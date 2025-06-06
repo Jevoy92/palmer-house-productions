@@ -1,3 +1,4 @@
+
 export const Team = () => {
   const teamMembers = [
     {
@@ -21,31 +22,31 @@ export const Team = () => {
   ];
 
   return (
-    <section id="team" className="py-20 bg-slate-900">
+    <section id="team" className="py-20 bg-earth-brown">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">The Expedition Team</h2>
-          <div className="mt-8 text-amber-400 text-2xl">⸻</div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-warm-cream">The Expedition Team</h2>
+          <div className="mt-8 text-warm-orange text-2xl">⸻</div>
         </div>
         
         <div className="grid md:grid-cols-3 gap-8">
           {teamMembers.map((member, index) => (
             <div 
               key={index}
-              className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 hover:border-amber-400/50 transition-all duration-300 group"
+              className="bg-earth-brown-light/50 border border-earth-brown-dark rounded-lg p-6 hover:border-warm-orange/50 transition-all duration-300 group"
             >
-              <div className="aspect-square w-full mb-6 rounded-lg overflow-hidden bg-gray-200">
+              <div className="aspect-square w-full mb-6 rounded-lg overflow-hidden bg-stone-gray">
                 <img 
                   src={member.image} 
                   alt={member.name}
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">{member.name}</h3>
-              <h4 className="text-amber-400 font-semibold mb-4 group-hover:text-white transition-colors duration-300">
+              <h3 className="text-xl font-bold text-warm-cream mb-2">{member.name}</h3>
+              <h4 className="text-warm-orange font-semibold mb-4 group-hover:text-warm-orange-light transition-colors duration-300">
                 {member.role}
               </h4>
-              <p className="text-gray-300 leading-relaxed text-sm group-hover:text-white transition-colors duration-300">
+              <p className="text-stone-gray leading-relaxed text-sm group-hover:text-warm-cream transition-colors duration-300">
                 {member.bio}
               </p>
             </div>

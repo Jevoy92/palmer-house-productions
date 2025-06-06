@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,25 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Earth-tone palette
+				sage: {
+					DEFAULT: 'hsl(var(--sage-green))',
+					light: 'hsl(var(--sage-light))',
+					dark: 'hsl(var(--sage-dark))',
+				},
+				'warm-orange': {
+					DEFAULT: 'hsl(var(--warm-orange))',
+					light: 'hsl(var(--warm-orange-light))',
+					dark: 'hsl(var(--warm-orange-dark))',
+				},
+				'earth-brown': {
+					DEFAULT: 'hsl(var(--earth-brown))',
+					light: 'hsl(var(--earth-brown-light))',
+					dark: 'hsl(var(--earth-brown-dark))',
+				},
+				'warm-cream': 'hsl(var(--warm-cream))',
+				'stone-gray': 'hsl(var(--stone-gray))',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

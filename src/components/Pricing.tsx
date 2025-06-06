@@ -79,11 +79,11 @@ export const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" className="py-20 bg-slate-900">
+    <section id="pricing" className="py-20 bg-sage">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">✦ Choose Your Path</h2>
-          <div className="text-lg text-gray-300 max-w-4xl mx-auto space-y-4">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-warm-cream">✦ Choose Your Path</h2>
+          <div className="text-lg text-stone-gray max-w-4xl mx-auto space-y-4">
             <p>Not all journeys are the same—neither are our video solutions.</p>
             <p>
               At Palmer House Productions, we don't offer one-offs or generic content. We create handcrafted, 
@@ -93,7 +93,7 @@ export const Pricing = () => {
             </p>
             <p>Whether you're just starting your brand story or scaling to new heights, there's a pathway that's right for your journey.</p>
           </div>
-          <div className="mt-8 text-amber-400 text-2xl">⸻</div>
+          <div className="mt-8 text-warm-orange text-2xl">⸻</div>
         </div>
         
         <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-8">
@@ -102,44 +102,44 @@ export const Pricing = () => {
               key={index}
               className={`relative p-8 rounded-lg border transition-all duration-300 ${
                 tier.highlight 
-                  ? 'border-amber-400 bg-gradient-to-b from-amber-500/10 to-orange-500/10 scale-105' 
-                  : 'border-slate-700 bg-slate-800/50 hover:border-amber-400/50'
+                  ? 'border-warm-orange bg-gradient-to-b from-warm-orange/10 to-earth-brown/10 scale-105' 
+                  : 'border-earth-brown-light bg-earth-brown/50 hover:border-warm-orange/50'
               } group`}
             >
               {tier.highlight && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 px-4 py-1 rounded-full text-sm font-semibold">
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-warm-orange to-warm-orange-dark text-earth-brown-dark px-4 py-1 rounded-full text-sm font-semibold">
                   Most Popular
                 </div>
               )}
               
               <div className="text-center mb-6">
                 <div className="text-3xl mb-3">{tier.icon}</div>
-                <h3 className="text-2xl font-bold text-amber-400 mb-2">{tier.name}</h3>
+                <h3 className="text-2xl font-bold text-warm-orange mb-2">{tier.name}</h3>
                 <div className="mb-4">
-                  <span className="text-4xl font-bold text-white">{tier.price}</span>
-                  <span className="text-gray-400">{tier.period}</span>
+                  <span className="text-4xl font-bold text-warm-cream">{tier.price}</span>
+                  <span className="text-stone-gray">{tier.period}</span>
                 </div>
-                <p className="text-gray-400 text-sm leading-relaxed">{tier.description}</p>
+                <p className="text-stone-gray text-sm leading-relaxed">{tier.description}</p>
               </div>
               
               <ul className="space-y-3 mb-6">
                 {tier.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-amber-400 rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-gray-300 text-sm leading-relaxed">{feature}</span>
+                    <div className="w-2 h-2 bg-warm-orange rounded-full mt-2 flex-shrink-0"></div>
+                    <span className="text-stone-gray text-sm leading-relaxed">{feature}</span>
                   </li>
                 ))}
               </ul>
               
               <div className="mb-8">
-                <p className="text-xs text-gray-400 mb-2">Perfect for:</p>
-                <p className="text-sm text-gray-300 leading-relaxed">{tier.perfectFor}</p>
+                <p className="text-xs text-stone-gray mb-2">Perfect for:</p>
+                <p className="text-sm text-warm-cream leading-relaxed">{tier.perfectFor}</p>
               </div>
               
               <button className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
                 tier.highlight
-                  ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 hover:from-amber-400 hover:to-orange-400'
-                  : 'border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-slate-950'
+                  ? 'bg-gradient-to-r from-warm-orange to-warm-orange-dark text-earth-brown-dark hover:from-warm-orange-light hover:to-warm-orange'
+                  : 'border border-warm-orange text-warm-orange hover:bg-warm-orange hover:text-earth-brown-dark'
               }`}>
                 Choose This Path
               </button>
@@ -148,12 +148,12 @@ export const Pricing = () => {
         </div>
         
         <div className="mt-16 text-center">
-          <div className="text-amber-400 text-2xl mb-6">⸻</div>
-          <h3 className="text-2xl font-bold text-white mb-4">🧭 Which Path Is Right For You?</h3>
-          <p className="text-lg text-gray-300 mb-8">
+          <div className="text-warm-orange text-2xl mb-6">⸻</div>
+          <h3 className="text-2xl font-bold text-warm-cream mb-4">🧭 Which Path Is Right For You?</h3>
+          <p className="text-lg text-stone-gray mb-8">
             If you're not sure where to begin, don't worry. Every journey starts with a strategy call.
           </p>
-          <button className="px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-semibold rounded-lg hover:from-amber-400 hover:to-orange-400 transition-all duration-300 text-lg">
+          <button className="px-8 py-4 bg-gradient-to-r from-warm-orange to-warm-orange-dark text-earth-brown-dark font-semibold rounded-lg hover:from-warm-orange-light hover:to-warm-orange transition-all duration-300 text-lg">
             Book My Call →
           </button>
         </div>

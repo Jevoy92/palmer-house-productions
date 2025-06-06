@@ -1,4 +1,6 @@
 
+import { Video, BookOpen, Users, Film, Megaphone, UserCheck } from 'lucide-react';
+
 export const Services = () => {
   return (
     <section id="services" className="py-20 bg-warm-beige">
@@ -14,7 +16,9 @@ export const Services = () => {
         <div className="space-y-8 max-w-4xl mx-auto">
           <div className="p-6 bg-cream-white/80 border border-warm-brown/20 rounded-lg hover:border-accent-terracotta/50 transition-all duration-300 group">
             <div className="flex items-start space-x-4">
-              <div className="text-2xl">🟤</div>
+              <div className="text-accent-terracotta mt-1">
+                <Video size={24} />
+              </div>
               <div>
                 <h3 className="text-xl font-semibold text-accent-terracotta mb-3 group-hover:text-warm-brown transition-colors duration-300">
                   Social-First Video Production
@@ -28,7 +32,9 @@ export const Services = () => {
 
           <div className="p-6 bg-cream-white/80 border border-warm-brown/20 rounded-lg hover:border-accent-terracotta/50 transition-all duration-300 group">
             <div className="flex items-start space-x-4">
-              <div className="text-2xl">🟤</div>
+              <div className="text-accent-terracotta mt-1">
+                <BookOpen size={24} />
+              </div>
               <div>
                 <h3 className="text-xl font-semibold text-accent-terracotta mb-3 group-hover:text-warm-brown transition-colors duration-300">
                   Long-Form Storytelling Content
@@ -42,7 +48,9 @@ export const Services = () => {
 
           <div className="p-6 bg-cream-white/80 border border-warm-brown/20 rounded-lg hover:border-accent-terracotta/50 transition-all duration-300 group">
             <div className="flex items-start space-x-4">
-              <div className="text-2xl">🟤</div>
+              <div className="text-accent-terracotta mt-1">
+                <Users size={24} />
+              </div>
               <div>
                 <h3 className="text-xl font-semibold text-accent-terracotta mb-3 group-hover:text-warm-brown transition-colors duration-300">
                   Content Strategy + Script Coaching
@@ -56,7 +64,9 @@ export const Services = () => {
 
           <div className="p-6 bg-cream-white/80 border border-warm-brown/20 rounded-lg hover:border-accent-terracotta/50 transition-all duration-300 group">
             <div className="flex items-start space-x-4">
-              <div className="text-2xl">🟤</div>
+              <div className="text-accent-terracotta mt-1">
+                <Film size={24} />
+              </div>
               <div>
                 <h3 className="text-xl font-semibold text-accent-terracotta mb-3 group-hover:text-warm-brown transition-colors duration-300">
                   Brand Identity Films
@@ -70,7 +80,9 @@ export const Services = () => {
 
           <div className="p-6 bg-cream-white/80 border border-warm-brown/20 rounded-lg hover:border-accent-terracotta/50 transition-all duration-300 group">
             <div className="flex items-start space-x-4">
-              <div className="text-2xl">🟤</div>
+              <div className="text-accent-terracotta mt-1">
+                <Megaphone size={24} />
+              </div>
               <div>
                 <h3 className="text-xl font-semibold text-accent-terracotta mb-3 group-hover:text-warm-brown transition-colors duration-300">
                   Micro-Campaign + Ad Creative
@@ -84,7 +96,9 @@ export const Services = () => {
 
           <div className="p-6 bg-cream-white/80 border border-warm-brown/20 rounded-lg hover:border-accent-terracotta/50 transition-all duration-300 group">
             <div className="flex items-start space-x-4">
-              <div className="text-2xl">🟤</div>
+              <div className="text-accent-terracotta mt-1">
+                <UserCheck size={24} />
+              </div>
               <div>
                 <h3 className="text-xl font-semibold text-accent-terracotta mb-3 group-hover:text-warm-brown transition-colors duration-300">
                   Client & Team Video Assets

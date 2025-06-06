@@ -16,37 +16,41 @@ export const PathwayField = ({ control }: PathwayFieldProps) => {
       name="pathway"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-deep-charcoal text-base">
-            What pathways are you interested in? <span className="text-accent-terracotta">*</span>
+          <FormLabel className="text-black font-medium text-lg">
+            Choose Your Plan
           </FormLabel>
           <FormControl>
             <RadioGroup
               onValueChange={field.onChange}
               defaultValue={field.value}
-              className="space-y-3"
+              className="space-y-4"
             >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="trailhead" id="trailhead" className="border-warm-brown text-accent-terracotta" />
-                <Label htmlFor="trailhead" className="text-deep-charcoal cursor-pointer">
-                  <span className="font-semibold text-accent-terracotta">Trailhead</span> — $1,500/month → For solo brands ready to start telling their story
+              <div className="flex items-center space-x-3 p-4 rounded-xl border border-apple-gray-2 hover:border-apple-blue transition-colors">
+                <RadioGroupItem value="starter" id="starter" className="border-apple-gray-3 text-apple-blue" />
+                <Label htmlFor="starter" className="text-black cursor-pointer flex-1">
+                  <span className="font-semibold">Starter</span> — $1,500/month
+                  <div className="text-apple-gray-4 text-sm">Perfect for solo brands</div>
                 </Label>
               </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="basecamp" id="basecamp" className="border-warm-brown text-accent-terracotta" />
-                <Label htmlFor="basecamp" className="text-deep-charcoal cursor-pointer">
-                  <span className="font-semibold text-accent-terracotta">Basecamp</span> — $3,500/month → For growing teams who need consistent video presence
+              <div className="flex items-center space-x-3 p-4 rounded-xl border border-apple-gray-2 hover:border-apple-blue transition-colors">
+                <RadioGroupItem value="growth" id="growth" className="border-apple-gray-3 text-apple-blue" />
+                <Label htmlFor="growth" className="text-black cursor-pointer flex-1">
+                  <span className="font-semibold">Growth</span> — $3,500/month
+                  <div className="text-apple-gray-4 text-sm">For growing teams</div>
                 </Label>
               </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="summit" id="summit" className="border-warm-brown text-accent-terracotta" />
-                <Label htmlFor="summit" className="text-deep-charcoal cursor-pointer">
-                  <span className="font-semibold text-accent-terracotta">Summit</span> — $7,500/month → For brands scaling authority with serious storytelling
+              <div className="flex items-center space-x-3 p-4 rounded-xl border border-apple-gray-2 hover:border-apple-blue transition-colors">
+                <RadioGroupItem value="scale" id="scale" className="border-apple-gray-3 text-apple-blue" />
+                <Label htmlFor="scale" className="text-black cursor-pointer flex-1">
+                  <span className="font-semibold">Scale</span> — $7,500/month
+                  <div className="text-apple-gray-4 text-sm">Authority building</div>
                 </Label>
               </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="horizon" id="horizon" className="border-warm-brown text-accent-terracotta" />
-                <Label htmlFor="horizon" className="text-deep-charcoal cursor-pointer">
-                  <span className="font-semibold text-accent-terracotta">Horizon</span> — $20,000/month → For high-end enterprises demanding elite execution
+              <div className="flex items-center space-x-3 p-4 rounded-xl border border-apple-gray-2 hover:border-apple-blue transition-colors">
+                <RadioGroupItem value="enterprise" id="enterprise" className="border-apple-gray-3 text-apple-blue" />
+                <Label htmlFor="enterprise" className="text-black cursor-pointer flex-1">
+                  <span className="font-semibold">Enterprise</span> — $20,000/month
+                  <div className="text-apple-gray-4 text-sm">Elite execution</div>
                 </Label>
               </div>
             </RadioGroup>

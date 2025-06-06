@@ -16,40 +16,40 @@ export const ChallengeField = ({ control }: ChallengeFieldProps) => {
       name="challenge"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-deep-charcoal text-base">
-            What challenge is your brand facing that you'd love to solve with video?
+          <FormLabel className="text-black font-medium text-lg">
+            What's your biggest challenge?
           </FormLabel>
-          <p className="text-sm text-muted-gray mb-4">
-            This helps us recommend the best strategy for your goals—whether that's better visibility, stronger trust, or making sure people finally understand what you do.
+          <p className="text-apple-gray-4 mb-6">
+            Help us understand your goals so we can recommend the best approach.
           </p>
           <FormControl>
             <RadioGroup
               onValueChange={field.onChange}
               defaultValue={field.value}
-              className="space-y-3"
+              className="space-y-4"
             >
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="visibility" id="visibility" className="border-warm-brown text-accent-terracotta" />
-                <Label htmlFor="visibility" className="text-deep-charcoal cursor-pointer">
-                  We're not showing up online like we should.
+              <div className="flex items-center space-x-3 p-4 rounded-xl hover:bg-apple-gray transition-colors">
+                <RadioGroupItem value="visibility" id="visibility" className="border-apple-gray-3 text-apple-blue" />
+                <Label htmlFor="visibility" className="text-black cursor-pointer flex-1">
+                  We need better online visibility
                 </Label>
               </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="content" id="content" className="border-warm-brown text-accent-terracotta" />
-                <Label htmlFor="content" className="text-deep-charcoal cursor-pointer">
-                  I want to post weekly but never know what to say.
+              <div className="flex items-center space-x-3 p-4 rounded-xl hover:bg-apple-gray transition-colors">
+                <RadioGroupItem value="content" id="content" className="border-apple-gray-3 text-apple-blue" />
+                <Label htmlFor="content" className="text-black cursor-pointer flex-1">
+                  Consistent content creation
                 </Label>
               </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="quality" id="quality" className="border-warm-brown text-accent-terracotta" />
-                <Label htmlFor="quality" className="text-deep-charcoal cursor-pointer">
-                  We have a great product, but our content doesn't reflect that.
+              <div className="flex items-center space-x-3 p-4 rounded-xl hover:bg-apple-gray transition-colors">
+                <RadioGroupItem value="quality" id="quality" className="border-apple-gray-3 text-apple-blue" />
+                <Label htmlFor="quality" className="text-black cursor-pointer flex-1">
+                  Professional content quality
                 </Label>
               </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="connection" id="connection" className="border-warm-brown text-accent-terracotta" />
-                <Label htmlFor="connection" className="text-deep-charcoal cursor-pointer">
-                  We need a better way to connect with customers visually.
+              <div className="flex items-center space-x-3 p-4 rounded-xl hover:bg-apple-gray transition-colors">
+                <RadioGroupItem value="connection" id="connection" className="border-apple-gray-3 text-apple-blue" />
+                <Label htmlFor="connection" className="text-black cursor-pointer flex-1">
+                  Better customer connection
                 </Label>
               </div>
             </RadioGroup>

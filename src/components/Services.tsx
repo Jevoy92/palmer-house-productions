@@ -1,127 +1,65 @@
 
-import { Video, BookOpen, Users, Film, Megaphone, UserCheck } from 'lucide-react';
+import { Video, Film, Users, Megaphone } from 'lucide-react';
 
 export const Services = () => {
+  const services = [
+    {
+      icon: Video,
+      title: "Social Video Production",
+      description: "Short-form content designed for maximum engagement across all platforms."
+    },
+    {
+      icon: Film,
+      title: "Brand Storytelling",
+      description: "Long-form narratives that capture your brand's authentic voice and vision."
+    },
+    {
+      icon: Users,
+      title: "Content Strategy",
+      description: "Strategic planning and script development to amplify your message."
+    },
+    {
+      icon: Megaphone,
+      title: "Campaign Creative",
+      description: "Targeted video content for launches, promotions, and brand initiatives."
+    }
+  ];
+
   return (
-    <section id="services" className="py-20 bg-warm-beige">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-deep-charcoal">What We Offer</h2>
-          <p className="text-xl text-muted-gray max-w-4xl mx-auto leading-relaxed">
-            Every service we provide is part of a monthly subscription pathway. We don't do one-offs—we build momentum through consistency, clarity, and bold creative execution.
+    <section id="services" className="py-32 bg-apple-gray">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="text-center mb-24">
+          <h2 className="text-5xl md:text-6xl font-sf font-semibold mb-6 text-black tracking-tight">What We Do</h2>
+          <p className="text-xl text-apple-gray-4 max-w-3xl mx-auto">
+            Comprehensive video production services designed to elevate your brand.
           </p>
-          <div className="mt-8 text-accent-terracotta text-2xl">⸻</div>
         </div>
         
-        <div className="space-y-8 max-w-4xl mx-auto">
-          <div className="p-6 bg-cream-white/80 border border-warm-brown/20 rounded-lg hover:border-accent-terracotta/50 transition-all duration-300 group">
-            <div className="flex items-start space-x-4">
-              <div className="text-accent-terracotta mt-1">
-                <Video size={24} />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-accent-terracotta mb-3 group-hover:text-warm-brown transition-colors duration-300">
-                  Social-First Video Production
+        <div className="grid md:grid-cols-2 gap-8">
+          {services.map((service, index) => {
+            const IconComponent = service.icon;
+            return (
+              <div 
+                key={index}
+                className="p-8 bg-white rounded-2xl apple-shadow hover:apple-shadow-lg transition-all duration-300"
+              >
+                <div className="w-12 h-12 bg-apple-blue rounded-xl flex items-center justify-center mb-6">
+                  <IconComponent size={24} className="text-white" />
+                </div>
+                <h3 className="text-2xl font-sf font-semibold text-black mb-4">
+                  {service.title}
                 </h3>
-                <p className="text-muted-gray leading-relaxed group-hover:text-deep-charcoal transition-colors duration-300">
-                  Ongoing short-form content designed for Instagram, TikTok, LinkedIn, YouTube Shorts, and Facebook—shot, edited, and delivered for maximum scroll-stopping power.
+                <p className="text-apple-gray-4 leading-relaxed text-lg">
+                  {service.description}
                 </p>
               </div>
-            </div>
-          </div>
-
-          <div className="p-6 bg-cream-white/80 border border-warm-brown/20 rounded-lg hover:border-accent-terracotta/50 transition-all duration-300 group">
-            <div className="flex items-start space-x-4">
-              <div className="text-accent-terracotta mt-1">
-                <BookOpen size={24} />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-accent-terracotta mb-3 group-hover:text-warm-brown transition-colors duration-300">
-                  Long-Form Storytelling Content
-                </h3>
-                <p className="text-muted-gray leading-relaxed group-hover:text-deep-charcoal transition-colors duration-300">
-                  Founder-led brand stories, launch explainers, behind-the-scenes videos, educational breakdowns, and episodic series built to live on YouTube or your website.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-6 bg-cream-white/80 border border-warm-brown/20 rounded-lg hover:border-accent-terracotta/50 transition-all duration-300 group">
-            <div className="flex items-start space-x-4">
-              <div className="text-accent-terracotta mt-1">
-                <Users size={24} />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-accent-terracotta mb-3 group-hover:text-warm-brown transition-colors duration-300">
-                  Content Strategy + Script Coaching
-                </h3>
-                <p className="text-muted-gray leading-relaxed group-hover:text-deep-charcoal transition-colors duration-300">
-                  Monthly batch ideation sessions with our team to plan your content themes, platform pairings, and video hooks. Includes scripting guidance and on-camera coaching.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-6 bg-cream-white/80 border border-warm-brown/20 rounded-lg hover:border-accent-terracotta/50 transition-all duration-300 group">
-            <div className="flex items-start space-x-4">
-              <div className="text-accent-terracotta mt-1">
-                <Film size={24} />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-accent-terracotta mb-3 group-hover:text-warm-brown transition-colors duration-300">
-                  Brand Identity Films
-                </h3>
-                <p className="text-muted-gray leading-relaxed group-hover:text-deep-charcoal transition-colors duration-300">
-                  High-impact visual stories that live on your About page or become the centerpiece of your brand's origin story. Built for founders, personal brands, and signature products.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-6 bg-cream-white/80 border border-warm-brown/20 rounded-lg hover:border-accent-terracotta/50 transition-all duration-300 group">
-            <div className="flex items-start space-x-4">
-              <div className="text-accent-terracotta mt-1">
-                <Megaphone size={24} />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-accent-terracotta mb-3 group-hover:text-warm-brown transition-colors duration-300">
-                  Micro-Campaign + Ad Creative
-                </h3>
-                <p className="text-muted-gray leading-relaxed group-hover:text-deep-charcoal transition-colors duration-300">
-                  Promo videos designed for time-sensitive launches, social ad funnels, seasonal campaigns, and event builds. Created within your monthly plan.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-6 bg-cream-white/80 border border-warm-brown/20 rounded-lg hover:border-accent-terracotta/50 transition-all duration-300 group">
-            <div className="flex items-start space-x-4">
-              <div className="text-accent-terracotta mt-1">
-                <UserCheck size={24} />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-accent-terracotta mb-3 group-hover:text-warm-brown transition-colors duration-300">
-                  Client & Team Video Assets
-                </h3>
-                <p className="text-muted-gray leading-relaxed group-hover:text-deep-charcoal transition-colors duration-300">
-                  Internal use videos like onboarding explainers, how-to tutorials, staff intros, and relationship-building content—created with brand voice and clarity in mind.
-                </p>
-              </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
         
-        <div className="mt-16 text-center">
-          <div className="text-accent-terracotta text-2xl mb-8">⸻</div>
-          <p className="text-xl text-muted-gray max-w-3xl mx-auto leading-relaxed mb-6">
-            Built for brands that don't just want content—
-          </p>
-          <p className="text-xl text-muted-gray max-w-3xl mx-auto leading-relaxed mb-8">
-            They want cinematic clarity, creative rhythm, and a marketing engine that sounds like them.
-          </p>
-          <div className="text-2xl mb-6">👇</div>
-          <button className="px-8 py-3 bg-gradient-to-r from-accent-terracotta to-warm-brown text-cream-white font-semibold rounded-lg hover:from-accent-terracotta/90 hover:to-warm-brown/90 transition-all duration-300 transform hover:scale-105">
-            Explore Subscription Paths
+        <div className="text-center mt-16">
+          <button className="px-8 py-4 bg-apple-blue text-white font-medium rounded-xl hover:bg-apple-blue/90 transition-all duration-200 apple-shadow">
+            View All Services
           </button>
         </div>
       </div>

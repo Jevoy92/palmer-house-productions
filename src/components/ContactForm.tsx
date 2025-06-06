@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,41 +33,34 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
 
   const onSubmit = (values: FormData) => {
     console.log(values);
-    // Handle form submission here
     onOpenChange(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-cream-white border-warm-brown/30">
-        <DialogHeader className="text-center mb-6">
-          <DialogTitle className="text-3xl font-bold text-accent-terracotta mb-4">
-            Ready to Chart Your Video Journey?
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-3xl border-0 apple-shadow-lg">
+        <DialogHeader className="text-center mb-8 pt-6">
+          <DialogTitle className="text-3xl font-sf font-semibold text-black mb-4">
+            Let's Start Your Project
           </DialogTitle>
-          <DialogDescription className="text-lg text-muted-gray leading-relaxed space-y-4">
-            <p>
-              Every great story starts with a single step. Whether you're testing the waters or gearing up for a bold brand transformation, we'll meet you where you are—and guide you the rest of the way.
-            </p>
-            <p>
-              Fill out the short form below so we can craft a pathway built just for you. No generic packages. No recycled content. Just a custom strategy that helps your brand stand out, scale up, and feel like you.
-            </p>
-          </DialogDescription>
-          <div className="w-32 h-px bg-gradient-to-r from-transparent via-accent-terracotta to-transparent mx-auto mt-6"></div>
+          <p className="text-lg text-apple-gray-4 leading-relaxed max-w-md mx-auto">
+            Tell us about your vision and we'll create a custom strategy for your brand.
+          </p>
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 px-6 pb-6">
             <PersonalInfoFields control={form.control} />
             
-            <div className="w-full h-px bg-gradient-to-r from-transparent via-warm-brown/30 to-transparent"></div>
+            <div className="w-full h-px bg-apple-gray-2"></div>
             
             <ChallengeField control={form.control} />
             
-            <div className="w-full h-px bg-gradient-to-r from-transparent via-warm-brown/30 to-transparent"></div>
+            <div className="w-full h-px bg-apple-gray-2"></div>
             
             <PathwayField control={form.control} />
             
-            <div className="w-full h-px bg-gradient-to-r from-transparent via-warm-brown/30 to-transparent"></div>
+            <div className="w-full h-px bg-apple-gray-2"></div>
             
             <AdditionalFields control={form.control} />
 
@@ -76,15 +69,15 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
-                className="flex-1 border-warm-brown text-muted-gray hover:bg-warm-beige"
+                className="flex-1 border-apple-gray-2 text-apple-gray-5 hover:bg-apple-gray rounded-xl"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                className="flex-1 bg-gradient-to-r from-accent-terracotta to-warm-brown text-cream-white font-semibold hover:from-accent-terracotta/90 hover:to-warm-brown/90"
+                className="flex-1 bg-apple-blue text-white font-medium hover:bg-apple-blue/90 rounded-xl"
               >
-                Send Signal
+                Send Message
               </Button>
             </div>
           </form>

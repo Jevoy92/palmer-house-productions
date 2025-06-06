@@ -63,20 +63,31 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Refined earth-tone palette
-				'warm-beige': 'hsl(var(--warm-beige))',
-				'soft-tan': 'hsl(var(--soft-tan))',
-				'muted-gray': 'hsl(var(--muted-gray))',
-				'cream-white': 'hsl(var(--cream-white))',
-				'warm-brown': 'hsl(var(--warm-brown))',
-				'accent-terracotta': 'hsl(var(--accent-terracotta))',
-				'deep-charcoal': 'hsl(var(--deep-charcoal))',
-				'light-sand': 'hsl(var(--light-sand))',
+				// Apple color system
+				'apple': {
+					'blue': 'hsl(var(--apple-blue))',
+					'gray': 'hsl(var(--apple-gray))',
+					'gray-2': 'hsl(var(--apple-gray-2))',
+					'gray-3': 'hsl(var(--apple-gray-3))',
+					'gray-4': 'hsl(var(--apple-gray-4))',
+					'gray-5': 'hsl(var(--apple-gray-5))',
+					'gray-6': 'hsl(var(--apple-gray-6))',
+					'white': 'hsl(var(--apple-white))',
+					'green': 'hsl(var(--apple-green))',
+					'orange': 'hsl(var(--apple-orange))',
+				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			fontFamily: {
+				'sf': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'Roboto', 'sans-serif'],
+			},
+			spacing: {
+				'128': '32rem',
+				'144': '36rem',
 			},
 			keyframes: {
 				'accordion-down': {
@@ -94,11 +105,22 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(20px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.6s ease-out'
 			}
 		}
 	},

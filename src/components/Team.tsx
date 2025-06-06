@@ -1,22 +1,21 @@
-
 export const Team = () => {
   const teamMembers = [
     {
       name: "Kyli Lora",
       role: "Executive Production Assistant",
-      image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=400&fit=crop&crop=face",
+      image: "/lovable-uploads/dcada800-4488-4970-82eb-2c356d3e789d.png",
       bio: "Based in Seattle, Kyli Lora is a multifaceted artist with a passion for storytelling through film and music. A recent graduate from the University of Washington, she's currently advancing her expertise in the UW Film & Video Production Certificate Program. Kyli has showcased her talents as an actress in productions like Teach (2019) and Tapestry Brewing (2025). Her musical endeavors include the album The Hourglass and singles like \"Mr. Rabbit and I\" reflecting her deep connection to storytelling."
     },
     {
       name: "Trenton Sims",
       role: "Video Editor & Animator", 
-      image: "https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=400&h=400&fit=crop&crop=face",
+      image: "/lovable-uploads/2537d3fc-b210-4170-93a2-d927fe38eea0.png",
       bio: "Trenton Sims is a dynamic video editor and 3D animator with a rich background in both creative and technical aspects of production. His experience includes roles at BRON Studios and Palmer House Productions, where he contributed to various projects as a junior animator and video editor. Trenton's diverse skill set and innovative approach make him an invaluable asset to any creative team."
     },
     {
       name: "Jevoy Palmer",
       role: "Founder & Creative Director",
-      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=400&fit=crop&crop=face", 
+      image: "/lovable-uploads/945e6d63-02d8-4c0d-a4ae-b691cc806a74.png", 
       bio: "Born and raised in Kingston, Jamaica, Jevoy Palmer is a Seattle-based creative strategist and visual storyteller. As the founder of Palmer House Productions, he specializes in crafting subscription-based video systems that empower brands to move beyond the basics. Jevoy's approach is rooted in authenticity, creativity, and a deep understanding of his clients' unique journeys. His work reflects a commitment to storytelling, discovery, and exclusivity, ensuring that every project is a tailored, unforgettable content journey."
     }
   ];

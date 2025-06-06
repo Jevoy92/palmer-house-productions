@@ -3,64 +3,77 @@ export const Pricing = () => {
   const pricingTiers = [
     {
       name: "Trailhead",
+      icon: "🥾",
       price: "$1,500",
       period: "/month",
-      description: "Perfect for getting started with professional video content",
+      description: "For solo adventurers and early-stage businesses ready to explore the power of video.",
       features: [
-        "2-3 short-form videos per month",
-        "Basic editing and color correction",
-        "Social media optimization",
-        "Monthly strategy call",
-        "48-hour turnaround"
+        "Up to 4 minutes of premium content",
+        "1 dedicated shoot day/month",
+        "1x monthly strategy session",
+        "Pre-shoot coaching",
+        "Monthly success check-in",
+        "Basic analytics & reporting",
+        "Ideal for: Instagram, TikTok",
+        "Suggested formats: 15 TikTok shorts, 2x 2-min Reels, or a 4-min flagship video"
       ],
+      perfectFor: "solopreneurs, service providers, and small but mighty teams (1–5) carving out their space.",
       highlight: false
     },
     {
       name: "Basecamp",
+      icon: "🏕",
       price: "$3,500",
       period: "/month",
-      description: "Ideal for consistent content creation and brand building",
+      description: "For growing teams ready to establish a stronger presence across multiple platforms.",
       features: [
-        "4-6 short-form videos per month",
-        "1 long-form video per month",
-        "Advanced editing and motion graphics",
-        "Content strategy sessions",
-        "Priority support",
-        "24-hour turnaround"
+        "10 minutes of content",
+        "2 shoot days/month",
+        "2x strategy sessions",
+        "Multi-campaign content blueprint",
+        "Premiere editing",
+        "Enhanced analytics",
+        "Ideal for: Instagram, TikTok, LinkedIn, Facebook",
+        "Suggested formats: 6–10 short-form videos, LinkedIn reels, or platform-specific deep dives"
       ],
+      perfectFor: "teams of 5–20, e-commerce brands, regional service pros, and businesses scaling up.",
       highlight: true
     },
     {
       name: "Summit",
+      icon: "🏔",
       price: "$7,500",
       period: "/month",
-      description: "Comprehensive video marketing for scaling businesses",
+      description: "For regional brands and agencies pushing for authority, consistency, and scale.",
       features: [
-        "8-10 short-form videos per month",
-        "2-3 long-form videos per month",
-        "Brand storytelling films",
-        "Ad creative development",
-        "Monthly batch ideation",
-        "Same-day turnaround",
-        "Dedicated project manager"
+        "25 minutes of content",
+        "Flexible shoot schedule",
+        "Weekly strategy sessions",
+        "Cross-platform content campaign design",
+        "Dedicated account lead",
+        "Deep-dive analytics & ROI reporting",
+        "Ideal for: YouTube, LinkedIn, Instagram, TikTok",
+        "Suggested formats: Full series rollouts, weekly videos, evergreen assets + monthly content stack"
       ],
+      perfectFor: "teams of 20–100, agencies, B2B pros, and companies needing a proven rhythm to their visibility.",
       highlight: false
     },
     {
       name: "Horizon",
+      icon: "🌄",
       price: "$20,000",
       period: "/month",
-      description: "White-glove service for enterprise-level content needs",
+      description: "For large enterprises and organizations who demand premium content, data, and agility—without compromise.",
       features: [
-        "Unlimited video content",
-        "Custom cinematic productions",
-        "Multi-location shoots",
-        "Advanced post-production",
-        "24/7 priority support",
-        "Dedicated creative team",
-        "Custom strategy development",
-        "Event coverage included"
+        "75 minutes of cinematic content",
+        "Unlimited shoot days",
+        "Weekly + quarterly strategy",
+        "Dedicated pre-production manager",
+        "Real-time analytics dashboard",
+        "Platform optimization & advanced scaling",
+        "Ideal for: all major platforms, internal comms, ad campaigns, training assets"
       ],
+      perfectFor: "national franchises, elite agencies, and organizations ready to dominate their space with unforgettable content.",
       highlight: false
     }
   ];
@@ -69,13 +82,21 @@ export const Pricing = () => {
     <section id="pricing" className="py-20 bg-slate-900">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">Choose Your Pathway</h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-            Subscription-based video production designed to scale with your vision
-          </p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">✦ Choose Your Path</h2>
+          <div className="text-lg text-gray-300 max-w-4xl mx-auto space-y-4">
+            <p>Not all journeys are the same—neither are our video solutions.</p>
+            <p>
+              At Palmer House Productions, we don't offer one-offs or generic content. We create handcrafted, 
+              high-impact video experiences designed to solve real business problems. That's why every path we 
+              offer is a fully guided expedition: built for growth, backed by strategy, and designed to get 
+              results on the platforms that matter most to your audience.
+            </p>
+            <p>Whether you're just starting your brand story or scaling to new heights, there's a pathway that's right for your journey.</p>
+          </div>
+          <div className="mt-8 text-amber-400 text-2xl">⸻</div>
         </div>
         
-        <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-8">
           {pricingTiers.map((tier, index) => (
             <div 
               key={index}
@@ -92,15 +113,16 @@ export const Pricing = () => {
               )}
               
               <div className="text-center mb-6">
+                <div className="text-3xl mb-3">{tier.icon}</div>
                 <h3 className="text-2xl font-bold text-amber-400 mb-2">{tier.name}</h3>
                 <div className="mb-4">
                   <span className="text-4xl font-bold text-white">{tier.price}</span>
                   <span className="text-gray-400">{tier.period}</span>
                 </div>
-                <p className="text-gray-400 text-sm">{tier.description}</p>
+                <p className="text-gray-400 text-sm leading-relaxed">{tier.description}</p>
               </div>
               
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-3 mb-6">
                 {tier.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-start space-x-3">
                     <div className="w-2 h-2 bg-amber-400 rounded-full mt-2 flex-shrink-0"></div>
@@ -109,23 +131,30 @@ export const Pricing = () => {
                 ))}
               </ul>
               
+              <div className="mb-8">
+                <p className="text-xs text-gray-400 mb-2">Perfect for:</p>
+                <p className="text-sm text-gray-300 leading-relaxed">{tier.perfectFor}</p>
+              </div>
+              
               <button className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
                 tier.highlight
                   ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 hover:from-amber-400 hover:to-orange-400'
                   : 'border border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-slate-950'
               }`}>
-                Get Started
+                Choose This Path
               </button>
             </div>
           ))}
         </div>
         
         <div className="mt-16 text-center">
-          <p className="text-lg text-gray-300 mb-6">
-            All pathways include unlimited revisions, monthly strategy sessions, and our signature cinematic approach.
+          <div className="text-amber-400 text-2xl mb-6">⸻</div>
+          <h3 className="text-2xl font-bold text-white mb-4">🧭 Which Path Is Right For You?</h3>
+          <p className="text-lg text-gray-300 mb-8">
+            If you're not sure where to begin, don't worry. Every journey starts with a strategy call.
           </p>
-          <button className="px-8 py-3 border border-amber-400 text-amber-400 font-semibold rounded-lg hover:bg-amber-400 hover:text-slate-950 transition-all duration-300">
-            Schedule a Discovery Call
+          <button className="px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-semibold rounded-lg hover:from-amber-400 hover:to-orange-400 transition-all duration-300 text-lg">
+            Book My Call →
           </button>
         </div>
       </div>

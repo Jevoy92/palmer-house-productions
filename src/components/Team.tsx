@@ -22,10 +22,10 @@ export const Team = () => {
   ];
 
   return (
-    <section id="team" className="py-20 bg-warm-brown">
+    <section id="team" className="py-20 bg-cream-white">
       <div className="max-w-6xl mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-cream-white">The Expedition Team</h2>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-deep-charcoal">The Expedition Team</h2>
           <div className="mt-8 text-accent-terracotta text-2xl">⸻</div>
         </div>
         
@@ -33,9 +33,9 @@ export const Team = () => {
           {teamMembers.map((member, index) => (
             <div 
               key={index}
-              className="bg-light-sand/90 border border-warm-beige rounded-lg p-6 hover:border-accent-terracotta/70 transition-all duration-300 group"
+              className="bg-background border border-warm-beige rounded-lg p-6 hover:border-accent-terracotta/50 transition-all duration-300 group hover:shadow-lg"
             >
-              <div className="aspect-square w-full mb-6 rounded-lg overflow-hidden bg-muted-gray">
+              <div className="aspect-square w-full mb-6 rounded-lg overflow-hidden bg-warm-beige/30">
                 <img 
                   src={member.image} 
                   alt={member.name}
@@ -46,7 +46,7 @@ export const Team = () => {
               <h4 className="text-accent-terracotta font-semibold mb-4 group-hover:text-warm-brown transition-colors duration-300">
                 {member.role}
               </h4>
-              <p className="text-muted-gray leading-relaxed text-sm group-hover:text-deep-charcoal transition-colors duration-300">
+              <p className="text-muted-foreground leading-relaxed text-sm group-hover:text-foreground transition-colors duration-300">
                 {member.bio}
               </p>
             </div>

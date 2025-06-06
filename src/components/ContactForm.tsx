@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -279,15 +278,15 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
                         <SelectValue placeholder="Select an option" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="bg-slate-800 border-slate-600">
-                      <SelectItem value="friend">Referred by a friend</SelectItem>
-                      <SelectItem value="instagram">Instagram</SelectItem>
-                      <SelectItem value="tiktok">TikTok</SelectItem>
-                      <SelectItem value="linkedin">LinkedIn</SelectItem>
-                      <SelectItem value="event">At an event</SelectItem>
-                      <SelectItem value="google">Google search</SelectItem>
-                      <SelectItem value="bni">BNI or local group</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
+                    <SelectContent className="bg-slate-800 border-slate-600 text-white">
+                      <SelectItem value="friend" className="text-white hover:bg-slate-700">Referred by a friend</SelectItem>
+                      <SelectItem value="instagram" className="text-white hover:bg-slate-700">Instagram</SelectItem>
+                      <SelectItem value="tiktok" className="text-white hover:bg-slate-700">TikTok</SelectItem>
+                      <SelectItem value="linkedin" className="text-white hover:bg-slate-700">LinkedIn</SelectItem>
+                      <SelectItem value="event" className="text-white hover:bg-slate-700">At an event</SelectItem>
+                      <SelectItem value="google" className="text-white hover:bg-slate-700">Google search</SelectItem>
+                      <SelectItem value="bni" className="text-white hover:bg-slate-700">BNI or local group</SelectItem>
+                      <SelectItem value="other" className="text-white hover:bg-slate-700">Other</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -311,10 +310,10 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
                         <SelectValue placeholder="Select your timeline" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="bg-slate-800 border-slate-600">
-                      <SelectItem value="ready">I'm ready to go this month</SelectItem>
-                      <SelectItem value="next-quarter">I'm exploring options for next quarter</SelectItem>
-                      <SelectItem value="researching">I'm just researching for now</SelectItem>
+                    <SelectContent className="bg-slate-800 border-slate-600 text-white">
+                      <SelectItem value="ready" className="text-white hover:bg-slate-700">I'm ready to go this month</SelectItem>
+                      <SelectItem value="next-quarter" className="text-white hover:bg-slate-700">I'm exploring options for next quarter</SelectItem>
+                      <SelectItem value="researching" className="text-white hover:bg-slate-700">I'm just researching for now</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

@@ -79,11 +79,11 @@ export const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" className="py-20 bg-sage">
+    <section id="pricing" className="py-20 bg-light-sand">
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-warm-cream">✦ Choose Your Path</h2>
-          <div className="text-lg text-stone-gray max-w-4xl mx-auto space-y-4">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-deep-charcoal">✦ Choose Your Path</h2>
+          <div className="text-lg text-muted-gray max-w-4xl mx-auto space-y-4">
             <p>Not all journeys are the same—neither are our video solutions.</p>
             <p>
               At Palmer House Productions, we don't offer one-offs or generic content. We create handcrafted, 
@@ -93,7 +93,7 @@ export const Pricing = () => {
             </p>
             <p>Whether you're just starting your brand story or scaling to new heights, there's a pathway that's right for your journey.</p>
           </div>
-          <div className="mt-8 text-warm-orange text-2xl">⸻</div>
+          <div className="mt-8 text-accent-terracotta text-2xl">⸻</div>
         </div>
         
         <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-8">
@@ -102,44 +102,44 @@ export const Pricing = () => {
               key={index}
               className={`relative p-8 rounded-lg border transition-all duration-300 ${
                 tier.highlight 
-                  ? 'border-warm-orange bg-gradient-to-b from-warm-orange/10 to-earth-brown/10 scale-105' 
-                  : 'border-earth-brown-light bg-earth-brown/50 hover:border-warm-orange/50'
+                  ? 'border-accent-terracotta bg-gradient-to-b from-accent-terracotta/10 to-warm-brown/10 scale-105' 
+                  : 'border-warm-brown/30 bg-cream-white/80 hover:border-accent-terracotta/50'
               } group`}
             >
               {tier.highlight && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-warm-orange to-warm-orange-dark text-earth-brown-dark px-4 py-1 rounded-full text-sm font-semibold">
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-accent-terracotta to-warm-brown text-cream-white px-4 py-1 rounded-full text-sm font-semibold">
                   Most Popular
                 </div>
               )}
               
               <div className="text-center mb-6">
                 <div className="text-3xl mb-3">{tier.icon}</div>
-                <h3 className="text-2xl font-bold text-warm-orange mb-2">{tier.name}</h3>
+                <h3 className="text-2xl font-bold text-accent-terracotta mb-2">{tier.name}</h3>
                 <div className="mb-4">
-                  <span className="text-4xl font-bold text-warm-cream">{tier.price}</span>
-                  <span className="text-stone-gray">{tier.period}</span>
+                  <span className="text-4xl font-bold text-deep-charcoal">{tier.price}</span>
+                  <span className="text-muted-gray">{tier.period}</span>
                 </div>
-                <p className="text-stone-gray text-sm leading-relaxed">{tier.description}</p>
+                <p className="text-muted-gray text-sm leading-relaxed">{tier.description}</p>
               </div>
               
               <ul className="space-y-3 mb-6">
                 {tier.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-warm-orange rounded-full mt-2 flex-shrink-0"></div>
-                    <span className="text-stone-gray text-sm leading-relaxed">{feature}</span>
+                    <div className="w-2 h-2 bg-accent-terracotta rounded-full mt-2 flex-shrink-0"></div>
+                    <span className="text-muted-gray text-sm leading-relaxed">{feature}</span>
                   </li>
                 ))}
               </ul>
               
               <div className="mb-8">
-                <p className="text-xs text-stone-gray mb-2">Perfect for:</p>
-                <p className="text-sm text-warm-cream leading-relaxed">{tier.perfectFor}</p>
+                <p className="text-xs text-muted-gray mb-2">Perfect for:</p>
+                <p className="text-sm text-deep-charcoal leading-relaxed">{tier.perfectFor}</p>
               </div>
               
               <button className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
                 tier.highlight
-                  ? 'bg-gradient-to-r from-warm-orange to-warm-orange-dark text-earth-brown-dark hover:from-warm-orange-light hover:to-warm-orange'
-                  : 'border border-warm-orange text-warm-orange hover:bg-warm-orange hover:text-earth-brown-dark'
+                  ? 'bg-gradient-to-r from-accent-terracotta to-warm-brown text-cream-white hover:from-accent-terracotta/90 hover:to-warm-brown/90'
+                  : 'border border-accent-terracotta text-accent-terracotta hover:bg-accent-terracotta hover:text-cream-white'
               }`}>
                 Choose This Path
               </button>
@@ -148,12 +148,12 @@ export const Pricing = () => {
         </div>
         
         <div className="mt-16 text-center">
-          <div className="text-warm-orange text-2xl mb-6">⸻</div>
-          <h3 className="text-2xl font-bold text-warm-cream mb-4">🧭 Which Path Is Right For You?</h3>
-          <p className="text-lg text-stone-gray mb-8">
+          <div className="text-accent-terracotta text-2xl mb-6">⸻</div>
+          <h3 className="text-2xl font-bold text-deep-charcoal mb-4">🧭 Which Path Is Right For You?</h3>
+          <p className="text-lg text-muted-gray mb-8">
             If you're not sure where to begin, don't worry. Every journey starts with a strategy call.
           </p>
-          <button className="px-8 py-4 bg-gradient-to-r from-warm-orange to-warm-orange-dark text-earth-brown-dark font-semibold rounded-lg hover:from-warm-orange-light hover:to-warm-orange transition-all duration-300 text-lg">
+          <button className="px-8 py-4 bg-gradient-to-r from-accent-terracotta to-warm-brown text-cream-white font-semibold rounded-lg hover:from-accent-terracotta/90 hover:to-warm-brown/90 transition-all duration-300 text-lg">
             Book My Call →
           </button>
         </div>

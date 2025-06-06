@@ -1,4 +1,3 @@
-
 import { Compass, Search, Sparkles, Heart, Wrench } from 'lucide-react';
 
 export const Values = () => {
@@ -93,28 +92,58 @@ export const Values = () => {
           })}
         </div>
         
-        <div className="text-center mb-20">
-          <div className="text-corporate-gray text-3xl mb-8">⸻</div>
-          <h3 className="text-4xl md:text-5xl font-display font-black mb-8 text-corporate-dark">
-            Choose Your <span className="text-gradient-2">Path</span>
+        <div className="text-center mb-16">
+          <div className="text-corporate-gray text-4xl mb-12 tracking-widest">⸻ ⸻ ⸻</div>
+          <div className="inline-block px-8 py-4 gradient-social-1 rounded-full text-white font-bold text-xl mb-8 video-shadow-lg">
+            🎒 Trail Selection
+          </div>
+          <h3 className="text-5xl md:text-6xl font-display font-black mb-10 text-corporate-dark leading-tight">
+            Choose Your <span className="text-gradient-2">Adventure</span>
           </h3>
-          <p className="text-xl text-corporate-gray mb-12 max-w-4xl mx-auto font-medium">
-            Because you should know what it feels like to embark on this journey with us before you ever hit "Send."
+          <p className="text-2xl text-corporate-gray mb-16 max-w-5xl mx-auto font-medium leading-relaxed">
+            Every great journey starts with a single step.
+            <br />
+            <span className="text-gradient-1 font-bold">What kind of explorer are you?</span> Pick the path that calls to your spirit.
           </p>
-          <div className="flex flex-wrap justify-center gap-6 mb-16">
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-20 max-w-6xl mx-auto">
             {pathChoices.map((item, index) => {
               return (
                 <div 
                   key={index}
-                  className={`group flex items-center space-x-3 px-8 py-4 ${item.gradient} text-white font-bold text-lg rounded-full hover:scale-105 transition-all duration-300 video-shadow cursor-pointer`}
+                  className={`group relative p-8 bg-video-white rounded-3xl hover:bg-transparent transition-all duration-500 video-shadow hover:video-shadow-lg cursor-pointer overflow-hidden`}
                 >
-                  <span className="text-2xl group-hover:scale-110 transition-transform duration-300">
-                    {item.icon}
-                  </span>
-                  <span>{item.word}</span>
+                  <div className={`absolute inset-0 ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl`}></div>
+                  
+                  <div className="relative z-10">
+                    <div className="text-5xl mb-6 group-hover:scale-125 transition-transform duration-500">
+                      {item.icon}
+                    </div>
+                    <h4 className="text-xl font-display font-black text-corporate-dark group-hover:text-white transition-colors duration-500 leading-tight">
+                      {item.word}
+                    </h4>
+                  </div>
+                  
+                  <div className="absolute -top-2 -right-2 w-6 h-6 gradient-social-3 rounded-full opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
+                  <div className="absolute -bottom-1 -left-1 w-4 h-4 gradient-social-4 rounded-full opacity-30 group-hover:opacity-60 transition-opacity duration-500"></div>
                 </div>
               );
             })}
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8 mb-16 max-w-4xl mx-auto">
+            <div className="p-8 bg-video-white rounded-2xl video-shadow">
+              <div className="text-5xl font-black text-gradient-1 mb-4">∞</div>
+              <div className="text-lg text-corporate-gray font-semibold">Paths to Explore</div>
+            </div>
+            <div className="p-8 bg-video-white rounded-2xl video-shadow">
+              <div className="text-5xl font-black text-gradient-2 mb-4">1</div>
+              <div className="text-lg text-corporate-gray font-semibold">Perfect Journey</div>
+            </div>
+            <div className="p-8 bg-video-white rounded-2xl video-shadow">
+              <div className="text-5xl font-black text-gradient-3 mb-4">100%</div>
+              <div className="text-lg text-corporate-gray font-semibold">Authentic Adventure</div>
+            </div>
           </div>
         </div>
         

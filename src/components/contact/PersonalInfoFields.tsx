@@ -17,11 +17,11 @@ export const PersonalInfoFields = ({ control }: PersonalInfoFieldsProps) => {
           name="firstName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-300">First Name</FormLabel>
+              <FormLabel className="text-deep-charcoal">First Name</FormLabel>
               <FormControl>
                 <Input 
                   placeholder="First name" 
-                  className="bg-slate-800 border-slate-600 text-white" 
+                  className="bg-warm-beige border-warm-brown/30 text-deep-charcoal placeholder:text-muted-gray focus:border-accent-terracotta" 
                   {...field} 
                 />
               </FormControl>
@@ -34,11 +34,11 @@ export const PersonalInfoFields = ({ control }: PersonalInfoFieldsProps) => {
           name="lastName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-gray-300">Last Name</FormLabel>
+              <FormLabel className="text-deep-charcoal">Last Name</FormLabel>
               <FormControl>
                 <Input 
                   placeholder="Last name" 
-                  className="bg-slate-800 border-slate-600 text-white" 
+                  className="bg-warm-beige border-warm-brown/30 text-deep-charcoal placeholder:text-muted-gray focus:border-accent-terracotta" 
                   {...field} 
                 />
               </FormControl>
@@ -53,12 +53,12 @@ export const PersonalInfoFields = ({ control }: PersonalInfoFieldsProps) => {
         name="email"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-gray-300">Email</FormLabel>
+            <FormLabel className="text-deep-charcoal">Email</FormLabel>
             <FormControl>
               <Input 
                 type="email" 
                 placeholder="your@email.com" 
-                className="bg-slate-800 border-slate-600 text-white" 
+                className="bg-warm-beige border-warm-brown/30 text-deep-charcoal placeholder:text-muted-gray focus:border-accent-terracotta" 
                 {...field} 
               />
             </FormControl>
@@ -72,12 +72,12 @@ export const PersonalInfoFields = ({ control }: PersonalInfoFieldsProps) => {
         name="phone"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-gray-300">Phone</FormLabel>
+            <FormLabel className="text-deep-charcoal">Phone</FormLabel>
             <FormControl>
               <Input 
                 type="tel" 
                 placeholder="(555) 123-4567" 
-                className="bg-slate-800 border-slate-600 text-white" 
+                className="bg-warm-beige border-warm-brown/30 text-deep-charcoal placeholder:text-muted-gray focus:border-accent-terracotta" 
                 {...field} 
               />
             </FormControl>

@@ -17,11 +17,11 @@ export const AdditionalFields = ({ control }: AdditionalFieldsProps) => {
         name="message"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-gray-300">Message</FormLabel>
+            <FormLabel className="text-deep-charcoal">Message</FormLabel>
             <FormControl>
               <Textarea 
                 placeholder="Tell us more about your vision..." 
-                className="bg-slate-800 border-slate-600 text-white min-h-[100px]" 
+                className="bg-warm-beige border-warm-brown/30 text-deep-charcoal placeholder:text-muted-gray min-h-[100px] focus:border-accent-terracotta" 
                 {...field} 
               />
             </FormControl>
@@ -35,24 +35,24 @@ export const AdditionalFields = ({ control }: AdditionalFieldsProps) => {
         name="referralSource"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-gray-300">
-              How did you hear about us? <span className="text-amber-400">*</span>
+            <FormLabel className="text-deep-charcoal">
+              How did you hear about us? <span className="text-accent-terracotta">*</span>
             </FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
+                <SelectTrigger className="bg-warm-beige border-warm-brown/30 text-deep-charcoal focus:border-accent-terracotta">
                   <SelectValue placeholder="Select an option" />
                 </SelectTrigger>
               </FormControl>
-              <SelectContent className="bg-slate-800 border-slate-600 text-white">
-                <SelectItem value="friend" className="text-white hover:bg-slate-700">Referred by a friend</SelectItem>
-                <SelectItem value="instagram" className="text-white hover:bg-slate-700">Instagram</SelectItem>
-                <SelectItem value="tiktok" className="text-white hover:bg-slate-700">TikTok</SelectItem>
-                <SelectItem value="linkedin" className="text-white hover:bg-slate-700">LinkedIn</SelectItem>
-                <SelectItem value="event" className="text-white hover:bg-slate-700">At an event</SelectItem>
-                <SelectItem value="google" className="text-white hover:bg-slate-700">Google search</SelectItem>
-                <SelectItem value="bni" className="text-white hover:bg-slate-700">BNI or local group</SelectItem>
-                <SelectItem value="other" className="text-white hover:bg-slate-700">Other</SelectItem>
+              <SelectContent className="bg-cream-white border-warm-brown/30 text-deep-charcoal">
+                <SelectItem value="friend" className="text-deep-charcoal hover:bg-warm-beige">Referred by a friend</SelectItem>
+                <SelectItem value="instagram" className="text-deep-charcoal hover:bg-warm-beige">Instagram</SelectItem>
+                <SelectItem value="tiktok" className="text-deep-charcoal hover:bg-warm-beige">TikTok</SelectItem>
+                <SelectItem value="linkedin" className="text-deep-charcoal hover:bg-warm-beige">LinkedIn</SelectItem>
+                <SelectItem value="event" className="text-deep-charcoal hover:bg-warm-beige">At an event</SelectItem>
+                <SelectItem value="google" className="text-deep-charcoal hover:bg-warm-beige">Google search</SelectItem>
+                <SelectItem value="bni" className="text-deep-charcoal hover:bg-warm-beige">BNI or local group</SelectItem>
+                <SelectItem value="other" className="text-deep-charcoal hover:bg-warm-beige">Other</SelectItem>
               </SelectContent>
             </Select>
             <FormMessage />
@@ -65,19 +65,19 @@ export const AdditionalFields = ({ control }: AdditionalFieldsProps) => {
         name="readiness"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-gray-300">
-              How ready are you to start your content journey? <span className="text-amber-400">*</span>
+            <FormLabel className="text-deep-charcoal">
+              How ready are you to start your content journey? <span className="text-accent-terracotta">*</span>
             </FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger className="bg-slate-800 border-slate-600 text-white">
+                <SelectTrigger className="bg-warm-beige border-warm-brown/30 text-deep-charcoal focus:border-accent-terracotta">
                   <SelectValue placeholder="Select your timeline" />
                 </SelectTrigger>
               </FormControl>
-              <SelectContent className="bg-slate-800 border-slate-600 text-white">
-                <SelectItem value="ready" className="text-white hover:bg-slate-700">I'm ready to go this month</SelectItem>
-                <SelectItem value="next-quarter" className="text-white hover:bg-slate-700">I'm exploring options for next quarter</SelectItem>
-                <SelectItem value="researching" className="text-white hover:bg-slate-700">I'm just researching for now</SelectItem>
+              <SelectContent className="bg-cream-white border-warm-brown/30 text-deep-charcoal">
+                <SelectItem value="ready" className="text-deep-charcoal hover:bg-warm-beige">I'm ready to go this month</SelectItem>
+                <SelectItem value="next-quarter" className="text-deep-charcoal hover:bg-warm-beige">I'm exploring options for next quarter</SelectItem>
+                <SelectItem value="researching" className="text-deep-charcoal hover:bg-warm-beige">I'm just researching for now</SelectItem>
               </SelectContent>
             </Select>
             <FormMessage />

@@ -16,8 +16,8 @@ export const PathwayField = ({ control }: PathwayFieldProps) => {
       name="pathway"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-gray-300 text-base">
-            What pathways are you interested in? <span className="text-amber-400">*</span>
+          <FormLabel className="text-deep-charcoal text-base">
+            What pathways are you interested in? <span className="text-accent-terracotta">*</span>
           </FormLabel>
           <FormControl>
             <RadioGroup
@@ -26,27 +26,27 @@ export const PathwayField = ({ control }: PathwayFieldProps) => {
               className="space-y-3"
             >
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="trailhead" id="trailhead" className="border-slate-600" />
-                <Label htmlFor="trailhead" className="text-gray-300 cursor-pointer">
-                  <span className="font-semibold text-amber-400">Trailhead</span> — $1,500/month → For solo brands ready to start telling their story
+                <RadioGroupItem value="trailhead" id="trailhead" className="border-warm-brown text-accent-terracotta" />
+                <Label htmlFor="trailhead" className="text-deep-charcoal cursor-pointer">
+                  <span className="font-semibold text-accent-terracotta">Trailhead</span> — $1,500/month → For solo brands ready to start telling their story
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="basecamp" id="basecamp" className="border-slate-600" />
-                <Label htmlFor="basecamp" className="text-gray-300 cursor-pointer">
-                  <span className="font-semibold text-amber-400">Basecamp</span> — $3,500/month → For growing teams who need consistent video presence
+                <RadioGroupItem value="basecamp" id="basecamp" className="border-warm-brown text-accent-terracotta" />
+                <Label htmlFor="basecamp" className="text-deep-charcoal cursor-pointer">
+                  <span className="font-semibold text-accent-terracotta">Basecamp</span> — $3,500/month → For growing teams who need consistent video presence
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="summit" id="summit" className="border-slate-600" />
-                <Label htmlFor="summit" className="text-gray-300 cursor-pointer">
-                  <span className="font-semibold text-amber-400">Summit</span> — $7,500/month → For brands scaling authority with serious storytelling
+                <RadioGroupItem value="summit" id="summit" className="border-warm-brown text-accent-terracotta" />
+                <Label htmlFor="summit" className="text-deep-charcoal cursor-pointer">
+                  <span className="font-semibold text-accent-terracotta">Summit</span> — $7,500/month → For brands scaling authority with serious storytelling
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="horizon" id="horizon" className="border-slate-600" />
-                <Label htmlFor="horizon" className="text-gray-300 cursor-pointer">
-                  <span className="font-semibold text-amber-400">Horizon</span> — $20,000/month → For high-end enterprises demanding elite execution
+                <RadioGroupItem value="horizon" id="horizon" className="border-warm-brown text-accent-terracotta" />
+                <Label htmlFor="horizon" className="text-deep-charcoal cursor-pointer">
+                  <span className="font-semibold text-accent-terracotta">Horizon</span> — $20,000/month → For high-end enterprises demanding elite execution
                 </Label>
               </div>
             </RadioGroup>

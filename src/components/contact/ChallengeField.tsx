@@ -16,10 +16,10 @@ export const ChallengeField = ({ control }: ChallengeFieldProps) => {
       name="challenge"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-gray-300 text-base">
+          <FormLabel className="text-deep-charcoal text-base">
             What challenge is your brand facing that you'd love to solve with video?
           </FormLabel>
-          <p className="text-sm text-gray-400 mb-4">
+          <p className="text-sm text-muted-gray mb-4">
             This helps us recommend the best strategy for your goals—whether that's better visibility, stronger trust, or making sure people finally understand what you do.
           </p>
           <FormControl>
@@ -29,26 +29,26 @@ export const ChallengeField = ({ control }: ChallengeFieldProps) => {
               className="space-y-3"
             >
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="visibility" id="visibility" className="border-slate-600" />
-                <Label htmlFor="visibility" className="text-gray-300 cursor-pointer">
+                <RadioGroupItem value="visibility" id="visibility" className="border-warm-brown text-accent-terracotta" />
+                <Label htmlFor="visibility" className="text-deep-charcoal cursor-pointer">
                   We're not showing up online like we should.
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="content" id="content" className="border-slate-600" />
-                <Label htmlFor="content" className="text-gray-300 cursor-pointer">
+                <RadioGroupItem value="content" id="content" className="border-warm-brown text-accent-terracotta" />
+                <Label htmlFor="content" className="text-deep-charcoal cursor-pointer">
                   I want to post weekly but never know what to say.
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="quality" id="quality" className="border-slate-600" />
-                <Label htmlFor="quality" className="text-gray-300 cursor-pointer">
+                <RadioGroupItem value="quality" id="quality" className="border-warm-brown text-accent-terracotta" />
+                <Label htmlFor="quality" className="text-deep-charcoal cursor-pointer">
                   We have a great product, but our content doesn't reflect that.
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="connection" id="connection" className="border-slate-600" />
-                <Label htmlFor="connection" className="text-gray-300 cursor-pointer">
+                <RadioGroupItem value="connection" id="connection" className="border-warm-brown text-accent-terracotta" />
+                <Label htmlFor="connection" className="text-deep-charcoal cursor-pointer">
                   We need a better way to connect with customers visually.
                 </Label>
               </div>

@@ -3,25 +3,25 @@ export const Team = () => {
   const teamMembers = [
     {
       name: "Kyli Lora",
-      role: "Executive Production Assistant",
+      role: "Creative Pathfinder",
       image: "/lovable-uploads/dcada800-4488-4970-82eb-2c356d3e789d.png",
-      bio: "Viral content strategist with 2M+ views across platforms.",
+      bio: "Trail guide for viral content discovery with 2M+ views across uncharted platforms.",
       gradient: "gradient-social-1",
       textGradient: "text-gradient-1"
     },
     {
       name: "Trenton Sims", 
-      role: "Video Editor & Animator",
+      role: "Visual Explorer & Motion Artist",
       image: "/lovable-uploads/2537d3fc-b210-4170-93a2-d927fe38eea0.png",
-      bio: "Motion graphics wizard who makes brands unforgettable.",
+      bio: "Cartographer of motion graphics who maps unforgettable brand territories.",
       gradient: "gradient-social-2",
       textGradient: "text-gradient-2"
     },
     {
       name: "Jevoy Palmer",
-      role: "Founder & Creative Director",
+      role: "Founder & Lead Adventure Guide",
       image: "/lovable-uploads/945e6d63-02d8-4c0d-a4ae-b691cc806a74.png",
-      bio: "Storytelling expert who turns brands into social movements.",
+      bio: "Your storyteller with a camera, charting new creative territories where culture meets vision.",
       gradient: "gradient-social-3", 
       textGradient: "text-gradient-3"
     }
@@ -38,13 +38,13 @@ export const Team = () => {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-24">
           <div className="inline-block px-6 py-3 gradient-social-2 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            👥 Meet the Creators
+            🏕️ Meet Your Guides
           </div>
           <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-            The <span className="text-gradient-2">Dream Team</span>
+            The <span className="text-gradient-2">Expedition</span> Team
           </h2>
           <p className="text-2xl text-corporate-gray max-w-3xl mx-auto font-medium">
-            The creative minds behind every viral moment and conversion-driving campaign.
+            The fearless explorers behind every groundbreaking campaign and boundary-pushing story.
           </p>
         </div>
         
@@ -91,15 +91,15 @@ export const Team = () => {
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div>
               <div className="text-4xl font-black text-white mb-2">500+</div>
-              <div className="text-white/90 font-medium">Videos Produced</div>
+              <div className="text-white/90 font-medium">Adventures Documented</div>
             </div>
             <div>
               <div className="text-4xl font-black text-white mb-2">15+</div>
-              <div className="text-white/90 font-medium">Years Combined Experience</div>
+              <div className="text-white/90 font-medium">Years Exploring Together</div>
             </div>
             <div>
               <div className="text-4xl font-black text-white mb-2">100%</div>
-              <div className="text-white/90 font-medium">Client Satisfaction</div>
+              <div className="text-white/90 font-medium">Trailblazer Satisfaction</div>
             </div>
           </div>
         </div>

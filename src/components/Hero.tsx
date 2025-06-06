@@ -13,7 +13,7 @@ export const Hero = () => {
       <div className="relative z-10 text-center px-6 max-w-6xl mx-auto">
         <div className="mb-8">
           <div className="inline-block px-6 py-3 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-semibold text-lg mb-6 video-shadow animate-pulse-social">
-            📹 Social Video Experts
+            🎬 Visual Storytelling Explorers
           </div>
         </div>
         
@@ -24,33 +24,33 @@ export const Hero = () => {
         </h1>
         
         <p className="text-2xl md:text-4xl text-corporate-gray mb-12 font-medium max-w-4xl mx-auto leading-tight">
-          Viral content that <span className="text-gradient-2 font-bold">converts</span>.
+          We film the <span className="text-gradient-2 font-bold">road less traveled</span>.
           <br />
-          Stories that <span className="text-gradient-3 font-bold">scale</span>.
+          Stories as <span className="text-gradient-3 font-bold">original</span> as the path you walk.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-6 justify-center mb-24">
           <button className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow-lg">
-            Start Creating 🚀
+            Start Your Journey 🗺️
           </button>
           <button className="px-10 py-5 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow">
-            Watch Our Reels ▶️
+            Explore Our Trails ▶️
           </button>
         </div>
         
         {/* Social Proof */}
         <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
           <div className="text-center">
-            <div className="text-3xl font-black text-gradient-1 mb-2">1M+</div>
-            <div className="text-sm text-corporate-gray font-medium">Views Generated</div>
+            <div className="text-3xl font-black text-gradient-1 mb-2">50+</div>
+            <div className="text-sm text-corporate-gray font-medium">Journeys Captured</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-black text-gradient-2 mb-2">50+</div>
-            <div className="text-sm text-corporate-gray font-medium">Viral Campaigns</div>
+            <div className="text-3xl font-black text-gradient-2 mb-2">1M+</div>
+            <div className="text-sm text-corporate-gray font-medium">Miles of Discovery</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-black text-gradient-3 mb-2">99%</div>
-            <div className="text-sm text-corporate-gray font-medium">Client ROI</div>
+            <div className="text-3xl font-black text-gradient-3 mb-2">∞</div>
+            <div className="text-sm text-corporate-gray font-medium">Stories Untold</div>
           </div>
         </div>
       </div>

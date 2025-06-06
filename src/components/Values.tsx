@@ -1,4 +1,5 @@
-import { Compass, Search, Sparkles, Heart, Wrench } from 'lucide-react';
+
+import { Compass, Search, Sparkles, Heart, Wrench, Target } from 'lucide-react';
 
 export const Values = () => {
   const values = [
@@ -31,6 +32,12 @@ export const Values = () => {
       title: "Craft over Clout", 
       description: "Quality matters more than views. We build visuals that last, not just content that scrolls.",
       gradient: "gradient-social-5"
+    },
+    { 
+      icon: Target, 
+      title: "Purpose over Profit", 
+      description: "We create with intention. Every frame serves your mission, not just our bottom line.",
+      gradient: "gradient-social-1"
     }
   ];
 
@@ -39,7 +46,8 @@ export const Values = () => {
     { icon: "⭐", word: "Creative", gradient: "gradient-social-2" },
     { icon: "🚀", word: "Bold", gradient: "gradient-social-3" },
     { icon: "🧭", word: "Authentic", gradient: "gradient-social-4" },
-    { icon: "🌟", word: "Elevated", gradient: "gradient-social-5" }
+    { icon: "🌟", word: "Elevated", gradient: "gradient-social-5" },
+    { icon: "🎯", word: "Focused", gradient: "gradient-social-1" }
   ];
 
   return (
@@ -106,26 +114,26 @@ export const Values = () => {
             <span className="text-gradient-1 font-bold">What kind of explorer are you?</span> Pick the path that calls to your spirit.
           </p>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-20 max-w-6xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-20 max-w-5xl mx-auto">
             {pathChoices.map((item, index) => {
               return (
                 <div 
                   key={index}
-                  className={`group relative p-8 bg-video-white rounded-3xl hover:bg-transparent transition-all duration-500 video-shadow hover:video-shadow-lg cursor-pointer overflow-hidden`}
+                  className={`group relative p-4 bg-video-white rounded-2xl hover:bg-transparent transition-all duration-500 video-shadow hover:video-shadow-lg cursor-pointer overflow-hidden`}
                 >
-                  <div className={`absolute inset-0 ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl`}></div>
+                  <div className={`absolute inset-0 ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl`}></div>
                   
-                  <div className="relative z-10">
-                    <div className="text-5xl mb-6 group-hover:scale-125 transition-transform duration-500">
+                  <div className="relative z-10 text-center">
+                    <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-500">
                       {item.icon}
                     </div>
-                    <h4 className="text-xl font-display font-black text-corporate-dark group-hover:text-white transition-colors duration-500 leading-tight">
+                    <h4 className="text-sm font-display font-black text-corporate-dark group-hover:text-white transition-colors duration-500 leading-tight">
                       {item.word}
                     </h4>
                   </div>
                   
-                  <div className="absolute -top-2 -right-2 w-6 h-6 gradient-social-3 rounded-full opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-                  <div className="absolute -bottom-1 -left-1 w-4 h-4 gradient-social-4 rounded-full opacity-30 group-hover:opacity-60 transition-opacity duration-500"></div>
+                  <div className="absolute -top-1 -right-1 w-3 h-3 gradient-social-3 rounded-full opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
+                  <div className="absolute -bottom-1 -left-1 w-2 h-2 gradient-social-4 rounded-full opacity-30 group-hover:opacity-60 transition-opacity duration-500"></div>
                 </div>
               );
             })}

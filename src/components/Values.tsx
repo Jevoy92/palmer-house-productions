@@ -30,7 +30,7 @@ export const Values = () => {
                 {value.title}
               </h3>
               <div className="text-gray-500 mb-3">
-                <span className="text-lg">></span> {value.subtitle}
+                <span className="text-lg">{'>'}</span> {value.subtitle}
               </div>
               <p className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
                 {value.description}

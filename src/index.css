@@ -14,48 +14,45 @@
     --popover: 45 15% 97%;
     --popover-foreground: 25 20% 15%;
 
-    --primary: 85 35% 35%;
+    --primary: 30 25% 55%;
     --primary-foreground: 45 15% 97%;
 
-    --secondary: 35 25% 85%;
+    --secondary: 35 15% 85%;
     --secondary-foreground: 25 20% 15%;
 
-    --muted: 35 15% 90%;
+    --muted: 35 10% 90%;
     --muted-foreground: 25 12% 45%;
 
-    --accent: 25 45% 65%;
+    --accent: 25 35% 65%;
     --accent-foreground: 45 15% 97%;
 
     --destructive: 0 62% 50%;
     --destructive-foreground: 45 15% 97%;
 
-    --border: 35 20% 82%;
-    --input: 35 20% 82%;
-    --ring: 85 35% 35%;
+    --border: 35 15% 82%;
+    --input: 35 15% 82%;
+    --ring: 30 25% 55%;
 
     --radius: 0.5rem;
 
     --sidebar-background: 45 15% 97%;
     --sidebar-foreground: 25 20% 15%;
-    --sidebar-primary: 85 35% 35%;
+    --sidebar-primary: 30 25% 55%;
     --sidebar-primary-foreground: 45 15% 97%;
-    --sidebar-accent: 35 25% 85%;
+    --sidebar-accent: 35 15% 85%;
     --sidebar-accent-foreground: 25 20% 15%;
-    --sidebar-border: 35 20% 82%;
-    --sidebar-ring: 85 35% 35%;
+    --sidebar-border: 35 15% 82%;
+    --sidebar-ring: 30 25% 55%;
 
-    /* Custom earth-tone variables */
-    --sage-green: 85 35% 35%;
-    --sage-light: 85 25% 45%;
-    --sage-dark: 85 45% 25%;
-    --warm-orange: 25 85% 55%;
-    --warm-orange-light: 25 75% 65%;
-    --warm-orange-dark: 25 95% 45%;
-    --earth-brown: 25 35% 25%;
-    --earth-brown-light: 25 25% 35%;
-    --earth-brown-dark: 25 45% 15%;
-    --warm-cream: 45 25% 95%;
-    --stone-gray: 35 10% 60%;
+    /* Refined earth-tone variables inspired by the reference */
+    --warm-beige: 35 25% 75%;
+    --soft-tan: 30 20% 65%;
+    --muted-gray: 25 8% 55%;
+    --cream-white: 45 15% 95%;
+    --warm-brown: 25 25% 45%;
+    --accent-terracotta: 15 45% 55%;
+    --deep-charcoal: 20 15% 25%;
+    --light-sand: 40 20% 85%;
   }
 
   .dark {
@@ -68,33 +65,33 @@
     --popover: 25 45% 8%;
     --popover-foreground: 45 15% 95%;
 
-    --primary: 85 35% 55%;
+    --primary: 30 25% 65%;
     --primary-foreground: 25 45% 8%;
 
-    --secondary: 25 35% 15%;
+    --secondary: 25 25% 15%;
     --secondary-foreground: 45 15% 95%;
 
-    --muted: 25 35% 15%;
+    --muted: 25 25% 15%;
     --muted-foreground: 35 12% 65%;
 
-    --accent: 25 85% 55%;
+    --accent: 15 45% 55%;
     --accent-foreground: 25 45% 8%;
 
     --destructive: 0 62% 50%;
     --destructive-foreground: 45 15% 95%;
 
-    --border: 25 35% 15%;
-    --input: 25 35% 15%;
-    --ring: 85 35% 55%;
+    --border: 25 25% 15%;
+    --input: 25 25% 15%;
+    --ring: 30 25% 65%;
 
     --sidebar-background: 25 45% 8%;
     --sidebar-foreground: 45 15% 95%;
-    --sidebar-primary: 85 35% 55%;
+    --sidebar-primary: 30 25% 65%;
     --sidebar-primary-foreground: 25 45% 8%;
-    --sidebar-accent: 25 35% 15%;
+    --sidebar-accent: 25 25% 15%;
     --sidebar-accent-foreground: 45 15% 95%;
-    --sidebar-border: 25 35% 15%;
-    --sidebar-ring: 85 35% 55%;
+    --sidebar-border: 25 25% 15%;
+    --sidebar-ring: 30 25% 65%;
   }
 }
 
@@ -109,81 +106,66 @@
 }
 
 @layer utilities {
-  .bg-sage {
-    background-color: hsl(var(--sage-green));
+  .bg-warm-beige {
+    background-color: hsl(var(--warm-beige));
   }
-  .bg-sage-light {
-    background-color: hsl(var(--sage-light));
+  .bg-soft-tan {
+    background-color: hsl(var(--soft-tan));
   }
-  .bg-sage-dark {
-    background-color: hsl(var(--sage-dark));
+  .bg-muted-gray {
+    background-color: hsl(var(--muted-gray));
   }
-  .bg-warm-orange {
-    background-color: hsl(var(--warm-orange));
+  .bg-cream-white {
+    background-color: hsl(var(--cream-white));
   }
-  .bg-warm-orange-light {
-    background-color: hsl(var(--warm-orange-light));
+  .bg-warm-brown {
+    background-color: hsl(var(--warm-brown));
   }
-  .bg-warm-orange-dark {
-    background-color: hsl(var(--warm-orange-dark));
+  .bg-accent-terracotta {
+    background-color: hsl(var(--accent-terracotta));
   }
-  .bg-earth-brown {
-    background-color: hsl(var(--earth-brown));
+  .bg-deep-charcoal {
+    background-color: hsl(var(--deep-charcoal));
   }
-  .bg-earth-brown-light {
-    background-color: hsl(var(--earth-brown-light));
-  }
-  .bg-earth-brown-dark {
-    background-color: hsl(var(--earth-brown-dark));
-  }
-  .bg-warm-cream {
-    background-color: hsl(var(--warm-cream));
-  }
-  .bg-stone-gray {
-    background-color: hsl(var(--stone-gray));
+  .bg-light-sand {
+    background-color: hsl(var(--light-sand));
   }
   
-  .text-sage {
-    color: hsl(var(--sage-green));
+  .text-warm-beige {
+    color: hsl(var(--warm-beige));
   }
-  .text-sage-light {
-    color: hsl(var(--sage-light));
+  .text-soft-tan {
+    color: hsl(var(--soft-tan));
   }
-  .text-sage-dark {
-    color: hsl(var(--sage-dark));
+  .text-muted-gray {
+    color: hsl(var(--muted-gray));
   }
-  .text-warm-orange {
-    color: hsl(var(--warm-orange));
+  .text-cream-white {
+    color: hsl(var(--cream-white));
   }
-  .text-warm-orange-light {
-    color: hsl(var(--warm-orange-light));
+  .text-warm-brown {
+    color: hsl(var(--warm-brown));
   }
-  .text-warm-orange-dark {
-    color: hsl(var(--warm-orange-dark));
+  .text-accent-terracotta {
+    color: hsl(var(--accent-terracotta));
   }
-  .text-earth-brown {
-    color: hsl(var(--earth-brown));
+  .text-deep-charcoal {
+    color: hsl(var(--deep-charcoal));
   }
-  .text-earth-brown-light {
-    color: hsl(var(--earth-brown-light));
-  }
-  .text-earth-brown-dark {
-    color: hsl(var(--earth-brown-dark));
-  }
-  .text-warm-cream {
-    color: hsl(var(--warm-cream));
-  }
-  .text-stone-gray {
-    color: hsl(var(--stone-gray));
+  .text-light-sand {
+    color: hsl(var(--light-sand));
   }
   
-  .border-sage {
-    border-color: hsl(var(--sage-green));
+  .border-warm-beige {
+    border-color: hsl(var(--warm-beige));
   }
-  .border-warm-orange {
-    border-color: hsl(var(--warm-orange));
+  .border-accent-terracotta {
+    border-color: hsl(var(--accent-terracotta));
   }
-  .border-earth-brown {
-    border-color: hsl(var(--earth-brown));
+  .border-warm-brown {
+    border-color: hsl(var(--warm-brown));
+  }
+  .border-muted-gray {
+    border-color: hsl(var(--muted-gray));
   }
 }

@@ -15,12 +15,12 @@ export const Navigation = () => {
           
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
-              <a href="#about" className="text-gray-300 hover:text-amber-400 transition-colors">About</a>
-              <a href="#team" className="text-gray-300 hover:text-amber-400 transition-colors">Team</a>
-              <a href="#services" className="text-gray-300 hover:text-amber-400 transition-colors">Services</a>
-              <a href="#pricing" className="text-gray-300 hover:text-amber-400 transition-colors">Pricing</a>
-              <a href="#values" className="text-gray-300 hover:text-amber-400 transition-colors">Values</a>
-              <a href="#contact" className="text-gray-300 hover:text-amber-400 transition-colors">Contact</a>
+              <a href="#about" className="text-gray-300 hover:text-amber-400 transition-colors">The Tribe</a>
+              <a href="#team" className="text-gray-300 hover:text-amber-400 transition-colors">The Crew</a>
+              <a href="#services" className="text-gray-300 hover:text-amber-400 transition-colors">Pathways</a>
+              <a href="#pricing" className="text-gray-300 hover:text-amber-400 transition-colors">Field Guide</a>
+              <a href="#values" className="text-gray-300 hover:text-amber-400 transition-colors">The Compass</a>
+              <a href="#contact" className="text-gray-300 hover:text-amber-400 transition-colors">Signal Us</a>
             </div>
           </div>
           
@@ -38,12 +38,12 @@ export const Navigation = () => {
       {isOpen && (
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-slate-950 border-t border-slate-800">
-            <a href="#about" className="block px-3 py-2 text-gray-300 hover:text-amber-400 transition-colors">About</a>
-            <a href="#team" className="block px-3 py-2 text-gray-300 hover:text-amber-400 transition-colors">Team</a>
-            <a href="#services" className="block px-3 py-2 text-gray-300 hover:text-amber-400 transition-colors">Services</a>
-            <a href="#pricing" className="block px-3 py-2 text-gray-300 hover:text-amber-400 transition-colors">Pricing</a>
-            <a href="#values" className="block px-3 py-2 text-gray-300 hover:text-amber-400 transition-colors">Values</a>
-            <a href="#contact" className="block px-3 py-2 text-gray-300 hover:text-amber-400 transition-colors">Contact</a>
+            <a href="#about" className="block px-3 py-2 text-gray-300 hover:text-amber-400 transition-colors">The Tribe</a>
+            <a href="#team" className="block px-3 py-2 text-gray-300 hover:text-amber-400 transition-colors">The Crew</a>
+            <a href="#services" className="block px-3 py-2 text-gray-300 hover:text-amber-400 transition-colors">Pathways</a>
+            <a href="#pricing" className="block px-3 py-2 text-gray-300 hover:text-amber-400 transition-colors">Field Guide</a>
+            <a href="#values" className="block px-3 py-2 text-gray-300 hover:text-amber-400 transition-colors">The Compass</a>
+            <a href="#contact" className="block px-3 py-2 text-gray-300 hover:text-amber-400 transition-colors">Signal Us</a>
           </div>
         </div>
       )}

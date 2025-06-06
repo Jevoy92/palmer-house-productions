@@ -1,5 +1,10 @@
 
+import { useState } from "react";
+import { ContactForm } from "./ContactForm";
+
 export const Contact = () => {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   return (
     <section id="contact" className="py-20 bg-slate-900">
       <div className="max-w-4xl mx-auto px-4 text-center">
@@ -19,7 +24,10 @@ export const Contact = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-semibold rounded-lg hover:from-amber-400 hover:to-orange-400 transition-all duration-300 transform hover:scale-105">
+            <button 
+              onClick={() => setIsFormOpen(true)}
+              className="px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-semibold rounded-lg hover:from-amber-400 hover:to-orange-400 transition-all duration-300 transform hover:scale-105"
+            >
               Get Started Today
             </button>
             <button className="px-8 py-3 border border-amber-400 text-amber-400 font-semibold rounded-lg hover:bg-amber-400 hover:text-slate-950 transition-all duration-300">
@@ -34,6 +42,8 @@ export const Contact = () => {
           </p>
         </footer>
       </div>
+
+      <ContactForm open={isFormOpen} onOpenChange={setIsFormOpen} />
     </section>
   );
 };

@@ -63,18 +63,24 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Apple color system
-				'apple': {
-					'blue': 'hsl(var(--apple-blue))',
-					'gray': 'hsl(var(--apple-gray))',
-					'gray-2': 'hsl(var(--apple-gray-2))',
-					'gray-3': 'hsl(var(--apple-gray-3))',
-					'gray-4': 'hsl(var(--apple-gray-4))',
-					'gray-5': 'hsl(var(--apple-gray-5))',
-					'gray-6': 'hsl(var(--apple-gray-6))',
-					'white': 'hsl(var(--apple-white))',
-					'green': 'hsl(var(--apple-green))',
-					'orange': 'hsl(var(--apple-orange))',
+				// Social Media Video Colors
+				'social': {
+					'purple': 'hsl(var(--social-purple))',
+					'pink': 'hsl(var(--social-pink))',
+					'orange': 'hsl(var(--social-orange))',
+					'cyan': 'hsl(var(--social-cyan))',
+					'yellow': 'hsl(var(--social-yellow))',
+					'blue': 'hsl(var(--social-blue))',
+					'green': 'hsl(var(--social-green))',
+				},
+				'corporate': {
+					'dark': 'hsl(var(--corporate-dark))',
+					'gray': 'hsl(var(--corporate-gray))',
+					'light': 'hsl(var(--corporate-light))',
+				},
+				'video': {
+					'black': 'hsl(var(--video-black))',
+					'white': 'hsl(var(--video-white))',
 				}
 			},
 			borderRadius: {
@@ -83,7 +89,8 @@ export default {
 				sm: 'calc(var(--radius) - 4px)'
 			},
 			fontFamily: {
-				'sf': ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Segoe UI', 'Roboto', 'sans-serif'],
+				'inter': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+				'display': ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
 			},
 			spacing: {
 				'128': '32rem',
@@ -115,12 +122,34 @@ export default {
 						opacity: '1',
 						transform: 'translateY(0)'
 					}
+				},
+				'slide-in-left': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateX(-30px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateX(0)'
+					}
+				},
+				'scale-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'scale(0.95)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'scale(1)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'fade-in': 'fade-in 0.6s ease-out'
+				'fade-in': 'fade-in 0.6s ease-out',
+				'slide-in-left': 'slide-in-left 0.6s ease-out',
+				'scale-in': 'scale-in 0.4s ease-out'
 			}
 		}
 	},

@@ -44,56 +44,41 @@
     --sidebar-border: 0 0% 90%;
     --sidebar-ring: 213 94% 68%;
 
-    /* Apple-inspired color system */
-    --apple-blue: 213 94% 68%;
-    --apple-gray: 0 0% 96%;
-    --apple-gray-2: 0 0% 88%;
-    --apple-gray-3: 0 0% 70%;
-    --apple-gray-4: 0 0% 45%;
-    --apple-gray-5: 0 0% 30%;
-    --apple-gray-6: 0 0% 9%;
-    --apple-white: 0 0% 100%;
-    --apple-green: 142 76% 36%;
-    --apple-orange: 28 100% 52%;
+    /* Social Media Video Corporate Colors */
+    --social-purple: 270 100% 65%;
+    --social-pink: 320 100% 70%;
+    --social-orange: 25 100% 60%;
+    --social-cyan: 190 100% 65%;
+    --social-yellow: 50 100% 65%;
+    --social-blue: 215 100% 65%;
+    --social-green: 150 100% 50%;
+    --corporate-dark: 220 20% 10%;
+    --corporate-gray: 220 10% 30%;
+    --corporate-light: 220 20% 95%;
+    --video-black: 0 0% 5%;
+    --video-white: 0 0% 98%;
   }
 
   .dark {
-    --background: 0 0% 9%;
-    --foreground: 0 0% 100%;
-
-    --card: 0 0% 9%;
-    --card-foreground: 0 0% 100%;
-
-    --popover: 0 0% 9%;
-    --popover-foreground: 0 0% 100%;
-
-    --primary: 213 94% 68%;
-    --primary-foreground: 0 0% 9%;
-
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 0 0% 15%;
+    --background: 220 20% 10%;
+    --foreground: 0 0% 98%;
+    --card: 220 20% 10%;
+    --card-foreground: 0 0% 98%;
+    --popover: 220 20% 10%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 270 100% 65%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 220 20% 15%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 220 20% 15%;
     --muted-foreground: 0 0% 65%;
-
-    --accent: 213 94% 68%;
-    --accent-foreground: 0 0% 9%;
-
+    --accent: 270 100% 65%;
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 213 94% 68%;
-
-    --sidebar-background: 0 0% 9%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 213 94% 68%;
-    --sidebar-primary-foreground: 0 0% 9%;
-    --sidebar-accent: 0 0% 15%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 15%;
-    --sidebar-ring: 213 94% 68%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 20% 15%;
+    --input: 220 20% 15%;
+    --ring: 270 100% 65%;
   }
 }
 
@@ -103,54 +88,125 @@
   }
 
   body {
-    @apply bg-background text-foreground;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    @apply bg-video-white text-corporate-dark;
+    font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: -0.025em;
   }
 }
 
 @layer utilities {
-  .apple-blue {
-    color: hsl(var(--apple-blue));
+  /* Social Media Gradients */
+  .gradient-social-1 {
+    background: linear-gradient(135deg, hsl(var(--social-purple)) 0%, hsl(var(--social-pink)) 100%);
   }
-  .bg-apple-blue {
-    background-color: hsl(var(--apple-blue));
+  .gradient-social-2 {
+    background: linear-gradient(135deg, hsl(var(--social-orange)) 0%, hsl(var(--social-yellow)) 100%);
   }
-  .apple-gray {
-    color: hsl(var(--apple-gray-4));
+  .gradient-social-3 {
+    background: linear-gradient(135deg, hsl(var(--social-cyan)) 0%, hsl(var(--social-blue)) 100%);
   }
-  .bg-apple-gray {
-    background-color: hsl(var(--apple-gray));
+  .gradient-social-4 {
+    background: linear-gradient(135deg, hsl(var(--social-pink)) 0%, hsl(var(--social-orange)) 100%);
   }
-  .bg-apple-gray-2 {
-    background-color: hsl(var(--apple-gray-2));
-  }
-  .apple-green {
-    color: hsl(var(--apple-green));
-  }
-  .bg-apple-green {
-    background-color: hsl(var(--apple-green));
-  }
-  .apple-orange {
-    color: hsl(var(--apple-orange));
-  }
-  .bg-apple-orange {
-    background-color: hsl(var(--apple-orange));
+  .gradient-social-5 {
+    background: linear-gradient(135deg, hsl(var(--social-blue)) 0%, hsl(var(--social-green)) 100%);
   }
   
-  .apple-gradient {
-    background: linear-gradient(135deg, hsl(var(--apple-blue)) 0%, hsl(var(--apple-green)) 100%);
+  /* Text Gradients */
+  .text-gradient-1 {
+    background: linear-gradient(135deg, hsl(var(--social-purple)) 0%, hsl(var(--social-pink)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-2 {
+    background: linear-gradient(135deg, hsl(var(--social-orange)) 0%, hsl(var(--social-yellow)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-3 {
+    background: linear-gradient(135deg, hsl(var(--social-cyan)) 0%, hsl(var(--social-blue)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   
-  .apple-shadow {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  /* Video-style shadows */
+  .video-shadow {
+    box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1);
   }
   
-  .apple-shadow-lg {
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  .video-shadow-lg {
+    box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
   }
+  
+  /* Social Media Animations */
+  .pulse-social {
+    animation: pulse-social 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes pulse-social {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+  }
+  
+  .float-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  /* Corporate Video Text Effects */
+  .text-corporate-gradient {
+    background: linear-gradient(135deg, hsl(var(--corporate-dark)) 0%, hsl(var(--corporate-gray)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Utility Classes */
+  .bg-social-purple { background-color: hsl(var(--social-purple)); }
+  .bg-social-pink { background-color: hsl(var(--social-pink)); }
+  .bg-social-orange { background-color: hsl(var(--social-orange)); }
+  .bg-social-cyan { background-color: hsl(var(--social-cyan)); }
+  .bg-social-yellow { background-color: hsl(var(--social-yellow)); }
+  .bg-social-blue { background-color: hsl(var(--social-blue)); }
+  .bg-social-green { background-color: hsl(var(--social-green)); }
+  .bg-corporate-dark { background-color: hsl(var(--corporate-dark)); }
+  .bg-corporate-gray { background-color: hsl(var(--corporate-gray)); }
+  .bg-corporate-light { background-color: hsl(var(--corporate-light)); }
+  .bg-video-black { background-color: hsl(var(--video-black)); }
+  .bg-video-white { background-color: hsl(var(--video-white)); }
+  
+  .text-social-purple { color: hsl(var(--social-purple)); }
+  .text-social-pink { color: hsl(var(--social-pink)); }
+  .text-social-orange { color: hsl(var(--social-orange)); }
+  .text-social-cyan { color: hsl(var(--social-cyan)); }
+  .text-social-yellow { color: hsl(var(--social-yellow)); }
+  .text-social-blue { color: hsl(var(--social-blue)); }
+  .text-social-green { color: hsl(var(--social-green)); }
+  .text-corporate-dark { color: hsl(var(--corporate-dark)); }
+  .text-corporate-gray { color: hsl(var(--corporate-gray)); }
+  .text-corporate-light { color: hsl(var(--corporate-light)); }
+  .text-video-black { color: hsl(var(--video-black)); }
+  .text-video-white { color: hsl(var(--video-white)); }
 }

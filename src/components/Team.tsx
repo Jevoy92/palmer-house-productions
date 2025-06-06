@@ -1,0 +1,57 @@
+
+export const Team = () => {
+  const teamMembers = [
+    {
+      name: "Kyli Lora",
+      role: "Executive Production Assistant",
+      image: "/lovable-uploads/cb07dfcd-6a7e-480c-95bb-833a66f4057e.png",
+      bio: "Based in Seattle, Kyli Lora is a multifaceted artist with a passion for storytelling through film and music. A recent graduate from the University of Washington, she's currently advancing her expertise in the UW Film & Video Production Certificate Program. Kyli has showcased her talents as an actress in productions like Teach (2019) and Tapestry Brewing (2025). Her musical endeavors include the album The Hourglass and singles like \"Mr. Rabbit and I\" reflecting her deep connection to storytelling."
+    },
+    {
+      name: "Trenton Sims",
+      role: "Video Editor & Animator", 
+      image: "/lovable-uploads/cb07dfcd-6a7e-480c-95bb-833a66f4057e.png",
+      bio: "Trenton Sims is a dynamic video editor and 3D animator with a rich background in both creative and technical aspects of production. His experience includes roles at BRON Studios and Palmer House Productions, where he contributed to various projects as a junior animator and video editor. Trenton's diverse skill set and innovative approach make him an invaluable asset to any creative team."
+    },
+    {
+      name: "Jevoy Palmer",
+      role: "Founder & Creative Director",
+      image: "/lovable-uploads/cb07dfcd-6a7e-480c-95bb-833a66f4057e.png", 
+      bio: "Born and raised in Kingston, Jamaica, Jevoy Palmer is a Seattle-based creative strategist and visual storyteller. As the founder of Palmer House Productions, he specializes in crafting subscription-based video systems that empower brands to move beyond the basics. Jevoy's approach is rooted in authenticity, creativity, and a deep understanding of his clients' unique journeys. His work reflects a commitment to storytelling, discovery, and exclusivity, ensuring that every project is a tailored, unforgettable content journey."
+    }
+  ];
+
+  return (
+    <section id="team" className="py-20 bg-slate-900">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">The Expedition Team</h2>
+          <div className="mt-8 text-amber-400 text-2xl">⸻</div>
+        </div>
+        
+        <div className="grid md:grid-cols-3 gap-8">
+          {teamMembers.map((member, index) => (
+            <div 
+              key={index}
+              className="bg-slate-800/50 border border-slate-700 rounded-lg p-6 hover:border-amber-400/50 transition-all duration-300 group"
+            >
+              <div className="aspect-square w-full mb-6 rounded-lg overflow-hidden bg-gray-200">
+                {/* Placeholder for individual team member photos - will need separate images */}
+                <div className="w-full h-full flex items-center justify-center text-slate-600">
+                  Team Photo
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">{member.name}</h3>
+              <h4 className="text-amber-400 font-semibold mb-4 group-hover:text-white transition-colors duration-300">
+                {member.role}
+              </h4>
+              <p className="text-gray-300 leading-relaxed text-sm group-hover:text-white transition-colors duration-300">
+                {member.bio}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};

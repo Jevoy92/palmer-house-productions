@@ -12,12 +12,12 @@ export const GlimpseCTA = () => {
 
       <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
         <div className="mb-16">
-          <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            📍 Ready to Begin?
-          </div>
           <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-white tracking-tight">
-            Ready to see what your brand <span className="text-gradient-1">could feel like?</span>
+            Your Audience Is Waiting for the
+            <br />
+            <span className="text-gradient-1">Best Version of You</span>.
           </h2>
+          <p className="text-2xl text-white/80 mb-8">Let's Show Them.</p>
         </div>
         
         <div className="bg-video-white rounded-3xl p-12 mb-16 video-shadow-lg">
@@ -37,8 +37,18 @@ export const GlimpseCTA = () => {
           </div>
         </div>
         
-        <footer className="border-t border-corporate-gray pt-8">
-          <p className="text-corporate-light">
+        <div className="mb-8 p-8 bg-video-white/10 rounded-2xl border border-white/20">
+          <h3 className="text-2xl font-display font-black text-white mb-4">A Palmer House Production</h3>
+          <p className="text-white/80 text-lg leading-relaxed">
+            The Glimpse is an immersive brand clarity session brought to you by Palmer House Productions — where story, style, and strategy meet.
+          </p>
+          <p className="text-white/60 italic mt-4">
+            "We don't build websites. We reveal what's possible."
+          </p>
+        </div>
+        
+        <footer className="border-t border-white/20 pt-8">
+          <p className="text-white/60">
             © 2024 Palmer House Productions. All rights reserved. Mapping journeys, creating glimpses.
           </p>
         </footer>

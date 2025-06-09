@@ -14,7 +14,7 @@ export const GlimpseWhy = () => {
             🎥 Why Palmer House?
           </div>
           <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-            Strategy. Storytelling. <span className="text-gradient-1">Soul</span>.
+            Why Palmer House?
           </h2>
         </div>
         
@@ -22,19 +22,19 @@ export const GlimpseWhy = () => {
           <div className="space-y-8">
             <div className="p-8 bg-corporate-light rounded-3xl video-shadow">
               <p className="text-xl text-corporate-gray leading-relaxed font-medium">
-                At Palmer House, we build <span className="text-gradient-2 font-bold">cinematic content</span> that solves business problems.
+                We create <span className="text-gradient-2 font-bold">cinematic content</span> that helps brave brands grow.
               </p>
             </div>
             
             <div className="p-8 bg-corporate-light rounded-3xl video-shadow">
               <p className="text-xl text-corporate-gray leading-relaxed font-medium">
-                The Glimpse is how we help you <span className="text-gradient-3 font-bold">start strong</span> — long before we ever roll a camera.
+                Our videos tell stories. Our strategies unlock potential.
               </p>
             </div>
             
             <div className="p-8 bg-corporate-light rounded-3xl video-shadow">
               <p className="text-xl text-corporate-gray leading-relaxed font-medium">
-                We believe every brand deserves a <span className="text-gradient-1 font-bold">custom path forward</span> — not a template.
+                The Glimpse is how we help you <span className="text-gradient-3 font-bold">start that journey</span> before the cameras roll.
               </p>
             </div>
           </div>
@@ -43,10 +43,13 @@ export const GlimpseWhy = () => {
             <div className="p-12 gradient-social-4 rounded-3xl video-shadow-lg">
               <div className="text-6xl mb-6">🗺️</div>
               <h3 className="text-4xl font-display font-black text-white mb-6">
-                If you're bold enough to explore,
+                "We don't do one-off videos.
                 <br />
-                <span className="text-white/90">we're ready to map it with you.</span>
+                <span className="text-white/90">We build brand ecosystems.</span>
               </h3>
+              <p className="text-white/80 text-xl">
+                This is where your story begins."
+              </p>
             </div>
           </div>
         </div>

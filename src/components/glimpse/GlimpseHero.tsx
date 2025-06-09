@@ -18,17 +18,17 @@ export const GlimpseHero = () => {
         </div>
         
         <h1 className="text-6xl md:text-8xl font-display font-black mb-8 tracking-tight leading-none">
-          See Your Customer Journey
+          See Your Brand's Future
           <br />
-          <span className="text-gradient-1">Before It's Real</span>
+          <span className="text-gradient-1">Before It's Built</span>
         </h1>
         
         <p className="text-2xl md:text-3xl text-corporate-gray mb-6 font-medium max-w-5xl mx-auto leading-tight">
-          A guided brand vision session that gives you a <span className="text-gradient-2 font-bold">living, breathing preview</span> of your next-level experience.
+          In one real-time strategy session, we build a <span className="text-gradient-2 font-bold">cinematic customer journey prototype</span> that helps you visualize the experience your brand deserves.
         </p>
         
         <p className="text-xl text-corporate-gray mb-12 font-medium max-w-4xl mx-auto">
-          Built in real time. Delivered in an hour. Hosted for as long as you want.
+          With zero dev time and all the clarity.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-6 justify-center mb-24">
@@ -41,7 +41,7 @@ export const GlimpseHero = () => {
         </div>
         
         <div className="text-lg text-corporate-gray italic max-w-3xl mx-auto">
-          "Before they'll follow you, they need to see where you're going."
+          "A cinematic customer journey prototype — built in real time, hosted for impact."
         </div>
       </div>
       

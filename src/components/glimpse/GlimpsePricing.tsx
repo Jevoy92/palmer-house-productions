@@ -6,10 +6,10 @@ export const GlimpsePricing = () => {
       icon: "🎒",
       price: "$350",
       features: [
-        "1-Hour Session",
-        "Home page or 1 wizard journey",
-        "Live screen share + recording",
-        "Hosted private link (7 days)"
+        "1-hour session",
+        "Home page or single flow",
+        "Screen share + recording",
+        "7-day hosted link"
       ],
       gradient: "gradient-social-1",
       highlight: false
@@ -19,25 +19,24 @@ export const GlimpsePricing = () => {
       icon: "🧭",
       price: "$750",
       features: [
-        "2-Hour Session",
-        "Up to 2 flows (onboarding, quiz, booking, funnel)",
+        "2-hour session",
+        "Up to 2 flows (e.g. onboarding + booking)",
         "Strategy snapshot PDF",
-        "30-day hosted demo link"
+        "30-day hosted link"
       ],
       gradient: "gradient-social-2",
       highlight: true
     },
     {
-      name: "Monthly Access",
+      name: "Monthly Hosting",
       icon: "🏕",
       price: "$250",
       period: "/month",
       features: [
-        "Premium hosting of your interactive Glimpse",
-        "Branded subdomain (yourbrand.palmer.house)",
-        "1 content tweak/month",
+        "Branded link (yourbrand.palmer.house)",
+        "Monthly content update",
         "Viewer analytics",
-        "Client or customer mode"
+        "Embeddable or shareable experience"
       ],
       gradient: "gradient-social-3",
       highlight: false
@@ -45,9 +44,9 @@ export const GlimpsePricing = () => {
   ];
 
   const addOns = [
-    { name: "Private explainer video", price: "+$200" },
     { name: "Additional flows", price: "$100 each" },
-    { name: "Priority scheduling", price: "+$50" }
+    { name: "Personalized walkthrough video", price: "$200" },
+    { name: "Priority booking", price: "+$50" }
   ];
 
   return (
@@ -61,10 +60,10 @@ export const GlimpsePricing = () => {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-24">
           <div className="inline-block px-6 py-3 gradient-social-3 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            🗺️ Glimpse Packages
+            🗺️ Offer Packages
           </div>
           <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-            Choose Your <span className="text-gradient-1">Vision</span>
+            Choose Your <span className="text-gradient-1">Glimpse</span>
           </h2>
         </div>
         
@@ -79,8 +78,10 @@ export const GlimpsePricing = () => {
               }`}
             >
               {pkg.highlight && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 gradient-social-2 text-white px-6 py-2 rounded-full text-sm font-bold video-shadow">
-                  🌟 Most Popular
+                <div className="mb-4 text-center">
+                  <div className="inline-block gradient-social-2 text-white px-4 py-2 rounded-full text-sm font-bold video-shadow">
+                    🌟 Most Popular
+                  </div>
                 </div>
               )}
               

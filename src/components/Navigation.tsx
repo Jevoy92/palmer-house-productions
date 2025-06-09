@@ -20,7 +20,7 @@ export const Navigation = () => {
               <a href="#team" className="text-apple-gray-5 hover:text-black transition-colors text-sm font-medium">Meet the Crew</a>
               <a href="#services" className="text-apple-gray-5 hover:text-black transition-colors text-sm font-medium">Pathways</a>
               <Link to="/glimpse" className="text-apple-gray-5 hover:text-black transition-colors text-sm font-medium">The Glimpse</Link>
-              <a href="#contact" className="px-4 py-2 bg-apple-blue text-video-white rounded-lg text-sm font-medium hover:bg-apple-blue/90 transition-colors">Signals</a>
+              <a href="#contact" className="text-apple-gray-5 hover:text-black transition-colors text-sm font-medium">Signals</a>
             </div>
           </div>
           
@@ -42,7 +42,7 @@ export const Navigation = () => {
             <a href="#team" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors">Meet the Crew</a>
             <a href="#services" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors">Pathways</a>
             <Link to="/glimpse" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors">The Glimpse</Link>
-            <a href="#contact" className="block px-3 py-2 text-apple-blue font-medium">Signals</a>
+            <a href="#contact" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors">Signals</a>
           </div>
         </div>
       )}

@@ -1,3 +1,4 @@
+
 export const Pricing = () => {
   const pricingTiers = [
     {
@@ -81,8 +82,14 @@ export const Pricing = () => {
     }
   ];
 
+  const handleStartJourney = (tierName: string) => {
+    console.log(`Starting journey for: ${tierName}`);
+    // TODO: Add actual booking/contact functionality
+    alert(`Starting your ${tierName} journey! This will integrate with booking system.`);
+  };
+
   return (
-    <section id="pricing" className="pt-40 pb-32 bg-corporate-light relative overflow-hidden">
+    <section id="pricing" className="pt-48 pb-32 bg-corporate-light relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-40 h-40 gradient-social-2 rounded-full opacity-10 float-animation"></div>
@@ -114,12 +121,12 @@ export const Pricing = () => {
               key={index}
               className={`relative p-8 bg-video-white rounded-3xl transition-all duration-500 video-shadow hover:video-shadow-lg group overflow-hidden ${
                 tier.highlight 
-                  ? 'scale-105 border-2 border-transparent' 
+                  ? 'scale-105 border-2 border-transparent mt-8' 
                   : 'hover:scale-105'
               }`}
             >
               {tier.highlight && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 gradient-social-2 text-white px-6 py-2 rounded-full text-sm font-bold video-shadow">
+                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 gradient-social-2 text-white px-6 py-2 rounded-full text-sm font-bold video-shadow z-20">
                   🌟 Most Popular
                 </div>
               )}
@@ -155,11 +162,14 @@ export const Pricing = () => {
                   <p className="text-sm text-corporate-dark leading-relaxed">{tier.perfectFor}</p>
                 </div>
                 
-                <button className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 ${
-                  tier.highlight
-                    ? `${tier.gradient} text-white hover:scale-105 video-shadow`
-                    : `border-2 border-corporate-gray text-corporate-dark hover:bg-corporate-dark hover:text-white hover:scale-105`
-                }`}>
+                <button 
+                  onClick={() => handleStartJourney(tier.name)}
+                  className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 ${
+                    tier.highlight
+                      ? `${tier.gradient} text-white hover:scale-105 video-shadow`
+                      : `border-2 border-corporate-gray text-corporate-dark hover:bg-corporate-dark hover:text-white hover:scale-105`
+                  }`}
+                >
                   Start This Journey
                 </button>
               </div>

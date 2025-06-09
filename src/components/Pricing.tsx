@@ -1,4 +1,3 @@
-
 export const Pricing = () => {
   const pricingTiers = [
     {
@@ -83,7 +82,7 @@ export const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" className="py-32 bg-corporate-light relative overflow-hidden">
+    <section id="pricing" className="pt-40 pb-32 bg-corporate-light relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-40 h-40 gradient-social-2 rounded-full opacity-10 float-animation"></div>

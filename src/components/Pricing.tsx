@@ -1,4 +1,5 @@
 
+
 export const Pricing = () => {
   const pricingTiers = [
     {
@@ -121,13 +122,15 @@ export const Pricing = () => {
               key={index}
               className={`relative p-8 bg-video-white rounded-3xl transition-all duration-500 video-shadow hover:video-shadow-lg group overflow-hidden ${
                 tier.highlight 
-                  ? 'scale-105 border-2 border-transparent mt-8' 
+                  ? 'scale-105 border-2 border-transparent' 
                   : 'hover:scale-105'
               }`}
             >
               {tier.highlight && (
-                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 gradient-social-2 text-white px-6 py-2 rounded-full text-sm font-bold video-shadow z-20">
-                  🌟 Most Popular
+                <div className="mb-4 text-center">
+                  <div className="inline-block gradient-social-2 text-white px-4 py-2 rounded-full text-sm font-bold video-shadow">
+                    🌟 Most Popular
+                  </div>
                 </div>
               )}
               
@@ -214,3 +217,4 @@ export const Pricing = () => {
     </section>
   );
 };
+

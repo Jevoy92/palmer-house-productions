@@ -20,7 +20,7 @@ export const Navigation = () => {
               <a href="#team" className="text-apple-gray-5 hover:text-black transition-colors text-sm font-medium">Meet the Crew</a>
               <a href="#services" className="text-apple-gray-5 hover:text-black transition-colors text-sm font-medium">Pathways</a>
               <Link to="/glimpse" className="text-apple-gray-5 hover:text-black transition-colors text-sm font-medium">The Glimpse</Link>
-              <a href="#contact" className="px-4 py-2 bg-apple-blue text-white rounded-lg text-sm font-medium hover:bg-apple-blue/90 transition-colors">Signals</a>
+              <a href="#contact" className="px-4 py-2 bg-apple-blue text-video-white rounded-lg text-sm font-medium hover:bg-apple-blue/90 transition-colors">Signals</a>
             </div>
           </div>
           

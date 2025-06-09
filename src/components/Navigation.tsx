@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -69,7 +70,13 @@ export const Navigation = () => {
               >
                 Pathways
               </button>
-              <Link to="/glimpse" className="text-apple-gray-5 hover:text-black transition-colors text-sm font-medium">The Glimpse</Link>
+              <Link 
+                to="/glimpse" 
+                className="text-apple-gray-5 hover:text-black transition-colors text-sm font-medium"
+                onClick={() => setIsOpen(false)}
+              >
+                The Glimpse
+              </Link>
               <button 
                 onClick={() => handleNavClick('contact')}
                 className="text-apple-gray-5 hover:text-black transition-colors text-sm font-medium"
@@ -111,7 +118,13 @@ export const Navigation = () => {
             >
               Pathways
             </button>
-            <Link to="/glimpse" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>The Glimpse</Link>
+            <Link 
+              to="/glimpse" 
+              className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" 
+              onClick={() => setIsOpen(false)}
+            >
+              The Glimpse
+            </Link>
             <button 
               onClick={() => handleNavClick('contact')}
               className="block w-full text-left px-3 py-2 text-apple-gray-5 hover:text-black transition-colors"

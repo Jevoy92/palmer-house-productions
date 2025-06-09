@@ -30,6 +30,12 @@ export const Clients = () => {
       description: "Anyone ready to scale with clarity, style, and integrity while blazing their own trail",
       icon: "🚀",
       gradient: "gradient-social-5"
+    },
+    {
+      title: "Vision Pioneers",
+      description: "Industry disruptors and innovators who need their brand to match their breakthrough thinking",
+      icon: "💎",
+      gradient: "gradient-social-1"
     }
   ];
 

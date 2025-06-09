@@ -1,4 +1,6 @@
 
+import { GlimpseContactForm } from "./GlimpseContactForm";
+
 export const GlimpseCTA = () => {
   return (
     <section className="py-32 bg-corporate-dark relative overflow-hidden">
@@ -10,8 +12,8 @@ export const GlimpseCTA = () => {
         <div className="absolute bottom-20 right-10 w-36 h-36 gradient-social-4 rounded-full opacity-12 float-animation" style={{animationDelay: '1s'}}></div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
-        <div className="mb-16">
+      <div className="max-w-5xl mx-auto px-6 relative z-10">
+        <div className="text-center mb-16">
           <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-white tracking-tight">
             Your Audience Is Waiting for the
             <br />
@@ -20,20 +22,19 @@ export const GlimpseCTA = () => {
           <p className="text-2xl text-white/80 mb-8">Let's Show Them.</p>
         </div>
         
-        <div className="bg-video-white rounded-3xl p-12 mb-16 video-shadow-lg">
-          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
-            <button className="px-12 py-6 gradient-social-1 text-white font-bold text-xl rounded-3xl hover:scale-105 transition-all duration-300 video-shadow">
-              Book Your Glimpse →
-            </button>
-            <button className="px-12 py-6 border-2 border-social-purple text-social-purple font-bold text-xl rounded-3xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow">
-              Talk to Us First
-            </button>
-          </div>
-          
-          <div className="text-lg text-corporate-gray">
-            <span className="font-bold">Stripe payment + Calendly booking</span> for instant access
-            <br />
-            or <span className="font-bold">Discovery Call</span> to explore your vision first
+        <div className="mb-16">
+          <GlimpseContactForm />
+        </div>
+        
+        <div className="text-center mb-8">
+          <div className="inline-block px-8 py-4 bg-video-white/10 rounded-2xl border border-white/20">
+            <p className="text-white/80 text-lg">
+              <span className="font-bold">Prefer to talk first?</span>
+              <br />
+              <button className="text-gradient-1 font-bold hover:underline mt-2">
+                Schedule a Discovery Call →
+              </button>
+            </p>
           </div>
         </div>
         

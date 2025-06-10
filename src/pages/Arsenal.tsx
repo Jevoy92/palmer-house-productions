@@ -1,4 +1,5 @@
 
+
 import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Shield, Users, FileText, HelpCircle, Zap, BookOpen, Heart, Trophy, ChevronDown, ChevronRight } from "lucide-react";
@@ -174,7 +175,7 @@ export default function Arsenal() {
   };
 
   const handleGetStarted = () => {
-    window.open('https://calendly.com/palmerhouseproductions-info/general-strategy-call', '_blank');
+    window.location.href = '/#contact';
   };
 
   const handlePathwayDiscovery = () => {
@@ -410,3 +411,4 @@ export default function Arsenal() {
     </div>
   );
 }
+

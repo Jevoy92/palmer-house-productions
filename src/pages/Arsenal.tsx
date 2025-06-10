@@ -1,15 +1,15 @@
-
-
 import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Shield, Users, FileText, HelpCircle, Zap, BookOpen, Heart, Trophy, ChevronDown, ChevronRight } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ContactForm } from "@/components/ContactForm";
 
 type FilterType = "all" | "internal" | "external";
 
 export default function Arsenal() {
   const [filter, setFilter] = useState<FilterType>("all");
   const [expandedSolutions, setExpandedSolutions] = useState<Set<string>>(new Set());
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
 
   const toggleSolution = (solutionId: string) => {
     const newExpanded = new Set(expandedSolutions);
@@ -175,7 +175,7 @@ export default function Arsenal() {
   };
 
   const handleGetStarted = () => {
-    window.location.href = '/#contact';
+    setIsContactFormOpen(true);
   };
 
   const handlePathwayDiscovery = () => {
@@ -408,7 +408,8 @@ export default function Arsenal() {
           </div>
         </div>
       </section>
+
+      <ContactForm open={isContactFormOpen} onOpenChange={setIsContactFormOpen} />
     </div>
   );
 }
-

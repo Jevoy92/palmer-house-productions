@@ -250,22 +250,6 @@ export default function Arsenal() {
         </section>
       )}
 
-      {/* Quote Banner */}
-      <section className="py-16 gradient-social-5 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-24 h-24 bg-white/10 rounded-full float-animation"></div>
-          <div className="absolute bottom-10 right-10 w-32 h-32 bg-white/10 rounded-full float-animation" style={{animationDelay: '3s'}}></div>
-        </div>
-        <div className="max-w-4xl mx-auto px-6 text-center relative z-10">
-          <h3 className="text-4xl font-black text-white mb-6">
-            "This onboarding video saved us 12 hours a week and eliminated 90% of our new hire questions."
-          </h3>
-          <p className="text-xl text-white/90 font-medium">
-            — Sarah Chen, Operations Director at TechFlow Solutions
-          </p>
-        </div>
-      </section>
-
       {/* CTA Section */}
       <section className="py-20 bg-corporate-light">
         <div className="max-w-4xl mx-auto px-6 text-center">

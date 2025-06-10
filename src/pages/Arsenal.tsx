@@ -1,80 +1,164 @@
 
 import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
-import { Shield, Users, FileText, HelpCircle, Zap, BookOpen, Heart, Trophy } from "lucide-react";
+import { Shield, Users, FileText, HelpCircle, Zap, BookOpen, Heart, Trophy, ChevronDown, ChevronRight } from "lucide-react";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 type FilterType = "all" | "internal" | "external";
 
 export default function Arsenal() {
   const [filter, setFilter] = useState<FilterType>("all");
+  const [expandedSolutions, setExpandedSolutions] = useState<Set<string>>(new Set());
+
+  const toggleSolution = (solutionId: string) => {
+    const newExpanded = new Set(expandedSolutions);
+    if (newExpanded.has(solutionId)) {
+      newExpanded.delete(solutionId);
+    } else {
+      newExpanded.add(solutionId);
+    }
+    setExpandedSolutions(newExpanded);
+  };
 
   const internalSolutions = [
     {
+      id: "employee-onboarding",
       icon: Users,
-      title: "Employee Onboarding Videos",
-      problem: "Get new hires up to speed fast—without repeating yourself.",
-      description: "Step-by-step walkthroughs of systems, HR policies, and culture that eliminate confusion and accelerate productivity.",
+      title: "Employee Onboarding Expeditions",
+      problem: "Get new crew members up to speed fast—without repeating yourself on every journey.",
+      description: "Step-by-step adventure guides that eliminate confusion and accelerate team integration.",
       gradient: "gradient-social-1",
-      textGradient: "text-gradient-1"
+      textGradient: "text-gradient-1",
+      examples: [
+        "New hire system navigation walkthroughs",
+        "Company culture & values introductions",
+        "Role-specific skill-building modules", 
+        "Security & compliance pathfinding guides",
+        "Remote work setup expeditions",
+        "Performance review journey maps"
+      ]
     },
     {
+      id: "client-intake",
       icon: FileText,
-      title: "Client Intake & Training",
-      problem: "Turn confusing onboarding into clear, repeatable systems.",
-      description: "Video series that explain your service process, set expectations, and showcase deliverables before you even start.",
+      title: "Client Journey Mapping",
+      problem: "Turn confusing onboarding into clear, repeatable expedition routes.",
+      description: "Video series that chart the course, set expectations, and showcase destinations before the journey begins.",
       gradient: "gradient-social-2",
-      textGradient: "text-gradient-2"
+      textGradient: "text-gradient-2",
+      examples: [
+        "Service process expedition overviews",
+        "Expectation-setting journey guides",
+        "Project timeline & milestone maps",
+        "Communication preference pathways",
+        "Deliverable showcase adventures",
+        "Feedback & revision route planning"
+      ]
     },
     {
+      id: "vendor-alignment",
       icon: Shield,
-      title: "Vendor + Partner Alignment",
-      problem: "One video beats ten emails. Align your outside help with your internal flow.",
-      description: "Crystal-clear communication tools that keep contractors, partners, and vendors on the same page.",
+      title: "Partner Expedition Alignment",
+      problem: "One video beats ten emails. Align your expedition partners with your internal compass.",
+      description: "Crystal-clear navigation tools that keep contractors, partners, and vendors on the same trail.",
       gradient: "gradient-social-3",
-      textGradient: "text-gradient-3"
+      textGradient: "text-gradient-3",
+      examples: [
+        "Project scope territory mapping",
+        "Quality standards demonstration camps",
+        "Timeline coordination expeditions",
+        "Communication protocol pathways",
+        "Brand guideline navigation charts",
+        "Deliverable specification adventures"
+      ]
     },
     {
+      id: "internal-faqs",
       icon: HelpCircle,
-      title: "Internal FAQs + Resource Libraries",
-      problem: "Answer questions before they're even asked.",
-      description: "Searchable video libraries that solve common issues instantly, reducing support tickets and confusion.",
+      title: "Base Camp Resource Libraries",
+      problem: "Answer questions before they derail the expedition.",
+      description: "Searchable video libraries that solve common trail challenges instantly, keeping everyone moving forward.",
       gradient: "gradient-social-4",
-      textGradient: "text-gradient-1"
+      textGradient: "text-gradient-1",
+      examples: [
+        "Software troubleshooting trail guides",
+        "Policy explanation expedition videos",
+        "Procedure step-by-step adventures",
+        "Equipment setup journey tutorials",
+        "Emergency protocol pathway guides",
+        "Best practice demonstration camps"
+      ]
     }
   ];
 
   const externalSolutions = [
     {
+      id: "discovery-campaigns",
       icon: Zap,
-      title: "Lead Generation Campaigns",
-      problem: "Stay top of mind and drive discovery across platforms.",
-      description: "Viral-ready content that captures attention, builds trust, and converts viewers into qualified leads.",
+      title: "Discovery Content Expeditions",
+      problem: "Stay visible on the horizon and guide explorers to your base camp.",
+      description: "Discovery-focused content that captures attention, builds trust, and converts wanderers into expedition partners.",
       gradient: "gradient-social-1",
-      textGradient: "text-gradient-1"
+      textGradient: "text-gradient-1",
+      examples: [
+        "Problem awareness expedition videos",
+        "Educational content journey series",
+        "Behind-the-scenes adventure stories",
+        "Case study expedition narratives",
+        "Industry insight trail reports",
+        "Solution preview adventure teasers"
+      ]
     },
     {
+      id: "pathfinding-guides",
       icon: BookOpen,
-      title: "Product/Service Education",
-      problem: "Teach before you pitch. Convert browsers into buyers.",
-      description: "Educational content that demonstrates value, addresses objections, and guides prospects through your buying process.",
+      title: "Pathfinding Education Guides",
+      problem: "Teach the trail before you guide the expedition. Convert explorers into adventurers.",
+      description: "Educational content that demonstrates routes, addresses trail concerns, and guides prospects through their decision journey.",
       gradient: "gradient-social-2",
-      textGradient: "text-gradient-2"
+      textGradient: "text-gradient-2",
+      examples: [
+        "Feature demonstration expeditions",
+        "Use case scenario adventures",
+        "Problem-solving pathway tutorials",
+        "Comparison guide explorations",
+        "Implementation journey tutorials",
+        "Success story expedition showcases"
+      ]
     },
     {
+      id: "journey-companions",
       icon: Heart,
-      title: "Audience Engagement & Retention",
-      problem: "Stay visible with evergreen content that scales your voice.",
-      description: "Consistent, valuable content that keeps your audience engaged and coming back for more.",
+      title: "Journey Companion Content",
+      problem: "Stay connected with consistent content that scales your expedition voice.",
+      description: "Regular, valuable content that keeps your audience engaged and eager for the next adventure.",
       gradient: "gradient-social-3",
-      textGradient: "text-gradient-3"
+      textGradient: "text-gradient-3",
+      examples: [
+        "Weekly insight expedition reports",
+        "Q&A campfire series",
+        "Industry trend exploration videos",
+        "Behind-the-scenes base camp content",
+        "Community spotlight adventures",
+        "Seasonal expedition campaigns"
+      ]
     },
     {
+      id: "expert-expedition",
       icon: Trophy,
-      title: "Reputation & Authority Building",
-      problem: "Become the go-to expert in your niche—on camera.",
-      description: "Thought leadership content that positions you as the authority and builds unshakeable credibility.",
+      title: "Expert Expedition Leadership",
+      problem: "Become the go-to expedition leader in your territory—on camera.",
+      description: "Thought leadership content that positions you as the expert guide and builds unshakeable credibility on any trail.",
       gradient: "gradient-social-4",
-      textGradient: "text-gradient-1"
+      textGradient: "text-gradient-1",
+      examples: [
+        "Thought leadership expedition presentations",
+        "Industry commentary trail reports",
+        "Speaking engagement adventure highlights",
+        "Podcast expedition appearances",
+        "Conference presentation adventures",
+        "Expertise demonstration expeditions"
+      ]
     }
   ];
 
@@ -94,7 +178,6 @@ export default function Arsenal() {
     if (contactElement) {
       contactElement.scrollIntoView({ behavior: 'smooth' });
     } else {
-      // If contact section doesn't exist, navigate to home page contact
       window.location.href = '/#contact';
     }
   };
@@ -120,10 +203,10 @@ export default function Arsenal() {
           <h1 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
             Not Just <span className="text-gradient-1">Video</span>.
             <br />
-            Business Tools That <span className="text-gradient-2">Work</span>.
+            Adventure Tools That <span className="text-gradient-2">Work</span>.
           </h1>
           <p className="text-2xl text-corporate-gray mb-12 leading-relaxed max-w-4xl mx-auto font-medium">
-            See how brands are solving real problems using handcrafted video—from onboarding and client training to viral growth campaigns.
+            See how expedition leaders are solving real challenges using handcrafted video—from crew training and partner alignment to discovery campaigns and authority building.
           </p>
 
           {/* Filter Buttons */}
@@ -136,7 +219,7 @@ export default function Arsenal() {
                   : "bg-video-white border-2 border-social-purple text-social-purple hover:bg-social-purple hover:text-white"
               }`}
             >
-              All Solutions
+              All Expedition Tools
             </button>
             <button
               onClick={() => setFilter("internal")}
@@ -146,7 +229,7 @@ export default function Arsenal() {
                   : "bg-video-white border-2 border-social-orange text-social-orange hover:bg-social-orange hover:text-white"
               }`}
             >
-              🔒 Internal Solutions
+              🏕️ Base Camp Tools
             </button>
             <button
               onClick={() => setFilter("external")}
@@ -156,7 +239,7 @@ export default function Arsenal() {
                   : "bg-video-white border-2 border-social-cyan text-social-cyan hover:bg-social-cyan hover:text-white"
               }`}
             >
-              🌐 External Solutions
+              🌄 Discovery Tools
             </button>
           </div>
         </div>
@@ -168,37 +251,62 @@ export default function Arsenal() {
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
               <div className="inline-block px-6 py-3 gradient-social-2 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-                🔒 Internal Solutions
+                🏕️ Base Camp Tools
               </div>
               <h2 className="text-5xl md:text-6xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-                Streamline Your <span className="text-gradient-2">Operations</span>
+                Streamline Your <span className="text-gradient-2">Expeditions</span>
               </h2>
               <p className="text-xl text-corporate-gray max-w-3xl mx-auto font-medium">
-                Save time, reduce confusion, and scale your internal processes with video tools that work.
+                Save time, reduce confusion, and scale your internal operations with video tools built for the adventure.
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-8">
+            <div className="grid lg:grid-cols-1 gap-8">
               {solutions.internal.map((solution, index) => {
                 const IconComponent = solution.icon;
+                const isExpanded = expandedSolutions.has(solution.id);
                 return (
-                  <div 
-                    key={index}
-                    className="group p-10 bg-video-white rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-500 hover:scale-105"
-                  >
-                    <div className={`w-16 h-16 ${solution.gradient} rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300`}>
-                      <IconComponent size={32} className="text-white" />
+                  <Collapsible key={index} open={isExpanded} onOpenChange={() => toggleSolution(solution.id)}>
+                    <div className="group p-10 bg-video-white rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-500">
+                      <div className="flex items-start gap-6">
+                        <div className={`w-16 h-16 ${solution.gradient} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}>
+                          <IconComponent size={32} className="text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-4">
+                            <h3 className={`text-3xl font-display font-black ${solution.textGradient}`}>
+                              {solution.title}
+                            </h3>
+                            <CollapsibleTrigger asChild>
+                              <button className="text-corporate-gray hover:text-corporate-dark transition-colors">
+                                {isExpanded ? <ChevronDown size={24} /> : <ChevronRight size={24} />}
+                              </button>
+                            </CollapsibleTrigger>
+                          </div>
+                          <p className="text-corporate-dark font-bold text-lg mb-4">
+                            {solution.problem}
+                          </p>
+                          <p className="text-corporate-gray leading-relaxed text-lg font-medium mb-6">
+                            {solution.description}
+                          </p>
+                          
+                          <CollapsibleContent className="space-y-3">
+                            <div className="border-t border-corporate-gray/20 pt-6">
+                              <h4 className="text-lg font-bold text-corporate-dark mb-4">Expedition Examples:</h4>
+                              <div className="grid md:grid-cols-2 gap-3">
+                                {solution.examples.map((example, exampleIndex) => (
+                                  <div key={exampleIndex} className="flex items-center gap-3 text-corporate-gray">
+                                    <div className="w-2 h-2 bg-gradient-to-r from-social-purple to-social-orange rounded-full flex-shrink-0"></div>
+                                    <span className="font-medium">{example}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </CollapsibleContent>
+                        </div>
+                      </div>
                     </div>
-                    <h3 className={`text-3xl font-display font-black mb-4 ${solution.textGradient}`}>
-                      {solution.title}
-                    </h3>
-                    <p className="text-corporate-dark font-bold text-lg mb-4">
-                      {solution.problem}
-                    </p>
-                    <p className="text-corporate-gray leading-relaxed text-lg font-medium">
-                      {solution.description}
-                    </p>
-                  </div>
+                  </Collapsible>
                 );
               })}
             </div>
@@ -212,37 +320,62 @@ export default function Arsenal() {
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
               <div className="inline-block px-6 py-3 gradient-social-3 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-                🌐 External Solutions
+                🌄 Discovery Tools
               </div>
               <h2 className="text-5xl md:text-6xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-                Grow Your <span className="text-gradient-3">Audience</span>
+                Expand Your <span className="text-gradient-3">Territory</span>
               </h2>
               <p className="text-xl text-corporate-gray max-w-3xl mx-auto font-medium">
-                Connect with customers, build authority, and drive growth with video that converts.
+                Connect with fellow adventurers, build authority, and guide growth with video that leads the way.
               </p>
             </div>
 
-            <div className="grid lg:grid-cols-2 gap-8">
+            <div className="grid lg:grid-cols-1 gap-8">
               {solutions.external.map((solution, index) => {
                 const IconComponent = solution.icon;
+                const isExpanded = expandedSolutions.has(solution.id);
                 return (
-                  <div 
-                    key={index}
-                    className="group p-10 bg-corporate-light rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-500 hover:scale-105"
-                  >
-                    <div className={`w-16 h-16 ${solution.gradient} rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform duration-300`}>
-                      <IconComponent size={32} className="text-white" />
+                  <Collapsible key={index} open={isExpanded} onOpenChange={() => toggleSolution(solution.id)}>
+                    <div className="group p-10 bg-corporate-light rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-500">
+                      <div className="flex items-start gap-6">
+                        <div className={`w-16 h-16 ${solution.gradient} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}>
+                          <IconComponent size={32} className="text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-4">
+                            <h3 className={`text-3xl font-display font-black ${solution.textGradient}`}>
+                              {solution.title}
+                            </h3>
+                            <CollapsibleTrigger asChild>
+                              <button className="text-corporate-gray hover:text-corporate-dark transition-colors">
+                                {isExpanded ? <ChevronDown size={24} /> : <ChevronRight size={24} />}
+                              </button>
+                            </CollapsibleTrigger>
+                          </div>
+                          <p className="text-corporate-dark font-bold text-lg mb-4">
+                            {solution.problem}
+                          </p>
+                          <p className="text-corporate-gray leading-relaxed text-lg font-medium mb-6">
+                            {solution.description}
+                          </p>
+                          
+                          <CollapsibleContent className="space-y-3">
+                            <div className="border-t border-corporate-gray/20 pt-6">
+                              <h4 className="text-lg font-bold text-corporate-dark mb-4">Discovery Examples:</h4>
+                              <div className="grid md:grid-cols-2 gap-3">
+                                {solution.examples.map((example, exampleIndex) => (
+                                  <div key={exampleIndex} className="flex items-center gap-3 text-corporate-gray">
+                                    <div className="w-2 h-2 bg-gradient-to-r from-social-cyan to-social-pink rounded-full flex-shrink-0"></div>
+                                    <span className="font-medium">{example}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </CollapsibleContent>
+                        </div>
+                      </div>
                     </div>
-                    <h3 className={`text-3xl font-display font-black mb-4 ${solution.textGradient}`}>
-                      {solution.title}
-                    </h3>
-                    <p className="text-corporate-dark font-bold text-lg mb-4">
-                      {solution.problem}
-                    </p>
-                    <p className="text-corporate-gray leading-relaxed text-lg font-medium">
-                      {solution.description}
-                    </p>
-                  </div>
+                  </Collapsible>
                 );
               })}
             </div>
@@ -257,14 +390,14 @@ export default function Arsenal() {
             Ready to Build Your <span className="text-gradient-1">Arsenal</span>?
           </h3>
           <p className="text-xl text-corporate-gray mb-12 max-w-2xl mx-auto">
-            Not sure what solution fits your business best? Let's explore your challenges and craft the perfect video strategy.
+            Not sure what expedition tools fit your adventure best? Let's explore your challenges and craft the perfect video strategy.
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <button 
               onClick={handleGetStarted}
               className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
             >
-              Start Building 🔨
+              Start the Expedition 🗺️
             </button>
             <button 
               onClick={() => window.open('/glimpse', '_blank')}

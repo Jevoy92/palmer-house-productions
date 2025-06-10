@@ -16,10 +16,10 @@ export const ChallengeField = ({ control }: ChallengeFieldProps) => {
       name="challenge"
       render={({ field }) => (
         <FormItem>
-          <FormLabel className="text-black font-medium text-lg">
+          <FormLabel className="text-corporate-dark font-medium text-lg">
             What's your biggest challenge?
           </FormLabel>
-          <p className="text-apple-gray-4 mb-6">
+          <p className="text-corporate-gray mb-6">
             Help us understand your goals so we can recommend the best approach.
           </p>
           <FormControl>
@@ -28,27 +28,27 @@ export const ChallengeField = ({ control }: ChallengeFieldProps) => {
               defaultValue={field.value}
               className="space-y-4"
             >
-              <div className="flex items-center space-x-3 p-4 rounded-xl hover:bg-apple-gray transition-colors">
-                <RadioGroupItem value="visibility" id="visibility" className="border-apple-gray-3 text-apple-blue" />
-                <Label htmlFor="visibility" className="text-black cursor-pointer flex-1">
+              <div className="flex items-center space-x-3 p-4 rounded-xl hover:bg-corporate-light transition-colors">
+                <RadioGroupItem value="visibility" id="visibility" className="border-corporate-gray text-social-purple" />
+                <Label htmlFor="visibility" className="text-corporate-dark cursor-pointer flex-1">
                   We need better online visibility
                 </Label>
               </div>
-              <div className="flex items-center space-x-3 p-4 rounded-xl hover:bg-apple-gray transition-colors">
-                <RadioGroupItem value="content" id="content" className="border-apple-gray-3 text-apple-blue" />
-                <Label htmlFor="content" className="text-black cursor-pointer flex-1">
+              <div className="flex items-center space-x-3 p-4 rounded-xl hover:bg-corporate-light transition-colors">
+                <RadioGroupItem value="content" id="content" className="border-corporate-gray text-social-purple" />
+                <Label htmlFor="content" className="text-corporate-dark cursor-pointer flex-1">
                   Consistent content creation
                 </Label>
               </div>
-              <div className="flex items-center space-x-3 p-4 rounded-xl hover:bg-apple-gray transition-colors">
-                <RadioGroupItem value="quality" id="quality" className="border-apple-gray-3 text-apple-blue" />
-                <Label htmlFor="quality" className="text-black cursor-pointer flex-1">
+              <div className="flex items-center space-x-3 p-4 rounded-xl hover:bg-corporate-light transition-colors">
+                <RadioGroupItem value="quality" id="quality" className="border-corporate-gray text-social-purple" />
+                <Label htmlFor="quality" className="text-corporate-dark cursor-pointer flex-1">
                   Professional content quality
                 </Label>
               </div>
-              <div className="flex items-center space-x-3 p-4 rounded-xl hover:bg-apple-gray transition-colors">
-                <RadioGroupItem value="connection" id="connection" className="border-apple-gray-3 text-apple-blue" />
-                <Label htmlFor="connection" className="text-black cursor-pointer flex-1">
+              <div className="flex items-center space-x-3 p-4 rounded-xl hover:bg-corporate-light transition-colors">
+                <RadioGroupItem value="connection" id="connection" className="border-corporate-gray text-social-purple" />
+                <Label htmlFor="connection" className="text-corporate-dark cursor-pointer flex-1">
                   Better customer connection
                 </Label>
               </div>

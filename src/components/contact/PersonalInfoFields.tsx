@@ -17,11 +17,11 @@ export const PersonalInfoFields = ({ control }: PersonalInfoFieldsProps) => {
           name="firstName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-black font-medium">First Name</FormLabel>
+              <FormLabel className="text-corporate-dark font-medium">First Name</FormLabel>
               <FormControl>
                 <Input 
                   placeholder="First name" 
-                  className="bg-apple-gray border-apple-gray-2 text-black placeholder:text-apple-gray-4 rounded-xl focus:border-apple-blue focus:ring-apple-blue" 
+                  className="bg-video-white border-corporate-light text-corporate-dark placeholder:text-corporate-gray rounded-xl focus:border-social-purple focus:ring-social-purple" 
                   {...field} 
                 />
               </FormControl>
@@ -34,11 +34,11 @@ export const PersonalInfoFields = ({ control }: PersonalInfoFieldsProps) => {
           name="lastName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel className="text-black font-medium">Last Name</FormLabel>
+              <FormLabel className="text-corporate-dark font-medium">Last Name</FormLabel>
               <FormControl>
                 <Input 
                   placeholder="Last name" 
-                  className="bg-apple-gray border-apple-gray-2 text-black placeholder:text-apple-gray-4 rounded-xl focus:border-apple-blue focus:ring-apple-blue" 
+                  className="bg-video-white border-corporate-light text-corporate-dark placeholder:text-corporate-gray rounded-xl focus:border-social-purple focus:ring-social-purple" 
                   {...field} 
                 />
               </FormControl>
@@ -53,12 +53,12 @@ export const PersonalInfoFields = ({ control }: PersonalInfoFieldsProps) => {
         name="email"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-black font-medium">Email</FormLabel>
+            <FormLabel className="text-corporate-dark font-medium">Email</FormLabel>
             <FormControl>
               <Input 
                 type="email" 
                 placeholder="your@email.com" 
-                className="bg-apple-gray border-apple-gray-2 text-black placeholder:text-apple-gray-4 rounded-xl focus:border-apple-blue focus:ring-apple-blue" 
+                className="bg-video-white border-corporate-light text-corporate-dark placeholder:text-corporate-gray rounded-xl focus:border-social-purple focus:ring-social-purple" 
                 {...field} 
               />
             </FormControl>
@@ -72,12 +72,12 @@ export const PersonalInfoFields = ({ control }: PersonalInfoFieldsProps) => {
         name="phone"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="text-black font-medium">Phone</FormLabel>
+            <FormLabel className="text-corporate-dark font-medium">Phone</FormLabel>
             <FormControl>
               <Input 
                 type="tel" 
                 placeholder="(555) 123-4567" 
-                className="bg-apple-gray border-apple-gray-2 text-black placeholder:text-apple-gray-4 rounded-xl focus:border-apple-blue focus:ring-apple-blue" 
+                className="bg-video-white border-corporate-light text-corporate-dark placeholder:text-corporate-gray rounded-xl focus:border-social-purple focus:ring-social-purple" 
                 {...field} 
               />
             </FormControl>

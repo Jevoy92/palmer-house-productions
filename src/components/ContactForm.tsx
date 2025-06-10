@@ -33,17 +33,37 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
 
   const onSubmit = (values: FormData) => {
     console.log(values);
+    
+    // Create mailto link with form data
+    const subject = `Project Inquiry from ${values.firstName} ${values.lastName}`;
+    const body = `
+Name: ${values.firstName} ${values.lastName}
+Email: ${values.email}
+Phone: ${values.phone || 'Not provided'}
+
+Challenge: ${values.challenge}
+Pathway: ${values.pathway}
+
+Message: ${values.message}
+
+Referral Source: ${values.referralSource || 'Not provided'}
+Readiness: ${values.readiness || 'Not provided'}
+    `;
+    
+    const mailtoLink = `mailto:information@palmerhouseproductions.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoLink;
+    
     onOpenChange(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-white rounded-3xl border-0 apple-shadow-lg">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-video-white rounded-3xl border-0 video-shadow-lg">
         <DialogHeader className="text-center mb-8 pt-6">
-          <DialogTitle className="text-3xl font-sf font-semibold text-black mb-4">
+          <DialogTitle className="text-3xl font-display font-bold text-corporate-dark mb-4">
             Let's Start Your Project
           </DialogTitle>
-          <p className="text-lg text-apple-gray-4 leading-relaxed max-w-md mx-auto">
+          <p className="text-lg text-corporate-gray leading-relaxed max-w-md mx-auto">
             Tell us about your vision and we'll create a custom strategy for your brand.
           </p>
         </DialogHeader>
@@ -52,15 +72,15 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 px-6 pb-6">
             <PersonalInfoFields control={form.control} />
             
-            <div className="w-full h-px bg-apple-gray-2"></div>
+            <div className="w-full h-px bg-corporate-light"></div>
             
             <ChallengeField control={form.control} />
             
-            <div className="w-full h-px bg-apple-gray-2"></div>
+            <div className="w-full h-px bg-corporate-light"></div>
             
             <PathwayField control={form.control} />
             
-            <div className="w-full h-px bg-apple-gray-2"></div>
+            <div className="w-full h-px bg-corporate-light"></div>
             
             <AdditionalFields control={form.control} />
 
@@ -69,13 +89,13 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
-                className="flex-1 border-apple-gray-2 text-apple-gray-5 hover:bg-apple-gray rounded-xl"
+                className="flex-1 border-corporate-light text-corporate-gray hover:bg-corporate-light rounded-xl"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                className="flex-1 bg-apple-blue text-white font-medium hover:bg-apple-blue/90 rounded-xl"
+                className="flex-1 gradient-social-1 text-white font-medium hover:scale-105 transition-all duration-300 rounded-xl"
               >
                 Send Message
               </Button>

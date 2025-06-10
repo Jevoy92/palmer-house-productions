@@ -22,21 +22,21 @@ export const Contact = () => {
       <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
         <div className="mb-16">
           <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            🚀 Let's Create Something Viral
+            🎬 Let's Create Your Story
           </div>
           <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-white tracking-tight">
-            Ready to <span className="text-gradient-1">Dominate</span>?
+            Ready to <span className="text-gradient-1">Begin</span>?
           </h2>
           <p className="text-2xl text-corporate-light mb-12 leading-relaxed max-w-3xl mx-auto font-medium">
-            Your next viral moment is just one conversation away. 
-            Let's turn your vision into content that converts.
+            Your authentic story is waiting to be told. 
+            Let's turn your vision into content that resonates.
           </p>
         </div>
         
         <div className="bg-video-white rounded-3xl p-12 mb-16 video-shadow-lg">
           <h3 className="text-4xl font-display font-black text-corporate-dark mb-6">Palmer House Productions</h3>
           <p className="text-xl text-corporate-gray mb-8 font-medium">
-            Where viral content meets corporate results.
+            Where authentic storytelling meets meaningful results.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
@@ -44,7 +44,7 @@ export const Contact = () => {
               onClick={() => setIsFormOpen(true)}
               className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
             >
-              Start Your Campaign 📹
+              Start Your Journey 🗺️
             </button>
             <button 
               onClick={handleStrategyCall}
@@ -61,7 +61,7 @@ export const Contact = () => {
                 <span className="text-white text-xl">📧</span>
               </div>
               <div className="font-bold text-corporate-dark mb-2">Email Us</div>
-              <div className="text-corporate-gray text-xs sm:text-sm break-all">information@palmerhouseproductions.com</div>
+              <div className="text-corporate-gray text-xs sm:text-sm break-all">info@palmerhouseproductions.com</div>
             </div>
             <div className="p-6 bg-corporate-light rounded-2xl">
               <div className="w-12 h-12 gradient-social-3 rounded-xl flex items-center justify-center mb-4 mx-auto">
@@ -82,7 +82,7 @@ export const Contact = () => {
         
         <footer className="border-t border-corporate-gray pt-8">
           <p className="text-corporate-light">
-            © 2025 Palmer House Productions. All rights reserved. Making brands go viral since day one.
+            © 2025 Palmer House Productions. All rights reserved. Crafting authentic stories since day one.
           </p>
         </footer>
       </div>

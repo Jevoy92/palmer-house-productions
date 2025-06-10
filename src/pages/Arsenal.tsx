@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Shield, Users, FileText, HelpCircle, Zap, BookOpen, Heart, Trophy, ChevronDown, ChevronRight } from "lucide-react";
@@ -174,12 +173,7 @@ export default function Arsenal() {
   };
 
   const handleGetStarted = () => {
-    const contactElement = document.getElementById('contact');
-    if (contactElement) {
-      contactElement.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      window.location.href = '/#contact';
-    }
+    window.location.href = '/#contact';
   };
 
   const handlePathwayDiscovery = () => {

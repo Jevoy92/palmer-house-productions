@@ -1,5 +1,4 @@
 
-
 export const Pricing = () => {
   const pricingTiers = [
     {
@@ -20,7 +19,8 @@ export const Pricing = () => {
       ],
       perfectFor: "solopreneurs, service providers, and small but mighty teams (1–5) carving out their space.",
       highlight: false,
-      gradient: "gradient-social-1"
+      gradient: "gradient-social-1",
+      action: "contact"
     },
     {
       name: "Basecamp",
@@ -40,7 +40,8 @@ export const Pricing = () => {
       ],
       perfectFor: "teams of 5–20, e-commerce brands, regional service pros, and businesses scaling up.",
       highlight: true,
-      gradient: "gradient-social-2"
+      gradient: "gradient-social-2",
+      action: "contact"
     },
     {
       name: "Summit",
@@ -60,10 +61,11 @@ export const Pricing = () => {
       ],
       perfectFor: "teams of 20–100, agencies, B2B pros, and companies needing a proven rhythm to their visibility.",
       highlight: false,
-      gradient: "gradient-social-3"
+      gradient: "gradient-social-3",
+      action: "contact"
     },
     {
-      name: "Horizon",
+      name: "Monthly Hosting",
       icon: "🌄",
       price: "$20,000",
       period: "/month",
@@ -79,14 +81,24 @@ export const Pricing = () => {
       ],
       perfectFor: "national franchises, elite agencies, and organizations ready to dominate their space with unforgettable content.",
       highlight: false,
-      gradient: "gradient-social-4"
+      gradient: "gradient-social-4",
+      action: "contact"
     }
   ];
 
-  const handleStartJourney = (tierName: string) => {
+  const handleStartJourney = (tierName: string, action: string) => {
+    if (action === "contact") {
+      // Open contact form or redirect to contact section
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
     console.log(`Starting journey for: ${tierName}`);
-    // TODO: Add actual booking/contact functionality
-    alert(`Starting your ${tierName} journey! This will integrate with booking system.`);
+  };
+
+  const handleStrategyCall = () => {
+    window.open('https://calendly.com/palmerhouseproductions-info/general-strategy-call', '_blank');
   };
 
   return (
@@ -166,14 +178,14 @@ export const Pricing = () => {
                 </div>
                 
                 <button 
-                  onClick={() => handleStartJourney(tier.name)}
+                  onClick={() => handleStartJourney(tier.name, tier.action)}
                   className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 ${
                     tier.highlight
                       ? `${tier.gradient} text-white hover:scale-105 video-shadow`
                       : `border-2 border-corporate-gray text-corporate-dark hover:bg-corporate-dark hover:text-white hover:scale-105`
                   }`}
                 >
-                  Start This Journey
+                  Get Started
                 </button>
               </div>
             </div>
@@ -209,7 +221,10 @@ export const Pricing = () => {
             </div>
           </div>
           
-          <button className="px-12 py-6 gradient-social-1 text-white font-bold rounded-3xl hover:scale-105 transition-all duration-300 text-xl video-shadow-lg">
+          <button 
+            onClick={handleStrategyCall}
+            className="px-12 py-6 gradient-social-1 text-white font-bold rounded-3xl hover:scale-105 transition-all duration-300 text-xl video-shadow-lg"
+          >
             Book My Strategy Call →
           </button>
         </div>
@@ -217,4 +232,3 @@ export const Pricing = () => {
     </section>
   );
 };
-

@@ -2,6 +2,10 @@
 import { GlimpseContactForm } from "./GlimpseContactForm";
 
 export const GlimpseCTA = () => {
+  const handleDiscoveryCall = () => {
+    window.open('https://calendly.com/palmerhouseproductions-info/discovery-call', '_blank');
+  };
+
   return (
     <section className="py-32 bg-corporate-dark relative overflow-hidden">
       {/* Background Elements */}
@@ -31,7 +35,10 @@ export const GlimpseCTA = () => {
             <p className="text-white/80 text-lg">
               <span className="font-bold">Prefer to talk first?</span>
               <br />
-              <button className="text-gradient-1 font-bold hover:underline mt-2">
+              <button 
+                onClick={handleDiscoveryCall}
+                className="text-gradient-1 font-bold hover:underline mt-2"
+              >
                 Schedule a Discovery Call →
               </button>
             </p>
@@ -49,9 +56,14 @@ export const GlimpseCTA = () => {
         </div>
         
         <footer className="border-t border-white/20 pt-8">
-          <p className="text-white/60">
-            © 2024 Palmer House Productions. All rights reserved. Mapping journeys, creating glimpses.
-          </p>
+          <div className="text-center space-y-2">
+            <p className="text-white/80 font-medium">
+              📧 information@palmerhouseproductions.com | 📞 425-738-7312
+            </p>
+            <p className="text-white/60">
+              © 2024 Palmer House Productions. All rights reserved. Mapping journeys, creating glimpses.
+            </p>
+          </div>
         </footer>
       </div>
     </section>

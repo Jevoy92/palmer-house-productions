@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,24 +21,47 @@ export const GlimpseContactForm = () => {
     resolver: zodResolver(glimpseContactFormSchema),
   });
 
+  const handleBaseGlimpse = () => {
+    window.open('https://calendly.com/palmerhouseproductions-info/the-glimpse', '_blank');
+  };
+
+  const handleFullGlimpse = () => {
+    window.open('https://calendly.com/palmerhouseproductions-info/the-full-glimpse', '_blank');
+  };
+
   const onSubmit = async (data: GlimpseContactFormData) => {
     setIsSubmitting(true);
     console.log("Glimpse contact form submission:", data);
     
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Create mailto link with form data
+      const subject = `Glimpse Inquiry from ${data.firstName} ${data.lastName}`;
+      const body = `
+Name: ${data.firstName} ${data.lastName}
+Email: ${data.email}
+Phone: ${data.phone || 'Not provided'}
+Company: ${data.company}
+Website: ${data.website || 'Not provided'}
+
+Challenge: ${data.currentChallenge}
+
+Timeline: ${data.timeline}
+Budget: ${data.budget}
+      `;
+      
+      const mailtoLink = `mailto:information@palmerhouseproductions.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailtoLink;
       
       toast({
-        title: "Message sent successfully!",
-        description: "We'll be in touch soon to schedule your Glimpse session.",
+        title: "Email client opened!",
+        description: "Your message has been prepared. Send it to complete your inquiry.",
       });
       
       reset();
     } catch (error) {
       toast({
-        title: "Error sending message",
-        description: "Please try again or contact us directly.",
+        title: "Error opening email",
+        description: "Please contact us directly at information@palmerhouseproductions.com",
         variant: "destructive",
       });
     } finally {
@@ -53,9 +75,28 @@ export const GlimpseContactForm = () => {
         <h3 className="text-3xl font-display font-black text-corporate-dark mb-4">
           Ready for Your <span className="text-gradient-1">Glimpse</span>?
         </h3>
-        <p className="text-lg text-corporate-gray">
-          Tell us about your vision and we'll get started.
+        <p className="text-lg text-corporate-gray mb-6">
+          Choose your path or tell us about your vision.
         </p>
+        
+        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+          <button
+            onClick={handleBaseGlimpse}
+            className="flex-1 px-6 py-4 gradient-social-1 text-white font-bold rounded-2xl hover:scale-105 transition-all duration-300"
+          >
+            Book Base Glimpse ($350)
+          </button>
+          <button
+            onClick={handleFullGlimpse}
+            className="flex-1 px-6 py-4 gradient-social-2 text-white font-bold rounded-2xl hover:scale-105 transition-all duration-300"
+          >
+            Book Full Glimpse ($750)
+          </button>
+        </div>
+        
+        <div className="text-center text-corporate-gray mb-6">
+          <span className="text-sm">Or fill out the form below for a custom consultation</span>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -199,7 +240,7 @@ export const GlimpseContactForm = () => {
           disabled={isSubmitting}
           className="w-full gradient-social-1 text-white font-bold text-lg py-6 rounded-2xl hover:scale-105 transition-all duration-300"
         >
-          {isSubmitting ? "Sending..." : "Book Your Glimpse 🗺️"}
+          {isSubmitting ? "Preparing Email..." : "Send Custom Inquiry 📧"}
         </Button>
       </form>
     </div>

@@ -5,6 +5,10 @@ import { ContactForm } from "./ContactForm";
 export const Contact = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
 
+  const handleStrategyCall = () => {
+    window.open('https://calendly.com/palmerhouseproductions-info/general-strategy-call', '_blank');
+  };
+
   return (
     <section id="contact" className="py-32 bg-corporate-dark relative overflow-hidden">
       {/* Background Elements */}
@@ -42,7 +46,10 @@ export const Contact = () => {
             >
               Start Your Campaign 📹
             </button>
-            <button className="px-10 py-5 border-2 border-social-purple text-social-purple font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow">
+            <button 
+              onClick={handleStrategyCall}
+              className="px-10 py-5 border-2 border-social-purple text-social-purple font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow"
+            >
               Book Strategy Call 📞
             </button>
           </div>
@@ -54,14 +61,14 @@ export const Contact = () => {
                 <span className="text-white text-xl">📧</span>
               </div>
               <div className="font-bold text-corporate-dark">Email Us</div>
-              <div className="text-corporate-gray text-sm">hello@palmerhouseproductions.com</div>
+              <div className="text-corporate-gray text-sm">information@palmerhouseproductions.com</div>
             </div>
             <div className="p-6 bg-corporate-light rounded-2xl">
               <div className="w-12 h-12 gradient-social-3 rounded-xl flex items-center justify-center mb-4 mx-auto">
                 <span className="text-white text-xl">📱</span>
               </div>
-              <div className="font-bold text-corporate-dark">Follow Us</div>
-              <div className="text-corporate-gray text-sm">@palmerhouseproductions</div>
+              <div className="font-bold text-corporate-dark">Call Us</div>
+              <div className="text-corporate-gray text-sm">425-738-7312</div>
             </div>
             <div className="p-6 bg-corporate-light rounded-2xl">
               <div className="w-12 h-12 gradient-social-4 rounded-xl flex items-center justify-center mb-4 mx-auto">

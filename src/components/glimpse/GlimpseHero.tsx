@@ -1,5 +1,13 @@
 
 export const GlimpseHero = () => {
+  const handleBookGlimpse = () => {
+    window.open('https://calendly.com/palmerhouseproductions-info/the-glimpse', '_blank');
+  };
+
+  const handleDiscoveryCall = () => {
+    window.open('https://calendly.com/palmerhouseproductions-info/discovery-call', '_blank');
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-video-white overflow-hidden">
       {/* Dynamic Background Elements */}
@@ -32,10 +40,16 @@ export const GlimpseHero = () => {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-6 justify-center mb-24">
-          <button className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow-lg">
+          <button 
+            onClick={handleBookGlimpse}
+            className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow-lg"
+          >
             Book Your Glimpse 🗺️
           </button>
-          <button className="px-10 py-5 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow">
+          <button 
+            onClick={handleDiscoveryCall}
+            className="px-10 py-5 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow"
+          >
             Talk to Us First 📞
           </button>
         </div>

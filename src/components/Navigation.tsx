@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+
   const handleNavClick = (sectionId: string) => {
     if (location.pathname !== '/') {
       // Navigate to home page first, then scroll to section
@@ -32,6 +34,19 @@ export const Navigation = () => {
     setIsOpen(false);
   };
 
+  const handleLogoClick = () => {
+    if (location.pathname !== '/') {
+      // Navigate to home page
+      navigate('/');
+    } else {
+      // If already on home page, scroll to top
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  };
+
   // Handle hash navigation when component mounts or location changes
   useEffect(() => {
     if (location.pathname === '/' && location.hash) {
@@ -46,11 +61,18 @@ export const Navigation = () => {
       }, 100);
     }
   }, [location]);
-  return <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-apple-gray-2/50">
+
+  return (
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-apple-gray-2/50">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
-            <Link to="/" className="text-xl font-sf font-semibold text-black">Palmer House Productions</Link>
+            <button 
+              onClick={handleLogoClick}
+              className="text-xl font-sf font-semibold text-black hover:text-apple-gray-5 transition-colors"
+            >
+              Palmer House Productions
+            </button>
           </div>
           
           <div className="hidden md:block">
@@ -106,5 +128,6 @@ export const Navigation = () => {
             </button>
           </div>
         </div>}
-    </nav>;
+    </nav>
+  );
 };

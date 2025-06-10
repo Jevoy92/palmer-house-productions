@@ -82,7 +82,7 @@ export const Contact = () => {
         
         <footer className="border-t border-corporate-gray pt-8">
           <p className="text-corporate-light">
-            © 2024 Palmer House Productions. All rights reserved. Making brands go viral since day one.
+            © 2025 Palmer House Productions. All rights reserved. Making brands go viral since day one.
           </p>
         </footer>
       </div>

@@ -60,21 +60,21 @@ export const Contact = () => {
               <div className="w-12 h-12 gradient-social-2 rounded-xl flex items-center justify-center mb-4 mx-auto">
                 <span className="text-white text-xl">📧</span>
               </div>
-              <div className="font-bold text-corporate-dark">Email Us</div>
-              <div className="text-corporate-gray text-sm">information@palmerhouseproductions.com</div>
+              <div className="font-bold text-corporate-dark mb-2">Email Us</div>
+              <div className="text-corporate-gray text-xs sm:text-sm break-all">information@palmerhouseproductions.com</div>
             </div>
             <div className="p-6 bg-corporate-light rounded-2xl">
               <div className="w-12 h-12 gradient-social-3 rounded-xl flex items-center justify-center mb-4 mx-auto">
                 <span className="text-white text-xl">📱</span>
               </div>
-              <div className="font-bold text-corporate-dark">Call Us</div>
+              <div className="font-bold text-corporate-dark mb-2">Call Us</div>
               <div className="text-corporate-gray text-sm">425-738-7312</div>
             </div>
             <div className="p-6 bg-corporate-light rounded-2xl">
               <div className="w-12 h-12 gradient-social-4 rounded-xl flex items-center justify-center mb-4 mx-auto">
                 <span className="text-white text-xl">⚡</span>
               </div>
-              <div className="font-bold text-corporate-dark">Response Time</div>
+              <div className="font-bold text-corporate-dark mb-2">Response Time</div>
               <div className="text-corporate-gray text-sm">Within 24 hours</div>
             </div>
           </div>

@@ -58,10 +58,10 @@ Readiness: ${values.readiness || 'Not provided'}
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-video-white rounded-3xl border-0 video-shadow-lg">
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-video-white to-corporate-light rounded-3xl border-0 video-shadow-lg">
         <DialogHeader className="text-center mb-8 pt-6">
           <DialogTitle className="text-3xl font-display font-bold text-corporate-dark mb-4">
-            Let's Start Your Project
+            Let's Start Your <span className="text-gradient-1">Project</span>
           </DialogTitle>
           <p className="text-lg text-corporate-gray leading-relaxed max-w-md mx-auto">
             Tell us about your vision and we'll create a custom strategy for your brand.
@@ -72,15 +72,15 @@ Readiness: ${values.readiness || 'Not provided'}
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 px-6 pb-6">
             <PersonalInfoFields control={form.control} />
             
-            <div className="w-full h-px bg-corporate-light"></div>
+            <div className="w-full h-px bg-gradient-social-1 opacity-30"></div>
             
             <ChallengeField control={form.control} />
             
-            <div className="w-full h-px bg-corporate-light"></div>
+            <div className="w-full h-px bg-gradient-social-1 opacity-30"></div>
             
             <PathwayField control={form.control} />
             
-            <div className="w-full h-px bg-corporate-light"></div>
+            <div className="w-full h-px bg-gradient-social-1 opacity-30"></div>
             
             <AdditionalFields control={form.control} />
 
@@ -89,15 +89,15 @@ Readiness: ${values.readiness || 'Not provided'}
                 type="button"
                 variant="outline"
                 onClick={() => onOpenChange(false)}
-                className="flex-1 border-corporate-light text-corporate-gray hover:bg-corporate-light rounded-xl"
+                className="flex-1 border-corporate-gray text-corporate-gray hover:bg-corporate-light hover:border-corporate-dark rounded-xl transition-all duration-300"
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                className="flex-1 gradient-social-1 text-white font-medium hover:scale-105 transition-all duration-300 rounded-xl"
+                className="flex-1 gradient-social-1 text-white font-medium hover:scale-105 transition-all duration-300 rounded-xl video-shadow"
               >
-                Send Message
+                Send Message ✨
               </Button>
             </div>
           </form>

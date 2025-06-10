@@ -1,7 +1,11 @@
 
 import { Compass, Search, Sparkles, Heart, Wrench, Target } from 'lucide-react';
+import { useState } from 'react';
+import { ContactForm } from './ContactForm';
 
 export const Values = () => {
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
+
   const values = [
     { 
       icon: Compass, 
@@ -49,6 +53,14 @@ export const Values = () => {
     { icon: "🌟", word: "Elevated", gradient: "gradient-social-5" },
     { icon: "🎯", word: "Focused", gradient: "gradient-social-1" }
   ];
+
+  const handlePathClick = (pathName: string) => {
+    // Store the selected path in localStorage for the contact form
+    localStorage.setItem('selectedPath', pathName);
+    
+    // Open the contact form
+    setIsContactFormOpen(true);
+  };
 
   return (
     <section id="values" className="py-32 bg-corporate-light relative overflow-hidden">
@@ -117,9 +129,10 @@ export const Values = () => {
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-20 max-w-5xl mx-auto">
             {pathChoices.map((item, index) => {
               return (
-                <div 
+                <button 
                   key={index}
-                  className={`group relative p-4 bg-video-white rounded-2xl hover:bg-transparent transition-all duration-500 video-shadow hover:video-shadow-lg cursor-pointer overflow-hidden`}
+                  onClick={() => handlePathClick(item.word)}
+                  className={`group relative p-4 bg-video-white rounded-2xl hover:bg-transparent transition-all duration-500 video-shadow hover:video-shadow-lg cursor-pointer overflow-hidden transform hover:scale-105 active:scale-95`}
                 >
                   <div className={`absolute inset-0 ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl`}></div>
                   
@@ -134,7 +147,7 @@ export const Values = () => {
                   
                   <div className="absolute -top-1 -right-1 w-3 h-3 gradient-social-3 rounded-full opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
                   <div className="absolute -bottom-1 -left-1 w-2 h-2 gradient-social-4 rounded-full opacity-30 group-hover:opacity-60 transition-opacity duration-500"></div>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -171,6 +184,8 @@ export const Values = () => {
           </div>
         </div>
       </div>
+
+      <ContactForm open={isContactFormOpen} onOpenChange={setIsContactFormOpen} />
     </section>
   );
 };

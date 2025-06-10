@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
@@ -8,6 +9,7 @@ import { PersonalInfoFields } from "./contact/PersonalInfoFields";
 import { ChallengeField } from "./contact/ChallengeField";
 import { PathwayField } from "./contact/PathwayField";
 import { AdditionalFields } from "./contact/AdditionalFields";
+import { useEffect } from "react";
 
 interface ContactFormProps {
   open: boolean;
@@ -29,6 +31,19 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
       readiness: "",
     },
   });
+
+  // Check for selected path when form opens
+  useEffect(() => {
+    if (open) {
+      const selectedPath = localStorage.getItem('selectedPath');
+      if (selectedPath) {
+        form.setValue('pathway', selectedPath);
+        form.setValue('message', `I'm interested in exploring the ${selectedPath} path for my brand's journey.`);
+        // Clear the stored path
+        localStorage.removeItem('selectedPath');
+      }
+    }
+  }, [open, form]);
 
   const onSubmit = (values: FormData) => {
     console.log(values);

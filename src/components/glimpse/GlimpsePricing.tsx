@@ -12,7 +12,8 @@ export const GlimpsePricing = () => {
         "7-day hosted link"
       ],
       gradient: "gradient-social-1",
-      highlight: false
+      highlight: false,
+      calendlyUrl: "https://calendly.com/palmerhouseproductions-info/the-glimpse"
     },
     {
       name: "Full Glimpse",
@@ -25,21 +26,8 @@ export const GlimpsePricing = () => {
         "30-day hosted link"
       ],
       gradient: "gradient-social-2",
-      highlight: true
-    },
-    {
-      name: "Monthly Hosting",
-      icon: "🏕",
-      price: "$250",
-      period: "/month",
-      features: [
-        "Branded link (yourbrand.palmer.house)",
-        "Monthly content update",
-        "Viewer analytics",
-        "Embeddable or shareable experience"
-      ],
-      gradient: "gradient-social-3",
-      highlight: false
+      highlight: true,
+      calendlyUrl: "https://calendly.com/palmerhouseproductions-info/the-full-glimpse"
     }
   ];
 
@@ -48,6 +36,10 @@ export const GlimpsePricing = () => {
     { name: "Personalized walkthrough video", price: "$200" },
     { name: "Priority booking", price: "+$50" }
   ];
+
+  const handleBooking = (calendlyUrl: string) => {
+    window.open(calendlyUrl, '_blank');
+  };
 
   return (
     <section className="py-32 bg-video-white relative overflow-hidden">
@@ -67,7 +59,7 @@ export const GlimpsePricing = () => {
           </h2>
         </div>
         
-        <div className="grid lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid lg:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto">
           {packages.map((pkg, index) => (
             <div 
               key={index}
@@ -92,7 +84,6 @@ export const GlimpsePricing = () => {
                 <h3 className="text-3xl font-display font-black text-corporate-dark mb-3">{pkg.name}</h3>
                 <div className="mb-6">
                   <span className="text-5xl font-black text-corporate-dark">{pkg.price}</span>
-                  {pkg.period && <span className="text-corporate-gray text-xl">{pkg.period}</span>}
                 </div>
               </div>
               
@@ -105,11 +96,14 @@ export const GlimpsePricing = () => {
                 ))}
               </ul>
               
-              <button className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 ${
-                pkg.highlight
-                  ? `${pkg.gradient} text-white hover:scale-105 video-shadow`
-                  : `border-2 border-corporate-gray text-corporate-dark hover:bg-corporate-dark hover:text-white hover:scale-105`
-              }`}>
+              <button 
+                onClick={() => handleBooking(pkg.calendlyUrl)}
+                className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 ${
+                  pkg.highlight
+                    ? `${pkg.gradient} text-white hover:scale-105 video-shadow`
+                    : `border-2 border-corporate-gray text-corporate-dark hover:bg-corporate-dark hover:text-white hover:scale-105`
+                }`}
+              >
                 Get Started
               </button>
             </div>

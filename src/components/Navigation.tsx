@@ -54,32 +54,32 @@ export const Navigation = () => {
             <div className="flex items-center space-x-8">
               <button 
                 onClick={() => handleNavClick('about')}
-                className="text-apple-gray-5 hover:text-black transition-colors text-sm font-medium"
+                className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium"
               >
                 Our Journey
               </button>
               <button 
                 onClick={() => handleNavClick('team')}
-                className="text-apple-gray-5 hover:text-black transition-colors text-sm font-medium"
+                className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium"
               >
                 Meet the Crew
               </button>
               <button 
                 onClick={() => handleNavClick('services')}
-                className="text-apple-gray-5 hover:text-black transition-colors text-sm font-medium"
+                className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium"
               >
                 Pathways
               </button>
               <Link 
                 to="/glimpse" 
-                className="text-apple-gray-5 hover:text-black transition-colors text-sm font-medium"
+                className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium"
                 onClick={() => setIsOpen(false)}
               >
                 The Glimpse
               </Link>
               <button 
                 onClick={() => handleNavClick('contact')}
-                className="text-apple-gray-5 hover:text-black transition-colors text-sm font-medium"
+                className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium"
               >
                 Signal Us
               </button>

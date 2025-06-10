@@ -49,7 +49,7 @@ Timeline: ${data.timeline}
 Budget: ${data.budget}
       `;
       
-      const mailtoLink = `mailto:information@palmerhouseproductions.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      const mailtoLink = `mailto:info@palmerhouseproductions.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       window.location.href = mailtoLink;
       
       toast({
@@ -61,7 +61,7 @@ Budget: ${data.budget}
     } catch (error) {
       toast({
         title: "Error opening email",
-        description: "Please contact us directly at information@palmerhouseproductions.com",
+        description: "Please contact us directly at info@palmerhouseproductions.com",
         variant: "destructive",
       });
     } finally {

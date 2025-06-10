@@ -6,6 +6,13 @@ export const GlimpseCTA = () => {
     window.open('https://calendly.com/palmerhouseproductions-info/discovery-call', '_blank');
   };
 
+  const handleBeginAdventure = () => {
+    const formElement = document.querySelector('.glimpse-contact-form');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="py-32 bg-corporate-dark relative overflow-hidden">
       {/* Background Elements */}
@@ -24,9 +31,15 @@ export const GlimpseCTA = () => {
             <span className="text-gradient-1">Best Version of You</span>.
           </h2>
           <p className="text-2xl text-white/80 mb-8">Let's Show Them.</p>
+          <button 
+            onClick={handleBeginAdventure}
+            className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow-lg"
+          >
+            Begin the Adventure ⚡
+          </button>
         </div>
         
-        <div className="mb-16">
+        <div className="mb-16 glimpse-contact-form">
           <GlimpseContactForm />
         </div>
         

@@ -1,7 +1,10 @@
 
 export const GlimpseHero = () => {
   const handleBookGlimpse = () => {
-    window.open('https://calendly.com/palmerhouseproductions-info/the-glimpse', '_blank');
+    const formElement = document.querySelector('.glimpse-contact-form');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const handleDiscoveryCall = () => {

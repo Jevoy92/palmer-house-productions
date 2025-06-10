@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Shield, Users, FileText, HelpCircle, Zap, BookOpen, Heart, Trophy, ChevronDown, ChevronRight } from "lucide-react";
@@ -403,10 +404,10 @@ export default function Arsenal() {
               Chart Your Course 🧭
             </button>
             <button 
-              onClick={() => window.open('/glimpse', '_blank')}
+              onClick={handleGetStarted}
               className="px-10 py-5 bg-video-white border-2 border-social-purple text-social-purple font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow"
             >
-              Book a Glimpse 👁️
+              Start Your Campaign 📹
             </button>
           </div>
         </div>

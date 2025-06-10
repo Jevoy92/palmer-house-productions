@@ -182,6 +182,15 @@ export default function Arsenal() {
     }
   };
 
+  const handlePathwayDiscovery = () => {
+    const contactElement = document.getElementById('contact');
+    if (contactElement) {
+      contactElement.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.location.href = '/#contact';
+    }
+  };
+
   const solutions = filteredSolutions();
 
   return (
@@ -394,10 +403,10 @@ export default function Arsenal() {
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <button 
-              onClick={handleGetStarted}
+              onClick={handlePathwayDiscovery}
               className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
             >
-              Start the Expedition 🗺️
+              Chart Your Course 🧭
             </button>
             <button 
               onClick={() => window.open('/glimpse', '_blank')}

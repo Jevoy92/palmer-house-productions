@@ -31,12 +31,6 @@ export const GlimpsePricing = () => {
     }
   ];
 
-  const addOns = [
-    { name: "Additional flows", price: "$100 each" },
-    { name: "Personalized walkthrough video", price: "$200" },
-    { name: "Priority booking", price: "+$50" }
-  ];
-
   const handleBooking = (calendlyUrl: string) => {
     window.open(calendlyUrl, '_blank');
   };
@@ -59,7 +53,7 @@ export const GlimpsePricing = () => {
           </h2>
         </div>
         
-        <div className="grid lg:grid-cols-2 gap-8 mb-16 max-w-4xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {packages.map((pkg, index) => (
             <div 
               key={index}
@@ -108,18 +102,6 @@ export const GlimpsePricing = () => {
               </button>
             </div>
           ))}
-        </div>
-        
-        <div className="bg-corporate-light rounded-3xl p-8 video-shadow">
-          <h3 className="text-3xl font-display font-black text-corporate-dark mb-6 text-center">Optional Add-Ons</h3>
-          <div className="grid md:grid-cols-3 gap-6">
-            {addOns.map((addon, index) => (
-              <div key={index} className="text-center p-6 bg-video-white rounded-2xl video-shadow">
-                <div className="font-bold text-corporate-dark mb-2">{addon.name}</div>
-                <div className="text-gradient-2 font-black text-xl">{addon.price}</div>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     </section>

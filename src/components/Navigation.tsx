@@ -71,6 +71,13 @@ export const Navigation = () => {
                 Pathways
               </button>
               <Link 
+                to="/arsenal" 
+                className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium"
+                onClick={() => setIsOpen(false)}
+              >
+                The Arsenal
+              </Link>
+              <Link 
                 to="/glimpse" 
                 className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium"
                 onClick={() => setIsOpen(false)}
@@ -118,6 +125,13 @@ export const Navigation = () => {
             >
               Pathways
             </button>
+            <Link 
+              to="/arsenal" 
+              className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" 
+              onClick={() => setIsOpen(false)}
+            >
+              The Arsenal
+            </Link>
             <Link 
               to="/glimpse" 
               className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" 

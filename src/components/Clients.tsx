@@ -39,6 +39,13 @@ export const Clients = () => {
     }
   ];
 
+  const handleStartAdventure = () => {
+    const contactElement = document.getElementById('contact');
+    if (contactElement) {
+      contactElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section id="clients" className="py-32 bg-corporate-light relative overflow-hidden">
       {/* Background Elements */}
@@ -97,7 +104,10 @@ export const Clients = () => {
               <br />
               <span className="font-bold">you're in the right place</span>.
             </p>
-            <button className="px-10 py-5 bg-video-white text-corporate-dark font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow">
+            <button 
+              onClick={handleStartAdventure}
+              className="px-10 py-5 bg-video-white text-corporate-dark font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
+            >
               Start the Adventure 🌟
             </button>
           </div>

@@ -33,6 +33,13 @@ export const Services = () => {
     }
   ];
 
+  const handleBeginAdventure = () => {
+    const contactElement = document.getElementById('contact');
+    if (contactElement) {
+      contactElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section id="services" className="py-32 bg-corporate-light">
       <div className="max-w-7xl mx-auto px-6">
@@ -76,7 +83,10 @@ export const Services = () => {
           <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
             Let's venture into uncharted creative territory and discover stories that resonate.
           </p>
-          <button className="px-10 py-5 bg-video-white text-corporate-dark font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow">
+          <button 
+            onClick={handleBeginAdventure}
+            className="px-10 py-5 bg-video-white text-corporate-dark font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
+          >
             Begin the Adventure 🌟
           </button>
         </div>

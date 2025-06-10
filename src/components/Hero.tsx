@@ -1,5 +1,19 @@
 
 export const Hero = () => {
+  const handleStartJourney = () => {
+    const contactElement = document.getElementById('contact');
+    if (contactElement) {
+      contactElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const handleExploreTrails = () => {
+    const servicesElement = document.getElementById('services');
+    if (servicesElement) {
+      servicesElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-video-white overflow-hidden">
       {/* Dynamic Background Elements */}
@@ -30,10 +44,16 @@ export const Hero = () => {
         </p>
         
         <div className="flex flex-col sm:flex-row gap-6 justify-center mb-24">
-          <button className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow-lg">
+          <button 
+            onClick={handleStartJourney}
+            className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow-lg"
+          >
             Start Your Journey 🗺️
           </button>
-          <button className="px-10 py-5 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow">
+          <button 
+            onClick={handleExploreTrails}
+            className="px-10 py-5 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow"
+          >
             Explore Our Trails ▶️
           </button>
         </div>

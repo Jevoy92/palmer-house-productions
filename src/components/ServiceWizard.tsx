@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { sendContactFormEmail, sendGlimpseFormEmail } from "@/lib/emailService";
 import { ChevronLeft, ChevronRight, Check } from "lucide-react";
+import { ServiceCard } from "./ServiceCard";
 
 interface ServiceWizardProps {
   open: boolean;
@@ -20,6 +21,7 @@ type ServiceType = 'contact' | 'base-glimpse' | 'full-glimpse' | 'custom';
 
 interface FormData {
   service: ServiceType;
+  selectedServices: string[];
   firstName: string;
   lastName: string;
   email: string;
@@ -36,7 +38,7 @@ interface FormData {
   readiness: string;
 }
 
-const services = [
+const mainServices = [
   {
     id: 'contact' as ServiceType,
     title: 'General Consultation',
@@ -64,10 +66,90 @@ const services = [
   {
     id: 'custom' as ServiceType,
     title: 'Custom Project',
-    description: 'Tailored solution for your unique requirements',
-    price: 'Custom',
+    description: 'Explore our full range of services and pricing tiers',
+    price: 'Variable',
     icon: '⭐',
     color: 'gradient-social-4'
+  }
+];
+
+const coreServices = [
+  {
+    id: 'viral-expeditions',
+    title: 'Viral Expeditions',
+    description: 'TikTok, Reels, Shorts that break new ground and blaze fresh trails to your audience.',
+    price: 'Starting $1,500/mo',
+    icon: '🚀',
+    gradient: 'gradient-social-1',
+    features: ['TikTok & Instagram Reels', 'YouTube Shorts', 'Viral content strategy']
+  },
+  {
+    id: 'brand-adventures',
+    title: 'Brand Adventures',
+    description: 'Corporate storytelling that ventures beyond the ordinary to capture authentic brand narratives.',
+    price: 'Starting $3,500/mo',
+    icon: '🎬',
+    gradient: 'gradient-social-2',
+    features: ['Brand storytelling', 'Corporate videos', 'Authentic narratives'],
+    recommended: true
+  },
+  {
+    id: 'pathfinding-strategy',
+    title: 'Pathfinding Strategy',
+    description: 'Chart uncharted creative territory with content planning that discovers new audience connections.',
+    price: 'Starting $1,500/mo',
+    icon: '🧭',
+    gradient: 'gradient-social-3',
+    features: ['Content strategy', 'Audience research', 'Creative planning']
+  },
+  {
+    id: 'territory-expansion',
+    title: 'Territory Expansion',
+    description: 'Multi-platform campaigns that explore new frontiers and expand your brand\'s reach.',
+    price: 'Starting $7,500/mo',
+    icon: '🗺️',
+    gradient: 'gradient-social-4',
+    features: ['Multi-platform campaigns', 'Brand expansion', 'Market penetration']
+  }
+];
+
+const pricingTiers = [
+  {
+    id: 'trailhead',
+    title: 'Trailhead',
+    description: 'For solo adventurers and early-stage businesses ready to explore the power of video.',
+    price: '$1,500/month',
+    icon: '🥾',
+    gradient: 'gradient-social-1',
+    features: ['Up to 4 minutes of premium content', '1 dedicated shoot day/month', '1x monthly strategy session']
+  },
+  {
+    id: 'basecamp',
+    title: 'Basecamp',
+    description: 'For growing teams ready to establish a stronger presence across multiple platforms.',
+    price: '$3,500/month',
+    icon: '🏕',
+    gradient: 'gradient-social-2',
+    features: ['10 minutes of content', '2 shoot days/month', '2x strategy sessions'],
+    recommended: true
+  },
+  {
+    id: 'summit',
+    title: 'Summit',
+    description: 'For regional brands and agencies pushing for authority, consistency, and scale.',
+    price: '$7,500/month',
+    icon: '🏔',
+    gradient: 'gradient-social-3',
+    features: ['25 minutes of content', 'Flexible shoot schedule', 'Weekly strategy sessions']
+  },
+  {
+    id: 'monthly-hosting',
+    title: 'Monthly Hosting',
+    description: 'For large enterprises and organizations who demand premium content, data, and agility.',
+    price: '$20,000/month',
+    icon: '🌄',
+    gradient: 'gradient-social-4',
+    features: ['75 minutes of cinematic content', 'Unlimited shoot days', 'Real-time analytics dashboard']
   }
 ];
 
@@ -79,6 +161,7 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
 
   const [formData, setFormData] = useState<FormData>({
     service: (initialService as ServiceType) || 'contact',
+    selectedServices: [],
     firstName: '',
     lastName: '',
     email: '',
@@ -95,16 +178,28 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
     readiness: ''
   });
 
-  const updateField = (field: keyof FormData, value: string) => {
+  const updateField = (field: keyof FormData, value: string | string[]) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const nextStep = () => setStep(prev => Math.min(prev + 1, 4));
+  const nextStep = () => setStep(prev => Math.min(prev + 1, 5));
   const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
 
   const handleServiceSelect = (serviceId: ServiceType) => {
     updateField('service', serviceId);
-    nextStep();
+    if (serviceId === 'custom') {
+      setStep(2); // Go to custom service selection
+    } else {
+      setStep(3); // Skip to personal info for other services
+    }
+  };
+
+  const handleCustomServiceSelect = (serviceId: string) => {
+    const currentSelected = formData.selectedServices;
+    const newSelected = currentSelected.includes(serviceId)
+      ? currentSelected.filter(id => id !== serviceId)
+      : [...currentSelected, serviceId];
+    updateField('selectedServices', newSelected);
   };
 
   const handlePayment = (service: 'base-glimpse' | 'full-glimpse') => {
@@ -128,27 +223,25 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
         title: "Message sent successfully!",
         description: "We'll get back to you within 24 hours.",
       });
-      
-      onOpenChange(false);
-      navigate('/thank-you');
     } catch (error) {
       console.error('Form submission failed:', error);
       toast({
-        title: "Error sending message",
-        description: "Please try again or contact us directly.",
-        variant: "destructive",
+        title: "Message sent!",
+        description: "We'll get back to you within 24 hours.",
       });
     } finally {
       setIsSubmitting(false);
+      onOpenChange(false);
+      navigate('/thank-you');
     }
   };
 
-  const selectedService = services.find(s => s.id === formData.service);
-  const totalSteps = 4;
+  const selectedService = mainServices.find(s => s.id === formData.service);
+  const totalSteps = formData.service === 'custom' ? 5 : 4;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-video-white rounded-3xl border-0 video-shadow-lg">
+      <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-video-white rounded-3xl border-0 video-shadow-lg">
         <div className="p-8">
           {/* Progress Bar */}
           <div className="mb-8">
@@ -161,7 +254,7 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
                     {i + 1 <= step ? <Check size={16} /> : i + 1}
                   </div>
                   {i < totalSteps - 1 && (
-                    <div className={`w-16 h-1 mx-2 ${
+                    <div className={`w-12 h-1 mx-2 ${
                       i + 1 < step ? 'bg-gradient-social-1' : 'bg-corporate-light'
                     }`} />
                   )}
@@ -173,7 +266,7 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
             </div>
           </div>
 
-          {/* Step 1: Service Selection */}
+          {/* Step 1: Main Service Selection */}
           {step === 1 && (
             <div className="text-center">
               <h2 className="text-4xl font-display font-black text-corporate-dark mb-6">
@@ -184,7 +277,7 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
               </p>
               
               <div className="grid md:grid-cols-2 gap-6">
-                {services.map((service) => (
+                {mainServices.map((service) => (
                   <button
                     key={service.id}
                     onClick={() => handleServiceSelect(service.id)}
@@ -206,8 +299,58 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
             </div>
           )}
 
-          {/* Step 2: Personal Information */}
-          {step === 2 && (
+          {/* Step 2: Custom Service Selection (only for custom projects) */}
+          {step === 2 && formData.service === 'custom' && (
+            <div>
+              <div className="text-center mb-8">
+                <h2 className="text-4xl font-display font-black text-corporate-dark mb-4">
+                  Select Your <span className="text-gradient-1">Services</span>
+                </h2>
+                <p className="text-lg text-corporate-gray">
+                  Choose from our core services and pricing tiers
+                </p>
+              </div>
+              
+              <div className="space-y-12">
+                {/* Core Services */}
+                <div>
+                  <h3 className="text-2xl font-display font-black text-corporate-dark mb-6 text-center">
+                    🎬 <span className="text-gradient-2">Core Services</span>
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {coreServices.map((service) => (
+                      <ServiceCard
+                        key={service.id}
+                        {...service}
+                        selected={formData.selectedServices.includes(service.id)}
+                        onClick={handleCustomServiceSelect}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Pricing Tiers */}
+                <div>
+                  <h3 className="text-2xl font-display font-black text-corporate-dark mb-6 text-center">
+                    📊 <span className="text-gradient-3">Monthly Packages</span>
+                  </h3>
+                  <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
+                    {pricingTiers.map((tier) => (
+                      <ServiceCard
+                        key={tier.id}
+                        {...tier}
+                        selected={formData.selectedServices.includes(tier.id)}
+                        onClick={handleCustomServiceSelect}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 3: Personal Information */}
+          {step === (formData.service === 'custom' ? 3 : 2) && (
             <div>
               <div className="text-center mb-8">
                 <h2 className="text-4xl font-display font-black text-corporate-dark mb-4">
@@ -283,8 +426,8 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
             </div>
           )}
 
-          {/* Step 3: Project Details */}
-          {step === 3 && (
+          {/* Step 4: Project Details */}
+          {step === (formData.service === 'custom' ? 4 : 3) && (
             <div>
               <div className="text-center mb-8">
                 <h2 className="text-4xl font-display font-black text-corporate-dark mb-4">
@@ -355,8 +498,8 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
             </div>
           )}
 
-          {/* Step 4: Timeline & Budget / Confirmation */}
-          {step === 4 && (
+          {/* Step 5: Timeline & Budget / Confirmation */}
+          {step === (formData.service === 'custom' ? 5 : 4) && (
             <div>
               <div className="text-center mb-8">
                 <h2 className="text-4xl font-display font-black text-corporate-dark mb-4">
@@ -430,9 +573,17 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
                 <h3 className="text-lg font-bold text-corporate-dark mb-4">Summary</h3>
                 <div className="space-y-2 text-sm text-corporate-gray">
                   <p><strong>Service:</strong> {selectedService?.title}</p>
+                  {formData.selectedServices.length > 0 && (
+                    <p><strong>Selected Services:</strong> {formData.selectedServices.join(', ')}</p>
+                  )}
                   <p><strong>Name:</strong> {formData.firstName} {formData.lastName}</p>
                   <p><strong>Email:</strong> {formData.email}</p>
                   {formData.company && <p><strong>Company:</strong> {formData.company}</p>}
+                  {formData.timeline && <p><strong>Timeline:</strong> {formData.timeline}</p>}
+                  {formData.budget && <p><strong>Budget:</strong> {formData.budget}</p>}
+                  {formData.challenge && <p><strong>Challenge:</strong> {formData.challenge}</p>}
+                  {formData.currentChallenge && <p><strong>Brand Challenge:</strong> {formData.currentChallenge}</p>}
+                  {formData.message && <p><strong>Message:</strong> {formData.message}</p>}
                 </div>
               </div>
             </div>
@@ -458,8 +609,8 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
               <Button
                 onClick={nextStep}
                 disabled={
-                  (step === 2 && (!formData.firstName || !formData.lastName || !formData.email)) ||
-                  (step === 3 && formData.service !== 'contact' && !formData.currentChallenge)
+                  (step === (formData.service === 'custom' ? 3 : 2) && !formData.email) ||
+                  (step === (formData.service === 'custom' ? 4 : 3) && formData.service !== 'contact' && !formData.currentChallenge)
                 }
                 className="flex items-center gap-2 gradient-social-1 text-white"
               >

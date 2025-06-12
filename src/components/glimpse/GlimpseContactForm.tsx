@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -11,6 +12,7 @@ import { GlimpseContactFormData, glimpseContactFormSchema } from "./GlimpseConta
 export const GlimpseContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   const {
     register,
@@ -34,34 +36,22 @@ export const GlimpseContactForm = () => {
     console.log("Glimpse contact form submission:", data);
     
     try {
-      // Create mailto link with form data
-      const subject = `Glimpse Inquiry from ${data.firstName} ${data.lastName}`;
-      const body = `
-Name: ${data.firstName} ${data.lastName}
-Email: ${data.email}
-Phone: ${data.phone || 'Not provided'}
-Company: ${data.company}
-Website: ${data.website || 'Not provided'}
-
-Challenge: ${data.currentChallenge}
-
-Timeline: ${data.timeline}
-Budget: ${data.budget}
-      `;
-      
-      const mailtoLink = `mailto:info@palmerhouseproductions.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailtoLink;
+      // Store form data for email sending on thank you page
+      localStorage.setItem('glimpseContactFormData', JSON.stringify(data));
       
       toast({
-        title: "Email client opened!",
-        description: "Your message has been prepared. Send it to complete your inquiry.",
+        title: "Message sent successfully!",
+        description: "We'll get back to you within 24 hours.",
       });
       
       reset();
+      
+      // Navigate to thank you page
+      navigate('/thank-you');
     } catch (error) {
       toast({
-        title: "Error opening email",
-        description: "Please contact us directly at info@palmerhouseproductions.com",
+        title: "Error sending message",
+        description: "Please try again or contact us directly.",
         variant: "destructive",
       });
     } finally {
@@ -240,7 +230,7 @@ Budget: ${data.budget}
           disabled={isSubmitting}
           className="w-full gradient-social-1 text-white font-bold text-lg py-6 rounded-2xl hover:scale-105 transition-all duration-300"
         >
-          {isSubmitting ? "Preparing Email..." : "Send Custom Inquiry 📧"}
+          {isSubmitting ? "Sending..." : "Send Custom Inquiry 📨"}
         </Button>
       </form>
     </div>

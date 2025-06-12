@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
@@ -10,6 +9,7 @@ import { ChallengeField } from "./contact/ChallengeField";
 import { PathwayField } from "./contact/PathwayField";
 import { AdditionalFields } from "./contact/AdditionalFields";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ContactFormProps {
   open: boolean;
@@ -17,6 +17,7 @@ interface ContactFormProps {
 }
 
 export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
+  const navigate = useNavigate();
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,28 +47,16 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
   }, [open, form]);
 
   const onSubmit = (values: FormData) => {
-    console.log(values);
+    console.log('Form submission:', values);
     
-    // Create mailto link with form data
-    const subject = `Project Inquiry from ${values.firstName} ${values.lastName}`;
-    const body = `
-Name: ${values.firstName} ${values.lastName}
-Email: ${values.email}
-Phone: ${values.phone || 'Not provided'}
-
-Challenge: ${values.challenge}
-Pathway: ${values.pathway}
-
-Message: ${values.message}
-
-Referral Source: ${values.referralSource || 'Not provided'}
-Readiness: ${values.readiness || 'Not provided'}
-    `;
+    // Store form data for email sending on thank you page
+    localStorage.setItem('contactFormData', JSON.stringify(values));
     
-    const mailtoLink = `mailto:info@palmerhouseproductions.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    window.location.href = mailtoLink;
-    
+    // Close the dialog
     onOpenChange(false);
+    
+    // Navigate to thank you page
+    navigate('/thank-you');
   };
 
   return (

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 
 export const Pricing = () => {
   const pricingTiers = [
@@ -95,10 +96,6 @@ export const Pricing = () => {
       }
     }
     console.log(`Starting journey for: ${tierName}`);
-  };
-
-  const handleStrategyCall = () => {
-    window.open('https://calendly.com/palmerhouseproductions-info/general-strategy-call', '_blank');
   };
 
   return (
@@ -201,9 +198,9 @@ export const Pricing = () => {
             Which Path Is Right <span className="text-gradient-2">For You?</span>
           </h3>
           <p className="text-2xl text-corporate-gray mb-12 max-w-4xl mx-auto font-medium leading-relaxed">
-            If you're not sure where to begin, don't worry. Every great adventure starts with a <span className="text-gradient-1 font-bold">strategy call</span>.
+            If you're not sure where to begin, each package above includes a <span className="text-gradient-1 font-bold">strategy consultation</span>.
             <br />
-            Let's map out your journey together.
+            Choose the tier that fits your needs and we'll map out your journey together.
           </p>
           
           <div className="grid md:grid-cols-3 gap-8 mb-16 max-w-4xl mx-auto">
@@ -220,13 +217,6 @@ export const Pricing = () => {
               <div className="text-lg text-corporate-gray font-semibold">Authentic Journey</div>
             </div>
           </div>
-          
-          <button 
-            onClick={handleStrategyCall}
-            className="px-12 py-6 gradient-social-1 text-white font-bold rounded-3xl hover:scale-105 transition-all duration-300 text-xl video-shadow-lg"
-          >
-            Book My Strategy Call →
-          </button>
         </div>
       </div>
     </section>

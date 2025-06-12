@@ -1,4 +1,3 @@
-
 import { Video, Film, Users, Megaphone } from 'lucide-react';
 
 export const Services = () => {
@@ -77,18 +76,12 @@ export const Services = () => {
           })}
         </div>
         
-        {/* CTA Section */}
+        {/* Simplified info section without redundant CTA */}
         <div className="text-center p-12 gradient-social-5 rounded-3xl video-shadow-lg">
           <h3 className="text-4xl font-black text-white mb-6">Ready to Explore New Horizons?</h3>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-white/90 max-w-2xl mx-auto">
             Let's venture into uncharted creative territory and discover stories that resonate.
           </p>
-          <button 
-            onClick={handleBeginAdventure}
-            className="px-10 py-5 bg-video-white text-corporate-dark font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
-          >
-            Begin the Adventure 🌟
-          </button>
         </div>
       </div>
     </section>

@@ -1,4 +1,3 @@
-
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
@@ -124,6 +123,20 @@
 /* Text gradients */
 .text-gradient-1 {
   background: linear-gradient(135deg, var(--social-purple) 0%, var(--social-pink) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-2 {
+  background: linear-gradient(135deg, var(--social-pink) 0%, var(--social-orange) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-3 {
+  background: linear-gradient(135deg, var(--social-orange) 0%, var(--social-blue) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

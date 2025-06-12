@@ -1,7 +1,6 @@
 import { Compass, Search, Sparkles, Heart, Wrench, Target } from 'lucide-react';
 import { useState } from 'react';
 import { ServiceWizard } from './ServiceWizard';
-import { PathwayCard } from './PathwayCard';
 
 export const Values = () => {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
@@ -46,82 +45,19 @@ export const Values = () => {
   ];
 
   const pathChoices = [
-    { 
-      icon: "🗺️", 
-      word: "Adventurous", 
-      gradient: "gradient-social-1",
-      description: "For brands that want to break boundaries and explore uncharted creative territory.",
-      benefits: [
-        "Bold, unconventional video concepts",
-        "Risk-taking creative approaches", 
-        "Standing out from competitors",
-        "Pioneering new trends in your industry"
-      ]
-    },
-    { 
-      icon: "⭐", 
-      word: "Creative", 
-      gradient: "gradient-social-2",
-      description: "For businesses that value artistic expression and want visually stunning content.",
-      benefits: [
-        "Artistic, high-production value videos",
-        "Unique visual storytelling techniques",
-        "Creative problem-solving approaches",
-        "Award-worthy content creation"
-      ]
-    },
-    { 
-      icon: "🚀", 
-      word: "Bold", 
-      gradient: "gradient-social-3",
-      description: "For companies ready to make big statements and dominate their market.",
-      benefits: [
-        "High-impact, attention-grabbing content",
-        "Confident brand positioning",
-        "Market leadership messaging",
-        "Fearless creative execution"
-      ]
-    },
-    { 
-      icon: "🧭", 
-      word: "Authentic", 
-      gradient: "gradient-social-4",
-      description: "For brands that prioritize genuine connections and honest storytelling.",
-      benefits: [
-        "Real, unfiltered brand stories",
-        "Honest customer testimonials",
-        "Behind-the-scenes content",
-        "Building trust through transparency"
-      ]
-    },
-    { 
-      icon: "🌟", 
-      word: "Elevated", 
-      gradient: "gradient-social-5",
-      description: "For premium brands that demand sophisticated, high-end video content.",
-      benefits: [
-        "Luxury-level production quality",
-        "Sophisticated visual aesthetics",
-        "Premium brand positioning",
-        "Elite market targeting"
-      ]
-    },
-    { 
-      icon: "🎯", 
-      word: "Focused", 
-      gradient: "gradient-social-1",
-      description: "For businesses with clear goals who want strategic, results-driven content.",
-      benefits: [
-        "Goal-oriented content strategy",
-        "ROI-focused video campaigns",
-        "Targeted audience approach",
-        "Measurable business outcomes"
-      ]
-    }
+    { icon: "🗺️", word: "Adventurous", gradient: "gradient-social-1" },
+    { icon: "⭐", word: "Creative", gradient: "gradient-social-2" },
+    { icon: "🚀", word: "Bold", gradient: "gradient-social-3" },
+    { icon: "🧭", word: "Authentic", gradient: "gradient-social-4" },
+    { icon: "🌟", word: "Elevated", gradient: "gradient-social-5" },
+    { icon: "🎯", word: "Focused", gradient: "gradient-social-1" }
   ];
 
   const handlePathClick = (pathName: string) => {
+    // Store the selected path in localStorage for the wizard
     localStorage.setItem('selectedPath', pathName);
+    
+    // Open the wizard
     setIsWizardOpen(true);
   };
 
@@ -178,29 +114,41 @@ export const Values = () => {
         <div className="text-center mb-16">
           <div className="text-corporate-gray text-4xl mb-12 tracking-widest">⸻ ⸻ ⸻</div>
           <div className="inline-block px-8 py-4 gradient-social-1 rounded-full text-white font-bold text-xl mb-8 video-shadow-lg">
-            🎒 Choose Your Path
+            🎒 Trail Selection
           </div>
           <h3 className="text-5xl md:text-6xl font-display font-black mb-10 text-corporate-dark leading-tight">
-            What Kind of <span className="text-corporate-dark">Explorer</span> Are You?
+            Choose Your <span className="text-corporate-dark">Adventure</span>
           </h3>
           <p className="text-2xl text-corporate-gray mb-16 max-w-5xl mx-auto font-medium leading-relaxed">
-            Every great journey starts with understanding your style.
+            Every great journey starts with a single step.
             <br />
-            <span className="text-corporate-dark font-bold">Click to learn more about each path</span> before choosing your adventure.
+            <span className="text-corporate-dark font-bold">What kind of explorer are you?</span> Pick the path that calls to your spirit.
           </p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-20 max-w-5xl mx-auto">
-            {pathChoices.map((item, index) => (
-              <PathwayCard
-                key={index}
-                icon={item.icon}
-                word={item.word}
-                gradient={item.gradient}
-                description={item.description}
-                benefits={item.benefits}
-                onStartJourney={() => handlePathClick(item.word)}
-              />
-            ))}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-20 max-w-5xl mx-auto">
+            {pathChoices.map((item, index) => {
+              return (
+                <button 
+                  key={index}
+                  onClick={() => handlePathClick(item.word)}
+                  className={`group relative p-4 bg-video-white rounded-2xl hover:bg-transparent transition-all duration-500 video-shadow hover:video-shadow-lg cursor-pointer overflow-hidden transform hover:scale-105 active:scale-95`}
+                >
+                  <div className={`absolute inset-0 ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl`}></div>
+                  
+                  <div className="relative z-10 text-center">
+                    <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-500">
+                      {item.icon}
+                    </div>
+                    <h4 className="text-sm font-display font-black text-corporate-dark group-hover:text-white transition-colors duration-500 leading-tight">
+                      {item.word}
+                    </h4>
+                  </div>
+                  
+                  <div className="absolute -top-1 -right-1 w-3 h-3 gradient-social-3 rounded-full opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
+                  <div className="absolute -bottom-1 -left-1 w-2 h-2 gradient-social-4 rounded-full opacity-30 group-hover:opacity-60 transition-opacity duration-500"></div>
+                </button>
+              );
+            })}
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 mb-16 max-w-4xl mx-auto">

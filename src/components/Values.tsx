@@ -1,10 +1,9 @@
-
 import { Compass, Search, Sparkles, Heart, Wrench, Target } from 'lucide-react';
 import { useState } from 'react';
-import { ContactForm } from './ContactForm';
+import { ServiceWizard } from './ServiceWizard';
 
 export const Values = () => {
-  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
 
   const values = [
     { 
@@ -55,11 +54,11 @@ export const Values = () => {
   ];
 
   const handlePathClick = (pathName: string) => {
-    // Store the selected path in localStorage for the contact form
+    // Store the selected path in localStorage for the wizard
     localStorage.setItem('selectedPath', pathName);
     
-    // Open the contact form
-    setIsContactFormOpen(true);
+    // Open the wizard
+    setIsWizardOpen(true);
   };
 
   return (
@@ -80,9 +79,9 @@ export const Values = () => {
             What We <span className="text-gradient-3">Value</span>
           </h2>
           <p className="text-2xl text-corporate-gray max-w-4xl mx-auto font-medium leading-tight">
-            These aren't just brand values—they're the <span className="text-gradient-1 font-bold">compass points</span> we navigate by.
+            These aren't just brand values—they're the <span className="text-corporate-dark font-bold">compass points</span> we navigate by.
             <br />
-            <span className="text-gradient-2 font-bold">Rules of the road</span> for every creative expedition.
+            <span className="text-corporate-dark font-bold">Rules of the road</span> for every creative expedition.
           </p>
         </div>
         
@@ -99,10 +98,10 @@ export const Values = () => {
                     <IconComponent size={28} className="text-white" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-display font-black text-corporate-dark mb-4 group-hover:text-gradient-1 transition-all duration-300">
+                    <h3 className="text-2xl font-display font-black text-corporate-dark mb-4 group-hover:text-corporate-dark transition-all duration-300">
                       {value.title}
                     </h3>
-                    <p className="text-corporate-gray leading-relaxed text-lg font-medium group-hover:text-corporate-dark transition-colors duration-300">
+                    <p className="text-corporate-gray leading-relaxed text-lg font-medium group-hover: text-corporate-dark transition-colors duration-300">
                       {value.description}
                     </p>
                   </div>
@@ -118,12 +117,12 @@ export const Values = () => {
             🎒 Trail Selection
           </div>
           <h3 className="text-5xl md:text-6xl font-display font-black mb-10 text-corporate-dark leading-tight">
-            Choose Your <span className="text-gradient-2">Adventure</span>
+            Choose Your <span className="text-corporate-dark">Adventure</span>
           </h3>
           <p className="text-2xl text-corporate-gray mb-16 max-w-5xl mx-auto font-medium leading-relaxed">
             Every great journey starts with a single step.
             <br />
-            <span className="text-gradient-1 font-bold">What kind of explorer are you?</span> Pick the path that calls to your spirit.
+            <span className="text-corporate-dark font-bold">What kind of explorer are you?</span> Pick the path that calls to your spirit.
           </p>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-20 max-w-5xl mx-auto">
@@ -154,15 +153,15 @@ export const Values = () => {
           
           <div className="grid md:grid-cols-3 gap-8 mb-16 max-w-4xl mx-auto">
             <div className="p-8 bg-video-white rounded-2xl video-shadow">
-              <div className="text-5xl font-black text-gradient-1 mb-4">∞</div>
+              <div className="text-5xl font-black text-corporate-dark mb-4">∞</div>
               <div className="text-lg text-corporate-gray font-semibold">Paths to Explore</div>
             </div>
             <div className="p-8 bg-video-white rounded-2xl video-shadow">
-              <div className="text-5xl font-black text-gradient-2 mb-4">1</div>
+              <div className="text-5xl font-black text-corporate-dark mb-4">1</div>
               <div className="text-lg text-corporate-gray font-semibold">Perfect Journey</div>
             </div>
             <div className="p-8 bg-video-white rounded-2xl video-shadow">
-              <div className="text-5xl font-black text-gradient-3 mb-4">100%</div>
+              <div className="text-5xl font-black text-corporate-dark mb-4">100%</div>
               <div className="text-lg text-corporate-gray font-semibold">Authentic Adventure</div>
             </div>
           </div>
@@ -185,7 +184,7 @@ export const Values = () => {
         </div>
       </div>
 
-      <ContactForm open={isContactFormOpen} onOpenChange={setIsContactFormOpen} />
+      <ServiceWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
     </section>
   );
 };

@@ -1,9 +1,9 @@
 
 import { useState } from "react";
-import { ContactForm } from "./ContactForm";
+import { ServiceWizard } from "./ServiceWizard";
 
 export const Contact = () => {
-  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
 
   const handleStrategyCall = () => {
     window.open('https://calendly.com/palmerhouseproductions-info/general-strategy-call', '_blank');
@@ -41,7 +41,7 @@ export const Contact = () => {
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
             <button 
-              onClick={() => setIsFormOpen(true)}
+              onClick={() => setIsWizardOpen(true)}
               className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
             >
               Start Your Journey 🗺️
@@ -87,7 +87,7 @@ export const Contact = () => {
         </footer>
       </div>
 
-      <ContactForm open={isFormOpen} onOpenChange={setIsFormOpen} />
+      <ServiceWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
     </section>
   );
 };

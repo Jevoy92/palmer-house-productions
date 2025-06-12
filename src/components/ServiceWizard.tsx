@@ -153,6 +153,86 @@ const pricingTiers = [
   }
 ];
 
+const pathwayOptions = [
+  {
+    id: 'adventurous',
+    title: 'Adventurous',
+    description: 'Bold moves that push boundaries and take creative risks',
+    icon: '🏔️',
+    gradient: 'gradient-social-1'
+  },
+  {
+    id: 'creative',
+    title: 'Creative',
+    description: 'Artistic storytelling that showcases unique brand personality',
+    icon: '🎨',
+    gradient: 'gradient-social-2'
+  },
+  {
+    id: 'bold',
+    title: 'Bold',
+    description: 'Confident messaging that commands attention and respect',
+    icon: '⚡',
+    gradient: 'gradient-social-3'
+  },
+  {
+    id: 'authentic',
+    title: 'Authentic',
+    description: 'Genuine narratives that build trust and human connection',
+    icon: '💎',
+    gradient: 'gradient-social-4'
+  },
+  {
+    id: 'elevated',
+    title: 'Elevated',
+    description: 'Sophisticated approach that positions you as premium',
+    icon: '👑',
+    gradient: 'gradient-social-1'
+  },
+  {
+    id: 'focused',
+    title: 'Focused',
+    description: 'Strategic precision targeting specific goals and audiences',
+    icon: '🎯',
+    gradient: 'gradient-social-2'
+  }
+];
+
+const getServiceNames = (serviceIds: string[]) => {
+  const allServices = [...coreServices, ...pricingTiers];
+  return serviceIds.map(id => {
+    const service = allServices.find(s => s.id === id);
+    return service ? service.title : id;
+  }).join(', ');
+};
+
+const getPathwayInfo = (pathwayId: string) => {
+  const pathway = pathwayOptions.find(p => p.id === pathwayId);
+  return pathway ? `${pathway.title} - ${pathway.description}` : pathwayId;
+};
+
+const getTimelineLabel = (timeline: string) => {
+  const timelineMap: { [key: string]: string } = {
+    'immediate': 'Need it ASAP',
+    '1-2-weeks': '1-2 weeks',
+    '1-month': 'Within a month',
+    '2-3-months': '2-3 months',
+    'exploring': 'Just exploring'
+  };
+  return timelineMap[timeline] || timeline;
+};
+
+const getBudgetLabel = (budget: string) => {
+  const budgetMap: { [key: string]: string } = {
+    'under-5k': 'Under $5k',
+    '5k-10k': '$5k - $10k',
+    '10k-25k': '$10k - $25k',
+    '25k-plus': '$25k+',
+    'tbd': 'To be determined'
+  };
+  return budgetMap[budget] || budget;
+};
+
 export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWizardProps) => {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -202,6 +282,10 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
     updateField('selectedServices', newSelected);
   };
 
+  const handlePathwaySelect = (pathwayId: string) => {
+    updateField('pathway', pathwayId);
+  };
+
   const handlePayment = (service: 'base-glimpse' | 'full-glimpse') => {
     const calendlyUrl = service === 'base-glimpse' 
       ? 'https://calendly.com/palmerhouseproductions-info/the-glimpse'
@@ -238,6 +322,11 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
 
   const selectedService = mainServices.find(s => s.id === formData.service);
   const totalSteps = formData.service === 'custom' ? 5 : 4;
+
+  // Validation logic
+  const canProceedFromStep2 = formData.service !== 'custom' || formData.selectedServices.length > 0;
+  const canProceedFromPersonalInfo = formData.firstName && formData.lastName && formData.email;
+  const canProceedFromProjectDetails = formData.service === 'contact' || formData.currentChallenge;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -307,7 +396,7 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
                   Select Your <span className="text-gradient-1">Services</span>
                 </h2>
                 <p className="text-lg text-corporate-gray">
-                  Choose from our core services and pricing tiers
+                  Choose from our core services and pricing tiers {formData.selectedServices.length > 0 && `(${formData.selectedServices.length} selected)`}
                 </p>
               </div>
               
@@ -452,21 +541,28 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
                       />
                     </div>
                     <div>
-                      <Label htmlFor="pathway">Preferred pathway</Label>
-                      <select
-                        id="pathway"
-                        value={formData.pathway}
-                        onChange={(e) => updateField('pathway', e.target.value)}
-                        className="mt-1 w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
-                      >
-                        <option value="">Select a pathway</option>
-                        <option value="Adventurous">Adventurous</option>
-                        <option value="Creative">Creative</option>
-                        <option value="Bold">Bold</option>
-                        <option value="Authentic">Authentic</option>
-                        <option value="Elevated">Elevated</option>
-                        <option value="Focused">Focused</option>
-                      </select>
+                      <Label className="text-lg font-bold text-corporate-dark mb-4 block">
+                        Choose Your Preferred Pathway
+                      </Label>
+                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {pathwayOptions.map((pathway) => (
+                          <button
+                            key={pathway.id}
+                            onClick={() => handlePathwaySelect(pathway.id)}
+                            className={`p-4 rounded-2xl border-2 transition-all duration-300 text-left hover:scale-105 ${
+                              formData.pathway === pathway.id
+                                ? 'border-social-purple bg-social-purple/5'
+                                : 'border-corporate-light hover:border-social-purple/50'
+                            }`}
+                          >
+                            <div className="text-center mb-3">
+                              <div className="text-2xl mb-2">{pathway.icon}</div>
+                              <h3 className="font-bold text-corporate-dark">{pathway.title}</h3>
+                            </div>
+                            <p className="text-sm text-corporate-gray">{pathway.description}</p>
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </>
                 )}
@@ -568,23 +664,82 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
                 </div>
               )}
               
-              {/* Summary */}
-              <div className="bg-video-white border border-corporate-light rounded-2xl p-6">
-                <h3 className="text-lg font-bold text-corporate-dark mb-4">Summary</h3>
-                <div className="space-y-2 text-sm text-corporate-gray">
-                  <p><strong>Service:</strong> {selectedService?.title}</p>
-                  {formData.selectedServices.length > 0 && (
-                    <p><strong>Selected Services:</strong> {formData.selectedServices.join(', ')}</p>
-                  )}
-                  <p><strong>Name:</strong> {formData.firstName} {formData.lastName}</p>
-                  <p><strong>Email:</strong> {formData.email}</p>
-                  {formData.company && <p><strong>Company:</strong> {formData.company}</p>}
-                  {formData.timeline && <p><strong>Timeline:</strong> {formData.timeline}</p>}
-                  {formData.budget && <p><strong>Budget:</strong> {formData.budget}</p>}
-                  {formData.challenge && <p><strong>Challenge:</strong> {formData.challenge}</p>}
-                  {formData.currentChallenge && <p><strong>Brand Challenge:</strong> {formData.currentChallenge}</p>}
-                  {formData.message && <p><strong>Message:</strong> {formData.message}</p>}
+              {/* Enhanced Summary */}
+              <div className="bg-video-white border border-corporate-light rounded-2xl p-6 video-shadow">
+                <h3 className="text-xl font-bold text-corporate-dark mb-6 flex items-center">
+                  <Check className="mr-2 text-social-purple" size={24} />
+                  Summary
+                </h3>
+                <div className="grid md:grid-cols-2 gap-4 text-sm">
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="font-medium text-corporate-gray">Service:</span>
+                      <span className="text-corporate-dark">{selectedService?.title}</span>
+                    </div>
+                    {formData.selectedServices.length > 0 && (
+                      <div className="flex justify-between">
+                        <span className="font-medium text-corporate-gray">Selected:</span>
+                        <span className="text-corporate-dark text-right">{getServiceNames(formData.selectedServices)}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span className="font-medium text-corporate-gray">Name:</span>
+                      <span className="text-corporate-dark">{formData.firstName} {formData.lastName}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="font-medium text-corporate-gray">Email:</span>
+                      <span className="text-corporate-dark">{formData.email}</span>
+                    </div>
+                    {formData.company && (
+                      <div className="flex justify-between">
+                        <span className="font-medium text-corporate-gray">Company:</span>
+                        <span className="text-corporate-dark">{formData.company}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="space-y-3">
+                    {formData.timeline && (
+                      <div className="flex justify-between">
+                        <span className="font-medium text-corporate-gray">Timeline:</span>
+                        <span className="text-corporate-dark">{getTimelineLabel(formData.timeline)}</span>
+                      </div>
+                    )}
+                    {formData.budget && (
+                      <div className="flex justify-between">
+                        <span className="font-medium text-corporate-gray">Budget:</span>
+                        <span className="text-corporate-dark">{getBudgetLabel(formData.budget)}</span>
+                      </div>
+                    )}
+                    {formData.pathway && (
+                      <div>
+                        <span className="font-medium text-corporate-gray block mb-1">Pathway:</span>
+                        <span className="text-corporate-dark text-sm">{getPathwayInfo(formData.pathway)}</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
+                {(formData.challenge || formData.currentChallenge || formData.message) && (
+                  <div className="mt-4 pt-4 border-t border-corporate-light">
+                    {formData.challenge && (
+                      <div className="mb-3">
+                        <span className="font-medium text-corporate-gray block mb-1">Challenge:</span>
+                        <span className="text-corporate-dark text-sm">{formData.challenge}</span>
+                      </div>
+                    )}
+                    {formData.currentChallenge && (
+                      <div className="mb-3">
+                        <span className="font-medium text-corporate-gray block mb-1">Brand Challenge:</span>
+                        <span className="text-corporate-dark text-sm">{formData.currentChallenge}</span>
+                      </div>
+                    )}
+                    {formData.message && (
+                      <div>
+                        <span className="font-medium text-corporate-gray block mb-1">Additional Message:</span>
+                        <span className="text-corporate-dark text-sm">{formData.message}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -609,8 +764,9 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
               <Button
                 onClick={nextStep}
                 disabled={
-                  (step === (formData.service === 'custom' ? 3 : 2) && !formData.email) ||
-                  (step === (formData.service === 'custom' ? 4 : 3) && formData.service !== 'contact' && !formData.currentChallenge)
+                  (step === 2 && !canProceedFromStep2) ||
+                  (step === (formData.service === 'custom' ? 3 : 2) && !canProceedFromPersonalInfo) ||
+                  (step === (formData.service === 'custom' ? 4 : 3) && !canProceedFromProjectDetails)
                 }
                 className="flex items-center gap-2 gradient-social-1 text-white"
               >

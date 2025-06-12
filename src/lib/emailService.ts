@@ -1,10 +1,10 @@
 
 import emailjs from '@emailjs/browser';
 
-// EmailJS configuration - you'll need to set these in your EmailJS dashboard
-const SERVICE_ID = 'your_service_id'; // Replace with your EmailJS service ID
-const TEMPLATE_ID = 'your_template_id'; // Replace with your EmailJS template ID  
-const PUBLIC_KEY = 'your_public_key'; // Replace with your EmailJS public key
+// EmailJS configuration
+const SERVICE_ID = 'service_7zd5x3u';
+const TEMPLATE_ID = 'template_b8dsioe';
+const PUBLIC_KEY = '5UDY6-g0vIXo_2VmT';
 
 export interface ContactFormEmailData {
   form_type: string;
@@ -24,6 +24,7 @@ export interface ContactFormEmailData {
   timeline?: string;
   budget?: string;
   submitted_date: string;
+  [key: string]: string | undefined;
 }
 
 export const sendContactFormEmail = async (formData: any): Promise<void> => {

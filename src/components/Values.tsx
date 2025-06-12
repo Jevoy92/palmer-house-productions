@@ -1,10 +1,9 @@
+
 import { Compass, Search, Sparkles, Heart, Wrench, Target } from 'lucide-react';
-import { useState } from 'react';
-import { ServiceWizard } from './ServiceWizard';
+import { PathwayCard } from './PathwayCard';
+import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
 
 export const Values = () => {
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
-
   const values = [
     { 
       icon: Compass, 
@@ -40,26 +39,65 @@ export const Values = () => {
       icon: Target, 
       title: "Purpose over Profit", 
       description: "We create with intention. Every frame serves your mission, not just our bottom line.",
-      gradient: "gradient-social-1"
+      gradient: "gradient-social-6"
     }
   ];
 
   const pathChoices = [
-    { icon: "🗺️", word: "Adventurous", gradient: "gradient-social-1" },
-    { icon: "⭐", word: "Creative", gradient: "gradient-social-2" },
-    { icon: "🚀", word: "Bold", gradient: "gradient-social-3" },
-    { icon: "🧭", word: "Authentic", gradient: "gradient-social-4" },
-    { icon: "🌟", word: "Elevated", gradient: "gradient-social-5" },
-    { icon: "🎯", word: "Focused", gradient: "gradient-social-1" }
+    { 
+      id: "adventurous",
+      icon: "🗺️", 
+      word: "Adventurous", 
+      gradient: "gradient-social-1",
+      description: "Bold moves that push boundaries and take creative risks to set your brand apart from the competition.",
+      features: ["Risk-taking creative approach", "Boundary-pushing content", "Unique market positioning", "Memorable brand experiences"]
+    },
+    { 
+      id: "creative",
+      icon: "⭐", 
+      word: "Creative", 
+      gradient: "gradient-social-2",
+      description: "Artistic storytelling that showcases your unique brand personality through innovative visual narratives.",
+      features: ["Artistic visual storytelling", "Innovative content creation", "Brand personality showcase", "Creative problem solving"]
+    },
+    { 
+      id: "bold",
+      icon: "🚀", 
+      word: "Bold", 
+      gradient: "gradient-social-3",
+      description: "Confident messaging that commands attention and respect in your industry while building brand authority.",
+      features: ["Confident brand messaging", "Authority positioning", "Industry leadership", "Attention-commanding content"]
+    },
+    { 
+      id: "authentic",
+      icon: "🧭", 
+      word: "Authentic", 
+      gradient: "gradient-social-4",
+      description: "Genuine narratives that build trust and human connection with your audience through real stories.",
+      features: ["Genuine storytelling", "Trust building", "Human connection", "Real brand narratives"]
+    },
+    { 
+      id: "elevated",
+      icon: "🌟", 
+      word: "Elevated", 
+      gradient: "gradient-social-5",
+      description: "Sophisticated approach that positions your brand as premium while maintaining accessibility and relatability.",
+      features: ["Premium positioning", "Sophisticated content", "High-end production value", "Luxury brand appeal"]
+    },
+    { 
+      id: "focused",
+      icon: "🎯", 
+      word: "Focused", 
+      gradient: "gradient-social-6",
+      description: "Strategic precision targeting specific goals and audiences with laser-focused messaging and content.",
+      features: ["Strategic precision", "Targeted messaging", "Goal-oriented content", "Audience-specific approach"]
+    }
   ];
 
-  const handlePathClick = (pathName: string) => {
-    // Store the selected path in localStorage for the wizard
-    localStorage.setItem('selectedPath', pathName);
-    
-    // Open the wizard
-    setIsWizardOpen(true);
-  };
+  // Animated counters
+  const pathsCounter = useAnimatedCounter({ end: Infinity, prefix: "" });
+  const journeyCounter = useAnimatedCounter({ end: 1, prefix: "" });
+  const authenticCounter = useAnimatedCounter({ end: 100, suffix: "%" });
 
   return (
     <section id="values" className="py-32 bg-corporate-light relative overflow-hidden">
@@ -126,42 +164,36 @@ export const Values = () => {
           </p>
           
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-20 max-w-5xl mx-auto">
-            {pathChoices.map((item, index) => {
-              return (
-                <button 
-                  key={index}
-                  onClick={() => handlePathClick(item.word)}
-                  className={`group relative p-4 bg-video-white rounded-2xl hover:bg-transparent transition-all duration-500 video-shadow hover:video-shadow-lg cursor-pointer overflow-hidden transform hover:scale-105 active:scale-95`}
-                >
-                  <div className={`absolute inset-0 ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl`}></div>
-                  
-                  <div className="relative z-10 text-center">
-                    <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-500">
-                      {item.icon}
-                    </div>
-                    <h4 className="text-sm font-display font-black text-corporate-dark group-hover:text-white transition-colors duration-500 leading-tight">
-                      {item.word}
-                    </h4>
-                  </div>
-                  
-                  <div className="absolute -top-1 -right-1 w-3 h-3 gradient-social-3 rounded-full opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-                  <div className="absolute -bottom-1 -left-1 w-2 h-2 gradient-social-4 rounded-full opacity-30 group-hover:opacity-60 transition-opacity duration-500"></div>
-                </button>
-              );
-            })}
+            {pathChoices.map((item, index) => (
+              <PathwayCard
+                key={index}
+                id={item.id}
+                icon={item.icon}
+                word={item.word}
+                gradient={item.gradient}
+                description={item.description}
+                features={item.features}
+              />
+            ))}
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 mb-16 max-w-4xl mx-auto">
             <div className="p-8 bg-video-white rounded-2xl video-shadow">
-              <div className="text-5xl font-black text-corporate-dark mb-4">∞</div>
+              <div ref={pathsCounter.ref} className="text-5xl font-black text-corporate-dark mb-4">
+                {pathsCounter.displayValue}
+              </div>
               <div className="text-lg text-corporate-gray font-semibold">Paths to Explore</div>
             </div>
             <div className="p-8 bg-video-white rounded-2xl video-shadow">
-              <div className="text-5xl font-black text-corporate-dark mb-4">1</div>
+              <div ref={journeyCounter.ref} className="text-5xl font-black text-corporate-dark mb-4">
+                {journeyCounter.displayValue}
+              </div>
               <div className="text-lg text-corporate-gray font-semibold">Perfect Journey</div>
             </div>
             <div className="p-8 bg-video-white rounded-2xl video-shadow">
-              <div className="text-5xl font-black text-corporate-dark mb-4">100%</div>
+              <div ref={authenticCounter.ref} className="text-5xl font-black text-corporate-dark mb-4">
+                {authenticCounter.displayValue}
+              </div>
               <div className="text-lg text-corporate-gray font-semibold">Authentic Adventure</div>
             </div>
           </div>
@@ -183,8 +215,6 @@ export const Values = () => {
           </div>
         </div>
       </div>
-
-      <ServiceWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
     </section>
   );
 };

@@ -426,6 +426,9 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
                     ? service.monthlyPrice 
                     : calculateDiscountedPrice(service.monthlyPrice, formData.commitment);
                   const savings = getSavingsAmount(service.monthlyPrice, formData.commitment);
+                  const priceText = formData.commitment === 'monthly' 
+                    ? `$${displayPrice.toLocaleString()} / month` 
+                    : `$${displayPrice.toLocaleString()} / ${formData.commitment}`;
                   
                   return (
                     <ServiceCard
@@ -433,7 +436,7 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
                       id={service.id}
                       title={service.title}
                       description={service.description}
-                      price={`$${displayPrice.toLocaleString()}${formData.commitment === 'monthly' ? '/mo' : `/${formData.commitment}`}`}
+                      price={priceText}
                       icon={service.icon}
                       gradient={service.gradient}
                       features={service.features}

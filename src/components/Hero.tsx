@@ -1,6 +1,4 @@
 
-import { useAnimatedCounter } from '@/hooks/useAnimatedCounter';
-
 export const Hero = () => {
   const handleStartJourney = () => {
     const contactElement = document.getElementById('contact');
@@ -15,11 +13,6 @@ export const Hero = () => {
       servicesElement.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
-  // Animated counters
-  const journeysCounter = useAnimatedCounter({ end: 50, suffix: "+" });
-  const milesCounter = useAnimatedCounter({ end: 1, suffix: "M+" });
-  const storiesCounter = useAnimatedCounter({ end: Infinity, prefix: "" });
 
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-video-white overflow-hidden">
@@ -68,21 +61,15 @@ export const Hero = () => {
         {/* Social Proof */}
         <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
           <div className="text-center">
-            <div ref={journeysCounter.ref} className="text-3xl font-black text-gradient-1 mb-2">
-              {journeysCounter.displayValue}
-            </div>
+            <div className="text-3xl font-black text-gradient-1 mb-2">50+</div>
             <div className="text-sm text-corporate-gray font-medium">Journeys Captured</div>
           </div>
           <div className="text-center">
-            <div ref={milesCounter.ref} className="text-3xl font-black text-gradient-2 mb-2">
-              {milesCounter.displayValue}
-            </div>
+            <div className="text-3xl font-black text-gradient-2 mb-2">1M+</div>
             <div className="text-sm text-corporate-gray font-medium">Miles of Discovery</div>
           </div>
           <div className="text-center">
-            <div ref={storiesCounter.ref} className="text-3xl font-black text-gradient-3 mb-2">
-              {storiesCounter.displayValue}
-            </div>
+            <div className="text-3xl font-black text-gradient-3 mb-2">∞</div>
             <div className="text-sm text-corporate-gray font-medium">Stories Untold</div>
           </div>
         </div>

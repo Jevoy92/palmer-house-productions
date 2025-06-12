@@ -1,3 +1,4 @@
+
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
@@ -82,8 +83,6 @@
   --social-blue: #3b82f6;
   --social-green: #10b981;
   --social-yellow: #f59e0b;
-  --social-teal: #14b8a6;
-  --social-indigo: #6366f1;
   
   /* Video-specific Colors */
   --video-white: #fafafa;
@@ -119,34 +118,12 @@
 }
 
 .gradient-social-6 {
-  background: linear-gradient(135deg, var(--social-yellow) 0%, var(--social-teal) 100%);
-}
-
-.gradient-social-7 {
-  background: linear-gradient(135deg, var(--social-teal) 0%, var(--social-indigo) 100%);
-}
-
-.gradient-social-8 {
-  background: linear-gradient(135deg, var(--social-indigo) 0%, var(--social-purple) 100%);
+  background: linear-gradient(135deg, var(--social-yellow) 0%, var(--social-purple) 100%);
 }
 
 /* Text gradients */
 .text-gradient-1 {
   background: linear-gradient(135deg, var(--social-purple) 0%, var(--social-pink) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.text-gradient-2 {
-  background: linear-gradient(135deg, var(--social-pink) 0%, var(--social-orange) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.text-gradient-3 {
-  background: linear-gradient(135deg, var(--social-orange) 0%, var(--social-blue) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -159,36 +136,6 @@
 
 .video-shadow-lg {
   box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-/* Floating animation for background elements */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-.float-animation {
-  animation: float 6s ease-in-out infinite;
-}
-
-/* Pulse animation for social badges */
-@keyframes pulse-social {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
-}
-
-.animate-pulse-social {
-  animation: pulse-social 3s ease-in-out infinite;
 }
 
 /* Custom utility classes */

@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { sendContactFormEmail, sendGlimpseFormEmail } from "@/lib/emailService";
-import { ChevronLeft, ChevronRight, Check } from "lucide-react";
+import { ChevronLeft, ChevronRight, Check, ArrowLeft, Star, Zap } from "lucide-react";
 import { ServiceCard } from "./ServiceCard";
 
 interface ServiceWizardProps {
@@ -18,6 +19,7 @@ interface ServiceWizardProps {
 }
 
 type ServiceType = 'contact' | 'base-glimpse' | 'full-glimpse' | 'custom';
+type CustomFlowStep = 'categories' | 'core-services' | 'pricing-tiers' | 'both';
 
 interface FormData {
   service: ServiceType;
@@ -70,6 +72,34 @@ const mainServices = [
     price: 'Variable',
     icon: '⭐',
     color: 'gradient-social-4'
+  }
+];
+
+const serviceCategories = [
+  {
+    id: 'core-services',
+    title: '🎬 Core Services',
+    description: 'Creative content and storytelling solutions',
+    icon: '🎬',
+    gradient: 'gradient-social-1',
+    count: 4
+  },
+  {
+    id: 'pricing-tiers',
+    title: '📊 Monthly Packages',
+    description: 'Ongoing content creation partnerships',
+    icon: '📊',
+    gradient: 'gradient-social-2',
+    count: 4
+  },
+  {
+    id: 'both',
+    title: '⚡ View All Options',
+    description: 'See everything we offer at once',
+    icon: '⚡',
+    gradient: 'gradient-social-3',
+    count: 8,
+    recommended: true
   }
 ];
 
@@ -198,17 +228,14 @@ const pathwayOptions = [
   }
 ];
 
-const getServiceNames = (serviceIds: string[]) => {
+const getServiceInfo = (serviceId: string) => {
   const allServices = [...coreServices, ...pricingTiers];
-  return serviceIds.map(id => {
-    const service = allServices.find(s => s.id === id);
-    return service ? service.title : id;
-  }).join(', ');
+  return allServices.find(s => s.id === serviceId);
 };
 
 const getPathwayInfo = (pathwayId: string) => {
   const pathway = pathwayOptions.find(p => p.id === pathwayId);
-  return pathway ? `${pathway.title} - ${pathway.description}` : pathwayId;
+  return pathway ? pathway : null;
 };
 
 const getTimelineLabel = (timeline: string) => {
@@ -235,6 +262,7 @@ const getBudgetLabel = (budget: string) => {
 
 export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWizardProps) => {
   const [step, setStep] = useState(1);
+  const [customFlowStep, setCustomFlowStep] = useState<CustomFlowStep>('categories');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -268,10 +296,15 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
   const handleServiceSelect = (serviceId: ServiceType) => {
     updateField('service', serviceId);
     if (serviceId === 'custom') {
-      setStep(2); // Go to custom service selection
+      setCustomFlowStep('categories');
+      setStep(2);
     } else {
-      setStep(3); // Skip to personal info for other services
+      setStep(3);
     }
+  };
+
+  const handleCategorySelect = (categoryId: CustomFlowStep) => {
+    setCustomFlowStep(categoryId);
   };
 
   const handleCustomServiceSelect = (serviceId: string) => {
@@ -323,10 +356,19 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
   const selectedService = mainServices.find(s => s.id === formData.service);
   const totalSteps = formData.service === 'custom' ? 5 : 4;
 
-  // Validation logic
+  // Fixed validation logic
   const canProceedFromStep2 = formData.service !== 'custom' || formData.selectedServices.length > 0;
   const canProceedFromPersonalInfo = formData.firstName && formData.lastName && formData.email;
-  const canProceedFromProjectDetails = formData.service === 'contact' || formData.currentChallenge;
+  const canProceedFromProjectDetails = formData.service === 'contact' || 
+    (formData.service === 'custom' && (formData.pathway || formData.message)) ||
+    (formData.service !== 'contact' && formData.service !== 'custom' && formData.currentChallenge);
+
+  const getServicesToShow = () => {
+    if (customFlowStep === 'core-services') return coreServices;
+    if (customFlowStep === 'pricing-tiers') return pricingTiers;
+    if (customFlowStep === 'both') return [...coreServices, ...pricingTiers];
+    return [];
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -388,26 +430,75 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
             </div>
           )}
 
-          {/* Step 2: Custom Service Selection (only for custom projects) */}
+          {/* Step 2: Custom Service Selection */}
           {step === 2 && formData.service === 'custom' && (
             <div>
-              <div className="text-center mb-8">
-                <h2 className="text-4xl font-display font-black text-corporate-dark mb-4">
-                  Select Your <span className="text-gradient-1">Services</span>
-                </h2>
-                <p className="text-lg text-corporate-gray">
-                  Choose from our core services and pricing tiers {formData.selectedServices.length > 0 && `(${formData.selectedServices.length} selected)`}
-                </p>
-              </div>
-              
-              <div className="space-y-12">
-                {/* Core Services */}
+              {customFlowStep === 'categories' ? (
+                // Category Selection
+                <div className="text-center">
+                  <h2 className="text-4xl font-display font-black text-corporate-dark mb-6">
+                    What Are You <span className="text-gradient-1">Looking For?</span>
+                  </h2>
+                  <p className="text-lg text-corporate-gray mb-12">
+                    Choose your area of interest to see relevant options
+                  </p>
+                  
+                  <div className="grid md:grid-cols-3 gap-6">
+                    {serviceCategories.map((category) => (
+                      <button
+                        key={category.id}
+                        onClick={() => handleCategorySelect(category.id as CustomFlowStep)}
+                        className="group p-8 bg-video-white border-2 border-corporate-light rounded-3xl hover:border-social-purple transition-all duration-300 text-center hover:scale-105 relative"
+                      >
+                        {category.recommended && (
+                          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                            <Badge className="gradient-social-2 text-white font-bold px-3 py-1">
+                              <Star size={12} className="mr-1" />
+                              Popular Choice
+                            </Badge>
+                          </div>
+                        )}
+                        <div className={`w-16 h-16 ${category.gradient} rounded-2xl flex items-center justify-center text-3xl mb-4 mx-auto`}>
+                          {category.icon}
+                        </div>
+                        <h3 className="text-xl font-display font-black text-corporate-dark mb-2">
+                          {category.title}
+                        </h3>
+                        <p className="text-corporate-gray mb-4">{category.description}</p>
+                        <div className="text-sm text-social-purple font-bold">
+                          {category.count} options available
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                // Service Selection within Category
                 <div>
-                  <h3 className="text-2xl font-display font-black text-corporate-dark mb-6 text-center">
-                    🎬 <span className="text-gradient-2">Core Services</span>
-                  </h3>
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {coreServices.map((service) => (
+                  <div className="flex items-center mb-8">
+                    <Button
+                      variant="ghost"
+                      onClick={() => setCustomFlowStep('categories')}
+                      className="flex items-center gap-2 text-corporate-gray hover:text-corporate-dark"
+                    >
+                      <ArrowLeft size={16} />
+                      Back to Categories
+                    </Button>
+                  </div>
+                  
+                  <div className="text-center mb-8">
+                    <h2 className="text-4xl font-display font-black text-corporate-dark mb-4">
+                      {customFlowStep === 'core-services' && '🎬 Core Services'}
+                      {customFlowStep === 'pricing-tiers' && '📊 Monthly Packages'}
+                      {customFlowStep === 'both' && '⚡ All Services & Packages'}
+                    </h2>
+                    <p className="text-lg text-corporate-gray">
+                      Select the services that interest you {formData.selectedServices.length > 0 && `(${formData.selectedServices.length} selected)`}
+                    </p>
+                  </div>
+                  
+                  <div className={`grid gap-6 ${customFlowStep === 'both' ? 'md:grid-cols-2 xl:grid-cols-3' : 'md:grid-cols-2'}`}>
+                    {getServicesToShow().map((service) => (
                       <ServiceCard
                         key={service.id}
                         {...service}
@@ -417,24 +508,7 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
                     ))}
                   </div>
                 </div>
-
-                {/* Pricing Tiers */}
-                <div>
-                  <h3 className="text-2xl font-display font-black text-corporate-dark mb-6 text-center">
-                    📊 <span className="text-gradient-3">Monthly Packages</span>
-                  </h3>
-                  <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
-                    {pricingTiers.map((tier) => (
-                      <ServiceCard
-                        key={tier.id}
-                        {...tier}
-                        selected={formData.selectedServices.includes(tier.id)}
-                        onClick={handleCustomServiceSelect}
-                      />
-                    ))}
-                  </div>
-                </div>
-              </div>
+              )}
             </div>
           )}
 
@@ -567,6 +641,33 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
                   </>
                 )}
                 
+                {formData.service === 'custom' && (
+                  <div>
+                    <Label className="text-lg font-bold text-corporate-dark mb-4 block">
+                      Choose Your Preferred Pathway
+                    </Label>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                      {pathwayOptions.map((pathway) => (
+                        <button
+                          key={pathway.id}
+                          onClick={() => handlePathwaySelect(pathway.id)}
+                          className={`p-4 rounded-2xl border-2 transition-all duration-300 text-left hover:scale-105 ${
+                            formData.pathway === pathway.id
+                              ? 'border-social-purple bg-social-purple/5'
+                              : 'border-corporate-light hover:border-social-purple/50'
+                          }`}
+                        >
+                          <div className="text-center mb-3">
+                            <div className="text-2xl mb-2">{pathway.icon}</div>
+                            <h3 className="font-bold text-corporate-dark">{pathway.title}</h3>
+                          </div>
+                          <p className="text-sm text-corporate-gray">{pathway.description}</p>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
                 {(formData.service === 'base-glimpse' || formData.service === 'full-glimpse') && (
                   <div>
                     <Label htmlFor="currentChallenge">What's your biggest brand challenge right now? *</Label>
@@ -594,12 +695,12 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
             </div>
           )}
 
-          {/* Step 5: Timeline & Budget / Confirmation */}
+          {/* Step 5: Enhanced Visual Summary */}
           {step === (formData.service === 'custom' ? 5 : 4) && (
             <div>
               <div className="text-center mb-8">
                 <h2 className="text-4xl font-display font-black text-corporate-dark mb-4">
-                  {formData.service === 'contact' ? 'Almost' : 'Timeline &'} <span className="text-gradient-1">{formData.service === 'contact' ? 'Done!' : 'Budget'}</span>
+                  {formData.service === 'contact' ? 'Almost' : 'Review &'} <span className="text-gradient-1">{formData.service === 'contact' ? 'Done!' : 'Confirm'}</span>
                 </h2>
                 <p className="text-lg text-corporate-gray">
                   {formData.service === 'contact' ? 'Ready to send your message' : 'Final details for your project'}
@@ -646,96 +747,146 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
               
               {/* Payment Options for Glimpse Services */}
               {(formData.service === 'base-glimpse' || formData.service === 'full-glimpse') && (
-                <div className="bg-corporate-light rounded-2xl p-6 mb-8">
-                  <h3 className="text-xl font-display font-black text-corporate-dark mb-4">
+                <div className="bg-gradient-social-1 rounded-2xl p-6 mb-8 text-white">
+                  <h3 className="text-xl font-display font-black mb-4 flex items-center">
+                    <Zap className="mr-2" size={24} />
                     Ready to book your {selectedService?.title}?
                   </h3>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Button
                       onClick={() => handlePayment(formData.service as 'base-glimpse' | 'full-glimpse')}
-                      className="flex-1 gradient-social-1 text-white font-bold py-4 rounded-2xl hover:scale-105 transition-all duration-300"
+                      className="flex-1 bg-white text-corporate-dark font-bold py-4 rounded-2xl hover:bg-gray-100 hover:scale-105 transition-all duration-300"
                     >
                       Book {selectedService?.title} ({selectedService?.price})
                     </Button>
-                    <div className="text-center text-corporate-gray py-2">
-                      <span className="text-sm">Or submit inquiry below</span>
+                    <div className="text-center py-2">
+                      <span className="text-sm opacity-90">Or submit inquiry below</span>
                     </div>
                   </div>
                 </div>
               )}
               
-              {/* Enhanced Summary */}
-              <div className="bg-video-white border border-corporate-light rounded-2xl p-6 video-shadow">
-                <h3 className="text-xl font-bold text-corporate-dark mb-6 flex items-center">
-                  <Check className="mr-2 text-social-purple" size={24} />
-                  Summary
+              {/* Enhanced Visual Summary */}
+              <div className="bg-gradient-to-br from-video-white to-corporate-light rounded-3xl p-8 video-shadow-lg border border-corporate-light">
+                <h3 className="text-2xl font-bold text-corporate-dark mb-6 flex items-center">
+                  <div className="w-8 h-8 gradient-social-1 rounded-full flex items-center justify-center mr-3">
+                    <Check className="text-white" size={18} />
+                  </div>
+                  Order Summary
                 </h3>
-                <div className="grid md:grid-cols-2 gap-4 text-sm">
+                
+                {/* Service Card */}
+                <div className="bg-video-white rounded-2xl p-6 mb-6 border-2 border-social-purple/20">
+                  <div className="flex items-center mb-4">
+                    <div className={`w-12 h-12 ${selectedService?.color} rounded-2xl flex items-center justify-center text-2xl mr-4`}>
+                      {selectedService?.icon}
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-display font-black text-corporate-dark">
+                        {selectedService?.title}
+                      </h4>
+                      <p className="text-corporate-gray">{selectedService?.description}</p>
+                    </div>
+                    <div className={`ml-auto px-4 py-2 ${selectedService?.color} text-white rounded-xl font-bold`}>
+                      {selectedService?.price}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Selected Services for Custom Projects */}
+                {formData.selectedServices.length > 0 && (
+                  <div className="mb-6">
+                    <h4 className="text-lg font-bold text-corporate-dark mb-4 flex items-center">
+                      <Star className="mr-2 text-social-purple" size={20} />
+                      Selected Services ({formData.selectedServices.length})
+                    </h4>
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {formData.selectedServices.map((serviceId) => {
+                        const service = getServiceInfo(serviceId);
+                        if (!service) return null;
+                        return (
+                          <div key={serviceId} className="bg-video-white rounded-xl p-4 border border-corporate-light">
+                            <div className="flex items-center">
+                              <div className={`w-8 h-8 ${service.gradient} rounded-lg flex items-center justify-center text-lg mr-3`}>
+                                {service.icon}
+                              </div>
+                              <div className="flex-1">
+                                <h5 className="font-bold text-corporate-dark text-sm">{service.title}</h5>
+                                <p className="text-xs text-corporate-gray">{service.price}</p>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* Personal Information */}
+                <div className="grid md:grid-cols-2 gap-6 mb-6">
                   <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="font-medium text-corporate-gray">Service:</span>
-                      <span className="text-corporate-dark">{selectedService?.title}</span>
+                    <div className="flex items-center justify-between p-3 bg-video-white rounded-xl">
+                      <span className="font-medium text-corporate-gray">Contact</span>
+                      <span className="text-corporate-dark font-bold">{formData.firstName} {formData.lastName}</span>
                     </div>
-                    {formData.selectedServices.length > 0 && (
-                      <div className="flex justify-between">
-                        <span className="font-medium text-corporate-gray">Selected:</span>
-                        <span className="text-corporate-dark text-right">{getServiceNames(formData.selectedServices)}</span>
-                      </div>
-                    )}
-                    <div className="flex justify-between">
-                      <span className="font-medium text-corporate-gray">Name:</span>
-                      <span className="text-corporate-dark">{formData.firstName} {formData.lastName}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="font-medium text-corporate-gray">Email:</span>
+                    <div className="flex items-center justify-between p-3 bg-video-white rounded-xl">
+                      <span className="font-medium text-corporate-gray">Email</span>
                       <span className="text-corporate-dark">{formData.email}</span>
                     </div>
                     {formData.company && (
-                      <div className="flex justify-between">
-                        <span className="font-medium text-corporate-gray">Company:</span>
+                      <div className="flex items-center justify-between p-3 bg-video-white rounded-xl">
+                        <span className="font-medium text-corporate-gray">Company</span>
                         <span className="text-corporate-dark">{formData.company}</span>
                       </div>
                     )}
                   </div>
                   <div className="space-y-3">
                     {formData.timeline && (
-                      <div className="flex justify-between">
-                        <span className="font-medium text-corporate-gray">Timeline:</span>
-                        <span className="text-corporate-dark">{getTimelineLabel(formData.timeline)}</span>
+                      <div className="flex items-center justify-between p-3 bg-video-white rounded-xl">
+                        <span className="font-medium text-corporate-gray">Timeline</span>
+                        <Badge variant="secondary">{getTimelineLabel(formData.timeline)}</Badge>
                       </div>
                     )}
                     {formData.budget && (
-                      <div className="flex justify-between">
-                        <span className="font-medium text-corporate-gray">Budget:</span>
-                        <span className="text-corporate-dark">{getBudgetLabel(formData.budget)}</span>
+                      <div className="flex items-center justify-between p-3 bg-video-white rounded-xl">
+                        <span className="font-medium text-corporate-gray">Budget</span>
+                        <Badge className="gradient-social-2 text-white">{getBudgetLabel(formData.budget)}</Badge>
                       </div>
                     )}
                     {formData.pathway && (
-                      <div>
-                        <span className="font-medium text-corporate-gray block mb-1">Pathway:</span>
-                        <span className="text-corporate-dark text-sm">{getPathwayInfo(formData.pathway)}</span>
+                      <div className="p-3 bg-video-white rounded-xl">
+                        <span className="font-medium text-corporate-gray block mb-2">Preferred Pathway</span>
+                        <div className="flex items-center">
+                          <div className={`w-6 h-6 ${getPathwayInfo(formData.pathway)?.gradient} rounded-lg flex items-center justify-center text-sm mr-2`}>
+                            {getPathwayInfo(formData.pathway)?.icon}
+                          </div>
+                          <span className="text-corporate-dark font-bold">{getPathwayInfo(formData.pathway)?.title}</span>
+                        </div>
                       </div>
                     )}
                   </div>
                 </div>
+
+                {/* Messages */}
                 {(formData.challenge || formData.currentChallenge || formData.message) && (
-                  <div className="mt-4 pt-4 border-t border-corporate-light">
+                  <div className="bg-video-white rounded-xl p-4 border-l-4 border-social-purple">
+                    <h5 className="font-bold text-corporate-dark mb-2">Your Message</h5>
                     {formData.challenge && (
-                      <div className="mb-3">
-                        <span className="font-medium text-corporate-gray block mb-1">Challenge:</span>
-                        <span className="text-corporate-dark text-sm">{formData.challenge}</span>
+                      <div className="mb-2">
+                        <span className="text-xs text-corporate-gray font-medium">Challenge:</span>
+                        <p className="text-sm text-corporate-dark">{formData.challenge}</p>
                       </div>
                     )}
                     {formData.currentChallenge && (
-                      <div className="mb-3">
-                        <span className="font-medium text-corporate-gray block mb-1">Brand Challenge:</span>
-                        <span className="text-corporate-dark text-sm">{formData.currentChallenge}</span>
+                      <div className="mb-2">
+                        <span className="text-xs text-corporate-gray font-medium">Brand Challenge:</span>
+                        <p className="text-sm text-corporate-dark">{formData.currentChallenge}</p>
                       </div>
                     )}
                     {formData.message && (
                       <div>
-                        <span className="font-medium text-corporate-gray block mb-1">Additional Message:</span>
-                        <span className="text-corporate-dark text-sm">{formData.message}</span>
+                        <span className="text-xs text-corporate-gray font-medium">Additional Notes:</span>
+                        <p className="text-sm text-corporate-dark">{formData.message}</p>
                       </div>
                     )}
                   </div>
@@ -764,6 +915,7 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
               <Button
                 onClick={nextStep}
                 disabled={
+                  (step === 2 && formData.service === 'custom' && customFlowStep === 'categories') ||
                   (step === 2 && !canProceedFromStep2) ||
                   (step === (formData.service === 'custom' ? 3 : 2) && !canProceedFromPersonalInfo) ||
                   (step === (formData.service === 'custom' ? 4 : 3) && !canProceedFromProjectDetails)

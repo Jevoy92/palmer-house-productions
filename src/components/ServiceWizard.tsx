@@ -1,7 +1,6 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -359,9 +358,10 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
   // Fixed validation logic
   const canProceedFromStep2 = formData.service !== 'custom' || formData.selectedServices.length > 0;
   const canProceedFromPersonalInfo = formData.firstName && formData.lastName && formData.email;
-  const canProceedFromProjectDetails = formData.service === 'contact' || 
+  const canProceedFromProjectDetails = 
+    formData.service === 'contact' || 
     (formData.service === 'custom' && (formData.pathway || formData.message)) ||
-    (formData.service !== 'contact' && formData.service !== 'custom' && formData.currentChallenge);
+    ((formData.service === 'base-glimpse' || formData.service === 'full-glimpse') && formData.currentChallenge);
 
   const getServicesToShow = () => {
     if (customFlowStep === 'core-services') return coreServices;
@@ -373,6 +373,7 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-video-white rounded-3xl border-0 video-shadow-lg">
+        <DialogTitle className="sr-only">Service Selection Wizard</DialogTitle>
         <div className="p-8">
           {/* Progress Bar */}
           <div className="mb-8">

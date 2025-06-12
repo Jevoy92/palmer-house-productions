@@ -413,7 +413,7 @@ export const ServiceWizard = ({ open, onOpenChange, initialService }: ServiceWiz
                   </h3>
                   <div className="flex flex-col sm:flex-row gap-4">
                     <Button
-                      onClick={() => handlePayment(formData.service)}
+                      onClick={() => handlePayment(formData.service as 'base-glimpse' | 'full-glimpse')}
                       className="flex-1 gradient-social-1 text-white font-bold py-4 rounded-2xl hover:scale-105 transition-all duration-300"
                     >
                       Book {selectedService?.title} ({selectedService?.price})

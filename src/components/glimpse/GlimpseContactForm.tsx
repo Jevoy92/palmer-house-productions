@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { GlimpseContactFormData, glimpseContactFormSchema } from "./GlimpseContactFormSchema";
+import { sendGlimpseFormEmail } from "@/lib/emailService";
 
 export const GlimpseContactForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -36,8 +38,8 @@ export const GlimpseContactForm = () => {
     console.log("Glimpse contact form submission:", data);
     
     try {
-      // Store form data for email sending on thank you page
-      localStorage.setItem('glimpseContactFormData', JSON.stringify(data));
+      // Send email via EmailJS
+      await sendGlimpseFormEmail(data);
       
       toast({
         title: "Message sent successfully!",
@@ -49,6 +51,7 @@ export const GlimpseContactForm = () => {
       // Navigate to thank you page
       navigate('/thank-you');
     } catch (error) {
+      console.error('Email sending failed:', error);
       toast({
         title: "Error sending message",
         description: "Please try again or contact us directly.",

@@ -1,7 +1,13 @@
-
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CheckCircle } from "lucide-react";
+
+// Declare gtag for TypeScript
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+  }
+}
 
 const ThankYou = () => {
   useEffect(() => {
@@ -9,15 +15,74 @@ const ThankYou = () => {
     // Example: gtag('event', 'conversion', {'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL'});
     
     // Google Analytics event tracking
-    if (typeof gtag !== 'undefined') {
-      gtag('event', 'form_submit', {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'form_submit', {
         event_category: 'Contact',
         event_label: 'Contact Form Submission'
       });
     }
     
     console.log('Conversion tracked: Contact form submission');
+
+    // Send emails for both contact forms
+    const contactFormData = localStorage.getItem('contactFormData');
+    const glimpseFormData = localStorage.getItem('glimpseContactFormData');
+    
+    if (contactFormData) {
+      sendContactEmail(JSON.parse(contactFormData));
+      localStorage.removeItem('contactFormData');
+    }
+    
+    if (glimpseFormData) {
+      sendGlimpseEmail(JSON.parse(glimpseFormData));
+      localStorage.removeItem('glimpseContactFormData');
+    }
   }, []);
+
+  const sendContactEmail = (formData: any) => {
+    const subject = `New Contact Form Submission from ${formData.firstName} ${formData.lastName}`;
+    const body = `
+New contact form submission:
+
+Name: ${formData.firstName} ${formData.lastName}
+Email: ${formData.email}
+Phone: ${formData.phone || 'Not provided'}
+
+Challenge: ${formData.challenge}
+Pathway: ${formData.pathway}
+Message: ${formData.message}
+
+Referral Source: ${formData.referralSource || 'Not provided'}
+Readiness: ${formData.readiness || 'Not provided'}
+
+Submitted: ${new Date().toLocaleString()}
+    `;
+    
+    const mailtoLink = `mailto:info@palmerhouseproductions.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.open(mailtoLink, '_blank');
+  };
+
+  const sendGlimpseEmail = (formData: any) => {
+    const subject = `New Glimpse Inquiry from ${formData.firstName} ${formData.lastName}`;
+    const body = `
+New Glimpse form submission:
+
+Name: ${formData.firstName} ${formData.lastName}
+Email: ${formData.email}
+Phone: ${formData.phone || 'Not provided'}
+Company: ${formData.company}
+Website: ${formData.website || 'Not provided'}
+
+Current Challenge: ${formData.currentChallenge}
+Timeline: ${formData.timeline}
+Budget: ${formData.budget}
+
+Submitted: ${new Date().toLocaleString()}
+    `;
+    
+    const mailtoLink = `mailto:info@palmerhouseproductions.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.open(mailtoLink, '_blank');
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-video-white to-corporate-light flex items-center justify-center px-6">

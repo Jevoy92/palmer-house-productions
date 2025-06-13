@@ -143,8 +143,8 @@ export const Pricing = () => {
                   </div>
                   <h3 className="text-3xl font-display font-black text-corporate-dark mb-3 group-hover:text-gradient-1 transition-all duration-300">{tier.name}</h3>
                   <div className="mb-6">
-                    <span className="text-5xl font-black text-corporate-dark">{tier.price}</span>
-                    <span className="text-corporate-gray text-xl">{tier.period}</span>
+                    <div className="text-5xl font-black text-corporate-dark">{tier.price}</div>
+                    <div className="text-corporate-gray text-xl">{tier.period}</div>
                   </div>
                   <p className="text-corporate-gray leading-relaxed font-medium">{tier.description}</p>
                 </div>

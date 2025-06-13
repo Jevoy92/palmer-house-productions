@@ -1,5 +1,8 @@
+
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WizardData } from "../ContactWizard";
+import { User, Building2, MessageSquare, Clock, DollarSign, Briefcase } from "lucide-react";
 
 interface ConfirmationStepProps {
   data: WizardData;
@@ -32,131 +35,193 @@ export const ConfirmationStep = ({ data, onSubmit, onCalendlyBooking, onBack, is
 
   const getBookingButtonText = (serviceType?: string) => {
     switch (serviceType) {
-      case "consultation": return "Book Strategy Call 📞";
-      case "base-glimpse": return "Book Base Glimpse 🎒";
-      case "full-glimpse": return "Book Full Glimpse 🧭";
-      case "monthly": return "Book Discovery Call 🏔";
-      default: return "Book & Pay Now 💳";
+      case "consultation": return "Book Strategy Call";
+      case "base-glimpse": return "Book Base Glimpse";
+      case "full-glimpse": return "Book Full Glimpse";
+      case "monthly": return "Book Discovery Call";
+      default: return "Book & Pay Now";
     }
   };
 
   return (
-    <div className="p-8">
+    <div className="p-8 max-w-4xl mx-auto">
       <div className="text-center mb-8">
         <h2 className="text-4xl font-display font-black text-corporate-dark mb-4">
           Ready to <span className="text-gradient-1">Begin</span>?
         </h2>
         <p className="text-xl text-corporate-gray max-w-2xl mx-auto">
-          Choose your next step: book directly or send us your inquiry.
+          Review your project details and choose how you'd like to proceed
         </p>
       </div>
 
-      <div className="max-w-2xl mx-auto">
-        <div className="bg-video-white rounded-3xl p-8 video-shadow-lg mb-8">
-          <h3 className="text-2xl font-display font-black text-corporate-dark mb-6">Project Summary</h3>
-          
-          <div className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
+      <div className="grid gap-6 mb-8">
+        {/* Service & Plan Card */}
+        <Card className="bg-video-white border-0 video-shadow">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-3 text-corporate-dark">
+              <Briefcase className="w-6 h-6 text-social-purple" />
+              Service Selection
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <h4 className="font-bold text-corporate-dark mb-2">Service Type</h4>
-                <p className="text-corporate-gray">{getServiceName(data.serviceType)}</p>
+                <h4 className="font-semibold text-corporate-dark mb-2">Service Type</h4>
+                <p className="text-corporate-gray bg-corporate-light px-4 py-2 rounded-lg">
+                  {getServiceName(data.serviceType)}
+                </p>
               </div>
               {data.planType && (
                 <div>
-                  <h4 className="font-bold text-corporate-dark mb-2">Monthly Plan</h4>
-                  <p className="text-corporate-gray">{getPlanName(data.planType)}</p>
+                  <h4 className="font-semibold text-corporate-dark mb-2">Monthly Plan</h4>
+                  <p className="text-corporate-gray bg-corporate-light px-4 py-2 rounded-lg">
+                    {getPlanName(data.planType)}
+                  </p>
                 </div>
               )}
             </div>
-            
-            <div className="w-full h-px bg-gradient-social-1 opacity-30"></div>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <h4 className="font-bold text-corporate-dark mb-2">Contact</h4>
-                <p className="text-corporate-gray">{data.firstName} {data.lastName}</p>
-                <p className="text-corporate-gray">{data.email}</p>
-                {data.phone && <p className="text-corporate-gray">{data.phone}</p>}
-              </div>
-              <div>
-                <h4 className="font-bold text-corporate-dark mb-2">Company</h4>
-                <p className="text-corporate-gray">{data.company}</p>
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="font-bold text-corporate-dark mb-2">Challenge</h4>
-              <p className="text-corporate-gray">{data.challenge}</p>
-            </div>
-            
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <h4 className="font-bold text-corporate-dark mb-2">Timeline</h4>
-                <p className="text-corporate-gray">{data.timeline}</p>
-              </div>
-              <div>
-                <h4 className="font-bold text-corporate-dark mb-2">Budget</h4>
-                <p className="text-corporate-gray">{data.budget}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        <div className="text-center mb-8">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-6 bg-gradient-social-1 rounded-2xl text-white">
-              <h4 className="font-bold mb-2">🚀 Ready to Start?</h4>
-              <p className="text-sm opacity-90">
-                Book your session directly and secure your spot with payment
-              </p>
+        {/* Contact Information Card */}
+        <Card className="bg-video-white border-0 video-shadow">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-3 text-corporate-dark">
+              <User className="w-6 h-6 text-social-cyan" />
+              Contact Information
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h4 className="font-semibold text-corporate-dark mb-2">Contact Person</h4>
+                <div className="space-y-1">
+                  <p className="text-corporate-gray">{data.firstName} {data.lastName}</p>
+                  <p className="text-corporate-gray">{data.email}</p>
+                  {data.phone && <p className="text-corporate-gray">{data.phone}</p>}
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold text-corporate-dark mb-2 flex items-center gap-2">
+                  <Building2 className="w-4 h-4" />
+                  Company
+                </h4>
+                <p className="text-corporate-gray bg-corporate-light px-4 py-2 rounded-lg">
+                  {data.company}
+                </p>
+              </div>
             </div>
-            <div className="p-6 bg-corporate-light rounded-2xl">
-              <h4 className="font-bold text-corporate-dark mb-2">💬 Have Questions?</h4>
-              <p className="text-corporate-gray text-sm">
-                Send us your inquiry and we'll respond within 24 hours
-              </p>
-            </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
 
-        <div className="space-y-4">
-          <div className="flex gap-4">
-            <Button
-              type="button"
-              onClick={onCalendlyBooking}
-              disabled={isSubmitting}
-              className="flex-1 gradient-social-1 text-white font-bold text-lg hover:scale-105 transition-all duration-300"
-            >
-              {getBookingButtonText(data.serviceType)}
-            </Button>
-            <Button
-              type="button"
-              onClick={onSubmit}
-              disabled={isSubmitting}
-              variant="outline"
-              className="flex-1 border-2 border-corporate-dark text-corporate-dark hover:bg-corporate-dark hover:text-white font-bold text-lg transition-all duration-300"
-            >
-              {isSubmitting ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
-                  Sending...
-                </>
-              ) : (
-                "Send Inquiry ✉️"
-              )}
-            </Button>
-          </div>
+        {/* Project Details Card */}
+        <Card className="bg-video-white border-0 video-shadow">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-3 text-corporate-dark">
+              <MessageSquare className="w-6 h-6 text-social-orange" />
+              Project Details
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              <div>
+                <h4 className="font-semibold text-corporate-dark mb-2">Challenge</h4>
+                <p className="text-corporate-gray bg-corporate-light p-4 rounded-lg leading-relaxed">
+                  {data.challenge}
+                </p>
+              </div>
+              
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-semibold text-corporate-dark mb-2 flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    Timeline
+                  </h4>
+                  <p className="text-corporate-gray bg-corporate-light px-4 py-2 rounded-lg">
+                    {data.timeline}
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-corporate-dark mb-2 flex items-center gap-2">
+                    <DollarSign className="w-4 h-4" />
+                    Budget
+                  </h4>
+                  <p className="text-corporate-gray bg-corporate-light px-4 py-2 rounded-lg">
+                    {data.budget}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Action Cards */}
+      <div className="grid md:grid-cols-2 gap-6 mb-8">
+        <Card className="bg-gradient-social-1 text-white border-0 video-shadow hover:scale-105 transition-all duration-300">
+          <CardContent className="p-6 text-center">
+            <div className="text-3xl mb-3">🚀</div>
+            <h4 className="font-bold text-lg mb-2">Ready to Start?</h4>
+            <p className="text-sm opacity-90">
+              Book your session directly and secure your spot with payment
+            </p>
+          </CardContent>
+        </Card>
+        
+        <Card className="bg-video-white border-2 border-corporate-light video-shadow hover:scale-105 transition-all duration-300">
+          <CardContent className="p-6 text-center">
+            <div className="text-3xl mb-3">💬</div>
+            <h4 className="font-bold text-lg text-corporate-dark mb-2">Have Questions?</h4>
+            <p className="text-corporate-gray text-sm">
+              Send us your inquiry and we'll respond within 24 hours
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Action Buttons */}
+      <div className="space-y-4">
+        <div className="grid md:grid-cols-2 gap-4">
+          <Button
+            type="button"
+            onClick={onCalendlyBooking}
+            disabled={isSubmitting}
+            className="gradient-social-1 text-white font-bold text-lg py-6 hover:scale-105 transition-all duration-300 border-0"
+          >
+            <span className="mr-2">📞</span>
+            {getBookingButtonText(data.serviceType)}
+          </Button>
           
           <Button
             type="button"
-            variant="outline"
-            onClick={onBack}
+            onClick={onSubmit}
             disabled={isSubmitting}
-            className="w-full border-corporate-gray text-corporate-gray hover:bg-corporate-light"
+            variant="outline"
+            className="border-2 border-corporate-dark text-corporate-dark hover:bg-corporate-dark hover:text-white font-bold text-lg py-6 transition-all duration-300"
           >
-            ← Back to Edit Details
+            {isSubmitting ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+                Sending...
+              </>
+            ) : (
+              <>
+                <span className="mr-2">✉️</span>
+                Send Inquiry
+              </>
+            )}
           </Button>
         </div>
+        
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onBack}
+          disabled={isSubmitting}
+          className="w-full border-corporate-gray text-corporate-gray hover:bg-corporate-light py-3"
+        >
+          ← Back to Edit Details
+        </Button>
       </div>
     </div>
   );

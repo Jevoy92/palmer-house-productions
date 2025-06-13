@@ -5,6 +5,7 @@ import { ServiceSelection } from "./wizard/ServiceSelection";
 import { PlanSelection } from "./wizard/PlanSelection";
 import { PersonalInfoStep } from "./wizard/PersonalInfoStep";
 import { ConfirmationStep } from "./wizard/ConfirmationStep";
+import { ThankYouStep } from "./wizard/ThankYouStep";
 import { useToast } from "@/hooks/use-toast";
 
 interface ContactWizardProps {
@@ -105,10 +106,9 @@ export const ContactWizard = ({ open, onOpenChange, initialService }: ContactWiz
     setIsSubmitting(true);
     
     try {
-      // Initialize EmailJS with new public key
+      console.log('Initializing EmailJS with public key: x9nf4ghJ-1Q7CkoeO');
       emailjs.init('x9nf4ghJ-1Q7CkoeO');
       
-      // Prepare email data
       const emailData = {
         to_email: 'info@palmerhouseproductions.com',
         from_name: `${wizardData.firstName} ${wizardData.lastName}`,
@@ -135,24 +135,40 @@ Phone: ${wizardData.phone || 'Not provided'}
 Company: ${wizardData.company}`
       };
 
-      // Send email using new template ID
+      console.log('Sending email with data:', emailData);
+      console.log('Using service_7zd5x3u and template_9qrpr29');
+      
       await emailjs.send(
         'service_7zd5x3u',
         'template_9qrpr29', 
         emailData
       );
 
-      toast({
-        title: "Project Inquiry Sent! ✨",
-        description: "We'll get back to you within 24 hours to discuss your project.",
-      });
-
-      handleClose();
+      console.log('Email sent successfully');
+      nextStep(); // Go to thank you page
     } catch (error) {
-      console.error('EmailJS Error:', error);
+      console.error('EmailJS Error Details:', error);
+      
+      let errorMessage = "Please try again or contact us directly at info@palmerhouseproductions.com";
+      
+      if (error && typeof error === 'object') {
+        const errorObj = error as any;
+        if (errorObj.text) {
+          console.error('Error text:', errorObj.text);
+          if (errorObj.text.includes('Account not found')) {
+            errorMessage = "Email service configuration error. Please contact us directly at info@palmerhouseproductions.com";
+          } else if (errorObj.text.includes('Template not found')) {
+            errorMessage = "Email template error. Please contact us directly at info@palmerhouseproductions.com";
+          }
+        }
+        if (errorObj.status) {
+          console.error('Error status:', errorObj.status);
+        }
+      }
+      
       toast({
         title: "Oops! Something went wrong",
-        description: "Please try again or contact us directly at info@palmerhouseproductions.com",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -208,6 +224,17 @@ Company: ${wizardData.company}`
             isSubmitting={isSubmitting}
           />
         );
+      case 5:
+        return (
+          <ThankYouStep
+            data={wizardData}
+            onClose={handleClose}
+            onNewInquiry={() => {
+              resetWizard();
+              setCurrentStep(1);
+            }}
+          />
+        );
       default:
         return null;
     }
@@ -216,33 +243,34 @@ Company: ${wizardData.company}`
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden bg-gradient-to-br from-video-white to-corporate-light rounded-3xl border-0 video-shadow-lg p-0">
-        {/* Step Indicator */}
-        <div className="flex items-center justify-center p-6 border-b border-corporate-light">
-          {[1, 2, 3, 4].map((step) => (
-            <div key={step} className="flex items-center">
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
-                  step === currentStep
-                    ? "gradient-social-1 text-white scale-110"
-                    : step < currentStep
-                    ? "bg-corporate-dark text-white"
-                    : "bg-corporate-light text-corporate-gray"
-                }`}
-              >
-                {step}
-              </div>
-              {step < 4 && (
+        {/* Step Indicator - only show for steps 1-4 */}
+        {currentStep <= 4 && (
+          <div className="flex items-center justify-center p-6 border-b border-corporate-light">
+            {[1, 2, 3, 4].map((step) => (
+              <div key={step} className="flex items-center">
                 <div
-                  className={`w-16 h-1 mx-2 transition-all duration-300 ${
-                    step < currentStep ? "bg-corporate-dark" : "bg-corporate-light"
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all duration-300 ${
+                    step === currentStep
+                      ? "gradient-social-1 text-white scale-110"
+                      : step < currentStep
+                      ? "bg-corporate-dark text-white"
+                      : "bg-corporate-light text-corporate-gray"
                   }`}
-                />
-              )}
-            </div>
-          ))}
-        </div>
+                >
+                  {step}
+                </div>
+                {step < 4 && (
+                  <div
+                    className={`w-16 h-1 mx-2 transition-all duration-300 ${
+                      step < currentStep ? "bg-corporate-dark" : "bg-corporate-light"
+                    }`}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        )}
 
-        {/* Step Content */}
         <div className="flex-1 overflow-y-auto">
           {renderStep()}
         </div>

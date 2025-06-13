@@ -2,10 +2,11 @@
 import { Compass, Search, Sparkles, Heart, Wrench, Target } from 'lucide-react';
 import { useState } from 'react';
 import { ServiceWizard } from './ServiceWizard';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 export const Values = () => {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
-  const [expandedPathway, setExpandedPathway] = useState<string | null>(null);
+  const [selectedPathway, setSelectedPathway] = useState<string | null>(null);
 
   const values = [
     { 
@@ -85,13 +86,15 @@ export const Values = () => {
     }
   ];
 
-  const handlePathwayToggle = (pathName: string) => {
-    if (expandedPathway === pathName) {
-      setExpandedPathway(null);
-    } else {
-      setExpandedPathway(pathName);
-    }
+  const handlePathwayClick = (pathName: string) => {
+    setSelectedPathway(pathName);
   };
+
+  const closePathwayModal = () => {
+    setSelectedPathway(null);
+  };
+
+  const selectedPathwayData = pathChoices.find(p => p.word === selectedPathway);
 
   return (
     <section id="values" className="py-32 bg-corporate-light relative overflow-hidden">
@@ -157,46 +160,29 @@ export const Values = () => {
             <span className="text-corporate-dark font-bold">What kind of story does your brand want to tell?</span> Click to learn more about each pathway.
           </p>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-20 max-w-5xl mx-auto">
-            {pathChoices.map((item, index) => {
-              const isExpanded = expandedPathway === item.word;
-              return (
-                <div key={index}>
-                  <button 
-                    onClick={() => handlePathwayToggle(item.word)}
-                    className={`group relative p-4 bg-video-white rounded-2xl hover:bg-transparent transition-all duration-500 video-shadow hover:video-shadow-lg cursor-pointer overflow-hidden transform hover:scale-105 active:scale-95 w-full ${
-                      isExpanded ? 'scale-105' : ''
-                    }`}
-                  >
-                    <div className={`absolute inset-0 ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl ${
-                      isExpanded ? 'opacity-100' : ''
-                    }`}></div>
-                    
-                    <div className="relative z-10 text-center">
-                      <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-500">
-                        {item.icon}
-                      </div>
-                      <h4 className={`text-sm font-display font-black transition-colors duration-500 leading-tight ${
-                        isExpanded ? 'text-white' : 'text-corporate-dark group-hover:text-white'
-                      }`}>
-                        {item.word}
-                      </h4>
-                    </div>
-                    
-                    <div className="absolute -top-1 -right-1 w-3 h-3 gradient-social-3 rounded-full opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-                    <div className="absolute -bottom-1 -left-1 w-2 h-2 gradient-social-4 rounded-full opacity-30 group-hover:opacity-60 transition-opacity duration-500"></div>
-                  </button>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-20 max-w-6xl mx-auto">
+            {pathChoices.map((item, index) => (
+              <div key={index}>
+                <button 
+                  onClick={() => handlePathwayClick(item.word)}
+                  className="group relative p-6 bg-video-white rounded-3xl hover:bg-transparent transition-all duration-500 video-shadow hover:video-shadow-lg cursor-pointer overflow-hidden transform hover:scale-105 active:scale-95 w-full"
+                >
+                  <div className={`absolute inset-0 ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl`}></div>
                   
-                  {isExpanded && (
-                    <div className="mt-4 p-6 bg-video-white rounded-2xl video-shadow border-l-4 border-social-purple">
-                      <p className="text-corporate-gray leading-relaxed font-medium">
-                        {item.description}
-                      </p>
+                  <div className="relative z-10 text-center">
+                    <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-500">
+                      {item.icon}
                     </div>
-                  )}
-                </div>
-              );
-            })}
+                    <h4 className="text-lg font-display font-black text-corporate-dark group-hover:text-white transition-colors duration-500 leading-tight">
+                      {item.word}
+                    </h4>
+                  </div>
+                  
+                  <div className="absolute -top-1 -right-1 w-4 h-4 gradient-social-3 rounded-full opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
+                  <div className="absolute -bottom-1 -left-1 w-3 h-3 gradient-social-4 rounded-full opacity-30 group-hover:opacity-60 transition-opacity duration-500"></div>
+                </button>
+              </div>
+            ))}
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 mb-16 max-w-4xl mx-auto">
@@ -231,6 +217,56 @@ export const Values = () => {
           </div>
         </div>
       </div>
+
+      {/* Pathway Modal */}
+      <Dialog open={!!selectedPathway} onOpenChange={closePathwayModal}>
+        <DialogContent className="max-w-2xl bg-video-white rounded-3xl border-0 video-shadow-lg">
+          <DialogHeader className="text-center pb-4">
+            <DialogTitle className="text-4xl font-display font-black text-corporate-dark mb-4">
+              <span className="text-6xl mr-4">{selectedPathwayData?.icon}</span>
+              <span className="text-gradient-1">{selectedPathwayData?.word}</span> Pathway
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="px-6 pb-6">
+            <div className={`w-full h-2 ${selectedPathwayData?.gradient} rounded-full mb-8 video-shadow`}></div>
+            
+            <p className="text-xl text-corporate-gray leading-relaxed mb-8 font-medium text-center">
+              {selectedPathwayData?.description}
+            </p>
+            
+            <div className="grid md:grid-cols-3 gap-6 mb-8">
+              <div className="text-center p-6 bg-corporate-light rounded-2xl">
+                <div className="text-3xl font-black text-corporate-dark mb-2">∞</div>
+                <div className="text-sm text-corporate-gray font-semibold">Creative Possibilities</div>
+              </div>
+              <div className="text-center p-6 bg-corporate-light rounded-2xl">
+                <div className="text-3xl font-black text-corporate-dark mb-2">1</div>
+                <div className="text-sm text-corporate-gray font-semibold">Perfect Strategy</div>
+              </div>
+              <div className="text-center p-6 bg-corporate-light rounded-2xl">
+                <div className="text-3xl font-black text-corporate-dark mb-2">100%</div>
+                <div className="text-sm text-corporate-gray font-semibold">Your Brand</div>
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <p className="text-corporate-gray mb-6 font-medium">
+                Ready to explore this pathway? Let's discuss how it fits your brand's journey.
+              </p>
+              <button
+                onClick={() => {
+                  setSelectedPathway(null);
+                  setIsWizardOpen(true);
+                }}
+                className={`px-8 py-4 ${selectedPathwayData?.gradient} text-white font-bold rounded-2xl hover:scale-105 transition-all duration-300 text-lg video-shadow-lg`}
+              >
+                Start This Journey →
+              </button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <ServiceWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
     </section>

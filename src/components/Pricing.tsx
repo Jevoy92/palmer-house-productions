@@ -155,25 +155,25 @@ export const Pricing = () => {
               </button>
               <button
                 onClick={() => setCommitment('3-month')}
-                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 relative ${
                   commitment === '3-month'
                     ? 'gradient-social-1 text-white video-shadow'
                     : 'text-corporate-gray hover:text-corporate-dark'
                 }`}
               >
                 3-Month
-                <span className="ml-2 text-xs bg-social-green text-white px-2 py-1 rounded-full">10% OFF</span>
+                <span className="ml-2 text-xs bg-gradient-social-2 text-white px-2 py-1 rounded-full">10% OFF</span>
               </button>
               <button
                 onClick={() => setCommitment('6-month')}
-                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 relative ${
                   commitment === '6-month'
                     ? 'gradient-social-1 text-white video-shadow'
                     : 'text-corporate-gray hover:text-corporate-dark'
                 }`}
               >
                 6-Month
-                <span className="ml-2 text-xs bg-social-green text-white px-2 py-1 rounded-full">20% OFF</span>
+                <span className="ml-2 text-xs bg-gradient-social-3 text-white px-2 py-1 rounded-full">20% OFF</span>
               </button>
             </div>
           </div>
@@ -203,8 +203,8 @@ export const Pricing = () => {
                 }`}
               >
                 {tier.highlight && (
-                  <div className="mb-4 text-center">
-                    <div className="inline-block gradient-social-2 text-white px-4 py-2 rounded-full text-sm font-bold video-shadow">
+                  <div className="absolute -top-4 -right-4 z-10">
+                    <div className="gradient-social-2 text-white px-4 py-2 rounded-full text-sm font-bold video-shadow transform rotate-12">
                       🌟 Most Popular
                     </div>
                   </div>
@@ -216,44 +216,44 @@ export const Pricing = () => {
                 
                 <div className="relative z-10">
                   <div className="text-center mb-8">
-                    <div className={`w-16 h-16 ${tier.gradient} rounded-2xl flex items-center justify-center text-3xl mb-4 mx-auto group-hover:scale-110 transition-transform duration-300`}>
+                    <div className={`w-20 h-20 ${tier.gradient} rounded-3xl flex items-center justify-center text-4xl mb-6 mx-auto group-hover:scale-110 transition-transform duration-300 video-shadow`}>
                       {tier.icon}
                     </div>
-                    <h3 className="text-3xl font-display font-black text-corporate-dark mb-3 group-hover:text-gradient-1 transition-all duration-300">{tier.name}</h3>
-                    <div className="mb-2">
+                    <h3 className="text-3xl font-display font-black text-corporate-dark mb-4 group-hover:text-gradient-1 transition-all duration-300">{tier.name}</h3>
+                    <div className="mb-4">
                       <span className="text-5xl font-black text-corporate-dark">${currentPrice.toLocaleString()}</span>
                       <span className="text-corporate-gray text-xl">{tier.period}</span>
                     </div>
                     {savings > 0 && (
                       <div className="mb-4">
-                        <span className="bg-social-green text-white px-3 py-1 rounded-full text-sm font-bold">
+                        <div className="inline-block bg-gradient-social-5 text-white px-4 py-2 rounded-2xl text-sm font-bold video-shadow">
                           You save ${savings.toLocaleString()}/month
-                        </span>
+                        </div>
                       </div>
                     )}
-                    <p className="text-corporate-gray leading-relaxed font-medium">{tier.description}</p>
+                    <p className="text-corporate-gray leading-relaxed font-medium text-lg">{tier.description}</p>
                   </div>
                   
                   <ul className="space-y-4 mb-8">
                     {tier.features.map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-start space-x-3">
-                        <div className={`w-3 h-3 ${tier.gradient} rounded-full mt-2 flex-shrink-0`}></div>
-                        <span className="text-corporate-gray leading-relaxed">{feature}</span>
+                        <div className={`w-4 h-4 ${tier.gradient} rounded-full mt-2 flex-shrink-0 video-shadow`}></div>
+                        <span className="text-corporate-gray leading-relaxed font-medium">{feature}</span>
                       </li>
                     ))}
                   </ul>
                   
-                  <div className="mb-8 p-4 bg-corporate-light rounded-2xl">
+                  <div className="mb-8 p-6 bg-gradient-to-r from-corporate-light to-video-white rounded-2xl border-l-4 border-social-purple">
                     <p className="text-sm text-corporate-gray mb-2 font-bold">Perfect for:</p>
-                    <p className="text-sm text-corporate-dark leading-relaxed">{tier.perfectFor}</p>
+                    <p className="text-sm text-corporate-dark leading-relaxed font-medium">{tier.perfectFor}</p>
                   </div>
                   
                   <button 
                     onClick={() => handleStartJourney(tier.name, tier.action)}
-                    className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 ${
+                    className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 video-shadow ${
                       tier.highlight
-                        ? `${tier.gradient} text-white hover:scale-105 video-shadow`
-                        : `border-2 border-corporate-gray text-corporate-dark hover:bg-corporate-dark hover:text-white hover:scale-105`
+                        ? `${tier.gradient} text-white hover:scale-105 hover:video-shadow-lg`
+                        : `border-2 border-corporate-gray text-corporate-dark hover:${tier.gradient} hover:text-white hover:scale-105 hover:border-transparent`
                     }`}
                   >
                     Get Started

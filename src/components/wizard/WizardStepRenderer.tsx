@@ -119,6 +119,7 @@ export const WizardStepRenderer = ({
             updateWizardData({ serviceType: service });
             nextStep();
           }}
+          onBack={prevStep}
         />
       );
     case 8:

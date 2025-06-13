@@ -1,8 +1,9 @@
 
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { ContactWizardProps } from "./wizard/types";
 import { useContactWizard } from "./wizard/useContactWizard";
 import { WizardStepRenderer } from "./wizard/WizardStepRenderer";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 export const ContactWizard = ({ open, onOpenChange, initialService }: ContactWizardProps) => {
   const {
@@ -23,7 +24,12 @@ export const ContactWizard = ({ open, onOpenChange, initialService }: ContactWiz
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className={`max-w-4xl ${currentStep === 10 ? 'max-h-[95vh]' : 'max-h-[90vh]'} overflow-y-auto bg-gradient-to-br from-video-white to-corporate-light rounded-3xl border-0 video-shadow-lg p-0`}>
+      <DialogContent className={`max-w-4xl ${currentStep === 11 ? 'max-h-[95vh]' : 'max-h-[90vh]'} overflow-y-auto bg-gradient-to-br from-video-white to-corporate-light rounded-3xl border-0 video-shadow-lg p-0`}>
+        <VisuallyHidden>
+          <DialogTitle>Contact Wizard</DialogTitle>
+          <DialogDescription>Complete our qualification process to get a custom proposal</DialogDescription>
+        </VisuallyHidden>
+        
         {/* Step Indicator - show for steps 1-10 */}
         {currentStep <= 10 && (
           <div className="flex items-center justify-center p-4 border-b border-corporate-light overflow-x-auto">

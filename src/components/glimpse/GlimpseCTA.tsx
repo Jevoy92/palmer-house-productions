@@ -71,10 +71,10 @@ export const GlimpseCTA = () => {
         <footer className="border-t border-white/20 pt-8">
           <div className="text-center space-y-2">
             <p className="text-white/80 font-medium">
-              📧 information@palmerhouseproductions.com | 📞 425-738-7312
+              📧 info@palmerhouseproductions.com | 📞 425-738-7312
             </p>
             <p className="text-white/60">
-              © 2024 Palmer House Productions. All rights reserved. Mapping journeys, creating glimpses.
+              © 2025 Palmer House Productions. All rights reserved. Mapping journeys, creating glimpses.
             </p>
           </div>
         </footer>

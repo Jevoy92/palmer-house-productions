@@ -182,9 +182,7 @@ Company: ${wizardData.company}`
 
   return {
     currentStep,
-    is
-
-,
+    isSubmitting,
     wizardData,
     updateWizardData,
     nextStep,

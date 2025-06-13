@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { WizardData } from "./types";
+import { WizardData, TimelineType } from "./types";
 
 interface PersonalInfoStepProps {
   data: WizardData;
@@ -25,7 +25,6 @@ export const PersonalInfoStep = ({ data, onDataUpdate, onNext, onBack }: Persona
     if (data.email && !/\S+@\S+\.\S+/.test(data.email)) newErrors.email = "Email is invalid";
     if (!data.company.trim()) newErrors.company = "Company is required";
     if (!data.challenge.trim()) newErrors.challenge = "Please describe your challenge";
-    if (!data.timeline) newErrors.timeline = "Please select a timeline";
     if (!data.budget) newErrors.budget = "Please select a budget";
     
     setErrors(newErrors);
@@ -132,46 +131,24 @@ export const PersonalInfoStep = ({ data, onDataUpdate, onNext, onBack }: Persona
           )}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-4">
-          <div>
-            <Label htmlFor="timeline">Timeline *</Label>
-            <select
-              id="timeline"
-              value={data.timeline}
-              onChange={(e) => onDataUpdate({ timeline: e.target.value })}
-              className="mt-1 w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
-            >
-              <option value="">Select timeline</option>
-              <option value="immediate">Need it ASAP</option>
-              <option value="1-2-weeks">1-2 weeks</option>
-              <option value="1-month">Within a month</option>
-              <option value="2-3-months">2-3 months</option>
-              <option value="exploring">Just exploring</option>
-            </select>
-            {errors.timeline && (
-              <p className="text-red-600 text-sm mt-1">{errors.timeline}</p>
-            )}
-          </div>
-          
-          <div>
-            <Label htmlFor="budget">Budget Range *</Label>
-            <select
-              id="budget"
-              value={data.budget}
-              onChange={(e) => onDataUpdate({ budget: e.target.value })}
-              className="mt-1 w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
-            >
-              <option value="">Select budget</option>
-              <option value="under-5k">Under $5k</option>
-              <option value="5k-10k">$5k - $10k</option>
-              <option value="10k-25k">$10k - $25k</option>
-              <option value="25k-plus">$25k+</option>
-              <option value="tbd">To be determined</option>
-            </select>
-            {errors.budget && (
-              <p className="text-red-600 text-sm mt-1">{errors.budget}</p>
-            )}
-          </div>
+        <div>
+          <Label htmlFor="budget">Budget Range *</Label>
+          <select
+            id="budget"
+            value={data.budget}
+            onChange={(e) => onDataUpdate({ budget: e.target.value })}
+            className="mt-1 w-full h-10 px-3 rounded-md border border-input bg-background text-sm"
+          >
+            <option value="">Select budget</option>
+            <option value="under-5k">Under $5k</option>
+            <option value="5k-10k">$5k - $10k</option>
+            <option value="10k-25k">$10k - $25k</option>
+            <option value="25k-plus">$25k+</option>
+            <option value="tbd">To be determined</option>
+          </select>
+          {errors.budget && (
+            <p className="text-red-600 text-sm mt-1">{errors.budget}</p>
+          )}
         </div>
 
         <div className="flex gap-4 pt-6">

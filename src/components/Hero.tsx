@@ -1,11 +1,9 @@
 
+import { useState } from "react";
+import { ContactWizard } from "./ContactWizard";
+
 export const Hero = () => {
-  const handleStartJourney = () => {
-    const contactElement = document.getElementById('contact');
-    if (contactElement) {
-      contactElement.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
 
   const handleExploreTrails = () => {
     const servicesElement = document.getElementById('services');
@@ -45,7 +43,7 @@ export const Hero = () => {
         
         <div className="flex flex-col sm:flex-row gap-6 justify-center mb-24">
           <button 
-            onClick={handleStartJourney}
+            onClick={() => setIsWizardOpen(true)}
             className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow-lg"
           >
             Start Your Journey 🗺️
@@ -78,6 +76,8 @@ export const Hero = () => {
       <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2">
         <div className="w-2 h-12 gradient-social-1 rounded-full animate-bounce"></div>
       </div>
+
+      <ContactWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
     </section>
   );
 };

@@ -5,40 +5,33 @@ export const Services = () => {
   const services = [
     {
       icon: Video,
-      title: "Viral Expeditions",
+      title: "Social Media Mastery",
       description: "TikTok, Reels, Shorts that break new ground and blaze fresh trails to your audience.",
       gradient: "gradient-social-1",
       textGradient: "text-gradient-1"
     },
     {
       icon: Film,
-      title: "Brand Adventures",
+      title: "Brand Documentary",
       description: "Corporate storytelling that ventures beyond the ordinary to capture authentic brand narratives.",
       gradient: "gradient-social-2", 
       textGradient: "text-gradient-2"
     },
     {
       icon: Users,
-      title: "Pathfinding Strategy",
+      title: "Content Strategy",
       description: "Chart uncharted creative territory with content planning that discovers new audience connections.",
       gradient: "gradient-social-3",
       textGradient: "text-gradient-3"
     },
     {
       icon: Megaphone,
-      title: "Territory Expansion",
+      title: "Multi-Platform Campaigns",
       description: "Multi-platform campaigns that explore new frontiers and expand your brand's reach.",
       gradient: "gradient-social-4",
       textGradient: "text-gradient-1"
     }
   ];
-
-  const handleBeginAdventure = () => {
-    const contactElement = document.getElementById('contact');
-    if (contactElement) {
-      contactElement.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <section id="services" className="py-32 bg-corporate-light">
@@ -55,7 +48,7 @@ export const Services = () => {
           </p>
         </div>
         
-        <div className="grid lg:grid-cols-2 gap-8 mb-16">
+        <div className="grid lg:grid-cols-2 gap-8">
           {services.map((service, index) => {
             const IconComponent = service.icon;
             return (
@@ -75,20 +68,6 @@ export const Services = () => {
               </div>
             );
           })}
-        </div>
-        
-        {/* CTA Section */}
-        <div className="text-center p-12 gradient-social-5 rounded-3xl video-shadow-lg">
-          <h3 className="text-4xl font-black text-white mb-6">Ready to Explore New Horizons?</h3>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Let's venture into uncharted creative territory and discover stories that resonate.
-          </p>
-          <button 
-            onClick={handleBeginAdventure}
-            className="px-10 py-5 bg-video-white text-corporate-dark font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
-          >
-            Begin the Adventure 🌟
-          </button>
         </div>
       </div>
     </section>

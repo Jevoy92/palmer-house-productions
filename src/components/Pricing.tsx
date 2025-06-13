@@ -1,5 +1,10 @@
 
+import { useState } from "react";
+import { ContactWizard } from "./ContactWizard";
+
 export const Pricing = () => {
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
+  
   const pricingTiers = [
     {
       name: "Trailhead",
@@ -19,8 +24,7 @@ export const Pricing = () => {
       ],
       perfectFor: "solopreneurs, service providers, and small but mighty teams (1–5) carving out their space.",
       highlight: false,
-      gradient: "gradient-social-1",
-      action: "contact"
+      gradient: "gradient-social-1"
     },
     {
       name: "Basecamp",
@@ -40,8 +44,7 @@ export const Pricing = () => {
       ],
       perfectFor: "teams of 5–20, e-commerce brands, regional service pros, and businesses scaling up.",
       highlight: true,
-      gradient: "gradient-social-2",
-      action: "contact"
+      gradient: "gradient-social-2"
     },
     {
       name: "Summit",
@@ -61,8 +64,7 @@ export const Pricing = () => {
       ],
       perfectFor: "teams of 20–100, agencies, B2B pros, and companies needing a proven rhythm to their visibility.",
       highlight: false,
-      gradient: "gradient-social-3",
-      action: "contact"
+      gradient: "gradient-social-3"
     },
     {
       name: "Monthly Hosting",
@@ -81,25 +83,9 @@ export const Pricing = () => {
       ],
       perfectFor: "national franchises, elite agencies, and organizations ready to dominate their space with unforgettable content.",
       highlight: false,
-      gradient: "gradient-social-4",
-      action: "contact"
+      gradient: "gradient-social-4"
     }
   ];
-
-  const handleStartJourney = (tierName: string, action: string) => {
-    if (action === "contact") {
-      // Open contact form or redirect to contact section
-      const contactSection = document.getElementById('contact');
-      if (contactSection) {
-        contactSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-    console.log(`Starting journey for: ${tierName}`);
-  };
-
-  const handleStrategyCall = () => {
-    window.open('https://calendly.com/palmerhouseproductions-info/general-strategy-call', '_blank');
-  };
 
   return (
     <section id="pricing" className="pt-48 pb-32 bg-corporate-light relative overflow-hidden">
@@ -176,17 +162,6 @@ export const Pricing = () => {
                   <p className="text-sm text-corporate-gray mb-2 font-bold">Perfect for:</p>
                   <p className="text-sm text-corporate-dark leading-relaxed">{tier.perfectFor}</p>
                 </div>
-                
-                <button 
-                  onClick={() => handleStartJourney(tier.name, tier.action)}
-                  className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 ${
-                    tier.highlight
-                      ? `${tier.gradient} text-white hover:scale-105 video-shadow`
-                      : `border-2 border-corporate-gray text-corporate-dark hover:bg-corporate-dark hover:text-white hover:scale-105`
-                  }`}
-                >
-                  Get Started
-                </button>
               </div>
             </div>
           ))}
@@ -195,40 +170,31 @@ export const Pricing = () => {
         <div className="text-center">
           <div className="text-corporate-gray text-4xl mb-12 tracking-widest">⸻ ⸻ ⸻</div>
           <div className="inline-block px-8 py-4 gradient-social-4 rounded-full text-white font-bold text-xl mb-8 video-shadow-lg">
-            🧭 Need Direction?
+            🧭 Ready to Begin?
           </div>
           <h3 className="text-5xl md:text-6xl font-display font-black mb-10 text-corporate-dark leading-tight">
-            Which Path Is Right <span className="text-gradient-2">For You?</span>
+            Let's Find Your Perfect <span className="text-gradient-2">Path</span>
           </h3>
           <p className="text-2xl text-corporate-gray mb-12 max-w-4xl mx-auto font-medium leading-relaxed">
-            If you're not sure where to begin, don't worry. Every great adventure starts with a <span className="text-gradient-1 font-bold">strategy call</span>.
+            Every great adventure starts with choosing the right direction.
             <br />
-            Let's map out your journey together.
+            Tell us about your vision and we'll <span className="text-gradient-1 font-bold">craft your journey</span>.
           </p>
           
-          <div className="grid md:grid-cols-3 gap-8 mb-16 max-w-4xl mx-auto">
-            <div className="p-8 bg-video-white rounded-3xl video-shadow">
-              <div className="text-5xl font-black text-gradient-1 mb-4">∞</div>
-              <div className="text-lg text-corporate-gray font-semibold">Endless Possibilities</div>
-            </div>
-            <div className="p-8 bg-video-white rounded-3xl video-shadow">
-              <div className="text-5xl font-black text-gradient-2 mb-4">1</div>
-              <div className="text-lg text-corporate-gray font-semibold">Perfect Expedition</div>
-            </div>
-            <div className="p-8 bg-video-white rounded-3xl video-shadow">
-              <div className="text-5xl font-black text-gradient-3 mb-4">100%</div>
-              <div className="text-lg text-corporate-gray font-semibold">Authentic Journey</div>
-            </div>
-          </div>
-          
           <button 
-            onClick={handleStrategyCall}
+            onClick={() => setIsWizardOpen(true)}
             className="px-12 py-6 gradient-social-1 text-white font-bold rounded-3xl hover:scale-105 transition-all duration-300 text-xl video-shadow-lg"
           >
-            Book My Strategy Call →
+            Choose Your Plan →
           </button>
         </div>
       </div>
+
+      <ContactWizard 
+        open={isWizardOpen} 
+        onOpenChange={setIsWizardOpen}
+        initialService="monthly"
+      />
     </section>
   );
 };

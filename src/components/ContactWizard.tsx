@@ -1,5 +1,4 @@
 import { useState } from "react";
-import emailjs from '@emailjs/browser';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ServiceSelection } from "./wizard/ServiceSelection";
 import { PlanSelection } from "./wizard/PlanSelection";
@@ -106,17 +105,15 @@ export const ContactWizard = ({ open, onOpenChange, initialService }: ContactWiz
     setIsSubmitting(true);
     
     try {
-      console.log('Initializing EmailJS with public key: x9nf4ghJ-1Q7CkoeO');
-      emailjs.init('x9nf4ghJ-1Q7CkoeO');
+      console.log('Submitting form to Formspree...');
       
-      const emailData = {
-        to_email: 'info@palmerhouseproductions.com',
-        from_name: `${wizardData.firstName} ${wizardData.lastName}`,
-        from_email: wizardData.email,
+      const formData = {
+        name: `${wizardData.firstName} ${wizardData.lastName}`,
+        email: wizardData.email,
+        phone: wizardData.phone || 'Not provided',
+        company: wizardData.company,
         service_type: getServiceName(wizardData.serviceType),
         plan_type: getPlanName(wizardData.planType),
-        company: wizardData.company,
-        phone: wizardData.phone || 'Not provided',
         challenge: wizardData.challenge,
         timeline: wizardData.timeline,
         budget: wizardData.budget,
@@ -135,40 +132,30 @@ Phone: ${wizardData.phone || 'Not provided'}
 Company: ${wizardData.company}`
       };
 
-      console.log('Sending email with data:', emailData);
-      console.log('Using service_7zd5x3u and template_9qrpr29');
+      console.log('Form data:', formData);
       
-      await emailjs.send(
-        'service_7zd5x3u',
-        'template_9qrpr29', 
-        emailData
-      );
+      const response = await fetch('https://formspree.io/f/mjkrwjpk', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-      console.log('Email sent successfully');
-      nextStep(); // Go to thank you page
-    } catch (error) {
-      console.error('EmailJS Error Details:', error);
-      
-      let errorMessage = "Please try again or contact us directly at info@palmerhouseproductions.com";
-      
-      if (error && typeof error === 'object') {
-        const errorObj = error as any;
-        if (errorObj.text) {
-          console.error('Error text:', errorObj.text);
-          if (errorObj.text.includes('Account not found')) {
-            errorMessage = "Email service configuration error. Please contact us directly at info@palmerhouseproductions.com";
-          } else if (errorObj.text.includes('Template not found')) {
-            errorMessage = "Email template error. Please contact us directly at info@palmerhouseproductions.com";
-          }
-        }
-        if (errorObj.status) {
-          console.error('Error status:', errorObj.status);
-        }
+      if (response.ok) {
+        console.log('Form submitted successfully');
+        nextStep(); // Go to thank you page
+      } else {
+        const errorData = await response.text();
+        console.error('Form submission failed:', response.status, errorData);
+        throw new Error(`Form submission failed with status: ${response.status}`);
       }
+    } catch (error) {
+      console.error('Form submission error:', error);
       
       toast({
         title: "Oops! Something went wrong",
-        description: errorMessage,
+        description: "Please try again or contact us directly at info@palmerhouseproductions.com",
         variant: "destructive",
       });
     } finally {

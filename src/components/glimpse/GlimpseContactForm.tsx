@@ -171,8 +171,7 @@ Budget: ${data.budget}
             <Label htmlFor="website">Website</Label>
             <Input
               id="website"
-              type="url"
-              placeholder="https://yourwebsite.com"
+              placeholder="yourwebsite.com"
               {...register("website")}
               className="mt-1"
             />

@@ -7,7 +7,10 @@ export const glimpseContactFormSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   phone: z.string().optional(),
   company: z.string().min(2, "Company name must be at least 2 characters"),
-  website: z.string().url("Please enter a valid website URL").optional().or(z.literal("")),
+  website: z.string().refine(
+    (val) => !val || val === "" || z.string().url().safeParse(val).success,
+    "Please enter a valid website URL"
+  ).optional(),
   currentChallenge: z.string().min(10, "Please describe your challenge in at least 10 characters"),
   timeline: z.enum(["immediate", "1-2-weeks", "1-month", "2-3-months", "exploring"], {
     required_error: "Please select a timeline",

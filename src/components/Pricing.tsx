@@ -55,7 +55,7 @@ export const Pricing = () => {
       features: [
         "25 minutes of content",
         "Flexible shoot schedule",
-        "Weekly strategy sessions",
+        "Weekly strategy sessions",  
         "Cross-platform content campaign design",
         "Dedicated account lead",
         "Deep-dive analytics & ROI reporting",
@@ -67,7 +67,7 @@ export const Pricing = () => {
       gradient: "gradient-social-3"
     },
     {
-      name: "Monthly Hosting",
+      name: "Pinnacle",
       icon: "🌄",
       price: "$20,000",
       period: "/month",

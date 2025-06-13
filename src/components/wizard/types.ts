@@ -1,5 +1,5 @@
 export type ServiceType = "consultation" | "base-glimpse" | "full-glimpse" | "monthly";
-export type PlanType = "trailhead" | "basecamp" | "summit" | "hosting";
+export type PlanType = "trailhead" | "basecamp" | "summit" | "pinnacle";
 
 // New qualification types
 export type BusinessProfileType = "solo" | "growing" | "established" | "agency" | "enterprise" | "nonprofit";

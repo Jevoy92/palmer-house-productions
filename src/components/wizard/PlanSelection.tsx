@@ -71,8 +71,8 @@ export const PlanSelection = ({ serviceType, onPlanSelect, onBack }: PlanSelecti
       gradient: "gradient-social-3",
     },
     {
-      id: "hosting" as PlanType,
-      name: "Monthly Hosting",
+      id: "pinnacle" as PlanType,
+      name: "Pinnacle",
       icon: "🌄",
       price: "$20,000",
       period: "/month",

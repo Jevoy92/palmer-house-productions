@@ -28,7 +28,7 @@ export const ConfirmationStep = ({ data, onSubmit, onCalendlyBooking, onBack, is
       case "trailhead": return "Trailhead ($1,500/month)";
       case "basecamp": return "Basecamp ($3,500/month)";
       case "summit": return "Summit ($7,500/month)";
-      case "hosting": return "Monthly Hosting ($20,000/month)";
+      case "pinnacle": return "Pinnacle ($20,000/month)";
       default: return "Not applicable";
     }
   };

@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { WizardData } from "./types";
 import { CheckCircle, Mail, Phone, Clock, ArrowRight } from "lucide-react";
+import { useEffect } from "react";
+import confetti from "canvas-confetti";
 
 interface ThankYouStepProps {
   data: WizardData;
@@ -11,6 +13,28 @@ interface ThankYouStepProps {
 }
 
 export const ThankYouStep = ({ data, onClose, onNewInquiry }: ThankYouStepProps) => {
+  useEffect(() => {
+    // Trigger confetti when component mounts
+    const triggerConfetti = () => {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+      
+      // Second burst after a short delay
+      setTimeout(() => {
+        confetti({
+          particleCount: 50,
+          spread: 60,
+          origin: { y: 0.6 }
+        });
+      }, 300);
+    };
+
+    triggerConfetti();
+  }, []);
+
   return (
     <div className="p-8 max-w-3xl mx-auto text-center">
       {/* Success Animation */}

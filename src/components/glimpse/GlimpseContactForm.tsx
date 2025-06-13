@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,34 +35,58 @@ export const GlimpseContactForm = () => {
     console.log("Glimpse contact form submission:", data);
     
     try {
-      // Create mailto link with form data
-      const subject = `Glimpse Inquiry from ${data.firstName} ${data.lastName}`;
-      const body = `
-Name: ${data.firstName} ${data.lastName}
+      const formData = {
+        name: `${data.firstName} ${data.lastName}`,
+        email: data.email,
+        phone: data.phone || 'Not provided',
+        company: data.company,
+        website: data.website || 'Not provided',
+        service_type: 'Glimpse Consultation',
+        challenge: data.currentChallenge,
+        timeline: data.timeline,
+        budget: data.budget,
+        message: `Glimpse consultation inquiry from ${data.firstName} ${data.lastName} at ${data.company}.
+
+CONTACT INFORMATION:
 Email: ${data.email}
 Phone: ${data.phone || 'Not provided'}
 Company: ${data.company}
 Website: ${data.website || 'Not provided'}
 
+PROJECT DETAILS:
 Challenge: ${data.currentChallenge}
-
 Timeline: ${data.timeline}
-Budget: ${data.budget}
-      `;
+Budget: ${data.budget}`
+      };
+
+      console.log('Submitting to Formspree:', formData);
       
-      const mailtoLink = `mailto:info@palmerhouseproductions.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailtoLink;
-      
-      toast({
-        title: "Email client opened!",
-        description: "Your message has been prepared. Send it to complete your inquiry.",
+      const response = await fetch('https://formspree.io/f/mjkrwjpk', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
-      
-      reset();
+
+      if (response.ok) {
+        console.log('Form submitted successfully');
+        toast({
+          title: "Message sent successfully!",
+          description: "Thank you for your inquiry. We'll get back to you soon.",
+        });
+        reset();
+      } else {
+        const errorData = await response.text();
+        console.error('Form submission failed:', response.status, errorData);
+        throw new Error(`Form submission failed with status: ${response.status}`);
+      }
     } catch (error) {
+      console.error('Form submission error:', error);
+      
       toast({
-        title: "Error opening email",
-        description: "Please contact us directly at info@palmerhouseproductions.com",
+        title: "Oops! Something went wrong",
+        description: "Please try again or contact us directly at info@palmerhouseproductions.com",
         variant: "destructive",
       });
     } finally {
@@ -239,7 +264,7 @@ Budget: ${data.budget}
           disabled={isSubmitting}
           className="w-full gradient-social-1 text-white font-bold text-lg py-6 rounded-2xl hover:scale-105 transition-all duration-300"
         >
-          {isSubmitting ? "Preparing Email..." : "Send Custom Inquiry 📧"}
+          {isSubmitting ? "Sending Message..." : "Send Custom Inquiry 📧"}
         </Button>
       </form>
     </div>

@@ -6,9 +6,10 @@ interface ConfirmationStepProps {
   data: WizardData;
   onSubmit: () => void;
   onBack: () => void;
+  isSubmitting?: boolean;
 }
 
-export const ConfirmationStep = ({ data, onSubmit, onBack }: ConfirmationStepProps) => {
+export const ConfirmationStep = ({ data, onSubmit, onBack, isSubmitting = false }: ConfirmationStepProps) => {
   const getServiceName = (serviceType?: string) => {
     switch (serviceType) {
       case "consultation": return "General Consultation";
@@ -107,6 +108,7 @@ export const ConfirmationStep = ({ data, onSubmit, onBack }: ConfirmationStepPro
             type="button"
             variant="outline"
             onClick={onBack}
+            disabled={isSubmitting}
             className="flex-1 border-corporate-gray text-corporate-gray hover:bg-corporate-light"
           >
             ← Back
@@ -114,9 +116,17 @@ export const ConfirmationStep = ({ data, onSubmit, onBack }: ConfirmationStepPro
           <Button
             type="button"
             onClick={onSubmit}
-            className="flex-1 gradient-social-1 text-white font-bold text-lg hover:scale-105 transition-all duration-300"
+            disabled={isSubmitting}
+            className="flex-1 gradient-social-1 text-white font-bold text-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Send Project Inquiry ✨
+            {isSubmitting ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                Sending...
+              </>
+            ) : (
+              "Send Project Inquiry ✨"
+            )}
           </Button>
         </div>
       </div>

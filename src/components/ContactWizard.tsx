@@ -1,10 +1,12 @@
 
 import { useState } from "react";
+import emailjs from '@emailjs/browser';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ServiceSelection } from "./wizard/ServiceSelection";
 import { PlanSelection } from "./wizard/PlanSelection";
 import { PersonalInfoStep } from "./wizard/PersonalInfoStep";
 import { ConfirmationStep } from "./wizard/ConfirmationStep";
+import { useToast } from "@/hooks/use-toast";
 
 interface ContactWizardProps {
   open: boolean;
@@ -30,6 +32,8 @@ export interface WizardData {
 
 export const ContactWizard = ({ open, onOpenChange, initialService }: ContactWizardProps) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
   const [wizardData, setWizardData] = useState<WizardData>({
     serviceType: initialService as ServiceType,
     firstName: "",
@@ -65,7 +69,86 @@ export const ContactWizard = ({ open, onOpenChange, initialService }: ContactWiz
 
   const handleClose = () => {
     onOpenChange(false);
-    setTimeout(resetWizard, 300); // Reset after dialog closes
+    setTimeout(resetWizard, 300);
+  };
+
+  const getServiceName = (serviceType?: ServiceType) => {
+    switch (serviceType) {
+      case "consultation": return "General Consultation";
+      case "base-glimpse": return "Base Glimpse ($350)";
+      case "full-glimpse": return "Full Glimpse ($750)";
+      case "monthly": return "Monthly Services";
+      default: return "Not specified";
+    }
+  };
+
+  const getPlanName = (planType?: PlanType) => {
+    switch (planType) {
+      case "trailhead": return "Trailhead ($1,500/month)";
+      case "basecamp": return "Basecamp ($3,500/month)";
+      case "summit": return "Summit ($7,500/month)";
+      case "hosting": return "Monthly Hosting ($20,000/month)";
+      default: return "Not applicable";
+    }
+  };
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    
+    try {
+      // Initialize EmailJS
+      emailjs.init('5UDY6-g0vIXo_2VmT');
+      
+      // Prepare email data
+      const emailData = {
+        to_email: 'info@palmerhouseproductions.com',
+        from_name: `${wizardData.firstName} ${wizardData.lastName}`,
+        from_email: wizardData.email,
+        service_type: getServiceName(wizardData.serviceType),
+        plan_type: getPlanName(wizardData.planType),
+        company: wizardData.company,
+        phone: wizardData.phone || 'Not provided',
+        challenge: wizardData.challenge,
+        timeline: wizardData.timeline,
+        budget: wizardData.budget,
+        message: `New project inquiry from ${wizardData.firstName} ${wizardData.lastName} at ${wizardData.company}.
+        
+Service: ${getServiceName(wizardData.serviceType)}
+Plan: ${getPlanName(wizardData.planType)}
+Timeline: ${wizardData.timeline}
+Budget: ${wizardData.budget}
+
+Challenge: ${wizardData.challenge}
+
+Contact Details:
+Email: ${wizardData.email}
+Phone: ${wizardData.phone || 'Not provided'}
+Company: ${wizardData.company}`
+      };
+
+      // Send email using your EmailJS credentials
+      await emailjs.send(
+        'service_7zd5x3u',
+        'template_b8dsioe', 
+        emailData
+      );
+
+      toast({
+        title: "Project Inquiry Sent! ✨",
+        description: "We'll get back to you within 24 hours to discuss your project.",
+      });
+
+      handleClose();
+    } catch (error) {
+      console.error('EmailJS Error:', error);
+      toast({
+        title: "Oops! Something went wrong",
+        description: "Please try again or contact us directly at info@palmerhouseproductions.com",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const renderStep = () => {
@@ -105,32 +188,9 @@ export const ContactWizard = ({ open, onOpenChange, initialService }: ContactWiz
         return (
           <ConfirmationStep
             data={wizardData}
-            onSubmit={() => {
-              // Handle submission
-              console.log("Submitting wizard data:", wizardData);
-              
-              // Create mailto link
-              const subject = `Project Inquiry from ${wizardData.firstName} ${wizardData.lastName}`;
-              const body = `
-Service Type: ${wizardData.serviceType}
-Plan Type: ${wizardData.planType || 'Not selected'}
-
-Name: ${wizardData.firstName} ${wizardData.lastName}
-Email: ${wizardData.email}
-Phone: ${wizardData.phone}
-Company: ${wizardData.company}
-
-Challenge: ${wizardData.challenge}
-Timeline: ${wizardData.timeline}
-Budget: ${wizardData.budget}
-              `;
-              
-              const mailtoLink = `mailto:info@palmerhouseproductions.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-              window.location.href = mailtoLink;
-              
-              handleClose();
-            }}
+            onSubmit={handleSubmit}
             onBack={prevStep}
+            isSubmitting={isSubmitting}
           />
         );
       default:

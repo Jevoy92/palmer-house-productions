@@ -39,26 +39,47 @@ export const CardSelection = ({
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto mb-8">
-        {options.map((option) => (
-          <button
-            key={option.id}
-            onClick={() => onSelect(option.id)}
-            className={`group p-6 bg-video-white rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105 text-left ${
-              selectedValue === option.id ? 'ring-2 ring-social-purple' : ''
-            }`}
-          >
-            <div className={`w-16 h-16 ${option.gradient || 'gradient-social-1'} rounded-2xl flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform duration-300`}>
-              {option.icon}
-            </div>
-            <h3 className="text-xl font-display font-black text-corporate-dark mb-3 group-hover:text-gradient-1 transition-all duration-300">
-              {option.title}
-            </h3>
-            <p className="text-corporate-gray text-sm leading-relaxed">
-              {option.description}
-            </p>
-          </button>
-        ))}
+      <div className="max-w-3xl mx-auto mb-8">
+        <div className="space-y-3">
+          {options.map((option) => (
+            <button
+              key={option.id}
+              onClick={() => onSelect(option.id)}
+              className={`w-full p-6 bg-video-white rounded-xl border-2 transition-all duration-200 text-left hover:border-corporate-dark ${
+                selectedValue === option.id 
+                  ? 'border-corporate-dark bg-corporate-light' 
+                  : 'border-corporate-light hover:bg-corporate-light/30'
+              }`}
+            >
+              <div className="flex items-start space-x-4">
+                <div className="text-2xl mt-1 flex-shrink-0">
+                  {option.icon}
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-corporate-dark mb-2">
+                    {option.title}
+                  </h3>
+                  <p className="text-corporate-gray text-sm leading-relaxed">
+                    {option.description}
+                  </p>
+                </div>
+                <div className="flex-shrink-0 mt-2">
+                  <div className={`w-5 h-5 rounded-full border-2 transition-all duration-200 ${
+                    selectedValue === option.id 
+                      ? 'bg-corporate-dark border-corporate-dark' 
+                      : 'border-corporate-gray'
+                  }`}>
+                    {selectedValue === option.id && (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <div className="w-2 h-2 bg-white rounded-full"></div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
 
       {showBack && onBack && (

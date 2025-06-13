@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Shield, Users, FileText, HelpCircle, Zap, BookOpen, Heart, Trophy, ChevronDown, ChevronRight } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ContactForm } from "@/components/ContactForm";
+import { ContactWizard } from "@/components/ContactWizard";
 
 type FilterType = "all" | "internal" | "external";
 
 export default function Arsenal() {
   const [filter, setFilter] = useState<FilterType>("all");
   const [expandedSolutions, setExpandedSolutions] = useState<Set<string>>(new Set());
-  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
+  const [isContactWizardOpen, setIsContactWizardOpen] = useState(false);
 
   const toggleSolution = (solutionId: string) => {
     const newExpanded = new Set(expandedSolutions);
@@ -174,11 +174,11 @@ export default function Arsenal() {
     }
   };
 
-  const handleGetStarted = () => {
-    setIsContactFormOpen(true);
+  const handleGetCustomProposal = () => {
+    setIsContactWizardOpen(true);
   };
 
-  const handlePathwayDiscovery = () => {
+  const handleBookDiscoveryCall = () => {
     window.open('https://calendly.com/palmerhouseproductions-info/discovery-call', '_blank');
   };
 
@@ -390,26 +390,36 @@ export default function Arsenal() {
             Ready to Build Your <span className="text-gradient-1">Arsenal</span>?
           </h3>
           <p className="text-xl text-corporate-gray mb-12 max-w-2xl mx-auto">
-            Not sure what expedition tools fit your adventure best? Let's explore your challenges and craft the perfect video strategy.
+            Choose your path: book a consultation to discuss your needs, or get a custom proposal through our detailed qualification process.
           </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <button 
-              onClick={handlePathwayDiscovery}
-              className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
-            >
-              Chart Your Course 🧭
-            </button>
-            <button 
-              onClick={handleGetStarted}
-              className="px-10 py-5 bg-video-white border-2 border-social-purple text-social-purple font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow"
-            >
-              Start Your Campaign 📹
-            </button>
+          <div className="flex flex-col lg:flex-row gap-8 justify-center">
+            <div className="flex-1 max-w-md">
+              <button 
+                onClick={handleBookDiscoveryCall}
+                className="w-full px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow mb-4"
+              >
+                📞 Book Discovery Call
+              </button>
+              <p className="text-corporate-gray text-sm">
+                Schedule a 30-minute consultation to discuss your video needs and explore solutions together.
+              </p>
+            </div>
+            <div className="flex-1 max-w-md">
+              <button 
+                onClick={handleGetCustomProposal}
+                className="w-full px-10 py-5 bg-video-white border-2 border-social-purple text-social-purple font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow mb-4"
+              >
+                📋 Get Custom Proposal
+              </button>
+              <p className="text-corporate-gray text-sm">
+                Complete our qualification wizard to receive a tailored proposal and pricing for your project.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      <ContactForm open={isContactFormOpen} onOpenChange={setIsContactFormOpen} />
+      <ContactWizard open={isContactWizardOpen} onOpenChange={setIsContactWizardOpen} />
     </div>
   );
 }

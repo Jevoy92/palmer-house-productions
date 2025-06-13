@@ -4,7 +4,13 @@ import { PlanSelection } from "./PlanSelection";
 import { PersonalInfoStep } from "./PersonalInfoStep";
 import { ConfirmationStep } from "./ConfirmationStep";
 import { ThankYouStep } from "./ThankYouStep";
-import { WizardData } from "./types";
+import { BusinessProfileStep } from "./BusinessProfileStep";
+import { BusinessTypeStep } from "./BusinessTypeStep";
+import { VideoUseCaseStep } from "./VideoUseCaseStep";
+import { ContentVolumeStep } from "./ContentVolumeStep";
+import { TimelineStep } from "./TimelineStep";
+import { GeographicStep } from "./GeographicStep";
+import { WizardData, BusinessProfileType, BusinessType, VideoUseCaseType, ContentVolumeType, TimelineType, GeographicType } from "./types";
 import { getCalendlyUrl } from "./utils";
 
 interface WizardStepRendererProps {
@@ -38,6 +44,75 @@ export const WizardStepRenderer = ({
   switch (currentStep) {
     case 1:
       return (
+        <BusinessProfileStep
+          selectedProfile={wizardData.businessProfile}
+          onProfileSelect={(profile: BusinessProfileType) => {
+            updateWizardData({ businessProfile: profile });
+            nextStep();
+          }}
+        />
+      );
+    case 2:
+      return (
+        <BusinessTypeStep
+          selectedType={wizardData.businessType}
+          onTypeSelect={(type: BusinessType) => {
+            updateWizardData({ businessType: type });
+            nextStep();
+          }}
+          onBack={prevStep}
+        />
+      );
+    case 3:
+      return (
+        <VideoUseCaseStep
+          selectedUseCase={wizardData.videoUseCase}
+          onUseCaseSelect={(useCase: VideoUseCaseType) => {
+            updateWizardData({ videoUseCase: useCase });
+            nextStep();
+          }}
+          onBack={prevStep}
+        />
+      );
+    case 4:
+      return (
+        <ContentVolumeStep
+          selectedVolume={wizardData.contentVolume}
+          onVolumeSelect={(volume: ContentVolumeType) => {
+            updateWizardData({ contentVolume: volume });
+            nextStep();
+          }}
+          onBack={prevStep}
+        />
+      );
+    case 5:
+      return (
+        <TimelineStep
+          selectedTimeline={wizardData.timeline}
+          onTimelineSelect={(timeline: TimelineType) => {
+            updateWizardData({ timeline: timeline });
+            nextStep();
+          }}
+          onBack={prevStep}
+        />
+      );
+    case 6:
+      return (
+        <GeographicStep
+          selectedGeographic={wizardData.geographic}
+          geographicCustom={wizardData.geographicCustom}
+          onGeographicSelect={(geographic: GeographicType, custom?: string) => {
+            updateWizardData({ 
+              geographic: geographic,
+              geographicCustom: custom 
+            });
+            nextStep();
+          }}
+          onBack={prevStep}
+        />
+      );
+    case 7:
+      return (
         <ServiceSelection
           selectedService={wizardData.serviceType}
           onServiceSelect={(service) => {
@@ -46,7 +121,7 @@ export const WizardStepRenderer = ({
           }}
         />
       );
-    case 2:
+    case 8:
       return (
         <PlanSelection
           selectedPlan={wizardData.planType}
@@ -58,7 +133,7 @@ export const WizardStepRenderer = ({
           onBack={prevStep}
         />
       );
-    case 3:
+    case 9:
       return (
         <PersonalInfoStep
           data={wizardData}
@@ -67,7 +142,7 @@ export const WizardStepRenderer = ({
           onBack={prevStep}
         />
       );
-    case 4:
+    case 10:
       return (
         <ConfirmationStep
           data={wizardData}
@@ -77,7 +152,7 @@ export const WizardStepRenderer = ({
           isSubmitting={isSubmitting}
         />
       );
-    case 5:
+    case 11:
       return (
         <ThankYouStep
           data={wizardData}

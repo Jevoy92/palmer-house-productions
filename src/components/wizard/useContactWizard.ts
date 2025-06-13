@@ -16,7 +16,6 @@ export const useContactWizard = (initialService?: string) => {
     phone: "",
     company: "",
     challenge: "",
-    timeline: "",
     budget: "",
   });
 
@@ -36,9 +35,82 @@ export const useContactWizard = (initialService?: string) => {
       phone: "",
       company: "",
       challenge: "",
-      timeline: "",
       budget: "",
     });
+  };
+
+  const getQualificationText = () => {
+    const qualifications = [];
+    
+    if (wizardData.businessProfile) {
+      const profileNames = {
+        solo: "Solo Founder / Small Team",
+        growing: "Growing Business",
+        established: "Established Business", 
+        agency: "Agency / Creative Firm",
+        enterprise: "Enterprise / Multi-Brand",
+        nonprofit: "Nonprofit / Special Project"
+      };
+      qualifications.push(`Business Stage: ${profileNames[wizardData.businessProfile]}`);
+    }
+    
+    if (wizardData.businessType) {
+      const typeNames = {
+        service: "Service-Based Business",
+        product: "Product-Based Business",
+        saas: "SaaS / Tech",
+        coaching: "Coaching / Consulting",
+        professional: "Professional Services",
+        media: "Media / Education",
+        nonprofit: "Nonprofit / Advocacy"
+      };
+      qualifications.push(`Business Type: ${typeNames[wizardData.businessType]}`);
+    }
+    
+    if (wizardData.videoUseCase) {
+      const useCaseNames = {
+        "lead-generation": "Lead Generation & Brand Growth",
+        "training": "Internal Training & Operations",
+        "onboarding": "Client Onboarding & Experience",
+        "authority": "Authority / Thought Leadership",
+        "education": "Customer Education & Support",
+        "sales": "Sales Support & Conversion"
+      };
+      qualifications.push(`Primary Use Case: ${useCaseNames[wizardData.videoUseCase]}`);
+    }
+    
+    if (wizardData.contentVolume) {
+      const volumeNames = {
+        "1-2": "1-2 videos per month",
+        "3-4": "3-4 videos per month", 
+        "5-8": "5-8 videos per month",
+        "8-plus": "8+ videos per month"
+      };
+      qualifications.push(`Content Volume: ${volumeNames[wizardData.contentVolume]}`);
+    }
+    
+    if (wizardData.timeline) {
+      const timelineNames = {
+        "immediately": "Immediately",
+        "1-3-months": "1-3 months",
+        "3-6-months": "3-6 months", 
+        "planning": "Planning / Research Mode"
+      };
+      qualifications.push(`Timeline: ${timelineNames[wizardData.timeline]}`);
+    }
+    
+    if (wizardData.geographic) {
+      const geoNames = {
+        "seattle": "Seattle Metro / Pacific Northwest",
+        "national": "National (United States)",
+        "international": "International",
+        "online": "Primarily Online / Virtual",
+        "custom": wizardData.geographicCustom || "Custom"
+      };
+      qualifications.push(`Service Area: ${geoNames[wizardData.geographic]}`);
+    }
+    
+    return qualifications.join('\n');
   };
 
   const handleSubmit = async () => {
@@ -57,16 +129,21 @@ export const useContactWizard = (initialService?: string) => {
         challenge: wizardData.challenge,
         timeline: wizardData.timeline,
         budget: wizardData.budget,
-        message: `New project inquiry from ${wizardData.firstName} ${wizardData.lastName} at ${wizardData.company}.
-        
+        qualifications: getQualificationText(),
+        message: `New qualified project inquiry from ${wizardData.firstName} ${wizardData.lastName} at ${wizardData.company}.
+
+QUALIFICATION DETAILS:
+${getQualificationText()}
+
+SERVICE SELECTION:
 Service: ${getServiceName(wizardData.serviceType)}
 Plan: ${getPlanName(wizardData.planType)}
-Timeline: ${wizardData.timeline}
 Budget: ${wizardData.budget}
 
+PROJECT DETAILS:
 Challenge: ${wizardData.challenge}
 
-Contact Details:
+CONTACT INFORMATION:
 Email: ${wizardData.email}
 Phone: ${wizardData.phone || 'Not provided'}
 Company: ${wizardData.company}`
@@ -105,7 +182,9 @@ Company: ${wizardData.company}`
 
   return {
     currentStep,
-    isSubmitting,
+    is
+
+,
     wizardData,
     updateWizardData,
     nextStep,

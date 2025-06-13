@@ -1,12 +1,10 @@
 
 import { Compass, Search, Sparkles, Heart, Wrench, Target } from 'lucide-react';
 import { useState } from 'react';
-import { ServiceWizard } from './ServiceWizard';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { ContactForm } from './ContactForm';
 
 export const Values = () => {
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
-  const [selectedPathway, setSelectedPathway] = useState<string | null>(null);
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
 
   const values = [
     { 
@@ -48,53 +46,21 @@ export const Values = () => {
   ];
 
   const pathChoices = [
-    { 
-      icon: "🗺️", 
-      word: "Adventurous", 
-      gradient: "gradient-social-1",
-      description: "Bold moves that push boundaries and take creative risks. Perfect for brands ready to stand out from the crowd and make a statement that resonates with bold, forward-thinking audiences."
-    },
-    { 
-      icon: "⭐", 
-      word: "Creative", 
-      gradient: "gradient-social-2",
-      description: "Artistic storytelling that showcases unique brand personality. Ideal for brands with a distinctive voice who want to express their creativity through compelling visual narratives."
-    },
-    { 
-      icon: "🚀", 
-      word: "Bold", 
-      gradient: "gradient-social-3",
-      description: "Confident messaging that commands attention and respect. Designed for established brands ready to assert their authority and leadership in their industry."
-    },
-    { 
-      icon: "🧭", 
-      word: "Authentic", 
-      gradient: "gradient-social-4",
-      description: "Genuine narratives that build trust and human connection. Perfect for brands who prioritize transparency, honesty, and building meaningful relationships with their audience."
-    },
-    { 
-      icon: "🌟", 
-      word: "Elevated", 
-      gradient: "gradient-social-5",
-      description: "Sophisticated approach that positions you as premium. Tailored for luxury brands and high-end services that demand excellence and exclusivity in their presentation."
-    },
-    { 
-      icon: "🎯", 
-      word: "Focused", 
-      gradient: "gradient-social-1",
-      description: "Strategic precision targeting specific goals and audiences. Ideal for brands with clear objectives who want every piece of content to serve a specific purpose and drive measurable results."
-    }
+    { icon: "🗺️", word: "Adventurous", gradient: "gradient-social-1" },
+    { icon: "⭐", word: "Creative", gradient: "gradient-social-2" },
+    { icon: "🚀", word: "Bold", gradient: "gradient-social-3" },
+    { icon: "🧭", word: "Authentic", gradient: "gradient-social-4" },
+    { icon: "🌟", word: "Elevated", gradient: "gradient-social-5" },
+    { icon: "🎯", word: "Focused", gradient: "gradient-social-1" }
   ];
 
-  const handlePathwayClick = (pathName: string) => {
-    setSelectedPathway(pathName);
+  const handlePathClick = (pathName: string) => {
+    // Store the selected path in localStorage for the contact form
+    localStorage.setItem('selectedPath', pathName);
+    
+    // Open the contact form
+    setIsContactFormOpen(true);
   };
-
-  const closePathwayModal = () => {
-    setSelectedPathway(null);
-  };
-
-  const selectedPathwayData = pathChoices.find(p => p.word === selectedPathway);
 
   return (
     <section id="values" className="py-32 bg-corporate-light relative overflow-hidden">
@@ -114,9 +80,9 @@ export const Values = () => {
             What We <span className="text-gradient-3">Value</span>
           </h2>
           <p className="text-2xl text-corporate-gray max-w-4xl mx-auto font-medium leading-tight">
-            These aren't just brand values—they're the <span className="text-corporate-dark font-bold">compass points</span> we navigate by.
+            These aren't just brand values—they're the <span className="text-gradient-1 font-bold">compass points</span> we navigate by.
             <br />
-            <span className="text-corporate-dark font-bold">Rules of the road</span> for every creative expedition.
+            <span className="text-gradient-2 font-bold">Rules of the road</span> for every creative expedition.
           </p>
         </div>
         
@@ -133,10 +99,10 @@ export const Values = () => {
                     <IconComponent size={28} className="text-white" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-display font-black text-corporate-dark mb-4 group-hover:text-corporate-dark transition-all duration-300">
+                    <h3 className="text-2xl font-display font-black text-corporate-dark mb-4 group-hover:text-gradient-1 transition-all duration-300">
                       {value.title}
                     </h3>
-                    <p className="text-corporate-gray leading-relaxed text-lg font-medium group-hover: text-corporate-dark transition-colors duration-300">
+                    <p className="text-corporate-gray leading-relaxed text-lg font-medium group-hover:text-corporate-dark transition-colors duration-300">
                       {value.description}
                     </p>
                   </div>
@@ -149,53 +115,54 @@ export const Values = () => {
         <div className="text-center mb-16">
           <div className="text-corporate-gray text-4xl mb-12 tracking-widest">⸻ ⸻ ⸻</div>
           <div className="inline-block px-8 py-4 gradient-social-1 rounded-full text-white font-bold text-xl mb-8 video-shadow-lg">
-            🎒 Brand Pathways
+            🎒 Trail Selection
           </div>
           <h3 className="text-5xl md:text-6xl font-display font-black mb-10 text-corporate-dark leading-tight">
-            Explore Your <span className="text-corporate-dark">Brand Direction</span>
+            Choose Your <span className="text-gradient-2">Adventure</span>
           </h3>
           <p className="text-2xl text-corporate-gray mb-16 max-w-5xl mx-auto font-medium leading-relaxed">
-            Every great brand has its own unique voice and approach.
+            Every great journey starts with a single step.
             <br />
-            <span className="text-corporate-dark font-bold">What kind of story does your brand want to tell?</span> Click to learn more about each pathway.
+            <span className="text-gradient-1 font-bold">What kind of explorer are you?</span> Pick the path that calls to your spirit.
           </p>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6 mb-20 max-w-6xl mx-auto">
-            {pathChoices.map((item, index) => (
-              <div key={index}>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-20 max-w-5xl mx-auto">
+            {pathChoices.map((item, index) => {
+              return (
                 <button 
-                  onClick={() => handlePathwayClick(item.word)}
-                  className="group relative p-6 bg-video-white rounded-3xl hover:bg-transparent transition-all duration-500 video-shadow hover:video-shadow-lg cursor-pointer overflow-hidden transform hover:scale-105 active:scale-95 w-full"
+                  key={index}
+                  onClick={() => handlePathClick(item.word)}
+                  className={`group relative p-4 bg-video-white rounded-2xl hover:bg-transparent transition-all duration-500 video-shadow hover:video-shadow-lg cursor-pointer overflow-hidden transform hover:scale-105 active:scale-95`}
                 >
-                  <div className={`absolute inset-0 ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl`}></div>
+                  <div className={`absolute inset-0 ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl`}></div>
                   
                   <div className="relative z-10 text-center">
-                    <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-500">
+                    <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-500">
                       {item.icon}
                     </div>
-                    <h4 className="text-lg font-display font-black text-corporate-dark group-hover:text-white transition-colors duration-500 leading-tight">
+                    <h4 className="text-sm font-display font-black text-corporate-dark group-hover:text-white transition-colors duration-500 leading-tight">
                       {item.word}
                     </h4>
                   </div>
                   
-                  <div className="absolute -top-1 -right-1 w-4 h-4 gradient-social-3 rounded-full opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-                  <div className="absolute -bottom-1 -left-1 w-3 h-3 gradient-social-4 rounded-full opacity-30 group-hover:opacity-60 transition-opacity duration-500"></div>
+                  <div className="absolute -top-1 -right-1 w-3 h-3 gradient-social-3 rounded-full opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
+                  <div className="absolute -bottom-1 -left-1 w-2 h-2 gradient-social-4 rounded-full opacity-30 group-hover:opacity-60 transition-opacity duration-500"></div>
                 </button>
-              </div>
-            ))}
+              );
+            })}
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 mb-16 max-w-4xl mx-auto">
             <div className="p-8 bg-video-white rounded-2xl video-shadow">
-              <div className="text-5xl font-black text-corporate-dark mb-4">∞</div>
+              <div className="text-5xl font-black text-gradient-1 mb-4">∞</div>
               <div className="text-lg text-corporate-gray font-semibold">Paths to Explore</div>
             </div>
             <div className="p-8 bg-video-white rounded-2xl video-shadow">
-              <div className="text-5xl font-black text-corporate-dark mb-4">1</div>
+              <div className="text-5xl font-black text-gradient-2 mb-4">1</div>
               <div className="text-lg text-corporate-gray font-semibold">Perfect Journey</div>
             </div>
             <div className="p-8 bg-video-white rounded-2xl video-shadow">
-              <div className="text-5xl font-black text-corporate-dark mb-4">100%</div>
+              <div className="text-5xl font-black text-gradient-3 mb-4">100%</div>
               <div className="text-lg text-corporate-gray font-semibold">Authentic Adventure</div>
             </div>
           </div>
@@ -218,57 +185,7 @@ export const Values = () => {
         </div>
       </div>
 
-      {/* Pathway Modal */}
-      <Dialog open={!!selectedPathway} onOpenChange={closePathwayModal}>
-        <DialogContent className="max-w-2xl bg-video-white rounded-3xl border-0 video-shadow-lg">
-          <DialogHeader className="text-center pb-4">
-            <DialogTitle className="text-4xl font-display font-black text-corporate-dark mb-4">
-              <span className="text-6xl mr-4">{selectedPathwayData?.icon}</span>
-              <span className="text-gradient-1">{selectedPathwayData?.word}</span> Pathway
-            </DialogTitle>
-          </DialogHeader>
-          
-          <div className="px-6 pb-6">
-            <div className={`w-full h-2 ${selectedPathwayData?.gradient} rounded-full mb-8 video-shadow`}></div>
-            
-            <p className="text-xl text-corporate-gray leading-relaxed mb-8 font-medium text-center">
-              {selectedPathwayData?.description}
-            </p>
-            
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className="text-center p-6 bg-corporate-light rounded-2xl">
-                <div className="text-3xl font-black text-corporate-dark mb-2">∞</div>
-                <div className="text-sm text-corporate-gray font-semibold">Creative Possibilities</div>
-              </div>
-              <div className="text-center p-6 bg-corporate-light rounded-2xl">
-                <div className="text-3xl font-black text-corporate-dark mb-2">1</div>
-                <div className="text-sm text-corporate-gray font-semibold">Perfect Strategy</div>
-              </div>
-              <div className="text-center p-6 bg-corporate-light rounded-2xl">
-                <div className="text-3xl font-black text-corporate-dark mb-2">100%</div>
-                <div className="text-sm text-corporate-gray font-semibold">Your Brand</div>
-              </div>
-            </div>
-            
-            <div className="text-center">
-              <p className="text-corporate-gray mb-6 font-medium">
-                Ready to explore this pathway? Let's discuss how it fits your brand's journey.
-              </p>
-              <button
-                onClick={() => {
-                  setSelectedPathway(null);
-                  setIsWizardOpen(true);
-                }}
-                className={`px-8 py-4 ${selectedPathwayData?.gradient} text-white font-bold rounded-2xl hover:scale-105 transition-all duration-300 text-lg video-shadow-lg`}
-              >
-                Start This Journey →
-              </button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      <ServiceWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
+      <ContactForm open={isContactFormOpen} onOpenChange={setIsContactFormOpen} />
     </section>
   );
 };

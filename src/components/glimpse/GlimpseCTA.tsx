@@ -1,16 +1,16 @@
 
-import { ServiceWizard } from "../ServiceWizard";
-import { useState } from "react";
+import { GlimpseContactForm } from "./GlimpseContactForm";
 
 export const GlimpseCTA = () => {
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
-  
   const handleDiscoveryCall = () => {
     window.open('https://calendly.com/palmerhouseproductions-info/discovery-call', '_blank');
   };
 
   const handleBeginAdventure = () => {
-    setIsWizardOpen(true);
+    const formElement = document.querySelector('.glimpse-contact-form');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -37,6 +37,10 @@ export const GlimpseCTA = () => {
           >
             Begin the Adventure ⚡
           </button>
+        </div>
+        
+        <div className="mb-16 glimpse-contact-form">
+          <GlimpseContactForm />
         </div>
         
         <div className="text-center mb-8">
@@ -75,12 +79,6 @@ export const GlimpseCTA = () => {
           </div>
         </footer>
       </div>
-
-      <ServiceWizard 
-        open={isWizardOpen} 
-        onOpenChange={setIsWizardOpen}
-        initialService="base-glimpse"
-      />
     </section>
   );
 };

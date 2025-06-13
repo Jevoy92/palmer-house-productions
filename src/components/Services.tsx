@@ -5,54 +5,57 @@ export const Services = () => {
   const services = [
     {
       icon: Video,
-      title: "Trailhead Package",
-      description: "For solo adventurers and early-stage businesses ready to explore the power of video. Up to 4 minutes of premium content monthly with 1 dedicated shoot day.",
-      price: "$1,500/month",
+      title: "Viral Expeditions",
+      description: "TikTok, Reels, Shorts that break new ground and blaze fresh trails to your audience.",
       gradient: "gradient-social-1",
       textGradient: "text-gradient-1"
     },
     {
       icon: Film,
-      title: "Basecamp Package",
-      description: "For growing teams ready to establish a stronger presence across multiple platforms. 10 minutes of content with 2 shoot days monthly.",
-      price: "$3,500/month",
+      title: "Brand Adventures",
+      description: "Corporate storytelling that ventures beyond the ordinary to capture authentic brand narratives.",
       gradient: "gradient-social-2", 
       textGradient: "text-gradient-2"
     },
     {
       icon: Users,
-      title: "Summit Package",
-      description: "For regional brands and agencies pushing for authority, consistency, and scale. 25 minutes of content with flexible shoot schedule.",
-      price: "$7,500/month",
+      title: "Pathfinding Strategy",
+      description: "Chart uncharted creative territory with content planning that discovers new audience connections.",
       gradient: "gradient-social-3",
       textGradient: "text-gradient-3"
     },
     {
       icon: Megaphone,
-      title: "Monthly Hosting Package",
-      description: "For large enterprises and organizations who demand premium content, data, and agility—without compromise. 75 minutes of cinematic content.",
-      price: "$20,000/month",
+      title: "Territory Expansion",
+      description: "Multi-platform campaigns that explore new frontiers and expand your brand's reach.",
       gradient: "gradient-social-4",
       textGradient: "text-gradient-1"
     }
   ];
+
+  const handleBeginAdventure = () => {
+    const contactElement = document.getElementById('contact');
+    if (contactElement) {
+      contactElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <section id="services" className="py-32 bg-corporate-light">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-24">
           <div className="inline-block px-6 py-3 gradient-social-3 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            🧭 Our Services
+            🧭 Our Expeditions
           </div>
           <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-            Services We <span className="text-gradient-1">Offer</span>
+            Journeys We <span className="text-gradient-1">Capture</span>
           </h2>
           <p className="text-2xl text-corporate-gray max-w-4xl mx-auto font-medium">
-            From early-stage businesses to enterprise organizations - we create handcrafted, high-impact video experiences designed to solve real business problems.
+            From uncharted creative territories to bold brand adventures - we explore every path to find your unique story.
           </p>
         </div>
         
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 gap-8 mb-16">
           {services.map((service, index) => {
             const IconComponent = service.icon;
             return (
@@ -66,15 +69,26 @@ export const Services = () => {
                 <h3 className={`text-3xl font-display font-black mb-6 ${service.textGradient}`}>
                   {service.title}
                 </h3>
-                <div className="mb-4">
-                  <span className="text-2xl font-bold text-corporate-dark">{service.price}</span>
-                </div>
                 <p className="text-corporate-gray leading-relaxed text-lg font-medium">
                   {service.description}
                 </p>
               </div>
             );
           })}
+        </div>
+        
+        {/* CTA Section */}
+        <div className="text-center p-12 gradient-social-5 rounded-3xl video-shadow-lg">
+          <h3 className="text-4xl font-black text-white mb-6">Ready to Explore New Horizons?</h3>
+          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            Let's venture into uncharted creative territory and discover stories that resonate.
+          </p>
+          <button 
+            onClick={handleBeginAdventure}
+            className="px-10 py-5 bg-video-white text-corporate-dark font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
+          >
+            Begin the Adventure 🌟
+          </button>
         </div>
       </div>
     </section>

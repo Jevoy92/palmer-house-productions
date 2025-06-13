@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Form } from "@/components/ui/form";
@@ -8,10 +9,7 @@ import { PersonalInfoFields } from "./contact/PersonalInfoFields";
 import { ChallengeField } from "./contact/ChallengeField";
 import { PathwayField } from "./contact/PathwayField";
 import { AdditionalFields } from "./contact/AdditionalFields";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
-import { sendContactFormEmail } from "@/lib/emailService";
+import { useEffect } from "react";
 
 interface ContactFormProps {
   open: boolean;
@@ -19,9 +17,6 @@ interface ContactFormProps {
 }
 
 export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,34 +45,29 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
     }
   }, [open, form]);
 
-  const onSubmit = async (values: FormData) => {
-    setIsSubmitting(true);
-    console.log('Form submission:', values);
+  const onSubmit = (values: FormData) => {
+    console.log(values);
     
-    try {
-      // Send email via EmailJS
-      await sendContactFormEmail(values);
-      
-      toast({
-        title: "Message sent successfully!",
-        description: "We'll get back to you within 24 hours.",
-      });
-      
-      // Close the dialog
-      onOpenChange(false);
-      
-      // Navigate to thank you page
-      navigate('/thank-you');
-    } catch (error) {
-      console.error('Email sending failed:', error);
-      toast({
-        title: "Error sending message",
-        description: "Please try again or contact us directly.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Create mailto link with form data
+    const subject = `Project Inquiry from ${values.firstName} ${values.lastName}`;
+    const body = `
+Name: ${values.firstName} ${values.lastName}
+Email: ${values.email}
+Phone: ${values.phone || 'Not provided'}
+
+Challenge: ${values.challenge}
+Pathway: ${values.pathway}
+
+Message: ${values.message}
+
+Referral Source: ${values.referralSource || 'Not provided'}
+Readiness: ${values.readiness || 'Not provided'}
+    `;
+    
+    const mailtoLink = `mailto:info@palmerhouseproductions.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = mailtoLink;
+    
+    onOpenChange(false);
   };
 
   return (
@@ -114,16 +104,14 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
                 variant="outline"
                 onClick={() => onOpenChange(false)}
                 className="flex-1 border-corporate-gray text-corporate-gray hover:bg-corporate-light hover:border-corporate-dark rounded-xl transition-all duration-300"
-                disabled={isSubmitting}
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                disabled={isSubmitting}
                 className="flex-1 gradient-social-1 text-white font-medium hover:scale-105 transition-all duration-300 rounded-xl video-shadow"
               >
-                {isSubmitting ? "Sending..." : "Send Message ✨"}
+                Send Message ✨
               </Button>
             </div>
           </form>

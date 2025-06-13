@@ -1,15 +1,15 @@
-
 import { Button } from "@/components/ui/button";
 import { WizardData } from "../ContactWizard";
 
 interface ConfirmationStepProps {
   data: WizardData;
   onSubmit: () => void;
+  onCalendlyBooking: () => void;
   onBack: () => void;
   isSubmitting?: boolean;
 }
 
-export const ConfirmationStep = ({ data, onSubmit, onBack, isSubmitting = false }: ConfirmationStepProps) => {
+export const ConfirmationStep = ({ data, onSubmit, onCalendlyBooking, onBack, isSubmitting = false }: ConfirmationStepProps) => {
   const getServiceName = (serviceType?: string) => {
     switch (serviceType) {
       case "consultation": return "General Consultation";
@@ -30,6 +30,16 @@ export const ConfirmationStep = ({ data, onSubmit, onBack, isSubmitting = false 
     }
   };
 
+  const getBookingButtonText = (serviceType?: string) => {
+    switch (serviceType) {
+      case "consultation": return "Book Strategy Call 📞";
+      case "base-glimpse": return "Book Base Glimpse 🎒";
+      case "full-glimpse": return "Book Full Glimpse 🧭";
+      case "monthly": return "Book Discovery Call 🏔";
+      default: return "Book & Pay Now 💳";
+    }
+  };
+
   return (
     <div className="p-8">
       <div className="text-center mb-8">
@@ -37,7 +47,7 @@ export const ConfirmationStep = ({ data, onSubmit, onBack, isSubmitting = false 
           Ready to <span className="text-gradient-1">Begin</span>?
         </h2>
         <p className="text-xl text-corporate-gray max-w-2xl mx-auto">
-          Review your information and let's start your brand's journey.
+          Choose your next step: book directly or send us your inquiry.
         </p>
       </div>
 
@@ -93,40 +103,58 @@ export const ConfirmationStep = ({ data, onSubmit, onBack, isSubmitting = false 
         </div>
 
         <div className="text-center mb-8">
-          <div className="inline-block p-6 bg-corporate-light rounded-2xl">
-            <p className="text-corporate-dark font-medium mb-2">
-              📧 We'll send your inquiry to our team
-            </p>
-            <p className="text-corporate-gray text-sm">
-              Expect a response within 24 hours to discuss your project
-            </p>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="p-6 bg-gradient-social-1 rounded-2xl text-white">
+              <h4 className="font-bold mb-2">🚀 Ready to Start?</h4>
+              <p className="text-sm opacity-90">
+                Book your session directly and secure your spot with payment
+              </p>
+            </div>
+            <div className="p-6 bg-corporate-light rounded-2xl">
+              <h4 className="font-bold text-corporate-dark mb-2">💬 Have Questions?</h4>
+              <p className="text-corporate-gray text-sm">
+                Send us your inquiry and we'll respond within 24 hours
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="flex gap-4">
+        <div className="space-y-4">
+          <div className="flex gap-4">
+            <Button
+              type="button"
+              onClick={onCalendlyBooking}
+              disabled={isSubmitting}
+              className="flex-1 gradient-social-1 text-white font-bold text-lg hover:scale-105 transition-all duration-300"
+            >
+              {getBookingButtonText(data.serviceType)}
+            </Button>
+            <Button
+              type="button"
+              onClick={onSubmit}
+              disabled={isSubmitting}
+              variant="outline"
+              className="flex-1 border-2 border-corporate-dark text-corporate-dark hover:bg-corporate-dark hover:text-white font-bold text-lg transition-all duration-300"
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current mr-2"></div>
+                  Sending...
+                </>
+              ) : (
+                "Send Inquiry ✉️"
+              )}
+            </Button>
+          </div>
+          
           <Button
             type="button"
             variant="outline"
             onClick={onBack}
             disabled={isSubmitting}
-            className="flex-1 border-corporate-gray text-corporate-gray hover:bg-corporate-light"
+            className="w-full border-corporate-gray text-corporate-gray hover:bg-corporate-light"
           >
-            ← Back
-          </Button>
-          <Button
-            type="button"
-            onClick={onSubmit}
-            disabled={isSubmitting}
-            className="flex-1 gradient-social-1 text-white font-bold text-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isSubmitting ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                Sending...
-              </>
-            ) : (
-              "Send Project Inquiry ✨"
-            )}
+            ← Back to Edit Details
           </Button>
         </div>
       </div>

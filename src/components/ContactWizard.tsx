@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import emailjs from '@emailjs/browser';
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -92,12 +91,22 @@ export const ContactWizard = ({ open, onOpenChange, initialService }: ContactWiz
     }
   };
 
+  const getCalendlyUrl = (serviceType?: ServiceType) => {
+    switch (serviceType) {
+      case "consultation": return "https://calendly.com/palmerhouseproductions-info/general-strategy-call";
+      case "base-glimpse": return "https://calendly.com/palmerhouseproductions-info/the-glimpse";
+      case "full-glimpse": return "https://calendly.com/palmerhouseproductions-info/the-full-glimpse";
+      case "monthly": return "https://calendly.com/palmerhouseproductions-info/discovery-call";
+      default: return "https://calendly.com/palmerhouseproductions-info/general-strategy-call";
+    }
+  };
+
   const handleSubmit = async () => {
     setIsSubmitting(true);
     
     try {
-      // Initialize EmailJS
-      emailjs.init('5UDY6-g0vIXo_2VmT');
+      // Initialize EmailJS with new public key
+      emailjs.init('x9nf4ghJ-1Q7CkoeO');
       
       // Prepare email data
       const emailData = {
@@ -126,10 +135,10 @@ Phone: ${wizardData.phone || 'Not provided'}
 Company: ${wizardData.company}`
       };
 
-      // Send email using your EmailJS credentials
+      // Send email using new template ID
       await emailjs.send(
         'service_7zd5x3u',
-        'template_b8dsioe', 
+        'template_9qrpr29', 
         emailData
       );
 
@@ -149,6 +158,11 @@ Company: ${wizardData.company}`
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleCalendlyBooking = () => {
+    const calendlyUrl = getCalendlyUrl(wizardData.serviceType);
+    window.open(calendlyUrl, '_blank');
   };
 
   const renderStep = () => {
@@ -189,6 +203,7 @@ Company: ${wizardData.company}`
           <ConfirmationStep
             data={wizardData}
             onSubmit={handleSubmit}
+            onCalendlyBooking={handleCalendlyBooking}
             onBack={prevStep}
             isSubmitting={isSubmitting}
           />

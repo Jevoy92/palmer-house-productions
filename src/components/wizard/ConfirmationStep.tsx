@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { WizardData } from "../ContactWizard";
+import { WizardData } from "./types";
 import { User, Building2, MessageSquare, Clock, DollarSign, Briefcase } from "lucide-react";
 
 interface ConfirmationStepProps {

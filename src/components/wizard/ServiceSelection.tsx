@@ -1,5 +1,5 @@
 
-import { ServiceType } from "../ContactWizard";
+import { ServiceType } from "./types";
 
 interface ServiceSelectionProps {
   selectedService?: ServiceType;

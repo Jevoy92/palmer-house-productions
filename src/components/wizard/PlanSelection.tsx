@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { ServiceType, PlanType } from "../ContactWizard";
+import { ServiceType, PlanType } from "./types";
 
 interface PlanSelectionProps {
   selectedPlan?: PlanType;

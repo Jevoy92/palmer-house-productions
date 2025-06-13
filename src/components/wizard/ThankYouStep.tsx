@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { WizardData } from "../ContactWizard";
+import { WizardData } from "./types";
 import { CheckCircle, Mail, Phone, Clock, ArrowRight } from "lucide-react";
 
 interface ThankYouStepProps {

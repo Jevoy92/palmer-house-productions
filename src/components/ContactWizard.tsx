@@ -1,4 +1,3 @@
-
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { ContactWizardProps } from "./wizard/types";
 import { useContactWizard } from "./wizard/useContactWizard";
@@ -23,7 +22,7 @@ export const ContactWizard = ({ open, onOpenChange, initialService }: ContactWiz
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden bg-gradient-to-br from-video-white to-corporate-light rounded-3xl border-0 video-shadow-lg p-0">
+      <DialogContent className={`max-w-4xl ${currentStep === 5 ? 'max-h-[95vh]' : 'max-h-[90vh]'} overflow-y-auto bg-gradient-to-br from-video-white to-corporate-light rounded-3xl border-0 video-shadow-lg p-0`}>
         {/* Step Indicator - only show for steps 1-4 */}
         {currentStep <= 4 && (
           <div className="flex items-center justify-center p-6 border-b border-corporate-light">

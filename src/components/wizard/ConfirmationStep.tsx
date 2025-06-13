@@ -158,7 +158,7 @@ export const ConfirmationStep = ({ data, onSubmit, onCalendlyBooking, onBack, is
 
       {/* Action Cards */}
       <div className="grid md:grid-cols-2 gap-6 mb-8">
-        <Card className="bg-gradient-social-1 text-white border-0 video-shadow hover:scale-105 transition-all duration-300">
+        <Card className="bg-corporate-dark text-white border-0 video-shadow hover:scale-105 transition-all duration-300">
           <CardContent className="p-6 text-center">
             <div className="text-3xl mb-3">🚀</div>
             <h4 className="font-bold text-lg mb-2">Ready to Start?</h4>

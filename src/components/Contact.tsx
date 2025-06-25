@@ -161,7 +161,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
   };
 
   return (
-    <section id="contact" className="py-12 bg-white min-h-screen">
+    <section id="contact" className="pt-24 pb-12 bg-white min-h-screen">
       <div className="max-w-6xl mx-auto px-6">
         {/* Header Section */}
         <div className="text-center mb-16">

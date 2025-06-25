@@ -1,6 +1,6 @@
-
 import { useState, useEffect } from "react";
 import { ContactWizard } from "./ContactWizard";
+import { JourneyWizard } from "./JourneyWizard";
 
 interface ContactProps {
   autoOpenWizard?: boolean;
@@ -8,10 +8,11 @@ interface ContactProps {
 
 export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
   const [isWizardOpen, setIsWizardOpen] = useState(autoOpenWizard);
+  const [isJourneyOpen, setIsJourneyOpen] = useState(false);
 
   useEffect(() => {
     if (autoOpenWizard) {
-      setIsWizardOpen(true);
+      setIsJourneyOpen(true); // Default to journey wizard
     }
   }, [autoOpenWizard]);
 
@@ -51,16 +52,26 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
           
           <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
             <button 
-              onClick={() => setIsWizardOpen(true)}
+              onClick={() => setIsJourneyOpen(true)}
               className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
             >
-              Start Project Wizard 🗺️
+              Start Your Journey 🗺️
             </button>
             <button 
               onClick={handleStrategyCall}
               className="px-10 py-5 border-2 border-social-purple text-social-purple font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow"
             >
               Book Strategy Call 📞
+            </button>
+          </div>
+
+          <div className="text-sm text-corporate-gray mb-4">
+            Prefer the detailed approach?{' '}
+            <button
+              onClick={() => setIsWizardOpen(true)}
+              className="text-social-purple font-medium hover:underline"
+            >
+              Use Full Wizard
             </button>
           </div>
 
@@ -98,6 +109,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
       </div>
 
       <ContactWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
+      <JourneyWizard open={isJourneyOpen} onOpenChange={setIsJourneyOpen} />
     </section>
   );
 };

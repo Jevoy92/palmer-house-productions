@@ -49,6 +49,7 @@ export const useJourneyWizard = () => {
 
   const nextStep = () => setCurrentStep(prev => prev + 1);
   const prevStep = () => setCurrentStep(prev => prev - 1);
+  const jumpToRecommendation = () => setCurrentStep(6);
 
   const resetJourney = () => {
     setCurrentStep(1);
@@ -146,5 +147,6 @@ Company: ${journeyData.company}`
     resetJourney,
     handleSubmit,
     getCalendlyUrl,
+    jumpToRecommendation,
   };
 };

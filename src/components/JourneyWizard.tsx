@@ -1,5 +1,6 @@
 
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { useJourneyWizard } from "./wizard/useJourneyWizard";
 import { JourneyProgress } from "./wizard/journey/JourneyProgress";
@@ -27,6 +28,7 @@ export const JourneyWizard = ({ open, onOpenChange }: JourneyWizardProps) => {
     resetJourney,
     handleSubmit,
     getCalendlyUrl,
+    jumpToRecommendation,
   } = useJourneyWizard();
 
   const handleClose = () => {
@@ -37,6 +39,18 @@ export const JourneyWizard = ({ open, onOpenChange }: JourneyWizardProps) => {
   const handleCalendlyBooking = () => {
     const calendlyUrl = getCalendlyUrl();
     window.open(calendlyUrl, '_blank');
+  };
+
+  const handleQuickRecommendation = () => {
+    // Set minimal data for quick recommendation
+    addJourneyTag('quick_recommendation');
+    updateJourneyData({ 
+      painPoint: 'quick_help',
+      businessStage: 'scaling_team',
+      videoGoal: 'lead_gen',
+      contentPace: 'basecamp'
+    });
+    jumpToRecommendation();
   };
 
   const renderStep = () => {
@@ -110,7 +124,7 @@ export const JourneyWizard = ({ open, onOpenChange }: JourneyWizardProps) => {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className={`max-w-4xl ${currentStep === 6 ? 'max-h-[95vh]' : 'max-h-[90vh]'} overflow-y-auto bg-gradient-to-br from-video-white to-corporate-light rounded-3xl border-0 video-shadow-lg p-0`}>
+      <DialogContent className={`max-w-5xl ${currentStep === 6 ? 'max-h-[95vh]' : 'max-h-[90vh]'} overflow-y-auto bg-gradient-to-br from-video-white to-corporate-light rounded-3xl border-0 video-shadow-lg p-0`}>
         <VisuallyHidden>
           <DialogTitle>Journey Wizard</DialogTitle>
           <DialogDescription>Take our interactive journey to discover your perfect video strategy</DialogDescription>
@@ -119,6 +133,20 @@ export const JourneyWizard = ({ open, onOpenChange }: JourneyWizardProps) => {
         {/* Journey Progress - show for steps 1-5 */}
         {currentStep <= 5 && (
           <JourneyProgress currentStep={currentStep} totalSteps={6} />
+        )}
+
+        {/* Quick Skip Option - show for steps 1-4 */}
+        {currentStep <= 4 && (
+          <div className="absolute top-4 right-4 z-20">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleQuickRecommendation}
+              className="text-xs border-corporate-gray text-corporate-gray hover:bg-corporate-light hover:scale-105 transition-all duration-300"
+            >
+              Get Quick Recommendation →
+            </Button>
+          </div>
         )}
 
         <div className="flex-1 overflow-y-auto">

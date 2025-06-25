@@ -112,22 +112,6 @@ export const Clients = () => {
             </button>
           </div>
         </div>
-        
-        {/* Explorer Stats */}
-        <div className="mt-16 grid md:grid-cols-3 gap-8 text-center">
-          <div className="p-6">
-            <div className="text-4xl font-black text-gradient-1 mb-2">∞</div>
-            <div className="text-corporate-gray font-medium">Uncharted Possibilities</div>
-          </div>
-          <div className="p-6">
-            <div className="text-4xl font-black text-gradient-2 mb-2">100%</div>
-            <div className="text-corporate-gray font-medium">Authentic Storytelling</div>
-          </div>
-          <div className="p-6">
-            <div className="text-4xl font-black text-gradient-3 mb-2">1st</div>
-            <div className="text-corporate-gray font-medium">To Break New Ground</div>
-          </div>
-        </div>
       </div>
     </section>
   );

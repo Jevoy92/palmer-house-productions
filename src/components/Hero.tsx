@@ -55,22 +55,6 @@ export const Hero = () => {
             Explore Our Trails ▶️
           </button>
         </div>
-        
-        {/* Social Proof */}
-        <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
-          <div className="text-center">
-            <div className="text-3xl font-black text-gradient-1 mb-2">50+</div>
-            <div className="text-sm text-corporate-gray font-medium">Journeys Captured</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-black text-gradient-2 mb-2">1M+</div>
-            <div className="text-sm text-corporate-gray font-medium">Miles of Discovery</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-black text-gradient-3 mb-2">∞</div>
-            <div className="text-sm text-corporate-gray font-medium">Stories Untold</div>
-          </div>
-        </div>
       </div>
       
       <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2">

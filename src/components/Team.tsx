@@ -85,24 +85,6 @@ export const Team = () => {
             </div>
           ))}
         </div>
-
-        {/* Team Stats */}
-        <div className="mt-24 p-12 gradient-social-4 rounded-3xl video-shadow-lg">
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <div className="text-4xl font-black text-white mb-2">500+</div>
-              <div className="text-white/90 font-medium">Adventures Documented</div>
-            </div>
-            <div>
-              <div className="text-4xl font-black text-white mb-2">15+</div>
-              <div className="text-white/90 font-medium">Years Exploring Together</div>
-            </div>
-            <div>
-              <div className="text-4xl font-black text-white mb-2">100%</div>
-              <div className="text-white/90 font-medium">Trailblazer Satisfaction</div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

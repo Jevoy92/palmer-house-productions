@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Target, Package, MapPin, Compass, Flag } from "lucide-react";
 import { FeaturesComparison } from "./pricing/FeaturesComparison";
 import { BillingCycle } from "./pricing/BillingCycle";
 import { PricingFAQ } from "./pricing/PricingFAQ";
@@ -20,31 +21,31 @@ export const PricingTrails = () => {
       waypoints: [
         { 
           id: "trailhead-1", 
-          icon: "🎯", 
+          icon: Target, 
           label: "Ideal for: Solo founders & small teams", 
           details: "Perfect for solopreneurs, service providers, and small but mighty teams (1–5) carving out their space with social storytelling and promos." 
         },
         { 
           id: "trailhead-2", 
-          icon: "📦", 
+          icon: Package, 
           label: "4 minutes content, 1 shoot day, 1 strategy session", 
           details: "15 TikTok Shorts or 1x 4-min flagship video with pre-shoot coaching and monthly success check-ins included." 
         },
         { 
           id: "trailhead-3", 
-          icon: "📍", 
+          icon: MapPin, 
           label: "Platforms: Instagram & TikTok", 
           details: "Optimized single-message promo content for the most engaging short-form video platforms." 
         },
         { 
           id: "trailhead-4", 
-          icon: "🧭", 
+          icon: Compass, 
           label: "Basic reporting & internal video support", 
           details: "Monthly strategy sessions, pre-shoot coaching, success check-ins, and basic analytics reporting." 
         },
         { 
           id: "trailhead-5", 
-          icon: "🏁", 
+          icon: Flag, 
           label: isAnnualBilling ? "$1,350/month" : "$1,500/month", 
           details: isAnnualBilling ? "Save $150/month with annual billing - perfect for consistent growth." : "Start your video journey with professional quality at an accessible price point." 
         }
@@ -59,31 +60,31 @@ export const PricingTrails = () => {
       waypoints: [
         { 
           id: "basecamp-1", 
-          icon: "🎯", 
+          icon: Target, 
           label: "Ideal for: Growing teams, e-com, scaling pros", 
           details: "Perfect for teams of 5–20, e-commerce brands, and regional service professionals scaling up with launch videos and explainers." 
         },
         { 
           id: "basecamp-2", 
-          icon: "📦", 
+          icon: Package, 
           label: "10 minutes content, 2 shoot days, 2 strategy sessions", 
           details: "6–10 short-form videos or LinkedIn reels with multi-message campaign approach and enhanced editing." 
         },
         { 
           id: "basecamp-3", 
-          icon: "📍", 
+          icon: MapPin, 
           label: "Platforms: Instagram, LinkedIn, TikTok", 
           details: "Expanded reach across professional and social platforms for maximum impact with multi-message campaigns." 
         },
         { 
           id: "basecamp-4", 
-          icon: "🧭", 
+          icon: Compass, 
           label: "Enhanced analytics & campaign strategy", 
           details: "Monthly success check-ins, pre-shoot coaching, enhanced analytics, and multi-platform campaign blueprint." 
         },
         { 
           id: "basecamp-5", 
-          icon: "🏁", 
+          icon: Flag, 
           label: isAnnualBilling ? "$3,150/month" : "$3,500/month", 
           details: isAnnualBilling ? "Save $350/month with annual billing - scale with confidence." : "Scale your presence with professional multi-platform content strategy." 
         }
@@ -98,31 +99,31 @@ export const PricingTrails = () => {
       waypoints: [
         { 
           id: "summit-1", 
-          icon: "🎯", 
+          icon: Target, 
           label: "Ideal for: B2B brands, regional agencies", 
           details: "Perfect for teams of 20–100, agencies, and B2B professionals building authority with funnel videos and deep dive series." 
         },
         { 
           id: "summit-2", 
-          icon: "📦", 
+          icon: Package, 
           label: "25 minutes content, 4 shoot days, weekly strategy", 
           details: "Weekly episodic series or stack with full cross-platform strategy and evergreen assets for consistent authority building." 
         },
         { 
           id: "summit-3", 
-          icon: "📍", 
+          icon: MapPin, 
           label: "Platforms: YouTube, LinkedIn, Instagram, TikTok", 
           details: "Comprehensive platform strategy including long-form and short-form content with full cross-platform campaigns." 
         },
         { 
           id: "summit-4", 
-          icon: "🧭", 
+          icon: Compass, 
           label: "Dedicated account lead & ROI insights", 
           details: "Weekly strategy sessions, dedicated account lead, ROI & engagement insights, and lead strategy integration." 
         },
         { 
           id: "summit-5", 
-          icon: "🏁", 
+          icon: Flag, 
           label: isAnnualBilling ? "$6,750/month" : "$7,500/month", 
           details: isAnnualBilling ? "Save $750/month with annual billing - establish lasting authority." : "Establish authority with consistent, high-impact content across all platforms." 
         }
@@ -137,31 +138,31 @@ export const PricingTrails = () => {
       waypoints: [
         { 
           id: "pinnacle-1", 
-          icon: "🎯", 
+          icon: Target, 
           label: "Ideal for: Franchises, global campaigns, enterprise", 
           details: "For national franchises, elite agencies, and organizations ready to dominate with paid ads, global rollouts, and training systems." 
         },
         { 
           id: "pinnacle-2", 
-          icon: "📦", 
+          icon: Package, 
           label: "75 minutes content, unlimited shoots, weekly + quarterly", 
           details: "Full asset library including ads, onboarding, training, and brand content with enterprise-level campaign systems." 
         },
         { 
           id: "pinnacle-3", 
-          icon: "📍", 
+          icon: MapPin, 
           label: "All major platforms + internal systems", 
           details: "Complete omnichannel presence including internal communications, training assets, and global campaign coordination." 
         },
         { 
           id: "pinnacle-4", 
-          icon: "🧭", 
+          icon: Compass, 
           label: "Pre-production manager & real-time dashboard", 
           details: "Dedicated pre-production manager, real-time analytics dashboard, Slack/direct line access, and on-demand support." 
         },
         { 
           id: "pinnacle-5", 
-          icon: "🏁", 
+          icon: Flag, 
           label: isAnnualBilling ? "$18,000/month" : "$20,000/month", 
           details: isAnnualBilling ? "Save $2,000/month with annual billing - enterprise excellence." : "Premium enterprise solution with unlimited shoots and dedicated team support." 
         }
@@ -263,15 +264,15 @@ export const PricingTrails = () => {
                           onMouseEnter={() => setHoveredWaypoint(waypoint.id)}
                           onMouseLeave={() => setHoveredWaypoint(null)}
                         />
-                        <text
-                          x="100"
-                          y={30 + index * 80}
-                          textAnchor="middle"
-                          dominantBaseline="middle"
-                          className="text-xl font-bold fill-white pointer-events-none"
+                        <foreignObject
+                          x="88"
+                          y={30 + index * 80 - 12}
+                          width="24"
+                          height="24"
+                          className="pointer-events-none"
                         >
-                          {waypoint.icon}
-                        </text>
+                          <waypoint.icon color="white" size={24} />
+                        </foreignObject>
                       </g>
                     ))}
                   </svg>
@@ -293,7 +294,9 @@ export const PricingTrails = () => {
                     >
                       <div className="bg-video-white/95 backdrop-blur-sm p-8 rounded-2xl video-shadow-lg max-w-lg border border-gray-100 min-w-[280px]">
                         <div className="flex items-start gap-4 mb-3">
-                          <div className="text-2xl flex-shrink-0 mt-1">{waypoint.icon}</div>
+                          <div className="text-2xl flex-shrink-0 mt-1">
+                            <waypoint.icon color="#4b5563" size={24} />
+                          </div>
                           <div>
                             <p className="text-base font-bold text-corporate-dark mb-3 leading-tight">{waypoint.label}</p>
                             <p className="text-sm text-corporate-gray leading-relaxed">{waypoint.details}</p>

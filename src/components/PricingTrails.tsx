@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { ContactWizard } from "./ContactWizard";
+import { useNavigate } from "react-router-dom";
 
 export const PricingTrails = () => {
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
+  const navigate = useNavigate();
   const [hoveredWaypoint, setHoveredWaypoint] = useState<string | null>(null);
 
   const pricingPaths = [
@@ -61,7 +61,7 @@ export const PricingTrails = () => {
   ];
 
   const handleTrailClick = (tier: string) => {
-    setIsWizardOpen(true);
+    navigate('/contact', { state: { selectedTier: tier } });
   };
 
   return (
@@ -211,19 +211,13 @@ export const PricingTrails = () => {
           </p>
           
           <button 
-            onClick={() => setIsWizardOpen(true)}
+            onClick={() => navigate('/contact')}
             className="px-12 py-6 gradient-social-1 text-white font-bold rounded-3xl hover:scale-105 transition-all duration-300 text-xl video-shadow-lg"
           >
             Start Your Journey →
           </button>
         </div>
       </div>
-
-      <ContactWizard 
-        open={isWizardOpen} 
-        onOpenChange={setIsWizardOpen}
-        initialService="monthly"
-      />
     </section>
   );
 };

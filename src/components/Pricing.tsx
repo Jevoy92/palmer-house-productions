@@ -202,6 +202,9 @@ export const Pricing = () => {
             <div className="mt-12 text-corporate-gray text-4xl tracking-widest">⸻ ⸻ ⸻</div>
           </div>
 
+          {/* Add Billing Cycle Component */}
+          <BillingCycle onCycleChange={handleBillingChange} />
+
           {/* Trail Map */}
           <div className="grid lg:grid-cols-4 gap-8 mb-20">
             {pricingPaths.map((path, pathIndex) => (

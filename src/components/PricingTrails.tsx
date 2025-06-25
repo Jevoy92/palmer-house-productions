@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FeaturesComparison } from "./pricing/FeaturesComparison";
@@ -208,6 +209,9 @@ export const PricingTrails = () => {
             </div>
           </div>
 
+          {/* Billing Cycle moved above */}
+          <BillingCycle onCycleChange={handleBillingChange} />
+
           {/* Trail Map */}
           <div className="grid lg:grid-cols-4 gap-8 mb-20">
             {pricingPaths.map((path, pathIndex) => (
@@ -344,7 +348,6 @@ export const PricingTrails = () => {
       </section>
 
       {/* Sections with billing integration */}
-      <BillingCycle onCycleChange={handleBillingChange} />
       <FeaturesComparison isAnnualBilling={isAnnualBilling} />
       <PricingFAQ />
     </div>

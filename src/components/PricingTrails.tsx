@@ -12,58 +12,158 @@ export const PricingTrails = () => {
   const pricingPaths = [
     {
       tier: "Trailhead",
-      price: "$1,500/mo",
-      annualPrice: "$1,350/mo",
+      monthlyPrice: 1500,
+      annualSavings: 10,
       gradient: "gradient-social-1",
       trailColor: "#8b5cf6",
       waypoints: [
-        { id: "trailhead-1", icon: "🎯", label: "Ideal for: solo founders & small teams", details: "Perfect for solopreneurs, service providers, and small but mighty teams (1–5) carving out their space." },
-        { id: "trailhead-2", icon: "📦", label: "Suggested Formats: 15 TikTok shorts or 4-min flagship", details: "Up to 4 minutes of premium content per month with flexible format options." },
-        { id: "trailhead-3", icon: "📍", label: "Platforms: Instagram, TikTok", details: "Optimized content for the most engaging short-form video platforms." },
-        { id: "trailhead-4", icon: "🧭", label: "1 shoot day, 1 strategy session, basic analytics", details: "Monthly strategy session, pre-shoot coaching, and success check-ins included." },
-        { id: "trailhead-5", icon: "🏁", label: isAnnualBilling ? "$1,350/month" : "$1,500/month", details: "Start your video journey with professional quality at an accessible price point." }
+        { 
+          id: "trailhead-1", 
+          icon: "🎯", 
+          label: "Ideal for: Solo founders & small teams", 
+          details: "Perfect for solopreneurs, service providers, and small but mighty teams (1–5) carving out their space with social storytelling and promos." 
+        },
+        { 
+          id: "trailhead-2", 
+          icon: "📦", 
+          label: "4 minutes content, 1 shoot day, 1 strategy session", 
+          details: "15 TikTok Shorts or 1x 4-min flagship video with pre-shoot coaching and monthly success check-ins included." 
+        },
+        { 
+          id: "trailhead-3", 
+          icon: "📍", 
+          label: "Platforms: Instagram & TikTok", 
+          details: "Optimized single-message promo content for the most engaging short-form video platforms." 
+        },
+        { 
+          id: "trailhead-4", 
+          icon: "🧭", 
+          label: "Basic reporting & internal video support", 
+          details: "Monthly strategy sessions, pre-shoot coaching, success check-ins, and basic analytics reporting." 
+        },
+        { 
+          id: "trailhead-5", 
+          icon: "🏁", 
+          label: isAnnualBilling ? "$1,350/month" : "$1,500/month", 
+          details: isAnnualBilling ? "Save $150/month with annual billing - perfect for consistent growth." : "Start your video journey with professional quality at an accessible price point." 
+        }
       ]
     },
     {
       tier: "Basecamp",
-      price: "$3,500/mo",
-      annualPrice: "$3,150/mo",
+      monthlyPrice: 3500,
+      annualSavings: 10,
       gradient: "gradient-social-2",
       trailColor: "#f59e0b",
       waypoints: [
-        { id: "basecamp-1", icon: "🎯", label: "Ideal for: growing teams, e-com, scaling pros", details: "Perfect for teams of 5–20, e-commerce brands, and regional service professionals scaling up." },
-        { id: "basecamp-2", icon: "📦", label: "Suggested Formats: 6–10 short-form or LinkedIn reels", details: "10 minutes of content with multi-platform optimization and premiere editing." },
-        { id: "basecamp-3", icon: "📍", label: "Platforms: Instagram, LinkedIn, TikTok", details: "Expanded reach across professional and social platforms for maximum impact." },
-        { id: "basecamp-4", icon: "🧭", label: "2 shoot days, 2 strategy sessions, enhanced editing", details: "Multi-campaign content blueprint with enhanced analytics and reporting." },
-        { id: "basecamp-5", icon: "🏁", label: isAnnualBilling ? "$3,150/month" : "$3,500/month", details: "Scale your presence with professional multi-platform content strategy." }
+        { 
+          id: "basecamp-1", 
+          icon: "🎯", 
+          label: "Ideal for: Growing teams, e-com, scaling pros", 
+          details: "Perfect for teams of 5–20, e-commerce brands, and regional service professionals scaling up with launch videos and explainers." 
+        },
+        { 
+          id: "basecamp-2", 
+          icon: "📦", 
+          label: "10 minutes content, 2 shoot days, 2 strategy sessions", 
+          details: "6–10 short-form videos or LinkedIn reels with multi-message campaign approach and enhanced editing." 
+        },
+        { 
+          id: "basecamp-3", 
+          icon: "📍", 
+          label: "Platforms: Instagram, LinkedIn, TikTok", 
+          details: "Expanded reach across professional and social platforms for maximum impact with multi-message campaigns." 
+        },
+        { 
+          id: "basecamp-4", 
+          icon: "🧭", 
+          label: "Enhanced analytics & campaign strategy", 
+          details: "Monthly success check-ins, pre-shoot coaching, enhanced analytics, and multi-platform campaign blueprint." 
+        },
+        { 
+          id: "basecamp-5", 
+          icon: "🏁", 
+          label: isAnnualBilling ? "$3,150/month" : "$3,500/month", 
+          details: isAnnualBilling ? "Save $350/month with annual billing - scale with confidence." : "Scale your presence with professional multi-platform content strategy." 
+        }
       ]
     },
     {
       tier: "Summit",
-      price: "$7,500/mo",
-      annualPrice: "$6,750/mo",
+      monthlyPrice: 7500,
+      annualSavings: 10,
       gradient: "gradient-social-3",
       trailColor: "#06b6d4",
       waypoints: [
-        { id: "summit-1", icon: "🎯", label: "Ideal for: B2B brands, regional agencies", details: "Perfect for teams of 20–100, agencies, and B2B professionals building authority." },
-        { id: "summit-2", icon: "📦", label: "Suggested Formats: Weekly series, episodic sets", details: "25 minutes of content with full series rollouts and evergreen assets." },
-        { id: "summit-3", icon: "📍", label: "Platforms: YouTube, LinkedIn, Instagram, TikTok", details: "Comprehensive platform strategy including long-form and short-form content." },
-        { id: "summit-4", icon: "🧭", label: "Cross-platform campaign, analytics & lead strategy", details: "Weekly strategy sessions, dedicated account lead, and deep-dive ROI reporting." },
-        { id: "summit-5", icon: "🏁", label: isAnnualBilling ? "$6,750/month" : "$7,500/month", details: "Establish authority with consistent, high-impact content across all platforms." }
+        { 
+          id: "summit-1", 
+          icon: "🎯", 
+          label: "Ideal for: B2B brands, regional agencies", 
+          details: "Perfect for teams of 20–100, agencies, and B2B professionals building authority with funnel videos and deep dive series." 
+        },
+        { 
+          id: "summit-2", 
+          icon: "📦", 
+          label: "25 minutes content, 4 shoot days, weekly strategy", 
+          details: "Weekly episodic series or stack with full cross-platform strategy and evergreen assets for consistent authority building." 
+        },
+        { 
+          id: "summit-3", 
+          icon: "📍", 
+          label: "Platforms: YouTube, LinkedIn, Instagram, TikTok", 
+          details: "Comprehensive platform strategy including long-form and short-form content with full cross-platform campaigns." 
+        },
+        { 
+          id: "summit-4", 
+          icon: "🧭", 
+          label: "Dedicated account lead & ROI insights", 
+          details: "Weekly strategy sessions, dedicated account lead, ROI & engagement insights, and lead strategy integration." 
+        },
+        { 
+          id: "summit-5", 
+          icon: "🏁", 
+          label: isAnnualBilling ? "$6,750/month" : "$7,500/month", 
+          details: isAnnualBilling ? "Save $750/month with annual billing - establish lasting authority." : "Establish authority with consistent, high-impact content across all platforms." 
+        }
       ]
     },
     {
       tier: "Pinnacle",
-      price: "$20,000/mo",
-      annualPrice: "$18,000/mo",
+      monthlyPrice: 20000,
+      annualSavings: 10,
       gradient: "gradient-social-4",
       trailColor: "#ec4899",
       waypoints: [
-        { id: "pinnacle-1", icon: "🎯", label: "Ideal for: franchises, internal ops, global campaigns", details: "For national franchises, elite agencies, and organizations ready to dominate their space." },
-        { id: "pinnacle-2", icon: "📦", label: "Suggested Formats: Full asset library, ads, training", details: "75 minutes of cinematic content with unlimited creative possibilities." },
-        { id: "pinnacle-3", icon: "📍", label: "Platforms: All major channels + internal systems", details: "Complete omnichannel presence including internal communications and training assets." },
-        { id: "pinnacle-4", icon: "🧭", label: "Unlimited shoots, dashboards, pre-pro manager", details: "Dedicated pre-production manager, real-time analytics dashboard, and weekly strategy." },
-        { id: "pinnacle-5", icon: "🏁", label: isAnnualBilling ? "$18,000/month" : "$20,000/month", details: "Premium enterprise solution with unlimited shoots and dedicated team support." }
+        { 
+          id: "pinnacle-1", 
+          icon: "🎯", 
+          label: "Ideal for: Franchises, global campaigns, enterprise", 
+          details: "For national franchises, elite agencies, and organizations ready to dominate with paid ads, global rollouts, and training systems." 
+        },
+        { 
+          id: "pinnacle-2", 
+          icon: "📦", 
+          label: "75 minutes content, unlimited shoots, weekly + quarterly", 
+          details: "Full asset library including ads, onboarding, training, and brand content with enterprise-level campaign systems." 
+        },
+        { 
+          id: "pinnacle-3", 
+          icon: "📍", 
+          label: "All major platforms + internal systems", 
+          details: "Complete omnichannel presence including internal communications, training assets, and global campaign coordination." 
+        },
+        { 
+          id: "pinnacle-4", 
+          icon: "🧭", 
+          label: "Pre-production manager & real-time dashboard", 
+          details: "Dedicated pre-production manager, real-time analytics dashboard, Slack/direct line access, and on-demand support." 
+        },
+        { 
+          id: "pinnacle-5", 
+          icon: "🏁", 
+          label: isAnnualBilling ? "$18,000/month" : "$20,000/month", 
+          details: isAnnualBilling ? "Save $2,000/month with annual billing - enterprise excellence." : "Premium enterprise solution with unlimited shoots and dedicated team support." 
+        }
       ]
     }
   ];
@@ -74,6 +174,14 @@ export const PricingTrails = () => {
 
   const handleBillingChange = (isAnnual: boolean) => {
     setIsAnnualBilling(isAnnual);
+  };
+
+  const calculatePrice = (monthlyPrice: number, annualSavings: number) => {
+    if (isAnnualBilling) {
+      const annualPrice = monthlyPrice * (1 - annualSavings / 100);
+      return `$${annualPrice.toLocaleString()}/mo`;
+    }
+    return `$${monthlyPrice.toLocaleString()}/mo`;
   };
 
   return (
@@ -116,7 +224,7 @@ export const PricingTrails = () => {
                   <div className="text-xl text-corporate-gray">Trail</div>
                 </div>
 
-                {/* SVG Trail Path */}
+                {/* SVG Trail Path - keeping existing code for the trail visualization */}
                 <div className="relative h-[450px] mb-8">
                   <svg
                     className="absolute inset-0 w-full h-full"
@@ -124,7 +232,6 @@ export const PricingTrails = () => {
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    {/* Trail Path */}
                     <path
                       d="M100 30 Q120 90 80 160 Q60 230 120 300 Q140 370 100 420"
                       stroke={path.trailColor}
@@ -134,7 +241,6 @@ export const PricingTrails = () => {
                       className="opacity-30"
                     />
                     
-                    {/* Waypoints */}
                     {path.waypoints.map((waypoint, index) => (
                       <g key={waypoint.id}>
                         <circle
@@ -162,7 +268,7 @@ export const PricingTrails = () => {
                     ))}
                   </svg>
 
-                  {/* Waypoint Details - Now Centered Above */}
+                  {/* Waypoint Details */}
                   {path.waypoints.map((waypoint, index) => (
                     <div
                       key={waypoint.id}
@@ -173,7 +279,7 @@ export const PricingTrails = () => {
                       }`}
                       style={{
                         left: '50%',
-                        top: `${7 + index * 17.5 - 12}%`, // Positioned above the waypoint
+                        top: `${7 + index * 17.5 - 12}%`,
                         transform: 'translateX(-50%) translateY(-100%)'
                       }}
                     >
@@ -186,7 +292,6 @@ export const PricingTrails = () => {
                           </div>
                         </div>
                       </div>
-                      {/* Arrow pointing down to waypoint */}
                       <div 
                         className="absolute top-full left-1/2 w-0 h-0 border-l-[10px] border-r-[10px] border-t-[10px] border-transparent border-t-video-white/95 -translate-x-1/2"
                       />
@@ -197,10 +302,10 @@ export const PricingTrails = () => {
                 {/* Final CTA */}
                 <div className="text-center">
                   <div className="text-4xl font-black text-corporate-dark mb-4">
-                    {isAnnualBilling ? path.annualPrice : path.price}
+                    {calculatePrice(path.monthlyPrice, path.annualSavings)}
                     {isAnnualBilling && (
                       <div className="text-sm text-green-600 font-medium">
-                        Save 10% annually
+                        Save {path.annualSavings}% annually
                       </div>
                     )}
                   </div>
@@ -215,7 +320,7 @@ export const PricingTrails = () => {
             ))}
           </div>
 
-          {/* Bottom Section */}
+          {/* Bottom Section - keeping existing code */}
           <div className="text-center">
             <div className="text-corporate-gray text-4xl mb-12 tracking-widest">⸻ ⸻ ⸻</div>
             <div className="inline-block px-8 py-4 gradient-social-4 rounded-full text-white font-bold text-xl mb-8 video-shadow-lg">
@@ -240,9 +345,9 @@ export const PricingTrails = () => {
         </div>
       </section>
 
-      {/* New Sections */}
+      {/* Sections with billing integration */}
       <BillingCycle onCycleChange={handleBillingChange} />
-      <FeaturesComparison />
+      <FeaturesComparison isAnnualBilling={isAnnualBilling} />
       <PricingFAQ />
     </div>
   );

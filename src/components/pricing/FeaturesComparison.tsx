@@ -2,45 +2,198 @@
 import { Check, X } from "lucide-react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-export const FeaturesComparison = () => {
-  const features = [
-    {
-      category: "Content Creation",
-      items: [
-        { feature: "Monthly Content Minutes", trailhead: "4 minutes", basecamp: "10 minutes", summit: "25 minutes", pinnacle: "75 minutes" },
-        { feature: "Shoot Days per Month", trailhead: "1", basecamp: "2", summit: "4", pinnacle: "Unlimited" },
-        { feature: "Strategy Sessions", trailhead: "1", basecamp: "2", summit: "Weekly", pinnacle: "Weekly + On-demand" },
-        { feature: "Pre-Production Manager", trailhead: false, basecamp: false, summit: false, pinnacle: true },
-        { feature: "Dedicated Account Lead", trailhead: false, basecamp: false, summit: true, pinnacle: true }
-      ]
+interface FeaturesComparisonProps {
+  isAnnualBilling: boolean;
+}
+
+export const FeaturesComparison = ({ isAnnualBilling }: FeaturesComparisonProps) => {
+  const tiers = [
+    { 
+      name: "Trailhead", 
+      monthlyPrice: 1500, 
+      gradient: "gradient-social-1" 
     },
-    {
-      category: "Platform Coverage",
-      items: [
-        { feature: "Instagram & TikTok", trailhead: true, basecamp: true, summit: true, pinnacle: true },
-        { feature: "LinkedIn", trailhead: false, basecamp: true, summit: true, pinnacle: true },
-        { feature: "YouTube", trailhead: false, basecamp: false, summit: true, pinnacle: true },
-        { feature: "Internal Systems", trailhead: false, basecamp: false, summit: false, pinnacle: true },
-        { feature: "All Major Channels", trailhead: false, basecamp: false, summit: false, pinnacle: true }
-      ]
+    { 
+      name: "Basecamp", 
+      monthlyPrice: 3500, 
+      gradient: "gradient-social-2" 
     },
-    {
-      category: "Analytics & Reporting",
-      items: [
-        { feature: "Basic Analytics", trailhead: true, basecamp: false, summit: false, pinnacle: false },
-        { feature: "Enhanced Analytics", trailhead: false, basecamp: true, summit: false, pinnacle: false },
-        { feature: "Deep-dive ROI Reporting", trailhead: false, basecamp: false, summit: true, pinnacle: true },
-        { feature: "Real-time Dashboard", trailhead: false, basecamp: false, summit: false, pinnacle: true },
-        { feature: "Lead Strategy Integration", trailhead: false, basecamp: false, summit: true, pinnacle: true }
-      ]
+    { 
+      name: "Summit", 
+      monthlyPrice: 7500, 
+      gradient: "gradient-social-3" 
+    },
+    { 
+      name: "Pinnacle", 
+      monthlyPrice: 20000, 
+      gradient: "gradient-social-4" 
     }
   ];
 
-  const tiers = [
-    { name: "Trailhead", price: "$1,500", gradient: "gradient-social-1" },
-    { name: "Basecamp", price: "$3,500", gradient: "gradient-social-2" },
-    { name: "Summit", price: "$7,500", gradient: "gradient-social-3" },
-    { name: "Pinnacle", price: "$20,000", gradient: "gradient-social-4" }
+  const calculatePrice = (monthlyPrice: number) => {
+    if (isAnnualBilling) {
+      const annualPrice = monthlyPrice * 0.9; // 10% discount
+      return `$${annualPrice.toLocaleString()}/mo`;
+    }
+    return `$${monthlyPrice.toLocaleString()}/mo`;
+  };
+
+  const features = [
+    {
+      category: "Content Creation & Support",
+      items: [
+        { 
+          feature: "Monthly Content Minutes", 
+          trailhead: "4 minutes", 
+          basecamp: "10 minutes", 
+          summit: "25 minutes", 
+          pinnacle: "75 minutes" 
+        },
+        { 
+          feature: "Shoot Days per Month", 
+          trailhead: "1", 
+          basecamp: "2", 
+          summit: "4", 
+          pinnacle: "Unlimited" 
+        },
+        { 
+          feature: "Strategy Sessions", 
+          trailhead: "1", 
+          basecamp: "2", 
+          summit: "Weekly", 
+          pinnacle: "Weekly + Quarterly" 
+        },
+        { 
+          feature: "Pre-shoot Coaching", 
+          trailhead: true, 
+          basecamp: true, 
+          summit: true, 
+          pinnacle: true 
+        },
+        { 
+          feature: "Success Check-ins", 
+          trailhead: "Monthly", 
+          basecamp: "Monthly", 
+          summit: "Weekly", 
+          pinnacle: "Slack/Direct + On-demand" 
+        },
+        { 
+          feature: "Dedicated Account Lead", 
+          trailhead: false, 
+          basecamp: false, 
+          summit: true, 
+          pinnacle: true 
+        },
+        { 
+          feature: "Pre-Production Manager", 
+          trailhead: false, 
+          basecamp: false, 
+          summit: false, 
+          pinnacle: true 
+        }
+      ]
+    },
+    {
+      category: "Platform Coverage & Output Style",
+      items: [
+        { 
+          feature: "Instagram & TikTok", 
+          trailhead: true, 
+          basecamp: true, 
+          summit: true, 
+          pinnacle: true 
+        },
+        { 
+          feature: "LinkedIn", 
+          trailhead: false, 
+          basecamp: true, 
+          summit: true, 
+          pinnacle: true 
+        },
+        { 
+          feature: "YouTube", 
+          trailhead: false, 
+          basecamp: false, 
+          summit: true, 
+          pinnacle: true 
+        },
+        { 
+          feature: "Internal Video Support", 
+          trailhead: true, 
+          basecamp: true, 
+          summit: true, 
+          pinnacle: true 
+        },
+        { 
+          feature: "All Major Platforms + Internal Systems", 
+          trailhead: false, 
+          basecamp: false, 
+          summit: false, 
+          pinnacle: true 
+        },
+        { 
+          feature: "Suggested Output Formats", 
+          trailhead: "15 TikTok Shorts or 1x 4-min flagship", 
+          basecamp: "6–10 short-form or LinkedIn reels", 
+          summit: "Weekly episodic series or stack", 
+          pinnacle: "Full asset library (ads, training, brand)" 
+        },
+        { 
+          feature: "Campaign Style", 
+          trailhead: "Single-message promo", 
+          basecamp: "Multi-message campaign", 
+          summit: "Full cross-platform strategy", 
+          pinnacle: "Enterprise-level campaign systems" 
+        },
+        { 
+          feature: "Use Case Examples", 
+          trailhead: "Social storytelling, promos", 
+          basecamp: "Launch videos, intros, explainers", 
+          summit: "Funnel videos, deep dives, series", 
+          pinnacle: "Paid ads, global rollouts, training" 
+        }
+      ]
+    },
+    {
+      category: "Analytics & Performance",
+      items: [
+        { 
+          feature: "Basic Reporting", 
+          trailhead: true, 
+          basecamp: true, 
+          summit: false, 
+          pinnacle: false 
+        },
+        { 
+          feature: "Enhanced Analytics", 
+          trailhead: false, 
+          basecamp: true, 
+          summit: true, 
+          pinnacle: true 
+        },
+        { 
+          feature: "ROI & Engagement Insights", 
+          trailhead: false, 
+          basecamp: false, 
+          summit: true, 
+          pinnacle: true 
+        },
+        { 
+          feature: "Real-Time Dashboard", 
+          trailhead: false, 
+          basecamp: false, 
+          summit: false, 
+          pinnacle: true 
+        },
+        { 
+          feature: "Lead Strategy Integration", 
+          trailhead: false, 
+          basecamp: false, 
+          summit: true, 
+          pinnacle: true 
+        }
+      ]
+    }
   ];
 
   const renderFeatureValue = (value: any) => {
@@ -51,7 +204,7 @@ export const FeaturesComparison = () => {
         <X className="w-5 h-5 text-gray-300 mx-auto" />
       );
     }
-    return <span className="font-medium text-corporate-dark">{value}</span>;
+    return <span className="font-medium text-corporate-dark text-sm leading-tight">{value}</span>;
   };
 
   return (
@@ -66,6 +219,11 @@ export const FeaturesComparison = () => {
           </h2>
           <p className="text-xl text-corporate-gray max-w-3xl mx-auto">
             Compare what's included in each trail to find the perfect fit for your journey.
+            {isAnnualBilling && (
+              <span className="block text-green-600 font-bold mt-2">
+                🎉 Annual pricing shown with 10% savings!
+              </span>
+            )}
           </p>
         </div>
 
@@ -81,7 +239,14 @@ export const FeaturesComparison = () => {
                     <div className={`inline-block px-4 py-2 ${tier.gradient} rounded-xl text-white font-bold mb-2`}>
                       {tier.name}
                     </div>
-                    <div className="text-sm text-corporate-gray">{tier.price}/mo</div>
+                    <div className="text-sm text-corporate-gray">
+                      {calculatePrice(tier.monthlyPrice)}
+                      {isAnnualBilling && (
+                        <div className="text-xs text-green-600 font-medium mt-1">
+                          Save 10%
+                        </div>
+                      )}
+                    </div>
                   </TableHead>
                 ))}
               </TableRow>
@@ -118,6 +283,30 @@ export const FeaturesComparison = () => {
             </TableBody>
           </Table>
         </div>
+
+        {/* Additional Benefits for Annual Billing */}
+        {isAnnualBilling && (
+          <div className="mt-12 bg-green-50 rounded-2xl p-8 border border-green-200">
+            <div className="text-center">
+              <div className="text-2xl mb-4">🎉</div>
+              <h3 className="text-2xl font-bold text-green-800 mb-4">Annual Billing Benefits</h3>
+              <div className="grid md:grid-cols-3 gap-6 text-sm text-green-700">
+                <div>
+                  <div className="font-bold mb-2">💰 Save 10% on All Plans</div>
+                  <p>Lock in your video journey for 12 months and enjoy significant savings.</p>
+                </div>
+                <div>
+                  <div className="font-bold mb-2">🚀 Priority Booking</div>
+                  <p>Get first priority on shoot day scheduling and strategy session bookings.</p>
+                </div>
+                <div>
+                  <div className="font-bold mb-2">⭐ Exclusive Strategy Sessions</div>
+                  <p>Access to quarterly deep-dive strategy sessions to maximize your ROI.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

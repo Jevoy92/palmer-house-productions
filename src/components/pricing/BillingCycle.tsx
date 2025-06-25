@@ -50,21 +50,36 @@ export const BillingCycle = ({ onCycleChange }: BillingCycleProps) => {
               }`}
             >
               Annual
-              {isAnnual && (
-                <div className="absolute -top-3 -right-3 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                  SAVE 10%
-                </div>
-              )}
+              <div className="absolute -top-2 -right-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                SAVE 10%
+              </div>
             </button>
           </div>
 
           {isAnnual && (
-            <div className="mt-6 p-4 bg-green-50 rounded-xl border border-green-200">
-              <div className="text-green-700 font-bold text-lg mb-2">🎉 Annual Savings!</div>
-              <div className="text-sm text-green-600">
-                Lock in your video journey for 12 months and save 10% on all plans.
-                <br />
-                <span className="font-medium">Plus: Priority booking & exclusive strategy sessions</span>
+            <div className="mt-6 p-6 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-200">
+              <div className="text-green-700 font-bold text-xl mb-3">🎉 Annual Savings Unlocked!</div>
+              <div className="space-y-2 text-sm text-green-600">
+                <div className="flex items-center justify-center space-x-2">
+                  <span>💰</span>
+                  <span className="font-medium">10% off all plans for 12 months</span>
+                </div>
+                <div className="flex items-center justify-center space-x-2">
+                  <span>🚀</span>
+                  <span className="font-medium">Priority booking & scheduling</span>
+                </div>
+                <div className="flex items-center justify-center space-x-2">
+                  <span>⭐</span>
+                  <span className="font-medium">Exclusive quarterly strategy sessions</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {!isAnnual && (
+            <div className="mt-6 p-4 bg-gray-50 rounded-xl border border-gray-200">
+              <div className="text-gray-600 text-sm">
+                💡 <span className="font-medium">Tip:</span> Switch to annual billing to save 10% and unlock exclusive benefits!
               </div>
             </div>
           )}

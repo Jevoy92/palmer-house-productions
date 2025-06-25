@@ -56,6 +56,41 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
     jumpToRecommendation();
   };
 
+  const handleViewAllReviews = () => {
+    window.open('https://www.google.com/search?q=palmer+house+productions&oq=palmer+house+productions&gs_lcrp=EgZjaHJvbWUqBggAEEUYOzIGCAAQRRg7MgYIARBFGD0yBggCEEUYPTIGCAMQRRhB0gEINTI0OWowajeoAgCwAgA&sourceid=chrome&ie=UTF-8#lrd=0x54905d5328d9caa5:0x5946127015c6ae31,1,,,,', '_blank');
+  };
+
+  const reviews = [
+    {
+      name: "Isabella Johnstun",
+      reviewCount: "2 reviews",
+      timeAgo: "a week ago",
+      text: "Jevoy and his team did an amazing job with pictures & videos of our team and stores. Our management was blown away by the quality, professionalism, and speed at which their media was produced. They took the time to understand our goals and absolutely delivered on every promise. We felt like they took our feedback really well and took the time to make the final product better than we every imagined! I'm looking forward to working with them on future projects!"
+    },
+    {
+      name: "Athan Seyler",
+      reviewCount: "Local Guide · 8 reviews",
+      timeAgo: "a month ago",
+      text: "Jevoy and the Palmer House Team were fantastic! Getting in front of the camera for photos is one stressor, but jumping in front of the camera to make a video is even more stressful. Jevoy has a gift of helping his clients become grounded again, making the process enjoyable and fun. Would highly recommend for anyone looking to add videos to their marketing plan as Jevoy also jumps into marketing strategy with his videos."
+    },
+    {
+      name: "Sarah Dylan Jensen",
+      reviewCount: "Local Guide · 32 reviews · 54 photos",
+      timeAgo: "9 months ago",
+      text: "Awesome experience from start to finish working with Jevoy. He was in constant communication, detail-oriented and provided exactly what we were looking for in our organization's marketing videos and photos."
+    }
+  ];
+
+  const renderStars = () => {
+    return (
+      <div className="flex space-x-1 mb-3">
+        {[...Array(5)].map((_, i) => (
+          <span key={i} className="text-yellow-400 text-lg">★</span>
+        ))}
+      </div>
+    );
+  };
+
   const renderEmbeddedStep = () => {
     switch (currentStep) {
       case 1:
@@ -141,8 +176,8 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 mb-16">
-          {/* Left Column - Embedded Journey Form */}
+        {/* Full-width Journey Form */}
+        <div className="max-w-4xl mx-auto mb-16">
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden relative">
             {currentStep <= 5 && (
               <JourneyProgress currentStep={currentStep} totalSteps={6} />
@@ -165,11 +200,19 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
               {renderEmbeddedStep()}
             </div>
           </div>
+        </div>
 
-          {/* Right Column - Journey Preview */}
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">Your Expedition Preview</h2>
-            <div className="space-y-6">
+        {/* Expedition Preview - Now under the form */}
+        <div className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Your Expedition Preview</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Here's a glimpse of the journey ahead as we guide you to your perfect video strategy.
+            </p>
+          </div>
+          
+          <div className="max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-6">
               <div className="bg-orange-50 rounded-xl p-6 border border-orange-100">
                 <div className="flex items-start space-x-4">
                   <div className="text-3xl">🌲</div>
@@ -203,45 +246,43 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
           </div>
         </div>
 
-        {/* Fellow Explorers Section */}
+        {/* Google Reviews Section */}
         <div className="mb-16">
           <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Fellow Explorers</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
-              <div className="mb-4">
-                <p className="text-gray-700 italic mb-4">
-                  "Palmer House transformed our brand story into compelling video content that resonates with our audience."
+            {reviews.map((review, index) => (
+              <div key={index} className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
+                {renderStars()}
+                
+                <div className="mb-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-1">
+                    {review.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-1">{review.reviewCount}</p>
+                  <p className="text-gray-600 text-sm">{review.timeAgo}</p>
+                </div>
+                
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  "{review.text}"
                 </p>
+                
+                {/* Google Badge */}
+                <div className="flex items-center space-x-2">
+                  <div className="w-6 h-6 bg-gradient-to-r from-blue-500 via-red-500 via-yellow-500 to-green-500 rounded-full"></div>
+                  <span className="text-gray-600 text-sm font-medium">Google Review</span>
+                </div>
               </div>
-              <div className="border-t pt-4">
-                <p className="font-semibold text-gray-900">Sarah Johnson</p>
-                <p className="text-sm text-gray-600">CEO, TechStart Solutions</p>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
-              <div className="mb-4">
-                <p className="text-gray-700 italic mb-4">
-                  "The journey approach helped us discover exactly what our business needed. The results speak for themselves."
-                </p>
-              </div>
-              <div className="border-t pt-4">
-                <p className="font-semibold text-gray-900">Michael Chen</p>
-                <p className="text-sm text-gray-600">Founder, GrowthLab</p>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
-              <div className="mb-4">
-                <p className="text-gray-700 italic mb-4">
-                  "Professional, creative, and results-driven. Palmer House exceeded our expectations in every way."
-                </p>
-              </div>
-              <div className="border-t pt-4">
-                <p className="font-semibold text-gray-900">Emma Rodriguez</p>
-                <p className="text-sm text-gray-600">Marketing Director, Innovate Co</p>
-              </div>
-            </div>
+            ))}
+          </div>
+          
+          {/* View All Reviews CTA */}
+          <div className="text-center mt-8">
+            <Button 
+              onClick={handleViewAllReviews}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium"
+            >
+              View All Google Reviews ⭐
+            </Button>
           </div>
         </div>
 

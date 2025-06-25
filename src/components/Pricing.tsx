@@ -218,7 +218,7 @@ export const Pricing = () => {
                   <div className="text-xl text-corporate-gray">Trail</div>
                 </div>
 
-                {/* SVG Trail Path */}
+                {/* Simplified SVG Trail Path */}
                 <div className="relative h-[450px] mb-8">
                   <svg
                     className="absolute inset-0 w-full h-full"
@@ -226,19 +226,23 @@ export const Pricing = () => {
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                   >
-                    <path
-                      d="M100 30 Q120 90 80 160 Q60 230 120 300 Q140 370 100 420"
+                    {/* Straight vertical line */}
+                    <line
+                      x1="100"
+                      y1="30"
+                      x2="100"
+                      y2="420"
                       stroke={path.trailColor}
                       strokeWidth="4"
                       strokeDasharray="8,4"
-                      fill="none"
                       className="opacity-30"
                     />
                     
+                    {/* Centered waypoints */}
                     {path.waypoints.map((waypoint, index) => (
                       <g key={waypoint.id}>
                         <circle
-                          cx={index % 2 === 0 ? 100 : index === 1 ? 120 : index === 3 ? 120 : 100}
+                          cx="100"
                           cy={30 + index * 80}
                           r="24"
                           fill={path.trailColor}
@@ -250,7 +254,7 @@ export const Pricing = () => {
                           onMouseLeave={() => setHoveredWaypoint(null)}
                         />
                         <text
-                          x={index % 2 === 0 ? 100 : index === 1 ? 120 : index === 3 ? 120 : 100}
+                          x="100"
                           y={30 + index * 80}
                           textAnchor="middle"
                           dominantBaseline="middle"

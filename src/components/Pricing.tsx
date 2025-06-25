@@ -277,7 +277,7 @@ export const Pricing = () => {
                       }`}
                       style={{
                         left: '50%',
-                        top: `${7 + index * 17.5 - 12}%`,
+                        top: `${30 + index * 80 - 60}px`,
                         transform: 'translateX(-50%) translateY(-100%)'
                       }}
                     >

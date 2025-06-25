@@ -2,26 +2,26 @@
 export const Team = () => {
   const teamMembers = [
     {
-      name: "Kyli Lora",
-      role: "Creative Pathfinder",
+      name: "Kyli Nelson",
+      role: "Executive Production Assistant",
       image: "/lovable-uploads/dcada800-4488-4970-82eb-2c356d3e789d.png",
-      bio: "Trail guide for viral content discovery with 2M+ views across uncharted platforms.",
+      bio: "Kyli keeps the wheels turning at Palmer House Productions. From client communication and scheduling to on-set logistics and post-production prep, she's the calm in the creative storm. With a sharp eye for detail and a heart for service, she ensures every project runs smoothly from start to finish.",
       gradient: "gradient-social-1",
       textGradient: "text-gradient-1"
     },
     {
-      name: "Trenton Sims", 
-      role: "Visual Explorer & Motion Artist",
+      name: "Trenton Hayes", 
+      role: "Lead Editor",
       image: "/lovable-uploads/2537d3fc-b210-4170-93a2-d927fe38eea0.png",
-      bio: "Cartographer of motion graphics who maps unforgettable brand territories.",
+      bio: "Trenton is the post-production powerhouse behind our visual storytelling. With a knack for turning raw footage into compelling narratives, he brings each client's vision to life through clean cuts, creative pacing, and platform-ready delivery. His work is where the magic comes together.",
       gradient: "gradient-social-2",
       textGradient: "text-gradient-2"
     },
     {
       name: "Jevoy Palmer",
-      role: "Founder & Lead Adventure Guide",
+      role: "Founder & CEO",
       image: "/lovable-uploads/945e6d63-02d8-4c0d-a4ae-b691cc806a74.png",
-      bio: "Your storyteller with a camera, charting new creative territories where culture meets vision.",
+      bio: "Jevoy is the visionary behind Palmer House Productions. A filmmaker, strategist, and storyteller at heart, he leads with the belief that video isn't just content—it's a business tool. Known for making even the most camera-shy clients feel confident on set, he's passionate about turning complex ideas into cinematic clarity.",
       gradient: "gradient-social-3", 
       textGradient: "text-gradient-3"
     }
@@ -38,13 +38,13 @@ export const Team = () => {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-24">
           <div className="inline-block px-6 py-3 gradient-social-2 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            🏕️ Meet Your Guides
+            🏕️ Meet Your Team
           </div>
           <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-            The <span className="text-gradient-2">Expedition</span> Team
+            The <span className="text-gradient-2">Palmer House</span> Team
           </h2>
           <p className="text-2xl text-corporate-gray max-w-3xl mx-auto font-medium">
-            The fearless explorers behind every groundbreaking campaign and boundary-pushing story.
+            The dedicated professionals behind every compelling story and successful campaign.
           </p>
         </div>
         

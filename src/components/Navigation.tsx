@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -77,12 +78,12 @@ export const Navigation = () => {
           
           <div className="hidden md:block">
             <div className="flex items-center space-x-8">
-              <button onClick={() => handleNavClick('about')} className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium">
+              <Link to="/about" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
                 Our Journey
-              </button>
-              <button onClick={() => handleNavClick('team')} className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium">
+              </Link>
+              <Link to="/team" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
                 Meet the Crew
-              </button>
+              </Link>
               <button onClick={() => handleNavClick('services')} className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium">
                 Pathways
               </button>
@@ -95,9 +96,9 @@ export const Navigation = () => {
               <Link to="/glimpse" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
                 The Glimpse
               </Link>
-              <button onClick={() => handleNavClick('contact')} className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium">
+              <Link to="/contact" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
                 Signal Us
-              </button>
+              </Link>
             </div>
           </div>
           
@@ -111,12 +112,12 @@ export const Navigation = () => {
 
       {isOpen && <div className="md:hidden bg-white border-t border-apple-gray-2">
           <div className="px-4 pt-2 pb-3 space-y-1">
-            <button onClick={() => handleNavClick('about')} className="block w-full text-left px-3 py-2 text-apple-gray-5 hover:text-black transition-colors">
+            <Link to="/about" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
               Our Journey
-            </button>
-            <button onClick={() => handleNavClick('team')} className="block w-full text-left px-3 py-2 text-apple-gray-5 hover:text-black transition-colors">
+            </Link>
+            <Link to="/team" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
               Meet the Crew
-            </button>
+            </Link>
             <button onClick={() => handleNavClick('services')} className="block w-full text-left px-3 py-2 text-apple-gray-5 hover:text-black transition-colors">
               Pathways
             </button>
@@ -129,9 +130,9 @@ export const Navigation = () => {
             <Link to="/glimpse" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
               The Glimpse
             </Link>
-            <button onClick={() => handleNavClick('contact')} className="block w-full text-left px-3 py-2 text-apple-gray-5 hover:text-black transition-colors">
+            <Link to="/contact" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
               Signal Us
-            </button>
+            </Link>
           </div>
         </div>}
     </nav>

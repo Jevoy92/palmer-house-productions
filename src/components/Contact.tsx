@@ -1,9 +1,19 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ContactWizard } from "./ContactWizard";
 
-export const Contact = () => {
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
+interface ContactProps {
+  autoOpenWizard?: boolean;
+}
+
+export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
+  const [isWizardOpen, setIsWizardOpen] = useState(autoOpenWizard);
+
+  useEffect(() => {
+    if (autoOpenWizard) {
+      setIsWizardOpen(true);
+    }
+  }, [autoOpenWizard]);
 
   const handleStrategyCall = () => {
     window.open('https://calendly.com/palmerhouseproductions-info/general-strategy-call', '_blank');

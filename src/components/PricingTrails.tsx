@@ -142,7 +142,7 @@ export const PricingTrails = () => {
                         y={30 + index * 80}
                         textAnchor="middle"
                         dominantBaseline="middle"
-                        className="text-lg font-bold fill-white pointer-events-none"
+                        className="text-xl font-bold fill-white pointer-events-none"
                       >
                         {waypoint.icon}
                       </text>
@@ -160,26 +160,26 @@ export const PricingTrails = () => {
                         : 'opacity-0 scale-95 translate-y-2'
                     }`}
                     style={{
-                      left: index % 2 === 0 ? '65%' : '-20%',
+                      left: index % 2 === 0 ? '75%' : '-45%',
                       top: `${7 + index * 17.5}%`,
                       transform: 'translateY(-50%)'
                     }}
                   >
-                    <div className="bg-video-white p-6 rounded-2xl video-shadow-lg max-w-md border border-gray-100 backdrop-blur-sm">
-                      <div className="flex items-start gap-3 mb-3">
-                        <div className="text-xl">{waypoint.icon}</div>
+                    <div className="bg-video-white/95 backdrop-blur-sm p-8 rounded-2xl video-shadow-lg max-w-lg border border-gray-100">
+                      <div className="flex items-start gap-4 mb-3">
+                        <div className="text-2xl flex-shrink-0 mt-1">{waypoint.icon}</div>
                         <div>
-                          <p className="text-base font-bold text-corporate-dark mb-2 leading-tight">{waypoint.label}</p>
+                          <p className="text-base font-bold text-corporate-dark mb-3 leading-tight">{waypoint.label}</p>
                           <p className="text-sm text-corporate-gray leading-relaxed">{waypoint.details}</p>
                         </div>
                       </div>
                     </div>
                     {/* Arrow pointing to waypoint */}
                     <div 
-                      className={`absolute top-1/2 w-0 h-0 border-t-8 border-b-8 border-transparent ${
+                      className={`absolute top-1/2 w-0 h-0 border-t-[10px] border-b-[10px] border-transparent ${
                         index % 2 === 0 
-                          ? 'border-r-8 border-r-video-white -left-2' 
-                          : 'border-l-8 border-l-video-white -right-2'
+                          ? 'border-r-[10px] border-r-video-white/95 -left-[10px]' 
+                          : 'border-l-[10px] border-l-video-white/95 -right-[10px]'
                       }`}
                       style={{ transform: 'translateY(-50%)' }}
                     />

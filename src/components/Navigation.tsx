@@ -86,6 +86,9 @@ export const Navigation = () => {
               <button onClick={() => handleNavClick('services')} className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium">
                 Pathways
               </button>
+              <button onClick={() => handleNavClick('reviews')} className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium">
+                Trail Reviews
+              </button>
               <Link to="/arsenal" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
                 The Arsenal
               </Link>
@@ -116,6 +119,9 @@ export const Navigation = () => {
             </button>
             <button onClick={() => handleNavClick('services')} className="block w-full text-left px-3 py-2 text-apple-gray-5 hover:text-black transition-colors">
               Pathways
+            </button>
+            <button onClick={() => handleNavClick('reviews')} className="block w-full text-left px-3 py-2 text-apple-gray-5 hover:text-black transition-colors">
+              Trail Reviews
             </button>
             <Link to="/arsenal" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
               The Arsenal

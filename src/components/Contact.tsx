@@ -130,21 +130,20 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
       <div className="max-w-6xl mx-auto px-6">
         {/* Header Section */}
         <div className="text-center mb-16">
-          <div className="inline-block bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+          <div className="inline-block bg-cyan-100 text-cyan-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
             Palmer House Wizard
           </div>
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
             The Client Expedition
           </h1>
           <p className="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
-            We'll guide you through an immersive journey to discover your perfect video strategy, 
-            tailored specifically to your business goals and vision.
+            Let us guide you through an immersive journey to help you understand your needs and find the right solution with clarity and momentum.
           </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
           {/* Left Column - Embedded Journey Form */}
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden relative">
             {currentStep <= 5 && (
               <JourneyProgress currentStep={currentStep} totalSteps={6} />
             )}
@@ -171,7 +170,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
           <div>
             <h2 className="text-3xl font-bold text-gray-900 mb-8">Your Expedition Preview</h2>
             <div className="space-y-6">
-              <div className="bg-green-50 rounded-xl p-6 border border-green-100">
+              <div className="bg-orange-50 rounded-xl p-6 border border-orange-100">
                 <div className="flex items-start space-x-4">
                   <div className="text-3xl">🌲</div>
                   <div>
@@ -181,7 +180,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
                 </div>
               </div>
 
-              <div className="bg-orange-50 rounded-xl p-6 border border-orange-100">
+              <div className="bg-blue-50 rounded-xl p-6 border border-blue-100">
                 <div className="flex items-start space-x-4">
                   <div className="text-3xl">🏜️</div>
                   <div>
@@ -191,7 +190,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
                 </div>
               </div>
 
-              <div className="bg-purple-50 rounded-xl p-6 border border-purple-100">
+              <div className="bg-pink-50 rounded-xl p-6 border border-pink-100">
                 <div className="flex items-start space-x-4">
                   <div className="text-3xl">⭐</div>
                   <div>
@@ -210,10 +209,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
               <div className="mb-4">
-                <div className="flex text-yellow-400 mb-2">
-                  ⭐⭐⭐⭐⭐
-                </div>
-                <p className="text-gray-700 italic">
+                <p className="text-gray-700 italic mb-4">
                   "Palmer House transformed our brand story into compelling video content that resonates with our audience."
                 </p>
               </div>
@@ -225,10 +221,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
 
             <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
               <div className="mb-4">
-                <div className="flex text-yellow-400 mb-2">
-                  ⭐⭐⭐⭐⭐
-                </div>
-                <p className="text-gray-700 italic">
+                <p className="text-gray-700 italic mb-4">
                   "The journey approach helped us discover exactly what our business needed. The results speak for themselves."
                 </p>
               </div>
@@ -240,10 +233,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
 
             <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
               <div className="mb-4">
-                <div className="flex text-yellow-400 mb-2">
-                  ⭐⭐⭐⭐⭐
-                </div>
-                <p className="text-gray-700 italic">
+                <p className="text-gray-700 italic mb-4">
                   "Professional, creative, and results-driven. Palmer House exceeded our expectations in every way."
                 </p>
               </div>

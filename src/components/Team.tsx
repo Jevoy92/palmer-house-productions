@@ -1,6 +1,13 @@
-
 export const Team = () => {
   const teamMembers = [
+    {
+      name: "Jevoy Palmer",
+      role: "Founder & CEO",
+      image: "/lovable-uploads/945e6d63-02d8-4c0d-a4ae-b691cc806a74.png",
+      bio: "Jevoy is the visionary behind Palmer House Productions. A filmmaker, strategist, and storyteller at heart, he leads with the belief that video isn't just content—it's a business tool. Known for making even the most camera-shy clients feel confident on set, he's passionate about turning complex ideas into cinematic clarity.",
+      gradient: "gradient-social-3", 
+      textGradient: "text-gradient-3"
+    },
     {
       name: "Kyli Nelson",
       role: "Executive Production Assistant",
@@ -16,14 +23,6 @@ export const Team = () => {
       bio: "Trenton is the post-production powerhouse behind our visual storytelling. With a knack for turning raw footage into compelling narratives, he brings each client's vision to life through clean cuts, creative pacing, and platform-ready delivery. His work is where the magic comes together.",
       gradient: "gradient-social-2",
       textGradient: "text-gradient-2"
-    },
-    {
-      name: "Jevoy Palmer",
-      role: "Founder & CEO",
-      image: "/lovable-uploads/945e6d63-02d8-4c0d-a4ae-b691cc806a74.png",
-      bio: "Jevoy is the visionary behind Palmer House Productions. A filmmaker, strategist, and storyteller at heart, he leads with the belief that video isn't just content—it's a business tool. Known for making even the most camera-shy clients feel confident on set, he's passionate about turning complex ideas into cinematic clarity.",
-      gradient: "gradient-social-3", 
-      textGradient: "text-gradient-3"
     }
   ];
 

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { ContactWizard } from "./ContactWizard";
 
@@ -150,7 +149,7 @@ export const PricingTrails = () => {
                   ))}
                 </svg>
 
-                {/* Waypoint Details */}
+                {/* Waypoint Details - Now Centered Above */}
                 {path.waypoints.map((waypoint, index) => (
                   <div
                     key={waypoint.id}
@@ -160,12 +159,12 @@ export const PricingTrails = () => {
                         : 'opacity-0 scale-95 translate-y-2'
                     }`}
                     style={{
-                      left: index % 2 === 0 ? '75%' : '-45%',
-                      top: `${7 + index * 17.5}%`,
-                      transform: 'translateY(-50%)'
+                      left: '50%',
+                      top: `${7 + index * 17.5 - 12}%`, // Positioned above the waypoint
+                      transform: 'translateX(-50%) translateY(-100%)'
                     }}
                   >
-                    <div className="bg-video-white/95 backdrop-blur-sm p-8 rounded-2xl video-shadow-lg max-w-lg border border-gray-100">
+                    <div className="bg-video-white/95 backdrop-blur-sm p-8 rounded-2xl video-shadow-lg max-w-lg border border-gray-100 min-w-[280px]">
                       <div className="flex items-start gap-4 mb-3">
                         <div className="text-2xl flex-shrink-0 mt-1">{waypoint.icon}</div>
                         <div>
@@ -174,14 +173,9 @@ export const PricingTrails = () => {
                         </div>
                       </div>
                     </div>
-                    {/* Arrow pointing to waypoint */}
+                    {/* Arrow pointing down to waypoint */}
                     <div 
-                      className={`absolute top-1/2 w-0 h-0 border-t-[10px] border-b-[10px] border-transparent ${
-                        index % 2 === 0 
-                          ? 'border-r-[10px] border-r-video-white/95 -left-[10px]' 
-                          : 'border-l-[10px] border-l-video-white/95 -right-[10px]'
-                      }`}
-                      style={{ transform: 'translateY(-50%)' }}
+                      className="absolute top-full left-1/2 w-0 h-0 border-l-[10px] border-r-[10px] border-t-[10px] border-transparent border-t-video-white/95 -translate-x-1/2"
                     />
                   </div>
                 ))}

@@ -1,13 +1,10 @@
-
 import { useState } from "react";
 import { Target, Package, MapPin, Compass, Flag, Footprints, Tent, Mountain, Sunrise } from "lucide-react";
-import { ContactWizard } from "./ContactWizard";
 import { BillingCycle } from "./pricing/BillingCycle";
 
 export const Pricing = () => {
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
-  const [isAnnualBilling, setIsAnnualBilling] = useState(false);
   const [hoveredWaypoint, setHoveredWaypoint] = useState<string | null>(null);
+  const [isAnnualBilling, setIsAnnualBilling] = useState(false);
 
   const handleBillingChange = (isAnnual: boolean) => {
     setIsAnnualBilling(isAnnual);
@@ -181,175 +178,142 @@ export const Pricing = () => {
   ];
 
   return (
-    <>
-      <section id="pricing" className="pt-48 pb-32 bg-corporate-light relative overflow-hidden">
-        {/* Background Elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-40 h-40 gradient-social-2 rounded-full opacity-10 float-animation"></div>
-          <div className="absolute bottom-20 right-10 w-48 h-48 gradient-social-4 rounded-full opacity-10 float-animation" style={{animationDelay: '2s'}}></div>
-          <div className="absolute top-1/2 left-1/4 w-32 h-32 gradient-social-1 rounded-full opacity-15 float-animation" style={{animationDelay: '4s'}}></div>
+    <section id="pricing" className="pt-48 pb-32 bg-corporate-light relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-10 w-40 h-40 gradient-social-2 rounded-full opacity-10 float-animation"></div>
+        <div className="absolute bottom-20 right-10 w-48 h-48 gradient-social-4 rounded-full opacity-10 float-animation" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/4 w-32 h-32 gradient-social-1 rounded-full opacity-15 float-animation" style={{animationDelay: '4s'}}></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="text-center mb-24">
+          <div className="inline-block px-6 py-3 gradient-social-3 rounded-full text-white font-bold text-lg mb-8 video-shadow">
+            🗺️ Expedition Packages
+          </div>
+          <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+            Choose Your <span className="text-gradient-1">Path</span>
+          </h2>
+          <div className="text-2xl text-corporate-gray max-w-5xl mx-auto space-y-6 font-medium leading-tight">
+            <p>Not all journeys are the same—neither are our video solutions.</p>
+            <p>
+              At Palmer House Productions, we don't offer one-offs or generic content. We create <span className="text-gradient-2 font-bold">handcrafted, high-impact video experiences</span> designed to solve real business problems. That's why every path we offer is a fully guided expedition: built for growth, backed by strategy, and designed to get results on the platforms that matter most to your audience.
+            </p>
+            <p>Whether you're just starting your brand story or scaling to new heights, there's a <span className="text-gradient-3 font-bold">pathway that's right for your journey</span>.</p>
+          </div>
+          <div className="mt-12 text-corporate-gray text-4xl tracking-widest">⸻ ⸻ ⸻</div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="text-center mb-24">
-            <div className="inline-block px-6 py-3 gradient-social-3 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-              🗺️ Expedition Packages
-            </div>
-            <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-              Choose Your <span className="text-gradient-1">Path</span>
-            </h2>
-            <div className="text-2xl text-corporate-gray max-w-5xl mx-auto space-y-6 font-medium leading-tight">
-              <p>Not all journeys are the same—neither are our video solutions.</p>
-              <p>
-                At Palmer House Productions, we don't offer one-offs or generic content. We create <span className="text-gradient-2 font-bold">handcrafted, high-impact video experiences</span> designed to solve real business problems. That's why every path we offer is a fully guided expedition: built for growth, backed by strategy, and designed to get results on the platforms that matter most to your audience.
-              </p>
-              <p>Whether you're just starting your brand story or scaling to new heights, there's a <span className="text-gradient-3 font-bold">pathway that's right for your journey</span>.</p>
-            </div>
-            <div className="mt-12 text-corporate-gray text-4xl tracking-widest">⸻ ⸻ ⸻</div>
-          </div>
+        {/* Add Billing Cycle Component */}
+        <BillingCycle onCycleChange={handleBillingChange} />
 
-          {/* Add Billing Cycle Component */}
-          <BillingCycle onCycleChange={handleBillingChange} />
-
-          {/* Trail Map */}
-          <div className="grid lg:grid-cols-4 gap-8 mb-20">
-            {pricingPaths.map((path, pathIndex) => (
-              <div key={path.tier} className="relative">
-                {/* Trail Header */}
-                <div className="text-center mb-8">
-                  <div className={`w-20 h-20 ${path.gradient} rounded-2xl flex items-center justify-center mb-4 mx-auto video-shadow`}>
-                    <path.headerIcon size={32} color="white" />
-                  </div>
-                  <h3 className="text-3xl font-display font-black text-corporate-dark mb-2">{path.tier}</h3>
-                  <div className="text-xl text-corporate-gray">Trail</div>
+        {/* Trail Map */}
+        <div className="grid lg:grid-cols-4 gap-8 mb-20">
+          {pricingPaths.map((path, pathIndex) => (
+            <div key={path.tier} className="relative">
+              {/* Trail Header */}
+              <div className="text-center mb-8">
+                <div className={`w-20 h-20 ${path.gradient} rounded-2xl flex items-center justify-center mb-4 mx-auto video-shadow`}>
+                  <path.headerIcon size={32} color="white" />
                 </div>
+                <h3 className="text-3xl font-display font-black text-corporate-dark mb-2">{path.tier}</h3>
+                <div className="text-xl text-corporate-gray">Trail</div>
+              </div>
 
-                {/* Simplified SVG Trail Path */}
-                <div className="relative h-[450px] mb-8">
-                  <svg
-                    className="absolute inset-0 w-full h-full"
-                    viewBox="0 0 200 450"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    {/* Straight vertical line */}
-                    <line
-                      x1="100"
-                      y1="30"
-                      x2="100"
-                      y2="420"
-                      stroke={path.trailColor}
-                      strokeWidth="4"
-                      strokeDasharray="8,4"
-                      className="opacity-30"
-                    />
-                    
-                    {/* Centered waypoints */}
-                    {path.waypoints.map((waypoint, index) => (
-                      <g key={waypoint.id}>
-                        <circle
-                          cx="100"
-                          cy={30 + index * 80}
-                          r="24"
-                          fill={path.trailColor}
-                          className="cursor-default transition-all duration-300"
-                          onMouseEnter={() => setHoveredWaypoint(waypoint.id)}
-                          onMouseLeave={() => setHoveredWaypoint(null)}
-                        />
-                        <foreignObject
-                          x="88"
-                          y={30 + index * 80 - 12}
-                          width="24"
-                          height="24"
-                          className="pointer-events-none"
-                        >
-                          <waypoint.icon color="white" size={24} />
-                        </foreignObject>
-                      </g>
-                    ))}
-                  </svg>
-
-                  {/* Waypoint Details */}
+              {/* Simplified SVG Trail Path */}
+              <div className="relative h-[450px] mb-8">
+                <svg
+                  className="absolute inset-0 w-full h-full"
+                  viewBox="0 0 200 450"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  {/* Straight vertical line */}
+                  <line
+                    x1="100"
+                    y1="30"
+                    x2="100"
+                    y2="420"
+                    stroke={path.trailColor}
+                    strokeWidth="4"
+                    strokeDasharray="8,4"
+                    className="opacity-30"
+                  />
+                  
+                  {/* Centered waypoints */}
                   {path.waypoints.map((waypoint, index) => (
-                    <div
-                      key={waypoint.id}
-                      className={`absolute transition-all duration-500 pointer-events-none z-50 ${
-                        hoveredWaypoint === waypoint.id 
-                          ? 'opacity-100 scale-100 translate-y-0' 
-                          : 'opacity-0 scale-95 translate-y-2'
-                      }`}
-                      style={{
-                        left: '50%',
-                        top: `${30 + index * 80 - 60}px`,
-                        transform: 'translateX(-50%) translateY(-100%)'
-                      }}
-                    >
-                      <div className="bg-video-white/95 backdrop-blur-sm p-8 rounded-2xl video-shadow-lg max-w-lg border border-gray-100 min-w-[280px]">
-                        <div className="flex items-start gap-4 mb-3">
-                          <div className="text-2xl flex-shrink-0 mt-1">
-                            <waypoint.icon color="#4b5563" size={24} />
-                          </div>
-                          <div>
-                            <p className="text-base font-bold text-corporate-dark mb-3 leading-tight">{waypoint.label}</p>
-                            <p className="text-sm text-corporate-gray leading-relaxed">{waypoint.details}</p>
-                          </div>
+                    <g key={waypoint.id}>
+                      <circle
+                        cx="100"
+                        cy={30 + index * 80}
+                        r="24"
+                        fill={path.trailColor}
+                        className="cursor-default transition-all duration-300"
+                        onMouseEnter={() => setHoveredWaypoint(waypoint.id)}
+                        onMouseLeave={() => setHoveredWaypoint(null)}
+                      />
+                      <foreignObject
+                        x="88"
+                        y={30 + index * 80 - 12}
+                        width="24"
+                        height="24"
+                        className="pointer-events-none"
+                      >
+                        <waypoint.icon color="white" size={24} />
+                      </foreignObject>
+                    </g>
+                  ))}
+                </svg>
+
+                {/* Waypoint Details */}
+                {path.waypoints.map((waypoint, index) => (
+                  <div
+                    key={waypoint.id}
+                    className={`absolute transition-all duration-500 pointer-events-none z-50 ${
+                      hoveredWaypoint === waypoint.id 
+                        ? 'opacity-100 scale-100 translate-y-0' 
+                        : 'opacity-0 scale-95 translate-y-2'
+                    }`}
+                    style={{
+                      left: '50%',
+                      top: `${30 + index * 80 - 60}px`,
+                      transform: 'translateX(-50%) translateY(-100%)'
+                    }}
+                  >
+                    <div className="bg-video-white/95 backdrop-blur-sm p-8 rounded-2xl video-shadow-lg max-w-lg border border-gray-100 min-w-[280px]">
+                      <div className="flex items-start gap-4 mb-3">
+                        <div className="text-2xl flex-shrink-0 mt-1">
+                          <waypoint.icon color="#4b5563" size={24} />
+                        </div>
+                        <div>
+                          <p className="text-base font-bold text-corporate-dark mb-3 leading-tight">{waypoint.label}</p>
+                          <p className="text-sm text-corporate-gray leading-relaxed">{waypoint.details}</p>
                         </div>
                       </div>
-                      <div 
-                        className="absolute top-full left-1/2 w-0 h-0 border-l-[10px] border-r-[10px] border-t-[10px] border-transparent border-t-video-white/95 -translate-x-1/2"
-                      />
                     </div>
-                  ))}
-                </div>
-
-                {/* Price Display Only - No Button */}
-                <div className="text-center">
-                  <div className="text-4xl font-black text-corporate-dark mb-4">
-                    {calculatePrice(path.monthlyPrice)}
-                    <span className="text-xl text-corporate-gray">/month</span>
-                    {isAnnualBilling && (
-                      <div className="text-sm text-green-600 font-medium">
-                        Save 10% annually
-                      </div>
-                    )}
+                    <div 
+                      className="absolute top-full left-1/2 w-0 h-0 border-l-[10px] border-r-[10px] border-t-[10px] border-transparent border-t-video-white/95 -translate-x-1/2"
+                    />
                   </div>
+                ))}
+              </div>
+
+              {/* Price Display Only - No Button */}
+              <div className="text-center">
+                <div className="text-4xl font-black text-corporate-dark mb-4">
+                  {calculatePrice(path.monthlyPrice)}
+                  <span className="text-xl text-corporate-gray">/month</span>
+                  {isAnnualBilling && (
+                    <div className="text-sm text-green-600 font-medium">
+                      Save 10% annually
+                    </div>
+                  )}
                 </div>
               </div>
-            ))}
-          </div>
-          
-          <div className="text-center">
-            <div className="text-corporate-gray text-4xl mb-12 tracking-widest">⸻ ⸻ ⸻</div>
-            <div className="inline-block px-8 py-4 gradient-social-4 rounded-full text-white font-bold text-xl mb-8 video-shadow-lg">
-              🧭 Ready to Begin?
             </div>
-            <h3 className="text-5xl md:text-6xl font-display font-black mb-10 text-corporate-dark leading-tight">
-              Let's Find Your Perfect <span className="text-gradient-2">Path</span>
-            </h3>
-            <p className="text-2xl text-corporate-gray mb-12 max-w-4xl mx-auto font-medium leading-relaxed">
-              Every great adventure starts with choosing the right direction.
-              <br />
-              Tell us about your vision and we'll <span className="text-gradient-1 font-bold">craft your journey</span>.
-            </p>
-            
-            <button 
-              onClick={() => setIsWizardOpen(true)}
-              className="px-12 py-6 gradient-social-1 text-white font-bold rounded-3xl hover:scale-105 transition-all duration-300 text-xl video-shadow-lg"
-            >
-              Choose Your Plan →
-            </button>
-          </div>
+          ))}
         </div>
-
-        <ContactWizard 
-          open={isWizardOpen} 
-          onOpenChange={setIsWizardOpen}
-          initialService="monthly"
-        />
-      </section>
-
-      {/* Add Billing Cycle Component */}
-      <BillingCycle onCycleChange={handleBillingChange} />
-    </>
+      </div>
+    </section>
   );
 };

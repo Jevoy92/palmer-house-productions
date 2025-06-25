@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { ContactWizard } from "./ContactWizard";
 import { JourneyWizard } from "./JourneyWizard";
@@ -301,8 +300,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
             </Button>
             <Button
               onClick={handleCalendlyBooking}
-              variant="outline"
-              className="border-white text-white hover:bg-white/10 font-bold px-8 py-3"
+              className="bg-white/20 text-white hover:bg-white/30 border border-white/30 font-bold px-8 py-3"
             >
               Book Strategy Call
             </Button>

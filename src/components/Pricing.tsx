@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Target, Package, MapPin, Compass, Flag, Footprints, Tent, Mountain, Sunrise } from "lucide-react";
 import { ContactWizard } from "./ContactWizard";
@@ -251,10 +252,7 @@ export const Pricing = () => {
                           cy={30 + index * 80}
                           r="24"
                           fill={path.trailColor}
-                          className="cursor-pointer transition-all duration-300 hover:scale-110 drop-shadow-lg"
-                          style={{
-                            filter: hoveredWaypoint === waypoint.id ? `drop-shadow(0 0 12px ${path.trailColor})` : 'none'
-                          }}
+                          className="cursor-default transition-all duration-300"
                           onMouseEnter={() => setHoveredWaypoint(waypoint.id)}
                           onMouseLeave={() => setHoveredWaypoint(null)}
                         />

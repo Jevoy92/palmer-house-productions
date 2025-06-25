@@ -37,6 +37,12 @@ export const PersonalInfoStep = ({ data, onDataUpdate, onNext, onBack }: Persona
     }
   };
 
+  const handleBack = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onBack();
+  };
+
   return (
     <div className="p-8">
       <div className="text-center mb-8">
@@ -155,7 +161,7 @@ export const PersonalInfoStep = ({ data, onDataUpdate, onNext, onBack }: Persona
           <Button
             type="button"
             variant="outline"
-            onClick={onBack}
+            onClick={handleBack}
             className="flex-1 border-corporate-gray text-corporate-gray hover:bg-corporate-light"
           >
             ← Back

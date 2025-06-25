@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { ContactWizard } from "./ContactWizard";
 import { BillingCycle } from "./pricing/BillingCycle";
@@ -294,7 +293,7 @@ export const Pricing = () => {
                   ))}
                 </div>
 
-                {/* Trail CTA */}
+                {/* Price Display Only - No Button */}
                 <div className="text-center">
                   <div className="text-4xl font-black text-corporate-dark mb-4">
                     {calculatePrice(path.monthlyPrice)}
@@ -305,12 +304,6 @@ export const Pricing = () => {
                       </div>
                     )}
                   </div>
-                  <button
-                    onClick={() => setIsWizardOpen(true)}
-                    className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 ${path.gradient} text-white hover:scale-105 video-shadow hover:shadow-2xl`}
-                  >
-                    Choose This Trail →
-                  </button>
                 </div>
               </div>
             ))}

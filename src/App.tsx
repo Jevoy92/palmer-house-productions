@@ -10,6 +10,7 @@ import Team from "./pages/Team";
 import Contact from "./pages/Contact";
 import Glimpse from "./pages/Glimpse";
 import Arsenal from "./pages/Arsenal";
+import Pathways from "./pages/Pathways";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/team" element={<Team />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/pathways" element={<Pathways />} />
           <Route path="/glimpse" element={<Glimpse />} />
           <Route path="/arsenal" element={<Arsenal />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

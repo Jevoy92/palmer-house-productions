@@ -84,9 +84,9 @@ export const Navigation = () => {
               <Link to="/team" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
                 Meet the Crew
               </Link>
-              <button onClick={() => handleNavClick('services')} className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium">
+              <Link to="/pathways" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
                 Pathways
-              </button>
+              </Link>
               <button onClick={() => handleNavClick('reviews')} className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium">
                 Trail Reviews
               </button>
@@ -118,9 +118,9 @@ export const Navigation = () => {
             <Link to="/team" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
               Meet the Crew
             </Link>
-            <button onClick={() => handleNavClick('services')} className="block w-full text-left px-3 py-2 text-apple-gray-5 hover:text-black transition-colors">
+            <Link to="/pathways" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
               Pathways
-            </button>
+            </Link>
             <button onClick={() => handleNavClick('reviews')} className="block w-full text-left px-3 py-2 text-apple-gray-5 hover:text-black transition-colors">
               Trail Reviews
             </button>

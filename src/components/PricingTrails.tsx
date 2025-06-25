@@ -94,7 +94,7 @@ export const PricingTrails = () => {
             <div key={path.tier} className="relative">
               {/* Trail Header */}
               <div className="text-center mb-8">
-                <div className={`w-16 h-16 ${path.gradient} rounded-2xl flex items-center justify-center text-3xl mb-4 mx-auto video-shadow`}>
+                <div className={`w-20 h-20 ${path.gradient} rounded-2xl flex items-center justify-center text-4xl mb-4 mx-auto video-shadow`}>
                   {path.tier === "Trailhead" && "🥾"}
                   {path.tier === "Basecamp" && "🏕"}
                   {path.tier === "Summit" && "🏔"}
@@ -105,16 +105,16 @@ export const PricingTrails = () => {
               </div>
 
               {/* SVG Trail Path */}
-              <div className="relative h-96 mb-8">
+              <div className="relative h-[450px] mb-8">
                 <svg
                   className="absolute inset-0 w-full h-full"
-                  viewBox="0 0 200 400"
+                  viewBox="0 0 200 450"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   {/* Trail Path */}
                   <path
-                    d="M100 20 Q120 80 80 140 Q60 200 120 260 Q140 320 100 380"
+                    d="M100 30 Q120 90 80 160 Q60 230 120 300 Q140 370 100 420"
                     stroke={path.trailColor}
                     strokeWidth="4"
                     strokeDasharray="8,4"
@@ -127,19 +127,22 @@ export const PricingTrails = () => {
                     <g key={waypoint.id}>
                       <circle
                         cx={index % 2 === 0 ? 100 : index === 1 ? 120 : index === 3 ? 120 : 100}
-                        cy={20 + index * 72}
-                        r="16"
+                        cy={30 + index * 80}
+                        r="24"
                         fill={path.trailColor}
-                        className="cursor-pointer hover:scale-110 transition-transform duration-300"
+                        className="cursor-pointer transition-all duration-300 hover:scale-110 drop-shadow-lg"
+                        style={{
+                          filter: hoveredWaypoint === waypoint.id ? `drop-shadow(0 0 12px ${path.trailColor})` : 'none'
+                        }}
                         onMouseEnter={() => setHoveredWaypoint(waypoint.id)}
                         onMouseLeave={() => setHoveredWaypoint(null)}
                       />
                       <text
                         x={index % 2 === 0 ? 100 : index === 1 ? 120 : index === 3 ? 120 : 100}
-                        y={20 + index * 72}
+                        y={30 + index * 80}
                         textAnchor="middle"
                         dominantBaseline="middle"
-                        className="text-sm font-bold fill-white pointer-events-none"
+                        className="text-lg font-bold fill-white pointer-events-none"
                       >
                         {waypoint.icon}
                       </text>
@@ -151,19 +154,35 @@ export const PricingTrails = () => {
                 {path.waypoints.map((waypoint, index) => (
                   <div
                     key={waypoint.id}
-                    className={`absolute transition-all duration-300 pointer-events-none ${
-                      hoveredWaypoint === waypoint.id ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+                    className={`absolute transition-all duration-500 pointer-events-none z-50 ${
+                      hoveredWaypoint === waypoint.id 
+                        ? 'opacity-100 scale-100 translate-y-0' 
+                        : 'opacity-0 scale-95 translate-y-2'
                     }`}
                     style={{
-                      left: index % 2 === 0 ? '60%' : '10%',
-                      top: `${5 + index * 18}%`,
+                      left: index % 2 === 0 ? '65%' : '-20%',
+                      top: `${7 + index * 17.5}%`,
                       transform: 'translateY(-50%)'
                     }}
                   >
-                    <div className="bg-video-white p-4 rounded-2xl video-shadow-lg max-w-xs">
-                      <p className="text-sm font-bold text-corporate-dark mb-2">{waypoint.label}</p>
-                      <p className="text-xs text-corporate-gray leading-relaxed">{waypoint.details}</p>
+                    <div className="bg-video-white p-6 rounded-2xl video-shadow-lg max-w-md border border-gray-100 backdrop-blur-sm">
+                      <div className="flex items-start gap-3 mb-3">
+                        <div className="text-xl">{waypoint.icon}</div>
+                        <div>
+                          <p className="text-base font-bold text-corporate-dark mb-2 leading-tight">{waypoint.label}</p>
+                          <p className="text-sm text-corporate-gray leading-relaxed">{waypoint.details}</p>
+                        </div>
+                      </div>
                     </div>
+                    {/* Arrow pointing to waypoint */}
+                    <div 
+                      className={`absolute top-1/2 w-0 h-0 border-t-8 border-b-8 border-transparent ${
+                        index % 2 === 0 
+                          ? 'border-r-8 border-r-video-white -left-2' 
+                          : 'border-l-8 border-l-video-white -right-2'
+                      }`}
+                      style={{ transform: 'translateY(-50%)' }}
+                    />
                   </div>
                 ))}
               </div>
@@ -173,7 +192,7 @@ export const PricingTrails = () => {
                 <div className="text-4xl font-black text-corporate-dark mb-4">{path.price}</div>
                 <button
                   onClick={() => handleTrailClick(path.tier)}
-                  className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 ${path.gradient} text-white hover:scale-105 video-shadow`}
+                  className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 ${path.gradient} text-white hover:scale-105 video-shadow hover:shadow-2xl`}
                 >
                   Choose This Trail →
                 </button>

@@ -6,49 +6,46 @@ interface JourneyProgressProps {
 
 export const JourneyProgress = ({ currentStep, totalSteps }: JourneyProgressProps) => {
   const checkpoints = [
-    { step: 1, icon: "🗺️", label: "Start", theme: "from-green-400 to-green-600" },
-    { step: 2, icon: "🧭", label: "Map", theme: "from-blue-400 to-blue-600" },
-    { step: 3, icon: "⛽", label: "Fuel", theme: "from-orange-400 to-orange-600" },
-    { step: 4, icon: "🎵", label: "Pace", theme: "from-purple-400 to-purple-600" },
-    { step: 5, icon: "🎯", label: "Vision", theme: "from-indigo-400 to-indigo-600" },
-    { step: 6, icon: "🎉", label: "Celebrate", theme: "from-pink-400 to-pink-600" },
+    { step: 1, label: "Start", icon: "🗺️" },
+    { step: 2, label: "Map", icon: "🧭" },
+    { step: 3, label: "Fuel", icon: "⛽" },
+    { step: 4, label: "Pace", icon: "🎵" },
+    { step: 5, label: "Vision", icon: "🎯" },
   ];
 
   return (
-    <div className="flex items-center justify-center p-6 border-b border-corporate-light bg-gradient-to-r from-white to-corporate-light overflow-x-auto">
-      <div className="flex items-center space-x-3 min-w-max">
+    <div className="flex items-center justify-center p-6 border-b border-gray-200 bg-white">
+      <div className="flex items-center space-x-4">
         {checkpoints.map((checkpoint, index) => (
           <div key={checkpoint.step} className="flex items-center">
             <div className="flex flex-col items-center">
               <div
-                className={`w-14 h-14 rounded-full flex items-center justify-center font-bold text-xl transition-all duration-500 transform ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center text-sm transition-all duration-300 ${
                   checkpoint.step === currentStep
-                    ? `bg-gradient-to-br ${checkpoint.theme} text-white scale-125 shadow-xl animate-pulse`
+                    ? "bg-blue-600 text-white shadow-lg"
                     : checkpoint.step < currentStep
-                    ? "bg-corporate-dark text-white scale-110 shadow-lg"
-                    : "bg-corporate-light text-corporate-gray hover:scale-105"
+                    ? "bg-green-600 text-white"
+                    : "bg-gray-200 text-gray-500"
                 }`}
               >
-                <span className="animate-bounce" style={{animationDelay: `${index * 0.1}s`}}>
-                  {checkpoint.icon}
-                </span>
+                {checkpoint.icon}
               </div>
-              <div className={`text-xs mt-2 font-medium transition-all duration-300 ${
+              <div className={`text-xs mt-1 font-medium ${
                 checkpoint.step === currentStep
-                  ? "text-corporate-dark font-bold"
+                  ? "text-blue-600"
                   : checkpoint.step < currentStep
-                  ? "text-corporate-dark"
-                  : "text-corporate-gray"
+                  ? "text-green-600"
+                  : "text-gray-400"
               }`}>
                 {checkpoint.label}
               </div>
             </div>
             {index < checkpoints.length - 1 && (
               <div
-                className={`w-12 h-2 mx-3 rounded-full transition-all duration-500 ${
+                className={`w-8 h-1 mx-2 rounded-full transition-all duration-300 ${
                   checkpoint.step < currentStep 
-                    ? "bg-gradient-to-r from-corporate-dark to-social-purple" 
-                    : "bg-corporate-light"
+                    ? "bg-green-600" 
+                    : "bg-gray-200"
                 }`}
               />
             )}

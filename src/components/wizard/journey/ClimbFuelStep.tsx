@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { CompassBot } from "./CompassBot";
 
 interface ClimbFuelStepProps {
   onSelect: (tag: string) => void;
@@ -9,87 +8,84 @@ interface ClimbFuelStepProps {
 }
 
 export const ClimbFuelStep = ({ onSelect, onBack }: ClimbFuelStepProps) => {
-  const [selectedOption, setSelectedOption] = useState<string>("");
-  const [showTips, setShowTips] = useState(false);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const options = [
-    { label: "We need more leads", tag: "lead_gen", icon: "🎯", color: "bg-red-100 hover:bg-red-200 border-red-300" },
-    { label: "Build trust with our audience", tag: "trust_building", icon: "🤝", color: "bg-blue-100 hover:bg-blue-200 border-blue-300" },
-    { label: "Explain our process better (for clients or team)", tag: "internal_clarity", icon: "🔍", color: "bg-purple-100 hover:bg-purple-200 border-purple-300" },
-    { label: "Train our team or onboard people better", tag: "training_ops", icon: "🎓", color: "bg-green-100 hover:bg-green-200 border-green-300" },
-    { label: "Position ourselves as experts", tag: "thought_leadership", icon: "👑", color: "bg-yellow-100 hover:bg-yellow-200 border-yellow-300" },
-    { label: "Educate customers before and after they buy", tag: "customer_support", icon: "💡", color: "bg-orange-100 hover:bg-orange-200 border-orange-300" },
-    { label: "Help our sales team close more deals", tag: "sales_enablement", icon: "📈", color: "bg-pink-100 hover:bg-pink-200 border-pink-300" },
+    { label: "We need more leads", tag: "lead_gen", icon: "🎯" },
+    { label: "Build trust with our audience", tag: "trust_building", icon: "🤝" },
+    { label: "Explain our process better", tag: "internal_clarity", icon: "📋" },
+    { label: "Train our team better", tag: "training_ops", icon: "🎓" },
+    { label: "Position ourselves as experts", tag: "thought_leadership", icon: "👑" },
+    { label: "Educate customers", tag: "customer_support", icon: "💡" },
+    { label: "Help sales close deals", tag: "sales_enablement", icon: "💼" },
   ];
 
-  const tips = [
-    "Pick the goal that keeps you up at night.",
-    "Video works best when it solves a real problem.",
-    "Your biggest challenge is your biggest opportunity."
-  ];
+  const handleToggle = (tag: string) => {
+    setSelectedTags(prev => 
+      prev.includes(tag) 
+        ? prev.filter(t => t !== tag)
+        : [...prev, tag]
+    );
+  };
 
-  const handleSelect = (tag: string) => {
-    setSelectedOption(tag);
-    setTimeout(() => onSelect(tag), 300);
+  const handleContinue = () => {
+    const primaryTag = selectedTags[0] || "lead_gen";
+    onSelect(primaryTag);
   };
 
   return (
-    <div className="journey-scene desert-theme p-8 text-center relative overflow-hidden">
-      {/* Desert Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-orange-50 to-yellow-50 opacity-40"></div>
-      <div className="absolute top-0 left-0 w-40 h-40 bg-yellow-200 rounded-full opacity-15 animate-float"></div>
-      <div className="absolute bottom-0 right-0 w-36 h-36 bg-orange-200 rounded-full opacity-20 animate-float" style={{animationDelay: '2s'}}></div>
-
-      <div className="relative z-10">
+    <div className="min-h-[600px] p-8 bg-gradient-to-b from-orange-50 to-white">
+      <div className="max-w-4xl mx-auto text-center">
         <div className="mb-8">
-          <div className="text-6xl mb-4 animate-bounce">⛽</div>
-          <h2 className="text-4xl font-display font-black text-corporate-dark mb-4">
-            Fuel for the <span className="text-gradient-1">Climb</span>
+          <div className="text-5xl mb-4">⛽</div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            Fuel for the <span className="text-orange-600">Climb</span>
           </h2>
-          <p className="text-xl text-corporate-gray max-w-2xl mx-auto">
-            What's your top reason for exploring video?
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            What's your top reason for exploring video? (Select all that apply)
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          {options.map((option, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+          {options.map((option) => (
             <button
               key={option.tag}
-              onClick={() => handleSelect(option.tag)}
-              className={`sticker-tile p-6 rounded-xl border-2 transition-all duration-300 text-center hover:scale-105 hover:shadow-lg ${
-                selectedOption === option.tag 
-                  ? 'border-corporate-dark bg-corporate-light scale-105 shadow-lg animate-pulse' 
-                  : `${option.color} border-transparent hover:border-current`
+              onClick={() => handleToggle(option.tag)}
+              className={`p-4 bg-white rounded-lg border-2 transition-all duration-200 text-left hover:border-orange-500 hover:shadow-sm ${
+                selectedTags.includes(option.tag)
+                  ? 'border-orange-500 bg-orange-50 shadow-sm' 
+                  : 'border-gray-200'
               }`}
-              style={{
-                animationDelay: `${index * 0.1}s`,
-                animation: 'sticker-appear 0.5s ease-out forwards'
-              }}
             >
-              <div className="text-3xl mb-3 sticker-icon animate-bounce" style={{animationDelay: `${index * 0.2}s`}}>
-                {option.icon}
+              <div className="flex items-center space-x-3">
+                <div className="text-xl">{option.icon}</div>
+                <div className="flex-1">
+                  <p className="font-medium text-gray-900">
+                    {option.label}
+                  </p>
+                </div>
+                {selectedTags.includes(option.tag) && (
+                  <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
+                    <span className="text-white text-xs">✓</span>
+                  </div>
+                )}
               </div>
-              <p className="text-sm font-medium text-corporate-dark leading-tight">
-                {option.label}
-              </p>
             </button>
           ))}
         </div>
 
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onBack}
-          className="border-corporate-gray text-corporate-gray hover:bg-corporate-light"
-        >
-          ← Back
-        </Button>
-
-        <CompassBot 
-          tips={tips} 
-          showTips={showTips} 
-          onToggleTips={() => setShowTips(!showTips)}
-        />
+        <div className="flex gap-4 justify-center">
+          <Button variant="outline" onClick={onBack}>
+            ← Back
+          </Button>
+          <Button 
+            onClick={handleContinue}
+            disabled={selectedTags.length === 0}
+            className="bg-orange-600 hover:bg-orange-700"
+          >
+            Continue →
+          </Button>
+        </div>
       </div>
     </div>
   );

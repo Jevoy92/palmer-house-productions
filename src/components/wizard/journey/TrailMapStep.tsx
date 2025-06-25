@@ -1,7 +1,6 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { CompassBot } from "./CompassBot";
 
 interface TrailMapStepProps {
   onSelect: (tag: string) => void;
@@ -10,99 +9,77 @@ interface TrailMapStepProps {
 
 export const TrailMapStep = ({ onSelect, onBack }: TrailMapStepProps) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
-  const [showTips, setShowTips] = useState(false);
 
   const options = [
     { 
       label: "Just getting my feet under me", 
       tag: "solo_startup", 
       icon: "🌱",
-      description: "Early stage, finding your direction",
-      gradient: "from-green-400 to-green-600"
+      description: "Early stage, figuring things out"
     },
     { 
       label: "Growing with a lean team", 
       tag: "scaling_team", 
-      icon: "🌳",
-      description: "Building momentum and systems",
-      gradient: "from-blue-400 to-blue-600"
+      icon: "🌿",
+      description: "Building momentum and systems"
     },
     { 
       label: "We're established and ready to lead", 
       tag: "established_leader", 
-      icon: "🏔️",
-      description: "Market position, scaling impact",
-      gradient: "from-purple-400 to-purple-600"
+      icon: "🌳",
+      description: "Market presence and thought leadership"
     },
-  ];
-
-  const tips = [
-    "Think about where you are today, not where you want to be.",
-    "Your current stage shapes the perfect video strategy for you.",
-    "Growth happens in stages—let's find yours."
   ];
 
   const handleSelect = (tag: string) => {
     setSelectedOption(tag);
-    setTimeout(() => onSelect(tag), 300);
+    setTimeout(() => onSelect(tag), 200);
   };
 
   return (
-    <div className="journey-scene forest-theme p-8 text-center relative overflow-hidden">
-      {/* Forest Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-green-50 to-emerald-50 opacity-40"></div>
-      <div className="absolute top-5 left-5 w-32 h-32 bg-green-200 rounded-full opacity-20 animate-float"></div>
-      <div className="absolute bottom-10 right-10 w-28 h-28 bg-emerald-200 rounded-full opacity-25 animate-float" style={{animationDelay: '3s'}}></div>
-
-      <div className="relative z-10">
+    <div className="min-h-[600px] p-8 bg-gradient-to-b from-green-50 to-white">
+      <div className="max-w-3xl mx-auto text-center">
         <div className="mb-8">
-          <div className="text-6xl mb-4 animate-bounce">🗺️</div>
-          <h2 className="text-4xl font-display font-black text-corporate-dark mb-4">
-            Choose Your <span className="text-gradient-1">Trail Map</span>
+          <div className="text-5xl mb-4">🧭</div>
+          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            Choose Your <span className="text-green-600">Trail Map</span>
           </h2>
-          <p className="text-xl text-corporate-gray max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Which of these matches your business's current vibe?
           </p>
         </div>
 
-        <div className="max-w-2xl mx-auto space-y-4 mb-8">
+        <div className="space-y-4 mb-8">
           {options.map((option) => (
             <button
               key={option.tag}
               onClick={() => handleSelect(option.tag)}
-              className={`emoji-card w-full p-8 bg-video-white rounded-2xl border-2 transition-all duration-300 text-center hover:border-corporate-dark hover:scale-105 hover:shadow-lg ${
+              className={`w-full p-6 bg-white rounded-lg border-2 transition-all duration-200 text-left hover:border-green-500 hover:shadow-md ${
                 selectedOption === option.tag 
-                  ? 'border-corporate-dark bg-corporate-light scale-105 shadow-lg' 
-                  : 'border-corporate-light'
+                  ? 'border-green-500 bg-green-50 shadow-md' 
+                  : 'border-gray-200'
               }`}
             >
-              <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br ${option.gradient} flex items-center justify-center text-2xl`}>
-                {option.icon}
+              <div className="flex items-start space-x-4">
+                <div className="text-3xl">{option.icon}</div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-900 mb-1">
+                    {option.label}
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    {option.description}
+                  </p>
+                </div>
               </div>
-              <h3 className="text-xl font-bold text-corporate-dark mb-2">
-                {option.label}
-              </h3>
-              <p className="text-corporate-gray">
-                {option.description}
-              </p>
             </button>
           ))}
         </div>
 
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onBack}
-          className="border-corporate-gray text-corporate-gray hover:bg-corporate-light"
-        >
-          ← Back
-        </Button>
-
-        <CompassBot 
-          tips={tips} 
-          showTips={showTips} 
-          onToggleTips={() => setShowTips(!showTips)}
-        />
+        <div className="flex gap-4 justify-center">
+          <Button variant="outline" onClick={onBack}>
+            ← Back
+          </Button>
+        </div>
       </div>
     </div>
   );

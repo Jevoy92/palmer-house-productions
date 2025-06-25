@@ -42,7 +42,6 @@ export const JourneyWizard = ({ open, onOpenChange }: JourneyWizardProps) => {
   };
 
   const handleQuickRecommendation = () => {
-    // Set minimal data for quick recommendation
     addJourneyTag('quick_recommendation');
     updateJourneyData({ 
       painPoint: 'quick_help',
@@ -124,7 +123,7 @@ export const JourneyWizard = ({ open, onOpenChange }: JourneyWizardProps) => {
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className={`max-w-5xl ${currentStep === 6 ? 'max-h-[95vh]' : 'max-h-[90vh]'} overflow-y-auto bg-gradient-to-br from-video-white to-corporate-light rounded-3xl border-0 video-shadow-lg p-0`}>
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-lg border-0 shadow-xl p-0">
         <VisuallyHidden>
           <DialogTitle>Journey Wizard</DialogTitle>
           <DialogDescription>Take our interactive journey to discover your perfect video strategy</DialogDescription>
@@ -142,7 +141,7 @@ export const JourneyWizard = ({ open, onOpenChange }: JourneyWizardProps) => {
               variant="outline"
               size="sm"
               onClick={handleQuickRecommendation}
-              className="text-xs border-corporate-gray text-corporate-gray hover:bg-corporate-light hover:scale-105 transition-all duration-300"
+              className="text-xs text-gray-600 hover:bg-gray-100"
             >
               Get Quick Recommendation →
             </Button>

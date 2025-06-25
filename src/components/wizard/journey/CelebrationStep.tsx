@@ -1,6 +1,7 @@
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { PackageDetailsModal } from "./PackageDetailsModal";
 import confetti from "canvas-confetti";
 
 interface CelebrationStepProps {
@@ -11,6 +12,8 @@ interface CelebrationStepProps {
 }
 
 export const CelebrationStep = ({ data, onClose, onNewInquiry, onCalendlyBooking }: CelebrationStepProps) => {
+  const [showPackageDetails, setShowPackageDetails] = useState(false);
+
   useEffect(() => {
     // Trigger confetti
     const duration = 3000;
@@ -46,6 +49,14 @@ export const CelebrationStep = ({ data, onClose, onNewInquiry, onCalendlyBooking
     if (tags.includes("summit")) return "Summit Package – Weekly strategy and production for major momentum.";
     if (tags.includes("basecamp")) return "Basecamp Package – 3–4 videos/month to maintain visibility and nurture leads.";
     return "Trailhead Package – 1–2 monthly videos, perfect for testing and steady growth.";
+  };
+
+  const getPackageType = () => {
+    const tags = data.journeyTags || [];
+    if (tags.includes("horizon")) return "Horizon Package";
+    if (tags.includes("summit")) return "Summit Package";
+    if (tags.includes("basecamp")) return "Basecamp Package";
+    return "Trailhead Package";
   };
 
   return (
@@ -88,10 +99,10 @@ export const CelebrationStep = ({ data, onClose, onNewInquiry, onCalendlyBooking
           </Button>
           <Button 
             variant="outline" 
-            onClick={onClose}
+            onClick={() => setShowPackageDetails(true)}
             className="text-lg px-8 py-3"
           >
-            Send Me the Plan First 📧
+            View Full Package Details 📋
           </Button>
         </div>
 
@@ -104,6 +115,16 @@ export const CelebrationStep = ({ data, onClose, onNewInquiry, onCalendlyBooking
           </button>
         </div>
       </div>
+
+      <PackageDetailsModal 
+        open={showPackageDetails}
+        onOpenChange={setShowPackageDetails}
+        packageType={getPackageType()}
+        onBookSession={() => {
+          setShowPackageDetails(false);
+          onCalendlyBooking();
+        }}
+      />
     </div>
   );
 };

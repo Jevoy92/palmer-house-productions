@@ -6,6 +6,7 @@ import { BillingCycle } from "./pricing/BillingCycle";
 export const Pricing = () => {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [isAnnualBilling, setIsAnnualBilling] = useState(false);
+  const [hoveredWaypoint, setHoveredWaypoint] = useState<string | null>(null);
 
   const handleBillingChange = (isAnnual: boolean) => {
     setIsAnnualBilling(isAnnual);
@@ -18,87 +19,159 @@ export const Pricing = () => {
     }
     return `$${monthlyPrice.toLocaleString()}`;
   };
-  
-  const pricingTiers = [
+
+  const pricingPaths = [
     {
-      name: "Trailhead",
-      icon: "🥾",
+      tier: "Trailhead",
       monthlyPrice: 1500,
-      period: "/month",
-      description: "For solo adventurers and early-stage businesses ready to explore the power of video.",
-      features: [
-        "Up to 4 minutes of premium content monthly",
-        "1 dedicated shoot day per month",
-        "1 monthly strategy session with pre-shoot coaching",
-        "Monthly success check-ins and basic analytics",
-        "Instagram & TikTok optimization",
-        "Internal video support included",
-        "15 TikTok Shorts or 1x 4-min flagship video",
-        "Single-message promo campaign style"
-      ],
-      perfectFor: "solopreneurs, service providers, and small but mighty teams (1–5) carving out their space with social storytelling and promos.",
-      highlight: false,
-      gradient: "gradient-social-1"
+      gradient: "gradient-social-1",
+      trailColor: "#8b5cf6",
+      waypoints: [
+        { 
+          id: "trailhead-1", 
+          icon: "🎯", 
+          label: "Ideal for: Solo founders & small teams", 
+          details: "Perfect for solopreneurs, service providers, and small but mighty teams (1–5) carving out their space with social storytelling and promos." 
+        },
+        { 
+          id: "trailhead-2", 
+          icon: "📦", 
+          label: "4 minutes content, 1 shoot day, 1 strategy session", 
+          details: "15 TikTok Shorts or 1x 4-min flagship video with pre-shoot coaching and monthly success check-ins included." 
+        },
+        { 
+          id: "trailhead-3", 
+          icon: "📍", 
+          label: "Platforms: Instagram & TikTok", 
+          details: "Optimized single-message promo content for the most engaging short-form video platforms." 
+        },
+        { 
+          id: "trailhead-4", 
+          icon: "🧭", 
+          label: "Basic reporting & internal video support", 
+          details: "Monthly strategy sessions, pre-shoot coaching, success check-ins, and basic analytics reporting." 
+        },
+        { 
+          id: "trailhead-5", 
+          icon: "🏁", 
+          label: isAnnualBilling ? "$1,350/month" : "$1,500/month", 
+          details: isAnnualBilling ? "Save $150/month with annual billing - perfect for consistent growth." : "Start your video journey with professional quality at an accessible price point." 
+        }
+      ]
     },
     {
-      name: "Basecamp",
-      icon: "🏕",
+      tier: "Basecamp",
       monthlyPrice: 3500,
-      period: "/month",
-      description: "For growing teams ready to establish a stronger presence across multiple platforms.",
-      features: [
-        "10 minutes of premium content monthly",
-        "2 dedicated shoot days per month",
-        "2 strategy sessions with multi-campaign blueprint",
-        "Enhanced analytics and monthly success check-ins",
-        "Instagram, TikTok, LinkedIn & Facebook optimization",
-        "6–10 short-form videos or LinkedIn reels",
-        "Multi-message campaign approach",
-        "Launch videos, intros, and explainer content"
-      ],
-      perfectFor: "teams of 5–20, e-commerce brands, regional service pros, and businesses scaling up with launch videos and explainers.",
-      highlight: true,
-      gradient: "gradient-social-2"
+      gradient: "gradient-social-2",
+      trailColor: "#f59e0b",
+      waypoints: [
+        { 
+          id: "basecamp-1", 
+          icon: "🎯", 
+          label: "Ideal for: Growing teams, e-com, scaling pros", 
+          details: "Perfect for teams of 5–20, e-commerce brands, and regional service professionals scaling up with launch videos and explainers." 
+        },
+        { 
+          id: "basecamp-2", 
+          icon: "📦", 
+          label: "10 minutes content, 2 shoot days, 2 strategy sessions", 
+          details: "6–10 short-form videos or LinkedIn reels with multi-message campaign approach and enhanced editing." 
+        },
+        { 
+          id: "basecamp-3", 
+          icon: "📍", 
+          label: "Platforms: Instagram, LinkedIn, TikTok", 
+          details: "Expanded reach across professional and social platforms for maximum impact with multi-message campaigns." 
+        },
+        { 
+          id: "basecamp-4", 
+          icon: "🧭", 
+          label: "Enhanced analytics & campaign strategy", 
+          details: "Monthly success check-ins, pre-shoot coaching, enhanced analytics, and multi-platform campaign blueprint." 
+        },
+        { 
+          id: "basecamp-5", 
+          icon: "🏁", 
+          label: isAnnualBilling ? "$3,150/month" : "$3,500/month", 
+          details: isAnnualBilling ? "Save $350/month with annual billing - scale with confidence." : "Scale your presence with professional multi-platform content strategy." 
+        }
+      ]
     },
     {
-      name: "Summit",
-      icon: "🏔",
+      tier: "Summit",
       monthlyPrice: 7500,
-      period: "/month",
-      description: "For regional brands and agencies pushing for authority, consistency, and scale.",
-      features: [
-        "25 minutes of premium content monthly",
-        "4 flexible shoot days with dedicated account lead",
-        "Weekly strategy sessions with deep-dive analytics",
-        "ROI & engagement insights with lead strategy integration",
-        "YouTube, LinkedIn, Instagram & TikTok mastery",
-        "Weekly episodic series or content stacks",
-        "Full cross-platform strategy execution",
-        "Funnel videos, deep dives, and evergreen series"
-      ],
-      perfectFor: "teams of 20–100, agencies, B2B pros, and companies needing a proven rhythm to their visibility with funnel videos and series.",
-      highlight: false,
-      gradient: "gradient-social-3"
+      gradient: "gradient-social-3",
+      trailColor: "#06b6d4",
+      waypoints: [
+        { 
+          id: "summit-1", 
+          icon: "🎯", 
+          label: "Ideal for: B2B brands, regional agencies", 
+          details: "Perfect for teams of 20–100, agencies, and B2B professionals building authority with funnel videos and deep dive series." 
+        },
+        { 
+          id: "summit-2", 
+          icon: "📦", 
+          label: "25 minutes content, 4 shoot days, weekly strategy", 
+          details: "Weekly episodic series or stack with full cross-platform strategy and evergreen assets for consistent authority building." 
+        },
+        { 
+          id: "summit-3", 
+          icon: "📍", 
+          label: "Platforms: YouTube, LinkedIn, Instagram, TikTok", 
+          details: "Comprehensive platform strategy including long-form and short-form content with full cross-platform campaigns." 
+        },
+        { 
+          id: "summit-4", 
+          icon: "🧭", 
+          label: "Dedicated account lead & ROI insights", 
+          details: "Weekly strategy sessions, dedicated account lead, ROI & engagement insights, and lead strategy integration." 
+        },
+        { 
+          id: "summit-5", 
+          icon: "🏁", 
+          label: isAnnualBilling ? "$6,750/month" : "$7,500/month", 
+          details: isAnnualBilling ? "Save $750/month with annual billing - establish lasting authority." : "Establish authority with consistent, high-impact content across all platforms." 
+        }
+      ]
     },
     {
-      name: "Pinnacle",
-      icon: "🌄",
+      tier: "Pinnacle",
       monthlyPrice: 20000,
-      period: "/month",
-      description: "For large enterprises and organizations who demand premium content, data, and agility—without compromise.",
-      features: [
-        "75 minutes of cinematic content monthly",
-        "Unlimited shoot days with pre-production manager",
-        "Weekly + quarterly strategy with real-time dashboard",
-        "Slack/Direct access with on-demand support",
-        "All major platforms + internal systems optimization",
-        "Full asset library: ads, training, brand content",
-        "Enterprise-level campaign systems",
-        "Paid ads, global rollouts, and training assets"
-      ],
-      perfectFor: "national franchises, elite agencies, and organizations ready to dominate their space with paid ads, global rollouts, and training systems.",
-      highlight: false,
-      gradient: "gradient-social-4"
+      gradient: "gradient-social-4",
+      trailColor: "#ec4899",
+      waypoints: [
+        { 
+          id: "pinnacle-1", 
+          icon: "🎯", 
+          label: "Ideal for: Franchises, global campaigns, enterprise", 
+          details: "For national franchises, elite agencies, and organizations ready to dominate with paid ads, global rollouts, and training systems." 
+        },
+        { 
+          id: "pinnacle-2", 
+          icon: "📦", 
+          label: "75 minutes content, unlimited shoots, weekly + quarterly", 
+          details: "Full asset library including ads, onboarding, training, and brand content with enterprise-level campaign systems." 
+        },
+        { 
+          id: "pinnacle-3", 
+          icon: "📍", 
+          label: "All major platforms + internal systems", 
+          details: "Complete omnichannel presence including internal communications, training assets, and global campaign coordination." 
+        },
+        { 
+          id: "pinnacle-4", 
+          icon: "🧭", 
+          label: "Pre-production manager & real-time dashboard", 
+          details: "Dedicated pre-production manager, real-time analytics dashboard, Slack/direct line access, and on-demand support." 
+        },
+        { 
+          id: "pinnacle-5", 
+          icon: "🏁", 
+          label: isAnnualBilling ? "$18,000/month" : "$20,000/month", 
+          details: isAnnualBilling ? "Save $2,000/month with annual billing - enterprise excellence." : "Premium enterprise solution with unlimited shoots and dedicated team support." 
+        }
+      ]
     }
   ];
 
@@ -129,62 +202,115 @@ export const Pricing = () => {
             </div>
             <div className="mt-12 text-corporate-gray text-4xl tracking-widest">⸻ ⸻ ⸻</div>
           </div>
-          
-          <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-8 mb-20">
-            {pricingTiers.map((tier, index) => (
-              <div 
-                key={index}
-                className={`relative p-8 bg-video-white rounded-3xl transition-all duration-500 video-shadow hover:video-shadow-lg group overflow-hidden ${
-                  tier.highlight 
-                    ? 'scale-105 border-2 border-transparent' 
-                    : 'hover:scale-105'
-                }`}
-              >
-                {tier.highlight && (
-                  <div className="mb-4 text-center">
-                    <div className="inline-block gradient-social-2 text-white px-4 py-2 rounded-full text-sm font-bold video-shadow">
-                      🌟 Most Popular
-                    </div>
+
+          {/* Trail Map */}
+          <div className="grid lg:grid-cols-4 gap-8 mb-20">
+            {pricingPaths.map((path, pathIndex) => (
+              <div key={path.tier} className="relative">
+                {/* Trail Header */}
+                <div className="text-center mb-8">
+                  <div className={`w-20 h-20 ${path.gradient} rounded-2xl flex items-center justify-center text-4xl mb-4 mx-auto video-shadow`}>
+                    {path.tier === "Trailhead" && "🥾"}
+                    {path.tier === "Basecamp" && "🏕"}
+                    {path.tier === "Summit" && "🏔"}
+                    {path.tier === "Pinnacle" && "🌄"}
                   </div>
-                )}
-                
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-5 transition-opacity duration-500">
-                  <div className={`w-full h-full ${tier.gradient} rounded-3xl`}></div>
+                  <h3 className="text-3xl font-display font-black text-corporate-dark mb-2">{path.tier}</h3>
+                  <div className="text-xl text-corporate-gray">Trail</div>
                 </div>
-                
-                <div className="relative z-10">
-                  <div className="text-center mb-8">
-                    <div className={`w-16 h-16 ${tier.gradient} rounded-2xl flex items-center justify-center text-3xl mb-4 mx-auto group-hover:scale-110 transition-transform duration-300`}>
-                      {tier.icon}
-                    </div>
-                    <h3 className="text-3xl font-display font-black text-corporate-dark mb-3 group-hover:text-gradient-1 transition-all duration-300">{tier.name}</h3>
-                    <div className="mb-6">
-                      <div className="text-5xl font-black text-corporate-dark">
-                        {calculatePrice(tier.monthlyPrice)}
-                        {isAnnualBilling && (
-                          <div className="text-sm text-green-600 font-medium mt-1">
-                            Save 10% annually
-                          </div>
-                        )}
-                      </div>
-                      <div className="text-corporate-gray text-xl">{tier.period}</div>
-                    </div>
-                    <p className="text-corporate-gray leading-relaxed font-medium">{tier.description}</p>
-                  </div>
-                  
-                  <ul className="space-y-4 mb-8">
-                    {tier.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-start space-x-3">
-                        <div className={`w-3 h-3 ${tier.gradient} rounded-full mt-2 flex-shrink-0`}></div>
-                        <span className="text-corporate-gray leading-relaxed">{feature}</span>
-                      </li>
+
+                {/* SVG Trail Path */}
+                <div className="relative h-[450px] mb-8">
+                  <svg
+                    className="absolute inset-0 w-full h-full"
+                    viewBox="0 0 200 450"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M100 30 Q120 90 80 160 Q60 230 120 300 Q140 370 100 420"
+                      stroke={path.trailColor}
+                      strokeWidth="4"
+                      strokeDasharray="8,4"
+                      fill="none"
+                      className="opacity-30"
+                    />
+                    
+                    {path.waypoints.map((waypoint, index) => (
+                      <g key={waypoint.id}>
+                        <circle
+                          cx={index % 2 === 0 ? 100 : index === 1 ? 120 : index === 3 ? 120 : 100}
+                          cy={30 + index * 80}
+                          r="24"
+                          fill={path.trailColor}
+                          className="cursor-pointer transition-all duration-300 hover:scale-110 drop-shadow-lg"
+                          style={{
+                            filter: hoveredWaypoint === waypoint.id ? `drop-shadow(0 0 12px ${path.trailColor})` : 'none'
+                          }}
+                          onMouseEnter={() => setHoveredWaypoint(waypoint.id)}
+                          onMouseLeave={() => setHoveredWaypoint(null)}
+                        />
+                        <text
+                          x={index % 2 === 0 ? 100 : index === 1 ? 120 : index === 3 ? 120 : 100}
+                          y={30 + index * 80}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          className="text-xl font-bold fill-white pointer-events-none"
+                        >
+                          {waypoint.icon}
+                        </text>
+                      </g>
                     ))}
-                  </ul>
-                  
-                  <div className="mb-8 p-4 bg-corporate-light rounded-2xl">
-                    <p className="text-sm text-corporate-gray mb-2 font-bold">Perfect for:</p>
-                    <p className="text-sm text-corporate-dark leading-relaxed">{tier.perfectFor}</p>
+                  </svg>
+
+                  {/* Waypoint Details */}
+                  {path.waypoints.map((waypoint, index) => (
+                    <div
+                      key={waypoint.id}
+                      className={`absolute transition-all duration-500 pointer-events-none z-50 ${
+                        hoveredWaypoint === waypoint.id 
+                          ? 'opacity-100 scale-100 translate-y-0' 
+                          : 'opacity-0 scale-95 translate-y-2'
+                      }`}
+                      style={{
+                        left: '50%',
+                        top: `${7 + index * 17.5 - 12}%`,
+                        transform: 'translateX(-50%) translateY(-100%)'
+                      }}
+                    >
+                      <div className="bg-video-white/95 backdrop-blur-sm p-8 rounded-2xl video-shadow-lg max-w-lg border border-gray-100 min-w-[280px]">
+                        <div className="flex items-start gap-4 mb-3">
+                          <div className="text-2xl flex-shrink-0 mt-1">{waypoint.icon}</div>
+                          <div>
+                            <p className="text-base font-bold text-corporate-dark mb-3 leading-tight">{waypoint.label}</p>
+                            <p className="text-sm text-corporate-gray leading-relaxed">{waypoint.details}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div 
+                        className="absolute top-full left-1/2 w-0 h-0 border-l-[10px] border-r-[10px] border-t-[10px] border-transparent border-t-video-white/95 -translate-x-1/2"
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* Trail CTA */}
+                <div className="text-center">
+                  <div className="text-4xl font-black text-corporate-dark mb-4">
+                    {calculatePrice(path.monthlyPrice)}
+                    <span className="text-xl text-corporate-gray">/month</span>
+                    {isAnnualBilling && (
+                      <div className="text-sm text-green-600 font-medium">
+                        Save 10% annually
+                      </div>
+                    )}
                   </div>
+                  <button
+                    onClick={() => setIsWizardOpen(true)}
+                    className={`w-full py-4 px-6 rounded-2xl font-bold text-lg transition-all duration-300 ${path.gradient} text-white hover:scale-105 video-shadow hover:shadow-2xl`}
+                  >
+                    Choose This Trail →
+                  </button>
                 </div>
               </div>
             ))}

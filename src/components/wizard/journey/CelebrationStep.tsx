@@ -1,8 +1,9 @@
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { PackageDetailsModal } from "./PackageDetailsModal";
-import confetti from "canvas-confetti";
+import { CheckCircle, ArrowRight, Calendar, Sparkles, Target, TrendingUp } from "lucide-react";
 
 interface CelebrationStepProps {
   data: any;
@@ -14,116 +15,234 @@ interface CelebrationStepProps {
 export const CelebrationStep = ({ data, onClose, onNewInquiry, onCalendlyBooking }: CelebrationStepProps) => {
   const [showPackageDetails, setShowPackageDetails] = useState(false);
 
-  useEffect(() => {
-    // Trigger confetti
-    const duration = 3000;
-    const end = Date.now() + duration;
-
-    const colors = ['#6366f1', '#8b5cf6', '#f59e0b'];
-
-    (function frame() {
-      confetti({
-        particleCount: 2,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: colors
-      });
-      confetti({
-        particleCount: 2,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: colors
-      });
-
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
-      }
-    }());
-  }, []);
-
-  const getRecommendation = () => {
-    const tags = data.journeyTags || [];
-    if (tags.includes("horizon")) return "Horizon Package – Full-scale video domination with high-frequency publishing.";
-    if (tags.includes("summit")) return "Summit Package – Weekly strategy and production for major momentum.";
-    if (tags.includes("basecamp")) return "Basecamp Package – 3–4 videos/month to maintain visibility and nurture leads.";
-    return "Trailhead Package – 1–2 monthly videos, perfect for testing and steady growth.";
+  const getRecommendedPackage = () => {
+    const { contentPace, businessStage, videoGoal, journeyTags } = data;
+    
+    if (contentPace === 'pinnacle' || journeyTags?.includes('enterprise') || businessStage === 'enterprise') {
+      return "Pinnacle Package";
+    } else if (contentPace === 'summit' || businessStage === 'scaling_team' || videoGoal === 'thought_leadership') {
+      return "Summit Package";
+    } else if (contentPace === 'basecamp' || businessStage === 'established' || videoGoal === 'lead_gen') {
+      return "Basecamp Package";
+    } else {
+      return "Trailhead Package";
+    }
   };
 
-  const getPackageType = () => {
-    const tags = data.journeyTags || [];
-    if (tags.includes("horizon")) return "Horizon Package";
-    if (tags.includes("summit")) return "Summit Package";
-    if (tags.includes("basecamp")) return "Basecamp Package";
-    return "Trailhead Package";
+  const getPackageIcon = (packageName: string) => {
+    switch (packageName) {
+      case "Trailhead Package": return "🥾";
+      case "Basecamp Package": return "🏕";
+      case "Summit Package": return "🏔";
+      case "Pinnacle Package": return "🌄";
+      default: return "📦";
+    }
   };
+
+  const getPackageGradient = (packageName: string) => {
+    switch (packageName) {
+      case "Trailhead Package": return "gradient-social-1";
+      case "Basecamp Package": return "gradient-social-2";
+      case "Summit Package": return "gradient-social-3";
+      case "Pinnacle Package": return "gradient-social-4";
+      default: return "gradient-social-1";
+    }
+  };
+
+  const getPackagePrice = (packageName: string) => {
+    switch (packageName) {
+      case "Trailhead Package": return "$1,500/month";
+      case "Basecamp Package": return "$3,500/month";
+      case "Summit Package": return "$7,500/month";
+      case "Pinnacle Package": return "$20,000/month";
+      default: return "Custom Pricing";
+    }
+  };
+
+  const recommendedPackage = getRecommendedPackage();
 
   return (
-    <div className="min-h-[600px] p-8 bg-gradient-to-b from-pink-50 to-white">
-      <div className="max-w-3xl mx-auto text-center">
-        <div className="mb-8">
-          <div className="text-6xl mb-4">🎉</div>
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            You've Mapped Your <span className="text-pink-600">Route</span>!
-          </h2>
-          <p className="text-lg text-gray-600 mb-8">
-            Based on your journey, here's what we recommend for {data.firstName}:
-          </p>
-        </div>
-
-        <div className="bg-white rounded-lg p-8 border-2 border-pink-200 shadow-lg mb-8">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
-            {getRecommendation().split(' – ')[0]}
-          </h3>
-          <p className="text-lg text-gray-600 mb-6">
-            {getRecommendation().split(' – ')[1]}
-          </p>
-          
-          <div className="bg-gray-50 rounded-lg p-4 mb-6">
-            <h4 className="font-semibold text-gray-900 mb-2">Your Journey Summary:</h4>
-            <div className="text-sm text-gray-600 space-y-1">
-              <p><strong>Company:</strong> {data.company}</p>
-              <p><strong>Challenge:</strong> {data.challenge}</p>
-              <p><strong>Budget:</strong> {data.budget}</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 p-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <div className="mb-6">
+            <div className="w-24 h-24 mx-auto bg-gradient-to-r from-green-400 to-blue-500 rounded-full flex items-center justify-center mb-4 shadow-lg">
+              <CheckCircle className="w-12 h-12 text-white" />
             </div>
           </div>
+          <h1 className="text-5xl font-display font-black text-gray-900 mb-4">
+            Your Perfect Trail <span className="text-gradient-2">Awaits!</span>
+          </h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Based on your journey, we've mapped the perfect video strategy for your business.
+          </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button 
-            onClick={onCalendlyBooking}
-            className="bg-pink-600 hover:bg-pink-700 text-lg px-8 py-3"
-          >
-            Book Your Strategy Session 📞
-          </Button>
-          <Button 
-            variant="outline" 
-            onClick={() => setShowPackageDetails(true)}
-            className="text-lg px-8 py-3"
-          >
-            View Full Package Details 📋
-          </Button>
+        {/* Main Results Card */}
+        <Card className="mb-8 bg-white/80 backdrop-blur-sm border-0 shadow-2xl">
+          <CardContent className="p-8">
+            <div className="grid lg:grid-cols-2 gap-8 items-center">
+              {/* Package Recommendation */}
+              <div>
+                <div className="text-center lg:text-left">
+                  <div className="inline-flex items-center px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-medium mb-4">
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    Recommended for You
+                  </div>
+                  <h2 className="text-3xl font-bold text-gray-900 mb-2">{recommendedPackage}</h2>
+                  <p className="text-lg text-gray-600 mb-6">
+                    {recommendedPackage === "Trailhead Package" && "Perfect for getting started with professional video content"}
+                    {recommendedPackage === "Basecamp Package" && "Ideal for maintaining steady growth and lead generation"}
+                    {recommendedPackage === "Summit Package" && "Great for establishing thought leadership and authority"}
+                    {recommendedPackage === "Pinnacle Package" && "Ultimate solution for enterprise-level video dominance"}
+                  </p>
+                  
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className={`w-16 h-16 ${getPackageGradient(recommendedPackage)} rounded-xl flex items-center justify-center text-2xl shadow-lg`}>
+                      {getPackageIcon(recommendedPackage)}
+                    </div>
+                    <div>
+                      <div className="text-2xl font-bold text-gray-900">{getPackagePrice(recommendedPackage)}</div>
+                      <div className="text-sm text-gray-500">Starting price</div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button 
+                      onClick={() => setShowPackageDetails(true)}
+                      variant="outline"
+                      className="flex-1"
+                    >
+                      View Details
+                    </Button>
+                    <Button 
+                      onClick={onCalendlyBooking}
+                      className={`flex-1 ${getPackageGradient(recommendedPackage)} text-white border-0 hover:scale-105 transition-transform`}
+                    >
+                      <Calendar className="w-4 h-4 mr-2" />
+                      Book Strategy Call
+                    </Button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Journey Summary */}
+              <div className="bg-gray-50 rounded-2xl p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                  <Target className="w-5 h-5 mr-2 text-blue-600" />
+                  Your Journey Summary
+                </h3>
+                <div className="space-y-3">
+                  {data.painPoint && (
+                    <div className="flex items-start gap-3">
+                      <div className="w-2 h-2 rounded-full bg-blue-500 mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="text-sm font-medium text-gray-700">Challenge: </span>
+                        <span className="text-sm text-gray-600 capitalize">{data.painPoint.replace(/_/g, ' ')}</span>
+                      </div>
+                    </div>
+                  )}
+                  {data.businessStage && (
+                    <div className="flex items-start gap-3">
+                      <div className="w-2 h-2 rounded-full bg-purple-500 mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="text-sm font-medium text-gray-700">Business Stage: </span>
+                        <span className="text-sm text-gray-600 capitalize">{data.businessStage.replace(/_/g, ' ')}</span>
+                      </div>
+                    </div>
+                  )}
+                  {data.videoGoal && (
+                    <div className="flex items-start gap-3">
+                      <div className="w-2 h-2 rounded-full bg-green-500 mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="text-sm font-medium text-gray-700">Video Goal: </span>
+                        <span className="text-sm text-gray-600 capitalize">{data.videoGoal.replace(/_/g, ' ')}</span>
+                      </div>
+                    </div>
+                  )}
+                  {data.contentPace && (
+                    <div className="flex items-start gap-3">
+                      <div className="w-2 h-2 rounded-full bg-orange-500 mt-2 flex-shrink-0"></div>
+                      <div>
+                        <span className="text-sm font-medium text-gray-700">Content Pace: </span>
+                        <span className="text-sm text-gray-600 capitalize">{data.contentPace.replace(/_/g, ' ')}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Key Benefits */}
+        <div className="grid md:grid-cols-3 gap-6 mb-8">
+          <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-lg">
+            <CardContent className="p-6 text-center">
+              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="w-6 h-6 text-blue-600" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Accelerated Growth</h3>
+              <p className="text-sm text-gray-600">Professional video content that drives real business results</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-lg">
+            <CardContent className="p-6 text-center">
+              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Target className="w-6 h-6 text-purple-600" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Strategic Approach</h3>
+              <p className="text-sm text-gray-600">Tailored content strategy aligned with your business goals</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/60 backdrop-blur-sm border-0 shadow-lg">
+            <CardContent className="p-6 text-center">
+              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <CheckCircle className="w-6 h-6 text-green-600" />
+              </div>
+              <h3 className="font-bold text-gray-900 mb-2">Proven Results</h3>
+              <p className="text-sm text-gray-600">Track record of helping businesses achieve video success</p>
+            </CardContent>
+          </Card>
         </div>
 
-        <div className="mt-6">
-          <button
-            onClick={onNewInquiry}
-            className="text-sm text-gray-500 hover:text-gray-700 underline"
-          >
-            Start a new journey
-          </button>
-        </div>
+        {/* Action Section */}
+        <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white border-0 shadow-2xl">
+          <CardContent className="p-8 text-center">
+            <h3 className="text-2xl font-bold mb-4">Ready to Start Your Journey?</h3>
+            <p className="text-lg mb-6 text-blue-100">
+              Let's discuss how we can bring your video vision to life with a personalized strategy session.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+              <Button 
+                onClick={onCalendlyBooking}
+                variant="secondary"
+                className="bg-white text-blue-600 hover:bg-gray-100 font-bold"
+              >
+                <Calendar className="w-4 h-4 mr-2" />
+                Book Your Call
+              </Button>
+              <Button 
+                onClick={onNewInquiry}
+                variant="outline"
+                className="border-white text-white hover:bg-white/10"
+              >
+                Take Quiz Again
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
-      <PackageDetailsModal 
+      {/* Package Details Modal */}
+      <PackageDetailsModal
         open={showPackageDetails}
         onOpenChange={setShowPackageDetails}
-        packageType={getPackageType()}
-        onBookSession={() => {
-          setShowPackageDetails(false);
-          onCalendlyBooking();
-        }}
+        packageType={recommendedPackage}
+        onBookSession={onCalendlyBooking}
       />
     </div>
   );

@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Target, Package, MapPin, Compass, Flag } from "lucide-react";
+import { Target, Package, MapPin, Compass, Flag, Footprints, Tent, Mountain, Sunrise } from "lucide-react";
 import { ContactWizard } from "./ContactWizard";
 import { BillingCycle } from "./pricing/BillingCycle";
 
@@ -27,6 +26,7 @@ export const Pricing = () => {
       monthlyPrice: 1500,
       gradient: "gradient-social-1",
       trailColor: "#8b5cf6",
+      headerIcon: Footprints,
       waypoints: [
         { 
           id: "trailhead-1", 
@@ -65,6 +65,7 @@ export const Pricing = () => {
       monthlyPrice: 3500,
       gradient: "gradient-social-2",
       trailColor: "#f59e0b",
+      headerIcon: Tent,
       waypoints: [
         { 
           id: "basecamp-1", 
@@ -103,6 +104,7 @@ export const Pricing = () => {
       monthlyPrice: 7500,
       gradient: "gradient-social-3",
       trailColor: "#06b6d4",
+      headerIcon: Mountain,
       waypoints: [
         { 
           id: "summit-1", 
@@ -141,6 +143,7 @@ export const Pricing = () => {
       monthlyPrice: 20000,
       gradient: "gradient-social-4",
       trailColor: "#ec4899",
+      headerIcon: Sunrise,
       waypoints: [
         { 
           id: "pinnacle-1", 
@@ -213,11 +216,8 @@ export const Pricing = () => {
               <div key={path.tier} className="relative">
                 {/* Trail Header */}
                 <div className="text-center mb-8">
-                  <div className={`w-20 h-20 ${path.gradient} rounded-2xl flex items-center justify-center text-4xl mb-4 mx-auto video-shadow`}>
-                    {path.tier === "Trailhead" && "🥾"}
-                    {path.tier === "Basecamp" && "🏕"}
-                    {path.tier === "Summit" && "🏔"}
-                    {path.tier === "Pinnacle" && "🌄"}
+                  <div className={`w-20 h-20 ${path.gradient} rounded-2xl flex items-center justify-center mb-4 mx-auto video-shadow`}>
+                    <path.headerIcon size={32} color="white" />
                   </div>
                   <h3 className="text-3xl font-display font-black text-corporate-dark mb-2">{path.tier}</h3>
                   <div className="text-xl text-corporate-gray">Trail</div>

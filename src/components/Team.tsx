@@ -9,7 +9,7 @@ export const Team = () => {
       textGradient: "text-gradient-3"
     },
     {
-      name: "Kyli Nelson",
+      name: "Kyli Lora",
       role: "Executive Production Assistant",
       image: "/lovable-uploads/dcada800-4488-4970-82eb-2c356d3e789d.png",
       bio: "Kyli keeps the wheels turning at Palmer House Productions. From client communication and scheduling to on-set logistics and post-production prep, she's the calm in the creative storm. With a sharp eye for detail and a heart for service, she ensures every project runs smoothly from start to finish.",
@@ -17,7 +17,7 @@ export const Team = () => {
       textGradient: "text-gradient-1"
     },
     {
-      name: "Trenton Hayes", 
+      name: "Trenton Sims", 
       role: "Lead Editor",
       image: "/lovable-uploads/2537d3fc-b210-4170-93a2-d927fe38eea0.png",
       bio: "Trenton is the post-production powerhouse behind our visual storytelling. With a knack for turning raw footage into compelling narratives, he brings each client's vision to life through clean cuts, creative pacing, and platform-ready delivery. His work is where the magic comes together.",

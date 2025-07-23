@@ -1,12 +1,12 @@
 
 import { Navigation } from "@/components/Navigation";
-import { PricingTrails } from "@/components/PricingTrails";
+import { VideoPackagesTiers } from "@/components/VideoPackagesTiers";
 
 const VideoPackagesPage = () => {
   return (
     <div className="min-h-screen bg-white">
       <Navigation />
-      <PricingTrails />
+      <VideoPackagesTiers />
     </div>
   );
 };

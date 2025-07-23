@@ -78,26 +78,26 @@ export const Navigation = () => {
           
           <div className="hidden md:block">
             <div className="flex items-center space-x-8">
-              <Link to="/about" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
-                Our Journey
+              <Link to="/video-packages" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
+                Video Packages
               </Link>
-              <Link to="/team" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
-                Meet the Crew
+              <Link to="/discovery-call" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
+                Discovery Call
               </Link>
-              <Link to="/pathways" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
-                Pathways
+              <Link to="/client-results" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
+                Client Results
               </Link>
-              <Link to="/reviews" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
-                Trail Reviews
+              <Link to="/video-use-cases" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
+                Video Use Cases
               </Link>
-              <Link to="/arsenal" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
-                The Arsenal
+              <Link to="/about-us" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
+                About Us
               </Link>
-              <Link to="/glimpse" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
-                The Glimpse
+              <Link to="/podcast" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
+                Podcast
               </Link>
               <Link to="/contact" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
-                Signal Us
+                Contact
               </Link>
             </div>
           </div>
@@ -112,26 +112,26 @@ export const Navigation = () => {
 
       {isOpen && <div className="md:hidden bg-white border-t border-apple-gray-2">
           <div className="px-4 pt-2 pb-3 space-y-1">
-            <Link to="/about" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
-              Our Journey
+            <Link to="/video-packages" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
+              Video Packages
             </Link>
-            <Link to="/team" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
-              Meet the Crew
+            <Link to="/discovery-call" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
+              Discovery Call
             </Link>
-            <Link to="/pathways" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
-              Pathways
+            <Link to="/client-results" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
+              Client Results
             </Link>
-            <Link to="/reviews" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
-              Trail Reviews
+            <Link to="/video-use-cases" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
+              Video Use Cases
             </Link>
-            <Link to="/arsenal" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
-              The Arsenal
+            <Link to="/about-us" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
+              About Us
             </Link>
-            <Link to="/glimpse" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
-              The Glimpse
+            <Link to="/podcast" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
+              Podcast
             </Link>
             <Link to="/contact" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
-              Signal Us
+              Contact
             </Link>
           </div>
         </div>}

@@ -5,11 +5,12 @@ import { ContactWizard } from "./ContactWizard";
 export const Hero = () => {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
 
-  const handleExploreTrails = () => {
-    const servicesElement = document.getElementById('services');
-    if (servicesElement) {
-      servicesElement.scrollIntoView({ behavior: 'smooth' });
-    }
+  const handleExplorePackages = () => {
+    window.location.href = '/video-packages';
+  };
+
+  const handleBookCall = () => {
+    window.location.href = '/discovery-call';
   };
 
   return (
@@ -29,30 +30,28 @@ export const Hero = () => {
           </div>
         </div>
         
-        <h1 className="text-7xl md:text-9xl font-display font-black mb-8 tracking-tight leading-none">
-          Palmer House
+        <h1 className="text-6xl md:text-8xl font-display font-black mb-8 tracking-tight leading-none">
+          Video That Ventures
           <br />
-          <span className="text-gradient-1">Productions</span>
+          <span className="text-gradient-1">Beyond Content</span>
         </h1>
         
-        <p className="text-2xl md:text-4xl text-corporate-gray mb-12 font-medium max-w-4xl mx-auto leading-tight">
-          We film the <span className="text-gradient-2 font-bold">road less traveled</span>.
-          <br />
-          Stories as <span className="text-gradient-3 font-bold">original</span> as the path you walk.
+        <p className="text-2xl md:text-3xl text-corporate-gray mb-12 font-medium max-w-4xl mx-auto leading-tight">
+          Short-form cinematic storytelling for <span className="text-gradient-2 font-bold">bold brands</span> ready to scale.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-6 justify-center mb-24">
           <button 
-            onClick={() => setIsWizardOpen(true)}
+            onClick={handleExplorePackages}
             className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow-lg"
           >
-            Start Your Journey 🗺️
+            🎯 Explore Video Packages
           </button>
           <button 
-            onClick={handleExploreTrails}
+            onClick={handleBookCall}
             className="px-10 py-5 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow"
           >
-            Explore Our Trails ▶️
+            🔍 Book a Discovery Call
           </button>
         </div>
       </div>

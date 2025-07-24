@@ -12,12 +12,15 @@ import {
   Video,
   Mic,
   Camera,
-  Play
+  Play,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 
 export const VideoPackagesTiers = () => {
   const navigate = useNavigate();
   const [hoveredTier, setHoveredTier] = useState<string | null>(null);
+  const [expandedTier, setExpandedTier] = useState<string | null>(null);
 
   const tiers = [
     {
@@ -128,42 +131,46 @@ export const VideoPackagesTiers = () => {
     navigate('/discovery-call');
   };
 
+  const toggleExpanded = (tierId: string) => {
+    setExpandedTier(expandedTier === tierId ? null : tierId);
+  };
+
   return (
-    <section className="pt-24 pb-16 bg-video-white relative overflow-hidden">
+    <section className="pt-16 md:pt-24 pb-8 md:pb-16 bg-video-white relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-32 h-32 gradient-social-1 rounded-full opacity-20 float-animation"></div>
-        <div className="absolute top-40 right-20 w-24 h-24 gradient-social-2 rounded-full opacity-30 float-animation" style={{animationDelay: '2s'}}></div>
-        <div className="absolute bottom-32 left-1/4 w-40 h-40 gradient-social-3 rounded-full opacity-15 float-animation" style={{animationDelay: '4s'}}></div>
-        <div className="absolute bottom-20 right-10 w-28 h-28 gradient-social-4 rounded-full opacity-25 float-animation" style={{animationDelay: '1s'}}></div>
+        <div className="absolute top-20 left-4 md:left-10 w-16 h-16 md:w-32 md:h-32 gradient-social-1 rounded-full opacity-20 float-animation"></div>
+        <div className="absolute top-40 right-4 md:right-20 w-12 h-12 md:w-24 md:h-24 gradient-social-2 rounded-full opacity-30 float-animation" style={{animationDelay: '2s'}}></div>
+        <div className="absolute bottom-32 left-1/4 w-20 h-20 md:w-40 md:h-40 gradient-social-3 rounded-full opacity-15 float-animation" style={{animationDelay: '4s'}}></div>
+        <div className="absolute bottom-20 right-4 md:right-10 w-14 h-14 md:w-28 md:h-28 gradient-social-4 rounded-full opacity-25 float-animation" style={{animationDelay: '1s'}}></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-16">
-          <div className="inline-block px-6 py-3 gradient-social-2 rounded-full text-white font-bold text-lg mb-8 video-shadow">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
+        <div className="text-center mb-8 md:mb-16">
+          <div className="inline-block px-4 md:px-6 py-2 md:py-3 gradient-social-2 rounded-full text-white font-bold text-base md:text-lg mb-6 md:mb-8 video-shadow">
             🎬 Video Packages
           </div>
-          <h1 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-black mb-4 md:mb-8 text-corporate-dark tracking-tight">
             Choose Your <span className="text-gradient-1">Subscription Path</span>
           </h1>
-          <p className="text-2xl text-corporate-gray mb-6 max-w-4xl mx-auto font-medium">
+          <p className="text-lg md:text-2xl text-corporate-gray mb-4 md:mb-6 max-w-4xl mx-auto font-medium px-4">
             All tiers include full-service production: scripting, filming, teleprompter support, editing, and internal/external delivery options.
           </p>
         </div>
 
         {/* Interactive Mountain Trail Visual */}
-        <div className="mb-16 relative">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-display font-black text-corporate-dark mb-4">
+        <div className="mb-8 md:mb-16 relative">
+          <div className="text-center mb-6 md:mb-12">
+            <h2 className="text-2xl md:text-4xl font-display font-black text-corporate-dark mb-2 md:mb-4">
               The Trail to <span className="text-gradient-2">Video Mastery</span>
             </h2>
-            <p className="text-xl text-corporate-gray">
+            <p className="text-lg md:text-xl text-corporate-gray">
               Every tier builds toward complete video independence
             </p>
           </div>
 
-          {/* Mountain Trail SVG */}
-          <div className="relative h-96 mb-8">
+          {/* Mountain Trail SVG - Hidden on mobile */}
+          <div className="hidden md:block relative h-96 mb-8">
             <svg
               className="w-full h-full"
               viewBox="0 0 800 400"
@@ -284,11 +291,11 @@ export const VideoPackagesTiers = () => {
         </div>
 
         {/* Tier Cards Grid */}
-        <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-8 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-8 mb-8 md:mb-16">
           {visibleTiers.map((tier) => (
             <div
               key={tier.id}
-              className={`relative p-6 bg-white rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105 group ${
+              className={`relative p-4 md:p-6 bg-white rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105 group ${
                 tier.highlight ? 'border-2 border-social-purple' : ''
               }`}
               onMouseEnter={() => setHoveredTier(tier.id)}
@@ -296,29 +303,29 @@ export const VideoPackagesTiers = () => {
             >
               {tier.highlight && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <div className="gradient-social-2 text-white px-4 py-2 rounded-full text-sm font-bold video-shadow">
+                  <div className="gradient-social-2 text-white px-3 md:px-4 py-1 md:py-2 rounded-full text-xs md:text-sm font-bold video-shadow">
                     🌟 Most Popular
                   </div>
                 </div>
               )}
 
-              <div className="text-center mb-6">
-                <div className={`w-16 h-16 ${tier.gradient} rounded-2xl flex items-center justify-center text-3xl mb-4 mx-auto group-hover:scale-110 transition-transform duration-300`}>
-                  <tier.icon color="white" size={32} />
+              <div className="text-center mb-4 md:mb-6">
+                <div className={`w-12 h-12 md:w-16 md:h-16 ${tier.gradient} rounded-2xl flex items-center justify-center text-2xl md:text-3xl mb-3 md:mb-4 mx-auto group-hover:scale-110 transition-transform duration-300`}>
+                  <tier.icon color="white" size={24} />
                 </div>
-                <h3 className="text-2xl font-display font-black text-corporate-dark mb-2">{tier.name}</h3>
-                <p className="text-corporate-gray italic text-sm mb-4">"{tier.tagline}"</p>
-                <div className="mb-4">
-                  <span className="text-4xl font-black text-corporate-dark">{tier.price}</span>
-                  <span className="text-corporate-gray text-lg">{tier.period}</span>
+                <h3 className="text-xl md:text-2xl font-display font-black text-corporate-dark mb-2">{tier.name}</h3>
+                <p className="text-corporate-gray italic text-xs md:text-sm mb-3 md:mb-4">"{tier.tagline}"</p>
+                <div className="mb-3 md:mb-4">
+                  <span className="text-2xl md:text-4xl font-black text-corporate-dark">{tier.price}</span>
+                  <span className="text-corporate-gray text-sm md:text-lg">{tier.period}</span>
                 </div>
               </div>
 
-              <ul className="space-y-2 mb-6">
+              <ul className="space-y-2 mb-4 md:mb-6">
                 {tier.features.map((feature, index) => (
                   <li key={index} className="flex items-start space-x-3">
                     <div className={`w-2 h-2 ${tier.gradient} rounded-full mt-2 flex-shrink-0`}></div>
-                    <span className="text-corporate-gray text-sm">{feature}</span>
+                    <span className="text-corporate-gray text-xs md:text-sm">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -326,7 +333,7 @@ export const VideoPackagesTiers = () => {
               <div className="mt-auto">
                 <button
                   onClick={handleDiscoveryCall}
-                  className={`w-full py-3 px-6 rounded-xl font-bold text-sm transition-all duration-300 ${
+                  className={`w-full py-2 md:py-3 px-4 md:px-6 rounded-xl font-bold text-xs md:text-sm transition-all duration-300 ${
                     tier.highlight
                       ? `${tier.gradient} text-white hover:scale-105 video-shadow`
                       : `border-2 border-corporate-gray text-corporate-dark hover:bg-corporate-dark hover:text-white`
@@ -339,13 +346,14 @@ export const VideoPackagesTiers = () => {
           ))}
         </div>
 
-        {/* Comparison Table */}
-        <div className="bg-white rounded-3xl p-8 video-shadow mb-16">
-          <h2 className="text-4xl font-display font-black text-corporate-dark mb-8 text-center">
+        {/* Mobile-Friendly Comparison Section */}
+        <div className="bg-white rounded-3xl p-4 md:p-8 video-shadow mb-8 md:mb-16">
+          <h2 className="text-2xl md:text-4xl font-display font-black text-corporate-dark mb-4 md:mb-8 text-center">
             Side-by-Side <span className="text-gradient-1">Comparison</span>
           </h2>
           
-          <div className="overflow-x-auto">
+          {/* Desktop Table */}
+          <div className="hidden lg:block overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-corporate-light">
@@ -400,36 +408,94 @@ export const VideoPackagesTiers = () => {
               </tbody>
             </table>
           </div>
+
+          {/* Mobile Accordion */}
+          <div className="lg:hidden space-y-4">
+            {visibleTiers.map((tier) => (
+              <div key={tier.id} className="border border-corporate-light rounded-xl overflow-hidden">
+                <button
+                  onClick={() => toggleExpanded(tier.id)}
+                  className="w-full p-4 flex items-center justify-between bg-corporate-light hover:bg-gray-100 transition-colors"
+                >
+                  <div className="flex items-center space-x-4">
+                    <div className={`w-10 h-10 ${tier.gradient} rounded-lg flex items-center justify-center`}>
+                      <tier.icon color="white" size={20} />
+                    </div>
+                    <div className="text-left">
+                      <div className="font-bold text-corporate-dark">{tier.name}</div>
+                      <div className="text-sm text-corporate-gray">{tier.price}{tier.period}</div>
+                    </div>
+                  </div>
+                  {expandedTier === tier.id ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
+                
+                {expandedTier === tier.id && (
+                  <div className="p-4 space-y-3 border-t border-corporate-light">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-corporate-dark">Monthly Shoot Days</span>
+                      <span className="text-sm text-corporate-gray">
+                        {tier.id === 'trailhead' ? '1' : 
+                         tier.id === 'basecamp' ? '2' : 
+                         tier.id === 'summit' ? '4' : 'Weekly'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-corporate-dark">Final Assets</span>
+                      <span className="text-sm text-corporate-gray">{tier.assets}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-corporate-dark">Pre-Production</span>
+                      <span className="text-sm text-corporate-gray">✓</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-corporate-dark">Internal Training Videos</span>
+                      <span className="text-sm text-corporate-gray">
+                        {tier.id === 'trailhead' ? '—' : '✓'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium text-corporate-dark">Dedicated Strategist</span>
+                      <span className="text-sm text-corporate-gray">
+                        {tier.id === 'horizon' ? '✓' : '—'}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Floating CTA */}
-        <div className="fixed bottom-8 right-8 z-50">
+        {/* Floating CTA - Adjusted for mobile */}
+        <div className="fixed bottom-4 md:bottom-8 right-4 md:right-8 z-50">
           <button
             onClick={handleDiscoveryCall}
-            className="px-6 py-3 gradient-social-1 text-white font-bold rounded-2xl hover:scale-105 transition-all duration-300 video-shadow-lg flex items-center space-x-2"
+            className="px-4 md:px-6 py-2 md:py-3 gradient-social-1 text-white font-bold rounded-2xl hover:scale-105 transition-all duration-300 video-shadow-lg flex items-center space-x-2 text-sm md:text-base"
           >
-            <Play size={20} />
-            <span>Book Discovery Call</span>
+            <Play size={16} className="md:hidden" />
+            <Play size={20} className="hidden md:block" />
+            <span className="hidden sm:inline">Book Discovery Call</span>
+            <span className="sm:hidden">Book Call</span>
           </button>
         </div>
 
         {/* Bottom CTA Section */}
-        <div className="text-center">
-          <div className="inline-block px-8 py-4 gradient-social-3 rounded-full text-white font-bold text-xl mb-8 video-shadow">
+        <div className="text-center px-4">
+          <div className="inline-block px-4 md:px-8 py-3 md:py-4 gradient-social-3 rounded-full text-white font-bold text-lg md:text-xl mb-4 md:mb-8 video-shadow">
             🎯 Ready to Begin Your Journey?
           </div>
-          <h3 className="text-5xl md:text-6xl font-display font-black mb-8 text-corporate-dark">
+          <h3 className="text-3xl md:text-5xl lg:text-6xl font-display font-black mb-4 md:mb-8 text-corporate-dark">
             Let's Find Your Perfect <span className="text-gradient-2">Path</span>
           </h3>
-          <p className="text-2xl text-corporate-gray mb-12 max-w-4xl mx-auto font-medium">
+          <p className="text-lg md:text-2xl text-corporate-gray mb-6 md:mb-12 max-w-4xl mx-auto font-medium">
             Every great video strategy starts with understanding your business.
-            <br />
+            <br className="hidden md:block" />
             Book a Discovery Call and we'll <span className="text-gradient-1 font-bold">map your journey</span>.
           </p>
           
           <button
             onClick={handleDiscoveryCall}
-            className="px-12 py-6 gradient-social-1 text-white font-bold rounded-3xl hover:scale-105 transition-all duration-300 text-xl video-shadow-lg"
+            className="px-8 md:px-12 py-4 md:py-6 gradient-social-1 text-white font-bold rounded-3xl hover:scale-105 transition-all duration-300 text-lg md:text-xl video-shadow-lg"
           >
             Book Your Discovery Call →
           </button>

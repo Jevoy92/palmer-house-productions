@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Play, ExternalLink } from "lucide-react";
+import { Play } from "lucide-react";
 
 export const ClientResultsGrid = () => {
   const [selectedFilter, setSelectedFilter] = useState("all");
@@ -22,7 +22,7 @@ export const ClientResultsGrid = () => {
       industry: "SaaS",
       challenge: "New users struggled with complex platform setup",
       solution: "5-part video walkthrough series",
-      result: "40% faster onboarding, 60% fewer support tickets",
+      result: "Faster onboarding and reduced support tickets",
       thumbnail: "🖥️",
       gradient: "gradient-social-1"
     },
@@ -33,7 +33,7 @@ export const ClientResultsGrid = () => {
       industry: "Real Estate",
       challenge: "Agent needed to build local market authority",
       solution: "Weekly market insight videos for Instagram",
-      result: "200% increase in qualified leads in 90 days",
+      result: "Significant increase in qualified leads",
       thumbnail: "🏠",
       gradient: "gradient-social-2"
     },
@@ -44,7 +44,7 @@ export const ClientResultsGrid = () => {
       industry: "Healthcare",
       challenge: "Patients calling with same questions repeatedly",
       solution: "Comprehensive FAQ video library",
-      result: "85% reduction in routine phone calls",
+      result: "Major reduction in routine phone calls",
       thumbnail: "⚕️",
       gradient: "gradient-social-3"
     },
@@ -55,7 +55,7 @@ export const ClientResultsGrid = () => {
       industry: "Coaching",
       challenge: "Launching new program to cold audience",
       solution: "3-part launch video sequence",
-      result: "Sold out 50-person program in 72 hours",
+      result: "Completely sold out program launch",
       thumbnail: "🎯",
       gradient: "gradient-social-4"
     },
@@ -66,7 +66,7 @@ export const ClientResultsGrid = () => {
       industry: "B2B Services",
       challenge: "CEO needed to establish industry authority",
       solution: "Weekly LinkedIn video series",
-      result: "3x speaking engagement requests",
+      result: "Multiple speaking engagement requests",
       thumbnail: "👔",
       gradient: "gradient-social-1"
     },
@@ -77,7 +77,7 @@ export const ClientResultsGrid = () => {
       industry: "Restaurant",
       challenge: "High staff turnover, inconsistent service",
       solution: "Complete training video library",
-      result: "50% reduction in training time",
+      result: "Dramatically reduced training time",
       thumbnail: "🍽️",
       gradient: "gradient-social-2"
     }
@@ -159,11 +159,6 @@ export const ClientResultsGrid = () => {
                 </div>
               </div>
 
-              {/* View Case Study Button */}
-              <button className="w-full py-3 px-6 bg-corporate-light text-corporate-dark font-medium rounded-xl hover:bg-corporate-dark hover:text-white transition-all duration-300 flex items-center justify-center space-x-2">
-                <span>View Case Study</span>
-                <ExternalLink size={16} />
-              </button>
             </div>
           ))}
         </div>

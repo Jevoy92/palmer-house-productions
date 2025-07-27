@@ -2,7 +2,6 @@
 import { Navigation } from "@/components/Navigation";
 import { VideoUseCasesHero } from "@/components/use-cases/VideoUseCasesHero";
 import { UseCaseCategories } from "@/components/use-cases/UseCaseCategories";
-import { UseCaseExamples } from "@/components/use-cases/UseCaseExamples";
 
 const VideoUseCasesPage = () => {
   return (
@@ -10,7 +9,6 @@ const VideoUseCasesPage = () => {
       <Navigation />
       <VideoUseCasesHero />
       <UseCaseCategories />
-      <UseCaseExamples />
     </div>
   );
 };

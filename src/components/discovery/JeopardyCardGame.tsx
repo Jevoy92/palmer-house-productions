@@ -39,42 +39,47 @@ const FlipCard = ({ front, back, isFlipped, onFlip }: FlipCardProps) => {
       onClick={onFlip}
     >
       <div className={cn(
-        "relative w-full h-64 transition-transform duration-700 transform-style-preserve-3d",
+        "relative w-full h-80 transition-transform duration-700 transform-style-preserve-3d",
         isFlipped && "rotate-y-180"
       )}>
         {/* Front of card */}
         <div className="absolute inset-0 w-full h-full backface-hidden">
           <div className={cn(
-            "w-full h-full rounded-2xl p-6 flex flex-col items-center justify-center text-center text-white relative overflow-hidden",
+            "w-full h-full rounded-3xl p-8 flex flex-col items-center justify-center text-center text-white relative overflow-hidden",
             front.gradient,
-            "hover:scale-105 transition-all duration-300 video-shadow-lg"
+            "hover:scale-[1.02] transition-all duration-500 video-shadow-xl border border-white/20"
           )}>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-            <front.icon size={48} className="mb-4 z-10" />
-            <h3 className="text-xl font-bold mb-2 z-10">{front.title}</h3>
-            <p className="text-sm opacity-90 z-10">{front.subtitle}</p>
-            <div className="absolute bottom-4 right-4 text-white/50">
-              <span className="text-xs">Click to reveal</span>
+            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="p-4 bg-white/20 rounded-2xl mb-6 backdrop-blur-sm">
+                <front.icon size={32} className="text-white" />
+              </div>
+              <h3 className="text-xl font-bold mb-3 leading-tight">{front.title}</h3>
+              <p className="text-sm opacity-90 font-medium">{front.subtitle}</p>
+            </div>
+            <div className="absolute bottom-6 right-6 text-white/60">
+              <span className="text-xs font-medium">Click to reveal →</span>
             </div>
           </div>
         </div>
         
         {/* Back of card */}
         <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
-          <div className="w-full h-full bg-white rounded-2xl p-6 flex flex-col justify-between video-shadow-lg border border-gray-200">
+          <div className="w-full h-full bg-white rounded-3xl p-8 flex flex-col justify-between video-shadow-xl border border-corporate-light/50">
             <div>
-              <h3 className="text-lg font-bold text-corporate-dark mb-3">{back.title}</h3>
-              <p className="text-sm text-corporate-gray leading-relaxed mb-4">{back.content}</p>
+              <h3 className="text-xl font-bold text-corporate-dark mb-4 leading-tight">{back.title}</h3>
+              <p className="text-sm text-corporate-gray leading-relaxed mb-6">{back.content}</p>
             </div>
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 back.ctaAction();
               }}
-              className="w-full py-3 px-4 gradient-social-1 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300 video-shadow flex items-center justify-center space-x-2"
+              className="w-full py-4 px-6 gradient-social-1 text-white font-bold text-sm rounded-2xl hover:scale-[1.02] hover:video-shadow-xl transition-all duration-300 video-shadow flex items-center justify-center space-x-3"
             >
               <span>{back.cta}</span>
-              <ArrowRight size={16} />
+              <ArrowRight size={18} />
             </button>
           </div>
         </div>

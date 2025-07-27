@@ -125,7 +125,7 @@ export const useContactWizard = (initialService?: string) => {
         phone: wizardData.phone || 'Not provided',
         company: wizardData.company,
         service_type: getServiceName(wizardData.serviceType),
-        plan_type: getPlanName(wizardData.planType),
+        service_category: getServiceCategoryName(wizardData.serviceCategory),
         challenge: wizardData.challenge,
         timeline: wizardData.timeline,
         budget: wizardData.budget,
@@ -137,7 +137,7 @@ ${getQualificationText()}
 
 SERVICE SELECTION:
 Service: ${getServiceName(wizardData.serviceType)}
-Plan: ${getPlanName(wizardData.planType)}
+Category: ${getServiceCategoryName(wizardData.serviceCategory)}
 Budget: ${wizardData.budget}
 
 PROJECT DETAILS:

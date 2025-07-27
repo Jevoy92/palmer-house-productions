@@ -24,7 +24,7 @@ export const UseCaseCategories = () => {
       gradient: "gradient-social-1",
       usage: "Internal",
       examples: ["Employee onboarding", "Process documentation", "Safety training", "Software tutorials"],
-      recommendedTier: "Summit or Pinnacle"
+      recommendedTier: "Social Authority Kit ($3,000/month)"
     },
     {
       id: "authority",
@@ -34,7 +34,7 @@ export const UseCaseCategories = () => {
       gradient: "gradient-social-2",
       usage: "External",
       examples: ["Industry insights", "CEO vlogs", "Expert interviews", "Speaking previews"],
-      recommendedTier: "Summit or Pinnacle"
+      recommendedTier: "Camera-Ready Brand ($2,000)"
     },
     {
       id: "education",
@@ -44,7 +44,7 @@ export const UseCaseCategories = () => {
       gradient: "gradient-social-3",
       usage: "Both",
       examples: ["Product tutorials", "Best practices", "Case studies", "Success stories"],
-      recommendedTier: "Basecamp or Summit"
+      recommendedTier: "FAQ Buildout Bundle"
     },
     {
       id: "lead-gen",
@@ -54,7 +54,7 @@ export const UseCaseCategories = () => {
       gradient: "gradient-social-4",
       usage: "External",
       examples: ["Social media ads", "Landing page videos", "Email campaigns", "Retargeting content"],
-      recommendedTier: "Trailhead or Basecamp"
+      recommendedTier: "Social Video Starter ($500)"
     },
     {
       id: "faq",
@@ -64,7 +64,7 @@ export const UseCaseCategories = () => {
       gradient: "gradient-social-1",
       usage: "Both",
       examples: ["Common questions", "Troubleshooting", "How-to guides", "Support videos"],
-      recommendedTier: "Basecamp or Summit"
+      recommendedTier: "FAQ Buildout Bundle"
     },
     {
       id: "launch",
@@ -74,7 +74,7 @@ export const UseCaseCategories = () => {
       gradient: "gradient-social-2",
       usage: "External",
       examples: ["Product launches", "Feature announcements", "Company updates", "Event promotions"],
-      recommendedTier: "Trailhead or Basecamp"
+      recommendedTier: "YouTube Visibility Engine"
     }
   ];
 

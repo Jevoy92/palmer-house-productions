@@ -151,7 +151,7 @@ export const VideoPackagesTiers = () => {
           <p className="text-lg md:text-2xl text-corporate-gray mb-4 md:mb-6 max-w-4xl mx-auto font-medium px-4">
             From DIY downloads to full-service production — choose your path to video mastery.
           </p>
-          <div className="inline-block px-4 py-2 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-bold text-sm md:text-base mb-6">
+          <div className="inline-block px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 text-sm font-medium mb-6">
             ⚠️ Limited slots available for all monthly packages
           </div>
         </div>

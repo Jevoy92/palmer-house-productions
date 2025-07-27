@@ -28,7 +28,7 @@ interface FlipCardProps {
     title: string;
     subtitle: string;
     icon: React.ComponentType<any>;
-    gradient: string;
+    gradient?: string;
     size?: 'small' | 'medium' | 'large' | 'wide';
     emoji?: string;
   };
@@ -411,7 +411,6 @@ export const JeopardyCardGame = () => {
         title: "I hate how I look on camera",
         subtitle: "Common founder objection",
         icon: Eye,
-        gradient: "gradient-social-1",
         emoji: "😬"
       },
       back: {
@@ -427,7 +426,6 @@ export const JeopardyCardGame = () => {
         title: "I don't know what to say",
         subtitle: "Content paralysis",
         icon: Brain,
-        gradient: "gradient-social-2",
         emoji: "🤯"
       },
       back: {
@@ -443,7 +441,6 @@ export const JeopardyCardGame = () => {
         title: "I don't post consistently",
         subtitle: "Sporadic content creation",
         icon: Timer,
-        gradient: "gradient-social-3",
         emoji: "⏰"
       },
       back: {
@@ -459,7 +456,6 @@ export const JeopardyCardGame = () => {
         title: "I can't afford video right now",
         subtitle: "Budget concerns",
         icon: DollarSign,
-        gradient: "gradient-social-4",
         emoji: "💸"
       },
       back: {
@@ -475,7 +471,6 @@ export const JeopardyCardGame = () => {
         title: "I don't have time to make content",
         subtitle: "Time management issue",
         icon: Clock,
-        gradient: "gradient-social-1",
         emoji: "⏳"
       },
       back: {
@@ -491,7 +486,6 @@ export const JeopardyCardGame = () => {
         title: "I'm waiting until I'm more ready",
         subtitle: "Perfectionism trap",
         icon: Star,
-        gradient: "gradient-social-2",
         emoji: "🌟"
       },
       back: {
@@ -507,7 +501,6 @@ export const JeopardyCardGame = () => {
         title: "What platform should I post on?",
         subtitle: "Analysis paralysis",
         icon: TrendingUp,
-        gradient: "gradient-social-3",
         emoji: "🤔"
       },
       back: {
@@ -523,7 +516,6 @@ export const JeopardyCardGame = () => {
         title: "My audience isn't on social media",
         subtitle: "Platform misconception",
         icon: Users,
-        gradient: "gradient-social-4",
         emoji: "👻"
       },
       back: {
@@ -539,7 +531,6 @@ export const JeopardyCardGame = () => {
         title: "I don't want to be the face of my brand",
         subtitle: "Personal brand resistance",
         icon: Heart,
-        gradient: "gradient-social-1",
         emoji: "🙈"
       },
       back: {

@@ -61,25 +61,25 @@ const DangerCard = ({ front, back, isFlipped, onFlip, index = 0 }: FlipCardProps
         };
       case 'what-to-say':
         return {
-          gradient: 'bg-orange-500',
-          borderColor: 'border-orange-300/50 hover:border-orange-400/80',
-          iconBg: 'bg-orange-200/30',
+          gradient: 'bg-green-500',
+          borderColor: 'border-green-300/50 hover:border-green-400/80',
+          iconBg: 'bg-green-200/30',
           emoji: '🤯',
-          backBg: 'bg-gradient-to-br from-orange-50 to-pink-50',
-          backBorder: 'border-orange-200',
-          backText: 'text-orange-700',
-          buttonGradient: 'bg-gradient-to-r from-orange-500 to-pink-500'
+          backBg: 'bg-gradient-to-br from-green-50 to-pink-50',
+          backBorder: 'border-green-200',
+          backText: 'text-green-700',
+          buttonGradient: 'bg-gradient-to-r from-green-500 to-pink-500'
         };
       case 'no-consistency':
         return {
-          gradient: 'bg-amber-500',
-          borderColor: 'border-amber-300/50 hover:border-amber-400/80',
-          iconBg: 'bg-amber-200/30',
+          gradient: 'bg-indigo-500',
+          borderColor: 'border-indigo-300/50 hover:border-indigo-400/80',
+          iconBg: 'bg-indigo-200/30',
           emoji: '⏰',
-          backBg: 'bg-gradient-to-br from-amber-50 to-teal-50',
-          backBorder: 'border-amber-200',
-          backText: 'text-amber-700',
-          buttonGradient: 'bg-gradient-to-r from-amber-500 to-teal-500'
+          backBg: 'bg-gradient-to-br from-indigo-50 to-teal-50',
+          backBorder: 'border-indigo-200',
+          backText: 'text-indigo-700',
+          buttonGradient: 'bg-gradient-to-r from-indigo-500 to-teal-500'
         };
       case 'cant-afford':
         return {
@@ -94,47 +94,47 @@ const DangerCard = ({ front, back, isFlipped, onFlip, index = 0 }: FlipCardProps
         };
       case 'no-time':
         return {
-          gradient: 'bg-cyan-500',
-          borderColor: 'border-cyan-300/50 hover:border-cyan-400/80',
-          iconBg: 'bg-cyan-200/30',
+          gradient: 'bg-pink-500',
+          borderColor: 'border-pink-300/50 hover:border-pink-400/80',
+          iconBg: 'bg-pink-200/30',
           emoji: '⏳',
-          backBg: 'bg-gradient-to-br from-cyan-50 to-rose-50',
-          backBorder: 'border-cyan-200',
-          backText: 'text-cyan-700',
-          buttonGradient: 'bg-gradient-to-r from-cyan-500 to-rose-500'
+          backBg: 'bg-gradient-to-br from-pink-50 to-rose-50',
+          backBorder: 'border-pink-200',
+          backText: 'text-pink-700',
+          buttonGradient: 'bg-gradient-to-r from-pink-500 to-rose-500'
         };
       case 'waiting-ready':
         return {
-          gradient: 'bg-purple-500',
-          borderColor: 'border-purple-300/50 hover:border-purple-400/80',
-          iconBg: 'bg-purple-200/30',
+          gradient: 'bg-violet-500',
+          borderColor: 'border-violet-300/50 hover:border-violet-400/80',
+          iconBg: 'bg-violet-200/30',
           emoji: '🌟',
-          backBg: 'bg-gradient-to-br from-purple-50 to-blue-50',
-          backBorder: 'border-purple-200',
-          backText: 'text-purple-700',
-          buttonGradient: 'bg-gradient-to-r from-purple-500 to-blue-500'
+          backBg: 'bg-gradient-to-br from-violet-50 to-blue-50',
+          backBorder: 'border-violet-200',
+          backText: 'text-violet-700',
+          buttonGradient: 'bg-gradient-to-r from-violet-500 to-blue-500'
         };
       case 'platform-confusion':
         return {
-          gradient: 'bg-teal-500',
-          borderColor: 'border-teal-300/50 hover:border-teal-400/80',
-          iconBg: 'bg-teal-200/30',
+          gradient: 'bg-rose-500',
+          borderColor: 'border-rose-300/50 hover:border-rose-400/80',
+          iconBg: 'bg-rose-200/30',
           emoji: '🤔',
-          backBg: 'bg-gradient-to-br from-teal-50 to-cyan-50',
-          backBorder: 'border-teal-200',
-          backText: 'text-teal-700',
-          buttonGradient: 'bg-gradient-to-r from-teal-500 to-cyan-500'
+          backBg: 'bg-gradient-to-br from-rose-50 to-cyan-50',
+          backBorder: 'border-rose-200',
+          backText: 'text-rose-700',
+          buttonGradient: 'bg-gradient-to-r from-rose-500 to-cyan-500'
         };
       case 'audience-not-social':
         return {
-          gradient: 'bg-slate-500',
-          borderColor: 'border-slate-300/50 hover:border-slate-400/80',
-          iconBg: 'bg-slate-200/30',
+          gradient: 'bg-amber-500',
+          borderColor: 'border-amber-300/50 hover:border-amber-400/80',
+          iconBg: 'bg-amber-200/30',
           emoji: '👻',
-          backBg: 'bg-gradient-to-br from-slate-50 to-gray-50',
-          backBorder: 'border-slate-200',
-          backText: 'text-slate-700',
-          buttonGradient: 'bg-gradient-to-r from-slate-500 to-gray-500'
+          backBg: 'bg-gradient-to-br from-amber-50 to-gray-50',
+          backBorder: 'border-amber-200',
+          backText: 'text-amber-700',
+          buttonGradient: 'bg-gradient-to-r from-amber-500 to-gray-500'
         };
       case 'not-face-of-brand':
         return {

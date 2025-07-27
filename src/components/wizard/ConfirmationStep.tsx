@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WizardData } from "./types";
+import { getServiceCategoryName } from "./utils";
 import { User, Building2, MessageSquare, Clock, DollarSign, Briefcase } from "lucide-react";
 
 interface ConfirmationStepProps {
@@ -71,11 +72,11 @@ export const ConfirmationStep = ({ data, onSubmit, onCalendlyBooking, onBack, is
                   {getServiceName(data.serviceType)}
                 </p>
               </div>
-              {data.planType && (
+              {data.serviceCategory && (
                 <div>
-                  <h4 className="font-semibold text-corporate-dark mb-2">Monthly Plan</h4>
+                  <h4 className="font-semibold text-corporate-dark mb-2">Service Category</h4>
                   <p className="text-corporate-gray bg-corporate-light px-4 py-2 rounded-lg">
-                    {getPlanName(data.planType)}
+                    {getServiceCategoryName(data.serviceCategory)}
                   </p>
                 </div>
               )}

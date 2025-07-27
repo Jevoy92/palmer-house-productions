@@ -13,7 +13,7 @@ import {
   Star
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getRecommendationForUseCase, getTierForPersonality } from "@/lib/pricing";
+import { getRecommendationForUseCase, getServiceForPersonality } from "@/lib/pricing";
 
 interface FlipCardProps {
   front: {
@@ -262,8 +262,8 @@ export const JeopardyCardGame = () => {
       back: {
         title: "Perfect Format: Voiceover Content",
         content: "Founder voiceovers with poetic visuals. Your wisdom shines through thoughtful narration over beautiful imagery.",
-        cta: "Try Trailhead Package",
-        ctaAction: () => handleBookCall("quiet-visionary", getTierForPersonality("quiet-visionary"))
+        cta: "Get Camera-Ready Coaching",
+        ctaAction: () => handleBookCall("quiet-visionary", getServiceForPersonality("quiet-visionary"))
       }
     },
     {
@@ -277,8 +277,8 @@ export const JeopardyCardGame = () => {
       back: {
         title: "Perfect Format: Walk-and-Talk",
         content: "Raw footage, fast edits, strong calls-to-action. Your energy translates directly into viewer engagement and action.",
-        cta: "Book Summit Day Shoot",
-        ctaAction: () => handleBookCall("high-energy-leader", getTierForPersonality("high-energy-leader"))
+        cta: "Book High-Volume Shoot",
+        ctaAction: () => handleBookCall("high-energy-leader", getServiceForPersonality("high-energy-leader"))
       }
     },
     {
@@ -292,8 +292,8 @@ export const JeopardyCardGame = () => {
       back: {
         title: "Perfect Format: Myth-Busting Reels",
         content: "Bite-sized clarity that generates leads through education. Your expertise becomes your best marketing tool.",
-        cta: "Use Basecamp Coaching",
-        ctaAction: () => handleBookCall("natural-teacher", getTierForPersonality("natural-teacher"))
+        cta: "Build FAQ Library",
+        ctaAction: () => handleBookCall("natural-teacher", getServiceForPersonality("natural-teacher"))
       }
     },
     {
@@ -307,8 +307,8 @@ export const JeopardyCardGame = () => {
       back: {
         title: "Perfect Format: Story-Driven Content",
         content: "Case studies and testimonial-based videos. Your empathy creates deep connections that convert at higher rates.",
-        cta: "Add Pinnacle Scripting",
-        ctaAction: () => handleBookCall("empathic-guide", getTierForPersonality("empathic-guide"))
+        cta: "Get Monthly Content Kit",
+        ctaAction: () => handleBookCall("empathic-guide", getServiceForPersonality("empathic-guide"))
       }
     }
   ];

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { WizardData, ServiceType } from "./types";
-import { getServiceName, getPlanName } from "./utils";
+import { getServiceName, getServiceCategoryName } from "./utils";
 
 export const useContactWizard = (initialService?: string) => {
   const [currentStep, setCurrentStep] = useState(1);

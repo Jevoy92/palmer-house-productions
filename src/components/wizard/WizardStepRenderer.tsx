@@ -1,6 +1,6 @@
 
 import { ServiceSelection } from "./ServiceSelection";
-import { PlanSelection } from "./PlanSelection";
+import { ServiceCategorySelection } from "./ServiceCategorySelection";
 import { PersonalInfoStep } from "./PersonalInfoStep";
 import { ConfirmationStep } from "./ConfirmationStep";
 import { ThankYouStep } from "./ThankYouStep";
@@ -124,11 +124,11 @@ export const WizardStepRenderer = ({
       );
     case 8:
       return (
-        <PlanSelection
-          selectedPlan={wizardData.planType}
+        <ServiceCategorySelection
+          selectedCategory={wizardData.serviceCategory}
           serviceType={wizardData.serviceType}
-          onPlanSelect={(plan) => {
-            updateWizardData({ planType: plan });
+          onCategorySelect={(category) => {
+            updateWizardData({ serviceCategory: category });
             nextStep();
           }}
           onBack={prevStep}

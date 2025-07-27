@@ -1,5 +1,5 @@
 
-import { ServiceType, PlanType } from "./types";
+import { ServiceType, ServiceCategory } from "./types";
 
 export const getServiceName = (serviceType?: ServiceType) => {
   switch (serviceType) {
@@ -11,13 +11,13 @@ export const getServiceName = (serviceType?: ServiceType) => {
   }
 };
 
-export const getPlanName = (planType?: PlanType) => {
-  switch (planType) {
-    case "trailhead": return "Trailhead ($1,500/month)";
-    case "basecamp": return "Basecamp ($3,500/month)";
-    case "summit": return "Summit ($7,500/month)";
-    case "pinnacle": return "Pinnacle ($20,000/month)";
-    default: return "Not applicable";
+export const getServiceCategoryName = (serviceCategory?: ServiceCategory) => {
+  switch (serviceCategory) {
+    case "diy-downloads": return "DIY Digital Downloads";
+    case "coaching": return "Camera-Ready Brand Coaching ($2,000)";
+    case "monthly-content": return "Social Authority Kit ($3,000/month)";
+    case "one-time-bundles": return "One-Time Problem-Solving Bundles";
+    default: return "Not specified";
   }
 };
 

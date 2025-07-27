@@ -1,5 +1,5 @@
-export type ServiceType = "consultation" | "base-glimpse" | "full-glimpse" | "monthly";
-export type PlanType = "trailhead" | "basecamp" | "summit" | "pinnacle";
+export type ServiceType = "consultation" | "base-glimpse" | "full-glimpse" | "monthly" | "coaching" | "bundle";
+export type ServiceCategory = "diy-downloads" | "coaching" | "monthly-content" | "one-time-bundles";
 
 // New qualification types
 export type BusinessProfileType = "solo" | "growing" | "established" | "agency" | "enterprise" | "nonprofit";
@@ -21,7 +21,7 @@ export interface WizardData {
   
   // Existing fields
   serviceType?: ServiceType;
-  planType?: PlanType;
+  serviceCategory?: ServiceCategory;
   firstName: string;
   lastName: string;
   email: string;

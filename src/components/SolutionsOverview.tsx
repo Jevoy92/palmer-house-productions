@@ -13,7 +13,7 @@ export const SolutionsOverview = () => {
     {
       category: "DIY Resources",
       description: "Start your video journey with instant downloads",
-      priceRange: PRICING.DIY_RESOURCES.displayPrice,
+      priceRange: "Starting at $19",
       icon: Download,
       gradient: "gradient-social-1",
       items: [
@@ -25,8 +25,8 @@ export const SolutionsOverview = () => {
     },
     {
       category: "Hands-On Coaching",
-      description: "6-week group program for camera confidence",
-      priceRange: PRICING.ONE_TIME.COACHING.displayPrice,
+      description: "6-week group program for camera confidence", 
+      priceRange: "$2,000",
       icon: Users,
       gradient: "gradient-social-2",
       items: [
@@ -39,7 +39,7 @@ export const SolutionsOverview = () => {
     {
       category: "Done-With-You Content",
       description: "Monthly content system with consistent delivery",
-      priceRange: PRICING.ONE_TIME.MONTHLY_CONTENT.displayPrice,
+      priceRange: "$3,000/month",
       icon: Repeat,
       gradient: "gradient-social-3",
       items: [

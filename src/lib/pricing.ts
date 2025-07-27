@@ -1,104 +1,199 @@
 export const PRICING = {
-  // DIY Resources - Standardized to $199
-  DIY_RESOURCES: {
-    displayPrice: "$199",
-    description: "DIY Resources starting at",
-    individual: {
-      "25_REELS": { price: "$47", name: "25 DIY Reels PDF + script pack" },
-      "STRATEGY_BLUEPRINT": { price: "$19", name: "The Video Strategy Blueprint" },
-      "SCRIPT_BUNDLE": { price: "$67", name: "Owner/Founder Script Bundle" },
-      "CONFIDENCE_COURSE": { price: "$99", name: "On-Camera Confidence Mini Course" }
+  // 1. Instant Digital Downloads (DIY Starters)
+  DIY_DOWNLOADS: {
+    "25_REELS": { 
+      price: "$47", 
+      name: "25 DIY Reels You Can Film From Home",
+      format: "PDF + sample scripts",
+      description: "Talking-head style reels for solo founders, coaches, and service providers who want fast content ideas. Platform breakdowns included."
+    },
+    "STRATEGY_BLUEPRINT": { 
+      price: "$19", 
+      name: "The Video Strategy Blueprint",
+      format: "PDF",
+      description: "A step-by-step guide to choosing the right videos for your brand's growth stage and audience behavior."
+    },
+    "SCRIPT_BUNDLE": { 
+      price: "$67", 
+      name: "Owner/Founder Script Bundle",
+      format: "PDF",
+      description: "Prewritten, plug-and-play scripts for: About Me, Social Proof, CTA, and FAQ videos."
+    },
+    "CONFIDENCE_COURSE": { 
+      price: "$99", 
+      name: "On-Camera Confidence Mini Course",
+      format: "4 x 15-min videos",
+      description: "Teaches owner/founders how to speak with clarity, energy, and conviction on camera. Includes warm-ups, posture, voice tips, and mindset."
     }
   },
-  
-  // Monthly Tiers
-  MONTHLY_TIERS: {
-    TRAILHEAD: { 
-      price: 1500, 
-      displayPrice: "$1,500/month",
-      name: "Trailhead",
-      description: "Perfect for social media growth and lead generation"
-    },
-    BASECAMP: { 
-      price: 3500, 
-      displayPrice: "$3,500/month",
-      name: "Basecamp", 
-      description: "Ideal for customer education and multi-platform campaigns"
-    },
-    SUMMIT: { 
-      price: 7500, 
-      displayPrice: "$7,500/month",
-      name: "Summit",
-      description: "Advanced team training and authority building"
-    },
-    PINNACLE: { 
-      price: 20000, 
-      displayPrice: "$20,000/month",
-      name: "Pinnacle",
-      description: "Enterprise-level video solutions"
+
+  // 2. Group Coaching
+  GROUP_COACHING: {
+    CAMERA_READY_BRAND: {
+      price: "$2,000",
+      displayPrice: "$2,000",
+      name: "The Camera-Ready Brand",
+      duration: "6 weeks",
+      format: "Weekly Zoom sessions (live)",
+      maxSeats: "8–10 founders per cohort",
+      includes: ["Assignments", "Feedback", "Private Circle group"],
+      outcome: "Confidence + skill to record your first 3–5 brand videos yourself",
+      commitment: "One-time"
     }
   },
-  
-  // One-time Services
-  ONE_TIME: {
-    COACHING: { price: 2000, displayPrice: "$2,000", name: "Camera-Ready Brand Coaching" },
-    MONTHLY_CONTENT: { price: 3000, displayPrice: "$3,000/month", name: "Social Authority Kit" }
+
+  // 3. Monthly Content System
+  MONTHLY_CONTENT: {
+    SOCIAL_AUTHORITY_KIT: {
+      price: "$3,000",
+      displayPrice: "$3,000/month",
+      name: "The Social Authority Kit",
+      commitment: "3-month minimum",
+      monthlyDelivery: {
+        heroVideo: "1 Hero/Founder video (90–120 seconds)",
+        socialReels: "6 Social Reels (30–45 seconds each)",
+        clientVoice: "1 Client Voice/Social Proof video (60–90 seconds)",
+        extras: "Captions + Thumbnails (Platform-optimized)"
+      },
+      excludes: "YouTube (long-form) — separate bucket below"
+    }
   },
-  
-  // Bundles
-  BUNDLES: {
-    FAQ_INTERNAL: { price: 4500, displayPrice: "$4,500", name: "Internal FAQ Buildout" },
-    FAQ_EXTERNAL: { price: 4500, displayPrice: "$4,500", name: "External FAQ Buildout" },
-    YOUTUBE_ENGINE: { price: 6500, displayPrice: "$6,500", name: "YouTube Visibility Engine" },
-    SEVEN_DAY_LAUNCH: { price: 2500, displayPrice: "$2,500", name: "The 7-Day Launch" },
-    THIRTY_REELS: { price: 4800, displayPrice: "$4,800", name: "30 Reels in 30 Days" },
-    FOUNDER_BRAND_KIT: { price: 6000, displayPrice: "$6,000", name: "The Founder's Brand Kit" },
-    STARTER_SESSION: { price: 500, displayPrice: "$500", name: "The Starter Session" }
+
+  // 4. One-Time Problem-Solving Bundles
+  ONE_TIME_BUNDLES: {
+    INTERNAL_FAQ: { 
+      price: "$4,500", 
+      name: "Internal FAQ Buildout",
+      videos: "Up to 15 short videos (60–90 seconds each)",
+      covers: ["HR onboarding", "hiring answers", "internal processes", "company explainer", "software tutorials"],
+      style: "Clean talking-head style (no heavy stylizing)"
+    },
+    EXTERNAL_FAQ: { 
+      price: "$4,500", 
+      name: "External FAQ Buildout",
+      videos: "Up to 15 short videos (60–90 seconds each)",
+      covers: ["Customer onboarding", "top objections", "service breakdowns", "pricing explanations"],
+      delivery: "Delivered with thumbnails + captioned for posting"
+    },
+    YOUTUBE_ENGINE: { 
+      price: "$6,500", 
+      name: "YouTube Visibility Engine",
+      videos: "3 long-form videos (8–10 minutes each)",
+      includes: ["Content strategy + video series plan", "Full scripting + outline development", "On-set teleprompter support", "Cinematic delivery + YouTube pacing edits", "Thumbnails, SEO titles, descriptions"]
+    },
+    SEVEN_DAY_LAUNCH: { 
+      price: "$2,500", 
+      name: "The 7-Day Launch",
+      sessions: "1 strategy session + 1 shoot day",
+      delivery: ["1 hero brand video (90–120 seconds)", "3–5 cutdowns for social"],
+      timeline: "Fast-turnaround edit timeline (7 business days)"
+    },
+    THIRTY_REELS: { 
+      price: "$4,800", 
+      name: "30 Reels in 30 Days",
+      shoot: "1 full-day shoot (up to 8 hours)",
+      videos: "30 social-ready vertical videos (15–30 seconds each)",
+      includes: "Captions + formatting for IG/LinkedIn/TikTok"
+    },
+    FOUNDER_BRAND_KIT: { 
+      price: "$6,000", 
+      name: "The Founder's Brand Kit",
+      shoot: "1 shoot day with personal brand strategy",
+      includes: ["Founder Bio Video (90–120 sec)", "2 Hook/Top-of-Funnel Videos", "Vibe Montage or Personal Style Sizzle", "Multi-Platform delivery + thumbnails"]
+    },
+    STARTER_SESSION: { 
+      price: "$500", 
+      name: "The Starter Session",
+      session: "30-minute filming session",
+      minimum: "3 edited one-minute videos",
+      style: "Simple talking-head delivery, no stylized editing",
+      limit: "Capped at 6 bookings per month"
+    }
+  },
+
+  // 5. Built-In Bonus Bundle
+  BONUS_PACK: {
+    name: "The Explorer's Bonus Pack",
+    totalValue: "$531",
+    qualifies: ["Monthly Social Authority Kit", "Any One-Time Bundle $4,500+"],
+    items: [
+      { item: "25 DIY Reels PDF + script pack", value: "$47" },
+      { item: "The Video Strategy Blueprint", value: "$19" },
+      { item: "Owner/Founder Script Bundle", value: "$67" },
+      { item: "On-Camera Confidence Mini Course", value: "$99" },
+      { item: "Personalized Script Feedback (1x)", value: "$97" },
+      { item: "On-Camera Coaching Session (1x)", value: "$200" }
+    ]
+  },
+
+  // Future State
+  FUTURE_YOUTUBE_PLAN: {
+    name: "Ongoing Monthly YouTube Plan",
+    priceRange: "$4,000–$5,000/month",
+    videos: "2–3 long-form videos/mo",
+    includes: "Full scripting, filming, editing, optimization",
+    status: "TBD"
   }
 } as const;
 
-// Helper functions for recommendations
+// Helper functions for new pricing structure
 export const getRecommendationForUseCase = (useCase: string): string => {
   switch (useCase) {
     case "team-training":
     case "authority":
-      return `${PRICING.MONTHLY_TIERS.SUMMIT.name} or ${PRICING.MONTHLY_TIERS.PINNACLE.name} tier`;
+      return `${PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.name} or ${PRICING.MONTHLY_CONTENT.SOCIAL_AUTHORITY_KIT.name}`;
     case "social-growth":
     case "marketing":
-      return `${PRICING.MONTHLY_TIERS.TRAILHEAD.name} or ${PRICING.MONTHLY_TIERS.BASECAMP.name} tier`;
+      return `${PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.name} or ${PRICING.MONTHLY_CONTENT.SOCIAL_AUTHORITY_KIT.name}`;
     case "education":
-      return `${PRICING.MONTHLY_TIERS.BASECAMP.name} or ${PRICING.MONTHLY_TIERS.SUMMIT.name} tier`;
+      return `${PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.name} or ${PRICING.GROUP_COACHING.CAMERA_READY_BRAND.name}`;
+    case "onboarding":
+      return `${PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.name}`;
+    case "quick-start":
+      return `${PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.name} or ${PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.name}`;
     default:
-      return `${PRICING.MONTHLY_TIERS.TRAILHEAD.name} tier`;
+      return `${PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.name} or ${PRICING.GROUP_COACHING.CAMERA_READY_BRAND.name}`;
   }
 };
 
-export const getTierForPersonality = (personality: string): { tier: string; reason: string } => {
+export const getServiceForPersonality = (personality: string): { service: string; reason: string } => {
   switch (personality) {
     case "quiet-visionary":
       return { 
-        tier: PRICING.MONTHLY_TIERS.TRAILHEAD.name, 
-        reason: "Perfect for voiceover-focused content" 
+        service: PRICING.GROUP_COACHING.CAMERA_READY_BRAND.name, 
+        reason: "Perfect for building confidence and voice-over focused content" 
       };
     case "high-energy-leader":
       return { 
-        tier: PRICING.MONTHLY_TIERS.SUMMIT.name, 
-        reason: "Ideal for walk-and-talk and behind-scenes content" 
+        service: PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.name, 
+        reason: "Ideal for high-volume content creation and dynamic presence" 
       };
     case "natural-teacher":
       return { 
-        tier: PRICING.MONTHLY_TIERS.BASECAMP.name, 
-        reason: "Great for educational content with coaching support" 
+        service: PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.name, 
+        reason: "Great for educational content and answering customer questions" 
       };
     case "empathic-guide":
       return { 
-        tier: PRICING.MONTHLY_TIERS.PINNACLE.name, 
-        reason: "Perfect for story-driven and testimonial content" 
+        service: PRICING.MONTHLY_CONTENT.SOCIAL_AUTHORITY_KIT.name, 
+        reason: "Perfect for consistent story-driven and testimonial content" 
       };
     default:
       return { 
-        tier: PRICING.MONTHLY_TIERS.TRAILHEAD.name, 
+        service: PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.name, 
         reason: "A great starting point for most founders" 
       };
   }
+};
+
+export const getBonusPackEligibility = (selectedService: string): boolean => {
+  const qualifyingServices = [
+    "The Social Authority Kit",
+    "Internal FAQ Buildout", 
+    "External FAQ Buildout",
+    "YouTube Visibility Engine",
+    "30 Reels in 30 Days",
+    "The Founder's Brand Kit"
+  ];
+  return qualifyingServices.includes(selectedService);
 };

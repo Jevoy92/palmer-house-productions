@@ -22,31 +22,31 @@ export const VideoPackagesTabbed = () => {
 
   const digitalDownloads = [
     {
-      title: "25 DIY Reels You Can Film From Home",
-      price: PRICING.DIY_RESOURCES.individual["25_REELS"].price,
-      format: "PDF + sample scripts",
-      description: "Talking-head style reels for solo founders, coaches, and service providers who want fast content ideas. Platform breakdowns included.",
+      title: PRICING.DIY_DOWNLOADS["25_REELS"].name,
+      price: PRICING.DIY_DOWNLOADS["25_REELS"].price,
+      format: PRICING.DIY_DOWNLOADS["25_REELS"].format,
+      description: PRICING.DIY_DOWNLOADS["25_REELS"].description,
       icon: Video
     },
     {
-      title: "The Video Strategy Blueprint",
-      price: PRICING.DIY_RESOURCES.individual.STRATEGY_BLUEPRINT.price,
-      format: "PDF",
-      description: "A step-by-step guide to choosing the right videos for your brand's growth stage and audience behavior.",
+      title: PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.name,
+      price: PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.price,
+      format: PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.format,
+      description: PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.description,
       icon: FileText
     },
     {
-      title: "Owner/Founder Script Bundle",
-      price: PRICING.DIY_RESOURCES.individual.SCRIPT_BUNDLE.price,
-      format: "PDF",
-      description: "Prewritten, plug-and-play scripts for: About Me, Social Proof, CTA, and FAQ videos.",
+      title: PRICING.DIY_DOWNLOADS.SCRIPT_BUNDLE.name,
+      price: PRICING.DIY_DOWNLOADS.SCRIPT_BUNDLE.price,
+      format: PRICING.DIY_DOWNLOADS.SCRIPT_BUNDLE.format,
+      description: PRICING.DIY_DOWNLOADS.SCRIPT_BUNDLE.description,
       icon: Mic
     },
     {
-      title: "On-Camera Confidence Mini Course",
-      price: PRICING.DIY_RESOURCES.individual.CONFIDENCE_COURSE.price,
-      format: "4 x 15-min videos",
-      description: "Teaches owner/founders how to speak with clarity, energy, and conviction on camera. Includes warm-ups, posture, voice tips, and mindset.",
+      title: PRICING.DIY_DOWNLOADS.CONFIDENCE_COURSE.name,
+      price: PRICING.DIY_DOWNLOADS.CONFIDENCE_COURSE.price,
+      format: PRICING.DIY_DOWNLOADS.CONFIDENCE_COURSE.format,
+      description: PRICING.DIY_DOWNLOADS.CONFIDENCE_COURSE.description,
       icon: Camera
     }
   ];
@@ -104,10 +104,10 @@ export const VideoPackagesTabbed = () => {
   ];
 
   const bonusItems = [
-    { item: "25 DIY Reels PDF + script pack", value: PRICING.DIY_RESOURCES.individual["25_REELS"].price },
-    { item: "The Video Strategy Blueprint", value: PRICING.DIY_RESOURCES.individual.STRATEGY_BLUEPRINT.price },
-    { item: "Owner/Founder Script Bundle", value: PRICING.DIY_RESOURCES.individual.SCRIPT_BUNDLE.price },
-    { item: "On-Camera Confidence Mini Course", value: PRICING.DIY_RESOURCES.individual.CONFIDENCE_COURSE.price },
+    { item: "25 DIY Reels PDF + script pack", value: PRICING.DIY_DOWNLOADS["25_REELS"].price },
+    { item: "The Video Strategy Blueprint", value: PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.price },
+    { item: "Owner/Founder Script Bundle", value: PRICING.DIY_DOWNLOADS.SCRIPT_BUNDLE.price },
+    { item: "On-Camera Confidence Mini Course", value: PRICING.DIY_DOWNLOADS.CONFIDENCE_COURSE.price },
     { item: "Personalized Script Feedback (1x)", value: "$97" },
     { item: "On-Camera Coaching Session (1x)", value: "$200" }
   ];

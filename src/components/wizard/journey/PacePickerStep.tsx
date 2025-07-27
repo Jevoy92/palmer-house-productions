@@ -36,7 +36,7 @@ export const PacePickerStep = ({ onSelect, onBack }: PacePickerStepProps) => {
     { 
       value: 4, 
       label: "We want to flood the market", 
-      tag: "horizon", 
+      tag: "pinnacle", 
       icon: "🚀", 
       description: "Maximum visibility"
     },

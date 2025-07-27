@@ -21,7 +21,7 @@ export const VideoNeedsQuiz = () => {
       description: "Internal processes, onboarding, and training materials",
       icon: Users,
       gradient: "gradient-social-1",
-      recommendation: "Summit or Horizon tier"
+      recommendation: "Summit or Pinnacle tier"
     },
     {
       id: "social-growth",
@@ -53,7 +53,7 @@ export const VideoNeedsQuiz = () => {
       description: "Thought leadership, speaking, and expertise content",
       icon: Award,
       gradient: "gradient-social-1",
-      recommendation: "Summit or Horizon tier"
+      recommendation: "Summit or Pinnacle tier"
     }
   ];
 

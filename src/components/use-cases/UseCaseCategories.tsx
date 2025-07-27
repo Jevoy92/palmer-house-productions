@@ -24,7 +24,7 @@ export const UseCaseCategories = () => {
       gradient: "gradient-social-1",
       usage: "Internal",
       examples: ["Employee onboarding", "Process documentation", "Safety training", "Software tutorials"],
-      recommendedTier: "Summit or Horizon"
+      recommendedTier: "Summit or Pinnacle"
     },
     {
       id: "authority",
@@ -34,7 +34,7 @@ export const UseCaseCategories = () => {
       gradient: "gradient-social-2",
       usage: "External",
       examples: ["Industry insights", "CEO vlogs", "Expert interviews", "Speaking previews"],
-      recommendedTier: "Summit or Horizon"
+      recommendedTier: "Summit or Pinnacle"
     },
     {
       id: "education",

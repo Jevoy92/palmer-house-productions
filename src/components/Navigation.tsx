@@ -2,11 +2,20 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  
+  // Helper function to check if a path is active
+  const isActivePath = (path: string) => {
+    if (path === '/') {
+      return location.pathname === '/';
+    }
+    return location.pathname === path;
+  };
 
   const handleNavClick = (sectionId: string) => {
     if (location.pathname !== '/') {
@@ -78,25 +87,88 @@ export const Navigation = () => {
           
           <div className="hidden md:block">
             <div className="flex items-center space-x-8">
-              <Link to="/video-packages" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
+              <Link 
+                to="/video-packages" 
+                className={cn(
+                  "transition-colors text-base font-medium",
+                  isActivePath('/video-packages') 
+                    ? "text-social-purple font-bold border-b-2 border-social-purple" 
+                    : "text-apple-gray-5 hover:text-black"
+                )}
+                onClick={() => setIsOpen(false)}
+              >
                 Video Packages
               </Link>
-              <Link to="/discovery-call" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
+              <Link 
+                to="/discovery-call" 
+                className={cn(
+                  "transition-colors text-base font-medium",
+                  isActivePath('/discovery-call') 
+                    ? "text-social-purple font-bold border-b-2 border-social-purple" 
+                    : "text-apple-gray-5 hover:text-black"
+                )}
+                onClick={() => setIsOpen(false)}
+              >
                 Discovery Call
               </Link>
-              <Link to="/client-results" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
+              <Link 
+                to="/client-results" 
+                className={cn(
+                  "transition-colors text-base font-medium",
+                  isActivePath('/client-results') 
+                    ? "text-social-purple font-bold border-b-2 border-social-purple" 
+                    : "text-apple-gray-5 hover:text-black"
+                )}
+                onClick={() => setIsOpen(false)}
+              >
                 Client Results
               </Link>
-              <Link to="/video-use-cases" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
+              <Link 
+                to="/video-use-cases" 
+                className={cn(
+                  "transition-colors text-base font-medium",
+                  isActivePath('/video-use-cases') 
+                    ? "text-social-purple font-bold border-b-2 border-social-purple" 
+                    : "text-apple-gray-5 hover:text-black"
+                )}
+                onClick={() => setIsOpen(false)}
+              >
                 Video Use Cases
               </Link>
-              <Link to="/about-us" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
+              <Link 
+                to="/about-us" 
+                className={cn(
+                  "transition-colors text-base font-medium",
+                  isActivePath('/about-us') 
+                    ? "text-social-purple font-bold border-b-2 border-social-purple" 
+                    : "text-apple-gray-5 hover:text-black"
+                )}
+                onClick={() => setIsOpen(false)}
+              >
                 About Us
               </Link>
-              <Link to="/podcast" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
+              <Link 
+                to="/podcast" 
+                className={cn(
+                  "transition-colors text-base font-medium",
+                  isActivePath('/podcast') 
+                    ? "text-social-purple font-bold border-b-2 border-social-purple" 
+                    : "text-apple-gray-5 hover:text-black"
+                )}
+                onClick={() => setIsOpen(false)}
+              >
                 Podcast
               </Link>
-              <Link to="/contact" className="text-apple-gray-5 hover:text-black transition-colors text-base font-medium" onClick={() => setIsOpen(false)}>
+              <Link 
+                to="/contact" 
+                className={cn(
+                  "transition-colors text-base font-medium",
+                  isActivePath('/contact') 
+                    ? "text-social-purple font-bold border-b-2 border-social-purple" 
+                    : "text-apple-gray-5 hover:text-black"
+                )}
+                onClick={() => setIsOpen(false)}
+              >
                 Contact
               </Link>
             </div>
@@ -112,25 +184,88 @@ export const Navigation = () => {
 
       {isOpen && <div className="md:hidden bg-white border-t border-apple-gray-2">
           <div className="px-4 pt-2 pb-3 space-y-1">
-            <Link to="/video-packages" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
+            <Link 
+              to="/video-packages" 
+              className={cn(
+                "block px-3 py-2 transition-colors",
+                isActivePath('/video-packages') 
+                  ? "text-social-purple font-bold bg-social-purple/10 rounded-lg" 
+                  : "text-apple-gray-5 hover:text-black"
+              )}
+              onClick={() => setIsOpen(false)}
+            >
               Video Packages
             </Link>
-            <Link to="/discovery-call" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
+            <Link 
+              to="/discovery-call" 
+              className={cn(
+                "block px-3 py-2 transition-colors",
+                isActivePath('/discovery-call') 
+                  ? "text-social-purple font-bold bg-social-purple/10 rounded-lg" 
+                  : "text-apple-gray-5 hover:text-black"
+              )}
+              onClick={() => setIsOpen(false)}
+            >
               Discovery Call
             </Link>
-            <Link to="/client-results" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
+            <Link 
+              to="/client-results" 
+              className={cn(
+                "block px-3 py-2 transition-colors",
+                isActivePath('/client-results') 
+                  ? "text-social-purple font-bold bg-social-purple/10 rounded-lg" 
+                  : "text-apple-gray-5 hover:text-black"
+              )}
+              onClick={() => setIsOpen(false)}
+            >
               Client Results
             </Link>
-            <Link to="/video-use-cases" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
+            <Link 
+              to="/video-use-cases" 
+              className={cn(
+                "block px-3 py-2 transition-colors",
+                isActivePath('/video-use-cases') 
+                  ? "text-social-purple font-bold bg-social-purple/10 rounded-lg" 
+                  : "text-apple-gray-5 hover:text-black"
+              )}
+              onClick={() => setIsOpen(false)}
+            >
               Video Use Cases
             </Link>
-            <Link to="/about-us" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
+            <Link 
+              to="/about-us" 
+              className={cn(
+                "block px-3 py-2 transition-colors",
+                isActivePath('/about-us') 
+                  ? "text-social-purple font-bold bg-social-purple/10 rounded-lg" 
+                  : "text-apple-gray-5 hover:text-black"
+              )}
+              onClick={() => setIsOpen(false)}
+            >
               About Us
             </Link>
-            <Link to="/podcast" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
+            <Link 
+              to="/podcast" 
+              className={cn(
+                "block px-3 py-2 transition-colors",
+                isActivePath('/podcast') 
+                  ? "text-social-purple font-bold bg-social-purple/10 rounded-lg" 
+                  : "text-apple-gray-5 hover:text-black"
+              )}
+              onClick={() => setIsOpen(false)}
+            >
               Podcast
             </Link>
-            <Link to="/contact" className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors" onClick={() => setIsOpen(false)}>
+            <Link 
+              to="/contact" 
+              className={cn(
+                "block px-3 py-2 transition-colors",
+                isActivePath('/contact') 
+                  ? "text-social-purple font-bold bg-social-purple/10 rounded-lg" 
+                  : "text-apple-gray-5 hover:text-black"
+              )}
+              onClick={() => setIsOpen(false)}
+            >
               Contact
             </Link>
           </div>

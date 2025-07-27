@@ -15,6 +15,7 @@ import {
   CheckCircle,
   DollarSign
 } from "lucide-react";
+import { PRICING } from "@/lib/pricing";
 
 export const VideoPackagesTabbed = () => {
   const navigate = useNavigate();
@@ -22,28 +23,28 @@ export const VideoPackagesTabbed = () => {
   const digitalDownloads = [
     {
       title: "25 DIY Reels You Can Film From Home",
-      price: "$47",
+      price: PRICING.DIY_RESOURCES.individual["25_REELS"].price,
       format: "PDF + sample scripts",
       description: "Talking-head style reels for solo founders, coaches, and service providers who want fast content ideas. Platform breakdowns included.",
       icon: Video
     },
     {
       title: "The Video Strategy Blueprint",
-      price: "$19",
+      price: PRICING.DIY_RESOURCES.individual.STRATEGY_BLUEPRINT.price,
       format: "PDF",
       description: "A step-by-step guide to choosing the right videos for your brand's growth stage and audience behavior.",
       icon: FileText
     },
     {
       title: "Owner/Founder Script Bundle",
-      price: "$67",
+      price: PRICING.DIY_RESOURCES.individual.SCRIPT_BUNDLE.price,
       format: "PDF",
       description: "Prewritten, plug-and-play scripts for: About Me, Social Proof, CTA, and FAQ videos.",
       icon: Mic
     },
     {
       title: "On-Camera Confidence Mini Course",
-      price: "$99",
+      price: PRICING.DIY_RESOURCES.individual.CONFIDENCE_COURSE.price,
       format: "4 x 15-min videos",
       description: "Teaches owner/founders how to speak with clarity, energy, and conviction on camera. Includes warm-ups, posture, voice tips, and mindset.",
       icon: Camera
@@ -103,10 +104,10 @@ export const VideoPackagesTabbed = () => {
   ];
 
   const bonusItems = [
-    { item: "25 DIY Reels PDF + script pack", value: "$47" },
-    { item: "The Video Strategy Blueprint", value: "$19" },
-    { item: "Owner/Founder Script Bundle", value: "$67" },
-    { item: "On-Camera Confidence Mini Course", value: "$99" },
+    { item: "25 DIY Reels PDF + script pack", value: PRICING.DIY_RESOURCES.individual["25_REELS"].price },
+    { item: "The Video Strategy Blueprint", value: PRICING.DIY_RESOURCES.individual.STRATEGY_BLUEPRINT.price },
+    { item: "Owner/Founder Script Bundle", value: PRICING.DIY_RESOURCES.individual.SCRIPT_BUNDLE.price },
+    { item: "On-Camera Confidence Mini Course", value: PRICING.DIY_RESOURCES.individual.CONFIDENCE_COURSE.price },
     { item: "Personalized Script Feedback (1x)", value: "$97" },
     { item: "On-Camera Coaching Session (1x)", value: "$200" }
   ];

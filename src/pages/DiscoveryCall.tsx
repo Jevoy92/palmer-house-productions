@@ -2,7 +2,7 @@
 import { Navigation } from "@/components/Navigation";
 import { DiscoveryCallHero } from "@/components/discovery/DiscoveryCallHero";
 import { CollapsibleDiscoverySteps } from "@/components/discovery/CollapsibleDiscoverySteps";
-import { VideoNeedsQuiz } from "@/components/discovery/VideoNeedsQuiz";
+import { JeopardyCardGame } from "@/components/discovery/JeopardyCardGame";
 import { DiscoveryCallForm } from "@/components/discovery/DiscoveryCallForm";
 
 const DiscoveryCallPage = () => {
@@ -11,7 +11,7 @@ const DiscoveryCallPage = () => {
       <Navigation />
       <DiscoveryCallHero />
       <CollapsibleDiscoverySteps />
-      <VideoNeedsQuiz />
+      <JeopardyCardGame />
       <DiscoveryCallForm />
     </div>
   );

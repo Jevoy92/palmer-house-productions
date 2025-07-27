@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Download, Users, Repeat, Wrench } from "lucide-react";
+import { PRICING } from "@/lib/pricing";
 
 export const SolutionsOverview = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export const SolutionsOverview = () => {
     {
       category: "DIY Resources",
       description: "Start your video journey with instant downloads",
-      priceRange: "$19 - $99",
+      priceRange: PRICING.DIY_RESOURCES.displayPrice,
       icon: Download,
       gradient: "gradient-social-1",
       items: [
@@ -25,7 +26,7 @@ export const SolutionsOverview = () => {
     {
       category: "Hands-On Coaching",
       description: "6-week group program for camera confidence",
-      priceRange: "$2,000",
+      priceRange: PRICING.ONE_TIME.COACHING.displayPrice,
       icon: Users,
       gradient: "gradient-social-2",
       items: [
@@ -38,7 +39,7 @@ export const SolutionsOverview = () => {
     {
       category: "Done-With-You Content",
       description: "Monthly content system with consistent delivery",
-      priceRange: "$3,000/month",
+      priceRange: PRICING.ONE_TIME.MONTHLY_CONTENT.displayPrice,
       icon: Repeat,
       gradient: "gradient-social-3",
       items: [

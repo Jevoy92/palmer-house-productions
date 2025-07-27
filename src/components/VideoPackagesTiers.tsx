@@ -193,34 +193,34 @@ export const VideoPackagesTiers = () => {
 
         {/* Group Coaching Section */}
         <div className="mb-16 md:mb-24">
-          <div className="bg-gradient-to-r from-social-purple to-social-pink p-8 md:p-12 rounded-3xl text-white text-center video-shadow-lg">
-            <div className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-white font-bold text-sm md:text-base mb-6">
+          <div className="bg-white p-8 md:p-12 rounded-3xl text-center video-shadow-lg border-4 border-gradient-to-r from-social-purple to-social-pink">
+            <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-bold text-sm md:text-base mb-6">
               <Users size={20} className="mr-2" />
               🗓️ 6-Week Group Coaching: "The Camera-Ready Brand"
             </div>
-            <h2 className="text-3xl md:text-5xl font-display font-black mb-6">
-              Transform Your On-Camera Presence
+            <h2 className="text-3xl md:text-5xl font-display font-black mb-6 text-corporate-dark">
+              Transform Your <span className="text-gradient-purple">On-Camera Presence</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              <div className="bg-white/10 p-6 rounded-2xl">
-                <div className="text-4xl font-black mb-2">$2,000</div>
-                <div className="text-lg font-medium">One-time investment</div>
+              <div className="bg-gray-50 p-6 rounded-2xl border-2 border-social-purple/20">
+                <div className="text-4xl font-black mb-2 text-corporate-dark">$2,000</div>
+                <div className="text-lg font-medium text-corporate-gray">One-time investment</div>
               </div>
-              <div className="bg-white/10 p-6 rounded-2xl">
-                <div className="text-2xl font-bold mb-2">8-10 Founders</div>
-                <div className="text-lg font-medium">Max seats per cohort</div>
+              <div className="bg-gray-50 p-6 rounded-2xl border-2 border-social-purple/20">
+                <div className="text-2xl font-bold mb-2 text-corporate-dark">8-10 Founders</div>
+                <div className="text-lg font-medium text-corporate-gray">Max seats per cohort</div>
               </div>
-              <div className="bg-white/10 p-6 rounded-2xl">
-                <div className="text-2xl font-bold mb-2">Weekly Zoom</div>
-                <div className="text-lg font-medium">Live sessions + feedback</div>
+              <div className="bg-gray-50 p-6 rounded-2xl border-2 border-social-purple/20">
+                <div className="text-2xl font-bold mb-2 text-corporate-dark">Weekly Zoom</div>
+                <div className="text-lg font-medium text-corporate-gray">Live sessions + feedback</div>
               </div>
             </div>
-            <p className="text-xl mb-8 opacity-90">
+            <p className="text-xl mb-8 text-corporate-gray">
               Build confidence + skill to record your first 3–5 brand videos yourself. Includes assignments, feedback, and private Circle group.
             </p>
             <button
               onClick={() => handleBooking("Camera-Ready Brand Coaching")}
-              className="px-8 py-4 bg-white text-social-purple font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
+              className="px-8 py-4 bg-gradient-to-r from-social-purple to-social-pink text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
             >
               Join Next Cohort
             </button>
@@ -351,31 +351,31 @@ export const VideoPackagesTiers = () => {
 
         {/* Explorer's Bonus Pack */}
         <div className="mb-16 md:mb-24">
-          <div className="bg-gradient-to-r from-yellow-400 to-orange-500 p-8 md:p-12 rounded-3xl text-white video-shadow-lg">
+          <div className="bg-white p-8 md:p-12 rounded-3xl video-shadow-lg border-4 border-gradient-to-r from-yellow-400 to-orange-500">
             <div className="text-center mb-8">
-              <div className="inline-flex items-center px-4 py-2 bg-white/20 rounded-full text-white font-bold text-sm md:text-base mb-4">
+              <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full text-white font-bold text-sm md:text-base mb-4">
                 <Gift size={20} className="mr-2" />
                 🎁 The Explorer's Bonus Pack
               </div>
-              <h2 className="text-3xl md:text-5xl font-display font-black mb-4">
-                Your Free Compass & Tools
+              <h2 className="text-3xl md:text-5xl font-display font-black mb-4 text-corporate-dark">
+                Your Free <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">Compass & Tools</span>
               </h2>
-              <p className="text-xl mb-2">Included FREE with:</p>
-              <p className="text-lg opacity-90">Monthly Social Authority Kit + Any One-Time Bundle $4,500+</p>
+              <p className="text-xl mb-2 text-corporate-gray">Included FREE with:</p>
+              <p className="text-lg text-corporate-gray">Monthly Social Authority Kit + Any One-Time Bundle $4,500+</p>
             </div>
 
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-8">
-                <div className="text-4xl font-black mb-2">Total Added Value: $531</div>
-                <p className="text-lg opacity-90">Use it. Don't use it. It's there when you need it. Like a compass in your back pocket.</p>
+                <div className="text-4xl font-black mb-2 text-corporate-dark">Total Added Value: $531</div>
+                <p className="text-lg text-corporate-gray">Use it. Don't use it. It's there when you need it. Like a compass in your back pocket.</p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {bonusItems.map((item, index) => (
-                  <div key={index} className="bg-white/10 p-4 rounded-2xl">
+                  <div key={index} className="bg-gray-50 p-4 rounded-2xl border-2 border-yellow-400/20">
                     <div className="flex justify-between items-center">
-                      <span className="text-sm font-medium">{item.item}</span>
-                      <span className="font-bold">{item.value}</span>
+                      <span className="text-sm font-medium text-corporate-gray">{item.item}</span>
+                      <span className="font-bold text-corporate-dark">{item.value}</span>
                     </div>
                   </div>
                 ))}
@@ -387,12 +387,12 @@ export const VideoPackagesTiers = () => {
         {/* Future YouTube Plan */}
         <div className="text-center mb-16">
           <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-3xl video-shadow border-2 border-dashed border-gray-300">
-            <div className="inline-flex items-center px-4 py-2 bg-gray-100 rounded-full text-gray-700 font-bold text-sm md:text-base mb-4">
-              <Clock size={20} className="mr-2" />
-              ✅ Future State: Ongoing Monthly YouTube Plan (TBD)
+            <div className="inline-flex items-center px-4 py-2 bg-green-100 rounded-full text-green-800 font-bold text-sm md:text-base mb-4">
+              <CheckCircle size={20} className="mr-2" />
+              ✅ Available Now: Ongoing Monthly YouTube Plan
             </div>
             <h2 className="text-3xl md:text-4xl font-display font-black text-corporate-dark mb-4">
-              Coming Soon: YouTube Mastery
+              YouTube Visibility Engine
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
               <div className="bg-gray-50 p-4 rounded-2xl">

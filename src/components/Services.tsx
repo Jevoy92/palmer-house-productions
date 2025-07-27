@@ -5,29 +5,29 @@ export const Services = () => {
   const services = [
     {
       icon: Video,
-      title: "Social Media Mastery",
-      description: "TikTok, Reels, Shorts that break new ground and blaze fresh trails to your audience.",
+      title: "DIY Resources",
+      description: "Digital downloads and self-paced learning to start your video journey at your own pace.",
       gradient: "gradient-social-1",
       textGradient: "text-gradient-1"
     },
     {
-      icon: Film,
-      title: "Brand Documentary",
-      description: "Corporate storytelling that ventures beyond the ordinary to capture authentic brand narratives.",
+      icon: Users,
+      title: "Hands-On Coaching",
+      description: "Group programs and personal guidance to build your on-camera confidence and skills.",
       gradient: "gradient-social-2", 
       textGradient: "text-gradient-2"
     },
     {
-      icon: Users,
-      title: "Content Strategy",
-      description: "Chart uncharted creative territory with content planning that discovers new audience connections.",
+      icon: Film,
+      title: "Done-With-You Content",
+      description: "Monthly content system collaboration where we work together to create consistent content.",
       gradient: "gradient-social-3",
       textGradient: "text-gradient-3"
     },
     {
       icon: Megaphone,
-      title: "Multi-Platform Campaigns",
-      description: "Multi-platform campaigns that explore new frontiers and expand your brand's reach.",
+      title: "Done-For-You Solutions",
+      description: "Complete one-time bundle services that solve specific video challenges for your business.",
       gradient: "gradient-social-4",
       textGradient: "text-gradient-1"
     }
@@ -38,13 +38,13 @@ export const Services = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-24">
           <div className="inline-block px-6 py-3 gradient-social-3 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            🧭 Our Expeditions
+            🎯 Solution Categories
           </div>
           <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-            Journeys We <span className="text-gradient-1">Capture</span>
+            Solutions for <span className="text-gradient-1">Every Stage</span>
           </h2>
           <p className="text-2xl text-corporate-gray max-w-4xl mx-auto font-medium">
-            From uncharted creative territories to bold brand adventures - we explore every path to find your unique story.
+            From DIY starters to full-service production - find the perfect solution for your business stage and goals.
           </p>
         </div>
         

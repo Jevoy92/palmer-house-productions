@@ -10,7 +10,15 @@ import {
   DollarSign,
   Clock,
   Heart,
-  Star
+  Star,
+  AlertTriangle,
+  Zap,
+  Target,
+  Brain,
+  Eye,
+  Timer,
+  TrendingDown,
+  ShieldAlert
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getRecommendationForUseCase, getServiceForPersonality } from "@/lib/pricing";
@@ -21,6 +29,8 @@ interface FlipCardProps {
     subtitle: string;
     icon: React.ComponentType<any>;
     gradient: string;
+    size?: 'small' | 'medium' | 'large' | 'wide';
+    emoji?: string;
   };
   back: {
     title: string;
@@ -30,13 +40,171 @@ interface FlipCardProps {
   };
   isFlipped: boolean;
   onFlip: () => void;
+  type?: 'danger' | 'personality';
+  index?: number;
 }
 
-const FlipCard = ({ front, back, isFlipped, onFlip }: FlipCardProps) => {
+// Danger/Warning themed card for cost avoidance game
+const DangerCard = ({ front, back, isFlipped, onFlip, index = 0 }: FlipCardProps) => {
+  const getCardSize = () => {
+    const sizes = ['h-72', 'h-80', 'h-96', 'h-72', 'h-88', 'h-80', 'h-84', 'h-76', 'h-92'];
+    return sizes[index % sizes.length];
+  };
+
+  const getAnimation = () => {
+    const delays = ['delay-0', 'delay-75', 'delay-150', 'delay-300', 'delay-200', 'delay-100', 'delay-250', 'delay-350', 'delay-400'];
+    return delays[index % delays.length];
+  };
+
   return (
     <div 
-      className="group perspective-1000 cursor-pointer"
+      className={cn(
+        "group perspective-1000 cursor-pointer transform transition-all duration-500 hover:scale-105",
+        getAnimation(),
+        "animate-fade-in"
+      )}
       onClick={onFlip}
+    >
+      <div className={cn(
+        "relative w-full transition-transform duration-700 transform-style-preserve-3d",
+        getCardSize(),
+        isFlipped && "rotate-y-180"
+      )}>
+        {/* Front of card */}
+        <div className="absolute inset-0 w-full h-full backface-hidden">
+          <div className={cn(
+            "w-full h-full rounded-2xl p-6 flex flex-col items-center justify-center text-center text-white relative overflow-hidden border-2",
+            front.gradient,
+            "border-red-400/30 hover:border-red-400/60 transition-all duration-500 hover:shadow-[0_0_30px_rgba(239,68,68,0.3)]"
+          )}>
+            {/* Danger warning elements */}
+            <div className="absolute top-4 right-4">
+              <div className="bg-red-500/90 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                ⚠️ COST ALERT
+              </div>
+            </div>
+            
+            <div className="absolute inset-0 bg-gradient-to-br from-red-500/20 to-orange-600/20"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+            
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="p-4 bg-red-500/30 rounded-xl mb-4 backdrop-blur-sm border border-red-400/40 animate-pulse">
+                <front.icon size={28} className="text-white" />
+              </div>
+              {front.emoji && (
+                <div className="text-4xl mb-3">{front.emoji}</div>
+              )}
+              <h3 className="text-lg font-black mb-2 leading-tight tracking-tight">{front.title}</h3>
+              <p className="text-xs opacity-90 font-bold uppercase tracking-wide">{front.subtitle}</p>
+            </div>
+            
+            <div className="absolute bottom-4 left-4 right-4">
+              <div className="text-center">
+                <span className="text-xs font-bold bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
+                  💸 Tap to see the real cost
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Back of card */}
+        <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
+          <div className="w-full h-full bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl p-6 flex flex-col justify-between video-shadow-xl border-2 border-red-200">
+            <div>
+              <div className="flex items-center mb-3">
+                <ShieldAlert className="text-red-500 mr-2" size={20} />
+                <h3 className="text-lg font-black text-red-700 leading-tight">{back.title}</h3>
+              </div>
+              <p className="text-sm text-red-600 leading-relaxed mb-4 font-medium">{back.content}</p>
+            </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                back.ctaAction();
+              }}
+              className="w-full py-3 px-4 bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold text-sm rounded-xl hover:scale-[1.02] hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2 border border-red-400"
+            >
+              <span>{back.cta}</span>
+              <ArrowRight size={16} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Personality themed card for video personality game
+const PersonalityCard = ({ front, back, isFlipped, onFlip, index = 0 }: FlipCardProps) => {
+  const getPersonalityStyle = (id: string) => {
+    switch (id) {
+      case 'quiet-visionary':
+        return {
+          gradient: 'bg-gradient-to-br from-purple-400 via-indigo-500 to-purple-600',
+          borderColor: 'border-purple-300/50 hover:border-purple-400/80',
+          iconBg: 'bg-purple-200/30',
+          emoji: '🧠',
+          backBg: 'bg-gradient-to-br from-purple-50 to-indigo-50',
+          backBorder: 'border-purple-200',
+          backText: 'text-purple-700',
+          buttonGradient: 'bg-gradient-to-r from-purple-500 to-indigo-500'
+        };
+      case 'high-energy-leader':
+        return {
+          gradient: 'bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500',
+          borderColor: 'border-yellow-300/50 hover:border-yellow-400/80',
+          iconBg: 'bg-yellow-200/30',
+          emoji: '⚡',
+          backBg: 'bg-gradient-to-br from-yellow-50 to-orange-50',
+          backBorder: 'border-yellow-200',
+          backText: 'text-orange-700',
+          buttonGradient: 'bg-gradient-to-r from-yellow-500 to-orange-500'
+        };
+      case 'natural-teacher':
+        return {
+          gradient: 'bg-gradient-to-br from-green-400 via-teal-500 to-blue-500',
+          borderColor: 'border-green-300/50 hover:border-green-400/80',
+          iconBg: 'bg-green-200/30',
+          emoji: '🎯',
+          backBg: 'bg-gradient-to-br from-green-50 to-teal-50',
+          backBorder: 'border-green-200',
+          backText: 'text-green-700',
+          buttonGradient: 'bg-gradient-to-r from-green-500 to-teal-500'
+        };
+      case 'empathic-guide':
+        return {
+          gradient: 'bg-gradient-to-br from-pink-400 via-rose-500 to-red-500',
+          borderColor: 'border-pink-300/50 hover:border-pink-400/80',
+          iconBg: 'bg-pink-200/30',
+          emoji: '💖',
+          backBg: 'bg-gradient-to-br from-pink-50 to-rose-50',
+          backBorder: 'border-pink-200',
+          backText: 'text-pink-700',
+          buttonGradient: 'bg-gradient-to-r from-pink-500 to-rose-500'
+        };
+      default:
+        return {
+          gradient: 'bg-gradient-to-br from-blue-400 to-purple-500',
+          borderColor: 'border-blue-300/50',
+          iconBg: 'bg-blue-200/30',
+          emoji: '✨',
+          backBg: 'bg-gradient-to-br from-blue-50 to-purple-50',
+          backBorder: 'border-blue-200',
+          backText: 'text-blue-700',
+          buttonGradient: 'bg-gradient-to-r from-blue-500 to-purple-500'
+        };
+    }
+  };
+
+  const cardId = front.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z-]/g, '');
+  const style = getPersonalityStyle(cardId);
+
+  return (
+    <div 
+      className="group perspective-1000 cursor-pointer transform transition-all duration-500 hover:scale-105 animate-fade-in"
+      onClick={onFlip}
+      style={{ animationDelay: `${index * 150}ms` }}
     >
       <div className={cn(
         "relative w-full h-80 transition-transform duration-700 transform-style-preserve-3d",
@@ -45,41 +213,59 @@ const FlipCard = ({ front, back, isFlipped, onFlip }: FlipCardProps) => {
         {/* Front of card */}
         <div className="absolute inset-0 w-full h-full backface-hidden">
           <div className={cn(
-            "w-full h-full rounded-3xl p-8 flex flex-col items-center justify-center text-center text-white relative overflow-hidden",
-            front.gradient,
-            "hover:scale-[1.02] transition-all duration-500 video-shadow-xl border border-white/20"
+            "w-full h-full rounded-3xl p-6 flex flex-col items-center justify-center text-center text-white relative overflow-hidden border-2 transition-all duration-500",
+            style.gradient,
+            style.borderColor,
+            "hover:shadow-2xl"
           )}>
             <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+            
             <div className="relative z-10 flex flex-col items-center">
-              <div className="p-4 bg-white/20 rounded-2xl mb-6 backdrop-blur-sm">
-                <front.icon size={32} className="text-white" />
+              <div className="text-5xl mb-4 animate-bounce" style={{ animationDuration: '2s' }}>
+                {style.emoji}
               </div>
-              <h3 className="text-xl font-bold mb-3 leading-tight">{front.title}</h3>
-              <p className="text-sm opacity-90 font-medium">{front.subtitle}</p>
+              <div className={cn("p-3 rounded-2xl mb-4 backdrop-blur-sm border border-white/30", style.iconBg)}>
+                <front.icon size={24} className="text-white" />
+              </div>
+              <h3 className="text-xl font-black mb-2 leading-tight">{front.title}</h3>
+              <p className="text-sm opacity-90 font-semibold">{front.subtitle}</p>
             </div>
-            <div className="absolute bottom-6 right-6 text-white/60">
-              <span className="text-xs font-medium">Click to reveal →</span>
+            
+            <div className="absolute bottom-4 left-4 right-4 text-center">
+              <span className="text-xs font-bold bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm">
+                ✨ Discover your format
+              </span>
             </div>
           </div>
         </div>
         
         {/* Back of card */}
         <div className="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
-          <div className="w-full h-full bg-white rounded-3xl p-8 flex flex-col justify-between video-shadow-xl border border-corporate-light/50">
+          <div className={cn(
+            "w-full h-full rounded-3xl p-6 flex flex-col justify-between video-shadow-xl border-2",
+            style.backBg,
+            style.backBorder
+          )}>
             <div>
-              <h3 className="text-xl font-bold text-corporate-dark mb-4 leading-tight">{back.title}</h3>
-              <p className="text-sm text-corporate-gray leading-relaxed mb-6">{back.content}</p>
+              <div className="flex items-center mb-3">
+                <div className="text-2xl mr-2">{style.emoji}</div>
+                <h3 className={cn("text-lg font-black leading-tight", style.backText)}>{back.title}</h3>
+              </div>
+              <p className={cn("text-sm leading-relaxed mb-4 font-medium", style.backText)}>{back.content}</p>
             </div>
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 back.ctaAction();
               }}
-              className="w-full py-4 px-6 gradient-social-1 text-white font-bold text-sm rounded-2xl hover:scale-[1.02] hover:video-shadow-xl transition-all duration-300 video-shadow flex items-center justify-center space-x-3"
+              className={cn(
+                "w-full py-3 px-4 text-white font-bold text-sm rounded-2xl hover:scale-[1.02] hover:shadow-lg transition-all duration-300 flex items-center justify-center space-x-2",
+                style.buttonGradient
+              )}
             >
               <span>{back.cta}</span>
-              <ArrowRight size={18} />
+              <ArrowRight size={16} />
             </button>
           </div>
         </div>
@@ -122,8 +308,9 @@ export const JeopardyCardGame = () => {
       front: {
         title: "I hate how I look on camera",
         subtitle: "Common founder objection",
-        icon: Users,
-        gradient: "gradient-social-1"
+        icon: Eye,
+        gradient: "gradient-social-1",
+        emoji: "😬"
       },
       back: {
         title: "Hidden Cost: Lost Credibility",
@@ -137,8 +324,9 @@ export const JeopardyCardGame = () => {
       front: {
         title: "I don't know what to say",
         subtitle: "Content paralysis",
-        icon: BookOpen,
-        gradient: "gradient-social-2"
+        icon: Brain,
+        gradient: "gradient-social-2",
+        emoji: "🤯"
       },
       back: {
         title: "Hidden Cost: Cold Traffic Stays Cold",
@@ -152,8 +340,9 @@ export const JeopardyCardGame = () => {
       front: {
         title: "I don't post consistently",
         subtitle: "Sporadic content creation",
-        icon: Clock,
-        gradient: "gradient-social-3"
+        icon: Timer,
+        gradient: "gradient-social-3",
+        emoji: "⏰"
       },
       back: {
         title: "Hidden Cost: Zero Compounding",
@@ -168,7 +357,8 @@ export const JeopardyCardGame = () => {
         title: "I can't afford video right now",
         subtitle: "Budget concerns",
         icon: DollarSign,
-        gradient: "gradient-social-4"
+        gradient: "gradient-social-4",
+        emoji: "💸"
       },
       back: {
         title: "Hidden Cost: Leaking Money Daily",
@@ -183,7 +373,8 @@ export const JeopardyCardGame = () => {
         title: "I don't have time to make content",
         subtitle: "Time management issue",
         icon: Clock,
-        gradient: "gradient-social-1"
+        gradient: "gradient-social-1",
+        emoji: "⏳"
       },
       back: {
         title: "Hidden Cost: Explaining Everything 5x",
@@ -198,7 +389,8 @@ export const JeopardyCardGame = () => {
         title: "I'm waiting until I'm more ready",
         subtitle: "Perfectionism trap",
         icon: Star,
-        gradient: "gradient-social-2"
+        gradient: "gradient-social-2",
+        emoji: "🌟"
       },
       back: {
         title: "Hidden Cost: Perfect Costs Progress",
@@ -213,7 +405,8 @@ export const JeopardyCardGame = () => {
         title: "What platform should I post on?",
         subtitle: "Analysis paralysis",
         icon: TrendingUp,
-        gradient: "gradient-social-3"
+        gradient: "gradient-social-3",
+        emoji: "🤔"
       },
       back: {
         title: "Hidden Cost: Zero Visibility",
@@ -228,7 +421,8 @@ export const JeopardyCardGame = () => {
         title: "My audience isn't on social media",
         subtitle: "Platform misconception",
         icon: Users,
-        gradient: "gradient-social-4"
+        gradient: "gradient-social-4",
+        emoji: "👻"
       },
       back: {
         title: "Hidden Cost: Invisible During Buying",
@@ -243,7 +437,8 @@ export const JeopardyCardGame = () => {
         title: "I don't want to be the face of my brand",
         subtitle: "Personal brand resistance",
         icon: Heart,
-        gradient: "gradient-social-1"
+        gradient: "gradient-social-1",
+        emoji: "🙈"
       },
       back: {
         title: "Hidden Cost: Expensive Trust Building",
@@ -340,13 +535,14 @@ export const JeopardyCardGame = () => {
             💸 Game 1: Hidden Costs of Video Avoidance
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {costingGameCards.map((card) => (
-              <FlipCard
+            {costingGameCards.map((card, index) => (
+              <DangerCard
                 key={card.id}
                 front={card.front}
                 back={card.back}
                 isFlipped={flippedCards.has(card.id)}
                 onFlip={() => flipCard(card.id)}
+                index={index}
               />
             ))}
           </div>
@@ -361,13 +557,14 @@ export const JeopardyCardGame = () => {
             Find the video format that matches your natural energy and style
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {personalityCards.map((card) => (
-              <FlipCard
+            {personalityCards.map((card, index) => (
+              <PersonalityCard
                 key={card.id}
                 front={card.front}
                 back={card.back}
                 isFlipped={flippedCards.has(card.id)}
                 onFlip={() => flipCard(card.id)}
+                index={index}
               />
             ))}
           </div>

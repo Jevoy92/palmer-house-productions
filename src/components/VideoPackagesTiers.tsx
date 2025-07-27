@@ -152,7 +152,7 @@ export const VideoPackagesTiers = () => {
             From DIY downloads to full-service production — choose your path to video mastery.
           </p>
           <div className="inline-block px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 text-sm font-medium mb-6">
-            ⚠️ Limited slots available for all monthly packages
+            🔥 Only 3-5 founder spots open each month for personalized attention
           </div>
         </div>
 

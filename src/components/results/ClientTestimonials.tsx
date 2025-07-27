@@ -2,24 +2,24 @@
 export const ClientTestimonials = () => {
   const testimonials = [
     {
-      quote: "Palmer House didn't just make videos — they built our entire content strategy. Our onboarding process went from 2 weeks to 5 days.",
-      author: "Sarah Chen",
-      title: "CEO, TechFlow Solutions",
-      industry: "SaaS",
+      quote: "Palmer House Productions is amazing! They are so professional and deliver excellent work. I'm so glad I found them and will definitely use them again.",
+      author: "Isabella Johnstun",
+      title: "Client",
+      industry: "Business",
       gradient: "gradient-social-1"
     },
     {
-      quote: "The video SOPs saved us 20 hours per week in training. New hires are productive from day one now.",
-      author: "Mike Rodriguez",
-      title: "Operations Manager, Bella Vista Restaurant Group",
-      industry: "Restaurant",
+      quote: "Palmer House Productions exceeded my expectations. Professional service and outstanding results that helped grow my business.",
+      author: "Athan Seyler", 
+      title: "Client",
+      industry: "Business",
       gradient: "gradient-social-2"
     },
     {
-      quote: "My LinkedIn videos generated more leads in 3 months than our entire previous year of marketing.",
-      author: "Jennifer Walsh",
-      title: "Real Estate Broker, Premier Properties",
-      industry: "Real Estate",
+      quote: "Working with Palmer House Productions was a great experience. They delivered quality content that made a real impact on our operations.",
+      author: "Sarah Dylan Jensen",
+      title: "Client", 
+      industry: "Business",
       gradient: "gradient-social-3"
     }
   ];

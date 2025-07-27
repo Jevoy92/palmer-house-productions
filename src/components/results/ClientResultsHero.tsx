@@ -11,9 +11,9 @@ export const ClientResultsHero = () => {
             <span className="text-gradient-1">Proof</span> Over Portfolio
           </h1>
           <p className="text-2xl text-corporate-gray mb-12 max-w-4xl mx-auto font-medium">
-            Real business impact through cinematic storytelling.
+            Real business impact through systematic content creation.
             <br />
-            <span className="text-gradient-2 font-bold">See what we've built for clients like you.</span>
+            <span className="text-corporate-dark font-bold">See what we've built for clients like you.</span>
           </p>
         </div>
       </div>

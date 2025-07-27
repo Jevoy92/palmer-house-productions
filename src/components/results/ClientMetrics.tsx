@@ -2,19 +2,19 @@
 export const ClientMetrics = () => {
   const metrics = [
     {
-      stat: "40%",
+      stat: "Significantly",
       description: "Faster onboarding with video SOPs"
     },
     {
-      stat: "90-day",
-      description: "Content library built in 3 sessions"
+      stat: "Rapid",
+      description: "Content library development"
     },
     {
-      stat: "3x",
+      stat: "Substantial",
       description: "Increase in qualified leads"
     },
     {
-      stat: "85%",
+      stat: "Major",
       description: "Reduction in FAQ support tickets"
     }
   ];
@@ -25,7 +25,7 @@ export const ClientMetrics = () => {
         <div className="grid md:grid-cols-4 gap-8">
           {metrics.map((metric, index) => (
             <div key={index} className="text-center">
-              <div className="text-6xl font-black text-gradient-1 mb-4">
+              <div className="text-6xl font-black text-corporate-dark mb-4">
                 {metric.stat}
               </div>
               <p className="text-corporate-gray font-medium">

@@ -45,7 +45,7 @@ export const Hero = () => {
             onClick={handleExplorePackages}
             className="px-6 md:px-10 py-3 md:py-5 gradient-social-1 text-white font-bold text-base md:text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow-lg"
           >
-            🎯 Explore Video Packages
+            🎯 View Our Solutions
           </button>
           <button 
             onClick={handleBookCall}

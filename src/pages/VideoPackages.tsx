@@ -1,12 +1,12 @@
 
 import { Navigation } from "@/components/Navigation";
-import { VideoPackagesTiers } from "@/components/VideoPackagesTiers";
+import { VideoPackagesTabbed } from "@/components/packages/VideoPackagesTabbed";
 
 const VideoPackagesPage = () => {
   return (
     <div className="min-h-screen bg-white">
       <Navigation />
-      <VideoPackagesTiers />
+      <VideoPackagesTabbed />
     </div>
   );
 };

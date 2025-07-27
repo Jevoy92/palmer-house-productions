@@ -1,7 +1,7 @@
 
 import { Navigation } from "@/components/Navigation";
 import { DiscoveryCallHero } from "@/components/discovery/DiscoveryCallHero";
-import { DiscoveryProcessSteps } from "@/components/discovery/DiscoveryProcessSteps";
+import { CollapsibleDiscoverySteps } from "@/components/discovery/CollapsibleDiscoverySteps";
 import { VideoNeedsQuiz } from "@/components/discovery/VideoNeedsQuiz";
 import { DiscoveryCallForm } from "@/components/discovery/DiscoveryCallForm";
 
@@ -10,7 +10,7 @@ const DiscoveryCallPage = () => {
     <div className="min-h-screen bg-white">
       <Navigation />
       <DiscoveryCallHero />
-      <DiscoveryProcessSteps />
+      <CollapsibleDiscoverySteps />
       <VideoNeedsQuiz />
       <DiscoveryCallForm />
     </div>

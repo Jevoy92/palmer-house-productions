@@ -1,14 +1,14 @@
 
 import { Hero } from "@/components/Hero";
-import { About } from "@/components/About";
-import { Team } from "@/components/Team";
 import { Services } from "@/components/Services";
-import { Reviews } from "@/components/Reviews";
 import { Clients } from "@/components/Clients";
 import { SolutionsOverview } from "@/components/SolutionsOverview";
-import { Values } from "@/components/Values";
 import { Contact } from "@/components/Contact";
 import { Navigation } from "@/components/Navigation";
+import { CollapsibleAbout } from "@/components/home/CollapsibleAbout";
+import { CollapsibleTeam } from "@/components/home/CollapsibleTeam";
+import { CollapsibleValues } from "@/components/home/CollapsibleValues";
+import { CollapsibleReviews } from "@/components/home/CollapsibleReviews";
 
 const Index = () => {
   return (
@@ -16,22 +16,22 @@ const Index = () => {
       <Navigation />
       <Hero />
       <div id="about">
-        <About />
+        <CollapsibleAbout />
       </div>
       <div id="team">
-        <Team />
+        <CollapsibleTeam />
       </div>
       <div id="services">
         <Services />
       </div>
       <div id="reviews">
-        <Reviews />
+        <CollapsibleReviews />
       </div>
       <Clients />
       <div id="pricing">
         <SolutionsOverview />
       </div>
-      <Values />
+      <CollapsibleValues />
       <div id="contact">
         <Contact />
       </div>

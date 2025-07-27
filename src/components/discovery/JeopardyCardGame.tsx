@@ -171,7 +171,7 @@ const DangerCard = ({ front, back, isFlipped, onFlip, index = 0 }: FlipCardProps
       style={{ animationDelay: `${index * 150}ms` }}
     >
       <div className={cn(
-        "relative w-full h-80 transition-transform duration-700 transform-style-preserve-3d",
+        "relative w-full h-64 transition-transform duration-700 transform-style-preserve-3d",
         isFlipped && "rotate-y-180"
       )}>
         {/* Front of card */}
@@ -637,7 +637,7 @@ export const JeopardyCardGame = () => {
           <h3 className="text-3xl font-bold text-corporate-dark mb-8 text-center">
             Hidden Costs of Video Avoidance
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {costingGameCards.map((card, index) => (
               <DangerCard
                 key={card.id}

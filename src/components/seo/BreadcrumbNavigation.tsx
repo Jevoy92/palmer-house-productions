@@ -25,8 +25,8 @@ export const BreadcrumbNavigation = () => {
     const path = location.pathname;
     
     switch (path) {
-      case "/about":
-        items.push({ label: "About", current: true });
+      case "/about-us":
+        items.push({ label: "About Us", current: true });
         break;
       case "/video-packages":
         items.push({ label: "Video Packages", current: true });
@@ -37,23 +37,8 @@ export const BreadcrumbNavigation = () => {
       case "/discovery-call":
         items.push({ label: "Discovery Call", current: true });
         break;
-      case "/glimpse":
-        items.push({ label: "Glimpse", current: true });
-        break;
-      case "/team":
-        items.push({ label: "Team", current: true });
-        break;
-      case "/reviews":
-        items.push({ label: "Reviews", current: true });
-        break;
       case "/video-use-cases":
         items.push({ label: "Video Use Cases", current: true });
-        break;
-      case "/arsenal":
-        items.push({ label: "Arsenal", current: true });
-        break;
-      case "/pathways":
-        items.push({ label: "Pathways", current: true });
         break;
       case "/podcast":
         items.push({ label: "Podcast", current: true });

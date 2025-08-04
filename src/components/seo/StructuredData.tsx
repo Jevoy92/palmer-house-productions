@@ -4,8 +4,30 @@ interface StructuredDataProps {
   type?: "homepage" | "about" | "services" | "contact" | "packages";
 }
 
-export const StructuredData = ({ type = "homepage" }: StructuredDataProps) => {
+export const StructuredData = ({ type }: StructuredDataProps) => {
   const location = useLocation();
+  
+  // Auto-detect page type based on route if not provided
+  const getPageType = (): "homepage" | "about" | "services" | "contact" | "packages" => {
+    if (type) return type;
+    
+    const path = location.pathname;
+    switch (path) {
+      case "/about-us":
+        return "about";
+      case "/video-packages":
+        return "packages";
+      case "/contact":
+        return "contact";
+      case "/video-use-cases":
+      case "/discovery-call":
+        return "services";
+      default:
+        return "homepage";
+    }
+  };
+  
+  const pageType = getPageType();
   
   const localBusinessSchema = {
     "@context": "https://schema.org",
@@ -144,7 +166,7 @@ export const StructuredData = ({ type = "homepage" }: StructuredDataProps) => {
       }
     ];
 
-    switch (type) {
+    switch (pageType) {
       case "about":
         items.push({
           "@type": "ListItem",
@@ -190,7 +212,7 @@ export const StructuredData = ({ type = "homepage" }: StructuredDataProps) => {
 
   const schemas: any[] = [localBusinessSchema, serviceSchema, aggregateRatingSchema];
   
-  if (type !== "homepage") {
+  if (pageType !== "homepage") {
     schemas.push(breadcrumbSchema);
   }
 

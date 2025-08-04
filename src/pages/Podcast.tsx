@@ -1,11 +1,15 @@
 
 import { Navigation } from "@/components/Navigation";
+import { SkipLink } from "@/components/ui/skip-link";
+import { MainContent } from "@/components/MainContent";
 
 const PodcastPage = () => {
   return (
     <div className="min-h-screen bg-white">
+      <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
-      <section className="pt-24 pb-16 bg-video-white">
+      <MainContent>
+        <section className="pt-24 pb-16 bg-video-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-16">
             <div className="inline-block px-6 py-3 gradient-social-2 rounded-full text-white font-bold text-lg mb-8 video-shadow">
@@ -71,6 +75,7 @@ const PodcastPage = () => {
           </div>
         </div>
       </section>
+      </MainContent>
     </div>
   );
 };

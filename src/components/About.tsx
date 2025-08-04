@@ -1,27 +1,28 @@
 
 export const About = () => {
   return (
-    <section id="about" className="py-32 bg-corporate-light relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-32 h-32 gradient-social-1 rounded-full opacity-10 float-animation"></div>
-        <div className="absolute bottom-40 right-20 w-48 h-48 gradient-social-3 rounded-full opacity-10 float-animation" style={{animationDelay: '2s'}}></div>
-      </div>
-      
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-24">
-          <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            🌍 Our Origin Story
-          </div>
-          <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-            An Adventure Worth <span className="text-gradient-1">Taking</span>
-          </h2>
-          <p className="text-2xl text-corporate-gray max-w-4xl mx-auto font-medium leading-tight">
-            Palmer House Productions isn't just a video company.
-            <br />
-            We're your <span className="text-gradient-2 font-bold">creative expedition partners</span> - charting new territories in visual storytelling.
-          </p>
+    <main>
+      <section id="about" className="py-32 bg-corporate-light relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-10 w-32 h-32 gradient-social-1 rounded-full opacity-10 float-animation"></div>
+          <div className="absolute bottom-40 right-20 w-48 h-48 gradient-social-3 rounded-full opacity-10 float-animation" style={{animationDelay: '2s'}}></div>
         </div>
+        
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <header className="text-center mb-24">
+            <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8 video-shadow">
+              🌍 Our Origin Story
+            </div>
+            <h1 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+              Meet Palmer House Productions | <span className="text-gradient-1">Video Production Team</span>
+            </h1>
+            <p className="text-2xl text-corporate-gray max-w-4xl mx-auto font-medium leading-tight">
+              Palmer House Productions isn't just a video company.
+              <br />
+              We're your <span className="text-gradient-2 font-bold">creative expedition partners</span> - charting new territories in visual storytelling.
+            </p>
+          </header>
 
         <div className="max-w-5xl mx-auto mb-20">
           <div className="bg-video-white/80 backdrop-blur-sm rounded-3xl p-12 video-shadow">
@@ -53,9 +54,9 @@ export const About = () => {
         </div>
 
         {/* Core Values */}
-        <div className="mb-20">
+        <section className="mb-20">
           <div className="text-center mb-16">
-            <h3 className="text-5xl font-display font-black text-corporate-dark mb-6">Our Explorer's Code</h3>
+            <h2 className="text-5xl font-display font-black text-corporate-dark mb-6">Our Explorer's Code</h2>
             <div className="w-32 h-1 bg-gradient-to-r from-social-purple to-social-pink mx-auto rounded-full"></div>
           </div>
           
@@ -63,7 +64,7 @@ export const About = () => {
             <div className="group bg-video-white/80 backdrop-blur-sm rounded-3xl p-10 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105">
               <div className="flex items-center mb-6">
                 <div className="text-4xl mr-4">🗺️</div>
-                <h4 className="text-2xl font-bold text-gradient-1">Uncharted Paths</h4>
+                <h3 className="text-2xl font-bold text-gradient-1">Uncharted Paths</h3>
               </div>
               <p className="text-corporate-gray leading-relaxed text-lg">
                 We venture where others won't go. Every project is a unique expedition, custom-built to discover your brand's authentic voice.
@@ -73,7 +74,7 @@ export const About = () => {
             <div className="group bg-video-white/80 backdrop-blur-sm rounded-3xl p-10 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105">
               <div className="flex items-center mb-6">
                 <div className="text-4xl mr-4">🧭</div>
-                <h4 className="text-2xl font-bold text-gradient-2">True North</h4>
+                <h3 className="text-2xl font-bold text-gradient-2">True North</h3>
               </div>
               <p className="text-corporate-gray leading-relaxed text-lg">
                 Authenticity is our compass. We bring out the best in you without changing who you are - just amplifying what makes you extraordinary.
@@ -83,7 +84,7 @@ export const About = () => {
             <div className="group bg-video-white/80 backdrop-blur-sm rounded-3xl p-10 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105">
               <div className="flex items-center mb-6">
                 <div className="text-4xl mr-4">⛰️</div>
-                <h4 className="text-2xl font-bold text-gradient-3">Summit Solutions</h4>
+                <h3 className="text-2xl font-bold text-gradient-3">Summit Solutions</h3>
               </div>
               <p className="text-corporate-gray leading-relaxed text-lg">
                 We're here to conquer real challenges - not just create pretty visuals. Every frame serves your business goals.
@@ -93,19 +94,19 @@ export const About = () => {
             <div className="group bg-video-white/80 backdrop-blur-sm rounded-3xl p-10 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105">
               <div className="flex items-center mb-6">
                 <div className="text-4xl mr-4">🌟</div>
-                <h4 className="text-2xl font-bold text-gradient-1">Fearless Creativity</h4>
+                <h3 className="text-2xl font-bold text-gradient-1">Fearless Creativity</h3>
               </div>
               <p className="text-corporate-gray leading-relaxed text-lg">
                 We don't follow trends - we blaze trails. Bold visuals, strong messaging, and a spark of the unexpected guide every expedition.
               </p>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* Founder Quote */}
-        <div className="max-w-4xl mx-auto text-center">
+        <section className="max-w-4xl mx-auto text-center">
           <div className="bg-gradient-to-br from-social-purple/10 via-social-pink/5 to-social-cyan/10 rounded-3xl p-12 video-shadow-lg border border-social-purple/20">
-            <h3 className="text-4xl font-display font-black text-corporate-dark mb-8">Field Notes from the Founder</h3>
+            <h2 className="text-4xl font-display font-black text-corporate-dark mb-8">Field Notes from the Founder</h2>
             <div className="relative">
               <div className="text-6xl text-social-purple/30 absolute -top-4 -left-4">"</div>
               <blockquote className="text-2xl text-corporate-gray leading-relaxed italic mb-8 relative z-10">
@@ -120,8 +121,9 @@ export const About = () => {
             </div>
             <p className="text-corporate-gray text-sm mt-2">Founder & Lead Creative Guide</p>
           </div>
+        </section>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
   );
 };

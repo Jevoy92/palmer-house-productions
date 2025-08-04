@@ -39,26 +39,27 @@ export const Reviews = () => {
   };
 
   return (
-    <section id="reviews" className="py-32 bg-video-white relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-40 h-40 gradient-social-1 rounded-full opacity-10 float-animation"></div>
-        <div className="absolute bottom-20 right-10 w-48 h-48 gradient-social-3 rounded-full opacity-10 float-animation" style={{animationDelay: '3s'}}></div>
-        <div className="absolute top-1/2 right-1/3 w-32 h-32 gradient-social-2 rounded-full opacity-15 float-animation" style={{animationDelay: '1s'}}></div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-24">
-          <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            ⭐ Trail Reviews
-          </div>
-          <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-            What Fellow <span className="text-gradient-1">Explorers</span> Say
-          </h2>
-          <p className="text-2xl text-corporate-gray max-w-4xl mx-auto font-medium leading-tight">
-            Real stories from brands who've blazed new trails with Palmer House Productions.
-          </p>
+    <main>
+      <section id="reviews" className="py-32 bg-video-white relative overflow-hidden">
+        {/* Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-10 w-40 h-40 gradient-social-1 rounded-full opacity-10 float-animation"></div>
+          <div className="absolute bottom-20 right-10 w-48 h-48 gradient-social-3 rounded-full opacity-10 float-animation" style={{animationDelay: '3s'}}></div>
+          <div className="absolute top-1/2 right-1/3 w-32 h-32 gradient-social-2 rounded-full opacity-15 float-animation" style={{animationDelay: '1s'}}></div>
         </div>
+
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <header className="text-center mb-24">
+            <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8 video-shadow">
+              ⭐ Trail Reviews
+            </div>
+            <h1 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+              Client Reviews | Palmer House Productions <span className="text-gradient-1">Testimonials</span>
+            </h1>
+            <p className="text-2xl text-corporate-gray max-w-4xl mx-auto font-medium leading-tight">
+              Real stories from brands who've blazed new trails with Palmer House Productions.
+            </p>
+          </header>
         
         <div className="grid lg:grid-cols-3 gap-8 mb-16">
           {reviews.map((review, index) => (
@@ -69,9 +70,9 @@ export const Reviews = () => {
               {renderStars()}
               
               <div className="mb-6">
-                <h3 className="text-xl font-display font-black text-corporate-dark mb-1">
+                <h2 className="text-xl font-display font-black text-corporate-dark mb-1">
                   {review.name}
-                </h3>
+                </h2>
                 <p className="text-corporate-gray text-sm mb-1">{review.reviewCount}</p>
                 <p className="text-corporate-gray text-sm">{review.timeAgo}</p>
               </div>
@@ -89,36 +90,37 @@ export const Reviews = () => {
           ))}
         </div>
         
-        {/* CTA Section */}
-        <div className="text-center p-12 gradient-social-2 rounded-3xl video-shadow-lg relative overflow-hidden">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-4 right-4 w-20 h-20 bg-white rounded-full"></div>
-            <div className="absolute bottom-4 left-4 w-16 h-16 bg-white rounded-full"></div>
-          </div>
-          <div className="relative z-10">
-            <h3 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
-              Ready to Join Our Trail of Success?
-            </h3>
-            <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto font-medium">
-              See what other explorers are saying about their journey with Palmer House Productions.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button 
-                onClick={handleViewAllReviews}
-                className="px-10 py-5 bg-video-white text-corporate-dark font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
-              >
-                View All Google Reviews ⭐
-              </button>
-              <button 
-                onClick={handleViewAllReviews}
-                className="px-10 py-5 bg-white/20 border-2 border-white text-white font-bold text-lg rounded-2xl hover:bg-white hover:text-corporate-dark transition-all duration-300"
-              >
-                Leave a Review 📝
-              </button>
+          {/* CTA Section */}
+          <section className="text-center p-12 gradient-social-2 rounded-3xl video-shadow-lg relative overflow-hidden">
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute top-4 right-4 w-20 h-20 bg-white rounded-full"></div>
+              <div className="absolute bottom-4 left-4 w-16 h-16 bg-white rounded-full"></div>
             </div>
-          </div>
+            <div className="relative z-10">
+              <h2 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+                Ready to Join Our Trail of Success?
+              </h2>
+              <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto font-medium">
+                See what other explorers are saying about their journey with Palmer House Productions.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button 
+                  onClick={handleViewAllReviews}
+                  className="px-10 py-5 bg-video-white text-corporate-dark font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
+                >
+                  View All Google Reviews ⭐
+                </button>
+                <button 
+                  onClick={handleViewAllReviews}
+                  className="px-10 py-5 bg-white/20 border-2 border-white text-white font-bold text-lg rounded-2xl hover:bg-white hover:text-corporate-dark transition-all duration-300"
+                >
+                  Leave a Review 📝
+                </button>
+              </div>
+            </div>
+          </section>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
   );
 };

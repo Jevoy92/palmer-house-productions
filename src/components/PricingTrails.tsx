@@ -190,7 +190,7 @@ export const PricingTrails = () => {
   };
 
   return (
-    <div>
+    <main>
       <section id="pricing" className="pt-48 pb-32 bg-corporate-light relative overflow-hidden">
         {/* Background Elements */}
         <div className="absolute inset-0">
@@ -200,18 +200,18 @@ export const PricingTrails = () => {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="text-center mb-24">
+          <header className="text-center mb-24">
             <div className="inline-block px-6 py-3 gradient-social-3 rounded-full text-white font-bold text-lg mb-8 video-shadow">
               🗺️ Choose Your Trail
             </div>
-            <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-              Map Your <span className="text-gradient-1">Journey</span>
-            </h2>
+            <h1 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+              Video Production Pricing | <span className="text-gradient-1">Palmer House Packages</span>
+            </h1>
             <div className="text-2xl text-corporate-gray max-w-4xl mx-auto mb-12 font-medium leading-tight">
               <p>Each trail represents a different approach to video content creation.</p>
               <p>Choose the path that matches your <span className="text-gradient-2 font-bold">ambition and scale</span>.</p>
             </div>
-          </div>
+          </header>
 
           {/* Billing Cycle moved above */}
           <BillingCycle onCycleChange={handleBillingChange} />
@@ -225,7 +225,7 @@ export const PricingTrails = () => {
                   <div className={`w-20 h-20 ${path.gradient} rounded-2xl flex items-center justify-center mb-4 mx-auto video-shadow`}>
                     <path.headerIcon size={32} color="white" />
                   </div>
-                  <h3 className="text-3xl font-display font-black text-corporate-dark mb-2">{path.tier}</h3>
+                  <h2 className="text-3xl font-display font-black text-corporate-dark mb-2">{path.tier}</h2>
                   <div className="text-xl text-corporate-gray">Trail</div>
                 </div>
 
@@ -323,14 +323,14 @@ export const PricingTrails = () => {
           </div>
 
           {/* Bottom Section - keeping existing code */}
-          <div className="text-center">
+          <section className="text-center">
             <div className="text-corporate-gray text-4xl mb-12 tracking-widest">⸻ ⸻ ⸻</div>
             <div className="inline-block px-8 py-4 gradient-social-4 rounded-full text-white font-bold text-xl mb-8 video-shadow-lg">
               🧭 Ready to Begin?
             </div>
-            <h3 className="text-5xl md:text-6xl font-display font-black mb-10 text-corporate-dark leading-tight">
+            <h2 className="text-5xl md:text-6xl font-display font-black mb-10 text-corporate-dark leading-tight">
               Let's Find Your Perfect <span className="text-gradient-2">Trail</span>
-            </h3>
+            </h2>
             <p className="text-2xl text-corporate-gray mb-12 max-w-4xl mx-auto font-medium leading-relaxed">
               Every great adventure starts with choosing the right path.
               <br />
@@ -343,13 +343,13 @@ export const PricingTrails = () => {
             >
               Start Your Journey →
             </button>
-          </div>
+          </section>
         </div>
       </section>
 
       {/* Sections with billing integration */}
       <FeaturesComparison isAnnualBilling={isAnnualBilling} />
       <PricingFAQ />
-    </div>
+    </main>
   );
 };

@@ -73,7 +73,7 @@ export const Navigation = () => {
   }, [location]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-apple-gray-2/50">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-apple-gray-2/50" role="navigation" aria-label="Main navigation">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0">
@@ -175,14 +175,20 @@ export const Navigation = () => {
           </div>
           
           <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-apple-gray-5 hover:text-black focus:outline-none">
+            <button 
+              onClick={() => setIsOpen(!isOpen)} 
+              className="text-apple-gray-5 hover:text-black focus:outline-none interactive-element"
+              aria-expanded={isOpen}
+              aria-controls="mobile-menu"
+              aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
       </div>
 
-      {isOpen && <div className="md:hidden bg-white border-t border-apple-gray-2">
+      {isOpen && <div id="mobile-menu" className="md:hidden bg-white border-t border-apple-gray-2" role="menu">
           <div className="px-4 pt-2 pb-3 space-y-1">
             <Link 
               to="/video-packages" 

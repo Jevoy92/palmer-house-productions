@@ -59,8 +59,10 @@ export const Team = () => {
                 <div className="relative aspect-square w-full rounded-3xl overflow-hidden video-shadow group-hover:video-shadow-lg transition-all duration-500 group-hover:scale-105">
                   <img 
                     src={member.image} 
-                    alt={member.name}
+                    alt={`${member.name}, ${member.role} at Palmer House Productions - Professional video production team member`}
                     className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
                   />
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

@@ -93,6 +93,30 @@
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
+  /* Critical accessibility improvements */
+  *:focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Smooth scrolling for better UX */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Reduced motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
   h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
     letter-spacing: -0.025em;
@@ -194,4 +218,33 @@
   .text-corporate-light { color: hsl(var(--corporate-light)); }
   .text-video-black { color: hsl(var(--video-black)); }
   .text-video-white { color: hsl(var(--video-white)); }
+
+  /* Enhanced shadow utilities for better visual hierarchy */
+  .video-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  .video-shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Performance optimized animations */
+  .transform-gpu {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Improved accessibility for interactive elements */
+  .interactive-element {
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .interactive-element:hover {
+    transform: translateY(-2px);
+  }
+
+  .interactive-element:active {
+    transform: translateY(0);
+  }
 }

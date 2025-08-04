@@ -68,8 +68,10 @@ export const CollapsibleTeam = () => {
                       <div className="aspect-square w-32 h-32 mx-auto rounded-2xl overflow-hidden video-shadow group-hover:scale-105 transition-transform duration-300">
                         <img 
                           src={member.image} 
-                          alt={member.name}
+                          alt={`${member.name}, ${member.role} at Palmer House Productions - Professional video production team member`}
                           className="w-full h-full object-cover"
+                          loading="lazy"
+                          decoding="async"
                         />
                       </div>
                     </div>

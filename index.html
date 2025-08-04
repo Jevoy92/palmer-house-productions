@@ -27,12 +27,45 @@
     <meta name="twitter:description" content="Professional video production services for bold brands. Short-form cinematic storytelling that scales your business." />
     <meta name="twitter:image" content="https://www.palmerhouseproductions.com/og-image.jpg" />
 
+    <!-- Performance & Resource Hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="dns-prefetch" href="https://salesiq.zohopublic.com">
+    <link rel="dns-prefetch" href="https://cdn.pagesense.io">
+    <link rel="preload" href="/src/index.css" as="style">
+    <link rel="preload" href="/src/main.tsx" as="script">
+
+    <!-- Skip to main content for accessibility -->
+    <style>
+      .skip-to-main {
+        position: absolute;
+        left: -10000px;
+        top: auto;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+      }
+      .skip-to-main:focus {
+        position: static;
+        width: auto;
+        height: auto;
+        z-index: 1000;
+        padding: 8px 16px;
+        background: hsl(213 94% 68%);
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        margin: 8px;
+        display: inline-block;
+      }
+    </style>
+
     <script>window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}</script>
     <script id="zsiqscript" src="https://salesiq.zohopublic.com/widget?wc=siq8f9f77aa0b3519fcdf02413fb333885559e4486d11cad45a93e901b9fc5b04ab2cc48126317e606eb6d3f1dc72fcef38" defer></script>
     <script src="https://cdn.pagesense.io/js/palmerhouseproductions/1671f6386ff00df00b41fe09/de1ff5bb0b0242b254.js"></script>
   </head>
 
   <body>
+    <a href="#main-content" class="skip-to-main">Skip to main content</a>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

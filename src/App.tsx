@@ -4,6 +4,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import Index from "./pages/Index";
 import VideoPackages from "./pages/VideoPackages";
 import DiscoveryCall from "./pages/DiscoveryCall";
@@ -22,6 +24,8 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <StructuredData />
+        <BreadcrumbNavigation />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/video-packages" element={<VideoPackages />} />

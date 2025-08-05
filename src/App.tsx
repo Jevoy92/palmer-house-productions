@@ -15,6 +15,12 @@ import AboutUs from "./pages/AboutUs";
 import Podcast from "./pages/Podcast";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import DIYDownloads from "./pages/services/DIYDownloads";
+import GroupCoaching from "./pages/services/GroupCoaching";
+import MonthlyContent from "./pages/services/MonthlyContent";
+import Team from "./pages/company/Team";
+import Values from "./pages/company/Values";
+import Reviews from "./pages/resources/Reviews";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +41,12 @@ const App = () => (
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/podcast" element={<Podcast />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/services/diy-downloads" element={<DIYDownloads />} />
+          <Route path="/services/group-coaching" element={<GroupCoaching />} />
+          <Route path="/services/monthly-content" element={<MonthlyContent />} />
+          <Route path="/company/team" element={<Team />} />
+          <Route path="/company/values" element={<Values />} />
+          <Route path="/resources/reviews" element={<Reviews />} />
           
           {/* Legacy route redirects */}
           <Route path="/pathways" element={<Navigate to="/video-packages" replace />} />

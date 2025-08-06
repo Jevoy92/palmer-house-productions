@@ -6,6 +6,7 @@ import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
+import { InternalLinking } from "@/components/seo/InternalLinking";
 
 const PathwaysPage = () => {
   return (
@@ -31,6 +32,7 @@ const PathwaysPage = () => {
           </div>
         </section>
         <ServicePackages />
+        <InternalLinking currentPage="packages" />
       </MainContent>
     </div>
   );

@@ -6,6 +6,7 @@ import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
+import { InternalLinking } from "@/components/seo/InternalLinking";
 
 const ReviewsPage = () => {
   return (
@@ -31,6 +32,14 @@ const ReviewsPage = () => {
           </div>
         </section>
         <Reviews />
+        <InternalLinking 
+          currentPage="reviews"
+          relatedLinks={[
+            { title: "Our Services", href: "/#services", description: "Explore our video production services" },
+            { title: "About Our Team", href: "/about-us", description: "Meet the experts behind our success" },
+            { title: "Get Started", href: "/contact", description: "Start your video production project" }
+          ]}
+        />
       </MainContent>
     </div>
   );

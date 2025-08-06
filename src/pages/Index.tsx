@@ -9,6 +9,8 @@ import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
 import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
+import { InternalLinking } from "@/components/seo/InternalLinking";
 
 const Index = () => {
   return (
@@ -23,6 +25,7 @@ const Index = () => {
         canonicalUrl="https://www.palmerhouseproductions.com/"
       />
       <StructuredData type="homepage" />
+      <GoogleAnalytics measurementId={import.meta.env.VITE_GA_MEASUREMENT_ID} />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <MainContent>
@@ -37,6 +40,7 @@ const Index = () => {
         <div id="contact">
           <Contact />
         </div>
+        <InternalLinking currentPage="homepage" />
       </MainContent>
     </div>
   );

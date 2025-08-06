@@ -40,7 +40,52 @@ export const Reviews = () => {
 
   return (
     <main>
-      <section id="reviews" className="py-32 bg-video-white relative overflow-hidden">
+      {/* Enhanced Content Section */}
+      <section className="py-24 bg-video-white relative overflow-hidden">
+        <div className="max-w-6xl mx-auto px-6 mb-16">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-display font-black mb-6 text-corporate-dark">
+                Why Businesses Choose Palmer House Productions
+              </h2>
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-gradient-social-1 rounded-full flex-shrink-0 mt-1"></div>
+                  <p className="text-corporate-gray text-lg">Professional video production that drives measurable business results</p>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-gradient-social-2 rounded-full flex-shrink-0 mt-1"></div>
+                  <p className="text-corporate-gray text-lg">Streamlined content systems that save time and increase efficiency</p>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-gradient-social-3 rounded-full flex-shrink-0 mt-1"></div>
+                  <p className="text-corporate-gray text-lg">Expert team dedicated to understanding your unique business needs</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-corporate-light p-8 rounded-2xl">
+              <h3 className="text-2xl font-display font-bold mb-4 text-corporate-dark">Client Success Metrics</h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-corporate-gray">Average Project Satisfaction</span>
+                  <span className="text-2xl font-bold text-gradient-1">98%</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-corporate-gray">Repeat Client Rate</span>
+                  <span className="text-2xl font-bold text-gradient-1">85%</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-corporate-gray">Projects Delivered On Time</span>
+                  <span className="text-2xl font-bold text-gradient-1">100%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Reviews Section */}
+      <section id="reviews" className="py-16 bg-video-white relative overflow-hidden">
         {/* Background Elements */}
         <div className="absolute inset-0">
           <div className="absolute top-20 left-10 w-40 h-40 gradient-social-1 rounded-full opacity-10 float-animation"></div>
@@ -61,37 +106,37 @@ export const Reviews = () => {
             </p>
           </header>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 px-4">
-          {reviews.map((review, index) => (
-            <div 
-              key={index}
-              className="group p-6 bg-corporate-light rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 mobile-touch-target"
-            >
-              {renderStars()}
-              
-              <div className="mb-6">
-                <h2 className="text-xl font-display font-black text-corporate-dark mb-1">
-                  {review.name}
-                </h2>
-                <p className="text-corporate-gray text-sm mb-1">{review.reviewCount}</p>
-                <p className="text-corporate-gray text-sm">{review.timeAgo}</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 px-4">
+            {reviews.map((review, index) => (
+              <div 
+                key={index}
+                className="group p-6 bg-corporate-light rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 mobile-touch-target"
+              >
+                {renderStars()}
+                
+                <div className="mb-6">
+                  <h2 className="text-xl font-display font-black text-corporate-dark mb-1">
+                    {review.name}
+                  </h2>
+                  <p className="text-corporate-gray text-sm mb-1">{review.reviewCount}</p>
+                  <p className="text-corporate-gray text-sm">{review.timeAgo}</p>
+                </div>
+                
+                <p className="text-corporate-gray leading-relaxed text-lg font-medium">
+                  "{review.text}"
+                </p>
+                
+                {/* Google Badge */}
+                <div className="mt-6 flex items-center space-x-2">
+                  <div className="w-6 h-6 bg-gradient-to-r from-blue-500 via-red-500 via-yellow-500 to-green-500 rounded-full"></div>
+                  <span className="text-corporate-gray text-sm font-medium">Google Review</span>
+                </div>
               </div>
-              
-              <p className="text-corporate-gray leading-relaxed text-lg font-medium">
-                "{review.text}"
-              </p>
-              
-              {/* Google Badge */}
-              <div className="mt-6 flex items-center space-x-2">
-                <div className="w-6 h-6 bg-gradient-to-r from-blue-500 via-red-500 via-yellow-500 to-green-500 rounded-full"></div>
-                <span className="text-corporate-gray text-sm font-medium">Google Review</span>
-              </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
         
           {/* CTA Section */}
-          <section className="text-center p-12 gradient-social-2 rounded-3xl video-shadow-lg relative overflow-hidden">
+          <div className="text-center p-12 gradient-social-2 rounded-3xl video-shadow-lg relative overflow-hidden">
             <div className="absolute inset-0 opacity-10">
               <div className="absolute top-4 right-4 w-20 h-20 bg-white rounded-full"></div>
               <div className="absolute bottom-4 left-4 w-16 h-16 bg-white rounded-full"></div>
@@ -106,19 +151,19 @@ export const Reviews = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button 
                   onClick={handleViewAllReviews}
-                  className="px-10 py-5 bg-video-white text-corporate-dark font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
+                  className="px-10 py-5 bg-video-white text-corporate-dark font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow mobile-touch-target"
                 >
                   View All Google Reviews ⭐
                 </button>
                 <button 
                   onClick={handleViewAllReviews}
-                  className="px-10 py-5 bg-white/20 border-2 border-white text-white font-bold text-lg rounded-2xl hover:bg-white hover:text-corporate-dark transition-all duration-300"
+                  className="px-10 py-5 bg-white/20 border-2 border-white text-white font-bold text-lg rounded-2xl hover:bg-white hover:text-corporate-dark transition-all duration-300 mobile-touch-target"
                 >
                   Leave a Review 📝
                 </button>
               </div>
             </div>
-          </section>
+          </div>
         </div>
       </section>
     </main>

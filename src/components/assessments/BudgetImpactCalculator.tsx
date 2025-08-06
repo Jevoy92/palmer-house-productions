@@ -13,6 +13,10 @@ import {
 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
+interface BudgetImpactCalculatorProps {
+  onBack?: () => void;
+}
+
 interface BudgetTier {
   id: string;
   name: string;
@@ -34,7 +38,7 @@ interface CalculatorResult {
   nextSteps: string[];
 }
 
-export const BudgetImpactCalculator = () => {
+export const BudgetImpactCalculator = ({ onBack }: BudgetImpactCalculatorProps) => {
   const [budget, setBudget] = useState([5000]);
   const [revenue, setRevenue] = useState([50000]);
   const [goals, setGoals] = useState<string[]>([]);

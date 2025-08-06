@@ -5,6 +5,10 @@ import { Progress } from "@/components/ui/progress";
 import { CheckCircle, Circle, Camera, Target, Lightbulb, TrendingUp, ArrowRight } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
+interface VideoReadinessAuditProps {
+  onBack?: () => void;
+}
+
 interface AssessmentSection {
   id: string;
   title: string;
@@ -25,7 +29,7 @@ interface AuditResults {
   suggestedServices: string[];
 }
 
-export const VideoReadinessAudit = () => {
+export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
   const [currentSection, setCurrentSection] = useState(0);
   const [answers, setAnswers] = useState<Record<string, boolean>>({});
   const [showResults, setShowResults] = useState(false);

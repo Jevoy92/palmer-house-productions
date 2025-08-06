@@ -16,6 +16,10 @@ import {
 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
+interface ContentGapAnalysisProps {
+  onBack?: () => void;
+}
+
 interface ContentType {
   id: string;
   name: string;
@@ -37,7 +41,7 @@ interface GapAnalysisResult {
   funnelCoverage: number;
 }
 
-export const ContentGapAnalysis = () => {
+export const ContentGapAnalysis = ({ onBack }: ContentGapAnalysisProps) => {
   const [selectedContent, setSelectedContent] = useState<string[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [contactInfo, setContactInfo] = useState({ name: "", email: "", company: "" });

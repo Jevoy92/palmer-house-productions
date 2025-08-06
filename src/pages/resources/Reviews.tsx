@@ -3,6 +3,7 @@ import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
+import { Navigation } from "@/components/Navigation";
 
 const Reviews = () => {
   const featuredReview = {
@@ -82,6 +83,7 @@ const Reviews = () => {
   return (
     <div className="min-h-screen bg-white">
       <SkipLink href="#main-content">Skip to main content</SkipLink>
+      <Navigation />
       <StructuredData />
       <MainContent>
         <section className="pt-24 pb-16 bg-video-white">

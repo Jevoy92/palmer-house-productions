@@ -21,14 +21,14 @@ export const EnhancedFooter = () => {
               </div>
               <div className="flex items-center text-sm text-gray-300">
                 <Mail size={16} className="mr-2" />
-                <a href="mailto:hello@palmerhouseproductions.com" className="hover:text-white transition-colors">
-                  hello@palmerhouseproductions.com
+                <a href="mailto:info@palmerhouseproductions.com" className="hover:text-white transition-colors">
+                  info@palmerhouseproductions.com
                 </a>
               </div>
               <div className="flex items-center text-sm text-gray-300">
                 <Phone size={16} className="mr-2" />
-                <a href="tel:+1234567890" className="hover:text-white transition-colors">
-                  (123) 456-7890
+                <a href="tel:+14257387312" className="hover:text-white transition-colors">
+                  425-738-7312
                 </a>
               </div>
             </div>

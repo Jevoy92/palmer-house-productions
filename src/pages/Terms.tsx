@@ -48,8 +48,8 @@ const Terms = () => {
                 <h2 className="text-2xl font-bold text-corporate-dark mb-4">Contact Information</h2>
                 <p className="text-corporate-gray">
                   For questions about these terms, please contact us at{" "}
-                  <a href="mailto:hello@palmerhouseproductions.com" className="text-social-purple hover:underline">
-                    hello@palmerhouseproductions.com
+                  <a href="mailto:info@palmerhouseproductions.com" className="text-social-purple hover:underline">
+                    info@palmerhouseproductions.com
                   </a>
                 </p>
               </div>

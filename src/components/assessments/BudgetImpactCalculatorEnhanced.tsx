@@ -38,6 +38,23 @@ interface BudgetTier {
   timelineMonths: number;
 }
 
+interface Priority {
+  id: string;
+  title: string;
+  description: string;
+  impact: 'High' | 'Medium' | 'Low';
+  effort: 'High' | 'Medium' | 'Low';
+  timeline: string;
+  category: string;
+}
+
+interface Milestone {
+  month: number;
+  title: string;
+  goals: string[];
+  metrics: string[];
+}
+
 interface CalculatorResult {
   selectedTier: BudgetTier;
   projectedROI: number;
@@ -53,17 +70,8 @@ interface CalculatorResult {
   };
   goalAlignment: number;
   sectionScores: Record<string, number>;
-  priorities: Array<{
-    title: string;
-    impact: 'high' | 'medium' | 'low';
-    effort: 'high' | 'medium' | 'low';
-    timeline: string;
-  }>;
-  milestones: Array<{
-    month: number;
-    goals: string[];
-    metrics: string[];
-  }>;
+  priorities: Priority[];
+  milestones: Milestone[];
 }
 
 export const BudgetImpactCalculatorEnhanced = ({ onBack }: BudgetImpactCalculatorEnhancedProps) => {
@@ -91,11 +99,13 @@ export const BudgetImpactCalculatorEnhanced = ({ onBack }: BudgetImpactCalculato
       setBudget(progress.answers?.budget || [5000]);
       setRevenue(progress.answers?.revenue || [50000]);
       setGoals(progress.answers?.goals || []);
-      setBusinessProfile(progress.businessContext || {
-        industry: "technology",
-        businessStage: "growth",
-        currentMarketingSpend: 0,
-        competitorActivity: "medium"
+      // Safely restore business context with proper type checking
+      const savedContext = progress.businessContext || {};
+      setBusinessProfile({
+        industry: savedContext.industry || "technology",
+        businessStage: savedContext.businessStage || "growth",
+        currentMarketingSpend: savedContext.currentMarketingSpend || 0,
+        competitorActivity: savedContext.competitorActivity || "medium"
       });
     }
   }, [progress]);
@@ -213,57 +223,72 @@ export const BudgetImpactCalculatorEnhanced = ({ onBack }: BudgetImpactCalculato
       'Risk Assessment': riskFactors.length < 2 ? 80 : 60
     };
 
-    // Priority actions based on tier and goals
-    const priorities = [
+    // Priority actions based on tier and goals with proper interface structure
+    const priorities: Priority[] = [
       {
+        id: "workflow",
         title: "Establish video production workflow",
-        impact: 'high' as const,
-        effort: selectedTier.id === 'starter' ? 'high' as const : 'medium' as const,
-        timeline: "2-4 weeks"
+        description: "Create systematic approach to video content creation",
+        impact: 'High',
+        effort: selectedTier.id === 'starter' ? 'High' : 'Medium',
+        timeline: "2-4 weeks",
+        category: "Production"
       },
       {
+        id: "strategy",
         title: "Create content calendar and strategy",
-        impact: 'high' as const,
-        effort: 'medium' as const,
-        timeline: "1-2 weeks"
+        description: "Plan strategic video content aligned with business goals",
+        impact: 'High',
+        effort: 'Medium',
+        timeline: "1-2 weeks",
+        category: "Strategy"
       },
       {
+        id: "analytics",
         title: "Set up measurement and analytics",
-        impact: 'medium' as const,
-        effort: 'low' as const,
-        timeline: "1 week"
+        description: "Track video performance and optimize based on data",
+        impact: 'Medium',
+        effort: 'Low',
+        timeline: "1 week",
+        category: "Analytics"
       }
     ];
 
-    // 6-month implementation milestones
-    const milestones = [
+    // 6-month implementation milestones with proper interface structure
+    const milestones: Milestone[] = [
       {
         month: 1,
+        title: "Foundation Phase",
         goals: ["Strategy development", "Team training"],
         metrics: ["Strategy document", "Team onboarded"]
       },
       {
         month: 2,
+        title: "Content Creation Phase",
         goals: ["First video series", "Brand foundation"],
         metrics: ["3-5 videos published", "Brand guidelines set"]
       },
       {
         month: 3,
+        title: "Optimization Phase",
         goals: ["Content optimization", "Performance tracking"],
         metrics: ["Analytics setup", "First performance review"]
       },
       {
         month: 4,
+        title: "Scale Phase",
         goals: ["Scale production", "Advanced content"],
         metrics: ["10+ videos published", "Advanced formats tested"]
       },
       {
         month: 5,
+        title: "Distribution Phase",
         goals: ["Distribution optimization", "Lead generation"],
         metrics: ["Multi-platform presence", "Lead tracking active"]
       },
       {
         month: 6,
+        title: "Assessment Phase",
         goals: ["ROI assessment", "Strategy refinement"],
         metrics: ["ROI analysis complete", "Strategy v2 planned"]
       }

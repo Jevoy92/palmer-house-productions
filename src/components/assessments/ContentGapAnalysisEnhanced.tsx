@@ -38,6 +38,23 @@ interface ContentType {
   impact: 'low' | 'medium' | 'high';
 }
 
+interface Priority {
+  id: string;
+  title: string;
+  description: string;
+  impact: 'High' | 'Medium' | 'Low';
+  effort: 'High' | 'Medium' | 'Low';
+  timeline: string;
+  category: string;
+}
+
+interface Milestone {
+  month: number;
+  title: string;
+  goals: string[];
+  metrics: string[];
+}
+
 interface GapAnalysisResult {
   currentContent: string[];
   missingContent: string[];
@@ -62,17 +79,8 @@ interface GapAnalysisResult {
     timeframe: string;
   }[];
   sectionScores: Record<string, number>;
-  priorities: Array<{
-    title: string;
-    impact: 'high' | 'medium' | 'low';
-    effort: 'high' | 'medium' | 'low';
-    timeline: string;
-  }>;
-  milestones: Array<{
-    month: number;
-    goals: string[];
-    metrics: string[];
-  }>;
+  priorities: Priority[];
+  milestones: Milestone[];
 }
 
 export const ContentGapAnalysisEnhanced = ({ onBack }: ContentGapAnalysisEnhancedProps) => {
@@ -97,12 +105,14 @@ export const ContentGapAnalysisEnhanced = ({ onBack }: ContentGapAnalysisEnhance
     if (progress) {
       setCurrentSection(progress.currentSection);
       setSelectedContent(progress.answers?.selectedContent || []);
-      setBusinessProfile(progress.businessContext || {
-        industry: "",
-        size: "",
-        primaryGoals: [],
-        currentChannels: [],
-        targetAudience: ""
+      // Safely restore business context with proper type checking
+      const savedContext = progress.businessContext || {};
+      setBusinessProfile({
+        industry: savedContext.industry || "",
+        size: savedContext.size || "",
+        primaryGoals: savedContext.primaryGoals || [],
+        currentChannels: savedContext.currentChannels || [],
+        targetAudience: savedContext.targetAudience || ""
       });
     }
   }, [progress]);
@@ -225,33 +235,39 @@ export const ContentGapAnalysisEnhanced = ({ onBack }: ContentGapAnalysisEnhance
       'Thought Leadership': selectedContent.includes('thought-leadership') ? 70 : 15
     };
     
-    // Generate priority actions
-    const priorities = [
+    // Generate priority actions with proper interface structure
+    const priorities: Priority[] = [
       {
         id: "brand-story",
         title: "Create Brand Story Video",
         description: "Establish credibility and trust with authentic brand storytelling",
-        impact: 'high' as const,
-        effort: 'medium' as const,
+        impact: 'High',
+        effort: 'Medium',
         timeline: "2-4 weeks",
         category: "Foundation"
       },
       {
+        id: "testimonials",
         title: "Collect Customer Testimonials",
-        impact: 'high' as const,
-        effort: 'low' as const,
-        timeline: "1-2 weeks"
+        description: "Build social proof through customer success stories",
+        impact: 'High',
+        effort: 'Low',
+        timeline: "1-2 weeks",
+        category: "Social Proof"
       },
       {
+        id: "product-demos",
         title: "Develop Product Demos",
-        impact: 'high' as const,
-        effort: 'medium' as const,
-        timeline: "3-6 weeks"
+        description: "Showcase product value through demonstrations",
+        impact: 'High',
+        effort: 'Medium',
+        timeline: "3-6 weeks",
+        category: "Product Marketing"
       }
     ].filter((_, index) => index < 3 - Math.floor(funnelCoverage / 33));
 
-    // Generate 6-month milestones
-    const milestones = [
+    // Generate 6-month milestones with proper interface structure
+    const milestones: Milestone[] = [
       {
         month: 1,
         title: "Foundation Phase",
@@ -260,26 +276,31 @@ export const ContentGapAnalysisEnhanced = ({ onBack }: ContentGapAnalysisEnhance
       },
       {
         month: 2,
+        title: "Social Proof Phase",
         goals: ["Launch testimonial collection", "Create product demo"],
         metrics: ["3 testimonials collected", "1 demo video live"]
       },
       {
         month: 3,
+        title: "Content Expansion",
         goals: ["Educational content series", "Optimize based on performance"],
         metrics: ["5 educational videos", "Performance benchmarks set"]
       },
       {
         month: 4,
+        title: "Authority Building",
         goals: ["Thought leadership content", "Cross-platform distribution"],
         metrics: ["2 expert interviews", "Multi-platform presence"]
       },
       {
         month: 5,
+        title: "Advanced Social Proof",
         goals: ["Advanced social proof", "Content optimization"],
         metrics: ["Case study videos", "Improved engagement rates"]
       },
       {
         month: 6,
+        title: "Full Funnel Coverage",
         goals: ["Full funnel content", "Performance review"],
         metrics: ["Complete content library", "ROI assessment"]
       }

@@ -6,15 +6,15 @@ interface ContactHeaderProps {
 
 export const ContactHeader = ({ onQuickRecommendation, currentStep }: ContactHeaderProps) => {
   return (
-    <div className="text-center mb-16">
-      <div className="inline-block bg-cyan-100 text-cyan-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
-        Palmer House Wizard
+    <div className="text-center mb-12">
+      <div className="inline-block bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-6 mobile-touch-target">
+        Solution Finder
       </div>
-      <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-        The Client Expedition
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-corporate-dark mb-6">
+        Find Your Video Solution
       </h1>
-      <p className="text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto">
-        Let us guide you through an immersive journey to help you understand your needs and find the right solution with clarity and momentum.
+      <p className="text-lg md:text-xl text-corporate-gray leading-relaxed max-w-2xl mx-auto">
+        Quick questions to match you with the right video service for your business goals.
       </p>
     </div>
   );

@@ -10,8 +10,8 @@ interface JourneyFormProps {
 
 export const JourneyForm = ({ currentStep, onQuickRecommendation, children }: JourneyFormProps) => {
   return (
-    <div className="max-w-4xl mx-auto mb-16">
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden relative">
+    <div className="max-w-4xl mx-auto mb-12">
+      <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden relative">
         {currentStep <= 5 && (
           <JourneyProgress currentStep={currentStep} totalSteps={6} />
         )}
@@ -22,14 +22,14 @@ export const JourneyForm = ({ currentStep, onQuickRecommendation, children }: Jo
               variant="outline"
               size="sm"
               onClick={onQuickRecommendation}
-              className="text-xs text-gray-600 hover:bg-gray-100"
+              className="text-xs text-corporate-gray hover:bg-corporate-light mobile-touch-target"
             >
-              Get Quick Recommendation →
+              Quick Recommendation →
             </Button>
           </div>
         )}
 
-        <div className="min-h-[500px]">
+        <div className="min-h-[400px] md:min-h-[500px]">
           {children}
         </div>
       </div>

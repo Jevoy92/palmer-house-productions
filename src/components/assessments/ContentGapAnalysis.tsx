@@ -15,6 +15,8 @@ import {
   PieChart
 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
+import { useAssessmentData } from "@/hooks/useAssessmentData";
+import { SmartBookingButton } from "./SmartBookingButton";
 
 interface ContentGapAnalysisProps {
   onBack?: () => void;
@@ -67,6 +69,7 @@ interface GapAnalysisResult {
 }
 
 export const ContentGapAnalysis = ({ onBack }: ContentGapAnalysisProps) => {
+  const { saveAssessment } = useAssessmentData();
   const [selectedContent, setSelectedContent] = useState<string[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [contactInfo, setContactInfo] = useState({ name: "", email: "", company: "" });
@@ -286,8 +289,22 @@ export const ContentGapAnalysis = ({ onBack }: ContentGapAnalysisProps) => {
   };
 
   const handleShowResults = () => {
-    setShowResults(true);
     const results = analyzeGaps();
+    
+    // Save assessment to persistent storage
+    saveAssessment({
+      type: 'content-gap',
+      score: results.funnelCoverage,
+      level: results.funnelCoverage >= 75 ? 'Comprehensive Coverage' : 
+             results.funnelCoverage >= 50 ? 'Good Coverage' : 
+             results.funnelCoverage >= 25 ? 'Basic Coverage' : 'Limited Coverage',
+      completedAt: Date.now(),
+      businessContext: businessProfile,
+      answers: { selectedContent },
+      recommendations: [...results.recommendations.immediate, ...results.recommendations.shortTerm]
+    });
+    
+    setShowResults(true);
     trackEvent('content_gap_analysis_completed', {
       funnel_coverage: results.funnelCoverage,
       priority_gaps: results.priorityGaps.length,
@@ -392,37 +409,46 @@ export const ContentGapAnalysis = ({ onBack }: ContentGapAnalysisProps) => {
               </div>
             </div>
 
-            <div className="p-6 bg-corporate-light rounded-xl">
-              <h3 className="text-lg font-bold text-corporate-dark mb-4">Get Your Detailed Content Strategy</h3>
-              <div className="grid md:grid-cols-3 gap-4 mb-4">
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  value={contactInfo.name}
-                  onChange={(e) => setContactInfo(prev => ({ ...prev, name: e.target.value }))}
-                  className="px-4 py-2 border border-corporate-gray rounded-lg"
-                />
-                <input
-                  type="email"
-                  placeholder="Email address"
-                  value={contactInfo.email}
-                  onChange={(e) => setContactInfo(prev => ({ ...prev, email: e.target.value }))}
-                  className="px-4 py-2 border border-corporate-gray rounded-lg"
-                />
-                <input
-                  type="text"
-                  placeholder="Company name"
-                  value={contactInfo.company}
-                  onChange={(e) => setContactInfo(prev => ({ ...prev, company: e.target.value }))}
-                  className="px-4 py-2 border border-corporate-gray rounded-lg"
-                />
-              </div>
-              <Button 
-                onClick={handleContactSubmit}
-                className="gradient-social-1 text-white hover:scale-105 transition-all w-full"
-              >
-                Send My Content Strategy Report
-              </Button>
+            <div className="mt-6 text-center">
+              <SmartBookingButton
+                assessmentType="Content Gap Analysis"
+                score={results.funnelCoverage}
+                level={results.funnelCoverage >= 75 ? 'Comprehensive Coverage' : 
+                       results.funnelCoverage >= 50 ? 'Good Coverage' : 
+                       results.funnelCoverage >= 25 ? 'Basic Coverage' : 'Limited Coverage'}
+                recommendations={[...results.recommendations.immediate, ...results.recommendations.shortTerm]}
+                businessContext={businessProfile}
+                onDownloadResults={() => {
+                  const content = `
+Content Gap Analysis Results
+Funnel Coverage: ${results.funnelCoverage}%
+Priority Gaps: ${results.priorityGaps.length}
+
+Current Content:
+${results.currentContent.map((contentId, i) => {
+  const content = contentTypes.find(type => type.id === contentId);
+  return `${i + 1}. ${content?.name}`;
+}).join('\n')}
+
+Top Recommendations:
+${[...results.recommendations.immediate, ...results.recommendations.shortTerm].slice(0, 5).map((rec, i) => `${i + 1}. ${rec}`).join('\n')}
+
+Generated on: ${new Date().toLocaleDateString()}
+                  `.trim();
+                  
+                  const blob = new Blob([content], { type: 'text/plain' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `content-gap-analysis-${Date.now()}.txt`;
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                  URL.revokeObjectURL(url);
+                }}
+                buttonText="Book Content Strategy Call"
+                size="lg"
+              />
             </div>
           </CardContent>
         </Card>

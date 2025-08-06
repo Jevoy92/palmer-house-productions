@@ -12,6 +12,8 @@ import {
   CheckCircle
 } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
+import { useAssessmentData } from "@/hooks/useAssessmentData";
+import { SmartBookingButton } from "./SmartBookingButton";
 
 interface BudgetImpactCalculatorProps {
   onBack?: () => void;
@@ -49,6 +51,7 @@ interface CalculatorResult {
 }
 
 export const BudgetImpactCalculator = ({ onBack }: BudgetImpactCalculatorProps) => {
+  const { saveAssessment } = useAssessmentData();
   const [budget, setBudget] = useState([5000]);
   const [revenue, setRevenue] = useState([50000]);
   const [goals, setGoals] = useState<string[]>([]);
@@ -290,8 +293,20 @@ export const BudgetImpactCalculator = ({ onBack }: BudgetImpactCalculatorProps) 
   };
 
   const handleCalculate = () => {
-    setShowResults(true);
     const result = calculateRecommendation();
+    
+    // Save assessment to persistent storage
+    saveAssessment({
+      type: 'budget-impact',
+      score: result.confidenceLevel,
+      level: result.selectedTier.name,
+      completedAt: Date.now(),
+      businessContext: { ...businessProfile, budget: budget[0], revenue: revenue[0], goals },
+      answers: { budget: budget[0], revenue: revenue[0], goals },
+      recommendations: result.nextSteps
+    });
+    
+    setShowResults(true);
     trackEvent('budget_calculator_completed', {
       budget: budget[0],
       revenue: revenue[0],
@@ -385,37 +400,44 @@ export const BudgetImpactCalculator = ({ onBack }: BudgetImpactCalculatorProps) 
               </div>
             </div>
 
-            <div className="p-6 bg-corporate-light rounded-xl">
-              <h3 className="text-lg font-bold text-corporate-dark mb-4">Ready to Get Started?</h3>
-              <div className="grid md:grid-cols-3 gap-4 mb-4">
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  value={contactDetails.name}
-                  onChange={(e) => setContactDetails(prev => ({ ...prev, name: e.target.value }))}
-                  className="px-4 py-2 border border-corporate-gray rounded-lg"
-                />
-                <input
-                  type="email"
-                  placeholder="Email address"
-                  value={contactDetails.email}
-                  onChange={(e) => setContactDetails(prev => ({ ...prev, email: e.target.value }))}
-                  className="px-4 py-2 border border-corporate-gray rounded-lg"
-                />
-                <input
-                  type="tel"
-                  placeholder="Phone number"
-                  value={contactDetails.phone}
-                  onChange={(e) => setContactDetails(prev => ({ ...prev, phone: e.target.value }))}
-                  className="px-4 py-2 border border-corporate-gray rounded-lg"
-                />
-              </div>
-              <Button 
-                onClick={handleContactSubmit}
-                className="gradient-social-1 text-white hover:scale-105 transition-all w-full"
-              >
-                Schedule Strategy Consultation
-              </Button>
+            <div className="mt-6 text-center">
+              <SmartBookingButton
+                assessmentType="Budget Impact Calculator"
+                score={result.confidenceLevel}
+                level={result.selectedTier.name}
+                recommendations={result.nextSteps}
+                businessContext={{ ...businessProfile, budget: budget[0], revenue: revenue[0], goals }}
+                onDownloadResults={() => {
+                  const content = `
+Budget Impact Calculator Results
+Recommended Tier: ${result.selectedTier.name}
+Confidence Level: ${result.confidenceLevel}%
+Projected ROI: $${result.projectedROI.toLocaleString()}
+Break-even Time: ${result.breakEvenTime}
+
+Budget: $${budget[0].toLocaleString()}
+Monthly Revenue: $${revenue[0].toLocaleString()}
+Selected Goals: ${goals.join(', ')}
+
+Top Recommendations:
+${result.nextSteps.map((step, i) => `${i + 1}. ${step}`).join('\n')}
+
+Generated on: ${new Date().toLocaleDateString()}
+                  `.trim();
+                  
+                  const blob = new Blob([content], { type: 'text/plain' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `budget-impact-calculator-${Date.now()}.txt`;
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                  URL.revokeObjectURL(url);
+                }}
+                buttonText="Book Investment Strategy Call"
+                size="lg"
+              />
             </div>
           </CardContent>
         </Card>

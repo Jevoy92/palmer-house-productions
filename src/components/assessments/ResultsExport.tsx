@@ -99,8 +99,22 @@ Generated on: ${new Date().toLocaleDateString()}
     if (onScheduleConsultation) {
       onScheduleConsultation();
     } else {
-      // Fallback to external calendar link
-      window.open('https://calendly.com/your-calendar', '_blank');
+      // Use smart routing based on assessment
+      const assessmentData = {
+        type: assessmentType,
+        score,
+        level,
+        recommendations,
+        businessContext
+      };
+      
+      // For quick booking without user info collection, use basic routing
+      const isHighScore = score >= 75;
+      const calendlyUrl = isHighScore 
+        ? 'https://calendly.com/palmerhouseproductions-info/discovery-call'
+        : 'https://calendly.com/palmerhouseproductions-info/general-strategy-call';
+      
+      window.open(calendlyUrl, '_blank');
     }
   };
 

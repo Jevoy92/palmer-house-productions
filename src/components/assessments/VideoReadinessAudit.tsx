@@ -18,9 +18,11 @@ import {
   Star
 } from "lucide-react";
 import { useAssessmentProgress } from "@/hooks/useAssessmentProgress";
+import { useAssessmentData } from "@/hooks/useAssessmentData";
 import { ProgressResume } from "./ProgressResume";
 import { ResultsExport } from "./ResultsExport";
 import { EnhancedResults } from "./EnhancedResults";
+import { SmartBookingButton } from "./SmartBookingButton";
 
 interface VideoReadinessAuditProps {
   onBack?: () => void;
@@ -75,6 +77,7 @@ interface AuditResults {
 
 export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
   const { progress, saveProgress, clearProgress, hasProgress } = useAssessmentProgress('video-readiness');
+  const { saveAssessment } = useAssessmentData();
   const [currentSection, setCurrentSection] = useState(progress?.currentSection || 0);
   const [answers, setAnswers] = useState<Record<string, number>>(progress?.answers || {});
   const [showResults, setShowResults] = useState(false);
@@ -322,6 +325,19 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
   };
 
   const handleShowResults = () => {
+    const results = calculateResults();
+    
+    // Save assessment to persistent storage
+    saveAssessment({
+      type: 'video-readiness',
+      score: results.overallScore,
+      level: results.readinessLevel,
+      completedAt: Date.now(),
+      businessContext,
+      answers,
+      recommendations: results.immediateActions.map(a => a.title)
+    });
+    
     setShowResults(true);
     clearProgress(); // Clear saved progress once results are shown
   };
@@ -396,13 +412,46 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
               onGetDetailedPlan={() => console.log('Book consultation')}
             />
 
+            <div className="mt-6 flex justify-center">
+              <SmartBookingButton
+                assessmentType="Video Readiness Audit"
+                score={results.overallScore}
+                level={results.readinessLevel}
+                recommendations={results.immediateActions.map(a => a.title)}
+                businessContext={businessContext}
+                onDownloadResults={() => {
+                  const content = `
+Video Readiness Audit Results
+Assessment Score: ${results.overallScore}%
+Readiness Level: ${results.readinessLevel}
+
+Top Recommendations:
+${results.immediateActions.slice(0, 5).map((action, i) => `${i + 1}. ${action.title}`).join('\n')}
+
+Generated on: ${new Date().toLocaleDateString()}
+                  `.trim();
+                  
+                  const blob = new Blob([content], { type: 'text/plain' });
+                  const url = URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `video-readiness-audit-${Date.now()}.txt`;
+                  document.body.appendChild(a);
+                  a.click();
+                  document.body.removeChild(a);
+                  URL.revokeObjectURL(url);
+                }}
+                buttonText="Schedule Strategy Call Based on Results"
+                size="lg"
+              />
+            </div>
+
             <ResultsExport
               assessmentType="Video Readiness Audit"
               score={results.overallScore}
               level={results.readinessLevel}
               recommendations={results.immediateActions.map(a => a.title)}
               businessContext={businessContext}
-              onScheduleConsultation={() => console.log('Schedule consultation')}
             />
 
             {/* Navigation */}

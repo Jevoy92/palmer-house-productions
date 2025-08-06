@@ -58,53 +58,67 @@ export const VideoPackagesTiers = () => {
 
   const oneTimeBundles = [
     {
-      title: "Internal FAQ Buildout",
-      price: "$4,500",
+      title: PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.name,
+      price: PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.price,
       type: "One-time",
-      description: "Up to 15 short videos (60–90 seconds each) covering HR onboarding, hiring answers, internal processes, company explainer, software tutorials. Clean talking-head style.",
-      features: ["15 videos (60-90 sec each)", "HR onboarding content", "Internal processes", "Company explainer", "Software tutorials"]
+      description: `${PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.videos} covering ${PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.covers.join(", ")}. ${PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.style}`,
+      features: ["15 videos (60-90 sec each)", "HR onboarding content", "Internal processes", "Company explainer", "Software tutorials"],
+      spotsAvailable: PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.spotsAvailable,
+      urgency: PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.urgency
     },
     {
-      title: "External FAQ Buildout", 
-      price: "$4,500",
+      title: PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.name,
+      price: PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.price,
       type: "One-time",
-      description: "Up to 15 short videos (60–90 seconds each) covering customer onboarding, top objections, service breakdowns, pricing explanations. Delivered with thumbnails + captioned.",
-      features: ["15 videos (60-90 sec each)", "Customer onboarding", "Objection handling", "Service breakdowns", "Pricing explanations", "Thumbnails + captions"]
+      description: `${PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.videos} covering ${PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.covers.join(", ")}. ${PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.delivery}`,
+      features: ["15 videos (60-90 sec each)", "Customer onboarding", "Objection handling", "Service breakdowns", "Pricing explanations", "Thumbnails + captions"],
+      spotsAvailable: PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.spotsAvailable,
+      urgency: PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.urgency
     },
     {
-      title: "YouTube Visibility Engine",
-      price: "$6,500", 
+      title: PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.name,
+      price: PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.price,
       type: "One-time",
-      description: "3 long-form videos (8–10 minutes each) with full strategy, scripting, teleprompter support, cinematic editing, and YouTube optimization.",
-      features: ["3 long-form videos (8-10 min)", "Content strategy + series plan", "Full scripting + outlines", "On-set teleprompter support", "Cinematic editing", "YouTube SEO optimization"]
+      description: `${PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.videos} with ${PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.includes.join(", ")}.`,
+      features: ["3 long-form videos (8-10 min)", "Content strategy + series plan", "Full scripting + outlines", "On-set teleprompter support", "Cinematic editing", "YouTube SEO optimization"],
+      spotsAvailable: PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.spotsAvailable,
+      urgency: PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.urgency
     },
     {
-      title: "The 7-Day Launch",
-      price: "$2,500",
-      type: "One-time", 
-      description: "1 strategy session + 1 shoot day. 1 hero brand video + 3-5 cutdowns for social. Fast-turnaround edit timeline (7 business days).",
-      features: ["1 strategy session", "1 shoot day", "1 hero brand video (90-120 sec)", "3-5 social cutdowns", "7-day turnaround"]
+      title: PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.name,
+      price: PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.price,
+      type: "One-time",
+      description: `${PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.sessions}. ${PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.delivery.join(" and ")}. ${PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.timeline}`,
+      features: ["1 strategy session", "1 shoot day", "1 hero brand video (90-120 sec)", "3-5 social cutdowns", "7-day turnaround"],
+      spotsAvailable: PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.spotsAvailable,
+      urgency: PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.urgency
     },
     {
-      title: "30 Reels in 30 Days",
-      price: "$4,800",
+      title: PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.name,
+      price: PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.price,
       type: "One-time",
-      description: "1 full-day shoot (up to 8 hours) producing 30 social-ready vertical videos with captions and formatting for IG/LinkedIn/TikTok.",
-      features: ["1 full-day shoot (8 hours)", "30 social videos (15-30 sec)", "Platform formatting", "Captions included", "IG/LinkedIn/TikTok ready"]
+      description: `${PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.shoot} producing ${PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.videos}. ${PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.includes}`,
+      features: ["1 full-day shoot (8 hours)", "30 social videos (15-30 sec)", "Platform formatting", "Captions included", "IG/LinkedIn/TikTok ready"],
+      spotsAvailable: PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.spotsAvailable,
+      urgency: PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.urgency
     },
     {
-      title: "The Founder's Brand Kit",
-      price: "$6,000",
+      title: PRICING.ONE_TIME_BUNDLES.FOUNDER_BRAND_KIT.name,
+      price: PRICING.ONE_TIME_BUNDLES.FOUNDER_BRAND_KIT.price,
       type: "One-time",
-      description: "1 shoot day with personal brand strategy including founder bio video, hook videos, vibe montage, and multi-platform delivery.",
-      features: ["1 shoot day + strategy", "Founder Bio Video (90-120 sec)", "2 Hook/Top-of-Funnel Videos", "Vibe Montage or Style Sizzle", "Multi-platform delivery", "Thumbnails included"]
+      description: `${PRICING.ONE_TIME_BUNDLES.FOUNDER_BRAND_KIT.shoot} including ${PRICING.ONE_TIME_BUNDLES.FOUNDER_BRAND_KIT.includes.join(", ")}.`,
+      features: ["1 shoot day + strategy", "Founder Bio Video (90-120 sec)", "2 Hook/Top-of-Funnel Videos", "Vibe Montage or Style Sizzle", "Multi-platform delivery", "Thumbnails included"],
+      spotsAvailable: PRICING.ONE_TIME_BUNDLES.FOUNDER_BRAND_KIT.spotsAvailable,
+      urgency: PRICING.ONE_TIME_BUNDLES.FOUNDER_BRAND_KIT.urgency
     },
     {
-      title: "The Starter Session",
-      price: "$500",
+      title: PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.name,
+      price: PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.price,
       type: "One-time",
-      description: "30-minute filming session with minimum 3 edited one-minute videos. Simple talking-head delivery, no stylized editing. Capped at 6 bookings per month.",
-      features: ["30-minute session", "3+ one-minute videos", "Simple talking-head style", "No stylized editing", "Limited slots (6/month)"]
+      description: `${PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.session} with ${PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.minimum}. ${PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.style}`,
+      features: ["30-minute session", "3+ one-minute videos", "Simple talking-head style", "No stylized editing", "Limited slots"],
+      spotsAvailable: PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.spotsAvailable,
+      urgency: PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.urgency
     }
   ];
 
@@ -195,10 +209,15 @@ export const VideoPackagesTiers = () => {
 
         {/* Group Coaching Section */}
         <div className="mb-16 md:mb-24">
-          <div className="bg-white p-8 md:p-12 rounded-3xl text-center video-shadow-lg border-4 border-gradient-to-r from-social-purple to-social-pink">
-            <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-bold text-sm md:text-base mb-6">
-              <Users size={20} className="mr-2" />
-              🗓️ 6-Week Group Coaching: "The Camera-Ready Brand"
+            <div className="bg-white p-8 md:p-12 rounded-3xl text-center video-shadow-lg border-4 border-gradient-to-r from-social-purple to-social-pink">
+            <div className="flex items-center justify-center mb-4">
+              <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-bold text-sm md:text-base mr-4">
+                <Users size={20} className="mr-2" />
+                🗓️ 6-Week Group Coaching: "The Camera-Ready Brand"
+              </div>
+              <div className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-bold">
+                {PRICING.GROUP_COACHING.CAMERA_READY_BRAND.spotsAvailable} spots left
+              </div>
             </div>
             <h2 className="text-xl md:text-2xl font-display font-black mb-4 text-corporate-dark">
               Group <span className="text-gradient-purple">Video Coaching</span>
@@ -247,7 +266,7 @@ export const VideoPackagesTiers = () => {
               <div className="text-5xl font-black text-corporate-dark mb-2">$3,000<span className="text-xl text-corporate-gray">/month</span></div>
               <div className="text-lg text-corporate-gray font-medium mb-4">3-month minimum commitment</div>
               <div className="inline-block px-4 py-2 bg-red-100 text-red-800 rounded-full text-sm font-bold">
-                ⚠️ Limited monthly slots available
+                {PRICING.MONTHLY_CONTENT.SOCIAL_AUTHORITY_KIT.urgency}
               </div>
             </div>
 
@@ -274,9 +293,9 @@ export const VideoPackagesTiers = () => {
                 </ul>
               </div>
               <div className="bg-gray-50 p-6 rounded-2xl">
-                <h4 className="font-bold text-corporate-dark mb-4">What's Excluded:</h4>
+                <h4 className="font-bold text-corporate-dark mb-4">YouTube Long-Form:</h4>
                 <p className="text-sm text-corporate-gray mb-4">
-                  YouTube (long-form) content is handled separately under our future ongoing monthly YouTube plan.
+                  For YouTube long-form videos, check out our "YouTube Visibility Engine" one-time bundle below.
                 </p>
                 <div className="bg-blue-50 p-4 rounded-xl">
                   <h5 className="font-bold text-blue-800 mb-2">🎁 Bonus Included:</h5>
@@ -313,11 +332,17 @@ export const VideoPackagesTiers = () => {
             {oneTimeBundles.map((bundle, index) => (
               <div key={index} className="bg-white p-6 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="text-center mb-4">
-                  <div className="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-bold mb-3">
-                    {bundle.type}
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-bold">
+                      {bundle.type}
+                    </div>
+                    <div className="bg-red-100 text-red-600 px-2 py-1 rounded-full text-xs font-bold">
+                      {bundle.spotsAvailable} left
+                    </div>
                   </div>
                   <h3 className="text-xl font-bold text-corporate-dark mb-2">{bundle.title}</h3>
-                  <div className="text-3xl font-black text-corporate-dark mb-4">{bundle.price}</div>
+                  <div className="text-3xl font-black text-corporate-dark mb-2">{bundle.price}</div>
+                  <div className="text-xs text-red-600 font-medium">{bundle.urgency}</div>
                 </div>
                 
                 <p className="text-sm text-corporate-gray mb-4 leading-relaxed">{bundle.description}</p>

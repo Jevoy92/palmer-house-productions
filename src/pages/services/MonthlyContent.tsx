@@ -49,11 +49,11 @@ const MonthlyContent = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Monthly Video Content Service | Palmer House Productions"
-        description="Social Authority Kit - monthly video content system. Hero videos, social reels, and testimonials delivered monthly."
+        title="Monthly Video Content Service | Palmer House"
+        description="Social Authority Kit - monthly video content system. Hero videos, social reels, and testimonials delivered monthly with 3-month commitment."
         keywords="monthly video content, social authority kit, video marketing system, consistent content creation, social media videos"
         ogTitle="Monthly Content | Palmer House Productions"
-        ogDescription="Social Authority Kit - professional monthly video content system. Get hero videos, social reels, and client testimonials delivered every month with a 3-month commitment."
+        ogDescription="Social Authority Kit - monthly video content system. Hero videos, social reels, and testimonials delivered monthly with 3-month commitment."
       />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>

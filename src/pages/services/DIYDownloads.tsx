@@ -52,10 +52,10 @@ const DIYDownloads = () => {
     <div className="min-h-screen bg-white">
       <MetaTags 
         title="DIY Video Resources & Downloads | Palmer House"
-        description="Download video production resources - script templates, strategy guides, and DIY tools for professional content."
+        description="Download professional video resources - script templates, strategy guides, and DIY tools for creating compelling business content."
         keywords="DIY video downloads, video strategy blueprint, script bundle, confidence course, video production resources"
         ogTitle="DIY Video Downloads | Palmer House Productions"
-        ogDescription="Instant access to professional video resources - DIY reels guide, strategy blueprint, script bundle, and confidence course. Start creating compelling content today."
+        ogDescription="Download professional video resources - script templates, strategy guides, and DIY tools for creating compelling business content."
       />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>

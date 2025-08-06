@@ -15,11 +15,11 @@ const DiscoveryCallPage = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Free Discovery Call | Video Strategy Consultation | Palmer House"
-        description="Book a free discovery call to explore video content solutions for your business. Map your challenges and discover the perfect strategy."
+        title="Free Discovery Call | Video Strategy | Palmer House"
+        description="Book a free discovery call to explore video solutions for your business. Map challenges and discover the perfect video strategy for growth."
         keywords="discovery call, free consultation, video strategy, business consultation, Palmer House Productions, video planning"
         ogTitle="Discovery Call | Palmer House Productions"
-        ogDescription="Book a free discovery call to explore video content solutions for your business. Map your challenges and discover the perfect strategy."
+        ogDescription="Book a free discovery call to explore video solutions for your business. Map challenges and discover the perfect video strategy for growth."
       />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <StructuredData />

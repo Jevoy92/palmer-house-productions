@@ -15,11 +15,11 @@ const ClientResultsPage = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Client Success Stories & Video Production Results | Palmer House"
-        description="See real results from Palmer House clients - increased conversion rates, improved ROI, and successful brand transformations through video."
+        title="Client Results & Video ROI Success | Palmer House"
+        description="Real Palmer House client results - 40% conversion increases, improved ROI, successful brand transformations through strategic video content."
         keywords="client results, video production ROI, business transformation, Palmer House Productions success stories, video marketing results"
         ogTitle="Client Results | Palmer House Productions"
-        ogDescription="See real results from Palmer House clients - increased conversion rates, improved ROI, and successful brand transformations through video."
+        ogDescription="Real Palmer House client results - 40% conversion increases, improved ROI, successful brand transformations through strategic video content."
       />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <StructuredData />

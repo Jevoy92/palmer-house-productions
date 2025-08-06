@@ -153,7 +153,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
         <ReviewsSection onViewAllReviews={handleViewAllReviews} />
 
         <BottomCTA 
-          onStartAssessment={resetService}
+          onStartAssessment={() => window.location.href = '/content-strategy'}
           onBookCall={handleCalendlyBooking}
         />
 

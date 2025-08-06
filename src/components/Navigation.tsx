@@ -206,6 +206,15 @@ export const Navigation = () => {
                 >
                   <DropdownMenuItem asChild>
                     <Link 
+                      to="/content-strategy" 
+                      className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Content Strategy
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link 
                       to="/video-use-cases" 
                       className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
                       onClick={() => setIsOpen(false)}
@@ -358,6 +367,13 @@ export const Navigation = () => {
             <div className="space-y-3">
               <div className="text-xs font-bold text-apple-gray-5 uppercase tracking-wider">Resources</div>
               <div className="space-y-1">
+                <Link 
+                  to="/content-strategy" 
+                  className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Content Strategy
+                </Link>
                 <Link 
                   to="/video-use-cases" 
                   className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"

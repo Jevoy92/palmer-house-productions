@@ -55,3 +55,50 @@ export const trackMobileInteraction = (interactionType: string, element: string)
     is_mobile: window.innerWidth < 768
   });
 };
+
+// Assessment completion tracking
+export const trackAssessmentCompletion = (
+  assessmentType: string, 
+  score: number, 
+  level: string,
+  businessContext?: any
+) => {
+  trackEvent('assessment_completed', {
+    assessment_type: assessmentType,
+    score,
+    level,
+    business_context: businessContext,
+    event_category: 'assessment',
+    event_label: 'Completion'
+  });
+};
+
+// Cross-assessment intelligence tracking
+export const trackIntelligenceInsight = (
+  insightId: string,
+  priority: string,
+  relatedAssessments: string[]
+) => {
+  trackEvent('intelligence_insight_generated', {
+    insight_id: insightId,
+    priority,
+    related_assessments: relatedAssessments.join(','),
+    event_category: 'intelligence',
+    event_label: 'Insight'
+  });
+};
+
+// Assessment flow tracking
+export const trackAssessmentFlow = (
+  fromAssessment: string,
+  toAssessment: string,
+  trigger: 'recommendation' | 'manual'
+) => {
+  trackEvent('assessment_flow', {
+    from_assessment: fromAssessment,
+    to_assessment: toAssessment,
+    trigger,
+    event_category: 'assessment',
+    event_label: 'Flow'
+  });
+};

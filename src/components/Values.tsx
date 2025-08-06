@@ -51,37 +51,35 @@ export const Values = () => {
       </div>
 
       <div className="max-w-6xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-24">
-          <div className="inline-block px-6 py-3 gradient-social-2 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            🧭 Trail Markers
+        <div className="text-center mb-16 px-4">
+          <div className="inline-block px-4 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
+            💎 Our Values
           </div>
-          <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-            What We <span className="text-gradient-3">Value</span>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-6 text-corporate-dark tracking-tight">
+            What We <span className="text-gradient-3">Stand For</span>
           </h2>
-          <p className="text-2xl text-corporate-gray max-w-4xl mx-auto font-medium leading-tight">
-            These aren't just brand values—they're the <span className="text-gradient-1 font-bold">compass points</span> we navigate by.
-            <br />
-            <span className="text-gradient-2 font-bold">Rules of the road</span> for every creative expedition.
+          <p className="text-base md:text-lg text-corporate-gray max-w-3xl mx-auto font-medium leading-relaxed">
+            These core values guide every project and client relationship at Palmer House Productions.
           </p>
         </div>
         
-        <div className="space-y-8 max-w-5xl mx-auto mb-20">
+        <div className="space-y-6 max-w-4xl mx-auto mb-16 px-4">
           {values.map((value, index) => {
             const IconComponent = value.icon;
             return (
               <div 
                 key={index}
-                className="group p-8 bg-video-white rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-500 hover:scale-105"
+                className="group p-6 md:p-8 bg-video-white rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 mobile-touch-target"
               >
                 <div className="flex items-start space-x-6">
                   <div className={`w-16 h-16 ${value.gradient} rounded-2xl flex items-center justify-center mt-1 group-hover:scale-110 transition-transform duration-300`}>
                     <IconComponent size={28} className="text-white" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-display font-black text-corporate-dark mb-4 group-hover:text-gradient-1 transition-all duration-300">
+                    <h3 className="text-lg md:text-xl font-display font-black text-corporate-dark mb-3 group-hover:text-gradient-1 transition-all duration-300">
                       {value.title}
                     </h3>
-                    <p className="text-corporate-gray leading-relaxed text-lg font-medium group-hover:text-corporate-dark transition-colors duration-300">
+                    <p className="text-corporate-gray leading-relaxed text-sm md:text-base font-medium group-hover:text-corporate-dark transition-colors duration-300">
                       {value.description}
                     </p>
                   </div>

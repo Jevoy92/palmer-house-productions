@@ -187,21 +187,19 @@ export const Pricing = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-24">
-          <div className="inline-block px-6 py-3 gradient-social-3 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            🗺️ Expedition Packages
+        <div className="text-center mb-16 px-4">
+          <div className="inline-block px-4 py-2 gradient-social-3 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
+            💰 Service Packages
           </div>
-          <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-            Choose Your <span className="text-gradient-1">Path</span>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-6 text-corporate-dark tracking-tight">
+            Video Production <span className="text-gradient-1">Pricing</span>
           </h2>
-          <div className="text-2xl text-corporate-gray max-w-5xl mx-auto space-y-6 font-medium leading-tight">
-            <p>Not all journeys are the same—neither are our video solutions.</p>
+          <div className="text-base md:text-lg text-corporate-gray max-w-3xl mx-auto font-medium leading-relaxed">
+            <p className="mb-4">Professional video solutions tailored to your business needs and budget.</p>
             <p>
-              At Palmer House Productions, we don't offer one-offs or generic content. We create <span className="text-gradient-2 font-bold">handcrafted, high-impact video experiences</span> designed to solve real business problems. That's why every path we offer is a fully guided expedition: built for growth, backed by strategy, and designed to get results on the platforms that matter most to your audience.
+              We create <span className="text-gradient-2 font-bold">strategic, results-driven content</span> designed to grow your business. Each package includes strategy, production, and optimization for your target platforms.
             </p>
-            <p>Whether you're just starting your brand story or scaling to new heights, there's a <span className="text-gradient-3 font-bold">pathway that's right for your journey</span>.</p>
           </div>
-          <div className="mt-12 text-corporate-gray text-4xl tracking-widest">⸻ ⸻ ⸻</div>
         </div>
 
         {/* Add Billing Cycle Component */}

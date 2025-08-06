@@ -10,44 +10,42 @@ export const About = () => {
         </div>
         
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <header className="text-center mb-24">
-            <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-              🌍 Our Origin Story
+          <header className="text-center mb-16 px-4">
+            <div className="inline-block px-4 py-2 gradient-social-1 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
+              👋 About Us
             </div>
-            <h1 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-              Meet Palmer House Productions | <span className="text-gradient-1">Video Production Team</span>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-6 text-corporate-dark tracking-tight">
+              Professional Video Production | <span className="text-gradient-1">Seattle-Based Team</span>
             </h1>
-            <p className="text-2xl text-corporate-gray max-w-4xl mx-auto font-medium leading-tight">
-              Palmer House Productions isn't just a video company.
-              <br />
-              We're your <span className="text-gradient-2 font-bold">creative expedition partners</span> - charting new territories in visual storytelling.
+            <p className="text-base md:text-lg text-corporate-gray max-w-3xl mx-auto font-medium leading-relaxed">
+              Palmer House Productions creates high-impact video content for growing businesses and established brands.
             </p>
           </header>
 
-        <div className="max-w-5xl mx-auto mb-20">
-          <div className="bg-video-white/80 backdrop-blur-sm rounded-3xl p-12 video-shadow">
-            <p className="text-xl text-corporate-gray leading-relaxed mb-8 text-center">
-              Raised where culture, rhythm, and resilience converge in Kingston, Jamaica, I've always believed stories are made to be <span className="text-gradient-3 font-bold">discovered</span> - not manufactured.
+        <div className="max-w-4xl mx-auto mb-16 px-4">
+          <div className="bg-video-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 video-shadow">
+            <p className="text-base md:text-lg text-corporate-gray leading-relaxed mb-6 text-center">
+              Founded with a vision to help businesses tell their stories authentically, Palmer House Productions combines <span className="text-gradient-3 font-bold">creative expertise</span> with strategic thinking.
             </p>
             
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className="text-center p-6 bg-corporate-light/50 rounded-2xl">
-                <div className="text-3xl mb-3 text-gradient-1">❌</div>
-                <p className="text-lg text-corporate-dark font-medium">We don't follow templates.</p>
+            <div className="grid md:grid-cols-3 gap-4 mb-6">
+              <div className="text-center p-4 bg-corporate-light/50 rounded-xl mobile-touch-target">
+                <div className="text-2xl mb-2 text-gradient-1">✓</div>
+                <p className="text-sm md:text-base text-corporate-dark font-medium">Custom solutions</p>
               </div>
-              <div className="text-center p-6 bg-corporate-light/50 rounded-2xl">
-                <div className="text-3xl mb-3 text-gradient-2">❌</div>
-                <p className="text-lg text-corporate-dark font-medium">We don't take safe routes.</p>
+              <div className="text-center p-4 bg-corporate-light/50 rounded-xl mobile-touch-target">
+                <div className="text-2xl mb-2 text-gradient-2">✓</div>
+                <p className="text-sm md:text-base text-corporate-dark font-medium">Strategic approach</p>
               </div>
-              <div className="text-center p-6 bg-corporate-light/50 rounded-2xl">
-                <div className="text-3xl mb-3 text-gradient-3">❌</div>
-                <p className="text-lg text-corporate-dark font-medium">We don't blend in.</p>
+              <div className="text-center p-4 bg-corporate-light/50 rounded-xl mobile-touch-target">
+                <div className="text-2xl mb-2 text-gradient-3">✓</div>
+                <p className="text-sm md:text-base text-corporate-dark font-medium">Measurable results</p>
               </div>
             </div>
 
-            <div className="bg-gradient-to-r from-social-purple/10 to-social-pink/10 rounded-2xl p-8 border border-social-purple/20">
-              <p className="text-xl text-corporate-gray leading-relaxed text-center">
-                We chart <span className="text-gradient-1 font-bold">new creative territory</span> with every project. You deserve more than content. You deserve a <span className="text-gradient-2 font-bold">visual identity as bold</span> as your brand's journey.
+            <div className="bg-gradient-to-r from-social-purple/10 to-social-pink/10 rounded-xl p-6 border border-social-purple/20">
+              <p className="text-sm md:text-base text-corporate-gray leading-relaxed text-center">
+                We create <span className="text-gradient-1 font-bold">strategic video content</span> that drives business results. Your brand deserves more than generic content—it deserves <span className="text-gradient-2 font-bold">professional storytelling</span> that converts.
               </p>
             </div>
           </div>

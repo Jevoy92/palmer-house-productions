@@ -49,23 +49,23 @@ export const Reviews = () => {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <header className="text-center mb-24">
-            <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-              ⭐ Trail Reviews
+          <header className="text-center mb-16 px-4">
+            <div className="inline-block px-4 py-2 gradient-social-1 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
+              ⭐ Client Reviews
             </div>
-            <h1 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-              Client Reviews | Palmer House Productions <span className="text-gradient-1">Testimonials</span>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-6 text-corporate-dark tracking-tight">
+              Client Testimonials | Palmer House Productions <span className="text-gradient-1">Reviews</span>
             </h1>
-            <p className="text-2xl text-corporate-gray max-w-4xl mx-auto font-medium leading-tight">
-              Real stories from brands who've blazed new trails with Palmer House Productions.
+            <p className="text-base md:text-lg text-corporate-gray max-w-3xl mx-auto font-medium leading-relaxed">
+              Hear from businesses who've achieved results with our video production services.
             </p>
           </header>
         
-        <div className="grid lg:grid-cols-3 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 px-4">
           {reviews.map((review, index) => (
             <div 
               key={index}
-              className="group p-8 bg-corporate-light rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-500 hover:scale-105"
+              className="group p-6 bg-corporate-light rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 mobile-touch-target"
             >
               {renderStars()}
               

@@ -74,26 +74,26 @@ export const SolutionsOverview = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-24">
-          <div className="inline-block px-6 py-3 gradient-social-3 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            🎯 Solutions for Every Stage
+        <div className="text-center mb-16 px-4">
+          <div className="inline-block px-4 py-2 gradient-social-3 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
+            🎯 Video Solutions
           </div>
-          <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-            Start Where <span className="text-gradient-1">You Are</span>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-6 text-corporate-dark tracking-tight">
+            Professional Video Services for <span className="text-gradient-1">Growing Businesses</span>
           </h2>
-          <p className="text-2xl text-corporate-gray max-w-5xl mx-auto space-y-6 font-medium leading-tight">
-            From DIY downloads to full-service production — choose the solution that fits your business stage, budget, and goals.
+          <p className="text-base md:text-lg text-corporate-gray max-w-3xl mx-auto font-medium leading-relaxed">
+            From DIY resources to full production—choose the solution that fits your business needs and budget.
           </p>
         </div>
 
         {/* Solutions Grid */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-16">
+        <div className="grid md:grid-cols-2 gap-6 mb-12 px-4">
           {solutions.map((solution, index) => {
             const IconComponent = solution.icon;
             return (
               <div 
                 key={index}
-                className="group p-10 bg-video-white rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-500 hover:scale-105"
+                className="group p-6 md:p-8 bg-video-white rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 mobile-touch-target"
               >
                 <div className="flex items-start justify-between mb-6">
                   <div className={`w-16 h-16 ${solution.gradient} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
@@ -104,10 +104,10 @@ export const SolutionsOverview = () => {
                   </div>
                 </div>
                 
-                <h3 className="text-3xl font-display font-black mb-4 text-corporate-dark">
+                <h3 className="text-xl md:text-2xl font-display font-black mb-3 text-corporate-dark">
                   {solution.category}
                 </h3>
-                <p className="text-corporate-gray leading-relaxed text-lg font-medium mb-6">
+                <p className="text-corporate-gray leading-relaxed text-sm md:text-base font-medium mb-4">
                   {solution.description}
                 </p>
 
@@ -124,13 +124,13 @@ export const SolutionsOverview = () => {
           })}
         </div>
 
-        {/* Value Ladder Visual */}
-        <div className="text-center mb-16">
-          <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            🪜 Your Video Journey
+        {/* Service Progression */}
+        <div className="text-center mb-12 px-4">
+          <div className="inline-block px-4 py-2 gradient-social-1 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
+            📈 Growth Path
           </div>
-          <h3 className="text-4xl font-display font-black mb-8 text-corporate-dark">
-            Progress at <span className="text-gradient-2">Your Pace</span>
+          <h3 className="text-xl md:text-2xl font-display font-black mb-6 text-corporate-dark">
+            Scale at <span className="text-gradient-2">Your Pace</span>
           </h3>
           
           <div className="max-w-5xl mx-auto">

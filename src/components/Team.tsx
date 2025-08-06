@@ -35,19 +35,19 @@ export const Team = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-24">
-          <div className="inline-block px-6 py-3 gradient-social-2 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            🏕️ Meet Your Team
+        <div className="text-center mb-16 px-4">
+          <div className="inline-block px-4 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
+            👥 Our Team
           </div>
-          <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-6 text-corporate-dark tracking-tight">
             The <span className="text-gradient-2">Palmer House</span> Team
           </h2>
-          <p className="text-2xl text-corporate-gray max-w-3xl mx-auto font-medium">
-            The dedicated professionals behind every compelling story and successful campaign.
+          <p className="text-base md:text-lg text-corporate-gray max-w-3xl mx-auto font-medium leading-relaxed">
+            Meet the video production professionals who bring your stories to life.
           </p>
         </div>
         
-        <div className="grid lg:grid-cols-3 gap-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
           {teamMembers.map((member, index) => (
             <div 
               key={index}
@@ -69,11 +69,11 @@ export const Team = () => {
                 </div>
               </div>
 
-              <h3 className="text-3xl font-display font-black text-corporate-dark mb-3">{member.name}</h3>
-              <h4 className={`text-xl font-bold mb-6 ${member.textGradient}`}>
+              <h3 className="text-xl md:text-2xl font-display font-black text-corporate-dark mb-2">{member.name}</h3>
+              <h4 className={`text-base md:text-lg font-bold mb-4 ${member.textGradient}`}>
                 {member.role}
               </h4>
-              <p className="text-corporate-gray leading-relaxed text-lg font-medium">
+              <p className="text-corporate-gray leading-relaxed text-sm md:text-base font-medium">
                 {member.bio}
               </p>
               

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { Facebook, Instagram, Youtube, Linkedin, Mail, Phone, MapPin, Twitter } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
+import { SocialIcon } from "react-social-icons";
 
 export const EnhancedFooter = () => {
   const currentYear = new Date().getFullYear();
@@ -107,84 +108,70 @@ export const EnhancedFooter = () => {
           <div className="space-y-4">
             <h4 className="font-bold text-white">Connect With Us</h4>
             <div className="grid grid-cols-4 gap-3 max-w-[200px]">
-              <a
-                href="https://www.facebook.com/profile.php?id=100092553086353"
+              <SocialIcon
+                url="https://www.facebook.com/profile.php?id=100092553086353"
+                style={{ height: 32, width: 32 }}
+                bgColor="transparent"
+                fgColor="#d1d5db"
+                className="hover:opacity-80 transition-opacity"
                 target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white transition-colors p-2 rounded-md hover:bg-white/10"
-                aria-label="Follow us on Facebook"
-              >
-                <Facebook size={20} />
-              </a>
-              <a
-                href="https://www.instagram.com/palmerhouseproductions"
+              />
+              <SocialIcon
+                url="https://www.instagram.com/palmerhouseproductions"
+                style={{ height: 32, width: 32 }}
+                bgColor="transparent"
+                fgColor="#d1d5db"
+                className="hover:opacity-80 transition-opacity"
                 target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white transition-colors p-2 rounded-md hover:bg-white/10"
-                aria-label="Follow us on Instagram"
-              >
-                <Instagram size={20} />
-              </a>
-              <a
-                href="https://www.youtube.com/channel/UCe7_R47Klv_JdupA1exogMw"
+              />
+              <SocialIcon
+                url="https://www.youtube.com/channel/UCe7_R47Klv_JdupA1exogMw"
+                style={{ height: 32, width: 32 }}
+                bgColor="transparent"
+                fgColor="#d1d5db"
+                className="hover:opacity-80 transition-opacity"
                 target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white transition-colors p-2 rounded-md hover:bg-white/10"
-                aria-label="Subscribe to our YouTube channel"
-              >
-                <Youtube size={20} />
-              </a>
-              <a
-                href="https://www.linkedin.com/company/palmer-house-productions/"
+              />
+              <SocialIcon
+                url="https://www.linkedin.com/company/palmer-house-productions/"
+                style={{ height: 32, width: 32 }}
+                bgColor="transparent"
+                fgColor="#d1d5db"
+                className="hover:opacity-80 transition-opacity"
                 target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white transition-colors p-2 rounded-md hover:bg-white/10"
-                aria-label="Connect with us on LinkedIn"
-              >
-                <Linkedin size={20} />
-              </a>
-              <a
-                href="https://x.com/palmerhouseviz"
+              />
+              <SocialIcon
+                url="https://x.com/palmerhouseviz"
+                style={{ height: 32, width: 32 }}
+                bgColor="transparent"
+                fgColor="#d1d5db"
+                className="hover:opacity-80 transition-opacity"
                 target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white transition-colors p-2 rounded-md hover:bg-white/10"
-                aria-label="Follow us on X (Twitter)"
-              >
-                <Twitter size={20} />
-              </a>
-              <a
-                href="https://www.pinterest.com/palmerhouseproductions/"
+              />
+              <SocialIcon
+                url="https://www.pinterest.com/palmerhouseproductions/"
+                style={{ height: 32, width: 32 }}
+                bgColor="transparent"
+                fgColor="#d1d5db"
+                className="hover:opacity-80 transition-opacity"
                 target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white transition-colors p-2 rounded-md hover:bg-white/10"
-                aria-label="Follow us on Pinterest"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.718-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.083.347-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.751-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24c6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001.001 12.017.001z"/>
-                </svg>
-              </a>
-              <a
-                href="https://www.tiktok.com/@palmerhouseproductions"
+              />
+              <SocialIcon
+                url="https://www.tiktok.com/@palmerhouseproductions"
+                style={{ height: 32, width: 32 }}
+                bgColor="transparent"
+                fgColor="#d1d5db"
+                className="hover:opacity-80 transition-opacity"
                 target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white transition-colors p-2 rounded-md hover:bg-white/10"
-                aria-label="Follow us on TikTok"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-                </svg>
-              </a>
-              <a
-                href="https://www.threads.com/@palmerhouseproductions"
+              />
+              <SocialIcon
+                url="https://www.threads.com/@palmerhouseproductions"
+                style={{ height: 32, width: 32 }}
+                bgColor="transparent"
+                fgColor="#d1d5db"
+                className="hover:opacity-80 transition-opacity"
                 target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-300 hover:text-white transition-colors p-2 rounded-md hover:bg-white/10"
-                aria-label="Follow us on Threads"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12.186 24h-.007c-5.828-.024-10.553-4.749-10.579-10.579C1.576 7.593 6.301 2.868 12.129 2.844c5.828.024 10.553 4.749 10.579 10.579-.026 5.828-4.751 10.553-10.579 10.579h-.007zm5.023-11.125c0-1.33-.488-2.494-1.452-3.458-.964-.964-2.129-1.452-3.458-1.452s-2.494.488-3.458 1.452c-.964.964-1.452 2.129-1.452 3.458 0 1.329.488 2.494 1.452 3.458.964.964 2.129 1.452 3.458 1.452s2.494-.488 3.458-1.452c.964-.964 1.452-2.129 1.452-3.458zm-2.755 0c0 .751-.268 1.402-.802 1.936-.535.535-1.185.802-1.936.802s-1.402-.268-1.936-.802c-.535-.535-.802-1.185-.802-1.936s.268-1.402.802-1.936c.535.535 1.185.802 1.936.802s1.402.268 1.936.802c.535.535.802 1.185.802 1.936z"/>
-                </svg>
-              </a>
+              />
             </div>
             <div className="space-y-2 text-sm">
               <p className="text-gray-300">

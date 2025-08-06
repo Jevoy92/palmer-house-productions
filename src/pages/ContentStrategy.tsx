@@ -1,0 +1,316 @@
+import { Navigation } from "@/components/Navigation";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
+import { MetaTags } from "@/components/seo/MetaTags";
+import { StructuredData } from "@/components/seo/StructuredData";
+import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
+import { SkipLink } from "@/components/ui/skip-link";
+import { MainContent } from "@/components/MainContent";
+import { VideoReadinessAudit } from "@/components/assessments/VideoReadinessAudit";
+import { ContentGapAnalysis } from "@/components/assessments/ContentGapAnalysis";
+import { BudgetImpactCalculator } from "@/components/assessments/BudgetImpactCalculator";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { 
+  Target, 
+  PieChart, 
+  Calculator, 
+  TrendingUp,
+  CheckCircle,
+  ArrowRight,
+  Lightbulb
+} from "lucide-react";
+
+const ContentStrategyPage = () => {
+  const [activeAssessment, setActiveAssessment] = useState<string | null>(null);
+
+  const assessments = [
+    {
+      id: "readiness",
+      title: "Video Readiness Audit",
+      description: "Assess your current video capabilities and identify improvement areas",
+      icon: Target,
+      gradient: "gradient-social-1",
+      timeEstimate: "5-7 minutes",
+      benefits: ["Strategic foundation assessment", "Technical readiness check", "Personalized recommendations"]
+    },
+    {
+      id: "content-gaps",
+      title: "Content Gap Analysis", 
+      description: "Identify missing content types in your marketing funnel",
+      icon: PieChart,
+      gradient: "gradient-social-2",
+      timeEstimate: "3-5 minutes",
+      benefits: ["Funnel coverage analysis", "Priority gap identification", "Content roadmap creation"]
+    },
+    {
+      id: "budget-calculator",
+      title: "Budget vs Impact Calculator",
+      description: "Find the optimal video investment strategy for your goals",
+      icon: Calculator,
+      gradient: "gradient-social-3",
+      timeEstimate: "4-6 minutes",
+      benefits: ["ROI projections", "Investment recommendations", "Service tier matching"]
+    }
+  ];
+
+  if (activeAssessment === "readiness") {
+    return (
+      <div className="min-h-screen bg-white">
+        <SkipLink href="#main-content">Skip to main content</SkipLink>
+        <Navigation />
+        <MainContent>
+          <div className="py-8">
+            <Button 
+              onClick={() => setActiveAssessment(null)}
+              variant="outline"
+              className="mb-6"
+            >
+              ← Back to Strategy Hub
+            </Button>
+            <VideoReadinessAudit />
+          </div>
+        </MainContent>
+      </div>
+    );
+  }
+
+  if (activeAssessment === "content-gaps") {
+    return (
+      <div className="min-h-screen bg-white">
+        <SkipLink href="#main-content">Skip to main content</SkipLink>
+        <Navigation />
+        <MainContent>
+          <div className="py-8">
+            <Button 
+              onClick={() => setActiveAssessment(null)}
+              variant="outline"
+              className="mb-6"
+            >
+              ← Back to Strategy Hub
+            </Button>
+            <ContentGapAnalysis />
+          </div>
+        </MainContent>
+      </div>
+    );
+  }
+
+  if (activeAssessment === "budget-calculator") {
+    return (
+      <div className="min-h-screen bg-white">
+        <SkipLink href="#main-content">Skip to main content</SkipLink>
+        <Navigation />
+        <MainContent>
+          <div className="py-8">
+            <Button 
+              onClick={() => setActiveAssessment(null)}
+              variant="outline"
+              className="mb-6"
+            >
+              ← Back to Strategy Hub
+            </Button>
+            <BudgetImpactCalculator />
+          </div>
+        </MainContent>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white">
+      <MetaTags 
+        title="Video Content Strategy Hub | Assessment Tools | Palmer House"
+        description="Discover your video readiness, identify content gaps, and calculate ROI with our comprehensive video strategy assessment tools. Get personalized recommendations for your business."
+        keywords="video strategy, content assessment, video audit, ROI calculator, content gaps, video marketing strategy, Palmer House Productions"
+        ogTitle="Video Content Strategy Hub | Palmer House Productions"
+        ogDescription="Comprehensive video strategy assessment tools to optimize your content marketing approach and maximize ROI."
+      />
+      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
+      <StructuredData />
+      <SkipLink href="#main-content">Skip to main content</SkipLink>
+      <Navigation />
+      <BreadcrumbNavigation />
+      <MainContent>
+        {/* Hero Section */}
+        <section className="py-24 bg-gradient-to-br from-video-white to-corporate-light">
+          <div className="max-w-6xl mx-auto px-6 text-center">
+            <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8 video-shadow">
+              🎯 Strategy Hub
+            </div>
+            <h1 className="text-5xl md:text-6xl font-display font-black mb-8 text-corporate-dark">
+              Build Your 
+              <br />
+              <span className="text-gradient-1">Video Strategy</span>
+            </h1>
+            <p className="text-xl text-corporate-gray max-w-3xl mx-auto font-medium mb-12">
+              Use our comprehensive assessment tools to discover your video readiness, 
+              identify content gaps, and calculate the perfect investment strategy for your business goals.
+            </p>
+            
+            <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+              <div className="flex items-center space-x-2 text-corporate-gray">
+                <CheckCircle className="w-5 h-5 text-social-green" />
+                <span>Free assessments</span>
+              </div>
+              <div className="flex items-center space-x-2 text-corporate-gray">
+                <CheckCircle className="w-5 h-5 text-social-green" />
+                <span>Instant results</span>
+              </div>
+              <div className="flex items-center space-x-2 text-corporate-gray">
+                <CheckCircle className="w-5 h-5 text-social-green" />
+                <span>Personalized recommendations</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Assessment Cards */}
+        <section className="py-24">
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-corporate-dark mb-4">
+                Choose Your Assessment
+              </h2>
+              <p className="text-xl text-corporate-gray">
+                Each tool provides unique insights to optimize your video strategy
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {assessments.map((assessment) => (
+                <Card 
+                  key={assessment.id}
+                  className="bg-gradient-to-br from-video-white to-corporate-light border-0 video-shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer"
+                  onClick={() => setActiveAssessment(assessment.id)}
+                >
+                  <CardHeader>
+                    <div className={`w-16 h-16 ${assessment.gradient} rounded-2xl flex items-center justify-center mb-4`}>
+                      <assessment.icon className="w-8 h-8 text-white" />
+                    </div>
+                    <CardTitle className="text-2xl text-corporate-dark mb-2">
+                      {assessment.title}
+                    </CardTitle>
+                    <p className="text-corporate-gray">
+                      {assessment.description}
+                    </p>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="mb-4">
+                      <div className="text-sm text-corporate-gray mb-2">
+                        ⏱️ {assessment.timeEstimate}
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2 mb-6">
+                      {assessment.benefits.map((benefit, index) => (
+                        <div key={index} className="flex items-center space-x-2 text-sm text-corporate-gray">
+                          <CheckCircle className="w-4 h-4 text-social-green flex-shrink-0" />
+                          <span>{benefit}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <Button className="w-full gradient-social-1 text-white hover:scale-105 transition-all">
+                      Start Assessment
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Content Strategy Framework */}
+        <section className="py-24 bg-corporate-light">
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-corporate-dark mb-4">
+                Our Content Strategy Framework
+              </h2>
+              <p className="text-xl text-corporate-gray max-w-3xl mx-auto">
+                Beyond SEO-first thinking: We help you create demand-driven content 
+                that generates qualified leads and drives real business results.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 gradient-social-1 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <Target className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-corporate-dark mb-2">Audience-Centric</h3>
+                <p className="text-corporate-gray">
+                  Build content around real audience problems, not just keywords
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 gradient-social-2 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <Lightbulb className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-corporate-dark mb-2">Interactive Experiences</h3>
+                <p className="text-corporate-gray">
+                  Engage prospects with assessments and personalized recommendations
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 gradient-social-3 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <TrendingUp className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-corporate-dark mb-2">Demand Generation</h3>
+                <p className="text-corporate-gray">
+                  Create content that generates demand, not just captures existing demand
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 gradient-social-4 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                  <Calculator className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-corporate-dark mb-2">ROI-Focused</h3>
+                <p className="text-corporate-gray">
+                  Every piece of content is designed to drive measurable business outcomes
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-24">
+          <div className="max-w-4xl mx-auto px-6 text-center">
+            <Card className="bg-gradient-to-br from-video-white to-corporate-light border-0 video-shadow-lg p-8">
+              <h2 className="text-3xl font-bold text-corporate-dark mb-4">
+                Ready for a Custom Strategy?
+              </h2>
+              <p className="text-xl text-corporate-gray mb-8">
+                Get personalized recommendations based on your specific business goals and challenges.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button 
+                  onClick={() => window.open('/discovery-call', '_blank')}
+                  className="gradient-social-1 text-white px-8 py-3 hover:scale-105 transition-all"
+                >
+                  Book Strategy Call
+                </Button>
+                <Button 
+                  onClick={() => window.open('/contact', '_blank')}
+                  variant="outline"
+                  className="px-8 py-3 hover:scale-105 transition-all"
+                >
+                  Get Custom Quote
+                </Button>
+              </div>
+            </Card>
+          </div>
+        </section>
+      </MainContent>
+    </div>
+  );
+};
+
+export default ContentStrategyPage;

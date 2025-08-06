@@ -24,6 +24,7 @@ import Reviews from "./pages/resources/Reviews";
 import FAQ from "./pages/FAQ";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import ContentStrategy from "./pages/ContentStrategy";
 
 const queryClient = new QueryClient();
 
@@ -53,6 +54,7 @@ const App = () => (
           <Route path="/faq" element={<FAQ />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
+          <Route path="/content-strategy" element={<ContentStrategy />} />
           
           {/* Legacy route redirects */}
           <Route path="/pathways" element={<Navigate to="/video-packages" replace />} />

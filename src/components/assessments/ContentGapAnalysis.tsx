@@ -27,24 +27,57 @@ interface ContentType {
   icon: any;
   importance: 'high' | 'medium' | 'low';
   examples: string[];
+  funnelStage: 'awareness' | 'consideration' | 'decision' | 'retention';
+  businessTypes: string[];
+  effort: 'low' | 'medium' | 'high';
+  impact: 'low' | 'medium' | 'high';
+}
+
+interface BusinessProfile {
+  industry: string;
+  size: string;
+  primaryGoals: string[];
+  currentChannels: string[];
+  targetAudience: string;
 }
 
 interface GapAnalysisResult {
   currentContent: string[];
   missingContent: string[];
   priorityGaps: string[];
+  funnelGaps: {
+    awareness: string[];
+    consideration: string[];
+    decision: string[];
+    retention: string[];
+  };
   recommendations: {
     immediate: string[];
     shortTerm: string[];
     longTerm: string[];
   };
   funnelCoverage: number;
+  impactScore: number;
+  competitorOpportunities: string[];
+  roiPredictions: {
+    content: string;
+    estimatedROI: string;
+    timeframe: string;
+  }[];
 }
 
 export const ContentGapAnalysis = ({ onBack }: ContentGapAnalysisProps) => {
   const [selectedContent, setSelectedContent] = useState<string[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [contactInfo, setContactInfo] = useState({ name: "", email: "", company: "" });
+  const [businessProfile, setBusinessProfile] = useState<BusinessProfile>({
+    industry: "",
+    size: "",
+    primaryGoals: [],
+    currentChannels: [],
+    targetAudience: ""
+  });
+  const [showProfileForm, setShowProfileForm] = useState(true);
 
   const contentTypes: ContentType[] = [
     {
@@ -53,7 +86,11 @@ export const ContentGapAnalysis = ({ onBack }: ContentGapAnalysisProps) => {
       description: "About us, mission, values, company culture",
       icon: Star,
       importance: 'high',
-      examples: ["Company origin story", "Team introductions", "Mission & values", "Behind-the-scenes"]
+      examples: ["Company origin story", "Team introductions", "Mission & values", "Behind-the-scenes"],
+      funnelStage: 'awareness',
+      businessTypes: ['all'],
+      effort: 'medium',
+      impact: 'high'
     },
     {
       id: "product-demos",
@@ -61,7 +98,11 @@ export const ContentGapAnalysis = ({ onBack }: ContentGapAnalysisProps) => {
       description: "Show your products/services in action",
       icon: PlayCircle,
       importance: 'high',
-      examples: ["Feature walkthroughs", "Use case scenarios", "Before/after comparisons", "Live demos"]
+      examples: ["Feature walkthroughs", "Use case scenarios", "Before/after comparisons", "Live demos"],
+      funnelStage: 'consideration',
+      businessTypes: ['saas', 'ecommerce', 'manufacturing'],
+      effort: 'medium',
+      impact: 'high'
     },
     {
       id: "customer-testimonials",
@@ -69,7 +110,11 @@ export const ContentGapAnalysis = ({ onBack }: ContentGapAnalysisProps) => {
       description: "Social proof and success stories",
       icon: Users,
       importance: 'high',
-      examples: ["Video testimonials", "Case study videos", "Customer success stories", "User-generated content"]
+      examples: ["Video testimonials", "Case study videos", "Customer success stories", "User-generated content"],
+      funnelStage: 'decision',
+      businessTypes: ['all'],
+      effort: 'low',
+      impact: 'high'
     },
     {
       id: "educational-content",
@@ -77,7 +122,11 @@ export const ContentGapAnalysis = ({ onBack }: ContentGapAnalysisProps) => {
       description: "How-to guides and tutorials",
       icon: BookOpen,
       importance: 'medium',
-      examples: ["Tutorial videos", "FAQ responses", "Best practices", "Industry insights"]
+      examples: ["Tutorial videos", "FAQ responses", "Best practices", "Industry insights"],
+      funnelStage: 'awareness',
+      businessTypes: ['all'],
+      effort: 'medium',
+      impact: 'medium'
     },
     {
       id: "thought-leadership",
@@ -85,7 +134,11 @@ export const ContentGapAnalysis = ({ onBack }: ContentGapAnalysisProps) => {
       description: "Industry expertise and insights",
       icon: TrendingUp,
       importance: 'medium',
-      examples: ["Industry predictions", "Expert interviews", "Trend analysis", "Opinion pieces"]
+      examples: ["Industry predictions", "Expert interviews", "Trend analysis", "Opinion pieces"],
+      funnelStage: 'awareness',
+      businessTypes: ['consulting', 'technology', 'finance'],
+      effort: 'high',
+      impact: 'medium'
     },
     {
       id: "social-proof",
@@ -93,7 +146,11 @@ export const ContentGapAnalysis = ({ onBack }: ContentGapAnalysisProps) => {
       description: "Reviews, awards, and recognition",
       icon: CheckCircle,
       importance: 'medium',
-      examples: ["Award announcements", "Press coverage", "Client spotlights", "Partnership announcements"]
+      examples: ["Award announcements", "Press coverage", "Client spotlights", "Partnership announcements"],
+      funnelStage: 'decision',
+      businessTypes: ['all'],
+      effort: 'low',
+      impact: 'medium'
     },
     {
       id: "promotional",
@@ -101,7 +158,11 @@ export const ContentGapAnalysis = ({ onBack }: ContentGapAnalysisProps) => {
       description: "Sales and marketing focused content",
       icon: AlertTriangle,
       importance: 'medium',
-      examples: ["Product launches", "Special offers", "Event promotions", "Call-to-action videos"]
+      examples: ["Product launches", "Special offers", "Event promotions", "Call-to-action videos"],
+      funnelStage: 'decision',
+      businessTypes: ['all'],
+      effort: 'medium',
+      impact: 'medium'
     },
     {
       id: "recruitment",
@@ -109,7 +170,11 @@ export const ContentGapAnalysis = ({ onBack }: ContentGapAnalysisProps) => {
       description: "Attract and engage talent",
       icon: Users,
       importance: 'low',
-      examples: ["Job postings", "Company culture", "Employee stories", "Office tours"]
+      examples: ["Job postings", "Company culture", "Employee stories", "Office tours"],
+      funnelStage: 'awareness',
+      businessTypes: ['all'],
+      effort: 'low',
+      impact: 'low'
     }
   ];
 
@@ -124,32 +189,86 @@ export const ContentGapAnalysis = ({ onBack }: ContentGapAnalysisProps) => {
     
     const funnelCoverage = (selectedContent.length / contentTypes.length) * 100;
     
+    // Analyze funnel gaps by stage
+    const funnelGaps = {
+      awareness: missingContent.filter(id => 
+        contentTypes.find(type => type.id === id)?.funnelStage === 'awareness'
+      ),
+      consideration: missingContent.filter(id => 
+        contentTypes.find(type => type.id === id)?.funnelStage === 'consideration'
+      ),
+      decision: missingContent.filter(id => 
+        contentTypes.find(type => type.id === id)?.funnelStage === 'decision'
+      ),
+      retention: missingContent.filter(id => 
+        contentTypes.find(type => type.id === id)?.funnelStage === 'retention'
+      )
+    };
+    
+    // Calculate impact score based on missing high-impact content
+    const impactScore = selectedContent.reduce((score, contentId) => {
+      const content = contentTypes.find(type => type.id === contentId);
+      if (content?.impact === 'high') return score + 3;
+      if (content?.impact === 'medium') return score + 2;
+      return score + 1;
+    }, 0);
+    
     let immediate: string[] = [];
     let shortTerm: string[] = [];
     let longTerm: string[] = [];
 
+    // Priority-based recommendations
     if (!selectedContent.includes('brand-story')) {
-      immediate.push("Create brand story videos to establish credibility");
+      immediate.push("Create brand story videos to establish credibility and trust");
     }
     if (!selectedContent.includes('product-demos')) {
-      immediate.push("Develop product demonstration videos");
+      immediate.push("Develop product demonstration videos to showcase value");
     }
     if (!selectedContent.includes('customer-testimonials')) {
-      shortTerm.push("Collect and produce customer testimonial videos");
+      shortTerm.push("Collect and produce customer testimonial videos for social proof");
     }
     if (!selectedContent.includes('educational-content')) {
-      shortTerm.push("Build educational content library");
+      shortTerm.push("Build educational content library to attract prospects");
     }
     if (!selectedContent.includes('thought-leadership')) {
       longTerm.push("Establish thought leadership through expert content");
     }
+    
+    // Add funnel-specific recommendations
+    if (funnelGaps.awareness.length > 2) {
+      immediate.push("Focus on awareness-stage content to attract new prospects");
+    }
+    if (funnelGaps.decision.length > 1) {
+      shortTerm.push("Create decision-stage content to close more deals");
+    }
+    
+    // Competitor opportunities
+    const competitorOpportunities = [
+      "Educational content gaps present opportunity for thought leadership",
+      "Limited social proof content allows for competitive advantage",
+      "Missing awareness-stage content creates market opportunity"
+    ].slice(0, Math.max(1, 3 - Math.floor(funnelCoverage / 33)));
+    
+    // ROI predictions based on content types
+    const roiPredictions = selectedContent.slice(0, 3).map(contentId => {
+      const content = contentTypes.find(type => type.id === contentId);
+      return {
+        content: content?.name || '',
+        estimatedROI: content?.impact === 'high' ? '300-500%' : content?.impact === 'medium' ? '200-300%' : '150-250%',
+        timeframe: content?.effort === 'low' ? '1-2 months' : content?.effort === 'medium' ? '2-4 months' : '4-6 months'
+      };
+    });
 
     return {
       currentContent,
       missingContent,
       priorityGaps: highImportanceMissing,
+      funnelGaps,
       recommendations: { immediate, shortTerm, longTerm },
-      funnelCoverage: Math.round(funnelCoverage)
+      funnelCoverage: Math.round(funnelCoverage),
+      impactScore,
+      competitorOpportunities,
+      roiPredictions
     };
   };
 

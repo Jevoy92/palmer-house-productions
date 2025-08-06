@@ -20,13 +20,32 @@ interface AssessmentSection {
   }[];
 }
 
+interface SectionPerformance {
+  section: string;
+  score: number;
+  maxScore: number;
+  percentage: number;
+  status: 'strong' | 'developing' | 'needs-attention';
+  specificGaps: string[];
+  priorities: string[];
+}
+
 interface AuditResults {
   totalScore: number;
   maxScore: number;
   percentage: number;
   readinessLevel: 'Beginner' | 'Developing' | 'Ready' | 'Advanced';
-  recommendations: string[];
+  sectionPerformance: SectionPerformance[];
+  topStrengths: string[];
+  criticalGaps: string[];
+  recommendations: {
+    immediate: string[];
+    shortTerm: string[];
+    longTerm: string[];
+  };
   suggestedServices: string[];
+  industryBenchmark: number;
+  nextSteps: string[];
 }
 
 export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
@@ -34,6 +53,11 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
   const [answers, setAnswers] = useState<Record<string, boolean>>({});
   const [showResults, setShowResults] = useState(false);
   const [emailForResults, setEmailForResults] = useState("");
+  const [businessContext, setBusinessContext] = useState({
+    industry: "",
+    businessSize: "",
+    currentVideoExperience: "none"
+  });
 
   const sections: AssessmentSection[] = [
     {
@@ -90,53 +114,127 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
     let totalScore = 0;
     let maxScore = 0;
 
-    sections.forEach(section => {
+    // Calculate section-specific performance
+    const sectionPerformance: SectionPerformance[] = sections.map(section => {
+      let sectionScore = 0;
+      let sectionMaxScore = 0;
+      const sectionGaps: string[] = [];
+      
       section.questions.forEach(question => {
-        maxScore += question.points;
+        sectionMaxScore += question.points;
         if (answers[question.id]) {
-          totalScore += question.points;
+          sectionScore += question.points;
+        } else {
+          // Map specific question to actionable gap
+          if (section.id === 'strategy' && question.id === 'clear-goals') {
+            sectionGaps.push("Define specific video marketing goals");
+          } else if (section.id === 'technical' && question.id === 'equipment') {
+            sectionGaps.push("Invest in basic video equipment");
+          } else if (section.id === 'content' && question.id === 'content-calendar') {
+            sectionGaps.push("Create content planning system");
+          } else if (section.id === 'distribution' && question.id === 'analytics-tracking') {
+            sectionGaps.push("Set up video performance tracking");
+          }
         }
       });
+      
+      const sectionPercentage = Math.round((sectionScore / sectionMaxScore) * 100);
+      let status: SectionPerformance['status'];
+      let priorities: string[] = [];
+      
+      if (sectionPercentage >= 80) {
+        status = 'strong';
+        priorities = [`Optimize ${section.title.toLowerCase()} for scale`];
+      } else if (sectionPercentage >= 50) {
+        status = 'developing';
+        priorities = [`Strengthen ${section.title.toLowerCase()} fundamentals`];
+      } else {
+        status = 'needs-attention';
+        priorities = [`Urgent: Build ${section.title.toLowerCase()} foundation`];
+      }
+      
+      totalScore += sectionScore;
+      maxScore += sectionMaxScore;
+      
+      return {
+        section: section.title,
+        score: sectionScore,
+        maxScore: sectionMaxScore,
+        percentage: sectionPercentage,
+        status,
+        specificGaps: sectionGaps,
+        priorities
+      };
     });
 
     const percentage = Math.round((totalScore / maxScore) * 100);
     
+    // Identify top strengths and critical gaps
+    const topStrengths = sectionPerformance
+      .filter(section => section.status === 'strong')
+      .map(section => section.section);
+    
+    const criticalGaps = sectionPerformance
+      .filter(section => section.status === 'needs-attention')
+      .map(section => section.section);
+    
+    // Industry benchmark (simulated based on typical SMB performance)
+    const industryBenchmark = businessContext.industry === 'technology' ? 72 : 
+                             businessContext.industry === 'healthcare' ? 65 : 68;
+    
+    // Generate phase-based recommendations
+    const immediate: string[] = [];
+    const shortTerm: string[] = [];
+    const longTerm: string[] = [];
+    
+    sectionPerformance.forEach(section => {
+      if (section.status === 'needs-attention') {
+        immediate.push(...section.priorities);
+        immediate.push(...section.specificGaps.slice(0, 2));
+      } else if (section.status === 'developing') {
+        shortTerm.push(...section.priorities);
+      } else {
+        longTerm.push(...section.priorities);
+      }
+    });
+    
+    // Add specific next steps based on readiness level
     let readinessLevel: AuditResults['readinessLevel'];
-    let recommendations: string[];
     let suggestedServices: string[];
+    let nextSteps: string[];
 
     if (percentage >= 80) {
       readinessLevel = 'Advanced';
-      recommendations = [
-        "You're ready for advanced video strategies",
-        "Focus on optimization and scaling",
-        "Consider premium production quality"
-      ];
       suggestedServices = ["Monthly Content Partnership", "Custom Video Strategy"];
+      nextSteps = [
+        "Schedule advanced strategy consultation",
+        "Plan content scaling roadmap",
+        "Implement advanced analytics tracking"
+      ];
     } else if (percentage >= 60) {
       readinessLevel = 'Ready';
-      recommendations = [
-        "You have a solid foundation",
-        "Focus on consistency and quality improvement",
-        "Optimize your distribution strategy"
-      ];
       suggestedServices = ["Group Coaching", "Monthly Content Partnership"];
+      nextSteps = [
+        "Join group coaching program",
+        "Create detailed content calendar",
+        "Optimize current video processes"
+      ];
     } else if (percentage >= 40) {
       readinessLevel = 'Developing';
-      recommendations = [
-        "Build your strategic foundation",
-        "Invest in basic equipment and training",
-        "Start with a simple content plan"
-      ];
       suggestedServices = ["DIY Downloads", "Group Coaching"];
+      nextSteps = [
+        "Download video marketing templates",
+        "Complete video fundamentals training",
+        "Set up basic equipment and workspace"
+      ];
     } else {
       readinessLevel = 'Beginner';
-      recommendations = [
-        "Start with strategy and planning",
-        "Learn basic video production skills",
-        "Focus on one platform initially"
-      ];
       suggestedServices = ["DIY Downloads", "Discovery Call"];
+      nextSteps = [
+        "Schedule discovery call",
+        "Start with video marketing basics",
+        "Define initial video goals and strategy"
+      ];
     }
 
     return {
@@ -144,8 +242,13 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
       maxScore,
       percentage,
       readinessLevel,
-      recommendations,
-      suggestedServices
+      sectionPerformance,
+      topStrengths,
+      criticalGaps,
+      recommendations: { immediate, shortTerm, longTerm },
+      suggestedServices,
+      industryBenchmark,
+      nextSteps
     };
   };
 
@@ -209,9 +312,9 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
           <CardContent>
             <div className="grid md:grid-cols-2 gap-8">
               <div>
-                <h3 className="text-xl font-bold text-corporate-dark mb-4">Recommendations</h3>
+                <h3 className="text-xl font-bold text-corporate-dark mb-4">Immediate Actions</h3>
                 <ul className="space-y-2">
-                  {results.recommendations.map((rec, index) => (
+                  {results.recommendations.immediate.map((rec, index) => (
                     <li key={index} className="flex items-start space-x-2">
                       <CheckCircle className="text-social-green w-5 h-5 mt-0.5 flex-shrink-0" />
                       <span className="text-corporate-gray">{rec}</span>

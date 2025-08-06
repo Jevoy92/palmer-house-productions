@@ -270,7 +270,7 @@ export const Navigation = () => {
           <div className="md:hidden">
             <button 
               onClick={() => setIsOpen(!isOpen)} 
-              className="text-apple-gray-5 hover:text-black focus:outline-none interactive-element"
+              className="p-2 text-apple-gray-5 hover:text-black focus:outline-none interactive-element min-h-[44px] min-w-[44px] flex items-center justify-center"
               aria-expanded={isOpen}
               aria-controls="mobile-menu"
               aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
@@ -281,127 +281,135 @@ export const Navigation = () => {
         </div>
       </div>
 
-      {isOpen && <div id="mobile-menu" className="md:hidden bg-white border-t border-apple-gray-2" role="menu">
-          <div className="px-4 pt-2 pb-3 space-y-1">
+      {isOpen && <div id="mobile-menu" className="md:hidden bg-white border-t border-apple-gray-2 shadow-lg" role="menu">
+          <div className="px-4 pt-4 pb-6 space-y-6 max-h-[calc(100vh-4rem)] overflow-y-auto">
             {/* Services Section */}
-            <div className="py-2">
-              <div className="text-xs font-bold text-apple-gray-5 uppercase tracking-wider mb-2">Services</div>
-              <Link 
-                to="/video-packages" 
-                className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Video Packages Overview
-              </Link>
-              <Link 
-                to="/services/diy-downloads" 
-                className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                DIY Downloads
-              </Link>
-              <Link 
-                to="/services/group-coaching" 
-                className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Group Coaching
-              </Link>
-              <Link 
-                to="/services/monthly-content" 
-                className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Monthly Content
-              </Link>
+            <div className="space-y-3">
+              <div className="text-xs font-bold text-apple-gray-5 uppercase tracking-wider">Services</div>
+              <div className="space-y-1">
+                <Link 
+                  to="/video-packages" 
+                  className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Video Packages
+                </Link>
+                <Link 
+                  to="/services/diy-downloads" 
+                  className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  DIY Downloads
+                </Link>
+                <Link 
+                  to="/services/group-coaching" 
+                  className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Group Coaching
+                </Link>
+                <Link 
+                  to="/services/monthly-content" 
+                  className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Monthly Content
+                </Link>
+              </div>
             </div>
 
             {/* Company Section */}
-            <div className="py-2">
-              <div className="text-xs font-bold text-apple-gray-5 uppercase tracking-wider mb-2">Company</div>
-              <Link 
-                to="/about-us" 
-                className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                About Us
-              </Link>
-              <Link 
-                to="/company/team" 
-                className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Our Team
-              </Link>
-              <Link 
-                to="/company/values" 
-                className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Our Values
-              </Link>
-              <Link 
-                to="/client-results" 
-                className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Client Results
-              </Link>
+            <div className="space-y-3">
+              <div className="text-xs font-bold text-apple-gray-5 uppercase tracking-wider">Company</div>
+              <div className="space-y-1">
+                <Link 
+                  to="/about-us" 
+                  className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  About Us
+                </Link>
+                <Link 
+                  to="/company/team" 
+                  className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Our Team
+                </Link>
+                <Link 
+                  to="/company/values" 
+                  className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Our Values
+                </Link>
+                <Link 
+                  to="/client-results" 
+                  className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Client Results
+                </Link>
+              </div>
             </div>
 
             {/* Resources Section */}
-            <div className="py-2">
-              <div className="text-xs font-bold text-apple-gray-5 uppercase tracking-wider mb-2">Resources</div>
-              <Link 
-                to="/video-use-cases" 
-                className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Video Use Cases
-              </Link>
-              <Link 
-                to="/resources/reviews" 
-                className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Client Reviews
-              </Link>
-              <Link 
-                to="/faq" 
-                className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                FAQ
-              </Link>
-              <Link 
-                to="/discovery-call" 
-                className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Discovery Call
-              </Link>
-              <Link 
-                to="/podcast" 
-                className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors"
-                onClick={() => setIsOpen(false)}
-              >
-                Podcast
-              </Link>
+            <div className="space-y-3">
+              <div className="text-xs font-bold text-apple-gray-5 uppercase tracking-wider">Resources</div>
+              <div className="space-y-1">
+                <Link 
+                  to="/video-use-cases" 
+                  className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Video Use Cases
+                </Link>
+                <Link 
+                  to="/resources/reviews" 
+                  className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Client Reviews
+                </Link>
+                <Link 
+                  to="/faq" 
+                  className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  FAQ
+                </Link>
+                <Link 
+                  to="/discovery-call" 
+                  className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Discovery Call
+                </Link>
+                <Link 
+                  to="/podcast" 
+                  className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Podcast
+                </Link>
+              </div>
             </div>
 
-            {/* Contact */}
-            <Link 
-              to="/contact" 
-              className={cn(
-                "block px-3 py-3 transition-colors font-medium border-t border-apple-gray-2 mt-4",
-                isActivePath('/contact') 
-                  ? "text-social-purple font-bold bg-social-purple/10 rounded-lg" 
-                  : "text-apple-gray-5 hover:text-black"
-              )}
-              onClick={() => setIsOpen(false)}
-            >
-              Contact
-            </Link>
+            {/* Contact CTA */}
+            <div className="pt-4 border-t border-apple-gray-2">
+              <Link 
+                to="/contact" 
+                className={cn(
+                  "block px-4 py-4 transition-colors font-medium rounded-lg text-center min-h-[48px] flex items-center justify-center",
+                  isActivePath('/contact') 
+                    ? "text-white bg-social-purple font-bold" 
+                    : "text-white bg-social-purple hover:bg-social-purple/90"
+                )}
+                onClick={() => setIsOpen(false)}
+              >
+                Get Started
+              </Link>
+            </div>
           </div>
         </div>}
     </nav>

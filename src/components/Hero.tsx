@@ -24,34 +24,34 @@ export const Hero = () => {
       </div>
       
       <div className="relative z-10 text-center px-4 md:px-6 max-w-6xl mx-auto">
-        <div className="mb-6 md:mb-8">
-          <div className="inline-block px-4 md:px-6 py-2 md:py-3 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-semibold text-base md:text-lg mb-4 md:mb-6 video-shadow animate-pulse-social">
-            🎬 Visual Storytelling Explorers
+        <div className="mb-4 md:mb-6">
+          <div className="inline-block px-3 md:px-4 py-2 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-semibold text-sm md:text-base mb-3 md:mb-4 video-shadow">
+            Professional Video Production
           </div>
         </div>
         
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-black mb-4 md:mb-8 tracking-tight leading-tight">
-          Video That Ventures
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-black mb-4 md:mb-6 tracking-tight leading-tight">
+          Video Content That
           <br />
-          <span className="text-gradient-1">Beyond Content</span>
+          <span className="text-gradient-1">Drives Results</span>
         </h1>
         
-        <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-corporate-gray mb-8 md:mb-12 font-medium max-w-4xl mx-auto leading-tight">
-          Short-form cinematic storytelling for <span className="text-gradient-2 font-bold">bold brands</span> ready to scale.
+        <p className="text-base sm:text-lg md:text-xl text-corporate-gray mb-6 md:mb-8 font-medium max-w-3xl mx-auto leading-relaxed">
+          Professional video production that saves your business time and money while building your brand.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center mb-16 md:mb-24">
+        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center mb-12 md:mb-16">
           <button 
             onClick={handleExplorePackages}
-            className="px-6 md:px-10 py-3 md:py-5 gradient-social-1 text-white font-bold text-base md:text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow-lg"
+            className="px-6 md:px-8 py-4 md:py-4 gradient-social-1 text-white font-bold text-base md:text-lg rounded-xl hover:scale-105 transition-all duration-300 video-shadow-lg min-h-[48px] flex items-center justify-center"
           >
-            🎯 View Our Solutions
+            View Services
           </button>
           <button 
             onClick={handleBookCall}
-            className="px-6 md:px-10 py-3 md:py-5 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-base md:text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow"
+            className="px-6 md:px-8 py-4 md:py-4 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-base md:text-lg rounded-xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow min-h-[48px] flex items-center justify-center"
           >
-            🔍 Book a Discovery Call
+            Book Discovery Call
           </button>
         </div>
       </div>

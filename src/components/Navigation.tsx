@@ -110,7 +110,7 @@ export const Navigation = () => {
                       className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
                       onClick={() => setIsOpen(false)}
                     >
-                      Video Packages Overview
+                      Video Packages
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>

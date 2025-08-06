@@ -46,7 +46,7 @@ export const ReviewsSection = ({ onViewAllReviews }: ReviewsSectionProps) => {
 
   return (
     <div className="mb-16">
-      <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Client Success Stories</h2>
+      <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Client Reviews</h2>
       <div className="grid md:grid-cols-3 gap-8">
         {reviews.map((review, index) => (
           <div key={index} className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">

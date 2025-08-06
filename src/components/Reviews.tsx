@@ -64,19 +64,28 @@ export const Reviews = () => {
               </div>
             </div>
             <div className="bg-corporate-light p-8 rounded-2xl">
-              <h3 className="text-2xl font-display font-bold mb-4 text-corporate-dark">Client Success Metrics</h3>
+              <h3 className="text-2xl font-display font-bold mb-4 text-corporate-dark">Our Commitment</h3>
               <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-corporate-gray">Average Project Satisfaction</span>
-                  <span className="text-2xl font-bold text-gradient-1">98%</span>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-gradient-social-1 rounded-full flex-shrink-0 mt-1"></div>
+                  <div>
+                    <span className="text-lg font-bold text-corporate-dark block">Professional Quality Guaranteed</span>
+                    <span className="text-corporate-gray">Every project meets broadcast standards</span>
+                  </div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-corporate-gray">Repeat Client Rate</span>
-                  <span className="text-2xl font-bold text-gradient-1">85%</span>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-gradient-social-2 rounded-full flex-shrink-0 mt-1"></div>
+                  <div>
+                    <span className="text-lg font-bold text-corporate-dark block">Collaborative Process</span>
+                    <span className="text-corporate-gray">Your feedback shapes the final product</span>
+                  </div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-corporate-gray">Projects Delivered On Time</span>
-                  <span className="text-2xl font-bold text-gradient-1">100%</span>
+                <div className="flex items-start space-x-3">
+                  <div className="w-6 h-6 bg-gradient-social-3 rounded-full flex-shrink-0 mt-1"></div>
+                  <div>
+                    <span className="text-lg font-bold text-corporate-dark block">Strategic Approach</span>
+                    <span className="text-corporate-gray">Video content aligned with your business goals</span>
+                  </div>
                 </div>
               </div>
             </div>

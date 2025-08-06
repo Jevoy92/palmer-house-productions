@@ -42,20 +42,24 @@ export const CondensedContact = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
           {/* Quick Actions */}
-          <div className="space-y-4">
+          <div className="flex flex-col sm:grid sm:grid-cols-2 lg:flex lg:flex-col gap-4 lg:space-y-4">
             <Card className="border-0 video-shadow hover:video-shadow-lg transition-all">
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 gradient-social-1 rounded-xl flex items-center justify-center">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:space-x-4">
+                  <div className="w-12 h-12 gradient-social-1 rounded-xl flex items-center justify-center flex-shrink-0">
                     <Calendar className="w-6 h-6 text-white" />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-corporate-dark mb-1">Book a Discovery Call</h3>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-corporate-dark mb-1 text-base sm:text-lg">Book a Discovery Call</h3>
                     <p className="text-sm text-corporate-gray">Free 30-minute strategy session</p>
                   </div>
-                  <Button onClick={handleBookCall} className="gradient-social-1 text-white">
+                  <Button 
+                    onClick={handleBookCall} 
+                    className="gradient-social-1 text-white w-full sm:w-auto min-h-[44px] px-6"
+                    size="lg"
+                  >
                     Book Call
                   </Button>
                 </div>
@@ -63,16 +67,21 @@ export const CondensedContact = () => {
             </Card>
 
             <Card className="border-0 video-shadow hover:video-shadow-lg transition-all">
-              <CardContent className="p-6">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 gradient-social-2 rounded-xl flex items-center justify-center">
+              <CardContent className="p-4 sm:p-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:space-x-4">
+                  <div className="w-12 h-12 gradient-social-2 rounded-xl flex items-center justify-center flex-shrink-0">
                     <MessageCircle className="w-6 h-6 text-white" />
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-corporate-dark mb-1">Take Strategy Assessment</h3>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-corporate-dark mb-1 text-base sm:text-lg">Take Strategy Assessment</h3>
                     <p className="text-sm text-corporate-gray">Free personalized recommendations</p>
                   </div>
-                  <Button onClick={handleStrategyAssessment} variant="outline">
+                  <Button 
+                    onClick={handleStrategyAssessment} 
+                    variant="outline" 
+                    className="w-full sm:w-auto min-h-[44px] px-6"
+                    size="lg"
+                  >
                     Start Assessment
                   </Button>
                 </div>
@@ -82,41 +91,44 @@ export const CondensedContact = () => {
 
           {/* Quick Contact Form */}
           <Card className="border-0 video-shadow">
-            <CardHeader>
-              <CardTitle className="text-xl text-corporate-dark">Quick Message</CardTitle>
+            <CardHeader className="p-4 sm:p-6 pb-3">
+              <CardTitle className="text-lg sm:text-xl text-corporate-dark">Quick Message</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-4 sm:p-6 pt-0">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <Label htmlFor="name">Name</Label>
+                  <Label htmlFor="name" className="text-sm font-medium">Name</Label>
                   <Input
                     id="name"
                     value={formData.name}
                     onChange={(e) => setFormData({...formData, name: e.target.value})}
                     placeholder="Your name"
+                    className="mt-1 min-h-[44px]"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email" className="text-sm font-medium">Email</Label>
                   <Input
                     id="email"
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
                     placeholder="your@email.com"
+                    className="mt-1 min-h-[44px]"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="message">Message</Label>
+                  <Label htmlFor="message" className="text-sm font-medium">Message</Label>
                   <Textarea
                     id="message"
                     value={formData.message}
                     onChange={(e) => setFormData({...formData, message: e.target.value})}
                     placeholder="Tell us about your video needs..."
                     rows={3}
+                    className="mt-1 min-h-[88px] resize-none"
                   />
                 </div>
-                <Button type="submit" className="w-full gradient-social-1 text-white">
+                <Button type="submit" className="w-full gradient-social-1 text-white min-h-[48px]" size="lg">
                   Send Message
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>

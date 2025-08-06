@@ -23,33 +23,34 @@ export const Hero = () => {
         <div className="absolute bottom-20 right-4 md:right-10 w-14 h-14 md:w-28 md:h-28 gradient-social-4 rounded-full opacity-25 float-animation" style={{animationDelay: '1s'}}></div>
       </div>
       
-      <div className="relative z-10 text-center px-4 md:px-6 max-w-6xl mx-auto">
-        <div className="mb-4 md:mb-6">
-          <div className="inline-block px-3 md:px-4 py-2 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-semibold text-sm md:text-base mb-3 md:mb-4 video-shadow">
+      <div className="relative z-10 text-center px-4 sm:px-6 max-w-7xl mx-auto">
+        <div className="mb-6 sm:mb-8">
+          <div className="inline-block px-4 py-2.5 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-semibold text-sm sm:text-base mb-4 sm:mb-6 video-shadow">
             Professional Video Production
           </div>
         </div>
         
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-black mb-4 md:mb-6 tracking-tight leading-tight">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-black mb-6 sm:mb-8 tracking-tight leading-[1.1] px-2">
           Professional Video Production That
-          <br />
+          <br className="hidden sm:block" />
+          <span className="sm:hidden"> </span>
           <span className="text-gradient-1">Drives Results</span>
         </h1>
         
-        <p className="text-base sm:text-lg md:text-xl text-corporate-gray mb-6 md:mb-8 font-medium max-w-3xl mx-auto leading-relaxed">
+        <p className="text-base sm:text-lg md:text-xl text-corporate-gray mb-8 sm:mb-10 font-medium max-w-4xl mx-auto leading-relaxed px-2">
           Professional video production that saves your business time and money while building your brand.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center mb-12 md:mb-16">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-16 sm:mb-20 px-4">
           <button 
             onClick={handleExplorePackages}
-            className="px-6 md:px-8 py-4 md:py-4 gradient-social-1 text-white font-bold text-base md:text-lg rounded-xl hover:scale-105 transition-all duration-300 video-shadow-lg min-h-[48px] flex items-center justify-center"
+            className="w-full sm:w-auto px-8 py-4 gradient-social-1 text-white font-bold text-base sm:text-lg rounded-xl hover:scale-105 transition-all duration-300 video-shadow-lg min-h-[52px] flex items-center justify-center"
           >
             View Services
           </button>
           <button 
             onClick={handleBookCall}
-            className="px-6 md:px-8 py-4 md:py-4 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-base md:text-lg rounded-xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow min-h-[48px] flex items-center justify-center"
+            className="w-full sm:w-auto px-8 py-4 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-base sm:text-lg rounded-xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow min-h-[52px] flex items-center justify-center"
           >
             Book Discovery Call
           </button>

@@ -241,8 +241,8 @@ export const ContentGapAnalysisEnhanced = ({ onBack }: ContentGapAnalysisEnhance
         id: "brand-story",
         title: "Create Brand Story Video",
         description: "Establish credibility and trust with authentic brand storytelling",
-        impact: 'High',
-        effort: 'Medium',
+        impact: 'High' as const,
+        effort: 'Medium' as const,
         timeline: "2-4 weeks",
         category: "Foundation"
       },
@@ -250,8 +250,8 @@ export const ContentGapAnalysisEnhanced = ({ onBack }: ContentGapAnalysisEnhance
         id: "testimonials",
         title: "Collect Customer Testimonials",
         description: "Build social proof through customer success stories",
-        impact: 'High',
-        effort: 'Low',
+        impact: 'High' as const,
+        effort: 'Low' as const,
         timeline: "1-2 weeks",
         category: "Social Proof"
       },
@@ -259,8 +259,8 @@ export const ContentGapAnalysisEnhanced = ({ onBack }: ContentGapAnalysisEnhance
         id: "product-demos",
         title: "Develop Product Demos",
         description: "Showcase product value through demonstrations",
-        impact: 'High',
-        effort: 'Medium',
+        impact: 'High' as const,
+        effort: 'Medium' as const,
         timeline: "3-6 weeks",
         category: "Product Marketing"
       }

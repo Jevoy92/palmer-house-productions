@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
+import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
 import Index from "./pages/Index";
 import VideoPackages from "./pages/VideoPackages";
 import DiscoveryCall from "./pages/DiscoveryCall";
@@ -67,6 +68,7 @@ const App = () => (
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <EnhancedFooter />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

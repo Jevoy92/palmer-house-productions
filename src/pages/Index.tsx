@@ -1,16 +1,15 @@
 
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
-import { Clients } from "@/components/Clients";
 import { SolutionsOverview } from "@/components/SolutionsOverview";
-import { Contact } from "@/components/Contact";
+import { CondensedClients } from "@/components/home/CondensedClients";
+import { CondensedContact } from "@/components/home/CondensedContact";
 import { Navigation } from "@/components/Navigation";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
 import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
-import { InternalLinking } from "@/components/seo/InternalLinking";
 
 const Index = () => {
   return (
@@ -33,14 +32,13 @@ const Index = () => {
         <div id="services">
           <Services />
         </div>
-        <Clients />
+        <CondensedClients />
         <div id="pricing">
           <SolutionsOverview />
         </div>
         <div id="contact">
-          <Contact />
+          <CondensedContact />
         </div>
-        <InternalLinking currentPage="homepage" />
       </MainContent>
     </div>
   );

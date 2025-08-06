@@ -8,10 +8,10 @@ import { MainContent } from "@/components/MainContent";
 import { VideoReadinessAudit } from "@/components/assessments/VideoReadinessAudit";
 import { ContentGapAnalysis } from "@/components/assessments/ContentGapAnalysis";
 import { BudgetImpactCalculator } from "@/components/assessments/BudgetImpactCalculator";
+import { AssessmentPreview } from "@/components/assessments/AssessmentPreview";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Target, 
   PieChart, 
@@ -25,37 +25,7 @@ import {
 const ContentStrategyPage = () => {
   const [activeAssessment, setActiveAssessment] = useState<string | null>(null);
 
-  const assessments = [
-    {
-      id: "readiness",
-      title: "Video Readiness Audit",
-      description: "Assess your current video capabilities and identify improvement areas",
-      icon: Target,
-      gradient: "gradient-social-1",
-      timeEstimate: "5-7 minutes",
-      benefits: ["Strategic foundation assessment", "Technical readiness check", "Personalized recommendations"]
-    },
-    {
-      id: "content-gaps",
-      title: "Content Gap Analysis", 
-      description: "Identify missing content types in your marketing funnel",
-      icon: PieChart,
-      gradient: "gradient-social-2",
-      timeEstimate: "3-5 minutes",
-      benefits: ["Funnel coverage analysis", "Priority gap identification", "Content roadmap creation"]
-    },
-    {
-      id: "budget-calculator",
-      title: "Budget vs Impact Calculator",
-      description: "Find the optimal video investment strategy for your goals",
-      icon: Calculator,
-      gradient: "gradient-social-3",
-      timeEstimate: "4-6 minutes",
-      benefits: ["ROI projections", "Investment recommendations", "Service tier matching"]
-    }
-  ];
-
-  if (activeAssessment === "readiness") {
+  if (activeAssessment === "video-readiness") {
     return (
       <div className="min-h-screen bg-white">
         <SkipLink href="#main-content">Skip to main content</SkipLink>
@@ -76,7 +46,7 @@ const ContentStrategyPage = () => {
     );
   }
 
-  if (activeAssessment === "content-gaps") {
+  if (activeAssessment === "content-gap") {
     return (
       <div className="min-h-screen bg-white">
         <SkipLink href="#main-content">Skip to main content</SkipLink>
@@ -97,7 +67,7 @@ const ContentStrategyPage = () => {
     );
   }
 
-  if (activeAssessment === "budget-calculator") {
+  if (activeAssessment === "budget-impact") {
     return (
       <div className="min-h-screen bg-white">
         <SkipLink href="#main-content">Skip to main content</SkipLink>
@@ -166,60 +136,13 @@ const ContentStrategyPage = () => {
           </div>
         </section>
 
-        {/* Assessment Cards */}
+        {/* Assessment Preview */}
         <section className="py-24">
           <div className="max-w-6xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl font-bold text-corporate-dark mb-4">
-                Choose Your Assessment
-              </h2>
-              <p className="text-xl text-corporate-gray">
-                Each tool provides unique insights to optimize your video strategy
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-8">
-              {assessments.map((assessment) => (
-                <Card 
-                  key={assessment.id}
-                  className="bg-gradient-to-br from-video-white to-corporate-light border-0 video-shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer"
-                  onClick={() => setActiveAssessment(assessment.id)}
-                >
-                  <CardHeader>
-                    <div className={`w-16 h-16 ${assessment.gradient} rounded-2xl flex items-center justify-center mb-4`}>
-                      <assessment.icon className="w-8 h-8 text-white" />
-                    </div>
-                    <CardTitle className="text-2xl text-corporate-dark mb-2">
-                      {assessment.title}
-                    </CardTitle>
-                    <p className="text-corporate-gray">
-                      {assessment.description}
-                    </p>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="mb-4">
-                      <div className="text-sm text-corporate-gray mb-2">
-                        ⏱️ {assessment.timeEstimate}
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2 mb-6">
-                      {assessment.benefits.map((benefit, index) => (
-                        <div key={index} className="flex items-center space-x-2 text-sm text-corporate-gray">
-                          <CheckCircle className="w-4 h-4 text-social-green flex-shrink-0" />
-                          <span>{benefit}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <Button className="w-full gradient-social-1 text-white hover:scale-105 transition-all">
-                      Start Assessment
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <AssessmentPreview 
+              onSelectAssessment={setActiveAssessment}
+              currentPath="/content-strategy"
+            />
           </div>
         </section>
 

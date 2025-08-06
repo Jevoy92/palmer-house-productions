@@ -3,6 +3,8 @@ import { Download, Video, FileText, Mic, Camera } from "lucide-react";
 import { PRICING } from "@/lib/pricing";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
+import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Navigation } from "@/components/Navigation";
@@ -48,6 +50,14 @@ const DIYDownloads = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <MetaTags 
+        title="DIY Video Downloads | Palmer House Productions"
+        description="Instant access to professional video resources - DIY reels guide, strategy blueprint, script bundle, and confidence course. Start creating compelling content today."
+        keywords="DIY video downloads, video strategy blueprint, script bundle, confidence course, video production resources"
+        ogTitle="DIY Video Downloads | Palmer House Productions"
+        ogDescription="Instant access to professional video resources - DIY reels guide, strategy blueprint, script bundle, and confidence course. Start creating compelling content today."
+      />
+      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <StructuredData />

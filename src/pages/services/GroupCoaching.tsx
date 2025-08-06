@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { Users, CheckCircle, Video, Camera, Clock } from "lucide-react";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
+import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Navigation } from "@/components/Navigation";
@@ -57,6 +59,14 @@ const GroupCoaching = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <MetaTags 
+        title="Group Coaching | Palmer House Productions"
+        description="6-week Camera-Ready Brand group coaching program. Build on-camera confidence and create your first 3-5 brand videos with expert guidance and peer support."
+        keywords="group coaching, camera confidence, brand coaching, video skills training, on-camera presence, Palmer House Productions"
+        ogTitle="Group Coaching | Palmer House Productions"
+        ogDescription="6-week Camera-Ready Brand group coaching program. Build on-camera confidence and create your first 3-5 brand videos with expert guidance and peer support."
+      />
+      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <StructuredData />

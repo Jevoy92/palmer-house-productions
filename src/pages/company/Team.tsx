@@ -1,5 +1,7 @@
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
+import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Navigation } from "@/components/Navigation";
@@ -37,6 +39,14 @@ const Team = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <MetaTags 
+        title="Meet Our Team | Palmer House Productions"
+        description="Get to know the creative professionals behind Palmer House Productions - Jevoy Palmer, Kyli Lora, and Trenton Sims. Expert video production team in Seattle."
+        keywords="Palmer House Productions team, Jevoy Palmer, video production team, Seattle creative professionals, video editing experts"
+        ogTitle="Meet Our Team | Palmer House Productions"
+        ogDescription="Get to know the creative professionals behind Palmer House Productions - Jevoy Palmer, Kyli Lora, and Trenton Sims. Expert video production team in Seattle."
+      />
+      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <StructuredData />

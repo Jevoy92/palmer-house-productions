@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { Repeat, CheckCircle, Video, Calendar, Gift } from "lucide-react";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
+import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Navigation } from "@/components/Navigation";
@@ -46,6 +48,14 @@ const MonthlyContent = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <MetaTags 
+        title="Monthly Content | Palmer House Productions"
+        description="Social Authority Kit - professional monthly video content system. Get hero videos, social reels, and client testimonials delivered every month with a 3-month commitment."
+        keywords="monthly video content, social authority kit, video marketing system, consistent content creation, social media videos"
+        ogTitle="Monthly Content | Palmer House Productions"
+        ogDescription="Social Authority Kit - professional monthly video content system. Get hero videos, social reels, and client testimonials delivered every month with a 3-month commitment."
+      />
+      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <StructuredData />

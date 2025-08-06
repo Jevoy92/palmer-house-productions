@@ -1,6 +1,8 @@
 import { Compass, Search, Sparkles, Heart, Wrench, Target } from "lucide-react";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
+import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Navigation } from "@/components/Navigation";
@@ -53,6 +55,14 @@ const Values = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <MetaTags 
+        title="Our Values | Palmer House Productions"
+        description="Discover the core values driving Palmer House Productions - truth over trends, clarity over complexity, emotion over ego. Learn what guides our creative process."
+        keywords="Palmer House Productions values, video production philosophy, creative principles, authenticity in video, Seattle video company culture"
+        ogTitle="Our Values | Palmer House Productions"
+        ogDescription="Discover the core values driving Palmer House Productions - truth over trends, clarity over complexity, emotion over ego. Learn what guides our creative process."
+      />
+      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <StructuredData />

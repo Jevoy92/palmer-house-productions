@@ -1,6 +1,8 @@
 import { Star, Quote } from "lucide-react";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
+import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Navigation } from "@/components/Navigation";
@@ -82,6 +84,14 @@ const Reviews = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <MetaTags 
+        title="Client Reviews | Palmer House Productions"
+        description="Read authentic reviews from Palmer House Productions clients. Discover how our video content systems have transformed businesses and increased ROI by 45% on average."
+        keywords="Palmer House Productions reviews, client testimonials, video production results, business transformation, ROI increase"
+        ogTitle="Client Reviews | Palmer House Productions"
+        ogDescription="Read authentic reviews from Palmer House Productions clients. Discover how our video content systems have transformed businesses and increased ROI by 45% on average."
+      />
+      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <StructuredData />

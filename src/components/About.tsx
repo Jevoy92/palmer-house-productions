@@ -14,9 +14,9 @@ export const About = () => {
             <div className="inline-block px-4 py-2 gradient-social-1 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
               👋 About Us
             </div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-6 text-corporate-dark tracking-tight">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-6 text-corporate-dark tracking-tight">
               Professional Video Production | <span className="text-gradient-1">Seattle-Based Team</span>
-            </h1>
+            </h2>
             <p className="text-base md:text-lg text-corporate-gray max-w-3xl mx-auto font-medium leading-relaxed">
               Palmer House Productions creates high-impact video content for growing businesses and established brands.
             </p>

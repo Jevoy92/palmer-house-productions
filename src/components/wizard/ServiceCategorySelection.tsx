@@ -10,9 +10,9 @@ interface ServiceCategorySelectionProps {
 }
 
 export const ServiceCategorySelection = ({ serviceType, onCategorySelect, onBack }: ServiceCategorySelectionProps) => {
-  // Skip category selection for consultation and glimpse services
-  if (serviceType === "consultation" || serviceType === "base-glimpse" || serviceType === "full-glimpse") {
-    // Auto-advance for these services
+  // Skip category selection for consultation services
+  if (serviceType === "consultation") {
+    // Auto-advance for consultation
     setTimeout(() => onCategorySelect("diy-downloads" as ServiceCategory), 0);
     return null;
   }

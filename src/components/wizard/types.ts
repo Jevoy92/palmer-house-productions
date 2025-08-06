@@ -1,4 +1,4 @@
-export type ServiceType = "consultation" | "base-glimpse" | "full-glimpse" | "monthly" | "coaching" | "bundle";
+export type ServiceType = "consultation" | "monthly" | "coaching" | "bundle" | "diy";
 export type ServiceCategory = "diy-downloads" | "coaching" | "monthly-content" | "one-time-bundles";
 
 // New qualification types

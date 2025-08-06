@@ -1,96 +1,64 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Users, Video, Globe, TrendingUp, DollarSign, Play, Building, Zap, Crown } from "lucide-react";
-import { FeaturesComparison } from "./pricing/FeaturesComparison";
-import { BillingCycle } from "./pricing/BillingCycle";
+import { PRICING } from "@/lib/pricing";
 import { PricingFAQ } from "./pricing/PricingFAQ";
 
 export const PricingTrails = () => {
   const navigate = useNavigate();
-  const [expandedTier, setExpandedTier] = useState<string | null>(null);
-  const [isAnnualBilling, setIsAnnualBilling] = useState(false);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
 
-  const pricingPackages = [
+  const pricingCategories = [
     {
-      tier: "Starter",
-      monthlyPrice: 1500,
-      annualSavings: 10,
+      id: "diy",
+      name: "DIY Digital Downloads",
+      icon: "📱",
+      description: "Instant access to guides, scripts, and courses",
+      priceRange: "$19 - $99",
       gradient: "gradient-social-1",
-      color: "#8b5cf6",
-      headerIcon: Play,
-      popular: false,
-      features: [
-        { icon: Users, label: "Solo founders & small teams (1-5)", details: "Perfect for solopreneurs and service providers starting their video journey" },
-        { icon: Video, label: "4 minutes content per month", details: "15 TikTok Shorts or 1 flagship 4-minute video with professional editing" },
-        { icon: Globe, label: "Instagram & TikTok optimization", details: "Content optimized for the most engaging short-form platforms" },
-        { icon: TrendingUp, label: "Monthly strategy & coaching", details: "Pre-shoot coaching and monthly success check-ins included" }
-      ]
+      items: Object.values(PRICING.DIY_DOWNLOADS)
     },
     {
-      tier: "Professional",
-      monthlyPrice: 3500,
-      annualSavings: 10,
+      id: "coaching", 
+      name: "Group Coaching",
+      icon: "👥",
+      description: "6-week intensive program",
+      priceRange: "$2,000",
       gradient: "gradient-social-2",
-      color: "#f59e0b",
-      headerIcon: Building,
       popular: true,
-      features: [
-        { icon: Users, label: "Growing teams & e-commerce (5-20)", details: "Ideal for scaling businesses and regional service professionals" },
-        { icon: Video, label: "10 minutes content per month", details: "6-10 short-form videos with multi-message campaign approach" },
-        { icon: Globe, label: "Instagram, LinkedIn & TikTok", details: "Cross-platform strategy for professional and social reach" },
-        { icon: TrendingUp, label: "Enhanced analytics & 2 shoots", details: "Bi-weekly strategy sessions with campaign performance insights" }
-      ]
+      items: [PRICING.GROUP_COACHING.CAMERA_READY_BRAND]
     },
     {
-      tier: "Enterprise",
-      monthlyPrice: 7500,
-      annualSavings: 10,
+      id: "monthly",
+      name: "Monthly Content System", 
+      icon: "🔄",
+      description: "Ongoing video production and strategy",
+      priceRange: "$3,000/month",
       gradient: "gradient-social-3",
-      color: "#06b6d4",
-      headerIcon: Zap,
-      popular: false,
-      features: [
-        { icon: Users, label: "B2B brands & agencies (20-100)", details: "Perfect for established businesses building thought leadership" },
-        { icon: Video, label: "25 minutes content per month", details: "Weekly episodic series with evergreen assets and authority content" },
-        { icon: Globe, label: "All major platforms + YouTube", details: "Comprehensive strategy across long-form and short-form content" },
-        { icon: TrendingUp, label: "Dedicated account lead & ROI", details: "Weekly strategy with dedicated support and lead generation focus" }
-      ]
+      items: [PRICING.MONTHLY_CONTENT.SOCIAL_AUTHORITY_KIT]
     },
     {
-      tier: "Ultimate",
-      monthlyPrice: 20000,
-      annualSavings: 10,
+      id: "bundles",
+      name: "One-Time Problem-Solving Bundles",
+      icon: "🛠️", 
+      description: "Targeted solutions for specific needs",
+      priceRange: "$500 - $6,500",
       gradient: "gradient-social-4",
-      color: "#ec4899",
-      headerIcon: Crown,
-      popular: false,
-      features: [
-        { icon: Users, label: "Enterprise & franchises (100+)", details: "National franchises and organizations with global reach" },
-        { icon: Video, label: "75+ minutes unlimited shoots", details: "Complete asset library: ads, training, onboarding, and brand content" },
-        { icon: Globe, label: "Omnichannel + internal systems", details: "Full platform presence plus internal communications and training" },
-        { icon: TrendingUp, label: "Dedicated team & real-time analytics", details: "Pre-production manager, live dashboard, and on-demand support" }
-      ]
+      items: Object.values(PRICING.ONE_TIME_BUNDLES)
     }
   ];
 
-  const handlePackageClick = (tier: string) => {
-    navigate('/contact', { state: { selectedTier: tier } });
+  const handleCategoryClick = (categoryId: string) => {
+    const routes = {
+      'diy': '/services/diy-downloads',
+      'coaching': '/services/group-coaching', 
+      'monthly': '/services/monthly-content',
+      'bundles': '/contact'
+    };
+    navigate(routes[categoryId] || '/contact');
   };
 
-  const toggleExpanded = (tier: string) => {
-    setExpandedTier(expandedTier === tier ? null : tier);
-  };
-
-  const handleBillingChange = (isAnnual: boolean) => {
-    setIsAnnualBilling(isAnnual);
-  };
-
-  const calculatePrice = (monthlyPrice: number, annualSavings: number) => {
-    if (isAnnualBilling) {
-      const annualPrice = monthlyPrice * (1 - annualSavings / 100);
-      return `$${annualPrice.toLocaleString()}/mo`;
-    }
-    return `$${monthlyPrice.toLocaleString()}/mo`;
+  const toggleExpanded = (categoryId: string) => {
+    setExpandedCategory(expandedCategory === categoryId ? null : categoryId);
   };
 
   return (
@@ -106,84 +74,92 @@ export const PricingTrails = () => {
         <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
           <header className="text-center mb-16 md:mb-24">
             <div className="inline-block px-4 md:px-6 py-2 md:py-3 gradient-social-3 rounded-full text-white font-bold text-sm md:text-lg mb-6 md:mb-8 video-shadow">
-              📊 Video Production Packages
+              🎯 Simplified Pricing
             </div>
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-display font-black mb-6 md:mb-8 text-corporate-dark tracking-tight leading-tight">
-              Professional Video Production <span className="text-gradient-1">Pricing Plans</span>
+              Palmer House Productions <span className="text-gradient-1">Package Options</span>
             </h1>
             <div className="text-lg md:text-xl text-corporate-gray max-w-3xl mx-auto mb-8 md:mb-12 font-medium leading-relaxed">
-              Choose the plan that fits your business needs and budget. All packages include strategy, filming, and professional editing.
+              From DIY downloads to comprehensive video production — choose what fits your current needs and growth stage.
             </div>
           </header>
 
-          {/* Billing Cycle */}
-          <BillingCycle onCycleChange={handleBillingChange} />
-
-          {/* Mobile-First Package Grid */}
+          {/* Service Categories Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 mb-16 md:mb-20">
-            {pricingPackages.map((pkg) => (
-              <div key={pkg.tier} className={`relative bg-white rounded-2xl p-6 border-2 transition-all duration-300 ${pkg.popular ? 'border-primary scale-105 md:scale-110' : 'border-gray-200'} hover:shadow-xl`}>
+            {pricingCategories.map((category) => (
+              <div key={category.id} className={`relative bg-white rounded-2xl p-6 border-2 transition-all duration-300 ${category.popular ? 'border-primary scale-105 md:scale-110' : 'border-gray-200'} hover:shadow-xl cursor-pointer`} onClick={() => handleCategoryClick(category.id)}>
                 {/* Popular Badge */}
-                {pkg.popular && (
+                {category.popular && (
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-primary to-primary-dark text-white px-4 py-1 rounded-full text-sm font-bold">
                     Most Popular
                   </div>
                 )}
 
-                {/* Package Header */}
+                {/* Category Header */}
                 <div className="text-center mb-6">
-                  <div className={`w-16 h-16 ${pkg.gradient} rounded-xl flex items-center justify-center mb-4 mx-auto`}>
-                    <pkg.headerIcon size={28} color="white" />
+                  <div className={`w-16 h-16 ${category.gradient} rounded-xl flex items-center justify-center mb-4 mx-auto text-2xl`}>
+                    {category.icon}
                   </div>
-                  <h3 className="text-2xl font-display font-black text-corporate-dark mb-2">{pkg.tier}</h3>
-                  <div className="text-3xl font-black text-corporate-dark">
-                    {calculatePrice(pkg.monthlyPrice, pkg.annualSavings)}
+                  <h3 className="text-xl font-display font-black text-corporate-dark mb-2">{category.name}</h3>
+                  <div className="text-2xl font-black text-corporate-dark mb-2">
+                    {category.priceRange}
                   </div>
-                  {isAnnualBilling && (
-                    <div className="text-sm text-green-600 font-medium">
-                      Save {pkg.annualSavings}% annually
-                    </div>
-                  )}
+                  <p className="text-sm text-corporate-gray">{category.description}</p>
                 </div>
 
-                {/* Features - Mobile Optimized */}
-                <div className="space-y-3 mb-6">
-                  {pkg.features.slice(0, expandedTier === pkg.tier ? undefined : 2).map((feature, index) => (
-                    <div key={index} className="flex items-start gap-3">
-                      <div className="flex-shrink-0 mt-1">
-                        <feature.icon size={18} color={pkg.color} />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-corporate-dark leading-tight">{feature.label}</p>
-                        <p className="text-xs text-corporate-gray mt-1 leading-relaxed">{feature.details}</p>
-                      </div>
+                {/* Sample Items */}
+                <div className="space-y-2 mb-6">
+                  {category.items.slice(0, expandedCategory === category.id ? undefined : 2).map((item, index) => (
+                    <div key={index} className="text-sm">
+                      <p className="font-semibold text-corporate-dark">{item.name}</p>
+                      <p className="text-xs text-corporate-gray">{item.price}</p>
                     </div>
                   ))}
                 </div>
 
                 {/* Expand/Collapse for Mobile */}
-                {pkg.features.length > 2 && (
+                {category.items.length > 2 && (
                   <button
-                    onClick={() => toggleExpanded(pkg.tier)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleExpanded(category.id);
+                    }}
                     className="w-full text-sm text-primary font-medium mb-4 hover:text-primary-dark transition-colors"
                   >
-                    {expandedTier === pkg.tier ? 'Show Less' : `Show All ${pkg.features.length} Features`}
+                    {expandedCategory === category.id ? 'Show Less' : `Show All ${category.items.length} Options`}
                   </button>
                 )}
 
                 {/* CTA Button */}
                 <button
-                  onClick={() => handlePackageClick(pkg.tier)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCategoryClick(category.id);
+                  }}
                   className={`w-full py-3 rounded-xl font-bold text-sm transition-all duration-300 mobile-touch-target ${
-                    pkg.popular 
+                    category.popular 
                       ? 'bg-gradient-to-r from-primary to-primary-dark text-white hover:shadow-lg' 
                       : 'border-2 border-gray-300 text-corporate-dark hover:border-primary hover:text-primary'
                   }`}
                 >
-                  Get Started →
+                  Explore {category.name} →
                 </button>
               </div>
             ))}
+          </div>
+
+          {/* Bonus Pack Highlight */}
+          <div className="bg-gradient-to-r from-primary/10 to-primary-dark/10 rounded-3xl p-8 mb-16 text-center">
+            <div className="text-4xl mb-4">🎁</div>
+            <h3 className="text-2xl font-display font-black text-corporate-dark mb-4">
+              The Explorer's Bonus Pack
+            </h3>
+            <p className="text-lg text-corporate-gray mb-4">
+              <strong>FREE with:</strong> Monthly Social Authority Kit + Any One-Time Bundle $4,500+
+            </p>
+            <p className="text-sm text-corporate-gray">
+              <strong>Total Value:</strong> {PRICING.BONUS_PACK.totalValue} • Includes scripts, courses, and coaching sessions
+            </p>
           </div>
 
           {/* Bottom CTA Section */}
@@ -209,8 +185,6 @@ export const PricingTrails = () => {
         </div>
       </section>
 
-      {/* Sections with billing integration */}
-      <FeaturesComparison isAnnualBilling={isAnnualBilling} />
       <PricingFAQ />
     </main>
   );

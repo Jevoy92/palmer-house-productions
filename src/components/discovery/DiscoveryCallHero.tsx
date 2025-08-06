@@ -17,15 +17,14 @@ export const DiscoveryCallHero = () => {
           <div className="inline-block px-6 py-3 gradient-social-2 rounded-full text-white font-bold text-lg mb-8 video-shadow">
             🔍 Discovery Call
           </div>
-          <h1 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-            Not Sure Where to Start?
-            <br />
-            <span className="text-gradient-1">Book a Glimpse</span>
+          <h1 className="text-3xl md:text-4xl font-display font-black mb-6 text-corporate-dark tracking-tight">
+            Discovery <span className="text-gradient-1">Call</span>
           </h1>
-          <p className="text-2xl text-corporate-gray mb-12 max-w-4xl mx-auto font-medium">
-            Our Discovery Call helps align your goals with the right package and strategy — fast.
-            <br />
-            <span className="text-gradient-2 font-bold">One call, total clarity.</span>
+          <p className="text-lg text-corporate-gray mb-8 max-w-3xl mx-auto font-medium">
+            Free consultation to align your goals with the right video strategy.
+          </p>
+          <p className="text-base text-corporate-gray mb-8 max-w-2xl mx-auto">
+            <span className="text-gradient-2 font-bold">15 minutes to clarity.</span>
           </p>
         </div>
 
@@ -51,12 +50,12 @@ export const DiscoveryCallHero = () => {
         </div>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-6 justify-center">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={handleBookCall}
-            className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow-lg"
+            className="px-6 py-4 gradient-social-1 text-white font-bold text-base rounded-xl hover:scale-105 transition-all duration-300 video-shadow-lg min-h-[44px]"
           >
-            Book Your Discovery Call
+            Book Discovery Call
           </button>
           <button
             onClick={() => {
@@ -65,9 +64,9 @@ export const DiscoveryCallHero = () => {
                 quizElement.scrollIntoView({ behavior: 'smooth' });
               }
             }}
-            className="px-10 py-5 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow"
+            className="px-6 py-4 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-base rounded-xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow min-h-[44px]"
           >
-            Take Video Match Quiz
+            Take Quiz
           </button>
         </div>
       </div>

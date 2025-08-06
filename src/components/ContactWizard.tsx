@@ -24,38 +24,43 @@ export const ContactWizard = ({ open, onOpenChange, initialService }: ContactWiz
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className={`max-w-4xl ${currentStep === 11 ? 'max-h-[95vh]' : 'max-h-[90vh]'} overflow-y-auto bg-gradient-to-br from-video-white to-corporate-light rounded-3xl border-0 video-shadow-lg p-0`}>
+      <DialogContent className={`max-w-3xl w-[95vw] ${currentStep === 11 ? 'max-h-[95vh]' : 'max-h-[90vh]'} overflow-y-auto bg-gradient-to-br from-video-white to-corporate-light rounded-2xl border-0 video-shadow-lg p-0`}>
         <VisuallyHidden>
           <DialogTitle>Contact Wizard</DialogTitle>
           <DialogDescription>Complete our qualification process to get a custom proposal</DialogDescription>
         </VisuallyHidden>
         
-        {/* Step Indicator - show for steps 1-10 */}
+        {/* Mobile-Optimized Step Indicator */}
         {currentStep <= 10 && (
-          <div className="flex items-center justify-center p-4 border-b border-corporate-light overflow-x-auto">
-            <div className="flex items-center space-x-2 min-w-max">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((step) => (
-                <div key={step} className="flex items-center">
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${
-                      step === currentStep
-                        ? "gradient-social-1 text-white scale-110"
-                        : step < currentStep
-                        ? "bg-corporate-dark text-white"
-                        : "bg-corporate-light text-corporate-gray"
-                    }`}
-                  >
-                    {step}
-                  </div>
-                  {step < 10 && (
+          <div className="p-3 border-b border-corporate-light">
+            <div className="flex items-center justify-center">
+              <div className="flex items-center space-x-1 overflow-x-auto pb-2">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((step) => (
+                  <div key={step} className="flex items-center flex-shrink-0">
                     <div
-                      className={`w-8 h-1 mx-1 transition-all duration-300 ${
-                        step < currentStep ? "bg-corporate-dark" : "bg-corporate-light"
+                      className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${
+                        step === currentStep
+                          ? "gradient-social-1 text-white"
+                          : step < currentStep
+                          ? "bg-corporate-dark text-white"
+                          : "bg-corporate-light text-corporate-gray"
                       }`}
-                    />
-                  )}
-                </div>
-              ))}
+                    >
+                      {step}
+                    </div>
+                    {step < 10 && (
+                      <div
+                        className={`w-4 h-0.5 mx-0.5 transition-all duration-300 ${
+                          step < currentStep ? "bg-corporate-dark" : "bg-corporate-light"
+                        }`}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="text-center mt-2">
+              <span className="text-xs text-corporate-gray">Step {currentStep} of 10</span>
             </div>
           </div>
         )}

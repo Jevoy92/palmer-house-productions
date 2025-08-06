@@ -142,31 +142,32 @@ export const VideoPackagesTiers = () => {
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
         {/* Hero Section */}
-        <div className="text-center mb-12 md:mb-20">
-          <div className="inline-block px-4 md:px-6 py-2 md:py-3 gradient-social-2 rounded-full text-white font-bold text-base md:text-lg mb-6 md:mb-8 video-shadow">
-            🎬 Palmer House Productions
+        <div className="text-center mb-8 md:mb-12">
+          <div className="inline-block px-3 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-4 video-shadow">
+            🎬 Video Packages
           </div>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-black mb-4 md:mb-8 text-corporate-dark tracking-tight">
-            Simplified Pricing + <span className="text-gradient-1">Package Layout</span>
+          <h1 className="text-2xl md:text-4xl font-display font-black mb-4 text-corporate-dark tracking-tight">
+            Video Production <span className="text-gradient-1">Packages</span>
           </h1>
-          <p className="text-lg md:text-2xl text-corporate-gray mb-4 md:mb-6 max-w-4xl mx-auto font-medium px-4">
-            From DIY downloads to full-service production — choose your path to video mastery.
+          <p className="text-base md:text-lg text-corporate-gray mb-4 max-w-2xl mx-auto px-4">
+            Professional video content for businesses. Choose the package that fits your needs.
           </p>
-          <div className="inline-block px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 text-sm font-medium mb-6">
-            🔥 Only 3-5 founder spots open each month for personalized attention
+          <div className="inline-block px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 text-xs font-medium mb-6">
+            📅 Limited monthly availability
           </div>
         </div>
 
         {/* Digital Downloads Section */}
         <div className="mb-16 md:mb-24">
-          <div className="text-center mb-8 md:mb-12">
-            <div className="inline-flex items-center px-4 py-2 gradient-social-1 rounded-full text-white font-bold text-sm md:text-base mb-4">
-              <Download size={20} className="mr-2" />
-              ✨ Instant Digital Downloads (DIY Starters)
+          <div className="text-center mb-6 md:mb-8">
+            <div className="inline-flex items-center px-3 py-2 gradient-social-1 rounded-full text-white font-bold text-sm mb-3">
+              <Download size={16} className="mr-2" />
+              Digital Downloads
             </div>
-            <h2 className="text-3xl md:text-5xl font-display font-black text-corporate-dark mb-4">
-              Start Your Video Journey <span className="text-gradient-2">Today</span>
+            <h2 className="text-xl md:text-2xl font-display font-black text-corporate-dark mb-2">
+              DIY Video <span className="text-gradient-2">Resources</span>
             </h2>
+            <p className="text-sm text-corporate-gray">Start creating immediately with our templates and guides</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -199,8 +200,8 @@ export const VideoPackagesTiers = () => {
               <Users size={20} className="mr-2" />
               🗓️ 6-Week Group Coaching: "The Camera-Ready Brand"
             </div>
-            <h2 className="text-3xl md:text-5xl font-display font-black mb-6 text-corporate-dark">
-              Transform Your <span className="text-gradient-purple">On-Camera Presence</span>
+            <h2 className="text-xl md:text-2xl font-display font-black mb-4 text-corporate-dark">
+              Group <span className="text-gradient-purple">Video Coaching</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               <div className="bg-gray-50 p-6 rounded-2xl border-2 border-social-purple/20">
@@ -235,9 +236,10 @@ export const VideoPackagesTiers = () => {
               <Repeat size={20} className="mr-2" />
               ♻️ Monthly Content System: "The Social Authority Kit"
             </div>
-            <h2 className="text-3xl md:text-5xl font-display font-black text-corporate-dark mb-4">
-              Consistent Content, <span className="text-gradient-3">Delivered Monthly</span>
+            <h2 className="text-xl md:text-2xl font-display font-black text-corporate-dark mb-2">
+              Monthly <span className="text-gradient-3">Content System</span>
             </h2>
+            <p className="text-sm text-corporate-gray">Consistent professional video content delivered monthly</p>
           </div>
 
           <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-3xl video-shadow-lg">
@@ -301,9 +303,10 @@ export const VideoPackagesTiers = () => {
               <Wrench size={20} className="mr-2" />
               🛠️ One-Time Problem-Solving Bundles
             </div>
-            <h2 className="text-3xl md:text-5xl font-display font-black text-corporate-dark mb-4">
-              Solve Specific Video <span className="text-gradient-4">Challenges</span>
+            <h2 className="text-xl md:text-2xl font-display font-black text-corporate-dark mb-2">
+              One-Time <span className="text-gradient-4">Bundles</span>
             </h2>
+            <p className="text-sm text-corporate-gray">Targeted solutions for specific video needs</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">

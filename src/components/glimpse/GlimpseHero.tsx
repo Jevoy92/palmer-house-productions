@@ -28,32 +28,30 @@ export const GlimpseHero = () => {
           </div>
         </div>
         
-        <h1 className="text-6xl md:text-8xl font-display font-black mb-8 tracking-tight leading-none">
-          See Your Brand's Future
-          <br />
-          <span className="text-gradient-1">Before It's Built</span>
+        <h1 className="text-3xl md:text-5xl font-display font-black mb-6 tracking-tight leading-tight">
+          Strategic Brand <span className="text-gradient-1">Visualization</span>
         </h1>
         
-        <p className="text-2xl md:text-3xl text-corporate-gray mb-6 font-medium max-w-5xl mx-auto leading-tight">
-          In one real-time strategy session, we build a <span className="text-gradient-2 font-bold">cinematic customer journey prototype</span> that helps you visualize the experience your brand deserves.
+        <p className="text-lg md:text-xl text-corporate-gray mb-4 font-medium max-w-3xl mx-auto leading-relaxed">
+          Interactive strategy session where we prototype your <span className="text-gradient-2 font-bold">brand experience</span> in real-time.
         </p>
         
-        <p className="text-xl text-corporate-gray mb-12 font-medium max-w-4xl mx-auto">
-          With zero dev time and all the clarity.
+        <p className="text-base text-corporate-gray mb-8 font-medium max-w-2xl mx-auto">
+          See your vision come to life before committing to production.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-6 justify-center mb-24">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
           <button 
             onClick={handleBookGlimpse}
-            className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow-lg"
+            className="px-6 py-4 gradient-social-1 text-white font-bold text-base rounded-xl hover:scale-105 transition-all duration-300 video-shadow-lg min-h-[44px]"
           >
-            Book Your Glimpse 🗺️
+            Book Strategy Session
           </button>
           <button 
             onClick={handleDiscoveryCall}
-            className="px-10 py-5 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow"
+            className="px-6 py-4 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-base rounded-xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow min-h-[44px]"
           >
-            Talk to Us First 📞
+            Discovery Call
           </button>
         </div>
         

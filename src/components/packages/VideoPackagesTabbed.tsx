@@ -131,49 +131,49 @@ export const VideoPackagesTabbed = () => {
 
       <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
         {/* Hero Section */}
-        <div className="text-center mb-12 md:mb-16">
-          <div className="inline-block px-4 md:px-6 py-2 md:py-3 gradient-social-2 rounded-full text-white font-bold text-base md:text-lg mb-6 md:mb-8 video-shadow">
-            🎬 Palmer House Productions
+        <div className="text-center mb-8 md:mb-12">
+          <div className="inline-block px-3 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-4 video-shadow">
+            🎬 Video Packages
           </div>
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-black mb-4 md:mb-8 text-corporate-dark tracking-tight">
-            Simplified Pricing + <span className="text-gradient-1">Package Layout</span>
+          <h1 className="text-2xl md:text-4xl font-display font-black mb-4 text-corporate-dark tracking-tight">
+            Video Production <span className="text-gradient-1">Services</span>
           </h1>
-          <p className="text-lg md:text-2xl text-corporate-gray mb-4 md:mb-6 max-w-4xl mx-auto font-medium px-4">
-            From DIY downloads to full-service production — choose your path to video mastery.
+          <p className="text-base md:text-lg text-corporate-gray mb-4 max-w-2xl mx-auto px-4">
+            Professional video content organized by service type for easy browsing.
           </p>
-          <div className="inline-block px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 text-sm font-medium mb-8">
-            🔥 Only 3-5 founder spots open each month for personalized attention
+          <div className="inline-block px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 text-xs font-medium mb-6">
+            📅 Limited monthly availability
           </div>
         </div>
 
         {/* Tabbed Interface */}
         <Tabs defaultValue="diy" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-8">
-            <TabsTrigger value="diy" className="text-sm">
-              <Download size={16} className="mr-2" />
-              DIY
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-6 h-auto">
+            <TabsTrigger value="diy" className="text-xs py-3 min-h-[44px] flex flex-col md:flex-row items-center">
+              <Download size={14} className="mb-1 md:mb-0 md:mr-2" />
+              <span>DIY</span>
             </TabsTrigger>
-            <TabsTrigger value="coaching" className="text-sm">
-              <Users size={16} className="mr-2" />
-              Coaching
+            <TabsTrigger value="coaching" className="text-xs py-3 min-h-[44px] flex flex-col md:flex-row items-center">
+              <Users size={14} className="mb-1 md:mb-0 md:mr-2" />
+              <span>Coaching</span>
             </TabsTrigger>
-            <TabsTrigger value="monthly" className="text-sm">
-              <Repeat size={16} className="mr-2" />
-              Monthly
+            <TabsTrigger value="monthly" className="text-xs py-3 min-h-[44px] flex flex-col md:flex-row items-center">
+              <Repeat size={14} className="mb-1 md:mb-0 md:mr-2" />
+              <span>Monthly</span>
             </TabsTrigger>
-            <TabsTrigger value="bundles" className="text-sm">
-              <Wrench size={16} className="mr-2" />
-              Bundles
+            <TabsTrigger value="bundles" className="text-xs py-3 min-h-[44px] flex flex-col md:flex-row items-center">
+              <Wrench size={14} className="mb-1 md:mb-0 md:mr-2" />
+              <span>Bundles</span>
             </TabsTrigger>
           </TabsList>
 
           {/* DIY Downloads Tab */}
           <TabsContent value="diy" className="space-y-6">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-display font-black text-corporate-dark mb-4">
-                ✨ Instant Digital Downloads
+            <div className="text-center mb-6">
+              <h2 className="text-lg md:text-xl font-display font-black text-corporate-dark mb-2">
+                📁 Digital Downloads
               </h2>
-              <p className="text-lg text-corporate-gray">Start your video journey today with our DIY resources</p>
+              <p className="text-sm text-corporate-gray">Instant access to templates, guides and resources</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

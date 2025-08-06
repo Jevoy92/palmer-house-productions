@@ -1,9 +1,26 @@
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { CheckCircle, Circle, Camera, Target, Lightbulb, TrendingUp, ArrowRight } from "lucide-react";
-import { trackEvent } from "@/lib/analytics";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { 
+  CheckCircle, 
+  AlertTriangle, 
+  TrendingUp, 
+  Video, 
+  Target, 
+  BarChart3,
+  ArrowLeft,
+  ArrowRight,
+  Star
+} from "lucide-react";
+import { useAssessmentProgress } from "@/hooks/useAssessmentProgress";
+import { ProgressResume } from "./ProgressResume";
+import { ResultsExport } from "./ResultsExport";
+import { EnhancedResults } from "./EnhancedResults";
 
 interface VideoReadinessAuditProps {
   onBack?: () => void;
@@ -12,7 +29,7 @@ interface VideoReadinessAuditProps {
 interface AssessmentSection {
   id: string;
   title: string;
-  icon: any;
+  description: string;
   questions: {
     id: string;
     text: string;
@@ -21,337 +38,384 @@ interface AssessmentSection {
 }
 
 interface SectionPerformance {
-  section: string;
+  name: string;
   score: number;
   maxScore: number;
   percentage: number;
-  status: 'strong' | 'developing' | 'needs-attention';
-  specificGaps: string[];
-  priorities: string[];
+  gaps: string[];
+  recommendations: string[];
 }
 
 interface AuditResults {
-  totalScore: number;
-  maxScore: number;
-  percentage: number;
-  readinessLevel: 'Beginner' | 'Developing' | 'Ready' | 'Advanced';
+  overallScore: number;
+  readinessLevel: string;
+  description: string;
   sectionPerformance: SectionPerformance[];
-  topStrengths: string[];
-  criticalGaps: string[];
-  recommendations: {
-    immediate: string[];
-    shortTerm: string[];
-    longTerm: string[];
-  };
-  suggestedServices: string[];
-  industryBenchmark: number;
-  nextSteps: string[];
+  immediateActions: {
+    title: string;
+    description: string;
+    priority: string;
+    timeline: string;
+    phase?: string;
+  }[];
+  suggestedServices: {
+    name: string;
+    description: string;
+    matchScore: number;
+    timeline: string;
+    investment: string;
+  }[];
+  monthlyMilestones: {
+    month: number;
+    title: string;
+    goals: string[];
+    metrics: string[];
+  }[];
 }
 
 export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
-  const [currentSection, setCurrentSection] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, boolean>>({});
+  const { progress, saveProgress, clearProgress, hasProgress } = useAssessmentProgress('video-readiness');
+  const [currentSection, setCurrentSection] = useState(progress?.currentSection || 0);
+  const [answers, setAnswers] = useState<Record<string, number>>(progress?.answers || {});
   const [showResults, setShowResults] = useState(false);
-  const [emailForResults, setEmailForResults] = useState("");
-  const [businessContext, setBusinessContext] = useState({
-    industry: "",
-    businessSize: "",
-    currentVideoExperience: "none"
+  const [emailForResults, setEmailForResults] = useState('');
+  const [businessContext, setBusinessContext] = useState(progress?.businessContext || {
+    industry: '',
+    businessSize: '',
+    currentVideoUse: ''
   });
+  const [showResumePrompt, setShowResumePrompt] = useState(hasProgress && !showResults);
 
   const sections: AssessmentSection[] = [
     {
-      id: "strategy",
-      title: "Strategic Foundation",
-      icon: Target,
+      id: 'strategic',
+      title: 'Strategic Foundation',
+      description: 'Assess your video marketing strategy and planning',
       questions: [
-        { id: "clear-goals", text: "Do you have clear video marketing goals?", points: 5 },
-        { id: "target-audience", text: "Do you know your target audience's video preferences?", points: 5 },
-        { id: "content-pillars", text: "Have you defined your content pillars/themes?", points: 4 },
-        { id: "competitor-analysis", text: "Have you analyzed competitor video strategies?", points: 3 },
-        { id: "success-metrics", text: "Do you have defined success metrics for video content?", points: 4 }
+        { id: 'clear-goals', text: 'Do you have clear, measurable video marketing goals?', points: 5 },
+        { id: 'target-audience', text: 'Have you defined your target audience and their video preferences?', points: 5 },
+        { id: 'content-strategy', text: 'Do you have a documented content strategy?', points: 4 },
+        { id: 'competitor-analysis', text: 'Have you analyzed competitor video strategies?', points: 3 },
+        { id: 'success-metrics', text: 'Do you track video performance metrics consistently?', points: 4 },
+        { id: 'budget-allocated', text: 'Do you have a dedicated video marketing budget?', points: 3 }
       ]
     },
     {
-      id: "technical",
-      title: "Technical Readiness",
-      icon: Camera,
+      id: 'technical',
+      title: 'Technical Readiness',
+      description: 'Evaluate your technical capabilities and resources',
       questions: [
-        { id: "equipment", text: "Do you have basic video equipment (camera, mic, lighting)?", points: 4 },
-        { id: "editing-software", text: "Do you have access to video editing software?", points: 3 },
-        { id: "hosting-platform", text: "Do you have a video hosting/distribution plan?", points: 4 },
-        { id: "brand-assets", text: "Do you have brand assets ready (logos, templates, etc.)?", points: 3 },
-        { id: "technical-skills", text: "Does your team have basic video production skills?", points: 4 }
+        { id: 'equipment-basic', text: 'Do you have basic video equipment (camera, microphone)?', points: 4 },
+        { id: 'lighting-setup', text: 'Do you have proper lighting equipment or setup?', points: 3 },
+        { id: 'editing-software', text: 'Do you have access to video editing software?', points: 4 },
+        { id: 'hosting-platform', text: 'Do you have a video hosting and distribution strategy?', points: 4 },
+        { id: 'technical-skills', text: 'Does your team have video production and editing skills?', points: 5 }
       ]
     },
     {
-      id: "content",
-      title: "Content Planning",
-      icon: Lightbulb,
+      id: 'content',
+      title: 'Content Planning',
+      description: 'Review your content creation and planning processes',
       questions: [
-        { id: "content-calendar", text: "Do you have a content calendar or planning system?", points: 4 },
-        { id: "script-templates", text: "Do you have script templates or talking points?", points: 3 },
-        { id: "content-repurposing", text: "Do you have a content repurposing strategy?", points: 4 },
-        { id: "approval-process", text: "Do you have a clear content approval process?", points: 3 },
-        { id: "content-archive", text: "Do you maintain an organized content archive?", points: 3 }
+        { id: 'content-calendar', text: 'Do you maintain a consistent content calendar?', points: 4 },
+        { id: 'script-templates', text: 'Do you have standardized script templates or frameworks?', points: 3 },
+        { id: 'brand-guidelines', text: 'Do you have video brand guidelines and style standards?', points: 4 },
+        { id: 'approval-process', text: 'Is there a clear content review and approval process?', points: 3 },
+        { id: 'repurposing-strategy', text: 'Do you have a content repurposing and distribution strategy?', points: 4 }
       ]
     },
     {
-      id: "distribution",
-      title: "Distribution & Analytics",
-      icon: TrendingUp,
+      id: 'distribution',
+      title: 'Distribution & Analytics',
+      description: 'Assess your distribution channels and measurement capabilities',
       questions: [
-        { id: "multi-platform", text: "Do you distribute content across multiple platforms?", points: 4 },
-        { id: "analytics-tracking", text: "Do you track video performance analytics?", points: 5 },
-        { id: "audience-engagement", text: "Do you actively engage with video comments/feedback?", points: 3 },
-        { id: "optimization", text: "Do you optimize videos based on performance data?", points: 4 },
-        { id: "conversion-tracking", text: "Do you track video-to-conversion metrics?", points: 5 }
+        { id: 'multi-platform', text: 'Do you distribute content across multiple relevant platforms?', points: 4 },
+        { id: 'optimization', text: 'Do you optimize videos for each platform (format, length, etc.)?', points: 4 },
+        { id: 'analytics-tracking', text: 'Do you regularly analyze video performance data?', points: 5 },
+        { id: 'audience-engagement', text: 'Do you actively engage with your video audience?', points: 3 },
+        { id: 'roi-measurement', text: 'Can you measure the ROI of your video marketing efforts?', points: 4 }
       ]
     }
   ];
 
   const calculateResults = (): AuditResults => {
-    let totalScore = 0;
-    let maxScore = 0;
+    const sectionPerformance = sections.map(section => {
+      const sectionAnswers = section.questions.filter(q => answers[q.id] !== undefined);
+      const score = sectionAnswers.reduce((sum, q) => sum + (answers[q.id] || 0), 0);
+      const maxScore = section.questions.reduce((sum, q) => sum + q.points, 0);
+      const percentage = Math.round((score / maxScore) * 100);
 
-    // Calculate section-specific performance
-    const sectionPerformance: SectionPerformance[] = sections.map(section => {
-      let sectionScore = 0;
-      let sectionMaxScore = 0;
-      const sectionGaps: string[] = [];
-      
-      section.questions.forEach(question => {
-        sectionMaxScore += question.points;
-        if (answers[question.id]) {
-          sectionScore += question.points;
-        } else {
-          // Map specific question to actionable gap
-          if (section.id === 'strategy' && question.id === 'clear-goals') {
-            sectionGaps.push("Define specific video marketing goals");
-          } else if (section.id === 'technical' && question.id === 'equipment') {
-            sectionGaps.push("Invest in basic video equipment");
-          } else if (section.id === 'content' && question.id === 'content-calendar') {
-            sectionGaps.push("Create content planning system");
-          } else if (section.id === 'distribution' && question.id === 'analytics-tracking') {
-            sectionGaps.push("Set up video performance tracking");
-          }
+      const gaps: string[] = [];
+      const recommendations: string[] = [];
+
+      section.questions.forEach(q => {
+        if ((answers[q.id] || 0) < q.points * 0.6) {
+          gaps.push(q.text);
+          
+          // Add specific recommendations based on question type
+          if (q.id.includes('goals')) recommendations.push('Define SMART video marketing objectives');
+          if (q.id.includes('audience')) recommendations.push('Conduct audience research and create viewer personas');
+          if (q.id.includes('equipment')) recommendations.push('Invest in basic video production equipment');
+          if (q.id.includes('analytics')) recommendations.push('Set up comprehensive video analytics tracking');
         }
       });
-      
-      const sectionPercentage = Math.round((sectionScore / sectionMaxScore) * 100);
-      let status: SectionPerformance['status'];
-      let priorities: string[] = [];
-      
-      if (sectionPercentage >= 80) {
-        status = 'strong';
-        priorities = [`Optimize ${section.title.toLowerCase()} for scale`];
-      } else if (sectionPercentage >= 50) {
-        status = 'developing';
-        priorities = [`Strengthen ${section.title.toLowerCase()} fundamentals`];
-      } else {
-        status = 'needs-attention';
-        priorities = [`Urgent: Build ${section.title.toLowerCase()} foundation`];
-      }
-      
-      totalScore += sectionScore;
-      maxScore += sectionMaxScore;
-      
+
       return {
-        section: section.title,
-        score: sectionScore,
-        maxScore: sectionMaxScore,
-        percentage: sectionPercentage,
-        status,
-        specificGaps: sectionGaps,
-        priorities
+        name: section.title,
+        score,
+        maxScore,
+        percentage,
+        gaps,
+        recommendations
       };
     });
 
-    const percentage = Math.round((totalScore / maxScore) * 100);
-    
-    // Identify top strengths and critical gaps
-    const topStrengths = sectionPerformance
-      .filter(section => section.status === 'strong')
-      .map(section => section.section);
-    
-    const criticalGaps = sectionPerformance
-      .filter(section => section.status === 'needs-attention')
-      .map(section => section.section);
-    
-    // Industry benchmark (simulated based on typical SMB performance)
-    const industryBenchmark = businessContext.industry === 'technology' ? 72 : 
-                             businessContext.industry === 'healthcare' ? 65 : 68;
-    
-    // Generate phase-based recommendations
-    const immediate: string[] = [];
-    const shortTerm: string[] = [];
-    const longTerm: string[] = [];
-    
-    sectionPerformance.forEach(section => {
-      if (section.status === 'needs-attention') {
-        immediate.push(...section.priorities);
-        immediate.push(...section.specificGaps.slice(0, 2));
-      } else if (section.status === 'developing') {
-        shortTerm.push(...section.priorities);
-      } else {
-        longTerm.push(...section.priorities);
-      }
-    });
-    
-    // Add specific next steps based on readiness level
-    let readinessLevel: AuditResults['readinessLevel'];
-    let suggestedServices: string[];
-    let nextSteps: string[];
+    const totalScore = sectionPerformance.reduce((sum, section) => sum + section.score, 0);
+    const maxTotalScore = sectionPerformance.reduce((sum, section) => sum + section.maxScore, 0);
+    const overallScore = Math.round((totalScore / maxTotalScore) * 100);
 
-    if (percentage >= 80) {
-      readinessLevel = 'Advanced';
-      suggestedServices = ["Monthly Content Partnership", "Custom Video Strategy"];
-      nextSteps = [
-        "Schedule advanced strategy consultation",
-        "Plan content scaling roadmap",
-        "Implement advanced analytics tracking"
-      ];
-    } else if (percentage >= 60) {
-      readinessLevel = 'Ready';
-      suggestedServices = ["Group Coaching", "Monthly Content Partnership"];
-      nextSteps = [
-        "Join group coaching program",
-        "Create detailed content calendar",
-        "Optimize current video processes"
-      ];
-    } else if (percentage >= 40) {
-      readinessLevel = 'Developing';
-      suggestedServices = ["DIY Downloads", "Group Coaching"];
-      nextSteps = [
-        "Download video marketing templates",
-        "Complete video fundamentals training",
-        "Set up basic equipment and workspace"
-      ];
+    let readinessLevel = '';
+    let description = '';
+
+    if (overallScore >= 85) {
+      readinessLevel = 'Video Marketing Advanced';
+      description = 'Your organization has excellent video marketing capabilities and is ready for advanced strategies.';
+    } else if (overallScore >= 70) {
+      readinessLevel = 'Video Marketing Ready';
+      description = 'You have solid foundations in place and are ready to scale your video marketing efforts.';
+    } else if (overallScore >= 50) {
+      readinessLevel = 'Video Marketing Developing';
+      description = 'You have some video marketing elements in place but need to strengthen key areas.';
     } else {
-      readinessLevel = 'Beginner';
-      suggestedServices = ["DIY Downloads", "Discovery Call"];
-      nextSteps = [
-        "Schedule discovery call",
-        "Start with video marketing basics",
-        "Define initial video goals and strategy"
-      ];
+      readinessLevel = 'Video Marketing Beginner';
+      description = 'You are in the early stages of video marketing and need foundational development.';
+    }
+
+    // Generate phase-based immediate actions
+    const immediateActions = [];
+    const weakestSections = sectionPerformance
+      .filter(section => section.percentage < 70)
+      .sort((a, b) => a.percentage - b.percentage)
+      .slice(0, 4);
+
+    weakestSections.forEach((section, index) => {
+      const priority = index === 0 ? 'High' : index === 1 ? 'Medium' : 'Low';
+      const timeline = priority === 'High' ? '1-2 weeks' : priority === 'Medium' ? '2-4 weeks' : '1-2 months';
+      
+      section.recommendations.slice(0, 2).forEach(rec => {
+        immediateActions.push({
+          title: rec,
+          description: `Focus on ${section.name.toLowerCase()} improvements to strengthen your video marketing foundation.`,
+          priority,
+          timeline,
+          phase: section.name
+        });
+      });
+    });
+
+    // Generate monthly milestones
+    const monthlyMilestones = [
+      {
+        month: 1,
+        title: 'Foundation Setup',
+        goals: ['Complete video marketing audit', 'Define clear objectives', 'Set up basic equipment'],
+        metrics: ['Goal clarity score', 'Equipment readiness', 'Team training completion']
+      },
+      {
+        month: 2,
+        title: 'Content Strategy Development',
+        goals: ['Create content calendar', 'Develop script templates', 'Establish brand guidelines'],
+        metrics: ['Content calendar completion', 'Script template usage', 'Brand consistency score']
+      },
+      {
+        month: 3,
+        title: 'Production & Publishing',
+        goals: ['Produce first video series', 'Optimize distribution channels', 'Begin audience engagement'],
+        metrics: ['Video production rate', 'Platform optimization', 'Engagement rate']
+      },
+      {
+        month: 4,
+        title: 'Analytics & Optimization',
+        goals: ['Implement tracking systems', 'Analyze performance data', 'Refine strategy based on insights'],
+        metrics: ['Analytics setup completion', 'Performance improvement', 'Strategy refinements']
+      },
+      {
+        month: 5,
+        title: 'Scale & Expand',
+        goals: ['Increase content volume', 'Expand to new platforms', 'Advanced optimization'],
+        metrics: ['Content volume increase', 'Platform expansion', 'Advanced metric tracking']
+      },
+      {
+        month: 6,
+        title: 'Mastery & Innovation',
+        goals: ['Implement advanced strategies', 'Explore new video formats', 'Maximize ROI'],
+        metrics: ['ROI improvement', 'Innovation implementation', 'Market leadership position']
+      }
+    ];
+
+    // Generate service recommendations based on score and gaps
+    const suggestedServices = [];
+    
+    if (overallScore < 50) {
+      suggestedServices.push({
+        name: 'DIY Video Marketing Starter Kit',
+        description: 'Templates, training, and step-by-step guides to build your foundation',
+        matchScore: 95,
+        timeline: '2-4 weeks',
+        investment: '$500-$1,500'
+      });
+    }
+    
+    if (overallScore >= 30 && overallScore < 70) {
+      suggestedServices.push({
+        name: 'Group Video Marketing Coaching',
+        description: 'Structured group coaching to develop strategy and skills',
+        matchScore: 88,
+        timeline: '2-3 months',
+        investment: '$2,500-$5,000'
+      });
+    }
+    
+    if (overallScore >= 50) {
+      suggestedServices.push({
+        name: 'Monthly Content Partnership',
+        description: 'Professional video creation and strategic guidance',
+        matchScore: 92,
+        timeline: '3-6 months',
+        investment: '$8,000-$15,000'
+      });
     }
 
     return {
-      totalScore,
-      maxScore,
-      percentage,
+      overallScore,
       readinessLevel,
+      description,
       sectionPerformance,
-      topStrengths,
-      criticalGaps,
-      recommendations: { immediate, shortTerm, longTerm },
+      immediateActions,
       suggestedServices,
-      industryBenchmark,
-      nextSteps
+      monthlyMilestones
     };
   };
 
-  const handleAnswer = (questionId: string, value: boolean) => {
-    setAnswers(prev => ({ ...prev, [questionId]: value }));
-    trackEvent('audit_question_answered', {
-      question_id: questionId,
-      section: sections[currentSection].id,
-      answer: value
+  const handleAnswer = (questionId: string, value: number) => {
+    const newAnswers = { ...answers, [questionId]: value };
+    setAnswers(newAnswers);
+    
+    // Auto-save progress
+    saveProgress({
+      currentSection,
+      answers: newAnswers,
+      businessContext
     });
   };
 
   const handleNextSection = () => {
     if (currentSection < sections.length - 1) {
-      setCurrentSection(prev => prev + 1);
-    } else {
-      handleShowResults();
+      const newSection = currentSection + 1;
+      setCurrentSection(newSection);
+      saveProgress({
+        currentSection: newSection,
+        answers,
+        businessContext
+      });
     }
   };
 
   const handleShowResults = () => {
-    const results = calculateResults();
     setShowResults(true);
-    trackEvent('audit_completed', {
-      score: results.totalScore,
-      percentage: results.percentage,
-      readiness_level: results.readinessLevel
-    });
+    clearProgress(); // Clear saved progress once results are shown
   };
 
   const handleEmailSubmit = () => {
-    if (emailForResults) {
-      trackEvent('audit_email_captured', {
-        email: emailForResults,
-        score: calculateResults().percentage
-      });
-      // Here you would typically send the results via email
-      alert("Results sent to your email!");
-    }
+    console.log('Email results to:', emailForResults);
   };
 
-  const currentSectionData = sections[currentSection];
-  const progress = ((currentSection + 1) / sections.length) * 100;
+  const handleResumeProgress = () => {
+    setShowResumePrompt(false);
+  };
+
+  const handleRestartAssessment = () => {
+    clearProgress();
+    setCurrentSection(0);
+    setAnswers({});
+    setBusinessContext({ industry: '', businessSize: '', currentVideoUse: '' });
+    setShowResumePrompt(false);
+  };
+
+  if (showResumePrompt) {
+    return (
+      <div className="max-w-4xl mx-auto p-6">
+        <ProgressResume
+          assessmentType="Video Readiness Audit"
+          currentSection={progress?.currentSection || 0}
+          totalSections={sections.length}
+          lastSaved={progress?.timestamp || Date.now()}
+          onResume={handleResumeProgress}
+          onRestart={handleRestartAssessment}
+        />
+      </div>
+    );
+  }
 
   if (showResults) {
     const results = calculateResults();
+    
     return (
       <div className="max-w-4xl mx-auto p-6">
-        <Card className="bg-gradient-to-br from-video-white to-corporate-light border-0 video-shadow-lg">
+        <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-bold text-corporate-dark mb-4">
-              Your Video Readiness Score
-            </CardTitle>
-            <div className="text-6xl font-black text-gradient-1 mb-4">
-              {results.percentage}%
+            <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+              <BarChart3 className="h-8 w-8 text-primary" />
             </div>
-            <div className="text-xl text-corporate-gray">
-              Readiness Level: <span className="font-bold text-gradient-2">{results.readinessLevel}</span>
-            </div>
+            <CardTitle className="text-2xl">Your Video Readiness Assessment</CardTitle>
+            <CardDescription>
+              Based on your responses, here's your personalized video marketing readiness report
+            </CardDescription>
           </CardHeader>
+          
           <CardContent>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="text-xl font-bold text-corporate-dark mb-4">Immediate Actions</h3>
-                <ul className="space-y-2">
-                  {results.recommendations.immediate.map((rec, index) => (
-                    <li key={index} className="flex items-start space-x-2">
-                      <CheckCircle className="text-social-green w-5 h-5 mt-0.5 flex-shrink-0" />
-                      <span className="text-corporate-gray">{rec}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-corporate-dark mb-4">Suggested Services</h3>
-                <ul className="space-y-2">
-                  {results.suggestedServices.map((service, index) => (
-                    <li key={index} className="flex items-start space-x-2">
-                      <ArrowRight className="text-social-blue w-5 h-5 mt-0.5 flex-shrink-0" />
-                      <span className="text-corporate-gray">{service}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            
-            <div className="mt-8 p-6 bg-corporate-light rounded-xl">
-              <h3 className="text-lg font-bold text-corporate-dark mb-4">Get Detailed Results</h3>
-              <div className="flex space-x-4">
-                <input
-                  type="email"
-                  placeholder="Enter your email for detailed results"
-                  value={emailForResults}
-                  onChange={(e) => setEmailForResults(e.target.value)}
-                  className="flex-1 px-4 py-2 border border-corporate-gray rounded-lg"
-                />
-                <Button 
-                  onClick={handleEmailSubmit}
-                  className="gradient-social-1 text-white hover:scale-105 transition-all"
-                >
-                  Send Results
+            <EnhancedResults
+              score={results.overallScore}
+              level={results.readinessLevel}
+              sectionScores={results.sectionPerformance.reduce((acc, section) => ({
+                ...acc,
+                [section.name.toLowerCase().replace(/\s+/g, '')]: section.percentage
+              }), {})}
+              priorities={results.immediateActions.map((action, index) => ({
+                id: `action-${index}`,
+                title: action.title,
+                description: action.description,
+                impact: action.priority as 'High' | 'Medium' | 'Low',
+                effort: 'Medium' as 'High' | 'Medium' | 'Low',
+                timeline: action.timeline,
+                category: action.phase || 'General'
+              }))}
+              milestones={results.monthlyMilestones || []}
+              industryBenchmark={65}
+              confidenceScore={85}
+              onGetDetailedPlan={() => console.log('Book consultation')}
+            />
+
+            <ResultsExport
+              assessmentType="Video Readiness Audit"
+              score={results.overallScore}
+              level={results.readinessLevel}
+              recommendations={results.immediateActions.map(a => a.title)}
+              businessContext={businessContext}
+              onScheduleConsultation={() => console.log('Schedule consultation')}
+            />
+
+            {/* Navigation */}
+            <div className="flex justify-between pt-6">
+              {onBack && (
+                <Button variant="outline" onClick={onBack}>
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back
                 </Button>
-              </div>
+              )}
+              <Button onClick={() => window.location.reload()} className="ml-auto">
+                Take Another Assessment
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -359,70 +423,90 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
     );
   }
 
+  // Assessment form
+  const currentSectionData = sections[currentSection];
+  const answeredQuestions = currentSectionData.questions.filter(q => answers[q.id] !== undefined);
+  const sectionProgress = Math.round((answeredQuestions.length / currentSectionData.questions.length) * 100);
+  const overallProgress = Math.round(((currentSection + (sectionProgress / 100)) / sections.length) * 100);
+
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-3xl font-bold text-corporate-dark">Video Readiness Audit</h2>
-          <div className="text-sm text-corporate-gray">
-            Section {currentSection + 1} of {sections.length}
-          </div>
-        </div>
-        <Progress value={progress} className="h-2" />
-      </div>
-
-      <Card className="bg-gradient-to-br from-video-white to-corporate-light border-0 video-shadow-lg">
+      <Card>
         <CardHeader>
-          <CardTitle className="flex items-center space-x-3 text-2xl text-corporate-dark">
-            <div className="gradient-social-1 p-3 rounded-xl">
-              <currentSectionData.icon className="w-6 h-6 text-white" />
-            </div>
-            <span>{currentSectionData.title}</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-6">
-            {currentSectionData.questions.map((question) => (
-              <div key={question.id} className="p-4 bg-white rounded-xl border border-corporate-light">
-                <div className="flex items-center justify-between">
-                  <span className="text-corporate-dark font-medium">{question.text}</span>
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => handleAnswer(question.id, true)}
-                      className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
-                        answers[question.id] === true
-                          ? 'bg-social-green text-white'
-                          : 'bg-corporate-light text-corporate-gray hover:bg-social-green hover:text-white'
-                      }`}
-                    >
-                      <CheckCircle className="w-4 h-4" />
-                      <span>Yes</span>
-                    </button>
-                    <button
-                      onClick={() => handleAnswer(question.id, false)}
-                      className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-all ${
-                        answers[question.id] === false
-                          ? 'bg-corporate-gray text-white'
-                          : 'bg-corporate-light text-corporate-gray hover:bg-corporate-gray hover:text-white'
-                      }`}
-                    >
-                      <Circle className="w-4 h-4" />
-                      <span>No</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="flex items-center justify-between mb-4">
+            <Badge variant="outline">
+              Section {currentSection + 1} of {sections.length}
+            </Badge>
+            <Badge variant="secondary">
+              {overallProgress}% Complete
+            </Badge>
           </div>
+          
+          <Progress value={overallProgress} className="mb-4" />
+          
+          <CardTitle className="flex items-center gap-3">
+            <Video className="h-6 w-6 text-primary" />
+            {currentSectionData.title}
+          </CardTitle>
+          <CardDescription>
+            {currentSectionData.description}
+          </CardDescription>
+        </CardHeader>
 
-          <div className="mt-8 flex justify-end">
+        <CardContent className="space-y-6">
+          {currentSectionData.questions.map((question) => (
+            <div key={question.id} className="space-y-3">
+              <Label className="text-base font-medium">
+                {question.text}
+              </Label>
+              <RadioGroup
+                value={answers[question.id]?.toString() || ''}
+                onValueChange={(value) => handleAnswer(question.id, parseInt(value))}
+                className="flex gap-4"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="0" id={`${question.id}-no`} />
+                  <Label htmlFor={`${question.id}-no`}>No</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={Math.round(question.points * 0.5).toString()} id={`${question.id}-partial`} />
+                  <Label htmlFor={`${question.id}-partial`}>Partially</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value={question.points.toString()} id={`${question.id}-yes`} />
+                  <Label htmlFor={`${question.id}-yes`}>Yes</Label>
+                </div>
+              </RadioGroup>
+            </div>
+          ))}
+
+          <div className="flex justify-between pt-6">
             <Button
-              onClick={handleNextSection}
-              className="gradient-social-1 text-white px-8 py-3 hover:scale-105 transition-all"
+              variant="outline"
+              onClick={() => setCurrentSection(Math.max(0, currentSection - 1))}
+              disabled={currentSection === 0}
             >
-              {currentSection === sections.length - 1 ? 'Get Results' : 'Next Section'}
-              <ArrowRight className="w-4 h-4 ml-2" />
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Previous
             </Button>
+
+            {currentSection === sections.length - 1 ? (
+              <Button 
+                onClick={handleShowResults}
+                disabled={answeredQuestions.length < currentSectionData.questions.length}
+              >
+                View Results
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+            ) : (
+              <Button 
+                onClick={handleNextSection}
+                disabled={answeredQuestions.length < currentSectionData.questions.length}
+              >
+                Next Section
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+            )}
           </div>
         </CardContent>
       </Card>

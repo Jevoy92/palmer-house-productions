@@ -18,43 +18,43 @@ export const CelebrationStep = ({ data, onClose, onNewInquiry, onCalendlyBooking
   const getRecommendedPackage = () => {
     const { contentPace, businessStage, videoGoal, journeyTags } = data;
     
-    if (contentPace === 'pinnacle' || journeyTags?.includes('enterprise') || businessStage === 'enterprise') {
-      return "Pinnacle Package";
-    } else if (contentPace === 'summit' || businessStage === 'scaling_team' || videoGoal === 'thought_leadership') {
-      return "Summit Package";
-    } else if (contentPace === 'basecamp' || businessStage === 'established' || videoGoal === 'lead_gen') {
-      return "Basecamp Package";
+    if (contentPace === 'high-volume' || journeyTags?.includes('enterprise') || businessStage === 'enterprise') {
+      return "Monthly Content System";
+    } else if (contentPace === 'weekly' || businessStage === 'scaling_team' || videoGoal === 'thought_leadership') {
+      return "One-Time Bundles";
+    } else if (contentPace === 'monthly' || businessStage === 'established' || videoGoal === 'lead_gen') {
+      return "Group Coaching";
     } else {
-      return "Trailhead Package";
+      return "DIY Downloads";
     }
   };
 
   const getPackageIcon = (packageName: string) => {
     switch (packageName) {
-      case "Trailhead Package": return "🥾";
-      case "Basecamp Package": return "🏕";
-      case "Summit Package": return "🏔";
-      case "Pinnacle Package": return "🌄";
+      case "DIY Downloads": return "📱";
+      case "Group Coaching": return "👥";
+      case "One-Time Bundles": return "🛠️";
+      case "Monthly Content System": return "🔄";
       default: return "📦";
     }
   };
 
   const getPackageGradient = (packageName: string) => {
     switch (packageName) {
-      case "Trailhead Package": return "gradient-social-1";
-      case "Basecamp Package": return "gradient-social-2";
-      case "Summit Package": return "gradient-social-3";
-      case "Pinnacle Package": return "gradient-social-4";
+      case "DIY Downloads": return "gradient-social-1";
+      case "Group Coaching": return "gradient-social-2";
+      case "One-Time Bundles": return "gradient-social-3";
+      case "Monthly Content System": return "gradient-social-4";
       default: return "gradient-social-1";
     }
   };
 
   const getPackagePrice = (packageName: string) => {
     switch (packageName) {
-      case "Trailhead Package": return "$1,500/month";
-      case "Basecamp Package": return "$3,500/month";
-      case "Summit Package": return "$7,500/month";
-      case "Pinnacle Package": return "$20,000/month";
+      case "DIY Downloads": return "$19-$99";
+      case "Group Coaching": return "$2,000";
+      case "One-Time Bundles": return "$500-$6,500";
+      case "Monthly Content System": return "$3,000/month";
       default: return "Custom Pricing";
     }
   };
@@ -72,10 +72,10 @@ export const CelebrationStep = ({ data, onClose, onNewInquiry, onCalendlyBooking
             </div>
           </div>
           <h1 className="text-5xl font-display font-black text-gray-900 mb-4">
-            Your Perfect Trail <span className="text-gradient-2">Awaits!</span>
+            Your Perfect <span className="text-gradient-2">Solution</span> Awaits!
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Based on your journey, we've mapped the perfect video strategy for your business.
+            Based on your needs, we've found the perfect video service for your business.
           </p>
         </div>
 
@@ -92,10 +92,10 @@ export const CelebrationStep = ({ data, onClose, onNewInquiry, onCalendlyBooking
                   </div>
                   <h2 className="text-3xl font-bold text-gray-900 mb-2">{recommendedPackage}</h2>
                   <p className="text-lg text-gray-600 mb-6">
-                    {recommendedPackage === "Trailhead Package" && "Perfect for getting started with professional video content"}
-                    {recommendedPackage === "Basecamp Package" && "Ideal for maintaining steady growth and lead generation"}
-                    {recommendedPackage === "Summit Package" && "Great for establishing thought leadership and authority"}
-                    {recommendedPackage === "Pinnacle Package" && "Ultimate solution for enterprise-level video dominance"}
+                    {recommendedPackage === "DIY Downloads" && "Perfect for getting started with professional video content"}
+                    {recommendedPackage === "Group Coaching" && "Ideal for mastering on-camera presence and building confidence"}
+                    {recommendedPackage === "One-Time Bundles" && "Great for solving specific video challenges and building authority"}
+                    {recommendedPackage === "Monthly Content System" && "Ultimate solution for consistent content that drives results"}
                   </p>
                   
                   <div className="flex items-center gap-4 mb-6">

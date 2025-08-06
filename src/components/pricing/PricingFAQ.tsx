@@ -11,8 +11,8 @@ export const PricingFAQ = () => {
       answer: "Each shoot day includes pre-production planning, on-location filming (up to 6 hours), and post-production editing. We'll work with you to maximize content creation during each session, often filming multiple pieces of content in one day."
     },
     {
-      question: "Can I upgrade or downgrade my trail anytime?",
-      answer: "Absolutely! You can change your plan at any time. Upgrades take effect immediately, while downgrades take effect at your next billing cycle. We'll work with you to ensure a smooth transition and help you get the most value from your new plan."
+      question: "Can I change my service package anytime?",
+      answer: "Absolutely! You can change your service at any time. For monthly services, changes take effect at your next billing cycle. For one-time services, we can discuss your new needs right away. We'll work with you to ensure a smooth transition."
     },
     {
       question: "How do you handle revisions and feedback?",
@@ -24,7 +24,7 @@ export const PricingFAQ = () => {
     },
     {
       question: "What if I need content faster than my monthly allocation?",
-      answer: "We offer rush production services for urgent needs. Additional content can be added to any plan at competitive rates. Our Pinnacle tier clients get priority for rush requests."
+      answer: "We offer rush production services for urgent needs. Additional content can be added to any service at competitive rates. Monthly Content System clients get priority for rush requests."
     },
     {
       question: "How far in advance do I need to book shoots?",
@@ -52,10 +52,10 @@ export const PricingFAQ = () => {
             ❓ Frequently Asked Questions
           </div>
           <h2 className="text-5xl md:text-6xl font-display font-black mb-6 text-corporate-dark tracking-tight">
-            Trail <span className="text-gradient-3">Questions</span>
+            Service <span className="text-gradient-3">Questions</span>
           </h2>
           <p className="text-xl text-corporate-gray max-w-2xl mx-auto">
-            Everything you need to know about our video production trails.
+            Everything you need to know about our video production services.
           </p>
         </div>
 

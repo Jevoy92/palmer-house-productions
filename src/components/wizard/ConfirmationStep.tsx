@@ -17,29 +17,21 @@ export const ConfirmationStep = ({ data, onSubmit, onCalendlyBooking, onBack, is
   const getServiceName = (serviceType?: string) => {
     switch (serviceType) {
       case "consultation": return "General Consultation";
-      case "base-glimpse": return "Base Glimpse ($350)";
-      case "full-glimpse": return "Full Glimpse ($750)";
-      case "monthly": return "Monthly Services";
+      case "diy": return "DIY Downloads";
+      case "coaching": return "Group Coaching";
+      case "monthly": return "Monthly Content System";
+      case "bundle": return "One-Time Bundles";
       default: return "Not specified";
-    }
-  };
-
-  const getPlanName = (planType?: string) => {
-    switch (planType) {
-      case "trailhead": return "Trailhead ($1,500/month)";
-      case "basecamp": return "Basecamp ($3,500/month)";
-      case "summit": return "Summit ($7,500/month)";
-      case "pinnacle": return "Pinnacle ($20,000/month)";
-      default: return "Not applicable";
     }
   };
 
   const getBookingButtonText = (serviceType?: string) => {
     switch (serviceType) {
       case "consultation": return "Book Strategy Call";
-      case "base-glimpse": return "Book Base Glimpse";
-      case "full-glimpse": return "Book Full Glimpse";
+      case "diy": return "Get Instant Access";
+      case "coaching": return "Apply for Coaching";
       case "monthly": return "Book Discovery Call";
+      case "bundle": return "Book Strategy Call";
       default: return "Book & Pay Now";
     }
   };

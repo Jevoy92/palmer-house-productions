@@ -15,30 +15,30 @@ export const PacePickerStep = ({ onSelect, onBack }: PacePickerStepProps) => {
     { 
       value: 1, 
       label: "One solid video a month", 
-      tag: "trailhead", 
-      icon: "🥾", 
-      description: "Steady and consistent"
+      tag: "diy", 
+      icon: "📱", 
+      description: "DIY approach with guidance"
     },
     { 
       value: 2, 
       label: "A few pieces to stay present", 
-      tag: "basecamp", 
-      icon: "⛺", 
-      description: "Building momentum"
+      tag: "coaching", 
+      icon: "👥", 
+      description: "Group learning and support"
     },
     { 
       value: 3, 
       label: "Weekly content for traction", 
-      tag: "summit", 
-      icon: "🏔️", 
-      description: "Active engagement"
+      tag: "bundle", 
+      icon: "🛠️", 
+      description: "Targeted solutions"
     },
     { 
       value: 4, 
       label: "We want to flood the market", 
-      tag: "pinnacle", 
-      icon: "🚀", 
-      description: "Maximum visibility"
+      tag: "monthly", 
+      icon: "🔄", 
+      description: "Consistent monthly system"
     },
   ];
 

@@ -82,7 +82,7 @@ export const About = () => {
             <div className="group bg-video-white/80 backdrop-blur-sm rounded-3xl p-10 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105">
               <div className="flex items-center mb-6">
                 <div className="text-4xl mr-4">⛰️</div>
-                <h3 className="text-2xl font-bold text-gradient-3">Summit Solutions</h3>
+                <h3 className="text-2xl font-bold text-gradient-3">Strategic Solutions</h3>
               </div>
               <p className="text-corporate-gray leading-relaxed text-lg">
                 We're here to conquer real challenges - not just create pretty visuals. Every frame serves your business goals.

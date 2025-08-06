@@ -15,89 +15,89 @@ interface PackageDetailsModalProps {
 export const PackageDetailsModal = ({ open, onOpenChange, packageType, onBookSession }: PackageDetailsModalProps) => {
   const getPackageDetails = () => {
     switch (packageType) {
-      case "Pinnacle Package":
+      case "Monthly Content System":
         return {
-          name: "Pinnacle Package",
-          subtitle: "Enterprise-level video domination with unlimited possibilities",
-          price: "$20,000/month",
-          icon: "🌄",
+          name: "Monthly Content System",
+          subtitle: "The Social Authority Kit - consistent monthly video content",
+          price: "$3,000/month",
+          icon: "🔄",
           gradient: "gradient-social-4",
-          frequency: "Unlimited shoots & content",
+          frequency: "Monthly deliverables",
           features: [
-            "Unlimited video production",
-            "Dedicated production team",
-            "Enterprise-level strategy",
-            "Multi-location shoots",
-            "Real-time analytics dashboard",
-            "White-label solutions",
-            "Training & internal content",
-            "Priority support & rush delivery"
-          ],
-          timeline: "Immediate setup, ongoing production",
-          ideal: "National franchises, large enterprises, and industry leaders ready to dominate their market"
-        };
-      case "Summit Package":
-        return {
-          name: "Summit Package",
-          subtitle: "Weekly strategy and production for major momentum",
-          price: "$7,500/month",
-          icon: "🏔",
-          gradient: "gradient-social-3",
-          frequency: "4-6 videos per month",
-          features: [
-            "Weekly video production",
+            "3-4 videos per month",
             "Strategic content planning",
-            "Professional editing suite",
-            "Platform-specific optimization",
+            "Professional production",
+            "Multi-platform optimization",
             "Performance analytics",
             "Monthly strategy calls",
             "Brand consistency guidelines",
-            "Audience engagement tracking"
+            "Content calendar planning"
           ],
-          timeline: "1-2 weeks setup, weekly deliveries",
-          ideal: "Growing businesses ready to establish thought leadership and authority"
+          timeline: "1-2 weeks setup, monthly deliveries",
+          ideal: "Businesses ready for consistent content that drives authority and results"
         };
-      case "Basecamp Package":
+      case "One-Time Bundles":
         return {
-          name: "Basecamp Package",
-          subtitle: "3–4 videos/month to maintain visibility and nurture leads",
-          price: "$3,500/month",
-          icon: "🏕",
-          gradient: "gradient-social-2",
-          frequency: "3-4 videos per month",
+          name: "One-Time Bundles",
+          subtitle: "Problem-solving video packages for specific needs",
+          price: "$500-$6,500",
+          icon: "🛠️",
+          gradient: "gradient-social-3",
+          frequency: "Project-based delivery",
           features: [
-            "Monthly video content",
-            "Lead generation focus",
-            "Professional production",
-            "Basic analytics reporting",
-            "Content strategy guidance",
-            "Brand messaging consistency",
-            "Multi-platform formatting",
-            "Quarterly strategy review"
+            "YouTube Visibility Engine",
+            "FAQ Video Bundles",
+            "Launch Video Kits",
+            "Team Training Videos",
+            "Custom project solutions",
+            "Fast turnaround",
+            "Strategic planning included",
+            "Multiple format delivery"
           ],
-          timeline: "1 week setup, monthly deliveries",
-          ideal: "Established businesses maintaining steady growth and lead generation"
+          timeline: "1-3 weeks project completion",
+          ideal: "Businesses with specific video challenges or one-time projects"
+        };
+      case "Group Coaching":
+        return {
+          name: "Group Coaching",
+          subtitle: "6-week Camera-Ready Brand program",
+          price: "$2,000",
+          icon: "👥",
+          gradient: "gradient-social-2",
+          frequency: "6-week program",
+          features: [
+            "6 weeks of intensive training",
+            "Live group coaching sessions",
+            "Camera confidence building",
+            "Personal brand development",
+            "Content strategy guidance",
+            "Peer support network",
+            "Recorded sessions access",
+            "Ongoing community support"
+          ],
+          timeline: "Next cohort starts monthly",
+          ideal: "Professionals wanting to master on-camera presence and build their personal brand"
         };
       default:
         return {
-          name: "Trailhead Package",
-          subtitle: "1–2 monthly videos, perfect for testing and steady growth",
-          price: "$1,500/month",
-          icon: "🥾",
+          name: "DIY Downloads",
+          subtitle: "Instant access to guides, scripts, and courses",
+          price: "$19-$99",
+          icon: "📱",
           gradient: "gradient-social-1",
-          frequency: "1-2 videos per month",
+          frequency: "Instant download",
           features: [
-            "Monthly video creation",
-            "Professional production quality",
-            "Single platform focus",
-            "Basic analytics",
-            "Content guidance",
-            "Brand alignment",
-            "Quick turnaround",
-            "Growth foundation"
+            "Video script bundles",
+            "Step-by-step guides",
+            "Template libraries",
+            "Quick-start courses",
+            "Editing tutorials",
+            "Lifetime access",
+            "Mobile-friendly content",
+            "Self-paced learning"
           ],
-          timeline: "3-5 days setup, monthly delivery",
-          ideal: "Small businesses and solopreneurs starting their video journey"
+          timeline: "Instant access after purchase",
+          ideal: "DIY creators and small businesses starting their video journey"
         };
     }
   };

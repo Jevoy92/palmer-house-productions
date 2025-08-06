@@ -21,7 +21,7 @@ export const VideoNeedsQuiz = () => {
       description: "Internal processes, onboarding, and training materials",
       icon: Users,
       gradient: "gradient-social-1",
-      recommendation: "Summit or Pinnacle tier"
+      recommendation: "Monthly Content or One-Time Bundles"
     },
     {
       id: "social-growth",
@@ -29,7 +29,7 @@ export const VideoNeedsQuiz = () => {
       description: "Instagram, TikTok, LinkedIn content that converts",
       icon: TrendingUp,
       gradient: "gradient-social-2",
-      recommendation: "Trailhead or Basecamp tier"
+      recommendation: "DIY Downloads or Group Coaching"
     },
     {
       id: "education",
@@ -37,7 +37,7 @@ export const VideoNeedsQuiz = () => {
       description: "FAQ videos, tutorials, and how-to content",
       icon: BookOpen,
       gradient: "gradient-social-3",
-      recommendation: "Basecamp or Summit tier"
+      recommendation: "Group Coaching or One-Time Bundles"
     },
     {
       id: "marketing",
@@ -45,7 +45,7 @@ export const VideoNeedsQuiz = () => {
       description: "Promotional videos, ads, and conversion content",
       icon: Megaphone,
       gradient: "gradient-social-4",
-      recommendation: "Trailhead or Basecamp tier"
+      recommendation: "DIY Downloads or Group Coaching"
     },
     {
       id: "authority",
@@ -53,7 +53,7 @@ export const VideoNeedsQuiz = () => {
       description: "Thought leadership, speaking, and expertise content",
       icon: Award,
       gradient: "gradient-social-1",
-      recommendation: "Summit or Pinnacle tier"
+      recommendation: "Monthly Content or One-Time Bundles"
     }
   ];
 

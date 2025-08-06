@@ -378,16 +378,16 @@ export const VideoPackagesTiers = () => {
           </div>
         </div>
 
-        {/* Explorer's Bonus Pack */}
+        {/* Business Bonus Pack */}
         <div className="mb-16 md:mb-24">
           <div className="bg-white p-8 md:p-12 rounded-3xl video-shadow-lg border-4 border-gradient-to-r from-yellow-400 to-orange-500">
             <div className="text-center mb-8">
               <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full text-white font-bold text-sm md:text-base mb-4">
                 <Gift size={20} className="mr-2" />
-                🎁 The Explorer's Bonus Pack
+                🎁 The Business Bonus Pack
               </div>
               <h2 className="text-3xl md:text-5xl font-display font-black mb-4 text-corporate-dark">
-                Your Free <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">Compass & Tools</span>
+                Your Free <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">Business Tools</span>
               </h2>
               <p className="text-xl mb-2 text-corporate-gray">Included FREE with:</p>
               <p className="text-lg text-corporate-gray">Monthly Social Authority Kit + Any One-Time Bundle $4,500+</p>
@@ -447,7 +447,7 @@ export const VideoPackagesTiers = () => {
         <div className="text-center">
           <div className="max-w-4xl mx-auto bg-gradient-to-r from-social-purple to-social-pink p-8 md:p-12 rounded-3xl text-white video-shadow-lg">
             <h2 className="text-3xl md:text-5xl font-display font-black mb-6">
-              Ready to Start Your Video Journey?
+              Ready to Start Your Video System?
             </h2>
             <p className="text-xl mb-8 opacity-90">
               Book a discovery call to discuss which solution fits your goals and timeline.

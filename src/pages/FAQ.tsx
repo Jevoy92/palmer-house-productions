@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp, HelpCircle, Search } from "lucide-react";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
@@ -6,11 +6,21 @@ import { Navigation } from "@/components/Navigation";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
+import { FAQSchema } from "@/components/seo/FAQSchema";
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
+
+  // Update page title for better SEO
+  useEffect(() => {
+    document.title = "Frequently Asked Questions - Palmer House Productions | Video Content Systems FAQ";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Complete FAQ covering Palmer House Productions video content systems, pricing, processes, and services. Find answers to all your video production questions.');
+    }
+  }, []);
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -308,6 +318,7 @@ const FAQ = () => {
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <StructuredData />
+      <FAQSchema faqs={filteredFaqs.map(faq => ({ question: faq.question, answer: faq.answer }))} />
       <MainContent>
         <section className="pt-24 pb-16 bg-video-white">
           <div className="max-w-6xl mx-auto px-6">
@@ -372,12 +383,12 @@ const FAQ = () => {
               {filteredFaqs.map((faq, index) => (
                 <div key={index} className="bg-white rounded-2xl video-shadow overflow-hidden">
                   <button
-                    className="w-full text-left p-6 hover:bg-gray-50 transition-colors duration-200 flex justify-between items-center"
+                    className="w-full text-left p-6 hover:bg-gray-50 transition-colors duration-200 flex justify-between items-center min-h-[80px] touch-manipulation"
                     onClick={() => toggleFAQ(index)}
                     aria-expanded={openIndex === index}
                     aria-controls={`faq-answer-${index}`}
                   >
-                    <h3 className="text-lg font-bold text-corporate-dark pr-4">
+                    <h3 className="text-lg md:text-xl font-bold text-corporate-dark pr-4 leading-tight">
                       {faq.question}
                     </h3>
                     {openIndex === index ? (
@@ -387,9 +398,9 @@ const FAQ = () => {
                     )}
                   </button>
                   {openIndex === index && (
-                    <div 
+                     <div 
                       id={`faq-answer-${index}`}
-                      className="px-6 pb-6 text-corporate-gray leading-relaxed"
+                      className="px-6 pb-6 text-corporate-gray leading-relaxed text-base md:text-lg"
                     >
                       {faq.answer}
                     </div>

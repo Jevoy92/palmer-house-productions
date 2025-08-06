@@ -357,7 +357,7 @@ export const VideoPackagesTabbed = () => {
           </TabsContent>
         </Tabs>
 
-        {/* Explorer's Bonus Pack - Collapsible */}
+        {/* Business Bonus Pack - Collapsible */}
         <div className="mt-16">
           <Accordion type="single" collapsible>
             <AccordionItem value="bonus-pack" className="bg-gradient-to-r from-social-purple/10 to-social-pink/10 rounded-3xl border border-social-purple/20">

@@ -4,12 +4,13 @@ import { ServiceCategorySelection } from "./ServiceCategorySelection";
 import { PersonalInfoStep } from "./PersonalInfoStep";
 import { ConfirmationStep } from "./ConfirmationStep";
 import { ThankYouStep } from "./ThankYouStep";
-import { BusinessProfileStep } from "./BusinessProfileStep";
+import { EnhancedBusinessProfileStep } from "./steps/EnhancedBusinessProfileStep";
 import { BusinessTypeStep } from "./BusinessTypeStep";
-import { VideoUseCaseStep } from "./VideoUseCaseStep";
-import { ContentVolumeStep } from "./ContentVolumeStep";
-import { TimelineStep } from "./TimelineStep";
+import { EnhancedVideoUseCaseStep } from "./steps/EnhancedVideoUseCaseStep";
+import { EnhancedContentVolumeStep } from "./steps/EnhancedContentVolumeStep";
+import { EnhancedTimelineStep } from "./steps/EnhancedTimelineStep";
 import { GeographicStep } from "./GeographicStep";
+import { ComprehensiveResults } from "./results/ComprehensiveResults";
 import { WizardData, BusinessProfileType, BusinessType, VideoUseCaseType, ContentVolumeType, TimelineType, GeographicType } from "./types";
 import { getCalendlyUrl } from "./utils";
 
@@ -44,11 +45,11 @@ export const WizardStepRenderer = ({
   switch (currentStep) {
     case 1:
       return (
-        <BusinessProfileStep
+        <EnhancedBusinessProfileStep
           selectedProfile={wizardData.businessProfile}
           onProfileSelect={(profile: BusinessProfileType) => {
             updateWizardData({ businessProfile: profile });
-            nextStep();
+            setTimeout(nextStep, 3000);
           }}
         />
       );
@@ -65,49 +66,42 @@ export const WizardStepRenderer = ({
       );
     case 3:
       return (
-        <VideoUseCaseStep
+        <EnhancedVideoUseCaseStep
           selectedUseCase={wizardData.videoUseCase}
           onUseCaseSelect={(useCase: VideoUseCaseType) => {
             updateWizardData({ videoUseCase: useCase });
-            nextStep();
+            setTimeout(nextStep, 3000);
           }}
           onBack={prevStep}
         />
       );
     case 4:
       return (
-        <ContentVolumeStep
+        <EnhancedContentVolumeStep
           selectedVolume={wizardData.contentVolume}
           onVolumeSelect={(volume: ContentVolumeType) => {
             updateWizardData({ contentVolume: volume });
-            nextStep();
+            setTimeout(nextStep, 3000);
           }}
           onBack={prevStep}
         />
       );
     case 5:
       return (
-        <TimelineStep
+        <EnhancedTimelineStep
           selectedTimeline={wizardData.timeline}
           onTimelineSelect={(timeline: TimelineType) => {
             updateWizardData({ timeline: timeline });
-            nextStep();
+            setTimeout(nextStep, 3000);
           }}
           onBack={prevStep}
         />
       );
     case 6:
       return (
-        <GeographicStep
-          selectedGeographic={wizardData.geographic}
-          geographicCustom={wizardData.geographicCustom}
-          onGeographicSelect={(geographic: GeographicType, custom?: string) => {
-            updateWizardData({ 
-              geographic: geographic,
-              geographicCustom: custom 
-            });
-            nextStep();
-          }}
+        <ComprehensiveResults
+          data={wizardData}
+          onContinueToServices={nextStep}
           onBack={prevStep}
         />
       );

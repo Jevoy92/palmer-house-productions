@@ -31,11 +31,11 @@ export const ContactWizard = ({ open, onOpenChange, initialService }: ContactWiz
         </VisuallyHidden>
         
         {/* Mobile-Optimized Step Indicator */}
-        {currentStep <= 10 && (
+        {currentStep <= 11 && (
           <div className="p-3 border-b border-corporate-light">
             <div className="flex items-center justify-center">
               <div className="flex items-center space-x-1 overflow-x-auto pb-2">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((step) => (
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((step) => (
                   <div key={step} className="flex items-center flex-shrink-0">
                     <div
                       className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-300 ${
@@ -48,7 +48,7 @@ export const ContactWizard = ({ open, onOpenChange, initialService }: ContactWiz
                     >
                       {step}
                     </div>
-                    {step < 10 && (
+                    {step < 12 && (
                       <div
                         className={`w-4 h-0.5 mx-0.5 transition-all duration-300 ${
                           step < currentStep ? "bg-corporate-dark" : "bg-corporate-light"
@@ -60,7 +60,7 @@ export const ContactWizard = ({ open, onOpenChange, initialService }: ContactWiz
               </div>
             </div>
             <div className="text-center mt-2">
-              <span className="text-xs text-corporate-gray">Step {currentStep} of 10</span>
+              <span className="text-xs text-corporate-gray">Step {currentStep} of 12</span>
             </div>
           </div>
         )}

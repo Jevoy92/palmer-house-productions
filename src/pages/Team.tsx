@@ -3,6 +3,7 @@ import { Navigation } from "@/components/Navigation";
 import { Team } from "@/components/Team";
 import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
@@ -19,6 +20,7 @@ const TeamPage = () => {
         canonicalUrl="https://www.palmerhouseproductions.com/team"
       />
       <StructuredData type="about" />
+      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <BreadcrumbNavigation />

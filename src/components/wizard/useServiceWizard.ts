@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { trackContactFormSubmit, trackConversion } from "@/lib/analytics";
 
 interface ServiceData {
   // Service selections
@@ -112,6 +113,8 @@ Company: ${serviceData.company}`
 
       if (response.ok) {
         console.log('Journey form submitted successfully');
+        trackContactFormSubmit('quick');
+        trackConversion('contact_submit');
         nextStep(); // Go to celebration page
       } else {
         const errorData = await response.text();

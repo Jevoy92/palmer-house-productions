@@ -1,11 +1,13 @@
 
 import { Navigation } from "@/components/Navigation";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
 
 const PodcastPage = () => {
   return (
     <div className="min-h-screen bg-white">
+      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <MainContent>

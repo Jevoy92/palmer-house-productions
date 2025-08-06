@@ -3,6 +3,7 @@ import { Navigation } from "@/components/Navigation";
 import { ServicePackages } from "@/components/ServicePackages";
 import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
@@ -20,6 +21,7 @@ const PathwaysPage = () => {
         canonicalUrl="https://www.palmerhouseproductions.com/pathways"
       />
       <StructuredData type="packages" />
+      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <BreadcrumbNavigation />

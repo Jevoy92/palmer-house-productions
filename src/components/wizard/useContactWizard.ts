@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { WizardData, ServiceType } from "./types";
 import { getServiceName, getServiceCategoryName } from "./utils";
+import { trackContactFormSubmit, trackConversion } from "@/lib/analytics";
 
 export const useContactWizard = (initialService?: string) => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -161,6 +162,8 @@ Company: ${wizardData.company}`
 
       if (response.ok) {
         console.log('Form submitted successfully');
+        trackContactFormSubmit('wizard');
+        trackConversion('contact_submit');
         nextStep(); // Go to thank you page
       } else {
         const errorData = await response.text();

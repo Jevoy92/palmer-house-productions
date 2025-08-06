@@ -30,7 +30,7 @@ export const trackVideoPlay = (videoTitle: string, videoType: string) => {
 // Page view tracking
 export const trackPageView = (pagePath: string, pageTitle: string) => {
   if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('config', import.meta.env.VITE_GA_MEASUREMENT_ID, {
+    (window as any).gtag('config', 'G-HTFNMQRWLL', {
       page_path: pagePath,
       page_title: pageTitle
     });

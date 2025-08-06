@@ -1,5 +1,6 @@
 
 import { Navigation } from "@/components/Navigation";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { DiscoveryCallHero } from "@/components/discovery/DiscoveryCallHero";
 import { CollapsibleDiscoverySteps } from "@/components/discovery/CollapsibleDiscoverySteps";
 import { JeopardyCardGame } from "@/components/discovery/JeopardyCardGame";
@@ -10,6 +11,7 @@ import { MainContent } from "@/components/MainContent";
 const DiscoveryCallPage = () => {
   return (
     <div className="min-h-screen bg-white">
+      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <MainContent>

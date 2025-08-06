@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { trackContactFormSubmit, trackConversion } from "@/lib/analytics";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -18,6 +19,8 @@ export const DiscoveryCallForm = () => {
     e.preventDefault();
     // Handle form submission
     console.log('Discovery call form submitted:', formData);
+    trackContactFormSubmit('discovery');
+    trackConversion('discovery_call');
     // Open Calendly or handle booking
     window.open('https://calendly.com/palmerhouseproductions-info/discovery-call', '_blank');
   };

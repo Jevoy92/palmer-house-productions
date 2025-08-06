@@ -3,8 +3,10 @@ import { Navigation } from "@/components/Navigation";
 import { Shield, Users, FileText, HelpCircle, Zap, BookOpen, Heart, Trophy, ChevronDown, ChevronRight } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ContactWizard } from "@/components/ContactWizard";
+import { trackConversion } from "@/lib/analytics";
 import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
@@ -184,6 +186,7 @@ export default function Arsenal() {
   };
 
   const handleBookDiscoveryCall = () => {
+    trackConversion('discovery_call');
     window.open('https://calendly.com/palmerhouseproductions-info/discovery-call', '_blank');
   };
 
@@ -200,6 +203,7 @@ export default function Arsenal() {
         canonicalUrl="https://www.palmerhouseproductions.com/arsenal"
       />
       <StructuredData type="services" />
+      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <BreadcrumbNavigation />

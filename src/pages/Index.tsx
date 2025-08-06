@@ -25,7 +25,7 @@ const Index = () => {
         canonicalUrl="https://www.palmerhouseproductions.com/"
       />
       <StructuredData type="homepage" />
-      <GoogleAnalytics measurementId={import.meta.env.VITE_GA_MEASUREMENT_ID} />
+      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <MainContent>

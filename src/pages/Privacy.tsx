@@ -1,6 +1,7 @@
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
 import { Navigation } from "@/components/Navigation";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
@@ -8,6 +9,7 @@ import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
 const Privacy = () => {
   return (
     <div className="min-h-screen bg-white">
+      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <StructuredData />

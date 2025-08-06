@@ -3,6 +3,7 @@ import { Navigation } from "@/components/Navigation";
 import { Reviews } from "@/components/Reviews";
 import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
@@ -20,6 +21,7 @@ const ReviewsPage = () => {
         canonicalUrl="https://www.palmerhouseproductions.com/reviews"
       />
       <StructuredData type="about" />
+      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <BreadcrumbNavigation />

@@ -4,13 +4,11 @@ import { Menu, X, ChevronDown } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -94,177 +92,180 @@ export const Navigation = () => {
           </div>
           
           <div className="hidden md:block">
-            <NavigationMenu>
-              <NavigationMenuList className="space-x-6">
-                {/* Services Dropdown */}
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-base font-medium text-apple-gray-5 hover:text-black">
-                    Services
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent className="w-64 p-4 bg-white border border-gray-200 rounded-lg shadow-lg">
-                    <div className="space-y-2">
-                      <NavigationMenuLink asChild>
-                        <Link 
-                          to="/video-packages" 
-                          className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          Video Packages Overview
-                        </Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
-                        <Link 
-                          to="/services/diy-downloads" 
-                          className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          DIY Downloads
-                        </Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
-                        <Link 
-                          to="/services/group-coaching" 
-                          className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          Group Coaching
-                        </Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
-                        <Link 
-                          to="/services/monthly-content" 
-                          className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          Monthly Content
-                        </Link>
-                      </NavigationMenuLink>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-
-                {/* Company Dropdown */}
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-base font-medium text-apple-gray-5 hover:text-black">
-                    Company
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent className="w-48 p-4 bg-white border border-gray-200 rounded-lg shadow-lg">
-                    <div className="space-y-2">
-                      <NavigationMenuLink asChild>
-                        <Link 
-                          to="/about-us" 
-                          className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          About Us
-                        </Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
-                        <Link 
-                          to="/company/team" 
-                          className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          Our Team
-                        </Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
-                        <Link 
-                          to="/company/values" 
-                          className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          Our Values
-                        </Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
-                        <Link 
-                          to="/client-results" 
-                          className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          Client Results
-                        </Link>
-                      </NavigationMenuLink>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-
-                {/* Resources Dropdown */}
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-base font-medium text-apple-gray-5 hover:text-black">
-                    Resources
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent className="w-48 p-4 bg-white border border-gray-200 rounded-lg shadow-lg">
-                    <div className="space-y-2">
-                      <NavigationMenuLink asChild>
-                        <Link 
-                          to="/video-use-cases" 
-                          className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          Video Use Cases
-                        </Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
-                        <Link 
-                          to="/resources/reviews" 
-                          className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          Client Reviews
-                        </Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
-                        <Link 
-                          to="/faq" 
-                          className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          FAQ
-                        </Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
-                        <Link 
-                          to="/discovery-call" 
-                          className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          Discovery Call
-                        </Link>
-                      </NavigationMenuLink>
-                      <NavigationMenuLink asChild>
-                        <Link 
-                          to="/podcast" 
-                          className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          Podcast
-                        </Link>
-                      </NavigationMenuLink>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-
-                {/* Contact Link */}
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
+            <div className="flex items-center space-x-6">
+              {/* Services Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center text-base font-medium text-apple-gray-5 hover:text-black transition-colors">
+                  Services
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent 
+                  align="start" 
+                  className="w-56 bg-white border border-border shadow-lg rounded-md z-50"
+                  sideOffset={5}
+                >
+                  <DropdownMenuItem asChild>
                     <Link 
-                      to="/contact" 
-                      className={cn(
-                        "transition-colors text-base font-medium px-3 py-2",
-                        isActivePath('/contact') 
-                          ? "text-social-purple font-bold border-b-2 border-social-purple" 
-                          : "text-apple-gray-5 hover:text-black"
-                      )}
+                      to="/video-packages" 
+                      className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
                       onClick={() => setIsOpen(false)}
                     >
-                      Contact
+                      Video Packages Overview
                     </Link>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link 
+                      to="/services/diy-downloads" 
+                      className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      DIY Downloads
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link 
+                      to="/services/group-coaching" 
+                      className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Group Coaching
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link 
+                      to="/services/monthly-content" 
+                      className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Monthly Content
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Company Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center text-base font-medium text-apple-gray-5 hover:text-black transition-colors">
+                  Company
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent 
+                  align="start" 
+                  className="w-48 bg-white border border-border shadow-lg rounded-md z-50"
+                  sideOffset={5}
+                >
+                  <DropdownMenuItem asChild>
+                    <Link 
+                      to="/about-us" 
+                      className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      About Us
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link 
+                      to="/company/team" 
+                      className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Our Team
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link 
+                      to="/company/values" 
+                      className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Our Values
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link 
+                      to="/client-results" 
+                      className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Client Results
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Resources Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center text-base font-medium text-apple-gray-5 hover:text-black transition-colors">
+                  Resources
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent 
+                  align="start" 
+                  className="w-48 bg-white border border-border shadow-lg rounded-md z-50"
+                  sideOffset={5}
+                >
+                  <DropdownMenuItem asChild>
+                    <Link 
+                      to="/video-use-cases" 
+                      className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Video Use Cases
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link 
+                      to="/resources/reviews" 
+                      className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Client Reviews
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link 
+                      to="/faq" 
+                      className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      FAQ
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link 
+                      to="/discovery-call" 
+                      className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Discovery Call
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link 
+                      to="/podcast" 
+                      className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Podcast
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Contact Link */}
+              <Link 
+                to="/contact" 
+                className={cn(
+                  "transition-colors text-base font-medium px-3 py-2",
+                  isActivePath('/contact') 
+                    ? "text-social-purple font-bold border-b-2 border-social-purple" 
+                    : "text-apple-gray-5 hover:text-black"
+                )}
+                onClick={() => setIsOpen(false)}
+              >
+                Contact
+              </Link>
+            </div>
           </div>
           
           <div className="md:hidden">

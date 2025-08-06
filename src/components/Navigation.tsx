@@ -217,6 +217,15 @@ export const Navigation = () => {
                       </NavigationMenuLink>
                       <NavigationMenuLink asChild>
                         <Link 
+                          to="/faq" 
+                          className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          FAQ
+                        </Link>
+                      </NavigationMenuLink>
+                      <NavigationMenuLink asChild>
+                        <Link 
                           to="/discovery-call" 
                           className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-md transition-colors"
                           onClick={() => setIsOpen(false)}
@@ -356,6 +365,13 @@ export const Navigation = () => {
                 onClick={() => setIsOpen(false)}
               >
                 Client Reviews
+              </Link>
+              <Link 
+                to="/faq" 
+                className="block px-3 py-2 text-apple-gray-5 hover:text-black transition-colors"
+                onClick={() => setIsOpen(false)}
+              >
+                FAQ
               </Link>
               <Link 
                 to="/discovery-call" 

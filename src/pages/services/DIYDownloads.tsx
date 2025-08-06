@@ -6,6 +6,7 @@ import { MainContent } from "@/components/MainContent";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Navigation } from "@/components/Navigation";
+import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
 
 const DIYDownloads = () => {
   const navigate = useNavigate();
@@ -117,6 +118,7 @@ const DIYDownloads = () => {
           </div>
         </section>
       </MainContent>
+      <EnhancedFooter />
     </div>
   );
 };

@@ -14,7 +14,7 @@ import { JourneyForm } from "./contact/JourneyForm";
 import { ExpeditionPreview } from "./contact/ExpeditionPreview";
 import { ReviewsSection } from "./contact/ReviewsSection";
 import { BottomCTA } from "./contact/BottomCTA";
-import { ContactFooter } from "./contact/ContactFooter";
+import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
 
 interface ContactProps {
   autoOpenWizard?: boolean;
@@ -157,7 +157,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
           onBookCall={handleCalendlyBooking}
         />
 
-        <ContactFooter />
+        <EnhancedFooter />
       </div>
 
       <ContactWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />

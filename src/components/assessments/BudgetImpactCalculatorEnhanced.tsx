@@ -492,7 +492,6 @@ export const BudgetImpactCalculatorEnhanced = ({ onBack }: BudgetImpactCalculato
         </Button>
 
         <EnhancedResults
-          assessmentType="Budget Impact Calculator"
           score={result.confidenceLevel}
           level={result.confidenceLevel >= 80 ? 'High Confidence' : result.confidenceLevel >= 65 ? 'Medium Confidence' : 'Conservative'}
           sectionScores={result.sectionScores}

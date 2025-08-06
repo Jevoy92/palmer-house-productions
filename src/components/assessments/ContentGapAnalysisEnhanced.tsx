@@ -455,7 +455,6 @@ export const ContentGapAnalysisEnhanced = ({ onBack }: ContentGapAnalysisEnhance
         </Button>
 
         <EnhancedResults
-          assessmentType="Content Gap Analysis"
           score={results.funnelCoverage}
           level={results.funnelCoverage >= 75 ? 'Advanced' : results.funnelCoverage >= 50 ? 'Intermediate' : 'Beginner'}
           sectionScores={results.sectionScores}

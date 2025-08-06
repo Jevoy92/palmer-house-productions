@@ -2,12 +2,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-interface ClimbFuelStepProps {
+interface GoalsStepProps {
   onSelect: (tag: string) => void;
   onBack: () => void;
 }
 
-export const ClimbFuelStep = ({ onSelect, onBack }: ClimbFuelStepProps) => {
+export const GoalsStep = ({ onSelect, onBack }: GoalsStepProps) => {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const options = [
@@ -39,7 +39,7 @@ export const ClimbFuelStep = ({ onSelect, onBack }: ClimbFuelStepProps) => {
         <div className="mb-8">
           <div className="text-5xl mb-4">⛽</div>
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Fuel for the <span className="text-orange-600">Climb</span>
+            What Are Your <span className="text-orange-600">Goals</span>?
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             What's your top reason for exploring video? (Select all that apply)

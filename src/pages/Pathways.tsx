@@ -1,12 +1,12 @@
 
 import { Navigation } from "@/components/Navigation";
-import { PricingTrails } from "@/components/PricingTrails";
+import { ServicePackages } from "@/components/ServicePackages";
 
 const PathwaysPage = () => {
   return (
     <div className="min-h-screen bg-white">
       <Navigation />
-      <PricingTrails />
+      <ServicePackages />
     </div>
   );
 };

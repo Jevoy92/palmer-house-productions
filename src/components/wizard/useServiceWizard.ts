@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
-interface JourneyData {
-  // Journey selections
+interface ServiceData {
+  // Service selections
   painPoint?: string;
   businessStage?: string;
   videoGoal?: string;
@@ -18,32 +18,32 @@ interface JourneyData {
   budget: string;
   
   // Collected tags for recommendations
-  journeyTags: string[];
+  serviceTags: string[];
 }
 
-export const useJourneyWizard = () => {
+export const useServiceWizard = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   
-  const [journeyData, setJourneyData] = useState<JourneyData>({
+  const [serviceData, setServiceData] = useState<ServiceData>({
     firstName: "",
     lastName: "",
     email: "",
     company: "",
     challenge: "",
     budget: "",
-    journeyTags: [],
+    serviceTags: [],
   });
 
-  const updateJourneyData = (data: Partial<JourneyData>) => {
-    setJourneyData(prev => ({ ...prev, ...data }));
+  const updateServiceData = (data: Partial<ServiceData>) => {
+    setServiceData(prev => ({ ...prev, ...data }));
   };
 
-  const addJourneyTag = (tag: string) => {
-    setJourneyData(prev => ({
+  const addServiceTag = (tag: string) => {
+    setServiceData(prev => ({
       ...prev,
-      journeyTags: [...prev.journeyTags, tag]
+      serviceTags: [...prev.serviceTags, tag]
     }));
   };
 
@@ -51,16 +51,16 @@ export const useJourneyWizard = () => {
   const prevStep = () => setCurrentStep(prev => prev - 1);
   const jumpToRecommendation = () => setCurrentStep(6);
 
-  const resetJourney = () => {
+  const resetService = () => {
     setCurrentStep(1);
-    setJourneyData({
+    setServiceData({
       firstName: "",
       lastName: "",
       email: "",
       company: "",
       challenge: "",
       budget: "",
-      journeyTags: [],
+      serviceTags: [],
     });
   };
 
@@ -71,33 +71,33 @@ export const useJourneyWizard = () => {
       console.log('Submitting journey form to Formspree...');
       
       const formData = {
-        name: `${journeyData.firstName} ${journeyData.lastName}`,
-        email: journeyData.email,
-        company: journeyData.company,
-        challenge: journeyData.challenge,
-        budget: journeyData.budget,
-        journey_tags: journeyData.journeyTags.join(', '),
-        pain_point: journeyData.painPoint,
-        business_stage: journeyData.businessStage,
-        video_goal: journeyData.videoGoal,
-        content_pace: journeyData.contentPace,
-        message: `New journey-based inquiry from ${journeyData.firstName} ${journeyData.lastName} at ${journeyData.company}.
+        name: `${serviceData.firstName} ${serviceData.lastName}`,
+        email: serviceData.email,
+        company: serviceData.company,
+        challenge: serviceData.challenge,
+        budget: serviceData.budget,
+        service_tags: serviceData.serviceTags.join(', '),
+        pain_point: serviceData.painPoint,
+        business_stage: serviceData.businessStage,
+        video_goal: serviceData.videoGoal,
+        content_pace: serviceData.contentPace,
+        message: `New service inquiry from ${serviceData.firstName} ${serviceData.lastName} at ${serviceData.company}.
 
-JOURNEY PATH:
-Pain Point: ${journeyData.painPoint}
-Business Stage: ${journeyData.businessStage}
-Video Goal: ${journeyData.videoGoal}
-Content Pace: ${journeyData.contentPace}
+SERVICE ASSESSMENT:
+Pain Point: ${serviceData.painPoint}
+Business Stage: ${serviceData.businessStage}
+Video Goal: ${serviceData.videoGoal}
+Content Pace: ${serviceData.contentPace}
 
-TAGS: ${journeyData.journeyTags.join(', ')}
+TAGS: ${serviceData.serviceTags.join(', ')}
 
 PROJECT DETAILS:
-Challenge: ${journeyData.challenge}
-Budget: ${journeyData.budget}
+Challenge: ${serviceData.challenge}
+Budget: ${serviceData.budget}
 
 CONTACT INFORMATION:
-Email: ${journeyData.email}
-Company: ${journeyData.company}`
+Email: ${serviceData.email}
+Company: ${serviceData.company}`
       };
 
       console.log('Journey form data:', formData);
@@ -139,12 +139,12 @@ Company: ${journeyData.company}`
   return {
     currentStep,
     isSubmitting,
-    journeyData,
-    updateJourneyData,
-    addJourneyTag,
+    serviceData,
+    updateServiceData,
+    addServiceTag,
     nextStep,
     prevStep,
-    resetJourney,
+    resetService,
     handleSubmit,
     getCalendlyUrl,
     jumpToRecommendation,

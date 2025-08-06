@@ -38,7 +38,7 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
       const selectedPath = localStorage.getItem('selectedPath');
       if (selectedPath) {
         form.setValue('pathway', selectedPath);
-        form.setValue('message', `I'm interested in exploring the ${selectedPath} path for my brand's journey.`);
+        form.setValue('message', `I'm interested in the ${selectedPath} service for my brand.`);
         // Clear the stored path
         localStorage.removeItem('selectedPath');
       }

@@ -1,10 +1,10 @@
 
-interface JourneyProgressProps {
+interface WizardProgressProps {
   currentStep: number;
   totalSteps: number;
 }
 
-export const JourneyProgress = ({ currentStep, totalSteps }: JourneyProgressProps) => {
+export const WizardProgress = ({ currentStep, totalSteps }: WizardProgressProps) => {
   const checkpoints = [
     { step: 1, label: "Start", icon: "🗺️" },
     { step: 2, label: "Map", icon: "🧭" },

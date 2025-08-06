@@ -1,17 +1,17 @@
 
 import { useState, useEffect } from "react";
 import { ContactWizard } from "./ContactWizard";
-import { JourneyWizard } from "./JourneyWizard";
-import { useJourneyWizard } from "./wizard/useJourneyWizard";
-import { JourneyStart } from "./wizard/journey/JourneyStart";
-import { TrailMapStep } from "./wizard/journey/TrailMapStep";
-import { ClimbFuelStep } from "./wizard/journey/ClimbFuelStep";
+import { ServiceWizard } from "./ServiceWizard";
+import { useServiceWizard } from "./wizard/useServiceWizard";
+import { NeedsAssessment } from "./wizard/journey/NeedsAssessment";
+import { BusinessStageStep } from "./wizard/journey/BusinessStageStep";
+import { GoalsStep } from "./wizard/journey/GoalsStep";
 import { PacePickerStep } from "./wizard/journey/PacePickerStep";
 import { VisionDetailsStep } from "./wizard/journey/VisionDetailsStep";
 import { CelebrationStep } from "./wizard/journey/CelebrationStep";
 import { ContactHeader } from "./contact/ContactHeader";
-import { JourneyForm } from "./contact/JourneyForm";
-import { ExpeditionPreview } from "./contact/ExpeditionPreview";
+import { WizardForm } from "./contact/WizardForm";
+import { ProcessPreview } from "./contact/ProcessPreview";
 import { ReviewsSection } from "./contact/ReviewsSection";
 import { BottomCTA } from "./contact/BottomCTA";
 import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
@@ -22,21 +22,21 @@ interface ContactProps {
 
 export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
   const [isWizardOpen, setIsWizardOpen] = useState(autoOpenWizard);
-  const [isJourneyOpen, setIsJourneyOpen] = useState(false);
+  const [isServiceOpen, setIsServiceOpen] = useState(false);
 
   const {
     currentStep,
     isSubmitting,
-    journeyData,
-    updateJourneyData,
-    addJourneyTag,
+    serviceData,
+    updateServiceData,
+    addServiceTag,
     nextStep,
     prevStep,
-    resetJourney,
+    resetService,
     handleSubmit,
     getCalendlyUrl,
     jumpToRecommendation,
-  } = useJourneyWizard();
+  } = useServiceWizard();
 
   useEffect(() => {
     if (autoOpenWizard) {
@@ -50,12 +50,12 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
   };
 
   const handleQuickRecommendation = () => {
-    addJourneyTag('quick_recommendation');
-    updateJourneyData({ 
+    addServiceTag('quick_recommendation');
+    updateServiceData({ 
       painPoint: 'quick_help',
       businessStage: 'scaling_team',
       videoGoal: 'lead_gen',
-      contentPace: 'basecamp'
+      contentPace: 'standard'
     });
     jumpToRecommendation();
   };
@@ -68,20 +68,20 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
     switch (currentStep) {
       case 1:
         return (
-          <JourneyStart
+          <NeedsAssessment
             onSelect={(tag) => {
-              addJourneyTag(tag);
-              updateJourneyData({ painPoint: tag });
+              addServiceTag(tag);
+              updateServiceData({ painPoint: tag });
               nextStep();
             }}
           />
         );
       case 2:
         return (
-          <TrailMapStep
+          <BusinessStageStep
             onSelect={(tag) => {
-              addJourneyTag(tag);
-              updateJourneyData({ businessStage: tag });
+              addServiceTag(tag);
+              updateServiceData({ businessStage: tag });
               nextStep();
             }}
             onBack={prevStep}
@@ -89,10 +89,10 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
         );
       case 3:
         return (
-          <ClimbFuelStep
+          <GoalsStep
             onSelect={(tag) => {
-              addJourneyTag(tag);
-              updateJourneyData({ videoGoal: tag });
+              addServiceTag(tag);
+              updateServiceData({ videoGoal: tag });
               nextStep();
             }}
             onBack={prevStep}
@@ -102,8 +102,8 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
         return (
           <PacePickerStep
             onSelect={(tag) => {
-              addJourneyTag(tag);
-              updateJourneyData({ contentPace: tag });
+              addServiceTag(tag);
+              updateServiceData({ contentPace: tag });
               nextStep();
             }}
             onBack={prevStep}
@@ -112,8 +112,8 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
       case 5:
         return (
           <VisionDetailsStep
-            data={journeyData}
-            onDataUpdate={updateJourneyData}
+            data={serviceData}
+            onDataUpdate={updateServiceData}
             onSubmit={handleSubmit}
             onBack={prevStep}
             isSubmitting={isSubmitting}
@@ -122,9 +122,9 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
       case 6:
         return (
           <CelebrationStep
-            data={journeyData}
-            onClose={() => resetJourney()}
-            onNewInquiry={resetJourney}
+            data={serviceData}
+            onClose={() => resetService()}
+            onNewInquiry={resetService}
             onCalendlyBooking={handleCalendlyBooking}
           />
         );
@@ -141,19 +141,19 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
           currentStep={currentStep}
         />
 
-        <JourneyForm 
+        <WizardForm 
           currentStep={currentStep}
           onQuickRecommendation={handleQuickRecommendation}
         >
           {renderEmbeddedStep()}
-        </JourneyForm>
+        </WizardForm>
 
-        <ExpeditionPreview />
+        <ProcessPreview />
 
         <ReviewsSection onViewAllReviews={handleViewAllReviews} />
 
         <BottomCTA 
-          onStartJourney={resetJourney}
+          onStartJourney={resetService}
           onBookCall={handleCalendlyBooking}
         />
 
@@ -161,7 +161,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
       </div>
 
       <ContactWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
-      <JourneyWizard open={isJourneyOpen} onOpenChange={setIsJourneyOpen} />
+      <ServiceWizard open={isServiceOpen} onOpenChange={setIsServiceOpen} />
     </section>
   );
 };

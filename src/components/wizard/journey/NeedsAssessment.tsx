@@ -1,11 +1,11 @@
 
 import { useState } from "react";
 
-interface JourneyStartProps {
+interface NeedsAssessmentProps {
   onSelect: (tag: string) => void;
 }
 
-export const JourneyStart = ({ onSelect }: JourneyStartProps) => {
+export const NeedsAssessment = ({ onSelect }: NeedsAssessmentProps) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
 
   const options = [
@@ -27,7 +27,7 @@ export const JourneyStart = ({ onSelect }: JourneyStartProps) => {
         <div className="mb-8">
           <div className="text-5xl mb-4">🗺️</div>
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Start Your <span className="text-blue-600">Expedition</span>
+            Let's Assess Your <span className="text-blue-600">Needs</span>
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             What feels most unclear about video right now?

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { PRICING } from "@/lib/pricing";
 import { PricingFAQ } from "./pricing/PricingFAQ";
 
-export const PricingTrails = () => {
+export const ServicePackages = () => {
   const navigate = useNavigate();
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
 
@@ -152,7 +152,7 @@ export const PricingTrails = () => {
           <div className="bg-gradient-to-r from-primary/10 to-primary-dark/10 rounded-3xl p-8 mb-16 text-center">
             <div className="text-4xl mb-4">🎁</div>
             <h3 className="text-2xl font-display font-black text-corporate-dark mb-4">
-              The Explorer's Bonus Pack
+              The Bonus Package
             </h3>
             <p className="text-lg text-corporate-gray mb-4">
               <strong>FREE with:</strong> Monthly Social Authority Kit + Any One-Time Bundle $4,500+

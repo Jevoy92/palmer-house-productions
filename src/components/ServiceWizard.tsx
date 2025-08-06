@@ -2,38 +2,38 @@
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
-import { useJourneyWizard } from "./wizard/useJourneyWizard";
-import { JourneyProgress } from "./wizard/journey/JourneyProgress";
-import { JourneyStart } from "./wizard/journey/JourneyStart";
-import { TrailMapStep } from "./wizard/journey/TrailMapStep";
-import { ClimbFuelStep } from "./wizard/journey/ClimbFuelStep";
+import { useServiceWizard } from "./wizard/useServiceWizard";
+import { WizardProgress } from "./wizard/journey/WizardProgress";
+import { NeedsAssessment } from "./wizard/journey/NeedsAssessment";
+import { BusinessStageStep } from "./wizard/journey/BusinessStageStep";
+import { GoalsStep } from "./wizard/journey/GoalsStep";
 import { PacePickerStep } from "./wizard/journey/PacePickerStep";
 import { VisionDetailsStep } from "./wizard/journey/VisionDetailsStep";
 import { CelebrationStep } from "./wizard/journey/CelebrationStep";
 
-interface JourneyWizardProps {
+interface ServiceWizardProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export const JourneyWizard = ({ open, onOpenChange }: JourneyWizardProps) => {
+export const ServiceWizard = ({ open, onOpenChange }: ServiceWizardProps) => {
   const {
     currentStep,
     isSubmitting,
-    journeyData,
-    updateJourneyData,
-    addJourneyTag,
+    serviceData,
+    updateServiceData,
+    addServiceTag,
     nextStep,
     prevStep,
-    resetJourney,
+    resetService,
     handleSubmit,
     getCalendlyUrl,
     jumpToRecommendation,
-  } = useJourneyWizard();
+  } = useServiceWizard();
 
   const handleClose = () => {
     onOpenChange(false);
-    setTimeout(resetJourney, 300);
+    setTimeout(resetService, 300);
   };
 
   const handleCalendlyBooking = () => {
@@ -42,12 +42,12 @@ export const JourneyWizard = ({ open, onOpenChange }: JourneyWizardProps) => {
   };
 
   const handleQuickRecommendation = () => {
-    addJourneyTag('quick_recommendation');
-    updateJourneyData({ 
+    addServiceTag('quick_recommendation');
+    updateServiceData({ 
       painPoint: 'quick_help',
       businessStage: 'scaling_team',
       videoGoal: 'lead_gen',
-      contentPace: 'basecamp'
+      contentPace: 'standard'
     });
     jumpToRecommendation();
   };
@@ -56,20 +56,20 @@ export const JourneyWizard = ({ open, onOpenChange }: JourneyWizardProps) => {
     switch (currentStep) {
       case 1:
         return (
-          <JourneyStart
+          <NeedsAssessment
             onSelect={(tag) => {
-              addJourneyTag(tag);
-              updateJourneyData({ painPoint: tag });
+              addServiceTag(tag);
+              updateServiceData({ painPoint: tag });
               nextStep();
             }}
           />
         );
       case 2:
         return (
-          <TrailMapStep
+          <BusinessStageStep
             onSelect={(tag) => {
-              addJourneyTag(tag);
-              updateJourneyData({ businessStage: tag });
+              addServiceTag(tag);
+              updateServiceData({ businessStage: tag });
               nextStep();
             }}
             onBack={prevStep}
@@ -77,10 +77,10 @@ export const JourneyWizard = ({ open, onOpenChange }: JourneyWizardProps) => {
         );
       case 3:
         return (
-          <ClimbFuelStep
+          <GoalsStep
             onSelect={(tag) => {
-              addJourneyTag(tag);
-              updateJourneyData({ videoGoal: tag });
+              addServiceTag(tag);
+              updateServiceData({ videoGoal: tag });
               nextStep();
             }}
             onBack={prevStep}
@@ -90,8 +90,8 @@ export const JourneyWizard = ({ open, onOpenChange }: JourneyWizardProps) => {
         return (
           <PacePickerStep
             onSelect={(tag) => {
-              addJourneyTag(tag);
-              updateJourneyData({ contentPace: tag });
+              addServiceTag(tag);
+              updateServiceData({ contentPace: tag });
               nextStep();
             }}
             onBack={prevStep}
@@ -100,8 +100,8 @@ export const JourneyWizard = ({ open, onOpenChange }: JourneyWizardProps) => {
       case 5:
         return (
           <VisionDetailsStep
-            data={journeyData}
-            onDataUpdate={updateJourneyData}
+            data={serviceData}
+            onDataUpdate={updateServiceData}
             onSubmit={handleSubmit}
             onBack={prevStep}
             isSubmitting={isSubmitting}
@@ -110,9 +110,9 @@ export const JourneyWizard = ({ open, onOpenChange }: JourneyWizardProps) => {
       case 6:
         return (
           <CelebrationStep
-            data={journeyData}
+            data={serviceData}
             onClose={handleClose}
-            onNewInquiry={resetJourney}
+            onNewInquiry={resetService}
             onCalendlyBooking={handleCalendlyBooking}
           />
         );
@@ -125,13 +125,13 @@ export const JourneyWizard = ({ open, onOpenChange }: JourneyWizardProps) => {
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white rounded-lg border-0 shadow-xl p-0">
         <VisuallyHidden>
-          <DialogTitle>Journey Wizard</DialogTitle>
-          <DialogDescription>Take our interactive journey to discover your perfect video strategy</DialogDescription>
+          <DialogTitle>Service Wizard</DialogTitle>
+          <DialogDescription>Take our interactive assessment to discover your perfect video strategy</DialogDescription>
         </VisuallyHidden>
         
-        {/* Journey Progress - show for steps 1-5 */}
+        {/* Wizard Progress - show for steps 1-5 */}
         {currentStep <= 5 && (
-          <JourneyProgress currentStep={currentStep} totalSteps={6} />
+          <WizardProgress currentStep={currentStep} totalSteps={6} />
         )}
 
         {/* Quick Skip Option - show for steps 1-4 */}

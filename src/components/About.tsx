@@ -54,7 +54,7 @@ export const About = () => {
         {/* Core Values */}
         <section className="mb-20">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-display font-black text-corporate-dark mb-6">Our Explorer's Code</h2>
+            <h2 className="text-5xl font-display font-black text-corporate-dark mb-6">Our Approach</h2>
             <div className="w-32 h-1 bg-gradient-to-r from-social-purple to-social-pink mx-auto rounded-full"></div>
           </div>
           
@@ -65,7 +65,7 @@ export const About = () => {
                 <h3 className="text-2xl font-bold text-gradient-1">Uncharted Paths</h3>
               </div>
               <p className="text-corporate-gray leading-relaxed text-lg">
-                We venture where others won't go. Every project is a unique expedition, custom-built to discover your brand's authentic voice.
+                We go beyond the ordinary. Every project is custom-built to discover and amplify your brand's authentic voice.
               </p>
             </div>
             
@@ -95,7 +95,7 @@ export const About = () => {
                 <h3 className="text-2xl font-bold text-gradient-1">Fearless Creativity</h3>
               </div>
               <p className="text-corporate-gray leading-relaxed text-lg">
-                We don't follow trends - we blaze trails. Bold visuals, strong messaging, and a spark of the unexpected guide every expedition.
+                We don't follow trends - we set them. Bold visuals, strong messaging, and a spark of the unexpected guide every project.
               </p>
             </div>
           </div>

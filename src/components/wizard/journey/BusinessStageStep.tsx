@@ -2,12 +2,12 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-interface TrailMapStepProps {
+interface BusinessStageStepProps {
   onSelect: (tag: string) => void;
   onBack: () => void;
 }
 
-export const TrailMapStep = ({ onSelect, onBack }: TrailMapStepProps) => {
+export const BusinessStageStep = ({ onSelect, onBack }: BusinessStageStepProps) => {
   const [selectedOption, setSelectedOption] = useState<string>("");
 
   const options = [
@@ -42,10 +42,10 @@ export const TrailMapStep = ({ onSelect, onBack }: TrailMapStepProps) => {
         <div className="mb-8">
           <div className="text-5xl mb-4">🧭</div>
           <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Choose Your <span className="text-green-600">Trail Map</span>
+            What's Your <span className="text-green-600">Business Stage</span>?
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Which of these matches your business's current vibe?
+            Which of these matches your business's current stage?
           </p>
         </div>
 

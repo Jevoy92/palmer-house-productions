@@ -1,19 +1,19 @@
 
 import { Button } from "@/components/ui/button";
-import { JourneyProgress } from "@/components/wizard/journey/JourneyProgress";
+import { WizardProgress } from "@/components/wizard/journey/WizardProgress";
 
-interface JourneyFormProps {
+interface WizardFormProps {
   currentStep: number;
   onQuickRecommendation: () => void;
   children: React.ReactNode;
 }
 
-export const JourneyForm = ({ currentStep, onQuickRecommendation, children }: JourneyFormProps) => {
+export const WizardForm = ({ currentStep, onQuickRecommendation, children }: WizardFormProps) => {
   return (
     <div className="max-w-4xl mx-auto mb-12">
       <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden relative">
         {currentStep <= 5 && (
-          <JourneyProgress currentStep={currentStep} totalSteps={6} />
+          <WizardProgress currentStep={currentStep} totalSteps={6} />
         )}
         
         {currentStep <= 4 && (

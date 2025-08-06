@@ -11,11 +11,11 @@ const Terms = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Terms of Service | Palmer House Video Production"
-        description="Review the terms of service for Palmer House Productions' video content systems, pricing, ownership, and business partnership agreements."
+        title="Terms of Service | Palmer House Productions Video Company"
+        description="Review the terms of service for Palmer House Productions' video content systems, pricing, ownership, and business agreements."
         keywords="terms of service, Palmer House Productions, video production terms, business agreement, content ownership"
         ogTitle="Terms of Service | Palmer House Productions"
-        ogDescription="Review the terms of service for Palmer House Productions' video content systems, pricing, ownership, and business partnership agreements."
+        ogDescription="Review the terms of service for Palmer House Productions' video content systems, pricing, ownership, and business agreements."
       />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>

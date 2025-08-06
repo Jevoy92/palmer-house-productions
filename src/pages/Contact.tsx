@@ -13,10 +13,10 @@ const ContactPage = () => {
     <div className="min-h-screen bg-white">
       <MetaTags 
         title="Contact Palmer House Productions | Start Your Video Project Today"
-        description="Contact Palmer House Productions for professional video production services. Get a custom quote for your business video, cinematic storytelling, or content creation project."
+        description="Contact Palmer House Productions for professional video production services. Get a custom quote for your business video project."
         keywords="contact Palmer House Productions, video production quote, professional video services, business video consultation"
         ogTitle="Contact Palmer House Productions | Video Production Services"
-        ogDescription="Contact us for professional video production services. Get a custom quote for your business video project."
+        ogDescription="Contact Palmer House Productions for professional video production services. Get a custom quote for your business video project."
         canonicalUrl="https://www.palmerhouseproductions.com/contact"
       />
       <StructuredData type="contact" />

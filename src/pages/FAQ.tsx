@@ -16,10 +16,10 @@ const FAQ = () => {
 
   // Update page title for better SEO
   useEffect(() => {
-    document.title = "Frequently Asked Questions | Palmer House Video Production";
+    document.title = "Frequently Asked Questions | Palmer House Video Production Help";
     const metaDescription = document.querySelector('meta[name="description"]');
     if (metaDescription) {
-      metaDescription.setAttribute('content', 'Complete FAQ covering Palmer House Productions video content systems, pricing, processes, and services.');
+      metaDescription.setAttribute('content', 'Complete FAQ covering Palmer House Productions video content systems, pricing, processes, and services for business growth.');
     }
   }, []);
 

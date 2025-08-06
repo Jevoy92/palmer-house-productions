@@ -12,11 +12,11 @@ const VideoPackagesPage = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Video Production Packages | Palmer House Productions"
+        title="Video Production Packages & Pricing | Palmer House Productions"
         description="Explore video production packages - Social Authority Kit, FAQ systems, External videos, and DIY resources for business growth."
         keywords="video production packages, social authority kit, video FAQ systems, Palmer House Productions pricing, business video solutions"
         ogTitle="Video Packages | Palmer House Productions"
-        ogDescription="Explore comprehensive video production packages - Social Authority Kit, Internal FAQ systems, External videos, and DIY resources. Transform your brand with professional video content."
+        ogDescription="Explore video production packages - Social Authority Kit, FAQ systems, External videos, and DIY resources for business growth."
       />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <StructuredData type="packages" />

@@ -15,11 +15,11 @@ const AboutPage = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="About Palmer House | Seattle Video Production"
-        description="Meet the Palmer House Productions team - professional video content creators specializing in strategic business storytelling and brand development in Seattle."
+        title="About Palmer House Productions | Seattle Video Production Team"
+        description="Meet the Palmer House Productions team - professional video content creators specializing in strategic business storytelling and brand development."
         keywords="about Palmer House Productions, Seattle video production team, professional video creators, business storytelling"
-        ogTitle="About Palmer House | Seattle Video Production Team"
-        ogDescription="Meet the Palmer House Productions team - professional video content creators specializing in strategic business storytelling and brand development in Seattle."
+        ogTitle="About Palmer House Productions | Seattle Video Production Team"
+        ogDescription="Meet the Palmer House Productions team - professional video content creators specializing in strategic business storytelling and brand development."
       />
       <StructuredData type="about" />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />

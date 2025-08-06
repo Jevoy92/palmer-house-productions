@@ -13,11 +13,11 @@ const PathwaysPage = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Video Production Packages | Service Options | Palmer House Productions"
-        description="Explore our video production service packages designed for different business needs. From single videos to comprehensive content strategies, find the perfect solution."
+        title="Video Production Service Packages | Palmer House Productions"
+        description="Explore video production service packages for different business needs. From single videos to comprehensive content strategies."
         keywords="video production packages, video service options, business video packages, video production pricing, content creation packages"
         ogTitle="Video Production Packages | Service Options"
-        ogDescription="Video production service packages for different business needs. From single videos to comprehensive strategies."
+        ogDescription="Explore video production service packages for different business needs. From single videos to comprehensive content strategies."
         canonicalUrl="https://www.palmerhouseproductions.com/pathways"
       />
       <StructuredData type="packages" />

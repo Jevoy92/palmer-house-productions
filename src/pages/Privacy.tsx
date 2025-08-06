@@ -11,11 +11,11 @@ const Privacy = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Privacy Policy | Palmer House Video Production"
-        description="Learn how Palmer House Productions protects your privacy. Our comprehensive privacy policy covers data collection, usage, security, and your rights as a client."
+        title="Privacy Policy | Palmer House Productions Video Services"
+        description="Learn how Palmer House Productions protects your privacy. Our comprehensive privacy policy covers data collection, usage, and security."
         keywords="privacy policy, data protection, Palmer House Productions, client privacy, personal information security"
         ogTitle="Privacy Policy | Palmer House Productions"
-        ogDescription="Learn how Palmer House Productions protects your privacy. Our comprehensive privacy policy covers data collection, usage, security, and your rights as a client."
+        ogDescription="Learn how Palmer House Productions protects your privacy. Our comprehensive privacy policy covers data collection, usage, and security."
       />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>

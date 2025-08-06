@@ -85,8 +85,8 @@ const Reviews = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Client Reviews | Palmer House Productions"
-        description="Read authentic reviews from Palmer House Productions clients. Discover how our video content systems have transformed businesses and increased ROI by 45% on average."
+        title="Client Reviews & Testimonials | Palmer House Video"
+        description="Authentic reviews from Palmer House clients. See how video content systems transformed businesses and increased ROI."
         keywords="Palmer House Productions reviews, client testimonials, video production results, business transformation, ROI increase"
         ogTitle="Client Reviews | Palmer House Productions"
         ogDescription="Read authentic reviews from Palmer House Productions clients. Discover how our video content systems have transformed businesses and increased ROI by 45% on average."

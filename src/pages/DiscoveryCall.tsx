@@ -15,7 +15,7 @@ const DiscoveryCallPage = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Discovery Call | Palmer House Productions"
+        title="Free Discovery Call | Video Strategy Session | Palmer House"
         description="Book a free discovery call to explore video content solutions for your business. Map your challenges and discover the perfect video strategy for your brand."
         keywords="discovery call, free consultation, video strategy, business consultation, Palmer House Productions, video planning"
         ogTitle="Discovery Call | Palmer House Productions"

@@ -51,8 +51,8 @@ const DIYDownloads = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="DIY Video Downloads | Palmer House Productions"
-        description="Instant access to professional video resources - DIY reels guide, strategy blueprint, script bundle, and confidence course. Start creating compelling content today."
+        title="DIY Video Resources & Downloads | Palmer House"
+        description="Download video production resources - script templates, strategy guides, and DIY tools for professional content."
         keywords="DIY video downloads, video strategy blueprint, script bundle, confidence course, video production resources"
         ogTitle="DIY Video Downloads | Palmer House Productions"
         ogDescription="Instant access to professional video resources - DIY reels guide, strategy blueprint, script bundle, and confidence course. Start creating compelling content today."

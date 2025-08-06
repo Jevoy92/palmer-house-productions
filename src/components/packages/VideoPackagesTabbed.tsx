@@ -135,9 +135,9 @@ export const VideoPackagesTabbed = () => {
           <div className="inline-block px-3 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-4 video-shadow">
             🎬 Video Packages
           </div>
-          <h1 className="text-2xl md:text-4xl font-display font-black mb-4 text-corporate-dark tracking-tight">
+          <h2 className="text-2xl md:text-4xl font-display font-black mb-4 text-corporate-dark tracking-tight">
             Video Production <span className="text-gradient-1">Services</span>
-          </h1>
+          </h2>
           <p className="text-base md:text-lg text-corporate-gray mb-4 max-w-2xl mx-auto px-4">
             Professional video content organized by service type for easy browsing.
           </p>

@@ -56,8 +56,8 @@ const Values = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Our Values | Palmer House Productions"
-        description="Discover the core values driving Palmer House Productions - truth over trends, clarity over complexity, emotion over ego. Learn what guides our creative process."
+        title="Our Core Values | Palmer House Video Production"
+        description="Core values driving Palmer House Productions - truth over trends, clarity over complexity, emotion over ego."
         keywords="Palmer House Productions values, video production philosophy, creative principles, authenticity in video, Seattle video company culture"
         ogTitle="Our Values | Palmer House Productions"
         ogDescription="Discover the core values driving Palmer House Productions - truth over trends, clarity over complexity, emotion over ego. Learn what guides our creative process."

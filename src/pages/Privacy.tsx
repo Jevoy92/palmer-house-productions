@@ -11,7 +11,7 @@ const Privacy = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Privacy Policy | Palmer House Productions"
+        title="Privacy Policy | Palmer House Video Production"
         description="Learn how Palmer House Productions protects your privacy. Our comprehensive privacy policy covers data collection, usage, security, and your rights as a client."
         keywords="privacy policy, data protection, Palmer House Productions, client privacy, personal information security"
         ogTitle="Privacy Policy | Palmer House Productions"

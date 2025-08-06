@@ -40,7 +40,7 @@ const Team = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Meet Our Team | Palmer House Productions"
+        title="Our Video Production Team | Palmer House Productions"
         description="Get to know the creative professionals behind Palmer House Productions - Jevoy Palmer, Kyli Lora, and Trenton Sims. Expert video production team in Seattle."
         keywords="Palmer House Productions team, Jevoy Palmer, video production team, Seattle creative professionals, video editing experts"
         ogTitle="Meet Our Team | Palmer House Productions"

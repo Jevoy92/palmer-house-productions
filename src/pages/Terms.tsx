@@ -11,7 +11,7 @@ const Terms = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Terms of Service | Palmer House Productions"
+        title="Terms of Service | Palmer House Video Production"
         description="Review the terms of service for Palmer House Productions' video content systems, pricing, ownership, and business partnership agreements."
         keywords="terms of service, Palmer House Productions, video production terms, business agreement, content ownership"
         ogTitle="Terms of Service | Palmer House Productions"

@@ -138,7 +138,7 @@ export const PRICING = {
 
   // 5. Built-In Bonus Bundle
   BONUS_PACK: {
-    name: "The Explorer's Bonus Pack",
+    name: "The Business Bonus Pack",
     totalValue: "$531",
     qualifies: ["Monthly Social Authority Kit", "Any One-Time Bundle $4,500+"],
     items: [

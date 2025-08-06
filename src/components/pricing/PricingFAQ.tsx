@@ -11,32 +11,32 @@ export const PricingFAQ = () => {
       answer: "Each shoot day includes pre-production planning, on-location filming (up to 6 hours), and post-production editing. We'll work with you to maximize content creation during each session, often filming multiple pieces of content in one day."
     },
     {
-      question: "Can I change my service package anytime?",
-      answer: "Absolutely! You can change your service at any time. For monthly services, changes take effect at your next billing cycle. For one-time services, we can discuss your new needs right away. We'll work with you to ensure a smooth transition."
+      question: "Do you offer monthly video content packages?",
+      answer: "Yes, our \"Social Authority Kit\" delivers hero videos, reels, and social proof content every month, so you never run out of fresh, on-brand assets. Minimum 3-month commitment."
+    },
+    {
+      question: "How do your one-time bundles work?",
+      answer: "We offer targeted solutions like Internal FAQ Buildouts, External FAQ Videos, Reels Blitzes, and rapid launches. Each solves a specific problem fast—without a long-term contract."
+    },
+    {
+      question: "Do you offer a starter package for first-timers?",
+      answer: "Yes—the \"Starter Session\" is a $500 mini-package with a 30-minute shoot and three edited videos. Simple, accessible, and capped to ensure quality."
+    },
+    {
+      question: "What's the \"Business Bonus Pack\"?",
+      answer: "It's our bundle of DIY guides, coaching, and scripts—free with monthly packages or any major bundle. Perfect for teams who want to practice, plan, or sharpen their on-camera skills."
+    },
+    {
+      question: "Do we own the video content?",
+      answer: "Yes. Upon final payment, you own all footage, finished videos, and source files—use them however and wherever you want."
     },
     {
       question: "How do you handle revisions and feedback?",
       answer: "We include up to 2 rounds of revisions for each piece of content. Our collaborative approach means we'll work closely with you during pre-production to align on your vision, minimizing the need for major changes later."
     },
     {
-      question: "Do you provide the video equipment and crew?",
-      answer: "Yes! We bring all professional equipment including cameras, lighting, audio gear, and our experienced crew. You just need to show up ready to create amazing content."
-    },
-    {
-      question: "What if I need content faster than my monthly allocation?",
-      answer: "We offer rush production services for urgent needs. Additional content can be added to any service at competitive rates. Monthly Content System clients get priority for rush requests."
-    },
-    {
-      question: "How far in advance do I need to book shoots?",
-      answer: "We recommend booking 2-3 weeks in advance for the best availability. However, we understand business needs can be urgent - we'll always try to accommodate shorter notice when possible."
-    },
-    {
-      question: "Do you help with content strategy and planning?",
-      answer: "Yes! Every plan includes strategic planning sessions where we'll help you develop content calendars, identify key messages, and plan content that aligns with your business goals."
-    },
-    {
-      question: "What happens if I'm not satisfied with the content?",
-      answer: "Your satisfaction is our priority. We offer a 100% satisfaction guarantee - if you're not happy with the final content, we'll reshoot at no additional cost or provide a full refund for that month's service."
+      question: "What's the first step to working with Palmer House Productions?",
+      answer: "Book a discovery call. We map your pain points, your goals, and your bottlenecks before recommending any solution."
     }
   ];
 

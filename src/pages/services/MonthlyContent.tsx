@@ -130,7 +130,7 @@ const MonthlyContent = () => {
                     🎁 Bonus Included
                   </h3>
                   <p className="text-xl text-corporate-gray mb-4">
-                    Get the complete <strong>Explorer's Bonus Pack</strong> (valued at $531) FREE with this package!
+                    Get the complete <strong>Business Bonus Pack</strong> (valued at $531) FREE with this package!
                   </p>
                   <p className="text-corporate-gray">
                     Includes DIY resources, strategy blueprints, and script bundles to supplement your monthly content.

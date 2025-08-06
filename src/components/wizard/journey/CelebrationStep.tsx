@@ -16,9 +16,9 @@ export const CelebrationStep = ({ data, onClose, onNewInquiry, onCalendlyBooking
   const [showPackageDetails, setShowPackageDetails] = useState(false);
 
   const getRecommendedPackage = () => {
-    const { contentPace, businessStage, videoGoal, journeyTags } = data;
+    const { contentPace, businessStage, videoGoal } = data;
     
-    if (contentPace === 'high-volume' || journeyTags?.includes('enterprise') || businessStage === 'enterprise') {
+    if (contentPace === 'high-volume' || businessStage === 'enterprise') {
       return "Monthly Content System";
     } else if (contentPace === 'weekly' || businessStage === 'scaling_team' || videoGoal === 'thought_leadership') {
       return "One-Time Bundles";

@@ -283,7 +283,7 @@ export const VideoPackagesTabbed = () => {
                   <div className="bg-blue-50 p-4 rounded-xl">
                     <h5 className="font-bold text-blue-800 mb-2">🎁 Bonus Included:</h5>
                     <p className="text-sm text-blue-700">
-                      Get the complete Explorer's Bonus Pack (valued at $531) FREE with this package!
+                      Get the complete Business Bonus Pack (valued at $531) FREE with this package!
                     </p>
                   </div>
                 </div>
@@ -339,7 +339,7 @@ export const VideoPackagesTabbed = () => {
                     {bundle.price !== "$500" && (
                       <div className="bg-yellow-50 p-3 rounded-xl mb-4">
                         <p className="text-xs text-yellow-800 font-medium">
-                          🎁 Includes FREE Explorer's Bonus Pack (valued at $531)
+                          🎁 Includes FREE Business Bonus Pack (valued at $531)
                         </p>
                       </div>
                     )}
@@ -365,7 +365,7 @@ export const VideoPackagesTabbed = () => {
                 <div className="text-left">
                   <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-bold text-sm mb-4">
                     <Gift size={20} className="mr-2" />
-                    🎁 The Explorer's Bonus Pack
+                    🎁 The Business Bonus Pack
                   </div>
                   <h2 className="text-3xl md:text-4xl font-display font-black text-corporate-dark">
                     Free Bonus <span className="text-gradient-purple">Value Pack</span>
@@ -408,10 +408,10 @@ export const VideoPackagesTabbed = () => {
         <div className="text-center mt-16">
           <div className="bg-white p-8 md:p-12 rounded-3xl video-shadow-lg max-w-4xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-display font-black mb-6 text-corporate-dark">
-              Ready to Begin Your <span className="text-gradient-1">Creative Journey</span>?
+              Ready to Begin Your <span className="text-gradient-1">Video Strategy</span>?
             </h2>
             <p className="text-xl text-corporate-gray mb-8 max-w-3xl mx-auto">
-              Book a discovery call to explore which package fits your brand's expedition goals.
+              Book a discovery call to explore which package fits your business goals.
             </p>
             <button
               onClick={handleDiscoveryCall}
@@ -423,7 +423,7 @@ export const VideoPackagesTabbed = () => {
               onClick={() => navigate('/contact')}
               className="px-8 py-4 bg-corporate-dark text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
             >
-              Start Your Journey
+              Start Your Project
             </button>
           </div>
         </div>

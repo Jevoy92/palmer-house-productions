@@ -48,7 +48,7 @@ export const CollapsibleReviews = () => {
                   ⭐ Client Stories
                 </div>
                 <h2 className="text-4xl md:text-5xl font-display font-black text-corporate-dark mb-4">
-                  What Our <span className="text-gradient-4">Explorers</span> Say
+                  What Our <span className="text-gradient-4">Clients</span> Say
                 </h2>
                 
                 {/* Featured Review Preview */}

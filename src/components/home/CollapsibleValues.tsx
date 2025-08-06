@@ -52,13 +52,13 @@ export const CollapsibleValues = () => {
             <div className="flex items-center justify-between p-8 bg-video-white rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300">
               <div className="text-left">
                 <div className="inline-block px-4 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-4">
-                  🧭 Trail Markers
+                  💎 Our Values
                 </div>
                 <h2 className="text-4xl md:text-5xl font-display font-black text-corporate-dark">
                   What We <span className="text-gradient-3">Value</span>
                 </h2>
                 <p className="text-lg text-corporate-gray mt-4">
-                  The compass points we navigate by in every creative expedition.
+                  The principles that guide every creative decision we make.
                 </p>
               </div>
               <div className="ml-6">

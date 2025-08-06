@@ -298,10 +298,10 @@ export const VideoPackagesTiers = () => {
                   For YouTube long-form videos, check out our "YouTube Visibility Engine" one-time bundle below.
                 </p>
                 <div className="bg-blue-50 p-4 rounded-xl">
-                  <h5 className="font-bold text-blue-800 mb-2">🎁 Bonus Included:</h5>
-                  <p className="text-sm text-blue-700">
-                    Get the complete Explorer's Bonus Pack (valued at $531) FREE with this package!
-                  </p>
+                    <h5 className="font-bold text-blue-800 mb-2">🎁 Bonus Included:</h5>
+                    <p className="text-sm text-blue-700">
+                      Get the complete Business Bonus Pack (valued at $531) FREE with this package!
+                    </p>
                 </div>
               </div>
             </div>
@@ -362,7 +362,7 @@ export const VideoPackagesTiers = () => {
                 {bundle.price !== "$500" && (
                   <div className="bg-yellow-50 p-3 rounded-xl mb-4">
                     <p className="text-xs text-yellow-800 font-medium">
-                      🎁 Includes FREE Explorer's Bonus Pack (valued at $531)
+                      🎁 Includes FREE Business Bonus Pack (valued at $531)
                     </p>
                   </div>
                 )}

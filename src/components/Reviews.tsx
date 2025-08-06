@@ -98,10 +98,10 @@ export const Reviews = () => {
             </div>
             <div className="relative z-10">
               <h2 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
-                Ready to Join Our Trail of Success?
+                Ready to Join Our Success Stories?
               </h2>
               <p className="text-xl text-white/90 mb-8 max-w-3xl mx-auto font-medium">
-                See what other explorers are saying about their journey with Palmer House Productions.
+                See what other businesses are saying about their experience with Palmer House Productions.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button 

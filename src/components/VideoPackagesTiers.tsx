@@ -132,7 +132,7 @@ export const VideoPackagesTiers = () => {
   ];
 
   const handleDiscoveryCall = () => {
-    navigate('/contact');
+    window.open('https://calendly.com/palmerhouseproductions-info/strategy-call', '_blank');
   };
 
   const handleBooking = (title: string) => {

@@ -23,12 +23,6 @@ export const getServiceCategoryName = (serviceCategory?: ServiceCategory) => {
 };
 
 export const getCalendlyUrl = (serviceType?: ServiceType) => {
-  switch (serviceType) {
-    case "consultation": return "https://calendly.com/palmerhouseproductions-info/general-strategy-call";
-    case "diy": return "https://calendly.com/palmerhouseproductions-info/general-strategy-call";
-    case "coaching": return "https://calendly.com/palmerhouseproductions-info/general-strategy-call";
-    case "monthly": return "https://calendly.com/palmerhouseproductions-info/discovery-call";
-    case "bundle": return "https://calendly.com/palmerhouseproductions-info/discovery-call";
-    default: return "https://calendly.com/palmerhouseproductions-info/general-strategy-call";
-  }
+  // All services now use the standardized strategy call URL
+  return "https://calendly.com/palmerhouseproductions-info/strategy-call";
 };

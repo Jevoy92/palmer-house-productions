@@ -182,19 +182,21 @@ const MonthlyContent = () => {
                   >
                     Apply for Monthly System
                   </button>
-                  <button
-                    onClick={() => navigate('/contact')}
+                  <a
+                    href="https://calendly.com/palmerhouseproductions-info/strategy-call"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="px-10 py-5 border-2 border-social-purple text-social-purple font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300"
                   >
-                    Schedule Strategy Call
-                  </button>
+                    Book Strategy Call
+                  </a>
                 </div>
               </div>
             </div>
           </div>
         </section>
       </MainContent>
-      <EnhancedFooter />
+      
     </div>
   );
 };

@@ -116,19 +116,21 @@ const DIYDownloads = () => {
                   >
                     Explore Group Coaching
                   </button>
-                  <button
-                    onClick={() => navigate('/contact')}
+                  <a
+                    href="https://calendly.com/palmerhouseproductions-info/strategy-call"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="px-8 py-4 border-2 border-social-purple text-social-purple font-bold rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300"
                   >
                     Book Strategy Call
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
         </section>
       </MainContent>
-      <EnhancedFooter />
+      
     </div>
   );
 };

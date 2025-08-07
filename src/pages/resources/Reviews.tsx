@@ -8,78 +8,89 @@ import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Navigation } from "@/components/Navigation";
 
 const Reviews = () => {
-  const featuredReview = {
-    name: "Sarah Chen",
-    role: "CEO, TechFlow Solutions",
-    company: "TechFlow Solutions",
-    content: "Palmer House didn't just create videos for us—they created a visual language that our entire team now speaks. The authenticity they captured has transformed how our clients see us. Our conversion rates increased by 40% after implementing their video strategy.",
-    rating: 5,
-    avatar: "SC",
-    results: ["40% increase in conversion rates", "3x more qualified leads", "50% reduction in sales cycle time"]
-  };
-
+  // Real Google Reviews from Palmer House Productions clients
   const clientReviews = [
     {
-      name: "Marcus Rodriguez",
-      role: "Founder, GreenSpace Ventures",
-      company: "GreenSpace Ventures",
-      content: "Working with Jevoy and his team was like having a creative partner who actually understood our mission. The videos they produced didn't just look professional—they felt like us. Our social media engagement has never been higher.",
+      name: "Isabella Johnstun",
+      role: "Team Member",
+      company: "Dick's Restaurant Supply",
+      content: "Jevoy and his team did an amazing job with pictures & videos of our team and stores. Our management was blown away by the quality, professionalism, and speed at which their media was produced. They took the time to understand our goals and delivered exceptional results.",
       rating: 5,
-      avatar: "MR",
-      industry: "Sustainable Technology"
+      avatar: "IJ",
+      timeAgo: "2 months ago"
     },
     {
-      name: "Emily Foster",
-      role: "Director of Marketing, Coastal Dynamics",
-      company: "Coastal Dynamics",
-      content: "The ROI on our Palmer House videos has been incredible. But beyond the numbers, they helped us find our voice in a crowded market. Our brand recognition has increased significantly.",
+      name: "Athan Seyler",
+      role: "Client",
+      company: "Local Guide",
+      content: "Jevoy and the Palmer House Team were fantastic! Getting in front of the camera for photos is one stressor, but jumping in front of the camera to make a video is even more stressful. Jevoy has a gift of helping his clients become grounded and comfortable.",
       rating: 5,
-      avatar: "EF",
-      industry: "Maritime Solutions"
+      avatar: "AS",
+      timeAgo: "4 months ago"
     },
     {
-      name: "David Kim",
-      role: "Co-founder, Nexus Labs",
-      company: "Nexus Labs",
-      content: "From strategy to final delivery, Palmer House Productions exceeded every expectation. Their attention to detail and creative vision is unmatched. We now use video as our primary marketing tool.",
+      name: "Chelsea Power",
+      role: "Client",
+      company: "",
+      content: "The Palmer House Productions team is incredibly warm, patient, and skilled! I'm painfully camera-shy, and they made the experience as comfortable as it ever could've been. They encouraged me along the way, tailoring the shoot in some very creative ways to achieve a highly professional video. Highly recommend!",
       rating: 5,
-      avatar: "DK",
-      industry: "AI & Machine Learning"
+      avatar: "CP",
+      timeAgo: "2 months ago"
     },
     {
-      name: "Jennifer Walsh",
-      role: "CEO, Wellness Collective",
-      company: "Wellness Collective",
-      content: "The authenticity Palmer House captured in our founder story video has been game-changing. It's opened doors we never thought possible and helped us connect with our audience on a deeper level.",
+      name: "Rachel Delavan",
+      role: "Client",
+      company: "Local Guide",
+      content: "Jevoy and his team did video marketing for me and my work. I don't love being in front of camera, and they made it easy, comfortable, seamless, and gave me the pointers and guidance I needed to get it done with hardly any cuts! Highly recommend them for any of your marketing needs!",
       rating: 5,
-      avatar: "JW",
-      industry: "Health & Wellness"
+      avatar: "RD",
+      timeAgo: "4 months ago"
     },
     {
-      name: "Alex Thompson",
-      role: "Founder, Urban Gardens Co.",
-      company: "Urban Gardens Co.",
-      content: "Jevoy and his team understood our vision from day one. The videos they created perfectly showcase our urban farming solutions and have helped us secure major partnerships.",
+      name: "Sarah Dylan Jensen",
+      role: "Client",
+      company: "Local Guide",
+      content: "Awesome experience from start to finish working with Jevoy. He was in constant communication, detail-oriented and provided exactly what we were looking for in our organization's marketing videos and photos.",
       rating: 5,
-      avatar: "AT",
-      industry: "Urban Agriculture"
+      avatar: "SJ",
+      timeAgo: "a year ago"
     },
     {
-      name: "Sophia Martinez",
-      role: "Marketing Director, CloudTech Innovations",
-      company: "CloudTech Innovations",
-      content: "Palmer House turned our complex tech solutions into compelling stories. Our client acquisition has doubled since launching their video campaign. The quality is exceptional.",
+      name: "Cynthia Scanlon",
+      role: "Client",
+      company: "",
+      content: "Jevoy is amazing. He's super easy to work with. He made me very comfortable to do a shoot with. I'd highly recommend him to anyone looking for good photos for any event. We used his pics for my website and got all good compliments!",
       rating: 5,
-      avatar: "SM",
-      industry: "Cloud Technology"
+      avatar: "CS",
+      timeAgo: "2 years ago"
+    },
+    {
+      name: "James Russell",
+      role: "Client",
+      company: "Local Guide",
+      content: "It was my first time in a professional environment. Jevoy gave me lots of good tips through the process to make it easier. Professional, patient, and skilled team.",
+      rating: 5,
+      avatar: "JR",
+      timeAgo: "2 months ago"
+    },
+    {
+      name: "Quenia Tolentino",
+      role: "Client",
+      company: "",
+      content: "I have done two photoshoots with Jevoy and the photos from both sessions turned out amazing. I love them. Besides that, he is easy to communicate and work with. I would easily work with Palmer House Productions again.",
+      rating: 5,
+      avatar: "QT",
+      timeAgo: "11 months ago"
+    },
+    {
+      name: "Olivia Colantonio",
+      role: "Client", 
+      company: "",
+      content: "Jevoy is an absolute dream to work with! He has a great eye and is very knowledgeable. My photos turned out so amazing I would highly recommend him to anyone looking to book a photographer!!",
+      rating: 5,
+      avatar: "OC",
+      timeAgo: "2 years ago"
     }
-  ];
-
-  const stats = [
-    { number: "150+", label: "Happy Clients" },
-    { number: "500+", label: "Videos Produced" },
-    { number: "98%", label: "Client Satisfaction" },
-    { number: "45%", label: "Average ROI Increase" }
   ];
 
   return (
@@ -106,98 +117,60 @@ const Reviews = () => {
                 ⭐ Client Stories
               </div>
               <h1 className="text-5xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-                What Our <span className="text-gradient-4">Explorers</span> Say
+                What Our <span className="text-gradient-4">Clients</span> Say
               </h1>
               <p className="text-xl md:text-2xl text-corporate-gray mb-8 max-w-4xl mx-auto">
                 Real stories from real clients who've transformed their brands through authentic video storytelling.
               </p>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
-              {stats.map((stat, index) => (
-                <div key={index} className="text-center bg-white p-6 rounded-2xl video-shadow">
-                  <div className="text-4xl font-black text-corporate-dark mb-2">{stat.number}</div>
-                  <div className="text-corporate-gray font-medium">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* Featured Review */}
-            <div className="mb-16">
-              <h2 className="text-3xl font-display font-black text-center text-corporate-dark mb-8">
-                Featured Success Story
-              </h2>
-              <div className="bg-gradient-to-br from-social-purple/10 via-social-pink/5 to-social-cyan/10 rounded-3xl p-12 border border-social-purple/20">
-                <div className="flex items-start space-x-6">
-                  <Quote size={48} className="text-social-purple/30 flex-shrink-0" />
-                  <div className="flex-1">
-                    <p className="text-xl text-corporate-gray leading-relaxed mb-6 italic">
-                      "{featuredReview.content}"
-                    </p>
-                    <div className="flex items-center justify-between flex-wrap gap-4">
-                      <div className="flex items-center">
-                        <div className="w-12 h-12 bg-gradient-social-4 rounded-full flex items-center justify-center text-white font-bold mr-4">
-                          {featuredReview.avatar}
-                        </div>
-                        <div>
-                          <p className="font-bold text-corporate-dark">{featuredReview.name}</p>
-                          <p className="text-corporate-gray text-sm">{featuredReview.role}</p>
-                        </div>
-                      </div>
-                      <div className="flex">
-                        {[...Array(featuredReview.rating)].map((_, i) => (
-                          <Star key={i} size={20} className="text-yellow-400 fill-current" />
-                        ))}
-                      </div>
-                    </div>
-                    {featuredReview.results && (
-                      <div className="mt-6 p-4 bg-white/50 rounded-2xl">
-                        <h4 className="font-bold text-corporate-dark mb-3">Results:</h4>
-                        <div className="grid md:grid-cols-3 gap-2">
-                          {featuredReview.results.map((result, i) => (
-                            <div key={i} className="text-sm text-corporate-gray">
-                              ✓ {result}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* All Reviews Grid */}
+            {/* Google Reviews Section */}
             <div>
-              <h2 className="text-3xl font-display font-black text-center text-corporate-dark mb-12">
-                More Client Success Stories
+              <h2 className="text-3xl font-display font-black text-center text-corporate-dark mb-4">
+                Authentic Client Reviews
               </h2>
+              <p className="text-center text-corporate-gray mb-12 max-w-2xl mx-auto">
+                Real testimonials from our clients on Google Reviews
+              </p>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {clientReviews.map((review, index) => (
                   <div key={index} className="bg-white p-8 rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300">
-                    <div className="flex mb-4">
-                      {[...Array(review.rating)].map((_, i) => (
-                        <Star key={i} size={16} className="text-yellow-400 fill-current" />
-                      ))}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex">
+                        {[...Array(review.rating)].map((_, i) => (
+                          <Star key={i} size={16} className="text-yellow-400 fill-current" />
+                        ))}
+                      </div>
+                      <div className="text-xs text-corporate-gray">
+                        {review.timeAgo}
+                      </div>
                     </div>
-                    <p className="text-corporate-gray leading-relaxed mb-6 italic">
+                    <p className="text-corporate-gray leading-relaxed mb-6">
                       "{review.content}"
                     </p>
-                    <div className="flex items-center mb-4">
+                    <div className="flex items-center">
                       <div className="w-10 h-10 bg-gradient-social-1 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">
                         {review.avatar}
                       </div>
                       <div>
                         <p className="font-bold text-corporate-dark text-sm">{review.name}</p>
-                        <p className="text-corporate-gray text-xs">{review.role}</p>
+                        {review.company && (
+                          <p className="text-corporate-gray text-xs">{review.company}</p>
+                        )}
                       </div>
-                    </div>
-                    <div className="text-xs text-social-purple font-medium bg-social-purple/10 px-3 py-1 rounded-full inline-block">
-                      {review.industry}
                     </div>
                   </div>
                 ))}
+              </div>
+              
+              {/* Google Review CTA */}
+              <div className="mt-12 text-center">
+                <button
+                  onClick={() => window.open('https://www.google.com/search?q=Palmer+House+Productions+reviews', '_blank')}
+                  className="px-8 py-4 bg-gradient-to-r from-social-purple to-social-pink text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300"
+                >
+                  View All Google Reviews ⭐
+                </button>
               </div>
             </div>
 

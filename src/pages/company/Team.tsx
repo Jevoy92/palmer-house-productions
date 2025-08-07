@@ -126,7 +126,7 @@ const Team = () => {
                   </div>
                 </div>
                 <p className="text-xl text-corporate-gray max-w-3xl mx-auto">
-                  We're not just makers of content. We're explorers of possibility, helping bold brands chart new creative territory with every project.
+                  We're not just makers of content. We're creators of possibility, helping bold brands chart new creative territory with every project.
                 </p>
               </div>
             </div>

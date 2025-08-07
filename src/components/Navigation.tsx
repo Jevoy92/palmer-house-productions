@@ -205,6 +205,15 @@ export const Navigation = () => {
                 >
                   <DropdownMenuItem asChild>
                     <Link 
+                      to="/blog" 
+                      className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Blog
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link 
                       to="/content-strategy" 
                       className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       onClick={() => setIsOpen(false)}
@@ -357,6 +366,13 @@ export const Navigation = () => {
             <div className="space-y-3">
               <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Resources</div>
               <div className="space-y-1">
+                <Link 
+                  to="/blog" 
+                  className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Blog
+                </Link>
                 <Link 
                   to="/content-strategy" 
                   className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"

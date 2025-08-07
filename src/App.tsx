@@ -26,6 +26,11 @@ import FAQ from "./pages/FAQ";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import ContentStrategy from "./pages/ContentStrategy";
+import Blog from "./pages/Blog";
+import VideoContentToolkit2025 from "./pages/blog/VideoContentToolkit2025";
+import AutomateEmployeeTrainingVideo from "./pages/blog/AutomateEmployeeTrainingVideo";
+import ContentCreationTools2025 from "./pages/blog/ContentCreationTools2025";
+import VideoContentROIComparison from "./pages/blog/VideoContentROIComparison";
 
 const queryClient = new QueryClient();
 
@@ -56,6 +61,11 @@ const App = () => (
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/content-strategy" element={<ContentStrategy />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/video-content-toolkit-2025" element={<VideoContentToolkit2025 />} />
+          <Route path="/blog/automate-employee-training-video" element={<AutomateEmployeeTrainingVideo />} />
+          <Route path="/blog/content-creation-tools-2025" element={<ContentCreationTools2025 />} />
+          <Route path="/blog/video-content-roi-comparison" element={<VideoContentROIComparison />} />
           
           {/* Legacy route redirects */}
           <Route path="/pathways" element={<Navigate to="/video-packages" replace />} />

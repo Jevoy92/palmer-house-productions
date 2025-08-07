@@ -10,7 +10,7 @@ import { VideoReadinessAudit } from "@/components/assessments/VideoReadinessAudi
 import { ContentGapAnalysis } from "@/components/assessments/ContentGapAnalysis";
 import { BudgetImpactCalculator } from "@/components/assessments/BudgetImpactCalculator";
 import { AssessmentPreview } from "@/components/assessments/AssessmentPreview";
-import { Contact } from "@/components/Contact";
+import { ContactWizard } from "@/components/ContactWizard";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,7 +26,7 @@ import {
 
 const ContentStrategyPage = () => {
   const [activeAssessment, setActiveAssessment] = useState<string | null>(null);
-  const [showFullWizard, setShowFullWizard] = useState(false);
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
 
   if (activeAssessment === "video-readiness") {
     return (
@@ -91,26 +91,6 @@ const ContentStrategyPage = () => {
     );
   }
 
-  if (showFullWizard) {
-    return (
-      <div className="min-h-screen bg-white">
-        <SkipLink href="#main-content">Skip to main content</SkipLink>
-        <Navigation />
-        <MainContent>
-          <div className="py-8">
-            <Button 
-              onClick={() => setShowFullWizard(false)}
-              variant="outline"
-              className="mb-6"
-            >
-              ← Back to Strategy Hub
-            </Button>
-            <Contact autoOpenWizard={true} />
-          </div>
-        </MainContent>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -162,7 +142,7 @@ const ContentStrategyPage = () => {
                 <strong>Want a comprehensive strategy?</strong>
               </p>
               <Button 
-                onClick={() => setShowFullWizard(true)}
+                onClick={() => setIsWizardOpen(true)}
                 variant="hero"
                 size="touch"
                 className="gradient-social-2 text-white w-full"
@@ -255,7 +235,7 @@ const ContentStrategyPage = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
-                  onClick={() => setShowFullWizard(true)}
+                  onClick={() => setIsWizardOpen(true)}
                   variant="premium"
                   size="touch"
                   className="gradient-social-1 text-white"
@@ -273,6 +253,8 @@ const ContentStrategyPage = () => {
             </Card>
           </div>
         </section>
+        
+        <ContactWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
       </MainContent>
     </div>
   );

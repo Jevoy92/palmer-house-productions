@@ -95,7 +95,7 @@ const DIYDownloads = () => {
                   {index === 0 ? (
                     <div className="w-full">
                       <ZohoCommerceEmbed
-                        embedId="AluTitwxbamKOBxlIxoEZw"
+                        embedId="daX7A9rSp8_m1Ijof_LxYw"
                         productId="6693975000000108039"
                         handle="25-diy-reels-you-can-film-from-home"
                         className="w-full"

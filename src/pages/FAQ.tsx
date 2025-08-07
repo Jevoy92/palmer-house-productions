@@ -33,13 +33,12 @@ const FAQ = () => {
     { id: "internal-external", label: "Internal & External Video" },
     { id: "packages-pricing", label: "Packages & Pricing" },
     { id: "ownership-support", label: "Ownership & Support" },
-    { id: "implementation", label: "Implementation" },
     { id: "measurement", label: "ROI & Results" },
     { id: "process", label: "Process & Next Steps" }
   ];
 
   const faqs = [
-    // Content Systems & Strategy
+    // Content Systems & Strategy (5 questions)
     {
       category: "content-systems",
       question: "What is a video content system and why does my business need one?",
@@ -65,13 +64,8 @@ const FAQ = () => {
       question: "How do you ensure the content system stays up to date as our business changes?",
       answer: "We design everything modular, so you can update, replace, or add new videos without redoing the whole library. Need quarterly refreshers? We'll support you with ongoing packages."
     },
-    {
-      category: "content-systems",
-      question: "Can your systems work for remote or hybrid teams?",
-      answer: "Absolutely. All our content is cloud-delivered—accessible from anywhere, at any time, so whether your team's in the office or all over the world, your message stays consistent."
-    },
 
-    // Internal Communications, Training, & Onboarding
+    // Internal & External Video (5 questions)
     {
       category: "internal-external",
       question: "How does video onboarding save time for my managers and HR team?",
@@ -84,23 +78,6 @@ const FAQ = () => {
     },
     {
       category: "internal-external",
-      question: "We have high turnover. Does this help?",
-      answer: "A repeatable video system means every new hire, no matter when they start, gets the exact same message and training—no more missing steps, no more tribal knowledge gaps."
-    },
-    {
-      category: "internal-external",
-      question: "How do you keep internal communications clear across large or growing teams?",
-      answer: "We build internal video libraries that act as a single source of truth. Updates? Just swap out the relevant video and notify your team. No more miscommunication across 10 departments."
-    },
-    {
-      category: "internal-external",
-      question: "Can you build content to support our managers as we scale?",
-      answer: "Yes—manager toolkits, leadership messages, process rollouts, and internal FAQ videos help every leader stay consistent, even as you add new locations or teams."
-    },
-
-    // External-Facing Video, Social & Marketing
-    {
-      category: "internal-external",
       question: "Can you create videos optimized for social media like TikTok, Instagram, and LinkedIn?",
       answer: "Absolutely. Our \"Social Authority Kit\" and reels bundles are built to create snackable, scroll-stopping content for each platform—captions, thumbnails, and sizing all dialed in."
     },
@@ -111,36 +88,11 @@ const FAQ = () => {
     },
     {
       category: "internal-external",
-      question: "Do you handle both short-form and long-form video?",
-      answer: "Yes. We cover everything: 15-second vertical reels for TikTok/IG, punchy mid-length pieces, and full 10-minute brand stories for YouTube—each built with its own strategy."
-    },
-    {
-      category: "internal-external",
       question: "Will your videos help us generate more leads or awareness?",
       answer: "Definitely. We design explainer videos, social proof, and \"hero\" content that attracts new leads and helps your team convert prospects—without doubling your ad spend."
     },
-    {
-      category: "internal-external",
-      question: "Can you help us automate responding to common customer questions?",
-      answer: "Yes. We create external-facing FAQ videos for your website and social—your prospects get their answers, and your team gets their time back."
-    },
-    {
-      category: "internal-external",
-      question: "How do I get started creating content for my business on TikTok or Instagram?",
-      answer: "Our \"DIY Reels\" guide and our hands-on coaching help you build confidence and film high-impact videos at home, even if you've never recorded before."
-    },
-    {
-      category: "internal-external",
-      question: "What if I want to level up my brand's YouTube channel?",
-      answer: "Our YouTube Visibility Engine gives you a full video series plan, on-camera support, SEO, and ongoing creative direction to keep your channel growing (not collecting dust)."
-    },
-    {
-      category: "internal-external",
-      question: "Can you help us build a consistent brand across all platforms?",
-      answer: "Yes. We design each content system for multi-platform delivery, so your message looks and feels cohesive—whether it's on YouTube, LinkedIn, or your company intranet."
-    },
 
-    // Packages, Process, and Pricing
+    // Packages & Pricing (5 questions)
     {
       category: "packages-pricing",
       question: "Do you offer monthly video content packages?",
@@ -158,36 +110,16 @@ const FAQ = () => {
     },
     {
       category: "packages-pricing",
-      question: "What about External FAQ Buildouts?",
-      answer: "Same structure, but aimed at customer onboarding, objections, product demos, and sales. Each video is easy to embed on your site, email to prospects, or share on socials."
-    },
-    {
-      category: "packages-pricing",
-      question: "How do your \"30 Reels in 30 Days\" and \"7-Day Launch\" bundles work?",
-      answer: "You get a concentrated blast of content—ideal for events, launches, or quick visibility. Full-day or half-day shoots, rapid editing, ready-to-post delivery."
-    },
-    {
-      category: "packages-pricing",
       question: "Do you offer a starter package for first-timers?",
       answer: "Yes—the \"Starter Session\" is a $500 mini-package with a 30-minute shoot and three edited videos. Simple, accessible, and capped to ensure quality."
-    },
-    {
-      category: "packages-pricing",
-      question: "Are your digital products really for DIYers?",
-      answer: "Absolutely—guides like \"25 DIY Reels\" and the \"Video Strategy Blueprint\" are designed for founders and small teams who want to level up fast, with or without a film crew."
     },
     {
       category: "packages-pricing",
       question: "What's included in the Camera-Ready Brand group coaching?",
       answer: "Live cohort sessions, assignments, direct feedback, and a private group to help you get on camera, build your first 3–5 videos, and conquer video nerves."
     },
-    {
-      category: "packages-pricing",
-      question: "What's the \"Business Bonus Pack\"?",
-      answer: "It's our bundle of DIY guides, coaching, and scripts—free with monthly packages or any major bundle. Perfect for teams who want to practice, plan, or sharpen their on-camera skills."
-    },
 
-    // Ownership, Access, and Support
+    // Ownership & Support (5 questions)
     {
       category: "ownership-support",
       question: "Do we own the video content?",
@@ -214,39 +146,7 @@ const FAQ = () => {
       answer: "Your assets are delivered through secure, cloud-based platforms, with download options and private link sharing for internal-only resources."
     },
 
-    // Implementation & Adoption
-    {
-      category: "implementation",
-      question: "Will you help with rollout and team adoption?",
-      answer: "Absolutely. We guide you through onboarding your team and embedding your content system into daily workflows—so your investment *actually* gets used."
-    },
-    {
-      category: "implementation",
-      question: "Can you integrate our video system with our existing tools?",
-      answer: "We can help you connect your content to your intranet, learning platforms, or CRM for seamless access and tracking."
-    },
-    {
-      category: "implementation",
-      question: "Can you customize training or onboarding for specific departments?",
-      answer: "Yes—each system is tailored to your unique workflows. Need sales onboarding, warehouse safety, or HR process breakdowns? We script and shoot for your reality."
-    },
-    {
-      category: "implementation",
-      question: "How do you keep things easy for people who hate being on camera?",
-      answer: "We coach every client through the process—simple scripts, natural delivery, and as many takes as you need. Our On-Camera Confidence mini-course is included."
-    },
-    {
-      category: "implementation",
-      question: "Do you offer teleprompter support or scripting?",
-      answer: "Always. From bullet points to full scripts, we make sure you sound clear, confident, and like yourself—never robotic."
-    },
-    {
-      category: "implementation",
-      question: "What if our team is camera-shy?",
-      answer: "No worries. We offer remote coaching, pre-filming Q&As, and can even provide pro voiceover if needed."
-    },
-
-    // Measurement, ROI, and Results
+    // ROI & Results (5 questions)
     {
       category: "measurement",
       question: "How do I measure the ROI of a video content system?",
@@ -267,8 +167,13 @@ const FAQ = () => {
       question: "Can we get help updating our system every year or quarter?",
       answer: "Yes—book a quarterly or annual refresh and keep your content system razor-sharp as your business evolves."
     },
+    {
+      category: "measurement",
+      question: "How long before we see results from our video content system?",
+      answer: "Most clients see immediate time savings and improved consistency within the first month, with measurable ROI typically appearing within 90 days of implementation."
+    },
 
-    // Process & Next Steps
+    // Process & Next Steps (5 questions)
     {
       category: "process",
       question: "What's the first step to working with Palmer House Productions?",
@@ -286,23 +191,13 @@ const FAQ = () => {
     },
     {
       category: "process",
-      question: "Is there a limit to how many videos we can make in a system?",
-      answer: "We price by bundle or by need. Monthly packages have set deliverables; custom systems can be quoted for any scale."
+      question: "How do I know which package or system is right for my business?",
+      answer: "That's what the strategy call is for—we listen first, then point you to the best fit. No pressure, no cookie-cutter answers, just smart solutions for your stage."
     },
     {
       category: "process",
       question: "Can you create content for our next product or event launch?",
       answer: "Yes! Our launch bundles deliver rapid-turnaround brand videos, social cutdowns, and all the assets you need for a major push."
-    },
-    {
-      category: "process",
-      question: "How does Palmer House Productions stay ahead of trends?",
-      answer: "We're constantly studying platforms, formats, and content psychology—so your videos aren't just beautiful, they're effective (and built to last)."
-    },
-    {
-      category: "process",
-      question: "How do I know which package or system is right for my business?",
-      answer: "That's what the strategy call is for—we listen first, then point you to the best fit. No pressure, no cookie-cutter answers, just smart solutions for your stage."
     }
   ];
 

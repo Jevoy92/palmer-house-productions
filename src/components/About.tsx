@@ -75,7 +75,7 @@ export const About = () => {
                 <h3 className="text-2xl font-bold text-gradient-2">True North</h3>
               </div>
               <p className="text-corporate-gray leading-relaxed text-lg">
-                Authenticity is our compass. We bring out the best in you without changing who you are - just amplifying what makes you extraordinary.
+                Authenticity drives our content systems. We bring out the best in your business without changing who you are - just amplifying what makes you extraordinary.
               </p>
             </div>
             

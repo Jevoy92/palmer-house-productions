@@ -74,13 +74,13 @@ const Values = () => {
             {/* Hero Section */}
             <div className="text-center mb-16">
               <div className="inline-block px-6 py-3 gradient-social-2 rounded-full text-white font-bold text-lg mb-8">
-                🧭 Trail Markers
+                📊 Content Pillars
               </div>
               <h1 className="text-5xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
                 What We <span className="text-gradient-3">Value</span>
               </h1>
               <p className="text-xl md:text-2xl text-corporate-gray mb-8 max-w-4xl mx-auto">
-                The compass points we navigate by in every creative expedition. These principles guide every decision, every frame, and every story we tell.
+                The principles that guide our content systems for your business. These values shape every decision, every frame, and every story we tell.
               </p>
             </div>
 

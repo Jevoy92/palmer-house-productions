@@ -16,10 +16,10 @@ export const CollapsibleAbout = () => {
                   🌍 Our Origin Story
                 </div>
                 <h2 className="text-4xl md:text-5xl font-display font-black text-corporate-dark">
-                  An Adventure Worth <span className="text-gradient-1">Taking</span>
+                  A Content System Worth <span className="text-gradient-1">Building</span>
                 </h2>
                 <p className="text-lg text-corporate-gray mt-4">
-                  Discover the story behind Palmer House Productions and our unique approach to visual storytelling.
+                  Discover the story behind Palmer House Productions and our strategic approach to content systems for your business.
                 </p>
               </div>
               <div className="ml-6">

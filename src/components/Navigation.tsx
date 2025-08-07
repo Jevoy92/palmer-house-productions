@@ -180,15 +180,6 @@ export const Navigation = () => {
                       Our Values
                     </Link>
                   </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link 
-                      to="/client-results" 
-                      className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      Client Results
-                    </Link>
-                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
 
@@ -246,15 +237,6 @@ export const Navigation = () => {
                       onClick={() => setIsOpen(false)}
                     >
                       FAQ
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link 
-                      to="/podcast" 
-                      className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      Podcast
                     </Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -352,13 +334,6 @@ export const Navigation = () => {
                 >
                   Our Values
                 </Link>
-                <Link 
-                  to="/client-results" 
-                  className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Client Results
-                </Link>
               </div>
             </div>
 
@@ -400,13 +375,6 @@ export const Navigation = () => {
                   onClick={() => setIsOpen(false)}
                 >
                   FAQ
-                </Link>
-                <Link 
-                  to="/podcast" 
-                  className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Podcast
                 </Link>
               </div>
             </div>

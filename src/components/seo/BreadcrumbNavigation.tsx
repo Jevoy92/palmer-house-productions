@@ -40,12 +40,6 @@ export const BreadcrumbNavigation = () => {
       case "/video-use-cases":
         items.push({ label: "Video Use Cases", current: true });
         break;
-      case "/podcast":
-        items.push({ label: "Podcast", current: true });
-        break;
-      case "/client-results":
-        items.push({ label: "Client Results", current: true });
-        break;
       default:
         return [];
     }

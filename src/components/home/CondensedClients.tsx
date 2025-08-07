@@ -27,7 +27,7 @@ export const CondensedClients = () => {
   ];
 
   const handleViewAllReviews = () => {
-    window.location.href = '/reviews';
+    window.location.href = '/resources/reviews';
   };
 
   return (

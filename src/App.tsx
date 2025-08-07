@@ -11,10 +11,8 @@ import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
 import Index from "./pages/Index";
 import VideoPackages from "./pages/VideoPackages";
 
-import ClientResults from "./pages/ClientResults";
 import VideoUseCases from "./pages/VideoUseCases";
 import AboutUs from "./pages/AboutUs";
-import Podcast from "./pages/Podcast";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import DIYDownloads from "./pages/services/DIYDownloads";
@@ -48,10 +46,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/video-packages" element={<VideoPackages />} />
           <Route path="/discovery-call" element={<Navigate to="/contact" replace />} />
-          <Route path="/client-results" element={<ClientResults />} />
           <Route path="/video-use-cases" element={<VideoUseCases />} />
           <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/podcast" element={<Podcast />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/services/diy-downloads" element={<DIYDownloads />} />
           <Route path="/services/group-coaching" element={<GroupCoaching />} />
@@ -72,7 +68,7 @@ const App = () => (
           {/* Legacy route redirects */}
           <Route path="/pathways" element={<Navigate to="/video-packages" replace />} />
           <Route path="/glimpse" element={<Navigate to="/contact" replace />} />
-          <Route path="/reviews" element={<Navigate to="/client-results" replace />} />
+          <Route path="/reviews" element={<Navigate to="/resources/reviews" replace />} />
           <Route path="/arsenal" element={<Navigate to="/video-use-cases" replace />} />
           <Route path="/about" element={<Navigate to="/about-us" replace />} />
           <Route path="/team" element={<Navigate to="/about-us" replace />} />

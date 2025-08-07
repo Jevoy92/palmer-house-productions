@@ -69,7 +69,7 @@ export const calculateBusinessProfileScore = (businessProfile: string): Question
     case 'agency':
       score = 80;
       insights.push({
-        id: 'agency-client-results',
+        id: 'agency-differentiation',
         title: '🎨 Agency Differentiation Strategy',
         description: 'Video storytelling can be your biggest differentiator in winning premium clients.',
         actionItems: [

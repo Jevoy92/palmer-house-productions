@@ -18,12 +18,12 @@ export const InternalLinking = ({ currentPage, relatedLinks }: InternalLinkingPr
         return [
           { title: "Video Production Packages", href: "/pathways", description: "Explore our service packages and pricing options" },
           { title: "Video Use Cases", href: "/video-use-cases", description: "See how video can transform your business operations" },
-          { title: "Client Results", href: "/client-results", description: "Real results from our video production clients" }
+          { title: "Client Reviews", href: "/resources/reviews", description: "Read testimonials from satisfied clients" }
         ];
       case 'about':
         return [
           { title: "Our Team", href: "/team", description: "Meet the video production experts behind Palmer House Productions" },
-          { title: "Client Reviews", href: "/reviews", description: "Read testimonials from satisfied clients" },
+          { title: "Client Reviews", href: "/resources/reviews", description: "Read testimonials from satisfied clients" },
           { title: "Contact Us", href: "/contact", description: "Start your video production project today" }
         ];
       case 'packages':

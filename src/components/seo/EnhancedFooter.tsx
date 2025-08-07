@@ -87,11 +87,6 @@ export const EnhancedFooter = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/client-results" className="text-gray-300 hover:text-white transition-colors">
-                  Client Results
-                </Link>
-              </li>
-              <li>
                 <Link to="/resources/reviews" className="text-gray-300 hover:text-white transition-colors">
                   Client Reviews
                 </Link>

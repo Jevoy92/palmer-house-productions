@@ -4,23 +4,23 @@ import { Button } from "@/components/ui/button";
 export const CondensedClients = () => {
   const testimonials = [
     {
-      name: "Sarah Chen",
-      role: "CEO, TechStart",
-      content: "Palmer House transformed our video strategy. We went from sporadic content to a systematic approach that generated 300% more leads.",
+      name: "Isabella Johnstun",
+      role: "Client",
+      content: "Jevoy and his team did an amazing job with pictures & videos for our wedding! He was very professional and easy to work with. The turnaround time was also fantastic - we received our photos and videos much sooner than expected. I would definitely recommend Palmer House Productions to anyone looking for high-quality video and photography services!",
       rating: 5,
       avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b5bc?w=64&h=64&fit=crop&crop=face"
     },
     {
-      name: "Marcus Rodriguez",
-      role: "Marketing Director, GrowthCorp",
-      content: "The ROI on our video investment has been incredible. Professional quality without the enterprise budget.",
+      name: "Athan Seyler",
+      role: "Client",
+      content: "Jevoy and the Palmer House Team were fantastic! They delivered exactly what we were looking for and more. The quality of work was exceptional and the communication throughout the process was excellent. Highly recommend!",
       rating: 5,
       avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=face"
     },
     {
-      name: "Lisa Thompson",
-      role: "Founder, InnovateLab",
-      content: "Finally, video content that actually drives business results. The strategy framework is game-changing.",
+      name: "Sarah Dylan Jensen",
+      role: "Client",
+      content: "Awesome experience from start to finish working with Jevoy and the Palmer House team. They understood our vision perfectly and delivered outstanding results. Professional, creative, and reliable!",
       rating: 5,
       avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=64&h=64&fit=crop&crop=face"
     }

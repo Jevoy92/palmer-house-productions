@@ -9,6 +9,7 @@ import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Navigation } from "@/components/Navigation";
 import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
+import { ZohoCommerceEmbed } from "@/components/commerce/ZohoCommerceEmbed";
 
 const DIYDownloads = () => {
   const navigate = useNavigate();
@@ -91,12 +92,23 @@ const DIYDownloads = () => {
                     <div className="text-sm text-corporate-gray mb-4 font-medium">{item.format}</div>
                   </div>
                   <p className="text-sm text-corporate-gray mb-8 leading-relaxed text-center">{item.description}</p>
-                  <button
-                    onClick={() => handleBooking(item.title)}
-                    className="w-full py-4 px-6 gradient-social-1 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300 video-shadow"
-                  >
-                    Get Instant Access
-                  </button>
+                  {index === 0 ? (
+                    <div className="w-full">
+                      <ZohoCommerceEmbed
+                        embedId="AluTitwxbamKOBxlIxoEZw"
+                        productId="6693975000000108039"
+                        handle="25-diy-reels-you-can-film-from-home"
+                        className="w-full"
+                      />
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => handleBooking(item.title)}
+                      className="w-full py-4 px-6 gradient-social-1 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300 video-shadow"
+                    >
+                      Get Instant Access
+                    </button>
+                  )}
                 </div>
               ))}
             </div>

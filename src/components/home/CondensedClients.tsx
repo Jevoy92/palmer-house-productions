@@ -8,21 +8,24 @@ export const CondensedClients = () => {
       role: "Client",
       content: "Jevoy and his team did an amazing job with pictures & videos for our wedding! He was very professional and easy to work with. The turnaround time was also fantastic - we received our photos and videos much sooner than expected. I would definitely recommend Palmer House Productions to anyone looking for high-quality video and photography services!",
       rating: 5,
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b5bc?w=64&h=64&fit=crop&crop=face"
+      initials: "IJ",
+      avatarColor: "bg-social-purple"
     },
     {
       name: "Athan Seyler",
       role: "Client",
       content: "Jevoy and the Palmer House Team were fantastic! They delivered exactly what we were looking for and more. The quality of work was exceptional and the communication throughout the process was excellent. Highly recommend!",
       rating: 5,
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=face"
+      initials: "AS",
+      avatarColor: "bg-social-cyan"
     },
     {
       name: "Sarah Dylan Jensen",
       role: "Client",
       content: "Awesome experience from start to finish working with Jevoy and the Palmer House team. They understood our vision perfectly and delivered outstanding results. Professional, creative, and reliable!",
       rating: 5,
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=64&h=64&fit=crop&crop=face"
+      initials: "SJ",
+      avatarColor: "bg-social-orange"
     }
   ];
 
@@ -57,11 +60,9 @@ export const CondensedClients = () => {
                 "{testimonial.content}"
               </p>
               <div className="flex items-center space-x-3">
-                <img 
-                  src={testimonial.avatar} 
-                  alt={testimonial.name}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
+                <div className={`w-12 h-12 rounded-full ${testimonial.avatarColor} flex items-center justify-center text-white font-bold`}>
+                  {testimonial.initials}
+                </div>
                 <div>
                   <div className="font-bold text-corporate-dark">{testimonial.name}</div>
                   <div className="text-sm text-corporate-gray">{testimonial.role}</div>

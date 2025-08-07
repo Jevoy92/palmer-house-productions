@@ -71,7 +71,7 @@ const App = () => (
           <Route path="/reviews" element={<Navigate to="/resources/reviews" replace />} />
           <Route path="/arsenal" element={<Navigate to="/video-use-cases" replace />} />
           <Route path="/about" element={<Navigate to="/about-us" replace />} />
-          <Route path="/team" element={<Team />} />
+          <Route path="/team" element={<Navigate to="/company/team" replace />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

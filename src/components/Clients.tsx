@@ -1,5 +1,9 @@
 
+import { useState } from "react";
+import { ContactWizard } from "./ContactWizard";
+
 export const Clients = () => {
+  const [isWizardOpen, setIsWizardOpen] = useState(false);
   const clientTypes = [
     {
       title: "Growing Businesses",
@@ -40,10 +44,7 @@ export const Clients = () => {
   ];
 
   const handleGetStarted = () => {
-    const contactElement = document.getElementById('contact');
-    if (contactElement) {
-      contactElement.scrollIntoView({ behavior: 'smooth' });
-    }
+    setIsWizardOpen(true);
   };
 
   return (
@@ -111,6 +112,8 @@ export const Clients = () => {
           </div>
         </div>
       </div>
+
+      <ContactWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
     </section>
   );
 };

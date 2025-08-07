@@ -9,6 +9,10 @@ export const SolutionsOverview = () => {
     navigate('/video-packages');
   };
 
+  const handleCardClick = () => {
+    navigate('/video-packages');
+  };
+
   const solutions = [
     {
       category: "DIY Resources",
@@ -93,7 +97,8 @@ export const SolutionsOverview = () => {
             return (
               <div 
                 key={index}
-                className="group p-6 md:p-8 bg-video-white rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 mobile-touch-target"
+                onClick={handleCardClick}
+                className="group p-6 md:p-8 bg-video-white rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 mobile-touch-target cursor-pointer hover:scale-105"
               >
                 <div className="flex items-start justify-between mb-6">
                   <div className={`w-16 h-16 ${solution.gradient} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
@@ -111,13 +116,19 @@ export const SolutionsOverview = () => {
                   {solution.description}
                 </p>
 
-                <div className="space-y-3">
+                <div className="space-y-3 mb-4">
                   {solution.items.map((item, itemIndex) => (
                     <div key={itemIndex} className="flex items-center">
                       <div className="w-2 h-2 bg-corporate-dark rounded-full mr-3"></div>
                       <span className="text-corporate-gray font-medium">{item}</span>
                     </div>
                   ))}
+                </div>
+                
+                <div className="mt-auto">
+                  <span className="text-social-purple font-semibold text-sm group-hover:underline">
+                    Click for more info →
+                  </span>
                 </div>
               </div>
             );

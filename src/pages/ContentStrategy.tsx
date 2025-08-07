@@ -11,7 +11,7 @@ import { ContentGapAnalysis } from "@/components/assessments/ContentGapAnalysis"
 import { BudgetImpactCalculator } from "@/components/assessments/BudgetImpactCalculator";
 import { AssessmentPreview } from "@/components/assessments/AssessmentPreview";
 import { ContactWizard } from "@/components/ContactWizard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -27,6 +27,15 @@ import {
 const ContentStrategyPage = () => {
   const [activeAssessment, setActiveAssessment] = useState<string | null>(null);
   const [isWizardOpen, setIsWizardOpen] = useState(false);
+
+  // Handle URL parameters for direct assessment links
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const assessment = params.get('assessment');
+    if (assessment && ['video-readiness', 'content-gap', 'budget-impact'].includes(assessment)) {
+      setActiveAssessment(assessment);
+    }
+  }, []);
 
   if (activeAssessment === "video-readiness") {
     return (
@@ -137,22 +146,6 @@ const ContentStrategyPage = () => {
               </div>
             </div>
             
-            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 max-w-2xl mx-auto">
-              <p className="text-center text-corporate-gray mb-4">
-                <strong>Want a comprehensive strategy?</strong>
-              </p>
-              <Button 
-                onClick={() => setIsWizardOpen(true)}
-                variant="hero"
-                size="touch"
-                className="gradient-social-2 text-white w-full"
-              >
-                <span className="text-center leading-snug">
-                  Get Complete Strategy Assessment<br className="sm:hidden" />
-                  <span className="hidden sm:inline"> </span>(10-15 min) →
-                </span>
-              </Button>
-            </div>
           </div>
         </section>
 

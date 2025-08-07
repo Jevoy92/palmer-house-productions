@@ -31,20 +31,54 @@ export const BottomCTA = ({ onStartAssessment, onBookCall, onComprehensiveStrate
       <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-6">
         <h3 className="text-xl font-bold mb-4">Or Take a Strategy Assessment</h3>
         
-        <div className="grid md:grid-cols-2 gap-4 mb-6">
-          {/* Quick Assessments */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          {/* Video Readiness Audit */}
           <Card className="bg-white/20 backdrop-blur-sm border-white/30">
-            <CardContent className="p-6 text-center">
-              <div className="text-3xl mb-2">⚡</div>
-              <h4 className="font-bold text-lg mb-2">Quick Assessments</h4>
-              <p className="text-sm opacity-90 mb-4">
-                Video Readiness • Content Gaps • Budget Impact
+            <CardContent className="p-4 text-center">
+              <div className="text-2xl mb-2">🎯</div>
+              <h4 className="font-bold text-base mb-2">Video Readiness Audit</h4>
+              <p className="text-xs opacity-90 mb-3">
+                Assess your current video strategy foundations
               </p>
               <Button
-                onClick={onStartAssessment}
-                className="bg-white text-purple-600 hover:bg-gray-100 font-bold px-4 py-2 text-sm w-full"
+                onClick={() => window.location.href = '/content-strategy?assessment=video-readiness'}
+                className="bg-white text-purple-600 hover:bg-gray-100 font-bold px-3 py-2 text-xs w-full"
               >
-                Start Assessment (3-5 min)
+                Start Audit
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Content Gap Analysis */}
+          <Card className="bg-white/20 backdrop-blur-sm border-white/30">
+            <CardContent className="p-4 text-center">
+              <div className="text-2xl mb-2">📊</div>
+              <h4 className="font-bold text-base mb-2">Content Gap Analysis</h4>
+              <p className="text-xs opacity-90 mb-3">
+                Identify missing content opportunities
+              </p>
+              <Button
+                onClick={() => window.location.href = '/content-strategy?assessment=content-gap'}
+                className="bg-white text-purple-600 hover:bg-gray-100 font-bold px-3 py-2 text-xs w-full"
+              >
+                Start Analysis
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Budget Impact Calculator */}
+          <Card className="bg-white/20 backdrop-blur-sm border-white/30">
+            <CardContent className="p-4 text-center">
+              <div className="text-2xl mb-2">💰</div>
+              <h4 className="font-bold text-base mb-2">Budget Impact Calculator</h4>
+              <p className="text-xs opacity-90 mb-3">
+                Calculate ROI of video content investments
+              </p>
+              <Button
+                onClick={() => window.location.href = '/content-strategy?assessment=budget-impact'}
+                className="bg-white text-purple-600 hover:bg-gray-100 font-bold px-3 py-2 text-xs w-full"
+              >
+                Calculate ROI
               </Button>
             </CardContent>
           </Card>

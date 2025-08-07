@@ -52,7 +52,7 @@ export const CondensedContact = () => {
                     <Calendar className="w-6 h-6 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-corporate-dark mb-1 text-base sm:text-lg">Book a Discovery Call</h3>
+                    <h3 className="font-bold text-corporate-dark mb-1 text-base sm:text-lg">Book a Strategy Call</h3>
                     <p className="text-sm text-corporate-gray">Free 30-minute strategy session</p>
                   </div>
                   <Button 

@@ -4,6 +4,7 @@ import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { SkipLink } from "@/components/ui/skip-link";
+import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 import { MainContent } from "@/components/MainContent";
 import { VideoReadinessAudit } from "@/components/assessments/VideoReadinessAudit";
 import { ContentGapAnalysis } from "@/components/assessments/ContentGapAnalysis";
@@ -99,6 +100,7 @@ const ContentStrategyPage = () => {
       />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <StructuredData />
+      <MobileFirstOptimization />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <BreadcrumbNavigation />
@@ -138,9 +140,14 @@ const ContentStrategyPage = () => {
               </p>
               <Button 
                 onClick={() => window.open('/contact', '_blank')}
-                className="gradient-social-2 text-white px-8 py-3 hover:scale-105 transition-all w-full"
+                variant="hero"
+                size="touch"
+                className="gradient-social-2 text-white w-full"
               >
-                Get Complete Strategy Assessment (10-15 min) →
+                <span className="text-center leading-snug">
+                  Get Complete Strategy Assessment<br className="sm:hidden" />
+                  <span className="hidden sm:inline"> </span>(10-15 min) →
+                </span>
               </Button>
             </div>
           </div>
@@ -226,7 +233,9 @@ const ContentStrategyPage = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
                   onClick={() => window.open('/contact', '_blank')}
-                  className="gradient-social-1 text-white px-8 py-3 hover:scale-105 transition-all"
+                  variant="premium"
+                  size="touch"
+                  className="gradient-social-1 text-white"
                 >
                   Complete Strategy Assessment
                 </Button>

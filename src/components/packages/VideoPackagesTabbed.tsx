@@ -411,13 +411,13 @@ export const VideoPackagesTabbed = () => {
               Ready to Begin Your <span className="text-gradient-1">Video Strategy</span>?
             </h2>
             <p className="text-xl text-corporate-gray mb-8 max-w-3xl mx-auto">
-              Book a discovery call to explore which package fits your business goals.
+              Book a strategy call to explore which package fits your business goals.
             </p>
             <button
               onClick={handleDiscoveryCall}
               className="px-8 py-4 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow mr-4"
             >
-              Book Discovery Call
+              Book Strategy Call
             </button>
             <button
               onClick={() => navigate('/contact')}

@@ -272,7 +272,7 @@ const FAQ = () => {
     {
       category: "process",
       question: "What's the first step to working with Palmer House Productions?",
-      answer: "Book a discovery call. We map your pain points, your goals, and your bottlenecks before recommending any solution."
+      answer: "Book a strategy call. We map your pain points, your goals, and your bottlenecks before recommending any solution."
     },
     {
       category: "process",
@@ -302,7 +302,7 @@ const FAQ = () => {
     {
       category: "process",
       question: "How do I know which package or system is right for my business?",
-      answer: "That's what the discovery call is for—we listen first, then point you to the best fit. No pressure, no cookie-cutter answers, just smart solutions for your stage."
+      answer: "That's what the strategy call is for—we listen first, then point you to the best fit. No pressure, no cookie-cutter answers, just smart solutions for your stage."
     }
   ];
 
@@ -447,7 +447,7 @@ const FAQ = () => {
                     href="/discovery-call"
                     className="inline-block px-8 py-4 border-2 border-social-purple text-social-purple font-bold rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300"
                   >
-                    Book Discovery Call
+                    Book Strategy Call
                   </a>
                 </div>
               </div>

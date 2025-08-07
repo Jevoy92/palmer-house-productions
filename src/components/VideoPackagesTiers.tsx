@@ -450,13 +450,13 @@ export const VideoPackagesTiers = () => {
               Ready to Start Your Video System?
             </h2>
             <p className="text-xl mb-8 opacity-90">
-              Book a discovery call to discuss which solution fits your goals and timeline.
+              Book a strategy call to discuss which solution fits your goals and timeline.
             </p>
             <button
               onClick={handleDiscoveryCall}
               className="px-8 py-4 bg-white text-social-purple font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
             >
-              🔍 Book Your Discovery Call
+              🔍 Book Your Strategy Call
             </button>
           </div>
         </div>
@@ -468,7 +468,7 @@ export const VideoPackagesTiers = () => {
           onClick={handleDiscoveryCall}
           className="px-6 py-3 gradient-social-2 text-white font-bold text-sm rounded-full video-shadow-lg hover:scale-105 transition-all duration-300"
         >
-          💬 Book Discovery Call
+          💬 Book Strategy Call
         </button>
       </div>
     </section>

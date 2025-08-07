@@ -10,6 +10,8 @@ import { MainContent } from "@/components/MainContent";
 import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
+import { LaunchOptimization } from "@/components/LaunchOptimization";
+import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 
 const Index = () => {
   return (
@@ -25,6 +27,8 @@ const Index = () => {
       />
       <StructuredData type="homepage" />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
+      <LaunchOptimization />
+      <MobileFirstOptimization />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <MainContent>

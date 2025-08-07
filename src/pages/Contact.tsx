@@ -1,14 +1,40 @@
 
+import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
-import { Contact } from "@/components/Contact";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
 import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { ArrowRight, Calendar, MessageCircle } from "lucide-react";
 
 const ContactPage = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission logic here
+    console.log('Form submitted:', formData);
+  };
+
+  const handleBookCall = () => {
+    window.open('https://calendly.com/palmerhouseproductions-info/strategy-call', '_blank');
+  };
+
+  const handleStrategyAssessment = () => {
+    window.location.href = '/content-strategy';
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
@@ -25,21 +51,117 @@ const ContactPage = () => {
       <Navigation />
       <BreadcrumbNavigation />
       <MainContent>
-        <section className="pt-24 pb-16 bg-video-white">
+        <section id="contact" className="py-24 bg-corporate-light">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-16">
-              <div className="inline-block px-6 py-3 gradient-social-3 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-                ✉️ Ready to Begin
+              <div className="inline-block px-4 py-2 gradient-social-1 rounded-full text-white font-bold text-sm mb-6 video-shadow">
+                💬 Get Started
               </div>
-              <h1 className="text-4xl md:text-6xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-                Start Your <span className="text-gradient-1">Video Project</span> Today
+              <h1 className="text-3xl md:text-4xl font-display font-black mb-6 text-corporate-dark">
+                Ready to Transform Your <span className="text-gradient-1">Video Strategy?</span>
               </h1>
-              <p className="text-xl text-corporate-gray mb-12 max-w-4xl mx-auto font-medium">
-                Let's create something extraordinary together. Your story deserves to be told with clarity and impact.
+              <p className="text-lg text-corporate-gray max-w-3xl mx-auto">
+                Get personalized recommendations and start creating professional video content that drives results.
               </p>
             </div>
-            
-            <Contact autoOpenWizard={false} />
+
+            <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto">
+              {/* Quick Actions */}
+              <div className="flex flex-col sm:grid sm:grid-cols-2 lg:flex lg:flex-col gap-4 lg:space-y-4">
+                <Card className="border-0 video-shadow hover:video-shadow-lg transition-all">
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:space-x-4">
+                      <div className="w-12 h-12 gradient-social-1 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <Calendar className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-bold text-corporate-dark mb-1 text-base sm:text-lg">Book a Strategy Call</h3>
+                        <p className="text-sm text-corporate-gray">Free 30-minute strategy session</p>
+                      </div>
+                      <Button 
+                        onClick={handleBookCall} 
+                        className="gradient-social-1 text-white w-full sm:w-auto min-h-[44px] px-6"
+                        size="lg"
+                      >
+                        Book Call
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-0 video-shadow hover:video-shadow-lg transition-all">
+                  <CardContent className="p-4 sm:p-6">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:space-x-4">
+                      <div className="w-12 h-12 gradient-social-2 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <MessageCircle className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-bold text-corporate-dark mb-1 text-base sm:text-lg">Take Strategy Assessment</h3>
+                        <p className="text-sm text-corporate-gray">Free personalized recommendations</p>
+                      </div>
+                      <Button 
+                        onClick={handleStrategyAssessment} 
+                        variant="outline" 
+                        className="w-full sm:w-auto min-h-[44px] px-6"
+                        size="lg"
+                      >
+                        Start Assessment
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              {/* Quick Contact Form */}
+              <Card className="border-0 video-shadow">
+                <CardHeader className="p-4 sm:p-6 pb-3">
+                  <CardTitle className="text-lg sm:text-xl text-corporate-dark">Quick Message</CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 sm:p-6 pt-0">
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                      <Label htmlFor="name" className="text-sm font-medium">Name</Label>
+                      <Input
+                        id="name"
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        placeholder="Your name"
+                        className="mt-1 min-h-[44px]"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        placeholder="your@email.com"
+                        className="mt-1 min-h-[44px]"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="message" className="text-sm font-medium">Message</Label>
+                      <Textarea
+                        id="message"
+                        value={formData.message}
+                        onChange={(e) => setFormData({...formData, message: e.target.value})}
+                        placeholder="Tell us about your video needs..."
+                        rows={3}
+                        className="mt-1 min-h-[88px] resize-none"
+                        required
+                      />
+                    </div>
+                    <Button type="submit" className="w-full gradient-social-1 text-white min-h-[48px]" size="lg">
+                      Send Message
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </section>
       </MainContent>

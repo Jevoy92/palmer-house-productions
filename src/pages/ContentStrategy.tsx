@@ -10,6 +10,7 @@ import { VideoReadinessAudit } from "@/components/assessments/VideoReadinessAudi
 import { ContentGapAnalysis } from "@/components/assessments/ContentGapAnalysis";
 import { BudgetImpactCalculator } from "@/components/assessments/BudgetImpactCalculator";
 import { AssessmentPreview } from "@/components/assessments/AssessmentPreview";
+import { Contact } from "@/components/Contact";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,6 +26,7 @@ import {
 
 const ContentStrategyPage = () => {
   const [activeAssessment, setActiveAssessment] = useState<string | null>(null);
+  const [showFullWizard, setShowFullWizard] = useState(false);
 
   if (activeAssessment === "video-readiness") {
     return (
@@ -89,6 +91,27 @@ const ContentStrategyPage = () => {
     );
   }
 
+  if (showFullWizard) {
+    return (
+      <div className="min-h-screen bg-white">
+        <SkipLink href="#main-content">Skip to main content</SkipLink>
+        <Navigation />
+        <MainContent>
+          <div className="py-8">
+            <Button 
+              onClick={() => setShowFullWizard(false)}
+              variant="outline"
+              className="mb-6"
+            >
+              ← Back to Strategy Hub
+            </Button>
+            <Contact autoOpenWizard={true} />
+          </div>
+        </MainContent>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
@@ -139,7 +162,7 @@ const ContentStrategyPage = () => {
                 <strong>Want a comprehensive strategy?</strong>
               </p>
               <Button 
-                onClick={() => window.open('/contact', '_blank')}
+                onClick={() => setShowFullWizard(true)}
                 variant="hero"
                 size="touch"
                 className="gradient-social-2 text-white w-full"
@@ -232,7 +255,7 @@ const ContentStrategyPage = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
-                  onClick={() => window.open('/contact', '_blank')}
+                  onClick={() => setShowFullWizard(true)}
                   variant="premium"
                   size="touch"
                   className="gradient-social-1 text-white"

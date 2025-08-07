@@ -31,14 +31,14 @@ export const Hero = () => {
         </div>
         
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-black mb-6 sm:mb-8 tracking-tight leading-[1.1] px-2">
-          Professional Video Production That
+          Seattle Video Production Company That
           <br className="hidden sm:block" />
           <span className="sm:hidden"> </span>
           <span className="text-gradient-1">Drives Results</span>
         </h1>
         
         <p className="text-base sm:text-lg md:text-xl text-corporate-gray mb-8 sm:mb-10 font-medium max-w-4xl mx-auto leading-relaxed px-2">
-          Professional video production that saves your business time and money while building your brand.
+          Professional video production company specializing in production video services that save your business time and money while building your brand.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-16 sm:mb-20 px-4">

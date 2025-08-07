@@ -83,10 +83,10 @@ export const SolutionsOverview = () => {
             🎯 Video Solutions
           </div>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-6 text-corporate-dark tracking-tight">
-            Professional Video Services for <span className="text-gradient-1">Growing Businesses</span>
+            Professional Video Production Company <span className="text-gradient-1">Services</span>
           </h2>
           <p className="text-base md:text-lg text-corporate-gray max-w-3xl mx-auto font-medium leading-relaxed">
-            From DIY resources to full production—choose the solution that fits your business needs and budget.
+            Expert video production services and professional video solutions—from DIY resources to full production video packages.
           </p>
         </div>
 
@@ -135,60 +135,6 @@ export const SolutionsOverview = () => {
           })}
         </div>
 
-        {/* Service Progression */}
-        <div className="text-center mb-12 px-4">
-          <div className="inline-block px-4 py-2 gradient-social-1 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
-            📈 Growth Path
-          </div>
-          <h3 className="text-xl md:text-2xl font-display font-black mb-6 text-corporate-dark">
-            Scale at <span className="text-gradient-2">Your Pace</span>
-          </h3>
-          
-          <div className="max-w-5xl mx-auto">
-            <div className="flex flex-col md:flex-row items-center justify-between space-y-8 md:space-y-0 md:space-x-8">
-              <div className="text-center">
-                <div className="w-20 h-20 gradient-social-1 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Download size={32} className="text-white" />
-                </div>
-                <h4 className="font-bold text-corporate-dark mb-2">Start</h4>
-                <p className="text-corporate-gray text-sm">DIY Resources</p>
-              </div>
-              
-              <div className="hidden md:block text-6xl text-corporate-gray">→</div>
-              <div className="md:hidden text-6xl text-corporate-gray">↓</div>
-              
-              <div className="text-center">
-                <div className="w-20 h-20 gradient-social-2 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Users size={32} className="text-white" />
-                </div>
-                <h4 className="font-bold text-corporate-dark mb-2">Learn</h4>
-                <p className="text-corporate-gray text-sm">Group Coaching</p>
-              </div>
-              
-              <div className="hidden md:block text-6xl text-corporate-gray">→</div>
-              <div className="md:hidden text-6xl text-corporate-gray">↓</div>
-              
-              <div className="text-center">
-                <div className="w-20 h-20 gradient-social-3 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Repeat size={32} className="text-white" />
-                </div>
-                <h4 className="font-bold text-corporate-dark mb-2">Scale</h4>
-                <p className="text-corporate-gray text-sm">Monthly System</p>
-              </div>
-              
-              <div className="hidden md:block text-6xl text-corporate-gray">→</div>
-              <div className="md:hidden text-6xl text-corporate-gray">↓</div>
-              
-              <div className="text-center">
-                <div className="w-20 h-20 gradient-social-4 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Wrench size={32} className="text-white" />
-                </div>
-                <h4 className="font-bold text-corporate-dark mb-2">Solve</h4>
-                <p className="text-corporate-gray text-sm">Custom Bundles</p>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* CTA Section */}
         <div className="text-center">

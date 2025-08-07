@@ -107,31 +107,41 @@ const ContentStrategyPage = () => {
         <section className="py-24 bg-gradient-to-br from-video-white to-corporate-light">
           <div className="max-w-6xl mx-auto px-6 text-center">
             <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-              🎯 Strategy Hub
+              🎯 Quick Assessment Tools
             </div>
             <h1 className="text-5xl md:text-6xl font-display font-black mb-8 text-corporate-dark">
-              Build Your 
-              <br />
-              <span className="text-gradient-1">Video Strategy</span>
+              Quick <span className="text-gradient-1">Assessments</span>
             </h1>
             <p className="text-xl text-corporate-gray max-w-3xl mx-auto font-medium mb-12">
-              Use our comprehensive assessment tools to discover your video readiness, 
-              identify content gaps, and calculate the perfect investment strategy for your business goals.
+              Take a 3-5 minute assessment to get instant insights about your video strategy. 
+              Perfect for quick wins and identifying immediate opportunities.
             </p>
             
-            <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8">
               <div className="flex items-center space-x-2 text-corporate-gray">
                 <CheckCircle className="w-5 h-5 text-social-green" />
-                <span>Free assessments</span>
+                <span>3-5 minute assessments</span>
               </div>
               <div className="flex items-center space-x-2 text-corporate-gray">
                 <CheckCircle className="w-5 h-5 text-social-green" />
-                <span>Instant results</span>
+                <span>Instant actionable insights</span>
               </div>
               <div className="flex items-center space-x-2 text-corporate-gray">
                 <CheckCircle className="w-5 h-5 text-social-green" />
-                <span>Personalized recommendations</span>
+                <span>Smart booking recommendations</span>
               </div>
+            </div>
+            
+            <div className="bg-white/70 backdrop-blur-sm rounded-2xl p-6 max-w-2xl mx-auto">
+              <p className="text-center text-corporate-gray mb-4">
+                <strong>Want a comprehensive strategy?</strong>
+              </p>
+              <Button 
+                onClick={() => window.open('/contact', '_blank')}
+                className="gradient-social-2 text-white px-8 py-3 hover:scale-105 transition-all w-full"
+              >
+                Get Complete Strategy Assessment (10-15 min) →
+              </Button>
             </div>
           </div>
         </section>
@@ -208,24 +218,24 @@ const ContentStrategyPage = () => {
           <div className="max-w-4xl mx-auto px-6 text-center">
             <Card className="bg-gradient-to-br from-video-white to-corporate-light border-0 video-shadow-lg p-8">
               <h2 className="text-3xl font-bold text-corporate-dark mb-4">
-                Ready for a Custom Strategy?
+                Need a Comprehensive Strategy?
               </h2>
               <p className="text-xl text-corporate-gray mb-8">
-                Get personalized recommendations based on your specific business goals and challenges.
+                Get a complete business assessment with personalized video strategy recommendations tailored to your goals.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
-                  onClick={() => window.open('/discovery-call', '_blank')}
+                  onClick={() => window.open('/contact', '_blank')}
                   className="gradient-social-1 text-white px-8 py-3 hover:scale-105 transition-all"
                 >
-                  Book Strategy Call
+                  Complete Strategy Assessment
                 </Button>
                 <Button 
-                  onClick={() => window.open('/contact', '_blank')}
+                  onClick={() => window.open('https://calendly.com/palmerhouseproductions-info/strategy-call', '_blank')}
                   variant="outline"
                   className="px-8 py-3 hover:scale-105 transition-all"
                 >
-                  Get Custom Quote
+                  Book Strategy Call
                 </Button>
               </div>
             </Card>

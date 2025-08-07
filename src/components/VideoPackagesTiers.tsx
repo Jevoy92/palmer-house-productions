@@ -132,7 +132,7 @@ export const VideoPackagesTiers = () => {
   ];
 
   const handleDiscoveryCall = () => {
-    navigate('/discovery-call');
+    navigate('/contact');
   };
 
   const handleBooking = (title: string) => {

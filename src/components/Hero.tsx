@@ -10,7 +10,7 @@ export const Hero = () => {
   };
 
   const handleBookCall = () => {
-    window.location.href = '/discovery-call';
+    window.location.href = '/contact';
   };
 
   return (
@@ -52,7 +52,7 @@ export const Hero = () => {
             onClick={handleBookCall}
             className="w-full sm:w-auto px-8 py-4 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-base sm:text-lg rounded-xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow min-h-[52px] flex items-center justify-center"
           >
-            Book Discovery Call
+            Get Started Today
           </button>
         </div>
       </div>

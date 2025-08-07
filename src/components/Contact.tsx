@@ -155,6 +155,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
         <BottomCTA 
           onStartAssessment={() => window.location.href = '/content-strategy'}
           onBookCall={handleCalendlyBooking}
+          onComprehensiveStrategy={() => setIsWizardOpen(true)}
         />
       </div>
 

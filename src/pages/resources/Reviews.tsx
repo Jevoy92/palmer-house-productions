@@ -212,7 +212,7 @@ const Reviews = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <button
-                    onClick={() => window.location.href = '/discovery-call'}
+                    onClick={() => window.location.href = '/contact'}
                     className="px-10 py-5 bg-gradient-to-r from-social-purple to-social-pink text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300"
                   >
                     Start Your Journey

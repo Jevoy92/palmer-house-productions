@@ -242,15 +242,6 @@ export const Navigation = () => {
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link 
-                      to="/discovery-call" 
-                      className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      Discovery Call
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link 
                       to="/podcast" 
                       className="block px-3 py-2 text-sm text-apple-gray-5 hover:text-black hover:bg-accent rounded-md transition-colors cursor-pointer"
                       onClick={() => setIsOpen(false)}
@@ -394,13 +385,6 @@ export const Navigation = () => {
                   onClick={() => setIsOpen(false)}
                 >
                   FAQ
-                </Link>
-                <Link 
-                  to="/discovery-call" 
-                  className="block px-4 py-3 text-apple-gray-5 hover:text-black hover:bg-gray-50 rounded-lg transition-colors min-h-[44px] flex items-center"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Discovery Call
                 </Link>
                 <Link 
                   to="/podcast" 

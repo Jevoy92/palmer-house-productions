@@ -20,7 +20,7 @@ export const CondensedContact = () => {
   };
 
   const handleBookCall = () => {
-    window.location.href = '/discovery-call';
+    window.location.href = '/contact';
   };
 
   const handleStrategyAssessment = () => {

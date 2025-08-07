@@ -60,7 +60,7 @@ export const EnhancedFooter = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/discovery-call" className="text-gray-300 hover:text-white transition-colors">
+                <Link to="/contact" className="text-gray-300 hover:text-white transition-colors">
                   Discovery Call
                 </Link>
               </li>

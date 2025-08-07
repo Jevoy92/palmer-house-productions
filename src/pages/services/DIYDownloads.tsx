@@ -117,7 +117,7 @@ const DIYDownloads = () => {
                     Explore Group Coaching
                   </button>
                   <button
-                    onClick={() => navigate('/discovery-call')}
+                    onClick={() => navigate('/contact')}
                     className="px-8 py-4 border-2 border-social-purple text-social-purple font-bold rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300"
                   >
                     Book Discovery Call

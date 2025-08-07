@@ -79,7 +79,7 @@ export const UseCaseCategories = () => {
   ];
 
   const handleCategoryClick = (categoryId: string) => {
-    navigate('/discovery-call', { 
+    navigate('/contact', { 
       state: { 
         selectedUseCase: categoryId,
         source: 'use_cases' 

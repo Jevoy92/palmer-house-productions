@@ -9,7 +9,7 @@ import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
 import Index from "./pages/Index";
 import VideoPackages from "./pages/VideoPackages";
-import DiscoveryCall from "./pages/DiscoveryCall";
+
 import ClientResults from "./pages/ClientResults";
 import VideoUseCases from "./pages/VideoUseCases";
 import AboutUs from "./pages/AboutUs";
@@ -40,7 +40,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/video-packages" element={<VideoPackages />} />
-          <Route path="/discovery-call" element={<DiscoveryCall />} />
+          <Route path="/discovery-call" element={<Navigate to="/contact" replace />} />
           <Route path="/client-results" element={<ClientResults />} />
           <Route path="/video-use-cases" element={<VideoUseCases />} />
           <Route path="/about-us" element={<AboutUs />} />
@@ -59,7 +59,7 @@ const App = () => (
           
           {/* Legacy route redirects */}
           <Route path="/pathways" element={<Navigate to="/video-packages" replace />} />
-          <Route path="/glimpse" element={<Navigate to="/discovery-call" replace />} />
+          <Route path="/glimpse" element={<Navigate to="/contact" replace />} />
           <Route path="/reviews" element={<Navigate to="/client-results" replace />} />
           <Route path="/arsenal" element={<Navigate to="/video-use-cases" replace />} />
           <Route path="/about" element={<Navigate to="/about-us" replace />} />

@@ -113,7 +113,7 @@ export const VideoPackagesTabbed = () => {
   ];
 
   const handleDiscoveryCall = () => {
-    navigate('/discovery-call');
+    navigate('/contact');
   };
 
   const handleBooking = (title: string) => {

@@ -470,7 +470,7 @@ export const ContentGapAnalysisEnhanced = ({ onBack }: ContentGapAnalysisEnhance
           level={results.funnelCoverage >= 75 ? 'Advanced' : results.funnelCoverage >= 50 ? 'Intermediate' : 'Beginner'}
           recommendations={[...results.recommendations.immediate, ...results.recommendations.shortTerm]}
           businessContext={businessProfile}
-          onScheduleConsultation={() => window.open('https://calendly.com/your-calendar', '_blank')}
+          onScheduleConsultation={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078320', '_blank')}
         />
       </div>
     );

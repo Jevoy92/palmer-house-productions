@@ -21,8 +21,8 @@ export const DiscoveryCallForm = () => {
     console.log('Discovery call form submitted:', formData);
     trackContactFormSubmit('discovery');
     trackConversion('discovery_call');
-    // Open Calendly or handle booking
-    window.open('https://calendly.com/palmerhouseproductions-info/discovery-call', '_blank');
+    // Open Zoho booking for general consultation
+    window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078320', '_blank');
   };
 
   const handleInputChange = (field: string, value: string) => {

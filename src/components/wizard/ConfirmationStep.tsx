@@ -8,12 +8,12 @@ import { User, Building2, MessageSquare, Clock, DollarSign, Briefcase } from "lu
 interface ConfirmationStepProps {
   data: WizardData;
   onSubmit: () => void;
-  onCalendlyBooking: () => void;
+  onZohoBooking: () => void;
   onBack: () => void;
   isSubmitting?: boolean;
 }
 
-export const ConfirmationStep = ({ data, onSubmit, onCalendlyBooking, onBack, isSubmitting = false }: ConfirmationStepProps) => {
+export const ConfirmationStep = ({ data, onSubmit, onZohoBooking, onBack, isSubmitting = false }: ConfirmationStepProps) => {
   const getServiceName = (serviceType?: string) => {
     switch (serviceType) {
       case "consultation": return "General Consultation";
@@ -177,7 +177,7 @@ export const ConfirmationStep = ({ data, onSubmit, onCalendlyBooking, onBack, is
         <div className="grid md:grid-cols-2 gap-4">
           <Button
             type="button"
-            onClick={onCalendlyBooking}
+            onClick={onZohoBooking}
             disabled={isSubmitting}
             className="gradient-social-1 text-white font-bold text-lg py-6 hover:scale-105 transition-all duration-300 border-0"
           >

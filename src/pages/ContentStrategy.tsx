@@ -263,7 +263,7 @@ const ContentStrategyPage = () => {
                   Complete Strategy Assessment
                 </Button>
                 <Button 
-                  onClick={() => window.open('https://calendly.com/palmerhouseproductions-info/strategy-call', '_blank')}
+                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank')}
                   variant="outline"
                   className="px-8 py-3 hover:scale-105 transition-all"
                 >

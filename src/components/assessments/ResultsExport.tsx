@@ -110,11 +110,11 @@ Generated on: ${new Date().toLocaleDateString()}
       
       // For quick booking without user info collection, use basic routing
       const isHighScore = score >= 75;
-      const calendlyUrl = isHighScore 
-        ? 'https://calendly.com/palmerhouseproductions-info/discovery-call'
-        : 'https://calendly.com/palmerhouseproductions-info/general-strategy-call';
+      const zohoUrl = isHighScore 
+        ? 'https://palmerhouseproductions.zohobookings.com/#/4740771000000078004' // Strategy Call for high scores
+        : 'https://palmerhouseproductions.zohobookings.com/#/4740771000000078320'; // General Consultation for lower scores
       
-      window.open(calendlyUrl, '_blank');
+      window.open(zohoUrl, '_blank');
     }
   };
 

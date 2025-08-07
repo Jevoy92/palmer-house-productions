@@ -14,7 +14,7 @@ import {
   Clock,
   Target
 } from "lucide-react";
-import { getSmartAssessmentCalendlyUrl, sendAssessmentToFormspree, getCallTypeExplanation } from "@/lib/assessmentRouting";
+import { getSmartAssessmentZohoUrl, sendAssessmentToFormspree, getCallTypeExplanation } from "@/lib/assessmentRouting";
 import { toast } from "@/hooks/use-toast";
 
 interface BookingPreparationProps {
@@ -67,10 +67,10 @@ export const BookingPreparation = ({
         userInfo
       };
 
-      const calendlyConfig = getSmartAssessmentCalendlyUrl(assessmentData);
+      const zohoConfig = getSmartAssessmentZohoUrl(assessmentData);
       
       // Send assessment data to Formspree for team notification
-      const formspreeResult = await sendAssessmentToFormspree(assessmentData, calendlyConfig);
+      const formspreeResult = await sendAssessmentToFormspree(assessmentData, zohoConfig);
       
       if (formspreeResult.success) {
         toast({
@@ -79,8 +79,8 @@ export const BookingPreparation = ({
         });
       }
 
-      // Redirect to Calendly
-      window.open(calendlyConfig.url, '_blank');
+      // Redirect to Zoho Booking
+      window.open(zohoConfig.url, '_blank');
       
       toast({
         title: "Redirecting to Booking",

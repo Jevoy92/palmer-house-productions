@@ -11,51 +11,43 @@ interface AssessmentData {
   };
 }
 
-interface CalendlyConfig {
+interface ZohoBookingConfig {
   url: string;
   prefillData: {
     name?: string;
     email?: string;
-    a1?: string; // Assessment Type
-    a2?: string; // Score
-    a3?: string; // Level
-    a4?: string; // Company
+    company?: string;
+    assessmentType?: string;
+    score?: string;
+    level?: string;
   };
 }
 
-export const getSmartAssessmentCalendlyUrl = (assessmentData: AssessmentData): CalendlyConfig => {
+export const getSmartAssessmentZohoUrl = (assessmentData: AssessmentData): ZohoBookingConfig => {
   const isHighScore = assessmentData.score >= 75;
   
-  // Choose the appropriate Calendly link based on score
+  // Choose the appropriate Zoho booking link based on score
   const baseUrl = isHighScore 
-    ? 'https://calendly.com/palmerhouseproductions-info/discovery-call'
-    : 'https://calendly.com/palmerhouseproductions-info/general-strategy-call';
+    ? 'https://palmerhouseproductions.zohobookings.com/#/4740771000000078004' // Strategy Call for high scores
+    : 'https://palmerhouseproductions.zohobookings.com/#/4740771000000078320'; // General Consultation for lower scores
   
-  // Prepare prefill data
+  // Prepare prefill data for Zoho (different format than previous booking system)
   const prefillData = {
     name: assessmentData.userInfo?.name,
     email: assessmentData.userInfo?.email,
-    a1: `${assessmentData.type} Assessment`,
-    a2: `${assessmentData.score}% (${assessmentData.level})`,
-    a3: isHighScore ? 'High Readiness - Discovery Call' : 'Building Readiness - Strategy Call',
-    a4: assessmentData.userInfo?.company
+    company: assessmentData.userInfo?.company,
+    assessmentType: `${assessmentData.type} Assessment`,
+    score: `${assessmentData.score}% (${assessmentData.level})`,
+    level: isHighScore ? 'High Readiness - Strategy Call' : 'Building Readiness - General Consultation'
   };
 
-  // Build query string for prefilled data
-  const params = new URLSearchParams();
-  Object.entries(prefillData).forEach(([key, value]) => {
-    if (value && value.trim()) {
-      params.append(key, value);
-    }
-  });
-
   return {
-    url: `${baseUrl}?${params.toString()}`,
+    url: baseUrl, // Zoho handles prefill differently, so we use the base URL
     prefillData
   };
 };
 
-export const sendAssessmentToFormspree = async (assessmentData: AssessmentData, routingDecision: CalendlyConfig) => {
+export const sendAssessmentToFormspree = async (assessmentData: AssessmentData, routingDecision: ZohoBookingConfig) => {
   // You'll need to replace this with your actual Formspree endpoint
   const formspreeEndpoint = 'https://formspree.io/f/mldezzqr'; // Replace with your Formspree form ID
   
@@ -70,7 +62,7 @@ export const sendAssessmentToFormspree = async (assessmentData: AssessmentData, 
     user_company: assessmentData.userInfo?.company || 'Not provided',
     key_recommendations: assessmentData.recommendations.slice(0, 5).join('; '),
     business_context: assessmentData.businessContext ? JSON.stringify(assessmentData.businessContext, null, 2) : 'Not provided',
-    calendly_url: routingDecision.url,
+    booking_url: routingDecision.url,
     timestamp: new Date().toISOString(),
     // Formatted summary for easy reading
     summary: `
@@ -98,7 +90,7 @@ ${assessmentData.score >= 75
   : 'BUILDING READINESS: This prospect needs foundational support. Focus on basic strategy, education, and building their capabilities.'
 }
 
-Calendly Link: ${routingDecision.url}
+Booking Link: ${routingDecision.url}
     `.trim()
   };
 
@@ -125,7 +117,7 @@ Calendly Link: ${routingDecision.url}
 export const getCallTypeExplanation = (score: number): { title: string; description: string; benefits: string[] } => {
   if (score >= 75) {
     return {
-      title: 'Discovery Call Recommended',
+      title: 'Strategy Call Recommended',
       description: 'Your high assessment score indicates strong video marketing foundations. You\'re ready for strategic growth discussions.',
       benefits: [
         'Advanced strategy development',
@@ -136,7 +128,7 @@ export const getCallTypeExplanation = (score: number): { title: string; descript
     };
   } else {
     return {
-      title: 'Strategy Call Recommended',
+      title: 'General Consultation Recommended',
       description: 'Your assessment shows opportunities to strengthen your video marketing foundation. Let\'s build your capabilities strategically.',
       benefits: [
         'Foundation building strategies',

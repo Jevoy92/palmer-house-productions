@@ -12,7 +12,7 @@ import { EnhancedTimelineStep } from "./steps/EnhancedTimelineStep";
 import { GeographicStep } from "./GeographicStep";
 import { ComprehensiveResults } from "./results/ComprehensiveResults";
 import { WizardData, BusinessProfileType, BusinessType, VideoUseCaseType, ContentVolumeType, TimelineType, GeographicType } from "./types";
-import { getCalendlyUrl } from "./utils";
+import { getZohoBookingUrl } from "./utils";
 
 interface WizardStepRendererProps {
   currentStep: number;
@@ -37,9 +37,9 @@ export const WizardStepRenderer = ({
   onClose,
   resetWizard,
 }: WizardStepRendererProps) => {
-  const handleCalendlyBooking = () => {
-    const calendlyUrl = getCalendlyUrl(wizardData.serviceType);
-    window.open(calendlyUrl, '_blank');
+  const handleZohoBooking = () => {
+    const zohoUrl = getZohoBookingUrl(wizardData.serviceType);
+    window.open(zohoUrl, '_blank');
   };
 
   switch (currentStep) {
@@ -142,7 +142,7 @@ export const WizardStepRenderer = ({
         <ConfirmationStep
           data={wizardData}
           onSubmit={handleSubmit}
-          onCalendlyBooking={handleCalendlyBooking}
+          onZohoBooking={handleZohoBooking}
           onBack={prevStep}
           isSubmitting={isSubmitting}
         />

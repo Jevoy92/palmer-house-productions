@@ -27,7 +27,7 @@ export const ServiceWizard = ({ open, onOpenChange }: ServiceWizardProps) => {
     prevStep,
     resetService,
     handleSubmit,
-    getCalendlyUrl,
+    getZohoBookingUrl,
     jumpToRecommendation,
   } = useServiceWizard();
 
@@ -36,9 +36,9 @@ export const ServiceWizard = ({ open, onOpenChange }: ServiceWizardProps) => {
     setTimeout(resetService, 300);
   };
 
-  const handleCalendlyBooking = () => {
-    const calendlyUrl = getCalendlyUrl();
-    window.open(calendlyUrl, '_blank');
+  const handleZohoBooking = () => {
+    const zohoUrl = getZohoBookingUrl();
+    window.open(zohoUrl, '_blank');
   };
 
   const handleQuickRecommendation = () => {
@@ -113,7 +113,7 @@ export const ServiceWizard = ({ open, onOpenChange }: ServiceWizardProps) => {
             data={serviceData}
             onClose={handleClose}
             onNewInquiry={resetService}
-            onCalendlyBooking={handleCalendlyBooking}
+            onZohoBooking={handleZohoBooking}
           />
         );
       default:

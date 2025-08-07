@@ -22,7 +22,7 @@ export const getServiceCategoryName = (serviceCategory?: ServiceCategory) => {
   }
 };
 
-export const getCalendlyUrl = (serviceType?: ServiceType) => {
+export const getZohoBookingUrl = (serviceType?: ServiceType) => {
   // All services now use the standardized strategy call URL
-  return "https://calendly.com/palmerhouseproductions-info/strategy-call";
+  return "https://palmerhouseproductions.zohobookings.com/#/4740771000000078004";
 };

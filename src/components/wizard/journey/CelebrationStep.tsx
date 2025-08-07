@@ -9,10 +9,10 @@ interface CelebrationStepProps {
   data: any;
   onClose: () => void;
   onNewInquiry: () => void;
-  onCalendlyBooking: () => void;
+  onZohoBooking: () => void;
 }
 
-export const CelebrationStep = ({ data, onClose, onNewInquiry, onCalendlyBooking }: CelebrationStepProps) => {
+export const CelebrationStep = ({ data, onClose, onNewInquiry, onZohoBooking }: CelebrationStepProps) => {
   const [showPackageDetails, setShowPackageDetails] = useState(false);
 
   const getRecommendedPackage = () => {
@@ -117,7 +117,7 @@ export const CelebrationStep = ({ data, onClose, onNewInquiry, onCalendlyBooking
                       View Details
                     </Button>
                     <Button 
-                      onClick={onCalendlyBooking}
+                      onClick={onZohoBooking}
                       className={`flex-1 ${getPackageGradient(recommendedPackage)} text-white border-0 hover:scale-105 transition-transform`}
                     >
                       <Calendar className="w-4 h-4 mr-2" />
@@ -218,7 +218,7 @@ export const CelebrationStep = ({ data, onClose, onNewInquiry, onCalendlyBooking
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
               <Button 
-                onClick={onCalendlyBooking}
+                onClick={onZohoBooking}
                 variant="secondary"
                 className="bg-white text-blue-600 hover:bg-gray-100 font-bold"
               >
@@ -242,7 +242,7 @@ export const CelebrationStep = ({ data, onClose, onNewInquiry, onCalendlyBooking
         open={showPackageDetails}
         onOpenChange={setShowPackageDetails}
         packageType={recommendedPackage}
-        onBookSession={onCalendlyBooking}
+        onBookSession={onZohoBooking}
       />
     </div>
   );

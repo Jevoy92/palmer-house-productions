@@ -1,7 +1,7 @@
 
 export const DiscoveryCallHero = () => {
   const handleBookCall = () => {
-    window.open('https://calendly.com/palmerhouseproductions-info/discovery-call', '_blank');
+    window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078320', '_blank');
   };
 
   return (

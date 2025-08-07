@@ -132,7 +132,7 @@ export const VideoPackagesTiers = () => {
   ];
 
   const handleDiscoveryCall = () => {
-    window.open('https://calendly.com/palmerhouseproductions-info/strategy-call', '_blank');
+    window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank');
   };
 
   const handleBooking = (title: string) => {

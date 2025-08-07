@@ -34,7 +34,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
     prevStep,
     resetService,
     handleSubmit,
-    getCalendlyUrl,
+    getZohoBookingUrl,
     jumpToRecommendation,
   } = useServiceWizard();
 
@@ -44,9 +44,9 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
     }
   }, [autoOpenWizard]);
 
-  const handleCalendlyBooking = () => {
-    const calendlyUrl = getCalendlyUrl();
-    window.open(calendlyUrl, '_blank');
+  const handleZohoBooking = () => {
+    const zohoUrl = getZohoBookingUrl();
+    window.open(zohoUrl, '_blank');
   };
 
   const handleQuickRecommendation = () => {
@@ -125,7 +125,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
             data={serviceData}
             onClose={() => resetService()}
             onNewInquiry={resetService}
-            onCalendlyBooking={handleCalendlyBooking}
+            onZohoBooking={handleZohoBooking}
           />
         );
       default:
@@ -154,7 +154,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
 
         <BottomCTA 
           onStartAssessment={() => window.location.href = '/content-strategy'}
-          onBookCall={handleCalendlyBooking}
+          onBookCall={handleZohoBooking}
           onComprehensiveStrategy={() => setIsWizardOpen(true)}
         />
       </div>

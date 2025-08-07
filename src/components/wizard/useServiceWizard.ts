@@ -134,9 +134,9 @@ Company: ${serviceData.company}`
     }
   };
 
-  const getCalendlyUrl = () => {
-    // Return Calendly URL based on journey data
-    return 'https://calendly.com/palmerhouseproductions-info/general-strategy-call';
+  const getZohoBookingUrl = () => {
+    // Return Zoho booking URL for general consultations
+    return 'https://palmerhouseproductions.zohobookings.com/#/4740771000000078320';
   };
 
   return {
@@ -149,7 +149,7 @@ Company: ${serviceData.company}`
     prevStep,
     resetService,
     handleSubmit,
-    getCalendlyUrl,
+    getZohoBookingUrl,
     jumpToRecommendation,
   };
 };

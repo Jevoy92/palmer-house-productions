@@ -210,7 +210,7 @@ export const FeaturesComparison = () => {
             Still not sure which option is right for you?
           </p>
           <a
-            href="https://calendly.com/palmerhouseproductions-info/general-strategy-call"
+            href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block px-8 py-4 gradient-social-4 text-white font-bold rounded-3xl hover:scale-105 transition-all duration-300 text-lg video-shadow-lg"

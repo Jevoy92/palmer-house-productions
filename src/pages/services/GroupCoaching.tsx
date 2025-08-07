@@ -175,7 +175,7 @@ const GroupCoaching = () => {
                     Apply for Coaching
                   </button>
                   <a
-                    href="https://calendly.com/palmerhouseproductions-info/strategy-call"
+                    href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="px-10 py-5 border-2 border-social-purple text-social-purple font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300"

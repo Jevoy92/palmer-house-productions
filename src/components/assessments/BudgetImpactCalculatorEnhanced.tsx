@@ -507,7 +507,7 @@ export const BudgetImpactCalculatorEnhanced = ({ onBack }: BudgetImpactCalculato
           level={result.confidenceLevel >= 80 ? 'High Confidence' : result.confidenceLevel >= 65 ? 'Medium Confidence' : 'Conservative'}
           recommendations={result.nextSteps}
           businessContext={{...businessProfile, budget: budget[0], revenue: revenue[0], goals}}
-          onScheduleConsultation={() => window.open('https://calendly.com/your-calendar', '_blank')}
+          onScheduleConsultation={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078320', '_blank')}
         />
       </div>
     );

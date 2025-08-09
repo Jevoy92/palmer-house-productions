@@ -335,7 +335,11 @@ Remember: The best testimonials don't just prove your solution works—they help
     readTime: "10 min read",
     publishDate: "2024-11-08",
     tags: ["testimonial videos", "social proof", "customer success", "conversion optimization"],
-    image: testimonialVideosImage,
+    metaDescription: "Learn how to create compelling customer testimonial videos that build trust, overcome objections, and drive conversions through authentic social proof.",
+    keywords: "testimonial videos, social proof, customer testimonials, video marketing, conversion optimization",
+    canonicalUrl: "https://www.palmerhouseproductions.com/blog/customer-testimonial-videos",
+    heroImage: testimonialVideosImage,
+    heroAlt: "Customer testimonial video setup with interview lighting and professional background",
     ogImage: testimonialVideosImage
   };
 
@@ -346,7 +350,7 @@ Remember: The best testimonials don't just prove your solution works—they help
         description="Learn how to create compelling customer testimonial videos that build trust, overcome objections, and drive conversions through authentic social proof."
         keywords="testimonial videos, social proof, customer testimonials, video marketing, conversion optimization"
         ogImage={testimonialVideosImage}
-        canonical="https://www.palmerhouseproductions.com/blog/customer-testimonial-videos"
+        canonicalUrl="https://www.palmerhouseproductions.com/blog/customer-testimonial-videos"
       />
       <Navigation />
       <BlogPost {...blogData} />

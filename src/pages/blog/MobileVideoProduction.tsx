@@ -349,7 +349,11 @@ The future of business video is mobile-first. Master these techniques now to sta
     readTime: "8 min read",
     publishDate: "2024-11-22",
     tags: ["mobile video", "smartphone production", "video apps", "mobile marketing"],
-    image: mobileVideoImage,
+    metaDescription: "Learn how to create professional-quality business videos using just your smartphone with the right techniques, apps, and accessories.",
+    keywords: "mobile video production, smartphone video, mobile filmmaking, video apps, business video",
+    canonicalUrl: "https://www.palmerhouseproductions.com/blog/mobile-video-production",
+    heroImage: mobileVideoImage,
+    heroAlt: "Mobile video production setup with smartphone on gimbal and professional equipment",
     ogImage: mobileVideoImage
   };
 
@@ -360,7 +364,7 @@ The future of business video is mobile-first. Master these techniques now to sta
         description="Learn how to create professional-quality business videos using just your smartphone with the right techniques, apps, and accessories."
         keywords="mobile video production, smartphone video, mobile filmmaking, video apps, business video"
         ogImage={mobileVideoImage}
-        canonical="https://www.palmerhouseproductions.com/blog/mobile-video-production"
+        canonicalUrl="https://www.palmerhouseproductions.com/blog/mobile-video-production"
       />
       <Navigation />
       <BlogPost {...blogData} />

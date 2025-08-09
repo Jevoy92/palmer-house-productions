@@ -121,7 +121,11 @@ Remember: The goal isn't perfect video—it's effective video that grows your bu
     readTime: "5 min read", 
     publishDate: "2024-12-10",
     tags: ["DIY video", "production mistakes", "video quality", "business branding"],
-    image: diyFailsImage,
+    metaDescription: "Common DIY video mistakes that damage your brand and turn away potential customers—and how to avoid them.",
+    keywords: "DIY video mistakes, video production errors, business video quality, professional video",
+    canonicalUrl: "https://www.palmerhouseproductions.com/blog/diy-video-fails",
+    heroImage: diyFailsImage,
+    heroAlt: "Professional before and after comparison showing DIY video mistakes vs professional results",
     ogImage: diyFailsImage
   };
 
@@ -132,7 +136,7 @@ Remember: The goal isn't perfect video—it's effective video that grows your bu
         description="Common DIY video mistakes that damage your brand and turn away potential customers—and how to avoid them."
         keywords="DIY video mistakes, video production errors, business video quality, professional video"
         ogImage={diyFailsImage}
-        canonical="https://www.palmerhouseproductions.com/blog/diy-video-fails"
+        canonicalUrl="https://www.palmerhouseproductions.com/blog/diy-video-fails"
       />
       <Navigation />
       <BlogPost {...blogData} />

@@ -181,8 +181,8 @@ Professional editors organize for efficiency and collaboration:
 - 06_Project_Files/
 
 **Naming Conventions**
-- `YYYYMMDD_ProjectName_Version`
-- `Scene_Shot_Take` for footage
+- YYYYMMDD_ProjectName_Version format
+- Scene_Shot_Take format for footage
 - Consistent abbreviations throughout
 
 ### Rendering and Export Settings
@@ -301,7 +301,11 @@ Great editing doesn't call attention to itself—it calls attention to your mess
     readTime: "9 min read",
     publishDate: "2024-11-25",
     tags: ["video editing", "post-production", "color grading", "professional techniques"],
-    image: editingImage,
+    metaDescription: "Master professional video editing techniques that elevate your business content from amateur to compelling, engagement-driving professional quality.",
+    keywords: "video editing, post-production, color grading, professional video editing, business video",
+    canonicalUrl: "https://www.palmerhouseproductions.com/blog/editing-like-pro",
+    heroImage: editingImage,
+    heroAlt: "Video editing workflow visualization with timeline and color grading panels",
     ogImage: editingImage
   };
 
@@ -312,7 +316,7 @@ Great editing doesn't call attention to itself—it calls attention to your mess
         description="Master professional video editing techniques that elevate your business content from amateur to compelling, engagement-driving professional quality."
         keywords="video editing, post-production, color grading, professional video editing, business video"
         ogImage={editingImage}
-        canonical="https://www.palmerhouseproductions.com/blog/editing-like-pro"
+        canonicalUrl="https://www.palmerhouseproductions.com/blog/editing-like-pro"
       />
       <Navigation />
       <BlogPost {...blogData} />

@@ -220,7 +220,11 @@ Remember: Perfect technique serves clear communication. Master these basics, and
     readTime: "8 min read",
     publishDate: "2024-12-05",
     tags: ["lighting", "audio", "technical", "video production"],
-    image: lightingAudioImage,
+    metaDescription: "Master the technical fundamentals of lighting and audio to create professional-quality business videos that command attention and respect.",
+    keywords: "video lighting, audio recording, video production, technical guide, professional video",
+    canonicalUrl: "https://www.palmerhouseproductions.com/blog/lighting-audio-basics",
+    heroImage: lightingAudioImage,
+    heroAlt: "Professional lighting and audio equipment setup for video production",
     ogImage: lightingAudioImage
   };
 
@@ -231,7 +235,7 @@ Remember: Perfect technique serves clear communication. Master these basics, and
         description="Master the technical fundamentals of lighting and audio to create professional-quality business videos that command attention and respect."
         keywords="video lighting, audio recording, video production, technical guide, professional video"
         ogImage={lightingAudioImage}
-        canonical="https://www.palmerhouseproductions.com/blog/lighting-audio-basics"
+        canonicalUrl="https://www.palmerhouseproductions.com/blog/lighting-audio-basics"
       />
       <Navigation />
       <BlogPost {...blogData} />

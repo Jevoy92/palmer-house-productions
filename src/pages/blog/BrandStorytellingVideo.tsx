@@ -229,7 +229,11 @@ Remember: Your story isn't about you—it's about the change you create in your 
     readTime: "9 min read",
     publishDate: "2024-12-01",
     tags: ["storytelling", "branding", "emotional marketing", "video strategy"],
-    image: brandStorytellingImage,
+    metaDescription: "Learn how to use video storytelling to create deep emotional connections with your audience and build a memorable brand that drives loyalty.",
+    keywords: "brand storytelling, video marketing, emotional branding, story structure, video strategy",
+    canonicalUrl: "https://www.palmerhouseproductions.com/blog/brand-storytelling-video",
+    heroImage: brandStorytellingImage,
+    heroAlt: "Brand storytelling concept with video elements and narrative visualization",
     ogImage: brandStorytellingImage
   };
 
@@ -240,7 +244,7 @@ Remember: Your story isn't about you—it's about the change you create in your 
         description="Learn how to use video storytelling to create deep emotional connections with your audience and build a memorable brand that drives loyalty."
         keywords="brand storytelling, video marketing, emotional branding, story structure, video strategy"
         ogImage={brandStorytellingImage}
-        canonical="https://www.palmerhouseproductions.com/blog/brand-storytelling-video"
+        canonicalUrl="https://www.palmerhouseproductions.com/blog/brand-storytelling-video"
       />
       <Navigation />
       <BlogPost {...blogData} />

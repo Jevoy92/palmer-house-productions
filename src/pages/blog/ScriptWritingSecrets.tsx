@@ -166,7 +166,11 @@ Remember: Your script is your blueprint for success. Invest the time to get it r
     readTime: "7 min read",
     publishDate: "2024-12-08",
     tags: ["script writing", "storytelling", "video content", "copywriting"],
-    image: scriptWritingImage,
+    metaDescription: "Transform your video scripts from boring corporate speak into compelling narratives that build your brand and drive action.",
+    keywords: "script writing, video scripts, storytelling, copywriting, content creation",
+    canonicalUrl: "https://www.palmerhouseproductions.com/blog/script-writing-secrets",
+    heroImage: scriptWritingImage,
+    heroAlt: "Script writing workspace with laptop, notes, and video planning elements",
     ogImage: scriptWritingImage
   };
 
@@ -177,7 +181,7 @@ Remember: Your script is your blueprint for success. Invest the time to get it r
         description="Transform your video scripts from boring corporate speak into compelling narratives that build your brand and drive action."
         keywords="script writing, video scripts, storytelling, copywriting, content creation"
         ogImage={scriptWritingImage}
-        canonical="https://www.palmerhouseproductions.com/blog/script-writing-secrets"
+        canonicalUrl="https://www.palmerhouseproductions.com/blog/script-writing-secrets"
       />
       <Navigation />
       <BlogPost {...blogData} />

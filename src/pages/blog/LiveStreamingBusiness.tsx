@@ -364,7 +364,11 @@ Remember: Authenticity beats perfection in live streaming. Your audience wants g
     readTime: "12 min read",
     publishDate: "2024-11-12",
     tags: ["live streaming", "real-time engagement", "business communication", "audience building"],
-    image: liveStreamingImage,
+    metaDescription: "Harness the power of live streaming to build authentic connections, showcase expertise, and drive immediate business results through real-time engagement.",
+    keywords: "live streaming, business live streaming, real-time engagement, video marketing, audience building",
+    canonicalUrl: "https://www.palmerhouseproductions.com/blog/live-streaming-business",
+    heroImage: liveStreamingImage,
+    heroAlt: "Live streaming setup with professional camera and streaming software interface",
     ogImage: liveStreamingImage
   };
 
@@ -375,7 +379,7 @@ Remember: Authenticity beats perfection in live streaming. Your audience wants g
         description="Harness the power of live streaming to build authentic connections, showcase expertise, and drive immediate business results through real-time engagement."
         keywords="live streaming, business live streaming, real-time engagement, video marketing, audience building"
         ogImage={liveStreamingImage}
-        canonical="https://www.palmerhouseproductions.com/blog/live-streaming-business"
+        canonicalUrl="https://www.palmerhouseproductions.com/blog/live-streaming-business"
       />
       <Navigation />
       <BlogPost {...blogData} />

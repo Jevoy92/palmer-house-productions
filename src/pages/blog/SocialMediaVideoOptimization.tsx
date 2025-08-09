@@ -316,7 +316,11 @@ Focus on providing value first, optimizing for discovery second, and building ge
     readTime: "10 min read",
     publishDate: "2024-11-18",
     tags: ["social media", "video optimization", "platform strategy", "digital marketing"],
-    image: socialMediaVideoImage,
+    metaDescription: "Master the unique requirements and optimization strategies for each social media platform to maximize your video content's reach and engagement.",
+    keywords: "social media video, video optimization, platform strategy, social media marketing, video content",
+    canonicalUrl: "https://www.palmerhouseproductions.com/blog/social-media-video-optimization",
+    heroImage: socialMediaVideoImage,
+    heroAlt: "Social media video optimization concept with multiple platform icons and engagement metrics",
     ogImage: socialMediaVideoImage
   };
 
@@ -327,7 +331,7 @@ Focus on providing value first, optimizing for discovery second, and building ge
         description="Master the unique requirements and optimization strategies for each social media platform to maximize your video content's reach and engagement."
         keywords="social media video, video optimization, platform strategy, social media marketing, video content"
         ogImage={socialMediaVideoImage}
-        canonical="https://www.palmerhouseproductions.com/blog/social-media-video-optimization"
+        canonicalUrl="https://www.palmerhouseproductions.com/blog/social-media-video-optimization"
       />
       <Navigation />
       <BlogPost {...blogData} />

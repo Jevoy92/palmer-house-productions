@@ -335,7 +335,11 @@ Remember: Search engines reward content that users find valuable. Create videos 
     readTime: "11 min read",
     publishDate: "2024-11-15",
     tags: ["video SEO", "search optimization", "YouTube SEO", "content marketing"],
-    image: videoSEOImage,
+    metaDescription: "Master video SEO techniques to improve your content's visibility in search engines and drive organic traffic to your business videos.",
+    keywords: "video SEO, search engine optimization, YouTube SEO, video marketing, content optimization",
+    canonicalUrl: "https://www.palmerhouseproductions.com/blog/video-seo-mastery",
+    heroImage: videoSEOImage,
+    heroAlt: "Video SEO concept visualization with search engine results and optimization elements",
     ogImage: videoSEOImage
   };
 
@@ -346,7 +350,7 @@ Remember: Search engines reward content that users find valuable. Create videos 
         description="Master video SEO techniques to improve your content's visibility in search engines and drive organic traffic to your business videos."
         keywords="video SEO, search engine optimization, YouTube SEO, video marketing, content optimization"
         ogImage={videoSEOImage}
-        canonical="https://www.palmerhouseproductions.com/blog/video-seo-mastery"
+        canonicalUrl="https://www.palmerhouseproductions.com/blog/video-seo-mastery"
       />
       <Navigation />
       <BlogPost {...blogData} />

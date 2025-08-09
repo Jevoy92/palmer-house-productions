@@ -260,7 +260,11 @@ Measure what matters, optimize what works, and eliminate what doesn't. Your vide
     readTime: "8 min read",
     publishDate: "2024-11-28",
     tags: ["video analytics", "ROI measurement", "marketing metrics", "video marketing"],
-    image: videoMetricsImage,
+    metaDescription: "Discover the video analytics that truly impact your bottom line and learn how to measure ROI from your video marketing investments.",
+    keywords: "video metrics, video analytics, ROI measurement, video marketing KPIs, conversion tracking",
+    canonicalUrl: "https://www.palmerhouseproductions.com/blog/video-metrics-matter",
+    heroImage: videoMetricsImage,
+    heroAlt: "Video analytics dashboard showing engagement metrics and performance data",
     ogImage: videoMetricsImage
   };
 
@@ -271,7 +275,7 @@ Measure what matters, optimize what works, and eliminate what doesn't. Your vide
         description="Discover the video analytics that truly impact your bottom line and learn how to measure ROI from your video marketing investments."
         keywords="video metrics, video analytics, ROI measurement, video marketing KPIs, conversion tracking"
         ogImage={videoMetricsImage}
-        canonical="https://www.palmerhouseproductions.com/blog/video-metrics-matter"
+        canonicalUrl="https://www.palmerhouseproductions.com/blog/video-metrics-matter"
       />
       <Navigation />
       <BlogPost {...blogData} />

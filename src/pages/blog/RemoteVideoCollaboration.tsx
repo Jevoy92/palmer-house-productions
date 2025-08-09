@@ -333,7 +333,11 @@ Remember: Remote video production isn't about replicating in-person processes di
     readTime: "12 min read",
     publishDate: "2024-11-01",
     tags: ["remote collaboration", "distributed teams", "workflow management", "production efficiency"],
-    image: remoteCollaborationImage,
+    metaDescription: "Master the tools, processes, and strategies needed to create professional video content with remote teams while maintaining quality and efficiency.",
+    keywords: "remote video collaboration, distributed production, video team management, remote workflow, production collaboration",
+    canonicalUrl: "https://www.palmerhouseproductions.com/blog/remote-video-collaboration",
+    heroImage: remoteCollaborationImage,
+    heroAlt: "Remote video collaboration workspace with video conference interface and collaborative tools",
     ogImage: remoteCollaborationImage
   };
 
@@ -344,7 +348,7 @@ Remember: Remote video production isn't about replicating in-person processes di
         description="Master the tools, processes, and strategies needed to create professional video content with remote teams while maintaining quality and efficiency."
         keywords="remote video collaboration, distributed production, video team management, remote workflow, production collaboration"
         ogImage={remoteCollaborationImage}
-        canonical="https://www.palmerhouseproductions.com/blog/remote-video-collaboration"
+        canonicalUrl="https://www.palmerhouseproductions.com/blog/remote-video-collaboration"
       />
       <Navigation />
       <BlogPost {...blogData} />

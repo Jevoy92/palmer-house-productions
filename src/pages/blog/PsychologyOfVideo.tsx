@@ -85,7 +85,11 @@ Video's psychological impact isn't accidental—it's the result of millions of y
     readTime: "6 min read",
     publishDate: "2024-12-15",
     tags: ["psychology", "neuroscience", "business communication", "decision making"],
-    image: psychologyImage,
+    metaDescription: "Discover the psychological principles that make video content so powerful for business communication and decision-making.",
+    keywords: "video psychology, neuroscience, business communication, decision making, visual processing",
+    canonicalUrl: "https://www.palmerhouseproductions.com/blog/psychology-of-video",
+    heroImage: psychologyImage,
+    heroAlt: "Professional business illustration showing psychology concepts in video communication",
     ogImage: psychologyImage
   };
 
@@ -96,7 +100,7 @@ Video's psychological impact isn't accidental—it's the result of millions of y
         description="Discover the psychological principles that make video content so powerful for business communication and decision-making."
         keywords="video psychology, neuroscience, business communication, decision making, visual processing"
         ogImage={psychologyImage}
-        canonical="https://www.palmerhouseproductions.com/blog/psychology-of-video"
+        canonicalUrl="https://www.palmerhouseproductions.com/blog/psychology-of-video"
       />
       <Navigation />
       <BlogPost {...blogData} />

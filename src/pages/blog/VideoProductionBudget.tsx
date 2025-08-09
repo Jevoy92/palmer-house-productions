@@ -383,7 +383,11 @@ Remember: The best video budget is one that delivers the results you need while 
     readTime: "11 min read",
     publishDate: "2024-11-05",
     tags: ["budget planning", "video production costs", "ROI optimization", "production strategy"],
-    image: budgetImage,
+    metaDescription: "Strategic guide to video production budgeting that helps you allocate resources effectively and achieve maximum return on your video marketing investment.",
+    keywords: "video production budget, production costs, video ROI, budget planning, video marketing investment",
+    canonicalUrl: "https://www.palmerhouseproductions.com/blog/video-production-budget",
+    heroImage: budgetImage,
+    heroAlt: "Video production budget planning with spreadsheet and timeline chart",
     ogImage: budgetImage
   };
 
@@ -394,7 +398,7 @@ Remember: The best video budget is one that delivers the results you need while 
         description="Strategic guide to video production budgeting that helps you allocate resources effectively and achieve maximum return on your video marketing investment."
         keywords="video production budget, production costs, video ROI, budget planning, video marketing investment"
         ogImage={budgetImage}
-        canonical="https://www.palmerhouseproductions.com/blog/video-production-budget"
+        canonicalUrl="https://www.palmerhouseproductions.com/blog/video-production-budget"
       />
       <Navigation />
       <BlogPost {...blogData} />

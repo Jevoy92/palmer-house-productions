@@ -286,35 +286,38 @@ const AutomateEmployeeTrainingVideo = () => {
   );
 
   return (
-    <BlogPost
-      title="How to Automate Employee Training with Video"
-      excerpt="Transform your employee onboarding and training programs with scalable video solutions that reduce costs and improve engagement."
-      content={content}
-      category="Training"
-      readTime="10 min read"
-      publishDate="2025-01-10"
-      tags={['employee-training', 'automation', 'video-systems', 'hr']}
-      metaDescription="Learn how to automate employee training with video systems. Reduce costs by 60-80% while improving completion rates and knowledge retention."
-      keywords="employee training automation, video training systems, HR video solutions, automated onboarding, training ROI"
-      canonicalUrl="https://palmerhouseproductions.com/blog/automate-employee-training-video"
-      relatedLinks={[
-        {
-          title: "Video Content Toolkit",
-          href: "/blog/video-content-toolkit-2025",
-          description: "Complete guide to building video content systems"
-        },
-        {
-          title: "Video ROI Analysis",
-          href: "/blog/video-content-roi-comparison",
-          description: "Data-driven comparison of video vs traditional training"
-        },
-        {
-          title: "Monthly Content Services",
-          href: "/services/monthly-content",
-          description: "Ongoing video content creation and management"
-        }
-      ]}
-    />
+  <BlogPost
+    title="How to Automate Employee Training with Video"
+    excerpt="Transform your employee onboarding and training programs with scalable video solutions that reduce costs and improve engagement."
+    content={content}
+    category="Training"
+    readTime="10 min read"
+    publishDate="2025-01-10"
+    tags={['employee-training', 'automation', 'video-systems', 'hr']}
+    metaDescription="Learn how to automate employee training with video systems. Reduce costs by 60-80% while improving completion rates and knowledge retention."
+    keywords="employee training automation, video training systems, HR video solutions, automated onboarding, training ROI"
+    canonicalUrl="https://palmerhouseproductions.com/blog/automate-employee-training-video"
+    heroImage="/lovable-uploads/2537d3fc-b210-4170-93a2-d927fe38eea0.png"
+    heroAlt="Automated employee training with video system"
+    ogImage="/lovable-uploads/2537d3fc-b210-4170-93a2-d927fe38eea0.png"
+    relatedLinks={[
+      {
+        title: "Video Content Toolkit",
+        href: "/blog/video-content-toolkit-2025",
+        description: "Complete guide to building video content systems"
+      },
+      {
+        title: "Video ROI Analysis",
+        href: "/blog/video-content-roi-comparison",
+        description: "Data-driven comparison of video vs traditional training"
+      },
+      {
+        title: "Monthly Content Services",
+        href: "/services/monthly-content",
+        description: "Ongoing video content creation and management"
+      }
+    ]}
+  />
   );
 };
 

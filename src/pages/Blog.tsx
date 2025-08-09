@@ -14,6 +14,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { OptimizedImage } from '@/components/seo/ImageOptimization';
 
 // Blog articles data
 const blogArticles = [
@@ -27,7 +29,9 @@ const blogArticles = [
     publishDate: '2025-01-15',
     featured: true,
     slug: '/blog/video-content-toolkit-2025',
-    tags: ['video-strategy', 'content-creation', 'business-growth', 'toolkits']
+    tags: ['video-strategy', 'content-creation', 'business-growth', 'toolkits'],
+    image: '/lovable-uploads/dcada800-4488-4970-82eb-2c356d3e789d.png',
+    imageAlt: 'Video content system toolkit concept'
   },
   {
     id: 'automate-employee-training-video',
@@ -38,7 +42,9 @@ const blogArticles = [
     publishDate: '2025-01-10',
     featured: true,
     slug: '/blog/automate-employee-training-video',
-    tags: ['employee-training', 'automation', 'video-systems', 'hr']
+    tags: ['employee-training', 'automation', 'video-systems', 'hr'],
+    image: '/lovable-uploads/2537d3fc-b210-4170-93a2-d927fe38eea0.png',
+    imageAlt: 'Automated employee training with video system'
   },
   {
     id: 'content-creation-tools-2025',
@@ -49,7 +55,9 @@ const blogArticles = [
     publishDate: '2025-01-05',
     featured: false,
     slug: '/blog/content-creation-tools-2025',
-    tags: ['content-tools', 'productivity', 'video-production', 'efficiency']
+    tags: ['content-tools', 'productivity', 'video-production', 'efficiency'],
+    image: '/lovable-uploads/945e6d63-02d8-4c0d-a4ae-b691cc806a74.png',
+    imageAlt: 'Content creation tools for business owners'
   },
   {
     id: 'video-content-roi-comparison',
@@ -60,7 +68,9 @@ const blogArticles = [
     publishDate: '2025-01-01',
     featured: true,
     slug: '/blog/video-content-roi-comparison',
-    tags: ['roi-analysis', 'video-training', 'business-metrics', 'cost-comparison']
+    tags: ['roi-analysis', 'video-training', 'business-metrics', 'cost-comparison'],
+    image: '/lovable-uploads/cb07dfcd-6a7e-480c-95bb-833a66f4057e.png',
+    imageAlt: 'ROI comparison of video training vs traditional methods'
   },
   // Additional Business Strategy Articles
   {
@@ -289,6 +299,16 @@ const Blog = () => {
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {featuredArticles.map((article) => (
                   <Card key={article.id} className="group hover:shadow-lg transition-all duration-300 border-corporate-light/30">
+                    {/* Cover Image */}
+                    <div className="overflow-hidden rounded-t-lg">
+                      <AspectRatio ratio={16/9}>
+                        <OptimizedImage
+                          src={article.image || '/placeholder.svg'}
+                          alt={article.imageAlt || `${article.title} cover image`}
+                          className="w-full h-full object-cover"
+                        />
+                      </AspectRatio>
+                    </div>
                     <CardHeader className="pb-4">
                       <div className="flex items-center justify-between mb-3">
                         <Badge variant="secondary" className="bg-social-purple/10 text-social-purple">
@@ -369,6 +389,16 @@ const Blog = () => {
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredArticles.map((article) => (
                   <Card key={article.id} className="group hover:shadow-lg transition-all duration-300 border-corporate-light/30">
+                    {/* Cover Image */}
+                    <div className="overflow-hidden rounded-t-lg">
+                      <AspectRatio ratio={16/9}>
+                        <OptimizedImage
+                          src={article.image || '/placeholder.svg'}
+                          alt={article.imageAlt || `${article.title} cover image`}
+                          className="w-full h-full object-cover"
+                        />
+                      </AspectRatio>
+                    </div>
                     <CardHeader className="pb-4">
                       <div className="flex items-center justify-between mb-3">
                         <Badge variant="outline" className="border-corporate-light text-corporate-gray">

@@ -493,35 +493,38 @@ const VideoContentROIComparison = () => {
   );
 
   return (
-    <BlogPost
-      title="The Real ROI of Video Content vs Old-School Training"
-      excerpt="Data-driven analysis showing how video content delivers measurable returns compared to traditional training methods."
-      content={content}
-      category="ROI"
-      readTime="15 min read"
-      publishDate="2025-01-01"
-      tags={['roi-analysis', 'video-training', 'business-metrics', 'cost-comparison']}
-      metaDescription="Comprehensive ROI analysis of video training vs traditional methods. Learn how video content delivers 4-6x better returns with detailed cost breakdowns and industry data."
-      keywords="video training ROI, training cost analysis, video vs traditional training, employee training metrics, business training ROI"
-      canonicalUrl="https://palmerhouseproductions.com/blog/video-content-roi-comparison"
-      relatedLinks={[
-        {
-          title: "Employee Training Automation",
-          href: "/blog/automate-employee-training-video",
-          description: "Learn how to implement automated video training systems"
-        },
-        {
-          title: "Video Content Toolkit",
-          href: "/blog/video-content-toolkit-2025",
-          description: "Complete system for creating effective training content"
-        },
-        {
-          title: "Monthly Content Services",
-          href: "/services/monthly-content",
-          description: "Ongoing video content creation and optimization"
-        }
-      ]}
-    />
+  <BlogPost
+    title="The Real ROI of Video Content vs Old-School Training"
+    excerpt="Data-driven analysis showing how video content delivers measurable returns compared to traditional training methods."
+    content={content}
+    category="ROI"
+    readTime="15 min read"
+    publishDate="2025-01-01"
+    tags={['roi-analysis', 'video-training', 'business-metrics', 'cost-comparison']}
+    metaDescription="Comprehensive ROI analysis of video training vs traditional methods. Learn how video content delivers 4-6x better returns with detailed cost breakdowns and industry data."
+    keywords="video training ROI, training cost analysis, video vs traditional training, employee training metrics, business training ROI"
+    canonicalUrl="https://palmerhouseproductions.com/blog/video-content-roi-comparison"
+    heroImage="/lovable-uploads/cb07dfcd-6a7e-480c-95bb-833a66f4057e.png"
+    heroAlt="ROI comparison of video training vs traditional methods"
+    ogImage="/lovable-uploads/cb07dfcd-6a7e-480c-95bb-833a66f4057e.png"
+    relatedLinks={[
+      {
+        title: "Employee Training Automation",
+        href: "/blog/automate-employee-training-video",
+        description: "Learn how to implement automated video training systems"
+      },
+      {
+        title: "Video Content Toolkit",
+        href: "/blog/video-content-toolkit-2025",
+        description: "Complete system for creating effective training content"
+      },
+      {
+        title: "Monthly Content Services",
+        href: "/services/monthly-content",
+        description: "Ongoing video content creation and optimization"
+      }
+    ]}
+  />
   );
 };
 

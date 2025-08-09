@@ -7,6 +7,8 @@ import { InternalLinking } from '@/components/seo/InternalLinking';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { OptimizedImage } from '@/components/seo/ImageOptimization';
 
 interface BlogPostProps {
   title: string;
@@ -19,6 +21,9 @@ interface BlogPostProps {
   metaDescription: string;
   keywords: string;
   canonicalUrl: string;
+  heroImage?: string;
+  heroAlt?: string;
+  ogImage?: string;
   relatedLinks?: Array<{
     title: string;
     href: string;
@@ -37,6 +42,9 @@ export const BlogPost = ({
   metaDescription,
   keywords,
   canonicalUrl,
+  heroImage,
+  heroAlt,
+  ogImage,
   relatedLinks
 }: BlogPostProps) => {
   const formatDate = (dateString: string) => {
@@ -72,6 +80,7 @@ export const BlogPost = ({
         keywords={keywords}
         ogTitle={title}
         ogDescription={metaDescription}
+        ogImage={ogImage || heroImage}
         canonicalUrl={canonicalUrl}
       />
       
@@ -88,11 +97,28 @@ export const BlogPost = ({
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Blog
             </Link>
-          </div>
-        </div>
+      </div>
+    </div>
 
-        {/* Article Header */}
-        <article className="py-12">
+    {/* Hero Image */}
+    {heroImage && (
+      <div className="max-w-5xl mx-auto px-6 mt-8">
+        <div className="overflow-hidden rounded-lg shadow-sm border border-corporate-light/40">
+          <AspectRatio ratio={16/9}>
+            <OptimizedImage
+              src={heroImage}
+              alt={heroAlt || `${title} hero image`}
+              className="w-full h-full object-cover"
+              loading="eager"
+              priority
+            />
+          </AspectRatio>
+        </div>
+      </div>
+    )}
+
+    {/* Article Header */}
+    <article className="py-12">
           <div className="max-w-4xl mx-auto px-6">
             <header className="mb-12">
               <div className="flex flex-wrap items-center gap-4 mb-6">

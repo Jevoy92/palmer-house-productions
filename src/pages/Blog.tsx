@@ -82,7 +82,9 @@ const blogArticles = [
     publishDate: '2024-12-28',
     featured: false,
     slug: '/blog/why-diy-video-fails',
-    tags: ['diy-video', 'professional-services', 'video-strategy', 'business-decisions']
+    tags: ['diy-video', 'professional-services', 'video-strategy', 'business-decisions'],
+    image: '/src/assets/blog/diy-video-fails.jpg',
+    imageAlt: 'Professional vs DIY video production comparison'
   },
   {
     id: 'five-stage-video-content-system',
@@ -93,7 +95,9 @@ const blogArticles = [
     publishDate: '2024-12-25',
     featured: false,
     slug: '/blog/five-stage-video-content-system',
-    tags: ['scaling', 'content-systems', 'business-growth', 'video-framework']
+    tags: ['scaling', 'content-systems', 'business-growth', 'video-framework'],
+    image: '/src/assets/blog/brand-storytelling-video.jpg',
+    imageAlt: 'Video content system framework visualization'
   },
   {
     id: 'overwhelmed-to-authority',
@@ -104,7 +108,9 @@ const blogArticles = [
     publishDate: '2024-12-20',
     featured: false,
     slug: '/blog/overwhelmed-to-authority',
-    tags: ['camera-confidence', 'thought-leadership', 'personal-branding', 'founder-tips']
+    tags: ['camera-confidence', 'thought-leadership', 'personal-branding', 'founder-tips'],
+    image: '/src/assets/blog/psychology-of-video.jpg',
+    imageAlt: 'Founder building video confidence and authority'
   },
   {
     id: 'internal-video-libraries',
@@ -115,7 +121,9 @@ const blogArticles = [
     publishDate: '2024-12-15',
     featured: false,
     slug: '/blog/internal-video-libraries',
-    tags: ['video-organization', 'team-resources', 'knowledge-management', 'internal-comms']
+    tags: ['video-organization', 'team-resources', 'knowledge-management', 'internal-comms'],
+    image: '/src/assets/blog/remote-video-collaboration.jpg',
+    imageAlt: 'Internal video library organization system'
   },
   {
     id: 'psychology-of-video',
@@ -126,7 +134,9 @@ const blogArticles = [
     publishDate: '2024-12-10',
     featured: false,
     slug: '/blog/psychology-of-video',
-    tags: ['video-psychology', 'communication-science', 'engagement', 'learning-theory']
+    tags: ['video-psychology', 'communication-science', 'engagement', 'learning-theory'],
+    image: '/src/assets/blog/psychology-of-video.jpg',
+    imageAlt: 'Psychology of video communication and engagement'
   },
   {
     id: 'measuring-video-roi',
@@ -137,7 +147,9 @@ const blogArticles = [
     publishDate: '2024-12-05',
     featured: false,
     slug: '/blog/measuring-video-roi',
-    tags: ['video-analytics', 'roi-measurement', 'business-metrics', 'kpi-tracking']
+    tags: ['video-analytics', 'roi-measurement', 'business-metrics', 'kpi-tracking'],
+    image: '/src/assets/blog/video-metrics-matter.jpg',
+    imageAlt: 'Video ROI measurement and analytics dashboard'
   },
   // Technical How-To Articles
   {
@@ -149,7 +161,9 @@ const blogArticles = [
     publishDate: '2024-12-01',
     featured: false,
     slug: '/blog/script-writing-framework',
-    tags: ['scriptwriting', 'video-planning', 'communication', 'time-management']
+    tags: ['scriptwriting', 'video-planning', 'communication', 'time-management'],
+    image: '/src/assets/blog/script-writing-secrets.jpg',
+    imageAlt: 'Video script writing framework for founders'
   },
   {
     id: 'lighting-audio-basics',
@@ -160,7 +174,9 @@ const blogArticles = [
     publishDate: '2024-11-25',
     featured: false,
     slug: '/blog/lighting-audio-basics',
-    tags: ['video-production', 'lighting', 'audio', 'budget-friendly']
+    tags: ['video-production', 'lighting', 'audio', 'budget-friendly'],
+    image: '/src/assets/blog/lighting-audio-basics.jpg',
+    imageAlt: 'Professional lighting and audio setup for video production'
   },
   {
     id: 'platform-specific-video',
@@ -171,7 +187,9 @@ const blogArticles = [
     publishDate: '2024-11-20',
     featured: false,
     slug: '/blog/platform-specific-video',
-    tags: ['social-media', 'platform-optimization', 'video-marketing', 'multi-channel']
+    tags: ['social-media', 'platform-optimization', 'video-marketing', 'multi-channel'],
+    image: '/src/assets/blog/social-media-video-optimization.jpg',
+    imageAlt: 'Platform-specific video optimization strategies'
   },
   {
     id: 'video-content-that-converts',
@@ -182,7 +200,9 @@ const blogArticles = [
     publishDate: '2024-11-15',
     featured: false,
     slug: '/blog/video-content-that-converts',
-    tags: ['conversion-optimization', 'video-marketing', 'cta-strategy', 'engagement']
+    tags: ['conversion-optimization', 'video-marketing', 'cta-strategy', 'engagement'],
+    image: '/src/assets/blog/customer-testimonial-videos.jpg',
+    imageAlt: 'Video content conversion strategy and optimization'
   },
   // Industry-Specific Content
   {
@@ -194,7 +214,9 @@ const blogArticles = [
     publishDate: '2024-11-10',
     featured: false,
     slug: '/blog/video-marketing-saas',
-    tags: ['saas-marketing', 'user-onboarding', 'product-demos', 'customer-success']
+    tags: ['saas-marketing', 'user-onboarding', 'product-demos', 'customer-success'],
+    image: '/src/assets/blog/mobile-video-production.jpg',
+    imageAlt: 'SaaS video marketing and customer onboarding'
   }
 ];
 

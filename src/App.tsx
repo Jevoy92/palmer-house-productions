@@ -44,6 +44,8 @@ import LiveStreamingBusiness from "./pages/blog/LiveStreamingBusiness";
 import CustomerTestimonialVideos from "./pages/blog/CustomerTestimonialVideos";
 import VideoProductionBudget from "./pages/blog/VideoProductionBudget";
 import RemoteVideoCollaboration from "./pages/blog/RemoteVideoCollaboration";
+import OverwhelmedToAuthority from "./pages/blog/OverwhelmedToAuthority";
+import VideoMarketingSaaS from "./pages/blog/VideoMarketingSaaS";
 
 const queryClient = new QueryClient();
 
@@ -92,6 +94,8 @@ const App = () => (
           <Route path="/blog/customer-testimonial-videos" element={<CustomerTestimonialVideos />} />
           <Route path="/blog/video-production-budget" element={<VideoProductionBudget />} />
           <Route path="/blog/remote-video-collaboration" element={<RemoteVideoCollaboration />} />
+          <Route path="/blog/overwhelmed-to-authority" element={<OverwhelmedToAuthority />} />
+          <Route path="/blog/video-marketing-saas" element={<VideoMarketingSaaS />} />
           
           {/* Legacy route redirects */}
           <Route path="/pathways" element={<Navigate to="/video-packages" replace />} />

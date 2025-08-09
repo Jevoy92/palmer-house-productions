@@ -74,27 +74,27 @@ const blogArticles = [
   },
   // Additional Business Strategy Articles
   {
-    id: 'why-diy-video-fails',
+    id: 'diy-video-fails',
     title: 'Why DIY Video Fails (And When to Hire Professionals)',
     excerpt: 'Understand the hidden costs of DIY video production and learn when professional help becomes a strategic investment.',
     category: 'Strategy',
     readTime: '9 min read',
     publishDate: '2024-12-28',
     featured: false,
-    slug: '/blog/why-diy-video-fails',
+    slug: '/blog/diy-video-fails',
     tags: ['diy-video', 'professional-services', 'video-strategy', 'business-decisions'],
     image: '/src/assets/blog/diy-video-fails.jpg',
     imageAlt: 'Professional vs DIY video production comparison'
   },
   {
-    id: 'five-stage-video-content-system',
+    id: 'brand-storytelling-video',
     title: 'The 5-Stage Video Content System That Scales With Your Business',
     excerpt: 'Build a sustainable video content framework that grows with your company from startup to enterprise.',
     category: 'Strategy',
     readTime: '14 min read',
     publishDate: '2024-12-25',
     featured: false,
-    slug: '/blog/five-stage-video-content-system',
+    slug: '/blog/brand-storytelling-video',
     tags: ['scaling', 'content-systems', 'business-growth', 'video-framework'],
     image: '/src/assets/blog/brand-storytelling-video.jpg',
     imageAlt: 'Video content system framework visualization'
@@ -113,14 +113,14 @@ const blogArticles = [
     imageAlt: 'Founder building video confidence and authority'
   },
   {
-    id: 'internal-video-libraries',
+    id: 'remote-video-collaboration',
     title: 'How to Build Internal Video Libraries That Actually Get Used',
     excerpt: 'Create organized, accessible video resources that your team will actually reference and use in their daily work.',
     category: 'Organization',
     readTime: '13 min read',
     publishDate: '2024-12-15',
     featured: false,
-    slug: '/blog/internal-video-libraries',
+    slug: '/blog/remote-video-collaboration',
     tags: ['video-organization', 'team-resources', 'knowledge-management', 'internal-comms'],
     image: '/src/assets/blog/remote-video-collaboration.jpg',
     imageAlt: 'Internal video library organization system'
@@ -139,28 +139,28 @@ const blogArticles = [
     imageAlt: 'Psychology of video communication and engagement'
   },
   {
-    id: 'measuring-video-roi',
+    id: 'video-metrics-matter',
     title: 'Measuring Video ROI: Beyond Views to Business Impact',
     excerpt: 'Learn how to track meaningful video metrics that connect directly to business outcomes and revenue growth.',
     category: 'Analytics',
     readTime: '12 min read',
     publishDate: '2024-12-05',
     featured: false,
-    slug: '/blog/measuring-video-roi',
+    slug: '/blog/video-metrics-matter',
     tags: ['video-analytics', 'roi-measurement', 'business-metrics', 'kpi-tracking'],
     image: '/src/assets/blog/video-metrics-matter.jpg',
     imageAlt: 'Video ROI measurement and analytics dashboard'
   },
   // Technical How-To Articles
   {
-    id: 'script-writing-framework',
+    id: 'script-writing-secrets',
     title: 'Script Writing for Busy Founders: The 5-Minute Framework',
     excerpt: 'Master the art of concise, effective video scripts that communicate value without wasting time.',
     category: 'How-To',
     readTime: '7 min read',
     publishDate: '2024-12-01',
     featured: false,
-    slug: '/blog/script-writing-framework',
+    slug: '/blog/script-writing-secrets',
     tags: ['scriptwriting', 'video-planning', 'communication', 'time-management'],
     image: '/src/assets/blog/script-writing-secrets.jpg',
     imageAlt: 'Video script writing framework for founders'
@@ -179,27 +179,27 @@ const blogArticles = [
     imageAlt: 'Professional lighting and audio setup for video production'
   },
   {
-    id: 'platform-specific-video',
+    id: 'social-media-video-optimization',
     title: 'Platform-Specific Video: What Works on LinkedIn vs. Instagram vs. YouTube',
     excerpt: 'Optimize your video content for each social platform to maximize reach, engagement, and business results.',
     category: 'Social Media',
     readTime: '14 min read',
     publishDate: '2024-11-20',
     featured: false,
-    slug: '/blog/platform-specific-video',
+    slug: '/blog/social-media-video-optimization',
     tags: ['social-media', 'platform-optimization', 'video-marketing', 'multi-channel'],
     image: '/src/assets/blog/social-media-video-optimization.jpg',
     imageAlt: 'Platform-specific video optimization strategies'
   },
   {
-    id: 'video-content-that-converts',
+    id: 'customer-testimonial-videos',
     title: 'Creating Video Content That Converts: Hook, Value, Call-to-Action',
     excerpt: 'Master the formula for video content that not only engages viewers but drives them to take meaningful action.',
     category: 'Conversion',
     readTime: '11 min read',
     publishDate: '2024-11-15',
     featured: false,
-    slug: '/blog/video-content-that-converts',
+    slug: '/blog/customer-testimonial-videos',
     tags: ['conversion-optimization', 'video-marketing', 'cta-strategy', 'engagement'],
     image: '/src/assets/blog/customer-testimonial-videos.jpg',
     imageAlt: 'Video content conversion strategy and optimization'
@@ -215,8 +215,8 @@ const blogArticles = [
     featured: false,
     slug: '/blog/video-marketing-saas',
     tags: ['saas-marketing', 'user-onboarding', 'product-demos', 'customer-success'],
-    image: '/src/assets/blog/mobile-video-production.jpg',
-    imageAlt: 'SaaS video marketing and customer onboarding'
+    image: '/src/assets/blog/video-production-budget.jpg',
+    imageAlt: 'SaaS video marketing and customer onboarding strategy'
   }
 ];
 

@@ -16,6 +16,17 @@ import {
 } from '@/components/ui/select';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { OptimizedImage } from '@/components/seo/ImageOptimization';
+import diyVideoFailsImage from '@/assets/blog/diy-video-fails.jpg';
+import brandStorytellingImage from '@/assets/blog/brand-storytelling-video.jpg';
+import mobileVideoProductionImage from '@/assets/blog/mobile-video-production.jpg';
+import remoteVideoCollaborationImage from '@/assets/blog/remote-video-collaboration.jpg';
+import psychologyOfVideoImage from '@/assets/blog/psychology-of-video.jpg';
+import videoMetricsMatterImage from '@/assets/blog/video-metrics-matter.jpg';
+import scriptWritingSecretsImage from '@/assets/blog/script-writing-secrets.jpg';
+import lightingAudioBasicsImage from '@/assets/blog/lighting-audio-basics.jpg';
+import socialMediaVideoOptimizationImage from '@/assets/blog/social-media-video-optimization.jpg';
+import customerTestimonialImage from '@/assets/blog/customer-testimonial-videos.jpg';
+import videoSeoMasteryImage from '@/assets/blog/video-seo-mastery.jpg';
 
 // Blog articles data
 const blogArticles = [
@@ -83,7 +94,7 @@ const blogArticles = [
     featured: false,
     slug: '/blog/diy-video-fails',
     tags: ['diy-video', 'professional-services', 'video-strategy', 'business-decisions'],
-    image: '/src/assets/blog/diy-video-fails.jpg',
+    image: diyVideoFailsImage,
     imageAlt: 'Professional vs DIY video production comparison'
   },
   {
@@ -96,7 +107,7 @@ const blogArticles = [
     featured: false,
     slug: '/blog/brand-storytelling-video',
     tags: ['scaling', 'content-systems', 'business-growth', 'video-framework'],
-    image: '/src/assets/blog/brand-storytelling-video.jpg',
+    image: brandStorytellingImage,
     imageAlt: 'Video content system framework visualization'
   },
   {
@@ -109,7 +120,7 @@ const blogArticles = [
     featured: false,
     slug: '/blog/overwhelmed-to-authority',
     tags: ['camera-confidence', 'thought-leadership', 'personal-branding', 'founder-tips'],
-    image: '/src/assets/blog/psychology-of-video.jpg',
+    image: mobileVideoProductionImage,
     imageAlt: 'Founder building video confidence and authority'
   },
   {
@@ -122,7 +133,7 @@ const blogArticles = [
     featured: false,
     slug: '/blog/remote-video-collaboration',
     tags: ['video-organization', 'team-resources', 'knowledge-management', 'internal-comms'],
-    image: '/src/assets/blog/remote-video-collaboration.jpg',
+    image: remoteVideoCollaborationImage,
     imageAlt: 'Internal video library organization system'
   },
   {
@@ -135,7 +146,7 @@ const blogArticles = [
     featured: false,
     slug: '/blog/psychology-of-video',
     tags: ['video-psychology', 'communication-science', 'engagement', 'learning-theory'],
-    image: '/src/assets/blog/psychology-of-video.jpg',
+    image: psychologyOfVideoImage,
     imageAlt: 'Psychology of video communication and engagement'
   },
   {
@@ -148,7 +159,7 @@ const blogArticles = [
     featured: false,
     slug: '/blog/video-metrics-matter',
     tags: ['video-analytics', 'roi-measurement', 'business-metrics', 'kpi-tracking'],
-    image: '/src/assets/blog/video-metrics-matter.jpg',
+    image: videoMetricsMatterImage,
     imageAlt: 'Video ROI measurement and analytics dashboard'
   },
   // Technical How-To Articles
@@ -162,7 +173,7 @@ const blogArticles = [
     featured: false,
     slug: '/blog/script-writing-secrets',
     tags: ['scriptwriting', 'video-planning', 'communication', 'time-management'],
-    image: '/src/assets/blog/script-writing-secrets.jpg',
+    image: scriptWritingSecretsImage,
     imageAlt: 'Video script writing framework for founders'
   },
   {
@@ -175,7 +186,7 @@ const blogArticles = [
     featured: false,
     slug: '/blog/lighting-audio-basics',
     tags: ['video-production', 'lighting', 'audio', 'budget-friendly'],
-    image: '/src/assets/blog/lighting-audio-basics.jpg',
+    image: lightingAudioBasicsImage,
     imageAlt: 'Professional lighting and audio setup for video production'
   },
   {
@@ -188,7 +199,7 @@ const blogArticles = [
     featured: false,
     slug: '/blog/social-media-video-optimization',
     tags: ['social-media', 'platform-optimization', 'video-marketing', 'multi-channel'],
-    image: '/src/assets/blog/social-media-video-optimization.jpg',
+    image: socialMediaVideoOptimizationImage,
     imageAlt: 'Platform-specific video optimization strategies'
   },
   {
@@ -201,7 +212,7 @@ const blogArticles = [
     featured: false,
     slug: '/blog/customer-testimonial-videos',
     tags: ['conversion-optimization', 'video-marketing', 'cta-strategy', 'engagement'],
-    image: '/src/assets/blog/customer-testimonial-videos.jpg',
+    image: customerTestimonialImage,
     imageAlt: 'Video content conversion strategy and optimization'
   },
   // Industry-Specific Content
@@ -215,7 +226,7 @@ const blogArticles = [
     featured: false,
     slug: '/blog/video-marketing-saas',
     tags: ['saas-marketing', 'user-onboarding', 'product-demos', 'customer-success'],
-    image: '/src/assets/blog/video-production-budget.jpg',
+    image: videoSeoMasteryImage,
     imageAlt: 'SaaS video marketing and customer onboarding strategy'
   }
 ];

@@ -9,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { OptimizedImage } from '@/components/seo/ImageOptimization';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface BlogPostProps {
   title: string;
@@ -167,7 +169,13 @@ export const BlogPost = ({
 
             {/* Article Content */}
             <div className="prose prose-lg max-w-none">
-              {content}
+              {typeof content === 'string' ? (
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {content as string}
+                </ReactMarkdown>
+              ) : (
+                content
+              )}
             </div>
 
             <Separator className="my-12" />

@@ -161,24 +161,18 @@ export const ZohoLeadForm = ({ title = "Start a Project", leadSource = "Website"
             <SelectTrigger className="mt-1 w-full min-h-[44px]">
               <SelectValue placeholder="I'm not sure yet" />
             </SelectTrigger>
-            <SelectContent className="bg-background z-50">
+            <SelectContent className="z-50">
               <SelectItem value={NOT_SURE_OPTION}>
-                <div className="flex flex-col">
-                  <span>Not sure yet</span>
-                  <span className="text-muted-foreground text-xs">We’ll help you choose based on your goals.</span>
-                </div>
+                <span className="truncate">Not sure yet</span>
               </SelectItem>
               {PROJECT_TYPES.map((opt) => (
                 <SelectItem key={opt} value={opt}>
-                  <div className="flex flex-col">
-                    <span>{opt}</span>
-                    <span className="text-muted-foreground text-xs">{PROJECT_TYPE_INFO[opt]}</span>
-                  </div>
+                  <span className="truncate">{opt}</span>
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          <div className="mt-2 flex items-start justify-between gap-2">
+          <div className="mt-2 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
             <p className="text-sm text-muted-foreground">
               {form.projectType
                 ? PROJECT_TYPE_INFO[form.projectType] || "We’ll help you choose the best fit."
@@ -186,7 +180,7 @@ export const ZohoLeadForm = ({ title = "Start a Project", leadSource = "Website"
             </p>
             <Dialog>
               <DialogTrigger asChild>
-                <button type="button" className="text-sm font-medium text-primary underline underline-offset-4 hover-scale whitespace-nowrap">
+                <button type="button" className="text-sm font-medium text-primary underline underline-offset-4 hover-scale self-start sm:self-auto whitespace-nowrap">
                   Compare options
                 </button>
               </DialogTrigger>

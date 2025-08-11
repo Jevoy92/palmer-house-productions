@@ -12,7 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, Calendar, MessageCircle, Video, BarChart3, DollarSign, CheckCircle } from "lucide-react";
+import { ArrowRight, Calendar, MessageCircle, Video, CheckCircle } from "lucide-react";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -35,13 +35,6 @@ const ContactPage = () => {
     window.location.href = '/content-strategy?assessment=video-readiness';
   };
 
-  const handleContentGapAnalysis = () => {
-    window.location.href = '/content-strategy?assessment=content-gap';
-  };
-
-  const handleBudgetImpactCalculator = () => {
-    window.location.href = '/content-strategy?assessment=budget-impact';
-  };
 
   const handleCompleteStrategyAssessment = () => {
     window.location.href = '/content-strategy';
@@ -148,51 +141,6 @@ const ContactPage = () => {
                   </CardContent>
                 </Card>
 
-                {/* Content Gap Analysis */}
-                <Card className="border-0 video-shadow hover:video-shadow-lg transition-all">
-                  <CardContent className="p-4 sm:p-6">
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:space-x-4">
-                      <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <BarChart3 className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-corporate-dark mb-1 text-base sm:text-lg">Content Gap Analysis</h3>
-                        <p className="text-sm text-corporate-gray">Identify missing content opportunities</p>
-                      </div>
-                      <Button 
-                        onClick={handleContentGapAnalysis} 
-                        variant="outline" 
-                        className="w-full sm:w-auto min-h-[44px] px-6"
-                        size="lg"
-                      >
-                        Start Analysis
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Budget Impact Calculator */}
-                <Card className="border-0 video-shadow hover:video-shadow-lg transition-all">
-                  <CardContent className="p-4 sm:p-6">
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:space-x-4">
-                      <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <DollarSign className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-corporate-dark mb-1 text-base sm:text-lg">Budget Impact Calculator</h3>
-                        <p className="text-sm text-corporate-gray">Calculate video marketing ROI potential</p>
-                      </div>
-                      <Button 
-                        onClick={handleBudgetImpactCalculator} 
-                        variant="outline" 
-                        className="w-full sm:w-auto min-h-[44px] px-6"
-                        size="lg"
-                      >
-                        Start Calculator
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
               </div>
 
               {/* Quick Contact Form */}

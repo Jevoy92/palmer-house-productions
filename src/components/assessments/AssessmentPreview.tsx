@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Users, TrendingUp, FileText, BarChart3, Calculator } from "lucide-react";
+import { Clock, Users, TrendingUp, FileText } from "lucide-react";
 
 interface AssessmentOption {
   id: string;
@@ -36,51 +36,11 @@ const assessmentOptions: AssessmentOption[] = [
     ],
     difficulty: 'Beginner',
     recommended: true
-  },
-  {
-    id: 'content-gap',
-    title: 'Content Gap Analysis',
-    description: 'Identify missing content types in your marketing funnel and prioritize creation.',
-    estimatedTime: '6-8 minutes',
-    questionsCount: 18,
-    icon: <BarChart3 className="h-6 w-6" />,
-    benefits: [
-      'Funnel stage mapping',
-      'Content priority matrix',
-      'ROI impact predictions',
-      'Competitive positioning insights'
-    ],
-    difficulty: 'Intermediate'
-  },
-  {
-    id: 'budget-impact',
-    title: 'Budget Impact Calculator',
-    description: 'Calculate ROI projections and get personalized investment recommendations.',
-    estimatedTime: '5-7 minutes',
-    questionsCount: 15,
-    icon: <Calculator className="h-6 w-6" />,
-    benefits: [
-      'ROI projections',
-      'Break-even analysis',
-      'Goal-aligned recommendations',
-      'Implementation timeline'
-    ],
-    difficulty: 'Advanced'
   }
 ];
 
 export const AssessmentPreview = ({ onSelectAssessment, currentPath }: AssessmentPreviewProps) => {
   const getRecommendedAssessment = () => {
-    // Logic to recommend assessment based on user journey
-    if (currentPath?.includes('discovery') || !currentPath) {
-      return 'video-readiness';
-    }
-    if (currentPath?.includes('content')) {
-      return 'content-gap';
-    }
-    if (currentPath?.includes('pricing') || currentPath?.includes('budget')) {
-      return 'budget-impact';
-    }
     return 'video-readiness';
   };
 
@@ -97,7 +57,7 @@ export const AssessmentPreview = ({ onSelectAssessment, currentPath }: Assessmen
         </p>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-6">
+      <div className="grid md:grid-cols-1 gap-6 max-w-md mx-auto">
         {assessmentOptions.map((assessment) => (
           <Card 
             key={assessment.id}

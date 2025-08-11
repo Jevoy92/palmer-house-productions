@@ -7,8 +7,6 @@ import { SkipLink } from "@/components/ui/skip-link";
 import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 import { MainContent } from "@/components/MainContent";
 import { VideoReadinessAudit } from "@/components/assessments/VideoReadinessAudit";
-import { ContentGapAnalysis } from "@/components/assessments/ContentGapAnalysis";
-import { BudgetImpactCalculator } from "@/components/assessments/BudgetImpactCalculator";
 import { AssessmentPreview } from "@/components/assessments/AssessmentPreview";
 import { ContactWizard } from "@/components/ContactWizard";
 import { useState, useEffect } from "react";
@@ -16,7 +14,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   Target, 
-  PieChart, 
   Calculator, 
   TrendingUp,
   CheckCircle,
@@ -32,7 +29,7 @@ const ContentStrategyPage = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const assessment = params.get('assessment');
-    if (assessment && ['video-readiness', 'content-gap', 'budget-impact'].includes(assessment)) {
+    if (assessment && ['video-readiness'].includes(assessment)) {
       setActiveAssessment(assessment);
     }
   }, []);
@@ -58,57 +55,17 @@ const ContentStrategyPage = () => {
     );
   }
 
-  if (activeAssessment === "content-gap") {
-    return (
-      <div className="min-h-screen bg-white">
-        <SkipLink href="#main-content">Skip to main content</SkipLink>
-        <Navigation />
-        <MainContent className="pt-20">
-          <div className="py-8">
-            <Button 
-              onClick={() => setActiveAssessment(null)}
-              variant="outline"
-              className="mb-6"
-            >
-              ← Back to Strategy Hub
-            </Button>
-            <ContentGapAnalysis />
-          </div>
-        </MainContent>
-      </div>
-    );
-  }
 
-  if (activeAssessment === "budget-impact") {
-    return (
-      <div className="min-h-screen bg-white">
-        <SkipLink href="#main-content">Skip to main content</SkipLink>
-        <Navigation />
-        <MainContent className="pt-20">
-          <div className="py-8">
-            <Button 
-              onClick={() => setActiveAssessment(null)}
-              variant="outline"
-              className="mb-6"
-            >
-              ← Back to Strategy Hub
-            </Button>
-            <BudgetImpactCalculator />
-          </div>
-        </MainContent>
-      </div>
-    );
-  }
 
 
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Video Content Strategy Hub | Assessment Tools | Palmer House"
-        description="Discover your video readiness, identify content gaps, and calculate ROI with our comprehensive video strategy assessment tools. Get personalized recommendations for your business."
-        keywords="video strategy, content assessment, video audit, ROI calculator, content gaps, video marketing strategy, Palmer House Productions"
-        ogTitle="Video Content Strategy Hub | Palmer House Productions"
-        ogDescription="Comprehensive video strategy assessment tools to optimize your content marketing approach and maximize ROI."
+        title="Video Readiness Audit | Quick Assessment | Palmer House"
+        description="Take our Video Readiness Audit for instant insights and a tailored roadmap to improve your video marketing."
+        keywords="video readiness audit, video strategy assessment, video marketing audit, Palmer House Productions"
+        ogTitle="Video Readiness Audit | Palmer House Productions"
+        ogDescription="Quick video readiness assessment with personalized recommendations."
       />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <StructuredData />
@@ -124,17 +81,17 @@ const ContentStrategyPage = () => {
               🎯 Quick Assessment Tools
             </div>
             <h1 className="text-5xl md:text-6xl font-display font-black mb-8 text-corporate-dark">
-              Quick <span className="text-gradient-1">Assessments</span>
+              Quick <span className="text-gradient-1">Assessment</span>
             </h1>
             <p className="text-xl text-corporate-gray max-w-3xl mx-auto font-medium mb-12">
-              Take a 3-5 minute assessment to get instant insights about your video strategy. 
+              Take a quick assessment to get instant insights about your video strategy.
               Perfect for quick wins and identifying immediate opportunities.
             </p>
             
             <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-8">
               <div className="flex items-center space-x-2 text-corporate-gray">
                 <CheckCircle className="w-5 h-5 text-social-green" />
-                <span>3-5 minute assessments</span>
+                <span>3-5 minute assessment</span>
               </div>
               <div className="flex items-center space-x-2 text-corporate-gray">
                 <CheckCircle className="w-5 h-5 text-social-green" />

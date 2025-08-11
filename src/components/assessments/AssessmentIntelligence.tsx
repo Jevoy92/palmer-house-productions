@@ -58,71 +58,7 @@ export const AssessmentIntelligence = ({
     const avgScore = assessments.length > 0 ? totalScore / assessments.length : 0;
     setOverallReadiness(Math.round(avgScore));
 
-    // Cross-assessment pattern analysis
-    if (completedTypes.includes('video-readiness') && completedTypes.includes('content-gap')) {
-      const videoReadiness = assessments.find(a => a.type === 'video-readiness');
-      const contentGap = assessments.find(a => a.type === 'content-gap');
-      
-      if (videoReadiness && contentGap) {
-        if (videoReadiness.score > 75 && contentGap.score < 50) {
-          newInsights.push({
-            id: 'video-content-mismatch',
-            title: 'Video Skills vs Content Strategy Mismatch',
-            description: 'You have strong video production capabilities but gaps in content strategy. Focus on content planning to maximize your video skills.',
-            priority: 'high',
-            actionable: true,
-            nextSteps: [
-              'Develop a comprehensive content calendar',
-              'Map existing video skills to content gaps',
-              'Consider strategic content planning consultation'
-            ],
-            relatedAssessments: ['video-readiness', 'content-gap']
-          });
-        }
-        
-        if (contentGap.score > 75 && videoReadiness.score < 50) {
-          newInsights.push({
-            id: 'content-production-gap',
-            title: 'Strong Strategy, Weak Execution',
-            description: 'Your content strategy is solid, but production capabilities need improvement to execute effectively.',
-            priority: 'high',
-            actionable: true,
-            nextSteps: [
-              'Invest in video production training',
-              'Consider equipment upgrades',
-              'Explore production partnerships'
-            ],
-            relatedAssessments: ['video-readiness', 'content-gap']
-          });
-        }
-      }
-    }
 
-    // Budget vs Readiness correlation
-    if (completedTypes.includes('budget-impact') && completedTypes.includes('video-readiness')) {
-      const budgetCalc = assessments.find(a => a.type === 'budget-impact');
-      const videoReadiness = assessments.find(a => a.type === 'video-readiness');
-      
-      if (budgetCalc && videoReadiness) {
-        const budget = budgetCalc.businessContext?.budget || 0;
-        
-        if (budget > 10000 && videoReadiness.score < 60) {
-          newInsights.push({
-            id: 'budget-readiness-mismatch',
-            title: 'High Budget, Low Readiness Risk',
-            description: 'Your budget suggests ambitious video plans, but current readiness may lead to inefficient spending.',
-            priority: 'high',
-            actionable: true,
-            nextSteps: [
-              'Invest in foundational training first',
-              'Start with smaller pilot projects',
-              'Consider guided implementation approach'
-            ],
-            relatedAssessments: ['budget-impact', 'video-readiness']
-          });
-        }
-      }
-    }
 
     // Industry-specific insights
     const industries = [...new Set(assessments.map(a => a.businessContext?.industry).filter(Boolean))];
@@ -146,22 +82,6 @@ export const AssessmentIntelligence = ({
       }
     }
 
-    // Completion pattern insights
-    if (assessments.length === 1) {
-      newInsights.push({
-        id: 'single-assessment-limitation',
-        title: 'Complete Picture Needed',
-        description: 'Taking additional assessments will provide more comprehensive insights and personalized recommendations.',
-        priority: 'medium',
-        actionable: true,
-        nextSteps: [
-          'Complete remaining assessments',
-          'Get cross-assessment analysis',
-          'Unlock advanced recommendations'
-        ],
-        relatedAssessments: ['video-readiness', 'content-gap', 'budget-impact']
-      });
-    }
 
     // Time-based insights
     const recentAssessments = assessments.filter(
@@ -192,14 +112,6 @@ export const AssessmentIntelligence = ({
     
     if (!completedTypes.includes('video-readiness')) {
       return { type: 'video-readiness', reason: 'Foundational assessment for video capabilities' };
-    }
-    
-    if (!completedTypes.includes('content-gap')) {
-      return { type: 'content-gap', reason: 'Essential for content strategy development' };
-    }
-    
-    if (!completedTypes.includes('budget-impact')) {
-      return { type: 'budget-impact', reason: 'Critical for investment planning' };
     }
     
     return null;

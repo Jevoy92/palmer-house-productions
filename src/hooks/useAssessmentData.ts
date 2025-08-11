@@ -62,7 +62,7 @@ export const useAssessmentData = () => {
   };
 
   const getCompletionRate = (): number => {
-    const totalAssessments = 3; // video-readiness, content-gap, budget-impact
+    const totalAssessments = 1; // video-readiness only
     return Math.round((assessments.length / totalAssessments) * 100);
   };
 
@@ -76,8 +76,6 @@ export const useAssessmentData = () => {
     const completed = assessments.map(a => a.type);
     
     if (!completed.includes('video-readiness')) return 'video-readiness';
-    if (!completed.includes('content-gap')) return 'content-gap';
-    if (!completed.includes('budget-impact')) return 'budget-impact';
     
     return null;
   };

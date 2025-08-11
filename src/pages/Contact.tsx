@@ -9,10 +9,8 @@ import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { ArrowRight, Calendar, MessageCircle, Video, CheckCircle } from "lucide-react";
+import { ZohoLeadForm } from "@/components/zoho/ZohoLeadForm";
+import { Calendar, Video, CheckCircle } from "lucide-react";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -143,55 +141,8 @@ const ContactPage = () => {
 
               </div>
 
-              {/* Quick Contact Form */}
-              <Card className="border-0 video-shadow">
-                <CardHeader className="p-4 sm:p-6 pb-3">
-                  <CardTitle className="text-lg sm:text-xl text-corporate-dark">Quick Message</CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 sm:p-6 pt-0">
-                  <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                      <Label htmlFor="name" className="text-sm font-medium">Name</Label>
-                      <Input
-                        id="name"
-                        value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        placeholder="Your name"
-                        className="mt-1 min-h-[44px]"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="email" className="text-sm font-medium">Email</Label>
-                      <Input
-                        id="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        placeholder="your@email.com"
-                        className="mt-1 min-h-[44px]"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="message" className="text-sm font-medium">Message</Label>
-                      <Textarea
-                        id="message"
-                        value={formData.message}
-                        onChange={(e) => setFormData({...formData, message: e.target.value})}
-                        placeholder="Tell us about your video needs..."
-                        rows={3}
-                        className="mt-1 min-h-[88px] resize-none"
-                        required
-                      />
-                    </div>
-                    <Button type="submit" className="w-full gradient-social-1 text-white min-h-[48px]" size="lg">
-                      Send Message
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </form>
-                </CardContent>
-              </Card>
+              {/* Quick Contact Form (Zoho CRM) */}
+              <ZohoLeadForm title="Quick Message" leadSource="Website" />
             </div>
           </div>
         </section>

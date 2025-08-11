@@ -9,6 +9,7 @@ import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Navigation } from "@/components/Navigation";
 import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
+import { ZohoLeadForm } from "@/components/zoho/ZohoLeadForm";
 
 
 const DIYDownloads = () => {
@@ -126,6 +127,9 @@ const DIYDownloads = () => {
                     Book Strategy Call
                   </a>
                 </div>
+              </div>
+              <div className="mt-12">
+                <ZohoLeadForm title="Questions about DIY?" leadSource="Website" defaultProjectType="Monthly Content System" />
               </div>
             </div>
           </div>

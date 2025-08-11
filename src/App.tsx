@@ -48,6 +48,7 @@ import VideoProductionBudget from "./pages/blog/VideoProductionBudget";
 import RemoteVideoCollaboration from "./pages/blog/RemoteVideoCollaboration";
 import OverwhelmedToAuthority from "./pages/blog/OverwhelmedToAuthority";
 import VideoMarketingSaaS from "./pages/blog/VideoMarketingSaaS";
+import ThankYou from "./pages/ThankYou";
 
 const queryClient = new QueryClient();
 
@@ -67,6 +68,7 @@ const App = () => (
           <Route path="/video-use-cases" element={<VideoUseCases />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/thank-you" element={<ThankYou />} />
           <Route path="/locations/bellevue-wa" element={<BellevueWA />} />
           <Route path="/locations/portland-or" element={<PortlandOR />} />
           <Route path="/services/diy-downloads" element={<DIYDownloads />} />

@@ -157,6 +157,38 @@ export const EnhancedFooter = () => {
                 className="hover:opacity-80 transition-opacity"
                 target="_blank"
               />
+              <SocialIcon
+                url="https://x.com/palmerhouseviz"
+                style={{ height: 32, width: 32 }}
+                bgColor="transparent"
+                fgColor="#d1d5db"
+                className="hover:opacity-80 transition-opacity"
+                target="_blank"
+              />
+              <SocialIcon
+                url="https://www.pinterest.com/palmerhouseproductions/"
+                style={{ height: 32, width: 32 }}
+                bgColor="transparent"
+                fgColor="#d1d5db"
+                className="hover:opacity-80 transition-opacity"
+                target="_blank"
+              />
+              <SocialIcon
+                url="https://www.tiktok.com/@palmerhouseproductions"
+                style={{ height: 32, width: 32 }}
+                bgColor="transparent"
+                fgColor="#d1d5db"
+                className="hover:opacity-80 transition-opacity"
+                target="_blank"
+              />
+              <SocialIcon
+                url="https://www.threads.com/@palmerhouseproductions"
+                style={{ height: 32, width: 32 }}
+                bgColor="transparent"
+                fgColor="#d1d5db"
+                className="hover:opacity-80 transition-opacity"
+                target="_blank"
+              />
             </div>
             <div className="space-y-2 text-sm">
               <p className="text-gray-300">

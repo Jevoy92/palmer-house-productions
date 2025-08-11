@@ -42,7 +42,7 @@ const ContentStrategyPage = () => {
       <div className="min-h-screen bg-white">
         <SkipLink href="#main-content">Skip to main content</SkipLink>
         <Navigation />
-        <MainContent>
+        <MainContent className="pt-20">
           <div className="py-8">
             <Button 
               onClick={() => setActiveAssessment(null)}
@@ -63,7 +63,7 @@ const ContentStrategyPage = () => {
       <div className="min-h-screen bg-white">
         <SkipLink href="#main-content">Skip to main content</SkipLink>
         <Navigation />
-        <MainContent>
+        <MainContent className="pt-20">
           <div className="py-8">
             <Button 
               onClick={() => setActiveAssessment(null)}
@@ -84,7 +84,7 @@ const ContentStrategyPage = () => {
       <div className="min-h-screen bg-white">
         <SkipLink href="#main-content">Skip to main content</SkipLink>
         <Navigation />
-        <MainContent>
+        <MainContent className="pt-20">
           <div className="py-8">
             <Button 
               onClick={() => setActiveAssessment(null)}

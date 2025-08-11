@@ -27,6 +27,8 @@ import lightingAudioBasicsImage from '@/assets/blog/lighting-audio-basics.jpg';
 import socialMediaVideoOptimizationImage from '@/assets/blog/social-media-video-optimization.jpg';
 import customerTestimonialImage from '@/assets/blog/customer-testimonial-videos.jpg';
 import videoSeoMasteryImage from '@/assets/blog/video-seo-mastery.jpg';
+import editingLikeProImage from '@/assets/blog/editing-like-pro.jpg';
+import liveStreamingBusinessImage from '@/assets/blog/live-streaming-business.jpg';
 
 // Blog articles data
 const blogArticles = [
@@ -41,8 +43,8 @@ const blogArticles = [
     featured: true,
     slug: '/blog/video-content-toolkit-2025',
     tags: ['video-strategy', 'content-creation', 'business-growth', 'toolkits'],
-    image: '/lovable-uploads/dcada800-4488-4970-82eb-2c356d3e789d.png',
-    imageAlt: 'Video content system toolkit concept'
+    image: editingLikeProImage,
+    imageAlt: 'Video content creation toolkit and editing workflow'
   },
   {
     id: 'automate-employee-training-video',
@@ -54,8 +56,8 @@ const blogArticles = [
     featured: true,
     slug: '/blog/automate-employee-training-video',
     tags: ['employee-training', 'automation', 'video-systems', 'hr'],
-    image: '/lovable-uploads/2537d3fc-b210-4170-93a2-d927fe38eea0.png',
-    imageAlt: 'Automated employee training with video system'
+    image: liveStreamingBusinessImage,
+    imageAlt: 'Automated employee training with video modules'
   },
   {
     id: 'content-creation-tools-2025',
@@ -67,8 +69,8 @@ const blogArticles = [
     featured: false,
     slug: '/blog/content-creation-tools-2025',
     tags: ['content-tools', 'productivity', 'video-production', 'efficiency'],
-    image: '/lovable-uploads/945e6d63-02d8-4c0d-a4ae-b691cc806a74.png',
-    imageAlt: 'Content creation tools for business owners'
+    image: mobileVideoProductionImage,
+    imageAlt: 'Essential content creation tools and mobile production setup'
   },
   {
     id: 'video-content-roi-comparison',
@@ -80,8 +82,8 @@ const blogArticles = [
     featured: true,
     slug: '/blog/video-content-roi-comparison',
     tags: ['roi-analysis', 'video-training', 'business-metrics', 'cost-comparison'],
-    image: '/lovable-uploads/cb07dfcd-6a7e-480c-95bb-833a66f4057e.png',
-    imageAlt: 'ROI comparison of video training vs traditional methods'
+    image: videoMetricsMatterImage,
+    imageAlt: 'Video ROI analytics and performance dashboard'
   },
   // Additional Business Strategy Articles
   {

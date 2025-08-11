@@ -1,4 +1,5 @@
 import { BlogPost } from '@/components/blog/BlogPost';
+import videoMetricsMatterImage from '@/assets/blog/video-metrics-matter.jpg';
 
 const VideoContentROIComparison = () => {
   const content = (
@@ -504,9 +505,9 @@ const VideoContentROIComparison = () => {
     metaDescription="Comprehensive ROI analysis of video training vs traditional methods. Learn how video content delivers 4-6x better returns with detailed cost breakdowns and industry data."
     keywords="video training ROI, training cost analysis, video vs traditional training, employee training metrics, business training ROI"
     canonicalUrl="https://palmerhouseproductions.com/blog/video-content-roi-comparison"
-    heroImage="/lovable-uploads/cb07dfcd-6a7e-480c-95bb-833a66f4057e.png"
-    heroAlt="ROI comparison of video training vs traditional methods"
-    ogImage="/lovable-uploads/cb07dfcd-6a7e-480c-95bb-833a66f4057e.png"
+    heroImage={videoMetricsMatterImage}
+    heroAlt="Video ROI analytics and performance dashboard"
+    ogImage={videoMetricsMatterImage}
     relatedLinks={[
       {
         title: "Employee Training Automation",

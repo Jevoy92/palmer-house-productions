@@ -1,4 +1,5 @@
 import { BlogPost } from '@/components/blog/BlogPost';
+import mobileVideoProductionImage from '@/assets/blog/mobile-video-production.jpg';
 
 const ContentCreationTools2025 = () => {
   const content = (
@@ -436,9 +437,9 @@ const ContentCreationTools2025 = () => {
       metaDescription="Essential content creation tools for business owners. Streamline video production with tools like Loom, Descript, and Canva for efficient content creation."
       keywords="content creation tools, video production software, business productivity tools, video editing tools, content management"
       canonicalUrl="https://palmerhouseproductions.com/blog/content-creation-tools-2025"
-      heroImage="/lovable-uploads/945e6d63-02d8-4c0d-a4ae-b691cc806a74.png"
-      heroAlt="Content creation tools for business owners"
-      ogImage="/lovable-uploads/945e6d63-02d8-4c0d-a4ae-b691cc806a74.png"
+      heroImage={mobileVideoProductionImage}
+      heroAlt="Essential content creation tools and mobile production setup"
+      ogImage={mobileVideoProductionImage}
       relatedLinks={[
         {
           title: "Video Content Toolkit",

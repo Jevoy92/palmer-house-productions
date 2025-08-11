@@ -1,5 +1,6 @@
 import { BlogPost } from '@/components/blog/BlogPost';
 import { Link } from 'react-router-dom';
+import editingLikeProImage from '@/assets/blog/editing-like-pro.jpg';
 
 const VideoContentToolkit2025 = () => {
   const content = (
@@ -242,9 +243,9 @@ const VideoContentToolkit2025 = () => {
       metaDescription="Complete guide to building a scalable video content system for business growth. Includes equipment recommendations, production workflows, and proven frameworks."
       keywords="video content strategy, business video toolkit, content creation system, video production workflow, business communication"
       canonicalUrl="https://palmerhouseproductions.com/blog/video-content-toolkit-2025"
-      heroImage="/lovable-uploads/dcada800-4488-4970-82eb-2c356d3e789d.png"
-      heroAlt="Video content system toolkit concept"
-      ogImage="/lovable-uploads/dcada800-4488-4970-82eb-2c356d3e789d.png"
+      heroImage={editingLikeProImage}
+      heroAlt="Video content creation toolkit and editing workflow"
+      ogImage={editingLikeProImage}
       relatedLinks={[
         {
           title: "Video Package Solutions",

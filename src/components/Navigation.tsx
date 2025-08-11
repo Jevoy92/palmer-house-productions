@@ -88,7 +88,7 @@ export const Navigation = () => {
     aria-label="Go to homepage"
   >
     <img 
-      src="/lovable-uploads/cb07dfcd-6a7e-480c-95bb-833a66f4057e.png" 
+      src="/lovable-uploads/1361e7b6-d134-4a00-b44d-4546f90039d2.png" 
       alt="Palmer House Productions logo" 
       className="h-8 w-auto"
       loading="eager"

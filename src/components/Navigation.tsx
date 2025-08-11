@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { LOGO, COMPANY } from "@/lib/branding";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -88,13 +89,13 @@ export const Navigation = () => {
     aria-label="Go to homepage"
   >
     <img 
-      src="/lovable-uploads/dcada800-4488-4970-82eb-2c356d3e789d.png" 
-      alt="Palmer House Productions logo" 
-      className="h-8 w-auto"
+      src={LOGO.url} 
+      alt={LOGO.alt} 
+      className={LOGO.className}
       loading="eager"
       decoding="async"
     />
-    <span className="text-foreground font-extrabold tracking-tight text-base sm:text-lg">Palmer House Productions</span>
+    <span className="text-foreground font-extrabold tracking-tight text-base sm:text-lg">{COMPANY.name}</span>
   </button>
 </div>
           

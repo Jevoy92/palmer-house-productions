@@ -74,13 +74,14 @@ export const Navigation = () => {
         <div className="relative flex justify-between items-center h-16">
           <div className="flex-shrink-0">
             <button onClick={handleLogoClick} className="flex items-center gap-3 whitespace-nowrap focus:outline-none" aria-label="Go to homepage">
-              <span className="text-foreground font-extrabold tracking-tight text-base sm:text-lg">{COMPANY.name}</span>
+              <img 
+                src={LOGO.url} 
+                alt={LOGO.alt} 
+                className="h-8 w-auto sm:h-10 object-contain" 
+              />
+              <span className="hidden sm:block text-foreground font-extrabold tracking-tight text-base lg:text-lg">{COMPANY.name}</span>
             </button>
           </div>
-          {/* Centered logo */}
-          <button onClick={handleLogoClick} className="absolute left-1/2 -translate-x-1/2 flex items-center focus:outline-none" aria-label="Go to homepage">
-            <img src={LOGO.url} alt={LOGO.alt} className={LOGO.className} />
-          </button>
           
           <div className="hidden md:block">
             <div className="flex items-center space-x-6">

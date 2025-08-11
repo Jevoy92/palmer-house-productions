@@ -12,7 +12,7 @@ export const LOGO_MARK = {
   alt: "Palmer House Productions logo",
   width: "auto",
   height: "40px", // h-10 in Tailwind for better visibility
-  className: "h-10 w-auto",
+  className: "h-8 w-auto sm:h-10 object-contain",
 } as const;
 
 export const LOGO_LOCKUP = {

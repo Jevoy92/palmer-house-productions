@@ -35,7 +35,7 @@ export const StructuredData = ({ type }: StructuredDataProps) => {
     "name": "Palmer House Productions",
     "description": "Professional video production services for bold brands. Short-form cinematic storytelling that scales your business.",
     "url": "https://www.palmerhouseproductions.com",
-    "telephone": "+1-555-0123",
+    "telephone": "+1-425-738-7312",
     "email": "info@palmerhouseproductions.com",
     "address": {
       "@type": "PostalAddress",
@@ -87,7 +87,7 @@ export const StructuredData = ({ type }: StructuredDataProps) => {
       "name": "Palmer House Productions",
       "url": "https://www.palmerhouseproductions.com"
     },
-    "areaServed": "United States",
+    "areaServed": ["Worldwide", "Bellevue, WA", "Portland, OR"],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": "Video Production Services",

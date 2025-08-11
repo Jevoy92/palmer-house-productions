@@ -187,7 +187,7 @@ const FAQ = () => {
     {
       category: "process",
       question: "Can you work with companies outside of Seattle?",
-      answer: "Yes—we work nationwide, offer remote planning, and travel for shoots as needed. Many products (downloads, coaching) are 100% remote."
+      answer: "Yes—we work globally, offer remote planning, and travel for shoots as needed. We maintain studios in Bellevue, WA and Portland, OR."
     },
     {
       category: "process",

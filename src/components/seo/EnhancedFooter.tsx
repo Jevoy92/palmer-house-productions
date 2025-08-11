@@ -8,7 +8,7 @@ export const EnhancedFooter = () => {
   return (
     <footer className="bg-corporate-dark text-white mt-16">
       <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           {/* Company Info */}
           <div className="space-y-4">
             <h3 className="text-xl font-display font-bold text-white">Palmer House Productions</h3>
@@ -18,7 +18,7 @@ export const EnhancedFooter = () => {
             <div className="space-y-2">
               <div className="flex items-center text-sm text-gray-300">
                 <MapPin size={16} className="mr-2" />
-                <span>Serving clients nationwide</span>
+                <span>Studios in Bellevue, WA and Portland, OR — serving clients globally</span>
               </div>
               <div className="flex items-center text-sm text-gray-300">
                 <Mail size={16} className="mr-2" />
@@ -62,6 +62,28 @@ export const EnhancedFooter = () => {
               <li>
                 <Link to="/contact" className="text-gray-300 hover:text-white transition-colors">
                   Discovery Call
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Locations */}
+          <div className="space-y-4">
+            <h4 className="font-bold text-white">Locations</h4>
+            <ul className="space-y-2 text-sm">
+              <li>
+                <Link to="/locations/bellevue-wa" className="text-gray-300 hover:text-white transition-colors">
+                  Bellevue, WA
+                </Link>
+              </li>
+              <li>
+                <Link to="/locations/portland-or" className="text-gray-300 hover:text-white transition-colors">
+                  Portland, OR
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="text-gray-300 hover:text-white transition-colors">
+                  Global / Remote Projects
                 </Link>
               </li>
             </ul>

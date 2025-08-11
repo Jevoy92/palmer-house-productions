@@ -24,6 +24,8 @@ import Reviews from "./pages/resources/Reviews";
 import FAQ from "./pages/FAQ";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import BellevueWA from "./pages/locations/BellevueWA";
+import PortlandOR from "./pages/locations/PortlandOR";
 import ContentStrategy from "./pages/ContentStrategy";
 import Blog from "./pages/Blog";
 import VideoContentToolkit2025 from "./pages/blog/VideoContentToolkit2025";
@@ -65,6 +67,8 @@ const App = () => (
           <Route path="/video-use-cases" element={<VideoUseCases />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/locations/bellevue-wa" element={<BellevueWA />} />
+          <Route path="/locations/portland-or" element={<PortlandOR />} />
           <Route path="/services/diy-downloads" element={<DIYDownloads />} />
           <Route path="/services/group-coaching" element={<GroupCoaching />} />
           <Route path="/services/monthly-content" element={<MonthlyContent />} />

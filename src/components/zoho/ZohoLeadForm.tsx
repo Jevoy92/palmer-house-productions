@@ -25,7 +25,7 @@ const PROJECT_TYPES = [
   "External FAQ Buildout",
   "Internal FAQ Buildout",
   "Monthly Content System",
-  "Pos-Production Only",
+  "Post-Production Only",
   "The 7 - Day :Launch",
   "The Founder's Brand Kit",
   "The Started Session",
@@ -40,7 +40,7 @@ const PROJECT_TYPE_INFO: Record<string, string> = {
   "External FAQ Buildout": "Answer buyer questions at scale with trust-building FAQ videos.",
   "Internal FAQ Buildout": "Document processes and onboard faster with evergreen internal videos.",
   "Monthly Content System": "Ongoing content engine: plan, produce, edit, and publish each month.",
-  "Pos-Production Only": "Editing and finishing for footage you already have.",
+  "Post-Production Only": "Editing and finishing for footage you already have.",
   "The 7 - Day :Launch": "Rapid go-to-market package to launch an offer in a week.",
   "The Founder's Brand Kit": "Evergreen founder story + signature content pillars.",
   "The Started Session": "Half-day focused session to unlock clarity and next steps.",
@@ -161,7 +161,7 @@ export const ZohoLeadForm = ({ title = "Start a Project", leadSource = "Website"
             <SelectTrigger className="mt-1 w-full min-h-[44px]">
               <SelectValue placeholder="I'm not sure yet" />
             </SelectTrigger>
-            <SelectContent className="z-50">
+            <SelectContent className="z-50 bg-background">
               <SelectItem value={NOT_SURE_OPTION}>
                 <span className="truncate">Not sure yet</span>
               </SelectItem>
@@ -172,36 +172,12 @@ export const ZohoLeadForm = ({ title = "Start a Project", leadSource = "Website"
               ))}
             </SelectContent>
           </Select>
-          <div className="mt-2 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+          <div className="mt-2">
             <p className="text-sm text-muted-foreground">
               {form.projectType
                 ? PROJECT_TYPE_INFO[form.projectType] || "We’ll help you choose the best fit."
                 : "Not sure? Pick “Not sure yet” and we’ll recommend the best fit."}
             </p>
-            <Dialog>
-              <DialogTrigger asChild>
-                <button type="button" className="text-sm font-medium text-primary underline underline-offset-4 hover-scale self-start sm:self-auto whitespace-nowrap">
-                  Compare options
-                </button>
-              </DialogTrigger>
-              <DialogContent className="w-[min(100vw-2rem,80rem)] sm:max-w-2xl lg:max-w-5xl">
-                <DialogHeader>
-                  <DialogTitle>Compare project options</DialogTitle>
-                </DialogHeader>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[70vh] overflow-y-auto">
-                  {PROJECT_TYPES.map((opt) => (
-                    <div key={opt} className="p-4 rounded-lg border border-border bg-card">
-                      <div className="font-semibold">{opt}</div>
-                      <div className="text-muted-foreground text-sm">{PROJECT_TYPE_INFO[opt]}</div>
-                    </div>
-                  ))}
-                  <div className="p-4 rounded-lg border border-border bg-card">
-                    <div className="font-semibold">Not sure yet</div>
-                    <div className="text-muted-foreground text-sm">{PROJECT_TYPE_INFO["Not sure yet"]}</div>
-                  </div>
-                </div>
-              </DialogContent>
-            </Dialog>
           </div>
         </div>
         <div>
@@ -233,6 +209,36 @@ export const ZohoLeadForm = ({ title = "Start a Project", leadSource = "Website"
               ))}
             </SelectContent>
           </Select>
+        </div>
+      </div>
+
+      {/* Compare options trigger centered below the selects */}
+      <div className="-mt-2 mb-2">
+        <div className="w-full flex items-center justify-center">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button type="button" variant="ghost" className="text-primary min-h-[44px]">
+                Compare options
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="w-[min(100vw-2rem,80rem)] sm:max-w-2xl lg:max-w-5xl">
+              <DialogHeader>
+                <DialogTitle>Compare project options</DialogTitle>
+              </DialogHeader>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[70vh] overflow-y-auto">
+                {PROJECT_TYPES.map((opt) => (
+                  <div key={opt} className="p-4 rounded-lg border border-border bg-card">
+                    <div className="font-semibold">{opt}</div>
+                    <div className="text-muted-foreground text-sm">{PROJECT_TYPE_INFO[opt]}</div>
+                  </div>
+                ))}
+                <div className="p-4 rounded-lg border border-border bg-card">
+                  <div className="font-semibold">Not sure yet</div>
+                  <div className="text-muted-foreground text-sm">{PROJECT_TYPE_INFO["Not sure yet"]}</div>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 

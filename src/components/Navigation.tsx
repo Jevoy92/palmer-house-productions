@@ -84,9 +84,17 @@ export const Navigation = () => {
           <div className="flex-shrink-0">
             <button 
               onClick={handleLogoClick}
-              className="text-xl font-display font-semibold text-foreground hover:text-muted-foreground transition-colors"
+              className="flex items-center gap-2 focus:outline-none"
+              aria-label="Go to homepage"
             >
-              Palmer House Productions
+              <img 
+                src="/lovable-uploads/cb07dfcd-6a7e-480c-95bb-833a66f4057e.png" 
+                alt="Palmer House Productions logo" 
+                className="h-8 w-auto"
+                loading="eager"
+                decoding="async"
+              />
+              <span className="sr-only">Palmer House Productions</span>
             </button>
           </div>
           

@@ -6,28 +6,28 @@ export const EnhancedFooter = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-corporate-dark text-white mt-16">
-      <div className="max-w-7xl mx-auto px-6 pt-16 pb-8">
+    <footer className="bg-corporate-dark text-white mt-16 overflow-x-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
           {/* Company Info */}
-          <div className="space-y-4">
+          <div className="space-y-4 lg:col-span-1">
             <h3 className="text-xl font-display font-bold text-white">Palmer House Productions</h3>
             <p className="text-gray-300 text-sm leading-relaxed">
               Crafting authentic stories since day one. We help businesses connect with their audience through powerful video content.
             </p>
             <div className="space-y-2">
-              <div className="flex items-center text-sm text-gray-300">
-                <MapPin size={16} className="mr-2" />
-                <span>Studios in Bellevue, WA and Portland, OR — serving clients globally</span>
+              <div className="flex items-start text-sm text-gray-300">
+                <MapPin size={16} className="mr-2 mt-0.5 flex-shrink-0" />
+                <span className="break-words">Studios in Bellevue, WA and Portland, OR — serving clients globally</span>
               </div>
-              <div className="flex items-center text-sm text-gray-300">
-                <Mail size={16} className="mr-2" />
-                <a href="mailto:info@palmerhouseproductions.com" className="hover:text-white transition-colors">
+              <div className="flex items-start text-sm text-gray-300">
+                <Mail size={16} className="mr-2 mt-0.5 flex-shrink-0" />
+                <a href="mailto:info@palmerhouseproductions.com" className="hover:text-white transition-colors break-all">
                   info@palmerhouseproductions.com
                 </a>
               </div>
               <div className="flex items-center text-sm text-gray-300">
-                <Phone size={16} className="mr-2" />
+                <Phone size={16} className="mr-2 flex-shrink-0" />
                 <a href="tel:+14257387312" className="hover:text-white transition-colors">
                   425-738-7312
                 </a>
@@ -124,7 +124,7 @@ export const EnhancedFooter = () => {
           {/* Social Media & Contact */}
           <div className="space-y-4">
             <h4 className="font-bold text-white">Connect With Us</h4>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 max-w-none overflow-hidden">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-[160px] sm:max-w-none">
               <SocialIcon
                 url="https://www.facebook.com/profile.php?id=100092553086353"
                 style={{ height: 32, width: 32 }}
@@ -151,38 +151,6 @@ export const EnhancedFooter = () => {
               />
               <SocialIcon
                 url="https://www.linkedin.com/company/palmer-house-productions/"
-                style={{ height: 32, width: 32 }}
-                bgColor="transparent"
-                fgColor="#d1d5db"
-                className="hover:opacity-80 transition-opacity"
-                target="_blank"
-              />
-              <SocialIcon
-                url="https://x.com/palmerhouseviz"
-                style={{ height: 32, width: 32 }}
-                bgColor="transparent"
-                fgColor="#d1d5db"
-                className="hover:opacity-80 transition-opacity"
-                target="_blank"
-              />
-              <SocialIcon
-                url="https://www.pinterest.com/palmerhouseproductions/"
-                style={{ height: 32, width: 32 }}
-                bgColor="transparent"
-                fgColor="#d1d5db"
-                className="hover:opacity-80 transition-opacity"
-                target="_blank"
-              />
-              <SocialIcon
-                url="https://www.tiktok.com/@palmerhouseproductions"
-                style={{ height: 32, width: 32 }}
-                bgColor="transparent"
-                fgColor="#d1d5db"
-                className="hover:opacity-80 transition-opacity"
-                target="_blank"
-              />
-              <SocialIcon
-                url="https://www.threads.com/@palmerhouseproductions"
                 style={{ height: 32, width: 32 }}
                 bgColor="transparent"
                 fgColor="#d1d5db"

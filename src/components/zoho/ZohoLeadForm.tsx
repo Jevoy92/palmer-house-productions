@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { trackContactFormSubmit, trackConversion } from "@/lib/analytics";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { PRICING } from "@/lib/pricing";
 
 
 export type ZohoLeadFormProps = {
@@ -64,6 +65,22 @@ const TIMELINES = [
   "Extended (1-2 months)",
   "Flexible (2+ months)",
 ];
+
+const OPTION_PRICE: Record<string, string> = {
+  "External FAQ Buildout": PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.price,
+  "Internal FAQ Buildout": PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.price,
+  "YouTube Visibility Engine": PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.price,
+  "30 Reels in 30 Days": PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.price,
+  "The Founder's Brand Kit": PRICING.ONE_TIME_BUNDLES.FOUNDER_BRAND_KIT.price,
+  "The 7 - Day :Launch": PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.price,
+  "The Started Session": PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.price,
+  "Monthly Content System": PRICING.MONTHLY_CONTENT.SOCIAL_AUTHORITY_KIT.displayPrice,
+  "Coaching": PRICING.GROUP_COACHING.CAMERA_READY_BRAND.displayPrice,
+  "Commercial/Advertisement": "Custom",
+  "Corporate Video": "Custom",
+  "Post-Production Only": "Custom",
+  [NOT_SURE_OPTION]: "—",
+};
 
 export const ZohoLeadForm = ({ title = "Start a Project", leadSource = "Website", defaultProjectType, compact }: ZohoLeadFormProps) => {
   const [form, setForm] = useState({
@@ -151,96 +168,96 @@ export const ZohoLeadForm = ({ title = "Start a Project", leadSource = "Website"
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div>
-          <Label htmlFor="projectType">Project Type</Label>
-          <Select
-            value={form.projectType}
-            onValueChange={(val) => setForm({ ...form, projectType: val })}
-          >
-            <SelectTrigger className="mt-1 w-full min-h-[44px]">
-              <SelectValue placeholder="I'm not sure yet" />
-            </SelectTrigger>
-            <SelectContent className="z-50 bg-background">
-              <SelectItem value={NOT_SURE_OPTION}>
-                <span className="truncate">Not sure yet</span>
-              </SelectItem>
-              {PROJECT_TYPES.map((opt) => (
-                <SelectItem key={opt} value={opt}>
-                  <span className="truncate">{opt}</span>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <div className="mt-2">
-            <p className="text-sm text-muted-foreground">
-              {form.projectType
-                ? PROJECT_TYPE_INFO[form.projectType] || "We’ll help you choose the best fit."
-                : "Not sure? Pick “Not sure yet” and we’ll recommend the best fit."}
-            </p>
-          </div>
-        </div>
-        <div>
-          <Label htmlFor="budget">Budget</Label>
-          <Select value={form.budget} onValueChange={(val) => setForm({ ...form, budget: val })}>
-            <SelectTrigger className="mt-1 w-full min-h-[44px]">
-              <SelectValue placeholder="Select budget" />
-            </SelectTrigger>
-            <SelectContent className="z-50">
-              {BUDGETS.map((opt) => (
-                <SelectItem key={opt} value={opt}>
-                  {opt}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div>
-          <Label htmlFor="timeline">Timeline</Label>
-          <Select value={form.timeline} onValueChange={(val) => setForm({ ...form, timeline: val })}>
-            <SelectTrigger className="mt-1 w-full min-h-[44px]">
-              <SelectValue placeholder="Select timeline" />
-            </SelectTrigger>
-            <SelectContent className="z-50">
-              {TIMELINES.map((opt) => (
-                <SelectItem key={opt} value={opt}>
-                  {opt}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-
-      {/* Compare options trigger centered below the selects */}
-      <div className="-mt-2 mb-2">
-        <div className="w-full flex items-center justify-center">
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button type="button" variant="ghost" className="text-primary min-h-[44px]">
-                Compare options
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="w-[min(100vw-2rem,80rem)] sm:max-w-2xl lg:max-w-5xl">
-              <DialogHeader>
-                <DialogTitle>Compare project options</DialogTitle>
-              </DialogHeader>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[70vh] overflow-y-auto">
-                {PROJECT_TYPES.map((opt) => (
-                  <div key={opt} className="p-4 rounded-lg border border-border bg-card">
-                    <div className="font-semibold">{opt}</div>
-                    <div className="text-muted-foreground text-sm">{PROJECT_TYPE_INFO[opt]}</div>
-                  </div>
-                ))}
-                <div className="p-4 rounded-lg border border-border bg-card">
-                  <div className="font-semibold">Not sure yet</div>
-                  <div className="text-muted-foreground text-sm">{PROJECT_TYPE_INFO["Not sure yet"]}</div>
+<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+  <div>
+    <Label htmlFor="projectType">Project Type</Label>
+    <Select
+      value={form.projectType}
+      onValueChange={(val) => setForm({ ...form, projectType: val })}
+    >
+      <SelectTrigger className="mt-1 w-full min-h-[44px]">
+        <SelectValue placeholder="I'm not sure yet" />
+      </SelectTrigger>
+      <SelectContent className="z-50 bg-background">
+        <SelectItem value={NOT_SURE_OPTION} description={PROJECT_TYPE_INFO[NOT_SURE_OPTION]}>
+          <span className="truncate">Not sure yet</span>
+        </SelectItem>
+        {PROJECT_TYPES.map((opt) => (
+          <SelectItem key={opt} value={opt} description={PROJECT_TYPE_INFO[opt]}>
+            <span className="truncate">{opt}</span>
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  </div>
+  <div>
+    <Label htmlFor="budget">Budget</Label>
+    <Select value={form.budget} onValueChange={(val) => setForm({ ...form, budget: val })}>
+      <SelectTrigger className="mt-1 w-full min-h-[44px]">
+        <SelectValue placeholder="Select budget" />
+      </SelectTrigger>
+      <SelectContent className="z-50">
+        {BUDGETS.map((opt) => (
+          <SelectItem key={opt} value={opt}>
+            {opt}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  </div>
+  <div>
+    <Label htmlFor="timeline">Timeline</Label>
+    <Select value={form.timeline} onValueChange={(val) => setForm({ ...form, timeline: val })}>
+      <SelectTrigger className="mt-1 w-full min-h-[44px]">
+        <SelectValue placeholder="Select timeline" />
+      </SelectTrigger>
+      <SelectContent className="z-50">
+        {TIMELINES.map((opt) => (
+          <SelectItem key={opt} value={opt}>
+            {opt}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  </div>
+  <div className="sm:col-span-3">
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button type="button" variant="ghost" className="w-full justify-center min-h-[44px] text-primary">
+          Compare options
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="w-[min(100vw-2rem,80rem)] sm:max-w-2xl lg:max-w-5xl">
+        <DialogHeader>
+          <DialogTitle>Compare project options</DialogTitle>
+        </DialogHeader>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[70vh] overflow-y-auto">
+          {PROJECT_TYPES.map((opt) => (
+            <div key={opt} className="p-4 rounded-lg border border-border bg-card">
+              <div className="flex items-baseline justify-between">
+                <div className="font-semibold">{opt}</div>
+                <div className="text-xs px-2 py-0.5 rounded-full bg-accent text-accent-foreground">
+                  {OPTION_PRICE[opt] ?? "Custom"}
                 </div>
               </div>
-            </DialogContent>
-          </Dialog>
+              <div className="text-muted-foreground text-sm mt-1">{PROJECT_TYPE_INFO[opt]}</div>
+            </div>
+          ))}
+          <div className="p-4 rounded-lg border border-border bg-card">
+            <div className="flex items-baseline justify-between">
+              <div className="font-semibold">Not sure yet</div>
+              <div className="text-xs px-2 py-0.5 rounded-full bg-accent text-accent-foreground">
+                {OPTION_PRICE[NOT_SURE_OPTION]}
+              </div>
+            </div>
+            <div className="text-muted-foreground text-sm mt-1">{PROJECT_TYPE_INFO["Not sure yet"]}</div>
+          </div>
         </div>
-      </div>
+      </DialogContent>
+    </Dialog>
+  </div>
+</div>
+
 
       <div>
         <Label htmlFor="description">Description</Label>

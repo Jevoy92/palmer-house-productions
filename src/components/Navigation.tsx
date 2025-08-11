@@ -81,22 +81,22 @@ export const Navigation = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-border/50" role="navigation" aria-label="Main navigation">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex justify-between items-center h-16">
-          <div className="flex-shrink-0">
-            <button 
-              onClick={handleLogoClick}
-              className="flex items-center gap-2 focus:outline-none"
-              aria-label="Go to homepage"
-            >
-              <img 
-                src="/lovable-uploads/cb07dfcd-6a7e-480c-95bb-833a66f4057e.png" 
-                alt="Palmer House Productions logo" 
-                className="h-8 w-auto"
-                loading="eager"
-                decoding="async"
-              />
-              <span className="sr-only">Palmer House Productions</span>
-            </button>
-          </div>
+<div className="flex-shrink-0">
+  <button 
+    onClick={handleLogoClick}
+    className="flex items-center gap-3 whitespace-nowrap focus:outline-none"
+    aria-label="Go to homepage"
+  >
+    <img 
+      src="/lovable-uploads/cb07dfcd-6a7e-480c-95bb-833a66f4057e.png" 
+      alt="Palmer House Productions logo" 
+      className="h-8 w-auto"
+      loading="eager"
+      decoding="async"
+    />
+    <span className="text-foreground font-extrabold tracking-tight text-base sm:text-lg">Palmer House Productions</span>
+  </button>
+</div>
           
           <div className="hidden md:block">
             <div className="flex items-center space-x-6">

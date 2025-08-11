@@ -184,20 +184,20 @@ export const ZohoLeadForm = ({ title = "Start a Project", leadSource = "Website"
                   Compare options
                 </button>
               </DialogTrigger>
-              <DialogContent>
+              <DialogContent className="w-[min(100vw-2rem,80rem)] sm:max-w-2xl lg:max-w-5xl">
                 <DialogHeader>
                   <DialogTitle>Compare project options</DialogTitle>
                 </DialogHeader>
-                <div className="space-y-3 text-sm">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[70vh] overflow-y-auto">
                   {PROJECT_TYPES.map((opt) => (
-                    <div key={opt} className="p-3 rounded-lg border border-border">
+                    <div key={opt} className="p-4 rounded-lg border border-border bg-card">
                       <div className="font-semibold">{opt}</div>
-                      <div className="text-muted-foreground">{PROJECT_TYPE_INFO[opt]}</div>
+                      <div className="text-muted-foreground text-sm">{PROJECT_TYPE_INFO[opt]}</div>
                     </div>
                   ))}
-                  <div className="p-3 rounded-lg border border-border">
+                  <div className="p-4 rounded-lg border border-border bg-card">
                     <div className="font-semibold">Not sure yet</div>
-                    <div className="text-muted-foreground">{PROJECT_TYPE_INFO["Not sure yet"]}</div>
+                    <div className="text-muted-foreground text-sm">{PROJECT_TYPE_INFO["Not sure yet"]}</div>
                   </div>
                 </div>
               </DialogContent>
@@ -210,7 +210,7 @@ export const ZohoLeadForm = ({ title = "Start a Project", leadSource = "Website"
             <SelectTrigger className="mt-1 w-full min-h-[44px]">
               <SelectValue placeholder="Select budget" />
             </SelectTrigger>
-            <SelectContent className="bg-background z-50">
+            <SelectContent className="z-50">
               {BUDGETS.map((opt) => (
                 <SelectItem key={opt} value={opt}>
                   {opt}
@@ -225,7 +225,7 @@ export const ZohoLeadForm = ({ title = "Start a Project", leadSource = "Website"
             <SelectTrigger className="mt-1 w-full min-h-[44px]">
               <SelectValue placeholder="Select timeline" />
             </SelectTrigger>
-            <SelectContent className="bg-background z-50">
+            <SelectContent className="z-50">
               {TIMELINES.map((opt) => (
                 <SelectItem key={opt} value={opt}>
                   {opt}

@@ -49,6 +49,7 @@ import RemoteVideoCollaboration from "./pages/blog/RemoteVideoCollaboration";
 import OverwhelmedToAuthority from "./pages/blog/OverwhelmedToAuthority";
 import VideoMarketingSaaS from "./pages/blog/VideoMarketingSaaS";
 import ThankYou from "./pages/ThankYou";
+import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 
 const queryClient = new QueryClient();
 
@@ -61,6 +62,7 @@ const App = () => (
         <ScrollToTop />
         <StructuredData />
         <BreadcrumbNavigation />
+        <MobileFirstOptimization />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/video-packages" element={<VideoPackages />} />

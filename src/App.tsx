@@ -1,4 +1,5 @@
 
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -50,6 +51,8 @@ import OverwhelmedToAuthority from "./pages/blog/OverwhelmedToAuthority";
 import VideoMarketingSaaS from "./pages/blog/VideoMarketingSaaS";
 import ThankYou from "./pages/ThankYou";
 import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
+
+const VideoReadinessPage = lazy(() => import("./pages/assessments/VideoReadiness"));
 
 const queryClient = new QueryClient();
 
@@ -104,6 +107,14 @@ const App = () => (
           <Route path="/blog/remote-video-collaboration" element={<RemoteVideoCollaboration />} />
           <Route path="/blog/overwhelmed-to-authority" element={<OverwhelmedToAuthority />} />
           <Route path="/blog/video-marketing-saas" element={<VideoMarketingSaaS />} />
+          <Route
+            path="/assessments/video-readiness"
+            element={
+              <Suspense fallback={<div className="p-8 text-center">Loading assessment...</div>}>
+                <VideoReadinessPage />
+              </Suspense>
+            }
+          />
           
           {/* Legacy route redirects */}
           <Route path="/pathways" element={<Navigate to="/video-packages" replace />} />

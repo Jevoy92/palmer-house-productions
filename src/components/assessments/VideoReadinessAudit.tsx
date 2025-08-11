@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { 
   CheckCircle, 
   AlertTriangle, 
@@ -508,24 +508,18 @@ Generated on: ${new Date().toLocaleDateString()}
               <Label className="text-base font-medium">
                 {question.text}
               </Label>
-              <RadioGroup
-                value={answers[question.id]?.toString() || ''}
-                onValueChange={(value) => handleAnswer(question.id, parseInt(value))}
-                className="flex gap-4"
+              <ToggleGroup
+                type="single"
+                value={answers[question.id]?.toString()}
+                onValueChange={(value) => value && handleAnswer(question.id, parseInt(value))}
+                className="flex flex-wrap gap-2"
+                variant="outline"
+                size="sm"
               >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="0" id={`${question.id}-no`} />
-                  <Label htmlFor={`${question.id}-no`}>No</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value={Math.round(question.points * 0.5).toString()} id={`${question.id}-partial`} />
-                  <Label htmlFor={`${question.id}-partial`}>Partially</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value={question.points.toString()} id={`${question.id}-yes`} />
-                  <Label htmlFor={`${question.id}-yes`}>Yes</Label>
-                </div>
-              </RadioGroup>
+                <ToggleGroupItem value="0" aria-label="No">No</ToggleGroupItem>
+                <ToggleGroupItem value={Math.round(question.points * 0.5).toString()} aria-label="Partially">Partially</ToggleGroupItem>
+                <ToggleGroupItem value={question.points.toString()} aria-label="Yes">Yes</ToggleGroupItem>
+              </ToggleGroup>
             </div>
           ))}
 

@@ -31,7 +31,7 @@ const ContactPage = () => {
   };
 
   const handleVideoReadinessAudit = () => {
-    window.location.href = '/content-strategy?assessment=video-readiness';
+    window.location.href = '/assessments/video-readiness';
   };
 
 

@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ZohoLeadForm } from "@/components/zoho/ZohoLeadForm";
 import { Calendar, Video, CheckCircle } from "lucide-react";
+import { TrustSidebar } from "@/components/contact/TrustSidebar";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -139,6 +140,7 @@ const ContactPage = () => {
                   </CardContent>
                 </Card>
 
+                <TrustSidebar />
               </div>
 
               {/* Quick Contact Form (Zoho CRM) */}

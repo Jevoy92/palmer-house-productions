@@ -1,11 +1,20 @@
+import { useEffect } from "react";
+import confetti from "canvas-confetti";
 import { Navigation } from "@/components/Navigation";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
 import { MetaTags } from "@/components/seo/MetaTags";
 import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
+import { Button } from "@/components/ui/button";
 
 const ThankYou = () => {
+  useEffect(() => {
+    try {
+      confetti({ particleCount: 120, spread: 70, origin: { y: 0.2 } });
+      setTimeout(() => confetti({ particleCount: 80, spread: 60, origin: { y: 0.3 } }), 250);
+    } catch {}
+  }, []);
   return (
     <div className="min-h-screen bg-white">
       <MetaTags
@@ -25,14 +34,24 @@ const ThankYou = () => {
             <div className="inline-block px-4 py-2 gradient-social-1 rounded-full text-white font-bold text-sm mb-6">🎉 Success</div>
             <h1 className="text-3xl md:text-4xl font-display font-black mb-6 text-corporate-dark">Thank you for your inquiry!</h1>
             <p className="text-lg text-corporate-gray mb-8">We received your details and will reply within one business day. If this is urgent, feel free to also book a strategy call.</p>
-            <a
-              href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-social-purple to-social-pink text-white font-bold rounded-2xl hover:scale-105 transition-all duration-300"
-            >
-              Book a Strategy Call
-            </a>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+              <Button asChild className="gradient-social-1 text-white min-h-[44px] px-6">
+                <a
+                  href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Book a Strategy Call"
+                >
+                  Book a Strategy Call
+                </a>
+              </Button>
+              <Button asChild variant="outline" className="min-h-[44px] px-6">
+                <a href="/" aria-label="Back to Home">Back to Home</a>
+              </Button>
+              <Button asChild variant="secondary" className="min-h-[44px] px-6">
+                <a href="/video-packages" aria-label="Explore Packages">Explore Packages</a>
+              </Button>
+            </div>
           </div>
         </section>
       </MainContent>

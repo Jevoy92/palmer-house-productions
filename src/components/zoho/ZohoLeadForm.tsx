@@ -6,6 +6,9 @@ import { Button } from "@/components/ui/button";
 import { submitZohoLead, ZohoLeadData } from "@/lib/zohoWebToLead";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { trackContactFormSubmit, trackConversion } from "@/lib/analytics";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+
 
 export type ZohoLeadFormProps = {
   title?: string;
@@ -28,6 +31,24 @@ const PROJECT_TYPES = [
   "The Started Session",
   "YouTube Visibility Engine",
 ];
+
+const PROJECT_TYPE_INFO: Record<string, string> = {
+  "30 Reels in 30 Days": "Done-with-you short-form content sprint to build momentum fast.",
+  "Coaching": "1:1 or team coaching on content strategy, on-camera performance, and systems.",
+  "Commercial/Advertisement": "Scripted promotional video for campaigns and paid distribution.",
+  "Corporate Video": "Company story, recruiting, training, or internal communications.",
+  "External FAQ Buildout": "Answer buyer questions at scale with trust-building FAQ videos.",
+  "Internal FAQ Buildout": "Document processes and onboard faster with evergreen internal videos.",
+  "Monthly Content System": "Ongoing content engine: plan, produce, edit, and publish each month.",
+  "Pos-Production Only": "Editing and finishing for footage you already have.",
+  "The 7 - Day :Launch": "Rapid go-to-market package to launch an offer in a week.",
+  "The Founder's Brand Kit": "Evergreen founder story + signature content pillars.",
+  "The Started Session": "Half-day focused session to unlock clarity and next steps.",
+  "YouTube Visibility Engine": "YouTube strategy, production, and SEO to grow discoverability.",
+  "Not sure yet": "Tell us about your goals and constraints — we'll recommend the best fit.",
+};
+
+const NOT_SURE_OPTION = "Not sure yet";
 
 const BUDGETS = [
   "Under $5,000",
@@ -55,7 +76,7 @@ export const ZohoLeadForm = ({ title = "Start a Project", leadSource = "Website"
     state: "",
     zip: "",
     country: "United States",
-    projectType: defaultProjectType || "",
+    projectType: defaultProjectType || NOT_SURE_OPTION,
     budget: BUDGETS[0],
     timeline: "",
     description: "",
@@ -133,54 +154,91 @@ export const ZohoLeadForm = ({ title = "Start a Project", leadSource = "Website"
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
           <Label htmlFor="projectType">Project Type</Label>
-          <select
-            id="projectType"
-            required
-            className="mt-1 w-full min-h-[44px] rounded-md border border-border bg-background px-3 py-2"
+          <Select
             value={form.projectType}
-            onChange={(e) => setForm({ ...form, projectType: e.target.value })}
+            onValueChange={(val) => setForm({ ...form, projectType: val })}
           >
-            <option value="">-None-</option>
-            {PROJECT_TYPES.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="mt-1 w-full min-h-[44px]">
+              <SelectValue placeholder="I'm not sure yet" />
+            </SelectTrigger>
+            <SelectContent className="bg-background z-50">
+              <SelectItem value={NOT_SURE_OPTION}>
+                <div className="flex flex-col">
+                  <span>Not sure yet</span>
+                  <span className="text-muted-foreground text-xs">We’ll help you choose based on your goals.</span>
+                </div>
+              </SelectItem>
+              {PROJECT_TYPES.map((opt) => (
+                <SelectItem key={opt} value={opt}>
+                  <div className="flex flex-col">
+                    <span>{opt}</span>
+                    <span className="text-muted-foreground text-xs">{PROJECT_TYPE_INFO[opt]}</span>
+                  </div>
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <div className="mt-2 flex items-start justify-between gap-2">
+            <p className="text-sm text-muted-foreground">
+              {form.projectType
+                ? PROJECT_TYPE_INFO[form.projectType] || "We’ll help you choose the best fit."
+                : "Not sure? Pick “Not sure yet” and we’ll recommend the best fit."}
+            </p>
+            <Dialog>
+              <DialogTrigger asChild>
+                <button type="button" className="text-sm font-medium text-primary underline underline-offset-4 hover-scale whitespace-nowrap">
+                  Compare options
+                </button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Compare project options</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-3 text-sm">
+                  {PROJECT_TYPES.map((opt) => (
+                    <div key={opt} className="p-3 rounded-lg border border-border">
+                      <div className="font-semibold">{opt}</div>
+                      <div className="text-muted-foreground">{PROJECT_TYPE_INFO[opt]}</div>
+                    </div>
+                  ))}
+                  <div className="p-3 rounded-lg border border-border">
+                    <div className="font-semibold">Not sure yet</div>
+                    <div className="text-muted-foreground">{PROJECT_TYPE_INFO["Not sure yet"]}</div>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
         <div>
           <Label htmlFor="budget">Budget</Label>
-          <select
-            id="budget"
-            required
-            className="mt-1 w-full min-h-[44px] rounded-md border border-border bg-background px-3 py-2"
-            value={form.budget}
-            onChange={(e) => setForm({ ...form, budget: e.target.value })}
-          >
-            <option value="">-None-</option>
-            {BUDGETS.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
+          <Select value={form.budget} onValueChange={(val) => setForm({ ...form, budget: val })}>
+            <SelectTrigger className="mt-1 w-full min-h-[44px]">
+              <SelectValue placeholder="Select budget" />
+            </SelectTrigger>
+            <SelectContent className="bg-background z-50">
+              {BUDGETS.map((opt) => (
+                <SelectItem key={opt} value={opt}>
+                  {opt}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         <div>
           <Label htmlFor="timeline">Timeline</Label>
-          <select
-            id="timeline"
-            required
-            className="mt-1 w-full min-h-[44px] rounded-md border border-border bg-background px-3 py-2"
-            value={form.timeline}
-            onChange={(e) => setForm({ ...form, timeline: e.target.value })}
-          >
-            <option value="">-None-</option>
-            {TIMELINES.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
+          <Select value={form.timeline} onValueChange={(val) => setForm({ ...form, timeline: val })}>
+            <SelectTrigger className="mt-1 w-full min-h-[44px]">
+              <SelectValue placeholder="Select timeline" />
+            </SelectTrigger>
+            <SelectContent className="bg-background z-50">
+              {TIMELINES.map((opt) => (
+                <SelectItem key={opt} value={opt}>
+                  {opt}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

@@ -8,7 +8,7 @@
 // Primary logo variants
 export const LOGO_MARK = {
   // Monogram mark for small spaces and favicon
-  url: "/lovable-uploads/9781932b-3e6b-492b-a04c-fbbfa0d34cf8.png",
+  url: "/lovable-uploads/6a007f61-ec64-4fca-8ece-c084a1dab8ae.png",
   alt: "Palmer House Productions monogram logo",
   width: "auto",
   height: "32px", // h-8 in Tailwind
@@ -18,7 +18,7 @@ export const LOGO_MARK = {
 export const LOGO_LOCKUP = {
   // Full wordmark/lockup for larger placements (navbar/footer)
   // Update this URL if you prefer a different lockup image
-  url: "/lovable-uploads/9781932b-3e6b-492b-a04c-fbbfa0d34cf8.png",
+  url: "/lovable-uploads/6a007f61-ec64-4fca-8ece-c084a1dab8ae.png",
   alt: "Palmer House Productions full logo",
   width: "auto",
   height: "32px",

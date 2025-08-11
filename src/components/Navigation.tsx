@@ -77,9 +77,9 @@ export const Navigation = () => {
               <span className="text-foreground font-extrabold tracking-tight text-base sm:text-lg">{COMPANY.name}</span>
             </button>
           </div>
-          {/* Centered logo placeholder */}
+          {/* Centered logo */}
           <button onClick={handleLogoClick} className="absolute left-1/2 -translate-x-1/2 flex items-center focus:outline-none" aria-label="Go to homepage">
-            <img src="/placeholder.svg" alt={`${COMPANY.name} logo placeholder`} className="h-8 w-auto" />
+            <img src={LOGO.url} alt={LOGO.alt} className={LOGO.className} />
           </button>
           
           <div className="hidden md:block">

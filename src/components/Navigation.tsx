@@ -71,13 +71,16 @@ export const Navigation = () => {
   }, [location]);
   return <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-border/50" role="navigation" aria-label="Main navigation">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex justify-between items-center h-16">
-        <div className="flex-shrink-0">
-  <button onClick={handleLogoClick} className="flex items-center gap-3 whitespace-nowrap focus:outline-none" aria-label="Go to homepage">
-    
-    <span className="text-foreground font-extrabold tracking-tight text-base sm:text-lg">{COMPANY.name}</span>
-  </button>
-        </div>
+        <div className="relative flex justify-between items-center h-16">
+          <div className="flex-shrink-0">
+            <button onClick={handleLogoClick} className="flex items-center gap-3 whitespace-nowrap focus:outline-none" aria-label="Go to homepage">
+              <span className="text-foreground font-extrabold tracking-tight text-base sm:text-lg">{COMPANY.name}</span>
+            </button>
+          </div>
+          {/* Centered logo placeholder */}
+          <button onClick={handleLogoClick} className="absolute left-1/2 -translate-x-1/2 flex items-center focus:outline-none" aria-label="Go to homepage">
+            <img src="/placeholder.svg" alt={`${COMPANY.name} logo placeholder`} className="h-8 w-auto" />
+          </button>
           
           <div className="hidden md:block">
             <div className="flex items-center space-x-6">

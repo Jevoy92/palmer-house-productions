@@ -124,7 +124,7 @@ export const EnhancedFooter = () => {
           {/* Social Media & Contact */}
           <div className="space-y-4">
             <h4 className="font-bold text-white">Connect With Us</h4>
-            <div className="grid grid-cols-4 gap-3 max-w-[200px]">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 max-w-none overflow-hidden">
               <SocialIcon
                 url="https://www.facebook.com/profile.php?id=100092553086353"
                 style={{ height: 32, width: 32 }}
@@ -197,7 +197,12 @@ export const EnhancedFooter = () => {
                 </Link>
               </p>
               <p className="text-gray-300">
-                <a href="/sitemap.xml" className="hover:text-white transition-colors">
+                <a 
+                  href="/sitemap.xml" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
                   Sitemap
                 </a>
               </p>

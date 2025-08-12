@@ -113,7 +113,7 @@ export const VideoPackagesTabbed = () => {
   ];
 
   const handleDiscoveryCall = () => {
-    window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank');
+    window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer');
   };
 
   const handleBooking = (title: string) => {

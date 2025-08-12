@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+import { BRAND_ENTITY } from "@/lib/brand-entity";
 
 interface StructuredDataProps {
   type?: "homepage" | "about" | "services" | "contact" | "packages";
@@ -32,19 +33,19 @@ export const StructuredData = ({ type }: StructuredDataProps) => {
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "Palmer House Productions",
+    "name": BRAND_ENTITY.legalName,
     "description": "Professional video production services for bold brands. Short-form cinematic storytelling that scales your business.",
-    "url": "https://www.palmerhouseproductions.com",
-    "telephone": "+1-425-738-7312",
-    "email": "info@palmerhouseproductions.com",
+    "url": BRAND_ENTITY.url,
+    "@id": BRAND_ENTITY.organizationId,
+    "telephone": BRAND_ENTITY.telephone,
+    "email": BRAND_ENTITY.email,
+    "logo": BRAND_ENTITY.logo,
+    "image": BRAND_ENTITY.image,
     "address": {
       "@type": "PostalAddress",
       "addressCountry": "US"
     },
-    "sameAs": [
-      "https://www.linkedin.com/company/palmer-house-productions",
-      "https://www.instagram.com/palmerhouseproductions"
-    ],
+    "sameAs": BRAND_ENTITY.sameAs,
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
       "name": "Video Production Services",
@@ -117,6 +118,22 @@ export const StructuredData = ({ type }: StructuredDataProps) => {
     }
   };
 
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "url": BRAND_ENTITY.url,
+    "name": BRAND_ENTITY.legalName,
+    "publisher": {
+      "@type": "Organization",
+      "@id": BRAND_ENTITY.organizationId
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": `${BRAND_ENTITY.url}/search?q={search_term_string}`,
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   const aggregateRatingSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -184,7 +201,7 @@ export const StructuredData = ({ type }: StructuredDataProps) => {
     "itemListElement": getBreadcrumbItems()
   };
 
-  const schemas: any[] = [localBusinessSchema, serviceSchema, aggregateRatingSchema];
+  const schemas: any[] = [websiteSchema, localBusinessSchema, serviceSchema, aggregateRatingSchema];
   
   if (pageType !== "homepage") {
     schemas.push(breadcrumbSchema);

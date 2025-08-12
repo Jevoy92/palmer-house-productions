@@ -114,7 +114,7 @@ Generated on: ${new Date().toLocaleDateString()}
         ? 'https://palmerhouseproductions.zohobookings.com/#/4740771000000078004' // Strategy Call for high scores
         : 'https://palmerhouseproductions.zohobookings.com/#/4740771000000078320'; // General Consultation for lower scores
       
-      window.open(zohoUrl, '_blank');
+      window.open(zohoUrl, '_blank', 'noopener,noreferrer');
     }
   };
 

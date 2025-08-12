@@ -8,7 +8,9 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
-import { GoogleAnalytics, trackEvent } from "@/components/seo/GoogleAnalytics";
+import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
+import { trackPageView } from "@/lib/analytics";
+import { Canonical } from "@/components/seo/Canonical";
 import Index from "./pages/Index";
 import VideoPackages from "./pages/VideoPackages";
 
@@ -57,7 +59,7 @@ const VideoReadinessPage = lazy(() => import("./pages/assessments/VideoReadiness
 const queryClient = new QueryClient();
 
 // Google Analytics Measurement ID (replace with actual GA4 ID when available)
-const GA_MEASUREMENT_ID = "G-XXXXXXXXXX";
+const GA_MEASUREMENT_ID = "G-HTFNMQRWLL";
 
 // Route tracking component
 function RouteTracker() {
@@ -65,11 +67,7 @@ function RouteTracker() {
 
   useEffect(() => {
     // Track page views on route changes
-    trackEvent('page_view', {
-      page_title: document.title,
-      page_location: window.location.href,
-      page_path: location.pathname
-    });
+    trackPageView(location.pathname, document.title);
   }, [location]);
 
   return null;
@@ -84,9 +82,9 @@ const App = () => (
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         <ScrollToTop />
         <StructuredData />
+        <Canonical />
         <BreadcrumbNavigation />
         <RouteTracker />
-        <MobileFirstOptimization />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/video-packages" element={<VideoPackages />} />

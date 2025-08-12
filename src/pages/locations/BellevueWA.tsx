@@ -4,6 +4,8 @@ import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Link } from "react-router-dom";
+import { LocationStructuredData } from "@/components/seo/LocationStructuredData";
+import { FAQSchema } from "@/components/seo/FAQSchema";
 
 const BellevueWA = () => {
   return (
@@ -17,6 +19,20 @@ const BellevueWA = () => {
         canonicalUrl="https://www.palmerhouseproductions.com/locations/bellevue-wa"
       />
       <StructuredData type="services" />
+      <LocationStructuredData
+        city="Bellevue"
+        region="WA"
+        canonicalUrl="https://www.palmerhouseproductions.com/locations/bellevue-wa"
+      />
+      <FAQSchema
+        faqs={[
+          { question: 'Do you serve the entire Seattle metro?', answer: 'Yes — Bellevue, Seattle, Redmond, Kirkland, and the broader Puget Sound region. Travel within ~30 miles is included.' },
+          { question: 'Studio or on-location?', answer: 'Both. We offer a professional studio setup in Bellevue and on-location shoots at your office or event.' },
+          { question: 'Can you work with distributed teams?', answer: 'Yes — we support remote-first workflows with cloud review, async feedback, and flexible scheduling.' },
+          { question: 'How do we start?', answer: 'Book a strategy call or share your bottleneck via our contact form. We’ll map the right video system for your goals.' },
+          { question: 'Do you do one-off videos?', answer: 'We prioritize content systems. Select one-time bundles are available when they function as a system (e.g., FAQ buildouts).'}
+        ]}
+      />
       <Navigation />
       <MainContent>
         <section className="py-32 relative overflow-hidden">

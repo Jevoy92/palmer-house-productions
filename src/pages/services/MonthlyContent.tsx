@@ -8,6 +8,7 @@ import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Navigation } from "@/components/Navigation";
 import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
+import { FAQSchema } from "@/components/seo/FAQSchema";
 
 const MonthlyContent = () => {
   const navigate = useNavigate();
@@ -56,6 +57,15 @@ const MonthlyContent = () => {
         ogDescription="Social Authority Kit - monthly video content system. Hero videos, social reels, and testimonials delivered monthly with 3-month commitment."
       />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
+      <FAQSchema
+        faqs={[
+          { question: 'What’s included each month?', answer: 'One hero/founder video, six social reels, one client voice video, plus captions and thumbnails.' },
+          { question: 'Is there a commitment?', answer: 'Yes — 3-month minimum to build momentum and measure results.' },
+          { question: 'Do you include YouTube long-form?', answer: 'No — YouTube long-form is a separate ongoing plan. This system focuses on social and brand assets.' },
+          { question: 'How does production work?', answer: 'One focused shoot day captures all assets; then we edit and deliver platform-ready files.' },
+          { question: 'Remote-friendly?', answer: 'Yes — we support distributed teams with cloud review and async feedback.' }
+        ]}
+      />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <StructuredData />

@@ -4,6 +4,8 @@ import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Link } from "react-router-dom";
+import { LocationStructuredData } from "@/components/seo/LocationStructuredData";
+import { FAQSchema } from "@/components/seo/FAQSchema";
 
 const PortlandOR = () => {
   return (
@@ -17,6 +19,20 @@ const PortlandOR = () => {
         canonicalUrl="https://www.palmerhouseproductions.com/locations/portland-or"
       />
       <StructuredData type="services" />
+      <LocationStructuredData
+        city="Portland"
+        region="OR"
+        canonicalUrl="https://www.palmerhouseproductions.com/locations/portland-or"
+      />
+      <FAQSchema
+        faqs={[
+          { question: 'Which areas around Portland do you cover?', answer: 'Metro Portland plus Beaverton, Lake Oswego, Tigard, Gresham, Salem, Bend, and the Oregon Coast. Remote collaboration is available.' },
+          { question: 'Do you travel for shoots?', answer: 'Yes — local travel is included, and extended coverage across Oregon and the Pacific Northwest is available.' },
+          { question: 'What types of projects fit best?', answer: 'Brand storytelling, social authority systems, internal training libraries, testimonials, and launch content.' },
+          { question: 'How fast can we start?', answer: 'Immediately. Book a strategy call and we’ll align on scope, timeline, and the right content system.' },
+          { question: 'Is long-form YouTube included?', answer: 'YouTube long-form is a separate ongoing plan. Social and brand assets are covered in our monthly and bundle systems.' }
+        ]}
+      />
       <Navigation />
       <MainContent>
         <section className="py-32 relative overflow-hidden">

@@ -11,6 +11,7 @@ import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { OptimizedImage } from '@/components/seo/ImageOptimization';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { BlogPostSchema } from '@/components/seo/BlogPostSchema';
 
 interface BlogPostProps {
   title: string;
@@ -76,6 +77,13 @@ export const BlogPost = ({
 
   return (
     <>
+      <BlogPostSchema
+        headline={title}
+        description={metaDescription || excerpt}
+        canonicalUrl={canonicalUrl}
+        image={ogImage || heroImage}
+        datePublished={publishDate}
+      />
       <MetaTags
         title={`${title} | Palmer House Productions`}
         description={metaDescription}

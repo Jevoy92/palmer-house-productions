@@ -10,6 +10,7 @@ import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Navigation } from "@/components/Navigation";
 import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
 import { ZohoLeadForm } from "@/components/zoho/ZohoLeadForm";
+import { FAQSchema } from "@/components/seo/FAQSchema";
 
 
 const DIYDownloads = () => {
@@ -60,6 +61,15 @@ const DIYDownloads = () => {
         ogDescription="Download professional video resources - script templates, strategy guides, and DIY tools for creating compelling business content."
       />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
+      <FAQSchema
+        faqs={[
+          { question: 'How do I receive my download?', answer: 'Instant access via email with auto-delivery. No waiting or manual processing.' },
+          { question: 'Are these part of a bigger system?', answer: 'Yes — each download fits into a broader content system for onboarding, sales, and support.' },
+          { question: 'Refund policy?', answer: 'Digital products are non-refundable. If you have an issue, email support and we’ll make it right.' },
+          { question: 'Can I use these with my team?', answer: 'Yes — licensed for your business use. Redistribution or resale is not permitted.' },
+          { question: 'What should I buy first?', answer: 'Start with the Video Strategy Blueprint to choose the right videos for your goals and audience.' }
+        ]}
+      />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <StructuredData />

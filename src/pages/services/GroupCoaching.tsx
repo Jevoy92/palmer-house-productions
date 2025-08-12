@@ -8,6 +8,7 @@ import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Navigation } from "@/components/Navigation";
 import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
+import { FAQSchema } from "@/components/seo/FAQSchema";
 
 const GroupCoaching = () => {
   const navigate = useNavigate();
@@ -67,6 +68,15 @@ const GroupCoaching = () => {
         ogDescription="6-week Camera-Ready Brand group coaching program. Build on-camera confidence and create your first 3-5 brand videos with expert guidance and peer support."
       />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
+      <FAQSchema
+        faqs={[
+          { question: 'How many seats per cohort?', answer: '8–10 founders to keep feedback focused and actionable.' },
+          { question: 'Are sessions recorded?', answer: 'Yes — replays are available for cohort members.' },
+          { question: 'What’s the outcome?', answer: 'Confidence and skill to record your first 3–5 brand videos yourself.' },
+          { question: 'Do you offer 1:1?', answer: 'This program is group-based. For custom systems, book a strategy call to discuss alternatives.' },
+          { question: 'When does the next cohort start?', answer: 'Rolling cohorts launch every 6 weeks. Apply to join the next one.' }
+        ]}
+      />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <StructuredData />

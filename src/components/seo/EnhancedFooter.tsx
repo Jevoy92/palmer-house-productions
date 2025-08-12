@@ -132,6 +132,8 @@ export const EnhancedFooter = () => {
                 fgColor="#d1d5db"
                 className="hover:opacity-80 transition-opacity"
                 target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
               />
               <SocialIcon
                 url="https://www.instagram.com/palmerhouseproductions"
@@ -140,6 +142,8 @@ export const EnhancedFooter = () => {
                 fgColor="#d1d5db"
                 className="hover:opacity-80 transition-opacity"
                 target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
               />
               <SocialIcon
                 url="https://www.youtube.com/channel/UCe7_R47Klv_JdupA1exogMw"
@@ -148,6 +152,8 @@ export const EnhancedFooter = () => {
                 fgColor="#d1d5db"
                 className="hover:opacity-80 transition-opacity"
                 target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
               />
               <SocialIcon
                 url="https://www.linkedin.com/company/palmer-house-productions/"
@@ -156,6 +162,8 @@ export const EnhancedFooter = () => {
                 fgColor="#d1d5db"
                 className="hover:opacity-80 transition-opacity"
                 target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
               />
               <SocialIcon
                 url="https://x.com/palmerhouseviz"
@@ -164,6 +172,8 @@ export const EnhancedFooter = () => {
                 fgColor="#d1d5db"
                 className="hover:opacity-80 transition-opacity"
                 target="_blank"
+                rel="noopener noreferrer"
+                aria-label="X (Twitter)"
               />
               <SocialIcon
                 url="https://www.pinterest.com/palmerhouseproductions/"
@@ -172,6 +182,8 @@ export const EnhancedFooter = () => {
                 fgColor="#d1d5db"
                 className="hover:opacity-80 transition-opacity"
                 target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Pinterest"
               />
               <SocialIcon
                 url="https://www.tiktok.com/@palmerhouseproductions"
@@ -180,14 +192,18 @@ export const EnhancedFooter = () => {
                 fgColor="#d1d5db"
                 className="hover:opacity-80 transition-opacity"
                 target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok"
               />
               <SocialIcon
-                url="https://www.threads.com/@palmerhouseproductions"
+                url="https://www.threads.net/@palmerhouseproductions"
                 style={{ height: 32, width: 32 }}
                 bgColor="transparent"
                 fgColor="#d1d5db"
                 className="hover:opacity-80 transition-opacity"
                 target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Threads"
               />
             </div>
             <div className="space-y-2 text-sm">

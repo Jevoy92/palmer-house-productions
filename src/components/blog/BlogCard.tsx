@@ -53,7 +53,9 @@ export const BlogCard = ({
         <h3 className={`font-semibold text-corporate-dark group-hover:text-social-purple transition-colors leading-tight ${
           featured ? 'text-xl' : 'text-lg'
         }`}>
-          {title}
+          <Link to={slug} className="hover:underline focus:underline">
+            {title}
+          </Link>
         </h3>
       </CardHeader>
       <CardContent>

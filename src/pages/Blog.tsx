@@ -355,7 +355,7 @@ const Blog = () => {
                         </div>
                       </div>
                       <h3 className="text-xl font-semibold text-corporate-dark group-hover:text-social-purple transition-colors">
-                        {article.title}
+                        <Link to={article.slug} className="hover:underline focus:underline">{article.title}</Link>
                       </h3>
                     </CardHeader>
                     <CardContent>
@@ -445,7 +445,7 @@ const Blog = () => {
                         </div>
                       </div>
                       <h3 className="text-lg font-semibold text-corporate-dark group-hover:text-social-purple transition-colors leading-tight">
-                        {article.title}
+                        <Link to={article.slug} className="hover:underline focus:underline">{article.title}</Link>
                       </h3>
                     </CardHeader>
                     <CardContent>

@@ -3,11 +3,12 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
+import { GoogleAnalytics, trackEvent } from "@/components/seo/GoogleAnalytics";
 import Index from "./pages/Index";
 import VideoPackages from "./pages/VideoPackages";
 
@@ -55,15 +56,36 @@ const VideoReadinessPage = lazy(() => import("./pages/assessments/VideoReadiness
 
 const queryClient = new QueryClient();
 
+// Google Analytics Measurement ID (replace with actual GA4 ID when available)
+const GA_MEASUREMENT_ID = "G-XXXXXXXXXX";
+
+// Route tracking component
+function RouteTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Track page views on route changes
+    trackEvent('page_view', {
+      page_title: document.title,
+      page_location: window.location.href,
+      page_path: location.pathname
+    });
+  }, [location]);
+
+  return null;
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         <ScrollToTop />
         <StructuredData />
         <BreadcrumbNavigation />
+        <RouteTracker />
         <MobileFirstOptimization />
         <Routes>
           <Route path="/" element={<Index />} />

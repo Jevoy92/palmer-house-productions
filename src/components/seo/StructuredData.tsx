@@ -127,33 +127,7 @@ export const StructuredData = ({ type }: StructuredDataProps) => {
       "reviewCount": "47",
       "bestRating": "5",
       "worstRating": "1"
-    },
-    "review": [
-      {
-        "@type": "Review",
-        "author": {
-          "@type": "Person",
-          "name": "Sarah M."
-        },
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5"
-        },
-        "reviewBody": "Palmer House Productions transformed our brand story into a compelling visual narrative. Their attention to detail and creative vision exceeded our expectations."
-      },
-      {
-        "@type": "Review",
-        "author": {
-          "@type": "Person",
-          "name": "Michael R."
-        },
-        "reviewRating": {
-          "@type": "Rating",
-          "ratingValue": "5"
-        },
-        "reviewBody": "Working with Palmer House was seamless from start to finish. They delivered a stunning corporate video that perfectly captured our company's mission and values."
-      }
-    ]
+    }
   };
 
   function getBreadcrumbItems() {

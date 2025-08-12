@@ -15,7 +15,7 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
   const [isWizardOpen, setIsWizardOpen] = useState(autoOpenWizard);
 
   const handleZohoBooking = () => {
-    window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078320', '_blank');
+    window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078320', '_blank', 'noopener,noreferrer');
   };
 
   const handleViewAllReviews = () => {

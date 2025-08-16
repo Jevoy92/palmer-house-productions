@@ -31,6 +31,7 @@ export const VideoPackagesTiers = () => {
       price: PRICING.DIY_DOWNLOADS["25_REELS"].price,
       format: PRICING.DIY_DOWNLOADS["25_REELS"].format,
       description: PRICING.DIY_DOWNLOADS["25_REELS"].description,
+      paymentUrl: PRICING.DIY_DOWNLOADS["25_REELS"].paymentUrl,
       icon: Video
     },
     {
@@ -38,6 +39,7 @@ export const VideoPackagesTiers = () => {
       price: PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.price,
       format: PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.format,
       description: PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.description,
+      paymentUrl: PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.paymentUrl,
       icon: FileText
     },
     {
@@ -45,14 +47,8 @@ export const VideoPackagesTiers = () => {
       price: PRICING.DIY_DOWNLOADS.SCRIPT_BUNDLE.price,
       format: PRICING.DIY_DOWNLOADS.SCRIPT_BUNDLE.format,
       description: PRICING.DIY_DOWNLOADS.SCRIPT_BUNDLE.description,
+      paymentUrl: PRICING.DIY_DOWNLOADS.SCRIPT_BUNDLE.paymentUrl,
       icon: Mic
-    },
-    {
-      title: PRICING.DIY_DOWNLOADS.CONFIDENCE_COURSE.name,
-      price: PRICING.DIY_DOWNLOADS.CONFIDENCE_COURSE.price,
-      format: PRICING.DIY_DOWNLOADS.CONFIDENCE_COURSE.format,
-      description: PRICING.DIY_DOWNLOADS.CONFIDENCE_COURSE.description,
-      icon: Camera
     }
   ];
 
@@ -126,7 +122,6 @@ export const VideoPackagesTiers = () => {
     { item: "25 DIY Reels PDF + script pack", value: PRICING.DIY_DOWNLOADS["25_REELS"].price },
     { item: "The Video Strategy Blueprint", value: PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.price },
     { item: "Owner/Founder Script Bundle", value: PRICING.DIY_DOWNLOADS.SCRIPT_BUNDLE.price },
-    { item: "On-Camera Confidence Mini Course", value: PRICING.DIY_DOWNLOADS.CONFIDENCE_COURSE.price },
     { item: "Personalized Script Feedback (1x)", value: "$97" },
     { item: "On-Camera Coaching Session (1x)", value: "$200" }
   ];
@@ -136,8 +131,11 @@ export const VideoPackagesTiers = () => {
   };
 
   const handleBooking = (title: string) => {
-    // This would typically open a booking system or navigate to a specific booking page
     navigate('/contact', { state: { selectedService: title } });
+  };
+
+  const handlePurchase = (paymentUrl: string) => {
+    window.open(paymentUrl, '_blank', 'noopener,noreferrer');
   };
 
   const toggleSection = (section: string) => {
@@ -184,7 +182,7 @@ export const VideoPackagesTiers = () => {
             <p className="text-sm text-corporate-gray">Start creating immediately with our templates and guides</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {digitalDownloads.map((item, index) => (
               <div key={index} className="bg-white p-6 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="text-center mb-4">
@@ -197,10 +195,10 @@ export const VideoPackagesTiers = () => {
                 </div>
                 <p className="text-sm text-corporate-gray mb-6 leading-relaxed">{item.description}</p>
                 <button
-                  onClick={() => handleBooking(item.title)}
+                  onClick={() => handlePurchase(item.paymentUrl)}
                   className="w-full py-3 px-4 gradient-social-1 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300 video-shadow"
                 >
-                  Get Instant Access
+                  Buy Now
                 </button>
               </div>
             ))}
@@ -300,7 +298,7 @@ export const VideoPackagesTiers = () => {
                 <div className="bg-blue-50 p-4 rounded-xl">
                     <h5 className="font-bold text-blue-800 mb-2">🎁 Bonus Included:</h5>
                     <p className="text-sm text-blue-700">
-                      Get the complete Business Bonus Pack (valued at $531) FREE with this package!
+                      Get the complete Business Bonus Pack (valued at $410) FREE with this package!
                     </p>
                 </div>
               </div>
@@ -362,7 +360,7 @@ export const VideoPackagesTiers = () => {
                 {bundle.price !== "$500" && (
                   <div className="bg-yellow-50 p-3 rounded-xl mb-4">
                     <p className="text-xs text-yellow-800 font-medium">
-                      🎁 Includes FREE Business Bonus Pack (valued at $531)
+                      🎁 Includes FREE Business Bonus Pack (valued at $410)
                     </p>
                   </div>
                 )}
@@ -395,7 +393,7 @@ export const VideoPackagesTiers = () => {
 
             <div className="max-w-4xl mx-auto">
               <div className="text-center mb-8">
-                <div className="text-4xl font-black mb-2 text-corporate-dark">Total Added Value: $531</div>
+                <div className="text-4xl font-black mb-2 text-corporate-dark">Total Added Value: $410</div>
                 <p className="text-lg text-corporate-gray">Use it. Don't use it. It's there when you need it. Like a compass in your back pocket.</p>
               </div>
 

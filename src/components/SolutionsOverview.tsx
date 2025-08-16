@@ -23,8 +23,7 @@ export const SolutionsOverview = () => {
       items: [
         "25 DIY Reels You Can Film From Home",
         "Video Strategy Blueprint", 
-        "Owner/Founder Script Bundle",
-        "On-Camera Confidence Mini Course"
+        "Owner/Founder Script Bundle"
       ]
     },
     {

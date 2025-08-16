@@ -5,25 +5,22 @@ export const PRICING = {
       price: "$47", 
       name: "25 DIY Reels You Can Film From Home",
       format: "PDF + sample scripts",
-      description: "Talking-head style reels for solo founders, coaches, and service providers who want fast content ideas. Platform breakdowns included."
+      description: "Talking-head style reels for solo founders, coaches, and service providers who want fast content ideas. Platform breakdowns included.",
+      paymentUrl: "https://payhip.com/b/u8wvz"
     },
     "STRATEGY_BLUEPRINT": { 
       price: "$19", 
       name: "The Video Strategy Blueprint",
       format: "PDF",
-      description: "A step-by-step guide to choosing the right videos for your brand's growth stage and audience behavior."
+      description: "A step-by-step guide to choosing the right videos for your brand's growth stage and audience behavior.",
+      paymentUrl: "https://payhip.com/b/nIagA"
     },
     "SCRIPT_BUNDLE": { 
-      price: "$67", 
+      price: "$47", 
       name: "Owner/Founder Script Bundle",
       format: "PDF",
-      description: "Prewritten, plug-and-play scripts for: About Me, Social Proof, CTA, and FAQ videos."
-    },
-    "CONFIDENCE_COURSE": { 
-      price: "$99", 
-      name: "On-Camera Confidence Mini Course",
-      format: "4 x 15-min videos",
-      description: "Teaches owner/founders how to speak with clarity, energy, and conviction on camera. Includes warm-ups, posture, voice tips, and mindset."
+      description: "Prewritten, plug-and-play scripts for: About Me, Social Proof, CTA, and FAQ videos.",
+      paymentUrl: "https://payhip.com/b/jxGKl"
     }
   },
 
@@ -139,13 +136,12 @@ export const PRICING = {
   // 5. Built-In Bonus Bundle
   BONUS_PACK: {
     name: "The Business Bonus Pack",
-    totalValue: "$531",
+    totalValue: "$410",
     qualifies: ["Monthly Social Authority Kit", "Any One-Time Bundle $4,500+"],
     items: [
       { item: "25 DIY Reels PDF + script pack", value: "$47" },
       { item: "The Video Strategy Blueprint", value: "$19" },
-      { item: "Owner/Founder Script Bundle", value: "$67" },
-      { item: "On-Camera Confidence Mini Course", value: "$99" },
+      { item: "Owner/Founder Script Bundle", value: "$47" },
       { item: "Personalized Script Feedback (1x)", value: "$97" },
       { item: "On-Camera Coaching Session (1x)", value: "$200" }
     ]

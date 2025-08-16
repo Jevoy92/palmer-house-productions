@@ -22,13 +22,12 @@ export const ServiceCategorySelection = ({ serviceType, onCategorySelect, onBack
       id: "diy-downloads" as ServiceCategory,
       name: "DIY Digital Downloads",
       icon: Download,
-      priceRange: "$19 - $99",
+      priceRange: "$19 - $47",
       description: "Instant access to video guides, scripts, and training materials",
       features: [
         "25 DIY Reels You Can Film From Home",
         "Video Strategy Blueprint",
-        "Owner/Founder Script Bundle",
-        "On-Camera Confidence Mini Course"
+        "Owner/Founder Script Bundle"
       ],
       gradient: "gradient-social-1",
     },

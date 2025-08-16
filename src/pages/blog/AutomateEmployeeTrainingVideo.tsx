@@ -1,5 +1,5 @@
 import { BlogPost } from '@/components/blog/BlogPost';
-import liveStreamingBusinessImage from '@/assets/blog/live-streaming-business.jpg';
+import videoProductionBudgetImage from '@/assets/blog/video-production-budget.jpg';
 
 const AutomateEmployeeTrainingVideo = () => {
   const content = (
@@ -298,9 +298,9 @@ const AutomateEmployeeTrainingVideo = () => {
     metaDescription="Learn how to automate employee training with video systems. Reduce costs by 60-80% while improving completion rates and knowledge retention."
     keywords="employee training automation, video training systems, HR video solutions, automated onboarding, training ROI"
     canonicalUrl="https://palmerhouseproductions.com/blog/automate-employee-training-video"
-    heroImage={liveStreamingBusinessImage}
+    heroImage={videoProductionBudgetImage}
     heroAlt="Automated employee training with video modules"
-    ogImage={liveStreamingBusinessImage}
+    ogImage={videoProductionBudgetImage}
     relatedLinks={[
       {
         title: "Video Content Toolkit",

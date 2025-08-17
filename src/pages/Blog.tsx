@@ -19,6 +19,7 @@ import { OptimizedImage } from '@/components/seo/ImageOptimization';
 import mobileVideoProductionImage from '@/assets/blog/mobile-video-production.jpg';
 import videoMetricsMatterImage from '@/assets/blog/video-metrics-matter.jpg';
 import editingLikeProImage from '@/assets/blog/editing-like-pro.jpg';
+import employeeTrainingAutomationImage from '@/assets/blog/employee-training-automation.jpg';
 
 // Blog articles data - Focused on core strategic content
 const blogArticles = [
@@ -45,7 +46,7 @@ const blogArticles = [
     featured: true,
     slug: '/blog/automate-employee-training-video',
     tags: ['employee-training', 'automation', 'video-systems', 'hr'],
-    image: editingLikeProImage,
+    image: employeeTrainingAutomationImage,
     imageAlt: 'Automated employee training with video modules'
   },
   {

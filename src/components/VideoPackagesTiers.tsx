@@ -54,67 +54,49 @@ export const VideoPackagesTiers = () => {
 
   const oneTimeBundles = [
     {
-      title: PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.name,
-      price: PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.price,
+      title: PRICING.OTHER_BUNDLES.YOUTUBE_ENGINE.name,
+      price: PRICING.OTHER_BUNDLES.YOUTUBE_ENGINE.price,
       type: "One-time",
-      description: `${PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.videos} covering ${PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.covers.join(", ")}. ${PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.style}`,
-      features: ["15 videos (60-90 sec each)", "HR onboarding content", "Internal processes", "Company explainer", "Software tutorials"],
-      spotsAvailable: PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.spotsAvailable,
-      urgency: PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.urgency
-    },
-    {
-      title: PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.name,
-      price: PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.price,
-      type: "One-time",
-      description: `${PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.videos} covering ${PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.covers.join(", ")}. ${PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.delivery}`,
-      features: ["15 videos (60-90 sec each)", "Customer onboarding", "Objection handling", "Service breakdowns", "Pricing explanations", "Thumbnails + captions"],
-      spotsAvailable: PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.spotsAvailable,
-      urgency: PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.urgency
-    },
-    {
-      title: PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.name,
-      price: PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.price,
-      type: "One-time",
-      description: `${PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.videos} with ${PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.includes.join(", ")}.`,
+      description: `${PRICING.OTHER_BUNDLES.YOUTUBE_ENGINE.videos} with ${PRICING.OTHER_BUNDLES.YOUTUBE_ENGINE.includes.join(", ")}.`,
       features: ["3 long-form videos (8-10 min)", "Content strategy + series plan", "Full scripting + outlines", "On-set teleprompter support", "Cinematic editing", "YouTube SEO optimization"],
-      spotsAvailable: PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.spotsAvailable,
-      urgency: PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.urgency
+      spotsAvailable: PRICING.OTHER_BUNDLES.YOUTUBE_ENGINE.spotsAvailable,
+      urgency: PRICING.OTHER_BUNDLES.YOUTUBE_ENGINE.urgency
     },
     {
-      title: PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.name,
-      price: PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.price,
+      title: PRICING.OTHER_BUNDLES.SEVEN_DAY_LAUNCH.name,
+      price: PRICING.OTHER_BUNDLES.SEVEN_DAY_LAUNCH.price,
       type: "One-time",
-      description: `${PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.sessions}. ${PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.delivery.join(" and ")}. ${PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.timeline}`,
+      description: `${PRICING.OTHER_BUNDLES.SEVEN_DAY_LAUNCH.sessions}. ${PRICING.OTHER_BUNDLES.SEVEN_DAY_LAUNCH.delivery.join(" and ")}. ${PRICING.OTHER_BUNDLES.SEVEN_DAY_LAUNCH.timeline}`,
       features: ["1 strategy session", "1 shoot day", "1 hero brand video (90-120 sec)", "3-5 social cutdowns", "7-day turnaround"],
-      spotsAvailable: PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.spotsAvailable,
-      urgency: PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.urgency
+      spotsAvailable: PRICING.OTHER_BUNDLES.SEVEN_DAY_LAUNCH.spotsAvailable,
+      urgency: PRICING.OTHER_BUNDLES.SEVEN_DAY_LAUNCH.urgency
     },
     {
-      title: PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.name,
-      price: PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.price,
+      title: PRICING.OTHER_BUNDLES.THIRTY_REELS.name,
+      price: PRICING.OTHER_BUNDLES.THIRTY_REELS.price,
       type: "One-time",
-      description: `${PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.shoot} producing ${PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.videos}. ${PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.includes}`,
+      description: `${PRICING.OTHER_BUNDLES.THIRTY_REELS.shoot} producing ${PRICING.OTHER_BUNDLES.THIRTY_REELS.videos}. ${PRICING.OTHER_BUNDLES.THIRTY_REELS.includes}`,
       features: ["1 full-day shoot (8 hours)", "30 social videos (15-30 sec)", "Platform formatting", "Captions included", "IG/LinkedIn/TikTok ready"],
-      spotsAvailable: PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.spotsAvailable,
-      urgency: PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.urgency
+      spotsAvailable: PRICING.OTHER_BUNDLES.THIRTY_REELS.spotsAvailable,
+      urgency: PRICING.OTHER_BUNDLES.THIRTY_REELS.urgency
     },
     {
-      title: PRICING.ONE_TIME_BUNDLES.FOUNDER_BRAND_KIT.name,
-      price: PRICING.ONE_TIME_BUNDLES.FOUNDER_BRAND_KIT.price,
+      title: PRICING.OTHER_BUNDLES.FOUNDER_BRAND_KIT.name,
+      price: PRICING.OTHER_BUNDLES.FOUNDER_BRAND_KIT.price,
       type: "One-time",
-      description: `${PRICING.ONE_TIME_BUNDLES.FOUNDER_BRAND_KIT.shoot} including ${PRICING.ONE_TIME_BUNDLES.FOUNDER_BRAND_KIT.includes.join(", ")}.`,
+      description: `${PRICING.OTHER_BUNDLES.FOUNDER_BRAND_KIT.shoot} including ${PRICING.OTHER_BUNDLES.FOUNDER_BRAND_KIT.includes.join(", ")}.`,
       features: ["1 shoot day + strategy", "Founder Bio Video (90-120 sec)", "2 Hook/Top-of-Funnel Videos", "Vibe Montage or Style Sizzle", "Multi-platform delivery", "Thumbnails included"],
-      spotsAvailable: PRICING.ONE_TIME_BUNDLES.FOUNDER_BRAND_KIT.spotsAvailable,
-      urgency: PRICING.ONE_TIME_BUNDLES.FOUNDER_BRAND_KIT.urgency
+      spotsAvailable: PRICING.OTHER_BUNDLES.FOUNDER_BRAND_KIT.spotsAvailable,
+      urgency: PRICING.OTHER_BUNDLES.FOUNDER_BRAND_KIT.urgency
     },
     {
-      title: PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.name,
-      price: PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.price,
+      title: PRICING.OTHER_BUNDLES.STARTER_SESSION.name,
+      price: PRICING.OTHER_BUNDLES.STARTER_SESSION.price,
       type: "One-time",
-      description: `${PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.session} with ${PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.minimum}. ${PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.style}`,
+      description: `${PRICING.OTHER_BUNDLES.STARTER_SESSION.session} with ${PRICING.OTHER_BUNDLES.STARTER_SESSION.minimum}. ${PRICING.OTHER_BUNDLES.STARTER_SESSION.style}`,
       features: ["30-minute session", "3+ one-minute videos", "Simple talking-head style", "No stylized editing", "Limited slots"],
-      spotsAvailable: PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.spotsAvailable,
-      urgency: PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.urgency
+      spotsAvailable: PRICING.OTHER_BUNDLES.STARTER_SESSION.spotsAvailable,
+      urgency: PRICING.OTHER_BUNDLES.STARTER_SESSION.urgency
     }
   ];
 
@@ -208,110 +190,78 @@ export const VideoPackagesTiers = () => {
           </div>
         </div>
 
-        {/* Group Coaching Section */}
-        <div className="mb-16 md:mb-24">
-            <div className="bg-white p-8 md:p-12 rounded-3xl text-center video-shadow-lg border-4 border-gradient-to-r from-social-purple to-social-pink">
-            <div className="flex items-center justify-center mb-4">
-              <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-bold text-sm md:text-base mr-4">
-                <Users size={20} className="mr-2" />
-                🗓️ 6-Week Group Coaching: "The Camera-Ready Brand"
-              </div>
-              <div className="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-bold">
-                {PRICING.GROUP_COACHING.CAMERA_READY_BRAND.spotsAvailable} spots left
-              </div>
-            </div>
-            <h2 className="text-xl md:text-2xl font-display font-black mb-4 text-corporate-dark">
-              Group <span className="text-gradient-purple">Video Coaching</span>
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              <div className="bg-gray-50 p-6 rounded-2xl border-2 border-social-purple/20">
-                <div className="text-4xl font-black mb-2 text-corporate-dark">$2,000</div>
-                <div className="text-lg font-medium text-corporate-gray">One-time investment</div>
-              </div>
-              <div className="bg-gray-50 p-6 rounded-2xl border-2 border-social-purple/20">
-                <div className="text-2xl font-bold mb-2 text-corporate-dark">8-10 Founders</div>
-                <div className="text-lg font-medium text-corporate-gray">Max seats per cohort</div>
-              </div>
-              <div className="bg-gray-50 p-6 rounded-2xl border-2 border-social-purple/20">
-                <div className="text-2xl font-bold mb-2 text-corporate-dark">Weekly Zoom</div>
-                <div className="text-lg font-medium text-corporate-gray">Live sessions + feedback</div>
-              </div>
-            </div>
-            <p className="text-xl mb-8 text-corporate-gray">
-              Build confidence + skill to record your first 3–5 brand videos yourself. Includes assignments, feedback, and private Circle group.
-            </p>
-            <button
-              onClick={() => handleBooking("Camera-Ready Brand Coaching")}
-              className="px-8 py-4 bg-gradient-to-r from-social-purple to-social-pink text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
-            >
-              Join Next Cohort
-            </button>
-          </div>
-        </div>
-
-        {/* Monthly Content System */}
+        {/* Business Video Assets Section */}
         <div className="mb-16 md:mb-24">
           <div className="text-center mb-8 md:mb-12">
-            <div className="inline-flex items-center px-4 py-2 gradient-social-3 rounded-full text-white font-bold text-sm md:text-base mb-4">
-              <Repeat size={20} className="mr-2" />
-              ♻️ Monthly Content System: "The Social Authority Kit"
+            <div className="inline-flex items-center px-4 py-2 gradient-social-2 rounded-full text-white font-bold text-sm md:text-base mb-4">
+              <Users size={20} className="mr-2" />
+              🏢 Business Video Assets
             </div>
             <h2 className="text-xl md:text-2xl font-display font-black text-corporate-dark mb-2">
-              Monthly <span className="text-gradient-3">Content System</span>
+              Business <span className="text-gradient-2">Video Assets</span>
             </h2>
-            <p className="text-sm text-corporate-gray">Consistent professional video content delivered monthly</p>
+            <p className="text-sm text-corporate-gray">Internal & external video systems for business operations</p>
           </div>
 
           <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-3xl video-shadow-lg">
             <div className="text-center mb-8">
-              <div className="text-5xl font-black text-corporate-dark mb-2">$3,000<span className="text-xl text-corporate-gray">/month</span></div>
-              <div className="text-lg text-corporate-gray font-medium mb-4">3-month minimum commitment</div>
+              <div className="text-5xl font-black text-corporate-dark mb-2">$4,500 - $10,000+</div>
+              <div className="text-lg text-corporate-gray font-medium mb-4">One-time investment</div>
               <div className="inline-block px-4 py-2 bg-red-100 text-red-800 rounded-full text-sm font-bold">
-                {PRICING.MONTHLY_CONTENT.SOCIAL_AUTHORITY_KIT.urgency}
+                Limited availability this quarter
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <div className="bg-gray-50 p-6 rounded-2xl">
-                <h4 className="font-bold text-corporate-dark mb-4">Monthly Delivery Includes:</h4>
+                <h4 className="font-bold text-corporate-dark mb-4">Internal Business Video Assets:</h4>
                 <ul className="space-y-3">
                   <li className="flex items-center">
                     <CheckCircle size={16} className="text-green-500 mr-3" />
-                    <span className="text-sm">1 Hero/Founder video (90–120 seconds)</span>
+                    <span className="text-sm">Onboarding & Training videos</span>
                   </li>
                   <li className="flex items-center">
                     <CheckCircle size={16} className="text-green-500 mr-3" />
-                    <span className="text-sm">6 Social Reels (30–45 seconds each)</span>
+                    <span className="text-sm">Software Walkthroughs</span>
                   </li>
                   <li className="flex items-center">
                     <CheckCircle size={16} className="text-green-500 mr-3" />
-                    <span className="text-sm">1 Client Voice/Social Proof video (60–90 seconds)</span>
+                    <span className="text-sm">Process & Policy Explainers</span>
                   </li>
                   <li className="flex items-center">
                     <CheckCircle size={16} className="text-green-500 mr-3" />
-                    <span className="text-sm">Captions + Thumbnails (Platform-optimized)</span>
+                    <span className="text-sm">Culture & Retention content</span>
                   </li>
                 </ul>
               </div>
               <div className="bg-gray-50 p-6 rounded-2xl">
-                <h4 className="font-bold text-corporate-dark mb-4">YouTube Long-Form:</h4>
-                <p className="text-sm text-corporate-gray mb-4">
-                  For YouTube long-form videos, check out our "YouTube Visibility Engine" one-time bundle below.
-                </p>
-                <div className="bg-blue-50 p-4 rounded-xl">
-                    <h5 className="font-bold text-blue-800 mb-2">🎁 Bonus Included:</h5>
-                    <p className="text-sm text-blue-700">
-                      Get the complete Business Bonus Pack (valued at $410) FREE with this package!
-                    </p>
-                </div>
+                <h4 className="font-bold text-corporate-dark mb-4">External Business Video Assets:</h4>
+                <ul className="space-y-3">
+                  <li className="flex items-center">
+                    <CheckCircle size={16} className="text-green-500 mr-3" />
+                    <span className="text-sm">Customer FAQ Libraries</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle size={16} className="text-green-500 mr-3" />
+                    <span className="text-sm">Product/Service Explainers</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle size={16} className="text-green-500 mr-3" />
+                    <span className="text-sm">Testimonial Capsules</span>
+                  </li>
+                  <li className="flex items-center">
+                    <CheckCircle size={16} className="text-green-500 mr-3" />
+                    <span className="text-sm">Behind-the-Scenes content</span>
+                  </li>
+                </ul>
               </div>
             </div>
 
             <button
-              onClick={() => handleBooking("Social Authority Kit")}
-              className="w-full py-4 px-6 gradient-social-3 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
+              onClick={() => handleBooking("Business Video Assets")}
+              className="w-full py-4 px-6 gradient-social-2 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
             >
-              Apply for Monthly Content System
+              Book Strategy Call for Business Assets
             </button>
           </div>
         </div>
@@ -324,7 +274,7 @@ export const VideoPackagesTiers = () => {
               🛠️ One-Time Problem-Solving Bundles
             </div>
             <h2 className="text-xl md:text-2xl font-display font-black text-corporate-dark mb-2">
-              One-Time <span className="text-gradient-4">Bundles</span>
+              Other Video <span className="text-gradient-4">Bundles</span>
             </h2>
             <p className="text-sm text-corporate-gray">Targeted solutions for specific video needs</p>
           </div>
@@ -391,7 +341,7 @@ export const VideoPackagesTiers = () => {
                 Your Free <span className="bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">Business Tools</span>
               </h2>
               <p className="text-xl mb-2 text-corporate-gray">Included FREE with:</p>
-              <p className="text-lg text-corporate-gray">Monthly Social Authority Kit + Any One-Time Bundle $4,500+</p>
+              <p className="text-lg text-corporate-gray">Any Business Video Assets Package $4,500+</p>
             </div>
 
             <div className="max-w-4xl mx-auto">

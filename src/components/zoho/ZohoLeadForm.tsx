@@ -20,12 +20,10 @@ export type ZohoLeadFormProps = {
 
 const PROJECT_TYPES = [
   "30 Reels in 30 Days",
-  "Coaching",
   "Commercial/Advertisement",
   "Corporate Video",
-  "External FAQ Buildout",
-  "Internal FAQ Buildout",
-  "Monthly Content System",
+  "External Business Video Assets",
+  "Internal Business Video Assets",
   "Post-Production Only",
   "The 7 - Day :Launch",
   "The Founder's Brand Kit",
@@ -35,12 +33,10 @@ const PROJECT_TYPES = [
 
 const PROJECT_TYPE_INFO: Record<string, string> = {
   "30 Reels in 30 Days": "Done-with-you short-form content sprint to build momentum fast.",
-  "Coaching": "1:1 or team coaching on content strategy, on-camera performance, and systems.",
   "Commercial/Advertisement": "Scripted promotional video for campaigns and paid distribution.",
   "Corporate Video": "Company story, recruiting, training, or internal communications.",
-  "External FAQ Buildout": "Answer buyer questions at scale with trust-building FAQ videos.",
-  "Internal FAQ Buildout": "Document processes and onboard faster with evergreen internal videos.",
-  "Monthly Content System": "Ongoing content engine: plan, produce, edit, and publish each month.",
+  "External Business Video Assets": "Customer-facing videos that scale trust and reduce repetitive conversations.",
+  "Internal Business Video Assets": "Video systems that scale your company from the inside out and replace PDFs.",
   "Post-Production Only": "Editing and finishing for footage you already have.",
   "The 7 - Day :Launch": "Rapid go-to-market package to launch an offer in a week.",
   "The Founder's Brand Kit": "Evergreen founder story + signature content pillars.",
@@ -67,15 +63,13 @@ const TIMELINES = [
 ];
 
 const OPTION_PRICE: Record<string, string> = {
-  "External FAQ Buildout": PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.price,
-  "Internal FAQ Buildout": PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.price,
-  "YouTube Visibility Engine": PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.price,
-  "30 Reels in 30 Days": PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.price,
-  "The Founder's Brand Kit": PRICING.ONE_TIME_BUNDLES.FOUNDER_BRAND_KIT.price,
-  "The 7 - Day :Launch": PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.price,
-  "The Started Session": PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.price,
-  "Monthly Content System": PRICING.MONTHLY_CONTENT.SOCIAL_AUTHORITY_KIT.displayPrice,
-  "Coaching": PRICING.GROUP_COACHING.CAMERA_READY_BRAND.displayPrice,
+  "External Business Video Assets": PRICING.BUSINESS_VIDEO_ASSETS.EXTERNAL_ASSETS.price,
+  "Internal Business Video Assets": PRICING.BUSINESS_VIDEO_ASSETS.INTERNAL_ASSETS.price,
+  "YouTube Visibility Engine": PRICING.OTHER_BUNDLES.YOUTUBE_ENGINE.price,
+  "30 Reels in 30 Days": PRICING.OTHER_BUNDLES.THIRTY_REELS.price,
+  "The Founder's Brand Kit": PRICING.OTHER_BUNDLES.FOUNDER_BRAND_KIT.price,
+  "The 7 - Day :Launch": PRICING.OTHER_BUNDLES.SEVEN_DAY_LAUNCH.price,
+  "The Started Session": PRICING.OTHER_BUNDLES.STARTER_SESSION.price,
   "Commercial/Advertisement": "Custom",
   "Corporate Video": "Custom",
   "Post-Production Only": "Custom",

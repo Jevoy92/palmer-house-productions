@@ -156,17 +156,20 @@ export const VideoPackagesTiers = () => {
         {/* Hero Section */}
         <div className="text-center mb-8 md:mb-12">
           <div className="inline-block px-3 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-4 video-shadow">
-            🎬 Video Packages
+            🎬 Business Video Assets
           </div>
           <h1 className="text-2xl md:text-4xl font-display font-black mb-4 text-corporate-dark tracking-tight">
-            Video Production <span className="text-gradient-1">Packages</span>
+            Business Video Assets: <span className="text-gradient-1">Evergreen Tools for Growth</span>
           </h1>
           <p className="text-base md:text-lg text-corporate-gray mb-4 max-w-2xl mx-auto px-4">
-            Professional video content for businesses. Choose the package that fits your needs.
+            Not social fluff — these are cinematic, repeatable videos that save your team time, cut training costs, and build customer trust.
           </p>
-          <div className="inline-block px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 text-xs font-medium mb-6">
-            📅 Limited monthly availability
-          </div>
+          <button
+            onClick={handleDiscoveryCall}
+            className="inline-flex items-center px-6 py-3 gradient-social-1 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300 video-shadow mb-6"
+          >
+            Book Strategy Call
+          </button>
         </div>
 
         {/* Digital Downloads Section */}

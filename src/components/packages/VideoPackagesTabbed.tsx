@@ -132,37 +132,36 @@ export const VideoPackagesTabbed = () => {
         {/* Hero Section */}
         <div className="text-center mb-8 md:mb-12">
           <div className="inline-block px-3 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-4 video-shadow">
-            🎬 Video Packages
+            🎬 Business Video Assets
           </div>
           <h2 className="text-2xl md:text-4xl font-display font-black mb-4 text-corporate-dark tracking-tight">
-            Video Production <span className="text-gradient-1">Services</span>
+            Business Video Assets: <span className="text-gradient-1">Evergreen Tools for Growth</span>
           </h2>
           <p className="text-base md:text-lg text-corporate-gray mb-4 max-w-2xl mx-auto px-4">
-            Professional video content organized by service type for easy browsing.
+            Not social fluff — these are cinematic, repeatable videos that save your team time, cut training costs, and build customer trust.
           </p>
-          <div className="inline-block px-3 py-2 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 text-xs font-medium mb-6">
-            📅 Limited monthly availability
-          </div>
+          <button
+            onClick={handleDiscoveryCall}
+            className="inline-flex items-center px-6 py-3 gradient-social-1 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300 video-shadow mb-6"
+          >
+            Book Strategy Call
+          </button>
         </div>
 
         {/* Tabbed Interface */}
-        <Tabs defaultValue="diy" className="w-full">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-6 h-auto">
-            <TabsTrigger value="diy" className="text-xs py-3 min-h-[44px] flex flex-col md:flex-row items-center">
-              <Download size={14} className="mb-1 md:mb-0 md:mr-2" />
-              <span>DIY</span>
-            </TabsTrigger>
-            <TabsTrigger value="coaching" className="text-xs py-3 min-h-[44px] flex flex-col md:flex-row items-center">
-              <Users size={14} className="mb-1 md:mb-0 md:mr-2" />
-              <span>Coaching</span>
-            </TabsTrigger>
-            <TabsTrigger value="monthly" className="text-xs py-3 min-h-[44px] flex flex-col md:flex-row items-center">
-              <Repeat size={14} className="mb-1 md:mb-0 md:mr-2" />
-              <span>Monthly</span>
+        <Tabs defaultValue="assets" className="w-full">
+          <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 mb-6 h-auto">
+            <TabsTrigger value="assets" className="text-xs py-3 min-h-[44px] flex flex-col md:flex-row items-center">
+              <Wrench size={14} className="mb-1 md:mb-0 md:mr-2" />
+              <span>Business Video Assets</span>
             </TabsTrigger>
             <TabsTrigger value="bundles" className="text-xs py-3 min-h-[44px] flex flex-col md:flex-row items-center">
-              <Wrench size={14} className="mb-1 md:mb-0 md:mr-2" />
-              <span>Bundles</span>
+              <Video size={14} className="mb-1 md:mb-0 md:mr-2" />
+              <span>Other Bundles</span>
+            </TabsTrigger>
+            <TabsTrigger value="diy" className="text-xs py-3 min-h-[44px] flex flex-col md:flex-row items-center">
+              <Download size={14} className="mb-1 md:mb-0 md:mr-2" />
+              <span>DIY Starters</span>
             </TabsTrigger>
           </TabsList>
 

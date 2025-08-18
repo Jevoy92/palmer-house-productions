@@ -24,65 +24,58 @@ export const PRICING = {
     }
   },
 
-  // 2. Group Coaching
-  GROUP_COACHING: {
-    CAMERA_READY_BRAND: {
-      price: "$2,000",
-      displayPrice: "$2,000",
-      name: "The Camera-Ready Brand",
-      duration: "6 weeks",
-      format: "Weekly Zoom sessions (live)",
-      maxSeats: "8–10 founders per cohort",
-      spotsAvailable: 6,
-      maxSpots: 10,
-      includes: ["Assignments", "Feedback", "Private Circle group"],
-      outcome: "Confidence + skill to record your first 3–5 brand videos yourself",
-      commitment: "One-time",
-      urgency: "Next cohort starts in 3 weeks"
-    }
-  },
-
-  // 3. Monthly Content System
-  MONTHLY_CONTENT: {
-    SOCIAL_AUTHORITY_KIT: {
-      price: "$3,000",
-      displayPrice: "$3,000/month",
-      name: "The Social Authority Kit",
-      commitment: "3-month minimum",
-      spotsAvailable: 3,
-      maxSpots: 8,
-      monthlyDelivery: {
-        heroVideo: "1 Hero/Founder video (90–120 seconds)",
-        socialReels: "6 Social Reels (30–45 seconds each)",
-        clientVoice: "1 Client Voice/Social Proof video (60–90 seconds)",
-        extras: "Captions + Thumbnails (Platform-optimized)"
-      },
-      urgency: "Only 3 spots available this quarter"
-    }
-  },
-
-  // 4. One-Time Problem-Solving Bundles
-  ONE_TIME_BUNDLES: {
-    INTERNAL_FAQ: { 
+  // 2. Business Video Assets
+  BUSINESS_VIDEO_ASSETS: {
+    INTERNAL_ASSETS: { 
       price: "$4,500", 
-      name: "Internal FAQ Buildout",
-      videos: "Up to 15 short videos (60–90 seconds each)",
-      covers: ["HR onboarding", "hiring answers", "internal processes", "company explainer", "software tutorials"],
-      style: "Clean talking-head style (no heavy stylizing)",
+      name: "Internal Business Video Assets",
+      videos: "15 videos @ 1–2 min",
+      categories: [
+        "Onboarding & Training (new hire orientation, role-specific tutorials)",
+        "Software Walkthroughs (step-by-step demos)",
+        "Process & Policy Explainers (turn SOPs into video)",
+        "Culture & Retention (leadership messages, recognition)"
+      ],
+      style: "Cinematic, repeatable videos for internal use",
       spotsAvailable: 4,
       maxSpots: 6,
       urgency: "Only 4 spots available this month"
     },
-    EXTERNAL_FAQ: { 
+    EXTERNAL_ASSETS: { 
       price: "$4,500", 
-      name: "External FAQ Buildout",
-      videos: "Up to 15 short videos (60–90 seconds each)",
-      covers: ["Customer onboarding", "top objections", "service breakdowns", "pricing explanations"],
+      name: "External Business Video Assets",
+      videos: "15 videos @ 1–2 min",
+      categories: [
+        "Customer FAQ Libraries (billing, service steps, expectations)",
+        "Product/Service Explainers (clear and concise)",
+        "Testimonial Capsules & Case Studies (build credibility)",
+        "Behind-the-Scenes & Culture Stories (show how you work)",
+        "Recruitment Videos (attract top talent)"
+      ],
       delivery: "Delivered with thumbnails + captioned for posting",
       spotsAvailable: 5,
       maxSpots: 6,
       urgency: "Only 5 spots available this month"
     },
+    ADVANCED_ASSETS: { 
+      price: "$10,000+", 
+      name: "Business Video Assets (Advanced/Safety & Compliance)",
+      videos: "8–10 videos @ up to 5 min",
+      categories: [
+        "Safety & Compliance Training (manufacturing, healthcare, construction)",
+        "Sales Training (pitch processes, objection handling)",
+        "Advanced Software Walkthroughs (complex systems)",
+        "Regulatory Compliance (industry-specific requirements)"
+      ],
+      style: "Extended format for complex processes and compliance needs",
+      spotsAvailable: 2,
+      maxSpots: 4,
+      urgency: "Only 2 spots available this quarter"
+    }
+  },
+
+  // 3. Other Video Bundles
+  OTHER_BUNDLES: {
     YOUTUBE_ENGINE: { 
       price: "$6,500", 
       name: "YouTube Visibility Engine",
@@ -133,11 +126,11 @@ export const PRICING = {
     }
   },
 
-  // 5. Built-In Bonus Bundle
+  // 3. Built-In Bonus Bundle
   BONUS_PACK: {
     name: "The Business Bonus Pack",
     totalValue: "$410",
-    qualifies: ["Monthly Social Authority Kit", "Any One-Time Bundle $4,500+"],
+    qualifies: ["Any Business Video Assets Package $4,500+"],
     items: [
       { item: "25 DIY Reels PDF + script pack", value: "$47" },
       { item: "The Video Strategy Blueprint", value: "$19" },
@@ -153,19 +146,20 @@ export const PRICING = {
 export const getRecommendationForUseCase = (useCase: string): string => {
   switch (useCase) {
     case "team-training":
+    case "onboarding":
+      return `${PRICING.BUSINESS_VIDEO_ASSETS.INTERNAL_ASSETS.name} or ${PRICING.BUSINESS_VIDEO_ASSETS.ADVANCED_ASSETS.name}`;
+    case "customer-education":
+    case "education":
+      return `${PRICING.BUSINESS_VIDEO_ASSETS.EXTERNAL_ASSETS.name}`;
     case "authority":
-      return `${PRICING.ONE_TIME_BUNDLES.YOUTUBE_ENGINE.name} or ${PRICING.MONTHLY_CONTENT.SOCIAL_AUTHORITY_KIT.name}`;
+      return `${PRICING.OTHER_BUNDLES.YOUTUBE_ENGINE.name}`;
     case "social-growth":
     case "marketing":
-      return `${PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.name} or ${PRICING.MONTHLY_CONTENT.SOCIAL_AUTHORITY_KIT.name}`;
-    case "education":
-      return `${PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.name} or ${PRICING.GROUP_COACHING.CAMERA_READY_BRAND.name}`;
-    case "onboarding":
-      return `${PRICING.ONE_TIME_BUNDLES.INTERNAL_FAQ.name}`;
+      return `${PRICING.OTHER_BUNDLES.THIRTY_REELS.name}`;
     case "quick-start":
-      return `${PRICING.ONE_TIME_BUNDLES.SEVEN_DAY_LAUNCH.name} or ${PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.name}`;
+      return `${PRICING.OTHER_BUNDLES.SEVEN_DAY_LAUNCH.name} or ${PRICING.OTHER_BUNDLES.STARTER_SESSION.name}`;
     default:
-      return `${PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.name} or ${PRICING.GROUP_COACHING.CAMERA_READY_BRAND.name}`;
+      return `${PRICING.OTHER_BUNDLES.STARTER_SESSION.name} or ${PRICING.BUSINESS_VIDEO_ASSETS.INTERNAL_ASSETS.name}`;
   }
 };
 
@@ -173,27 +167,27 @@ export const getServiceForPersonality = (personality: string): { service: string
   switch (personality) {
     case "quiet-visionary":
       return { 
-        service: PRICING.GROUP_COACHING.CAMERA_READY_BRAND.name, 
-        reason: "Perfect for building confidence and voice-over focused content" 
+        service: PRICING.BUSINESS_VIDEO_ASSETS.INTERNAL_ASSETS.name, 
+        reason: "Perfect for systematic internal communication and training" 
       };
     case "high-energy-leader":
       return { 
-        service: PRICING.ONE_TIME_BUNDLES.THIRTY_REELS.name, 
+        service: PRICING.OTHER_BUNDLES.THIRTY_REELS.name, 
         reason: "Ideal for high-volume content creation and dynamic presence" 
       };
     case "natural-teacher":
       return { 
-        service: PRICING.ONE_TIME_BUNDLES.EXTERNAL_FAQ.name, 
+        service: PRICING.BUSINESS_VIDEO_ASSETS.EXTERNAL_ASSETS.name, 
         reason: "Great for educational content and answering customer questions" 
       };
     case "empathic-guide":
       return { 
-        service: PRICING.MONTHLY_CONTENT.SOCIAL_AUTHORITY_KIT.name, 
-        reason: "Perfect for consistent story-driven and testimonial content" 
+        service: PRICING.BUSINESS_VIDEO_ASSETS.EXTERNAL_ASSETS.name, 
+        reason: "Perfect for testimonial content and customer trust-building" 
       };
     default:
       return { 
-        service: PRICING.ONE_TIME_BUNDLES.STARTER_SESSION.name, 
+        service: PRICING.OTHER_BUNDLES.STARTER_SESSION.name, 
         reason: "A great starting point for most founders" 
       };
   }
@@ -201,9 +195,9 @@ export const getServiceForPersonality = (personality: string): { service: string
 
 export const getBonusPackEligibility = (selectedService: string): boolean => {
   const qualifyingServices = [
-    "The Social Authority Kit",
-    "Internal FAQ Buildout", 
-    "External FAQ Buildout",
+    "Internal Business Video Assets",
+    "External Business Video Assets", 
+    "Business Video Assets (Advanced/Safety & Compliance)",
     "YouTube Visibility Engine",
     "30 Reels in 30 Days",
     "The Founder's Brand Kit"

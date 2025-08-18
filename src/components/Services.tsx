@@ -12,22 +12,22 @@ export const Services = () => {
     },
     {
       icon: Users,
-      title: "Coaching Programs",
-      description: "Group coaching to build video skills and on-camera confidence.",
+      title: "Business Video Assets",
+      description: "Strategic video systems that replace repetitive operations and save time.",
       gradient: "gradient-social-2", 
       textGradient: "text-gradient-2"
     },
     {
       icon: Film,
-      title: "Content Partnership",
-      description: "Monthly collaboration to produce consistent, high-quality video content.",
+      title: "Other Video Bundles",
+      description: "Specialized video solutions for events, recruitment, and music production.",
       gradient: "gradient-social-3",
       textGradient: "text-gradient-3"
     },
     {
       icon: Megaphone,
-      title: "Full-Service Production",
-      description: "Complete video solutions handled from concept to delivery.",
+      title: "Coaching & Support",
+      description: "Group coaching programs and hands-on guidance for video confidence.",
       gradient: "gradient-social-4",
       textGradient: "text-gradient-1"
     }

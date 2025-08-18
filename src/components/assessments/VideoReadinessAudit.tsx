@@ -271,21 +271,21 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
     
     if (overallScore >= 30 && overallScore < 70) {
       suggestedServices.push({
-        name: 'Group Video Marketing Coaching',
-        description: 'Structured group coaching to develop strategy and skills',
+        name: 'Business Video Assets',
+        description: 'Strategic video systems that replace repetitive operations',
         matchScore: 88,
         timeline: '2-3 months',
-        investment: '$2,500-$5,000'
+        investment: '$4,500-$6,500'
       });
     }
     
     if (overallScore >= 50) {
       suggestedServices.push({
-        name: 'Monthly Content Partnership',
-        description: 'Professional video creation and strategic guidance',
+        name: 'Other Video Bundles',
+        description: 'Specialized video solutions and content packages',
         matchScore: 92,
-        timeline: '3-6 months',
-        investment: '$8,000-$15,000'
+        timeline: '1-3 months',
+        investment: '$2,500-$7,500'
       });
     }
 

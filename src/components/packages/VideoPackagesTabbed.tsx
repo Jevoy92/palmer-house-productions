@@ -197,102 +197,118 @@ export const VideoPackagesTabbed = () => {
             </div>
           </TabsContent>
 
-          {/* Group Coaching Tab */}
-          <TabsContent value="coaching" className="space-y-6">
-            <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-3xl text-center video-shadow-lg border-4 border-gradient-to-r from-social-purple to-social-pink">
-              <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-bold text-sm md:text-base mb-6">
-                <Users size={20} className="mr-2" />
-                🗓️ 6-Week Group Coaching: "The Camera-Ready Brand"
-              </div>
-              <h2 className="text-3xl md:text-5xl font-display font-black mb-6 text-corporate-dark">
-                Transform Your <span className="text-gradient-purple">On-Camera Presence</span>
+          {/* Business Video Assets Tab */}
+          <TabsContent value="assets" className="space-y-6">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl md:text-4xl font-display font-black text-corporate-dark mb-4">
+                📊 Strategic Business Video Assets
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div className="bg-gray-50 p-6 rounded-2xl border-2 border-social-purple/20">
-                  <div className="text-4xl font-black mb-2 text-corporate-dark">$2,000</div>
-                  <div className="text-lg font-medium text-corporate-gray">One-time investment</div>
-                </div>
-                <div className="bg-gray-50 p-6 rounded-2xl border-2 border-social-purple/20">
-                  <div className="text-2xl font-bold mb-2 text-corporate-dark">8-10 Founders</div>
-                  <div className="text-lg font-medium text-corporate-gray">Max seats per cohort</div>
-                </div>
-                <div className="bg-gray-50 p-6 rounded-2xl border-2 border-social-purple/20">
-                  <div className="text-2xl font-bold mb-2 text-corporate-dark">Weekly Zoom</div>
-                  <div className="text-lg font-medium text-corporate-gray">Live sessions + feedback</div>
-                </div>
-              </div>
-              <p className="text-xl mb-8 text-corporate-gray">
-                Build confidence + skill to record your first 3–5 brand videos yourself. Includes assignments, feedback, and private Circle group.
+              <p className="text-lg text-corporate-gray max-w-3xl mx-auto">
+                Replace repetitive operations with systematic video solutions. One shoot → a year of assets.
               </p>
-              <button
-                onClick={() => handleBooking("Camera-Ready Brand Coaching")}
-                className="px-8 py-4 bg-gradient-to-r from-social-purple to-social-pink text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
-              >
-                Join Next Cohort
-              </button>
             </div>
-          </TabsContent>
 
-          {/* Monthly Content Tab */}
-          <TabsContent value="monthly" className="space-y-6">
-            <div className="max-w-4xl mx-auto bg-white p-8 md:p-12 rounded-3xl video-shadow-lg">
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center px-4 py-2 gradient-social-3 rounded-full text-white font-bold text-sm md:text-base mb-4">
-                  <Repeat size={20} className="mr-2" />
-                  ♻️ Monthly Content System: "The Social Authority Kit"
-                </div>
-                <h2 className="text-3xl md:text-4xl font-display font-black text-corporate-dark mb-4">
-                  Consistent Content, <span className="text-gradient-3">Delivered Monthly</span>
-                </h2>
-                <div className="text-5xl font-black text-corporate-dark mb-2">$3,000<span className="text-xl text-corporate-gray">/month</span></div>
-                <div className="text-lg text-corporate-gray font-medium mb-4">3-month minimum commitment</div>
-                <div className="inline-block px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 text-sm font-medium">
-                  🔥 Limited monthly slots available
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div className="bg-gray-50 p-6 rounded-2xl">
-                  <h4 className="font-bold text-corporate-dark mb-4">Monthly Delivery Includes:</h4>
-                  <ul className="space-y-3">
-                    <li className="flex items-center">
-                      <CheckCircle size={16} className="text-green-500 mr-3" />
-                      <span className="text-sm">1 Hero/Founder video (90–120 seconds)</span>
-                    </li>
-                    <li className="flex items-center">
-                      <CheckCircle size={16} className="text-green-500 mr-3" />
-                      <span className="text-sm">6 Social Reels (30–45 seconds each)</span>
-                    </li>
-                    <li className="flex items-center">
-                      <CheckCircle size={16} className="text-green-500 mr-3" />
-                      <span className="text-sm">1 Client Voice/Social Proof video (60–90 seconds)</span>
-                    </li>
-                    <li className="flex items-center">
-                      <CheckCircle size={16} className="text-green-500 mr-3" />
-                      <span className="text-sm">Captions + Thumbnails (Platform-optimized)</span>
-                    </li>
-                  </ul>
-                </div>
-                <div className="bg-gray-50 p-6 rounded-2xl">
-                  <h4 className="font-bold text-corporate-dark mb-4">What's Excluded:</h4>
-                  <p className="text-sm text-corporate-gray mb-4">
-                    YouTube (long-form) content is handled separately under our future ongoing monthly YouTube plan.
-                  </p>
-                  <div className="bg-blue-50 p-4 rounded-xl">
-                    <h5 className="font-bold text-blue-800 mb-2">🎁 Bonus Included:</h5>
-                    <p className="text-sm text-blue-700">
-                      Get the complete Business Bonus Pack (valued at $410) FREE with this package!
-                    </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              {/* External Business Video Assets */}
+              <div className="bg-white p-8 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300">
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-bold text-sm mb-4">
+                    <Users size={16} className="mr-2" />
+                    External Assets
                   </div>
+                  <h3 className="text-2xl font-bold text-corporate-dark mb-2">Customer-Facing Systems</h3>
+                  <div className="text-4xl font-black text-corporate-dark">{PRICING.BUSINESS_VIDEO_ASSETS.EXTERNAL_ASSETS.price}</div>
                 </div>
+                <p className="text-sm text-corporate-gray mb-6 leading-relaxed">
+                  Up to 15 videos covering customer onboarding, top objections, service breakdowns, and pricing explanations. 
+                  Delivered with thumbnails and captions for immediate deployment.
+                </p>
+                <ul className="space-y-2 mb-6">
+                  <li className="flex items-center text-sm">
+                    <CheckCircle size={14} className="text-green-500 mr-2" />
+                    Customer onboarding videos
+                  </li>
+                  <li className="flex items-center text-sm">
+                    <CheckCircle size={14} className="text-green-500 mr-2" />
+                    Objection handling content
+                  </li>
+                  <li className="flex items-center text-sm">
+                    <CheckCircle size={14} className="text-green-500 mr-2" />
+                    Service breakdowns
+                  </li>
+                  <li className="flex items-center text-sm">
+                    <CheckCircle size={14} className="text-green-500 mr-2" />
+                    Pricing explanations
+                  </li>
+                </ul>
+                <button
+                  onClick={() => handleBooking("External Business Video Assets")}
+                  className="w-full py-3 px-4 bg-gradient-to-r from-social-purple to-social-pink text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300 video-shadow"
+                >
+                  Book Strategy Call
+                </button>
               </div>
 
-              <button
-                onClick={() => handleBooking("Social Authority Kit")}
-                className="w-full py-4 px-6 gradient-social-3 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
-              >
-                Apply for Monthly Content System
-              </button>
+              {/* Internal Business Video Assets */}
+              <div className="bg-white p-8 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300">
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center px-4 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-4">
+                    <Wrench size={16} className="mr-2" />
+                    Internal Assets
+                  </div>
+                  <h3 className="text-2xl font-bold text-corporate-dark mb-2">Team-Facing Systems</h3>
+                  <div className="text-4xl font-black text-corporate-dark">{PRICING.BUSINESS_VIDEO_ASSETS.INTERNAL_ASSETS.price}</div>
+                </div>
+                <p className="text-sm text-corporate-gray mb-6 leading-relaxed">
+                  Up to 15 videos covering HR onboarding, hiring processes, internal procedures, and software tutorials. 
+                  Clean talking-head style for maximum clarity.
+                </p>
+                <ul className="space-y-2 mb-6">
+                  <li className="flex items-center text-sm">
+                    <CheckCircle size={14} className="text-green-500 mr-2" />
+                    HR onboarding content
+                  </li>
+                  <li className="flex items-center text-sm">
+                    <CheckCircle size={14} className="text-green-500 mr-2" />
+                    Hiring process videos
+                  </li>
+                  <li className="flex items-center text-sm">
+                    <CheckCircle size={14} className="text-green-500 mr-2" />
+                    Internal procedures
+                  </li>
+                  <li className="flex items-center text-sm">
+                    <CheckCircle size={14} className="text-green-500 mr-2" />
+                    Software tutorials
+                  </li>
+                </ul>
+                <button
+                  onClick={() => handleBooking("Internal Business Video Assets")}
+                  className="w-full py-3 px-4 gradient-social-2 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300 video-shadow"
+                >
+                  Book Strategy Call
+                </button>
+              </div>
+            </div>
+
+            {/* Bonus Pack Section */}
+            <div className="bg-gray-50 p-8 rounded-3xl border-2 border-gray-200">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center px-4 py-2 gradient-social-3 rounded-full text-white font-bold text-sm mb-4">
+                  <Gift size={16} className="mr-2" />
+                  Business Bonus Pack
+                </div>
+                <h3 className="text-2xl font-bold text-corporate-dark mb-2">Free with Any Business Video Assets Package</h3>
+                <div className="text-lg text-corporate-gray">Total Value: {PRICING.BONUS_PACK.totalValue}</div>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {bonusItems.map((item, index) => (
+                  <div key={index} className="flex items-center justify-between p-4 bg-white rounded-xl border">
+                    <span className="text-sm font-medium text-corporate-dark">{item.item}</span>
+                    <span className="text-sm font-bold text-green-600">{item.value}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </TabsContent>
 

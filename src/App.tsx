@@ -19,8 +19,6 @@ import AboutUs from "./pages/AboutUs";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import DIYDownloads from "./pages/services/DIYDownloads";
-import GroupCoaching from "./pages/services/GroupCoaching";
-import MonthlyContent from "./pages/services/MonthlyContent";
 import Team from "./pages/company/Team";
 import Values from "./pages/company/Values";
 import Reviews from "./pages/resources/Reviews";
@@ -81,8 +79,8 @@ const App = () => (
           <Route path="/locations/bellevue-wa" element={<BellevueWA />} />
           <Route path="/locations/portland-or" element={<PortlandOR />} />
           <Route path="/services/diy-downloads" element={<DIYDownloads />} />
-          <Route path="/services/group-coaching" element={<GroupCoaching />} />
-          <Route path="/services/monthly-content" element={<MonthlyContent />} />
+          <Route path="/services/group-coaching" element={<Navigate to="/video-packages" replace />} />
+          <Route path="/services/monthly-content" element={<Navigate to="/video-packages" replace />} />
           <Route path="/company/team" element={<Team />} />
           <Route path="/company/values" element={<Values />} />
           <Route path="/resources/reviews" element={<Reviews />} />

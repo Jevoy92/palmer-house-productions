@@ -481,7 +481,7 @@ export const ContentOverwhelmHub = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
-              onClick={() => window.open('/services/monthly-content', '_blank')}
+              onClick={() => window.open('/video-packages', '_blank')}
               className="bg-white text-corporate-dark px-8 py-3 hover:scale-105 transition-all"
             >
               Get Complete System

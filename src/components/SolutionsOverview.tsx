@@ -27,42 +27,42 @@ export const SolutionsOverview = () => {
       ]
     },
     {
-      category: "Hands-On Coaching",
-      description: "6-week group program for camera confidence", 
-      priceRange: "$2,000",
+      category: "Business Video Assets",
+      description: "Strategic video systems for operational efficiency", 
+      priceRange: "$4,500 - $6,500",
       icon: Users,
       gradient: "gradient-social-2",
       items: [
-        "Camera-Ready Brand Coaching",
-        "8-10 founders per cohort",
-        "Weekly Zoom sessions",
-        "Private Circle group"
+        "External Business Video Assets",
+        "Internal Business Video Assets",
+        "YouTube Visibility Engine",
+        "Founder's Brand Kit"
       ]
     },
     {
-      category: "Done-With-You Content",
-      description: "Monthly content system with consistent delivery",
-      priceRange: "$3,000/month",
+      category: "Other Video Bundles",
+      description: "Specialized video solutions for specific needs",
+      priceRange: "$500 - $7,500",
       icon: Repeat,
       gradient: "gradient-social-3",
       items: [
-        "1 Hero/Founder video monthly",
-        "6 Social Reels monthly",
-        "Client voice videos",
-        "Platform optimization"
+        "The Starter Session",
+        "30 Reels in 30 Days",
+        "Music Video Production",
+        "Event & Recruitment Capsules"
       ]
     },
     {
-      category: "Done-For-You Solutions",
-      description: "Complete one-time video bundles",
-      priceRange: "$500 - $6,500",
+      category: "DIY Coaching & Support",
+      description: "Guided learning and hands-on coaching",
+      priceRange: "$2,000",
       icon: Wrench,
       gradient: "gradient-social-4", 
       items: [
-        "FAQ Buildouts",
-        "YouTube Visibility Engine",
-        "Founder's Brand Kit",
-        "30 Reels in 30 Days"
+        "6-Week Camera-Ready Brand",
+        "Group coaching sessions",
+        "Private Circle community",
+        "Bonus pack included"
       ]
     }
   ];

@@ -119,10 +119,10 @@ const DIYDownloads = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <button
-                    onClick={() => navigate('/services/group-coaching')}
+                    onClick={() => navigate('/video-packages')}
                     className="px-8 py-4 bg-gradient-to-r from-social-purple to-social-pink text-white font-bold rounded-2xl hover:scale-105 transition-all duration-300"
                   >
-                    Explore Group Coaching
+                    Explore DIY Coaching
                   </button>
                   <a
                     href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
@@ -135,7 +135,7 @@ const DIYDownloads = () => {
                 </div>
               </div>
               <div className="mt-12">
-                <ZohoLeadForm title="Questions about DIY?" leadSource="Website" defaultProjectType="Monthly Content System" />
+                <ZohoLeadForm title="Questions about DIY?" leadSource="Website" defaultProjectType="Business Video Assets" />
               </div>
             </div>
           </div>

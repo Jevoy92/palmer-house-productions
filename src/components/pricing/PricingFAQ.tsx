@@ -12,7 +12,7 @@ export const PricingFAQ = () => {
     },
     {
       question: "Do you offer monthly video content packages?",
-      answer: "Yes, our \"Social Authority Kit\" delivers hero videos, reels, and social proof content every month, so you never run out of fresh, on-brand assets. Minimum 3-month commitment."
+      answer: "Yes, our \"Business Video Assets\" package delivers strategic video systems that replace repetitive operations, so you never run out of evergreen business documentation. Custom project basis."
     },
     {
       question: "How do your one-time bundles work?",

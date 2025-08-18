@@ -28,7 +28,7 @@ export const ServiceSelection = ({ selectedService, onServiceSelect, onBack }: S
       id: "assets",
       title: "Business Video Assets",
       description: "Strategic video systems that replace repetitive operations",
-      icon: "🎯",
+      icon: "🎬",
       gradient: "gradient-social-2",
     },
     {

@@ -33,7 +33,7 @@ export const ServiceCategorySelection = ({ serviceType, onCategorySelect, onBack
     },
     {
       id: "coaching" as ServiceCategory,
-      name: "Group Coaching",
+      name: "DIY Coaching",
       icon: Users,
       priceRange: "$2,000",
       description: "6-week intensive program to build camera confidence",
@@ -49,16 +49,16 @@ export const ServiceCategorySelection = ({ serviceType, onCategorySelect, onBack
     },
     {
       id: "monthly-content" as ServiceCategory,
-      name: "Monthly Content System",
+      name: "Business Video Assets",
       icon: Repeat,
-      priceRange: "$3,000/month",
-      description: "Consistent professional content delivered monthly",
+      priceRange: "$3,000-$15,000",
+      description: "Strategic video systems that replace repetitive operations",
       features: [
-        "1 Hero/Founder video monthly",
-        "6 Social Reels monthly",
-        "1 Client voice video",
-        "Platform-optimized captions & thumbnails",
-        "3-month minimum commitment"
+        "Process documentation videos",
+        "Internal training systems", 
+        "Client onboarding sequences",
+        "FAQ automation videos",
+        "Standard operating procedures"
       ],
       gradient: "gradient-social-3",
     },

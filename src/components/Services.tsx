@@ -27,7 +27,7 @@ export const Services = () => {
     {
       icon: Megaphone,
       title: "Coaching & Support",
-      description: "Group coaching programs and hands-on guidance for video confidence.",
+      description: "DIY coaching programs and hands-on guidance for video confidence.",
       gradient: "gradient-social-4",
       textGradient: "text-gradient-1"
     }

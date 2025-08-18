@@ -26,19 +26,19 @@ export const Hero = () => {
       <div className="relative z-10 text-center px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="mb-6 sm:mb-8">
           <div className="inline-block px-4 py-2.5 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-semibold text-sm sm:text-base mb-4 sm:mb-6 video-shadow">
-            Professional Video Production
+            Business Systems & Process Documentation
           </div>
         </div>
         
         <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-black mb-6 sm:mb-8 tracking-tight leading-[1.1] px-2">
-          Seattle Video Production Company That
+          Business Video Assets That
           <br className="hidden sm:block" />
           <span className="sm:hidden"> </span>
-          <span className="text-gradient-1">Drives Results</span>
+          <span className="text-gradient-1">Replace Manual Work</span>
         </h1>
         
         <p className="text-base sm:text-lg md:text-xl text-corporate-gray mb-8 sm:mb-10 font-medium max-w-4xl mx-auto leading-relaxed px-2">
-          Professional video production company specializing in production video services that save your business time and money while building your brand.
+          Strategic video production focused on business systems and process documentation that reduces repetitive work and scales your operations.
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-16 sm:mb-20 px-4">

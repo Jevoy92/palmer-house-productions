@@ -1,4 +1,3 @@
-
 import { Navigation } from "@/components/Navigation";
 import { VideoPackagesTabbed } from "@/components/packages/VideoPackagesTabbed";
 import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
@@ -26,7 +25,7 @@ const VideoPackagesPage = () => {
           { question: 'Do you offer one-off videos?', answer: 'We build content systems. Select one-time bundles are available when they function as systems (e.g., FAQ buildouts, launches).' },
           { question: 'How do I choose the right package?', answer: 'Start with your bottleneck. If it repeats weekly, systematize it — onboarding, FAQs, sales demos, or social proof.' },
           { question: 'Can we start now?', answer: 'Yes — all offers are available now. Book a strategy call to map scope and timeline.' },
-          { question: 'What’s the Social Authority Kit?', answer: 'A monthly content system delivering a hero/founder video, six reels, and a client voice video with captions and thumbnails.' },
+          { question: "What's the Business Video Assets package?", answer: "Strategic video systems that replace repetitive operations like client onboarding, training, and FAQ documentation." },
           { question: 'Are downloads instant?', answer: 'Yes — digital downloads are instant access with auto‑delivery.' }
         ]}
       />

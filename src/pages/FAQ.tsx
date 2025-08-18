@@ -79,7 +79,7 @@ const FAQ = () => {
     {
       category: "internal-external",
       question: "Can you create videos optimized for social media like TikTok, Instagram, and LinkedIn?",
-      answer: "Absolutely. Our \"Social Authority Kit\" and reels bundles are built to create snackable, scroll-stopping content for each platform—captions, thumbnails, and sizing all dialed in."
+      answer: "Absolutely. Our \"Business Video Assets\" and \"Other Bundles\" are built to create systematic business documentation and processes—all professionally optimized for your specific needs."
     },
     {
       category: "internal-external",
@@ -96,7 +96,7 @@ const FAQ = () => {
     {
       category: "packages-pricing",
       question: "Do you offer monthly video content packages?",
-      answer: "Yes, our \"Social Authority Kit\" delivers hero videos, reels, and social proof content every month, so you never run out of fresh, on-brand assets. Minimum 3-month commitment."
+      answer: "Yes, our \"Business Video Assets\" package delivers strategic systems that replace repetitive operations, so you never run out of evergreen business documentation. Custom project basis."
     },
     {
       category: "packages-pricing",
@@ -115,7 +115,7 @@ const FAQ = () => {
     },
     {
       category: "packages-pricing",
-      question: "What's included in the Camera-Ready Brand group coaching?",
+      question: "What's included in the Camera-Ready Brand DIY coaching?",
       answer: "Live cohort sessions, assignments, direct feedback, and a private group to help you get on camera, build your first 3–5 videos, and conquer video nerves."
     },
 

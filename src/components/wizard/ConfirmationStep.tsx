@@ -18,9 +18,8 @@ export const ConfirmationStep = ({ data, onSubmit, onZohoBooking, onBack, isSubm
     switch (serviceType) {
       case "consultation": return "General Consultation";
       case "diy": return "DIY Downloads";
-      case "coaching": return "Group Coaching";
-      case "monthly": return "Monthly Content System";
-      case "bundle": return "One-Time Bundles";
+      case "assets": return "Business Video Assets";
+      case "bundles": return "Other Bundles";
       default: return "Not specified";
     }
   };
@@ -29,9 +28,8 @@ export const ConfirmationStep = ({ data, onSubmit, onZohoBooking, onBack, isSubm
     switch (serviceType) {
       case "consultation": return "Book Strategy Call";
       case "diy": return "Get Instant Access";
-      case "coaching": return "Apply for Coaching";
-      case "monthly": return "Book Discovery Call";
-      case "bundle": return "Book Strategy Call";
+      case "assets": return "Book Strategy Call";
+      case "bundles": return "Book Strategy Call";
       default: return "Book & Pay Now";
     }
   };

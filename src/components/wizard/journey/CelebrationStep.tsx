@@ -19,11 +19,11 @@ export const CelebrationStep = ({ data, onClose, onNewInquiry, onZohoBooking }: 
     const { contentPace, businessStage, videoGoal } = data;
     
     if (contentPace === 'high-volume' || businessStage === 'enterprise') {
-      return "Monthly Content System";
+      return "Business Video Assets";
     } else if (contentPace === 'weekly' || businessStage === 'scaling_team' || videoGoal === 'thought_leadership') {
-      return "One-Time Bundles";
+      return "Other Bundles";
     } else if (contentPace === 'monthly' || businessStage === 'established' || videoGoal === 'lead_gen') {
-      return "Group Coaching";
+      return "DIY Coaching";
     } else {
       return "DIY Downloads";
     }
@@ -32,9 +32,9 @@ export const CelebrationStep = ({ data, onClose, onNewInquiry, onZohoBooking }: 
   const getPackageIcon = (packageName: string) => {
     switch (packageName) {
       case "DIY Downloads": return "📱";
-      case "Group Coaching": return "👥";
-      case "One-Time Bundles": return "🛠️";
-      case "Monthly Content System": return "🔄";
+      case "DIY Coaching": return "🎯";
+      case "Other Bundles": return "🛠️";
+      case "Business Video Assets": return "🎬";
       default: return "📦";
     }
   };
@@ -42,9 +42,9 @@ export const CelebrationStep = ({ data, onClose, onNewInquiry, onZohoBooking }: 
   const getPackageGradient = (packageName: string) => {
     switch (packageName) {
       case "DIY Downloads": return "gradient-social-1";
-      case "Group Coaching": return "gradient-social-2";
-      case "One-Time Bundles": return "gradient-social-3";
-      case "Monthly Content System": return "gradient-social-4";
+      case "DIY Coaching": return "gradient-social-2";
+      case "Other Bundles": return "gradient-social-3";
+      case "Business Video Assets": return "gradient-social-4";
       default: return "gradient-social-1";
     }
   };
@@ -52,9 +52,9 @@ export const CelebrationStep = ({ data, onClose, onNewInquiry, onZohoBooking }: 
   const getPackagePrice = (packageName: string) => {
     switch (packageName) {
       case "DIY Downloads": return "$19-$99";
-      case "Group Coaching": return "$2,000";
-      case "One-Time Bundles": return "$500-$6,500";
-      case "Monthly Content System": return "$3,000/month";
+      case "DIY Coaching": return "$2,000";
+      case "Other Bundles": return "$500-$6,500";
+      case "Business Video Assets": return "$3,000-$15,000";
       default: return "Custom Pricing";
     }
   };
@@ -93,9 +93,9 @@ export const CelebrationStep = ({ data, onClose, onNewInquiry, onZohoBooking }: 
                   <h2 className="text-3xl font-bold text-gray-900 mb-2">{recommendedPackage}</h2>
                   <p className="text-lg text-gray-600 mb-6">
                     {recommendedPackage === "DIY Downloads" && "Perfect for getting started with professional video content"}
-                    {recommendedPackage === "Group Coaching" && "Ideal for mastering on-camera presence and building confidence"}
-                    {recommendedPackage === "One-Time Bundles" && "Great for solving specific video challenges and building authority"}
-                    {recommendedPackage === "Monthly Content System" && "Ultimate solution for consistent content that drives results"}
+                    {recommendedPackage === "DIY Coaching" && "Ideal for mastering on-camera presence and building confidence"}
+                    {recommendedPackage === "Other Bundles" && "Great for solving specific video challenges and building authority"}
+                    {recommendedPackage === "Business Video Assets" && "Ultimate solution for systematic business processes and documentation"}
                   </p>
                   
                   <div className="flex items-center gap-4 mb-6">

@@ -60,7 +60,7 @@ export const SolutionsOverview = () => {
       gradient: "gradient-social-4", 
       items: [
         "6-Week Camera-Ready Brand",
-        "Group coaching sessions",
+        "DIY coaching sessions",
         "Private Circle community",
         "Bonus pack included"
       ]

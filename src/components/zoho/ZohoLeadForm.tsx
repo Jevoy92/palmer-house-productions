@@ -62,6 +62,7 @@ const TIMELINES = [
   "Flexible (2+ months)",
 ];
 
+// Pricing mapping for project types
 const OPTION_PRICE: Record<string, string> = {
   "External Business Video Assets": PRICING.BUSINESS_VIDEO_ASSETS.EXTERNAL_ASSETS.price,
   "Internal Business Video Assets": PRICING.BUSINESS_VIDEO_ASSETS.INTERNAL_ASSETS.price,

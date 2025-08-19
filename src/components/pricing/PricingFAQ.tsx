@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export const PricingFAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -45,36 +45,45 @@ export const PricingFAQ = () => {
   };
 
   return (
-    <section className="py-24 bg-background">
-      <div className="max-w-4xl mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-12 text-foreground">Frequently asked questions</h2>
-        
-        <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
-          {faqs.map((faq, index) => (
-            <div key={index} className="border-b border-border pb-6">
-              <button
+    <section className="py-16 px-4 md:px-8 lg:px-16 bg-background">
+      <div className="container mx-auto max-w-6xl">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
+          {/* Left column with heading and subtext */}
+          <div className="md:col-span-4">
+            <h2 className="text-6xl font-bold mb-6 text-foreground">FAQ</h2>
+            <p className="text-muted-foreground text-lg mb-8">
+              Get quick answers about working with us and our approach to digital solutions.
+            </p>
+            <span className="inline-flex items-center text-foreground font-medium group cursor-pointer hover:text-primary transition-colors">
+              <span className="mr-2">Ask a question</span>
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </span>
+          </div>
+          
+          {/* Right column with FAQ items */}
+          <div className="md:col-span-8">
+            {faqs.map((faq, index) => (
+              <div 
+                key={index} 
+                className="border-b border-border py-6 cursor-pointer group hover:bg-muted/50 transition-colors"
                 onClick={() => toggleFAQ(index)}
-                className="w-full text-left flex items-center justify-between group"
               >
-                <h3 className="text-xl font-semibold mb-3 text-foreground group-hover:text-primary transition-colors">
-                  {faq.question}
-                </h3>
-                <div className="flex-shrink-0 ml-4">
-                  {openIndex === index ? (
-                    <ChevronUp className="w-5 h-5 text-muted-foreground" />
-                  ) : (
-                    <ChevronDown className="w-5 h-5 text-muted-foreground" />
-                  )}
+                <div className="flex justify-between items-center">
+                  <h3 className="text-lg font-medium text-foreground group-hover:text-primary transition-colors pr-4">
+                    {faq.question}
+                  </h3>
+                  <span className="text-3xl font-light text-muted-foreground flex-shrink-0">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
                 </div>
-              </button>
-              
-              {openIndex === index && (
-                <div className="mt-3 text-muted-foreground leading-relaxed animate-accordion-down overflow-hidden">
-                  {faq.answer}
-                </div>
-              )}
-            </div>
-          ))}
+                {openIndex === index && (
+                  <div className="mt-4 text-muted-foreground">
+                    <p className="leading-relaxed">{faq.answer}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

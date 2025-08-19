@@ -9,7 +9,7 @@ export const ProcessOverview = () => {
       number: "01",
       title: "Map the System",
       bgColor: "bg-process-1",
-      triggerBg: "bg-process-1/20 hover:bg-process-1/30",
+      triggerBg: "bg-process-1 hover:bg-process-1",
       textColor: "text-charcoal",
       items: [
         {
@@ -30,7 +30,7 @@ export const ProcessOverview = () => {
       number: "02",
       title: "Capture the Core", 
       bgColor: "bg-process-2",
-      triggerBg: "bg-process-2/20 hover:bg-process-2/30",
+      triggerBg: "bg-process-2 hover:bg-process-2",
       textColor: "text-charcoal",
       items: [
         {
@@ -51,8 +51,8 @@ export const ProcessOverview = () => {
       number: "03", 
       title: "Build the Library",
       bgColor: "bg-process-3",
-      triggerBg: "bg-process-3/60 hover:bg-process-3/70",
-      textColor: "text-white",
+      triggerBg: "bg-process-3 hover:bg-process-3",
+      textColor: "text-charcoal",
       items: [
         {
           title: "Content System Assembly",
@@ -86,7 +86,7 @@ export const ProcessOverview = () => {
             <div className="flex items-center mb-4">
               <span className="text-sm font-medium tracking-widest text-muted-foreground">0—1</span>
             </div>
-            <h2 className="font-black tracking-tighter mb-6 text-charcoal">
+            <h2 className="text-8xl md:text-9xl font-black tracking-tighter mb-6 text-charcoal">
               Process
             </h2>
             <p className="max-w-2xl text-muted-foreground">
@@ -108,8 +108,8 @@ export const ProcessOverview = () => {
             <CollapsibleTrigger className={`w-full ${step.triggerBg} transition-all duration-300`}>
               <div className="container mx-auto container-padding">
                 <div className="flex items-center justify-between py-4 lg:py-6 relative">
-                  <h3 className={`font-bold z-10 ${step.textColor} text-left`}>{step.title}</h3>
-                  <span className="font-black text-white/20 absolute right-0 top-1/2 -translate-y-1/2 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl">
+                  <h3 className={`text-5xl font-bold z-10 ${step.textColor} text-left`}>{step.title}</h3>
+                  <span className="font-black text-white/70 absolute right-0 top-1/2 -translate-y-1/2 text-8xl">
                     {step.number}
                   </span>
                 </div>

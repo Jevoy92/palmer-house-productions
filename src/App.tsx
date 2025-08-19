@@ -38,6 +38,7 @@ import ThankYou from "./pages/ThankYou";
 import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 
 const VideoReadinessPage = lazy(() => import("./pages/assessments/VideoReadiness"));
+const PackagesPage = lazy(() => import("./pages/Packages"));
 
 const queryClient = new QueryClient();
 
@@ -71,6 +72,11 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/video-packages" element={<VideoPackages />} />
+          <Route path="/packages" element={
+            <Suspense fallback={<div className="p-8 text-center">Loading packages...</div>}>
+              <PackagesPage />
+            </Suspense>
+          } />
           <Route path="/discovery-call" element={<Navigate to="/contact" replace />} />
           <Route path="/video-use-cases" element={<VideoUseCases />} />
           <Route path="/about-us" element={<AboutUs />} />

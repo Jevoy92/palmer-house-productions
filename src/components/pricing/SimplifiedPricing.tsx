@@ -76,7 +76,7 @@ export const SimplifiedPricing = () => {
               <div className="flex items-end">
                 <span className="text-2xl text-foreground">$</span>
                 <span className="text-6xl font-bold text-foreground">
-                  {isAnnual ? "2,699" : "2,999"}
+                  {isAnnual ? "4,500" : "5,000"}
                 </span>
               </div>
               <p className="text-muted-foreground">
@@ -125,7 +125,7 @@ export const SimplifiedPricing = () => {
               <p className="text-sm mb-2 text-muted-foreground">Starts at</p>
               <div className="flex items-end">
                 <span className="text-2xl text-foreground">$</span>
-                <span className="text-6xl font-bold text-foreground">2,500</span>
+                <span className="text-6xl font-bold text-foreground">3,000</span>
               </div>
             </div>
             
@@ -158,10 +158,16 @@ export const SimplifiedPricing = () => {
             Choose the plan that works for you and start creating amazing content today.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <button className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 px-8 rounded-full transition duration-300">
-              Get started now
+            <button 
+              onClick={() => window.location.href = '/packages'}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 px-8 rounded-full transition duration-300"
+            >
+              View All Packages
             </button>
-            <button className="border-2 border-foreground hover:bg-foreground hover:text-background text-foreground font-medium py-3 px-8 rounded-full transition duration-300">
+            <button 
+              onClick={() => window.location.href = '/contact'}
+              className="border-2 border-foreground hover:bg-foreground hover:text-background text-foreground font-medium py-3 px-8 rounded-full transition duration-300"
+            >
               Talk to sales
             </button>
           </div>

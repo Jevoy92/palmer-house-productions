@@ -177,43 +177,40 @@ export const TrustSection = () => {
               
               {/* Timeline visualization */}
               <div className="relative pt-8">
-                {/* Vertical timeline line */}
-                <div className="absolute left-0 right-0 h-0.5 bg-gray-200 top-64"></div>
-                
-                {/* Timeline stages */}
-                <div className="relative grid grid-cols-3 gap-4">
-                  {/* Discovery stage */}
-                  <div className="flex flex-col items-center">
-                    <div className="px-4 py-2 bg-coral-light text-gray-900 font-medium rounded-full mb-4 text-xs text-center">
-                      Discovery
+                {/* Horizontal timeline line */}
+                <div className="relative h-0.5 bg-gray-200 mb-8">
+                  {/* Timeline stages */}
+                  <div className="absolute inset-0 flex justify-between items-center">
+                    {/* Discovery stage */}
+                    <div className="flex flex-col items-center">
+                      <div className="px-3 py-1.5 bg-coral-light text-gray-900 font-medium rounded-full text-xs whitespace-nowrap">
+                        Discovery
+                      </div>
+                      <div className="mt-2 text-gray-500 text-xs">1 Week</div>
                     </div>
-                    <div className="h-32 border-r border-gray-200"></div>
-                    <div className="pt-4 text-gray-500 text-xs text-center">1 Week</div>
-                  </div>
-                  
-                  {/* Concept stage */}
-                  <div className="flex flex-col items-center mt-16">
-                    <div className="px-4 py-2 bg-coral text-gray-900 font-medium rounded-full mb-4 text-xs text-center">
-                      Concept
+                    
+                    {/* Concept stage */}
+                    <div className="flex flex-col items-center">
+                      <div className="px-3 py-1.5 bg-coral text-gray-900 font-medium rounded-full text-xs whitespace-nowrap">
+                        Concept
+                      </div>
+                      <div className="mt-2 text-gray-500 text-xs">2 Weeks</div>
                     </div>
-                    <div className="h-16 border-r border-gray-200"></div>
-                    <div className="pt-4 text-gray-500 text-xs text-center">2 Weeks</div>
-                  </div>
-                  
-                  {/* Execution stage */}
-                  <div className="flex flex-col items-center mt-32">
-                    <div className="px-4 py-2 bg-coral-dark text-white font-medium rounded-full mb-4 text-xs text-center">
-                      Execution
+                    
+                    {/* Execution stage */}
+                    <div className="flex flex-col items-center">
+                      <div className="px-3 py-1.5 bg-coral-dark text-white font-medium rounded-full text-xs whitespace-nowrap">
+                        Execution
+                      </div>
+                      <div className="mt-2 text-gray-500 text-xs">3 Weeks</div>
                     </div>
-                    <div className="h-0 border-r border-gray-200"></div>
-                    <div className="pt-4 text-gray-500 text-xs text-center">3 Weeks</div>
                   </div>
                 </div>
               </div>
             </Card>
 
             {/* Statistics Card 2 */}
-            <Card className="bg-white p-8 rounded-3xl shadow-sm flex flex-col justify-between col-span-1 md:col-span-2 lg:col-span-1 border-0">
+            <Card className="bg-white p-8 rounded-3xl shadow-sm flex flex-col justify-between col-span-1 border-0">
               <div className="flex justify-between items-start w-full">
                 <span className="text-sm font-medium text-gray-500">Fact 02</span>
                 <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">

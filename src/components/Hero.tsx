@@ -1,12 +1,12 @@
 
 import { useState, useEffect } from "react";
 import { ContactWizard } from "./ContactWizard";
-import heroFounder from "../assets/hero-founder.jpg";
+import heroStatue from "../assets/hero-statue-camera.jpg";
 
 export const Hero = () => {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
 
-  const handleExplorePackages = () => {
+  const handleSeePricing = () => {
     window.location.href = '/video-packages';
   };
 
@@ -46,45 +46,47 @@ export const Hero = () => {
             <div className="lg:col-span-3 hero-content">
               {/* Service Categories */}
               <div className="mb-8 animate-fade-blur-in">
-                <div className="flex flex-wrap gap-2 mb-6">
-                  <span className="text-xs font-medium text-cinematic-glow/60 tracking-wide uppercase">Content Systems</span>
-                  <span className="text-cinematic-glow/30">•</span>
-                  <span className="text-xs font-medium text-cinematic-glow/60 tracking-wide uppercase">Brand Strategy</span>
-                  <span className="text-cinematic-glow/30">•</span>
-                  <span className="text-xs font-medium text-cinematic-glow/60 tracking-wide uppercase">Growth Systems</span>
+                <div className="flex flex-col gap-1 mb-6">
+                  <span className="text-sm font-medium text-cinematic-glow/70 tracking-wide">Content systems</span>
+                  <span className="text-sm font-medium text-cinematic-glow/70 tracking-wide">On-camera coaching</span>
+                  <span className="text-sm font-medium text-cinematic-glow/70 tracking-wide">Cinematic production</span>
+                  <span className="text-sm font-medium text-cinematic-glow/70 tracking-wide">Subscription fulfillment</span>
                 </div>
               </div>
               
               <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black mb-6 tracking-tight leading-[0.95] text-video-white animate-fade-blur-in" style={{animationDelay: '0.1s'}}>
-                Creative studio for
+                Creative video systems for
                 <br />
-                <span className="bg-gradient-to-r from-cinematic-violet to-cinematic-indigo bg-clip-text text-transparent">founders</span>
+                <span className="bg-gradient-to-r from-cinematic-violet to-cinematic-indigo bg-clip-text text-transparent">bold founders</span>
               </h1>
               
-              <p className="text-lg lg:text-xl text-cinematic-glow mb-10 font-medium max-w-xl leading-relaxed animate-fade-blur-in" style={{animationDelay: '0.2s'}}>
-                Systemized video that saves time, cuts costs, and scales your brand.
-              </p>
-              
-              <div className="animate-fade-blur-in" style={{animationDelay: '0.3s'}}>
+              <div className="animate-fade-blur-in" style={{animationDelay: '0.2s'}}>
                 <button 
-                  onClick={handleGetStarted}
-                  className="px-8 py-4 gradient-cinematic-primary text-video-white font-bold text-lg rounded-xl btn-cinematic min-h-[56px] flex items-center justify-center video-shadow-lg hover:animate-hover-pulse"
+                  onClick={handleSeePricing}
+                  className="px-8 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold text-base rounded-full transition-colors duration-200"
                 >
-                  Book Strategy Call
+                  See pricing
                 </button>
               </div>
             </div>
 
-            {/* Right Image - 40% */}
+            {/* Right Content - 40% */}
             <div className="lg:col-span-2 hero-image animate-fade-blur-in" style={{animationDelay: '0.4s'}}>
               <div className="relative">
-                <div className="aspect-[4/5] relative overflow-hidden rounded-2xl video-shadow-lg">
+                <div className="aspect-[4/5] relative overflow-hidden rounded-2xl video-shadow-lg mb-6">
                   <img
-                    src={heroFounder}
-                    alt="Confident founder in modern office environment"
+                    src={heroStatue}
+                    alt="Classical marble statue representing creative vision and leadership"
                     className="w-full h-full object-cover transform hover:scale-105 transition-all duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-cinematic-charcoal/20 to-transparent"></div>
+                </div>
+                
+                {/* Right-side descriptive text */}
+                <div className="text-cinematic-glow/80 text-sm leading-relaxed">
+                  <p>
+                    We partner with growth-stage brands who understand that premium video content is non-negotiable for sustainable growth.
+                  </p>
                 </div>
                 
                 {/* Floating accent element */}

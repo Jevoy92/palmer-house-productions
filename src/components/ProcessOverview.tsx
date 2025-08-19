@@ -9,6 +9,8 @@ export const ProcessOverview = () => {
       number: "01",
       title: "Map the System",
       bgColor: "bg-process-1",
+      triggerBg: "bg-process-1/20 hover:bg-process-1/30",
+      textColor: "text-charcoal",
       items: [
         {
           title: "Content Audit & Gap Analysis",
@@ -28,6 +30,8 @@ export const ProcessOverview = () => {
       number: "02",
       title: "Capture the Core", 
       bgColor: "bg-process-2",
+      triggerBg: "bg-process-2/20 hover:bg-process-2/30",
+      textColor: "text-charcoal",
       items: [
         {
           title: "Shoot Once, Use Everywhere",
@@ -47,6 +51,8 @@ export const ProcessOverview = () => {
       number: "03", 
       title: "Build the Library",
       bgColor: "bg-process-3",
+      triggerBg: "bg-process-3/60 hover:bg-process-3/70",
+      textColor: "text-white",
       items: [
         {
           title: "Content System Assembly",
@@ -99,11 +105,11 @@ export const ProcessOverview = () => {
             onOpenChange={() => toggleStep(index)}
             className={`border-b border-white/50 ${index === steps.length - 1 ? 'border-b-0' : ''}`}
           >
-            <CollapsibleTrigger className="w-full bg-white transition-all duration-300 hover:opacity-90">
+            <CollapsibleTrigger className={`w-full ${step.triggerBg} transition-all duration-300`}>
               <div className="container mx-auto container-padding">
                 <div className="flex items-center justify-between py-4 lg:py-6 relative">
-                  <h3 className="font-bold z-10 text-charcoal text-left">{step.title}</h3>
-                  <span className="font-black text-charcoal/20 absolute right-0 top-1/2 -translate-y-1/2 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl">
+                  <h3 className={`font-bold z-10 ${step.textColor} text-left`}>{step.title}</h3>
+                  <span className={`font-black ${step.textColor}/20 absolute right-0 top-1/2 -translate-y-1/2 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl`}>
                     {step.number}
                   </span>
                 </div>
@@ -115,8 +121,8 @@ export const ProcessOverview = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 py-6 lg:py-8">
                   {step.items.map((item, itemIndex) => (
                     <div key={itemIndex} className="space-y-3">
-                      <h4 className="text-lg font-bold text-charcoal">{item.title}</h4>
-                      <p className="text-gray-700 text-sm leading-relaxed">{item.description}</p>
+                      <h4 className={`text-lg font-bold ${step.textColor}`}>{item.title}</h4>
+                      <p className={`${step.textColor === 'text-white' ? 'text-white/80' : 'text-gray-700'} text-sm leading-relaxed`}>{item.description}</p>
                     </div>
                   ))}
                 </div>

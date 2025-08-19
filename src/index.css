@@ -557,4 +557,17 @@
   .btn-cinematic:active {
     transform: scale(0.98);
   }
+  
+  /* Process Section Background Colors */
+  .bg-process-1 {
+    @apply bg-coral-light/20 backdrop-blur-sm;
+  }
+  
+  .bg-process-2 {
+    @apply bg-cinematic-indigo/10 backdrop-blur-sm;
+  }
+  
+  .bg-process-3 {
+    @apply bg-cinematic-cyan/10 backdrop-blur-sm;
+  }
 }

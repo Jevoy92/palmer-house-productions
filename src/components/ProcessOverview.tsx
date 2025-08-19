@@ -51,8 +51,8 @@ export const ProcessOverview = () => {
       number: "03", 
       title: "Build the Library",
       bgColor: "bg-process-3",
-      triggerBg: "bg-process-3/20 hover:bg-process-3/30",
-      textColor: "text-charcoal",
+      triggerBg: "bg-process-3/60 hover:bg-process-3/70",
+      textColor: "text-white",
       items: [
         {
           title: "Content System Assembly",
@@ -109,7 +109,7 @@ export const ProcessOverview = () => {
               <div className="container mx-auto container-padding">
                 <div className="flex items-center justify-between py-4 lg:py-6 relative">
                   <h3 className={`font-bold z-10 ${step.textColor} text-left`}>{step.title}</h3>
-                  <span className={`font-black ${step.textColor}/20 absolute right-0 top-1/2 -translate-y-1/2 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl`}>
+                  <span className="font-black text-white/20 absolute right-0 top-1/2 -translate-y-1/2 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl">
                     {step.number}
                   </span>
                 </div>
@@ -122,7 +122,7 @@ export const ProcessOverview = () => {
                   {step.items.map((item, itemIndex) => (
                     <div key={itemIndex} className="space-y-3">
                       <h4 className={`text-lg font-bold ${step.textColor}`}>{item.title}</h4>
-                      <p className="text-gray-700 text-sm leading-relaxed">{item.description}</p>
+                      <p className={`${step.textColor === 'text-white' ? 'text-white/80' : 'text-gray-700'} text-sm leading-relaxed`}>{item.description}</p>
                     </div>
                   ))}
                 </div>

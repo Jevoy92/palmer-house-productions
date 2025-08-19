@@ -147,14 +147,14 @@ export const TrustSection = () => {
               <p className="text-gray-600 mb-6">We transform underwhelming brands into standout experiences, built to reflect the quality, ambition, and greatness.</p>
               <div className="mt-8">
                 {/* Timeline Container */}
-                <div className="relative py-4">
+                <div className="relative py-8">
                   {/* Timeline Line */}
-                  <div className="absolute top-8 left-8 right-8 h-0.5 bg-gray-200"></div>
+                  <div className="absolute top-12 left-8 right-8 h-0.5 bg-gray-200"></div>
                   
                   {/* Timeline Stages */}
                   <div className="relative flex justify-between items-start">
                     {/* Discovery */}
-                    <div className="flex flex-col items-start">
+                    <div className="flex flex-col items-start -mt-4">
                       <div className="bg-orange-200 px-4 py-1 rounded-full text-sm font-medium text-orange-800 relative z-10">
                         Discovery
                       </div>
@@ -162,7 +162,7 @@ export const TrustSection = () => {
                     </div>
                     
                     {/* Concept */}
-                    <div className="flex flex-col items-center">
+                    <div className="flex flex-col items-center mt-2">
                       <div className="bg-orange-300 px-4 py-1 rounded-full text-sm font-medium text-orange-800 relative z-10">
                         Concept
                       </div>
@@ -170,7 +170,7 @@ export const TrustSection = () => {
                     </div>
                     
                     {/* Execution */}
-                    <div className="flex flex-col items-end">
+                    <div className="flex flex-col items-end mt-6">
                       <div className="bg-orange-400 px-4 py-1 rounded-full text-sm font-medium text-orange-800 relative z-10">
                         Execution
                       </div>

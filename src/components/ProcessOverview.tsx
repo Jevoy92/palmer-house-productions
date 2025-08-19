@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 export const ProcessOverview = () => {
-  const [openStep, setOpenStep] = useState<number | null>(null);
+  const [openSteps, setOpenSteps] = useState<{ [key: number]: boolean }>({});
   
   const steps = [
     {
@@ -65,7 +65,10 @@ export const ProcessOverview = () => {
   ];
 
   const toggleStep = (stepNumber: number) => {
-    setOpenStep(openStep === stepNumber ? null : stepNumber);
+    setOpenSteps(prev => ({
+      ...prev,
+      [stepNumber]: !prev[stepNumber]
+    }));
   };
 
   return (
@@ -89,7 +92,7 @@ export const ProcessOverview = () => {
         {steps.map((step, index) => (
           <Collapsible 
             key={index}
-            open={openStep === index}
+            open={openSteps[index] || false}
             onOpenChange={() => toggleStep(index)}
             className={`border-b border-white/50 ${index === steps.length - 1 ? 'border-b-0' : ''}`}
           >

@@ -5,46 +5,45 @@ export const Services = () => {
   const services = [
     {
       icon: Video,
-      title: "DIY Resources",
-      description: "Templates, guides, and training to create professional videos independently.",
-      gradient: "gradient-social-1",
-      textGradient: "text-gradient-1"
-    },
-    {
-      icon: Users,
-      title: "Business Video Assets",
-      description: "Strategic video systems that replace repetitive operations and save time.",
-      gradient: "gradient-social-2", 
-      textGradient: "text-gradient-2"
+      title: "Content Systems",
+      description: "30 Reels, FAQs, SOPs, Evergreen YouTube content that works while you sleep.",
+      gradient: "gradient-cinematic-primary"
     },
     {
       icon: Film,
-      title: "Other Video Bundles",
-      description: "Specialized video solutions for events, recruitment, and music production.",
-      gradient: "gradient-social-3",
-      textGradient: "text-gradient-3"
+      title: "Content Strategy", 
+      description: "Script Bundle, Coaching, Video Strategy Blueprint for consistent growth.",
+      gradient: "gradient-cinematic-secondary"
+    },
+    {
+      icon: Users,
+      title: "Brand Identity",
+      description: "Founder films, Brand story, Customer testimonials that build trust.",
+      gradient: "gradient-cinematic-accent"
     },
     {
       icon: Megaphone,
-      title: "Coaching & Support",
-      description: "DIY coaching programs and hands-on guidance for video confidence.",
-      gradient: "gradient-social-4",
-      textGradient: "text-gradient-1"
+      title: "Launch & Growth Systems",
+      description: "7-Day Launch, Visibility Engine, Broadcast spots that drive results.",
+      gradient: "gradient-cinematic-primary"
     }
   ];
 
   return (
-    <section id="services" className="py-16 sm:py-24 lg:py-32 bg-corporate-light">
+    <section id="services" className="py-16 sm:py-24 lg:py-32 bg-cinematic-dark">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 sm:mb-16">
-          <div className="inline-block px-4 py-2.5 gradient-social-3 rounded-full text-white font-semibold text-sm mb-6 video-shadow">
+          <div className="inline-block px-4 py-2.5 glass-card text-cinematic-glow font-semibold text-sm mb-6 animate-fade-blur-in">
             💼 Service Categories
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black mb-6 text-corporate-dark tracking-tight leading-tight px-2">
-            Video Production Services for <span className="text-gradient-1">Every Business Need</span>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black mb-6 text-video-white tracking-tight leading-tight px-2 animate-fade-blur-in" style={{animationDelay: '0.1s'}}>
+            Our services help founders grow smarter,{' '}
+            <span className="bg-gradient-to-r from-cinematic-violet to-cinematic-indigo bg-clip-text text-transparent">
+              move faster, and build with clarity
+            </span>
           </h2>
-          <p className="text-base sm:text-lg md:text-xl text-corporate-gray max-w-4xl mx-auto font-medium leading-relaxed px-2">
-            Professional video production company offering production video services that save time, increase efficiency, and drive results for your business.
+          <p className="text-base sm:text-lg md:text-xl text-cinematic-glow max-w-4xl mx-auto font-medium leading-relaxed px-2 animate-fade-blur-in" style={{animationDelay: '0.2s'}}>
+            Strategic video production focused on business systems that reduce repetitive work and scale your operations efficiently.
           </p>
         </div>
         
@@ -54,15 +53,16 @@ export const Services = () => {
             return (
               <div 
                 key={index}
-                className="group p-6 sm:p-8 bg-video-white rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-[1.02] touch-manipulation"
+                className="group glass-card p-6 sm:p-8 hover:scale-[1.02] transition-all duration-300 btn-cinematic animate-fade-blur-in"
+                style={{animationDelay: `${0.3 + index * 0.1}s`}}
               >
                 <div className={`w-14 h-14 sm:w-16 sm:h-16 ${service.gradient} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <IconComponent size={28} className="text-white sm:w-8 sm:h-8" />
+                  <IconComponent size={28} className="text-video-white sm:w-8 sm:h-8" />
                 </div>
-                <h3 className={`text-xl sm:text-2xl font-display font-bold mb-4 ${service.textGradient} leading-tight`}>
+                <h3 className="text-xl sm:text-2xl font-display font-bold mb-4 text-video-white leading-tight">
                   {service.title}
                 </h3>
-                <p className="text-corporate-gray leading-relaxed text-base sm:text-lg font-medium">
+                <p className="text-cinematic-glow leading-relaxed text-base sm:text-lg font-medium">
                   {service.description}
                 </p>
               </div>

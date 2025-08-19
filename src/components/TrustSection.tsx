@@ -79,43 +79,49 @@ export const TrustSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="w-full bg-gray-50 py-24">
-      <div className="container mx-auto px-6 grid grid-cols-12 gap-8 items-start">
-        {/* Large Numeral - Sticky */}
-        <div ref={numeralRef} className="col-span-12 lg:col-span-3 sticky top-24">
-          <h2 className="font-manrope text-[12rem] lg:text-[18rem] font-extrabold leading-none text-gray-200">0-1</h2>
-        </div>
-
-        {/* Main Content Area */}
-        <div className="col-span-12 lg:col-span-9 space-y-8">
-          {/* Intro Header */}
-          <div className="max-w-3xl">
-            {/* Company Brand */}
-            <h3 className="text-xl font-medium mb-4 text-gray-900">Palmer House Productions</h3>
-            
-            {/* Social Proof */}
-            <div className="flex items-center mb-4">
-              <div className="flex -space-x-3">
-                <img className="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="User 1" />
-                <img className="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg" alt="User 2" />
-                <img className="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="User 3" />
-                <div className="w-10 h-10 rounded-full bg-gray-900 text-white flex items-center justify-center font-bold text-sm border-2 border-white">95+</div>
-              </div>
-              <p className="ml-4 text-sm font-medium text-gray-600">Trusted by industry leaders</p>
-            </div>
-            
-            {/* Star Rating */}
-            <div className="flex items-center text-yellow-500 mb-6">
-              <span className="text-lg">★★★★★</span>
-            </div>
-            
-            {/* Main Headline */}
-            <h3 className="text-4xl md:text-5xl font-manrope font-normal tracking-tighter leading-tight text-gray-900">
-              We help brands grow with strategic design that's thoughtful, visually bold, and built to make an impression.
-            </h3>
+    <section ref={sectionRef} className="w-full bg-gray-50">
+      {/* Numeral and Header Section - Contained */}
+      <div className="py-24">
+        <div className="container mx-auto px-6 grid grid-cols-12 gap-8 items-start">
+          {/* Large Numeral - Sticky */}
+          <div ref={numeralRef} className="col-span-12 lg:col-span-3 sticky top-24">
+            <h2 className="font-manrope text-[12rem] lg:text-[18rem] font-extrabold leading-none text-gray-200">0-1</h2>
           </div>
 
-          {/* Info Grid */}
+          {/* Intro Header */}
+          <div className="col-span-12 lg:col-span-9">
+            <div className="max-w-3xl">
+              {/* Company Brand */}
+              <h3 className="text-xl font-medium mb-4 text-gray-900">Palmer House Productions</h3>
+              
+              {/* Social Proof */}
+              <div className="flex items-center mb-4">
+                <div className="flex -space-x-3">
+                  <img className="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-5.jpg" alt="User 1" />
+                  <img className="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-2.jpg" alt="User 2" />
+                  <img className="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="User 3" />
+                  <div className="w-10 h-10 rounded-full bg-gray-900 text-white flex items-center justify-center font-bold text-sm border-2 border-white">95+</div>
+                </div>
+                <p className="ml-4 text-sm font-medium text-gray-600">Trusted by industry leaders</p>
+              </div>
+              
+              {/* Star Rating */}
+              <div className="flex items-center text-yellow-500 mb-6">
+                <span className="text-lg">★★★★★</span>
+              </div>
+              
+              {/* Main Headline */}
+              <h3 className="text-4xl md:text-5xl font-manrope font-normal tracking-tighter leading-tight text-gray-900">
+                We help brands grow with strategic design that's thoughtful, visually bold, and built to make an impression.
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Cards Section - Full Width */}
+      <div className="pb-24">
+        <div className="px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Testimonial Card */}
             <Card className="bg-white p-12 rounded-3xl shadow-sm relative overflow-hidden col-span-1 border-0 min-h-[400px]">

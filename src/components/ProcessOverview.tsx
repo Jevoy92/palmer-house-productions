@@ -87,39 +87,43 @@ export const ProcessOverview = () => {
               We don't just make videos — we build a reusable system that serves your business across every channel.
             </p>
           </div>
-
-          {/* Accordion Container */}
-          <div className="w-full rounded-b-2xl overflow-hidden">
-            {steps.map((step, index) => (
-              <Collapsible 
-                key={index}
-                open={openSteps[index] || false}
-                onOpenChange={() => toggleStep(index)}
-                className={`border-b border-white/50 ${index === steps.length - 1 ? 'border-b-0' : ''}`}
-              >
-                <CollapsibleTrigger className="w-full bg-white transition-all duration-300 hover:opacity-90">
-                  <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4 lg:py-6 relative">
-                    <h3 className="font-bold z-10 text-charcoal text-left">{step.title}</h3>
-                    <span className="font-black text-charcoal/20 absolute right-4 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl">
-                      {step.number}
-                    </span>
-                  </div>
-                </CollapsibleTrigger>
-                
-                <CollapsibleContent className={`${step.bgColor} transition-all duration-500 ease-in-out`}>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 p-4 sm:p-6 lg:p-8">
-                    {step.items.map((item, itemIndex) => (
-                      <div key={itemIndex} className="space-y-3">
-                        <h4 className="text-lg font-bold text-charcoal">{item.title}</h4>
-                        <p className="text-gray-700 text-sm leading-relaxed">{item.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </CollapsibleContent>
-              </Collapsible>
-            ))}
-          </div>
         </div>
+      </div>
+
+      {/* Full-Width Accordion Container */}
+      <div className="w-full">
+        {steps.map((step, index) => (
+          <Collapsible 
+            key={index}
+            open={openSteps[index] || false}
+            onOpenChange={() => toggleStep(index)}
+            className={`border-b border-white/50 ${index === steps.length - 1 ? 'border-b-0' : ''}`}
+          >
+            <CollapsibleTrigger className="w-full bg-white transition-all duration-300 hover:opacity-90">
+              <div className="container mx-auto container-padding">
+                <div className="flex items-center justify-between py-4 lg:py-6 relative">
+                  <h3 className="font-bold z-10 text-charcoal text-left">{step.title}</h3>
+                  <span className="font-black text-charcoal/20 absolute right-0 top-1/2 -translate-y-1/2 text-4xl sm:text-5xl lg:text-6xl xl:text-7xl">
+                    {step.number}
+                  </span>
+                </div>
+              </div>
+            </CollapsibleTrigger>
+            
+            <CollapsibleContent className={`${step.bgColor} transition-all duration-500 ease-in-out w-full`}>
+              <div className="container mx-auto container-padding">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 py-6 lg:py-8">
+                  {step.items.map((item, itemIndex) => (
+                    <div key={itemIndex} className="space-y-3">
+                      <h4 className="text-lg font-bold text-charcoal">{item.title}</h4>
+                      <p className="text-gray-700 text-sm leading-relaxed">{item.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        ))}
       </div>
     </section>
   );

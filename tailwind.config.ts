@@ -63,6 +63,12 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
+				// Coral colors for timeline
+				'coral': {
+					'light': 'hsl(var(--coral-light))',
+					DEFAULT: 'hsl(var(--coral))',
+					'dark': 'hsl(var(--coral-dark))',
+				},
 				// Cinematic colors for motion enhancement
 				'cinematic': {
 					'charcoal': 'hsl(var(--cinematic-charcoal))',

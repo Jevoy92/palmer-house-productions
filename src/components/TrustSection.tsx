@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { TrendingUp, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -119,7 +118,7 @@ export const TrustSection = () => {
           {/* Info Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Testimonial Card */}
-            <Card className="bg-white p-8 rounded-3xl shadow-sm relative overflow-hidden col-span-1">
+            <Card className="bg-white p-8 rounded-3xl shadow-sm relative overflow-hidden col-span-1 border-0">
               <div className="absolute -bottom-10 -right-10 text-[12rem] text-gray-100/50 z-0 font-bold">"</div>
               <div className="relative z-10">
                 <h4 className="text-xl font-bold mb-4">Thoughtful design that moves the needle</h4>
@@ -135,11 +134,11 @@ export const TrustSection = () => {
             </Card>
 
             {/* Statistics Card 1 */}
-            <Card className="bg-white p-8 rounded-3xl shadow-sm flex flex-col justify-between col-span-1">
+            <Card className="bg-white p-8 rounded-3xl shadow-sm flex flex-col justify-between col-span-1 border-0">
               <div className="flex justify-between items-start w-full">
                 <span className="text-sm font-medium text-gray-500">Fact 01</span>
                 <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
-                  <TrendingUp className="w-4 h-4 text-gray-500" />
+                  <i className="fa-solid fa-arrow-trend-up text-gray-500"></i>
                 </div>
               </div>
               <div>
@@ -149,49 +148,76 @@ export const TrustSection = () => {
             </Card>
 
             {/* Case Study Card */}
-            <Card className="bg-gray-200 p-6 rounded-3xl shadow-sm col-span-1 relative overflow-hidden min-h-[300px] flex flex-col justify-end text-white">
+            <Card className="bg-gray-200 p-6 rounded-3xl shadow-sm col-span-1 relative overflow-hidden min-h-[300px] flex flex-col justify-end text-white border-0">
               <img className="absolute inset-0 w-full h-full object-cover" src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop" alt="Professional video production" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
               <div className="relative z-10">
                 <h4 className="text-xl font-bold max-w-md">$4M raised: the strategy behind Tera's growth</h4>
                 <div className="mt-4 inline-flex items-center font-semibold group cursor-pointer text-sm">
-                  See case study <ArrowRight className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  See case study <i className="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
                 </div>
               </div>
             </Card>
 
             {/* Process Description Card */}
-            <Card className="bg-white p-8 rounded-3xl shadow-sm col-span-1">
+            <Card className="bg-white p-8 rounded-3xl shadow-sm col-span-1 border-0">
               <h4 className="text-xl font-bold mb-2">A streamlined process, executed with methodical care.</h4>
               <p className="text-gray-600 mb-6 text-sm leading-6">We transform underwhelming brands into standout experiences, built to reflect the quality, ambition, and greatness</p>
               <div className="inline-flex items-center font-semibold group cursor-pointer text-sm">
-                Learn about our process <ArrowRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                Learn about our process <i className="fa-solid fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
               </div>
             </Card>
 
             {/* Timeline Card */}
-            <Card className="bg-white p-8 rounded-3xl shadow-sm col-span-1">
-              <h4 className="text-sm font-medium text-gray-500 mb-1">Timeline</h4>
-              <p className="text-sm font-semibold mb-8">Website & branding for Sony</p>
-              <div className="relative h-20">
-                <div className="absolute top-1/2 left-0 w-full h-px bg-gray-200"></div>
-                <div className="absolute top-1/2 left-0 w-full flex justify-between text-xs text-gray-400 -mt-5">
-                  <span>1 Week</span>
-                  <span>2 Weeks</span>
-                  <span>3 Weeks</span>
+            <Card className="bg-white p-8 rounded-3xl shadow-sm col-span-1 border-0">
+              <div className="mb-4">
+                <h4 className="text-sm font-medium text-gray-500">Timeline</h4>
+                <p className="text-sm font-semibold text-gray-900">Website & branding for Sony</p>
+              </div>
+              
+              {/* Timeline visualization */}
+              <div className="relative pt-8">
+                {/* Vertical timeline line */}
+                <div className="absolute left-0 right-0 h-0.5 bg-gray-200 top-64"></div>
+                
+                {/* Timeline stages */}
+                <div className="relative grid grid-cols-3 gap-4">
+                  {/* Discovery stage */}
+                  <div className="flex flex-col items-center">
+                    <div className="px-4 py-2 bg-coral-light text-gray-900 font-medium rounded-full mb-4 text-xs text-center">
+                      Discovery
+                    </div>
+                    <div className="h-32 border-r border-gray-200"></div>
+                    <div className="pt-4 text-gray-500 text-xs text-center">1 Week</div>
+                  </div>
+                  
+                  {/* Concept stage */}
+                  <div className="flex flex-col items-center mt-16">
+                    <div className="px-4 py-2 bg-coral text-gray-900 font-medium rounded-full mb-4 text-xs text-center">
+                      Concept
+                    </div>
+                    <div className="h-16 border-r border-gray-200"></div>
+                    <div className="pt-4 text-gray-500 text-xs text-center">2 Weeks</div>
+                  </div>
+                  
+                  {/* Execution stage */}
+                  <div className="flex flex-col items-center mt-32">
+                    <div className="px-4 py-2 bg-coral-dark text-white font-medium rounded-full mb-4 text-xs text-center">
+                      Execution
+                    </div>
+                    <div className="h-0 border-r border-gray-200"></div>
+                    <div className="pt-4 text-gray-500 text-xs text-center">3 Weeks</div>
+                  </div>
                 </div>
-                <div className="absolute top-1/2 left-[15%] -translate-x-1/2 -translate-y-1/2 bg-orange-200 text-gray-800 text-xs font-semibold px-3 py-1 rounded-full">Discovery</div>
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-orange-300 text-gray-800 text-xs font-semibold px-3 py-1 rounded-full">Concept</div>
-                <div className="absolute top-1/2 left-[85%] -translate-x-1/2 -translate-y-1/2 bg-orange-400 text-gray-800 text-xs font-semibold px-3 py-1 rounded-full">Execution</div>
               </div>
             </Card>
 
             {/* Statistics Card 2 */}
-            <Card className="bg-white p-8 rounded-3xl shadow-sm flex flex-col justify-between col-span-1 md:col-span-2 lg:col-span-1">
+            <Card className="bg-white p-8 rounded-3xl shadow-sm flex flex-col justify-between col-span-1 md:col-span-2 lg:col-span-1 border-0">
               <div className="flex justify-between items-start w-full">
                 <span className="text-sm font-medium text-gray-500">Fact 02</span>
                 <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
-                  <TrendingUp className="w-4 h-4 text-gray-500" />
+                  <i className="fa-solid fa-arrow-trend-up text-gray-500"></i>
                 </div>
               </div>
               <div>

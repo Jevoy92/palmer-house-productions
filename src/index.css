@@ -59,6 +59,11 @@
     --motion-slow: 600ms;
     --motion-parallax: 1200ms;
     
+    /* Coral Timeline Colors */
+    --coral-light: 25 100% 89%;
+    --coral: 25 100% 75%;
+    --coral-dark: 25 100% 68%;
+    
     /* Legacy colors for compatibility */
     --social-purple: 270 100% 65%;
     --social-pink: 320 100% 70%;

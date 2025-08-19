@@ -21,20 +21,20 @@ export const Hero = () => {
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50"></div>
       
-      <div className="relative z-10 h-full max-w-7xl mx-auto px-8">
-        <div className="flex flex-col h-screen">
+      <div className="relative z-10 h-full w-full">
+        <div className="container mx-auto container-padding h-screen">
           
           {/* Main Hero Content */}
-          <div className="flex flex-1 items-center">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 w-full">
+          <div className="flex flex-1 items-center h-full">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 w-full">
               {/* Left Column - Headline and Description */}
               <div className="flex flex-col justify-center hero-content">
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight mb-8 text-video-white animate-fade-blur-in">
+                <h1 className="font-bold leading-tight tracking-tight mb-6 lg:mb-8 text-video-white animate-fade-blur-in">
                   Build Video<br/>
                   Content<br/>
                   Systems
                 </h1>
-                <p className="text-xl text-neutral-300 leading-relaxed max-w-lg mb-12 animate-fade-blur-in" style={{animationDelay: '0.1s'}}>
+                <p className="text-lg lg:text-xl text-neutral-300 leading-relaxed max-w-lg mb-8 lg:mb-12 animate-fade-blur-in" style={{animationDelay: '0.1s'}}>
                   Save time and money, drive authority, and scale your business.
                 </p>
                 

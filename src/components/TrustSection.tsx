@@ -146,19 +146,37 @@ export const TrustSection = () => {
               <h4 className="text-xl font-bold mb-2 text-gray-900">A streamlined process, executed with methodical care.</h4>
               <p className="text-gray-600 mb-6">We transform underwhelming brands into standout experiences, built to reflect the quality, ambition, and greatness.</p>
               <div className="mt-8">
-                <div className="flex items-center">
-                  <div className="bg-orange-200 px-4 py-1 rounded-full text-sm font-medium text-orange-800">Discovery</div>
-                </div>
-                <div className="flex items-center mt-4">
-                  <div className="bg-orange-300 px-4 py-1 rounded-full text-sm font-medium text-orange-800">Concept</div>
-                </div>
-                <div className="flex items-center mt-4">
-                  <div className="bg-orange-400 px-4 py-1 rounded-full text-sm font-medium text-orange-800">Execution</div>
-                </div>
-                <div className="flex justify-between text-xs text-gray-400 mt-2">
-                  <span>1 Week</span>
-                  <span>2 Weeks</span>
-                  <span>3 Weeks</span>
+                {/* Timeline Container */}
+                <div className="relative py-4">
+                  {/* Timeline Line */}
+                  <div className="absolute top-8 left-8 right-8 h-0.5 bg-gray-200"></div>
+                  
+                  {/* Timeline Stages */}
+                  <div className="relative flex justify-between items-start">
+                    {/* Discovery */}
+                    <div className="flex flex-col items-start">
+                      <div className="bg-orange-200 px-4 py-1 rounded-full text-sm font-medium text-orange-800 relative z-10">
+                        Discovery
+                      </div>
+                      <span className="text-xs text-gray-400 mt-2">1 Week</span>
+                    </div>
+                    
+                    {/* Concept */}
+                    <div className="flex flex-col items-center">
+                      <div className="bg-orange-300 px-4 py-1 rounded-full text-sm font-medium text-orange-800 relative z-10">
+                        Concept
+                      </div>
+                      <span className="text-xs text-gray-400 mt-2">2 Weeks</span>
+                    </div>
+                    
+                    {/* Execution */}
+                    <div className="flex flex-col items-end">
+                      <div className="bg-orange-400 px-4 py-1 rounded-full text-sm font-medium text-orange-800 relative z-10">
+                        Execution
+                      </div>
+                      <span className="text-xs text-gray-400 mt-2">3 Weeks</span>
+                    </div>
+                  </div>
                 </div>
               </div>
               <span className="mt-6 inline-flex items-center text-sm font-semibold group cursor-pointer">

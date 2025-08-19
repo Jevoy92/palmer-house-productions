@@ -408,11 +408,52 @@
 
   /* Enhanced shadow utilities for better visual hierarchy */
   .video-shadow {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 10px 30px -10px hsl(var(--cinematic-charcoal) / 0.3);
   }
   
   .video-shadow-lg {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 20px 60px -20px hsl(var(--cinematic-charcoal) / 0.4), 
+                0 0 0 1px hsl(var(--video-white) / 0.06) inset;
+  }
+
+  /* Hero Section Enhancements */
+  .hero-section {
+    background: radial-gradient(1600px 800px at 70% 10%, hsl(var(--cinematic-charcoal)) 0%, hsl(var(--cinematic-charcoal) / 0.95) 45%, hsl(var(--cinematic-charcoal) / 0.9) 100%);
+  }
+
+  .hero-bg-text {
+    filter: blur(1px);
+  }
+
+  .hero-orb {
+    filter: blur(32px);
+    mix-blend-mode: screen;
+    animation: floaty 3.6s ease-in-out infinite alternate;
+  }
+
+  .hero-orb--1 {
+    background: radial-gradient(circle at 30% 30%, hsl(var(--cinematic-violet) / 0.6), transparent 55%),
+                radial-gradient(circle at 70% 70%, hsl(var(--cinematic-indigo) / 0.4), transparent 60%);
+    box-shadow: 0 0 40px hsl(var(--cinematic-violet) / 0.35);
+  }
+
+  .hero-orb--2 {
+    background: radial-gradient(circle at 30% 30%, hsl(var(--cinematic-indigo) / 0.5), transparent 55%),
+                radial-gradient(circle at 70% 70%, hsl(var(--cinematic-glow) / 0.4), transparent 60%);
+    box-shadow: 0 0 40px hsl(var(--cinematic-glow) / 0.3);
+  }
+
+  .hero-visual {
+    box-shadow: 0 30px 80px rgba(0,0,0,.55), 0 0 0 1px hsl(var(--video-white) / 0.06) inset;
+  }
+
+  .hero-cta {
+    box-shadow: 0 10px 30px hsl(210 100% 50% / 0.28);
+  }
+
+  @keyframes floaty {
+    from { transform: translate3d(0,0,0); }
+    to { transform: translate3d(0,-14px,0); }
   }
 
   /* Performance optimized animations */

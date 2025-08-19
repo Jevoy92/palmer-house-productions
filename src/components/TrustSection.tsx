@@ -92,7 +92,7 @@ export const TrustSection = () => {
           <div className="col-span-12 lg:col-span-9">
             <div className="max-w-3xl">
               {/* Company Brand */}
-              <h3 className="text-xl font-medium mb-4 text-gray-900">Palmer House Productions</h3>
+              <h3 className="text-xl font-medium mb-4 text-black">Palmer House Productions</h3>
               
               {/* Social Proof */}
               <div className="flex items-center mb-4">
@@ -102,7 +102,7 @@ export const TrustSection = () => {
                   <img className="w-10 h-10 rounded-full border-2 border-white object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-3.jpg" alt="User 3" />
                   <div className="w-10 h-10 rounded-full bg-gray-900 text-white flex items-center justify-center font-bold text-sm border-2 border-white">95+</div>
                 </div>
-                <p className="ml-4 text-sm font-medium text-gray-600">Trusted by industry leaders</p>
+                <p className="ml-4 text-sm font-medium text-black">Trusted by industry leaders</p>
               </div>
               
               {/* Star Rating */}
@@ -127,12 +127,12 @@ export const TrustSection = () => {
             <Card className="bg-white p-12 rounded-3xl shadow-sm relative overflow-hidden col-span-1 border-0 min-h-[400px]">
               <div className="absolute -bottom-10 -right-10 text-[12rem] text-gray-100/50 z-0 font-bold">"</div>
               <div className="relative z-10">
-                <h4 className="text-xl font-bold mb-4">Thoughtful design that moves the needle</h4>
-                <p className="text-gray-800 mb-6 text-sm leading-6">Awesome experience from start to finish. He was in constant communication, detail-oriented and provided exactly what we were looking for in our organization's marketing videos and photos.</p>
+                <h4 className="text-xl font-bold mb-4 text-black">Thoughtful design that moves the needle</h4>
+                <p className="text-black mb-6 text-sm leading-6">Awesome experience from start to finish. He was in constant communication, detail-oriented and provided exactly what we were looking for in our organization's marketing videos and photos.</p>
                 <div className="flex items-center">
                   <img className="w-10 h-10 rounded-full object-cover" src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=200&fit=crop&crop=face" alt="Sarah Dylan Jensen" />
                   <div className="ml-3">
-                    <p className="font-bold text-sm">Sarah Dylan Jensen</p>
+                    <p className="font-bold text-sm text-black">Sarah Dylan Jensen</p>
                     <p className="text-xs text-gray-500">CEO at Sony</p>
                   </div>
                 </div>
@@ -149,7 +149,7 @@ export const TrustSection = () => {
               </div>
               <div>
                 <p className="font-manrope text-9xl font-extrabold my-6" ref={firstStatRef}>49%</p>
-                <p className="text-gray-800 max-w-xs text-sm">Faster revenue growth for companies using video compared to those who don't.</p>
+                <p className="text-black max-w-xs text-sm">Faster revenue growth for companies using video compared to those who don't.</p>
               </div>
             </Card>
 
@@ -169,8 +169,8 @@ export const TrustSection = () => {
             <Card className="bg-white p-12 rounded-3xl shadow-sm col-span-1 md:col-span-2 lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-8 border-0 min-h-[400px]">
               <div className="flex flex-col justify-between">
                 <div>
-                  <h4 className="text-xl font-bold mb-2">A streamlined process, executed with methodical care.</h4>
-                  <p className="text-gray-800 text-sm leading-6">We transform underwhelming brands into standout experiences, built to reflect the quality, ambition, and greatness</p>
+                  <h4 className="text-xl font-bold mb-2 text-black">A streamlined process, executed with methodical care.</h4>
+                  <p className="text-black text-sm leading-6">We transform underwhelming brands into standout experiences, built to reflect the quality, ambition, and greatness</p>
                 </div>
                 <div className="inline-flex items-center font-semibold group cursor-pointer text-sm text-[#FF6B49] mt-6 lg:mt-0">
                   <i className="fa-solid fa-arrow-right mr-2"></i> Learn about our process
@@ -212,7 +212,7 @@ export const TrustSection = () => {
               </div>
               <div>
                 <p className="font-manrope text-9xl font-extrabold my-6" ref={secondStatRef}>$82M</p>
-                <p className="text-gray-800 max-w-xs text-sm">Million hours of video are watched every single day on YouTube.</p>
+                <p className="text-black max-w-xs text-sm">Million hours of video are watched every single day on YouTube.</p>
               </div>
             </Card>
           </div>

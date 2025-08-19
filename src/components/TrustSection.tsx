@@ -27,7 +27,7 @@ export const TrustSection = () => {
         filter: 'blur(10px)'
       },
       { 
-        opacity: 0.2, 
+        opacity: 0.1, 
         scale: 1,
         filter: 'blur(0px)',
         duration: 0.8,
@@ -79,7 +79,7 @@ export const TrustSection = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="w-full bg-gray-50">
+    <section ref={sectionRef} className="w-full bg-white">
       {/* Numeral and Header Section - Contained */}
       <div className="py-24">
         <div className="container mx-auto px-6 grid grid-cols-12 gap-8 items-start">
@@ -111,7 +111,7 @@ export const TrustSection = () => {
               </div>
               
               {/* Main Headline */}
-              <h3 className="text-4xl md:text-5xl font-manrope font-normal tracking-tighter leading-tight text-gray-900">
+              <h3 className="text-4xl md:text-5xl font-manrope font-normal tracking-tighter leading-tight text-black">
                 We help brands grow with strategic design that's thoughtful, visually bold, and built to make an impression.
               </h3>
             </div>
@@ -128,7 +128,7 @@ export const TrustSection = () => {
               <div className="absolute -bottom-10 -right-10 text-[12rem] text-gray-100/50 z-0 font-bold">"</div>
               <div className="relative z-10">
                 <h4 className="text-xl font-bold mb-4">Thoughtful design that moves the needle</h4>
-                <p className="text-gray-600 mb-6 text-sm leading-6">Awesome experience from start to finish. He was in constant communication, detail-oriented and provided exactly what we were looking for in our organization's marketing videos and photos.</p>
+                <p className="text-gray-800 mb-6 text-sm leading-6">Awesome experience from start to finish. He was in constant communication, detail-oriented and provided exactly what we were looking for in our organization's marketing videos and photos.</p>
                 <div className="flex items-center">
                   <img className="w-10 h-10 rounded-full object-cover" src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=200&fit=crop&crop=face" alt="Sarah Dylan Jensen" />
                   <div className="ml-3">
@@ -149,7 +149,7 @@ export const TrustSection = () => {
               </div>
               <div>
                 <p className="font-manrope text-9xl font-extrabold my-6" ref={firstStatRef}>49%</p>
-                <p className="text-gray-600 max-w-xs text-sm">Faster revenue growth for companies using video compared to those who don't.</p>
+                <p className="text-gray-800 max-w-xs text-sm">Faster revenue growth for companies using video compared to those who don't.</p>
               </div>
             </Card>
 
@@ -170,7 +170,7 @@ export const TrustSection = () => {
               <div className="flex flex-col justify-between">
                 <div>
                   <h4 className="text-xl font-bold mb-2">A streamlined process, executed with methodical care.</h4>
-                  <p className="text-gray-600 text-sm leading-6">We transform underwhelming brands into standout experiences, built to reflect the quality, ambition, and greatness</p>
+                  <p className="text-gray-800 text-sm leading-6">We transform underwhelming brands into standout experiences, built to reflect the quality, ambition, and greatness</p>
                 </div>
                 <div className="inline-flex items-center font-semibold group cursor-pointer text-sm text-[#FF6B49] mt-6 lg:mt-0">
                   <i className="fa-solid fa-arrow-right mr-2"></i> Learn about our process
@@ -212,7 +212,7 @@ export const TrustSection = () => {
               </div>
               <div>
                 <p className="font-manrope text-9xl font-extrabold my-6" ref={secondStatRef}>$82M</p>
-                <p className="text-gray-600 max-w-xs text-sm">Million hours of video are watched every single day on YouTube.</p>
+                <p className="text-gray-800 max-w-xs text-sm">Million hours of video are watched every single day on YouTube.</p>
               </div>
             </Card>
           </div>

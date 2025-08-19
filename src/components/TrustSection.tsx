@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { TrendingUp, ArrowRight } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -74,6 +75,9 @@ export const TrustSection = () => {
         <div className="col-span-12 lg:col-span-9 space-y-8">
           {/* Intro Header */}
           <div className="max-w-3xl">
+            {/* Company Brand */}
+            <h3 className="text-xl font-medium mb-4 text-gray-900">Palmer House Productions</h3>
+            
             {/* Social Proof */}
             <div className="flex items-center mb-4">
               <div className="flex -space-x-3">
@@ -104,7 +108,7 @@ export const TrustSection = () => {
               <div className="absolute -bottom-12 -right-0 w-24 h-24 bg-gray-50 rounded-tl-full z-0 transform scale-x-[-1]"></div>
               <div className="relative z-10">
                 <h4 className="text-xl font-bold mb-4 text-gray-900">Thoughtful design that moves the needle</h4>
-                <p className="text-gray-600 mb-6">Awesome experience from start to finish. They were in constant communication, detail-oriented and provided exactly what we were looking for in our marketing videos and photos.</p>
+                <p className="text-gray-600 mb-6">Awesome experience from start to finish working with Jevoy. He was in constant communication, detail-oriented and provided exactly what we were looking for in our organization's marketing videos and photos.</p>
                 <div className="flex items-center">
                   <img className="w-12 h-12 rounded-full object-cover" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg" alt="Sarah Dylan Jensen" />
                   <div className="ml-4">
@@ -119,7 +123,7 @@ export const TrustSection = () => {
             <div ref={statsRef} className="bg-white p-8 rounded-3xl shadow-sm flex flex-col justify-center text-center">
               <div className="flex justify-between items-start w-full">
                 <span className="text-sm font-medium text-gray-600">Fact 01</span>
-                <span className="text-gray-300">📈</span>
+                <TrendingUp className="w-5 h-5 text-gray-300" />
               </div>
               <p className="font-manrope font-extrabold text-7xl my-4 text-gray-900 count-up">0%</p>
               <p className="text-gray-600 max-w-xs mx-auto">Faster revenue growth for companies using video compared to those who don't.</p>
@@ -140,13 +144,36 @@ export const TrustSection = () => {
             {/* Process Card */}
             <div className="bg-white p-8 rounded-3xl shadow-sm">
               <h4 className="text-xl font-bold mb-2 text-gray-900">A streamlined process, executed with methodical care.</h4>
-              <p className="text-gray-600">Our systemized approach to video production ensures quality and efficiency, saving you time and money.</p>
+              <p className="text-gray-600 mb-6">We transform underwhelming brands into standout experiences, built to reflect the quality, ambition, and greatness.</p>
+              <div className="mt-8">
+                <div className="flex items-center">
+                  <div className="bg-orange-200 px-4 py-1 rounded-full text-sm font-medium text-orange-800">Discovery</div>
+                </div>
+                <div className="flex items-center mt-4">
+                  <div className="bg-orange-300 px-4 py-1 rounded-full text-sm font-medium text-orange-800">Concept</div>
+                </div>
+                <div className="flex items-center mt-4">
+                  <div className="bg-orange-400 px-4 py-1 rounded-full text-sm font-medium text-orange-800">Execution</div>
+                </div>
+                <div className="flex justify-between text-xs text-gray-400 mt-2">
+                  <span>1 Week</span>
+                  <span>2 Weeks</span>
+                  <span>3 Weeks</span>
+                </div>
+              </div>
+              <span className="mt-6 inline-flex items-center text-sm font-semibold group cursor-pointer">
+                <ArrowRight className="w-4 h-4 mr-2 text-orange-500" /> Learn about our process
+              </span>
             </div>
             
-            {/* Timeline Card */}
+            {/* Fact Card 2 */}
             <div className="bg-white p-8 rounded-3xl shadow-sm">
-              <h4 className="text-sm font-medium text-gray-600 mb-2">Timeline</h4>
-              <p className="text-xl font-bold text-gray-900">Website & branding for Sony</p>
+              <div className="flex justify-between items-start w-full mb-2">
+                <span className="text-sm font-medium text-gray-600">Fact 02</span>
+                <TrendingUp className="w-5 h-5 text-gray-300" />
+              </div>
+              <p className="font-manrope font-extrabold text-7xl my-4 text-gray-900">$82M</p>
+              <p className="text-gray-600">Million hours of video are watched every single day on YouTube.</p>
             </div>
           </div>
         </div>

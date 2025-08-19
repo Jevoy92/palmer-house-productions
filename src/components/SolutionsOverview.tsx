@@ -66,7 +66,7 @@ export const SolutionsOverview = () => {
   );
 
   return (
-    <section className="max-w-6xl mx-auto px-4 py-20">
+    <section className="bg-white max-w-6xl mx-auto px-4 py-20">
       {/* Header */}
       <div className="text-center mb-16">
         <h1 className="text-7xl font-bold mb-6">Flexible plans</h1>

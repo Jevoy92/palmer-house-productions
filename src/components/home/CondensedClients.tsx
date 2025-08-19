@@ -50,13 +50,13 @@ export const CondensedClients = () => {
 
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-video-white p-6 rounded-2xl video-shadow hover:video-shadow-lg transition-all">
+            <div key={index} className="bg-video-white p-6 rounded-2xl video-shadow hover:video-shadow-lg transition-all overflow-hidden h-auto">
               <div className="flex space-x-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-social-yellow text-social-yellow" />
                 ))}
               </div>
-              <p className="text-corporate-gray mb-6 leading-relaxed">
+              <p className="text-corporate-gray mb-6 leading-relaxed line-clamp-6">
                 "{testimonial.content}"
               </p>
               <div className="flex items-center space-x-3">

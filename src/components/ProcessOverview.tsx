@@ -88,7 +88,8 @@ export const ProcessOverview = () => {
   };
 
   return (
-    <section className="max-w-7xl mx-auto px-6 md:px-12 py-24">
+    <section className="bg-video-white">
+      <div className="max-w-7xl mx-auto px-6 md:px-12 py-24">
       {/* Process Header */}
       <div className="mb-16">
         <div className="flex items-center mb-4">
@@ -132,6 +133,7 @@ export const ProcessOverview = () => {
             </CollapsibleContent>
           </Collapsible>
         ))}
+      </div>
       </div>
     </section>
   );

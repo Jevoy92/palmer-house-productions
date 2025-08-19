@@ -97,7 +97,15 @@ export default {
 				'video': {
 					'black': 'hsl(var(--video-black))',
 					'white': 'hsl(var(--video-white))',
-				}
+				},
+				// Process accordion colors
+				'process': {
+					'1': 'hsl(25 100% 92%)',  // #FFEAE3
+					'2': 'hsl(25 100% 87%)',  // #FFD1C2
+					'3': 'hsl(25 100% 82%)',  // #FFB8A3
+					'4': 'hsl(25 100% 77%)',  // #FF9E85
+				},
+				'charcoal': 'hsl(0 0% 7%)'  // #111111
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

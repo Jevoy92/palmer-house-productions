@@ -7,77 +7,58 @@ export const ProcessOverview = () => {
   const steps = [
     {
       number: "01",
-      title: "Discovery",
+      title: "Map the System",
       bgColor: "bg-process-1",
       items: [
         {
-          title: "Stakeholder interviews",
-          description: "We kick things off by talking with key stakeholders to understand the business, the product, and what success looks like."
+          title: "Content Audit & Gap Analysis",
+          description: "We identify what your business is missing — onboarding, FAQs, sales touchpoints, or social authority."
         },
         {
-          title: "User & market research", 
-          description: "From audience behaviors to competitive landscapes, we dig deep to uncover insights that will inform the design and strategy."
+          title: "System Blueprint", 
+          description: "We design a repeatable plan: what to film once, and how it multiplies into assets for every platform."
         },
         {
-          title: "Defining the challenge",
-          description: "We define a clear problem statement, map out user journeys, and outline key objectives. This becomes our north star."
+          title: "Success Metrics",
+          description: "We define the ROI markers (time saved, sales supported, brand authority built)."
         }
       ]
     },
     {
       number: "02",
-      title: "Concept", 
+      title: "Capture the Core", 
       bgColor: "bg-process-2",
       items: [
         {
-          title: "Ideation & brainstorming",
-          description: "This is where creativity takes center stage. We explore multiple directions through sketches and collaborative sessions."
+          title: "Shoot Once, Use Everywhere",
+          description: "We record modular videos (anchors, FAQs, social snippets, training) designed for maximum reusability."
         },
         {
-          title: "Information architecture",
-          description: "We organize content and functionality in a way that makes sense for users, ensuring intuitive navigation and discovery."
+          title: "Flexible Formats",
+          description: "Every session is planned so one shoot fuels months of distribution: reels, YouTube, web, internal library."
         },
         {
-          title: "Design systems & direction",
-          description: "We establish the visual language that will guide the project, including color palettes, typography, and components."
+          title: "Guided Performance",
+          description: "We provide coaching, teleprompter support, and prompts so you sound like your best self on camera."
         }
       ]
     },
     {
       number: "03", 
-      title: "Execution",
+      title: "Build the Library",
       bgColor: "bg-process-3",
       items: [
         {
-          title: "UI design & prototyping",
-          description: "We bring concepts to life with high-fidelity designs and interactive prototypes for stakeholders to experience."
+          title: "Content System Assembly",
+          description: "We edit, organize, and format your footage into a scalable library that serves your business needs."
         },
         {
-          title: "User testing & iteration",
-          description: "We validate our designs with real users, gathering feedback and making necessary adjustments to meet user needs."
+          title: "Multi-Channel Deployment",
+          description: "From Instagram to onboarding portals, your content is prepped and optimized for every channel."
         },
         {
-          title: "Development handoff", 
-          description: "We prepare all assets and specifications for the development team, ensuring a smooth transition from design to code."
-        }
-      ]
-    },
-    {
-      number: "04",
-      title: "Launch",
-      bgColor: "bg-process-4", 
-      items: [
-        {
-          title: "Quality assurance",
-          description: "We conduct thorough testing across devices and browsers to ensure everything works as intended and is optimized."
-        },
-        {
-          title: "Deployment & go-live",
-          description: "We coordinate with stakeholders for a smooth launch, addressing any last-minute issues and ensuring systems are ready."
-        },
-        {
-          title: "Post-launch support",
-          description: "We monitor performance, gather user feedback, and make adjustments after launch for future improvements."
+          title: "Ongoing Growth", 
+          description: "We track usage, add new shoots, and expand your system as your business evolves and scales."
         }
       ]
     }
@@ -99,7 +80,7 @@ export const ProcessOverview = () => {
           Process
         </h2>
         <p className="text-lg md:text-xl max-w-2xl text-muted-foreground">
-          Let's dive into the process. From first idea to final launch, every step is clear and intentional.
+          We don't just make videos — we build a reusable system that serves your business across every channel.
         </p>
       </div>
 
@@ -112,10 +93,10 @@ export const ProcessOverview = () => {
             onOpenChange={() => toggleStep(index)}
             className={`border-b border-white/50 ${index === steps.length - 1 ? 'border-b-0' : ''}`}
           >
-            <CollapsibleTrigger className={`w-full ${step.bgColor} transition-all duration-300 hover:opacity-90`}>
+            <CollapsibleTrigger className="w-full bg-white transition-all duration-300 hover:opacity-90">
               <div className="flex items-center justify-between px-8 py-6 relative">
                 <h3 className="text-3xl md:text-5xl font-bold z-10 text-charcoal">{step.title}</h3>
-                <span className="text-6xl md:text-8xl font-black text-white/70 absolute right-8 top-1/2 -translate-y-1/2">
+                <span className="text-6xl md:text-8xl font-black text-charcoal/20 absolute right-8 top-1/2 -translate-y-1/2">
                   {step.number}
                 </span>
               </div>

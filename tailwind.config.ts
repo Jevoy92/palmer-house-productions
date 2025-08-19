@@ -100,9 +100,9 @@ export default {
 				},
 				// Process accordion colors
 				'process': {
-					'1': 'hsl(16 100% 95%)',    // Light coral/peach
-					'2': 'hsl(27 85% 70%)',     // Medium coral/orange  
-					'3': 'hsl(25 45% 15%)',     // Dark charcoal/orange
+					'1': 'hsl(16 100% 97%)',    // Very light coral/peach
+					'2': 'hsl(16 90% 85%)',     // Light-medium coral
+					'3': 'hsl(16 80% 70%)',     // Medium-deep coral
 					'4': 'hsl(25 100% 77%)',    // #FF9E85 (keep for future use)
 				},
 				'charcoal': 'hsl(0 0% 7%)'  // #111111

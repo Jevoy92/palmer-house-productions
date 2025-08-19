@@ -51,8 +51,8 @@ export const ProcessOverview = () => {
       number: "03", 
       title: "Build the Library",
       bgColor: "bg-process-3",
-      triggerBg: "bg-process-3/60 hover:bg-process-3/70",
-      textColor: "text-white",
+      triggerBg: "bg-process-3/20 hover:bg-process-3/30",
+      textColor: "text-charcoal",
       items: [
         {
           title: "Content System Assembly",
@@ -122,7 +122,7 @@ export const ProcessOverview = () => {
                   {step.items.map((item, itemIndex) => (
                     <div key={itemIndex} className="space-y-3">
                       <h4 className={`text-lg font-bold ${step.textColor}`}>{item.title}</h4>
-                      <p className={`${step.textColor === 'text-white' ? 'text-white/80' : 'text-gray-700'} text-sm leading-relaxed`}>{item.description}</p>
+                      <p className="text-gray-700 text-sm leading-relaxed">{item.description}</p>
                     </div>
                   ))}
                 </div>

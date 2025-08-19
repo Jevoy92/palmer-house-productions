@@ -41,10 +41,10 @@ const Index = () => {
           <Services />
         </div>
         <ProcessOverview />
-        <CondensedClients />
         <div id="pricing">
           <SolutionsOverview />
         </div>
+        <CondensedClients />
         <FAQ />
       </MainContent>
     </div>

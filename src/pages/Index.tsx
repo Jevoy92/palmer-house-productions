@@ -2,6 +2,8 @@
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
 import { SolutionsOverview } from "@/components/SolutionsOverview";
+import { ProcessOverview } from "@/components/ProcessOverview";
+import { FAQ } from "@/components/FAQ";
 import { CondensedClients } from "@/components/home/CondensedClients";
 import { TrustSection } from "@/components/TrustSection";
 
@@ -38,10 +40,12 @@ const Index = () => {
         <div id="services">
           <Services />
         </div>
+        <ProcessOverview />
         <CondensedClients />
         <div id="pricing">
           <SolutionsOverview />
         </div>
+        <FAQ />
       </MainContent>
     </div>
   );

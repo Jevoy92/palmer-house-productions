@@ -61,22 +61,26 @@ export const Hero = () => {
             <div className="lg:col-span-3 hero-content" data-parallax data-speed="0.05">
               {/* Service Categories */}
               <div className="mb-8 animate-fade-blur-in">
-                <div className="flex flex-col gap-1 mb-6">
-                  <span className="text-sm font-medium text-cinematic-glow/70 tracking-wide">Content systems</span>
-                  <span className="text-sm font-medium text-cinematic-glow/70 tracking-wide">Strategy</span>
-                  <span className="text-sm font-medium text-cinematic-glow/70 tracking-wide">Cinematic production</span>
-                  <span className="text-sm font-medium text-cinematic-glow/70 tracking-wide">Subscription fulfillment</span>
+                <div className="flex flex-wrap gap-x-4 gap-y-1 mb-6">
+                  <span className="text-sm font-semibold text-cinematic-glow/80 tracking-wide px-3 py-1 bg-cinematic-glow/10 rounded-full">Video Strategy</span>
+                  <span className="text-sm font-semibold text-cinematic-glow/80 tracking-wide px-3 py-1 bg-cinematic-glow/10 rounded-full">Content Systems</span>
+                  <span className="text-sm font-semibold text-cinematic-glow/80 tracking-wide px-3 py-1 bg-cinematic-glow/10 rounded-full">Brand Storytelling</span>
+                  <span className="text-sm font-semibold text-cinematic-glow/80 tracking-wide px-3 py-1 bg-cinematic-glow/10 rounded-full">Process Documentation</span>
                 </div>
               </div>
               
               <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black mb-6 tracking-tight leading-[0.95] text-video-white animate-fade-blur-in" style={{animationDelay: '0.1s'}}>
-                Creative studio for
+                Systemized video that
                 <br />
-                <span className="bg-gradient-to-r from-cinematic-violet to-cinematic-indigo bg-clip-text text-transparent">founders</span>
+                <span className="bg-gradient-to-r from-cinematic-violet to-cinematic-indigo bg-clip-text text-transparent">saves time & scales</span>
               </h1>
               
-              <p className="text-cinematic-glow/80 text-lg mb-8 max-w-[52ch] animate-fade-blur-in" style={{animationDelay: '0.15s'}}>
-                We turn video into a system that saves time, cuts costs, and scales your brand.
+              <p className="text-cinematic-glow/80 text-xl mb-4 max-w-[48ch] font-medium animate-fade-blur-in" style={{animationDelay: '0.15s'}}>
+                Professional cinematic storytelling for business systems and process documentation.
+              </p>
+              
+              <p className="text-cinematic-glow/70 text-base mb-8 max-w-[52ch] animate-fade-blur-in" style={{animationDelay: '0.18s'}}>
+                We help growth-stage companies turn video content into scalable business systems that work while you sleep.
               </p>
               
               <div className="animate-fade-blur-in" style={{animationDelay: '0.2s'}}>

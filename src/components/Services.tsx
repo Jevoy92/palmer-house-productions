@@ -5,27 +5,31 @@ export const Services = () => {
   const services = [
     {
       icon: Video,
-      title: "Content Systems",
-      description: "30 Reels, FAQs, SOPs, Evergreen YouTube content that works while you sleep.",
-      gradient: "gradient-cinematic-primary"
+      title: "Video Content Systems",
+      description: "Transform your expertise into scalable video assets—from SOPs and training videos to evergreen content that automates your business processes.",
+      gradient: "gradient-cinematic-primary",
+      features: ["30 Reels Library", "FAQ Video Series", "Process Documentation", "Evergreen YouTube Content"]
     },
     {
       icon: Film,
-      title: "Content Strategy", 
-      description: "Script Bundle, Coaching, Video Strategy Blueprint for consistent growth.",
-      gradient: "gradient-cinematic-secondary"
+      title: "Strategic Video Planning", 
+      description: "Comprehensive video strategy that aligns with your business goals. Get scripts, coaching, and blueprints for sustainable content growth.",
+      gradient: "gradient-cinematic-secondary",
+      features: ["Custom Script Bundle", "1-on-1 Strategy Coaching", "Video Content Calendar", "Performance Analytics Setup"]
     },
     {
       icon: Users,
-      title: "Brand Identity",
-      description: "Founder films, Brand story, Customer testimonials that build trust.",
-      gradient: "gradient-cinematic-accent"
+      title: "Brand Story & Authority",
+      description: "Build trust and credibility through authentic storytelling. Founder films, customer testimonials, and brand narratives that convert.",
+      gradient: "gradient-cinematic-accent",
+      features: ["Founder Documentary", "Customer Success Stories", "Brand Identity Videos", "Authority Content Series"]
     },
     {
       icon: Megaphone,
-      title: "Launch & Growth Systems",
-      description: "7-Day Launch, Visibility Engine, Broadcast spots that drive results.",
-      gradient: "gradient-cinematic-primary"
+      title: "Launch & Visibility Systems",
+      description: "Go-to-market video strategies that drive results. From product launches to visibility campaigns that scale your reach.",
+      gradient: "gradient-cinematic-primary",
+      features: ["7-Day Launch Sequence", "Visibility Engine Setup", "PR & Media Kit", "Campaign Performance Tracking"]
     }
   ];
 
@@ -62,9 +66,17 @@ export const Services = () => {
                 <h3 className="text-xl sm:text-2xl font-display font-bold mb-4 text-video-white leading-tight">
                   {service.title}
                 </h3>
-                <p className="text-cinematic-glow leading-relaxed text-base sm:text-lg font-medium">
+                <p className="text-cinematic-glow leading-relaxed text-base sm:text-lg font-medium mb-4">
                   {service.description}
                 </p>
+                <div className="space-y-2">
+                  {service.features.map((feature, featureIndex) => (
+                    <div key={featureIndex} className="flex items-center text-sm text-cinematic-glow/70">
+                      <div className="w-1.5 h-1.5 bg-cinematic-violet rounded-full mr-2 flex-shrink-0"></div>
+                      <span>{feature}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             );
           })}

@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Check, ArrowRight, Phone } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
+import { ArrowRight, Phone } from "lucide-react";
 
 export const SolutionsOverview = () => {
   const navigate = useNavigate();
   const [isAnnual, setIsAnnual] = useState(false);
+  const [monthlyRetainerIsYearly, setMonthlyRetainerIsYearly] = useState(false);
 
   const handleContactSales = () => {
     navigate('/contact');
@@ -20,207 +20,207 @@ export const SolutionsOverview = () => {
   };
 
   const retainerFeatures = [
-    "Monthly video content strategy",
-    "4-6 videos per month",
-    "Dedicated project manager",
-    "Priority scheduling",
-    "Brand consistency guarantee",
-    "Performance analytics",
-    "Unlimited revisions"
+    "Up to 2 shoot days/month",
+    "Pre-production (scripting, teleprompter, planning)",
+    "8–12 short videos (30–60s)",
+    "1 evergreen video (3–5 min)",
+    "FAQ/onboarding/client proof assets"
   ];
 
   const projectFeatures = [
-    "Complete video production",
-    "Professional editing",
-    "Custom graphics & animations",
-    "Music & sound design",
-    "Multiple format delivery",
-    "2 rounds of revisions",
-    "Fast turnaround"
+    "Fixed scope, flat price",
+    "Clear timeline and milestones", 
+    "Custom one-off design requests",
+    "Great for launches, pitches, or rebrands"
   ];
 
   const faqs = [
     {
-      question: "What's included in the monthly retainer?",
-      answer: "Our monthly retainer includes 4-6 professionally produced videos, dedicated project management, priority scheduling, and unlimited revisions to ensure your content meets your brand standards."
+      question: "Can I change plans later?",
+      answer: "Yes, you can upgrade, downgrade, or cancel your plan at any time. Changes will take effect at the start of your next billing cycle."
     },
     {
-      question: "How do one-off projects work?",
-      answer: "One-off projects are perfect for specific campaigns or events. We'll work with you to understand your needs, provide a custom quote, and deliver high-quality video content on your timeline."
+      question: "What payment methods do you accept?",
+      answer: "We accept all major credit cards, ACH transfers, and wire transfers for enterprise customers."
     },
     {
-      question: "Can I switch between plans?",
-      answer: "Yes! You can upgrade from one-off projects to a monthly retainer at any time. We'll work with you to find the best solution for your evolving video content needs."
+      question: "Is there a minimum contract period?",
+      answer: "Monthly plans require a 3-month minimum commitment. One-off projects have no minimum term."
     },
     {
-      question: "What's the typical turnaround time?",
-      answer: "Monthly retainer clients get priority scheduling with 5-7 business day turnaround. One-off projects typically take 10-14 business days depending on complexity and current workload."
+      question: "What happens if I need more content?",
+      answer: "You can purchase additional content packages or upgrade to a higher tier plan at any time to meet your needs."
     }
   ];
 
+  const ToggleSwitch = ({ checked, onChange }: { checked: boolean; onChange: (checked: boolean) => void }) => (
+    <label className="relative inline-flex items-center cursor-pointer">
+      <input
+        type="checkbox"
+        className="sr-only peer"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+      />
+      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+    </label>
+  );
+
   return (
-    <section className="py-16 md:py-24 bg-background">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black mb-6 text-foreground">
-            Flexible <span className="text-primary">plans</span>
-          </h2>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-            Choose the perfect video production solution for your business. 
-            Tailored plans that scale with your content needs.
-          </p>
-        </div>
+    <section className="max-w-6xl mx-auto px-4 py-20">
+      {/* Header */}
+      <div className="text-center mb-16">
+        <h1 className="text-7xl font-bold mb-6">Flexible plans</h1>
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          Tailored, flexible plans designed to scale with you — whether you're just starting out or growing fast.
+        </p>
+      </div>
 
-        {/* Billing Toggle */}
-        <div className="flex items-center justify-center mb-12">
-          <div className="flex items-center space-x-4 bg-muted rounded-full p-2">
-            <span className={`px-4 py-2 text-sm font-medium transition-colors ${!isAnnual ? 'text-primary-foreground' : 'text-muted-foreground'}`}>
-              Monthly
-            </span>
-            <Switch 
-              checked={isAnnual} 
-              onCheckedChange={setIsAnnual}
-              className="data-[state=checked]:bg-primary"
+      {/* Global Billing Toggle */}
+      <div className="flex justify-center items-center mb-16">
+        <span className="text-sm font-medium mr-3">Monthly</span>
+        <ToggleSwitch 
+          checked={isAnnual} 
+          onChange={setIsAnnual}
+        />
+        <span className="text-sm font-medium ml-3">Yearly</span>
+      </div>
+
+      {/* Main Cards */}
+      <div className="grid md:grid-cols-2 gap-8">
+        {/* Monthly Retainer Plan */}
+        <div className="bg-gray-100 rounded-xl p-10 relative">
+          <h2 className="text-3xl font-bold mb-2">Monthly retainer</h2>
+          
+          <div className="flex items-center mb-6">
+            <span className="text-sm text-gray-500 mr-2">Yearly</span>
+            <ToggleSwitch 
+              checked={monthlyRetainerIsYearly} 
+              onChange={setMonthlyRetainerIsYearly}
             />
-            <span className={`px-4 py-2 text-sm font-medium transition-colors ${isAnnual ? 'text-primary-foreground' : 'text-muted-foreground'}`}>
-              Yearly
-              <span className="ml-2 px-2 py-1 bg-primary text-primary-foreground text-xs rounded-full">
-                Save 15%
-              </span>
-            </span>
           </div>
-        </div>
-
-        {/* Main Cards */}
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
-          {/* Monthly Retainer Card */}
-          <div className="relative bg-card border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-            <div className="mb-6">
-              <h3 className="text-2xl font-bold text-card-foreground mb-2">Monthly Retainer</h3>
-              <p className="text-muted-foreground mb-4">
-                Consistent video content with dedicated support
-              </p>
-              <div className="flex items-baseline">
-                <span className="text-4xl font-black text-card-foreground">
-                  ${isAnnual ? '2,549' : '2,999'}
-                </span>
-                <span className="text-muted-foreground ml-2">/month</span>
-              </div>
-              {isAnnual && (
-                <p className="text-sm text-primary mt-1">
-                  Billed annually • Save $5,400/year
-                </p>
-              )}
-            </div>
-
-            <ul className="space-y-4 mb-8">
-              {retainerFeatures.map((feature, index) => (
-                <li key={index} className="flex items-center">
-                  <Check className="h-5 w-5 text-primary mr-3 flex-shrink-0" />
-                  <span className="text-muted-foreground">{feature}</span>
-                </li>
-              ))}
-            </ul>
-
-            <button
-              onClick={handleGetStarted}
-              className="w-full bg-primary text-primary-foreground py-4 rounded-xl font-semibold hover:bg-primary/90 transition-colors"
-            >
-              Get Started
-            </button>
-          </div>
-
-          {/* One-off Project Card */}
-          <div className="bg-card border rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-            <div className="mb-6">
-              <h3 className="text-2xl font-bold text-card-foreground mb-2">One-off Project</h3>
-              <p className="text-muted-foreground mb-4">
-                Custom video production for specific needs
-              </p>
-              <div className="flex items-baseline">
-                <span className="text-4xl font-black text-card-foreground">$2,500</span>
-                <span className="text-muted-foreground ml-2">starting</span>
-              </div>
-            </div>
-
-            <ul className="space-y-4 mb-8">
-              {projectFeatures.map((feature, index) => (
-                <li key={index} className="flex items-center">
-                  <Check className="h-5 w-5 text-primary mr-3 flex-shrink-0" />
-                  <span className="text-muted-foreground">{feature}</span>
-                </li>
-              ))}
-            </ul>
-
-            <button
-              onClick={handleGetStarted}
-              className="w-full bg-secondary text-secondary-foreground py-4 rounded-xl font-semibold hover:bg-secondary/90 transition-colors"
-            >
-              Get Quote
-            </button>
-          </div>
-        </div>
-
-        {/* Enterprise Section */}
-        <div className="bg-muted rounded-2xl p-8 mb-16 text-center">
-          <h3 className="text-2xl font-bold text-foreground mb-4">Enterprise Solutions</h3>
-          <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Need a custom solution? We work with enterprise clients to create tailored video production 
-            packages that fit your specific requirements and scale.
+          
+          <p className="text-gray-600 mb-10">
+            Consistent, systemized video every month — a streamlined engine that removes posting stress, keeps messaging sharp, and builds a growing content library.
           </p>
-          <button
-            onClick={handleContactSales}
-            className="inline-flex items-center px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-colors"
+          
+          <div className="mb-10">
+            <h3 className="text-sm text-gray-500 mb-4">What's Included:</h3>
+            <ul className="space-y-3">
+              {retainerFeatures.map((feature, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="text-gray-400 mr-2">◦</span>
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          <div className="mb-6">
+            <div className="flex items-end">
+              <span className="text-2xl">$</span>
+              <span className="text-6xl font-bold">
+                {monthlyRetainerIsYearly ? '2,549' : '2,999'}
+              </span>
+            </div>
+            <p className="text-gray-600">
+              {monthlyRetainerIsYearly ? 'Billed yearly (save $5,400/year)' : 'Billed monthly (3-month minimum)'}
+            </p>
+          </div>
+          
+          <button 
+            onClick={handleGetStarted}
+            className="bg-primary hover:bg-opacity-90 text-primary-foreground font-medium py-3 px-6 rounded-full transition duration-300"
           >
-            <Phone className="h-5 w-5 mr-2" />
-            Contact Sales
+            Get started
           </button>
         </div>
-
-        {/* FAQ Section */}
-        <div className="mb-16">
-          <h3 className="text-3xl font-bold text-center text-foreground mb-12">
-            Frequently Asked Questions
-          </h3>
-          <div className="grid md:grid-cols-2 gap-8">
-            {faqs.map((faq, index) => (
-              <div key={index} className="bg-card border rounded-xl p-6">
-                <h4 className="text-lg font-semibold text-card-foreground mb-3">
-                  {faq.question}
-                </h4>
-                <p className="text-muted-foreground leading-relaxed">
-                  {faq.answer}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Final CTA */}
-        <div className="text-center bg-primary/5 rounded-2xl p-12">
-          <h3 className="text-3xl font-bold text-foreground mb-4">
-            Ready to get started?
-          </h3>
-          <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Transform your business with professional video content that converts. 
-            Choose your plan or contact us for a custom solution.
+        
+        {/* One-off Project Plan */}
+        <div className="bg-gray-100 rounded-xl p-10 relative">
+          <h2 className="text-3xl font-bold mb-2">One off project</h2>
+          
+          <div className="h-5 mb-6"></div> {/* Spacer to align with other card */}
+          
+          <p className="text-gray-600 mb-10">
+            Clear scope, set timeline—Ideal for one-off projects that need sharp execution without the long-term commitment.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={handleGetStarted}
-              className="px-8 py-4 bg-primary text-primary-foreground rounded-xl font-semibold hover:bg-primary/90 transition-colors"
-            >
-              Start Your Project
-            </button>
-            <button
-              onClick={handleViewAllPackages}
-              className="inline-flex items-center px-8 py-4 bg-secondary text-secondary-foreground rounded-xl font-semibold hover:bg-secondary/90 transition-colors"
-            >
-              View All Packages
-              <ArrowRight className="h-5 w-5 ml-2" />
-            </button>
+          
+          <div className="mb-10">
+            <h3 className="text-sm text-gray-500 mb-4">What's Included:</h3>
+            <ul className="space-y-3">
+              {projectFeatures.map((feature, index) => (
+                <li key={index} className="flex items-start">
+                  <span className="text-gray-400 mr-2">◦</span>
+                  <span>{feature}</span>
+                </li>
+              ))}
+            </ul>
           </div>
+          
+          <div className="mb-6">
+            <p className="text-sm mb-2">Starts at</p>
+            <div className="flex items-end">
+              <span className="text-2xl">$</span>
+              <span className="text-6xl font-bold">2500</span>
+            </div>
+          </div>
+          
+          <button 
+            onClick={handleGetStarted}
+            className="bg-primary hover:bg-opacity-90 text-primary-foreground font-medium py-3 px-6 rounded-full transition duration-300"
+          >
+            Book a call
+          </button>
+        </div>
+      </div>
+      
+      {/* Enterprise Option */}
+      <div className="mt-12 text-center">
+        <h3 className="text-2xl font-bold mb-3">Need a custom solution?</h3>
+        <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+          For teams with specific requirements or larger content needs, we offer tailored enterprise packages.
+        </p>
+        <button 
+          onClick={handleContactSales}
+          className="border-2 border-secondary hover:bg-secondary hover:text-secondary-foreground text-secondary font-medium py-3 px-8 rounded-full transition duration-300"
+        >
+          Contact sales
+        </button>
+      </div>
+      
+      {/* FAQ Section */}
+      <div className="mt-24">
+        <h2 className="text-3xl font-bold text-center mb-12">Frequently asked questions</h2>
+        
+        <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
+          {faqs.map((faq, index) => (
+            <div key={index} className="border-b border-gray-200 pb-6">
+              <h3 className="text-xl font-semibold mb-3">{faq.question}</h3>
+              <p className="text-gray-600">{faq.answer}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      {/* Final CTA */}
+      <div className="mt-24 text-center">
+        <h2 className="text-3xl font-bold mb-4">Ready to get started?</h2>
+        <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          Choose the plan that works for you and start creating amazing content today.
+        </p>
+        <div className="flex flex-wrap justify-center gap-4">
+          <button 
+            onClick={handleGetStarted}
+            className="bg-primary hover:bg-opacity-90 text-primary-foreground font-medium py-3 px-8 rounded-full transition duration-300"
+          >
+            Get started now
+          </button>
+          <button 
+            onClick={handleContactSales}
+            className="border-2 border-secondary hover:bg-secondary hover:text-secondary-foreground text-secondary font-medium py-3 px-8 rounded-full transition duration-300"
+          >
+            Talk to sales
+          </button>
         </div>
       </div>
     </section>

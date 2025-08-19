@@ -1,18 +1,10 @@
 
 import { useState, useEffect } from "react";
-import { ContactWizard } from "./ContactWizard";
-import heroStatue from "../assets/hero-statue-camera.jpg";
-import { initVanillaParallax } from "../lib/vanillaParallax";
+import { Play, Check } from "lucide-react";
 
 export const Hero = () => {
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
-
-  const handleSeePricing = () => {
+  const handleStartSystem = () => {
     window.location.href = '/video-packages';
-  };
-
-  const handleGetStarted = () => {
-    setIsWizardOpen(true);
   };
 
   useEffect(() => {
@@ -21,101 +13,117 @@ export const Hero = () => {
       import('../lib/gsap').then(({ revealElements }) => {
         revealElements('.hero-content > *', { stagger: 0.1, delay: 0.2 });
       });
-      
-      // Initialize vanilla parallax
-      initVanillaParallax();
     }
   }, []);
 
   return (
-    <section className="hero-section relative min-h-screen overflow-hidden">
-      {/* Background "PALMER HOUSE" Text */}
-      <div 
-        className="absolute inset-0 flex items-center justify-end pr-8 lg:pr-16"
-        data-parallax 
-        data-speed="-0.08"
-      >
-        <div className="hero-bg-text text-[12rem] md:text-[16rem] lg:text-[20rem] xl:text-[24rem] font-black text-cinematic-charcoal/35 select-none pointer-events-none leading-none tracking-tighter">
-          PALMER<br />HOUSE
-        </div>
-      </div>
-
-      {/* Floating Orbs */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div 
-          className="hero-orb hero-orb--1 absolute top-20 left-4 md:left-10 w-32 h-32 md:w-44 md:h-44 rounded-full opacity-35"
-          data-parallax 
-          data-speed="-0.15"
-        ></div>
-        <div 
-          className="hero-orb hero-orb--2 absolute bottom-32 right-1/4 w-36 h-36 md:w-52 md:h-52 rounded-full opacity-35"
-          data-parallax 
-          data-speed="0.2"
-        ></div>
-      </div>
+    <section className="relative w-full min-h-screen overflow-hidden bg-video-black text-video-white">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/50"></div>
       
-      <div className="relative z-10 min-h-screen flex items-center">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="grid lg:grid-cols-5 gap-8 lg:gap-16 items-center">
-            {/* Left Content - 60% */}
-            <div className="lg:col-span-3 hero-content" data-parallax data-speed="0.05">
-              {/* Service Categories */}
-              <div className="mb-8 animate-fade-blur-in">
-                <div className="flex flex-wrap gap-x-4 gap-y-1 mb-6">
-                  <span className="text-sm font-semibold text-cinematic-glow/80 tracking-wide px-3 py-1 bg-cinematic-glow/10 rounded-full">Video Strategy</span>
-                  <span className="text-sm font-semibold text-cinematic-glow/80 tracking-wide px-3 py-1 bg-cinematic-glow/10 rounded-full">Content Systems</span>
-                  <span className="text-sm font-semibold text-cinematic-glow/80 tracking-wide px-3 py-1 bg-cinematic-glow/10 rounded-full">Brand Storytelling</span>
-                  <span className="text-sm font-semibold text-cinematic-glow/80 tracking-wide px-3 py-1 bg-cinematic-glow/10 rounded-full">Process Documentation</span>
+      <div className="relative z-10 h-full max-w-7xl mx-auto px-8">
+        <div className="flex flex-col h-screen">
+          
+          {/* Main Hero Content */}
+          <div className="flex flex-1 items-center">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 w-full">
+              {/* Left Column - Headline and Description */}
+              <div className="flex flex-col justify-center hero-content">
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight mb-8 text-video-white animate-fade-blur-in">
+                  Build Video<br/>
+                  Content<br/>
+                  Systems
+                </h1>
+                <p className="text-xl text-neutral-300 leading-relaxed max-w-lg mb-12 animate-fade-blur-in" style={{animationDelay: '0.1s'}}>
+                  Save time and money, drive authority, and scale your business.
+                </p>
+                
+                <div className="flex animate-fade-blur-in" style={{animationDelay: '0.2s'}}>
+                  <button 
+                    onClick={handleStartSystem}
+                    className="bg-social-orange text-white text-lg font-medium px-10 py-4 rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-[0_0_20px_rgba(255,125,59,0.4)] hover:-translate-y-0.5"
+                  >
+                    Start Your System
+                  </button>
                 </div>
               </div>
               
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black mb-6 tracking-tight leading-[0.95] text-video-white animate-fade-blur-in" style={{animationDelay: '0.1s'}}>
-                Systemized video that
-                <br />
-                <span className="bg-gradient-to-r from-cinematic-violet to-cinematic-indigo bg-clip-text text-transparent">saves time & scales</span>
-              </h1>
-              
-              <p className="text-cinematic-glow/80 text-xl mb-4 max-w-[48ch] font-medium animate-fade-blur-in" style={{animationDelay: '0.15s'}}>
-                Professional cinematic storytelling for business systems and process documentation.
-              </p>
-              
-              <p className="text-cinematic-glow/70 text-base mb-8 max-w-[52ch] animate-fade-blur-in" style={{animationDelay: '0.18s'}}>
-                We help growth-stage companies turn video content into scalable business systems that work while you sleep.
-              </p>
-              
-              <div className="animate-fade-blur-in" style={{animationDelay: '0.2s'}}>
-                <button 
-                  onClick={handleSeePricing}
-                  className="hero-cta px-6 py-3.5 bg-orange-500 hover:bg-orange-600 text-white font-bold text-base rounded-xl transition-all duration-250 hover:shadow-lg hover:shadow-orange-500/25 hover:-translate-y-0.5 active:translate-y-0 active:scale-95"
-                >
-                  See pricing
-                </button>
-              </div>
-            </div>
+              {/* Right Column - Visual System */}
+              <div className="relative flex items-center justify-center animate-fade-blur-in" style={{animationDelay: '0.3s'}}>
+                {/* Connection Lines SVG */}
+                <div className="absolute inset-0 pointer-events-none z-0">
+                  <svg width="100%" height="100%" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M295 295 C 295 200, 400 200, 420 190" stroke="hsl(var(--social-blue))" strokeWidth="1.5" strokeOpacity="0.5"></path>
+                    <path d="M295 295 C 200 295, 200 230, 180 215" stroke="hsl(var(--social-blue))" strokeWidth="1.5" strokeOpacity="0.5"></path>
+                    <path d="M295 305 C 200 305, 200 380, 220 400" stroke="hsl(var(--social-blue))" strokeWidth="1.5" strokeOpacity="0.5"></path>
+                    <path d="M220 400 C 220 440, 280 440, 300 440" stroke="hsl(var(--social-blue))" strokeWidth="1.5" strokeOpacity="0.5"></path>
+                    <path d="M420 190 C 470 190, 470 140, 490 130" stroke="hsl(var(--social-blue))" strokeWidth="1.5" strokeOpacity="0.5"></path>
+                  </svg>
+                </div>
 
-            {/* Right Content - 40% */}
-            <div 
-              className="lg:col-span-2 hero-image animate-fade-blur-in" 
-              style={{animationDelay: '0.4s'}}
-              data-parallax 
-              data-speed="-0.12"
-            >
-              <div className="relative">
-                <div className="hero-visual aspect-[4/5] relative overflow-hidden rounded-2xl mb-6">
-                  <img
-                    src={heroStatue}
-                    alt="Classical marble statue representing creative vision and leadership"
-                    className="w-full h-full object-cover transform hover:scale-105 transition-all duration-700"
-                    loading="eager"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-cinematic-charcoal/20 to-transparent"></div>
+                {/* Central Monitor */}
+                <div className="relative z-10 w-48 h-32 bg-video-black/50 backdrop-blur-md rounded-lg p-2 border border-social-orange/50 shadow-[0_0_30px_rgba(255,125,59,0.3)]">
+                  <div className="w-full h-full rounded-md flex items-center justify-center bg-gradient-to-br from-social-orange/30 to-social-orange/10">
+                     <div className="w-10 h-10 bg-social-orange rounded-md flex items-center justify-center">
+                        <Play className="w-5 h-5 text-white fill-white" />
+                    </div>
+                  </div>
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-24 h-2 bg-video-black/50 border-x border-b border-social-orange/50 rounded-b-md"></div>
+                </div>
+
+                {/* Onboarding Card */}
+                <div className="absolute top-16 right-0 z-10 w-44 bg-video-black/50 backdrop-blur-md rounded-lg p-3 border border-social-orange/50 shadow-[0_0_20px_rgba(255,125,59,0.2)]">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <div className="w-6 h-6 bg-social-orange rounded-sm flex items-center justify-center">
+                      <Play className="w-3 h-3 text-white fill-white" />
+                    </div>
+                    <span className="font-medium text-sm">Onboarding</span>
+                  </div>
+                  <div className="space-y-1.5">
+                    <div className="h-2 w-3/4 bg-social-blue/30 rounded-full"></div>
+                    <div className="h-2 w-full bg-social-blue/30 rounded-full"></div>
+                  </div>
                 </div>
                 
-                {/* Right-side descriptive text */}
-                <div className="text-cinematic-glow/80 text-sm leading-relaxed">
-                  <p>
-                    We partner with growth-stage brands to turn video into a problem-solver—building content systems that save time, drive authority, and scale trust.
-                  </p>
+                {/* Checkmark Card */}
+                <div className="absolute top-24 left-24 z-10 w-24 h-16 bg-video-black/50 backdrop-blur-md rounded-lg p-3 border border-social-orange/50 shadow-[0_0_20px_rgba(255,125,59,0.2)] flex items-center justify-center">
+                   <Check className="w-8 h-8 text-social-orange" />
+                </div>
+
+                {/* Video Item Card */}
+                <div className="absolute top-40 left-8 z-10 w-24 h-16 bg-video-black/50 backdrop-blur-md rounded-lg p-3 border border-social-blue/50 shadow-[0_0_20px_rgba(59,130,246,0.2)] flex items-center justify-center">
+                  <div className="w-8 h-8 bg-social-blue rounded-md flex items-center justify-center">
+                    <Play className="w-4 h-4 text-white fill-white" />
+                  </div>
+                </div>
+
+                {/* List Card */}
+                <div className="absolute bottom-32 left-16 z-10 w-32 h-20 bg-video-black/50 backdrop-blur-md rounded-lg p-3 border border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.2)] flex items-center space-x-3">
+                  <span className="text-3xl font-bold text-red-400">1</span>
+                  <div className="flex-1 space-y-2">
+                    <div className="h-2.5 w-full bg-red-400/30 rounded-full"></div>
+                    <div className="h-2.5 w-3/4 bg-red-400/30 rounded-full"></div>
+                  </div>
+                </div>
+
+                {/* FAQs Card */}
+                <div className="absolute bottom-16 left-48 z-10 w-28 bg-video-black/50 backdrop-blur-md rounded-lg p-3 border border-social-purple/50 shadow-[0_0_20px_rgba(151,71,255,0.2)] flex items-center space-x-2">
+                  <div className="flex flex-col space-y-1">
+                    <div className="w-2.5 h-2.5 bg-social-purple/50 rounded-full"></div>
+                    <div className="w-2.5 h-2.5 bg-social-purple/50 rounded-full"></div>
+                  </div>
+                  <span className="font-medium text-sm">FAQs</span>
+                </div>
+
+                {/* Playlist Card */}
+                <div className="absolute bottom-20 right-8 z-10 w-36 bg-video-black/50 backdrop-blur-md rounded-lg p-3 border border-social-purple/50 shadow-[0_0_20px_rgba(151,71,255,0.2)] flex items-center space-x-3">
+                  <div className="flex-1 space-y-2">
+                    <div className="h-2.5 w-full bg-social-purple/30 rounded-full"></div>
+                    <div className="h-2.5 w-3/4 bg-social-purple/30 rounded-full"></div>
+                  </div>
+                  <div className="w-8 h-8 bg-social-purple rounded-full flex items-center justify-center">
+                    <Play className="w-3 h-3 text-white fill-white" />
+                  </div>
                 </div>
               </div>
             </div>
@@ -123,7 +131,10 @@ export const Hero = () => {
         </div>
       </div>
 
-      <ContactWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
+      {/* Glow Effects */}
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-social-purple/10 rounded-full blur-[120px]"></div>
+      <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-social-orange/10 rounded-full blur-[100px]"></div>
+
     </section>
   );
 };

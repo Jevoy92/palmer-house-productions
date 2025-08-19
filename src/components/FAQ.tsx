@@ -69,17 +69,17 @@ export const FAQ = () => {
   };
 
   return (
-    <section className="py-24 bg-corporate-light">
+    <section className="py-24 bg-background">
       <div className="max-w-5xl mx-auto px-6">
         <div className="text-center mb-16">
-          <div className="inline-block px-4 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-6">
+          <div className="inline-block px-4 py-2 bg-primary/10 text-primary font-bold text-sm mb-6 rounded-full">
             ❓ Frequently Asked Questions
           </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black mb-6 text-corporate-dark tracking-tight">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black mb-6 text-foreground tracking-tight">
             Everything You Need to Know About 
-            <span className="text-gradient-1"> Working With Us</span>
+            <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent"> Working With Us</span>
           </h2>
-          <p className="text-lg text-corporate-gray max-w-3xl mx-auto font-medium">
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto font-medium">
             Get answers to common questions about our process, pricing, timelines, and what makes our video systems approach unique.
           </p>
         </div>
@@ -92,33 +92,33 @@ export const FAQ = () => {
             return (
               <div 
                 key={index}
-                className="bg-video-white rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300"
+                className="bg-card border border-border rounded-2xl hover:shadow-lg transition-all duration-300"
               >
                 <button
                   onClick={() => toggleItem(index)}
-                  className="w-full p-6 text-left flex items-center justify-between hover:bg-gray-50/50 rounded-2xl transition-colors duration-200"
+                  className="w-full p-6 text-left flex items-center justify-between hover:bg-muted/50 rounded-2xl transition-colors duration-200"
                 >
                   <div className="flex-1 pr-4">
-                    <div className={`text-xs font-semibold ${categoryInfo.color} mb-2 uppercase tracking-wide`}>
+                    <div className={`text-xs font-semibold text-primary mb-2 uppercase tracking-wide`}>
                       {categoryInfo.name}
                     </div>
-                    <h3 className="text-lg md:text-xl font-bold text-corporate-dark leading-tight">
+                    <h3 className="text-lg md:text-xl font-bold text-foreground leading-tight">
                       {faq.question}
                     </h3>
                   </div>
                   <div className="flex-shrink-0">
                     {isOpen ? (
-                      <ChevronUp className="w-6 h-6 text-corporate-gray" />
+                      <ChevronUp className="w-6 h-6 text-muted-foreground" />
                     ) : (
-                      <ChevronDown className="w-6 h-6 text-corporate-gray" />
+                      <ChevronDown className="w-6 h-6 text-muted-foreground" />
                     )}
                   </div>
                 </button>
                 
                 {isOpen && (
                   <div className="px-6 pb-6">
-                    <div className="pt-4 border-t border-gray-100">
-                      <p className="text-corporate-gray leading-relaxed text-lg">
+                    <div className="pt-4 border-t border-border">
+                      <p className="text-muted-foreground leading-relaxed text-lg">
                         {faq.answer}
                       </p>
                     </div>
@@ -130,14 +130,14 @@ export const FAQ = () => {
         </div>
 
         <div className="text-center mt-16">
-          <div className="bg-video-white rounded-2xl p-8 video-shadow">
-            <h3 className="text-2xl font-bold text-corporate-dark mb-4">
+          <div className="bg-card border border-border rounded-2xl p-8">
+            <h3 className="text-2xl font-bold text-foreground mb-4">
               Still Have Questions?
             </h3>
-            <p className="text-corporate-gray text-lg mb-6">
+            <p className="text-muted-foreground text-lg mb-6">
               We're here to help! Book a free discovery call to discuss your specific needs and get personalized answers.
             </p>
-            <button className="px-8 py-4 gradient-social-1 text-white font-bold text-lg rounded-xl hover:scale-105 transition-all duration-300">
+            <button className="px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-bold text-lg rounded-xl hover:scale-105 transition-all duration-300">
               Book Discovery Call
             </button>
           </div>

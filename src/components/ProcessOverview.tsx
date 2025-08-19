@@ -37,17 +37,17 @@ export const ProcessOverview = () => {
   ];
 
   return (
-    <section className="py-24 bg-cinematic-dark">
+    <section className="py-24 bg-muted/30">
       <div className="max-w-7xl mx-auto px-6">
         <div className="text-center mb-16">
-          <div className="inline-block px-4 py-2 glass-card text-cinematic-glow font-semibold text-sm mb-6">
+          <div className="inline-block px-4 py-2 bg-primary/10 text-primary font-semibold text-sm mb-6 rounded-full">
             ⚡ Our Process
           </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black mb-6 text-video-white tracking-tight">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black mb-6 text-foreground tracking-tight">
             How We Turn Your Vision Into 
-            <span className="bg-gradient-to-r from-cinematic-violet to-cinematic-indigo bg-clip-text text-transparent"> Powerful Video</span>
+            <span className="bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent"> Powerful Video</span>
           </h2>
-          <p className="text-lg text-cinematic-glow max-w-3xl mx-auto font-medium">
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto font-medium">
             Our proven 4-step process ensures every project delivers exceptional results while staying on time and on budget.
           </p>
         </div>
@@ -58,34 +58,34 @@ export const ProcessOverview = () => {
             return (
               <div 
                 key={index}
-                className="group glass-card p-8 hover:scale-[1.02] transition-all duration-300"
+                className="group bg-card border border-border rounded-2xl p-8 hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
               >
                 <div className="flex items-start gap-6 mb-6">
                   <div className="flex-shrink-0">
-                    <div className="text-6xl font-black text-cinematic-glow/20 leading-none">
+                    <div className="text-6xl font-black text-muted-foreground/20 leading-none">
                       {step.number}
                     </div>
                   </div>
-                  <div className={`w-16 h-16 ${step.gradient} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
-                    <IconComponent size={32} className="text-white" />
+                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <IconComponent size={32} className="text-primary-foreground" />
                   </div>
                 </div>
                 
-                <h3 className="text-2xl font-display font-bold mb-4 text-video-white">
+                <h3 className="text-2xl font-display font-bold mb-4 text-foreground">
                   {step.title}
                 </h3>
-                <p className="text-cinematic-glow leading-relaxed mb-6 text-lg">
+                <p className="text-muted-foreground leading-relaxed mb-6 text-lg">
                   {step.description}
                 </p>
 
                 <div className="space-y-3">
-                  <h4 className="font-semibold text-cinematic-glow/90 text-sm uppercase tracking-wide">
+                  <h4 className="font-semibold text-muted-foreground/90 text-sm uppercase tracking-wide">
                     Key Deliverables
                   </h4>
                   {step.deliverables.map((deliverable, deliverableIndex) => (
                     <div key={deliverableIndex} className="flex items-center">
-                      <div className="w-2 h-2 bg-cinematic-violet rounded-full mr-3 flex-shrink-0"></div>
-                      <span className="text-cinematic-glow/80 font-medium">{deliverable}</span>
+                      <div className="w-2 h-2 bg-primary rounded-full mr-3 flex-shrink-0"></div>
+                      <span className="text-muted-foreground/80 font-medium">{deliverable}</span>
                     </div>
                   ))}
                 </div>
@@ -95,14 +95,14 @@ export const ProcessOverview = () => {
         </div>
 
         <div className="text-center mt-16">
-          <div className="glass-card p-8 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold text-video-white mb-4">
+          <div className="bg-card border border-border rounded-2xl p-8 max-w-4xl mx-auto">
+            <h3 className="text-2xl font-bold text-foreground mb-4">
               Ready to Transform Your Business with Video?
             </h3>
-            <p className="text-cinematic-glow text-lg mb-6">
+            <p className="text-muted-foreground text-lg mb-6">
               Our process has helped 200+ businesses create video content that drives real results. Let's discuss your project.
             </p>
-            <button className="px-8 py-4 bg-gradient-to-r from-cinematic-violet to-cinematic-indigo text-white font-bold text-lg rounded-xl hover:scale-105 transition-all duration-300">
+            <button className="px-8 py-4 bg-gradient-to-r from-primary to-primary/80 text-primary-foreground font-bold text-lg rounded-xl hover:scale-105 transition-all duration-300">
               Start Your Project
             </button>
           </div>

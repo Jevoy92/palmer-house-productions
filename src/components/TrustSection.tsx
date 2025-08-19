@@ -159,58 +159,45 @@ export const TrustSection = () => {
               </div>
             </Card>
 
-            {/* Process Description Card */}
-            <Card className="bg-white p-8 rounded-3xl shadow-sm col-span-1 border-0">
-              <h4 className="text-xl font-bold mb-2">A streamlined process, executed with methodical care.</h4>
-              <p className="text-gray-600 mb-6 text-sm leading-6">We transform underwhelming brands into standout experiences, built to reflect the quality, ambition, and greatness</p>
-              <div className="inline-flex items-center font-semibold group cursor-pointer text-sm">
-                Learn about our process <i className="fa-solid fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i>
+            {/* Combined Process and Timeline Card */}
+            <Card className="bg-white p-8 rounded-3xl shadow-sm col-span-1 md:col-span-2 lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-8 border-0">
+              <div className="flex flex-col justify-between">
+                <div>
+                  <h4 className="text-xl font-bold mb-2">A streamlined process, executed with methodical care.</h4>
+                  <p className="text-gray-600 text-sm leading-6">We transform underwhelming brands into standout experiences, built to reflect the quality, ambition, and greatness</p>
+                </div>
+                <div className="inline-flex items-center font-semibold group cursor-pointer text-sm text-[#FF6B49] mt-6 lg:mt-0">
+                  <i className="fa-solid fa-arrow-right mr-2"></i> Learn about our process
+                </div>
               </div>
-            </Card>
-
-            {/* Timeline Card */}
-            <Card className="bg-white p-8 rounded-3xl shadow-sm col-span-1 border-0">
-              <div className="mb-4">
+              <div>
                 <h4 className="text-sm font-medium text-gray-500">Timeline</h4>
-                <p className="text-sm font-semibold text-gray-900">Website & branding for Sony</p>
-              </div>
-              
-              {/* Timeline visualization */}
-              <div className="relative pt-8">
-                {/* Horizontal timeline line */}
-                <div className="relative h-0.5 bg-gray-200 mb-8">
-                  {/* Timeline stages */}
-                  <div className="absolute inset-0 flex justify-between items-center">
-                    {/* Discovery stage */}
-                    <div className="flex flex-col items-center">
-                      <div className="px-3 py-1.5 bg-coral-light text-gray-900 font-medium rounded-full text-xs whitespace-nowrap">
-                        Discovery
-                      </div>
-                      <div className="mt-2 text-gray-500 text-xs">1 Week</div>
-                    </div>
-                    
-                    {/* Concept stage */}
-                    <div className="flex flex-col items-center">
-                      <div className="px-3 py-1.5 bg-coral text-gray-900 font-medium rounded-full text-xs whitespace-nowrap">
-                        Concept
-                      </div>
-                      <div className="mt-2 text-gray-500 text-xs">2 Weeks</div>
-                    </div>
-                    
-                    {/* Execution stage */}
-                    <div className="flex flex-col items-center">
-                      <div className="px-3 py-1.5 bg-coral-dark text-white font-medium rounded-full text-xs whitespace-nowrap">
-                        Execution
-                      </div>
-                      <div className="mt-2 text-gray-500 text-xs">3 Weeks</div>
-                    </div>
+                <p className="text-sm font-semibold text-gray-500 mb-6">Website & branding for Sony</p>
+                <div className="relative h-32">
+                  <div className="absolute bottom-6 w-full flex justify-around">
+                    <div className="h-20 w-px bg-gray-200"></div>
+                    <div className="h-20 w-px bg-gray-200"></div>
+                    <div className="h-20 w-px bg-gray-200"></div>
+                    <div className="h-20 w-px bg-gray-200"></div>
+                    <div className="h-20 w-px bg-gray-200"></div>
                   </div>
+                  <div className="absolute bottom-0 w-full flex justify-around text-xs text-gray-400">
+                    <span>...</span>
+                    <span>1 Week</span>
+                    <span></span>
+                    <span>2 Weeks</span>
+                    <span></span>
+                    <span>3 Weeks</span>
+                  </div>
+                  <div className="absolute top-0 left-[18%] -translate-x-1/2 bg-[#FFD1C1] text-gray-900 text-xs font-semibold px-4 py-2 rounded-full">Discovery</div>
+                  <div className="absolute top-8 left-[45%] -translate-x-1/2 bg-[#FFB39E] text-gray-900 text-xs font-semibold px-4 py-2 rounded-full">Concept</div>
+                  <div className="absolute top-16 left-[70%] -translate-x-1/2 bg-[#FF8F7A] text-gray-900 text-xs font-semibold px-4 py-2 rounded-full">Execution</div>
                 </div>
               </div>
             </Card>
 
             {/* Statistics Card 2 */}
-            <Card className="bg-white p-8 rounded-3xl shadow-sm flex flex-col justify-between col-span-1 border-0">
+            <Card className="bg-white p-8 rounded-3xl shadow-sm flex flex-col justify-between col-span-1 md:col-span-2 lg:col-span-1 border-0">
               <div className="flex justify-between items-start w-full">
                 <span className="text-sm font-medium text-gray-500">Fact 02</span>
                 <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">

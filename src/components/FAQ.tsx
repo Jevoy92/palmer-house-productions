@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { ArrowRight, Plus } from 'lucide-react';
 
 interface FAQItem {
   question: string;
@@ -8,10 +8,37 @@ interface FAQItem {
 
 export const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [inViewItems, setInViewItems] = useState<Set<number>>(new Set());
+  const faqRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -30px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const index = parseInt(entry.target.getAttribute('data-index') || '0');
+          setInViewItems(prev => new Set([...prev, index]));
+        }
+      });
+    }, observerOptions);
+
+    faqRefs.current.forEach((ref, index) => {
+      if (ref) {
+        ref.setAttribute('data-index', index.toString());
+        observer.observe(ref);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   const faqs: FAQItem[] = [
     {
@@ -68,23 +95,48 @@ export const FAQ = () => {
           <div className="md:col-span-8">
             {faqs.map((faq, index) => (
               <div 
-                key={index} 
-                className="border-b border-border py-6 cursor-pointer group hover:bg-muted/50 transition-colors"
+                key={index}
+                ref={el => faqRefs.current[index] = el}
+                className={`
+                  border-b border-border py-6 px-4 cursor-pointer group 
+                  transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
+                  hover:bg-muted/50 hover:-translate-y-0.5 hover:shadow-lg hover:rounded-lg
+                  ${inViewItems.has(index) ? 'opacity-100 translate-y-0' : 'opacity-80 translate-y-2'}
+                  ${openIndex === index ? 'bg-muted/30' : ''}
+                `}
+                style={{ transitionDelay: `${index * 0.1}s` }}
                 onClick={() => toggleFAQ(index)}
               >
                 <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-medium text-foreground group-hover:text-primary transition-colors pr-4">
-                    {faq.question}
-                  </h3>
-                  <span className="text-3xl font-light text-muted-foreground flex-shrink-0">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                </div>
-                {openIndex === index && (
-                  <div className="mt-4 text-muted-foreground">
-                    <p className="leading-relaxed">{faq.answer}</p>
+                  <div className="flex items-center flex-1">
+                    <h3 className="text-lg font-medium text-foreground group-hover:text-primary transition-all duration-300 pr-4">
+                      {faq.question}
+                    </h3>
                   </div>
-                )}
+                  <div className="flex items-center space-x-4">
+                    <span className={`
+                      text-2xl font-light transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
+                      ${openIndex === index ? 'text-foreground font-normal' : 'text-muted-foreground'}
+                      group-hover:text-foreground group-hover:scale-105
+                    `}>
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <div className="w-8 h-8 rounded-full border border-border flex items-center justify-center group-hover:border-primary/50 transition-all duration-300">
+                      <Plus className={`
+                        w-4 h-4 transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
+                        ${openIndex === index ? 'rotate-45' : ''}
+                      `} />
+                    </div>
+                  </div>
+                </div>
+                <div className={`
+                  overflow-hidden transition-all duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]
+                  ${openIndex === index ? 'max-h-96 opacity-100 pt-4' : 'max-h-0 opacity-0 pt-0'}
+                `}>
+                  <div className="text-muted-foreground leading-relaxed">
+                    <p>{faq.answer}</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

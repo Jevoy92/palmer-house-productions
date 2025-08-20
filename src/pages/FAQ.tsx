@@ -278,30 +278,58 @@ const FAQ = () => {
             {/* FAQ Items */}
             <div className="space-y-4 mb-16">
               {filteredFaqs.map((faq, index) => (
-                <div key={index} className="bg-white rounded-2xl video-shadow overflow-hidden">
+                <div 
+                  key={index} 
+                  className={`
+                    bg-white rounded-2xl video-shadow overflow-hidden
+                    transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
+                    hover:-translate-y-1 hover:shadow-xl
+                    ${openIndex === index ? 'ring-2 ring-primary/20' : ''}
+                  `}
+                >
                   <button
-                    className="w-full text-left p-6 hover:bg-gray-50 transition-colors duration-200 flex justify-between items-center min-h-[80px] touch-manipulation"
+                    className="w-full text-left p-6 hover:bg-gray-50 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] flex justify-between items-center min-h-[80px] touch-manipulation group"
                     onClick={() => toggleFAQ(index)}
                     aria-expanded={openIndex === index}
                     aria-controls={`faq-answer-${index}`}
                   >
-                    <h3 className="text-lg md:text-xl font-bold text-corporate-dark pr-4 leading-tight">
-                      {faq.question}
-                    </h3>
-                    {openIndex === index ? (
-                      <ChevronUp className="w-5 h-5 text-corporate-gray flex-shrink-0" />
-                    ) : (
-                      <ChevronDown className="w-5 h-5 text-corporate-gray flex-shrink-0" />
-                    )}
+                    <div className="flex items-center flex-1">
+                      <h3 className="text-lg md:text-xl font-bold text-corporate-dark pr-4 leading-tight group-hover:text-primary transition-colors duration-300">
+                        {faq.question}
+                      </h3>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <span className={`
+                        text-xl font-light transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
+                        ${openIndex === index ? 'text-corporate-dark font-normal' : 'text-corporate-gray'}
+                        group-hover:text-corporate-dark group-hover:scale-105
+                      `}>
+                        {String(index + 1).padStart(2, '0')}
+                      </span>
+                      <div className="w-8 h-8 rounded-full border border-gray-200 flex items-center justify-center group-hover:border-primary/50 transition-all duration-300">
+                        {openIndex === index ? (
+                          <ChevronUp className="w-4 h-4 text-corporate-gray transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] rotate-180" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4 text-corporate-gray transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]" />
+                        )}
+                      </div>
+                    </div>
                   </button>
-                  {openIndex === index && (
-                     <div 
+                  <div className={`
+                    overflow-hidden transition-all duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]
+                    ${openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}
+                  `}>
+                    <div 
                       id={`faq-answer-${index}`}
-                      className="px-6 pb-6 text-corporate-gray leading-relaxed text-base md:text-lg"
+                      className={`
+                        px-6 pb-6 text-corporate-gray leading-relaxed text-base md:text-lg
+                        transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
+                        ${openIndex === index ? 'pt-0' : 'pt-0'}
+                      `}
                     >
                       {faq.answer}
                     </div>
-                  )}
+                  </div>
                 </div>
               ))}
             </div>

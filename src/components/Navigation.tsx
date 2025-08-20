@@ -91,7 +91,7 @@ export const Navigation = () => {
                   Services
                   <ChevronDown className="ml-1 h-4 w-4" />
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-56 bg-gray-900 border border-gray-700 shadow-lg rounded-md z-50" sideOffset={5}>
+                  <DropdownMenuContent align="start" className="w-56 bg-gray-900 border border-gray-700 shadow-lg rounded-md z-50" sideOffset={5}>
                   <DropdownMenuItem asChild>
                     <Link to="/video-packages" className="block px-3 py-2 text-sm text-gray-200 hover:text-white hover:bg-gray-800 rounded-md transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
                       Video Packages

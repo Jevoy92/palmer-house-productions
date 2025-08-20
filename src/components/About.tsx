@@ -22,7 +22,7 @@ export const About = () => {
             </p>
           </header>
 
-        <div className="max-w-4xl mx-auto mb-16">
+        <div className="max-w-7xl mx-auto mb-16">
           <div className="bg-video-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 video-shadow">
             <p className="text-base md:text-lg text-corporate-gray leading-relaxed mb-6 text-center">
               Founded with a vision to help businesses tell their stories authentically, Palmer House Productions combines <span className="text-gradient-3 font-bold">creative expertise</span> with strategic thinking.
@@ -58,7 +58,7 @@ export const About = () => {
             <div className="w-32 h-1 bg-gradient-to-r from-social-purple to-social-pink mx-auto rounded-full"></div>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-12">
             <div className="group bg-video-white/80 backdrop-blur-sm rounded-3xl p-10 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105">
               <div className="flex items-center mb-6">
                 <div className="text-4xl mr-4">🎯</div>

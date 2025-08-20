@@ -98,12 +98,12 @@ export default {
 					'black': 'hsl(var(--video-black))',
 					'white': 'hsl(var(--video-white))',
 				},
-				// Process accordion colors
+				// Process accordion colors - Coral variations matching timeline
 				'process': {
-					'1': '#FFEAE3',    // Very light coral
-					'2': '#FFD1C2',    // Light coral
-					'3': '#FFB8A3',    // Medium coral
-					'4': '#FF9E85',    // Orange coral
+					'1': 'hsl(25 100% 92%)',    // Lightest coral
+					'2': 'hsl(25 100% 85%)',    // Light coral
+					'3': 'hsl(25 100% 78%)',    // Medium coral
+					'4': 'hsl(25 100% 70%)',    // Deeper coral
 				},
 				'charcoal': 'hsl(0 0% 7%)'  // #111111
 			},

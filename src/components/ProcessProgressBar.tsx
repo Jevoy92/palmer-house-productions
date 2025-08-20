@@ -79,9 +79,9 @@ export const ProcessProgressBar = ({ stepNumber, isActive, colorClass }: Process
 
   const getProgressColorClass = () => {
     switch (stepNumber) {
-      case "01": return "[&>div]:bg-coral-light";
-      case "02": return "[&>div]:bg-cinematic-indigo";
-      case "03": return "[&>div]:bg-cinematic-cyan";
+      case "01": return "[&>div]:bg-[#FFCBB8]";
+      case "02": return "[&>div]:bg-[#FFB39E]";
+      case "03": return "[&>div]:bg-[#FF9A7D]";
       default: return "[&>div]:bg-primary";
     }
   };

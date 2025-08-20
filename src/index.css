@@ -616,39 +616,39 @@
   
   /* Process Section Background Colors */
   .bg-process-1 {
-    @apply bg-coral-light/20 backdrop-blur-sm;
+    @apply bg-[#FFCBB8]/20 backdrop-blur-sm;
   }
   
   .bg-process-2 {
-    @apply bg-cinematic-indigo/10 backdrop-blur-sm;
+    @apply bg-[#FFB39E]/10 backdrop-blur-sm;
   }
   
   .bg-process-3 {
-    @apply bg-cinematic-cyan/10 backdrop-blur-sm;
+    @apply bg-[#FF9A7D]/10 backdrop-blur-sm;
   }
 
   /* Process trigger backgrounds with higher opacity for contrast */
   .bg-process-1-trigger {
-    @apply bg-coral-light/85 transition-colors duration-300;
+    @apply bg-[#FFCBB8]/85 transition-colors duration-300;
   }
 
   .bg-process-1-trigger:hover {
-    @apply bg-coral-light/75;
+    @apply bg-[#FFCBB8]/75;
   }
 
   .bg-process-2-trigger {
-    @apply bg-cinematic-indigo/85 transition-colors duration-300;
+    @apply bg-[#FFB39E]/85 transition-colors duration-300;
   }
 
   .bg-process-2-trigger:hover {
-    @apply bg-cinematic-indigo/75;
+    @apply bg-[#FFB39E]/75;
   }
 
   .bg-process-3-trigger {
-    @apply bg-cinematic-cyan/85 transition-colors duration-300;
+    @apply bg-[#FF9A7D]/85 transition-colors duration-300;
   }
 
   .bg-process-3-trigger:hover {
-    @apply bg-cinematic-cyan/75;
+    @apply bg-[#FF9A7D]/75;
   }
 }

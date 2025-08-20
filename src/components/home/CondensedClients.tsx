@@ -48,37 +48,24 @@ export const CondensedClients = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-video-white p-8 rounded-2xl video-shadow hover:video-shadow-lg transition-all min-h-[400px] flex flex-col border border-gray-100">
-              {/* Star Rating */}
-              <div className="flex justify-between items-center mb-6">
-                <div className="flex space-x-1">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <span key={i} className="text-process-3 text-sm">★</span>
-                  ))}
-                </div>
+            <div key={index} className="bg-video-white p-6 rounded-2xl video-shadow hover:video-shadow-lg transition-all min-h-[400px] flex flex-col">
+              <div className="flex space-x-1 mb-4">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 fill-social-yellow text-social-yellow" />
+                ))}
               </div>
-              
-              {/* Testimonial Content */}
-              <div className="flex-grow mb-6">
-                <p className="text-corporate-gray leading-relaxed text-sm">
-                  "{testimonial.content}"
-                </p>
-              </div>
-              
-              {/* Author Information */}
-              <div className="flex items-center space-x-4 mt-auto pt-4 border-t border-gray-100">
-                <div className="w-12 h-12 rounded-full overflow-hidden">
-                  <img 
-                    className="w-full h-full object-cover" 
-                    src={`https://images.unsplash.com/photo-${index === 0 ? '1494790108755-2616b612b786' : index === 1 ? '1507003211169-0a1dd7228f2d' : '1500648767791-00dcc994a43e'}?w=100&h=100&fit=crop&crop=face`} 
-                    alt={testimonial.name} 
-                  />
+              <p className="text-corporate-gray mb-6 leading-relaxed flex-grow">
+                "{testimonial.content}"
+              </p>
+              <div className="flex items-center space-x-3 mt-auto">
+                <div className={`w-12 h-12 rounded-full ${testimonial.avatarColor} flex items-center justify-center text-white font-bold`}>
+                  {testimonial.initials}
                 </div>
                 <div>
-                  <div className="font-bold text-sm text-corporate-dark">{testimonial.name}</div>
-                  <div className="text-xs text-corporate-gray">{testimonial.role}</div>
+                  <div className="font-bold text-corporate-dark">{testimonial.name}</div>
+                  <div className="text-sm text-corporate-gray">{testimonial.role}</div>
                 </div>
               </div>
             </div>

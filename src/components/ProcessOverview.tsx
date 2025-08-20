@@ -93,50 +93,47 @@ export const ProcessOverview = () => {
         </div>
       </div>
 
-      {/* Process Steps */}
-      <div className="container mx-auto container-padding">
-        <div className="space-y-4">
-          {steps.map((step, index) => (
-            <div key={index} className="w-full">
-              {!openSteps[index] ? (
-                // Collapsed State: Full-width clickable bar
-                <button
-                  onClick={() => toggleStep(index)}
-                  className={`w-full ${step.triggerBgColor} transition-all duration-300 relative overflow-hidden border-b border-gray-200 ${index === steps.length - 1 ? 'border-b-0' : ''}`}
-                >
-                  <div className="flex items-center justify-between py-6 lg:py-8">
-                    <h3 className="text-4xl md:text-5xl font-bold text-charcoal text-left">{step.title}</h3>
-                    <span className="text-6xl md:text-7xl lg:text-8xl font-black text-white">{step.number}</span>
-                  </div>
-                </button>
-              ) : (
-                // Expanded State: Compact rectangle
-                <div className={`max-w-4xl mx-auto ${step.bgColor} rounded-2xl p-8 lg:p-12 transition-all duration-500 ease-in-out`}>
-                  {/* Header with title and number */}
-                  <div className="flex items-center justify-between mb-8">
-                    <h3 className="text-3xl md:text-4xl font-bold text-white">{step.title}</h3>
-                    <button
-                      onClick={() => toggleStep(index)}
-                      className="text-4xl md:text-5xl lg:text-6xl font-black text-white hover:text-white/80 transition-colors duration-200"
-                    >
-                      {step.number}
-                    </button>
-                  </div>
-                  
-                  {/* Content */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-                    {step.items.map((item, itemIndex) => (
-                      <div key={itemIndex} className="space-y-3">
-                        <h4 className="text-lg font-bold text-white">{item.title}</h4>
-                        <p className="text-white/90 text-sm leading-relaxed">{item.description}</p>
-                      </div>
-                    ))}
-                  </div>
+      {/* Full-Width Accordion Container */}
+      <div className="w-full">
+        {steps.map((step, index) => (
+          <Collapsible 
+            key={index}
+            open={openSteps[index] || false}
+            onOpenChange={() => toggleStep(index)}
+            className={`border-b border-gray-200 ${index === steps.length - 1 ? 'border-b-0' : ''}`}
+          >
+            <CollapsibleTrigger className={`w-full ${step.triggerBgColor} transition-all duration-300 relative overflow-hidden`}>
+              <div className="container mx-auto container-padding">
+                <div className="flex items-center justify-between py-6 lg:py-8 relative">
+                  <h3 className="text-4xl md:text-5xl font-bold text-charcoal text-left">{step.title}</h3>
+                  <span className="text-6xl md:text-7xl lg:text-8xl font-black text-white">{step.number}</span>
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
+              </div>
+            </CollapsibleTrigger>
+            
+            <CollapsibleContent className="bg-white transition-all duration-500 ease-in-out w-full relative overflow-hidden">
+              {/* Compact Sliding Badge */}
+              <div className={`absolute top-6 right-6 h-16 md:h-20 lg:h-24 w-16 md:w-20 lg:w-24 flex items-center justify-center z-20 ${step.bgColor} rounded-lg ${
+                openSteps[index] ? 'animate-slide-in-from-right' : 'animate-slide-out-to-right'
+              }`}>
+                <span className="font-black text-white text-2xl md:text-3xl lg:text-4xl">
+                  {step.number}
+                </span>
+              </div>
+              
+              <div className="container mx-auto container-padding relative z-10">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 py-8 lg:py-12 pr-12 md:pr-16 lg:pr-20">
+                  {step.items.map((item, itemIndex) => (
+                    <div key={itemIndex} className="space-y-3">
+                      <h4 className="text-lg font-bold text-charcoal">{item.title}</h4>
+                      <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CollapsibleContent>
+          </Collapsible>
+        ))}
       </div>
     </section>
   );

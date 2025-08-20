@@ -105,24 +105,35 @@ export const ProcessOverview = () => {
             onOpenChange={() => toggleStep(index)}
             className={`border-b border-white/50 ${index === steps.length - 1 ? 'border-b-0' : ''}`}
           >
-            <CollapsibleTrigger className={`w-full ${step.triggerBg} transition-all duration-300`}>
+            <CollapsibleTrigger className={`w-full ${step.triggerBg} transition-all duration-300 relative overflow-hidden`}>
               <div className="container mx-auto container-padding">
                 <div className="flex items-center justify-between py-4 lg:py-6 relative">
-                  <h3 className={`text-5xl font-bold z-10 ${step.textColor} text-left`}>{step.title}</h3>
-                  <span className="font-black text-white/70 absolute right-0 top-1/2 -translate-y-1/2 text-8xl">
-                    {step.number}
-                  </span>
+                  <h3 className={`text-4xl md:text-5xl font-bold z-10 text-white text-left`}>{step.title}</h3>
+                  <div className="relative">
+                    <span className="font-black text-white/30 text-6xl md:text-8xl">
+                      {step.number}
+                    </span>
+                  </div>
                 </div>
               </div>
             </CollapsibleTrigger>
             
-            <CollapsibleContent className={`${step.bgColor} transition-all duration-500 ease-in-out w-full`}>
-              <div className="container mx-auto container-padding">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 py-6 lg:py-8">
+            <CollapsibleContent className={`${step.bgColor} transition-all duration-500 ease-in-out w-full relative overflow-hidden`}>
+              {/* Sliding Number Banner */}
+              <div className={`absolute top-0 right-0 h-full w-32 md:w-40 lg:w-48 flex items-center justify-center z-20 ${
+                openSteps[index] ? 'animate-slide-in-from-right' : 'animate-slide-out-to-right'
+              }`}>
+                <span className="font-black text-white text-6xl md:text-7xl lg:text-8xl opacity-20">
+                  {step.number}
+                </span>
+              </div>
+              
+              <div className="container mx-auto container-padding relative z-10">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 py-6 lg:py-8 pr-16 md:pr-20 lg:pr-24">
                   {step.items.map((item, itemIndex) => (
                     <div key={itemIndex} className="space-y-3">
-                      <h4 className={`text-lg font-bold ${step.textColor}`}>{item.title}</h4>
-                      <p className={`${step.textColor === 'text-white' ? 'text-white/80' : 'text-gray-700'} text-sm leading-relaxed`}>{item.description}</p>
+                      <h4 className="text-lg font-bold text-white">{item.title}</h4>
+                      <p className="text-white/90 text-sm leading-relaxed">{item.description}</p>
                     </div>
                   ))}
                 </div>

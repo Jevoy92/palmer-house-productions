@@ -100,9 +100,9 @@ export default {
 				},
 				// Process accordion colors - Coral variations matching timeline
 				'process': {
-					'1': 'hsl(25 100% 92%)',    // Lightest coral
-					'2': 'hsl(25 100% 85%)',    // Light coral
-					'3': 'hsl(25 100% 78%)',    // Medium coral
+					'1': 'hsl(14 85% 65%)',    // Darker saturated coral
+					'2': 'hsl(20 80% 60%)',    // Darker medium coral  
+					'3': 'hsl(28 75% 55%)',    // Darker deep coral
 					'4': 'hsl(25 100% 70%)',    // Deeper coral
 				},
 				'charcoal': 'hsl(0 0% 7%)'  // #111111
@@ -205,6 +205,26 @@ export default {
 				'skeleton-pulse': {
 					'0%': { backgroundPosition: '200% 0' },
 					'100%': { backgroundPosition: '-200% 0' }
+				},
+				'slide-in-from-right': {
+					'0%': { 
+						transform: 'translateX(100%)',
+						opacity: '0'
+					},
+					'100%': { 
+						transform: 'translateX(0)',
+						opacity: '1'
+					}
+				},
+				'slide-out-to-right': {
+					'0%': { 
+						transform: 'translateX(0)',
+						opacity: '1'
+					},
+					'100%': { 
+						transform: 'translateX(100%)',
+						opacity: '0'
+					}
 				}
 			},
 			animation: {
@@ -219,7 +239,9 @@ export default {
 				'ripple': 'ripple 0.6s linear',
 				'loading-spin': 'loading-spin 1s linear infinite',
 				'loading-dots': 'loading-dots 1.5s ease-in-out infinite',
-				'skeleton-pulse': 'skeleton-pulse 1.5s ease-in-out infinite'
+				'skeleton-pulse': 'skeleton-pulse 1.5s ease-in-out infinite',
+				'slide-in-from-right': 'slide-in-from-right 0.5s ease-out',
+				'slide-out-to-right': 'slide-out-to-right 0.5s ease-out'
 			}
 		}
 	},

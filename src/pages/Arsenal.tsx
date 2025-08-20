@@ -193,7 +193,7 @@ export default function Arsenal() {
   const solutions = filteredSolutions();
 
   return (
-    <div className="min-h-screen bg-video-white">
+    <div className="min-h-screen bg-cinematic-charcoal">
       <MetaTags 
         title="Video Production Arsenal | Business Video Solutions | Palmer House Productions"
         description="Explore our comprehensive video production solutions for internal operations and external marketing. Professional business videos that streamline processes and drive growth."
@@ -210,7 +210,7 @@ export default function Arsenal() {
       
       <MainContent>
         {/* Hero Section */}
-        <section className="pt-32 pb-20 bg-video-white relative overflow-hidden">
+        <section className="pt-32 pb-20 bg-cinematic-charcoal/50 backdrop-blur-sm relative overflow-hidden">
           <div className="absolute inset-0">
             <div className="absolute top-20 left-10 w-32 h-32 gradient-social-1 rounded-full opacity-20 float-animation"></div>
             <div className="absolute top-40 right-20 w-24 h-24 gradient-social-2 rounded-full opacity-30 float-animation" style={{animationDelay: '2s'}}></div>
@@ -221,12 +221,12 @@ export default function Arsenal() {
             <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8 video-shadow">
               🛠️ Video Solutions Arsenal
             </div>
-            <h1 className="text-4xl md:text-6xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+            <h1 className="text-4xl md:text-6xl font-display font-black mb-8 text-video-white tracking-tight">
               Not Just <span className="text-gradient-1">Video</span>.
               <br />
               Business Tools That <span className="text-gradient-2">Work</span>.
             </h1>
-            <p className="text-xl text-corporate-gray mb-12 leading-relaxed max-w-4xl mx-auto font-medium">
+            <p className="text-xl text-video-white/80 mb-12 leading-relaxed max-w-4xl mx-auto font-medium">
               See how business leaders are solving real challenges using professional video—from team training and partner alignment to marketing campaigns and thought leadership.
             </p>
 
@@ -268,16 +268,16 @@ export default function Arsenal() {
 
         {/* Internal Solutions */}
         {solutions.internal.length > 0 && (
-          <section className="py-20 bg-corporate-light">
+          <section className="py-20 bg-white/5 backdrop-blur-sm border-t border-white/10">
             <div className="max-w-7xl mx-auto px-6">
               <div className="text-center mb-16">
                 <div className="inline-block px-6 py-3 gradient-social-2 rounded-full text-white font-bold text-lg mb-8 video-shadow">
                   🏢 Internal Operations
                 </div>
-                <h2 className="text-4xl md:text-5xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+                <h2 className="text-4xl md:text-5xl font-display font-black mb-8 text-video-white tracking-tight">
                   Streamline Your <span className="text-gradient-2">Operations</span>
                 </h2>
-                <p className="text-xl text-corporate-gray max-w-3xl mx-auto font-medium">
+                <p className="text-xl text-video-white/80 max-w-3xl mx-auto font-medium">
                   Save time, reduce confusion, and scale your internal operations with video tools built for business.
                 </p>
               </div>
@@ -337,16 +337,16 @@ export default function Arsenal() {
 
         {/* External Solutions */}
         {solutions.external.length > 0 && (
-          <section className="py-20 bg-video-white">
+          <section className="py-20 bg-cinematic-charcoal/30 backdrop-blur-sm border-t border-white/10">
             <div className="max-w-7xl mx-auto px-6">
               <div className="text-center mb-16">
                 <div className="inline-block px-6 py-3 gradient-social-3 rounded-full text-white font-bold text-lg mb-8 video-shadow">
                   📈 Marketing & Growth
                 </div>
-                <h2 className="text-4xl md:text-5xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+                <h2 className="text-4xl md:text-5xl font-display font-black mb-8 text-video-white tracking-tight">
                   Expand Your <span className="text-gradient-3">Reach</span>
                 </h2>
-                <p className="text-xl text-corporate-gray max-w-3xl mx-auto font-medium">
+                <p className="text-xl text-video-white/80 max-w-3xl mx-auto font-medium">
                   Connect with your audience, build authority, and drive growth with video that leads the way.
                 </p>
               </div>

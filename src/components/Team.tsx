@@ -27,7 +27,7 @@ export const Team = () => {
   ];
 
   return (
-    <section id="team" className="py-32 bg-video-white relative overflow-hidden">
+    <section id="team" className="py-32 bg-cinematic-charcoal/50 backdrop-blur-sm relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute top-0 left-0 w-full h-full">
         <div className="absolute top-20 right-10 w-64 h-64 gradient-social-1 rounded-full opacity-10 float-animation"></div>
@@ -39,10 +39,10 @@ export const Team = () => {
           <div className="inline-block px-4 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
             👥 Our Team
           </div>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-6 text-corporate-dark tracking-tight">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-6 text-video-white tracking-tight">
             The <span className="text-gradient-2">Palmer House</span> Team
           </h2>
-          <p className="text-base md:text-lg text-corporate-gray max-w-3xl mx-auto font-medium leading-relaxed">
+          <p className="text-base md:text-lg text-video-white/80 max-w-3xl mx-auto font-medium leading-relaxed">
             Meet the video production professionals who bring your stories to life.
           </p>
         </div>
@@ -69,11 +69,11 @@ export const Team = () => {
                 </div>
               </div>
 
-              <h3 className="text-xl md:text-2xl font-display font-black text-corporate-dark mb-2">{member.name}</h3>
+              <h3 className="text-xl md:text-2xl font-display font-black text-video-white mb-2">{member.name}</h3>
               <h4 className={`text-base md:text-lg font-bold mb-4 ${member.textGradient}`}>
                 {member.role}
               </h4>
-              <p className="text-corporate-gray leading-relaxed text-sm md:text-base font-medium">
+              <p className="text-video-white/80 leading-relaxed text-sm md:text-base font-medium">
                 {member.bio}
               </p>
               

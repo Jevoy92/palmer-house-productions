@@ -207,30 +207,30 @@ export const EnhancedFooter = () => {
       </div>
 
       {/* Scrolling Marquee */}
-      <div className="w-full overflow-hidden py-8 border-t border-b border-gray-200">
+      <div className="container mx-auto overflow-x-hidden py-4 sm:py-6 lg:py-8 border-t border-b border-gray-200">
         <div className="flex animate-marquee">
-          <div className="flex-shrink-0 flex items-center space-x-12 mx-6">
-            <span className="w-16 h-px bg-corporate-dark"></span>
-            <h2 className="text-7xl md:text-9xl font-black tracking-tighter uppercase">
-              Palmer House Productions<sup className="text-2xl md:text-4xl -top-8 md:-top-12">™</sup>
+          <div className="flex-shrink-0 flex items-center space-x-6 sm:space-x-8 lg:space-x-12 mx-3 sm:mx-4 lg:mx-6">
+            <span className="w-8 sm:w-12 lg:w-16 h-px bg-corporate-dark"></span>
+            <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter uppercase whitespace-nowrap">
+              Palmer House Productions<sup className="text-lg sm:text-2xl lg:text-3xl -top-4 sm:-top-6 lg:-top-8">™</sup>
             </h2>
           </div>
-          <div className="flex-shrink-0 flex items-center space-x-12 mx-6">
-            <span className="w-16 h-px bg-corporate-dark"></span>
-            <h2 className="text-7xl md:text-9xl font-black tracking-tighter uppercase">
-              Palmer House Productions<sup className="text-2xl md:text-4xl -top-8 md:-top-12">™</sup>
+          <div className="flex-shrink-0 flex items-center space-x-6 sm:space-x-8 lg:space-x-12 mx-3 sm:mx-4 lg:mx-6">
+            <span className="w-8 sm:w-12 lg:w-16 h-px bg-corporate-dark"></span>
+            <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter uppercase whitespace-nowrap">
+              Palmer House Productions<sup className="text-lg sm:text-2xl lg:text-3xl -top-4 sm:-top-6 lg:-top-8">™</sup>
             </h2>
           </div>
-          <div className="flex-shrink-0 flex items-center space-x-12 mx-6">
-            <span className="w-16 h-px bg-corporate-dark"></span>
-            <h2 className="text-7xl md:text-9xl font-black tracking-tighter uppercase">
-              Palmer House Productions<sup className="text-2xl md:text-4xl -top-8 md:-top-12">™</sup>
+          <div className="flex-shrink-0 flex items-center space-x-6 sm:space-x-8 lg:space-x-12 mx-3 sm:mx-4 lg:mx-6">
+            <span className="w-8 sm:w-12 lg:w-16 h-px bg-corporate-dark"></span>
+            <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter uppercase whitespace-nowrap">
+              Palmer House Productions<sup className="text-lg sm:text-2xl lg:text-3xl -top-4 sm:-top-6 lg:-top-8">™</sup>
             </h2>
           </div>
-          <div className="flex-shrink-0 flex items-center space-x-12 mx-6">
-            <span className="w-16 h-px bg-corporate-dark"></span>
-            <h2 className="text-7xl md:text-9xl font-black tracking-tighter uppercase">
-              Palmer House Productions<sup className="text-2xl md:text-4xl -top-8 md:-top-12">™</sup>
+          <div className="flex-shrink-0 flex items-center space-x-6 sm:space-x-8 lg:space-x-12 mx-3 sm:mx-4 lg:mx-6">
+            <span className="w-8 sm:w-12 lg:w-16 h-px bg-corporate-dark"></span>
+            <h2 className="text-4xl sm:text-6xl lg:text-8xl font-black tracking-tighter uppercase whitespace-nowrap">
+              Palmer House Productions<sup className="text-lg sm:text-2xl lg:text-3xl -top-4 sm:-top-6 lg:-top-8">™</sup>
             </h2>
           </div>
         </div>

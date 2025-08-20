@@ -27,7 +27,7 @@ export const TrustSection = () => {
         filter: 'blur(10px)'
       },
       { 
-        opacity: 0.1, 
+        opacity: 0.4, 
         scale: 1,
         filter: 'blur(0px)',
         duration: 0.8,
@@ -85,7 +85,7 @@ export const TrustSection = () => {
         <div className="container mx-auto px-6 grid grid-cols-12 gap-8 items-start">
           {/* Large Numeral - Sticky */}
           <div ref={numeralRef} className="col-span-12 lg:col-span-3 sticky top-24">
-            <h2 className="font-manrope text-[12rem] lg:text-[18rem] font-extrabold leading-none text-gray-200">0-1</h2>
+            <h2 className="font-manrope text-[12rem] lg:text-[18rem] font-extrabold leading-none text-gray-400">0-1</h2>
           </div>
 
           {/* Intro Header */}
@@ -211,7 +211,7 @@ export const TrustSection = () => {
                 </div>
               </div>
               <div>
-                <p className="font-manrope text-9xl font-extrabold my-6" ref={secondStatRef}>$82M</p>
+                <p className="font-manrope text-6xl md:text-7xl lg:text-8xl font-extrabold my-6" ref={secondStatRef}>$82M</p>
                 <p className="text-black max-w-xs text-sm">Million hours of video are watched every single day on YouTube.</p>
               </div>
             </Card>

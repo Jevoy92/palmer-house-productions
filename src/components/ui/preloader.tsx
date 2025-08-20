@@ -21,9 +21,9 @@ export const Preloader = ({ onComplete, className }: PreloaderProps) => {
           }, 500);
           return 100;
         }
-        return prev + Math.random() * 15 + 5;
+        return prev + Math.random() * 2 + 3; // Slower increment for 2-second duration
       });
-    }, 100);
+    }, 80); // Slightly faster interval for smoother animation
 
     return () => clearInterval(timer);
   }, [onComplete]);

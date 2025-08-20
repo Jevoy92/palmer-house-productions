@@ -125,7 +125,7 @@ export const TrustSection = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Testimonial Card */}
             <Card className="bg-white p-12 rounded-3xl shadow-sm relative overflow-hidden col-span-1 border-0 min-h-[400px]">
-              <div className="absolute -bottom-10 -right-10 text-[12rem] text-gray-100/50 z-0 font-bold">"</div>
+              <div className="absolute -bottom-10 -right-2 text-[12rem] text-gray-100/50 z-0 font-bold">"</div>
               <div className="relative z-10">
                 <h4 className="text-xl font-bold mb-4 text-black">Thoughtful design that moves the needle</h4>
                 <p className="text-black mb-6 text-sm leading-6">Awesome experience from start to finish. He was in constant communication, detail-oriented and provided exactly what we were looking for in our organization's marketing videos and photos.</p>

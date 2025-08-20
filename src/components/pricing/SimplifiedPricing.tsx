@@ -76,11 +76,11 @@ export const SimplifiedPricing = () => {
               <div className="flex items-end">
                 <span className="text-2xl text-foreground">$</span>
                 <span className="text-6xl font-bold text-foreground">
-                  {isAnnual ? "4,500" : "5,000"}
+                  {isAnnual ? "2,999" : "3,749"}
                 </span>
               </div>
               <p className="text-muted-foreground">
-                {isAnnual ? "Billed annually (10% savings)" : "Billed monthly (3-month minimum)"}
+                {isAnnual ? "Billed annually (20% savings)" : "Billed monthly"}
               </p>
             </div>
             

@@ -9,58 +9,84 @@ export const EnhancedFooter = () => {
     <footer className="bg-[#F5F5F5] text-corporate-dark mt-16 overflow-x-hidden">
       {/* Main Footer Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          {/* Links */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+          {/* Services */}
           <div className="col-span-1">
-            <h3 className="text-xs text-gray-500 mb-4">Links</h3>
+            <h3 className="text-xs text-gray-500 mb-4">Services</h3>
             <ul className="space-y-3">
               <li>
-                <Link to="/" className="hover:text-gray-600 cursor-pointer transition-colors">
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link to="/about-us" className="hover:text-gray-600 cursor-pointer transition-colors">
-                  Studio
-                </Link>
-              </li>
-              <li>
                 <Link to="/video-packages" className="hover:text-gray-600 cursor-pointer transition-colors">
-                  Projects
+                  Video Packages
+                </Link>
+              </li>
+              <li>
+                <Link to="/services/diy-downloads" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  DIY Downloads
+                </Link>
+              </li>
+              <li>
+                <Link to="/content-strategy" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  Content Strategy
                 </Link>
               </li>
               <li>
                 <Link to="/video-use-cases" className="hover:text-gray-600 cursor-pointer transition-colors">
-                  Project single
+                  Video Use Cases
                 </Link>
               </li>
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div className="col-span-1">
+            <h3 className="text-xs text-gray-500 mb-4">Company</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/about-us" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link to="/company/team" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  Our Team
+                </Link>
+              </li>
+              <li>
+                <Link to="/company/values" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  Our Values
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Resources */}
+          <div className="col-span-1">
+            <h3 className="text-xs text-gray-500 mb-4">Resources</h3>
+            <ul className="space-y-3">
               <li>
                 <Link to="/blog" className="hover:text-gray-600 cursor-pointer transition-colors">
-                  News
+                  Blog
                 </Link>
               </li>
               <li>
-                <Link to="/blog" className="hover:text-gray-600 cursor-pointer transition-colors">
-                  News single
+                <Link to="/resources/reviews" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  Client Reviews
                 </Link>
               </li>
               <li>
-                <Link to="/packages" className="hover:text-gray-600 cursor-pointer transition-colors">
-                  Pricing
+                <Link to="/faq" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  FAQ
                 </Link>
               </li>
               <li>
                 <Link to="/privacy" className="hover:text-gray-600 cursor-pointer transition-colors">
-                  Privacy policy
+                  Privacy Policy
                 </Link>
               </li>
               <li>
                 <Link to="/terms" className="hover:text-gray-600 cursor-pointer transition-colors">
-                  Terms of service
+                  Terms of Service
                 </Link>
-              </li>
-              <li>
-                <span className="hover:text-gray-600 cursor-pointer">404</span>
               </li>
             </ul>
           </div>
@@ -118,7 +144,7 @@ export const EnhancedFooter = () => {
           </div>
 
           {/* Subscribe */}
-          <div className="col-span-1 lg:col-span-2">
+          <div className="col-span-1">
             <h3 className="text-xl font-semibold mb-2">Subscribe</h3>
             <p className="text-gray-600 mb-6">Join our newsletter and stay updated on the latest trends in video production.</p>
             <form className="flex items-center border-b border-gray-400 pb-2">

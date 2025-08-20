@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ProcessProgressBar } from "./ProcessProgressBar";
 
 export const ProcessOverview = () => {
   const [openSteps, setOpenSteps] = useState<{ [key: number]: boolean }>({});
@@ -106,10 +105,8 @@ export const ProcessOverview = () => {
             <CollapsibleTrigger className={`w-full ${step.triggerBgColor} transition-all duration-300 relative overflow-hidden`}>
               <div className="container mx-auto container-padding">
                 <div className="flex items-center justify-between py-6 lg:py-8 relative">
-                  <div className="flex items-center gap-4">
-                    <span className="text-sm font-medium text-gray-500">{step.number}</span>
-                    <h3 className="text-4xl md:text-5xl font-bold text-charcoal text-left">{step.title}</h3>
-                  </div>
+                  <h3 className="text-4xl md:text-5xl font-bold text-charcoal text-left">{step.title}</h3>
+                  <span className="text-4xl md:text-5xl font-bold text-white">{step.number}</span>
                 </div>
               </div>
             </CollapsibleTrigger>
@@ -125,12 +122,6 @@ export const ProcessOverview = () => {
               </div>
               
               <div className="container mx-auto container-padding relative z-10">
-                <ProcessProgressBar
-                  stepNumber={step.number}
-                  isActive={openSteps[index] || false}
-                  colorClass={step.bgColor}
-                />
-                
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 py-8 lg:py-12 pr-12 md:pr-16 lg:pr-20">
                   {step.items.map((item, itemIndex) => (
                     <div key={itemIndex} className="space-y-3">

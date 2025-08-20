@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ProcessProgressBar } from "./ProcessProgressBar";
 
 export const ProcessOverview = () => {
   const [openSteps, setOpenSteps] = useState<{ [key: number]: boolean }>({});
@@ -124,6 +125,12 @@ export const ProcessOverview = () => {
               </div>
               
               <div className="container mx-auto container-padding relative z-10">
+                <ProcessProgressBar
+                  stepNumber={step.number}
+                  isActive={openSteps[index] || false}
+                  colorClass={step.bgColor}
+                />
+                
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 py-8 lg:py-12 pr-12 md:pr-16 lg:pr-20">
                   {step.items.map((item, itemIndex) => (
                     <div key={itemIndex} className="space-y-3">

@@ -144,7 +144,7 @@ export const Hero = () => {
                 <div className="flex animate-fade-blur-in" style={{animationDelay: '0.2s'}}>
                   <button 
                     onClick={handleStartSystem}
-                    className="bg-social-orange text-white text-lg font-medium px-10 py-4 rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-[0_0_20px_rgba(255,125,59,0.4)] hover:shadow-[0_0_30px_rgba(255,125,59,0.6)] hover:-translate-y-0.5"
+                    className="bg-social-orange text-white text-lg font-medium container-padding py-4 rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-[0_0_20px_rgba(255,125,59,0.4)] hover:shadow-[0_0_30px_rgba(255,125,59,0.6)] hover:-translate-y-0.5"
                   >
                     Start Your System
                   </button>

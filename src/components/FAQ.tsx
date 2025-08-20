@@ -76,7 +76,7 @@ export const FAQ = () => {
   ];
 
   return (
-    <section className="py-16 px-4 md:px-8 lg:px-16 bg-background">
+    <section className="section-padding bg-background">
       <div className="container mx-auto max-w-6xl">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
           {/* Left column with heading and subtext */}

@@ -83,7 +83,7 @@ Readiness: ${values.readiness || 'Not provided'}
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 px-6 pb-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 container-padding pb-6">
             <PersonalInfoFields control={form.control} />
             
             <div className="w-full h-px bg-gradient-social-1 opacity-30"></div>

@@ -9,8 +9,8 @@ export const About = () => {
           <div className="absolute bottom-40 right-20 w-48 h-48 gradient-social-3 rounded-full opacity-10 float-animation" style={{animationDelay: '2s'}}></div>
         </div>
         
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <header className="text-center mb-16 px-4">
+        <div className="max-w-7xl mx-auto container-padding relative z-10">
+          <header className="text-center mb-16">
             <div className="inline-block px-4 py-2 gradient-social-1 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
               👋 About Us
             </div>
@@ -22,7 +22,7 @@ export const About = () => {
             </p>
           </header>
 
-        <div className="max-w-4xl mx-auto mb-16 px-4">
+        <div className="max-w-4xl mx-auto mb-16">
           <div className="bg-video-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 video-shadow">
             <p className="text-base md:text-lg text-corporate-gray leading-relaxed mb-6 text-center">
               Founded with a vision to help businesses tell their stories authentically, Palmer House Productions combines <span className="text-gradient-3 font-bold">creative expertise</span> with strategic thinking.

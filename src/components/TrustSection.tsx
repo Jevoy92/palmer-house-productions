@@ -124,7 +124,7 @@ export const TrustSection = () => {
         <div className="px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Testimonial Card */}
-            <Card className="bg-white p-12 rounded-3xl shadow-sm relative overflow-hidden col-span-1 border-0 min-h-[400px]">
+            <Card className="bg-white p-12 rounded-3xl shadow-xl relative overflow-hidden col-span-1 border-0 min-h-[400px]">
               <div className="absolute -bottom-10 -right-2 text-[12rem] text-gray-100/50 z-0 font-bold">"</div>
               <div className="relative z-10">
                 <h4 className="text-xl font-bold mb-4 text-black">Thoughtful design that moves the needle</h4>
@@ -140,7 +140,7 @@ export const TrustSection = () => {
             </Card>
 
             {/* Statistics Card 1 */}
-            <Card className="bg-white p-12 rounded-3xl shadow-sm flex flex-col justify-between col-span-1 border-0 min-h-[400px]">
+            <Card className="bg-white p-12 rounded-3xl shadow-xl flex flex-col justify-between col-span-1 border-0 min-h-[400px]">
               <div className="flex justify-between items-start w-full">
                 <span className="text-sm font-medium text-gray-500">Fact 01</span>
                 <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
@@ -154,7 +154,7 @@ export const TrustSection = () => {
             </Card>
 
             {/* Case Study Card */}
-            <Card className="bg-gray-200 p-12 rounded-3xl shadow-sm col-span-1 relative overflow-hidden min-h-[400px] flex flex-col justify-end text-white border-0">
+            <Card className="bg-gray-200 p-12 rounded-3xl shadow-xl col-span-1 relative overflow-hidden min-h-[400px] flex flex-col justify-end text-white border-0">
               <img className="absolute inset-0 w-full h-full object-cover" src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop" alt="Professional video production" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
               <div className="relative z-10">
@@ -166,7 +166,7 @@ export const TrustSection = () => {
             </Card>
 
             {/* Combined Process and Timeline Card */}
-            <Card className="bg-white p-12 rounded-3xl shadow-sm col-span-1 md:col-span-2 lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-8 border-0 min-h-[400px]">
+            <Card className="bg-white p-12 rounded-3xl shadow-xl col-span-1 md:col-span-2 lg:col-span-2 grid grid-cols-1 lg:grid-cols-2 gap-8 border-0 min-h-[400px]">
               <div className="flex flex-col justify-between">
                 <div>
                   <h4 className="text-xl font-bold mb-2 text-black">A streamlined process, executed with methodical care.</h4>
@@ -203,7 +203,7 @@ export const TrustSection = () => {
             </Card>
 
             {/* Statistics Card 2 */}
-            <Card className="bg-white p-12 rounded-3xl shadow-sm flex flex-col justify-between col-span-1 md:col-span-2 lg:col-span-1 border-0 min-h-[400px]">
+            <Card className="bg-white p-12 rounded-3xl shadow-xl flex flex-col justify-between col-span-1 md:col-span-2 lg:col-span-1 border-0 min-h-[400px]">
               <div className="flex justify-between items-start w-full">
                 <span className="text-sm font-medium text-gray-500">Fact 02</span>
                 <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">

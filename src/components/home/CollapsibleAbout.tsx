@@ -56,7 +56,7 @@ export const CollapsibleAbout = () => {
 
                 <div className="bg-gradient-to-r from-social-purple/10 to-social-pink/10 rounded-2xl p-8 border border-social-purple/20 mb-8">
                   <p className="text-xl text-corporate-gray leading-relaxed text-center">
-                    We chart <span className="text-gradient-1 font-bold">new creative territory</span> with every project. You deserve more than content. You deserve a <span className="text-gradient-2 font-bold">visual identity as bold</span> as your brand's journey.
+                    We develop <span className="text-gradient-1 font-bold">strategic video content</span> with every project. You deserve more than content. You deserve a <span className="text-gradient-2 font-bold">visual identity as bold</span> as your brand's story.
                   </p>
                 </div>
 
@@ -66,7 +66,7 @@ export const CollapsibleAbout = () => {
                   <div className="relative">
                     <div className="text-4xl text-social-purple/30 absolute -top-2 -left-2">"</div>
                     <blockquote className="text-xl text-corporate-gray leading-relaxed italic mb-6 relative z-10 text-center">
-                      I grew up knowing that stories could change lives—but only if told with truth, courage, and soul. Palmer House is more than a business. It's an invitation to <span className="text-gradient-2 font-bold">explore boldly</span> and say what matters.
+                      I grew up knowing that stories could change lives—but only if told with truth, courage, and soul. Palmer House is more than a business. It's an invitation to <span className="text-gradient-2 font-bold">create boldly</span> and say what matters.
                     </blockquote>
                     <div className="text-4xl text-social-purple/30 absolute -bottom-4 -right-2">"</div>
                   </div>
@@ -75,7 +75,7 @@ export const CollapsibleAbout = () => {
                     <p className="text-gradient-1 font-bold text-lg">Jevoy Palmer</p>
                     <div className="w-12 h-1 bg-gradient-to-r from-social-purple to-social-pink rounded-full"></div>
                   </div>
-                  <p className="text-corporate-gray text-sm mt-2 text-center">Founder & Lead Creative Guide</p>
+                  <p className="text-corporate-gray text-sm mt-2 text-center">Founder & Creative Director</p>
                 </div>
               </div>
             </div>

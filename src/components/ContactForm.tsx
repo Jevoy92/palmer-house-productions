@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { formSchema, FormData } from "./contact/ContactFormSchema";
 import { PersonalInfoFields } from "./contact/PersonalInfoFields";
 import { ChallengeField } from "./contact/ChallengeField";
-import { PathwayField } from "./contact/PathwayField";
+import { ServiceField } from "./contact/ServiceField";
 import { AdditionalFields } from "./contact/AdditionalFields";
 import { useEffect } from "react";
 
@@ -25,7 +25,7 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
       email: "",
       phone: "",
       challenge: "",
-      pathway: "",
+      service: "",
       message: "",
       referralSource: "",
       readiness: "",
@@ -37,7 +37,7 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
     if (open) {
       const selectedPath = localStorage.getItem('selectedPath');
       if (selectedPath) {
-        form.setValue('pathway', selectedPath);
+        form.setValue('service', selectedPath);
         form.setValue('message', `I'm interested in the ${selectedPath} service for my brand.`);
         // Clear the stored path
         localStorage.removeItem('selectedPath');
@@ -56,7 +56,7 @@ Email: ${values.email}
 Phone: ${values.phone || 'Not provided'}
 
 Challenge: ${values.challenge}
-Pathway: ${values.pathway}
+Service: ${values.service}
 
 Message: ${values.message}
 
@@ -92,7 +92,7 @@ Readiness: ${values.readiness || 'Not provided'}
             
             <div className="w-full h-px bg-gradient-social-1 opacity-30"></div>
             
-            <PathwayField control={form.control} />
+            <ServiceField control={form.control} />
             
             <div className="w-full h-px bg-gradient-social-1 opacity-30"></div>
             

@@ -5,21 +5,21 @@ import { Label } from "@/components/ui/label";
 import { Control } from "react-hook-form";
 import { FormData } from "./ContactFormSchema";
 
-interface PathwayFieldProps {
+interface ServiceFieldProps {
   control: Control<FormData>;
 }
 
-export const PathwayField = ({ control }: PathwayFieldProps) => {
+export const ServiceField = ({ control }: ServiceFieldProps) => {
   return (
     <div className="bg-video-white p-6 rounded-2xl video-shadow border border-corporate-light">
       <FormField
         control={control}
-        name="pathway"
+        name="service"
         render={({ field }) => (
           <FormItem>
             <FormLabel className="text-xl font-bold text-corporate-dark mb-6 flex items-center">
               <span className="w-8 h-8 bg-gradient-social-3 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">3</span>
-              Choose Your Plan
+              Choose Your Service
             </FormLabel>
             <FormControl>
               <RadioGroup

@@ -13,7 +13,7 @@ import { MainContent } from "@/components/MainContent";
 
 type FilterType = "all" | "internal" | "external";
 
-export default function Arsenal() {
+export default function Solutions() {
   const [filter, setFilter] = useState<FilterType>("all");
   const [expandedSolutions, setExpandedSolutions] = useState<Set<string>>(new Set());
   const [isContactWizardOpen, setIsContactWizardOpen] = useState(false);
@@ -195,12 +195,12 @@ export default function Arsenal() {
   return (
     <div className="min-h-screen bg-cinematic-charcoal">
       <MetaTags 
-        title="Video Production Arsenal | Business Video Solutions | Palmer House Productions"
-        description="Explore our comprehensive video production solutions for internal operations and external marketing. Professional business videos that streamline processes and drive growth."
-        keywords="video production solutions, business videos, internal training videos, marketing videos, corporate video production"
-        ogTitle="Video Production Arsenal | Business Solutions"
-        ogDescription="Comprehensive video production solutions for internal operations and external marketing. Professional business videos that drive results."
-        canonicalUrl="https://www.palmerhouseproductions.com/arsenal"
+        title="Business Video Solutions | Palmer House Productions"
+        description="Strategic video solutions for growing businesses. Explore how professional video content drives engagement, builds trust, and generates results."
+        keywords="video solutions, business video, professional video production, video marketing, corporate video"
+        ogTitle="Business Video Solutions | Palmer House Productions"
+        ogDescription="Strategic video solutions for growing businesses. Professional video content that drives real results."
+        canonicalUrl="https://www.palmerhouseproductions.com/solutions"
       />
       <StructuredData type="services" />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
@@ -219,7 +219,7 @@ export default function Arsenal() {
 
           <div className="max-w-6xl mx-auto px-6 text-center relative z-10">
             <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-              🛠️ Video Solutions Arsenal
+              🎯 Business Solutions
             </div>
             <h1 className="text-4xl md:text-6xl font-display font-black mb-8 text-video-white tracking-tight">
               Not Just <span className="text-gradient-1">Video</span>.
@@ -414,7 +414,7 @@ export default function Arsenal() {
           
           <div className="max-w-6xl mx-auto px-6 text-center relative z-10">
             <h2 className="text-4xl md:text-5xl font-display font-black mb-8 text-white tracking-tight">
-              Ready to Build Your <span className="text-video-white">Video Arsenal</span>?
+              Ready to Build Your <span className="text-video-white">Video Strategy</span>?
             </h2>
             <p className="text-xl text-video-white mb-12 max-w-3xl mx-auto font-medium">
               Let's create a custom video strategy that solves your specific business challenges and drives real results.

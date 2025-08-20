@@ -7,7 +7,7 @@ export const formSchema = z.object({
   email: z.string().email("Please enter a valid email"),
   phone: z.string().min(1, "Phone number is required"),
   challenge: z.string().min(1, "Please select a challenge"),
-  pathway: z.string().min(1, "Please select a pathway"),
+  service: z.string().min(1, "Please select a service"),
   message: z.string().optional(),
   referralSource: z.string().min(1, "Please tell us how you heard about us"),
   readiness: z.string().min(1, "Please tell us your timeline"),

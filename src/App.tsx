@@ -110,7 +110,7 @@ const App = () => (
           />
           
           {/* Legacy route redirects */}
-          <Route path="/pathways" element={<Navigate to="/video-packages" replace />} />
+          <Route path="/solutions" element={<Navigate to="/video-use-cases" replace />} />
           <Route path="/glimpse" element={<Navigate to="/contact" replace />} />
           <Route path="/reviews" element={<Navigate to="/resources/reviews" replace />} />
           <Route path="/arsenal" element={<Navigate to="/video-use-cases" replace />} />

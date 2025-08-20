@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp, Compass, Search, Sparkles, Heart, Wrench, Target } from "lucide-react";
+import { ChevronDown, ChevronUp, Target, Search, Sparkles, Heart, Wrench, Settings } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 export const CollapsibleValues = () => {
@@ -7,15 +7,15 @@ export const CollapsibleValues = () => {
 
   const values = [
     { 
-      icon: Compass, 
+      icon: Target, 
       title: "Freedom over Formulas", 
-      description: "We break the template. Every brand has a wild edge—we help you find it and film it.",
+      description: "We break the template. Every brand has a unique angle—we help you find it and film it.",
       gradient: "gradient-social-1"
     },
     { 
       icon: Search, 
       title: "Truth over Trendiness", 
-      description: "We don't chase what's viral. We tell stories with soul that actually mean something.",
+      description: "We don't chase what's viral. We tell stories with substance that actually mean something.",
       gradient: "gradient-social-2"
     },
     { 

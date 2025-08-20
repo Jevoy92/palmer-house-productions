@@ -526,7 +526,7 @@
   }
   
   .hover-pulse {
-    @apply hover:scale-102 transition-all duration-200 ease-power2-out;
+    @apply hover:scale-105 transition-all duration-200 ease-power2-out;
   }
   
   .click-feedback {

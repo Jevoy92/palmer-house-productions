@@ -7,13 +7,37 @@ export const EnhancedFooter = () => {
 
   return (
     <footer className="bg-[#F5F5F5] text-corporate-dark mt-16 overflow-x-hidden">
+      {/* Company Description */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-8">
+        <div className="text-center mb-12">
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            Crafting authentic stories since day one. We help businesses connect with their audience through powerful video content.
+          </p>
+        </div>
+      </div>
+
       {/* Main Footer Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Services */}
           <div className="col-span-1">
             <h3 className="text-xs text-gray-500 mb-4">Services</h3>
             <ul className="space-y-3">
+              <li>
+                <Link to="/pathways" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  Monthly Content
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  Group Coaching
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  Discovery Call
+                </Link>
+              </li>
               <li>
                 <Link to="/video-packages" className="hover:text-gray-600 cursor-pointer transition-colors">
                   Video Packages
@@ -56,18 +80,6 @@ export const EnhancedFooter = () => {
                   Our Values
                 </Link>
               </li>
-            </ul>
-          </div>
-
-          {/* Resources */}
-          <div className="col-span-1">
-            <h3 className="text-xs text-gray-500 mb-4">Resources</h3>
-            <ul className="space-y-3">
-              <li>
-                <Link to="/blog" className="hover:text-gray-600 cursor-pointer transition-colors">
-                  Blog
-                </Link>
-              </li>
               <li>
                 <Link to="/resources/reviews" className="hover:text-gray-600 cursor-pointer transition-colors">
                   Client Reviews
@@ -76,6 +88,55 @@ export const EnhancedFooter = () => {
               <li>
                 <Link to="/faq" className="hover:text-gray-600 cursor-pointer transition-colors">
                   FAQ
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Locations */}
+          <div className="col-span-1">
+            <h3 className="text-xs text-gray-500 mb-4">Locations</h3>
+            <ul className="space-y-3">
+              <li>
+                <Link to="/locations/bellevue-wa" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  Bellevue, WA
+                </Link>
+              </li>
+              <li>
+                <Link to="/locations/portland-or" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  Portland, OR
+                </Link>
+              </li>
+              <li>
+                <Link to="/contact" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  Global / Remote Projects
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Connect With Us */}
+          <div className="col-span-1">
+            <h3 className="text-xs text-gray-500 mb-4">Connect With Us</h3>
+            <ul className="space-y-3">
+              <li>
+                <a href="mailto:info@palmerhouseproductions.com" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  info@palmerhouseproductions.com
+                </a>
+              </li>
+              <li>
+                <a href="tel:+14257387312" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  (425) 738-7312
+                </a>
+              </li>
+              <li>
+                <Link to="/contact" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  Get Started Today
+                </Link>
+              </li>
+              <li>
+                <Link to="/blog" className="hover:text-gray-600 cursor-pointer transition-colors">
+                  Blog
                 </Link>
               </li>
               <li>
@@ -89,27 +150,9 @@ export const EnhancedFooter = () => {
                 </Link>
               </li>
             </ul>
-          </div>
-
-          {/* Get in touch */}
-          <div className="col-span-1">
-            <h3 className="text-xs text-gray-500 mb-4">Get in touch</h3>
-            <ul className="space-y-3">
-              <li>
-                <a href="mailto:info@palmerhouseproductions.com" className="hover:text-gray-600 cursor-pointer transition-colors">
-                  info@palmerhouseproductions.com
-                </a>
-              </li>
-              <li>
-                <a href="tel:+14257387312" className="hover:text-gray-600 cursor-pointer transition-colors">
-                  (425) 738-7312
-                </a>
-              </li>
-              <li>
-                <p>Bellevue, WA & Portland, OR</p>
-              </li>
-            </ul>
-            <div className="flex space-x-4 mt-4 text-gray-600">
+            
+            {/* Social Media Icons */}
+            <div className="flex space-x-4 mt-6 text-gray-600">
               <SocialIcon
                 url="https://www.linkedin.com/company/palmer-house-productions/"
                 style={{ height: 24, width: 24 }}
@@ -141,25 +184,24 @@ export const EnhancedFooter = () => {
                 aria-label="Instagram"
               />
             </div>
-          </div>
-
-          {/* Subscribe */}
-          <div className="col-span-1">
-            <h3 className="text-xl font-semibold mb-2">Subscribe</h3>
-            <p className="text-gray-600 mb-6">Join our newsletter and stay updated on the latest trends in video production.</p>
-            <form className="flex items-center border-b border-gray-400 pb-2">
-              <input 
-                type="email" 
-                placeholder="E-mail" 
-                className="bg-transparent w-full focus:outline-none placeholder-gray-400"
-              />
-              <button 
-                type="submit" 
-                className="bg-corporate-dark text-white rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 hover:bg-gray-800 transition-colors"
-              >
-                <ArrowRight size={14} />
-              </button>
-            </form>
+            
+            {/* Newsletter Subscription */}
+            <div className="mt-8">
+              <h4 className="text-sm font-semibold mb-3">Subscribe to Newsletter</h4>
+              <form className="flex items-center border-b border-gray-400 pb-2">
+                <input 
+                  type="email" 
+                  placeholder="E-mail" 
+                  className="bg-transparent w-full focus:outline-none placeholder-gray-400 text-sm"
+                />
+                <button 
+                  type="submit" 
+                  className="bg-corporate-dark text-white rounded-full w-7 h-7 flex items-center justify-center flex-shrink-0 hover:bg-gray-800 transition-colors ml-2"
+                >
+                  <ArrowRight size={12} />
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>

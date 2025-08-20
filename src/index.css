@@ -500,6 +500,17 @@
     animation: hover-pulse 2s ease-in-out infinite;
   }
   
+  /* Scrolling Marquee Animation */
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  
+  .animate-marquee {
+    animation: marquee-scroll 40s linear infinite;
+  }
+  }
+  
   .animate-float-gentle {
     animation: float-gentle 8s ease-in-out infinite;
   }

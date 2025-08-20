@@ -111,17 +111,17 @@ export const ProcessOverview = () => {
             </CollapsibleTrigger>
             
             <CollapsibleContent className="bg-white transition-all duration-500 ease-in-out w-full relative overflow-hidden">
-              {/* Sliding Number Banner */}
-              <div className={`absolute top-0 right-0 h-full w-32 md:w-40 lg:w-48 flex items-center justify-center z-20 ${step.bgColor} ${
+              {/* Compact Sliding Badge */}
+              <div className={`absolute top-6 right-6 h-16 md:h-20 lg:h-24 w-16 md:w-20 lg:w-24 flex items-center justify-center z-20 ${step.bgColor} rounded-lg ${
                 openSteps[index] ? 'animate-slide-in-from-right' : 'animate-slide-out-to-right'
               }`}>
-                <span className="font-black text-white text-6xl md:text-7xl lg:text-8xl opacity-90">
+                <span className="font-black text-white text-2xl md:text-3xl lg:text-4xl">
                   {step.number}
                 </span>
               </div>
               
               <div className="container mx-auto container-padding relative z-10">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 py-8 lg:py-12 pr-16 md:pr-20 lg:pr-24">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 py-8 lg:py-12 pr-12 md:pr-16 lg:pr-20">
                   {step.items.map((item, itemIndex) => (
                     <div key={itemIndex} className="space-y-3">
                       <h4 className="text-lg font-bold text-charcoal">{item.title}</h4>

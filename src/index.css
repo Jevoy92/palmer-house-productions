@@ -626,4 +626,29 @@
   .bg-process-3 {
     @apply bg-cinematic-cyan/10 backdrop-blur-sm;
   }
+
+  /* Process trigger backgrounds with higher opacity for contrast */
+  .bg-process-1-trigger {
+    @apply bg-coral-light/85 transition-colors duration-300;
+  }
+
+  .bg-process-1-trigger:hover {
+    @apply bg-coral-light/75;
+  }
+
+  .bg-process-2-trigger {
+    @apply bg-cinematic-indigo/85 transition-colors duration-300;
+  }
+
+  .bg-process-2-trigger:hover {
+    @apply bg-cinematic-indigo/75;
+  }
+
+  .bg-process-3-trigger {
+    @apply bg-cinematic-cyan/85 transition-colors duration-300;
+  }
+
+  .bg-process-3-trigger:hover {
+    @apply bg-cinematic-cyan/75;
+  }
 }

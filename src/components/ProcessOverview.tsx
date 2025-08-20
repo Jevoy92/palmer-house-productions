@@ -9,6 +9,7 @@ export const ProcessOverview = () => {
       number: "01",
       title: "Map the System",
       bgColor: "bg-process-1",
+      triggerBgColor: "bg-process-1-trigger",
       items: [
         {
           title: "Content Audit & Gap Analysis",
@@ -28,6 +29,7 @@ export const ProcessOverview = () => {
       number: "02",
       title: "Capture the Core", 
       bgColor: "bg-process-2",
+      triggerBgColor: "bg-process-2-trigger",
       items: [
         {
           title: "Shoot Once, Use Everywhere",
@@ -47,6 +49,7 @@ export const ProcessOverview = () => {
       number: "03", 
       title: "Build the Library",
       bgColor: "bg-process-3",
+      triggerBgColor: "bg-process-3-trigger",
       items: [
         {
           title: "Content System Assembly",
@@ -99,7 +102,7 @@ export const ProcessOverview = () => {
             onOpenChange={() => toggleStep(index)}
             className={`border-b border-gray-200 ${index === steps.length - 1 ? 'border-b-0' : ''}`}
           >
-            <CollapsibleTrigger className="w-full bg-white hover:bg-gray-50 transition-all duration-300 relative overflow-hidden">
+            <CollapsibleTrigger className={`w-full ${step.triggerBgColor} transition-all duration-300 relative overflow-hidden`}>
               <div className="container mx-auto container-padding">
                 <div className="flex items-center justify-between py-6 lg:py-8 relative">
                   <div className="flex items-center gap-4">

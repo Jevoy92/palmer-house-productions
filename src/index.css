@@ -509,7 +509,6 @@
   .animate-marquee {
     animation: marquee-scroll 40s linear infinite;
   }
-  }
   
   .animate-float-gentle {
     animation: float-gentle 8s ease-in-out infinite;

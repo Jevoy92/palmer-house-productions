@@ -24,7 +24,7 @@ export const ContactWizard = ({ open, onOpenChange, initialService }: ContactWiz
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className={`max-w-3xl w-[95vw] ${currentStep === 11 ? 'max-h-[95vh]' : 'max-h-[90vh]'} overflow-y-auto bg-gradient-to-br from-video-white to-corporate-light rounded-2xl border-0 video-shadow-lg p-0`}>
+      <DialogContent className={`w-full max-w-[95vw] sm:max-w-3xl ${currentStep === 11 ? 'max-h-[95vh]' : 'max-h-[90vh]'} overflow-y-auto bg-gradient-to-br from-video-white to-corporate-light rounded-2xl border-0 video-shadow-lg p-0`}>
         <VisuallyHidden>
           <DialogTitle>Contact Wizard</DialogTitle>
           <DialogDescription>Complete our qualification process to get a custom proposal</DialogDescription>

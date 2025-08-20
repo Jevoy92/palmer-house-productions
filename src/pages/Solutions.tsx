@@ -217,7 +217,7 @@ export default function Solutions() {
             <div className="absolute bottom-32 left-1/4 w-40 h-40 gradient-social-3 rounded-full opacity-15 float-animation" style={{animationDelay: '4s'}}></div>
           </div>
 
-          <div className="max-w-6xl mx-auto px-6 text-center relative z-10">
+          <div className="max-w-7xl mx-auto container-padding text-center relative z-10">
             <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8 video-shadow">
               🎯 Business Solutions
             </div>
@@ -269,7 +269,7 @@ export default function Solutions() {
         {/* Internal Solutions */}
         {solutions.internal.length > 0 && (
           <section className="py-20 bg-white/5 backdrop-blur-sm border-t border-white/10">
-            <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-7xl mx-auto container-padding">
               <div className="text-center mb-16">
                 <div className="inline-block px-6 py-3 gradient-social-2 rounded-full text-white font-bold text-lg mb-8 video-shadow">
                   🏢 Internal Operations
@@ -338,7 +338,7 @@ export default function Solutions() {
         {/* External Solutions */}
         {solutions.external.length > 0 && (
           <section className="py-20 bg-cinematic-charcoal/30 backdrop-blur-sm border-t border-white/10">
-            <div className="max-w-7xl mx-auto px-6">
+            <div className="max-w-7xl mx-auto container-padding">
               <div className="text-center mb-16">
                 <div className="inline-block px-6 py-3 gradient-social-3 rounded-full text-white font-bold text-lg mb-8 video-shadow">
                   📈 Marketing & Growth

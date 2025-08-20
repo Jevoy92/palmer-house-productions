@@ -34,8 +34,8 @@ export const Team = () => {
         <div className="absolute bottom-20 left-10 w-48 h-48 gradient-social-2 rounded-full opacity-10 float-animation" style={{animationDelay: '3s'}}></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-16 px-4">
+      <div className="max-w-7xl mx-auto container-padding relative z-10">
+        <div className="text-center mb-16">
           <div className="inline-block px-4 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
             👥 Our Team
           </div>
@@ -47,7 +47,7 @@ export const Team = () => {
           </p>
         </div>
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-12">
           {teamMembers.map((member, index) => (
             <div 
               key={index}

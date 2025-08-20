@@ -106,7 +106,7 @@ export const ProcessOverview = () => {
               <div className="container mx-auto container-padding">
                 <div className="flex items-center justify-between py-6 lg:py-8 relative">
                   <h3 className="text-4xl md:text-5xl font-bold text-charcoal text-left">{step.title}</h3>
-                  <span className="text-4xl md:text-5xl font-bold text-white">{step.number}</span>
+                  <span className="text-6xl md:text-7xl lg:text-8xl font-black text-white">{step.number}</span>
                 </div>
               </div>
             </CollapsibleTrigger>

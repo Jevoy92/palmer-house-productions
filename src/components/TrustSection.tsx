@@ -123,17 +123,76 @@ export const TrustSection = () => {
       <div className="pb-24">
         <div className="px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Testimonial Card */}
-            <Card className="bg-white p-12 rounded-3xl shadow-sm relative overflow-hidden col-span-1 border-0 min-h-[400px]">
-              <div className="absolute -bottom-10 -right-10 text-[12rem] text-gray-100/50 z-0 font-bold">"</div>
-              <div className="relative z-10">
-                <h4 className="text-xl font-bold mb-4 text-black">Thoughtful design that moves the needle</h4>
-                <p className="text-black mb-6 text-sm leading-6">Awesome experience from start to finish. He was in constant communication, detail-oriented and provided exactly what we were looking for in our organization's marketing videos and photos.</p>
-                <div className="flex items-center">
-                  <img className="w-10 h-10 rounded-full object-cover" src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=200&fit=crop&crop=face" alt="Sarah Dylan Jensen" />
-                  <div className="ml-3">
-                    <p className="font-bold text-sm text-black">Sarah Dylan Jensen</p>
-                    <p className="text-xs text-gray-500">CEO at Sony</p>
+            {/* Modern Testimonial Section */}
+            <Card className="bg-white p-12 rounded-3xl shadow-sm col-span-1 md:col-span-2 lg:col-span-3 border-0">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16 items-start">
+                {/* Clients Header */}
+                <div className="lg:col-span-1">
+                  <h2 className="text-7xl font-extrabold tracking-tighter mb-6 text-black">Clients</h2>
+                  <p className="text-base text-gray-600 max-w-xs">
+                    Real words from the people we've partnered with — honest feedback, lasting impact.
+                  </p>
+                </div>
+
+                {/* Featured Testimonial */}
+                <div className="lg:col-span-2">
+                  <div className="flex flex-col md:flex-row items-start gap-8">
+                    {/* Portrait Image */}
+                    <div className="flex-shrink-0">
+                      <div className="w-[300px] h-[400px] rounded-2xl overflow-hidden shadow-lg">
+                        <img className="w-full h-full object-cover" src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400&h=500&fit=crop&crop=face" alt="Sarah Dylan Jensen" />
+                      </div>
+                    </div>
+
+                    {/* Testimonial Content */}
+                    <div className="flex flex-col pt-4 w-full">
+                      {/* Meta Information */}
+                      <div className="flex justify-between items-center mb-8">
+                        <div className="flex items-center space-x-2">
+                          <div className="w-5 h-5 rounded-full bg-black flex items-center justify-center">
+                            <span className="text-white text-[10px] font-bold">s</span>
+                          </div>
+                          <span className="font-semibold text-sm tracking-wide text-black">Sony</span>
+                        </div>
+                        <div className="flex space-x-1">
+                          <span className="text-process-3 text-xs">★</span>
+                          <span className="text-process-3 text-xs">★</span>
+                          <span className="text-process-3 text-xs">★</span>
+                          <span className="text-process-3 text-xs">★</span>
+                          <span className="text-process-3 text-xs">★</span>
+                        </div>
+                      </div>
+                      
+                      {/* Testimonial Body */}
+                      <div className="flex-grow">
+                        <h3 className="text-3xl font-bold tracking-tight mb-6 max-w-md text-black">The closest thing to having an in-house production team without actually hiring one</h3>
+                        <p className="text-gray-600 text-base mb-10 max-w-md">
+                          From strategy to execution, they integrated seamlessly into our workflow and brought clarity to every step of the process.
+                        </p>
+                      </div>
+                      
+                      {/* Author Information */}
+                      <div>
+                        <p className="font-bold text-sm text-black">Sarah Dylan Jensen</p>
+                        <p className="text-gray-600 text-sm">Marketing Director at Sony</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Navigation Thumbnails */}
+                  <div className="mt-8 flex justify-start gap-3 pl-0 md:pl-[332px]">
+                    <button className="w-14 h-14 rounded-lg overflow-hidden border-2 border-process-3 focus:border-process-2 focus:outline-none transition-all duration-200">
+                      <img className="w-full h-full object-cover" src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face" alt="Sarah Dylan Jensen" />
+                    </button>
+                    <button className="w-14 h-14 rounded-lg overflow-hidden border-2 border-transparent focus:border-process-2 focus:outline-none transition-all duration-200">
+                      <img className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face" alt="Client 2" />
+                    </button>
+                    <button className="w-14 h-14 rounded-lg overflow-hidden border-2 border-transparent focus:border-process-2 focus:outline-none transition-all duration-200">
+                      <img className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face" alt="Client 3" />
+                    </button>
+                    <button className="w-14 h-14 rounded-lg overflow-hidden border-2 border-transparent focus:border-process-2 focus:outline-none transition-all duration-200">
+                      <img className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face" alt="Client 4" />
+                    </button>
                   </div>
                 </div>
               </div>

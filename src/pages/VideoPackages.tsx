@@ -1,5 +1,5 @@
 import { Navigation } from "@/components/Navigation";
-import { AnimatedVideoPackagesTabbed } from "@/components/packages/AnimatedVideoPackagesTabbed";
+import { VideoPackagesTabbed } from "@/components/packages/VideoPackagesTabbed";
 import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
@@ -7,14 +7,10 @@ import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
 import { FAQSchema } from "@/components/seo/FAQSchema";
-import { ScrollProgress } from "@/components/ui/scroll-progress";
-import { AnimatedCursor } from "@/components/ui/animated-cursor";
 
 const VideoPackagesPage = () => {
   return (
-    <div className="min-h-screen bg-cinematic-charcoal text-video-white">
-      <ScrollProgress />
-      <AnimatedCursor />
+    <div className="min-h-screen bg-white">
       <MetaTags 
         title="Business Video Assets & Pricing | Palmer House Productions"
         description="Business video assets - Internal & External video systems, advanced compliance training, and DIY resources for evergreen business growth."
@@ -38,7 +34,7 @@ const VideoPackagesPage = () => {
       <BreadcrumbNavigation />
       <MainContent>
         <h1 className="sr-only">Video Production Packages and Pricing</h1>
-        <AnimatedVideoPackagesTabbed />
+        <VideoPackagesTabbed />
       </MainContent>
     </div>
   );

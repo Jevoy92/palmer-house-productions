@@ -1,8 +1,8 @@
 
 import { Hero } from "@/components/Hero";
-import { ServicesHorizontalScroll } from "@/components/animations/ServicesHorizontalScroll";
+import { Services } from "@/components/Services";
 import { SolutionsOverview } from "@/components/SolutionsOverview";
-import { EnhancedProcessSection } from "@/components/animations/EnhancedProcessSection";
+import { ProcessOverview } from "@/components/ProcessOverview";
 import { FAQ } from "@/components/FAQ";
 import { CondensedClients } from "@/components/home/CondensedClients";
 import { TrustSection } from "@/components/TrustSection";
@@ -15,8 +15,6 @@ import { StructuredData } from "@/components/seo/StructuredData";
 import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { LaunchOptimization } from "@/components/LaunchOptimization";
 import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
-import { ScrollProgress } from "@/components/ui/scroll-progress";
-import { AnimatedCursor } from "@/components/ui/animated-cursor";
 
 const Index = () => {
   return (
@@ -34,17 +32,15 @@ const Index = () => {
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <LaunchOptimization />
       <MobileFirstOptimization />
-      <ScrollProgress />
-      <AnimatedCursor />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <MainContent>
         <Hero />
         <TrustSection />
         <div id="services">
-          <ServicesHorizontalScroll />
+          <Services />
         </div>
-        <EnhancedProcessSection />
+        <ProcessOverview />
         <div id="pricing">
           <SolutionsOverview />
         </div>

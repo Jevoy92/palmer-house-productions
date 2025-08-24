@@ -57,14 +57,50 @@ export const Hero = () => {
   };
 
   useEffect(() => {
-    // Initialize animations
+    // Initialize advanced animations
     if (typeof window !== 'undefined') {
-      import('../lib/gsap').then(({ revealElements }) => {
-        revealElements('.hero-content > *', { stagger: 0.1, delay: 0.2 });
+      import('../lib/gsap').then(({ 
+        cinematicReveal, 
+        heroParallax, 
+        magneticButton,
+        scrollReveal 
+      }) => {
+        // Cinematic text reveals
+        cinematicReveal('.hero-title', { 
+          splitBy: 'words', 
+          stagger: 0.1, 
+          blur: true, 
+          scale: true 
+        });
+        
+        cinematicReveal('.hero-subtitle', { 
+          splitBy: 'words', 
+          stagger: 0.05, 
+          duration: 0.6 
+        });
+
+        // Parallax effects for floating cards
+        heroParallax('.hero-float-1', 0.2);
+        heroParallax('.hero-float-2', 0.3);
+        heroParallax('.hero-float-3', 0.15);
+        heroParallax('.hero-float-4', 0.25);
+        heroParallax('.hero-float-5', 0.35);
+        heroParallax('.hero-float-6', 0.2);
+
+        // Magnetic effect for CTA button
+        magneticButton('.hero-cta-button', {
+          strength: 0.4,
+          scaleFactor: 1.08
+        });
+
+        // Scroll-triggered reveals for interactive cards
+        scrollReveal('.hero-visual-system', '.interactive-card', {
+          stagger: 0.1
+        });
       });
     }
 
-    // Add CSS animations
+    // Add CSS animations and GSAP reveal classes
     const style = document.createElement('style');
     style.textContent = `
       @keyframes dash {
@@ -108,6 +144,12 @@ export const Hero = () => {
       .hero-float-6 {
         animation: hero-float-3 3.2s ease-in-out infinite;
       }
+      
+      /* GSAP reveal animations */
+      .hero-title, .hero-subtitle, .hero-cta, .hero-visual-system {
+        opacity: 1 !important;
+        transform: none !important;
+      }
     `;
     document.head.appendChild(style);
 
@@ -132,27 +174,26 @@ export const Hero = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 w-full">
               {/* Left Column - Headline and Description */}
               <div className="flex flex-col justify-center hero-content">
-                <h1 className="font-bold leading-tight tracking-tight mb-6 lg:mb-8 text-video-white animate-fade-blur-in">
-                  Build Video<br/>
-                  Content<br/>
-                  Systems
+                <h1 className="hero-title font-bold leading-tight tracking-tight mb-6 lg:mb-8 text-video-white text-5xl md:text-6xl lg:text-7xl opacity-0">
+                  Build Video Content Systems
                 </h1>
-                <p className="text-lg lg:text-xl text-neutral-300 leading-relaxed max-w-lg mb-8 lg:mb-12 animate-fade-blur-in" style={{animationDelay: '0.1s'}}>
+                <p className="hero-subtitle text-lg lg:text-xl text-neutral-300 leading-relaxed max-w-lg mb-8 lg:mb-12 opacity-0">
                   Save time and money, drive authority, and scale your business.
                 </p>
                 
-                <div className="flex animate-fade-blur-in" style={{animationDelay: '0.2s'}}>
+                <div className="flex opacity-0 hero-cta" style={{animationDelay: '0.8s'}}>
                   <button 
                     onClick={handleStartSystem}
-                    className="animated-button bg-social-orange text-white text-lg font-medium px-8 py-4 rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-[0_0_20px_rgba(255,125,59,0.4)] hover:shadow-[0_0_30px_rgba(255,125,59,0.6)] hover:-translate-y-0.5 hover-glow click-feedback"
+                    className="hero-cta-button bg-gradient-to-r from-social-orange to-social-pink text-white text-lg font-medium px-8 py-4 rounded-lg transition-all duration-300 shadow-[0_0_20px_rgba(255,125,59,0.4)] hover:shadow-[0_0_40px_rgba(255,125,59,0.8)] relative overflow-hidden group"
                   >
-                    Start Your System
+                    <span className="relative z-10">Start Your System</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-social-pink to-social-cyan opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </button>
                 </div>
               </div>
               
               {/* Right Column - Visual System */}
-              <div className="relative flex items-center justify-center animate-fade-blur-in" style={{animationDelay: '0.3s'}}>
+              <div className="hero-visual-system relative flex items-center justify-center opacity-0">
                 {/* Connection Lines SVG - Hidden on mobile */}
                 <div className="absolute inset-0 pointer-events-none z-0 hidden md:block">
                   <svg width="100%" height="100%" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -209,7 +250,7 @@ export const Hero = () => {
                 {/* Desktop/Tablet: Full floating card system */}
                 <div className="hidden md:block">
                   {/* Onboarding Card - Responsive positioning */}
-                  <div className="hero-float-1 absolute top-4 right-0 md:top-8 md:right-4 lg:top-16 lg:right-0 z-10 w-32 md:w-36 lg:w-44 bg-video-black/50 backdrop-blur-md rounded-lg p-3 border border-social-orange/50 shadow-[0_0_20px_rgba(255,125,59,0.2)] hover:scale-105 hover:shadow-[0_0_25px_rgba(255,125,59,0.3)] transition-all duration-300">
+                  <div className="interactive-card hero-float-1 absolute top-4 right-0 md:top-8 md:right-4 lg:top-16 lg:right-0 z-10 w-32 md:w-36 lg:w-44 bg-video-black/50 backdrop-blur-md rounded-lg p-3 border border-social-orange/50 shadow-[0_0_20px_rgba(255,125,59,0.2)] hover:scale-105 hover:shadow-[0_0_25px_rgba(255,125,59,0.3)] transition-all duration-300 opacity-0">
                     <div className="flex items-center space-x-2 mb-2">
                       <div className="w-5 h-5 lg:w-6 lg:h-6 bg-social-orange rounded-sm flex items-center justify-center">
                         <Play className="w-2 h-2 lg:w-3 lg:h-3 text-white fill-white" />

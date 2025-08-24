@@ -1,6 +1,8 @@
 
 import { useState, useEffect } from "react";
 import { Play, Check, Pause } from "lucide-react";
+import { MagneticButton } from "@/components/ui/magnetic-button";
+import { MorphingText } from "@/components/ui/morphing-text";
 
 export const Hero = () => {
   // Interactive state management
@@ -134,7 +136,12 @@ export const Hero = () => {
               <div className="flex flex-col justify-center hero-content">
                 <h1 className="font-bold leading-tight tracking-tight mb-6 lg:mb-8 text-video-white animate-fade-blur-in">
                   Build Video<br/>
-                  Content<br/>
+                  <MorphingText 
+                    texts={["Content", "Marketing", "Training", "Brand", "Content"]}
+                    className="text-social-orange"
+                    duration={1.2}
+                    stagger={2.5}
+                  /><br/>
                   Systems
                 </h1>
                 <p className="text-lg lg:text-xl text-neutral-300 leading-relaxed max-w-lg mb-8 lg:mb-12 animate-fade-blur-in" style={{animationDelay: '0.1s'}}>
@@ -142,12 +149,13 @@ export const Hero = () => {
                 </p>
                 
                 <div className="flex animate-fade-blur-in" style={{animationDelay: '0.2s'}}>
-                  <button 
+                  <MagneticButton 
                     onClick={handleStartSystem}
-                    className="animated-button bg-social-orange text-white text-lg font-medium px-8 py-4 rounded-lg hover:bg-opacity-90 transition-all duration-300 shadow-[0_0_20px_rgba(255,125,59,0.4)] hover:shadow-[0_0_30px_rgba(255,125,59,0.6)] hover:-translate-y-0.5 hover-glow click-feedback"
+                    className="text-lg px-8 py-4 shadow-[0_0_20px_rgba(255,125,59,0.4)] hover:shadow-[0_0_30px_rgba(255,125,59,0.6)]"
+                    intensity={0.4}
                   >
                     Start Your System
-                  </button>
+                  </MagneticButton>
                 </div>
               </div>
               

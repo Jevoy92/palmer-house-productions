@@ -2,7 +2,7 @@
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
 import { SolutionsOverview } from "@/components/SolutionsOverview";
-import { HorizontalProcessSection } from "@/components/HorizontalProcessSection";
+import { ProcessOverview } from "@/components/ProcessOverview";
 import { FAQ } from "@/components/FAQ";
 import { CondensedClients } from "@/components/home/CondensedClients";
 import { TrustSection } from "@/components/TrustSection";
@@ -14,7 +14,7 @@ import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { LaunchOptimization } from "@/components/LaunchOptimization";
-import { ShowcaseSection } from "@/components/ShowcaseSection";
+import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 
 const Index = () => {
   return (
@@ -31,6 +31,7 @@ const Index = () => {
       <StructuredData type="homepage" />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <LaunchOptimization />
+      <MobileFirstOptimization />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <MainContent>
@@ -39,8 +40,7 @@ const Index = () => {
         <div id="services">
           <Services />
         </div>
-        <ShowcaseSection />
-        <HorizontalProcessSection />
+        <ProcessOverview />
         <div id="pricing">
           <SolutionsOverview />
         </div>

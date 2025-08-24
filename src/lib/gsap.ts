@@ -144,7 +144,7 @@ export const buttonHover = (button: string | Element) => {
 // Horizontal scrolling container
 export const createHorizontalScroll = (
   container: string | Element,
-  items: string | Element[],
+  items: string | Element[] | NodeListOf<Element>,
   options: {
     trigger?: string | Element;
     start?: string;
@@ -154,10 +154,25 @@ export const createHorizontalScroll = (
 ) => {
   if (prefersReducedMotion()) return;
 
+  const containerEl = typeof container === 'string' ? document.querySelector(container) : container;
+  if (!containerEl) return;
+
+  let itemElements: Element[] = [];
+  
+  if (typeof items === 'string') {
+    itemElements = Array.from(document.querySelectorAll(items));
+  } else if (items instanceof NodeList) {
+    itemElements = Array.from(items);
+  } else {
+    itemElements = Array.isArray(items) ? items : [];
+  }
+  
+  if (itemElements.length === 0) return;
+
   const {
-    trigger = container,
+    trigger = containerEl,
     start = 'top top',
-    end = () => `+=${typeof items === 'string' ? document.querySelectorAll(items).length * 100 : items.length * 100}%`,
+    end = `+=${itemElements.length * 100}%`,
     snap = true
   } = options;
 
@@ -169,15 +184,16 @@ export const createHorizontalScroll = (
       scrub: 1,
       pin: true,
       snap: snap ? {
-        snapTo: 1 / (typeof items === 'string' ? document.querySelectorAll(items).length : items.length),
+        snapTo: 1 / itemElements.length,
         duration: { min: 0.2, max: 0.5 },
         delay: 0.1
       } : undefined,
     }
   });
 
-  timeline.to(items, {
-    xPercent: -100 * (typeof items === 'string' ? document.querySelectorAll(items).length - 1 : items.length - 1),
+  // Create horizontal scroll animation
+  timeline.to(itemElements, {
+    xPercent: -100 * (itemElements.length - 1),
     ease: 'none'
   });
 

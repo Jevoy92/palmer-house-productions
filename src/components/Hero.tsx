@@ -57,47 +57,71 @@ export const Hero = () => {
   };
 
   useEffect(() => {
-    // Initialize advanced animations
+    // Initialize advanced animations with delay to ensure DOM is ready
     if (typeof window !== 'undefined') {
-      import('../lib/gsap').then(({ 
-        cinematicReveal, 
-        heroParallax, 
-        magneticButton,
-        scrollReveal 
-      }) => {
-        // Cinematic text reveals
-        cinematicReveal('.hero-title', { 
-          splitBy: 'words', 
-          stagger: 0.1, 
-          blur: true, 
-          scale: true 
-        });
-        
-        cinematicReveal('.hero-subtitle', { 
-          splitBy: 'words', 
-          stagger: 0.05, 
-          duration: 0.6 
-        });
+      const timer = setTimeout(() => {
+        import('../lib/gsap').then(({ 
+          cinematicReveal, 
+          heroParallax, 
+          magneticButton,
+          scrollReveal 
+        }) => {
+          // Check if elements exist before animating
+          const titleEl = document.querySelector('.hero-title');
+          const subtitleEl = document.querySelector('.hero-subtitle');
+          const ctaButtonEl = document.querySelector('.hero-cta-button');
+          
+          if (titleEl) {
+            cinematicReveal('.hero-title', { 
+              splitBy: 'words', 
+              stagger: 0.1, 
+              blur: true, 
+              scale: true 
+            });
+          }
+          
+          if (subtitleEl) {
+            cinematicReveal('.hero-subtitle', { 
+              splitBy: 'words', 
+              stagger: 0.05, 
+              duration: 0.6 
+            });
+          }
 
-        // Parallax effects for floating cards
-        heroParallax('.hero-float-1', 0.2);
-        heroParallax('.hero-float-2', 0.3);
-        heroParallax('.hero-float-3', 0.15);
-        heroParallax('.hero-float-4', 0.25);
-        heroParallax('.hero-float-5', 0.35);
-        heroParallax('.hero-float-6', 0.2);
+          // Parallax effects for floating cards (check existence)
+          const floatElements = [
+            '.hero-float-1', '.hero-float-2', '.hero-float-3',
+            '.hero-float-4', '.hero-float-5', '.hero-float-6'
+          ];
+          
+          floatElements.forEach((selector, index) => {
+            const element = document.querySelector(selector);
+            if (element) {
+              heroParallax(selector, 0.2 + (index * 0.05));
+            }
+          });
 
-        // Magnetic effect for CTA button
-        magneticButton('.hero-cta-button', {
-          strength: 0.4,
-          scaleFactor: 1.08
-        });
+          // Magnetic effect for CTA button
+          if (ctaButtonEl) {
+            magneticButton('.hero-cta-button', {
+              strength: 0.4,
+              scaleFactor: 1.08
+            });
+          }
 
-        // Scroll-triggered reveals for interactive cards
-        scrollReveal('.hero-visual-system', '.interactive-card', {
-          stagger: 0.1
+          // Scroll-triggered reveals for interactive cards
+          const visualSystem = document.querySelector('.hero-visual-system');
+          if (visualSystem) {
+            scrollReveal('.hero-visual-system', '.interactive-card', {
+              stagger: 0.1
+            });
+          }
+        }).catch(error => {
+          console.warn('GSAP animations failed to load:', error);
         });
-      });
+      }, 100);
+      
+      return () => clearTimeout(timer);
     }
 
     // Add CSS animations and GSAP reveal classes

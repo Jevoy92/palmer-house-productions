@@ -46,18 +46,30 @@ export const HorizontalProcessSection = () => {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const timeline = createHorizontalScroll(
-      containerRef.current,
-      '.process-panel',
-      {
-        trigger: containerRef.current,
-        start: 'top top',
-        end: '+=300%',
-        snap: true
-      }
-    );
+    // Wait for DOM to be ready
+    const timer = setTimeout(() => {
+      const container = containerRef.current;
+      if (!container) return;
+
+      const panels = Array.from(container.querySelectorAll('.process-panel'));
+      if (panels.length === 0) return;
+
+      const timeline = createHorizontalScroll(
+        container,
+        panels,
+        {
+          trigger: container,
+          start: 'top top',
+          end: `+=${panels.length * 100}%`,
+          snap: true
+        }
+      );
+
+      return timeline;
+    }, 100);
 
     return () => {
+      clearTimeout(timer);
       cleanupScrollTrigger();
     };
   }, []);

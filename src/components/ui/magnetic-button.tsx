@@ -14,16 +14,17 @@ export const MagneticButton = forwardRef<HTMLButtonElement, MagneticButtonProps>
     const buttonRef = useRef<HTMLButtonElement>(null);
     const combinedRef = ref || buttonRef;
 
-    useEffect(() => {
-      if (!buttonRef.current) return;
+  useEffect(() => {
+    const element = (ref as React.MutableRefObject<HTMLButtonElement>)?.current || buttonRef.current;
+    if (!element) return;
 
-      const cleanup = magneticButton(buttonRef.current, {
-        strength: magnetStrength,
-        scaleFactor: scaleOnHover,
-      });
+    const cleanup = magneticButton(element, {
+      strength: magnetStrength,
+      scaleFactor: scaleOnHover,
+    });
 
-      return cleanup;
-    }, [magnetStrength, scaleOnHover]);
+    return cleanup;
+  }, [magnetStrength, scaleOnHover, ref]);
 
     return (
       <Button

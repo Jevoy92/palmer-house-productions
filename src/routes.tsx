@@ -5,12 +5,14 @@ import NotFound from './pages/NotFound';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import ThankYou from './pages/ThankYou';
+import VideoGenerator from './pages/VideoGenerator';
 
 export const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/video-generator" element={<VideoGenerator />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/thank-you" element={<ThankYou />} />

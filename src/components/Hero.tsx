@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { Play, Check, Pause } from "lucide-react";
+import { MouseGlowText } from "./ui/mouse-glow-text";
 
 export const Hero = () => {
   // Interactive state management
@@ -135,7 +136,13 @@ export const Hero = () => {
                 <h1 className="font-bold leading-tight tracking-tight mb-6 lg:mb-8 text-video-white animate-fade-blur-in">
                   Build Video<br/>
                   Content<br/>
-                  Systems
+                  <MouseGlowText
+                    glowColor="hsl(var(--social-orange))"
+                    intensity={0.9}
+                    radius={100}
+                  >
+                    Systems
+                  </MouseGlowText>
                 </h1>
                 <p className="text-lg lg:text-xl text-neutral-300 leading-relaxed max-w-lg mb-8 lg:mb-12 animate-fade-blur-in" style={{animationDelay: '0.1s'}}>
                   Save time and money, drive authority, and scale your business.

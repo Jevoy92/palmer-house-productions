@@ -625,61 +625,6 @@ const Pals = () => {
           </div>
         </section>
 
-        {/* Call to Action */}
-        <section className="py-24 bg-gradient-to-br from-primary to-secondary text-white relative overflow-hidden">
-          <div className="absolute inset-0 bg-black bg-opacity-30"></div>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <h2 className="text-5xl md:text-6xl font-black mb-8">Ready to Meet Your Perfect Pal?</h2>
-            <p className="text-xl mb-12 max-w-4xl mx-auto opacity-90 leading-relaxed">Every great video journey starts with choosing the right guide. Book a strategy call and we'll help you discover which Pal is perfect for your unique goals and vision.</p>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-              <div className="bg-white bg-opacity-15 backdrop-blur-sm rounded-2xl p-8 text-center hover:bg-opacity-25 transition-all cursor-pointer">
-                <div className="w-20 h-20 bg-yellow-500 bg-opacity-80 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Smartphone className="text-white h-8 w-8" />
-                </div>
-                <h3 className="font-bold text-lg mb-2">Need Quick Social Content?</h3>
-                <p className="text-sm opacity-80 mb-4">Start with Reel Pal</p>
-                <Button className="bg-yellow-500 text-white hover:bg-yellow-600 transition-colors">Choose Reel Pal</Button>
-              </div>
-              
-              <div className="bg-white bg-opacity-15 backdrop-blur-sm rounded-2xl p-8 text-center hover:bg-opacity-25 transition-all cursor-pointer">
-                <div className="w-20 h-20 bg-gray-600 bg-opacity-80 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Settings className="text-white h-8 w-8" />
-                </div>
-                <h3 className="font-bold text-lg mb-2">Building Video Systems?</h3>
-                <p className="text-sm opacity-80 mb-4">Start with System Pal</p>
-                <Button className="bg-gray-600 text-white hover:bg-gray-700 transition-colors">Choose System Pal</Button>
-              </div>
-              
-              <div className="bg-white bg-opacity-15 backdrop-blur-sm rounded-2xl p-8 text-center hover:bg-opacity-25 transition-all cursor-pointer">
-                <div className="w-20 h-20 bg-green-600 bg-opacity-80 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Sprout className="text-white h-8 w-8" />
-                </div>
-                <h3 className="font-bold text-lg mb-2">Growing Long-term Authority?</h3>
-                <p className="text-sm opacity-80 mb-4">Start with Evergreen Pal</p>
-                <Button className="bg-green-600 text-white hover:bg-green-700 transition-colors">Choose Evergreen Pal</Button>
-              </div>
-              
-              <div className="bg-white bg-opacity-15 backdrop-blur-sm rounded-2xl p-8 text-center hover:bg-opacity-25 transition-all cursor-pointer">
-                <div className="w-20 h-20 bg-red-600 bg-opacity-80 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                  <Star className="text-white h-8 w-8" />
-                </div>
-                <h3 className="font-bold text-lg mb-2">Creating Cinematic Brand Stories?</h3>
-                <p className="text-sm opacity-80 mb-4">Start with Spotlight Pal</p>
-                <Button className="bg-red-600 text-white hover:bg-red-700 transition-colors">Choose Spotlight Pal</Button>
-              </div>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button size="xl" className="bg-white text-primary hover:bg-gray-100 transition-all transform hover:scale-105">Book Your Strategy Call</Button>
-              <Button variant="outline" size="xl" className="border-2 border-white text-white hover:bg-white hover:text-primary transition-all transform hover:scale-105">Explore All Services</Button>
-            </div>
-            
-            <div className="mt-12 text-center opacity-75">
-              <p className="text-lg">🎬 Still not sure? No problem! Our strategy call is completely free.</p>
-            </div>
-          </div>
-        </section>
       </div>
     </>
   );

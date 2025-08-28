@@ -128,15 +128,15 @@ const Blog = () => {
       
       <Navigation />
       
-      <main className="min-h-screen bg-cinematic-charcoal pt-20">
+      <main className="min-h-screen bg-video-white pt-20">
         {/* Hero Section */}
-        <section className="py-16 bg-gradient-to-br from-social-purple/20 via-cinematic-charcoal/50 to-social-pink/20 backdrop-blur-sm">
+        <section className="py-16 bg-gradient-to-br from-social-purple/10 via-video-white to-social-pink/10">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center max-w-4xl mx-auto">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-video-white mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-corporate-dark mb-6">
                 Video Strategy <span className="text-gradient-1">Intelligence</span>
               </h1>
-              <p className="text-xl text-video-white/80 mb-8 leading-relaxed">
+              <p className="text-xl text-corporate-gray mb-8 leading-relaxed">
                 Proven strategies, real-world insights, and actionable frameworks to transform your business through strategic video content.
               </p>
               
@@ -174,7 +174,7 @@ const Blog = () => {
         {featuredArticles.length > 0 && (
           <section className="py-16">
             <div className="max-w-7xl mx-auto px-6">
-              <h2 className="text-3xl font-bold text-video-white mb-8">Featured Articles</h2>
+              <h2 className="text-3xl font-bold text-corporate-dark mb-8">Featured Articles</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {featuredArticles.map((article) => (
                   <Card key={article.id} className="group hover:shadow-lg transition-all duration-300 border-corporate-light/30">
@@ -231,7 +231,7 @@ const Blog = () => {
         <section className="py-8 border-t border-corporate-light/30">
           <div className="max-w-7xl mx-auto px-6">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <h2 className="text-2xl font-bold text-video-white">
+              <h2 className="text-2xl font-bold text-corporate-dark">
                 All Articles ({filteredArticles.length})
               </h2>
               <Select value={sortBy} onValueChange={setSortBy}>
@@ -253,7 +253,7 @@ const Blog = () => {
           <div className="max-w-7xl mx-auto px-6">
             {filteredArticles.length === 0 ? (
               <div className="text-center py-16">
-                <p className="text-xl text-video-white/80 mb-4">No articles found matching your criteria.</p>
+                <p className="text-xl text-corporate-gray mb-4">No articles found matching your criteria.</p>
                 <Button
                   onClick={() => {
                     setSearchTerm('');
@@ -325,12 +325,12 @@ const Blog = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 bg-gradient-to-r from-social-purple/20 to-social-pink/20 backdrop-blur-sm border-t border-white/10">
+        <section className="py-16 bg-gradient-to-r from-social-purple/10 to-social-pink/10">
           <div className="max-w-4xl mx-auto px-6 text-center">
-            <h2 className="text-3xl font-bold text-video-white mb-4">
+            <h2 className="text-3xl font-bold text-corporate-dark mb-4">
               Ready to Transform Your Business with Video?
             </h2>
-            <p className="text-xl text-video-white/80 mb-8">
+            <p className="text-xl text-corporate-gray mb-8">
               Get personalized insights and strategic recommendations for your unique situation.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

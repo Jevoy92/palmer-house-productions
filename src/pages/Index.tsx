@@ -2,10 +2,7 @@
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
 import { SolutionsOverview } from "@/components/SolutionsOverview";
-import { ProcessOverview } from "@/components/ProcessOverview";
-import { FAQ } from "@/components/FAQ";
 import { CondensedClients } from "@/components/home/CondensedClients";
-import { TrustSection } from "@/components/TrustSection";
 
 import { Navigation } from "@/components/Navigation";
 import { SkipLink } from "@/components/ui/skip-link";
@@ -18,13 +15,13 @@ import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-cinematic-charcoal">
+    <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Palmer House Productions | Creative Studio for Founders"
-        description="Systemized video that saves time, cuts costs, and scales your brand. Professional cinematic storytelling for business systems and process documentation."
-        keywords="video production, business systems, process documentation, creative studio, founders, systemized video"
-        ogTitle="Palmer House Productions | Creative Studio for Founders"
-        ogDescription="Systemized video that saves time, cuts costs, and scales your brand."
+        title="Palmer House Productions | Professional Video Production & Cinematic Storytelling"
+        description="Professional video production services that drive results. Expert cinematic storytelling, business videos, and content creation that saves time and builds your brand."
+        keywords="video production, professional video, cinematic storytelling, business videos, content creation, video marketing"
+        ogTitle="Palmer House Productions | Professional Video Production"
+        ogDescription="Professional video production services that drive results. Expert cinematic storytelling and content creation."
         ogImage="https://www.palmerhouseproductions.com/og-image.jpg"
         canonicalUrl="https://www.palmerhouseproductions.com/"
       />
@@ -36,16 +33,13 @@ const Index = () => {
       <Navigation />
       <MainContent>
         <Hero />
-        <TrustSection />
         <div id="services">
           <Services />
         </div>
-        <ProcessOverview />
+        <CondensedClients />
         <div id="pricing">
           <SolutionsOverview />
         </div>
-        <CondensedClients />
-        <FAQ />
       </MainContent>
     </div>
   );

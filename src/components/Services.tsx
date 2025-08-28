@@ -1,142 +1,73 @@
 
+import { Video, Film, Users, Megaphone } from 'lucide-react';
+
 export const Services = () => {
+  const services = [
+    {
+      icon: Video,
+      title: "DIY Resources",
+      description: "Templates, guides, and training to create professional videos independently.",
+      gradient: "gradient-social-1",
+      textGradient: "text-gradient-1"
+    },
+    {
+      icon: Users,
+      title: "Business Video Assets",
+      description: "Strategic video systems that replace repetitive operations and save time.",
+      gradient: "gradient-social-2", 
+      textGradient: "text-gradient-2"
+    },
+    {
+      icon: Film,
+      title: "Other Video Bundles",
+      description: "Specialized video solutions for events, recruitment, and music production.",
+      gradient: "gradient-social-3",
+      textGradient: "text-gradient-3"
+    },
+    {
+      icon: Megaphone,
+      title: "Coaching & Support",
+      description: "DIY coaching programs and hands-on guidance for video confidence.",
+      gradient: "gradient-social-4",
+      textGradient: "text-gradient-1"
+    }
+  ];
+
   return (
-    <section id="services" className="w-full bg-black text-white relative">
-      <div className="absolute top-0 right-4 sm:right-6 md:right-8 bottom-0 w-px bg-gray-800 hidden md:block">
-        <div className="h-24 w-px bg-primary animate-pulse"></div>
-      </div>
-      <div className="section-padding">
-        <div className="container mx-auto container-padding">
-          <div id="services-header" className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12 mb-16 lg:mb-24">
-            <div className="pt-2">
-              <span className="text-sm font-semibold tracking-widest uppercase text-gray-300">Services</span>
-            </div>
-            <div>
-              <h2 className="text-white mb-6">Our services are built to help founders grow smarter, move faster, and build with clarity.</h2>
-              <span className="text-social-orange font-semibold group inline-flex items-center cursor-pointer hover:text-social-orange/80 transition-colors">
-                See pricing
-                <svg className="ml-2 w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </span>
-            </div>
+    <section id="services" className="py-16 sm:py-24 lg:py-32 bg-corporate-light">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-12 sm:mb-16">
+          <div className="inline-block px-4 py-2.5 gradient-social-3 rounded-full text-white font-semibold text-sm mb-6 video-shadow">
+            💼 Service Categories
           </div>
-
-          <div id="services-list" className="space-y-12 lg:space-y-20">
-            <div id="service-content-systems" className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center border-t border-gray-800 pt-12 lg:pt-20">
-              <h3 className="text-white order-1 lg:order-1">Content systems</h3>
-              <ul className="space-y-4 text-lg text-white order-2 lg:order-2">
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>30 Reels in 30 Days</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Customer-facing FAQ videos</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Internal SOP & onboarding videos</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Evergreen YouTube strategy</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Content Calendars</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Social cutdowns (Reels, TikTok, Shorts)</span>
-              </li>
-            </ul>
-          </div>
-
-            <div id="service-content-strategy" className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center border-t border-gray-800 pt-12 lg:pt-20">
-              <h3 className="text-white order-1 lg:order-1">Content strategy</h3>
-              <ul className="space-y-4 text-lg text-white order-2 lg:order-2">
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Founder Script Bundle</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Tone of voice guidelines</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Video Strategy Blueprint</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>On-Camera Confidence training</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Group Coaching: The Camera-Ready Brain</span>
-              </li>
-            </ul>
-          </div>
-
-            <div id="service-brand-identity" className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center border-t border-gray-800 pt-12 lg:pt-20">
-              <h3 className="text-white order-1 lg:order-1">Brand identity</h3>
-              <ul className="space-y-4 text-lg text-white order-2 lg:order-2">
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Founder "About Me" films</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Brand story and positioning videos</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Social proof and testimonial films</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Recruitment & culture capsules</span>
-              </li>
-              <li className="flex items-start">
-                <svg className="text-social-orange mt-2 mr-4 w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                </svg>
-                <span>Event recaps</span>
-              </li>
-            </ul>
-          </div>
-          </div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black mb-6 text-corporate-dark tracking-tight leading-tight px-2">
+            Video Production Services for <span className="text-gradient-1">Every Business Need</span>
+          </h2>
+          <p className="text-base sm:text-lg md:text-xl text-corporate-gray max-w-4xl mx-auto font-medium leading-relaxed px-2">
+            Professional video production company offering production video services that save time, increase efficiency, and drive results for your business.
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-5xl mx-auto">
+          {services.map((service, index) => {
+            const IconComponent = service.icon;
+            return (
+              <div 
+                key={index}
+                className="group p-6 sm:p-8 bg-video-white rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-[1.02] touch-manipulation"
+              >
+                <div className={`w-14 h-14 sm:w-16 sm:h-16 ${service.gradient} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <IconComponent size={28} className="text-white sm:w-8 sm:h-8" />
+                </div>
+                <h3 className={`text-xl sm:text-2xl font-display font-bold mb-4 ${service.textGradient} leading-tight`}>
+                  {service.title}
+                </h3>
+                <p className="text-corporate-gray leading-relaxed text-base sm:text-lg font-medium">
+                  {service.description}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

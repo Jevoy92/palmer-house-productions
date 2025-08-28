@@ -23,8 +23,8 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
   };
 
   return (
-    <section id="contact" className="section-padding bg-white min-h-screen">
-      <div className="max-w-7xl mx-auto container-padding">
+    <section id="contact" className="pt-24 pb-12 bg-white min-h-screen">
+      <div className="max-w-6xl mx-auto px-6">
         <ContactHeader />
 
         <ProcessPreview />

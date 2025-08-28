@@ -1,229 +1,152 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, Phone } from "lucide-react";
+import { Download, Users, Repeat, Wrench } from "lucide-react";
+import { PRICING } from "@/lib/pricing";
 
 export const SolutionsOverview = () => {
   const navigate = useNavigate();
-  const [isAnnual, setIsAnnual] = useState(false);
-  const [monthlyRetainerIsYearly, setMonthlyRetainerIsYearly] = useState(false);
 
-  const handleContactSales = () => {
-    navigate('/contact');
-  };
-
-  const handleViewAllPackages = () => {
+  const handleViewAllSolutions = () => {
     navigate('/video-packages');
   };
 
-  const handleGetStarted = () => {
-    navigate('/contact');
+  const handleCardClick = () => {
+    navigate('/video-packages');
   };
 
-  const retainerFeatures = [
-    "Up to 2 shoot days/month",
-    "Pre-production (scripting, teleprompter, planning)",
-    "8–12 short videos (30–60s)",
-    "1 evergreen video (3–5 min)",
-    "FAQ/onboarding/client proof assets"
-  ];
-
-  const projectFeatures = [
-    "Fixed scope, flat price",
-    "Clear timeline and milestones", 
-    "Custom one-off design requests",
-    "Great for launches, pitches, or rebrands"
-  ];
-
-  const faqs = [
+  const solutions = [
     {
-      question: "Can I change plans later?",
-      answer: "Yes, you can upgrade, downgrade, or cancel your plan at any time. Changes will take effect at the start of your next billing cycle."
+      category: "DIY Resources",
+      description: "Start your video journey with instant downloads",
+      priceRange: "Starting at $19",
+      icon: Download,
+      gradient: "gradient-social-1",
+      items: [
+        "25 DIY Reels You Can Film From Home",
+        "Video Strategy Blueprint", 
+        "Owner/Founder Script Bundle"
+      ]
     },
     {
-      question: "What payment methods do you accept?",
-      answer: "We accept all major credit cards, ACH transfers, and wire transfers for enterprise customers."
+      category: "Business Video Assets",
+      description: "Strategic video systems for operational efficiency", 
+      priceRange: "$4,500 - $6,500",
+      icon: Users,
+      gradient: "gradient-social-2",
+      items: [
+        "External Business Video Assets",
+        "Internal Business Video Assets",
+        "YouTube Visibility Engine",
+        "Founder's Brand Kit"
+      ]
     },
     {
-      question: "Is there a minimum contract period?",
-      answer: "Monthly plans require a 3-month minimum commitment. One-off projects have no minimum term."
+      category: "Other Video Bundles",
+      description: "Specialized video solutions for specific needs",
+      priceRange: "$500 - $7,500",
+      icon: Repeat,
+      gradient: "gradient-social-3",
+      items: [
+        "The Starter Session",
+        "30 Reels in 30 Days",
+        "Music Video Production",
+        "Event & Recruitment Capsules"
+      ]
     },
     {
-      question: "What happens if I need more content?",
-      answer: "You can purchase additional content packages or upgrade to a higher tier plan at any time to meet your needs."
+      category: "DIY Coaching & Support",
+      description: "Guided learning and hands-on coaching",
+      priceRange: "$2,000",
+      icon: Wrench,
+      gradient: "gradient-social-4", 
+      items: [
+        "6-Week Camera-Ready Brand",
+        "DIY coaching sessions",
+        "Private Circle community",
+        "Bonus pack included"
+      ]
     }
   ];
 
-  const ToggleSwitch = ({ checked, onChange }: { checked: boolean; onChange: (checked: boolean) => void }) => (
-    <label className="relative inline-flex items-center cursor-pointer">
-      <input
-        type="checkbox"
-        className="sr-only peer"
-        checked={checked}
-        onChange={(e) => onChange(e.target.checked)}
-      />
-      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-    </label>
-  );
-
   return (
-    <section className="bg-white">
-      <div className="max-w-6xl mx-auto px-4 py-20">
-      {/* Header */}
-      <div className="text-center mb-16">
-        <h1 className="text-7xl font-bold mb-6">Flexible plans</h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          Tailored, flexible plans designed to scale with you — whether you're just starting out or growing fast.
-        </p>
+    <section className="py-32 bg-corporate-light relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 left-10 w-40 h-40 gradient-social-2 rounded-full opacity-10 float-animation"></div>
+        <div className="absolute bottom-20 right-10 w-48 h-48 gradient-social-4 rounded-full opacity-10 float-animation" style={{animationDelay: '2s'}}></div>
+        <div className="absolute top-1/2 left-1/4 w-32 h-32 gradient-social-1 rounded-full opacity-15 float-animation" style={{animationDelay: '4s'}}></div>
       </div>
 
-      {/* Global Billing Toggle */}
-      <div className="flex justify-center items-center mb-16">
-        <span className="text-sm font-medium mr-3">Monthly</span>
-        <ToggleSwitch 
-          checked={isAnnual} 
-          onChange={setIsAnnual}
-        />
-        <span className="text-sm font-medium ml-3">Yearly</span>
-      </div>
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="text-center mb-16 px-4">
+          <div className="inline-block px-4 py-2 gradient-social-3 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
+            🎯 Video Solutions
+          </div>
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-6 text-corporate-dark tracking-tight">
+            Professional Video Production Company <span className="text-gradient-1">Services</span>
+          </h2>
+          <p className="text-base md:text-lg text-corporate-gray max-w-3xl mx-auto font-medium leading-relaxed">
+            Expert video production services and professional video solutions—from DIY resources to full production video packages.
+          </p>
+        </div>
 
-      {/* Main Cards */}
-      <div className="grid md:grid-cols-2 gap-8">
-        {/* Monthly Retainer Plan */}
-        <div className="bg-gray-100 rounded-xl p-10 relative">
-          <h2 className="text-3xl font-bold mb-2">Monthly retainer</h2>
-          
-          <div className="flex items-center mb-6">
-            <span className="text-sm text-gray-500 mr-2">Yearly</span>
-            <ToggleSwitch 
-              checked={monthlyRetainerIsYearly} 
-              onChange={setMonthlyRetainerIsYearly}
-            />
-          </div>
-          
-          <p className="text-gray-600 mb-10">
-            Consistent, systemized video every month — a streamlined engine that removes posting stress, keeps messaging sharp, and builds a growing content library.
+        {/* Solutions Grid */}
+        <div className="grid md:grid-cols-2 gap-6 mb-12 px-4">
+          {solutions.map((solution, index) => {
+            const IconComponent = solution.icon;
+            return (
+              <div 
+                key={index}
+                onClick={handleCardClick}
+                className="group p-6 md:p-8 bg-video-white rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 mobile-touch-target cursor-pointer hover:scale-105"
+              >
+                <div className="flex items-start justify-between mb-6">
+                  <div className={`w-16 h-16 ${solution.gradient} rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                    <IconComponent size={32} className="text-white" />
+                  </div>
+                  <div className="text-right">
+                    <div className="text-3xl font-black text-corporate-dark">{solution.priceRange}</div>
+                  </div>
+                </div>
+                
+                <h3 className="text-xl md:text-2xl font-display font-black mb-3 text-corporate-dark">
+                  {solution.category}
+                </h3>
+                <p className="text-corporate-gray leading-relaxed text-sm md:text-base font-medium mb-4">
+                  {solution.description}
+                </p>
+
+                <div className="space-y-3 mb-4">
+                  {solution.items.map((item, itemIndex) => (
+                    <div key={itemIndex} className="flex items-center">
+                      <div className="w-2 h-2 bg-corporate-dark rounded-full mr-3"></div>
+                      <span className="text-corporate-gray font-medium">{item}</span>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-auto">
+                  <span className="text-social-purple font-semibold text-sm group-hover:underline">
+                    Click for more info →
+                  </span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+
+        {/* CTA Section */}
+        <div className="text-center">
+          <button
+            onClick={handleViewAllSolutions}
+            className="px-12 py-6 gradient-social-1 text-white font-bold text-xl rounded-3xl hover:scale-105 transition-all duration-300 video-shadow-lg"
+          >
+            View All Solutions
+          </button>
+          <p className="text-corporate-gray mt-4 text-lg">
+            Explore detailed packages and pricing for each solution category
           </p>
-          
-          <div className="mb-10">
-            <h3 className="text-sm text-gray-500 mb-4">What's Included:</h3>
-            <ul className="space-y-3">
-              {retainerFeatures.map((feature, index) => (
-                <li key={index} className="flex items-start">
-                  <span className="text-gray-400 mr-2">◦</span>
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          <div className="mb-6">
-            <div className="flex items-end">
-              <span className="text-2xl">$</span>
-              <span className="text-6xl font-bold">
-                {monthlyRetainerIsYearly ? '2,549' : '2,999'}
-              </span>
-            </div>
-            <p className="text-gray-600">
-              {monthlyRetainerIsYearly ? 'Billed yearly (save $5,400/year)' : 'Billed monthly (3-month minimum)'}
-            </p>
-          </div>
-          
-          <button 
-            onClick={handleGetStarted}
-            className="bg-primary hover:bg-opacity-90 text-primary-foreground font-medium py-3 px-6 rounded-full transition duration-300"
-          >
-            Get started
-          </button>
         </div>
-        
-        {/* One-off Project Plan */}
-        <div className="bg-gray-100 rounded-xl p-10 relative">
-          <h2 className="text-3xl font-bold mb-2">One off project</h2>
-          
-          <div className="h-5 mb-6"></div> {/* Spacer to align with other card */}
-          
-          <p className="text-gray-600 mb-10">
-            Clear scope, set timeline—Ideal for one-off projects that need sharp execution without the long-term commitment.
-          </p>
-          
-          <div className="mb-10">
-            <h3 className="text-sm text-gray-500 mb-4">What's Included:</h3>
-            <ul className="space-y-3">
-              {projectFeatures.map((feature, index) => (
-                <li key={index} className="flex items-start">
-                  <span className="text-gray-400 mr-2">◦</span>
-                  <span>{feature}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          
-          <div className="mb-6">
-            <p className="text-sm mb-2">Starts at</p>
-            <div className="flex items-end">
-              <span className="text-2xl">$</span>
-              <span className="text-6xl font-bold">2500</span>
-            </div>
-          </div>
-          
-          <button 
-            onClick={handleGetStarted}
-            className="bg-primary hover:bg-opacity-90 text-primary-foreground font-medium py-3 px-6 rounded-full transition duration-300"
-          >
-            Book a call
-          </button>
-        </div>
-      </div>
-      
-      {/* Enterprise Option */}
-      <div className="mt-12 text-center">
-        <h3 className="text-2xl font-bold mb-3">Need a custom solution?</h3>
-        <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-          For teams with specific requirements or larger content needs, we offer tailored enterprise packages.
-        </p>
-        <button 
-          onClick={handleContactSales}
-          className="border-2 border-secondary hover:bg-secondary hover:text-secondary-foreground text-secondary font-medium py-3 px-8 rounded-full transition duration-300"
-        >
-          Contact sales
-        </button>
-      </div>
-      
-      {/* FAQ Section */}
-      <div className="mt-24">
-        <h2 className="text-3xl font-bold text-center mb-12">Frequently asked questions</h2>
-        
-        <div className="grid md:grid-cols-2 gap-x-12 gap-y-8">
-          {faqs.map((faq, index) => (
-            <div key={index} className="border-b border-gray-200 pb-6">
-              <h3 className="text-xl font-semibold mb-3">{faq.question}</h3>
-              <p className="text-gray-600">{faq.answer}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      {/* Final CTA */}
-      <div className="mt-24 text-center">
-        <h2 className="text-3xl font-bold mb-4">Ready to get started?</h2>
-        <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-          Choose the plan that works for you and start creating amazing content today.
-        </p>
-        <div className="flex flex-wrap justify-center gap-4">
-          <button 
-            onClick={handleGetStarted}
-            className="bg-primary hover:bg-opacity-90 text-primary-foreground font-medium py-3 px-8 rounded-full transition duration-300"
-          >
-            Get started now
-          </button>
-          <button 
-            onClick={handleContactSales}
-            className="border-2 border-secondary hover:bg-secondary hover:text-secondary-foreground text-secondary font-medium py-3 px-8 rounded-full transition duration-300"
-          >
-            Talk to sales
-          </button>
-        </div>
-      </div>
       </div>
     </section>
   );

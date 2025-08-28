@@ -1,32 +1,30 @@
 
-import { useState, useEffect, useRef } from "react";
-import { ArrowRight, Plus } from "lucide-react";
+import { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 export const PricingFAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const [inViewItems, setInViewItems] = useState<Set<number>>(new Set());
-  const faqRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const faqs = [
     {
-      question: "Can I change plans later?",
-      answer: "Yes, you can upgrade, downgrade, or cancel your plan at any time. Changes will take effect at the start of your next billing cycle."
-    },
-    {
-      question: "What payment methods do you accept?",
-      answer: "We accept all major credit cards, ACH transfers, and wire transfers for enterprise customers."
-    },
-    {
-      question: "Is there a minimum contract period?",
-      answer: "Monthly plans require a 3-month minimum commitment. One-off projects have no minimum term."
-    },
-    {
-      question: "What happens if I need more content?",
-      answer: "You can purchase additional content packages or upgrade to a higher tier plan at any time to meet your needs."
-    },
-    {
       question: "What's included in my monthly shoot days?",
       answer: "Each shoot day includes pre-production planning, on-location filming (up to 6 hours), and post-production editing. We'll work with you to maximize content creation during each session, often filming multiple pieces of content in one day."
+    },
+    {
+      question: "Do you offer monthly video content packages?",
+      answer: "Yes, our \"Business Video Assets\" package delivers strategic video systems that replace repetitive operations, so you never run out of evergreen business documentation. Custom project basis."
+    },
+    {
+      question: "How do your one-time bundles work?",
+      answer: "We offer targeted solutions like Internal FAQ Buildouts, External FAQ Videos, Reels Blitzes, and rapid launches. Each solves a specific problem fast—without a long-term contract."
+    },
+    {
+      question: "Do you offer a starter package for first-timers?",
+      answer: "Yes—the \"Starter Session\" is a $500 mini-package with a 30-minute shoot and three edited videos. Simple, accessible, and capped to ensure quality."
+    },
+    {
+      question: "What's the \"Business Bonus Pack\"?",
+      answer: "It's our bundle of DIY guides, coaching, and scripts—free with monthly packages or any major bundle. Perfect for teams who want to practice, plan, or sharpen their on-camera skills."
     },
     {
       question: "Do we own the video content?",
@@ -46,96 +44,59 @@ export const PricingFAQ = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  useEffect(() => {
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: '0px 0px -30px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const index = parseInt(entry.target.getAttribute('data-index') || '0');
-          setInViewItems(prev => new Set([...prev, index]));
-        }
-      });
-    }, observerOptions);
-
-    faqRefs.current.forEach((ref, index) => {
-      if (ref) {
-        ref.setAttribute('data-index', index.toString());
-        observer.observe(ref);
-      }
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section className="py-16 px-4 md:px-8 lg:px-16 bg-background">
-      <div className="container mx-auto max-w-6xl">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-12">
-          {/* Left column with heading and subtext */}
-          <div className="md:col-span-4">
-            <h2 className="text-6xl font-bold mb-6 text-foreground">FAQ</h2>
-            <p className="text-muted-foreground text-lg mb-8">
-              Get quick answers about working with us and our approach to digital solutions.
-            </p>
-            <span className="inline-flex items-center text-foreground font-medium group cursor-pointer hover:text-primary transition-colors">
-              <span className="mr-2">Ask a question</span>
-              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-            </span>
+    <section className="py-20 bg-white">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <div className="inline-block px-6 py-3 gradient-social-4 rounded-full text-white font-bold text-lg mb-8 video-shadow">
+            ❓ Frequently Asked Questions
           </div>
-          
-          {/* Right column with FAQ items */}
-          <div className="md:col-span-8">
-            {faqs.map((faq, index) => (
-              <div 
-                key={index}
-                ref={el => faqRefs.current[index] = el}
-                className={`
-                  border-b border-border py-6 px-4 cursor-pointer group 
-                  transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
-                  hover:bg-muted/50 hover:-translate-y-0.5 hover:shadow-lg hover:rounded-lg
-                  ${inViewItems.has(index) ? 'opacity-100 translate-y-0' : 'opacity-80 translate-y-2'}
-                  ${openIndex === index ? 'bg-muted/30' : ''}
-                `}
-                style={{ transitionDelay: `${index * 0.1}s` }}
+          <h2 className="text-5xl md:text-6xl font-display font-black mb-6 text-corporate-dark tracking-tight">
+            Service <span className="text-gradient-3">Questions</span>
+          </h2>
+          <p className="text-xl text-corporate-gray max-w-2xl mx-auto">
+            Everything you need to know about our video production services.
+          </p>
+        </div>
+
+        <div className="space-y-6">
+          {faqs.map((faq, index) => (
+            <div
+              key={index}
+              className="bg-video-white rounded-2xl video-shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl"
+            >
+              <button
                 onClick={() => toggleFAQ(index)}
+                className="w-full px-8 py-6 text-left flex items-center justify-between hover:bg-gray-50/50 transition-colors"
               >
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center flex-1">
-                    <h3 className="text-lg font-medium text-foreground group-hover:text-primary transition-all duration-300 pr-4">
-                      {faq.question}
-                    </h3>
-                  </div>
-                  <div className="flex items-center space-x-4">
-                    <span className={`
-                      text-2xl font-light transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
-                      ${openIndex === index ? 'text-foreground font-normal' : 'text-muted-foreground'}
-                      group-hover:text-foreground group-hover:scale-105
-                    `}>
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <div className="w-8 h-8 rounded-full border border-border flex items-center justify-center group-hover:border-primary/50 transition-all duration-300">
-                      <Plus className={`
-                        w-4 h-4 transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
-                        ${openIndex === index ? 'rotate-45' : ''}
-                      `} />
-                    </div>
-                  </div>
+                <h3 className="text-lg md:text-xl font-bold text-corporate-dark pr-4">
+                  {faq.question}
+                </h3>
+                <div className="flex-shrink-0">
+                  {openIndex === index ? (
+                    <ChevronUp className="w-6 h-6 text-corporate-gray" />
+                  ) : (
+                    <ChevronDown className="w-6 h-6 text-corporate-gray" />
+                  )}
                 </div>
-                <div className={`
-                  overflow-hidden transition-all duration-400 ease-[cubic-bezier(0.4,0,0.2,1)]
-                  ${openIndex === index ? 'max-h-96 opacity-100 pt-4' : 'max-h-0 opacity-0 pt-0'}
-                `}>
-                  <div className="text-muted-foreground leading-relaxed">
-                    <p>{faq.answer}</p>
-                  </div>
+              </button>
+              
+              {openIndex === index && (
+                <div className="px-8 pb-6 text-corporate-gray leading-relaxed text-base md:text-lg">
+                  {faq.answer}
                 </div>
-              </div>
-            ))}
-          </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-16">
+          <p className="text-xl text-corporate-gray mb-8">
+            Still have questions? We're here to help!
+          </p>
+          <button className="px-8 py-4 gradient-social-1 text-white font-bold rounded-2xl hover:scale-105 transition-all duration-300 text-lg video-shadow-lg">
+            Get in Touch →
+          </button>
         </div>
       </div>
     </section>

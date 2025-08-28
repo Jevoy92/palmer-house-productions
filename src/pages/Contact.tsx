@@ -40,7 +40,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cinematic-charcoal">
+    <div className="min-h-screen bg-white">
       <MetaTags 
         title="Contact Palmer House Productions | Start Your Video Project Today"
         description="Contact Palmer House Productions for professional video production services. Get a custom quote for your business video project."
@@ -55,16 +55,16 @@ const ContactPage = () => {
       <Navigation />
       <BreadcrumbNavigation />
       <MainContent>
-        <section id="contact" className="py-24 bg-cinematic-charcoal/50 backdrop-blur-sm">
+        <section id="contact" className="py-24 bg-corporate-light">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-16">
               <div className="inline-block px-4 py-2 gradient-social-1 rounded-full text-white font-bold text-sm mb-6 video-shadow">
                 💬 Get Started
               </div>
-              <h1 className="text-3xl md:text-4xl font-display font-black mb-6 text-video-white">
+              <h1 className="text-3xl md:text-4xl font-display font-black mb-6 text-corporate-dark">
                 Ready to Transform Your <span className="text-gradient-1">Video Strategy?</span>
               </h1>
-              <p className="text-lg text-video-white/80 max-w-3xl mx-auto">
+              <p className="text-lg text-corporate-gray max-w-3xl mx-auto">
                 Get personalized recommendations and start creating professional video content that drives results.
               </p>
             </div>
@@ -73,15 +73,15 @@ const ContactPage = () => {
               {/* Assessment Options */}
               <div className="space-y-4">
                 {/* Book Strategy Call */}
-                <Card className="border-0 video-shadow hover:video-shadow-lg transition-all bg-white/10 backdrop-blur-sm border border-white/20">
+                <Card className="border-0 video-shadow hover:video-shadow-lg transition-all">
                   <CardContent className="p-4 sm:p-6">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:space-x-4">
                       <div className="w-12 h-12 gradient-social-1 rounded-xl flex items-center justify-center flex-shrink-0">
                         <Calendar className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-video-white mb-1 text-base sm:text-lg">Book a Strategy Call</h3>
-                        <p className="text-sm text-video-white/80">Free 30-minute strategy session</p>
+                        <h3 className="font-bold text-corporate-dark mb-1 text-base sm:text-lg">Book a Strategy Call</h3>
+                        <p className="text-sm text-corporate-gray">Free 30-minute strategy session</p>
                       </div>
                       <Button 
                         onClick={handleBookCall} 
@@ -95,15 +95,15 @@ const ContactPage = () => {
                 </Card>
 
                 {/* Complete Strategy Assessment */}
-                <Card className="border-0 video-shadow hover:video-shadow-lg transition-all bg-white/10 backdrop-blur-sm border border-white/20">
+                <Card className="border-0 video-shadow hover:video-shadow-lg transition-all">
                   <CardContent className="p-4 sm:p-6">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:space-x-4">
                       <div className="w-12 h-12 gradient-social-2 rounded-xl flex items-center justify-center flex-shrink-0">
                         <CheckCircle className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-video-white mb-1 text-base sm:text-lg">Complete Strategy Assessment</h3>
-                        <p className="text-sm text-video-white/80">Comprehensive 12-step video strategy audit</p>
+                        <h3 className="font-bold text-corporate-dark mb-1 text-base sm:text-lg">Complete Strategy Assessment</h3>
+                        <p className="text-sm text-corporate-gray">Comprehensive 12-step video strategy audit</p>
                       </div>
                       <Button 
                         onClick={handleCompleteStrategyAssessment} 
@@ -118,15 +118,15 @@ const ContactPage = () => {
                 </Card>
 
                 {/* Video Readiness Audit */}
-                <Card className="border-0 video-shadow hover:video-shadow-lg transition-all bg-white/10 backdrop-blur-sm border border-white/20">
+                <Card className="border-0 video-shadow hover:video-shadow-lg transition-all">
                   <CardContent className="p-4 sm:p-6">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:space-x-4">
-                      <div className="w-12 h-12 gradient-social-3 rounded-xl flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
                         <Video className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-video-white mb-1 text-base sm:text-lg">Video Readiness Audit</h3>
-                        <p className="text-sm text-video-white/80">Assess your current video capabilities</p>
+                        <h3 className="font-bold text-corporate-dark mb-1 text-base sm:text-lg">Video Readiness Audit</h3>
+                        <p className="text-sm text-corporate-gray">Assess your current video capabilities</p>
                       </div>
                       <Button 
                         onClick={handleVideoReadinessAudit} 

@@ -56,30 +56,6 @@
         margin: 8px;
         display: inline-block;
       }
-      
-      /* Hide scrollbars on Zoho SalesIQ chat widget */
-      [id*="zsiq"],
-      [class*="zsiq"],
-      .zsiq_float,
-      .zsiq_theme1 {
-        scrollbar-width: none !important;
-        -ms-overflow-style: none !important;
-        overflow: hidden !important;
-      }
-      
-      [id*="zsiq"]::-webkit-scrollbar,
-      [class*="zsiq"]::-webkit-scrollbar,
-      .zsiq_float::-webkit-scrollbar,
-      .zsiq_theme1::-webkit-scrollbar {
-        display: none !important;
-        width: 0 !important;
-        height: 0 !important;
-      }
-      
-      /* Target iframe content */
-      iframe[src*="salesiq"] {
-        overflow: hidden !important;
-      }
     </style>
 
     <script>window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}</script>

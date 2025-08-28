@@ -11,7 +11,7 @@ import { InternalLinking } from "@/components/seo/InternalLinking";
 
 const PathwaysPage = () => {
   return (
-    <div className="min-h-screen bg-cinematic-charcoal">
+    <div className="min-h-screen bg-white">
       <MetaTags 
         title="Video Production Service Packages | Palmer House Productions"
         description="Explore video production service packages for different business needs. From single videos to comprehensive content strategies."
@@ -26,32 +26,32 @@ const PathwaysPage = () => {
       <Navigation />
       <BreadcrumbNavigation />
       <MainContent>
-        <section className="pt-24 pb-16 bg-cinematic-charcoal/50 backdrop-blur-sm">
+        <section className="pt-24 pb-16">
           <div className="max-w-6xl mx-auto px-6">
-            <h1 className="text-4xl md:text-6xl font-display font-black mb-8 text-video-white tracking-tight text-center">
+            <h1 className="text-4xl md:text-6xl font-display font-black mb-8 text-corporate-dark tracking-tight text-center">
               Video Production <span className="text-gradient-1">Service Packages</span>
             </h1>
             <div className="max-w-4xl mx-auto text-center mb-16">
-              <p className="text-lg md:text-xl text-video-white/80 leading-relaxed mb-8">
+              <p className="text-lg md:text-xl text-corporate-gray leading-relaxed mb-8">
                 Discover our comprehensive video production services designed to solve specific business challenges. From individual video needs to complete content systems, we help businesses streamline communication, improve training, and boost engagement through strategic video content.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-6 rounded-xl video-shadow">
-                  <h3 className="text-xl font-bold text-video-white mb-3">Content Systems</h3>
-                  <p className="text-video-white/80">Ongoing video libraries that grow with your business and solve recurring communication challenges.</p>
+                <div className="bg-white p-6 rounded-xl video-shadow">
+                  <h3 className="text-xl font-bold text-corporate-dark mb-3">Content Systems</h3>
+                  <p className="text-corporate-gray">Ongoing video libraries that grow with your business and solve recurring communication challenges.</p>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-6 rounded-xl video-shadow">
-                  <h3 className="text-xl font-bold text-video-white mb-3">One-Time Solutions</h3>
-                  <p className="text-video-white/80">Targeted video bundles that address specific needs like onboarding, FAQs, or product launches.</p>
+                <div className="bg-white p-6 rounded-xl video-shadow">
+                  <h3 className="text-xl font-bold text-corporate-dark mb-3">One-Time Solutions</h3>
+                  <p className="text-corporate-gray">Targeted video bundles that address specific needs like onboarding, FAQs, or product launches.</p>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-6 rounded-xl video-shadow">
-                  <h3 className="text-xl font-bold text-video-white mb-3">DIY Resources</h3>
-                  <p className="text-video-white/80">Templates, guides, and coaching to help you create professional video content in-house.</p>
+                <div className="bg-white p-6 rounded-xl video-shadow">
+                  <h3 className="text-xl font-bold text-corporate-dark mb-3">DIY Resources</h3>
+                  <p className="text-corporate-gray">Templates, guides, and coaching to help you create professional video content in-house.</p>
                 </div>
               </div>
-              <div className="bg-gradient-social-1/20 backdrop-blur-sm p-6 rounded-xl border border-white/20">
-                <h4 className="text-lg font-bold text-video-white mb-2">Why Choose Palmer House Productions?</h4>
-                <p className="text-video-white/80">
+              <div className="bg-blue-50 p-6 rounded-xl border border-blue-200">
+                <h4 className="text-lg font-bold text-blue-800 mb-2">Why Choose Palmer House Productions?</h4>
+                <p className="text-blue-700">
                   We don't just create videos—we build strategic content systems that save time, reduce repetitive work, and scale with your business. Every project starts with understanding your unique challenges and designing solutions that deliver measurable results.
                 </p>
               </div>

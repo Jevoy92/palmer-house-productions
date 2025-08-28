@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { formSchema, FormData } from "./contact/ContactFormSchema";
 import { PersonalInfoFields } from "./contact/PersonalInfoFields";
 import { ChallengeField } from "./contact/ChallengeField";
-import { ServiceField } from "./contact/ServiceField";
+import { PathwayField } from "./contact/PathwayField";
 import { AdditionalFields } from "./contact/AdditionalFields";
 import { useEffect } from "react";
 
@@ -25,7 +25,7 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
       email: "",
       phone: "",
       challenge: "",
-      service: "",
+      pathway: "",
       message: "",
       referralSource: "",
       readiness: "",
@@ -37,7 +37,7 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
     if (open) {
       const selectedPath = localStorage.getItem('selectedPath');
       if (selectedPath) {
-        form.setValue('service', selectedPath);
+        form.setValue('pathway', selectedPath);
         form.setValue('message', `I'm interested in the ${selectedPath} service for my brand.`);
         // Clear the stored path
         localStorage.removeItem('selectedPath');
@@ -56,7 +56,7 @@ Email: ${values.email}
 Phone: ${values.phone || 'Not provided'}
 
 Challenge: ${values.challenge}
-Service: ${values.service}
+Pathway: ${values.pathway}
 
 Message: ${values.message}
 
@@ -83,7 +83,7 @@ Readiness: ${values.readiness || 'Not provided'}
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 container-padding pb-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 px-6 pb-6">
             <PersonalInfoFields control={form.control} />
             
             <div className="w-full h-px bg-gradient-social-1 opacity-30"></div>
@@ -92,7 +92,7 @@ Readiness: ${values.readiness || 'Not provided'}
             
             <div className="w-full h-px bg-gradient-social-1 opacity-30"></div>
             
-            <ServiceField control={form.control} />
+            <PathwayField control={form.control} />
             
             <div className="w-full h-px bg-gradient-social-1 opacity-30"></div>
             

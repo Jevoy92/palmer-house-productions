@@ -9,8 +9,8 @@ export const About = () => {
           <div className="absolute bottom-40 right-20 w-48 h-48 gradient-social-3 rounded-full opacity-10 float-animation" style={{animationDelay: '2s'}}></div>
         </div>
         
-        <div className="max-w-7xl mx-auto container-padding relative z-10">
-          <header className="text-center mb-16">
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <header className="text-center mb-16 px-4">
             <div className="inline-block px-4 py-2 gradient-social-1 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
               👋 About Us
             </div>
@@ -22,7 +22,7 @@ export const About = () => {
             </p>
           </header>
 
-        <div className="max-w-7xl mx-auto mb-16">
+        <div className="max-w-4xl mx-auto mb-16 px-4">
           <div className="bg-video-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 video-shadow">
             <p className="text-base md:text-lg text-corporate-gray leading-relaxed mb-6 text-center">
               Founded with a vision to help businesses tell their stories authentically, Palmer House Productions combines <span className="text-gradient-3 font-bold">creative expertise</span> with strategic thinking.
@@ -58,14 +58,14 @@ export const About = () => {
             <div className="w-32 h-1 bg-gradient-to-r from-social-purple to-social-pink mx-auto rounded-full"></div>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-6 lg:gap-12">
+          <div className="grid md:grid-cols-2 gap-8">
             <div className="group bg-video-white/80 backdrop-blur-sm rounded-3xl p-10 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105">
               <div className="flex items-center mb-6">
-                <div className="text-4xl mr-4">🎯</div>
-                <h3 className="text-2xl font-bold text-gradient-1">Custom Solutions</h3>
+                <div className="text-4xl mr-4">🗺️</div>
+                <h3 className="text-2xl font-bold text-gradient-1">Uncharted Paths</h3>
               </div>
               <p className="text-corporate-gray leading-relaxed text-lg">
-                We go beyond the ordinary. Every project is custom-built to develop and amplify your brand's authentic voice.
+                We go beyond the ordinary. Every project is custom-built to discover and amplify your brand's authentic voice.
               </p>
             </div>
             
@@ -95,7 +95,7 @@ export const About = () => {
                 <h3 className="text-2xl font-bold text-gradient-1">Fearless Creativity</h3>
               </div>
               <p className="text-corporate-gray leading-relaxed text-lg">
-                We don't follow trends - we set them. Bold visuals, strong messaging, and a spark of the unexpected drive every project.
+                We don't follow trends - we set them. Bold visuals, strong messaging, and a spark of the unexpected guide every project.
               </p>
             </div>
           </div>
@@ -108,7 +108,7 @@ export const About = () => {
             <div className="relative">
               <div className="text-6xl text-social-purple/30 absolute -top-4 -left-4">"</div>
               <blockquote className="text-2xl text-corporate-gray leading-relaxed italic mb-8 relative z-10">
-                I grew up knowing that stories could change lives—but only if told with truth, courage, and soul. Palmer House is more than a business. It's an invitation to <span className="text-gradient-2 font-bold">create boldly</span> and say what matters.
+                I grew up knowing that stories could change lives—but only if told with truth, courage, and soul. Palmer House is more than a business. It's an invitation to <span className="text-gradient-2 font-bold">explore boldly</span> and say what matters.
               </blockquote>
               <div className="text-6xl text-social-purple/30 absolute -bottom-8 -right-4">"</div>
             </div>
@@ -117,7 +117,7 @@ export const About = () => {
               <p className="text-gradient-1 font-bold text-xl">Jevoy Palmer</p>
               <div className="w-16 h-1 bg-gradient-to-r from-social-purple to-social-pink rounded-full"></div>
             </div>
-            <p className="text-corporate-gray text-sm mt-2">Founder & Creative Director</p>
+            <p className="text-corporate-gray text-sm mt-2">Founder & Lead Creative Guide</p>
           </div>
         </section>
         </div>

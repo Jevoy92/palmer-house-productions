@@ -1,18 +1,18 @@
 
-import { Target, Search, Sparkles, Heart, Wrench, Settings } from 'lucide-react';
+import { Compass, Search, Sparkles, Heart, Wrench, Target } from 'lucide-react';
 
 export const Values = () => {
   const values = [
     { 
-      icon: Target, 
+      icon: Compass, 
       title: "Freedom over Formulas", 
-      description: "We break the template. Every brand has a unique angle—we help you find it and film it.",
+      description: "We break the template. Every brand has a wild edge—we help you find it and film it.",
       gradient: "gradient-social-1"
     },
     { 
       icon: Search, 
       title: "Truth over Trendiness", 
-      description: "We don't chase what's viral. We tell stories with substance that actually mean something.",
+      description: "We don't chase what's viral. We tell stories with soul that actually mean something.",
       gradient: "gradient-social-2"
     },
     { 
@@ -34,7 +34,7 @@ export const Values = () => {
       gradient: "gradient-social-5"
     },
     { 
-      icon: Settings, 
+      icon: Target, 
       title: "Purpose over Profit", 
       description: "We create with intention. Every frame serves your mission, not just our bottom line.",
       gradient: "gradient-social-1"
@@ -59,7 +59,7 @@ export const Values = () => {
             What We <span className="text-gradient-3">Stand For</span>
           </h2>
           <p className="text-base md:text-lg text-corporate-gray max-w-3xl mx-auto font-medium leading-relaxed">
-            These core values drive every project and client relationship at Palmer House Productions.
+            These core values guide every project and client relationship at Palmer House Productions.
           </p>
         </div>
         

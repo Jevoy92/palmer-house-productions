@@ -64,15 +64,15 @@ const TIMELINES = [
 
 // Pricing mapping for project types
 const OPTION_PRICE: Record<string, string> = {
-  "External Business Video Assets": PRICING.BUSINESS_VIDEO_ASSETS?.EXTERNAL_ASSETS?.price || "$4,500",
-  "Internal Business Video Assets": PRICING.BUSINESS_VIDEO_ASSETS?.INTERNAL_ASSETS?.price || "$4,500", 
-  "YouTube Visibility Engine": PRICING.OTHER_BUNDLES?.YOUTUBE_ENGINE?.price || "$6,500",
-  "30 Reels in 30 Days": PRICING.OTHER_BUNDLES?.THIRTY_REELS?.price || "$4,800",
-  "The Founder's Brand Kit": PRICING.OTHER_BUNDLES?.FOUNDER_BRAND_KIT?.price || "$6,000",
-  "The 7 - Day :Launch": PRICING.OTHER_BUNDLES?.SEVEN_DAY_LAUNCH?.price || "$2,500",
-  "The Started Session": PRICING.OTHER_BUNDLES?.STARTER_SESSION?.price || "$500",
+  "External Business Video Assets": PRICING.BUSINESS_VIDEO_ASSETS.EXTERNAL_ASSETS.price,
+  "Internal Business Video Assets": PRICING.BUSINESS_VIDEO_ASSETS.INTERNAL_ASSETS.price,
+  "YouTube Visibility Engine": PRICING.OTHER_BUNDLES.YOUTUBE_ENGINE.price,
+  "30 Reels in 30 Days": PRICING.OTHER_BUNDLES.THIRTY_REELS.price,
+  "The Founder's Brand Kit": PRICING.OTHER_BUNDLES.FOUNDER_BRAND_KIT.price,
+  "The 7 - Day :Launch": PRICING.OTHER_BUNDLES.SEVEN_DAY_LAUNCH.price,
+  "The Started Session": PRICING.OTHER_BUNDLES.STARTER_SESSION.price,
   "Commercial/Advertisement": "Custom",
-  "Corporate Video": "Custom", 
+  "Corporate Video": "Custom",
   "Post-Production Only": "Custom",
   [NOT_SURE_OPTION]: "—",
 };

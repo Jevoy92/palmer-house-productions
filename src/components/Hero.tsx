@@ -91,7 +91,7 @@ export const Hero = () => {
             ))}
           </div>
         ) : (
-          <div className="animate-fade-in">
+          <div className={`transition-opacity duration-700 ${showHeadline ? 'opacity-100' : 'opacity-0'}`}>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-semibold mb-6 sm:mb-8 tracking-tight leading-[1.1] px-2">
               We turn those questions into a{" "}
               <span className="text-gradient-1">Content System</span>

@@ -453,9 +453,9 @@ const ReelPal = () => {
               <div className="bg-background rounded-2xl p-8 text-center transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer">
                 <div className="mb-6">
                   <img 
-                    className="w-24 h-24 mx-auto rounded-full" 
-                    src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-772ba728bd8c24b597ce.png" 
-                    alt="cartoon character female with brown hair, teal outfit, holding growing plant with video play button" 
+                    className="w-24 h-24 mx-auto rounded-full object-cover object-center" 
+                    src="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png" 
+                    alt="cartoon character male with gray hair and beard, teal coat, holding golden play button with plants and educational elements, evergreen content creator mascot" 
                   />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-3">Evergreen Pal</h3>

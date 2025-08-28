@@ -45,9 +45,9 @@ const EvergreenPal = () => {
               </div>
               <div className="text-center">
                 <img 
-                  className="w-80 h-80 mx-auto rounded-full border-4 border-white/20" 
-                  src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-772ba728bd8c24b597ce.png" 
-                  alt="cartoon character female with brown hair, teal outfit, holding growing plant with video play button" 
+                  className="w-80 h-80 mx-auto rounded-full border-4 border-white/20 object-cover object-center" 
+                  src="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png" 
+                  alt="cartoon character male with gray hair and beard, teal coat, holding golden play button with plants and educational elements, evergreen content creator mascot" 
                 />
               </div>
             </div>
@@ -324,9 +324,9 @@ const EvergreenPal = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="mb-8">
               <img 
-                className="w-32 h-32 mx-auto rounded-full border-4 border-green-200" 
-                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-772ba728bd8c24b597ce.png" 
-                alt="cartoon character female with brown hair, teal outfit, holding growing plant with video play button" 
+                className="w-32 h-32 mx-auto rounded-full border-4 border-green-200 object-cover object-center" 
+                src="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png" 
+                alt="cartoon character male with gray hair and beard, teal coat, holding golden play button with plants and educational elements, evergreen content creator mascot" 
               />
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">Ready to Build Authority with Evergreen Pal?</h2>

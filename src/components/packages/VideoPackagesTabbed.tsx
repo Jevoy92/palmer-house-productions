@@ -379,8 +379,8 @@ export const VideoPackagesTabbed = () => {
             <div className="text-center mb-8">
               <div className="w-24 h-24 mx-auto rounded-full bg-green-100 flex items-center justify-center mb-4">
                 <img 
-                  className="w-20 h-20 rounded-full" 
-                  src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-772ba728bd8c24b597ce.png" 
+                  className="w-20 h-20 rounded-full object-cover object-center" 
+                  src="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png" 
                   alt="Evergreen Pal avatar" 
                 />
               </div>

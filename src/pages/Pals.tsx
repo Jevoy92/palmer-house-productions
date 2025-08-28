@@ -80,7 +80,7 @@ const Pals = () => {
                 <p className="text-sm text-muted-foreground mt-2">Backend Systems</p>
               </div>
               <div className="bg-white rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 shadow-lg hover:shadow-xl">
-                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-green-400" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-e7363733c56c43638c8f.png" alt="cartoon character female with brown hair, teal outfit, holding plant with lightbulb, growth-focused mascot style" />
+                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-green-400 object-cover object-center" src="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png" alt="cartoon character male with gray hair and beard, teal coat, holding golden play button with plants and book, growth-focused mascot style" />
                 <h3 className="text-xl font-bold text-foreground">Evergreen Pal</h3>
                 <p className="text-sm text-muted-foreground mt-2">Long-term Growth</p>
               </div>
@@ -250,7 +250,7 @@ const Pals = () => {
                   </div>
                 </div>
                 <div className="text-center">
-                  <img className="w-80 h-80 mx-auto" src={evergreenPalClean} alt="cartoon character female with brown hair in a ponytail wearing a teal cardigan, holding a growing plant, with floating growth icons like lightbulbs, trees, and charts on a clean white background" />
+                  <img className="w-80 h-80 mx-auto object-contain" src="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png" alt="cartoon character male with gray hair and beard wearing teal coat, holding golden video play button, surrounded by floating growth elements like lightbulb with plant, book, and green leaves" />
                 </div>
               </div>
             </div>

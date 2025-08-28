@@ -13,6 +13,7 @@ import { trackPageView } from "@/lib/analytics";
 import { Canonical } from "@/components/seo/Canonical";
 import Index from "./pages/Index";
 import VideoPackages from "./pages/VideoPackages";
+import Pals from "./pages/Pals";
 
 import VideoUseCases from "./pages/VideoUseCases";
 import AboutUs from "./pages/AboutUs";
@@ -70,6 +71,7 @@ const App = () => (
         <RouteTracker />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/pals" element={<Pals />} />
           <Route path="/video-packages" element={<VideoPackages />} />
           <Route path="/discovery-call" element={<Navigate to="/contact" replace />} />
           <Route path="/video-use-cases" element={<VideoUseCases />} />

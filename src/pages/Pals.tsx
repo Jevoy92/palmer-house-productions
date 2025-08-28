@@ -433,7 +433,7 @@ const Pals = () => {
             <div className="bg-background rounded-3xl shadow-2xl overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gradient-to-r from-primary to-secondary text-white">
+                  <thead className="bg-primary text-white">
                     <tr>
                       <th className="px-8 py-6 text-left text-lg font-bold">Comparison</th>
                       <th className="px-8 py-6 text-center text-lg font-bold">

@@ -355,9 +355,9 @@ const SpotlightPal = () => {
               <div className="bg-background rounded-2xl p-8 text-center transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer">
                 <div className="mb-6">
                   <img 
-                    className="w-24 h-24 mx-auto rounded-full" 
-                    src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-3499219619cfd6454f31.png" 
-                    alt="cartoon character female with red hair, gray professional outfit, holding clipboard with gears and system icons" 
+                    className="w-24 h-24 mx-auto rounded-full object-cover object-center" 
+                    src="/lovable-uploads/1d3c7a2a-e5cb-4900-9b76-9eadb6620973.png" 
+                    alt="System Pal - professional male character in gray jacket with green accents, surrounded by workflow icons, gears, folders, and organizational elements" 
                   />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-3">System Pal</h3>

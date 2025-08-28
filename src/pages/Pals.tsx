@@ -158,7 +158,7 @@ const Pals = () => {
               <div className="absolute top-0 left-0 w-64 h-64 bg-purple-100 rounded-full -translate-y-32 -translate-x-32 opacity-50"></div>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
                 <div className="text-center order-2 lg:order-1">
-                  <img className="w-80 h-80 mx-auto" src={systemPalClean} alt="cartoon character female with red hair and glasses wearing a gray suit, holding a checklist, with floating system icons like gears, charts, and documents on a clean white background" />
+                  <img className="w-80 h-80 mx-auto object-contain" src="/lovable-uploads/1d3c7a2a-e5cb-4900-9b76-9eadb6620973.png" alt="System Pal - professional male character in gray jacket with green accents, surrounded by workflow icons, gears, folders, and organizational elements" />
                 </div>
                 <div className="text-center lg:text-left order-1 lg:order-2">
                   <div className="inline-flex items-center bg-purple-100 text-purple-800 px-6 py-3 rounded-full text-sm font-bold mb-6">
@@ -551,7 +551,7 @@ const Pals = () => {
               
               <div className="bg-purple-50 rounded-3xl p-8 border-2 border-purple-200">
                 <div className="flex items-center mb-6">
-                  <img className="w-16 h-16 rounded-full mr-4" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-5375fe727564572cfda8.png" alt="cartoon character female with red hair, gray outfit, small avatar style" />
+                  <img className="w-16 h-16 rounded-full mr-4 object-cover object-center" src="/lovable-uploads/1d3c7a2a-e5cb-4900-9b76-9eadb6620973.png" alt="System Pal - professional male character in gray jacket with green accents, small avatar style" />
                   <div>
                     <h3 className="text-xl font-bold text-foreground">System Pal Transformation</h3>
                     <p className="text-purple-600 font-semibold">Operational Excellence</p>

@@ -43,9 +43,9 @@ const SystemPal = () => {
               </div>
               <div className="text-center">
                 <img 
-                  className="w-80 h-80 mx-auto rounded-full border-4 border-white/20" 
-                  src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-3499219619cfd6454f31.png" 
-                  alt="cartoon character female with red hair, gray professional outfit, holding clipboard with gears and system icons" 
+                  className="w-80 h-80 mx-auto rounded-full border-4 border-white/20 object-cover object-center" 
+                  src="/lovable-uploads/1d3c7a2a-e5cb-4900-9b76-9eadb6620973.png" 
+                  alt="System Pal - professional male character in gray jacket with green accents, surrounded by workflow icons, gears, folders, and organizational elements" 
                 />
               </div>
             </div>
@@ -326,9 +326,9 @@ const SystemPal = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="mb-8">
               <img 
-                className="w-32 h-32 mx-auto rounded-full border-4 border-purple-200" 
-                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-3499219619cfd6454f31.png" 
-                alt="cartoon character female with red hair, gray professional outfit, holding clipboard with gears and system icons" 
+                className="w-32 h-32 mx-auto rounded-full border-4 border-purple-200 object-cover object-center" 
+                src="/lovable-uploads/1d3c7a2a-e5cb-4900-9b76-9eadb6620973.png" 
+                alt="System Pal - professional male character in gray jacket with green accents, surrounded by workflow icons, gears, folders, and organizational elements" 
               />
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">Ready to Streamline with System Pal?</h2>

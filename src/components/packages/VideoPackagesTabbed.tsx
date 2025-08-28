@@ -149,225 +149,384 @@ export const VideoPackagesTabbed = () => {
         </div>
 
         {/* Tabbed Interface */}
-        <Tabs defaultValue="assets" className="w-full">
-          <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 mb-6 h-auto">
-            <TabsTrigger value="assets" className="text-xs py-3 min-h-[44px] flex flex-col md:flex-row items-center">
-              <Wrench size={14} className="mb-1 md:mb-0 md:mr-2" />
-              <span>Business Video Assets</span>
+        <Tabs defaultValue="reel" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-6 h-auto">
+            <TabsTrigger value="reel" className="text-xs py-3 min-h-[44px] flex flex-col items-center">
+              <div className="w-8 h-8 bg-yellow-500 rounded-full mb-1 flex items-center justify-center">
+                <Video size={14} className="text-white" />
+              </div>
+              <span>Reel Pal</span>
             </TabsTrigger>
-            <TabsTrigger value="bundles" className="text-xs py-3 min-h-[44px] flex flex-col md:flex-row items-center">
-              <Video size={14} className="mb-1 md:mb-0 md:mr-2" />
-              <span>Other Bundles</span>
+            <TabsTrigger value="system" className="text-xs py-3 min-h-[44px] flex flex-col items-center">
+              <div className="w-8 h-8 bg-purple-500 rounded-full mb-1 flex items-center justify-center">
+                <Wrench size={14} className="text-white" />
+              </div>
+              <span>System Pal</span>
             </TabsTrigger>
-            <TabsTrigger value="diy" className="text-xs py-3 min-h-[44px] flex flex-col md:flex-row items-center">
-              <Download size={14} className="mb-1 md:mb-0 md:mr-2" />
-              <span>DIY Starters</span>
+            <TabsTrigger value="evergreen" className="text-xs py-3 min-h-[44px] flex flex-col items-center">
+              <div className="w-8 h-8 bg-green-500 rounded-full mb-1 flex items-center justify-center">
+                <Users size={14} className="text-white" />
+              </div>
+              <span>Evergreen Pal</span>
+            </TabsTrigger>
+            <TabsTrigger value="spotlight" className="text-xs py-3 min-h-[44px] flex flex-col items-center">
+              <div className="w-8 h-8 bg-red-500 rounded-full mb-1 flex items-center justify-center">
+                <Camera size={14} className="text-white" />
+              </div>
+              <span>Spotlight Pal</span>
             </TabsTrigger>
           </TabsList>
 
-          {/* DIY Downloads Tab */}
-          <TabsContent value="diy" className="space-y-6">
-            <div className="text-center mb-6">
-              <h2 className="text-lg md:text-xl font-display font-black text-corporate-dark mb-2">
-                📁 Digital Downloads
-              </h2>
-              <p className="text-sm text-corporate-gray">Instant access to templates, guides and resources</p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {digitalDownloads.map((item, index) => (
-                <div key={index} className="bg-white p-6 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105">
-                  <div className="text-center mb-4">
-                    <div className="w-16 h-16 gradient-social-1 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                      <item.icon color="white" size={24} />
-                    </div>
-                    <h3 className="text-lg font-bold text-corporate-dark mb-2">{item.title}</h3>
-                    <div className="text-3xl font-black text-corporate-dark mb-2">{item.price}</div>
-                    <div className="text-sm text-corporate-gray mb-3 font-medium">{item.format}</div>
-                  </div>
-                  <p className="text-sm text-corporate-gray mb-6 leading-relaxed">{item.description}</p>
-                  <button
-                    onClick={() => handlePurchase(item.paymentUrl)}
-                    className="w-full py-3 px-4 gradient-social-1 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300 video-shadow"
-                  >
-                    Buy Now
-                  </button>
-                </div>
-              ))}
-            </div>
-          </TabsContent>
-
-          {/* Business Video Assets Tab */}
-          <TabsContent value="assets" className="space-y-6">
+          {/* Reel Pal Tab */}
+          <TabsContent value="reel" className="space-y-6">
             <div className="text-center mb-8">
+              <div className="w-24 h-24 mx-auto rounded-full bg-yellow-100 flex items-center justify-center mb-4">
+                <img 
+                  className="w-20 h-20 rounded-full" 
+                  src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-bb993d7dd66fd010bb42.png" 
+                  alt="Reel Pal avatar" 
+                />
+              </div>
               <h2 className="text-3xl md:text-4xl font-display font-black text-corporate-dark mb-4">
-                📊 Strategic Business Video Assets
+                📱 Reel Pal - Social Content Creation
               </h2>
               <p className="text-lg text-corporate-gray max-w-3xl mx-auto">
-                Replace repetitive operations with systematic video solutions. One shoot → a year of assets.
+                Short-form social content that captures hearts and drives real engagement across all platforms.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {/* External Business Video Assets */}
-              <div className="bg-white p-8 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300">
-                <div className="text-center mb-6">
-                  <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-bold text-sm mb-4">
-                    <Users size={16} className="mr-2" />
-                    External Assets
-                  </div>
-                  <h3 className="text-2xl font-bold text-corporate-dark mb-2">Customer-Facing Systems</h3>
-                  <div className="text-4xl font-black text-corporate-dark">{PRICING.BUSINESS_VIDEO_ASSETS.EXTERNAL_ASSETS.price}</div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* Starter Session */}
+              <div className="bg-white p-6 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300">
+                <div className="text-center mb-4">
+                  <div className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-bold mb-4">STARTER</div>
+                  <h3 className="text-lg font-bold text-corporate-dark mb-2">The Starter Session</h3>
+                  <div className="text-3xl font-black text-yellow-600">$500</div>
                 </div>
-                <p className="text-sm text-corporate-gray mb-6 leading-relaxed">
-                  Up to 15 videos covering customer onboarding, top objections, service breakdowns, and pricing explanations. 
-                  Delivered with thumbnails and captions for immediate deployment.
-                </p>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-center text-sm">
-                    <CheckCircle size={14} className="text-green-500 mr-2" />
-                    Customer onboarding videos
-                  </li>
-                  <li className="flex items-center text-sm">
-                    <CheckCircle size={14} className="text-green-500 mr-2" />
-                    Objection handling content
-                  </li>
-                  <li className="flex items-center text-sm">
-                    <CheckCircle size={14} className="text-green-500 mr-2" />
-                    Service breakdowns
-                  </li>
-                  <li className="flex items-center text-sm">
-                    <CheckCircle size={14} className="text-green-500 mr-2" />
-                    Pricing explanations
-                  </li>
+                <ul className="space-y-2 mb-6 text-sm">
+                  <li className="flex items-center"><CheckCircle size={14} className="text-yellow-500 mr-2" />30-minute filming session</li>
+                  <li className="flex items-center"><CheckCircle size={14} className="text-yellow-500 mr-2" />Minimum 3 edited videos</li>
+                  <li className="flex items-center"><CheckCircle size={14} className="text-yellow-500 mr-2" />Simple talking-head style</li>
                 </ul>
                 <button
-                  onClick={() => handleBooking("External Business Video Assets")}
-                  className="w-full py-3 px-4 bg-gradient-to-r from-social-purple to-social-pink text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300 video-shadow"
+                  onClick={() => handleBooking("The Starter Session")}
+                  className="w-full py-3 px-4 bg-yellow-500 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300"
                 >
-                  Book Strategy Call
+                  Book Session
                 </button>
               </div>
 
-              {/* Internal Business Video Assets */}
-              <div className="bg-white p-8 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300">
-                <div className="text-center mb-6">
-                  <div className="inline-flex items-center px-4 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-4">
-                    <Wrench size={16} className="mr-2" />
-                    Internal Assets
-                  </div>
-                  <h3 className="text-2xl font-bold text-corporate-dark mb-2">Team-Facing Systems</h3>
-                  <div className="text-4xl font-black text-corporate-dark">{PRICING.BUSINESS_VIDEO_ASSETS.INTERNAL_ASSETS.price}</div>
+              {/* DIY Reels */}
+              <div className="bg-white p-6 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300">
+                <div className="text-center mb-4">
+                  <div className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-bold mb-4">DIY</div>
+                  <h3 className="text-lg font-bold text-corporate-dark mb-2">25 DIY Reels</h3>
+                  <div className="text-3xl font-black text-yellow-600">$47</div>
                 </div>
-                <p className="text-sm text-corporate-gray mb-6 leading-relaxed">
-                  Up to 15 videos covering HR onboarding, hiring processes, internal procedures, and software tutorials. 
-                  Clean talking-head style for maximum clarity.
-                </p>
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-center text-sm">
-                    <CheckCircle size={14} className="text-green-500 mr-2" />
-                    HR onboarding content
-                  </li>
-                  <li className="flex items-center text-sm">
-                    <CheckCircle size={14} className="text-green-500 mr-2" />
-                    Hiring process videos
-                  </li>
-                  <li className="flex items-center text-sm">
-                    <CheckCircle size={14} className="text-green-500 mr-2" />
-                    Internal procedures
-                  </li>
-                  <li className="flex items-center text-sm">
-                    <CheckCircle size={14} className="text-green-500 mr-2" />
-                    Software tutorials
-                  </li>
+                <ul className="space-y-2 mb-6 text-sm">
+                  <li className="flex items-center"><CheckCircle size={14} className="text-yellow-500 mr-2" />25 talking-head reel ideas</li>
+                  <li className="flex items-center"><CheckCircle size={14} className="text-yellow-500 mr-2" />Platform breakdowns</li>
+                  <li className="flex items-center"><CheckCircle size={14} className="text-yellow-500 mr-2" />Sample scripts provided</li>
                 </ul>
                 <button
-                  onClick={() => handleBooking("Internal Business Video Assets")}
-                  className="w-full py-3 px-4 gradient-social-2 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300 video-shadow"
+                  onClick={() => handlePurchase(PRICING.DIY_DOWNLOADS["25_REELS"].paymentUrl)}
+                  className="w-full py-3 px-4 bg-yellow-500 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300"
                 >
-                  Book Strategy Call
+                  Buy Now
                 </button>
               </div>
-            </div>
 
-            {/* Bonus Pack Section */}
-            <div className="bg-gray-50 p-8 rounded-3xl border-2 border-gray-200">
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center px-4 py-2 gradient-social-3 rounded-full text-white font-bold text-sm mb-4">
-                  <Gift size={16} className="mr-2" />
-                  Business Bonus Pack
+              {/* Script Bundle */}
+              <div className="bg-white p-6 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300">
+                <div className="text-center mb-4">
+                  <div className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-bold mb-4">SCRIPTS</div>
+                  <h3 className="text-lg font-bold text-corporate-dark mb-2">Script Bundle</h3>
+                  <div className="text-3xl font-black text-yellow-600">$47</div>
                 </div>
-                <h3 className="text-2xl font-bold text-corporate-dark mb-2">Free with Any Business Video Assets Package</h3>
-                <div className="text-lg text-corporate-gray">Total Value: {PRICING.BONUS_PACK.totalValue}</div>
+                <ul className="space-y-2 mb-6 text-sm">
+                  <li className="flex items-center"><CheckCircle size={14} className="text-yellow-500 mr-2" />About Me video scripts</li>
+                  <li className="flex items-center"><CheckCircle size={14} className="text-yellow-500 mr-2" />Social proof templates</li>
+                  <li className="flex items-center"><CheckCircle size={14} className="text-yellow-500 mr-2" />Call-to-action scripts</li>
+                </ul>
+                <button
+                  onClick={() => handlePurchase(PRICING.DIY_DOWNLOADS.SCRIPT_BUNDLE.paymentUrl)}
+                  className="w-full py-3 px-4 bg-yellow-500 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300"
+                >
+                  Get Scripts
+                </button>
               </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {bonusItems.map((item, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 bg-white rounded-xl border">
-                    <span className="text-sm font-medium text-corporate-dark">{item.item}</span>
-                    <span className="text-sm font-bold text-green-600">{item.value}</span>
-                  </div>
-                ))}
+
+              {/* 30 Reels */}
+              <div className="bg-white p-6 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300 relative">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <div className="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-semibold">MOST POPULAR</div>
+                </div>
+                <div className="text-center mb-4 mt-4">
+                  <div className="inline-block px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-bold mb-4">DONE FOR YOU</div>
+                  <h3 className="text-lg font-bold text-corporate-dark mb-2">30 Reels in 30 Days</h3>
+                  <div className="text-3xl font-black text-yellow-600">$4,800</div>
+                </div>
+                <ul className="space-y-2 mb-6 text-sm">
+                  <li className="flex items-center"><CheckCircle size={14} className="text-yellow-500 mr-2" />1 full-day shoot (8 hours)</li>
+                  <li className="flex items-center"><CheckCircle size={14} className="text-yellow-500 mr-2" />30 social-ready videos</li>
+                  <li className="flex items-center"><CheckCircle size={14} className="text-yellow-500 mr-2" />Platform formatting</li>
+                </ul>
+                <button
+                  onClick={() => handleBooking("30 Reels in 30 Days")}
+                  className="w-full py-3 px-4 bg-yellow-500 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300"
+                >
+                  Book Now
+                </button>
               </div>
             </div>
           </TabsContent>
 
-          {/* One-Time Bundles Tab */}
-          <TabsContent value="bundles" className="space-y-6">
+          {/* System Pal Tab */}
+          <TabsContent value="system" className="space-y-6">
             <div className="text-center mb-8">
+              <div className="w-24 h-24 mx-auto rounded-full bg-purple-100 flex items-center justify-center mb-4">
+                <img 
+                  className="w-20 h-20 rounded-full" 
+                  src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-3499219619cfd6454f31.png" 
+                  alt="System Pal avatar" 
+                />
+              </div>
               <h2 className="text-3xl md:text-4xl font-display font-black text-corporate-dark mb-4">
-                🛠️ One-Time Problem-Solving Bundles
+                ⚙️ System Pal - Training & Internal Systems
               </h2>
-              <p className="text-lg text-corporate-gray">Solve specific video challenges with targeted solutions</p>
+              <p className="text-lg text-corporate-gray max-w-3xl mx-auto">
+                Training videos, employee onboarding, and internal documentation that actually gets used and drives results.
+              </p>
             </div>
 
-            <Accordion type="single" collapsible className="space-y-4">
-              {oneTimeBundles.map((bundle, index) => (
-                <AccordionItem key={index} value={`bundle-${index}`} className="bg-white rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300">
-                  <AccordionTrigger className="px-6 py-4 hover:no-underline">
-                    <div className="flex items-center justify-between w-full text-left">
-                      <div>
-                        <div className="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-bold mb-2">
-                          {bundle.type}
-                        </div>
-                        <h3 className="text-xl font-bold text-corporate-dark">{bundle.title}</h3>
-                        <div className="text-2xl font-black text-corporate-dark mt-1">{bundle.price}</div>
-                      </div>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="px-6 pb-6">
-                    <p className="text-sm text-corporate-gray mb-4 leading-relaxed">{bundle.description}</p>
-                    
-                    <div className="mb-6">
-                      <h4 className="font-bold text-sm text-corporate-dark mb-3">Includes:</h4>
-                      <ul className="space-y-2">
-                        {bundle.features.map((feature, featureIndex) => (
-                          <li key={featureIndex} className="flex items-start">
-                            <CheckCircle size={14} className="text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                            <span className="text-xs text-corporate-gray">{feature}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Internal Assets */}
+              <div className="bg-white p-8 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300">
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-bold mb-4">
+                    Internal Assets
+                  </div>
+                  <h3 className="text-2xl font-bold text-corporate-dark mb-2">Internal Business Assets</h3>
+                  <div className="text-4xl font-black text-purple-600">$4,500</div>
+                </div>
+                <ul className="space-y-2 mb-6">
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-purple-500 mr-2" />15 videos @ 1–2 min each</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-purple-500 mr-2" />Onboarding & training</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-purple-500 mr-2" />Software walkthroughs</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-purple-500 mr-2" />Process & policy explainers</li>
+                </ul>
+                <button
+                  onClick={() => handleBooking("Internal Business Video Assets")}
+                  className="w-full py-3 px-4 bg-purple-500 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300"
+                >
+                  Book Now
+                </button>
+              </div>
 
-                    {bundle.price !== "$500" && (
-                      <div className="bg-yellow-50 p-3 rounded-xl mb-4">
-                        <p className="text-xs text-yellow-800 font-medium">
-                          🎁 Includes FREE Business Bonus Pack (valued at $410)
-                        </p>
-                      </div>
-                    )}
+              {/* External Assets */}
+              <div className="bg-white p-8 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300 relative">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <div className="bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-semibold">MOST POPULAR</div>
+                </div>
+                <div className="text-center mb-6 mt-4">
+                  <div className="inline-flex items-center px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-bold mb-4">
+                    External Assets
+                  </div>
+                  <h3 className="text-2xl font-bold text-corporate-dark mb-2">External Business Assets</h3>
+                  <div className="text-4xl font-black text-purple-600">$4,500</div>
+                </div>
+                <ul className="space-y-2 mb-6">
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-purple-500 mr-2" />15 videos @ 1–2 min each</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-purple-500 mr-2" />Customer FAQ libraries</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-purple-500 mr-2" />Product/service explainers</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-purple-500 mr-2" />Testimonial capsules</li>
+                </ul>
+                <button
+                  onClick={() => handleBooking("External Business Video Assets")}
+                  className="w-full py-3 px-4 bg-purple-500 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300"
+                >
+                  Book Now
+                </button>
+              </div>
 
-                    <button
-                      onClick={() => handleBooking(bundle.title)}
-                      className="w-full py-3 px-4 gradient-social-4 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300 video-shadow"
-                    >
-                      Book This Bundle
-                    </button>
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+              {/* Advanced Package */}
+              <div className="bg-white p-8 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300">
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center px-4 py-2 bg-purple-100 text-purple-800 rounded-full text-sm font-bold mb-4">
+                    Advanced
+                  </div>
+                  <h3 className="text-2xl font-bold text-corporate-dark mb-2">Safety & Compliance</h3>
+                  <div className="text-4xl font-black text-purple-600">$10,000+</div>
+                </div>
+                <ul className="space-y-2 mb-6">
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-purple-500 mr-2" />8–10 videos @ up to 5 min</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-purple-500 mr-2" />Safety & compliance training</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-purple-500 mr-2" />Sales training modules</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-purple-500 mr-2" />Advanced software training</li>
+                </ul>
+                <button
+                  onClick={() => handleBooking("Safety & Compliance Training")}
+                  className="w-full py-3 px-4 bg-purple-500 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300"
+                >
+                  Get Quote
+                </button>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Evergreen Pal Tab */}
+          <TabsContent value="evergreen" className="space-y-6">
+            <div className="text-center mb-8">
+              <div className="w-24 h-24 mx-auto rounded-full bg-green-100 flex items-center justify-center mb-4">
+                <img 
+                  className="w-20 h-20 rounded-full" 
+                  src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-772ba728bd8c24b597ce.png" 
+                  alt="Evergreen Pal avatar" 
+                />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-display font-black text-corporate-dark mb-4">
+                🌱 Evergreen Pal - Authority Building
+              </h2>
+              <p className="text-lg text-corporate-gray max-w-3xl mx-auto">
+                YouTube growth, thought leadership content, and building sustainable authority that drives long-term business success.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Strategy Blueprint */}
+              <div className="bg-white p-8 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300">
+                <div className="text-center mb-6">
+                  <div className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-bold mb-4">STRATEGY</div>
+                  <h3 className="text-2xl font-bold text-corporate-dark mb-2">Video Strategy Blueprint</h3>
+                  <div className="text-4xl font-black text-green-600">$19</div>
+                </div>
+                <ul className="space-y-2 mb-6">
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-green-500 mr-2" />Step-by-step video guide</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-green-500 mr-2" />Growth stage strategies</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-green-500 mr-2" />Audience behavior insights</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-green-500 mr-2" />Content planning framework</li>
+                </ul>
+                <button
+                  onClick={() => handlePurchase(PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.paymentUrl)}
+                  className="w-full py-3 px-4 bg-green-500 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300"
+                >
+                  Get Strategy
+                </button>
+              </div>
+
+              {/* Founder Brand Kit */}
+              <div className="bg-white p-8 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300 relative">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <div className="bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold">MOST POPULAR</div>
+                </div>
+                <div className="text-center mb-6 mt-4">
+                  <div className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-bold mb-4">PERSONAL BRAND</div>
+                  <h3 className="text-2xl font-bold text-corporate-dark mb-2">Founder's Brand Kit</h3>
+                  <div className="text-4xl font-black text-green-600">$6,000</div>
+                </div>
+                <ul className="space-y-2 mb-6">
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-green-500 mr-2" />1 shoot day + strategy</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-green-500 mr-2" />Founder bio video (90-120 sec)</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-green-500 mr-2" />2 hook/top-of-funnel videos</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-green-500 mr-2" />Vibe montage/sizzle reel</li>
+                </ul>
+                <button
+                  onClick={() => handleBooking("The Founder's Brand Kit")}
+                  className="w-full py-3 px-4 bg-green-500 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300"
+                >
+                  Book Now
+                </button>
+              </div>
+
+              {/* YouTube Engine */}
+              <div className="bg-white p-8 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300">
+                <div className="text-center mb-6">
+                  <div className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-bold mb-4">YOUTUBE</div>
+                  <h3 className="text-2xl font-bold text-corporate-dark mb-2">YouTube Visibility Engine</h3>
+                  <div className="text-4xl font-black text-green-600">$6,500</div>
+                </div>
+                <ul className="space-y-2 mb-6">
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-green-500 mr-2" />3 long-form videos (8-10 min)</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-green-500 mr-2" />Content strategy + series plan</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-green-500 mr-2" />Full scripting + outlines</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-green-500 mr-2" />SEO titles + descriptions</li>
+                </ul>
+                <button
+                  onClick={() => handleBooking("YouTube Visibility Engine")}
+                  className="w-full py-3 px-4 bg-green-500 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300"
+                >
+                  Book Now
+                </button>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Spotlight Pal Tab */}
+          <TabsContent value="spotlight" className="space-y-6">
+            <div className="text-center mb-8">
+              <div className="w-24 h-24 mx-auto rounded-full bg-red-100 flex items-center justify-center mb-4">
+                <img 
+                  className="w-20 h-20 rounded-full" 
+                  src="https://storage.googleapis.com/uxpilot-auth.appspot.com/8f0c5b28b6-3b90b01dce247861b422.png" 
+                  alt="Spotlight Pal avatar" 
+                />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-display font-black text-corporate-dark mb-4">
+                🎬 Spotlight Pal - Premium Content
+              </h2>
+              <p className="text-lg text-corporate-gray max-w-3xl mx-auto">
+                Cinematic brand films and premium content that commands attention and creates lasting impact.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {/* 7-Day Launch */}
+              <div className="bg-white p-8 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300 relative">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <div className="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold">MOST POPULAR</div>
+                </div>
+                <div className="text-center mb-6 mt-4">
+                  <div className="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-bold mb-4">HERO</div>
+                  <h3 className="text-2xl font-bold text-corporate-dark mb-2">The 7-Day Launch</h3>
+                  <div className="text-4xl font-black text-red-600">$2,500</div>
+                </div>
+                <ul className="space-y-2 mb-6">
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-red-500 mr-2" />1 strategy session + shoot day</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-red-500 mr-2" />1 hero brand video (90-120 sec)</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-red-500 mr-2" />3–5 cutdowns for social</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-red-500 mr-2" />Fast turnaround (7 business days)</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-red-500 mr-2" />Professional cinematic quality</li>
+                </ul>
+                <button
+                  onClick={() => handleBooking("The 7-Day Launch")}
+                  className="w-full py-3 px-4 bg-red-500 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300"
+                >
+                  Book Launch
+                </button>
+              </div>
+
+              {/* Music Video */}
+              <div className="bg-white p-8 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300">
+                <div className="text-center mb-6">
+                  <div className="inline-block px-3 py-1 bg-red-100 text-red-800 rounded-full text-xs font-bold mb-4">MUSIC</div>
+                  <h3 className="text-2xl font-bold text-corporate-dark mb-2">Music Video Production</h3>
+                  <div className="text-4xl font-black text-red-600">Custom</div>
+                </div>
+                <ul className="space-y-2 mb-6">
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-red-500 mr-2" />Cinematic music video creation</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-red-500 mr-2" />Creative concept development</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-red-500 mr-2" />Professional video production</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-red-500 mr-2" />Multi-location shooting</li>
+                  <li className="flex items-center text-sm"><CheckCircle size={14} className="text-red-500 mr-2" />Advanced post-production</li>
+                </ul>
+                <button
+                  onClick={() => handleBooking("Music Video Production")}
+                  className="w-full py-3 px-4 bg-red-500 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300"
+                >
+                  Get Quote
+                </button>
+              </div>
+            </div>
           </TabsContent>
         </Tabs>
 
@@ -384,9 +543,9 @@ export const VideoPackagesTabbed = () => {
                   <h2 className="text-3xl md:text-4xl font-display font-black text-corporate-dark">
                     Free Bonus <span className="text-gradient-purple">Value Pack</span>
                   </h2>
-                    <p className="text-lg text-corporate-gray mt-2">
-                      $410 value included with most packages - see what's inside
-                    </p>
+                  <p className="text-lg text-corporate-gray mt-2">
+                    $410 value included with most packages - see what's inside
+                  </p>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="px-8 pb-6">

@@ -6,6 +6,7 @@ export const Hero = () => {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showHeadline, setShowHeadline] = useState(false);
+  const [fadeOutQuestions, setFadeOutQuestions] = useState(false);
   const [scrollOpacity, setScrollOpacity] = useState(1);
 
   const questions = [
@@ -32,11 +33,20 @@ export const Hero = () => {
       return () => clearTimeout(timer);
     } else {
       const timer = setTimeout(() => {
-        setShowHeadline(true);
-      }, 3000);
+        setFadeOutQuestions(true);
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [currentQuestionIndex, questions.length]);
+
+  useEffect(() => {
+    if (fadeOutQuestions) {
+      const timer = setTimeout(() => {
+        setShowHeadline(true);
+      }, 800);
+      return () => clearTimeout(timer);
+    }
+  }, [fadeOutQuestions]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,7 +75,7 @@ export const Hero = () => {
       
       <div className="relative z-10 text-center px-4 sm:px-6 max-w-7xl mx-auto">
         {!showHeadline ? (
-          <div className="flex flex-col items-center justify-center min-h-[60vh]">
+          <div className={`flex flex-col items-center justify-center min-h-[60vh] transition-opacity duration-700 ${fadeOutQuestions ? 'opacity-0' : 'opacity-100'}`}>
             {questions.map((question, index) => (
               <div
                 key={index}

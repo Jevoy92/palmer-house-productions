@@ -72,7 +72,7 @@ const Pals = () => {
                 <p className="text-sm text-muted-foreground mt-2">Social Content</p>
               </div>
               <div className="bg-white rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 shadow-lg hover:shadow-xl">
-                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-gray-400" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-8fbf1beda1a411066413.png" alt="cartoon character female with red hair, gray professional outfit, holding clipboard with gears, technical mascot style" />
+                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-purple-400" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-8fbf1beda1a411066413.png" alt="cartoon character female with red hair, gray professional outfit, holding clipboard with gears, technical mascot style" />
                 <h3 className="text-xl font-bold text-foreground">System Pal</h3>
                 <p className="text-sm text-muted-foreground mt-2">Backend Systems</p>
               </div>
@@ -152,40 +152,40 @@ const Pals = () => {
             
             {/* System Pal */}
             <div className="bg-background rounded-3xl shadow-2xl p-12 mb-16 overflow-hidden relative transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
-              <div className="absolute top-0 left-0 w-64 h-64 bg-gray-100 rounded-full -translate-y-32 -translate-x-32 opacity-50"></div>
+              <div className="absolute top-0 left-0 w-64 h-64 bg-purple-100 rounded-full -translate-y-32 -translate-x-32 opacity-50"></div>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
                 <div className="text-center order-2 lg:order-1">
                   <img className="w-80 h-80 mx-auto" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-8585903249c27bf175cd.png" alt="cartoon character female with red hair, professional gray outfit, holding clipboard with checkmarks and gear icons, surrounded by system diagrams and workflow charts, technical but approachable mascot style" />
                 </div>
                 <div className="text-center lg:text-left order-1 lg:order-2">
-                  <div className="inline-flex items-center bg-gray-200 text-gray-800 px-6 py-3 rounded-full text-sm font-bold mb-6">
+                  <div className="inline-flex items-center bg-purple-100 text-purple-800 px-6 py-3 rounded-full text-sm font-bold mb-6">
                     <Settings className="mr-2 h-4 w-4" />
                     SYSTEM PAL
                   </div>
-                  <h3 className="text-4xl md:text-5xl font-black text-foreground mb-6">"Let's build systems that scale!"</h3>
+                  <h3 className="text-4xl md:text-5xl font-black text-foreground mb-6">"Let's streamline your systems!"</h3>
                   <p className="text-xl text-muted-foreground mb-8 leading-relaxed">Hey! I'm the organized one who loves creating video systems that work like clockwork. From employee training to customer onboarding, I build video infrastructure that grows with your business.</p>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gray-600 rounded-xl flex items-center justify-center">
+                      <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
                         <GraduationCap className="text-white h-5 w-5" />
                       </div>
                       <span className="text-foreground font-semibold">Training Video Systems</span>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gray-600 rounded-xl flex items-center justify-center">
+                      <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
                         <UserPlus className="text-white h-5 w-5" />
                       </div>
                       <span className="text-foreground font-semibold">Onboarding Sequences</span>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gray-600 rounded-xl flex items-center justify-center">
+                      <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
                         <HelpCircle className="text-white h-5 w-5" />
                       </div>
                       <span className="text-foreground font-semibold">FAQ Video Libraries</span>
                     </div>
                     <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gray-600 rounded-xl flex items-center justify-center">
+                      <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
                         <Network className="text-white h-5 w-5" />
                       </div>
                       <span className="text-foreground font-semibold">Process Documentation</span>
@@ -193,7 +193,7 @@ const Pals = () => {
                   </div>
                   
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Button asChild className="bg-gray-600 text-white hover:bg-gray-700 transition-all transform hover:scale-105" size="lg">
+                    <Button asChild className="bg-purple-500 text-white hover:bg-purple-600 transition-all transform hover:scale-105" size="lg">
                       <Link to="/system-pal">Meet System Pal</Link>
                     </Button>
                   </div>
@@ -340,26 +340,26 @@ const Pals = () => {
                 <p className="text-muted-foreground mt-4 italic">"I'll help you find the perfect entry point that gets results fast!"</p>
               </div>
               
-              <div className="bg-gray-50 rounded-3xl p-8 text-center border-2 border-gray-200">
-                <div className="w-16 h-16 bg-gray-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <div className="bg-purple-50 rounded-3xl p-8 text-center border-2 border-purple-200">
+                <div className="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
                   <Brain className="text-white h-8 w-8" />
                 </div>
                 <h3 className="text-2xl font-bold text-foreground mb-4">System Pal</h3>
                 <div className="space-y-3 text-left">
                   <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                     <span className="text-foreground">Enterprise Package Alignment</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                     <span className="text-foreground">Workflow Integration Services</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                     <span className="text-foreground">Training Program Selection</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
                     <span className="text-foreground">Scalable Solution Design</span>
                   </div>
                 </div>
@@ -475,7 +475,7 @@ const Pals = () => {
                         <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold">1-2 weeks</span>
                       </td>
                       <td className="px-8 py-6 text-center">
-                        <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm font-semibold">2-4 weeks</span>
+                        <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">2-4 weeks</span>
                       </td>
                       <td className="px-8 py-6 text-center">
                         <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Ongoing</span>
@@ -546,26 +546,26 @@ const Pals = () => {
                 </div>
               </div>
               
-              <div className="bg-gray-50 rounded-3xl p-8 border-2 border-gray-200">
+              <div className="bg-purple-50 rounded-3xl p-8 border-2 border-purple-200">
                 <div className="flex items-center mb-6">
                   <img className="w-16 h-16 rounded-full mr-4" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-5375fe727564572cfda8.png" alt="cartoon character female with red hair, gray outfit, small avatar style" />
                   <div>
                     <h3 className="text-xl font-bold text-foreground">System Pal Transformation</h3>
-                    <p className="text-gray-600 font-semibold">Operational Excellence</p>
+                    <p className="text-purple-600 font-semibold">Operational Excellence</p>
                   </div>
                 </div>
                 <blockquote className="text-lg text-foreground mb-6 italic">"System Pal could help you eliminate training bottlenecks and create seamless onboarding experiences that scale effortlessly as your team grows, reducing stress and improving consistency."</blockquote>
                 <div className="flex space-x-6 text-sm">
                   <div className="text-center">
-                    <div className="text-lg font-bold text-gray-600">Efficiency Gains</div>
+                    <div className="text-lg font-bold text-purple-600">Efficiency Gains</div>
                     <div className="text-muted-foreground text-xs">Streamlined operations</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg font-bold text-gray-600">Scalable Systems</div>
+                    <div className="text-lg font-bold text-purple-600">Scalable Systems</div>
                     <div className="text-muted-foreground text-xs">Growth-ready processes</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-lg font-bold text-gray-600">Team Alignment</div>
+                    <div className="text-lg font-bold text-purple-600">Team Alignment</div>
                     <div className="text-muted-foreground text-xs">Consistent execution</div>
                   </div>
                 </div>

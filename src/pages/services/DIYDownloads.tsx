@@ -134,9 +134,6 @@ const DIYDownloads = () => {
                   </a>
                 </div>
               </div>
-              <div className="mt-12">
-                <ZohoLeadForm title="Questions about DIY?" leadSource="Website" defaultProjectType="Business Video Assets" />
-              </div>
             </div>
           </div>
         </section>

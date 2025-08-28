@@ -39,9 +39,6 @@ const SystemPal = () => {
                   <Button asChild size="lg" className="bg-gray-500 text-white hover:bg-gray-600">
                     <Link to="/contact">Book a Strategy Call</Link>
                   </Button>
-                  <Button asChild variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-gray-800">
-                    <Link to="/video-packages">View Portfolio</Link>
-                  </Button>
                 </div>
               </div>
               <div className="text-center">

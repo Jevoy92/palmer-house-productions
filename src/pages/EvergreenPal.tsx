@@ -41,9 +41,6 @@ const EvergreenPal = () => {
                   <Button asChild size="lg" className="bg-green-500 text-white hover:bg-green-600">
                     <Link to="/contact">Book a Strategy Call</Link>
                   </Button>
-                  <Button asChild variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-green-800">
-                    <Link to="/video-packages">View Portfolio</Link>
-                  </Button>
                 </div>
               </div>
               <div className="text-center">

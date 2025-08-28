@@ -56,9 +56,6 @@ const ReelPal = () => {
                   <Button asChild size="lg" className="bg-yellow-500 text-white hover:bg-yellow-600">
                     <Link to="/contact">Book a Strategy Call</Link>
                   </Button>
-                  <Button asChild variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-primary">
-                    <Link to="/video-packages">View Portfolio</Link>
-                  </Button>
                 </div>
               </div>
               <div className="text-center">

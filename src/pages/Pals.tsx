@@ -56,41 +56,35 @@ const Pals = () => {
         <Navigation />
 
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary to-secondary text-white h-[700px] flex items-center relative overflow-hidden">
-          <div className="absolute inset-0 bg-black bg-opacity-20"></div>
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-            <div className="mb-8">
-              <h1 className="text-6xl md:text-8xl font-black mb-6 tracking-tight">Palmer House Pals</h1>
-              <p className="text-xl md:text-2xl mb-8 max-w-4xl mx-auto opacity-90 font-medium">Meet your specialized video production guides. Each Pal has unique superpowers to help you create the perfect content for your brand's journey.</p>
+        <section className="py-24 bg-background">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="mb-16">
+              <h1 className="text-6xl md:text-8xl font-black mb-6 tracking-tight text-foreground">Palmer House Pals</h1>
+              <p className="text-xl md:text-2xl mb-12 max-w-4xl mx-auto text-muted-foreground font-medium">Meet your specialized video production guides. Each Pal has unique superpowers to help you create the perfect content for your brand's journey.</p>
             </div>
             
             {/* Character Preview Row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto mb-12">
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2">
-                <img className="w-20 h-20 mx-auto rounded-full mb-3 border-4 border-yellow-400" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-24a6f3cb81aba8920004.png" alt="cartoon character female with brown hair, yellow shirt, holding phone with social media icons, friendly mascot style" />
-                <h3 className="text-lg font-bold">Reel Pal</h3>
-                <p className="text-sm opacity-80">Social Content</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+              <div className="bg-white rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 shadow-lg hover:shadow-xl">
+                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-yellow-400" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-24a6f3cb81aba8920004.png" alt="cartoon character female with brown hair, yellow shirt, holding phone with social media icons, friendly mascot style" />
+                <h3 className="text-xl font-bold text-foreground">Reel Pal</h3>
+                <p className="text-sm text-muted-foreground mt-2">Social Content</p>
               </div>
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2">
-                <img className="w-20 h-20 mx-auto rounded-full mb-3 border-4 border-gray-400" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-8fbf1beda1a411066413.png" alt="cartoon character female with red hair, gray professional outfit, holding clipboard with gears, technical mascot style" />
-                <h3 className="text-lg font-bold">System Pal</h3>
-                <p className="text-sm opacity-80">Backend Systems</p>
+              <div className="bg-white rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 shadow-lg hover:shadow-xl">
+                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-gray-400" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-8fbf1beda1a411066413.png" alt="cartoon character female with red hair, gray professional outfit, holding clipboard with gears, technical mascot style" />
+                <h3 className="text-xl font-bold text-foreground">System Pal</h3>
+                <p className="text-sm text-muted-foreground mt-2">Backend Systems</p>
               </div>
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2">
-                <img className="w-20 h-20 mx-auto rounded-full mb-3 border-4 border-green-400" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-e7363733c56c43638c8f.png" alt="cartoon character female with brown hair, teal outfit, holding plant with lightbulb, growth-focused mascot style" />
-                <h3 className="text-lg font-bold">Evergreen Pal</h3>
-                <p className="text-sm opacity-80">Long-term Growth</p>
+              <div className="bg-white rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 shadow-lg hover:shadow-xl">
+                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-green-400" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-e7363733c56c43638c8f.png" alt="cartoon character female with brown hair, teal outfit, holding plant with lightbulb, growth-focused mascot style" />
+                <h3 className="text-xl font-bold text-foreground">Evergreen Pal</h3>
+                <p className="text-sm text-muted-foreground mt-2">Long-term Growth</p>
               </div>
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2">
-                <img className="w-20 h-20 mx-auto rounded-full mb-3 border-4 border-red-400" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/8f0c5b28b6-8c6945ce46e0e60e28bf.png" alt="cartoon character blonde female, red blazer, holding microphone with studio lights, cinematic mascot style" />
-                <h3 className="text-lg font-bold">Spotlight Pal</h3>
-                <p className="text-sm opacity-80">Cinematic Brand</p>
+              <div className="bg-white rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 shadow-lg hover:shadow-xl">
+                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-red-400" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/8f0c5b28b6-8c6945ce46e0e60e28bf.png" alt="cartoon character blonde female, red blazer, holding microphone with studio lights, cinematic mascot style" />
+                <h3 className="text-xl font-bold text-foreground">Spotlight Pal</h3>
+                <p className="text-sm text-muted-foreground mt-2">Cinematic Brand</p>
               </div>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="xl" className="bg-white text-primary hover:bg-gray-100 transition-all transform hover:scale-105">Find Your Perfect Pal</Button>
-              <Button variant="outline" size="xl" className="border-2 border-white text-white hover:bg-white hover:text-primary transition-all transform hover:scale-105">Watch Our Story</Button>
             </div>
           </div>
         </section>

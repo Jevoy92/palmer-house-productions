@@ -513,12 +513,12 @@ const Pals = () => {
           </div>
         </section>
 
-        {/* Success Stories */}
+        {/* Potential Outcomes */}
         <section className="py-24 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-20">
-              <h2 className="text-5xl md:text-6xl font-black text-foreground mb-8">Pal Success Stories</h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">See how each Pal has helped real clients achieve their video goals and transform their businesses.</p>
+              <h2 className="text-5xl md:text-6xl font-black text-foreground mb-8">What Your Pal Could Achieve</h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Each Pal specializes in different types of transformative outcomes for your business. Here's what becomes possible.</p>
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -526,23 +526,23 @@ const Pals = () => {
                 <div className="flex items-center mb-6">
                   <img className="w-16 h-16 rounded-full mr-4" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-9b37f82e5ee6d35a236c.png" alt="cartoon character female with brown hair, yellow shirt, small avatar style" />
                   <div>
-                    <h3 className="text-xl font-bold text-foreground">Reel Pal Success</h3>
-                    <p className="text-yellow-600 font-semibold">TechStartup Co.</p>
+                    <h3 className="text-xl font-bold text-foreground">Reel Pal Transformation</h3>
+                    <p className="text-yellow-600 font-semibold">Social Media Growth</p>
                   </div>
                 </div>
-                <blockquote className="text-lg text-foreground mb-6 italic">"Reel Pal helped us create 50 TikTok videos that generated over 2 million views and 15,000 new followers in just 3 months. Our brand awareness skyrocketed!"</blockquote>
+                <blockquote className="text-lg text-foreground mb-6 italic">"With Reel Pal's guidance, you could transform from social media uncertainty to creating scroll-stopping content that builds genuine community and drives authentic engagement with your brand."</blockquote>
                 <div className="flex space-x-6 text-sm">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-yellow-600">2M+</div>
-                    <div className="text-muted-foreground">Views</div>
+                    <div className="text-lg font-bold text-yellow-600">Viral Reach</div>
+                    <div className="text-muted-foreground text-xs">Content that spreads</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-yellow-600">15K</div>
-                    <div className="text-muted-foreground">New Followers</div>
+                    <div className="text-lg font-bold text-yellow-600">Brand Awareness</div>
+                    <div className="text-muted-foreground text-xs">Recognition growth</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-yellow-600">300%</div>
-                    <div className="text-muted-foreground">Engagement↑</div>
+                    <div className="text-lg font-bold text-yellow-600">Community Building</div>
+                    <div className="text-muted-foreground text-xs">Loyal following</div>
                   </div>
                 </div>
               </div>
@@ -551,23 +551,23 @@ const Pals = () => {
                 <div className="flex items-center mb-6">
                   <img className="w-16 h-16 rounded-full mr-4" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-5375fe727564572cfda8.png" alt="cartoon character female with red hair, gray outfit, small avatar style" />
                   <div>
-                    <h3 className="text-xl font-bold text-foreground">System Pal Success</h3>
-                    <p className="text-gray-600 font-semibold">GlobalCorp Inc.</p>
+                    <h3 className="text-xl font-bold text-foreground">System Pal Transformation</h3>
+                    <p className="text-gray-600 font-semibold">Operational Excellence</p>
                   </div>
                 </div>
-                <blockquote className="text-lg text-foreground mb-6 italic">"System Pal built our entire employee training system with 40+ modules. We reduced onboarding time by 60% and improved retention rates significantly."</blockquote>
+                <blockquote className="text-lg text-foreground mb-6 italic">"System Pal could help you eliminate training bottlenecks and create seamless onboarding experiences that scale effortlessly as your team grows, reducing stress and improving consistency."</blockquote>
                 <div className="flex space-x-6 text-sm">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-600">60%</div>
-                    <div className="text-muted-foreground">Time Saved</div>
+                    <div className="text-lg font-bold text-gray-600">Efficiency Gains</div>
+                    <div className="text-muted-foreground text-xs">Streamlined operations</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-600">40+</div>
-                    <div className="text-muted-foreground">Video Modules</div>
+                    <div className="text-lg font-bold text-gray-600">Scalable Systems</div>
+                    <div className="text-muted-foreground text-xs">Growth-ready processes</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-gray-600">85%</div>
-                    <div className="text-muted-foreground">Retention Rate</div>
+                    <div className="text-lg font-bold text-gray-600">Team Alignment</div>
+                    <div className="text-muted-foreground text-xs">Consistent execution</div>
                   </div>
                 </div>
               </div>
@@ -576,23 +576,23 @@ const Pals = () => {
                 <div className="flex items-center mb-6">
                   <img className="w-16 h-16 rounded-full mr-4" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-86b2d84085b3635c8f10.png" alt="cartoon character female with brown hair, teal outfit, small avatar style" />
                   <div>
-                    <h3 className="text-xl font-bold text-foreground">Evergreen Pal Success</h3>
-                    <p className="text-green-600 font-semibold">Expert Consulting</p>
+                    <h3 className="text-xl font-bold text-foreground">Evergreen Pal Transformation</h3>
+                    <p className="text-green-600 font-semibold">Authority Development</p>
                   </div>
                 </div>
-                <blockquote className="text-lg text-foreground mb-6 italic">"Evergreen Pal developed our YouTube strategy and content calendar. We went from 500 subscribers to 50K in 18 months and became the go-to authority in our industry."</blockquote>
+                <blockquote className="text-lg text-foreground mb-6 italic">"Evergreen Pal could position you as the go-to expert in your field through strategic content that builds lasting credibility and attracts premium opportunities year after year."</blockquote>
                 <div className="flex space-x-6 text-sm">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">50K</div>
-                    <div className="text-muted-foreground">Subscribers</div>
+                    <div className="text-lg font-bold text-green-600">Thought Leadership</div>
+                    <div className="text-muted-foreground text-xs">Industry recognition</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">18</div>
-                    <div className="text-muted-foreground">Months</div>
+                    <div className="text-lg font-bold text-green-600">Sustainable Growth</div>
+                    <div className="text-muted-foreground text-xs">Long-term success</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-green-600">#1</div>
-                    <div className="text-muted-foreground">Industry Authority</div>
+                    <div className="text-lg font-bold text-green-600">Premium Positioning</div>
+                    <div className="text-muted-foreground text-xs">Higher value offers</div>
                   </div>
                 </div>
               </div>
@@ -601,23 +601,23 @@ const Pals = () => {
                 <div className="flex items-center mb-6">
                   <img className="w-16 h-16 rounded-full mr-4" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/8f0c5b28b6-f994443bd5f1f3a8b01d.png" alt="cartoon character blonde female, red blazer, small avatar style" />
                   <div>
-                    <h3 className="text-xl font-bold text-foreground">Spotlight Pal Success</h3>
-                    <p className="text-red-600 font-semibold">Luxury Brand Co.</p>
+                    <h3 className="text-xl font-bold text-foreground">Spotlight Pal Transformation</h3>
+                    <p className="text-red-600 font-semibold">Brand Elevation</p>
                   </div>
                 </div>
-                <blockquote className="text-lg text-foreground mb-6 italic">"Spotlight Pal created our brand film that won 3 industry awards and increased our premium product sales by 400%. The cinematic quality was absolutely stunning."</blockquote>
+                <blockquote className="text-lg text-foreground mb-6 italic">"Spotlight Pal could elevate your brand with cinematic storytelling that commands attention, builds emotional connections, and positions your business as a premium choice in your market."</blockquote>
                 <div className="flex space-x-6 text-sm">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-red-600">3</div>
-                    <div className="text-muted-foreground">Awards Won</div>
+                    <div className="text-lg font-bold text-red-600">Emotional Impact</div>
+                    <div className="text-muted-foreground text-xs">Memorable experiences</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-red-600">400%</div>
-                    <div className="text-muted-foreground">Sales↑</div>
+                    <div className="text-lg font-bold text-red-600">Premium Perception</div>
+                    <div className="text-muted-foreground text-xs">Elevated brand status</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-red-600">5M+</div>
-                    <div className="text-muted-foreground">Brand Views</div>
+                    <div className="text-lg font-bold text-red-600">Market Differentiation</div>
+                    <div className="text-muted-foreground text-xs">Competitive advantage</div>
                   </div>
                 </div>
               </div>

@@ -124,7 +124,44 @@ const ReelPal = () => {
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Boost your social media presence with our proven content creation packages.</p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+              {/* Starter Session */}
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-yellow-500 transition-all hover:scale-105">
+                <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">STARTER</div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">The Starter Session</h3>
+                <div className="text-4xl font-bold text-yellow-600 mb-6">$500</div>
+                <ul className="space-y-4 mb-8 text-left">
+                  <li className="flex items-center space-x-3">
+                    <Check className="text-yellow-500 h-5 w-5" />
+                    <span>30-minute filming session</span>
+                  </li>
+                  <li className="flex items-center space-x-3">
+                    <Check className="text-yellow-500 h-5 w-5" />
+                    <span>Minimum 3 edited videos</span>
+                  </li>
+                  <li className="flex items-center space-x-3">
+                    <Check className="text-yellow-500 h-5 w-5" />
+                    <span>One-minute video format</span>
+                  </li>
+                  <li className="flex items-center space-x-3">
+                    <Check className="text-yellow-500 h-5 w-5" />
+                    <span>Simple talking-head style</span>
+                  </li>
+                  <li className="flex items-center space-x-3">
+                    <Check className="text-yellow-500 h-5 w-5" />
+                    <span>Professional delivery</span>
+                  </li>
+                  <li className="flex items-center space-x-3">
+                    <Check className="text-yellow-500 h-5 w-5" />
+                    <span>Limited availability</span>
+                  </li>
+                </ul>
+                <Button asChild className="w-full bg-yellow-500 text-white hover:bg-yellow-600 mb-4" size="lg">
+                  <Link to="/contact">Book Session</Link>
+                </Button>
+                <Button variant="outline" className="w-full border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white">Quick Chat</Button>
+              </div>
+              
               {/* DIY Package */}
               <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-yellow-500 transition-all hover:scale-105">
                 <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">DIY</div>

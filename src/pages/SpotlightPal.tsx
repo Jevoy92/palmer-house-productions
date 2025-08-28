@@ -109,44 +109,7 @@ const SpotlightPal = () => {
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Premium video content that commands attention and creates lasting impact.</p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Starter Session */}
-              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-red-500 transition-all hover:scale-105">
-                <div className="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">STARTER</div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">The Starter Session</h3>
-                <div className="text-4xl font-bold text-red-600 mb-6">$500</div>
-                <ul className="space-y-4 mb-8 text-left">
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
-                    <span>30-minute filming session</span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
-                    <span>Minimum 3 edited videos</span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
-                    <span>One-minute video format</span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
-                    <span>Simple talking-head style</span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
-                    <span>Professional delivery</span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
-                    <span>Only 2 spots left this month</span>
-                  </li>
-                </ul>
-                <Button asChild className="w-full bg-red-500 text-white hover:bg-red-600 mb-4" size="lg">
-                  <Link to="/contact">Book Now</Link>
-                </Button>
-                <Button variant="outline" className="w-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white">Learn More</Button>
-              </div>
-              
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* 7-Day Launch */}
               <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-red-500 transition-all hover:scale-105 relative">
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">

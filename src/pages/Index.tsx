@@ -1,46 +1,36 @@
 
 import { Hero } from "@/components/Hero";
+import { About } from "@/components/About";
+import { Team } from "@/components/Team";
 import { Services } from "@/components/Services";
-import { SolutionsOverview } from "@/components/SolutionsOverview";
-import { CondensedClients } from "@/components/home/CondensedClients";
-
+import { Clients } from "@/components/Clients";
+import { Pricing } from "@/components/Pricing";
+import { Values } from "@/components/Values";
+import { Contact } from "@/components/Contact";
 import { Navigation } from "@/components/Navigation";
-import { SkipLink } from "@/components/ui/skip-link";
-import { MainContent } from "@/components/MainContent";
-import { MetaTags } from "@/components/seo/MetaTags";
-import { StructuredData } from "@/components/seo/StructuredData";
-import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
-import { LaunchOptimization } from "@/components/LaunchOptimization";
-import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-white">
-      <MetaTags 
-        title="Palmer House Productions | Professional Video Production & Cinematic Storytelling"
-        description="Professional video production services that drive results. Expert cinematic storytelling, business videos, and content creation that saves time and builds your brand."
-        keywords="video production, professional video, cinematic storytelling, business videos, content creation, video marketing"
-        ogTitle="Palmer House Productions | Professional Video Production"
-        ogDescription="Professional video production services that drive results. Expert cinematic storytelling and content creation."
-        ogImage="https://www.palmerhouseproductions.com/og-image.jpg"
-        canonicalUrl="https://www.palmerhouseproductions.com/"
-      />
-      <StructuredData type="homepage" />
-      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
-      <LaunchOptimization />
-      <MobileFirstOptimization />
-      <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
-      <MainContent>
-        <Hero />
-        <div id="services">
-          <Services />
-        </div>
-        <CondensedClients />
-        <div id="pricing">
-          <SolutionsOverview />
-        </div>
-      </MainContent>
+      <Hero />
+      <div id="about">
+        <About />
+      </div>
+      <div id="team">
+        <Team />
+      </div>
+      <div id="services">
+        <Services />
+      </div>
+      <Clients />
+      <div id="pricing">
+        <Pricing />
+      </div>
+      <Values />
+      <div id="contact">
+        <Contact />
+      </div>
     </div>
   );
 };

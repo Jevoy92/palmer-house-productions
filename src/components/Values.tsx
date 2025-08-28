@@ -1,7 +1,11 @@
 
 import { Compass, Search, Sparkles, Heart, Wrench, Target } from 'lucide-react';
+import { useState } from 'react';
+import { ContactForm } from './ContactForm';
 
 export const Values = () => {
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
+
   const values = [
     { 
       icon: Compass, 
@@ -41,6 +45,23 @@ export const Values = () => {
     }
   ];
 
+  const pathChoices = [
+    { icon: "🗺️", word: "Adventurous", gradient: "gradient-social-1" },
+    { icon: "⭐", word: "Creative", gradient: "gradient-social-2" },
+    { icon: "🚀", word: "Bold", gradient: "gradient-social-3" },
+    { icon: "🧭", word: "Authentic", gradient: "gradient-social-4" },
+    { icon: "🌟", word: "Elevated", gradient: "gradient-social-5" },
+    { icon: "🎯", word: "Focused", gradient: "gradient-social-1" }
+  ];
+
+  const handlePathClick = (pathName: string) => {
+    // Store the selected path in localStorage for the contact form
+    localStorage.setItem('selectedPath', pathName);
+    
+    // Open the contact form
+    setIsContactFormOpen(true);
+  };
+
   return (
     <section id="values" className="py-32 bg-corporate-light relative overflow-hidden">
       {/* Background Elements */}
@@ -51,35 +72,37 @@ export const Values = () => {
       </div>
 
       <div className="max-w-6xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-16 px-4">
-          <div className="inline-block px-4 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
-            💎 Our Values
+        <div className="text-center mb-24">
+          <div className="inline-block px-6 py-3 gradient-social-2 rounded-full text-white font-bold text-lg mb-8 video-shadow">
+            🧭 Trail Markers
           </div>
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-6 text-corporate-dark tracking-tight">
-            What We <span className="text-gradient-3">Stand For</span>
+          <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+            What We <span className="text-gradient-3">Value</span>
           </h2>
-          <p className="text-base md:text-lg text-corporate-gray max-w-3xl mx-auto font-medium leading-relaxed">
-            These core values guide every project and client relationship at Palmer House Productions.
+          <p className="text-2xl text-corporate-gray max-w-4xl mx-auto font-medium leading-tight">
+            These aren't just brand values—they're the <span className="text-gradient-1 font-bold">compass points</span> we navigate by.
+            <br />
+            <span className="text-gradient-2 font-bold">Rules of the road</span> for every creative expedition.
           </p>
         </div>
         
-        <div className="space-y-6 max-w-4xl mx-auto mb-16 px-4">
+        <div className="space-y-8 max-w-5xl mx-auto mb-20">
           {values.map((value, index) => {
             const IconComponent = value.icon;
             return (
               <div 
                 key={index}
-                className="group p-6 md:p-8 bg-video-white rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 mobile-touch-target"
+                className="group p-8 bg-video-white rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-500 hover:scale-105"
               >
                 <div className="flex items-start space-x-6">
                   <div className={`w-16 h-16 ${value.gradient} rounded-2xl flex items-center justify-center mt-1 group-hover:scale-110 transition-transform duration-300`}>
                     <IconComponent size={28} className="text-white" />
                   </div>
                   <div>
-                    <h3 className="text-lg md:text-xl font-display font-black text-corporate-dark mb-3 group-hover:text-gradient-1 transition-all duration-300">
+                    <h3 className="text-2xl font-display font-black text-corporate-dark mb-4 group-hover:text-gradient-1 transition-all duration-300">
                       {value.title}
                     </h3>
-                    <p className="text-corporate-gray leading-relaxed text-sm md:text-base font-medium group-hover:text-corporate-dark transition-colors duration-300">
+                    <p className="text-corporate-gray leading-relaxed text-lg font-medium group-hover:text-corporate-dark transition-colors duration-300">
                       {value.description}
                     </p>
                   </div>
@@ -87,6 +110,62 @@ export const Values = () => {
               </div>
             );
           })}
+        </div>
+        
+        <div className="text-center mb-16">
+          <div className="text-corporate-gray text-4xl mb-12 tracking-widest">⸻ ⸻ ⸻</div>
+          <div className="inline-block px-8 py-4 gradient-social-1 rounded-full text-white font-bold text-xl mb-8 video-shadow-lg">
+            🎒 Trail Selection
+          </div>
+          <h3 className="text-5xl md:text-6xl font-display font-black mb-10 text-corporate-dark leading-tight">
+            Choose Your <span className="text-gradient-2">Adventure</span>
+          </h3>
+          <p className="text-2xl text-corporate-gray mb-16 max-w-5xl mx-auto font-medium leading-relaxed">
+            Every great journey starts with a single step.
+            <br />
+            <span className="text-gradient-1 font-bold">What kind of explorer are you?</span> Pick the path that calls to your spirit.
+          </p>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-20 max-w-5xl mx-auto">
+            {pathChoices.map((item, index) => {
+              return (
+                <button 
+                  key={index}
+                  onClick={() => handlePathClick(item.word)}
+                  className={`group relative p-4 bg-video-white rounded-2xl hover:bg-transparent transition-all duration-500 video-shadow hover:video-shadow-lg cursor-pointer overflow-hidden transform hover:scale-105 active:scale-95`}
+                >
+                  <div className={`absolute inset-0 ${item.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl`}></div>
+                  
+                  <div className="relative z-10 text-center">
+                    <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-500">
+                      {item.icon}
+                    </div>
+                    <h4 className="text-sm font-display font-black text-corporate-dark group-hover:text-white transition-colors duration-500 leading-tight">
+                      {item.word}
+                    </h4>
+                  </div>
+                  
+                  <div className="absolute -top-1 -right-1 w-3 h-3 gradient-social-3 rounded-full opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
+                  <div className="absolute -bottom-1 -left-1 w-2 h-2 gradient-social-4 rounded-full opacity-30 group-hover:opacity-60 transition-opacity duration-500"></div>
+                </button>
+              );
+            })}
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8 mb-16 max-w-4xl mx-auto">
+            <div className="p-8 bg-video-white rounded-2xl video-shadow">
+              <div className="text-5xl font-black text-gradient-1 mb-4">∞</div>
+              <div className="text-lg text-corporate-gray font-semibold">Paths to Explore</div>
+            </div>
+            <div className="p-8 bg-video-white rounded-2xl video-shadow">
+              <div className="text-5xl font-black text-gradient-2 mb-4">1</div>
+              <div className="text-lg text-corporate-gray font-semibold">Perfect Journey</div>
+            </div>
+            <div className="p-8 bg-video-white rounded-2xl video-shadow">
+              <div className="text-5xl font-black text-gradient-3 mb-4">100%</div>
+              <div className="text-lg text-corporate-gray font-semibold">Authentic Adventure</div>
+            </div>
+          </div>
         </div>
         
         <div className="text-center p-12 gradient-social-4 rounded-3xl video-shadow-lg relative overflow-hidden">
@@ -105,6 +184,8 @@ export const Values = () => {
           </div>
         </div>
       </div>
+
+      <ContactForm open={isContactFormOpen} onOpenChange={setIsContactFormOpen} />
     </section>
   );
 };

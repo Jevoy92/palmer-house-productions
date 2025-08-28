@@ -230,60 +230,6 @@ const ReelPal = () => {
           </div>
         </section>
 
-        {/* Success Metrics Section */}
-        <section className="py-20 bg-background">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Ready to Create Amazing Content?</h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Join the thousands of creators who have transformed their social media presence with Reel Pal's proven strategies and engaging content solutions.</p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="bg-yellow-50 rounded-2xl p-8 text-center">
-                <div className="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Eye className="text-white h-8 w-8" />
-                </div>
-                <div className="text-3xl font-bold text-yellow-600 mb-2">2M+</div>
-                <p className="text-muted-foreground">Total Views Generated</p>
-              </div>
-              
-              <div className="bg-blue-50 rounded-2xl p-8 text-center">
-                <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Users className="text-white h-8 w-8" />
-                </div>
-                <div className="text-3xl font-bold text-blue-600 mb-2">150+</div>
-                <p className="text-muted-foreground">Happy Clients Served</p>
-              </div>
-              
-              <div className="bg-green-50 rounded-2xl p-8 text-center">
-                <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <ChartLine className="text-white h-8 w-8" />
-                </div>
-                <div className="text-3xl font-bold text-green-600 mb-2">450%</div>
-                <p className="text-muted-foreground">Average Growth Rate</p>
-              </div>
-              
-              <div className="bg-purple-50 rounded-2xl p-8 text-center">
-                <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Star className="text-white h-8 w-8" />
-                </div>
-                <div className="text-3xl font-bold text-purple-600 mb-2">4.9/5</div>
-                <p className="text-muted-foreground">Client Satisfaction Rating</p>
-              </div>
-            </div>
-            
-            <div className="text-center mt-16">
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button asChild size="lg" className="bg-yellow-500 text-white hover:bg-yellow-600">
-                  <Link to="/contact">Start Your Journey Today</Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white">
-                  <Link to="/contact">Book Free Consultation</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Process Section */}
         <section className="py-20 bg-muted/5">

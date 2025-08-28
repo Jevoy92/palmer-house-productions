@@ -32,6 +32,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import BellevueWA from "./pages/locations/BellevueWA";
 import PortlandOR from "./pages/locations/PortlandOR";
+import { CriticalCSS } from "./components/performance/CriticalCSS";
 import ContentStrategy from "./pages/ContentStrategy";
 import Blog from "./pages/Blog";
 import VideoContentToolkit2025 from "./pages/blog/VideoContentToolkit2025";
@@ -67,6 +68,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <CriticalCSS />
         <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
         <ScrollToTop />
         <StructuredData />

@@ -153,15 +153,15 @@ const PortlandOR = () => {
                   <div className="space-y-3">
                     <div className="border-l-4 border-social-purple pl-4">
                       <h4 className="font-semibold text-corporate-dark">Single Videos</h4>
-                      <p className="text-sm text-corporate-gray">Starting at $3,500</p>
+                      <p className="text-sm text-corporate-gray">Starting at $500</p>
                     </div>
                     <div className="border-l-4 border-social-purple pl-4">
                       <h4 className="font-semibold text-corporate-dark">Video Packages</h4>
-                      <p className="text-sm text-corporate-gray">Starting at $7,500</p>
+                      <p className="text-sm text-corporate-gray">Starting at $2,500</p>
                     </div>
                     <div className="border-l-4 border-social-purple pl-4">
-                      <h4 className="font-semibold text-corporate-dark">Monthly Programs</h4>
-                      <p className="text-sm text-corporate-gray">Starting at $5,000/month</p>
+                      <h4 className="font-semibold text-corporate-dark">Business Video Assets</h4>
+                      <p className="text-sm text-corporate-gray">Starting at $4,500</p>
                     </div>
                   </div>
                 </div>

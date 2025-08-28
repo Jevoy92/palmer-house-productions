@@ -42,7 +42,7 @@ export const SolutionsOverview = () => {
     {
       category: "Other Video Bundles",
       description: "Specialized video solutions for specific needs",
-      priceRange: "$500 - $7,500",
+      priceRange: "Starting at $2,500",
       icon: Repeat,
       gradient: "gradient-social-3",
       items: [

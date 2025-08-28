@@ -42,7 +42,7 @@ export const Hero = () => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
-      const newOpacity = Math.max(0, 1 - (scrollY / (windowHeight * 0.5)));
+      const newOpacity = Math.max(0, 1 - (scrollY / (windowHeight * 0.8)));
       setScrollOpacity(newOpacity);
     };
 
@@ -69,7 +69,7 @@ export const Hero = () => {
             {questions.map((question, index) => (
               <div
                 key={index}
-                className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black text-corporate-dark mb-4 ${
+                className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-medium text-corporate-dark mb-4 ${
                   index <= currentQuestionIndex ? 'question-reveal' : 'opacity-0'
                 }`}
                 style={{
@@ -82,7 +82,7 @@ export const Hero = () => {
           </div>
         ) : (
           <div className="animate-fade-in">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-black mb-6 sm:mb-8 tracking-tight leading-[1.1] px-2">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-semibold mb-6 sm:mb-8 tracking-tight leading-[1.1] px-2">
               We turn those questions into a{" "}
               <span className="text-gradient-1">Content System</span>
             </h1>

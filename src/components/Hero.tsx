@@ -1,9 +1,11 @@
 
 import { useState } from "react";
 import { ContactWizard } from "./ContactWizard";
+import { QuestionSequence } from "./QuestionSequence";
 
 export const Hero = () => {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
+  const [showMainContent, setShowMainContent] = useState(false);
 
   const handleExplorePackages = () => {
     window.location.href = '/video-packages';
@@ -24,37 +26,26 @@ export const Hero = () => {
       </div>
       
       <div className="relative z-10 text-center px-4 sm:px-6 max-w-7xl mx-auto">
-        <div className="mb-6 sm:mb-8">
-          <div className="inline-block px-4 py-2.5 bg-gradient-to-r from-social-purple to-social-pink rounded-full text-white font-semibold text-sm sm:text-base mb-4 sm:mb-6 video-shadow">
-            Professional Video Production
-          </div>
-        </div>
-        
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-black mb-6 sm:mb-8 tracking-tight leading-[1.1] px-2">
-          Seattle Video Production Company That
-          <br className="hidden sm:block" />
-          <span className="sm:hidden"> </span>
-          <span className="text-gradient-1">Drives Results</span>
-        </h1>
-        
-        <p className="text-base sm:text-lg md:text-xl text-corporate-gray mb-8 sm:mb-10 font-medium max-w-4xl mx-auto leading-relaxed px-2">
-          Professional video production company specializing in production video services that save your business time and money while building your brand.
-        </p>
-        
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-16 sm:mb-20 px-4">
-          <button 
-            onClick={handleExplorePackages}
-            className="w-full sm:w-auto px-8 py-4 gradient-social-1 text-white font-bold text-base sm:text-lg rounded-xl hover:scale-105 transition-all duration-300 video-shadow-lg min-h-[52px] flex items-center justify-center"
-          >
-            View Services
-          </button>
-          <button 
-            onClick={handleGetStarted}
-            className="w-full sm:w-auto px-8 py-4 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-base sm:text-lg rounded-xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow min-h-[52px] flex items-center justify-center"
-          >
-            Get Started Today
-          </button>
-        </div>
+        {!showMainContent ? (
+          <QuestionSequence onComplete={() => setShowMainContent(true)} />
+        ) : (
+          <>
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-16 sm:mb-20 px-4 animate-fade-in">
+              <button 
+                onClick={handleExplorePackages}
+                className="w-full sm:w-auto px-8 py-4 gradient-social-1 text-white font-bold text-base sm:text-lg rounded-xl hover:scale-105 transition-all duration-300 video-shadow-lg min-h-[52px] flex items-center justify-center"
+              >
+                Build My Content System
+              </button>
+              <button 
+                onClick={handleGetStarted}
+                className="w-full sm:w-auto px-8 py-4 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-base sm:text-lg rounded-xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow min-h-[52px] flex items-center justify-center"
+              >
+                Book Strategy Call
+              </button>
+            </div>
+          </>
+        )}
       </div>
       
       <div className="absolute bottom-6 md:bottom-12 left-1/2 transform -translate-x-1/2">

@@ -6,6 +6,7 @@ export const Hero = () => {
   const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showHeadline, setShowHeadline] = useState(false);
+  const [scrollOpacity, setScrollOpacity] = useState(1);
 
   const questions = [
     "Where do I post?",
@@ -27,7 +28,7 @@ export const Hero = () => {
     if (currentQuestionIndex < questions.length) {
       const timer = setTimeout(() => {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
-      }, 800);
+      }, 300);
       return () => clearTimeout(timer);
     } else {
       const timer = setTimeout(() => {
@@ -37,8 +38,23 @@ export const Hero = () => {
     }
   }, [currentQuestionIndex, questions.length]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const newOpacity = Math.max(0, 1 - (scrollY / (windowHeight * 0.5)));
+      setScrollOpacity(newOpacity);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-video-white overflow-hidden">
+    <section 
+      className="relative min-h-screen flex items-center justify-center bg-video-white overflow-hidden"
+      style={{ opacity: scrollOpacity }}
+    >
       {/* Clean white canvas with subtle floating elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-4 md:left-10 w-16 h-16 md:w-32 md:h-32 gradient-social-1 rounded-full opacity-20 float-animation"></div>
@@ -57,7 +73,7 @@ export const Hero = () => {
                   index <= currentQuestionIndex ? 'question-reveal' : 'opacity-0'
                 }`}
                 style={{
-                  animationDelay: `${index * 0.8}s`
+                  animationDelay: `${index * 0.3}s`
                 }}
               >
                 {question}

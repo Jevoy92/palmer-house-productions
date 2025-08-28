@@ -100,9 +100,8 @@ const Pals = () => {
             </div>
             
             {/* Reel Pal */}
-            <div className="bg-background rounded-3xl shadow-2xl p-12 mb-16 overflow-hidden relative transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-100 rounded-full -translate-y-32 translate-x-32 opacity-50"></div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+            <div className="bg-background rounded-3xl shadow-2xl p-12 mb-16 transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div className="text-center lg:text-left">
                   <div className="inline-flex items-center bg-yellow-100 text-yellow-800 px-6 py-3 rounded-full text-sm font-bold mb-6">
                     <Smartphone className="mr-2 h-4 w-4" />
@@ -151,9 +150,8 @@ const Pals = () => {
             </div>
             
             {/* System Pal */}
-            <div className="bg-background rounded-3xl shadow-2xl p-12 mb-16 overflow-hidden relative transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
-              <div className="absolute top-0 left-0 w-64 h-64 bg-purple-100 rounded-full -translate-y-32 -translate-x-32 opacity-50"></div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+            <div className="bg-background rounded-3xl shadow-2xl p-12 mb-16 transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div className="text-center order-2 lg:order-1">
                   <img className="w-80 h-80 mx-auto" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-8585903249c27bf175cd.png" alt="cartoon character female with red hair, professional gray outfit, holding clipboard with checkmarks and gear icons, surrounded by system diagrams and workflow charts, technical but approachable mascot style" />
                 </div>
@@ -202,9 +200,8 @@ const Pals = () => {
             </div>
             
             {/* Evergreen Pal */}
-            <div className="bg-background rounded-3xl shadow-2xl p-12 mb-16 overflow-hidden relative transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-green-100 rounded-full -translate-y-32 translate-x-32 opacity-50"></div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+            <div className="bg-background rounded-3xl shadow-2xl p-12 mb-16 transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div className="text-center lg:text-left">
                   <div className="inline-flex items-center bg-green-100 text-green-800 px-6 py-3 rounded-full text-sm font-bold mb-6">
                     <Sprout className="mr-2 h-4 w-4" />
@@ -253,9 +250,8 @@ const Pals = () => {
             </div>
             
             {/* Spotlight Pal */}
-            <div className="bg-background rounded-3xl shadow-2xl p-12 mb-16 overflow-hidden relative transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
-              <div className="absolute top-0 left-0 w-64 h-64 bg-red-100 rounded-full -translate-y-32 -translate-x-32 opacity-50"></div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+            <div className="bg-background rounded-3xl shadow-2xl p-12 mb-16 transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div className="text-center order-2 lg:order-1">
                   <img className="w-80 h-80 mx-auto" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/8f0c5b28b6-6ce39935cbfdf13bc919.png" alt="cartoon character blonde female, professional red blazer, holding microphone with studio lights and camera equipment around her, star and spotlight effects, glamorous but professional mascot style" />
                 </div>

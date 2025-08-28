@@ -166,6 +166,11 @@ export const Navigation = () => {
               </DropdownMenu>
 
               {/* Contact Link */}
+              <Link to="/pals" className={cn("transition-colors text-base font-medium px-3 py-2", isActivePath('/pals') ? "text-social-purple font-bold border-b-2 border-social-purple" : "text-muted-foreground hover:text-foreground")} onClick={() => setIsOpen(false)}>
+                Meet the Pals
+              </Link>
+
+              {/* Contact Link */}
               <Link to="/contact" className={cn("transition-colors text-base font-medium px-3 py-2", isActivePath('/contact') ? "text-social-purple font-bold border-b-2 border-social-purple" : "text-muted-foreground hover:text-foreground")} onClick={() => setIsOpen(false)}>
                 Contact
               </Link>
@@ -229,6 +234,16 @@ export const Navigation = () => {
                 </Link>
                 <Link to="/faq" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
                   FAQ
+                </Link>
+              </div>
+            </div>
+
+            {/* Pals Section */}
+            <div className="space-y-3">
+              <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Meet the Pals</div>
+              <div className="space-y-1">
+                <Link to="/pals" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
+                  Palmer House Pals
                 </Link>
               </div>
             </div>

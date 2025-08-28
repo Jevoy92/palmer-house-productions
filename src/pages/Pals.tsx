@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { 
   Menu, 
@@ -138,8 +139,9 @@ const Pals = () => {
                   </div>
                   
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Button className="bg-yellow-500 text-white hover:bg-yellow-600 transition-all transform hover:scale-105" size="lg">Start with Reel Pal</Button>
-                    <Button variant="outline" className="border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white transition-all" size="lg">See Reel Examples</Button>
+                    <Button asChild className="bg-yellow-500 text-white hover:bg-yellow-600 transition-all transform hover:scale-105" size="lg">
+                      <Link to="/reel-pal">Meet Reel Pal</Link>
+                    </Button>
                   </div>
                 </div>
                 <div className="text-center">
@@ -191,8 +193,9 @@ const Pals = () => {
                   </div>
                   
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Button className="bg-gray-600 text-white hover:bg-gray-700 transition-all transform hover:scale-105" size="lg">Build with System Pal</Button>
-                    <Button variant="outline" className="border-2 border-gray-600 text-gray-600 hover:bg-gray-600 hover:text-white transition-all" size="lg">View System Examples</Button>
+                    <Button asChild className="bg-gray-600 text-white hover:bg-gray-700 transition-all transform hover:scale-105" size="lg">
+                      <Link to="/system-pal">Meet System Pal</Link>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -238,8 +241,9 @@ const Pals = () => {
                   </div>
                   
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Button className="bg-green-600 text-white hover:bg-green-700 transition-all transform hover:scale-105" size="lg">Grow with Evergreen Pal</Button>
-                    <Button variant="outline" className="border-2 border-green-600 text-green-600 hover:bg-green-600 hover:text-white transition-all" size="lg">See Growth Plans</Button>
+                    <Button asChild className="bg-green-600 text-white hover:bg-green-700 transition-all transform hover:scale-105" size="lg">
+                      <Link to="/evergreen-pal">Meet Evergreen Pal</Link>
+                    </Button>
                   </div>
                 </div>
                 <div className="text-center">
@@ -291,8 +295,9 @@ const Pals = () => {
                   </div>
                   
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Button className="bg-red-600 text-white hover:bg-red-700 transition-all transform hover:scale-105" size="lg">Shine with Spotlight Pal</Button>
-                    <Button variant="outline" className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white transition-all" size="lg">View Cinematic Portfolio</Button>
+                    <Button asChild className="bg-red-600 text-white hover:bg-red-700 transition-all transform hover:scale-105" size="lg">
+                      <Link to="/spotlight-pal">Meet Spotlight Pal</Link>
+                    </Button>
                   </div>
                 </div>
               </div>

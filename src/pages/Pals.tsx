@@ -306,12 +306,12 @@ const Pals = () => {
           </div>
         </section>
 
-        {/* Personality Deep Dive */}
+        {/* Strategic Service Guidance */}
         <section className="py-24 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-20">
               <h2 className="text-5xl md:text-6xl font-black text-foreground mb-8">More Than Mascots</h2>
-              <p className="text-xl text-muted-foreground max-w-4xl mx-auto">Each Pal has a distinct personality and approach that matches their expertise. Get to know them better.</p>
+              <p className="text-xl text-muted-foreground max-w-4xl mx-auto">Each Pal helps you navigate our extensive service offerings with intention, ensuring you choose exactly what aligns with your goals and budget.</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -323,22 +323,22 @@ const Pals = () => {
                 <div className="space-y-3 text-left">
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                    <span className="text-foreground">Energetic & Authentic</span>
+                    <span className="text-foreground">Starter Package Focus</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                    <span className="text-foreground">Trend-aware</span>
+                    <span className="text-foreground">DIY Tool Recommendations</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                    <span className="text-foreground">Community-focused</span>
+                    <span className="text-foreground">Platform-Specific Solutions</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                    <span className="text-foreground">Quick & Agile</span>
+                    <span className="text-foreground">Quick Turnaround Options</span>
                   </div>
                 </div>
-                <p className="text-muted-foreground mt-4 italic">"Let's make something that feels real and connects with people!"</p>
+                <p className="text-muted-foreground mt-4 italic">"I'll help you find the perfect entry point that gets results fast!"</p>
               </div>
               
               <div className="bg-gray-50 rounded-3xl p-8 text-center border-2 border-gray-200">
@@ -349,22 +349,22 @@ const Pals = () => {
                 <div className="space-y-3 text-left">
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
-                    <span className="text-foreground">Methodical & Organized</span>
+                    <span className="text-foreground">Enterprise Package Alignment</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
-                    <span className="text-foreground">Process-oriented</span>
+                    <span className="text-foreground">Workflow Integration Services</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
-                    <span className="text-foreground">Scalability-minded</span>
+                    <span className="text-foreground">Training Program Selection</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-gray-600 rounded-full"></div>
-                    <span className="text-foreground">Detail-focused</span>
+                    <span className="text-foreground">Scalable Solution Design</span>
                   </div>
                 </div>
-                <p className="text-muted-foreground mt-4 italic">"Let's build something that works perfectly every time!"</p>
+                <p className="text-muted-foreground mt-4 italic">"I'll map out the perfect system that grows with your business!"</p>
               </div>
               
               <div className="bg-green-50 rounded-3xl p-8 text-center border-2 border-green-200">
@@ -375,22 +375,22 @@ const Pals = () => {
                 <div className="space-y-3 text-left">
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-green-600 rounded-full"></div>
-                    <span className="text-foreground">Patient & Wise</span>
+                    <span className="text-foreground">Long-term Content Strategy</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-green-600 rounded-full"></div>
-                    <span className="text-foreground">Strategic thinker</span>
+                    <span className="text-foreground">Authority Building Packages</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-green-600 rounded-full"></div>
-                    <span className="text-foreground">Value-driven</span>
+                    <span className="text-foreground">ROI-Focused Recommendations</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-green-600 rounded-full"></div>
-                    <span className="text-foreground">Growth-oriented</span>
+                    <span className="text-foreground">Sustainable Growth Planning</span>
                   </div>
                 </div>
-                <p className="text-muted-foreground mt-4 italic">"Let's plant seeds that will grow into something amazing!"</p>
+                <p className="text-muted-foreground mt-4 italic">"I'll guide you to investments that compound over time!"</p>
               </div>
               
               <div className="bg-red-50 rounded-3xl p-8 text-center border-2 border-red-200">
@@ -401,22 +401,22 @@ const Pals = () => {
                 <div className="space-y-3 text-left">
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                    <span className="text-foreground">Creative & Visionary</span>
+                    <span className="text-foreground">Premium Production Services</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                    <span className="text-foreground">Quality-obsessed</span>
+                    <span className="text-foreground">Brand Story Development</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                    <span className="text-foreground">Story-focused</span>
+                    <span className="text-foreground">High-Impact Campaign Design</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <div className="w-2 h-2 bg-red-600 rounded-full"></div>
-                    <span className="text-foreground">Impact-driven</span>
+                    <span className="text-foreground">Cinematic Package Selection</span>
                   </div>
                 </div>
-                <p className="text-muted-foreground mt-4 italic">"Let's create something that takes people's breath away!"</p>
+                <p className="text-muted-foreground mt-4 italic">"I'll help you choose services that create unforgettable impact!"</p>
               </div>
             </div>
           </div>

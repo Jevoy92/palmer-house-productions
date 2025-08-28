@@ -398,11 +398,11 @@ export const generateOverallRecommendations = (scores: QuestionScore[]): {
     recommendations = [
       'You\'re in an excellent position to launch a comprehensive video strategy',
       'Your business profile and goals align perfectly with video marketing success',
-      'Consider starting with our Business Video Assets for maximum impact'
+      'Consider starting with our Monthly Content System for maximum impact'
     ];
     nextSteps = [
       'Schedule a Discovery Call to map out your custom strategy',
-      'Review our Business Video Assets packages',
+      'Review our Monthly Content System packages',
       'Prepare your team for video content production'
     ];
   } else if (overallScore >= 60) {

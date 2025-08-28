@@ -9,27 +9,6 @@ export const Pricing = () => {
 
   const pricingCategories = [
     {
-      id: "business-assets",
-      name: "Business Video Assets",
-      icon: Users,
-      description: "Internal & external video systems for business operations",
-      priceRange: "$4,500 - $10,000+",
-      gradient: "gradient-social-2",
-      popular: true,
-      items: Object.values(PRICING.BUSINESS_VIDEO_ASSETS),
-      route: "/contact"
-    },
-    {
-      id: "bundles",
-      name: "Other Video Bundles",
-      icon: Wrench, 
-      description: "YouTube, launches, reels, and founder branding",
-      priceRange: "$500 - $6,500",
-      gradient: "gradient-social-4",
-      items: Object.values(PRICING.OTHER_BUNDLES).slice(0, 4), // Show top 4
-      route: "/contact"
-    },
-    {
       id: "diy",
       name: "DIY Digital Downloads",
       icon: Download,
@@ -38,6 +17,37 @@ export const Pricing = () => {
       gradient: "gradient-social-1",
       items: Object.values(PRICING.DIY_DOWNLOADS),
       route: "/services/diy-downloads"
+    },
+    {
+      id: "coaching", 
+      name: "Group Coaching",
+      icon: Users,
+      description: "6-week intensive program",
+      priceRange: "$2,000",
+      gradient: "gradient-social-2",
+      popular: true,
+      items: [PRICING.GROUP_COACHING.CAMERA_READY_BRAND],
+      route: "/services/group-coaching"
+    },
+    {
+      id: "monthly",
+      name: "Monthly Content System", 
+      icon: Repeat,
+      description: "Ongoing video production and strategy",
+      priceRange: "$3,000/month",
+      gradient: "gradient-social-3",
+      items: [PRICING.MONTHLY_CONTENT.SOCIAL_AUTHORITY_KIT],
+      route: "/services/monthly-content"
+    },
+    {
+      id: "bundles",
+      name: "One-Time Problem-Solving Bundles",
+      icon: Wrench, 
+      description: "Targeted solutions for specific needs",
+      priceRange: "$500 - $6,500",
+      gradient: "gradient-social-4",
+      items: Object.values(PRICING.ONE_TIME_BUNDLES).slice(0, 4), // Show top 4
+      route: "/contact"
     }
   ];
 
@@ -143,7 +153,7 @@ export const Pricing = () => {
               The Business Bonus Pack
             </h3>
             <p className="text-lg text-corporate-gray mb-4">
-              <strong>FREE with:</strong> Any Business Video Assets Package $4,500+
+              <strong>FREE with:</strong> Monthly Social Authority Kit + Any One-Time Bundle $4,500+
             </p>
             <p className="text-sm text-corporate-gray">
               <strong>Total Value:</strong> {PRICING.BONUS_PACK.totalValue} • Includes scripts, courses, and coaching sessions

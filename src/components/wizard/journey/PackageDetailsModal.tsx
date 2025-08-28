@@ -15,31 +15,31 @@ interface PackageDetailsModalProps {
 export const PackageDetailsModal = ({ open, onOpenChange, packageType, onBookSession }: PackageDetailsModalProps) => {
   const getPackageDetails = () => {
     switch (packageType) {
-      case "Business Video Assets":
+      case "Monthly Content System":
         return {
-          name: "Business Video Assets",
-          subtitle: "Strategic video systems that replace repetitive operations",
-          price: "$3,000-$15,000",
-          icon: "🎬",
+          name: "Monthly Content System",
+          subtitle: "The Social Authority Kit - consistent monthly video content",
+          price: "$3,000/month",
+          icon: "🔄",
           gradient: "gradient-social-4",
-          frequency: "Project-based delivery",
+          frequency: "Monthly deliverables",
           features: [
-            "Process documentation videos",
-            "Internal training systems",
-            "Client onboarding sequences",
-            "FAQ automation videos",
-            "Standard operating procedures",
-            "Employee training modules",
-            "Custom workflow documentation",
-            "Evergreen business assets"
+            "3-4 videos per month",
+            "Strategic content planning",
+            "Professional production",
+            "Multi-platform optimization",
+            "Performance analytics",
+            "Monthly strategy calls",
+            "Brand consistency guidelines",
+            "Content calendar planning"
           ],
-          timeline: "2-6 weeks project completion",
-          ideal: "Businesses looking to systematize operations and reduce repetitive work"
+          timeline: "1-2 weeks setup, monthly deliveries",
+          ideal: "Businesses ready for consistent content that drives authority and results"
         };
-      case "Other Bundles":
+      case "One-Time Bundles":
         return {
-          name: "Other Bundles",
-          subtitle: "Specialized video solutions for specific business needs",
+          name: "One-Time Bundles",
+          subtitle: "Problem-solving video packages for specific needs",
           price: "$500-$6,500",
           icon: "🛠️",
           gradient: "gradient-social-3",
@@ -57,12 +57,12 @@ export const PackageDetailsModal = ({ open, onOpenChange, packageType, onBookSes
           timeline: "1-3 weeks project completion",
           ideal: "Businesses with specific video challenges or one-time projects"
         };
-      case "DIY Coaching":
+      case "Group Coaching":
         return {
-          name: "DIY Coaching",
+          name: "Group Coaching",
           subtitle: "6-week Camera-Ready Brand program",
           price: "$2,000",
-          icon: "🎯",
+          icon: "👥",
           gradient: "gradient-social-2",
           frequency: "6-week program",
           features: [

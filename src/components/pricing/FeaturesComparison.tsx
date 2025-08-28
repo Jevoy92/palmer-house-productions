@@ -10,18 +10,18 @@ export const FeaturesComparison = () => {
       gradient: "gradient-social-1" 
     },
     { 
-      name: "Business Video Assets", 
-      priceRange: "$4,500-$6,500",
+      name: "Group Coaching", 
+      priceRange: "$2,000",
       gradient: "gradient-social-2" 
     },
     { 
-      name: "Other Bundles", 
-      priceRange: "$500-$7,500",
+      name: "Monthly Content", 
+      priceRange: "$3,000/mo",
       gradient: "gradient-social-3" 
     },
     { 
-      name: "DIY Coaching & Support", 
-      priceRange: "$2,000",
+      name: "One-Time Bundles", 
+      priceRange: "$500-$6,500",
       gradient: "gradient-social-4" 
     }
   ];

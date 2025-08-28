@@ -23,46 +23,47 @@ export const SolutionsOverview = () => {
       items: [
         "25 DIY Reels You Can Film From Home",
         "Video Strategy Blueprint", 
-        "Owner/Founder Script Bundle"
+        "Owner/Founder Script Bundle",
+        "On-Camera Confidence Mini Course"
       ]
     },
     {
-      category: "Business Video Assets",
-      description: "Strategic video systems for operational efficiency", 
-      priceRange: "$4,500 - $6,500",
+      category: "Hands-On Coaching",
+      description: "6-week group program for camera confidence", 
+      priceRange: "$2,000",
       icon: Users,
       gradient: "gradient-social-2",
       items: [
-        "External Business Video Assets",
-        "Internal Business Video Assets",
-        "YouTube Visibility Engine",
-        "Founder's Brand Kit"
+        "Camera-Ready Brand Coaching",
+        "8-10 founders per cohort",
+        "Weekly Zoom sessions",
+        "Private Circle group"
       ]
     },
     {
-      category: "Other Video Bundles",
-      description: "Specialized video solutions for specific needs",
-      priceRange: "$500 - $7,500",
+      category: "Done-With-You Content",
+      description: "Monthly content system with consistent delivery",
+      priceRange: "$3,000/month",
       icon: Repeat,
       gradient: "gradient-social-3",
       items: [
-        "The Starter Session",
-        "30 Reels in 30 Days",
-        "Music Video Production",
-        "Event & Recruitment Capsules"
+        "1 Hero/Founder video monthly",
+        "6 Social Reels monthly",
+        "Client voice videos",
+        "Platform optimization"
       ]
     },
     {
-      category: "DIY Coaching & Support",
-      description: "Guided learning and hands-on coaching",
-      priceRange: "$2,000",
+      category: "Done-For-You Solutions",
+      description: "Complete one-time video bundles",
+      priceRange: "$500 - $6,500",
       icon: Wrench,
       gradient: "gradient-social-4", 
       items: [
-        "6-Week Camera-Ready Brand",
-        "DIY coaching sessions",
-        "Private Circle community",
-        "Bonus pack included"
+        "FAQ Buildouts",
+        "YouTube Visibility Engine",
+        "Founder's Brand Kit",
+        "30 Reels in 30 Days"
       ]
     }
   ];

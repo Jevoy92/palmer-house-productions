@@ -452,9 +452,9 @@ const ContentCreationTools2025 = () => {
           description: "Templates and resources for self-service content creation"
         },
         {
-          title: "DIY Coaching",
-          href: "/video-packages",
-          description: "Learn video creation in a supportive coaching environment"
+          title: "Group Coaching",
+          href: "/services/group-coaching",
+          description: "Learn video creation in a supportive group environment"
         }
       ]}
     />

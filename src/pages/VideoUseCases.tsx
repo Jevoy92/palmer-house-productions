@@ -12,11 +12,11 @@ const VideoUseCasesPage = () => {
   return (
     <div className="min-h-screen bg-white">
       <MetaTags 
-        title="Seattle Business Video Case Studies | Palmer House Productions"
-        description="Real Seattle business video case studies showing transformation through strategic content systems. See specific challenges, processes, and projected results for local businesses."
-        keywords="Seattle business video case studies, video content systems, business transformation, Seattle video production, local business examples"
-        ogTitle="Seattle Business Video Case Studies | Palmer House Productions"
-        ogDescription="Real Seattle business video case studies showing transformation through strategic content systems."
+        title="Video Use Cases | Business Video Applications | Palmer House Productions"
+        description="Explore comprehensive video use cases for business applications. See how professional video production can transform your internal operations and external marketing efforts."
+        keywords="video use cases, business video applications, corporate video examples, video marketing cases, training video examples"
+        ogTitle="Video Use Cases | Business Applications"
+        ogDescription="Comprehensive video use cases for business applications. Transform your operations and marketing with professional video."
         canonicalUrl="https://www.palmerhouseproductions.com/video-use-cases"
       />
       <StructuredData type="services" />

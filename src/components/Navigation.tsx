@@ -102,6 +102,16 @@ export const Navigation = () => {
                       DIY Downloads
                     </Link>
                   </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/services/group-coaching" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
+                      Group Coaching
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/services/monthly-content" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
+                      Monthly Content
+                    </Link>
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
 
@@ -191,6 +201,12 @@ export const Navigation = () => {
                 </Link>
                 <Link to="/services/diy-downloads" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
                   DIY Downloads
+                </Link>
+                <Link to="/services/group-coaching" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
+                  Group Coaching
+                </Link>
+                <Link to="/services/monthly-content" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
+                  Monthly Content
                 </Link>
               </div>
             </div>

@@ -16,13 +16,23 @@ import {
 } from '@/components/ui/select';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { OptimizedImage } from '@/components/seo/ImageOptimization';
+import diyVideoFailsImage from '@/assets/blog/diy-video-fails.jpg';
+import brandStorytellingImage from '@/assets/blog/brand-storytelling-video.jpg';
 import mobileVideoProductionImage from '@/assets/blog/mobile-video-production.jpg';
+import remoteVideoCollaborationImage from '@/assets/blog/remote-video-collaboration.jpg';
+import psychologyOfVideoImage from '@/assets/blog/psychology-of-video.jpg';
 import videoMetricsMatterImage from '@/assets/blog/video-metrics-matter.jpg';
+import scriptWritingSecretsImage from '@/assets/blog/script-writing-secrets.jpg';
+import lightingAudioBasicsImage from '@/assets/blog/lighting-audio-basics.jpg';
+import socialMediaVideoOptimizationImage from '@/assets/blog/social-media-video-optimization.jpg';
+import customerTestimonialImage from '@/assets/blog/customer-testimonial-videos.jpg';
+import videoSeoMasteryImage from '@/assets/blog/video-seo-mastery.jpg';
 import editingLikeProImage from '@/assets/blog/editing-like-pro.jpg';
-import employeeTrainingAutomationImage from '@/assets/blog/employee-training-automation.jpg';
+import liveStreamingBusinessImage from '@/assets/blog/live-streaming-business.jpg';
 
-// Blog articles data - Focused on core strategic content
+// Blog articles data
 const blogArticles = [
+  // Core ChatGPT Articles
   {
     id: 'video-content-toolkit-2025',
     title: 'The Ultimate Video Content System Toolkit for Founders (2025 Edition)',
@@ -46,7 +56,7 @@ const blogArticles = [
     featured: true,
     slug: '/blog/automate-employee-training-video',
     tags: ['employee-training', 'automation', 'video-systems', 'hr'],
-    image: employeeTrainingAutomationImage,
+    image: liveStreamingBusinessImage,
     imageAlt: 'Automated employee training with video modules'
   },
   {
@@ -74,10 +84,156 @@ const blogArticles = [
     tags: ['roi-analysis', 'video-training', 'business-metrics', 'cost-comparison'],
     image: videoMetricsMatterImage,
     imageAlt: 'Video ROI analytics and performance dashboard'
+  },
+  // Additional Business Strategy Articles
+  {
+    id: 'diy-video-fails',
+    title: 'Why DIY Video Fails (And When to Hire Professionals)',
+    excerpt: 'Understand the hidden costs of DIY video production and learn when professional help becomes a strategic investment.',
+    category: 'Strategy',
+    readTime: '9 min read',
+    publishDate: '2024-12-28',
+    featured: false,
+    slug: '/blog/diy-video-fails',
+    tags: ['diy-video', 'professional-services', 'video-strategy', 'business-decisions'],
+    image: diyVideoFailsImage,
+    imageAlt: 'Professional vs DIY video production comparison'
+  },
+  {
+    id: 'brand-storytelling-video',
+    title: 'The 5-Stage Video Content System That Scales With Your Business',
+    excerpt: 'Build a sustainable video content framework that grows with your company from startup to enterprise.',
+    category: 'Strategy',
+    readTime: '14 min read',
+    publishDate: '2024-12-25',
+    featured: false,
+    slug: '/blog/brand-storytelling-video',
+    tags: ['scaling', 'content-systems', 'business-growth', 'video-framework'],
+    image: brandStorytellingImage,
+    imageAlt: 'Video content system framework visualization'
+  },
+  {
+    id: 'overwhelmed-to-authority',
+    title: 'From Overwhelmed to Authority: A Founder\'s Guide to Video Confidence',
+    excerpt: 'Overcome camera anxiety and build confidence to become a thought leader through strategic video content.',
+    category: 'Personal Development',
+    readTime: '11 min read',
+    publishDate: '2024-12-20',
+    featured: false,
+    slug: '/blog/overwhelmed-to-authority',
+    tags: ['camera-confidence', 'thought-leadership', 'personal-branding', 'founder-tips'],
+    image: mobileVideoProductionImage,
+    imageAlt: 'Founder building video confidence and authority'
+  },
+  {
+    id: 'remote-video-collaboration',
+    title: 'How to Build Internal Video Libraries That Actually Get Used',
+    excerpt: 'Create organized, accessible video resources that your team will actually reference and use in their daily work.',
+    category: 'Organization',
+    readTime: '13 min read',
+    publishDate: '2024-12-15',
+    featured: false,
+    slug: '/blog/remote-video-collaboration',
+    tags: ['video-organization', 'team-resources', 'knowledge-management', 'internal-comms'],
+    image: remoteVideoCollaborationImage,
+    imageAlt: 'Internal video library organization system'
+  },
+  {
+    id: 'psychology-of-video',
+    title: 'The Psychology of Video: Why Talking Heads Beat Text Every Time',
+    excerpt: 'Explore the cognitive science behind why video communication is more effective than written content for learning and engagement.',
+    category: 'Psychology',
+    readTime: '10 min read',
+    publishDate: '2024-12-10',
+    featured: false,
+    slug: '/blog/psychology-of-video',
+    tags: ['video-psychology', 'communication-science', 'engagement', 'learning-theory'],
+    image: psychologyOfVideoImage,
+    imageAlt: 'Psychology of video communication and engagement'
+  },
+  {
+    id: 'video-metrics-matter',
+    title: 'Measuring Video ROI: Beyond Views to Business Impact',
+    excerpt: 'Learn how to track meaningful video metrics that connect directly to business outcomes and revenue growth.',
+    category: 'Analytics',
+    readTime: '12 min read',
+    publishDate: '2024-12-05',
+    featured: false,
+    slug: '/blog/video-metrics-matter',
+    tags: ['video-analytics', 'roi-measurement', 'business-metrics', 'kpi-tracking'],
+    image: videoMetricsMatterImage,
+    imageAlt: 'Video ROI measurement and analytics dashboard'
+  },
+  // Technical How-To Articles
+  {
+    id: 'script-writing-secrets',
+    title: 'Script Writing for Busy Founders: The 5-Minute Framework',
+    excerpt: 'Master the art of concise, effective video scripts that communicate value without wasting time.',
+    category: 'How-To',
+    readTime: '7 min read',
+    publishDate: '2024-12-01',
+    featured: false,
+    slug: '/blog/script-writing-secrets',
+    tags: ['scriptwriting', 'video-planning', 'communication', 'time-management'],
+    image: scriptWritingSecretsImage,
+    imageAlt: 'Video script writing framework for founders'
+  },
+  {
+    id: 'lighting-audio-basics',
+    title: 'Lighting and Audio Basics: Professional Videos on a Budget',
+    excerpt: 'Achieve professional video quality without expensive equipment using smart lighting and audio techniques.',
+    category: 'Technical',
+    readTime: '16 min read',
+    publishDate: '2024-11-25',
+    featured: false,
+    slug: '/blog/lighting-audio-basics',
+    tags: ['video-production', 'lighting', 'audio', 'budget-friendly'],
+    image: lightingAudioBasicsImage,
+    imageAlt: 'Professional lighting and audio setup for video production'
+  },
+  {
+    id: 'social-media-video-optimization',
+    title: 'Platform-Specific Video: What Works on LinkedIn vs. Instagram vs. YouTube',
+    excerpt: 'Optimize your video content for each social platform to maximize reach, engagement, and business results.',
+    category: 'Social Media',
+    readTime: '14 min read',
+    publishDate: '2024-11-20',
+    featured: false,
+    slug: '/blog/social-media-video-optimization',
+    tags: ['social-media', 'platform-optimization', 'video-marketing', 'multi-channel'],
+    image: socialMediaVideoOptimizationImage,
+    imageAlt: 'Platform-specific video optimization strategies'
+  },
+  {
+    id: 'customer-testimonial-videos',
+    title: 'Creating Video Content That Converts: Hook, Value, Call-to-Action',
+    excerpt: 'Master the formula for video content that not only engages viewers but drives them to take meaningful action.',
+    category: 'Conversion',
+    readTime: '11 min read',
+    publishDate: '2024-11-15',
+    featured: false,
+    slug: '/blog/customer-testimonial-videos',
+    tags: ['conversion-optimization', 'video-marketing', 'cta-strategy', 'engagement'],
+    image: customerTestimonialImage,
+    imageAlt: 'Video content conversion strategy and optimization'
+  },
+  // Industry-Specific Content
+  {
+    id: 'video-marketing-saas',
+    title: 'Video Marketing for SaaS: Onboarding, Demos, and Customer Success',
+    excerpt: 'Specialized video strategies for SaaS companies to improve user onboarding, showcase features, and reduce churn.',
+    category: 'Industry',
+    readTime: '13 min read',
+    publishDate: '2024-11-10',
+    featured: false,
+    slug: '/blog/video-marketing-saas',
+    tags: ['saas-marketing', 'user-onboarding', 'product-demos', 'customer-success'],
+    image: videoSeoMasteryImage,
+    imageAlt: 'SaaS video marketing and customer onboarding strategy'
   }
 ];
 
-const categories = ['All', 'Strategy', 'Training', 'Tools', 'ROI'];
+const categories = ['All', 'Strategy', 'Training', 'Tools', 'ROI', 'How-To', 'Technical', 'Social Media', 'Conversion', 'Industry', 'Psychology', 'Analytics', 'Organization', 'Personal Development'];
 
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState('');

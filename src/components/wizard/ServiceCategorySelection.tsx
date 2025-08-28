@@ -22,18 +22,19 @@ export const ServiceCategorySelection = ({ serviceType, onCategorySelect, onBack
       id: "diy-downloads" as ServiceCategory,
       name: "DIY Digital Downloads",
       icon: Download,
-      priceRange: "$19 - $47",
+      priceRange: "$19 - $99",
       description: "Instant access to video guides, scripts, and training materials",
       features: [
         "25 DIY Reels You Can Film From Home",
         "Video Strategy Blueprint",
-        "Owner/Founder Script Bundle"
+        "Owner/Founder Script Bundle",
+        "On-Camera Confidence Mini Course"
       ],
       gradient: "gradient-social-1",
     },
     {
       id: "coaching" as ServiceCategory,
-      name: "DIY Coaching",
+      name: "Group Coaching",
       icon: Users,
       priceRange: "$2,000",
       description: "6-week intensive program to build camera confidence",
@@ -49,16 +50,16 @@ export const ServiceCategorySelection = ({ serviceType, onCategorySelect, onBack
     },
     {
       id: "monthly-content" as ServiceCategory,
-      name: "Business Video Assets",
+      name: "Monthly Content System",
       icon: Repeat,
-      priceRange: "$3,000-$15,000",
-      description: "Strategic video systems that replace repetitive operations",
+      priceRange: "$3,000/month",
+      description: "Consistent professional content delivered monthly",
       features: [
-        "Process documentation videos",
-        "Internal training systems", 
-        "Client onboarding sequences",
-        "FAQ automation videos",
-        "Standard operating procedures"
+        "1 Hero/Founder video monthly",
+        "6 Social Reels monthly",
+        "1 Client voice video",
+        "Platform-optimized captions & thumbnails",
+        "3-month minimum commitment"
       ],
       gradient: "gradient-social-3",
     },

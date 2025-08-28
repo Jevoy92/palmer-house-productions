@@ -5,8 +5,9 @@ export const getServiceName = (serviceType?: ServiceType) => {
   switch (serviceType) {
     case "consultation": return "General Consultation";
     case "diy": return "DIY Downloads";
-    case "assets": return "Business Video Assets";
-    case "bundles": return "Other Bundles";
+    case "coaching": return "Group Coaching";
+    case "monthly": return "Monthly Content System";
+    case "bundle": return "One-Time Bundles";
     default: return "Not specified";
   }
 };
@@ -14,9 +15,9 @@ export const getServiceName = (serviceType?: ServiceType) => {
 export const getServiceCategoryName = (serviceCategory?: ServiceCategory) => {
   switch (serviceCategory) {
     case "diy-downloads": return "DIY Digital Downloads";
-    case "coaching": return "DIY Coaching ($2,000)";
-    case "monthly-content": return "Business Video Assets ($3,000-$15,000)";
-    case "one-time-bundles": return "Other Bundles";
+    case "coaching": return "Camera-Ready Brand Coaching ($2,000)";
+    case "monthly-content": return "Social Authority Kit ($3,000/month)";
+    case "one-time-bundles": return "One-Time Problem-Solving Bundles";
     default: return "Not specified";
   }
 };

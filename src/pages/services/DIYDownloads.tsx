@@ -22,7 +22,6 @@ const DIYDownloads = () => {
       price: PRICING.DIY_DOWNLOADS["25_REELS"].price,
       format: PRICING.DIY_DOWNLOADS["25_REELS"].format,
       description: PRICING.DIY_DOWNLOADS["25_REELS"].description,
-      paymentUrl: PRICING.DIY_DOWNLOADS["25_REELS"].paymentUrl,
       icon: Video
     },
     {
@@ -30,7 +29,6 @@ const DIYDownloads = () => {
       price: PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.price,
       format: PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.format,
       description: PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.description,
-      paymentUrl: PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.paymentUrl,
       icon: FileText
     },
     {
@@ -38,13 +36,19 @@ const DIYDownloads = () => {
       price: PRICING.DIY_DOWNLOADS.SCRIPT_BUNDLE.price,
       format: PRICING.DIY_DOWNLOADS.SCRIPT_BUNDLE.format,
       description: PRICING.DIY_DOWNLOADS.SCRIPT_BUNDLE.description,
-      paymentUrl: PRICING.DIY_DOWNLOADS.SCRIPT_BUNDLE.paymentUrl,
       icon: Mic
+    },
+    {
+      title: PRICING.DIY_DOWNLOADS.CONFIDENCE_COURSE.name,
+      price: PRICING.DIY_DOWNLOADS.CONFIDENCE_COURSE.price,
+      format: PRICING.DIY_DOWNLOADS.CONFIDENCE_COURSE.format,
+      description: PRICING.DIY_DOWNLOADS.CONFIDENCE_COURSE.description,
+      icon: Camera
     }
   ];
 
-  const handlePurchase = (paymentUrl: string) => {
-    window.open(paymentUrl, '_blank', 'noopener,noreferrer');
+  const handleBooking = (title: string) => {
+    navigate('/contact', { state: { selectedService: title } });
   };
 
   return (
@@ -52,7 +56,7 @@ const DIYDownloads = () => {
       <MetaTags 
         title="DIY Video Resources & Downloads | Palmer House"
         description="Download professional video resources - script templates, strategy guides, and DIY tools for creating compelling business content."
-        keywords="DIY video downloads, video strategy blueprint, script bundle, video production resources"
+        keywords="DIY video downloads, video strategy blueprint, script bundle, confidence course, video production resources"
         ogTitle="DIY Video Downloads | Palmer House Productions"
         ogDescription="Download professional video resources - script templates, strategy guides, and DIY tools for creating compelling business content."
       />
@@ -87,7 +91,7 @@ const DIYDownloads = () => {
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {digitalDownloads.map((item, index) => (
                 <div key={index} className="bg-white p-8 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105">
                   <div className="text-center mb-6">
@@ -100,10 +104,10 @@ const DIYDownloads = () => {
                   </div>
                   <p className="text-sm text-corporate-gray mb-8 leading-relaxed text-center">{item.description}</p>
                   <button
-                    onClick={() => handlePurchase(item.paymentUrl)}
+                    onClick={() => handleBooking(item.title)}
                     className="w-full py-4 px-6 gradient-social-1 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300 video-shadow"
                   >
-                    Buy Now
+                    Get Instant Access
                   </button>
                 </div>
               ))}
@@ -119,10 +123,10 @@ const DIYDownloads = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <button
-                    onClick={() => navigate('/video-packages')}
+                    onClick={() => navigate('/services/group-coaching')}
                     className="px-8 py-4 bg-gradient-to-r from-social-purple to-social-pink text-white font-bold rounded-2xl hover:scale-105 transition-all duration-300"
                   >
-                    Explore DIY Coaching
+                    Explore Group Coaching
                   </button>
                   <a
                     href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
@@ -135,7 +139,7 @@ const DIYDownloads = () => {
                 </div>
               </div>
               <div className="mt-12">
-                <ZohoLeadForm title="Questions about DIY?" leadSource="Website" defaultProjectType="Business Video Assets" />
+                <ZohoLeadForm title="Questions about DIY?" leadSource="Website" defaultProjectType="Monthly Content System" />
               </div>
             </div>
           </div>

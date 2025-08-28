@@ -50,8 +50,8 @@ export const EnhancedFooter = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/video-packages" className="text-gray-300 hover:text-white transition-colors">
-                  DIY Coaching
+                <Link to="/services/group-coaching" className="text-gray-300 hover:text-white transition-colors">
+                  Group Coaching
                 </Link>
               </li>
               <li>

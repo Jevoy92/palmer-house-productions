@@ -352,30 +352,30 @@ const ReelPal = () => {
         </section>
 
         {/* Call to Action Section */}
-        <section className="py-20 bg-gradient-to-br from-primary to-secondary text-white">
+        <section className="py-20 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="mb-8">
               <img 
-                className="w-32 h-32 mx-auto rounded-full border-4 border-white/20" 
+                className="w-32 h-32 mx-auto rounded-full border-4 border-yellow-200" 
                 src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-084a4815eb9cd20133f5.png" 
                 alt="cartoon character female with brown hair, yellow shirt, waving hand with social media icons floating around, friendly video production mascot" 
               />
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Ready to Go Viral with Reel Pal?</h2>
-            <p className="text-xl mb-12 max-w-3xl mx-auto opacity-90">Let's create content that doesn't just look good—but actually grows your business. Book a strategy call and let's turn your social media into your biggest marketing asset.</p>
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">Ready to Go Viral with Reel Pal?</h2>
+            <p className="text-xl mb-12 max-w-3xl mx-auto text-muted-foreground">Let's create content that doesn't just look good—but actually grows your business. Book a strategy call and let's turn your social media into your biggest marketing asset.</p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6">
-                <div className="text-3xl font-bold text-yellow-300 mb-2">500K+</div>
-                <p className="text-sm opacity-80">Views Generated</p>
+              <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-6">
+                <div className="text-2xl font-bold text-yellow-600 mb-2">Creative Excellence</div>
+                <p className="text-sm text-muted-foreground">Trending content that captures attention and drives engagement</p>
               </div>
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6">
-                <div className="text-3xl font-bold text-yellow-300 mb-2">50+</div>
-                <p className="text-sm opacity-80">Happy Clients</p>
+              <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
+                <div className="text-2xl font-bold text-blue-600 mb-2">Proven Results</div>
+                <p className="text-sm text-muted-foreground">Clients consistently see increased followers and engagement</p>
               </div>
-              <div className="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6">
-                <div className="text-3xl font-bold text-yellow-300 mb-2">95%</div>
-                <p className="text-sm opacity-80">Client Satisfaction</p>
+              <div className="bg-green-50 border border-green-200 rounded-2xl p-6">
+                <div className="text-2xl font-bold text-green-600 mb-2">Personal Touch</div>
+                <p className="text-sm text-muted-foreground">Dedicated support and customized content strategies</p>
               </div>
             </div>
             
@@ -383,12 +383,12 @@ const ReelPal = () => {
               <Button asChild size="lg" className="bg-yellow-500 text-white hover:bg-yellow-600">
                 <Link to="/contact">Book Your Strategy Call</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-2 border-white text-white hover:bg-white hover:text-primary">
+              <Button asChild variant="outline" size="lg" className="border-2 border-yellow-500 text-yellow-600 hover:bg-yellow-500 hover:text-white">
                 <Link to="/services/diy-downloads">Start with DIY Kit</Link>
               </Button>
             </div>
             
-            <p className="text-sm opacity-75 mt-6">🎉 Limited Time: Book this month and get a FREE content audit worth $300!</p>
+            <p className="text-sm text-muted-foreground mt-6">🎉 Limited Time: Book this month and get a FREE content audit worth $300!</p>
           </div>
         </section>
 

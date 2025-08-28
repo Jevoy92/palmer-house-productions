@@ -70,7 +70,7 @@ const Pals = () => {
             {/* Character Preview Row */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
               <div className="bg-white rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 shadow-lg hover:shadow-xl">
-                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-yellow-400" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-24a6f3cb81aba8920004.png" alt="cartoon character female with brown hair, yellow shirt, holding phone with social media icons, friendly mascot style" />
+                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-yellow-400" src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" alt="cartoon character female with brown hair in bun, orange shirt, holding phone with video elements, friendly social media mascot style" />
                 <h3 className="text-xl font-bold text-foreground">Reel Pal</h3>
                 <p className="text-sm text-muted-foreground mt-2">Social Content</p>
               </div>
@@ -85,7 +85,7 @@ const Pals = () => {
                 <p className="text-sm text-muted-foreground mt-2">Long-term Growth</p>
               </div>
               <div className="bg-white rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 shadow-lg hover:shadow-xl">
-                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-red-400" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/8f0c5b28b6-8c6945ce46e0e60e28bf.png" alt="cartoon character blonde female, red blazer, holding microphone with studio lights, cinematic mascot style" />
+                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-red-400" src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" alt="cartoon character red hair female, professional dark suit, holding microphone with video equipment, cinematic mascot style" />
                 <h3 className="text-xl font-bold text-foreground">Spotlight Pal</h3>
                 <p className="text-sm text-muted-foreground mt-2">Cinematic Brand</p>
               </div>
@@ -148,7 +148,7 @@ const Pals = () => {
                   </div>
                 </div>
                 <div className="text-center">
-                  <img className="w-80 h-80 mx-auto" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-bae844072a2205552064.png" alt="cartoon character female with brown hair, bright yellow shirt, holding smartphone with heart icons and social media symbols floating around, friendly and energetic mascot style illustration" />
+                  <img className="w-80 h-80 mx-auto" src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" alt="cartoon character female with brown hair in bun, orange shirt and jeans, holding smartphone with video camera and film strip elements floating around, energetic social media creator mascot style" />
                 </div>
               </div>
             </div>
@@ -260,7 +260,7 @@ const Pals = () => {
               <div className="absolute top-0 left-0 w-64 h-64 bg-red-100 rounded-full -translate-y-32 -translate-x-32 opacity-50"></div>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
                 <div className="text-center order-2 lg:order-1">
-                  <img className="w-80 h-80 mx-auto" src={spotlightPalClean} alt="cartoon character blonde female wearing a professional red blazer, holding a microphone, with floating cinematic icons like film reels, lights, and stars on a clean white background" />
+                  <img className="w-80 h-80 mx-auto" src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" alt="cartoon character red hair female wearing professional dark business suit, holding microphone with professional video equipment including camera on tripod and studio light, cinematic production mascot style" />
                 </div>
                 <div className="text-center lg:text-left order-1 lg:order-2">
                   <div className="inline-flex items-center bg-red-100 text-red-800 px-6 py-3 rounded-full text-sm font-bold mb-6">
@@ -526,7 +526,7 @@ const Pals = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               <div className="bg-yellow-50 rounded-3xl p-8 border-2 border-yellow-200">
                 <div className="flex items-center mb-6">
-                  <img className="w-16 h-16 rounded-full mr-4" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-9b37f82e5ee6d35a236c.png" alt="cartoon character female with brown hair, yellow shirt, small avatar style" />
+                  <img className="w-16 h-16 rounded-full mr-4" src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" alt="cartoon character female with brown hair in bun, orange shirt, small avatar style" />
                   <div>
                     <h3 className="text-xl font-bold text-foreground">Reel Pal Transformation</h3>
                     <p className="text-yellow-600 font-semibold">Social Media Growth</p>
@@ -601,7 +601,7 @@ const Pals = () => {
               
               <div className="bg-red-50 rounded-3xl p-8 border-2 border-red-200">
                 <div className="flex items-center mb-6">
-                  <img className="w-16 h-16 rounded-full mr-4" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/8f0c5b28b6-f994443bd5f1f3a8b01d.png" alt="cartoon character blonde female, red blazer, small avatar style" />
+                  <img className="w-16 h-16 rounded-full mr-4" src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" alt="cartoon character red hair female, professional dark suit, small avatar style" />
                   <div>
                     <h3 className="text-xl font-bold text-foreground">Spotlight Pal Transformation</h3>
                     <p className="text-red-600 font-semibold">Brand Elevation</p>

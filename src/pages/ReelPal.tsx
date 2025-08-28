@@ -61,8 +61,8 @@ const ReelPal = () => {
               <div className="text-center">
                 <img 
                   className="w-80 h-80 mx-auto rounded-full border-4 border-white/20" 
-                  src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-bb993d7dd66fd010bb42.png" 
-                  alt="cartoon character female with brown hair, yellow shirt, holding phone with social media icons, friendly video production mascot with heart and video elements, professional illustration style" 
+                  src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
+                  alt="cartoon character female with brown hair in bun, orange shirt and jeans, holding smartphone with video camera and film strip elements, energetic social media creator mascot" 
                 />
               </div>
             </div>
@@ -389,11 +389,11 @@ const ReelPal = () => {
         <section className="py-20 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="mb-8">
-              <img 
-                className="w-32 h-32 mx-auto rounded-full border-4 border-yellow-200" 
-                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-084a4815eb9cd20133f5.png" 
-                alt="cartoon character female with brown hair, yellow shirt, waving hand with social media icons floating around, friendly video production mascot" 
-              />
+                <img 
+                  className="w-32 h-32 mx-auto rounded-full border-4 border-yellow-200" 
+                  src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
+                  alt="cartoon character female with brown hair in bun, orange shirt and jeans, holding smartphone, social media creator mascot" 
+                />
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">Ready to Go Viral with Reel Pal?</h2>
             <p className="text-xl mb-12 max-w-3xl mx-auto text-muted-foreground">Let's create content that doesn't just look good—but actually grows your business. Book a strategy call and let's turn your social media into your biggest marketing asset.</p>
@@ -469,8 +469,8 @@ const ReelPal = () => {
                 <div className="mb-6">
                   <img 
                     className="w-24 h-24 mx-auto rounded-full" 
-                    src="https://storage.googleapis.com/uxpilot-auth.appspot.com/8f0c5b28b6-3b90b01dce247861b422.png" 
-                    alt="cartoon character blonde female, red blazer, holding microphone with studio lights" 
+                    src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" 
+                    alt="cartoon character red hair female wearing professional dark business suit, holding microphone, cinematic production mascot" 
                   />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-3">Spotlight Pal</h3>

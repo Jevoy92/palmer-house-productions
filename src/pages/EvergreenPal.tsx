@@ -373,8 +373,8 @@ const EvergreenPal = () => {
                 <div className="mb-6">
                   <img 
                     className="w-24 h-24 mx-auto rounded-full" 
-                    src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-bb993d7dd66fd010bb42.png" 
-                    alt="cartoon character female with brown hair, yellow shirt, holding phone with social media icons" 
+                    src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
+                    alt="cartoon character female with brown hair in bun, orange shirt and jeans, holding smartphone, social media creator mascot" 
                   />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-3">Reel Pal</h3>
@@ -403,8 +403,8 @@ const EvergreenPal = () => {
                 <div className="mb-6">
                   <img 
                     className="w-24 h-24 mx-auto rounded-full" 
-                    src="https://storage.googleapis.com/uxpilot-auth.appspot.com/8f0c5b28b6-3b90b01dce247861b422.png" 
-                    alt="cartoon character blonde female, red blazer, holding microphone with studio lights" 
+                    src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" 
+                    alt="cartoon character red hair female wearing professional dark business suit, holding microphone, cinematic production mascot" 
                   />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-3">Spotlight Pal</h3>

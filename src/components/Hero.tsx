@@ -33,7 +33,7 @@ export const Hero = () => {
     } else {
       const timer = setTimeout(() => {
         setShowHeadline(true);
-      }, 2500);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [currentQuestionIndex, questions.length]);

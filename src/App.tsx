@@ -36,6 +36,7 @@ import VideoContentROIComparison from "./pages/blog/VideoContentROIComparison";
 import MobileVideoProduction from "./pages/blog/MobileVideoProduction";
 import ThankYou from "./pages/ThankYou";
 import PalmerHousePals from "./pages/PalmerHousePals";
+import ReelPalShowcase from "./pages/ReelPalShowcase";
 
 // Lazy load individual Pal pages
 const ReelPal = lazy(() => import("./pages/pals/ReelPal"));
@@ -78,6 +79,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/pals" element={<PalmerHousePals />} />
+          <Route path="/reel-pal-showcase" element={<ReelPalShowcase />} />
           <Route 
             path="/pals/reel-pal" 
             element={

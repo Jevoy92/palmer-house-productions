@@ -1,144 +1,200 @@
 import { useState } from 'react';
-import { PalsHero } from '@/components/pals/PalsHero';
-import { PalsFinder } from '@/components/pals/PalsFinder';
-import { PalCard } from '@/components/pals/PalCard';
+import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { PALS_DATA } from '@/lib/palsData';
-import { Users, Expand, Minimize } from 'lucide-react';
+import { Users, ArrowRight, CheckCircle, Zap } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { OptimizedImage } from '@/components/seo/ImageOptimization';
+import { MetaTags } from '@/components/seo/MetaTags';
 
 export default function PalmerHousePals() {
-  const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
-  const [showFinder, setShowFinder] = useState(false);
   const navigate = useNavigate();
-
-  const toggleCard = (palId: string) => {
-    const newExpanded = new Set(expandedCards);
-    if (newExpanded.has(palId)) {
-      newExpanded.delete(palId);
-    } else {
-      newExpanded.add(palId);
-    }
-    setExpandedCards(newExpanded);
-  };
-
-  const expandAll = () => {
-    setExpandedCards(new Set(PALS_DATA.map(pal => pal.id)));
-  };
-
-  const collapseAll = () => {
-    setExpandedCards(new Set());
-  };
 
   return (
     <>
-
-      <main className="min-h-screen">
+      <MetaTags
+        title="Meet the Palmer House Pals - Your Video Production Guides"
+        description="Meet your personalized video production guides. Each Pal specializes in different video solutions to help you achieve your goals."
+        keywords="video production guides, video strategy, social media video, business systems video, evergreen content, cinematic video"
+      />
+      <Navigation />
+      
+      <main className="min-h-screen bg-video-white">
         {/* Hero Section */}
-        <PalsHero />
-
-        {/* Find Your Pal Section */}
-        {showFinder ? (
-          <PalsFinder />
-        ) : (
-          <section className="py-16 bg-accent/5">
-            <div className="max-w-4xl mx-auto px-6 text-center">
-              <h2 className="text-3xl font-bold text-foreground mb-4">
-                Not Sure Which Pal is Right for You?
-              </h2>
-              <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
-                Take our quick assessment to get a personalized recommendation based on your specific needs and goals.
-              </p>
-              <Button 
-                onClick={() => setShowFinder(true)}
-                size="lg"
-                className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white"
-              >
-                Find My Perfect Pal
-                <Users className="w-5 h-5 ml-2" />
-              </Button>
-            </div>
-          </section>
-        )}
-
-        {/* Meet the Pals Section */}
-        <section className="py-20">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                Meet Your Video Production Guides
-              </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-                Each Pal specializes in different types of video solutions, ensuring you get exactly what you need
+        <section className="py-20 lg:py-32 bg-gradient-to-br from-primary/10 to-secondary/10">
+          <div className="max-w-6xl mx-auto px-6 text-center">
+            <div className="animate-fade-in">
+              <div className="flex justify-center mb-8">
+                <div className="flex items-center gap-4 text-primary">
+                  <Zap className="w-8 h-8" />
+                  <Users className="w-8 h-8" />
+                  <Zap className="w-8 h-8" />
+                </div>
+              </div>
+              
+              <h1 className="text-4xl lg:text-6xl font-bold text-corporate-dark mb-6">
+                Meet the 
+                <span className="text-gradient-1"> Palmer House Pals</span>
+              </h1>
+              
+              <p className="text-xl lg:text-2xl text-corporate-gray mb-8 max-w-4xl mx-auto leading-relaxed">
+                Your personalized video production guides. Each Pal specializes in different types of video solutions, 
+                ensuring you get exactly what you need to achieve your goals.
               </p>
               
-              {/* Controls */}
-              <div className="flex flex-wrap gap-4 justify-center">
-                <Button
-                  variant="outline"
-                  onClick={expandAll}
-                  disabled={expandedCards.size === PALS_DATA.length}
-                  className="flex items-center gap-2"
-                >
-                  <Expand className="w-4 h-4" />
-                  Expand All
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={collapseAll}
-                  disabled={expandedCards.size === 0}
-                  className="flex items-center gap-2"
-                >
-                  <Minimize className="w-4 h-4" />
-                  Collapse All
-                </Button>
-              </div>
+              <Button
+                onClick={() => navigate('/contact')}
+                size="xl"
+                className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 px-12 py-6 text-xl"
+              >
+                Find Your Perfect Match
+                <ArrowRight className="w-6 h-6 ml-2" />
+              </Button>
             </div>
+          </div>
+        </section>
 
-            {/* Pals Grid */}
-            <div className="grid lg:grid-cols-2 gap-8">
+        {/* How to Choose Section */}
+        <section className="py-16 bg-corporate-light/30">
+          <div className="max-w-4xl mx-auto px-6 text-center">
+            <h2 className="text-3xl lg:text-4xl font-bold text-corporate-dark mb-8">
+              How to Choose Your Perfect Pal
+            </h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              <Card className="p-6">
+                <CardContent className="p-0 text-center">
+                  <div className="w-12 h-12 bg-social-yellow rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl font-bold text-white">1</span>
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3 text-corporate-dark">Think About Your Goals</h3>
+                  <p className="text-corporate-gray">What do you want to achieve with video? Quick social content, business systems, or cinematic storytelling?</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="p-6">
+                <CardContent className="p-0 text-center">
+                  <div className="w-12 h-12 bg-social-cyan rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl font-bold text-white">2</span>
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3 text-corporate-dark">Browse Each Pal</h3>
+                  <p className="text-corporate-gray">Read about their personality, strengths, and what they do best to find your match.</p>
+                </CardContent>
+              </Card>
+              
+              <Card className="p-6">
+                <CardContent className="p-0 text-center">
+                  <div className="w-12 h-12 bg-social-purple rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl font-bold text-white">3</span>
+                  </div>
+                  <h3 className="text-xl font-semibold mb-3 text-corporate-dark">Start Your Journey</h3>
+                  <p className="text-corporate-gray">Click to explore their packages or book a strategy call to get started.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
+
+        {/* Meet the Pals Grid */}
+        <section className="py-20">
+          <div className="max-w-7xl mx-auto px-6">
+            <h2 className="text-3xl lg:text-4xl font-bold text-center text-corporate-dark mb-16">
+              Choose Your Video Production Guide
+            </h2>
+            
+            <div className="grid lg:grid-cols-2 gap-12">
               {PALS_DATA.map((pal) => (
-                <PalCard
+                <Card 
                   key={pal.id}
-                  pal={pal}
-                  isExpanded={expandedCards.has(pal.id)}
-                  onToggle={() => toggleCard(pal.id)}
-                />
+                  className="overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                  onClick={() => navigate(`/pals/${pal.id}`)}
+                >
+                  <CardContent className="p-0">
+                    <div className="grid md:grid-cols-2">
+                      {/* Character Image */}
+                      <div 
+                        className="p-8 flex items-center justify-center"
+                        style={{ backgroundColor: pal.colorScheme.bg }}
+                      >
+                        <OptimizedImage
+                          src={pal.image}
+                          alt={`${pal.name} character illustration`}
+                          className="w-full max-w-48 h-auto group-hover:scale-105 transition-transform duration-300"
+                          width={200}
+                          height={200}
+                        />
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="p-8 flex flex-col justify-center">
+                        <h3 
+                          className="text-2xl lg:text-3xl font-bold mb-2"
+                          style={{ color: pal.colorScheme.primary }}
+                        >
+                          {pal.name}
+                        </h3>
+                        <p className="text-lg text-corporate-gray mb-4">
+                          {pal.tagline}
+                        </p>
+                        
+                        {/* Top 3 Strengths */}
+                        <div className="space-y-2 mb-6">
+                          {pal.strengths.slice(0, 3).map((strength, index) => (
+                            <div key={index} className="flex items-center gap-2">
+                              <CheckCircle className="w-4 h-4 flex-shrink-0" style={{ color: pal.colorScheme.secondary }} />
+                              <span className="text-sm text-corporate-gray">{strength}</span>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <Button
+                          variant="outline"
+                          className="mt-auto group-hover:scale-105 transition-transform duration-300"
+                          style={{ borderColor: pal.colorScheme.primary, color: pal.colorScheme.primary }}
+                        >
+                          Meet {pal.name}
+                          <ArrowRight className="w-4 h-4 ml-2" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Still Need Help Section */}
-        <section className="py-16 bg-gradient-to-br from-primary/5 to-secondary/5">
+        {/* Final CTA Section */}
+        <section className="py-20 bg-gradient-to-br from-primary/10 to-secondary/10">
           <div className="max-w-4xl mx-auto px-6 text-center">
-            <h2 className="text-3xl font-bold text-foreground mb-4">
-              Still Not Sure Which Path to Take?
+            <h2 className="text-3xl lg:text-4xl font-bold text-corporate-dark mb-6">
+              Still Not Sure Which Pal is Right?
             </h2>
-            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              No problem! Our team is here to help you navigate your options and find the perfect video solution for your unique needs.
+            <p className="text-xl text-corporate-gray mb-8 max-w-2xl mx-auto">
+              No problem! Book a free strategy call and we'll help you find the perfect video solution for your unique needs.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Button 
                 onClick={() => navigate('/contact')}
-                size="lg"
-                className="bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white px-8"
+                size="xl"
+                className="bg-gradient-to-r from-primary to-secondary text-white hover:opacity-90 px-12 py-6 text-xl"
               >
-                Book a Strategy Call
+                Book Free Strategy Call
+                <ArrowRight className="w-6 h-6 ml-2" />
               </Button>
               <Button 
                 onClick={() => navigate('/video-packages')}
                 variant="outline"
-                size="lg"
-                className="px-8"
+                size="xl"
+                className="px-12 py-6 text-xl border-2 border-primary text-primary"
               >
                 Browse All Packages
               </Button>
             </div>
 
-            <div className="mt-8 pt-8 border-t border-border">
-              <p className="text-sm text-muted-foreground">
+            <div className="mt-12 pt-8 border-t border-corporate-gray/20">
+              <p className="text-sm text-corporate-gray">
                 <strong>Free Strategy Call:</strong> 30-minute consultation to understand your goals and recommend the best approach
               </p>
             </div>

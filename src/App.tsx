@@ -36,6 +36,12 @@ import VideoContentROIComparison from "./pages/blog/VideoContentROIComparison";
 import MobileVideoProduction from "./pages/blog/MobileVideoProduction";
 import ThankYou from "./pages/ThankYou";
 import PalmerHousePals from "./pages/PalmerHousePals";
+
+// Lazy load individual Pal pages
+const ReelPal = lazy(() => import("./pages/pals/ReelPal"));
+const SystemPal = lazy(() => import("./pages/pals/SystemPal"));
+const EvergreenPal = lazy(() => import("./pages/pals/EvergreenPal"));
+const SpotlightPal = lazy(() => import("./pages/pals/SpotlightPal"));
 import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 
 const VideoReadinessPage = lazy(() => import("./pages/assessments/VideoReadiness"));
@@ -72,6 +78,38 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/pals" element={<PalmerHousePals />} />
+          <Route 
+            path="/pals/reel-pal" 
+            element={
+              <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+                <ReelPal />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/pals/system-pal" 
+            element={
+              <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+                <SystemPal />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/pals/evergreen-pal" 
+            element={
+              <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+                <EvergreenPal />
+              </Suspense>
+            } 
+          />
+          <Route 
+            path="/pals/spotlight-pal" 
+            element={
+              <Suspense fallback={<div className="p-8 text-center">Loading...</div>}>
+                <SpotlightPal />
+              </Suspense>
+            } 
+          />
           <Route path="/video-packages" element={<VideoPackages />} />
           <Route path="/discovery-call" element={<Navigate to="/contact" replace />} />
           <Route path="/video-use-cases" element={<VideoUseCases />} />

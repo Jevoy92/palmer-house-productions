@@ -115,7 +115,7 @@ const Values = () => {
             </div>
             
             {/* Philosophy Section */}
-            <div className="bg-gradient-to-br from-social-purple/10 via-social-pink/5 to-social-cyan/10 rounded-3xl p-12 video-shadow border border-social-purple/20 mb-16">
+            <div className="rounded-3xl p-12 video-shadow border border-gray-200 mb-16">
               <div className="text-center">
                 <h2 className="text-4xl font-display font-black text-corporate-dark mb-8">
                   Our Creative Philosophy

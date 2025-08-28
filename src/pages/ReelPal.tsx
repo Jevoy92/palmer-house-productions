@@ -121,110 +121,116 @@ const ReelPal = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Reel Pal Packages</h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Choose the perfect package to kickstart your social media content journey. From quick wins to comprehensive strategies.</p>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Boost your social media presence with our proven content creation packages.</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Starter Package */}
+              {/* DIY Package */}
               <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-yellow-500 transition-all hover:scale-105">
-                <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">STARTER</div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">Starter Session</h3>
-                <div className="text-4xl font-bold text-yellow-600 mb-6">$500</div>
+                <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">DIY</div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">25 DIY Reels</h3>
+                <div className="text-4xl font-bold text-yellow-600 mb-6">$47</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
                     <Check className="text-yellow-500 h-5 w-5" />
-                    <span>5 short-form videos</span>
+                    <span>25 talking-head reel ideas</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-yellow-500 h-5 w-5" />
-                    <span>Platform optimization</span>
+                    <span>Platform breakdowns included</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-yellow-500 h-5 w-5" />
-                    <span>Content strategy session</span>
+                    <span>Sample scripts provided</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-yellow-500 h-5 w-5" />
-                    <span>Basic editing included</span>
+                    <span>Film from home setup</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-yellow-500 h-5 w-5" />
-                    <span>1 revision round</span>
+                    <span>Instant PDF download</span>
                   </li>
                 </ul>
-                <Button className="w-full bg-yellow-500 text-white hover:bg-yellow-600 mb-4" size="lg">Get Started</Button>
+                <Button asChild className="w-full bg-yellow-500 text-white hover:bg-yellow-600 mb-4" size="lg">
+                  <a href="https://payhip.com/b/u8wvz" target="_blank" rel="noopener noreferrer">Buy Now</a>
+                </Button>
                 <Button variant="outline" className="w-full border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white">Learn More</Button>
               </div>
               
-              {/* Growth Package */}
+              {/* Script Bundle */}
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-yellow-500 transition-all hover:scale-105">
+                <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">SCRIPTS</div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">Script Bundle</h3>
+                <div className="text-4xl font-bold text-yellow-600 mb-6">$47</div>
+                <ul className="space-y-4 mb-8 text-left">
+                  <li className="flex items-center space-x-3">
+                    <Check className="text-yellow-500 h-5 w-5" />
+                    <span>About Me video scripts</span>
+                  </li>
+                  <li className="flex items-center space-x-3">
+                    <Check className="text-yellow-500 h-5 w-5" />
+                    <span>Social proof templates</span>
+                  </li>
+                  <li className="flex items-center space-x-3">
+                    <Check className="text-yellow-500 h-5 w-5" />
+                    <span>Call-to-action scripts</span>
+                  </li>
+                  <li className="flex items-center space-x-3">
+                    <Check className="text-yellow-500 h-5 w-5" />
+                    <span>FAQ video templates</span>
+                  </li>
+                  <li className="flex items-center space-x-3">
+                    <Check className="text-yellow-500 h-5 w-5" />
+                    <span>Plug-and-play format</span>
+                  </li>
+                </ul>
+                <Button asChild className="w-full bg-yellow-500 text-white hover:bg-yellow-600 mb-4" size="lg">
+                  <a href="https://payhip.com/b/jxGKl" target="_blank" rel="noopener noreferrer">Get Scripts</a>
+                </Button>
+                <Button variant="outline" className="w-full border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white">View Samples</Button>
+              </div>
+              
+              {/* 30 Reels Package */}
               <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-yellow-500 transition-all hover:scale-105 relative">
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <div className="bg-yellow-500 text-white px-4 py-2 rounded-full text-sm font-semibold">MOST POPULAR</div>
                 </div>
-                <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">GROWTH</div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">Content Boost</h3>
-                <div className="text-4xl font-bold text-yellow-600 mb-6">$1,200</div>
+                <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">DONE FOR YOU</div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">30 Reels in 30 Days</h3>
+                <div className="text-4xl font-bold text-yellow-600 mb-6">$4,800</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
                     <Check className="text-yellow-500 h-5 w-5" />
-                    <span>15 short-form videos</span>
+                    <span>1 full-day shoot (8 hours)</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-yellow-500 h-5 w-5" />
-                    <span>Multi-platform optimization</span>
+                    <span>30 social-ready videos</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-yellow-500 h-5 w-5" />
-                    <span>Content calendar planning</span>
+                    <span>15-30 seconds each</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-yellow-500 h-5 w-5" />
-                    <span>Advanced editing & effects</span>
+                    <span>Captions + formatting</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-yellow-500 h-5 w-5" />
-                    <span>Unlimited revisions</span>
+                    <span>IG/LinkedIn/TikTok ready</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-yellow-500 h-5 w-5" />
-                    <span>Performance analytics</span>
+                    <span>Only 3 spots available</span>
                   </li>
                 </ul>
-                <Button className="w-full bg-yellow-500 text-white hover:bg-yellow-600 mb-4" size="lg">Choose Growth</Button>
-                <Button asChild variant="outline" className="w-full border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white">
-                  <Link to="/contact">Book Strategy Call</Link>
+                <Button asChild className="w-full bg-yellow-500 text-white hover:bg-yellow-600 mb-4" size="lg">
+                  <Link to="/contact">Book Now</Link>
                 </Button>
-              </div>
-              
-              {/* DIY Package */}
-              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-yellow-500 transition-all hover:scale-105">
-                <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">DIY KIT</div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">DIY Creator Kit</h3>
-                <div className="text-4xl font-bold text-yellow-600 mb-6">$800</div>
-                <ul className="space-y-4 mb-8 text-left">
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-yellow-500 h-5 w-5" />
-                    <span>Complete content templates</span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-yellow-500 h-5 w-5" />
-                    <span>Video editing tutorials</span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-yellow-500 h-5 w-5" />
-                    <span>Content planning tools</span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-yellow-500 h-5 w-5" />
-                    <span>Brand style guide</span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-yellow-500 h-5 w-5" />
-                    <span>30 days of support</span>
-                  </li>
-                </ul>
-                <Button className="w-full bg-yellow-500 text-white hover:bg-yellow-600 mb-4" size="lg">Buy Now</Button>
-                <Button variant="outline" className="w-full border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white">View Samples</Button>
+                <Button asChild variant="outline" className="w-full border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white">
+                  <Link to="/contact">Strategy Call</Link>
+                </Button>
               </div>
             </div>
           </div>

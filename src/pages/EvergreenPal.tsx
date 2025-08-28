@@ -110,106 +110,118 @@ const EvergreenPal = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Foundation Package */}
+              {/* Strategy Blueprint */}
               <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105">
-                <div className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">FOUNDATION</div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">Authority Builder</h3>
-                <div className="text-4xl font-bold text-green-600 mb-6">$1,200</div>
+                <div className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">STRATEGY</div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">Video Strategy Blueprint</h3>
+                <div className="text-4xl font-bold text-green-600 mb-6">$19</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>5 YouTube videos</span>
+                    <span>Step-by-step video guide</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>SEO optimization</span>
+                    <span>Growth stage strategies</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>Channel strategy session</span>
+                    <span>Audience behavior insights</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>Custom thumbnails</span>
+                    <span>Content planning framework</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>2 revision rounds</span>
+                    <span>Instant PDF download</span>
                   </li>
                 </ul>
-                <Button className="w-full bg-green-500 text-white hover:bg-green-600 mb-4" size="lg">Get Started</Button>
+                <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600 mb-4" size="lg">
+                  <a href="https://payhip.com/b/nIagA" target="_blank" rel="noopener noreferrer">Get Strategy</a>
+                </Button>
                 <Button variant="outline" className="w-full border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white">Learn More</Button>
               </div>
               
-              {/* Growth Package */}
+              {/* Founder Brand Kit */}
               <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105 relative">
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <div className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold">MOST POPULAR</div>
                 </div>
-                <div className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">GROWTH</div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">Channel Accelerator</h3>
-                <div className="text-4xl font-bold text-green-600 mb-6">$3,500</div>
+                <div className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">PERSONAL BRAND</div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">Founder's Brand Kit</h3>
+                <div className="text-4xl font-bold text-green-600 mb-6">$6,000</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>15 high-value videos</span>
+                    <span>1 shoot day + strategy</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>Complete channel optimization</span>
+                    <span>Founder bio video (90-120 sec)</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>Content series planning</span>
+                    <span>2 hook/top-of-funnel videos</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>Advanced SEO strategy</span>
+                    <span>Vibe montage/sizzle reel</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>Unlimited revisions</span>
+                    <span>Multi-platform delivery</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>Performance analytics</span>
+                    <span>Only 4 spots available</span>
                   </li>
                 </ul>
-                <Button className="w-full bg-green-500 text-white hover:bg-green-600 mb-4" size="lg">Choose Growth</Button>
+                <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600 mb-4" size="lg">
+                  <Link to="/contact">Book Now</Link>
+                </Button>
                 <Button asChild variant="outline" className="w-full border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white">
-                  <Link to="/contact">Book Strategy Call</Link>
+                  <Link to="/contact">Strategy Call</Link>
                 </Button>
               </div>
               
-              {/* Authority Package */}
+              {/* YouTube Engine */}
               <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105">
-                <div className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">AUTHORITY</div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">Thought Leader</h3>
+                <div className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">YOUTUBE</div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">YouTube Visibility Engine</h3>
                 <div className="text-4xl font-bold text-green-600 mb-6">$6,500</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>30 premium videos</span>
+                    <span>3 long-form videos (8-10 min)</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>Multi-platform distribution</span>
+                    <span>Content strategy + series plan</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>Personal brand strategy</span>
+                    <span>Full scripting + outlines</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>Speaking reel creation</span>
+                    <span>Teleprompter support</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-green-500 h-5 w-5" />
-                    <span>6 months ongoing support</span>
+                    <span>SEO titles + descriptions</span>
+                  </li>
+                  <li className="flex items-center space-x-3">
+                    <Check className="text-green-500 h-5 w-5" />
+                    <span>Only 2 spots this quarter</span>
                   </li>
                 </ul>
-                <Button className="w-full bg-green-500 text-white hover:bg-green-600 mb-4" size="lg">Become a Leader</Button>
-                <Button variant="outline" className="w-full border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white">Schedule Deep Dive</Button>
+                <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600 mb-4" size="lg">
+                  <Link to="/contact">Book Now</Link>
+                </Button>
+                <Button asChild variant="outline" className="w-full border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white">
+                  <Link to="/contact">Deep Dive Call</Link>
+                </Button>
               </div>
             </div>
           </div>

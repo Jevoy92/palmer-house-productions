@@ -104,110 +104,126 @@ const SystemPal = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">System Pal Packages</h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Streamline your operations with video systems that actually work and get used by your team.</p>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Build video systems that streamline operations and reduce repetitive tasks.</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Foundation Package */}
+              {/* Internal Assets */}
               <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-gray-500 transition-all hover:scale-105">
-                <div className="bg-gray-100 text-gray-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">FOUNDATION</div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">Training Starter</h3>
-                <div className="text-4xl font-bold text-gray-600 mb-6">$800</div>
+                <div className="bg-gray-100 text-gray-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">INTERNAL</div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">Internal Business Assets</h3>
+                <div className="text-4xl font-bold text-gray-600 mb-6">$4,500</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>3 training modules</span>
+                    <span>15 videos @ 1–2 min each</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>Process documentation</span>
+                    <span>Onboarding & training</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>Basic screen recordings</span>
+                    <span>Software walkthroughs</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>Implementation guide</span>
+                    <span>Process & policy explainers</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>2 revision rounds</span>
+                    <span>Culture & retention content</span>
+                  </li>
+                  <li className="flex items-center space-x-3">
+                    <Check className="text-gray-500 h-5 w-5" />
+                    <span>Only 4 spots available</span>
                   </li>
                 </ul>
-                <Button className="w-full bg-gray-500 text-white hover:bg-gray-600 mb-4" size="lg">Get Started</Button>
+                <Button asChild className="w-full bg-gray-500 text-white hover:bg-gray-600 mb-4" size="lg">
+                  <Link to="/contact">Book Now</Link>
+                </Button>
                 <Button variant="outline" className="w-full border-2 border-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white">Learn More</Button>
               </div>
               
-              {/* Complete Package */}
+              {/* External Assets */}
               <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-gray-500 transition-all hover:scale-105 relative">
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <div className="bg-gray-500 text-white px-4 py-2 rounded-full text-sm font-semibold">MOST POPULAR</div>
                 </div>
-                <div className="bg-gray-100 text-gray-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">COMPLETE</div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">System Overhaul</h3>
-                <div className="text-4xl font-bold text-gray-600 mb-6">$2,500</div>
+                <div className="bg-gray-100 text-gray-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">EXTERNAL</div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">External Business Assets</h3>
+                <div className="text-4xl font-bold text-gray-600 mb-6">$4,500</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>10 comprehensive modules</span>
+                    <span>15 videos @ 1–2 min each</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>Complete onboarding system</span>
+                    <span>Customer FAQ libraries</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>Interactive assessments</span>
+                    <span>Product/service explainers</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>Custom learning platform setup</span>
+                    <span>Testimonial capsules</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>Unlimited revisions</span>
+                    <span>Behind-the-scenes content</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>90-day support included</span>
+                    <span>Only 5 spots available</span>
                   </li>
                 </ul>
-                <Button className="w-full bg-gray-500 text-white hover:bg-gray-600 mb-4" size="lg">Choose Complete</Button>
+                <Button asChild className="w-full bg-gray-500 text-white hover:bg-gray-600 mb-4" size="lg">
+                  <Link to="/contact">Book Now</Link>
+                </Button>
                 <Button asChild variant="outline" className="w-full border-2 border-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white">
-                  <Link to="/contact">Book Strategy Call</Link>
+                  <Link to="/contact">Strategy Call</Link>
                 </Button>
               </div>
               
-              {/* Enterprise Package */}
+              {/* Advanced Package */}
               <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-gray-500 transition-all hover:scale-105">
-                <div className="bg-gray-100 text-gray-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">ENTERPRISE</div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">Custom Solutions</h3>
-                <div className="text-4xl font-bold text-gray-600 mb-6">Custom</div>
+                <div className="bg-gray-100 text-gray-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">ADVANCED</div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">Safety & Compliance</h3>
+                <div className="text-4xl font-bold text-gray-600 mb-6">$10,000+</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>Unlimited training modules</span>
+                    <span>8–10 videos @ up to 5 min</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>Multi-department systems</span>
+                    <span>Safety & compliance training</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>Advanced integrations</span>
+                    <span>Sales training modules</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>Dedicated project manager</span>
+                    <span>Advanced software training</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-gray-500 h-5 w-5" />
-                    <span>Ongoing maintenance</span>
+                    <span>Regulatory compliance</span>
+                  </li>
+                  <li className="flex items-center space-x-3">
+                    <Check className="text-gray-500 h-5 w-5" />
+                    <span>Only 2 spots this quarter</span>
                   </li>
                 </ul>
-                <Button className="w-full bg-gray-500 text-white hover:bg-gray-600 mb-4" size="lg">Get Quote</Button>
-                <Button variant="outline" className="w-full border-2 border-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white">Schedule Consultation</Button>
+                <Button asChild className="w-full bg-gray-500 text-white hover:bg-gray-600 mb-4" size="lg">
+                  <Link to="/contact">Get Quote</Link>
+                </Button>
+                <Button asChild variant="outline" className="w-full border-2 border-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white">
+                  <Link to="/contact">Consultation</Link>
+                </Button>
               </div>
             </div>
           </div>

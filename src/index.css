@@ -336,6 +336,32 @@
     transform: rotateY(180deg);
   }
 
+  /* Hero Question Animation */
+  @keyframes question-reveal {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .question-reveal {
+    animation: question-reveal 0.8s ease-out forwards;
+    opacity: 0;
+  }
+
+  /* Respects reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .question-reveal {
+      animation: none;
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   /* Simple animations only */
   .float-animation {
     animation: float 6s ease-in-out infinite;

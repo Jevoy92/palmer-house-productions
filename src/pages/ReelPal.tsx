@@ -365,7 +365,7 @@ const ReelPal = () => {
                 </div>
                 {faqOpen[4] && (
                   <div className="mt-6 text-muted-foreground">
-                    <p>The DIY Creator Kit includes 30+ video templates, step-by-step editing tutorials, content planning worksheets, brand style guides, trending hashtag lists, and 30 days of email support. Everything you need to create professional content independently.</p>
+                    <p>I've curated Amazon affiliate kits at $250, $500, and custom budgets beyond that. Each kit contains carefully selected equipment and tools to help you create professional content at your budget level.</p>
                   </div>
                 )}
               </div>

@@ -153,10 +153,9 @@ const ReelPal = () => {
                     <span>Limited availability</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-yellow-500 text-white hover:bg-yellow-600 mb-4" size="lg">
+                <Button asChild className="w-full bg-yellow-500 text-white hover:bg-yellow-600" size="lg">
                   <Link to="/contact">Book Session</Link>
                 </Button>
-                <Button variant="outline" className="w-full border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white">Quick Chat</Button>
               </div>
               
               {/* DIY Package */}
@@ -186,10 +185,9 @@ const ReelPal = () => {
                     <span>Instant PDF download</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-yellow-500 text-white hover:bg-yellow-600 mb-4" size="lg">
+                <Button asChild className="w-full bg-yellow-500 text-white hover:bg-yellow-600" size="lg">
                   <a href="https://payhip.com/b/u8wvz" target="_blank" rel="noopener noreferrer">Buy Now</a>
                 </Button>
-                <Button variant="outline" className="w-full border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white">Learn More</Button>
               </div>
               
               {/* Script Bundle */}
@@ -219,10 +217,9 @@ const ReelPal = () => {
                     <span>Plug-and-play format</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-yellow-500 text-white hover:bg-yellow-600 mb-4" size="lg">
+                <Button asChild className="w-full bg-yellow-500 text-white hover:bg-yellow-600" size="lg">
                   <a href="https://payhip.com/b/jxGKl" target="_blank" rel="noopener noreferrer">Get Scripts</a>
                 </Button>
-                <Button variant="outline" className="w-full border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white">View Samples</Button>
               </div>
               
               {/* 30 Reels Package */}
@@ -259,11 +256,8 @@ const ReelPal = () => {
                     <span>Only 3 spots available</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-yellow-500 text-white hover:bg-yellow-600 mb-4" size="lg">
+                <Button asChild className="w-full bg-yellow-500 text-white hover:bg-yellow-600" size="lg">
                   <Link to="/contact">Book Now</Link>
-                </Button>
-                <Button asChild variant="outline" className="w-full border-2 border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white">
-                  <Link to="/contact">Strategy Call</Link>
                 </Button>
               </div>
             </div>
@@ -451,7 +445,7 @@ const ReelPal = () => {
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-3">System Pal</h3>
                 <p className="text-muted-foreground mb-4">Perfect for businesses needing training videos and internal systems</p>
-                <Button asChild className="bg-gray-600 text-white hover:bg-gray-700">
+                <Button asChild className="bg-purple-600 text-white hover:bg-purple-700">
                   <Link to="/system-pal">Meet System Pal</Link>
                 </Button>
               </div>

@@ -141,11 +141,8 @@ const SpotlightPal = () => {
                     <span>8 spots available this month</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-red-500 text-white hover:bg-red-600 mb-4" size="lg">
+                <Button asChild className="w-full bg-red-500 text-white hover:bg-red-600" size="lg">
                   <Link to="/contact">Book Launch</Link>
-                </Button>
-                <Button asChild variant="outline" className="w-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white">
-                  <Link to="/contact">Strategy Call</Link>
                 </Button>
               </div>
               
@@ -180,11 +177,8 @@ const SpotlightPal = () => {
                     <span>Artist collaboration focused</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-red-500 text-white hover:bg-red-600 mb-4" size="lg">
+                <Button asChild className="w-full bg-red-500 text-white hover:bg-red-600" size="lg">
                   <Link to="/contact">Get Quote</Link>
-                </Button>
-                <Button asChild variant="outline" className="w-full border-2 border-red-500 text-red-500 hover:bg-red-500 hover:text-white">
-                  <Link to="/contact">Creative Consultation</Link>
                 </Button>
               </div>
             </div>
@@ -368,7 +362,7 @@ const SpotlightPal = () => {
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-3">System Pal</h3>
                 <p className="text-muted-foreground mb-4">Perfect for businesses needing training videos and internal systems</p>
-                <Button asChild className="bg-gray-600 text-white hover:bg-gray-700">
+                <Button asChild className="bg-purple-600 text-white hover:bg-purple-700">
                   <Link to="/system-pal">Meet System Pal</Link>
                 </Button>
               </div>

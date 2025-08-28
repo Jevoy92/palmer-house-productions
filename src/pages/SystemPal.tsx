@@ -136,10 +136,9 @@ const SystemPal = () => {
                     <span>Only 4 spots available</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-purple-500 text-white hover:bg-purple-600 mb-4" size="lg">
+                <Button asChild className="w-full bg-purple-500 text-white hover:bg-purple-600" size="lg">
                   <Link to="/contact">Book Now</Link>
                 </Button>
-                <Button variant="outline" className="w-full border-2 border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white">Learn More</Button>
               </div>
               
               {/* External Assets */}
@@ -176,11 +175,8 @@ const SystemPal = () => {
                     <span>Only 5 spots available</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-purple-500 text-white hover:bg-purple-600 mb-4" size="lg">
+                <Button asChild className="w-full bg-purple-500 text-white hover:bg-purple-600" size="lg">
                   <Link to="/contact">Book Now</Link>
-                </Button>
-                <Button asChild variant="outline" className="w-full border-2 border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white">
-                  <Link to="/contact">Strategy Call</Link>
                 </Button>
               </div>
               
@@ -215,11 +211,8 @@ const SystemPal = () => {
                     <span>Only 2 spots this quarter</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-purple-500 text-white hover:bg-purple-600 mb-4" size="lg">
+                <Button asChild className="w-full bg-purple-500 text-white hover:bg-purple-600" size="lg">
                   <Link to="/contact">Get Quote</Link>
-                </Button>
-                <Button asChild variant="outline" className="w-full border-2 border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white">
-                  <Link to="/contact">Consultation</Link>
                 </Button>
               </div>
             </div>

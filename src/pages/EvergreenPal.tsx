@@ -134,10 +134,9 @@ const EvergreenPal = () => {
                     <span>Instant PDF download</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600 mb-4" size="lg">
+                <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600" size="lg">
                   <a href="https://payhip.com/b/nIagA" target="_blank" rel="noopener noreferrer">Get Strategy</a>
                 </Button>
-                <Button variant="outline" className="w-full border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white">Learn More</Button>
               </div>
               
               {/* Founder Brand Kit */}
@@ -174,11 +173,8 @@ const EvergreenPal = () => {
                     <span>Only 4 spots available</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600 mb-4" size="lg">
+                <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600" size="lg">
                   <Link to="/contact">Book Now</Link>
-                </Button>
-                <Button asChild variant="outline" className="w-full border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white">
-                  <Link to="/contact">Strategy Call</Link>
                 </Button>
               </div>
               
@@ -213,11 +209,8 @@ const EvergreenPal = () => {
                     <span>Only 2 spots this quarter</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600 mb-4" size="lg">
+                <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600" size="lg">
                   <Link to="/contact">Book Now</Link>
-                </Button>
-                <Button asChild variant="outline" className="w-full border-2 border-green-500 text-green-500 hover:bg-green-500 hover:text-white">
-                  <Link to="/contact">Deep Dive Call</Link>
                 </Button>
               </div>
             </div>
@@ -401,7 +394,7 @@ const EvergreenPal = () => {
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-3">System Pal</h3>
                 <p className="text-muted-foreground mb-4">Perfect for businesses needing training videos and internal systems</p>
-                <Button asChild className="bg-gray-600 text-white hover:bg-gray-700">
+                <Button asChild className="bg-purple-600 text-white hover:bg-purple-700">
                   <Link to="/system-pal">Meet System Pal</Link>
                 </Button>
               </div>

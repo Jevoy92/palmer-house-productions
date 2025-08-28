@@ -15,6 +15,9 @@ import Index from "./pages/Index";
 import VideoPackages from "./pages/VideoPackages";
 import Pals from "./pages/Pals";
 import ReelPal from "./pages/ReelPal";
+import SystemPal from "./pages/SystemPal";
+import EvergreenPal from "./pages/EvergreenPal";
+import SpotlightPal from "./pages/SpotlightPal";
 
 import VideoUseCases from "./pages/VideoUseCases";
 import AboutUs from "./pages/AboutUs";
@@ -74,6 +77,9 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/pals" element={<Pals />} />
           <Route path="/reel-pal" element={<ReelPal />} />
+          <Route path="/system-pal" element={<SystemPal />} />
+          <Route path="/evergreen-pal" element={<EvergreenPal />} />
+          <Route path="/spotlight-pal" element={<SpotlightPal />} />
           <Route path="/video-packages" element={<VideoPackages />} />
           <Route path="/discovery-call" element={<Navigate to="/contact" replace />} />
           <Route path="/video-use-cases" element={<VideoUseCases />} />

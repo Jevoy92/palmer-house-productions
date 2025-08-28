@@ -95,43 +95,6 @@ const Pals = () => {
           </div>
         </section>
 
-        {/* Introduction Section */}
-        <section className="py-24 bg-background">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-20">
-              <div className="inline-flex items-center bg-primary/10 text-primary px-6 py-2 rounded-full text-sm font-semibold mb-6">
-                <Wand2 className="mr-2 h-4 w-4" />
-                HOW THE PALS WORK
-              </div>
-              <h2 className="text-5xl md:text-6xl font-black text-foreground mb-8">Your Video Journey,<br />Perfectly Guided</h2>
-              <p className="text-xl text-muted-foreground max-w-4xl mx-auto leading-relaxed">Each Pal represents a different expertise in video production. They're not just mascots—they're your strategic guides who understand exactly what you need and how to get you there.</p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-20">
-              <div className="text-center group">
-                <div className="w-24 h-24 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform">
-                  <Handshake className="text-white h-8 w-8" />
-                </div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">1. Meet Your Pals</h3>
-                <p className="text-muted-foreground text-lg leading-relaxed">Get to know each Pal's personality, strengths, and the unique video solutions they specialize in.</p>
-              </div>
-              <div className="text-center group">
-                <div className="w-24 h-24 bg-gradient-to-br from-accent to-secondary rounded-2xl flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform">
-                  <Route className="text-white h-8 w-8" />
-                </div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">2. Choose Your Path</h3>
-                <p className="text-muted-foreground text-lg leading-relaxed">Select the Pal whose expertise aligns perfectly with your video goals and business objectives.</p>
-              </div>
-              <div className="text-center group">
-                <div className="w-24 h-24 bg-gradient-to-br from-green-500 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-8 group-hover:scale-110 transition-transform">
-                  <Rocket className="text-white h-8 w-8" />
-                </div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">3. Launch Together</h3>
-                <p className="text-muted-foreground text-lg leading-relaxed">Dive into tailored packages and services designed specifically around your chosen Pal's expertise.</p>
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* Main Pals Showcase */}
         <section className="py-24 bg-muted/5">

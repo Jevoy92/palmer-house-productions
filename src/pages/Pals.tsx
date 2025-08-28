@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
+import systemPalClean from "@/assets/system-pal-clean.png";
 import { 
   Menu, 
   Wand2, 
@@ -155,7 +156,7 @@ const Pals = () => {
               <div className="absolute top-0 left-0 w-64 h-64 bg-purple-100 rounded-full -translate-y-32 -translate-x-32 opacity-50"></div>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
                 <div className="text-center order-2 lg:order-1">
-                  <img className="w-80 h-80 mx-auto" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-8585903249c27bf175cd.png" alt="cartoon character female with red hair, professional gray outfit, holding clipboard with checkmarks and gear icons, surrounded by system diagrams and workflow charts, technical but approachable mascot style" />
+                  <img className="w-80 h-80 mx-auto" src={systemPalClean} alt="cartoon character female with red hair and glasses wearing a gray suit, holding a checklist, with floating system icons like gears, charts, and documents on a clean white background" />
                 </div>
                 <div className="text-center lg:text-left order-1 lg:order-2">
                   <div className="inline-flex items-center bg-purple-100 text-purple-800 px-6 py-3 rounded-full text-sm font-bold mb-6">

@@ -98,11 +98,6 @@ export const Navigation = () => {
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/pals" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
-                      Meet the Pals
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
                     <Link to="/services/diy-downloads" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
                       DIY Downloads
                     </Link>
@@ -193,9 +188,6 @@ export const Navigation = () => {
               <div className="space-y-1">
                 <Link to="/video-packages" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
                   Video Packages
-                </Link>
-                <Link to="/pals" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
-                  Meet the Pals
                 </Link>
                 <Link to="/services/diy-downloads" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
                   DIY Downloads

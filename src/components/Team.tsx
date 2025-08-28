@@ -1,29 +1,28 @@
-
 export const Team = () => {
   const teamMembers = [
     {
+      name: "Jevoy Palmer",
+      role: "Founder & CEO",
+      image: "/lovable-uploads/945e6d63-02d8-4c0d-a4ae-b691cc806a74.png",
+      bio: "Jevoy is the visionary behind Palmer House Productions. A filmmaker, strategist, and storyteller at heart, he leads with the belief that video isn't just content—it's a business tool. Known for making even the most camera-shy clients feel confident on set, he's passionate about turning complex ideas into cinematic clarity.",
+      gradient: "gradient-social-3", 
+      textGradient: "text-gradient-3"
+    },
+    {
       name: "Kyli Lora",
-      role: "Creative Pathfinder",
+      role: "Executive Production Assistant",
       image: "/lovable-uploads/dcada800-4488-4970-82eb-2c356d3e789d.png",
-      bio: "Trail guide for viral content discovery with 2M+ views across uncharted platforms.",
+      bio: "Kyli keeps the wheels turning at Palmer House Productions. From client communication and scheduling to on-set logistics and post-production prep, she's the calm in the creative storm. With a sharp eye for detail and a heart for service, she ensures every project runs smoothly from start to finish.",
       gradient: "gradient-social-1",
       textGradient: "text-gradient-1"
     },
     {
       name: "Trenton Sims", 
-      role: "Visual Explorer & Motion Artist",
+      role: "Lead Editor",
       image: "/lovable-uploads/2537d3fc-b210-4170-93a2-d927fe38eea0.png",
-      bio: "Cartographer of motion graphics who maps unforgettable brand territories.",
+      bio: "Trenton is the post-production powerhouse behind our visual storytelling. With a knack for turning raw footage into compelling narratives, he brings each client's vision to life through clean cuts, creative pacing, and platform-ready delivery. His work is where the magic comes together.",
       gradient: "gradient-social-2",
       textGradient: "text-gradient-2"
-    },
-    {
-      name: "Jevoy Palmer",
-      role: "Founder & Lead Adventure Guide",
-      image: "/lovable-uploads/945e6d63-02d8-4c0d-a4ae-b691cc806a74.png",
-      bio: "Your storyteller with a camera, charting new creative territories where culture meets vision.",
-      gradient: "gradient-social-3", 
-      textGradient: "text-gradient-3"
     }
   ];
 
@@ -36,19 +35,19 @@ export const Team = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-24">
-          <div className="inline-block px-6 py-3 gradient-social-2 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            🏕️ Meet Your Guides
+        <div className="text-center mb-16 px-4">
+          <div className="inline-block px-4 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-6 video-shadow mobile-touch-target">
+            👥 Our Team
           </div>
-          <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-            The <span className="text-gradient-2">Expedition</span> Team
+          <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-6 text-corporate-dark tracking-tight">
+            The <span className="text-gradient-2">Palmer House</span> Team
           </h2>
-          <p className="text-2xl text-corporate-gray max-w-3xl mx-auto font-medium">
-            The fearless explorers behind every groundbreaking campaign and boundary-pushing story.
+          <p className="text-base md:text-lg text-corporate-gray max-w-3xl mx-auto font-medium leading-relaxed">
+            Meet the video production professionals who bring your stories to life.
           </p>
         </div>
         
-        <div className="grid lg:grid-cols-3 gap-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
           {teamMembers.map((member, index) => (
             <div 
               key={index}
@@ -60,19 +59,21 @@ export const Team = () => {
                 <div className="relative aspect-square w-full rounded-3xl overflow-hidden video-shadow group-hover:video-shadow-lg transition-all duration-500 group-hover:scale-105">
                   <img 
                     src={member.image} 
-                    alt={member.name}
+                    alt={`${member.name}, ${member.role} at Palmer House Productions - Professional video production team member`}
                     className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
                   />
                   {/* Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
               </div>
 
-              <h3 className="text-3xl font-display font-black text-corporate-dark mb-3">{member.name}</h3>
-              <h4 className={`text-xl font-bold mb-6 ${member.textGradient}`}>
+              <h3 className="text-xl md:text-2xl font-display font-black text-corporate-dark mb-2">{member.name}</h3>
+              <h4 className={`text-base md:text-lg font-bold mb-4 ${member.textGradient}`}>
                 {member.role}
               </h4>
-              <p className="text-corporate-gray leading-relaxed text-lg font-medium">
+              <p className="text-corporate-gray leading-relaxed text-sm md:text-base font-medium">
                 {member.bio}
               </p>
               
@@ -84,24 +85,6 @@ export const Team = () => {
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Team Stats */}
-        <div className="mt-24 p-12 gradient-social-4 rounded-3xl video-shadow-lg">
-          <div className="grid md:grid-cols-3 gap-8 text-center">
-            <div>
-              <div className="text-4xl font-black text-white mb-2">500+</div>
-              <div className="text-white/90 font-medium">Adventures Documented</div>
-            </div>
-            <div>
-              <div className="text-4xl font-black text-white mb-2">15+</div>
-              <div className="text-white/90 font-medium">Years Exploring Together</div>
-            </div>
-            <div>
-              <div className="text-4xl font-black text-white mb-2">100%</div>
-              <div className="text-white/90 font-medium">Trailblazer Satisfaction</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

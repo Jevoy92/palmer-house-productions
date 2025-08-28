@@ -1,93 +1,44 @@
 
 import { useState } from "react";
-import { ContactForm } from "./ContactForm";
+import { ContactWizard } from "./ContactWizard";
+import { ContactHeader } from "./contact/ContactHeader";
+import { ProcessPreview } from "./contact/ProcessPreview";
+import { ReviewsSection } from "./contact/ReviewsSection";
+import { BottomCTA } from "./contact/BottomCTA";
 
-export const Contact = () => {
-  const [isFormOpen, setIsFormOpen] = useState(false);
 
-  const handleStrategyCall = () => {
-    window.open('https://calendly.com/palmerhouseproductions-info/general-strategy-call', '_blank');
+interface ContactProps {
+  autoOpenWizard?: boolean;
+}
+
+export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
+  const [isWizardOpen, setIsWizardOpen] = useState(autoOpenWizard);
+
+  const handleZohoBooking = () => {
+    window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078320', '_blank', 'noopener,noreferrer');
+  };
+
+  const handleViewAllReviews = () => {
+    window.open('https://www.google.com/search?q=palmer+house+productions&oq=palmer+house+productions&gs_lcrp=EgZjaHJvbWUqBggAEEUYOzIGCAAQRRg7MgYIARBFGD0yBggCEEUYPTIGCAMQRRhB0gEINTI0OWowajeoAgCwAgA&sourceid=chrome&ie=UTF-8#lrd=0x54905d5328d9caa5:0x5946127015c6ae31,1,,,,', '_blank');
   };
 
   return (
-    <section id="contact" className="py-32 bg-corporate-dark relative overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-40 h-40 gradient-social-1 rounded-full opacity-10 float-animation"></div>
-        <div className="absolute top-40 right-20 w-32 h-32 gradient-social-2 rounded-full opacity-15 float-animation" style={{animationDelay: '2s'}}></div>
-        <div className="absolute bottom-32 left-1/4 w-48 h-48 gradient-social-3 rounded-full opacity-10 float-animation" style={{animationDelay: '4s'}}></div>
-        <div className="absolute bottom-20 right-10 w-36 h-36 gradient-social-4 rounded-full opacity-12 float-animation" style={{animationDelay: '1s'}}></div>
+    <section id="contact" className="pt-24 pb-12 bg-white min-h-screen">
+      <div className="max-w-6xl mx-auto px-6">
+        <ContactHeader />
+
+        <ProcessPreview />
+
+        <ReviewsSection onViewAllReviews={handleViewAllReviews} />
+
+        <BottomCTA 
+          onStartAssessment={() => window.location.href = '/content-strategy'}
+          onBookCall={handleZohoBooking}
+          onComprehensiveStrategy={() => setIsWizardOpen(true)}
+        />
       </div>
 
-      <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
-        <div className="mb-16">
-          <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8 video-shadow">
-            🎬 Let's Create Your Story
-          </div>
-          <h2 className="text-6xl md:text-7xl font-display font-black mb-8 text-white tracking-tight">
-            Ready to <span className="text-gradient-1">Begin</span>?
-          </h2>
-          <p className="text-2xl text-corporate-light mb-12 leading-relaxed max-w-3xl mx-auto font-medium">
-            Your authentic story is waiting to be told. 
-            Let's turn your vision into content that resonates.
-          </p>
-        </div>
-        
-        <div className="bg-video-white rounded-3xl p-12 mb-16 video-shadow-lg">
-          <h3 className="text-4xl font-display font-black text-corporate-dark mb-6">Palmer House Productions</h3>
-          <p className="text-xl text-corporate-gray mb-8 font-medium">
-            Where authentic storytelling meets meaningful results.
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-6 justify-center mb-8">
-            <button 
-              onClick={() => setIsFormOpen(true)}
-              className="px-10 py-5 gradient-social-1 text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
-            >
-              Start Your Journey 🗺️
-            </button>
-            <button 
-              onClick={handleStrategyCall}
-              className="px-10 py-5 border-2 border-social-purple text-social-purple font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow"
-            >
-              Book Strategy Call 📞
-            </button>
-          </div>
-
-          {/* Contact Methods */}
-          <div className="grid md:grid-cols-3 gap-6 mt-12">
-            <div className="p-6 bg-corporate-light rounded-2xl">
-              <div className="w-12 h-12 gradient-social-2 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                <span className="text-white text-xl">📧</span>
-              </div>
-              <div className="font-bold text-corporate-dark mb-2">Email Us</div>
-              <div className="text-corporate-gray text-xs sm:text-sm break-all">info@palmerhouseproductions.com</div>
-            </div>
-            <div className="p-6 bg-corporate-light rounded-2xl">
-              <div className="w-12 h-12 gradient-social-3 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                <span className="text-white text-xl">📱</span>
-              </div>
-              <div className="font-bold text-corporate-dark mb-2">Call Us</div>
-              <div className="text-corporate-gray text-sm">425-738-7312</div>
-            </div>
-            <div className="p-6 bg-corporate-light rounded-2xl">
-              <div className="w-12 h-12 gradient-social-4 rounded-xl flex items-center justify-center mb-4 mx-auto">
-                <span className="text-white text-xl">⚡</span>
-              </div>
-              <div className="font-bold text-corporate-dark mb-2">Response Time</div>
-              <div className="text-corporate-gray text-sm">Within 24 hours</div>
-            </div>
-          </div>
-        </div>
-        
-        <footer className="border-t border-corporate-gray pt-8">
-          <p className="text-corporate-light">
-            © 2025 Palmer House Productions. All rights reserved. Crafting authentic stories since day one.
-          </p>
-        </footer>
-      </div>
-
-      <ContactForm open={isFormOpen} onOpenChange={setIsFormOpen} />
+      <ContactWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
     </section>
   );
 };

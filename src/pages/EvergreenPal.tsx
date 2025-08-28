@@ -372,7 +372,7 @@ const EvergreenPal = () => {
               <div className="bg-background rounded-2xl p-8 text-center transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer">
                 <div className="mb-6">
                   <img 
-                    className="w-24 h-24 mx-auto rounded-full" 
+                    className="w-24 h-24 mx-auto rounded-full object-cover object-center" 
                     src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
                     alt="cartoon character female with brown hair in bun, orange shirt and jeans, holding smartphone, social media creator mascot" 
                   />
@@ -402,7 +402,7 @@ const EvergreenPal = () => {
               <div className="bg-background rounded-2xl p-8 text-center transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer">
                 <div className="mb-6">
                   <img 
-                    className="w-24 h-24 mx-auto rounded-full" 
+                    className="w-24 h-24 mx-auto rounded-full object-cover object-center" 
                     src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" 
                     alt="cartoon character red hair female wearing professional dark business suit, holding microphone, cinematic production mascot" 
                   />

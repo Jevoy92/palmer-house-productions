@@ -45,7 +45,7 @@ const SpotlightPal = () => {
               </div>
               <div className="text-center">
                 <img 
-                  className="w-80 h-80 mx-auto rounded-full border-4 border-white/20" 
+                  className="w-80 h-80 mx-auto rounded-full border-4 border-white/20 object-cover object-center" 
                   src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" 
                   alt="cartoon character red hair female wearing professional dark business suit, holding microphone with professional video equipment, cinematic production mascot" 
                 />
@@ -292,7 +292,7 @@ const SpotlightPal = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="mb-8">
                 <img 
-                  className="w-32 h-32 mx-auto rounded-full border-4 border-red-200" 
+                  className="w-32 h-32 mx-auto rounded-full border-4 border-red-200 object-cover object-center" 
                   src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" 
                   alt="cartoon character red hair female wearing professional dark business suit, holding microphone, cinematic production mascot" 
                 />
@@ -340,7 +340,7 @@ const SpotlightPal = () => {
               <div className="bg-background rounded-2xl p-8 text-center transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer">
                 <div className="mb-6">
                   <img 
-                    className="w-24 h-24 mx-auto rounded-full" 
+                    className="w-24 h-24 mx-auto rounded-full object-cover object-center" 
                     src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
                     alt="cartoon character female with brown hair in bun, orange shirt and jeans, holding smartphone, social media creator mascot" 
                   />

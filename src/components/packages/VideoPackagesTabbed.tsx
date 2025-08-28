@@ -182,7 +182,7 @@ export const VideoPackagesTabbed = () => {
             <div className="text-center mb-8">
               <div className="w-24 h-24 mx-auto rounded-full bg-yellow-100 flex items-center justify-center mb-4">
                 <img 
-                  className="w-20 h-20 rounded-full" 
+                  className="w-20 h-20 rounded-full object-cover object-center" 
                   src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
                   alt="Reel Pal avatar" 
                 />
@@ -466,7 +466,7 @@ export const VideoPackagesTabbed = () => {
             <div className="text-center mb-8">
               <div className="w-24 h-24 mx-auto rounded-full bg-red-100 flex items-center justify-center mb-4">
                 <img 
-                  className="w-20 h-20 rounded-full" 
+                  className="w-20 h-20 rounded-full object-cover object-center" 
                   src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" 
                   alt="Spotlight Pal avatar" 
                 />

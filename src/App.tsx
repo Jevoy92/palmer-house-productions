@@ -35,6 +35,7 @@ import ContentCreationTools2025 from "./pages/blog/ContentCreationTools2025";
 import VideoContentROIComparison from "./pages/blog/VideoContentROIComparison";
 import MobileVideoProduction from "./pages/blog/MobileVideoProduction";
 import ThankYou from "./pages/ThankYou";
+import PalmerHousePals from "./pages/PalmerHousePals";
 import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 
 const VideoReadinessPage = lazy(() => import("./pages/assessments/VideoReadiness"));
@@ -70,6 +71,7 @@ const App = () => (
         <RouteTracker />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/pals" element={<PalmerHousePals />} />
           <Route path="/video-packages" element={<VideoPackages />} />
           <Route path="/discovery-call" element={<Navigate to="/contact" replace />} />
           <Route path="/video-use-cases" element={<VideoUseCases />} />

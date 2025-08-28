@@ -282,30 +282,41 @@
 }
 
 @layer utilities {
-  /* Hero Question Animation */
-  @keyframes question-reveal {
-    0% {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* Social Media Gradients */
+  .gradient-social-1 {
+    background: linear-gradient(135deg, hsl(var(--social-purple)) 0%, hsl(var(--social-pink)) 100%);
   }
-
-  .question-reveal {
-    animation: question-reveal 0.8s ease-out forwards;
-    opacity: 0;
+  .gradient-social-2 {
+    background: linear-gradient(135deg, hsl(var(--social-orange)) 0%, hsl(var(--social-yellow)) 100%);
   }
-
-  /* Respects reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .question-reveal {
-      animation: none;
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .gradient-social-3 {
+    background: linear-gradient(135deg, hsl(var(--social-cyan)) 0%, hsl(var(--social-blue)) 100%);
+  }
+  .gradient-social-4 {
+    background: linear-gradient(135deg, hsl(var(--social-pink)) 0%, hsl(var(--social-orange)) 100%);
+  }
+  .gradient-social-5 {
+    background: linear-gradient(135deg, hsl(var(--social-blue)) 0%, hsl(var(--social-green)) 100%);
+  }
+  
+  /* Text Gradients */
+  .text-gradient-1 {
+    background: linear-gradient(135deg, hsl(var(--social-purple)) 0%, hsl(var(--social-pink)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-2 {
+    background: linear-gradient(135deg, hsl(var(--social-orange)) 0%, hsl(var(--social-yellow)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .text-gradient-3 {
+    background: linear-gradient(135deg, hsl(var(--social-cyan)) 0%, hsl(var(--social-blue)) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   
   /* 3D Card Flip Utilities */

@@ -15,28 +15,28 @@ export const ContentVolumeStep = ({ selectedVolume, onVolumeSelect, onBack }: Co
       title: "1-2 videos per month",
       description: "Perfect for testing the waters and building momentum",
       icon: "🌱",
-      gradient: "gradient-social-1",
+      bgClass: "bg-social-purple",
     },
     {
       id: "3-4",
       title: "3-4 videos per month",
       description: "Steady content flow for consistent engagement",
       icon: "📅",
-      gradient: "gradient-social-2",
+      bgClass: "bg-social-orange",
     },
     {
       id: "5-8",
       title: "5-8 videos per month",
       description: "High-impact content strategy for growth",
       icon: "⚡",
-      gradient: "gradient-social-3",
+      bgClass: "bg-social-cyan",
     },
     {
       id: "8-plus",
       title: "8+ videos / High Frequency",
       description: "Maximum content velocity for market dominance",
       icon: "🚀",
-      gradient: "gradient-social-4",
+      bgClass: "bg-social-pink",
     },
   ];
 

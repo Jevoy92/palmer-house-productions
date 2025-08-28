@@ -15,28 +15,28 @@ export const TimelineStep = ({ selectedTimeline, onTimelineSelect, onBack }: Tim
       title: "Immediately",
       description: "Ready to start right away",
       icon: "⚡",
-      gradient: "gradient-social-1",
+      bgClass: "bg-social-purple",
     },
     {
       id: "1-3-months",
       title: "1-3 months",
       description: "Planning to begin within the quarter",
       icon: "📅",
-      gradient: "gradient-social-2",
+      bgClass: "bg-social-orange",
     },
     {
       id: "3-6-months",
       title: "3-6 months",
       description: "Part of a longer-term strategy",
       icon: "🗓️",
-      gradient: "gradient-social-3",
+      bgClass: "bg-social-cyan",
     },
     {
       id: "planning",
       title: "Planning / Research Mode",
       description: "Gathering information for future decisions",
       icon: "🔍",
-      gradient: "gradient-social-4",
+      bgClass: "bg-social-pink",
     },
   ];
 

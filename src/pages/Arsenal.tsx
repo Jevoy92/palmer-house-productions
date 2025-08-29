@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Shield, Users, FileText, HelpCircle, Zap, BookOpen, Heart, Trophy, ChevronDown, ChevronRight } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ContactWizard } from "@/components/ContactWizard";
 import { trackConversion } from "@/lib/analytics";
 import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
@@ -16,7 +15,6 @@ type FilterType = "all" | "internal" | "external";
 export default function Arsenal() {
   const [filter, setFilter] = useState<FilterType>("all");
   const [expandedSolutions, setExpandedSolutions] = useState<Set<string>>(new Set());
-  const [isContactWizardOpen, setIsContactWizardOpen] = useState(false);
 
   const toggleSolution = (solutionId: string) => {
     const newExpanded = new Set(expandedSolutions);
@@ -182,7 +180,7 @@ export default function Arsenal() {
   };
 
   const handleGetCustomProposal = () => {
-    setIsContactWizardOpen(true);
+    window.location.href = '/video-packages';
   };
 
   const handleBookDiscoveryCall = () => {
@@ -436,8 +434,6 @@ export default function Arsenal() {
           </div>
         </section>
       </MainContent>
-
-      <ContactWizard open={isContactWizardOpen} onOpenChange={setIsContactWizardOpen} />
     </div>
   );
 }

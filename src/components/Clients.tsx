@@ -1,9 +1,7 @@
 
 import { useState } from "react";
-import { ContactWizard } from "./ContactWizard";
 
 export const Clients = () => {
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
   const clientTypes = [
     {
       title: "Growing Businesses",
@@ -44,7 +42,7 @@ export const Clients = () => {
   ];
 
   const handleGetStarted = () => {
-    setIsWizardOpen(true);
+    window.location.href = '/video-packages';
   };
 
   return (
@@ -113,7 +111,6 @@ export const Clients = () => {
         </div>
       </div>
 
-      <ContactWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
     </section>
   );
 };

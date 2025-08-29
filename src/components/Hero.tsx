@@ -1,9 +1,7 @@
 
 import { useState, useEffect } from "react";
-import { ContactWizard } from "./ContactWizard";
 
 export const Hero = () => {
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showHeadline, setShowHeadline] = useState(false);
   const [fadeOutQuestions, setFadeOutQuestions] = useState(false);
@@ -22,7 +20,7 @@ export const Hero = () => {
   };
 
   const handleGetStarted = () => {
-    setIsWizardOpen(true);
+    window.location.href = '/video-packages';
   };
 
   useEffect(() => {
@@ -118,8 +116,6 @@ export const Hero = () => {
           </div>
         )}
       </div>
-
-      <ContactWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
     </section>
   );
 };

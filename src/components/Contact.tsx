@@ -1,6 +1,5 @@
 
 import { useState } from "react";
-import { ContactWizard } from "./ContactWizard";
 import { ContactHeader } from "./contact/ContactHeader";
 import { ProcessPreview } from "./contact/ProcessPreview";
 import { ReviewsSection } from "./contact/ReviewsSection";
@@ -12,7 +11,6 @@ interface ContactProps {
 }
 
 export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
-  const [isWizardOpen, setIsWizardOpen] = useState(autoOpenWizard);
 
   const handleZohoBooking = () => {
     window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078320', '_blank', 'noopener,noreferrer');
@@ -34,11 +32,9 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
         <BottomCTA 
           onStartAssessment={() => window.location.href = '/content-strategy'}
           onBookCall={handleZohoBooking}
-          onComprehensiveStrategy={() => setIsWizardOpen(true)}
+          onComprehensiveStrategy={() => window.location.href = '/video-packages'}
         />
       </div>
-
-      <ContactWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
     </section>
   );
 };

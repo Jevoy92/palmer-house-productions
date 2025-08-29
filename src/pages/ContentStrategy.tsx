@@ -8,7 +8,6 @@ import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 import { MainContent } from "@/components/MainContent";
 import { VideoReadinessAudit } from "@/components/assessments/VideoReadinessAudit";
 import { AssessmentPreview } from "@/components/assessments/AssessmentPreview";
-import { ContactWizard } from "@/components/ContactWizard";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -23,7 +22,6 @@ import {
 
 const ContentStrategyPage = () => {
   const [activeAssessment, setActiveAssessment] = useState<string | null>(null);
-  const [isWizardOpen, setIsWizardOpen] = useState(false);
 
   // Handle URL parameters for direct assessment links
   useEffect(() => {
@@ -185,7 +183,7 @@ const ContentStrategyPage = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
-                  onClick={() => setIsWizardOpen(true)}
+                  onClick={() => window.location.href = '/video-packages'}
                   variant="premium"
                   size="touch"
                   className="gradient-social-1 text-white"
@@ -203,8 +201,6 @@ const ContentStrategyPage = () => {
             </Card>
           </div>
         </section>
-        
-        <ContactWizard open={isWizardOpen} onOpenChange={setIsWizardOpen} />
       </MainContent>
     </div>
   );

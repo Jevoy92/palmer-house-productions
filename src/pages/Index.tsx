@@ -1,7 +1,7 @@
 
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
-import { SolutionsOverview } from "@/components/SolutionsOverview";
+
 import { CondensedClients } from "@/components/home/CondensedClients";
 
 import { Navigation } from "@/components/Navigation";
@@ -37,9 +37,6 @@ const Index = () => {
           <Services />
         </div>
         <CondensedClients />
-        <div id="pricing">
-          <SolutionsOverview />
-        </div>
       </MainContent>
     </div>
   );

@@ -37,11 +37,11 @@ export const Services = () => {
     <section id="services" className="py-16 sm:py-24 lg:py-32 bg-corporate-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 sm:mb-16">
-          <div className="inline-block px-4 py-2.5 gradient-social-3 rounded-full text-white font-semibold text-sm mb-6 video-shadow">
+          <div className="inline-block px-4 py-2.5 bg-social-orange text-white font-semibold text-sm mb-6 rounded-lg">
             💼 Service Categories
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black mb-6 text-corporate-dark tracking-tight leading-tight px-2">
-            Video Production Services for <span className="text-gradient-1">Every Business Need</span>
+            Video Production Services for <span className="text-social-purple">Every Business Need</span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-corporate-gray max-w-4xl mx-auto font-medium leading-relaxed px-2">
             Professional video production company offering production video services that save time, increase efficiency, and drive results for your business.
@@ -54,12 +54,12 @@ export const Services = () => {
             return (
               <div 
                 key={index}
-                className="group p-6 sm:p-8 bg-video-white rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-[1.02] touch-manipulation"
+                className="group p-6 sm:p-8 bg-white rounded-lg border border-gray-200 hover:border-social-purple/50 transition-colors duration-200 touch-manipulation"
               >
-                <div className={`w-14 h-14 sm:w-16 sm:h-16 ${service.gradient} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                <div className={`w-14 h-14 sm:w-16 sm:h-16 ${service.gradient.replace('gradient-', 'bg-')} rounded-lg flex items-center justify-center mb-6 transition-colors duration-200`}>
                   <IconComponent size={28} className="text-white sm:w-8 sm:h-8" />
                 </div>
-                <h3 className={`text-xl sm:text-2xl font-display font-bold mb-4 ${service.textGradient} leading-tight`}>
+                <h3 className="text-xl sm:text-2xl font-display font-bold mb-4 text-corporate-dark leading-tight">
                   {service.title}
                 </h3>
                 <p className="text-corporate-gray leading-relaxed text-base sm:text-lg font-medium">

@@ -441,3 +441,41 @@
     animation: fade-in 0.6s ease-out forwards;
   }
 }
+
+/* Flat Design Utilities */
+.flat-card {
+  @apply bg-white border border-gray-200 rounded-lg transition-colors;
+}
+
+.flat-card:hover {
+  @apply border-social-purple/50;
+}
+
+.flat-button-primary {
+  @apply bg-social-purple text-white hover:bg-social-purple/90 transition-colors;
+}
+
+.flat-button-secondary {
+  @apply bg-white border-2 border-social-purple text-corporate-dark hover:bg-social-purple hover:text-white transition-colors;
+}
+
+.flat-badge {
+  @apply px-4 py-2 rounded-lg text-white font-semibold text-sm;
+}
+
+.flat-icon-container {
+  @apply rounded-lg flex items-center justify-center transition-colors;
+}
+
+/* Remove gradients and shadows for flat design */
+.no-gradient {
+  background: none !important;
+}
+
+.no-shadow {
+  box-shadow: none !important;
+}
+
+.no-scale:hover {
+  transform: none !important;
+}

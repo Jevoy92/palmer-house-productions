@@ -30,6 +30,7 @@ import Reviews from "./pages/resources/Reviews";
 import FAQ from "./pages/FAQ";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
+import TestPage from "./pages/TestPage";
 import BellevueWA from "./pages/locations/BellevueWA";
 import PortlandOR from "./pages/locations/PortlandOR";
 import { CriticalCSS } from "./components/performance/CriticalCSS";
@@ -104,16 +105,17 @@ const App = () => (
           <Route path="/blog/video-content-toolkit-2025" element={<VideoContentToolkit2025 />} />
           <Route path="/blog/automate-employee-training-video" element={<AutomateEmployeeTrainingVideo />} />
           <Route path="/blog/content-creation-tools-2025" element={<ContentCreationTools2025 />} />
-          <Route path="/blog/video-content-roi-comparison" element={<VideoContentROIComparison />} />
-          <Route path="/blog/mobile-video-production" element={<MobileVideoProduction />} />
-          <Route
-            path="/assessments/video-readiness"
-            element={
-              <Suspense fallback={<div className="p-8 text-center">Loading assessment...</div>}>
-                <VideoReadinessPage />
-              </Suspense>
-            }
-          />
+           <Route path="/blog/video-content-roi-comparison" element={<VideoContentROIComparison />} />
+           <Route path="/blog/mobile-video-production" element={<MobileVideoProduction />} />
+           <Route path="/test" element={<TestPage />} />
+           <Route
+             path="/assessments/video-readiness"
+             element={
+               <Suspense fallback={<div className="p-8 text-center">Loading assessment...</div>}>
+                 <VideoReadinessPage />
+               </Suspense>
+             }
+           />
           
           {/* Legacy route redirects */}
           <Route path="/pathways" element={<Navigate to="/video-packages" replace />} />

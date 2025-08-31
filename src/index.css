@@ -376,6 +376,10 @@
     }
   }
   
+  .floating-card {
+    animation: float 3s ease-in-out infinite;
+  }
+  
   /* Utility Classes */
   .bg-social-purple { background-color: hsl(var(--social-purple)); }
   .bg-social-pink { background-color: hsl(var(--social-pink)); }

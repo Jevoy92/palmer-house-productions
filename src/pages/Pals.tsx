@@ -1,7 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
+import systemPalClean from "@/assets/system-pal-clean.png";
+import evergreenPalClean from "@/assets/evergreen-pal-clean.png";
+import spotlightPalClean from "@/assets/spotlight-pal-clean.png";
 import { 
+  Menu, 
+  Wand2, 
+  Handshake, 
+  Route, 
+  Rocket, 
   Smartphone, 
   Settings, 
   Sprout, 
@@ -24,89 +32,22 @@ import {
   Sparkles,
   Heart,
   Brain,
-  Leaf,
-  ArrowRight,
-  Zap,
-  Target,
-  Lightbulb
+  Leaf
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MetaTags } from "@/components/seo/MetaTags";
 
 const Pals = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [selectedPal, setSelectedPal] = useState<string | null>(null);
-  const [scrollY, setScrollY] = useState(0);
-  const heroRef = useRef<HTMLDivElement>(null);
+  const [headerScrolled, setHeaderScrolled] = useState(false);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      setHeaderScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
     window.addEventListener('scroll', handleScroll);
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const pals = [
-    {
-      id: 'reel',
-      name: 'Reel Pal',
-      tagline: "Let's make content that connects!",
-      description: "Your go-to for authentic, engaging short-form content that makes people stop scrolling.",
-      image: "/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png",
-      color: 'social-orange',
-      icon: Smartphone,
-      features: ['Short-form Social Content', 'DIY Creation Kits', 'Starter Sessions', 'Platform Optimization'],
-      route: '/reel-pal',
-      position: { x: -20, y: 0 }
-    },
-    {
-      id: 'system',
-      name: 'System Pal',
-      tagline: "Let's streamline your systems!",
-      description: "The organized one who creates video systems that work like clockwork for your business.",
-      image: "/lovable-uploads/1d3c7a2a-e5cb-4900-9b76-9eadb6620973.png",
-      color: 'social-purple',
-      icon: Settings,
-      features: ['Training Video Systems', 'Onboarding Sequences', 'FAQ Video Libraries', 'Process Documentation'],
-      route: '/system-pal',
-      position: { x: 20, y: -10 }
-    },
-    {
-      id: 'evergreen',
-      name: 'Evergreen Pal',
-      tagline: "Let's grow your authority!",
-      description: "All about the long game - building your reputation and authority over time.",
-      image: "/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png",
-      color: 'social-green',
-      icon: Sprout,
-      features: ['YouTube Development', 'Educational Series', 'Monthly Content Plans', 'Authority Building'],
-      route: '/evergreen-pal',
-      position: { x: -15, y: 15 }
-    },
-    {
-      id: 'spotlight',
-      name: 'Spotlight Pal',
-      tagline: "Let's create cinematic magic!",
-      description: "Your creative visionary for high-end, cinematic content that tells powerful stories.",
-      image: "/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png",
-      color: 'social-pink',
-      icon: Star,
-      features: ['Brand Films', 'Music Videos', 'Commercial Content', 'Cinematic Storytelling'],
-      route: '/spotlight-pal',
-      position: { x: 25, y: 5 }
-    }
-  ];
 
   return (
     <>
@@ -115,269 +56,577 @@ const Pals = () => {
         description="Meet your specialized video production guides. Each Pal has unique superpowers to help you create the perfect content for your brand's journey."
       />
       
-      <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-accent/10 overflow-hidden">
+      <div className="bg-muted/5">
         <Navigation />
 
-        {/* 3D Hero Section */}
-        <section ref={heroRef} className="relative min-h-screen flex items-center justify-center perspective-1000">
-          {/* Floating Background Elements */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {[...Array(20)].map((_, i) => (
-              <div
-                key={i}
-                className="absolute w-2 h-2 bg-primary/20 rounded-full animate-float-random"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 5}s`,
-                  animationDuration: `${3 + Math.random() * 4}s`
-                }}
-              />
-            ))}
-          </div>
-
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="text-center mb-20">
-              <h1 
-                className="text-7xl md:text-9xl font-black mb-8 text-foreground transform-gpu"
-                style={{
-                  transform: `translateY(${scrollY * 0.2}px)`
-                }}
-              >
-                Palmer House
-                <span className="block text-transparent bg-gradient-to-r from-social-purple via-social-pink to-social-orange bg-clip-text">
-                  Pals
-                </span>
-              </h1>
-              <p className="text-2xl md:text-3xl mb-16 max-w-4xl mx-auto text-muted-foreground/80 font-light">
-                Four unique personalities, infinite creative possibilities
-              </p>
+        {/* Hero Section */}
+        <section className="py-24 bg-background">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div className="mb-16">
+              <h1 className="text-6xl md:text-8xl font-black mb-6 tracking-tight text-foreground">Palmer House Pals</h1>
+              <p className="text-xl md:text-2xl mb-12 max-w-4xl mx-auto text-muted-foreground font-medium">Meet your specialized video production guides. Each Pal has unique superpowers to help you create the perfect content for your brand's journey.</p>
             </div>
-
-            {/* 3D Floating Character Cards */}
-            <div className="relative h-96 transform-gpu preserve-3d">
-              {pals.map((pal, index) => {
-                const Icon = pal.icon;
-                const isSelected = selectedPal === pal.id;
-                const mouseInfluence = {
-                  x: (mousePosition.x - window.innerWidth / 2) * 0.01,
-                  y: (mousePosition.y - window.innerHeight / 2) * 0.01
-                };
-
-                return (
-                  <div
-                    key={pal.id}
-                    className={`absolute w-72 h-80 cursor-pointer transition-all duration-700 transform-gpu preserve-3d ${
-                      isSelected ? 'z-30 scale-110' : 'z-10'
-                    }`}
-                    style={{
-                      left: `${25 + (index * 15) + pal.position.x}%`,
-                      top: `${20 + pal.position.y}%`,
-                      transform: `
-                        translateX(${mouseInfluence.x * (index + 1)}px)
-                        translateY(${mouseInfluence.y * (index + 1)}px)
-                        rotateX(${mouseInfluence.y * 2}deg)
-                        rotateY(${mouseInfluence.x * 2}deg)
-                        translateZ(${isSelected ? 50 : 0}px)
-                      `
-                    }}
-                    onMouseEnter={() => setSelectedPal(pal.id)}
-                    onMouseLeave={() => setSelectedPal(null)}
-                  >
-                    {/* Card */}
-                    <div className={`relative w-full h-full bg-card/90 backdrop-blur-md rounded-3xl shadow-2xl border border-border/20 overflow-hidden transform-gpu transition-all duration-500 ${
-                      isSelected ? 'shadow-3xl' : ''
-                    }`}>
-                      {/* Gradient Overlay */}
-                      <div className={`absolute inset-0 bg-gradient-to-br from-${pal.color}/20 to-transparent opacity-${isSelected ? '100' : '40'} transition-opacity duration-500`} />
-                      
-                      {/* Character Image */}
-                      <div className="relative z-10 p-8 text-center">
-                        <div className={`w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-${pal.color} shadow-lg transform transition-all duration-500 ${
-                          isSelected ? 'scale-110 rotate-3' : ''
-                        }`}>
-                          <img 
-                            src={pal.image} 
-                            alt={pal.name}
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
-                        
-                        <div className={`w-12 h-12 mx-auto mb-4 bg-${pal.color}/20 rounded-full flex items-center justify-center transform transition-all duration-500 ${
-                          isSelected ? 'scale-110' : ''
-                        }`}>
-                          <Icon className={`w-6 h-6 text-${pal.color}`} />
-                        </div>
-                        
-                        <h3 className="text-2xl font-bold text-foreground mb-2">{pal.name}</h3>
-                        <p className="text-sm text-muted-foreground opacity-80">{pal.description}</p>
-                      </div>
-
-                      {/* Hover Details */}
-                      <div className={`absolute inset-0 bg-card/95 backdrop-blur-md transition-all duration-500 ${
-                        isSelected ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-full'
-                      }`}>
-                        <div className="p-8 h-full flex flex-col justify-center">
-                          <h4 className="text-xl font-bold text-foreground mb-4 text-center">{pal.tagline}</h4>
-                          <div className="space-y-2 mb-6">
-                            {pal.features.slice(0, 3).map((feature, idx) => (
-                              <div key={idx} className="flex items-center space-x-2">
-                                <div className={`w-2 h-2 bg-${pal.color} rounded-full`} />
-                                <span className="text-sm text-muted-foreground">{feature}</span>
-                              </div>
-                            ))}
-                          </div>
-                          <Button asChild className={`w-full bg-${pal.color} hover:bg-${pal.color}/90 text-white`}>
-                            <Link to={pal.route} className="flex items-center justify-center space-x-2">
-                              <span>Meet {pal.name}</span>
-                              <ArrowRight className="w-4 h-4" />
-                            </Link>
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+            
+            {/* Character Preview Row */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+              <div className="bg-white rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 shadow-lg hover:shadow-xl">
+                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-yellow-400 object-cover object-center" src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" alt="cartoon character female with brown hair in bun, orange shirt, holding phone with video elements, friendly social media mascot style" />
+                <h3 className="text-xl font-bold text-foreground">Reel Pal</h3>
+                <p className="text-sm text-muted-foreground mt-2">Social Content</p>
+              </div>
+              <div className="bg-white rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 shadow-lg hover:shadow-xl">
+                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-purple-400" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-8fbf1beda1a411066413.png" alt="cartoon character female with red hair, gray professional outfit, holding clipboard with gears, technical mascot style" />
+                <h3 className="text-xl font-bold text-foreground">System Pal</h3>
+                <p className="text-sm text-muted-foreground mt-2">Backend Systems</p>
+              </div>
+              <div className="bg-white rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 shadow-lg hover:shadow-xl">
+                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-green-400 object-cover object-center" src="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png" alt="cartoon character male with gray hair and beard, teal coat, holding golden play button with plants and book, growth-focused mascot style" />
+                <h3 className="text-xl font-bold text-foreground">Evergreen Pal</h3>
+                <p className="text-sm text-muted-foreground mt-2">Long-term Growth</p>
+              </div>
+              <div className="bg-white rounded-2xl p-8 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:-translate-y-2 shadow-lg hover:shadow-xl">
+                <img className="w-24 h-24 mx-auto rounded-full mb-4 border-4 border-red-400 object-cover object-center" src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" alt="cartoon character red hair female, professional dark suit, holding microphone with video equipment, cinematic mascot style" />
+                <h3 className="text-xl font-bold text-foreground">Spotlight Pal</h3>
+                <p className="text-sm text-muted-foreground mt-2">Cinematic Brand</p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Interactive Comparison Section */}
-        <section className="py-32 relative overflow-hidden">
+
+        {/* Main Pals Showcase */}
+        <section className="py-24 bg-muted/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-20">
-              <h2 className="text-5xl md:text-7xl font-black text-foreground mb-8">
-                Choose Your
-                <span className="block text-transparent bg-gradient-to-r from-social-cyan to-social-blue bg-clip-text">
-                  Adventure
-                </span>
-              </h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                Each Pal brings their unique expertise to transform your content strategy
-              </p>
+              <h2 className="text-5xl md:text-6xl font-black text-foreground mb-8">Meet the Pals</h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Four unique personalities, four specialized skill sets, one amazing video production experience.</p>
             </div>
-
-            {/* Floating Comparison Cards */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
-              {pals.map((pal, index) => {
-                const Icon = pal.icon;
-                const isEven = index % 2 === 0;
-                
-                return (
-                  <div
-                    key={pal.id}
-                    className={`group relative transform-gpu transition-all duration-700 hover:scale-105 ${
-                      isEven ? 'lg:translate-x-8' : 'lg:-translate-x-8'
-                    }`}
-                    style={{
-                      animationDelay: `${index * 0.2}s`
-                    }}
-                  >
-                    <div className="bg-card/80 backdrop-blur-md rounded-3xl p-8 shadow-xl border border-border/20 hover:shadow-2xl transition-all duration-500 overflow-hidden relative">
-                      {/* Gradient Background */}
-                      <div className={`absolute inset-0 bg-gradient-to-br from-${pal.color}/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-                      
-                      {/* Content */}
-                      <div className="relative z-10">
-                        <div className="flex items-start space-x-6 mb-6">
-                          <div className={`w-16 h-16 bg-${pal.color}/20 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                            <Icon className={`w-8 h-8 text-${pal.color}`} />
-                          </div>
-                          <div>
-                            <h3 className="text-2xl font-bold text-foreground mb-2">{pal.name}</h3>
-                            <p className="text-lg text-muted-foreground italic">"{pal.tagline}"</p>
-                          </div>
-                        </div>
-                        
-                        <p className="text-muted-foreground mb-6 leading-relaxed">{pal.description}</p>
-                        
-                        <div className="grid grid-cols-2 gap-3 mb-8">
-                          {pal.features.map((feature, idx) => (
-                            <div key={idx} className="flex items-center space-x-2">
-                              <div className={`w-1.5 h-1.5 bg-${pal.color} rounded-full flex-shrink-0`} />
-                              <span className="text-sm text-muted-foreground">{feature}</span>
-                            </div>
-                          ))}
-                        </div>
-                        
-                        <Button asChild className={`w-full bg-${pal.color}/10 hover:bg-${pal.color}/20 text-${pal.color} border border-${pal.color}/20 group-hover:scale-105 transition-all duration-300`}>
-                          <Link to={pal.route} className="flex items-center justify-center space-x-2">
-                            <span>Explore {pal.name}</span>
-                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                          </Link>
-                        </Button>
+            
+            {/* Reel Pal */}
+            <div className="bg-background rounded-3xl shadow-2xl p-12 mb-16 overflow-hidden relative transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-100 rounded-full -translate-y-32 translate-x-32 opacity-50"></div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+                <div className="text-center lg:text-left">
+                  <div className="inline-flex items-center bg-yellow-100 text-yellow-800 px-6 py-3 rounded-full text-sm font-bold mb-6">
+                    <Smartphone className="mr-2 h-4 w-4" />
+                    REEL PAL
+                  </div>
+                  <h3 className="text-4xl md:text-5xl font-black text-foreground mb-6">"Let's make content that connects!"</h3>
+                  <p className="text-xl text-muted-foreground mb-8 leading-relaxed">Hi there! I'm your go-to for authentic, engaging short-form content that makes people stop scrolling. From TikToks to Instagram Reels, I help you create videos that feel genuine and drive real engagement.</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-yellow-500 rounded-xl flex items-center justify-center">
+                        <Video className="text-white h-5 w-5" />
                       </div>
+                      <span className="text-foreground font-semibold">Short-form Social Content</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-yellow-500 rounded-xl flex items-center justify-center">
+                        <Wrench className="text-white h-5 w-5" />
+                      </div>
+                      <span className="text-foreground font-semibold">DIY Creation Kits</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-yellow-500 rounded-xl flex items-center justify-center">
+                        <PlayCircle className="text-white h-5 w-5" />
+                      </div>
+                      <span className="text-foreground font-semibold">Starter Sessions</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-yellow-500 rounded-xl flex items-center justify-center">
+                        <TrendingUp className="text-white h-5 w-5" />
+                      </div>
+                      <span className="text-foreground font-semibold">Platform Optimization</span>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-
-            {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-              {[
-                { icon: Zap, title: "Lightning Fast", value: "24hr", desc: "Turnaround Time" },
-                { icon: Target, title: "Precision Focus", value: "100%", desc: "Custom Solutions" },
-                { icon: Lightbulb, title: "Creative Spark", value: "∞", desc: "Possibilities" }
-              ].map((stat, index) => (
-                <div
-                  key={index}
-                  className="text-center p-8 bg-card/60 backdrop-blur-md rounded-2xl border border-border/20 hover:scale-105 transition-all duration-500 group"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <stat.icon className="w-8 h-8 text-primary" />
+                  
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button asChild className="bg-yellow-500 text-white hover:bg-yellow-600 transition-all transform hover:scale-105" size="lg">
+                      <Link to="/reel-pal">Meet Reel Pal</Link>
+                    </Button>
                   </div>
-                  <div className="text-4xl font-black text-foreground mb-2">{stat.value}</div>
-                  <div className="text-lg font-semibold text-foreground mb-1">{stat.title}</div>
-                  <div className="text-sm text-muted-foreground">{stat.desc}</div>
                 </div>
-              ))}
+                <div className="text-center">
+                  <img className="w-80 h-80 mx-auto object-contain" src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" alt="cartoon character female with brown hair in bun, orange shirt and jeans, holding smartphone with video camera and film strip elements floating around, energetic social media creator mascot style" />
+                </div>
+              </div>
+            </div>
+            
+            {/* System Pal */}
+            <div className="bg-background rounded-3xl shadow-2xl p-12 mb-16 overflow-hidden relative transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
+              <div className="absolute top-0 left-0 w-64 h-64 bg-purple-100 rounded-full -translate-y-32 -translate-x-32 opacity-50"></div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+                <div className="text-center order-2 lg:order-1">
+                  <img className="w-80 h-80 mx-auto object-contain" src="/lovable-uploads/1d3c7a2a-e5cb-4900-9b76-9eadb6620973.png" alt="System Pal - professional male character in gray jacket with green accents, surrounded by workflow icons, gears, folders, and organizational elements" />
+                </div>
+                <div className="text-center lg:text-left order-1 lg:order-2">
+                  <div className="inline-flex items-center bg-purple-100 text-purple-800 px-6 py-3 rounded-full text-sm font-bold mb-6">
+                    <Settings className="mr-2 h-4 w-4" />
+                    SYSTEM PAL
+                  </div>
+                  <h3 className="text-4xl md:text-5xl font-black text-foreground mb-6">"Let's streamline your systems!"</h3>
+                  <p className="text-xl text-muted-foreground mb-8 leading-relaxed">Hey! I'm the organized one who loves creating video systems that work like clockwork. From employee training to customer onboarding, I build video infrastructure that grows with your business.</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
+                        <GraduationCap className="text-white h-5 w-5" />
+                      </div>
+                      <span className="text-foreground font-semibold">Training Video Systems</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
+                        <UserPlus className="text-white h-5 w-5" />
+                      </div>
+                      <span className="text-foreground font-semibold">Onboarding Sequences</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
+                        <HelpCircle className="text-white h-5 w-5" />
+                      </div>
+                      <span className="text-foreground font-semibold">FAQ Video Libraries</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
+                        <Network className="text-white h-5 w-5" />
+                      </div>
+                      <span className="text-foreground font-semibold">Process Documentation</span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button asChild className="bg-purple-500 text-white hover:bg-purple-600 transition-all transform hover:scale-105" size="lg">
+                      <Link to="/system-pal">Meet System Pal</Link>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Evergreen Pal */}
+            <div className="bg-background rounded-3xl shadow-2xl p-12 mb-16 overflow-hidden relative transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-green-100 rounded-full -translate-y-32 translate-x-32 opacity-50"></div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+                <div className="text-center lg:text-left">
+                  <div className="inline-flex items-center bg-green-100 text-green-800 px-6 py-3 rounded-full text-sm font-bold mb-6">
+                    <Sprout className="mr-2 h-4 w-4" />
+                    EVERGREEN PAL
+                  </div>
+                  <h3 className="text-4xl md:text-5xl font-black text-foreground mb-6">"Let's grow your authority!"</h3>
+                  <p className="text-xl text-muted-foreground mb-8 leading-relaxed">Hello! I'm all about the long game. I help you create content that builds your reputation and authority over time. Think YouTube channels, educational series, and content that keeps delivering value for years.</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-green-600 rounded-xl flex items-center justify-center">
+                        <Youtube className="text-white h-5 w-5" />
+                      </div>
+                      <span className="text-foreground font-semibold">YouTube Development</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-green-600 rounded-xl flex items-center justify-center">
+                        <BookOpen className="text-white h-5 w-5" />
+                      </div>
+                      <span className="text-foreground font-semibold">Educational Series</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-green-600 rounded-xl flex items-center justify-center">
+                        <Calendar className="text-white h-5 w-5" />
+                      </div>
+                      <span className="text-foreground font-semibold">Monthly Content Plans</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-green-600 rounded-xl flex items-center justify-center">
+                        <Crown className="text-white h-5 w-5" />
+                      </div>
+                      <span className="text-foreground font-semibold">Authority Building</span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button asChild className="bg-green-600 text-white hover:bg-green-700 transition-all transform hover:scale-105" size="lg">
+                      <Link to="/evergreen-pal">Meet Evergreen Pal</Link>
+                    </Button>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <img className="w-80 h-80 mx-auto object-contain" src="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png" alt="cartoon character male with gray hair and beard wearing teal coat, holding golden video play button, surrounded by floating growth elements like lightbulb with plant, book, and green leaves" />
+                </div>
+              </div>
+            </div>
+            
+            {/* Spotlight Pal */}
+            <div className="bg-background rounded-3xl shadow-2xl p-12 mb-16 overflow-hidden relative transition-all duration-300 hover:-translate-y-2 hover:shadow-3xl">
+              <div className="absolute top-0 left-0 w-64 h-64 bg-red-100 rounded-full -translate-y-32 -translate-x-32 opacity-50"></div>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+                <div className="text-center order-2 lg:order-1">
+                  <img className="w-80 h-80 mx-auto object-contain" src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" alt="cartoon character red hair female wearing professional dark business suit, holding microphone with professional video equipment including camera on tripod and studio light, cinematic production mascot style" />
+                </div>
+                <div className="text-center lg:text-left order-1 lg:order-2">
+                  <div className="inline-flex items-center bg-red-100 text-red-800 px-6 py-3 rounded-full text-sm font-bold mb-6">
+                    <Star className="mr-2 h-4 w-4" />
+                    SPOTLIGHT PAL
+                  </div>
+                  <h3 className="text-4xl md:text-5xl font-black text-foreground mb-6">"Let's create cinematic magic!"</h3>
+                  <p className="text-xl text-muted-foreground mb-8 leading-relaxed">Darling! I'm your creative visionary for high-end, cinematic content that tells powerful stories. From brand films to music videos, I help you create content that captivates and inspires audiences.</p>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center">
+                        <Film className="text-white h-5 w-5" />
+                      </div>
+                      <span className="text-foreground font-semibold">Brand Storytelling</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center">
+                        <Music className="text-white h-5 w-5" />
+                      </div>
+                      <span className="text-foreground font-semibold">Music Videos</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center">
+                        <Trophy className="text-white h-5 w-5" />
+                      </div>
+                      <span className="text-foreground font-semibold">Hero Content</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center">
+                        <Sparkles className="text-white h-5 w-5" />
+                      </div>
+                      <span className="text-foreground font-semibold">Premium Experiences</span>
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button asChild className="bg-red-600 text-white hover:bg-red-700 transition-all transform hover:scale-105" size="lg">
+                      <Link to="/spotlight-pal">Meet Spotlight Pal</Link>
+                    </Button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Dynamic CTA Section */}
-        <section className="py-32 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/5 to-secondary/10" />
-          
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="text-center">
-              <div className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-6 py-3 rounded-full text-sm font-bold mb-8">
-                <Sparkles className="w-4 h-4" />
-                <span>Ready to Transform Your Content?</span>
+        {/* Strategic Service Guidance */}
+        <section className="py-24 bg-background">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-20">
+              <h2 className="text-5xl md:text-6xl font-black text-foreground mb-8">More Than Mascots</h2>
+              <p className="text-xl text-muted-foreground max-w-4xl mx-auto">Each Pal helps you navigate our extensive service offerings with intention, ensuring you choose exactly what aligns with your goals and budget.</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="bg-yellow-50 rounded-3xl p-8 text-center border-2 border-yellow-200">
+                <div className="w-16 h-16 bg-yellow-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <Heart className="text-white h-8 w-8" />
+                </div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">Reel Pal</h3>
+                <div className="space-y-3 text-left">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                    <span className="text-foreground">Starter Package Focus</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                    <span className="text-foreground">DIY Tool Recommendations</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                    <span className="text-foreground">Platform-Specific Solutions</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                    <span className="text-foreground">Quick Turnaround Options</span>
+                  </div>
+                </div>
+                <p className="text-muted-foreground mt-4 italic">"I'll help you find the perfect entry point that gets results fast!"</p>
               </div>
               
-              <h2 className="text-6xl md:text-8xl font-black text-foreground mb-8">
-                Your Perfect
-                <span className="block text-transparent bg-gradient-to-r from-social-purple via-social-pink to-social-orange bg-clip-text">
-                  Pal Awaits
-                </span>
-              </h2>
+              <div className="bg-purple-50 rounded-3xl p-8 text-center border-2 border-purple-200">
+                <div className="w-16 h-16 bg-purple-500 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <Brain className="text-white h-8 w-8" />
+                </div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">System Pal</h3>
+                <div className="space-y-3 text-left">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                    <span className="text-foreground">Enterprise Package Alignment</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                    <span className="text-foreground">Workflow Integration Services</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                    <span className="text-foreground">Training Program Selection</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                    <span className="text-foreground">Scalable Solution Design</span>
+                  </div>
+                </div>
+                <p className="text-muted-foreground mt-4 italic">"I'll map out the perfect system that grows with your business!"</p>
+              </div>
               
-              <p className="text-2xl text-muted-foreground mb-16 max-w-4xl mx-auto leading-relaxed">
-                Whether you're creating viral TikToks, building training systems, growing your YouTube presence, or crafting cinematic masterpieces - your specialized guide is ready to help.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-                <Button asChild size="xl" className="bg-gradient-to-r from-social-purple to-social-pink text-white hover:scale-105 transition-all duration-300 shadow-lg">
-                  <Link to="/video-packages" className="flex items-center space-x-2">
-                    <span>Start Your Journey</span>
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                </Button>
-                
-                <Button asChild variant="outline" size="xl" className="border-2 hover:scale-105 transition-all duration-300">
-                  <Link to="/contact" className="flex items-center space-x-2">
-                    <Heart className="w-5 h-5" />
-                    <span>Get Personal Guidance</span>
-                  </Link>
-                </Button>
+              <div className="bg-green-50 rounded-3xl p-8 text-center border-2 border-green-200">
+                <div className="w-16 h-16 bg-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <Leaf className="text-white h-8 w-8" />
+                </div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">Evergreen Pal</h3>
+                <div className="space-y-3 text-left">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                    <span className="text-foreground">Long-term Content Strategy</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                    <span className="text-foreground">Authority Building Packages</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                    <span className="text-foreground">ROI-Focused Recommendations</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-green-600 rounded-full"></div>
+                    <span className="text-foreground">Sustainable Growth Planning</span>
+                  </div>
+                </div>
+                <p className="text-muted-foreground mt-4 italic">"I'll guide you to investments that compound over time!"</p>
+              </div>
+              
+              <div className="bg-red-50 rounded-3xl p-8 text-center border-2 border-red-200">
+                <div className="w-16 h-16 bg-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                  <Star className="text-white h-8 w-8" />
+                </div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">Spotlight Pal</h3>
+                <div className="space-y-3 text-left">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-red-600 rounded-full"></div>
+                    <span className="text-foreground">Premium Production Services</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-red-600 rounded-full"></div>
+                    <span className="text-foreground">Brand Story Development</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-red-600 rounded-full"></div>
+                    <span className="text-foreground">High-Impact Campaign Design</span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="w-2 h-2 bg-red-600 rounded-full"></div>
+                    <span className="text-foreground">Cinematic Package Selection</span>
+                  </div>
+                </div>
+                <p className="text-muted-foreground mt-4 italic">"I'll help you choose services that create unforgettable impact!"</p>
               </div>
             </div>
           </div>
         </section>
+
+        {/* Comparison Table */}
+        <section className="py-24 bg-muted/5">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-5xl md:text-6xl font-black text-foreground mb-8">Choose Your Adventure</h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Still deciding? Here's a detailed comparison to help you pick the perfect Pal for your video journey.</p>
+            </div>
+            
+            <div className="bg-background rounded-3xl shadow-2xl overflow-hidden">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-primary text-white">
+                    <tr>
+                      <th className="px-8 py-6 text-left text-lg font-bold">Comparison</th>
+                      <th className="px-8 py-6 text-center text-lg font-bold">
+                        <div className="flex flex-col items-center">
+                          <Smartphone className="h-6 w-6 mb-2" />
+                          Reel Pal
+                        </div>
+                      </th>
+                      <th className="px-8 py-6 text-center text-lg font-bold">
+                        <div className="flex flex-col items-center">
+                          <Settings className="h-6 w-6 mb-2" />
+                          System Pal
+                        </div>
+                      </th>
+                      <th className="px-8 py-6 text-center text-lg font-bold">
+                        <div className="flex flex-col items-center">
+                          <Sprout className="h-6 w-6 mb-2" />
+                          Evergreen Pal
+                        </div>
+                      </th>
+                      <th className="px-8 py-6 text-center text-lg font-bold">
+                        <div className="flex flex-col items-center">
+                          <Star className="h-6 w-6 mb-2" />
+                          Spotlight Pal
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    <tr className="hover:bg-muted/5">
+                      <td className="px-8 py-6 font-bold text-foreground">Perfect For</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground">Social media growth</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground">Business operations</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground">Long-term authority</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground">Brand storytelling</td>
+                    </tr>
+                    <tr className="hover:bg-muted/5 bg-muted/2">
+                      <td className="px-8 py-6 font-bold text-foreground">Timeline</td>
+                      <td className="px-8 py-6 text-center">
+                        <span className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm font-semibold">1-2 weeks</span>
+                      </td>
+                      <td className="px-8 py-6 text-center">
+                        <span className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">2-4 weeks</span>
+                      </td>
+                      <td className="px-8 py-6 text-center">
+                        <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">Ongoing</span>
+                      </td>
+                      <td className="px-8 py-6 text-center">
+                        <span className="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">4-8 weeks</span>
+                      </td>
+                    </tr>
+                    <tr className="hover:bg-muted/5">
+                      <td className="px-8 py-6 font-bold text-foreground">Investment Range</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground font-semibold">$500 - $2,000</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground font-semibold">$2,000 - $10,000</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground font-semibold">$1,000 - $5,000/mo</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground font-semibold">$5,000 - $25,000</td>
+                    </tr>
+                    <tr className="hover:bg-muted/5 bg-muted/2">
+                      <td className="px-8 py-6 font-bold text-foreground">Content Focus</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground">Short-form, viral</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground">Educational, structured</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground">Authority, evergreen</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground">Cinematic, premium</td>
+                    </tr>
+                    <tr className="hover:bg-muted/5">
+                      <td className="px-8 py-6 font-bold text-foreground">Best Results</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground">Quick engagement</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground">Operational efficiency</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground">Sustained growth</td>
+                      <td className="px-8 py-6 text-center text-muted-foreground">Brand elevation</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Potential Outcomes */}
+        <section className="py-24 bg-background">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-20">
+              <h2 className="text-5xl md:text-6xl font-black text-foreground mb-8">What Your Pal Could Achieve</h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Each Pal specializes in different types of transformative outcomes for your business. Here's what becomes possible.</p>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+              <div className="bg-yellow-50 rounded-3xl p-8 border-2 border-yellow-200">
+                <div className="flex items-center mb-6">
+                  <img className="w-16 h-16 rounded-full mr-4 object-cover object-center" src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" alt="cartoon character female with brown hair in bun, orange shirt, small avatar style" />
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground">Reel Pal Transformation</h3>
+                    <p className="text-yellow-600 font-semibold">Social Media Growth</p>
+                  </div>
+                </div>
+                <blockquote className="text-lg text-foreground mb-6 italic">"With Reel Pal's guidance, you could transform from social media uncertainty to creating scroll-stopping content that builds genuine community and drives authentic engagement with your brand."</blockquote>
+                <div className="flex space-x-6 text-sm">
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-yellow-600">Viral Reach</div>
+                    <div className="text-muted-foreground text-xs">Content that spreads</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-yellow-600">Brand Awareness</div>
+                    <div className="text-muted-foreground text-xs">Recognition growth</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-yellow-600">Community Building</div>
+                    <div className="text-muted-foreground text-xs">Loyal following</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-purple-50 rounded-3xl p-8 border-2 border-purple-200">
+                <div className="flex items-center mb-6">
+                  <img className="w-16 h-16 rounded-full mr-4 object-cover object-center" src="/lovable-uploads/1d3c7a2a-e5cb-4900-9b76-9eadb6620973.png" alt="System Pal - professional male character in gray jacket with green accents, small avatar style" />
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground">System Pal Transformation</h3>
+                    <p className="text-purple-600 font-semibold">Operational Excellence</p>
+                  </div>
+                </div>
+                <blockquote className="text-lg text-foreground mb-6 italic">"System Pal could help you eliminate training bottlenecks and create seamless onboarding experiences that scale effortlessly as your team grows, reducing stress and improving consistency."</blockquote>
+                <div className="flex space-x-6 text-sm">
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-purple-600">Efficiency Gains</div>
+                    <div className="text-muted-foreground text-xs">Streamlined operations</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-purple-600">Scalable Systems</div>
+                    <div className="text-muted-foreground text-xs">Growth-ready processes</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-purple-600">Team Alignment</div>
+                    <div className="text-muted-foreground text-xs">Consistent execution</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-green-50 rounded-3xl p-8 border-2 border-green-200">
+                <div className="flex items-center mb-6">
+                  <img className="w-16 h-16 rounded-full mr-4" src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-86b2d84085b3635c8f10.png" alt="cartoon character female with brown hair, teal outfit, small avatar style" />
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground">Evergreen Pal Transformation</h3>
+                    <p className="text-green-600 font-semibold">Authority Development</p>
+                  </div>
+                </div>
+                <blockquote className="text-lg text-foreground mb-6 italic">"Evergreen Pal could position you as the go-to expert in your field through strategic content that builds lasting credibility and attracts premium opportunities year after year."</blockquote>
+                <div className="flex space-x-6 text-sm">
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-green-600">Thought Leadership</div>
+                    <div className="text-muted-foreground text-xs">Industry recognition</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-green-600">Sustainable Growth</div>
+                    <div className="text-muted-foreground text-xs">Long-term success</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-green-600">Premium Positioning</div>
+                    <div className="text-muted-foreground text-xs">Higher value offers</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-red-50 rounded-3xl p-8 border-2 border-red-200">
+                <div className="flex items-center mb-6">
+                  <img className="w-16 h-16 rounded-full mr-4 object-cover object-center" src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" alt="cartoon character red hair female, professional dark suit, small avatar style" />
+                  <div>
+                    <h3 className="text-xl font-bold text-foreground">Spotlight Pal Transformation</h3>
+                    <p className="text-red-600 font-semibold">Brand Elevation</p>
+                  </div>
+                </div>
+                <blockquote className="text-lg text-foreground mb-6 italic">"Spotlight Pal could elevate your brand with cinematic storytelling that commands attention, builds emotional connections, and positions your business as a premium choice in your market."</blockquote>
+                <div className="flex space-x-6 text-sm">
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-red-600">Emotional Impact</div>
+                    <div className="text-muted-foreground text-xs">Memorable experiences</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-red-600">Premium Perception</div>
+                    <div className="text-muted-foreground text-xs">Elevated brand status</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-lg font-bold text-red-600">Market Differentiation</div>
+                    <div className="text-muted-foreground text-xs">Competitive advantage</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
     </>
   );

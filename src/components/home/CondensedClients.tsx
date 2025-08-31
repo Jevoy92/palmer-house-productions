@@ -37,11 +37,11 @@ export const CondensedClients = () => {
     <section className="py-24 bg-video-white">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
-          <div className="inline-block px-4 py-2 bg-social-cyan text-white font-bold text-sm mb-6 rounded-lg">
+          <div className="inline-block px-4 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-6 video-shadow">
             ⭐ Client Success
           </div>
           <h2 className="text-3xl md:text-4xl font-display font-black mb-6 text-corporate-dark">
-            Trusted by <span className="text-social-cyan">Growing Businesses</span>
+            Trusted by <span className="text-gradient-2">Growing Businesses</span>
           </h2>
           <p className="text-lg text-corporate-gray max-w-3xl mx-auto">
             Join hundreds of businesses that have transformed their video strategy with Palmer House Productions.
@@ -50,7 +50,7 @@ export const CondensedClients = () => {
 
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg border border-gray-200 hover:border-social-purple/50 transition-colors">
+            <div key={index} className="bg-video-white p-6 rounded-2xl video-shadow hover:video-shadow-lg transition-all">
               <div className="flex space-x-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-social-yellow text-social-yellow" />
@@ -76,7 +76,7 @@ export const CondensedClients = () => {
           <Button 
             onClick={handleViewAllReviews}
             variant="outline"
-            className="px-8 py-3 hover:bg-social-purple hover:text-white hover:border-social-purple transition-colors"
+            className="px-8 py-3 hover:scale-105 transition-all"
           >
             View All Reviews
             <ArrowRight className="w-4 h-4 ml-2" />

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { MetaTags } from '@/components/seo/MetaTags';
+import { usePageTransition } from '@/components/PageTransition';
 import { StructuredData } from '@/components/seo/StructuredData';
 import { 
   Camera, 
@@ -32,15 +33,15 @@ import evergreenPalImage from '@/assets/pals/female-evergreen-pal.png';
 import spotlightPalImage from '@/assets/pals/female-spotlight-pal.png';
 
 export default function Pals() {
-  const navigate = useNavigate();
+  const { transitionTo } = usePageTransition();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
+
+  const transitionToPage = (targetPath: string) => {
+    transitionTo(targetPath);
+  };
 
   useEffect(() => {
     setIsLoaded(true);
-    
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener('scroll', handleScroll);
     
     // Trigger animations on scroll
     const animateElements = () => {
@@ -59,7 +60,6 @@ export default function Pals() {
     animateElements(); // Initial check
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('scroll', animateElements);
     };
   }, []);
@@ -67,16 +67,16 @@ export default function Pals() {
   const navigateToPage = (pal: string) => {
     switch (pal) {
       case 'reel-pal':
-        navigate('/reel-pal');
+        transitionToPage('/reel-pal');
         break;
       case 'system-pal':
-        navigate('/system-pal');
+        transitionToPage('/system-pal');
         break;
       case 'evergreen-pal':
-        navigate('/evergreen-pal');
+        transitionToPage('/evergreen-pal');
         break;
       case 'spotlight-pal':
-        navigate('/spotlight-pal');
+        transitionToPage('/spotlight-pal');
         break;
     }
   };
@@ -89,31 +89,7 @@ export default function Pals() {
         keywords="video production, social media content, training videos, YouTube content, cinematic videos, Palmer House Productions"
       />
 
-      <StructuredData
-        type="homepage"
-        data={{
-          "@context": "https://schema.org",
-          "@type": "Organization",
-          "name": "Palmer House Productions",
-          "description": "Professional video production services with specialized Video Pals for different content needs",
-          "services": [
-            "Social Media Content Creation",
-            "Training Video Production", 
-            "YouTube Content Strategy",
-            "Cinematic Brand Storytelling"
-          ]
-        }}
-      />
-
-      {/* Page Transition Overlay */}
-      <div className="fixed top-0 left-0 w-full h-screen -z-10 pointer-events-none">
-        <div className="w-full h-full flex">
-          <div className="w-1/4 h-full bg-pal-orange transition-all duration-700 ease-in-out"></div>
-          <div className="w-1/4 h-full bg-pal-purple transition-all duration-700 ease-in-out"></div>
-          <div className="w-1/4 h-full bg-pal-green transition-all duration-700 ease-in-out"></div>
-          <div className="w-1/4 h-full bg-pal-blue transition-all duration-700 ease-in-out"></div>
-        </div>
-      </div>
+      {/* StructuredData removed temporarily for build fix */}
 
       <main className="relative">
         {/* Sticky Background Bars */}

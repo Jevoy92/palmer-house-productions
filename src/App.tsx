@@ -8,6 +8,7 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
+import { PageTransition } from '@/components/PageTransition';
 import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { trackPageView } from "@/lib/analytics";
 import { Canonical } from "@/components/seo/Canonical";
@@ -69,14 +70,15 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <CriticalCSS />
-        <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
-        <ScrollToTop />
-        <StructuredData />
-        <Canonical />
-        <BreadcrumbNavigation />
-        <RouteTracker />
-        <Routes>
+        <PageTransition>
+          <CriticalCSS />
+          <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
+          <ScrollToTop />
+          <StructuredData />
+          <Canonical />
+          <BreadcrumbNavigation />
+          <RouteTracker />
+          <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/pals" element={<Pals />} />
           <Route path="/reel-pal" element={<ReelPal />} />
@@ -127,8 +129,9 @@ const App = () => (
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
-        </Routes>
-        <EnhancedFooter />
+          </Routes>
+          <EnhancedFooter />
+        </PageTransition>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

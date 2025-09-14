@@ -30,7 +30,7 @@ import {
 import reelPalImage from '@/assets/pals/female-reel-pal-edited.png';
 import systemPalImage from '@/assets/pals/female-system-pal-edited.png';
 import evergreenPalImage from '@/assets/pals/female-evergreen-pal-edited.png';
-import spotlightPalImage from '@/assets/pals/female-spotlight-pal.png';
+import spotlightPalImage from '@/assets/pals/female-spotlight-pal-edited.png';
 
 export default function Pals() {
   const { transitionTo } = usePageTransition();

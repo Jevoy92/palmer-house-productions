@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { MetaTags } from '@/components/seo/MetaTags';
 import { usePageTransition } from '@/components/PageTransition';
 import { StructuredData } from '@/components/seo/StructuredData';
+import { ScrollBars } from '@/components/ScrollBars';
 import { 
   Camera, 
   Cog, 
@@ -87,6 +88,7 @@ export default function Pals() {
 
   return (
     <div className="bg-gray-50 overflow-x-hidden font-sans">
+      <ScrollBars />
       <MetaTags
         title="Meet Your Video Pals - Palmer House Productions"
         description="Discover our specialized Video Pals: Reel Pal for social content, System Pal for training videos, Evergreen Pal for authority building, and Spotlight Pal for cinematic storytelling."

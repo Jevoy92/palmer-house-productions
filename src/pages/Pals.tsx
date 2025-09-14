@@ -509,45 +509,99 @@ export default function Pals() {
         </section>
 
         {/* Workflow Section */}
-        <section className="bg-gray-50 py-20 lg:py-32 relative z-20">
-          <div className="container mx-auto px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">Our Seamless Workflow</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-200">From upload to final cut, our process is designed for clarity and speed.</p>
+        <section className="relative py-20 lg:py-32 overflow-hidden">
+          {/* Animated Background Bars */}
+          <div className="absolute inset-0 -z-10">
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-gray-100"></div>
+            <div className="absolute top-0 left-0 w-full h-full opacity-10">
+              <div className="absolute top-0 left-0 w-1/4 h-full bg-pal-orange animate-pulse" style={{animationDelay: '0s'}}></div>
+              <div className="absolute top-0 left-1/4 w-1/4 h-full bg-pal-purple animate-pulse" style={{animationDelay: '0.5s'}}></div>
+              <div className="absolute top-0 left-2/4 w-1/4 h-full bg-pal-green animate-pulse" style={{animationDelay: '1s'}}></div>
+              <div className="absolute top-0 left-3/4 w-1/4 h-full bg-pal-blue animate-pulse" style={{animationDelay: '1.5s'}}></div>
             </div>
-            <div className="relative flex flex-col md:flex-row justify-between items-center w-full max-w-5xl mx-auto">
+            {/* Floating Elements */}
+            <div className="absolute top-1/4 left-1/6 w-32 h-32 bg-pal-orange/5 rounded-full animate-bounce" style={{animationDelay: '2s', animationDuration: '3s'}}></div>
+            <div className="absolute bottom-1/4 right-1/6 w-24 h-24 bg-pal-purple/5 rounded-full animate-bounce" style={{animationDelay: '3s', animationDuration: '4s'}}></div>
+            <div className="absolute top-1/3 right-1/3 w-16 h-16 bg-pal-green/5 rounded-full animate-bounce" style={{animationDelay: '1s', animationDuration: '2.5s'}}></div>
+          </div>
 
-              <div className="flex flex-col items-center relative z-10 p-4 w-full md:w-1/4 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-300">
-                <div className="w-16 h-16 bg-pal-orange/20 border-2 border-pal-orange rounded-full flex items-center justify-center mb-4">
-                  <Upload className="text-pal-orange text-2xl" />
+          <div className="container mx-auto px-6 lg:px-8 relative z-10">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-pal-orange via-pal-purple to-pal-blue bg-clip-text text-transparent mb-6 animate-fade-in">
+                Our Seamless Workflow
+              </h2>
+              <p className="text-xl text-gray-700 max-w-3xl mx-auto animate-fade-in" style={{animationDelay: '0.2s'}}>
+                From upload to final cut, our process is designed for clarity and speed.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+              {/* Step 1 - Upload */}
+              <div className="group relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-pal-orange/20 to-pal-orange/5 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                <div className="relative bg-white/80 backdrop-blur-lg rounded-3xl p-8 text-center border border-pal-orange/20 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-500 animate-scale-in" style={{animationDelay: '0.3s'}}>
+                  <div className="w-20 h-20 bg-gradient-to-br from-pal-orange to-pal-orange/70 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:rotate-12 transition-transform duration-500 shadow-lg">
+                    <Upload className="text-white text-3xl" />
+                  </div>
+                  <div className="absolute top-4 right-4 w-8 h-8 bg-pal-orange/10 rounded-full flex items-center justify-center">
+                    <span className="text-pal-orange font-bold text-lg">1</span>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-gray-900">Upload</h3>
+                  <p className="text-gray-600 leading-relaxed">Securely upload your raw footage and assets to our dedicated portal.</p>
                 </div>
-                <h3 className="text-xl font-semibold mb-2">1. Upload</h3>
-                <p className="text-gray-600 text-sm text-center">Securely upload your raw footage and assets to our dedicated portal.</p>
               </div>
 
-              <div className="flex flex-col items-center relative z-10 p-4 w-full md:w-1/4 mt-8 md:mt-0 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-450">
-                <div className="w-16 h-16 bg-pal-purple/20 border-2 border-pal-purple rounded-full flex items-center justify-center mb-4">
-                  <Wand2 className="text-pal-purple text-2xl" />
+              {/* Step 2 - Edit */}
+              <div className="group relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-pal-purple/20 to-pal-purple/5 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                <div className="relative bg-white/80 backdrop-blur-lg rounded-3xl p-8 text-center border border-pal-purple/20 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-500 animate-scale-in" style={{animationDelay: '0.4s'}}>
+                  <div className="w-20 h-20 bg-gradient-to-br from-pal-purple to-pal-purple/70 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:rotate-12 transition-transform duration-500 shadow-lg">
+                    <Wand2 className="text-white text-3xl" />
+                  </div>
+                  <div className="absolute top-4 right-4 w-8 h-8 bg-pal-purple/10 rounded-full flex items-center justify-center">
+                    <span className="text-pal-purple font-bold text-lg">2</span>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-gray-900">Edit</h3>
+                  <p className="text-gray-600 leading-relaxed">Our editors work their magic, crafting the first draft based on your brief.</p>
                 </div>
-                <h3 className="text-xl font-semibold mb-2">2. Edit</h3>
-                <p className="text-gray-600 text-sm text-center">Our editors work their magic, crafting the first draft based on your brief.</p>
               </div>
 
-              <div className="flex flex-col items-center relative z-10 p-4 w-full md:w-1/4 mt-8 md:mt-0 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-600">
-                <div className="w-16 h-16 bg-pal-green/20 border-2 border-pal-green rounded-full flex items-center justify-center mb-4">
-                  <MessageCircle className="text-pal-green text-2xl" />
+              {/* Step 3 - Review */}
+              <div className="group relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-pal-green/20 to-pal-green/5 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                <div className="relative bg-white/80 backdrop-blur-lg rounded-3xl p-8 text-center border border-pal-green/20 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-500 animate-scale-in" style={{animationDelay: '0.5s'}}>
+                  <div className="w-20 h-20 bg-gradient-to-br from-pal-green to-pal-green/70 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:rotate-12 transition-transform duration-500 shadow-lg">
+                    <MessageCircle className="text-white text-3xl" />
+                  </div>
+                  <div className="absolute top-4 right-4 w-8 h-8 bg-pal-green/10 rounded-full flex items-center justify-center">
+                    <span className="text-pal-green font-bold text-lg">3</span>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-gray-900">Review</h3>
+                  <p className="text-gray-600 leading-relaxed">Provide feedback directly on the video with our intuitive review tools.</p>
                 </div>
-                <h3 className="text-xl font-semibold mb-2">3. Review</h3>
-                <p className="text-gray-600 text-sm text-center">Provide feedback directly on the video with our intuitive review tools.</p>
               </div>
 
-              <div className="flex flex-col items-center relative z-10 p-4 w-full md:w-1/4 mt-8 md:mt-0 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-750">
-                <div className="w-16 h-16 bg-pal-blue/20 border-2 border-pal-blue rounded-full flex items-center justify-center mb-4">
-                  <Download className="text-pal-blue text-2xl" />
+              {/* Step 4 - Deliver */}
+              <div className="group relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-pal-blue/20 to-pal-blue/5 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                <div className="relative bg-white/80 backdrop-blur-lg rounded-3xl p-8 text-center border border-pal-blue/20 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-500 animate-scale-in" style={{animationDelay: '0.6s'}}>
+                  <div className="w-20 h-20 bg-gradient-to-br from-pal-blue to-pal-blue/70 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:rotate-12 transition-transform duration-500 shadow-lg">
+                    <Download className="text-white text-3xl" />
+                  </div>
+                  <div className="absolute top-4 right-4 w-8 h-8 bg-pal-blue/10 rounded-full flex items-center justify-center">
+                    <span className="text-pal-blue font-bold text-lg">4</span>
+                  </div>
+                  <h3 className="text-2xl font-bold mb-4 text-gray-900">Deliver</h3>
+                  <p className="text-gray-600 leading-relaxed">Download your finalized, high-resolution video in multiple formats.</p>
                 </div>
-                <h3 className="text-xl font-semibold mb-2">4. Deliver</h3>
-                <p className="text-gray-600 text-sm text-center">Download your finalized, high-resolution video in multiple formats.</p>
               </div>
+            </div>
+
+            {/* Call-to-Action */}
+            <div className="text-center mt-16 animate-fade-in" style={{animationDelay: '0.7s'}}>
+              <button className="bg-gradient-to-r from-pal-orange via-pal-purple to-pal-blue text-white font-bold py-4 px-12 rounded-full text-xl hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
+                Start Your Project Today
+              </button>
             </div>
           </div>
         </section>

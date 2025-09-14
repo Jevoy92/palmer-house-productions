@@ -4,7 +4,6 @@ import { Services } from "@/components/Services";
 
 import { CondensedClients } from "@/components/home/CondensedClients";
 
-import { Navigation } from "@/components/Navigation";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
 import { MetaTags } from "@/components/seo/MetaTags";
@@ -30,7 +29,6 @@ const Index = () => {
       <LaunchOptimization />
       <MobileFirstOptimization />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
-      <Navigation />
       <MainContent>
         <Hero />
         <div id="services">

@@ -32,6 +32,7 @@ import maleReelPalImage from '@/assets/pals/male-reel-pal-edited.png';
 import systemPalImage from '@/assets/pals/female-system-pal-edited.png';
 import maleSystemPalImage from '@/assets/pals/male-system-pal-edited.png';
 import evergreenPalImage from '@/assets/pals/female-evergreen-pal-final.png';
+import maleEvergreenPalImage from '@/assets/pals/male-evergreen-pal-edited.png';
 import spotlightPalImage from '@/assets/pals/female-spotlight-pal-edited.png';
 
 export default function Pals() {
@@ -186,9 +187,15 @@ export default function Pals() {
             </div>
             <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.4s_forwards]">
               <img 
-                className="w-full h-full object-contain" 
+                className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
                 src={evergreenPalImage} 
-                alt="Evergreen Pal character in green jacket"
+                alt="Female Evergreen Pal character in green cardigan"
+                loading="eager"
+              />
+              <img 
+                className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
+                src={maleEvergreenPalImage} 
+                alt="Male Evergreen Pal character in blue cardigan"
                 loading="eager"
               />
             </div>

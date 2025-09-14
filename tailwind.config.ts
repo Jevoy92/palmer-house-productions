@@ -81,6 +81,14 @@ export default {
 				'video': {
 					'black': 'hsl(var(--video-black))',
 					'white': 'hsl(var(--video-white))',
+				},
+				// Pal colors
+				'pal': {
+					'orange': 'hsl(var(--pal-orange))',
+					'purple': 'hsl(var(--pal-purple))',
+					'green': 'hsl(var(--pal-green))',
+					'blue': 'hsl(var(--pal-blue))',
+					'footer-green': 'hsl(var(--pal-footer-green))',
 				}
 			},
 			borderRadius: {

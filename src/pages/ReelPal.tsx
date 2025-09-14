@@ -57,18 +57,18 @@ const ReelPal = () => {
           </div>
 
           {/* Hero Section */}
-          <section className="min-h-screen flex items-center justify-center relative z-10 px-4 sm:px-6 lg:px-8">
-            <div className="max-w-7xl mx-auto">
+          <section className="min-h-screen flex items-center justify-center relative z-10 px-4 sm:px-6 lg:px-8 pt-20">
+            <div className="max-w-7xl mx-auto w-full">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div className="text-center lg:text-left">
+                <div className="text-center lg:text-left order-2 lg:order-1">
                   <div className="bg-white/20 backdrop-blur-lg text-white px-6 py-3 rounded-full text-sm font-bold w-fit mx-auto lg:mx-0 mb-8 border border-white/30">
                     REEL PAL
                   </div>
-                  <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-8 leading-tight">
-                    "Let's make content that 
-                    <span className="bg-gradient-to-r from-yellow-200 to-orange-200 bg-clip-text text-transparent"> connects!</span>"
+                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-8 leading-tight">
+                    "Let's make content that{' '}
+                    <span className="text-yellow-300 drop-shadow-lg">connects!</span>"
                   </h1>
-                  <p className="text-xl md:text-2xl text-white/90 mb-12 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                  <p className="text-lg md:text-xl text-white/90 mb-12 leading-relaxed max-w-2xl mx-auto lg:mx-0">
                     Your go-to guide for short-form social content that captures hearts and drives real engagement. I specialize in authentic content that resonates with your audience across all platforms.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
@@ -77,11 +77,11 @@ const ReelPal = () => {
                     </button>
                   </div>
                 </div>
-                <div className="text-center">
+                <div className="text-center order-1 lg:order-2">
                   <div className="relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-full blur-3xl"></div>
                     <img 
-                      className="relative w-96 h-96 mx-auto rounded-full border-4 border-white/30 object-cover object-center shadow-2xl hover:scale-105 transition-transform duration-500" 
+                      className="relative w-80 h-80 md:w-96 md:h-96 mx-auto rounded-full border-4 border-white/30 object-cover object-center shadow-2xl hover:scale-105 transition-transform duration-500" 
                       src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
                       alt="cartoon character female with brown hair in bun, orange shirt and jeans, holding smartphone with video camera and film strip elements, energetic social media creator mascot" 
                     />

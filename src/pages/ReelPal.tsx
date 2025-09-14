@@ -41,77 +41,122 @@ const ReelPal = () => {
         description="Meet Reel Pal, your go-to guide for authentic, engaging short-form content. From TikToks to Instagram Reels, create videos that drive real engagement."
       />
       
-      <div className="bg-muted/5">
+      <div className="bg-gray-50 overflow-x-hidden font-sans">
         <Navigation />
 
-        {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary to-secondary text-white min-h-[500px] flex items-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mb-4">REEL PAL</div>
-                <h1 className="text-5xl md:text-6xl font-bold mb-6">"Let's make content that connects!"</h1>
-                <p className="text-xl mb-8 opacity-90">Your go-to guide for short-form social content that captures hearts and drives real engagement. I specialize in authentic content that resonates with your audience across all platforms.</p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button asChild size="lg" className="bg-yellow-500 text-white hover:bg-yellow-600">
-                    <Link to="/contact">Book a Strategy Call</Link>
-                  </Button>
-                </div>
-              </div>
-              <div className="text-center">
-                <img 
-                  className="w-80 h-80 mx-auto rounded-full border-4 border-white/20 object-cover object-center" 
-                  src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
-                  alt="cartoon character female with brown hair in bun, orange shirt and jeans, holding smartphone with video camera and film strip elements, energetic social media creator mascot" 
-                />
-              </div>
+        <main className="relative">
+          {/* Animated Background Bars */}
+          <div className="fixed top-0 left-0 w-full h-screen -z-10">
+            <div className="w-full h-full flex">
+              <div className="w-full h-full bg-gradient-to-br from-pal-orange to-pal-orange/80 transition-all duration-700 ease-in-out"></div>
             </div>
+            {/* Floating Elements */}
+            <div className="absolute top-1/4 left-1/6 w-32 h-32 bg-white/10 rounded-full animate-bounce" style={{animationDelay: '2s', animationDuration: '3s'}}></div>
+            <div className="absolute bottom-1/4 right-1/6 w-24 h-24 bg-white/5 rounded-full animate-bounce" style={{animationDelay: '3s', animationDuration: '4s'}}></div>
+            <div className="absolute top-1/3 right-1/3 w-16 h-16 bg-white/10 rounded-full animate-bounce" style={{animationDelay: '1s', animationDuration: '2.5s'}}></div>
           </div>
-        </section>
 
-        {/* Expertise Section */}
-        <section className="py-20 bg-background">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">What I Do Best</h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">From viral TikToks to Instagram Reels that convert, I help you create content that not only looks great but actually drives results for your business.</p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="bg-yellow-50 rounded-2xl p-8 text-center">
-                <div className="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Video className="text-white h-8 w-8" />
+          {/* Hero Section */}
+          <section className="min-h-screen flex items-center justify-center relative z-10 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div className="text-center lg:text-left">
+                  <div className="bg-white/20 backdrop-blur-lg text-white px-6 py-3 rounded-full text-sm font-bold w-fit mx-auto lg:mx-0 mb-8 border border-white/30">
+                    REEL PAL
+                  </div>
+                  <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-8 leading-tight">
+                    "Let's make content that 
+                    <span className="bg-gradient-to-r from-yellow-200 to-orange-200 bg-clip-text text-transparent"> connects!</span>"
+                  </h1>
+                  <p className="text-xl md:text-2xl text-white/90 mb-12 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                    Your go-to guide for short-form social content that captures hearts and drives real engagement. I specialize in authentic content that resonates with your audience across all platforms.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
+                    <button className="bg-white/20 backdrop-blur-lg text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-white/30 transition-all shadow-xl hover:shadow-2xl border border-white/30 hover:scale-105">
+                      Book a Strategy Call
+                    </button>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-4">TikTok Content</h3>
-                <p className="text-muted-foreground">Trending content that captures attention and drives engagement on the world's fastest-growing platform.</p>
-              </div>
-              
-              <div className="bg-blue-50 rounded-2xl p-8 text-center">
-                <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <PlayCircle className="text-white h-8 w-8" />
+                <div className="text-center">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-full blur-3xl"></div>
+                    <img 
+                      className="relative w-96 h-96 mx-auto rounded-full border-4 border-white/30 object-cover object-center shadow-2xl hover:scale-105 transition-transform duration-500" 
+                      src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
+                      alt="cartoon character female with brown hair in bun, orange shirt and jeans, holding smartphone with video camera and film strip elements, energetic social media creator mascot" 
+                    />
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-4">Instagram Reels</h3>
-                <p className="text-muted-foreground">Stories and Reels that showcase your brand personality and convert followers into customers.</p>
-              </div>
-              
-              <div className="bg-red-50 rounded-2xl p-8 text-center">
-                <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Video className="text-white h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-4">YouTube Shorts</h3>
-                <p className="text-muted-foreground">Quick, impactful videos that grow your YouTube presence and drive subscribers.</p>
-              </div>
-              
-              <div className="bg-green-50 rounded-2xl p-8 text-center">
-                <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Wrench className="text-white h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-4">DIY Kits</h3>
-                <p className="text-muted-foreground">Complete content creation packages that enable you to create professional content in-house.</p>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+
+          {/* White Section Separator */}
+          <div className="h-[10vh] bg-white relative z-10"></div>
+
+          {/* Expertise Section */}
+          <section className="bg-white py-20 lg:py-32 relative z-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-6xl font-extrabold bg-gradient-to-r from-pal-orange to-yellow-500 bg-clip-text text-transparent mb-6">
+                  What I Do Best
+                </h2>
+                <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+                  From viral TikToks to Instagram Reels that convert, I help you create content that not only looks great but actually drives results for your business.
+                </p>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {/* TikTok Content */}
+                <div className="group relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/20 to-orange-400/5 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                  <div className="relative bg-white/90 backdrop-blur-lg rounded-3xl p-8 text-center border border-yellow-400/20 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-500">
+                    <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-400 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:rotate-12 transition-transform duration-500 shadow-lg">
+                      <Video className="text-white text-3xl" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4 text-gray-900">TikTok Content</h3>
+                    <p className="text-gray-600 leading-relaxed">Trending content that captures attention and drives engagement on the world's fastest-growing platform.</p>
+                  </div>
+                </div>
+
+                {/* Instagram Reels */}
+                <div className="group relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-400/20 to-blue-400/5 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                  <div className="relative bg-white/90 backdrop-blur-lg rounded-3xl p-8 text-center border border-blue-400/20 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-500">
+                    <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-400 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:rotate-12 transition-transform duration-500 shadow-lg">
+                      <PlayCircle className="text-white text-3xl" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4 text-gray-900">Instagram Reels</h3>
+                    <p className="text-gray-600 leading-relaxed">Stories and Reels that showcase your brand personality and convert followers into customers.</p>
+                  </div>
+                </div>
+
+                {/* YouTube Shorts */}
+                <div className="group relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-red-400/20 to-red-400/5 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                  <div className="relative bg-white/90 backdrop-blur-lg rounded-3xl p-8 text-center border border-red-400/20 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-500">
+                    <div className="w-20 h-20 bg-gradient-to-br from-red-500 to-red-400 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:rotate-12 transition-transform duration-500 shadow-lg">
+                      <Video className="text-white text-3xl" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4 text-gray-900">YouTube Shorts</h3>
+                    <p className="text-gray-600 leading-relaxed">Quick, impactful videos that grow your YouTube presence and drive subscribers.</p>
+                  </div>
+                </div>
+
+                {/* DIY Kits */}
+                <div className="group relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-green-400/20 to-green-400/5 rounded-3xl blur-xl group-hover:blur-2xl transition-all duration-500"></div>
+                  <div className="relative bg-white/90 backdrop-blur-lg rounded-3xl p-8 text-center border border-green-400/20 shadow-xl group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-500">
+                    <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-400 rounded-2xl flex items-center justify-center mb-6 mx-auto group-hover:rotate-12 transition-transform duration-500 shadow-lg">
+                      <Wrench className="text-white text-3xl" />
+                    </div>
+                    <h3 className="text-2xl font-bold mb-4 text-gray-900">DIY Kits</h3>
+                    <p className="text-gray-600 leading-relaxed">Complete content creation packages that enable you to create professional content in-house.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
 
         {/* Packages Section */}
         <section className="py-20 bg-muted/5">
@@ -482,6 +527,7 @@ const ReelPal = () => {
             </div>
           </div>
         </section>
+        </main>
       </div>
     </>
   );

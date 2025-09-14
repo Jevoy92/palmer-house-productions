@@ -517,7 +517,6 @@ export default function Pals() {
               <p className="text-lg text-gray-600 max-w-2xl mx-auto animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-200">From upload to final cut, our process is designed for clarity and speed.</p>
             </div>
             <div className="relative flex flex-col md:flex-row justify-between items-center w-full max-w-5xl mx-auto">
-              <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-300 hidden md:block border-t-2 border-dashed border-gray-400"></div>
 
               <div className="flex flex-col items-center relative z-10 p-4 w-full md:w-1/4 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-300">
                 <div className="w-16 h-16 bg-pal-orange/20 border-2 border-pal-orange rounded-full flex items-center justify-center mb-4">

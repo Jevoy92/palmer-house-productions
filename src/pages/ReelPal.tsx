@@ -45,15 +45,20 @@ const ReelPal = () => {
         <Navigation />
 
         <main className="relative">
-          {/* Animated Background Bars */}
+          {/* Dynamic 4-Colored Background Bars */}
           <div className="fixed top-0 left-0 w-full h-screen -z-10">
             <div className="w-full h-full flex">
-              <div className="w-full h-full bg-gradient-to-br from-pal-orange to-pal-orange/80 transition-all duration-700 ease-in-out"></div>
+              <div className="w-1/4 h-full bg-pal-orange transition-all duration-700 ease-in-out opacity-90"></div>
+              <div className="w-1/4 h-full bg-pal-purple transition-all duration-700 ease-in-out opacity-80"></div>
+              <div className="w-1/4 h-full bg-pal-green transition-all duration-700 ease-in-out opacity-80"></div>
+              <div className="w-1/4 h-full bg-pal-blue transition-all duration-700 ease-in-out opacity-80"></div>
             </div>
             {/* Floating Elements */}
             <div className="absolute top-1/4 left-1/6 w-32 h-32 bg-white/10 rounded-full animate-bounce" style={{animationDelay: '2s', animationDuration: '3s'}}></div>
             <div className="absolute bottom-1/4 right-1/6 w-24 h-24 bg-white/5 rounded-full animate-bounce" style={{animationDelay: '3s', animationDuration: '4s'}}></div>
             <div className="absolute top-1/3 right-1/3 w-16 h-16 bg-white/10 rounded-full animate-bounce" style={{animationDelay: '1s', animationDuration: '2.5s'}}></div>
+            {/* Reel Pal Focus Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-r from-pal-orange/60 via-transparent to-transparent"></div>
           </div>
 
           {/* Hero Section */}
@@ -61,27 +66,27 @@ const ReelPal = () => {
             <div className="max-w-7xl mx-auto w-full">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                 <div className="text-center lg:text-left order-2 lg:order-1">
-                  <div className="bg-white/20 backdrop-blur-lg text-white px-6 py-3 rounded-full text-sm font-bold w-fit mx-auto lg:mx-0 mb-8 border border-white/30">
+                  <div className="bg-white/30 backdrop-blur-lg text-white px-6 py-3 rounded-full text-sm font-bold w-fit mx-auto lg:mx-0 mb-8 border border-white/40 shadow-lg">
                     REEL PAL
                   </div>
-                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-8 leading-tight">
+                  <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold text-white mb-8 leading-tight drop-shadow-2xl">
                     "Let's make content that{' '}
-                    <span className="text-yellow-300 drop-shadow-lg">connects!</span>"
+                    <span className="text-yellow-200 drop-shadow-lg">connects!</span>"
                   </h1>
-                  <p className="text-lg md:text-xl text-white/90 mb-12 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                  <p className="text-lg md:text-xl text-white/95 mb-12 leading-relaxed max-w-2xl mx-auto lg:mx-0 drop-shadow-lg">
                     Your go-to guide for short-form social content that captures hearts and drives real engagement. I specialize in authentic content that resonates with your audience across all platforms.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start">
-                    <button className="bg-white/20 backdrop-blur-lg text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-white/30 transition-all shadow-xl hover:shadow-2xl border border-white/30 hover:scale-105">
+                    <button className="bg-white/25 backdrop-blur-lg text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-white/35 transition-all shadow-xl hover:shadow-2xl border border-white/40 hover:scale-105">
                       Book a Strategy Call
                     </button>
                   </div>
                 </div>
                 <div className="text-center order-1 lg:order-2">
                   <div className="relative">
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent rounded-full blur-3xl"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent rounded-full blur-3xl"></div>
                     <img 
-                      className="relative w-80 h-80 md:w-96 md:h-96 mx-auto rounded-full border-4 border-white/30 object-cover object-center shadow-2xl hover:scale-105 transition-transform duration-500" 
+                      className="relative w-80 h-80 md:w-96 md:h-96 mx-auto rounded-full border-4 border-white/40 object-cover object-center shadow-2xl hover:scale-105 transition-transform duration-500" 
                       src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
                       alt="cartoon character female with brown hair in bun, orange shirt and jeans, holding smartphone with video camera and film strip elements, energetic social media creator mascot" 
                     />

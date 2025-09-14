@@ -44,26 +44,61 @@ const ReelPal = () => {
       <div className="bg-muted/5">
         <Navigation />
 
+        {/* Fixed 4-Color Background Bars */}
+        <div className="fixed top-0 left-0 w-full h-screen -z-10">
+          <div className="w-full h-full flex">
+            <div className="w-1/4 h-full bg-pal-orange transition-all duration-700 ease-in-out"></div>
+            <div className="w-1/4 h-full bg-pal-purple transition-all duration-700 ease-in-out"></div>
+            <div className="w-1/4 h-full bg-pal-green transition-all duration-700 ease-in-out"></div>
+            <div className="w-1/4 h-full bg-pal-blue transition-all duration-700 ease-in-out"></div>
+          </div>
+          {/* Reel Pal Orange Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-pal-orange/60 via-pal-orange/40 to-pal-orange/20"></div>
+        </div>
+
+        {/* Floating Animation Elements */}
+        <div className="fixed inset-0 -z-5 pointer-events-none overflow-hidden">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl animate-float"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-pal-orange/20 rounded-full blur-lg animate-float-delayed"></div>
+          <div className="absolute bottom-32 left-1/4 w-28 h-28 bg-white/5 rounded-full blur-2xl animate-float-slow"></div>
+          <div className="absolute top-1/3 right-1/3 w-20 h-20 bg-pal-orange/10 rounded-full blur-lg animate-float"></div>
+        </div>
+
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-primary to-secondary text-white min-h-[500px] flex items-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative min-h-[100vh] flex items-center justify-center text-white overflow-hidden pt-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mb-4">REEL PAL</div>
-                <h1 className="text-5xl md:text-6xl font-bold mb-6">"Let's make content that connects!"</h1>
-                <p className="text-xl mb-8 opacity-90">Your go-to guide for short-form social content that captures hearts and drives real engagement. I specialize in authentic content that resonates with your audience across all platforms.</p>
+              <div className="backdrop-blur-md bg-white/10 p-8 lg:p-12 rounded-3xl border border-white/20 shadow-2xl">
+                <div className="bg-pal-orange/90 backdrop-blur-sm text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg">
+                  ✨ REEL PAL
+                </div>
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black mb-8 leading-tight">
+                  <span className="block text-white drop-shadow-lg">"Let's make content</span>
+                  <span className="block text-yellow-300 drop-shadow-lg">that connects!"</span>
+                </h1>
+                <p className="text-lg lg:text-xl mb-10 text-white/95 leading-relaxed drop-shadow-md">
+                  Your go-to guide for short-form social content that captures hearts and drives real engagement. I specialize in authentic content that resonates with your audience across all platforms.
+                </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button asChild size="lg" className="bg-yellow-500 text-white hover:bg-yellow-600">
-                    <Link to="/contact">Book a Strategy Call</Link>
+                  <Button asChild size="lg" className="bg-pal-orange hover:bg-pal-orange/80 text-white font-bold shadow-lg hover:shadow-xl transition-all transform hover:scale-105">
+                    <Link to="/contact">📱 Book a Strategy Call</Link>
                   </Button>
                 </div>
               </div>
-              <div className="text-center">
-                <img 
-                  className="w-80 h-80 mx-auto rounded-full border-4 border-white/20 object-cover object-center" 
-                  src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
-                  alt="cartoon character female with brown hair in bun, orange shirt and jeans, holding smartphone with video camera and film strip elements, energetic social media creator mascot" 
-                />
+              <div className="text-center relative">
+                <div className="relative z-10 transform hover:scale-105 transition-all duration-500">
+                  <div className="absolute inset-0 bg-pal-orange/20 rounded-full blur-3xl scale-110"></div>
+                  <img 
+                    className="relative w-80 h-80 lg:w-96 lg:h-96 mx-auto rounded-full border-4 border-white/30 object-cover object-center shadow-2xl backdrop-blur-sm" 
+                    src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
+                    alt="cartoon character female with brown hair in bun, orange shirt and jeans, holding smartphone with video camera and film strip elements, energetic social media creator mascot" 
+                  />
+                </div>
+                {/* Floating Elements Around Character */}
+                <div className="absolute top-10 -left-5 text-4xl animate-bounce">📱</div>
+                <div className="absolute top-20 -right-8 text-3xl animate-pulse">🎬</div>
+                <div className="absolute -bottom-5 left-8 text-3xl animate-bounce" style={{animationDelay: '0.5s'}}>✨</div>
+                <div className="absolute bottom-10 -right-5 text-2xl animate-pulse" style={{animationDelay: '1s'}}>🚀</div>
               </div>
             </div>
           </div>

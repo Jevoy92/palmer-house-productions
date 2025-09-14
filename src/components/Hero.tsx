@@ -59,17 +59,32 @@ export const Hero = () => {
   }, []);
 
   return (
-    <section 
-      className="relative min-h-screen flex items-center justify-center bg-video-white overflow-hidden"
-      style={{ opacity: scrollOpacity }}
-    >
-      {/* Clean white canvas with subtle floating elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-4 md:left-10 w-16 h-16 md:w-32 md:h-32 gradient-social-1 rounded-full opacity-20 float-animation"></div>
-        <div className="absolute top-40 right-4 md:right-20 w-12 h-12 md:w-24 md:h-24 gradient-social-2 rounded-full opacity-30 float-animation" style={{animationDelay: '2s'}}></div>
-        <div className="absolute bottom-32 left-1/4 w-20 h-20 md:w-40 md:h-40 gradient-social-3 rounded-full opacity-15 float-animation" style={{animationDelay: '4s'}}></div>
-        <div className="absolute bottom-20 right-4 md:right-10 w-14 h-14 md:w-28 md:h-28 gradient-social-4 rounded-full opacity-25 float-animation" style={{animationDelay: '1s'}}></div>
+    <div className="relative">
+      {/* Fixed 4-Color Background Bars */}
+      <div className="fixed top-0 left-0 w-full h-screen -z-10">
+        <div className="w-full h-full flex">
+          <div className="w-1/4 h-full bg-pal-orange transition-all duration-700 ease-in-out"></div>
+          <div className="w-1/4 h-full bg-pal-purple transition-all duration-700 ease-in-out"></div>
+          <div className="w-1/4 h-full bg-pal-green transition-all duration-700 ease-in-out"></div>
+          <div className="w-1/4 h-full bg-pal-blue transition-all duration-700 ease-in-out"></div>
+        </div>
+        {/* Subtle white overlay to maintain readability */}
+        <div className="absolute inset-0 bg-white/85 backdrop-blur-sm"></div>
       </div>
+
+      {/* Floating Animation Elements */}
+      <div className="fixed inset-0 -z-5 pointer-events-none overflow-hidden">
+        <div className="absolute top-20 left-10 w-24 h-24 md:w-32 md:h-32 bg-pal-purple/20 rounded-full blur-xl animate-float"></div>
+        <div className="absolute top-40 right-20 w-20 h-20 md:w-24 md:h-24 bg-pal-orange/30 rounded-full blur-lg animate-float-delayed"></div>
+        <div className="absolute bottom-32 left-1/4 w-32 h-32 md:w-40 md:h-40 bg-pal-green/15 rounded-full blur-2xl animate-float-slow"></div>
+        <div className="absolute bottom-20 right-10 w-24 h-24 md:w-28 md:h-28 bg-pal-blue/25 rounded-full blur-lg animate-float"></div>
+        <div className="absolute top-1/3 left-1/2 w-16 h-16 bg-pal-orange/10 rounded-full blur-lg animate-float-delayed"></div>
+      </div>
+
+      <section 
+        className="relative min-h-screen flex items-center justify-center overflow-hidden z-10"
+        style={{ opacity: scrollOpacity }}
+      >
       
       <div className="relative z-10 text-center px-4 sm:px-6 max-w-7xl mx-auto">
         {!showHeadline ? (
@@ -116,6 +131,7 @@ export const Hero = () => {
           </div>
         )}
       </div>
-    </section>
+      </section>
+    </div>
   );
 };

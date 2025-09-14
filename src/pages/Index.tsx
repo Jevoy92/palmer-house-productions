@@ -1,9 +1,7 @@
 
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
-
 import { CondensedClients } from "@/components/home/CondensedClients";
-
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
 import { MetaTags } from "@/components/seo/MetaTags";
@@ -11,10 +9,12 @@ import { StructuredData } from "@/components/seo/StructuredData";
 import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { LaunchOptimization } from "@/components/LaunchOptimization";
 import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
+import { ScrollBars } from "@/components/ScrollBars";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50 overflow-x-hidden font-sans">
+      <ScrollBars />
       <MetaTags 
         title="Palmer House Productions | Professional Video Production & Cinematic Storytelling"
         description="Professional video production services that drive results. Expert cinematic storytelling, business videos, and content creation that saves time and builds your brand."

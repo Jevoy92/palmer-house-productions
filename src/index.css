@@ -57,6 +57,13 @@
     --corporate-light: 220 20% 95%;
     --video-black: 0 0% 5%;
     --video-white: 0 0% 98%;
+
+    /* Pal Colors */
+    --pal-orange: 22 89% 58%;
+    --pal-purple: 253 55% 62%;
+    --pal-green: 111 46% 55%;
+    --pal-blue: 214 63% 57%;
+    --pal-footer-green: 109 26% 42%;
   }
 
   .dark {
@@ -406,6 +413,19 @@
   .text-corporate-light { color: hsl(var(--corporate-light)); }
   .text-video-black { color: hsl(var(--video-black)); }
   .text-video-white { color: hsl(var(--video-white)); }
+
+  /* Pal color utilities */
+  .bg-pal-orange { background-color: hsl(var(--pal-orange)); }
+  .bg-pal-purple { background-color: hsl(var(--pal-purple)); }
+  .bg-pal-green { background-color: hsl(var(--pal-green)); }
+  .bg-pal-blue { background-color: hsl(var(--pal-blue)); }
+  .bg-pal-footer-green { background-color: hsl(var(--pal-footer-green)); }
+  
+  .text-pal-orange { color: hsl(var(--pal-orange)); }
+  .text-pal-purple { color: hsl(var(--pal-purple)); }
+  .text-pal-green { color: hsl(var(--pal-green)); }
+  .text-pal-blue { color: hsl(var(--pal-blue)); }
+  .text-pal-footer-green { color: hsl(var(--pal-footer-green)); }
 
   /* Enhanced shadow utilities for better visual hierarchy */
   .video-shadow {

@@ -28,6 +28,7 @@ import {
 
 // Import character images
 import reelPalImage from '@/assets/pals/female-reel-pal-edited.png';
+import maleReelPalImage from '@/assets/pals/male-reel-pal-edited.png';
 import systemPalImage from '@/assets/pals/female-system-pal-edited.png';
 import evergreenPalImage from '@/assets/pals/female-evergreen-pal-final.png';
 import spotlightPalImage from '@/assets/pals/female-spotlight-pal-edited.png';
@@ -134,9 +135,15 @@ export default function Pals() {
             </div>
             <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_forwards]">
               <img 
-                className="w-full h-full object-contain" 
+                className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
                 src={reelPalImage} 
-                alt="Reel Pal character in orange hoodie"
+                alt="Female Reel Pal character in orange hoodie"
+                loading="eager"
+              />
+              <img 
+                className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
+                src={maleReelPalImage} 
+                alt="Male Reel Pal character in orange hoodie"
                 loading="eager"
               />
             </div>

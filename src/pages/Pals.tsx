@@ -760,24 +760,6 @@ export default function Pals() {
             </div>
           </div>
         </section>
-
-        {/* Footer */}
-        <footer className="bg-pal-footer-green text-white pt-20 pb-8 px-4 sm:px-8 md:px-12 relative z-20">
-          <div className="container mx-auto flex flex-col items-center">
-            <div className="flex items-center gap-4 mb-8">
-              <Video className="text-5xl" />
-              <span className="text-5xl font-bold">Video Pals</span>
-            </div>
-            <div className="w-full flex flex-col md:flex-row justify-between items-center text-center border-t border-white/20 pt-6 mt-8">
-              <p className="text-sm text-white/70 mb-4 md:mb-0">© 2024 Palmer House Productions. All rights reserved.</p>
-              <div className="flex items-center gap-6 text-sm">
-                <Link to="/privacy" className="hover:underline cursor-pointer">Privacy Policy</Link>
-                <Link to="/terms" className="hover:underline cursor-pointer">Terms of Service</Link>
-                <Link to="/contact" className="hover:underline cursor-pointer">Contact Us</Link>
-              </div>
-            </div>
-          </div>
-        </footer>
       </main>
 
       <style>{`

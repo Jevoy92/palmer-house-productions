@@ -119,7 +119,6 @@ export default function Pals() {
               <Link to="/services" className="hover:opacity-80 transition-opacity cursor-pointer">Solutions</Link>
               <Link to="/about" className="hover:opacity-80 transition-opacity cursor-pointer">About</Link>
               <Link to="/contact" className="hover:opacity-80 transition-opacity cursor-pointer">Contact</Link>
-              <Link to="/contact" className="bg-white text-pal-blue font-semibold px-5 py-2.5 rounded-full hover:bg-opacity-90 transition-all cursor-pointer">Get Started</Link>
             </nav>
             <button className="md:hidden text-white text-2xl">
               <Menu />

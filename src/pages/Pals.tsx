@@ -27,7 +27,7 @@ import {
 } from 'lucide-react';
 
 // Import character images
-import reelPalImage from '@/assets/pals/female-reel-pal.png';
+import reelPalImage from '@/assets/pals/female-reel-pal-edited.png';
 import systemPalImage from '@/assets/pals/female-system-pal.png';
 import evergreenPalImage from '@/assets/pals/female-evergreen-pal.png';
 import spotlightPalImage from '@/assets/pals/female-spotlight-pal.png';

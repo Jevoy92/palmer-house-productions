@@ -34,6 +34,7 @@ import maleSystemPalImage from '@/assets/pals/male-system-pal-edited.png';
 import evergreenPalImage from '@/assets/pals/female-evergreen-pal-final.png';
 import maleEvergreenPalImage from '@/assets/pals/male-evergreen-pal-edited.png';
 import spotlightPalImage from '@/assets/pals/female-spotlight-pal-edited.png';
+import maleSpotlightPalImage from '@/assets/pals/male-spotlight-pal-edited.png';
 
 export default function Pals() {
   const { transitionTo } = usePageTransition();
@@ -212,9 +213,15 @@ export default function Pals() {
             </div>
             <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.6s_forwards]">
               <img 
-                className="w-full h-full object-contain" 
+                className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
                 src={spotlightPalImage} 
-                alt="Spotlight Pal character in blue jacket"
+                alt="Female Spotlight Pal character in blue jacket"
+                loading="eager"
+              />
+              <img 
+                className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
+                src={maleSpotlightPalImage} 
+                alt="Male Spotlight Pal character in blue jacket"
                 loading="eager"
               />
             </div>

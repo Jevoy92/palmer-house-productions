@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
 import systemPalImage from '@/assets/pals/female-system-pal-knowledge-base.png';
+import systemPalCircular from '@/assets/pals/female-system-pal-circular.jpg';
 import { 
   Settings, 
   Users, 
@@ -318,8 +319,8 @@ const SystemPal = () => {
             <div className="mb-8">
               <img 
                 className="w-32 h-32 mx-auto rounded-full border-4 border-purple-200 object-cover object-center" 
-                src="/lovable-uploads/1d3c7a2a-e5cb-4900-9b76-9eadb6620973.png" 
-                alt="System Pal - professional male character in gray jacket with green accents, surrounded by workflow icons, gears, folders, and organizational elements" 
+                src={systemPalCircular} 
+                alt="System Pal - Professional female character with glasses and brown hair in business attire, representing training and knowledge management expertise" 
               />
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">Ready to Streamline with System Pal?</h2>

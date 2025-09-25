@@ -351,7 +351,13 @@ const SystemPal = () => {
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Button asChild size="lg" className="bg-purple-500 text-white hover:bg-purple-600">
-                <Link to="/contact">Book Your Strategy Call</Link>
+                <a 
+                  href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Book Your Strategy Call
+                </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="border-2 border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white">
                 <Link to="/services/diy-downloads">View Training Samples</Link>

@@ -505,7 +505,13 @@ const ReelPal = () => {
               
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <Button asChild size="lg" className="bg-pal-orange hover:bg-pal-orange/80 text-white font-bold shadow-xl hover:shadow-2xl transition-all transform hover:scale-105 px-12 py-6 text-xl">
-                  <Link to="/contact">🚀 Book Strategy Call</Link>
+                  <a 
+                    href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    🚀 Book Strategy Call
+                  </a>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="border-white/30 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 font-bold shadow-xl px-12 py-6 text-xl">
                   <Link to="/pals">👥 Explore All Pals</Link>

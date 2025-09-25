@@ -23,6 +23,10 @@ export const Hero = () => {
     window.location.href = '/video-packages';
   };
 
+  const handleBookStrategyCall = () => {
+    window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer');
+  };
+
   useEffect(() => {
     if (currentQuestionIndex < questions.length) {
       const timer = setTimeout(() => {
@@ -102,7 +106,7 @@ export const Hero = () => {
                   Build My Content System
                 </button>
                 <button 
-                  onClick={handleExplorePackages}
+                  onClick={handleBookStrategyCall}
                   className="w-full sm:w-auto px-8 py-4 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-base sm:text-lg rounded-xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow min-h-[52px] flex items-center justify-center"
                 >
                   Book Strategy Call

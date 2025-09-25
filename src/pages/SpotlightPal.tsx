@@ -317,7 +317,13 @@ const SpotlightPal = () => {
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Button asChild size="lg" className="bg-red-500 text-white hover:bg-red-600">
-                <Link to="/contact">Book Your Strategy Call</Link>
+                <a 
+                  href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Book Your Strategy Call
+                </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="border-2 border-red-500 text-red-600 hover:bg-red-500 hover:text-white">
                 <Link to="/video-packages">View Premium Portfolio</Link>

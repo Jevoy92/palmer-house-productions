@@ -39,7 +39,13 @@ const EvergreenPal = () => {
                 <p className="text-xl mb-8 opacity-90">Your strategic partner for YouTube growth, thought leadership content, and building sustainable authority that drives long-term business success.</p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button asChild size="lg" className="bg-green-500 text-white hover:bg-green-600">
-                    <Link to="/contact">Book a Strategy Call</Link>
+                    <a 
+                      href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Book a Strategy Call
+                    </a>
                   </Button>
                 </div>
               </div>
@@ -349,7 +355,13 @@ const EvergreenPal = () => {
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <Button asChild size="lg" className="bg-green-500 text-white hover:bg-green-600">
-                <Link to="/contact">Book Your Strategy Call</Link>
+                <a 
+                  href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Book Your Strategy Call
+                </a>
               </Button>
               <Button asChild variant="outline" size="lg" className="border-2 border-green-500 text-green-600 hover:bg-green-500 hover:text-white">
                 <Link to="/video-packages">View Authority Examples</Link>

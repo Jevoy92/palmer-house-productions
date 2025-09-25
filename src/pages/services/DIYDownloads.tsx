@@ -48,7 +48,16 @@ const DIYDownloads = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen overflow-x-hidden font-sans relative">
+      {/* Fixed 4-Color Background Bars */}
+      <div className="fixed top-0 left-0 w-full h-full z-0">
+        <div className="w-full h-full flex">
+          <div className="w-1/4 h-full bg-pal-orange"></div>
+          <div className="w-1/4 h-full bg-pal-purple"></div>
+          <div className="w-1/4 h-full bg-pal-green"></div>
+          <div className="w-1/4 h-full bg-pal-blue"></div>
+        </div>
+      </div>
       <MetaTags 
         title="DIY Video Resources & Downloads | Palmer House"
         description="Download professional video resources - script templates, strategy guides, and DIY tools for creating compelling business content."
@@ -70,57 +79,69 @@ const DIYDownloads = () => {
       <Navigation />
       <StructuredData />
       <MainContent>
-        <section className="pt-24 pb-16 bg-video-white">
+        <section className="pt-24 pb-16 relative z-10">
           <div className="max-w-7xl mx-auto px-6">
             <BreadcrumbNavigation />
             
-            <div className="text-center mb-16">
-              <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8">
-                <Download className="inline-block mr-2" size={20} />
-                DIY Downloads
+            {/* Hero Section - White Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-12">
+              <div className="text-center">
+                <div className="inline-block px-6 py-3 bg-pal-purple text-white font-bold text-lg mb-8 rounded-full">
+                  <Download className="inline-block mr-2" size={20} />
+                  DIY Downloads
+                </div>
+                <h1 className="text-3xl md:text-5xl lg:text-6xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+                  Start Your Video Journey <span className="text-pal-purple">Today</span>
+                </h1>
+                <p className="text-lg md:text-xl xl:text-2xl text-corporate-gray mb-8 max-w-4xl mx-auto font-medium">
+                  Instant access to professional video resources that help you create compelling content on your own timeline.
+                </p>
               </div>
-              <h1 className="text-5xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-                Start Your Video Journey <span className="text-gradient-1">Today</span>
-              </h1>
-              <p className="text-xl md:text-2xl text-corporate-gray mb-8 max-w-4xl mx-auto">
-                Instant access to professional video resources that help you create compelling content on your own timeline.
-              </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {digitalDownloads.map((item, index) => (
-                <div key={index} className="bg-white p-8 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105">
-                  <div className="text-center mb-6">
-                    <div className="w-20 h-20 gradient-social-1 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                      <item.icon color="white" size={32} />
+            {/* Downloads Grid - White Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-12">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {digitalDownloads.map((item, index) => {
+                  const palColors = ['bg-pal-purple', 'bg-pal-orange', 'bg-pal-blue'];
+                  const palTextColors = ['text-pal-purple', 'text-pal-orange', 'text-pal-blue'];
+                  
+                  return (
+                    <div key={index} className="bg-white p-8 rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-[1.02] border border-gray-100">
+                      <div className="text-center mb-6">
+                        <div className={`w-20 h-20 ${palColors[index]} rounded-2xl flex items-center justify-center mx-auto mb-6`}>
+                          <item.icon color="white" size={32} />
+                        </div>
+                        <h2 className="text-xl font-bold text-corporate-dark mb-4">{item.title}</h2>
+                        <div className={`text-4xl font-black ${palTextColors[index]} mb-2`}>{item.price}</div>
+                        <div className="text-sm text-corporate-gray mb-4 font-medium">{item.format}</div>
+                      </div>
+                      <p className="text-sm text-corporate-gray mb-8 leading-relaxed text-center">{item.description}</p>
+                      <button
+                        onClick={() => handlePurchase(item.paymentUrl)}
+                        className={`w-full py-4 px-6 ${palColors[index]} text-white font-bold text-base rounded-xl hover:scale-105 transition-all duration-300 video-shadow`}
+                      >
+                        Buy Now
+                      </button>
                     </div>
-                    <h2 className="text-xl font-bold text-corporate-dark mb-4">{item.title}</h2>
-                    <div className="text-4xl font-black text-corporate-dark mb-2">{item.price}</div>
-                    <div className="text-sm text-corporate-gray mb-4 font-medium">{item.format}</div>
-                  </div>
-                  <p className="text-sm text-corporate-gray mb-8 leading-relaxed text-center">{item.description}</p>
-                  <button
-                    onClick={() => handlePurchase(item.paymentUrl)}
-                    className="w-full py-4 px-6 gradient-social-1 text-white font-bold text-sm rounded-xl hover:scale-105 transition-all duration-300 video-shadow"
-                  >
-                    Buy Now
-                  </button>
-                </div>
-              ))}
+                  );
+                })}
+              </div>
             </div>
 
-            <div className="mt-16 text-center">
-              <div className="bg-gradient-to-r from-social-purple/10 to-social-pink/10 rounded-3xl p-8 border border-social-purple/20">
-                <h3 className="text-3xl font-display font-black text-corporate-dark mb-4">
+            {/* CTA Section - White Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl">
+              <div className="text-center">
+                <h3 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-corporate-dark mb-6">
                   Ready to Take the Next Step?
                 </h3>
-                <p className="text-lg text-corporate-gray mb-6">
+                <p className="text-lg xl:text-xl text-corporate-gray mb-8 font-medium max-w-3xl mx-auto">
                   Need more personalized guidance? Explore our coaching and production services.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <div className="flex flex-col sm:flex-row gap-6 justify-center">
                   <button
                     onClick={() => navigate('/video-packages')}
-                    className="px-8 py-4 bg-gradient-to-r from-social-purple to-social-pink text-white font-bold rounded-2xl hover:scale-105 transition-all duration-300"
+                    className="px-8 py-4 bg-pal-purple text-white font-bold text-lg rounded-xl hover:scale-105 transition-all duration-300 video-shadow-lg"
                   >
                     Explore DIY Coaching
                   </button>
@@ -128,7 +149,7 @@ const DIYDownloads = () => {
                     href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-8 py-4 border-2 border-social-purple text-social-purple font-bold rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300"
+                    className="px-8 py-4 border-2 border-pal-purple text-pal-purple font-bold text-lg rounded-xl hover:bg-pal-purple hover:text-white transition-all duration-300"
                   >
                     Book Strategy Call
                   </a>

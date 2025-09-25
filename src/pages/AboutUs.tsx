@@ -13,7 +13,17 @@ import { InternalLinking } from "@/components/seo/InternalLinking";
 
 const AboutUsPage = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen overflow-x-hidden font-sans relative">
+      {/* Fixed 4-Color Background Bars */}
+      <div className="fixed top-0 left-0 w-full h-full z-0">
+        <div className="w-full h-full flex">
+          <div className="w-1/4 h-full bg-pal-orange"></div>
+          <div className="w-1/4 h-full bg-pal-purple"></div>
+          <div className="w-1/4 h-full bg-pal-green"></div>
+          <div className="w-1/4 h-full bg-pal-blue"></div>
+        </div>
+      </div>
+      
       <MetaTags 
         title="About Palmer House Productions | Professional Video Production Team"
         description="Meet the Palmer House Productions team. Professional video production experts specializing in cinematic storytelling and business content creation."
@@ -28,11 +38,14 @@ const AboutUsPage = () => {
       <Navigation />
       <BreadcrumbNavigation />
       <MainContent>
-        <section className="pt-24 pb-16">
-          <div className="max-w-6xl mx-auto px-6">
-            <h1 className="text-4xl md:text-6xl font-display font-black mb-8 text-corporate-dark tracking-tight text-center">
-              About <span className="text-gradient-1">Palmer House Productions</span>
-            </h1>
+        <section className="pt-24 pb-16 relative z-10">
+          <div className="max-w-7xl mx-auto px-6">
+            {/* Hero Section - White Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl text-center mb-12">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+                About <span className="text-pal-purple">Palmer House Productions</span>
+              </h1>
+            </div>
           </div>
         </section>
         <About />

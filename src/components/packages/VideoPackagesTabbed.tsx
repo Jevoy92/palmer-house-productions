@@ -200,17 +200,6 @@ export const VideoPackagesTabbed = () => {
               alt="Male Reel Pal character in orange hoodie"
               loading="eager"
             />
-            <video 
-              className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100 z-10 pointer-events-none" 
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-            >
-              <source src="/assets/reel_pal-2.webm" type="video/webm" />
-              <source src="/assets/reel_pal.mp4" type="video/mp4" />
-            </video>
           </div>
         </div>
 

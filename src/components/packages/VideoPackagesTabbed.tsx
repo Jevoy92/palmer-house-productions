@@ -17,6 +17,12 @@ import {
 } from "lucide-react";
 import { PRICING } from "@/lib/pricing";
 
+// Import new character avatars
+import reelPalAvatar from "@/assets/pals/reel-pal-3d-avatar.png";
+import systemPalAvatar from "@/assets/pals/system-pal-3d-avatar.png";
+import evergreenPalAvatar from "@/assets/pals/evergreen-pal-3d-avatar.png";
+import spotlightPalAvatar from "@/assets/pals/spotlight-pal-3d-avatar.png";
+
 export const VideoPackagesTabbed = () => {
   const navigate = useNavigate();
 
@@ -179,8 +185,8 @@ export const VideoPackagesTabbed = () => {
                 <div className="w-24 h-24 mx-auto rounded-full bg-pal-orange/10 flex items-center justify-center mb-6">
                   <img 
                     className="w-20 h-20 rounded-full object-cover object-center" 
-                    src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
-                    alt="Reel Pal avatar" 
+                    src={reelPalAvatar} 
+                    alt="Reel Pal 3D character avatar" 
                   />
                 </div>
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-corporate-dark mb-6">
@@ -280,13 +286,13 @@ export const VideoPackagesTabbed = () => {
           {/* System Pal Tab */}
           <TabsContent value="system" className="space-y-8">
             <div className="text-center">
-              <div className="w-24 h-24 mx-auto rounded-full bg-pal-purple/10 flex items-center justify-center mb-6">
-                <img 
-                  className="w-20 h-20 rounded-full object-cover object-center" 
-                  src="/lovable-uploads/1d3c7a2a-e5cb-4900-9b76-9eadb6620973.png" 
-                  alt="System Pal avatar" 
-                />
-              </div>
+                <div className="w-24 h-24 mx-auto rounded-full bg-pal-purple/10 flex items-center justify-center mb-6">
+                  <img 
+                    className="w-20 h-20 rounded-full object-cover object-center" 
+                    src={systemPalAvatar} 
+                    alt="System Pal 3D character avatar" 
+                  />
+                </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-corporate-dark mb-6">
                 ⚙️ System Pal - Training & Internal Systems
               </h2>
@@ -373,13 +379,13 @@ export const VideoPackagesTabbed = () => {
           {/* Evergreen Pal Tab */}
           <TabsContent value="evergreen" className="space-y-8">
             <div className="text-center">
-              <div className="w-24 h-24 mx-auto rounded-full bg-pal-green/10 flex items-center justify-center mb-6">
-                <img 
-                  className="w-20 h-20 rounded-full object-cover object-center" 
-                  src="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png" 
-                  alt="Evergreen Pal avatar" 
-                />
-              </div>
+                <div className="w-24 h-24 mx-auto rounded-full bg-pal-green/10 flex items-center justify-center mb-6">
+                  <img 
+                    className="w-20 h-20 rounded-full object-cover object-center" 
+                    src={evergreenPalAvatar} 
+                    alt="Evergreen Pal 3D character avatar" 
+                  />
+                </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-corporate-dark mb-6">
                 🌱 Evergreen Pal - Authority Building
               </h2>
@@ -460,13 +466,13 @@ export const VideoPackagesTabbed = () => {
           {/* Spotlight Pal Tab */}
           <TabsContent value="spotlight" className="space-y-8">
             <div className="text-center">
-              <div className="w-24 h-24 mx-auto rounded-full bg-pal-blue/10 flex items-center justify-center mb-6">
-                <img 
-                  className="w-20 h-20 rounded-full object-cover object-center" 
-                  src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" 
-                  alt="Spotlight Pal avatar" 
-                />
-              </div>
+                <div className="w-24 h-24 mx-auto rounded-full bg-pal-blue/10 flex items-center justify-center mb-6">
+                  <img 
+                    className="w-20 h-20 rounded-full object-cover object-center" 
+                    src={spotlightPalAvatar} 
+                    alt="Spotlight Pal 3D character avatar" 
+                  />
+                </div>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black text-corporate-dark mb-6">
                 🎬 Spotlight Pal - Premium Content
               </h2>

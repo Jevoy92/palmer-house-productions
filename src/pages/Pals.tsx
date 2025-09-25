@@ -36,6 +36,7 @@ import evergreenPalImage from '@/assets/pals/female-evergreen-pal-final.png';
 import maleEvergreenPalImage from '@/assets/pals/male-evergreen-pal-edited.png';
 import spotlightPalImage from '@/assets/pals/female-spotlight-pal-edited.png';
 import maleSpotlightPalImage from '@/assets/pals/male-spotlight-pal-edited.png';
+import { PRICING } from "@/lib/pricing";
 
 export default function Pals() {
   const { transitionTo } = usePageTransition();
@@ -621,8 +622,8 @@ export default function Pals() {
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Reel Pal</h3>
                 <div className="mb-6">
-                  <span className="text-4xl font-extrabold text-pal-orange">$299</span>
-                  <span className="text-gray-600">/video</span>
+                  <span className="text-4xl font-extrabold text-pal-orange">{PRICING.OTHER_BUNDLES.STARTER_SESSION.price}</span>
+                  <span className="text-gray-600"> - {PRICING.OTHER_BUNDLES.THIRTY_REELS.price}</span>
                 </div>
                 <ul className="space-y-3 mb-8 text-left">
                   <li className="flex items-center gap-3">
@@ -639,7 +640,7 @@ export default function Pals() {
                   </li>
                   <li className="flex items-center gap-3">
                     <Check className="text-pal-orange" size={16} />
-                    <span className="text-gray-600">2 revisions</span>
+                    <span className="text-gray-600">Multiple package options</span>
                   </li>
                 </ul>
                 <button 
@@ -657,8 +658,8 @@ export default function Pals() {
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">System Pal</h3>
                 <div className="mb-6">
-                  <span className="text-4xl font-extrabold text-pal-purple">$599</span>
-                  <span className="text-gray-600">/video</span>
+                  <span className="text-4xl font-extrabold text-pal-purple">{PRICING.BUSINESS_VIDEO_ASSETS.INTERNAL_ASSETS.price}</span>
+                  <span className="text-gray-600"> - {PRICING.BUSINESS_VIDEO_ASSETS.ADVANCED_ASSETS.price}</span>
                 </div>
                 <ul className="space-y-3 mb-8 text-left">
                   <li className="flex items-center gap-3">
@@ -675,7 +676,7 @@ export default function Pals() {
                   </li>
                   <li className="flex items-center gap-3">
                     <Check className="text-pal-purple" size={16} />
-                    <span className="text-gray-600">3 revisions</span>
+                    <span className="text-gray-600">Multiple complexity levels</span>
                   </li>
                 </ul>
                 <button 
@@ -693,13 +694,13 @@ export default function Pals() {
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Evergreen Pal</h3>
                 <div className="mb-6">
-                  <span className="text-4xl font-extrabold text-pal-green">$999</span>
-                  <span className="text-gray-600">/month</span>
+                  <span className="text-4xl font-extrabold text-pal-green">{PRICING.DIY_DOWNLOADS.STRATEGY_BLUEPRINT.price}</span>
+                  <span className="text-gray-600"> - {PRICING.OTHER_BUNDLES.YOUTUBE_ENGINE.price}</span>
                 </div>
                 <ul className="space-y-3 mb-8 text-left">
                   <li className="flex items-center gap-3">
                     <Check className="text-pal-green" size={16} />
-                    <span className="text-gray-600">4 long-form videos/month</span>
+                    <span className="text-gray-600">Long-form content strategy</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <Check className="text-pal-green" size={16} />
@@ -707,11 +708,11 @@ export default function Pals() {
                   </li>
                   <li className="flex items-center gap-3">
                     <Check className="text-pal-green" size={16} />
-                    <span className="text-gray-600">Content strategy planning</span>
+                    <span className="text-gray-600">Authority building content</span>
                   </li>
                   <li className="flex items-center gap-3">
                     <Check className="text-pal-green" size={16} />
-                    <span className="text-gray-600">Unlimited revisions</span>
+                    <span className="text-gray-600">DIY guides included</span>
                   </li>
                 </ul>
                 <button 
@@ -729,8 +730,8 @@ export default function Pals() {
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Spotlight Pal</h3>
                 <div className="mb-6">
-                  <span className="text-4xl font-extrabold text-pal-blue">$2,999</span>
-                  <span className="text-gray-600">/project</span>
+                  <span className="text-4xl font-extrabold text-pal-blue">{PRICING.OTHER_BUNDLES.SEVEN_DAY_LAUNCH.price}</span>
+                  <span className="text-gray-600"> - {PRICING.OTHER_BUNDLES.FOUNDER_BRAND_KIT.price}</span>
                 </div>
                 <ul className="space-y-3 mb-8 text-left">
                   <li className="flex items-center gap-3">

@@ -355,41 +355,41 @@ const ReelPal = () => {
         {/* CTA Section */}
         <section className="py-20 relative z-10">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-gradient-to-br from-orange-500 to-orange-700 rounded-3xl p-12 lg:p-16 text-white shadow-2xl">
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 lg:p-16 shadow-2xl border border-white/20">
               <div className="text-center">
-                <h2 className="text-4xl md:text-5xl font-bold mb-8">
+                <h2 className="text-4xl md:text-5xl font-bold mb-8 text-foreground">
                   Ready to Create Content That Connects?
                 </h2>
-                <p className="text-xl mb-12 max-w-3xl mx-auto opacity-90">
+                <p className="text-xl mb-12 max-w-3xl mx-auto text-muted-foreground">
                   Let's work together to build your social media presence with content that actually converts. Book your strategy call today and let's make magic happen!
                 </p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
                   <div className="text-center">
-                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
                       <Smartphone className="text-white h-8 w-8" />
                     </div>
-                    <h3 className="text-xl font-bold mb-2">Proven Systems</h3>
-                    <p className="opacity-90">Strategies that actually work and drive real engagement</p>
+                    <h3 className="text-xl font-bold mb-2 text-foreground">Proven Systems</h3>
+                    <p className="text-muted-foreground">Strategies that actually work and drive real engagement</p>
                   </div>
                   <div className="text-center">
-                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
                       <Rocket className="text-white h-8 w-8" />
                     </div>
-                    <h3 className="text-xl font-bold mb-2">Fast Results</h3>
-                    <p className="opacity-90">See improvement in your social media performance within weeks</p>
+                    <h3 className="text-xl font-bold mb-2 text-foreground">Fast Results</h3>
+                    <p className="text-muted-foreground">See improvement in your social media performance within weeks</p>
                   </div>
                   <div className="text-center">
-                    <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4">
                       <Camera className="text-white h-8 w-8" />
                     </div>
-                    <h3 className="text-xl font-bold mb-2">Professional Quality</h3>
-                    <p className="opacity-90">Content that looks great and represents your brand perfectly</p>
+                    <h3 className="text-xl font-bold mb-2 text-foreground">Professional Quality</h3>
+                    <p className="text-muted-foreground">Content that looks great and represents your brand perfectly</p>
                   </div>
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                  <Button asChild size="lg" className="bg-white text-orange-600 hover:bg-orange-50 shadow-xl">
+                  <Button asChild size="lg" className="bg-orange-500 text-white hover:bg-orange-600 shadow-xl">
                     <a 
                       href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
                       target="_blank"
@@ -398,12 +398,12 @@ const ReelPal = () => {
                       🚀 Book Strategy Call
                     </a>
                   </Button>
-                  <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10 shadow-xl">
+                  <Button asChild size="lg" variant="outline" className="border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white shadow-xl">
                     <Link to="/pals">👥 Explore All Pals</Link>
                   </Button>
                 </div>
                 
-                <p className="text-white/80 mt-8">
+                <p className="text-muted-foreground mt-8">
                   💎 <strong>Limited Time:</strong> Free content audit with every strategy call
                 </p>
               </div>

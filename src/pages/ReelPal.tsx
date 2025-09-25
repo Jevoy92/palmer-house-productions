@@ -1,219 +1,108 @@
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Navigation } from '@/components/Navigation';
+import { Button } from '@/components/ui/button';
 import { 
-  Smartphone,
   Video,
-  Wrench,
   PlayCircle,
+  Wrench,
+  Check,
   MessageCircle,
   Lightbulb,
   Rocket,
   ChevronDown,
   ChevronUp,
-  Check,
-  Menu,
+  Smartphone,
   Camera,
-  Film,
-  Zap
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { MetaTags } from "@/components/seo/MetaTags";
-import { ScrollBars } from "@/components/ScrollBars";
+  Film
+} from 'lucide-react';
 
 const ReelPal = () => {
-  const [faqOpen, setFaqOpen] = useState<{ [key: number]: boolean }>({});
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
 
   const toggleFAQ = (num: number) => {
-    setFaqOpen(prev => ({
-      ...prev,
-      [num]: !prev[num]
-    }));
+    setOpenFAQ(openFAQ === num ? null : num);
   };
 
-  useEffect(() => {
-    setIsLoaded(true);
-    
-    // Trigger animations on scroll
-    const animateElements = () => {
-      const elements = document.querySelectorAll('.animate-on-scroll');
-      elements.forEach((element) => {
-        const rect = element.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-        if (isVisible) {
-          element.classList.add('opacity-100', 'translate-y-0', 'translate-x-0');
-          element.classList.remove('opacity-0', 'translate-y-10', 'translate-x-10');
-        }
-      });
-    };
-
-    window.addEventListener('scroll', animateElements);
-    animateElements(); // Initial check
-
-    return () => {
-      window.removeEventListener('scroll', animateElements);
-    };
-  }, []);
-
   return (
-    <div className="bg-gray-50 overflow-x-hidden font-sans">
-      <ScrollBars />
-      <MetaTags 
-        title="Reel Pal - Your Social Content Creation Guide | Palmer House Productions"
-        description="Meet Reel Pal, your go-to guide for authentic, engaging short-form content. From TikToks to Instagram Reels, create videos that drive real engagement."
-      />
-      
-      <main className="relative">
-        {/* Fixed 4-Color Background Bars */}
-        <div className="fixed top-0 left-0 w-full h-screen -z-10">
-          <div className="w-full h-full flex">
-            <div className="w-1/4 h-full bg-pal-orange transition-all duration-700 ease-in-out"></div>
-            <div className="w-1/4 h-full bg-pal-purple transition-all duration-700 ease-in-out"></div>
-            <div className="w-1/4 h-full bg-pal-green transition-all duration-700 ease-in-out"></div>
-            <div className="w-1/4 h-full bg-pal-blue transition-all duration-700 ease-in-out"></div>
-          </div>
-          {/* Reel Pal Orange Overlay */}
-          <div className="absolute inset-0 bg-pal-orange/30"></div>
-        </div>
-
-        {/* Floating Animation Elements */}
-        <div className="fixed inset-0 -z-5 pointer-events-none overflow-hidden">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl animate-float"></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-pal-orange/20 rounded-full blur-lg animate-float-delayed"></div>
-          <div className="absolute bottom-32 left-1/4 w-28 h-28 bg-white/5 rounded-full blur-2xl animate-float-slow"></div>
-          <div className="absolute top-1/3 right-1/3 w-20 h-20 bg-pal-orange/10 rounded-full blur-lg animate-float"></div>
-        </div>
-
-        {/* Header */}
-        <header className="absolute top-0 left-0 w-full z-20 py-6 px-4 sm:px-8 md:px-12">
-          <div className="container mx-auto flex justify-between items-center">
-            <div className="flex items-center gap-3">
-              <Video className="text-white text-3xl" />
-              <h1 className="text-3xl font-bold text-white">Reel Pal</h1>
-            </div>
-            <nav className="hidden md:flex items-center gap-8 text-white font-medium">
-              <Link to="/pals" className="hover:opacity-80 transition-opacity cursor-pointer">All Pals</Link>
-              <Link to="/services" className="hover:opacity-80 transition-opacity cursor-pointer">Solutions</Link>
-              <Link to="/contact" className="hover:opacity-80 transition-opacity cursor-pointer">Contact</Link>
-            </nav>
-            <button className="md:hidden text-white text-2xl">
-              <Menu />
-            </button>
-          </div>
-        </header>
-
+    <>
+      <Navigation />
+      <div className="min-h-screen bg-background">
         {/* Hero Section */}
-        <section className="h-[950px] md:h-[850px] lg:h-[900px] xl:h-[1000px] w-full flex flex-col justify-center items-center relative z-10 text-white text-center">
-          <div className="absolute top-0 left-0 w-full h-full bg-pal-orange/10"></div>
-          
-          <div className="relative z-20 max-w-4xl mx-auto px-6">
-            <div className="backdrop-blur-md bg-white/5 p-8 lg:p-16 rounded-3xl border border-white/10 shadow-2xl animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
-              <div className="bg-pal-orange text-white px-8 py-4 rounded-full text-lg font-bold w-fit mx-auto mb-8 shadow-lg animate-pulse">
-                📱 REEL PAL
+        <section className="bg-gradient-to-br from-orange-500 to-orange-700 text-white min-h-[500px] flex items-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <div className="bg-orange-100 text-orange-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mb-4">REEL PAL</div>
+                <h1 className="text-5xl md:text-6xl font-bold mb-6">"Let's make content that connects!"</h1>
+                <p className="text-xl mb-8 opacity-90">Your go-to guide for short-form social content that captures hearts and drives real engagement across all platforms.</p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Button asChild size="lg" className="bg-orange-500 text-white hover:bg-orange-600">
+                    <Link to="/contact">🚀 Start Creating Content</Link>
+                  </Button>
+                </div>
               </div>
-              
-              <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black mb-8 leading-tight">
-                <span className="block text-white drop-shadow-2xl">"Let's make content</span>
-                <span className="block text-yellow-300 drop-shadow-2xl">that connects!"</span>
-              </h1>
-              
-              <p className="text-xl lg:text-2xl mb-12 text-white/95 leading-relaxed drop-shadow-md max-w-3xl mx-auto">
-                Your go-to guide for short-form social content that captures hearts and drives real engagement across all platforms.
-              </p>
-              
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Button asChild size="lg" className="bg-pal-orange hover:bg-pal-orange/80 text-white font-bold shadow-xl hover:shadow-2xl transition-all transform hover:scale-105 px-8 py-4 text-lg">
-                  <Link to="/contact">🚀 Start Creating Content</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="border-white/20 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 font-bold shadow-xl px-8 py-4 text-lg">
-                  <Link to="/pals">👥 Meet All Pals</Link>
-                </Button>
-              </div>
-            </div>
-            
-            {/* Character Image */}
-            <div className="mt-12 relative animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-300">
-              <div className="relative z-10 transform hover:scale-110 transition-all duration-500">
-                <div className="absolute inset-0 bg-pal-orange/30 rounded-full blur-3xl scale-125"></div>
+              <div className="text-center">
                 <img 
-                  className="relative w-64 h-64 lg:w-80 lg:h-80 mx-auto rounded-full border-4 border-white/30 object-cover object-center shadow-2xl" 
+                  className="w-80 h-80 mx-auto rounded-full border-4 border-white/20 object-cover object-center" 
                   src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
                   alt="Reel Pal - Your Social Content Creation Guide" 
                 />
               </div>
-              
-              {/* Floating Elements Around Character */}
-              <div className="absolute -top-5 -left-10 text-5xl animate-bounce">📱</div>
-              <div className="absolute -top-3 -right-12 text-4xl animate-pulse">🎬</div>
-              <div className="absolute -bottom-8 left-5 text-4xl animate-bounce" style={{animationDelay: '0.5s'}}>✨</div>
-              <div className="absolute -bottom-5 -right-8 text-3xl animate-pulse" style={{animationDelay: '1s'}}>🚀</div>
-              <div className="absolute top-1/2 -left-16 text-3xl animate-float">📺</div>
-              <div className="absolute top-1/2 -right-16 text-3xl animate-float-delayed">🎭</div>
             </div>
           </div>
         </section>
 
-        {/* Spacer */}
-        <div className="h-[5vh] bg-white/10 backdrop-blur-sm relative z-10"></div>
-
         {/* Expertise Section */}
-        <section className="py-20 lg:py-32 bg-white/10 backdrop-blur-sm relative z-20">
+        <section className="py-20 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 drop-shadow-2xl animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
-                What I Do Best
-              </h2>
-              <p className="text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-md animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-200">
-                From viral TikToks to Instagram Reels that convert, I help you create content that not only looks great but actually drives results for your business.
-              </p>
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">What I Do Best</h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">From viral TikToks to Instagram Reels that convert, I help you create content that not only looks great but actually drives results for your business.</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="backdrop-blur-md bg-white/10 rounded-3xl p-8 text-center border border-white/20 shadow-2xl hover:bg-white/20 transition-all duration-500 transform hover:scale-105 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-300">
-                <div className="w-20 h-20 bg-pal-orange/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-6 border border-white/30">
-                  <Video className="text-white h-10 w-10 drop-shadow-lg" />
+              <div className="bg-orange-50 rounded-2xl p-8 text-center">
+                <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Video className="text-white h-8 w-8" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">TikTok Content</h3>
-                <p className="text-white/80 leading-relaxed">Trending content that captures attention and drives engagement on the world's fastest-growing platform.</p>
+                <h3 className="text-xl font-bold text-foreground mb-4">TikTok Content</h3>
+                <p className="text-muted-foreground">Trending content that captures attention and drives engagement on the world's fastest-growing platform.</p>
               </div>
               
-              <div className="backdrop-blur-md bg-white/10 rounded-3xl p-8 text-center border border-white/20 shadow-2xl hover:bg-white/20 transition-all duration-500 transform hover:scale-105 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-400">
-                <div className="w-20 h-20 bg-pal-purple/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-6 border border-white/30">
-                  <PlayCircle className="text-white h-10 w-10 drop-shadow-lg" />
+              <div className="bg-blue-50 rounded-2xl p-8 text-center">
+                <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <PlayCircle className="text-white h-8 w-8" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">Instagram Reels</h3>
-                <p className="text-white/80 leading-relaxed">Stories and Reels that showcase your brand personality and convert followers into customers.</p>
+                <h3 className="text-xl font-bold text-foreground mb-4">Instagram Reels</h3>
+                <p className="text-muted-foreground">Stories and Reels that showcase your brand personality and convert followers into customers.</p>
               </div>
               
-              <div className="backdrop-blur-md bg-white/10 rounded-3xl p-8 text-center border border-white/20 shadow-2xl hover:bg-white/20 transition-all duration-500 transform hover:scale-105 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-500">
-                <div className="w-20 h-20 bg-pal-blue/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-6 border border-white/30">
-                  <Video className="text-white h-10 w-10 drop-shadow-lg" />
+              <div className="bg-green-50 rounded-2xl p-8 text-center">
+                <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Video className="text-white h-8 w-8" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">YouTube Shorts</h3>
-                <p className="text-white/80 leading-relaxed">Quick, impactful videos that grow your YouTube presence and drive subscribers.</p>
+                <h3 className="text-xl font-bold text-foreground mb-4">YouTube Shorts</h3>
+                <p className="text-muted-foreground">Quick, impactful videos that grow your YouTube presence and drive subscribers.</p>
               </div>
               
-              <div className="backdrop-blur-md bg-white/10 rounded-3xl p-8 text-center border border-white/20 shadow-2xl hover:bg-white/20 transition-all duration-500 transform hover:scale-105 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-600">
-                <div className="w-20 h-20 bg-pal-green/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-6 border border-white/30">
-                  <Wrench className="text-white h-10 w-10 drop-shadow-lg" />
+              <div className="bg-orange-50 rounded-2xl p-8 text-center">
+                <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Wrench className="text-white h-8 w-8" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">DIY Kits</h3>
-                <p className="text-white/80 leading-relaxed">Complete content creation packages that enable you to create professional content in-house.</p>
+                <h3 className="text-xl font-bold text-foreground mb-4">DIY Kits</h3>
+                <p className="text-muted-foreground">Complete content creation packages that enable you to create professional content in-house.</p>
               </div>
             </div>
           </div>
         </section>
 
         {/* Packages Section */}
-        <section className="py-20 lg:py-32 bg-white/5 backdrop-blur-sm relative z-20">
+        <section className="py-20 bg-muted/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 drop-shadow-2xl animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
-                Reel Pal Packages
-              </h2>
-              <p className="text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-md animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-200">
-                Boost your social media presence with our proven content creation packages.
-              </p>
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Reel Pal Packages</h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Boost your social media presence with our proven content creation packages.</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -360,67 +249,59 @@ const ReelPal = () => {
         </section>
 
         {/* Process Section */}
-        <section className="py-20 lg:py-32 bg-white/10 backdrop-blur-sm relative z-20">
+        <section className="py-20 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 drop-shadow-2xl animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
-                How We Work Together
-              </h2>
-              <p className="text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-md animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-200">
-                My proven 4-step process ensures we create content that not only looks amazing but drives real results for your business.
-              </p>
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">How We Work Together</h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">My proven 4-step process ensures we create content that not only looks amazing but drives real results for your business.</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="text-center animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-300">
-                <div className="w-24 h-24 bg-pal-orange/20 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-6 relative border border-white/20 shadow-2xl">
-                  <MessageCircle className="text-white h-12 w-12 drop-shadow-lg" />
-                  <div className="absolute -top-3 -right-3 w-10 h-10 bg-pal-orange rounded-full flex items-center justify-center text-white text-lg font-bold shadow-xl">1</div>
+              <div className="text-center">
+                <div className="w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                  <MessageCircle className="text-white h-8 w-8" />
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">Discovery Call</h3>
-                <p className="text-white/80 leading-relaxed">We dive deep into your brand, audience, and goals to create a personalized content strategy.</p>
+                <h3 className="text-xl font-bold text-foreground mb-4">Discovery Call</h3>
+                <p className="text-muted-foreground">We dive deep into your brand, audience, and goals to create a personalized content strategy.</p>
               </div>
               
-              <div className="text-center animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-400">
-                <div className="w-24 h-24 bg-pal-purple/20 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-6 relative border border-white/20 shadow-2xl">
-                  <Lightbulb className="text-white h-12 w-12 drop-shadow-lg" />
-                  <div className="absolute -top-3 -right-3 w-10 h-10 bg-pal-purple rounded-full flex items-center justify-center text-white text-lg font-bold shadow-xl">2</div>
+              <div className="text-center">
+                <div className="w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                  <Lightbulb className="text-white h-8 w-8" />
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">Content Planning</h3>
-                <p className="text-white/80 leading-relaxed">I create a detailed content calendar with trending topics and platform-specific optimizations.</p>
+                <h3 className="text-xl font-bold text-foreground mb-4">Content Planning</h3>
+                <p className="text-muted-foreground">I create a detailed content calendar with trending topics and platform-specific optimizations.</p>
               </div>
               
-              <div className="text-center animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-500">
-                <div className="w-24 h-24 bg-pal-green/20 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-6 relative border border-white/20 shadow-2xl">
-                  <Video className="text-white h-12 w-12 drop-shadow-lg" />
-                  <div className="absolute -top-3 -right-3 w-10 h-10 bg-pal-green rounded-full flex items-center justify-center text-white text-lg font-bold shadow-xl">3</div>
+              <div className="text-center">
+                <div className="w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                  <Video className="text-white h-8 w-8" />
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">Production</h3>
-                <p className="text-white/80 leading-relaxed">Professional filming and editing that brings your content to life with trending effects and music.</p>
+                <h3 className="text-xl font-bold text-foreground mb-4">Production</h3>
+                <p className="text-muted-foreground">Professional filming and editing that brings your content to life with trending effects and music.</p>
               </div>
               
-              <div className="text-center animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-600">
-                <div className="w-24 h-24 bg-pal-blue/20 backdrop-blur-md rounded-full flex items-center justify-center mx-auto mb-6 relative border border-white/20 shadow-2xl">
-                  <Rocket className="text-white h-12 w-12 drop-shadow-lg" />
-                  <div className="absolute -top-3 -right-3 w-10 h-10 bg-pal-blue rounded-full flex items-center justify-center text-white text-lg font-bold shadow-xl">4</div>
+              <div className="text-center">
+                <div className="w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                  <Rocket className="text-white h-8 w-8" />
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">Launch & Optimize</h3>
-                <p className="text-white/80 leading-relaxed">Strategic posting schedule with performance tracking and continuous optimization for maximum reach.</p>
+                <h3 className="text-xl font-bold text-foreground mb-4">Launch & Optimize</h3>
+                <p className="text-muted-foreground">Strategic posting schedule with performance tracking and continuous optimization for maximum reach.</p>
               </div>
             </div>
           </div>
         </section>
 
         {/* FAQ Section */}
-        <section className="py-20 lg:py-32 bg-white/5 backdrop-blur-sm relative z-20">
+        <section className="py-20 bg-muted/5">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 drop-shadow-2xl animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
-                Frequently Asked Questions
-              </h2>
-              <p className="text-xl lg:text-2xl text-white/90 leading-relaxed drop-shadow-md animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-200">
-                Everything you need to know about working with Reel Pal.
-              </p>
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Frequently Asked Questions</h2>
+              <p className="text-xl text-muted-foreground">Everything you need to know about working with Reel Pal.</p>
             </div>
 
             <div className="space-y-6">
@@ -446,20 +327,21 @@ const ReelPal = () => {
                   answer: "Absolutely! Every project starts with a strategy session where we discuss your goals, audience, and brand voice. I provide ongoing strategic guidance to help your content perform better and reach more people."
                 }
               ].map((faq, index) => (
-                <div key={index} className="backdrop-blur-md bg-white/10 rounded-3xl border border-white/20 shadow-2xl animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700" style={{animationDelay: `${300 + index * 100}ms`}}>
-                  <button
-                    className="w-full px-8 py-6 text-left flex justify-between items-center text-white hover:bg-white/10 transition-all rounded-3xl"
-                    onClick={() => toggleFAQ(index)}
+                <div key={index} className="bg-background rounded-2xl p-8">
+                  <div 
+                    className="flex justify-between items-center cursor-pointer" 
+                    onClick={() => toggleFAQ(index + 1)}
                   >
-                    <span className="text-xl font-bold drop-shadow-lg">{faq.question}</span>
-                    {faqOpen[index] ? 
-                      <ChevronUp className="h-6 w-6 drop-shadow-lg" /> : 
-                      <ChevronDown className="h-6 w-6 drop-shadow-lg" />
-                    }
-                  </button>
-                  {faqOpen[index] && (
-                    <div className="px-8 pb-6">
-                      <p className="text-white/80 leading-relaxed">{faq.answer}</p>
+                    <h3 className="text-xl font-bold text-foreground">{faq.question}</h3>
+                    {openFAQ === index + 1 ? (
+                      <ChevronUp className="text-muted-foreground h-6 w-6" />
+                    ) : (
+                      <ChevronDown className="text-muted-foreground h-6 w-6" />
+                    )}
+                  </div>
+                  {openFAQ === index + 1 && (
+                    <div className="mt-4">
+                      <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
                     </div>
                   )}
                 </div>
@@ -469,42 +351,42 @@ const ReelPal = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 lg:py-32 bg-white/10 backdrop-blur-sm relative z-20">
+        <section className="py-20 bg-background">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="backdrop-blur-md bg-white/10 rounded-3xl p-12 lg:p-16 border border-white/20 shadow-2xl animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-8 drop-shadow-2xl">
+            <div className="bg-gradient-to-br from-orange-500 to-orange-700 rounded-3xl p-12 lg:p-16 text-white">
+              <h2 className="text-4xl md:text-5xl font-bold mb-8">
                 Ready to Create Content That Connects?
               </h2>
-              <p className="text-xl lg:text-2xl text-white/90 mb-12 max-w-3xl mx-auto leading-relaxed drop-shadow-md">
+              <p className="text-xl mb-12 max-w-3xl mx-auto opacity-90">
                 Let's work together to build your social media presence with content that actually converts. Book your strategy call today and let's make magic happen!
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
                 <div className="text-center">
-                  <div className="w-20 h-20 bg-pal-orange/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 border border-white/30">
-                    <Zap className="text-white h-10 w-10 drop-shadow-lg" />
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Smartphone className="text-white h-8 w-8" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">Proven Systems</h3>
-                  <p className="text-white/80">Strategies that actually work and drive real engagement</p>
+                  <h3 className="text-xl font-bold mb-2">Proven Systems</h3>
+                  <p className="opacity-90">Strategies that actually work and drive real engagement</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-20 h-20 bg-pal-purple/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 border border-white/30">
-                    <Rocket className="text-white h-10 w-10 drop-shadow-lg" />
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Rocket className="text-white h-8 w-8" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">Fast Results</h3>
-                  <p className="text-white/80">See improvement in your social media performance within weeks</p>
+                  <h3 className="text-xl font-bold mb-2">Fast Results</h3>
+                  <p className="opacity-90">See improvement in your social media performance within weeks</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-20 h-20 bg-pal-green/20 backdrop-blur-sm rounded-full flex items-center justify-center mx-auto mb-4 border border-white/30">
-                    <Camera className="text-white h-10 w-10 drop-shadow-lg" />
+                  <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Camera className="text-white h-8 w-8" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">Professional Quality</h3>
-                  <p className="text-white/80">Content that looks great and represents your brand perfectly</p>
+                  <h3 className="text-xl font-bold mb-2">Professional Quality</h3>
+                  <p className="opacity-90">Content that looks great and represents your brand perfectly</p>
                 </div>
               </div>
               
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                <Button asChild size="lg" className="bg-pal-orange hover:bg-pal-orange/80 text-white font-bold shadow-xl hover:shadow-2xl transition-all transform hover:scale-105 px-12 py-6 text-xl">
+                <Button asChild size="lg" className="bg-white text-orange-600 hover:bg-orange-50">
                   <a 
                     href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
                     target="_blank"
@@ -513,12 +395,12 @@ const ReelPal = () => {
                     🚀 Book Strategy Call
                   </a>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="border-white/30 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 font-bold shadow-xl px-12 py-6 text-xl">
+                <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
                   <Link to="/pals">👥 Explore All Pals</Link>
                 </Button>
               </div>
               
-              <p className="text-white/70 mt-8 text-lg">
+              <p className="text-white/80 mt-8">
                 💎 <strong>Limited Time:</strong> Free content audit with every strategy call
               </p>
             </div>
@@ -526,67 +408,63 @@ const ReelPal = () => {
         </section>
 
         {/* Related Pals Section */}
-        <section className="py-20 lg:py-32 bg-white/5 backdrop-blur-sm relative z-20">
+        <section className="py-20 bg-muted/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 drop-shadow-2xl animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
-                Meet My Fellow Pals
-              </h2>
-              <p className="text-xl lg:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed drop-shadow-md animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-200">
-                Each Video Pal specializes in different content types. Find the perfect Pal for your specific video needs.
-              </p>
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Meet My Fellow Pals</h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Each Video Pal specializes in different content types. Find the perfect Pal for your specific video needs.</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="backdrop-blur-md bg-white/10 rounded-3xl p-8 text-center border border-white/20 shadow-2xl hover:bg-white/20 transition-all duration-500 transform hover:scale-105 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-300">
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-purple-500 transition-all hover:scale-105">
                 <div className="mb-6">
                   <img 
-                    className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-pal-purple/30" 
+                    className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-purple-200" 
                     src="/lovable-uploads/c70f84e1-b8ab-4479-a04d-7793a76d402f.png" 
                     alt="System Pal - Training & Internal Video Expert" 
                   />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3 drop-shadow-lg">System Pal</h3>
-                <p className="text-white/80 mb-4 leading-relaxed">Perfect for training videos, onboarding, and internal business content</p>
-                <Button asChild className="bg-pal-purple hover:bg-pal-purple/80 text-white font-bold shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+                <h3 className="text-2xl font-bold text-foreground mb-3">System Pal</h3>
+                <p className="text-muted-foreground mb-4">Perfect for training videos, onboarding, and internal business content</p>
+                <Button asChild className="bg-purple-500 text-white hover:bg-purple-600">
                   <Link to="/system-pal">🎓 Meet System Pal</Link>
                 </Button>
               </div>
               
-              <div className="backdrop-blur-md bg-white/10 rounded-3xl p-8 text-center border border-white/20 shadow-2xl hover:bg-white/20 transition-all duration-500 transform hover:scale-105 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-400">
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105">
                 <div className="mb-6">
                   <img 
-                    className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-pal-green/30" 
+                    className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-green-200" 
                     src="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png" 
                     alt="Evergreen Pal - YouTube & Authority Content Expert" 
                   />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3 drop-shadow-lg">Evergreen Pal</h3>
-                <p className="text-white/80 mb-4 leading-relaxed">Ideal for long-term YouTube growth and authority building</p>
-                <Button asChild className="bg-pal-green hover:bg-pal-green/80 text-white font-bold shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+                <h3 className="text-2xl font-bold text-foreground mb-3">Evergreen Pal</h3>
+                <p className="text-muted-foreground mb-4">Ideal for long-term YouTube growth and authority building</p>
+                <Button asChild className="bg-green-500 text-white hover:bg-green-600">
                   <Link to="/evergreen-pal">🌱 Meet Evergreen Pal</Link>
                 </Button>
               </div>
               
-              <div className="backdrop-blur-md bg-white/10 rounded-3xl p-8 text-center border border-white/20 shadow-2xl hover:bg-white/20 transition-all duration-500 transform hover:scale-105 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-500">
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-blue-500 transition-all hover:scale-105">
                 <div className="mb-6">
                   <img 
-                    className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-pal-blue/30" 
+                    className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-blue-200" 
                     src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" 
                     alt="Spotlight Pal - Cinematic Brand Video Expert" 
                   />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3 drop-shadow-lg">Spotlight Pal</h3>
-                <p className="text-white/80 mb-4 leading-relaxed">Your go-to for cinematic brand films and premium content</p>
-                <Button asChild className="bg-pal-blue hover:bg-pal-blue/80 text-white font-bold shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+                <h3 className="text-2xl font-bold text-foreground mb-3">Spotlight Pal</h3>
+                <p className="text-muted-foreground mb-4">Your go-to for cinematic brand films and premium content</p>
+                <Button asChild className="bg-blue-500 text-white hover:bg-blue-600">
                   <Link to="/spotlight-pal">🎬 Meet Spotlight Pal</Link>
                 </Button>
               </div>
             </div>
           </div>
         </section>
-      </main>
-    </div>
+      </div>
+    </>
   );
 };
 

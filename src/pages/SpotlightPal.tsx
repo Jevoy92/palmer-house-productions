@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
 import spotlightPalImage from '@/assets/pals/female-spotlight-pal-cinematography.png';
+import reelPalHeadshot from '@/assets/pals/female-reel-pal-circular-headshot.jpg';
+import systemPalHeadshot from '@/assets/pals/female-system-pal-circular-3.jpg';
+import evergreenPalHeadshot from '@/assets/pals/male-evergreen-pal-circular-headshot.jpg';
 import { 
   Camera, 
   Film, 
@@ -383,8 +386,8 @@ const SpotlightPal = () => {
                   <div className="mb-6">
                     <img 
                       className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-orange-200" 
-                      src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
-                      alt="cartoon character female with brown hair in bun, orange shirt and jeans, holding smartphone, social media creator mascot" 
+                      src={reelPalHeadshot} 
+                      alt="Female Reel Pal - Social media content creator in orange hoodie" 
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-3">Reel Pal</h3>
@@ -398,8 +401,8 @@ const SpotlightPal = () => {
                   <div className="mb-6">
                     <img 
                       className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-purple-200" 
-                      src="/lovable-uploads/1d3c7a2a-e5cb-4900-9b76-9eadb6620973.png" 
-                      alt="System Pal - professional male character in gray jacket with green accents, surrounded by workflow icons, gears, folders, and organizational elements" 
+                      src={systemPalHeadshot} 
+                      alt="Female System Pal - Workflow optimization expert with glasses" 
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-3">System Pal</h3>
@@ -413,8 +416,8 @@ const SpotlightPal = () => {
                   <div className="mb-6">
                     <img 
                       className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-green-200" 
-                      src="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png" 
-                      alt="cartoon character male with gray hair and beard, teal coat, holding golden play button with plants and educational elements, evergreen content creator mascot" 
+                      src={evergreenPalHeadshot} 
+                      alt="Male Evergreen Pal - Authority building expert in blue cardigan" 
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-3">Evergreen Pal</h3>

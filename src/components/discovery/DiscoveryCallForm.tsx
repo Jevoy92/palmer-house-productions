@@ -18,7 +18,6 @@ export const DiscoveryCallForm = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle form submission
-    console.log('Discovery call form submitted:', formData);
     trackContactFormSubmit('discovery');
     trackConversion('discovery_call');
     // Open Zoho booking for general consultation

@@ -67,7 +67,7 @@ export const BlogPost = ({
           url: window.location.href,
         });
       } catch (err) {
-        console.log('Error sharing:', err);
+        // Silently handle share error
       }
     } else {
       // Fallback: copy to clipboard

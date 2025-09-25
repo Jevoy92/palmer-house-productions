@@ -343,7 +343,7 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
   };
 
   const handleEmailSubmit = () => {
-    console.log('Email results to:', emailForResults);
+    // Email results functionality
   };
 
   const handleResumeProgress = () => {
@@ -409,7 +409,7 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
               milestones={results.monthlyMilestones || []}
               industryBenchmark={65}
               confidenceScore={85}
-              onGetDetailedPlan={() => console.log('Book consultation')}
+              onGetDetailedPlan={() => {/* Book consultation */}}
             />
 
             <div className="mt-6 flex justify-center">

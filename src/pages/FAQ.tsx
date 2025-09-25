@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ChevronDown, ChevronUp, HelpCircle, Search } from "lucide-react";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
 import { Navigation } from "@/components/Navigation";
+import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
@@ -13,15 +14,6 @@ const FAQ = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
-
-  // Update page title for better SEO
-  useEffect(() => {
-    document.title = "Frequently Asked Questions | Palmer House Video Production Help";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute('content', 'Complete FAQ covering Palmer House Productions video content systems, pricing, processes, and services for business growth.');
-    }
-  }, []);
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -220,10 +212,19 @@ const FAQ = () => {
           <div className="w-1/4 h-full bg-pal-blue"></div>
         </div>
       </div>
+      
+      <MetaTags 
+        title="Frequently Asked Questions | Palmer House Productions"
+        description="Complete FAQ covering Palmer House Productions video content systems, pricing, processes, and services for business growth. Get answers to all your video production questions."
+        keywords="video production FAQ, Palmer House Productions questions, video content systems, video production pricing, business video services"
+        ogTitle="Video Production FAQ | Palmer House Productions"
+        ogDescription="Get answers to all your video production questions. Complete FAQ covering content systems, pricing, and processes."
+        canonicalUrl="https://www.palmerhouseproductions.com/faq"
+      />
+      <StructuredData type="services" />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
-      <StructuredData />
       <FAQSchema faqs={filteredFaqs.map(faq => ({ question: faq.question, answer: faq.answer }))} />
       <BreadcrumbNavigation />
       <MainContent>

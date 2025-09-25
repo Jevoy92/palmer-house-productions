@@ -5,26 +5,26 @@ import { usePageTransition } from '@/components/PageTransition';
 import { StructuredData } from '@/components/seo/StructuredData';
 import { ScrollBars } from '@/components/ScrollBars';
 import { 
-  Camera, 
   Cog, 
   Youtube, 
   Film, 
   Smartphone, 
   Rocket, 
-  Wand2, 
   Users, 
   GraduationCap,
   CircleHelp,
+  Video,
+  Menu,
+  Wand2,
+  Camera,
   Calendar,
   Trophy,
   Music,
   Megaphone,
   Upload,
-  Download,
   MessageCircle,
-  Check,
-  Video,
-  Menu
+  Download,
+  Check
 } from 'lucide-react';
 
 // Import character images
@@ -37,6 +37,7 @@ import maleEvergreenPalImage from '@/assets/pals/male-evergreen-pal-edited.png';
 import spotlightPalImage from '@/assets/pals/female-spotlight-pal-edited.png';
 import maleSpotlightPalImage from '@/assets/pals/male-spotlight-pal-edited.png';
 import { PRICING } from "@/lib/pricing";
+
 
 export default function Pals() {
   const { transitionTo } = usePageTransition();
@@ -90,13 +91,16 @@ export default function Pals() {
   return (
     <div className="bg-gray-50 overflow-x-hidden font-sans">
       <ScrollBars />
-      <MetaTags
-        title="Meet Your Video Pals - Palmer House Productions"
-        description="Discover our specialized Video Pals: Reel Pal for social content, System Pal for training videos, Evergreen Pal for authority building, and Spotlight Pal for cinematic storytelling."
-        keywords="video production, social media content, training videos, YouTube content, cinematic videos, Palmer House Productions"
-      />
+        <MetaTags 
+          title="Meet Your Video Production Specialists | Palmer House Productions"
+          description="Meet the Video Pals: Reel Pal for social content creation, System Pal for training systems, Evergreen Pal for authority building, and Spotlight Pal for cinematic storytelling. Seattle-based professional video production team."
+          keywords="video production specialists, social media content, training video systems, YouTube content, cinematic video production, Seattle video production team"
+          ogTitle="Meet Your Video Production Specialists | Palmer House Productions"
+          ogDescription="Meet the Video Pals: specialized video production experts for social content, training systems, authority building, and cinematic storytelling."
+          canonicalUrl="https://www.palmerhouseproductions.com/pals"
+        />
 
-      {/* StructuredData removed temporarily for build fix */}
+      <StructuredData type="services" />
 
       <main className="relative">
         {/* Sticky Background Bars */}
@@ -117,9 +121,9 @@ export default function Pals() {
               <h1 className="text-3xl font-bold text-white">Video Pals</h1>
             </div>
             <nav className="hidden md:flex items-center gap-8 text-white font-medium">
-              <Link to="/services" className="hover:opacity-80 transition-opacity cursor-pointer">Solutions</Link>
-              <Link to="/about" className="hover:opacity-80 transition-opacity cursor-pointer">About</Link>
-              <Link to="/contact" className="hover:opacity-80 transition-opacity cursor-pointer">Contact</Link>
+              <button onClick={() => transitionToPage('/services')} className="hover:opacity-80 transition-opacity cursor-pointer">Solutions</button>
+              <button onClick={() => transitionToPage('/about')} className="hover:opacity-80 transition-opacity cursor-pointer">About</button>
+              <button onClick={() => transitionToPage('/contact')} className="hover:opacity-80 transition-opacity cursor-pointer">Contact</button>
             </nav>
             <button className="md:hidden text-white text-2xl">
               <Menu />

@@ -46,8 +46,6 @@ export const ContactForm = ({ open, onOpenChange }: ContactFormProps) => {
   }, [open, form]);
 
   const onSubmit = (values: FormData) => {
-    console.log(values);
-    
     // Create mailto link with form data
     const subject = `Project Inquiry from ${values.firstName} ${values.lastName}`;
     const body = `

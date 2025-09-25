@@ -183,7 +183,7 @@ export const VideoPackagesTabbed = () => {
           className="group relative w-full md:w-1/4 h-full bg-pal-orange flex flex-col justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
           onClick={() => navigateToPage('reel-pal')}
         >
-          <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
+          <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-[5%] md:top-1/4 md:group-hover:top-[5%]">
             <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6 border border-white/30">
               <div className="text-lg font-bold opacity-95 mb-3">💡 Perfect For:</div>
               <div className="text-base opacity-90">Quick wins • Social media growth • DIY solutions</div>
@@ -219,7 +219,7 @@ export const VideoPackagesTabbed = () => {
           className="group relative w-full md:w-1/4 h-full bg-pal-purple flex flex-col justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
           onClick={() => navigateToPage('system-pal')}
         >
-          <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
+          <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-[5%] md:top-1/4 md:group-hover:top-[5%]">
             <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6 border border-white/30">
               <div className="text-lg font-bold opacity-95 mb-3">🎯 Perfect For:</div>
               <div className="text-base opacity-90">Team efficiency • Process automation • Scaling operations</div>
@@ -255,7 +255,7 @@ export const VideoPackagesTabbed = () => {
           className="group relative w-full md:w-1/4 h-full bg-pal-green flex flex-col justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
           onClick={() => navigateToPage('evergreen-pal')}
         >
-          <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
+          <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-[5%] md:top-1/4 md:group-hover:top-[5%]">
             <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6 border border-white/30">
               <div className="text-lg font-bold opacity-95 mb-3">🌱 Perfect For:</div>
               <div className="text-base opacity-90">Authority building • Long-term growth • Brand positioning</div>
@@ -291,7 +291,7 @@ export const VideoPackagesTabbed = () => {
           className="group relative w-full md:w-1/4 h-full bg-pal-blue flex flex-col justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
           onClick={() => navigateToPage('spotlight-pal')}
         >
-          <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
+          <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-[5%] md:top-1/4 md:group-hover:top-[5%]">
             <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6 border border-white/30">
               <div className="text-lg font-bold opacity-95 mb-3">✨ Perfect For:</div>
               <div className="text-base opacity-90">Premium brands • Emotional impact • Cinematic quality</div>

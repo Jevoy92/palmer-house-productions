@@ -13,8 +13,7 @@ import {
   ChevronDown,
   ChevronUp,
   Smartphone,
-  Camera,
-  Film
+  Camera
 } from 'lucide-react';
 
 const ReelPal = () => {
@@ -105,142 +104,110 @@ const ReelPal = () => {
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Boost your social media presence with our proven content creation packages.</p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Starter Session */}
-              <div className="backdrop-blur-md bg-white/10 rounded-3xl p-8 text-center border border-white/20 shadow-2xl hover:bg-white/20 transition-all duration-500 transform hover:scale-105 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-300">
-                <div className="bg-pal-orange/90 backdrop-blur-sm text-white px-6 py-3 rounded-full text-sm font-bold w-fit mx-auto mb-6 shadow-lg">STARTER</div>
-                <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">The Starter Session</h3>
-                <div className="text-5xl font-black text-yellow-300 mb-6 drop-shadow-2xl">$500</div>
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-orange-500 transition-all hover:scale-105">
+                <div className="bg-orange-100 text-orange-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">STARTER</div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">The Starter Session</h3>
+                <div className="text-4xl font-bold text-orange-600 mb-6">$500</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-orange h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">30-minute filming session</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>30-minute filming session</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-orange h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">Minimum 3 edited videos</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>Minimum 3 edited videos</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-orange h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">One-minute video format</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>One-minute video format</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-orange h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">Simple talking-head style</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>Simple talking-head style</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-orange h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">Professional delivery</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>Professional delivery</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-orange h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">Limited availability</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>Limited availability</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-pal-orange hover:bg-pal-orange/80 text-white font-bold shadow-xl hover:shadow-2xl transition-all transform hover:scale-105" size="lg">
+                <Button asChild className="w-full bg-orange-500 text-white hover:bg-orange-600" size="lg">
                   <Link to="/contact">📱 Book Session</Link>
                 </Button>
               </div>
               
               {/* DIY Package */}
-              <div className="backdrop-blur-md bg-white/10 rounded-3xl p-8 text-center border border-white/20 shadow-2xl hover:bg-white/20 transition-all duration-500 transform hover:scale-105 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-400">
-                <div className="bg-pal-purple/90 backdrop-blur-sm text-white px-6 py-3 rounded-full text-sm font-bold w-fit mx-auto mb-6 shadow-lg">DIY</div>
-                <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">25 DIY Reels</h3>
-                <div className="text-5xl font-black text-yellow-300 mb-6 drop-shadow-2xl">$47</div>
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-orange-500 transition-all hover:scale-105">
+                <div className="bg-orange-100 text-orange-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">DIY</div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">25 DIY Reels</h3>
+                <div className="text-4xl font-bold text-orange-600 mb-6">$47</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-purple h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">25 talking-head reel ideas</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>25 talking-head reel ideas</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-purple h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">Platform breakdowns included</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>Platform breakdowns included</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-purple h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">Sample scripts provided</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>Sample scripts provided</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-purple h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">Film from home setup</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>Film from home setup</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-purple h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">Instant PDF download</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>Instant PDF download</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-pal-purple hover:bg-pal-purple/80 text-white font-bold shadow-xl hover:shadow-2xl transition-all transform hover:scale-105" size="lg">
+                <Button asChild className="w-full bg-orange-500 text-white hover:bg-orange-600" size="lg">
                   <a href="https://payhip.com/b/u8wvz" target="_blank" rel="noopener noreferrer">🛒 Buy Now</a>
                 </Button>
               </div>
               
-              {/* Script Bundle */}
-              <div className="backdrop-blur-md bg-white/10 rounded-3xl p-8 text-center border border-white/20 shadow-2xl hover:bg-white/20 transition-all duration-500 transform hover:scale-105 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-500">
-                <div className="bg-pal-green/90 backdrop-blur-sm text-white px-6 py-3 rounded-full text-sm font-bold w-fit mx-auto mb-6 shadow-lg">SCRIPTS</div>
-                <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">Script Bundle</h3>
-                <div className="text-5xl font-black text-yellow-300 mb-6 drop-shadow-2xl">$47</div>
-                <ul className="space-y-4 mb-8 text-left">
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-pal-green h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">About Me video scripts</span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-pal-green h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">Social proof templates</span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-pal-green h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">Call-to-action scripts</span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-pal-green h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">FAQ video templates</span>
-                  </li>
-                  <li className="flex items-center space-x-3">
-                    <Check className="text-pal-green h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">Plug-and-play format</span>
-                  </li>
-                </ul>
-                <Button asChild className="w-full bg-pal-green hover:bg-pal-green/80 text-white font-bold shadow-xl hover:shadow-2xl transition-all transform hover:scale-105" size="lg">
-                  <a href="https://payhip.com/b/jxGKl" target="_blank" rel="noopener noreferrer">📝 Get Scripts</a>
-                </Button>
-              </div>
-              
-              {/* 30 Reels Package */}
-              <div className="backdrop-blur-md bg-white/10 rounded-3xl p-8 text-center border border-pal-blue/40 shadow-2xl hover:bg-white/20 transition-all duration-500 transform hover:scale-105 relative animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-600">
+              {/* Content Creation Package */}
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-orange-500 transition-all hover:scale-105 relative">
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-pal-blue text-white px-6 py-3 rounded-full text-sm font-bold shadow-xl">⭐ MOST POPULAR</div>
+                  <div className="bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold">POPULAR</div>
                 </div>
-                <div className="bg-pal-blue/90 backdrop-blur-sm text-white px-6 py-3 rounded-full text-sm font-bold w-fit mx-auto mb-6 mt-4 shadow-lg">DONE FOR YOU</div>
-                <h3 className="text-2xl font-bold text-white mb-4 drop-shadow-lg">30 Reels in 30 Days</h3>
-                <div className="text-5xl font-black text-yellow-300 mb-6 drop-shadow-2xl">$4,800</div>
+                <div className="bg-orange-100 text-orange-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">CONTENT</div>
+                <h3 className="text-2xl font-bold text-foreground mb-4">30 Reels in a Day</h3>
+                <div className="text-4xl font-bold text-orange-600 mb-6">$3,000</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-blue h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">1 full-day shoot (8 hours)</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>1 full-day shoot (8 hours)</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-blue h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">30 social-ready videos</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>30 social-ready videos</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-blue h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">15-30 seconds each</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>15-30 seconds each</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-blue h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">Captions + formatting</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>Captions + formatting</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-blue h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">IG/LinkedIn/TikTok ready</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>IG/LinkedIn/TikTok ready</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-pal-blue h-6 w-6 drop-shadow-lg" />
-                    <span className="text-white/90">Only 3 spots available</span>
+                    <Check className="text-orange-500 h-5 w-5" />
+                    <span>Only 3 spots available</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-pal-blue hover:bg-pal-blue/80 text-white font-bold shadow-xl hover:shadow-2xl transition-all transform hover:scale-105" size="lg">
+                <Button asChild className="w-full bg-orange-500 text-white hover:bg-orange-600" size="lg">
                   <Link to="/contact">🚀 Book Now</Link>
                 </Button>
               </div>

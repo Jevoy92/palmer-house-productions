@@ -210,39 +210,48 @@ const FAQ = () => {
   });
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen overflow-x-hidden font-sans relative">
+      {/* Fixed 4-Color Background Bars */}
+      <div className="fixed top-0 left-0 w-full h-full z-0">
+        <div className="w-full h-full flex">
+          <div className="w-1/4 h-full bg-pal-orange"></div>
+          <div className="w-1/4 h-full bg-pal-purple"></div>
+          <div className="w-1/4 h-full bg-pal-green"></div>
+          <div className="w-1/4 h-full bg-pal-blue"></div>
+        </div>
+      </div>
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <StructuredData />
       <FAQSchema faqs={filteredFaqs.map(faq => ({ question: faq.question, answer: faq.answer }))} />
+      <BreadcrumbNavigation />
       <MainContent>
-        <section className="pt-24 pb-16 bg-video-white">
-          <div className="max-w-6xl mx-auto px-6">
-            <BreadcrumbNavigation />
-            
-            <div className="text-center mb-16">
-              <div className="inline-block px-6 py-3 gradient-social-1 rounded-full text-white font-bold text-lg mb-8">
+        <section className="pt-24 pb-16 relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+            {/* Hero Section - White Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl text-center mb-12">
+              <div className="inline-block px-6 py-3 bg-pal-blue text-white font-bold text-lg mb-8 rounded-full video-shadow">
                 <HelpCircle className="inline-block mr-2" size={20} />
                 The Complete FAQ Guide
               </div>
-              <h1 className="text-5xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-                Every <span className="text-gradient-1">Question</span> Answered
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+                Every <span className="text-pal-blue">Question</span> Answered
               </h1>
-              <p className="text-xl md:text-2xl text-corporate-gray mb-8 max-w-4xl mx-auto">
+              <p className="text-lg xl:text-xl text-corporate-gray max-w-4xl mx-auto font-medium leading-relaxed">
                 Your complete guide to video content systems, pricing, and process. Find exactly what you're looking for.
               </p>
             </div>
 
-            {/* Search and Filter Section */}
-            <div className="mb-12">
+            {/* Search and Filter Section - White Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-12">
               <div className="max-w-2xl mx-auto mb-8">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                   <input
                     type="text"
                     placeholder="Search questions..."
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pal-blue focus:border-transparent"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -257,7 +266,7 @@ const FAQ = () => {
                     onClick={() => setSelectedCategory(category.id)}
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                       selectedCategory === category.id
-                        ? 'gradient-social-1 text-white'
+                        ? 'bg-pal-blue text-white'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
@@ -265,88 +274,88 @@ const FAQ = () => {
                   </button>
                 ))}
               </div>
+
+              {/* Results Count */}
+              <div className="text-center">
+                <p className="text-corporate-gray">
+                  Showing {filteredFaqs.length} of {faqs.length} questions
+                  {searchQuery && ` for "${searchQuery}"`}
+                </p>
+              </div>
             </div>
 
-            {/* Results Count */}
-            <div className="text-center mb-8">
-              <p className="text-corporate-gray">
-                Showing {filteredFaqs.length} of {faqs.length} questions
-                {searchQuery && ` for "${searchQuery}"`}
-              </p>
-            </div>
-
-            {/* FAQ Items */}
-            <div className="space-y-4 mb-16">
-              {filteredFaqs.map((faq, index) => (
-                <div key={index} className="bg-white rounded-2xl video-shadow overflow-hidden">
-                  <button
-                    className="w-full text-left p-6 hover:bg-gray-50 transition-colors duration-200 flex justify-between items-center min-h-[80px] touch-manipulation"
-                    onClick={() => toggleFAQ(index)}
-                    aria-expanded={openIndex === index}
-                    aria-controls={`faq-answer-${index}`}
-                  >
-                    <h3 className="text-lg md:text-xl font-bold text-corporate-dark pr-4 leading-tight">
-                      {faq.question}
-                    </h3>
-                    {openIndex === index ? (
-                      <ChevronUp className="w-5 h-5 text-corporate-gray flex-shrink-0" />
-                    ) : (
-                      <ChevronDown className="w-5 h-5 text-corporate-gray flex-shrink-0" />
-                    )}
-                  </button>
-                  {openIndex === index && (
-                     <div 
-                      id={`faq-answer-${index}`}
-                      className="px-6 pb-6 text-corporate-gray leading-relaxed text-base md:text-lg"
+            {/* FAQ Items - White Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-12">
+              <div className="space-y-4">
+                {filteredFaqs.map((faq, index) => (
+                  <div key={index} className="bg-gradient-to-br from-gray-50 to-white rounded-2xl border overflow-hidden">
+                    <button
+                      className="w-full text-left p-6 hover:bg-gray-100 transition-colors duration-200 flex justify-between items-center min-h-[80px] touch-manipulation"
+                      onClick={() => toggleFAQ(index)}
+                      aria-expanded={openIndex === index}
+                      aria-controls={`faq-answer-${index}`}
                     >
-                      {faq.answer}
-                    </div>
-                  )}
-                </div>
-              ))}
+                      <h3 className="text-lg md:text-xl font-bold text-corporate-dark pr-4 leading-tight">
+                        {faq.question}
+                      </h3>
+                      {openIndex === index ? (
+                        <ChevronUp className="w-5 h-5 text-corporate-gray flex-shrink-0" />
+                      ) : (
+                        <ChevronDown className="w-5 h-5 text-corporate-gray flex-shrink-0" />
+                      )}
+                    </button>
+                    {openIndex === index && (
+                       <div 
+                        id={`faq-answer-${index}`}
+                        className="px-6 pb-6 text-corporate-gray leading-relaxed text-base md:text-lg"
+                      >
+                        {faq.answer}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* No Results Message */}
             {filteredFaqs.length === 0 && (
-              <div className="text-center py-12">
+              <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl text-center">
                 <p className="text-xl text-corporate-gray mb-4">No questions match your search.</p>
                 <button
                   onClick={() => {
                     setSearchQuery("");
                     setSelectedCategory("all");
                   }}
-                  className="px-6 py-3 gradient-social-1 text-white font-bold rounded-xl hover:scale-105 transition-all duration-300"
+                  className="px-6 py-3 bg-pal-blue text-white font-bold rounded-xl hover:scale-105 transition-all duration-300"
                 >
                   Show All Questions
                 </button>
               </div>
             )}
 
-            {/* Contact CTA */}
-            <div className="mt-16 text-center">
-              <div className="bg-gradient-to-r from-social-purple/10 to-social-pink/10 rounded-3xl p-8 border border-social-purple/20">
-                <h3 className="text-3xl font-display font-black text-corporate-dark mb-4">
-                  Still Have Questions?
-                </h3>
-                <p className="text-lg text-corporate-gray mb-6">
-                  We'd love to chat about your specific project and how we can help bring your vision to life.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a
-                    href="/contact"
-                    className="inline-block px-8 py-4 gradient-social-1 text-white font-bold rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
-                  >
-                    Get In Touch
-                  </a>
-                  <a
-                    href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block px-8 py-4 border-2 border-social-purple text-social-purple font-bold rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300"
-                  >
-                    Book Strategy Call
-                  </a>
-                </div>
+            {/* Contact CTA - White Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl text-center">
+              <h3 className="text-2xl md:text-3xl lg:text-4xl font-display font-black text-corporate-dark mb-6 tracking-tight">
+                Still Have <span className="text-pal-green">Questions</span>?
+              </h3>
+              <p className="text-lg xl:text-xl text-corporate-gray mb-8 max-w-4xl mx-auto font-medium leading-relaxed">
+                We'd love to chat about your specific project and how we can help bring your vision to life.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <a
+                  href="/contact"
+                  className="inline-block px-8 py-4 bg-pal-green text-white font-bold rounded-2xl hover:scale-105 transition-all duration-300 video-shadow"
+                >
+                  Get In Touch
+                </a>
+                <a
+                  href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-8 py-4 border-2 border-pal-purple text-pal-purple font-bold rounded-2xl hover:bg-pal-purple hover:text-white transition-all duration-300"
+                >
+                  Book Strategy Call
+                </a>
               </div>
             </div>
           </div>

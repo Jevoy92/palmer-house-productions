@@ -94,7 +94,16 @@ const Reviews = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen overflow-x-hidden font-sans relative">
+      {/* Fixed 4-Color Background Bars */}
+      <div className="fixed top-0 left-0 w-full h-full z-0">
+        <div className="w-full h-full flex">
+          <div className="w-1/4 h-full bg-pal-orange"></div>
+          <div className="w-1/4 h-full bg-pal-purple"></div>
+          <div className="w-1/4 h-full bg-pal-green"></div>
+          <div className="w-1/4 h-full bg-pal-blue"></div>
+        </div>
+      </div>
       <MetaTags 
         title="Client Reviews & Testimonials | Palmer House Video"
         description="Authentic Palmer House client reviews. See how video content systems transformed businesses and increased ROI by 45% on average."
@@ -106,35 +115,37 @@ const Reviews = () => {
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <Navigation />
       <StructuredData />
+      <BreadcrumbNavigation />
       <MainContent>
-        <section className="pt-24 pb-16 bg-video-white">
-          <div className="max-w-7xl mx-auto px-6">
-            <BreadcrumbNavigation />
-            
-            {/* Hero Section */}
-            <div className="text-center mb-16">
-              <div className="inline-block px-6 py-3 gradient-social-4 rounded-full text-white font-bold text-lg mb-8">
+        <section className="pt-24 pb-16 relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+            {/* Hero Section - White Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl text-center mb-12">
+              <div className="inline-block px-6 py-3 bg-pal-green text-white font-bold text-lg mb-8 rounded-full video-shadow">
                 ⭐ Client Stories
               </div>
-              <h1 className="text-5xl md:text-7xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-                What Our <span className="text-gradient-4">Clients</span> Say
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+                What Our <span className="text-pal-green">Clients</span> Say
               </h1>
-              <p className="text-xl md:text-2xl text-corporate-gray mb-8 max-w-4xl mx-auto">
+              <p className="text-lg xl:text-xl text-corporate-gray max-w-4xl mx-auto font-medium leading-relaxed">
                 Real stories from real clients who've transformed their brands through authentic video storytelling.
               </p>
             </div>
 
-            {/* Google Reviews Section */}
-            <div>
-              <h2 className="text-3xl font-display font-black text-center text-corporate-dark mb-4">
-                Authentic Client Reviews
-              </h2>
-              <p className="text-center text-corporate-gray mb-12 max-w-2xl mx-auto">
-                Real testimonials from our clients on Google Reviews
-              </p>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Google Reviews Section - White Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-12">
+              <div className="text-center mb-12">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-black text-corporate-dark mb-4 tracking-tight">
+                  Authentic Client <span className="text-pal-orange">Reviews</span>
+                </h2>
+                <p className="text-lg text-corporate-gray max-w-2xl mx-auto font-medium">
+                  Real testimonials from our clients on Google Reviews
+                </p>
+              </div>
+              
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                 {clientReviews.map((review, index) => (
-                  <div key={index} className="bg-white p-8 rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300">
+                  <div key={index} className="bg-gradient-to-br from-gray-50 to-white p-8 rounded-2xl border hover:border-gray-200 transition-all duration-300">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex">
                         {[...Array(review.rating)].map((_, i) => (
@@ -149,7 +160,7 @@ const Reviews = () => {
                       "{review.content}"
                     </p>
                     <div className="flex items-center">
-                      <div className="w-10 h-10 bg-gradient-social-1 rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">
+                      <div className="w-10 h-10 bg-pal-orange rounded-full flex items-center justify-center text-white text-sm font-bold mr-3">
                         {review.avatar}
                       </div>
                       <div>
@@ -164,39 +175,37 @@ const Reviews = () => {
               </div>
               
               {/* Google Review CTA */}
-              <div className="mt-12 text-center">
+              <div className="text-center">
                 <button
                   onClick={() => window.open('https://www.google.com/search?q=Palmer+House+Productions+reviews', '_blank')}
-                  className="px-8 py-4 bg-gradient-to-r from-social-purple to-social-pink text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300"
+                  className="px-8 py-4 bg-pal-green text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300"
                 >
                   View All Google Reviews ⭐
                 </button>
               </div>
             </div>
 
-            {/* CTA Section */}
-            <div className="mt-16 text-center">
-              <div className="bg-gradient-to-r from-social-purple/10 to-social-pink/10 rounded-3xl p-12 border border-social-purple/20">
-                <h3 className="text-4xl font-display font-black text-corporate-dark mb-6">
-                  Ready to Create Your Success Story?
-                </h3>
-                <p className="text-xl text-corporate-gray mb-8 max-w-3xl mx-auto">
-                  Join the growing community of businesses that have transformed their brand presence through authentic video storytelling.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button
-                    onClick={() => window.location.href = '/contact'}
-                    className="px-10 py-5 bg-gradient-to-r from-social-purple to-social-pink text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300"
-                  >
-                    Start Your Journey
-                  </button>
-                  <button
-                    onClick={() => window.location.href = '/video-packages'}
-                    className="px-10 py-5 border-2 border-social-purple text-social-purple font-bold text-lg rounded-2xl hover:bg-social-purple hover:text-white transition-all duration-300"
-                  >
-                    View Our Services
-                  </button>
-                </div>
+            {/* CTA Section - White Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl text-center">
+              <h3 className="text-2xl md:text-3xl lg:text-4xl font-display font-black text-corporate-dark mb-6 tracking-tight">
+                Ready to Create Your <span className="text-pal-purple">Success Story</span>?
+              </h3>
+              <p className="text-lg xl:text-xl text-corporate-gray mb-8 max-w-4xl mx-auto font-medium leading-relaxed">
+                Join the growing community of businesses that have transformed their brand presence through authentic video storytelling.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={() => window.location.href = '/contact'}
+                  className="px-10 py-5 bg-pal-purple text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300"
+                >
+                  Start Your Journey
+                </button>
+                <button
+                  onClick={() => window.location.href = '/video-packages'}
+                  className="px-10 py-5 border-2 border-pal-orange text-pal-orange font-bold text-lg rounded-2xl hover:bg-pal-orange hover:text-white transition-all duration-300"
+                >
+                  View Our Services
+                </button>
               </div>
             </div>
           </div>

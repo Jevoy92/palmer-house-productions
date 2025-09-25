@@ -40,28 +40,7 @@ const VideoPackagesPage = () => {
         ]}
       />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
-      
-      {/* Custom transparent navigation for this page */}
-      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg border-b border-white/20" role="navigation" aria-label="Main navigation">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="relative flex justify-between items-center h-16">
-            <div className="flex-shrink-0">
-              <button className="flex items-center gap-3 whitespace-nowrap focus:outline-none" aria-label="Go to homepage">
-                <span className="text-white font-extrabold tracking-tight text-base lg:text-lg">Palmer House Productions</span>
-              </button>
-            </div>
-            
-            <div className="hidden md:flex items-center space-x-6 text-white font-medium">
-              <a href="/services" className="hover:opacity-80 transition-opacity cursor-pointer">Services</a>
-              <a href="/about" className="hover:opacity-80 transition-opacity cursor-pointer">Company</a>
-              <a href="/resources" className="hover:opacity-80 transition-opacity cursor-pointer">Resources</a>
-              <a href="/pals" className="hover:opacity-80 transition-opacity cursor-pointer">Meet the Pals</a>
-              <a href="/contact" className="hover:opacity-80 transition-opacity cursor-pointer">Contact</a>
-            </div>
-          </div>
-        </div>
-      </nav>
-      
+      <Navigation />
       <BreadcrumbNavigation />
       <MainContent>
         <h1 className="sr-only">Video Production Packages and Pricing</h1>

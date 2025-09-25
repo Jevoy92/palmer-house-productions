@@ -176,24 +176,6 @@ export const VideoPackagesTabbed = () => {
         </div>
       </div>
 
-      {/* Header */}
-      <header className="absolute top-0 left-0 w-full z-20 py-6 px-4 sm:px-8 md:px-12">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <Video className="text-white text-3xl" />
-            <h1 className="text-3xl font-bold text-white">Business Video Assets</h1>
-          </div>
-          <nav className="hidden md:flex items-center gap-8 text-white font-medium">
-            <Link to="/services" className="hover:opacity-80 transition-opacity cursor-pointer">Solutions</Link>
-            <Link to="/about" className="hover:opacity-80 transition-opacity cursor-pointer">About</Link>
-            <Link to="/contact" className="hover:opacity-80 transition-opacity cursor-pointer">Contact</Link>
-          </nav>
-          <button className="md:hidden text-white text-2xl">
-            <Menu />
-          </button>
-        </div>
-      </header>
-
       {/* Hero Section */}
       <section className="h-[950px] md:h-[850px] lg:h-[900px] xl:h-[1000px] w-full flex flex-col md:flex-row relative z-10">
         {/* Reel Pal Card */}

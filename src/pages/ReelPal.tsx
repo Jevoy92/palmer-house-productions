@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
+import { OptimizedImage } from '@/components/performance/OptimizedImage';
+import { LazySection } from '@/components/performance/LazySection';
+import { MobileOptimized, useMobileStyles } from '@/components/performance/MobileOptimized';
 import reelPalImage from '@/assets/pals/female-reel-pal-social-engagement.png';
 import systemPalHeadshot from '@/assets/pals/male-system-pal-headshot.jpg';
 import evergreenPalHeadshot from '@/assets/pals/male-evergreen-pal-headshot-2.jpg';
@@ -22,6 +25,7 @@ import {
 
 const ReelPal = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const mobileStyles = useMobileStyles();
 
   const toggleFAQ = (num: number) => {
     setOpenFAQ(openFAQ === num ? null : num);
@@ -30,7 +34,8 @@ const ReelPal = () => {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen relative overflow-hidden">
+      <MobileOptimized>
+        <div className="min-h-screen relative overflow-hidden">
         {/* Static 4-Color Background Bars */}
         <div className="fixed top-0 left-0 w-full h-screen -z-10">
           <div className="w-full h-full flex">
@@ -83,7 +88,7 @@ const ReelPal = () => {
         </section>
 
         {/* Expertise Section */}
-        <section className="py-20 relative z-10">
+        <LazySection className="py-12 sm:py-16 lg:py-20 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
               <div className="text-center mb-16">
@@ -126,7 +131,7 @@ const ReelPal = () => {
               </div>
             </div>
           </div>
-        </section>
+        </LazySection>
 
         {/* Packages Section */}
         <section className="py-20 relative z-10">
@@ -472,7 +477,8 @@ const ReelPal = () => {
             </div>
           </div>
         </section>
-      </div>
+        </div>
+      </MobileOptimized>
     </>
   );
 };

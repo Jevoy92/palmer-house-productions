@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
+import { OptimizedImage } from '@/components/performance/OptimizedImage';
+import { LazySection } from '@/components/performance/LazySection';
+import { MobileOptimized, useMobileStyles } from '@/components/performance/MobileOptimized';
 import spotlightPalImage from '@/assets/pals/female-spotlight-pal-cinematography.png';
 import spotlightPalHeadshot from '@/assets/pals/female-spotlight-pal-circular-3.jpg';
 import reelPalHeadshot from '@/assets/pals/female-reel-pal-circular-headshot.jpg';
@@ -25,6 +28,7 @@ import {
 
 const SpotlightPal = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const mobileStyles = useMobileStyles();
 
   const toggleFAQ = (num: number) => {
     setOpenFAQ(openFAQ === num ? null : num);
@@ -33,7 +37,8 @@ const SpotlightPal = () => {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen relative overflow-hidden">
+      <MobileOptimized>
+        <div className="min-h-screen relative overflow-hidden">
         {/* Static 4-Color Background Bars */}
         <div className="fixed top-0 left-0 w-full h-screen -z-10">
           <div className="w-full h-full flex">
@@ -55,29 +60,31 @@ const SpotlightPal = () => {
         </div>
 
         {/* Hero Section */}
-        <section className="relative min-h-[600px] flex items-center">
+        <section className="relative min-h-[500px] sm:min-h-[600px] flex items-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="bg-white p-12 rounded-3xl shadow-2xl border border-gray-100">
-                <div className="bg-red-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg">🎬 SPOTLIGHT PAL</div>
-                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">"Let's create cinematic magic!"</h1>
-                <p className="text-xl mb-8 text-muted-foreground">Your premier partner for cinematic brand films, premium commercials, and high-end video content that elevates your brand to iconic status.</p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button asChild size="lg" className="bg-red-500 text-white hover:bg-red-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              <div className="bg-white p-6 sm:p-8 lg:p-12 rounded-3xl shadow-2xl border border-gray-100">
+                <div className="bg-red-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm font-bold w-fit mb-4 sm:mb-6 shadow-lg">🎬 SPOTLIGHT PAL</div>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 text-foreground leading-tight">"Let's create cinematic magic!"</h1>
+                <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-muted-foreground">Your premier partner for cinematic brand films, premium commercials, and high-end video content that elevates your brand to iconic status.</p>
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                  <Button asChild size="lg" className={`${mobileStyles.mobileButton} bg-red-500 text-white hover:bg-red-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105`}>
                     <Link to="/contact">🚀 Book Strategy Call</Link>
                   </Button>
-                  <Button asChild size="lg" variant="outline" className="border-red-500 text-red-500 hover:bg-red-500 hover:text-white shadow-xl">
+                  <Button asChild size="lg" variant="outline" className={`${mobileStyles.mobileButton} border-red-500 text-red-500 hover:bg-red-500 hover:text-white shadow-xl`}>
                     <Link to="/pals">👥 Meet All Pals</Link>
                   </Button>
                 </div>
               </div>
               
-              <div className="text-center relative">
+              <div className="text-center relative order-first lg:order-last">
                 <div className="relative z-10 transform hover:scale-105 transition-all duration-500">
-                  <img 
-                    className="relative w-full max-w-lg mx-auto object-contain" 
-                    src={spotlightPalImage} 
-                    alt="Spotlight Pal - Your Cinematic Production Expert" 
+                  <OptimizedImage 
+                    src={spotlightPalImage}
+                    alt="Spotlight Pal - Your Cinematic Production Expert"
+                    className="relative w-full max-w-lg mx-auto object-contain"
+                    priority={true}
+                    loading="eager"
                   />
                 </div>
               </div>
@@ -86,7 +93,7 @@ const SpotlightPal = () => {
         </section>
 
         {/* Expertise Section */}
-        <section className="py-20 relative z-10">
+        <LazySection className="py-12 sm:py-16 lg:py-20 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
               <div className="text-center mb-16">
@@ -129,7 +136,7 @@ const SpotlightPal = () => {
               </div>
             </div>
           </div>
-        </section>
+        </LazySection>
 
         {/* Packages Section */}
         <section className="py-20 relative z-10">
@@ -329,11 +336,12 @@ const SpotlightPal = () => {
         {/* Call to Action Section */}
         <section className="py-20 bg-background">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="mb-8">
-              <img 
-                className="w-32 h-32 mx-auto rounded-full border-4 border-red-200 object-cover object-center" 
-                src={spotlightPalHeadshot} 
-                alt="Female Spotlight Pal - Cinematic production expert with purple hair" 
+            <div className="mb-6 sm:mb-8">
+              <OptimizedImage 
+                src={spotlightPalHeadshot}
+                alt="Female Spotlight Pal - Cinematic production expert with purple hair"
+                className="w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-full border-4 border-red-200 object-cover object-center"
+                loading="lazy"
               />
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">Ready to Shine with Spotlight Pal?</h2>
@@ -385,10 +393,11 @@ const SpotlightPal = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-orange-500 transition-all hover:scale-105">
                   <div className="mb-6">
-                    <img 
-                      className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-orange-200" 
-                      src={reelPalHeadshot} 
-                      alt="Female Reel Pal - Social media content creator in orange hoodie" 
+                    <OptimizedImage 
+                      src={reelPalHeadshot}
+                      alt="Female Reel Pal - Social media content creator in orange hoodie"
+                      className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full object-cover object-center border-4 border-orange-200"
+                      loading="lazy"
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-3">Reel Pal</h3>
@@ -400,10 +409,11 @@ const SpotlightPal = () => {
                 
                 <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-purple-500 transition-all hover:scale-105">
                   <div className="mb-6">
-                    <img 
-                      className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-purple-200" 
-                      src={systemPalHeadshot} 
-                      alt="Female System Pal - Workflow optimization expert with glasses" 
+                    <OptimizedImage 
+                      src={systemPalHeadshot}
+                      alt="Female System Pal - Workflow optimization expert with glasses"
+                      className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full object-cover object-center border-4 border-purple-200"
+                      loading="lazy"
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-3">System Pal</h3>
@@ -415,10 +425,11 @@ const SpotlightPal = () => {
                 
                 <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105">
                   <div className="mb-6">
-                    <img 
-                      className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-green-200" 
-                      src={evergreenPalHeadshot} 
-                      alt="Male Evergreen Pal - Authority building expert in blue cardigan" 
+                    <OptimizedImage 
+                      src={evergreenPalHeadshot}
+                      alt="Male Evergreen Pal - Authority building expert in blue cardigan"
+                      className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full object-cover object-center border-4 border-green-200"
+                      loading="lazy"
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-3">Evergreen Pal</h3>
@@ -431,7 +442,8 @@ const SpotlightPal = () => {
             </div>
           </div>
         </section>
-      </div>
+        </div>
+      </MobileOptimized>
     </>
   );
 };

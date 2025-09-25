@@ -194,11 +194,13 @@ export const VideoPackagesTabbed = () => {
               alt="Female Reel Pal character in orange hoodie"
               loading="eager"
             />
-            <img 
+            <video 
               className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
-              src={maleReelPalImage} 
-              alt="Male Reel Pal character in orange hoodie"
-              loading="eager"
+              src="/assets/reel_pal.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
             />
           </div>
         </div>

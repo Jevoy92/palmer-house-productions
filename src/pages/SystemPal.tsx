@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
-import systemPalImage from '@/assets/pals/female-system-pal-analytics.png';
+import systemPalImage from '@/assets/pals/female-system-pal-knowledge-base.png';
 import { 
   Settings, 
   Users, 

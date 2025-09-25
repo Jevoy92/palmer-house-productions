@@ -48,18 +48,18 @@ const ReelPal = () => {
         </div>
 
         {/* Hero Section */}
-        <section className="relative text-white min-h-[600px] flex items-center backdrop-blur-sm bg-black/20">
+        <section className="relative min-h-[600px] flex items-center">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="backdrop-blur-md bg-white/10 p-8 rounded-3xl border border-white/20 shadow-2xl">
-                <div className="bg-orange-500/90 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg animate-pulse">📱 REEL PAL</div>
-                <h1 className="text-5xl md:text-6xl font-bold mb-6 drop-shadow-2xl">"Let's make content that connects!"</h1>
-                <p className="text-xl mb-8 opacity-95 drop-shadow-lg">Your go-to guide for short-form social content that captures hearts and drives real engagement across all platforms.</p>
+              <div className="bg-white p-12 rounded-3xl shadow-2xl border border-gray-100">
+                <div className="bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg animate-pulse">📱 REEL PAL</div>
+                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">"Let's make content that connects!"</h1>
+                <p className="text-xl mb-8 text-muted-foreground">Your go-to guide for short-form social content that captures hearts and drives real engagement across all platforms.</p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button asChild size="lg" className="bg-orange-500 text-white hover:bg-orange-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
                     <Link to="/contact">🚀 Start Creating Content</Link>
                   </Button>
-                  <Button asChild size="lg" variant="outline" className="border-white/30 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 shadow-xl">
+                  <Button asChild size="lg" variant="outline" className="border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white shadow-xl">
                     <Link to="/pals">👥 Meet All Pals</Link>
                   </Button>
                 </div>

@@ -492,4 +492,37 @@
   .animate-float-slow {
     animation: animate-float-slow 10s ease-in-out infinite 1s;
   }
+  /* Button System - Standardized CTA Styles */
+  .btn-primary {
+    @apply px-8 py-4 gradient-social-1 text-white font-bold text-lg rounded-xl hover:scale-105 transition-all duration-300 video-shadow-lg min-h-[52px] flex items-center justify-center;
+  }
+  
+  .btn-secondary {
+    @apply px-8 py-4 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-lg rounded-xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow min-h-[52px] flex items-center justify-center;
+  }
+  
+  .btn-pal-orange {
+    @apply px-6 py-3 bg-pal-orange text-white font-bold rounded-xl hover:scale-105 transition-all duration-300 video-shadow;
+  }
+  
+  .btn-pal-purple {
+    @apply px-6 py-3 bg-pal-purple text-white font-bold rounded-xl hover:scale-105 transition-all duration-300 video-shadow;
+  }
+  
+  .btn-pal-green {
+    @apply px-6 py-3 bg-pal-green text-white font-bold rounded-xl hover:scale-105 transition-all duration-300 video-shadow;
+  }
+  
+  .btn-pal-blue {
+    @apply px-6 py-3 bg-pal-blue text-white font-bold rounded-xl hover:scale-105 transition-all duration-300 video-shadow;
+  }
+  
+  .btn-outline {
+    @apply px-6 py-3 bg-transparent border-2 border-current text-current font-bold rounded-xl hover:bg-current hover:text-white transition-all duration-300 video-shadow;
+  }
+  
+  .btn-ghost {
+    @apply px-6 py-3 bg-transparent text-current font-bold rounded-xl hover:bg-gray-100 transition-all duration-300;
+  }
+
 }

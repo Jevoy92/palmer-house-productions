@@ -103,13 +103,13 @@ export const Hero = () => {
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
                 <button 
                   onClick={handleGetStarted}
-                  className="w-full sm:w-auto px-8 py-4 gradient-social-1 text-white font-bold text-base sm:text-lg rounded-xl hover:scale-105 transition-all duration-300 video-shadow-lg min-h-[52px] flex items-center justify-center"
+                  className="btn-primary w-full sm:w-auto"
                 >
                   Build My Content System
                 </button>
                 <button 
                   onClick={handleBookStrategyCall}
-                  className="w-full sm:w-auto px-8 py-4 bg-video-white border-2 border-social-purple text-corporate-dark font-bold text-base sm:text-lg rounded-xl hover:bg-social-purple hover:text-white transition-all duration-300 video-shadow min-h-[52px] flex items-center justify-center"
+                  className="btn-secondary w-full sm:w-auto"
                 >
                   Book Strategy Call
                 </button>

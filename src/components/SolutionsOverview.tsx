@@ -139,7 +139,7 @@ export const SolutionsOverview = () => {
         <div className="text-center">
           <button
             onClick={handleViewAllSolutions}
-            className="px-12 py-6 gradient-social-1 text-white font-bold text-xl rounded-3xl hover:scale-105 transition-all duration-300 video-shadow-lg"
+            className="btn-primary"
           >
             View All Solutions
           </button>

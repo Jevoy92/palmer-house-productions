@@ -184,18 +184,18 @@ export const VideoPackagesTabbed = () => {
           onClick={() => navigateToPage('reel-pal')}
         >
           <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-4 border border-white/20">
-              <div className="text-sm font-medium opacity-90 mb-2">💡 Perfect For:</div>
-              <div className="text-xs opacity-80">Quick wins • Social media growth • DIY solutions</div>
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6 border border-white/30">
+              <div className="text-lg font-bold opacity-95 mb-3">💡 Perfect For:</div>
+              <div className="text-base opacity-90">Quick wins • Social media growth • DIY solutions</div>
             </div>
-            <h2 className="text-4xl font-extrabold mb-4">Reel Pal</h2>
-            <p className="text-lg font-light leading-relaxed max-w-xs mb-4">Short-form social content that actually converts followers into customers.</p>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-sm">
-              <div className="flex items-center justify-center mb-2">
-                <span className="text-2xl mr-2">📱</span>
-                <span className="font-semibold">Starting at $19</span>
+            <h2 className="text-4xl font-extrabold mb-6">Reel Pal</h2>
+            <p className="text-xl font-medium leading-relaxed max-w-sm mb-6">Short-form social content that actually converts followers into customers.</p>
+            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4 text-base">
+              <div className="flex items-center justify-center mb-3">
+                <span className="text-3xl mr-3">📱</span>
+                <span className="font-bold text-lg">Starting at $19</span>
               </div>
-              <div className="text-xs opacity-90">DIY resources • Starter sessions • 30-reel packages</div>
+              <div className="text-sm opacity-95">DIY resources • Starter sessions • 30-reel packages</div>
             </div>
           </div>
           <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_forwards]">
@@ -220,18 +220,18 @@ export const VideoPackagesTabbed = () => {
           onClick={() => navigateToPage('system-pal')}
         >
           <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-4 border border-white/20">
-              <div className="text-sm font-medium opacity-90 mb-2">🎯 Perfect For:</div>
-              <div className="text-xs opacity-80">Team efficiency • Process automation • Scaling operations</div>
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6 border border-white/30">
+              <div className="text-lg font-bold opacity-95 mb-3">🎯 Perfect For:</div>
+              <div className="text-base opacity-90">Team efficiency • Process automation • Scaling operations</div>
             </div>
-            <h2 className="text-4xl font-extrabold mb-4">System Pal</h2>
-            <p className="text-lg font-light leading-relaxed max-w-xs mb-4">Backend video systems that replace repetitive meetings and streamline operations.</p>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-sm">
-              <div className="flex items-center justify-center mb-2">
-                <span className="text-2xl mr-2">⚙️</span>
-                <span className="font-semibold">$4,500 - $6,500</span>
+            <h2 className="text-4xl font-extrabold mb-6">System Pal</h2>
+            <p className="text-xl font-medium leading-relaxed max-w-sm mb-6">Backend video systems that replace repetitive meetings and streamline operations.</p>
+            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4 text-base">
+              <div className="flex items-center justify-center mb-3">
+                <span className="text-3xl mr-3">⚙️</span>
+                <span className="font-bold text-lg">$4,500 - $6,500</span>
               </div>
-              <div className="text-xs opacity-90">Training systems • FAQ buildouts • Onboarding flows</div>
+              <div className="text-sm opacity-95">Training systems • FAQ buildouts • Onboarding flows</div>
             </div>
           </div>
           <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.2s_forwards]">
@@ -256,18 +256,18 @@ export const VideoPackagesTabbed = () => {
           onClick={() => navigateToPage('evergreen-pal')}
         >
           <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-4 border border-white/20">
-              <div className="text-sm font-medium opacity-90 mb-2">🌱 Perfect For:</div>
-              <div className="text-xs opacity-80">Authority building • Long-term growth • Brand positioning</div>
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6 border border-white/30">
+              <div className="text-lg font-bold opacity-95 mb-3">🌱 Perfect For:</div>
+              <div className="text-base opacity-90">Authority building • Long-term growth • Brand positioning</div>
             </div>
-            <h2 className="text-4xl font-extrabold mb-4">Evergreen Pal</h2>
-            <p className="text-lg font-light leading-relaxed max-w-xs mb-4">Strategic content that builds lasting authority and generates leads for years.</p>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-sm">
-              <div className="flex items-center justify-center mb-2">
-                <span className="text-2xl mr-2">🎬</span>
-                <span className="font-semibold">$6,000 - $6,500</span>
+            <h2 className="text-4xl font-extrabold mb-6">Evergreen Pal</h2>
+            <p className="text-xl font-medium leading-relaxed max-w-sm mb-6">Strategic content that builds lasting authority and generates leads for years.</p>
+            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4 text-base">
+              <div className="flex items-center justify-center mb-3">
+                <span className="text-3xl mr-3">🎬</span>
+                <span className="font-bold text-lg">$6,000 - $6,500</span>
               </div>
-              <div className="text-xs opacity-90">YouTube engines • Brand kits • Authority content</div>
+              <div className="text-sm opacity-95">YouTube engines • Brand kits • Authority content</div>
             </div>
           </div>
           <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.4s_forwards]">
@@ -292,18 +292,18 @@ export const VideoPackagesTabbed = () => {
           onClick={() => navigateToPage('spotlight-pal')}
         >
           <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 mb-4 border border-white/20">
-              <div className="text-sm font-medium opacity-90 mb-2">✨ Perfect For:</div>
-              <div className="text-xs opacity-80">Premium brands • Emotional impact • Cinematic quality</div>
+            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6 border border-white/30">
+              <div className="text-lg font-bold opacity-95 mb-3">✨ Perfect For:</div>
+              <div className="text-base opacity-90">Premium brands • Emotional impact • Cinematic quality</div>
             </div>
-            <h2 className="text-4xl font-extrabold mb-4">Spotlight Pal</h2>
-            <p className="text-lg font-light leading-relaxed max-w-xs mb-4">Cinematic storytelling that elevates your brand and creates emotional connections.</p>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-sm">
-              <div className="flex items-center justify-center mb-2">
-                <span className="text-2xl mr-2">🎭</span>
-                <span className="font-semibold">Premium Projects</span>
+            <h2 className="text-4xl font-extrabold mb-6">Spotlight Pal</h2>
+            <p className="text-xl font-medium leading-relaxed max-w-sm mb-6">Cinematic storytelling that elevates your brand and creates emotional connections.</p>
+            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-4 text-base">
+              <div className="flex items-center justify-center mb-3">
+                <span className="text-3xl mr-3">🎭</span>
+                <span className="font-bold text-lg">Premium Projects</span>
               </div>
-              <div className="text-xs opacity-90">Music videos • Commercials • Hero brand content</div>
+              <div className="text-sm opacity-95">Music videos • Commercials • Hero brand content</div>
             </div>
           </div>
           <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.6s_forwards]">

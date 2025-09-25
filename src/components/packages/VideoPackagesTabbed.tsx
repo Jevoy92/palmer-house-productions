@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { PRICING } from "@/lib/pricing";
 import { PackagesHero } from "./PackagesHero";
+import { ScrollAnimatedCharacters } from "./ScrollAnimatedCharacters";
 
 // Import new character avatars
 import reelPalAvatar from "@/assets/pals/female-reel-pal-content-creation.png";
@@ -131,6 +132,9 @@ export const VideoPackagesTabbed = () => {
       <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
         {/* Animated Hero Section */}
         <PackagesHero />
+        
+        {/* Scroll-Animated Characters Section */}
+        <ScrollAnimatedCharacters />
 
         {/* Tabbed Interface - White Card */}
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl">

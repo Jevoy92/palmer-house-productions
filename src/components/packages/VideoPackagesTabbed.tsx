@@ -19,7 +19,7 @@ import { PRICING } from "@/lib/pricing";
 
 // Import new character avatars
 import reelPalAvatar from "@/assets/pals/female-reel-pal-content-creation.png";
-import systemPalAvatar from "@/assets/pals/system-pal-3d-avatar.png";
+import systemPalAvatar from "@/assets/pals/female-system-pal-multitasking.png";
 import evergreenPalAvatar from "@/assets/pals/evergreen-pal-3d-avatar.png";
 import spotlightPalAvatar from "@/assets/pals/spotlight-pal-3d-avatar.png";
 
@@ -286,9 +286,9 @@ export const VideoPackagesTabbed = () => {
           {/* System Pal Tab */}
           <TabsContent value="system" className="space-y-8">
             <div className="text-center">
-                <div className="w-24 h-24 mx-auto rounded-full bg-pal-purple/10 flex items-center justify-center mb-6">
+                <div className="w-48 h-48 mx-auto flex items-center justify-center mb-6">
                   <img 
-                    className="w-20 h-20 rounded-full object-cover object-center" 
+                    className="w-full h-full object-contain" 
                     src={systemPalAvatar} 
                     alt="System Pal 3D character avatar" 
                   />

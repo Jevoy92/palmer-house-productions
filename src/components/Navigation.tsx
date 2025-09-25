@@ -4,10 +4,20 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { LOGO, COMPANY } from "@/lib/branding";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { usePageTransition } from '@/components/PageTransition';
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { transitionTo } = usePageTransition();
+
+  // Helper function to handle page transitions
+  const handlePageTransition = (path: string) => {
+    if (location.pathname !== path) {
+      transitionTo(path);
+    }
+    setIsOpen(false);
+  };
 
   // Helper function to check if a path is active
   const isActivePath = (path: string) => {
@@ -44,8 +54,8 @@ export const Navigation = () => {
   };
   const handleLogoClick = () => {
     if (location.pathname !== '/') {
-      // Navigate to home page
-      navigate('/');
+      // Navigate to home page with transition
+      transitionTo('/');
     } else {
       // If already on home page, scroll to top
       window.scrollTo({
@@ -93,14 +103,20 @@ export const Navigation = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-56 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
                   <DropdownMenuItem asChild>
-                    <Link to="/video-packages" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
+                    <button 
+                      onClick={() => handlePageTransition('/video-packages')}
+                      className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                    >
                       Video Packages
-                    </Link>
+                    </button>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/services/diy-downloads" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
+                    <button 
+                      onClick={() => handlePageTransition('/services/diy-downloads')}
+                      className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                    >
                       DIY Downloads
-                    </Link>
+                    </button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -113,19 +129,28 @@ export const Navigation = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-48 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
                   <DropdownMenuItem asChild>
-                    <Link to="/about-us" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
+                    <button 
+                      onClick={() => handlePageTransition('/about-us')}
+                      className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                    >
                       About Us
-                    </Link>
+                    </button>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/company/team" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
+                    <button 
+                      onClick={() => handlePageTransition('/company/team')}
+                      className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                    >
                       Our Team
-                    </Link>
+                    </button>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/company/values" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
+                    <button 
+                      onClick={() => handlePageTransition('/company/values')}
+                      className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                    >
                       Our Values
-                    </Link>
+                    </button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -138,42 +163,63 @@ export const Navigation = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" className="w-48 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
                   <DropdownMenuItem asChild>
-                    <Link to="/blog" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
+                    <button 
+                      onClick={() => handlePageTransition('/blog')}
+                      className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                    >
                       Blog
-                    </Link>
+                    </button>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/content-strategy" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
+                    <button 
+                      onClick={() => handlePageTransition('/content-strategy')}
+                      className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                    >
                       Content Strategy
-                    </Link>
+                    </button>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/video-use-cases" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
+                    <button 
+                      onClick={() => handlePageTransition('/video-use-cases')}
+                      className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                    >
                       Video Use Cases
-                    </Link>
+                    </button>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/resources/reviews" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
+                    <button 
+                      onClick={() => handlePageTransition('/resources/reviews')}
+                      className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                    >
                       Client Reviews
-                    </Link>
+                    </button>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link to="/faq" className="block px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer" onClick={() => setIsOpen(false)}>
+                    <button 
+                      onClick={() => handlePageTransition('/faq')}
+                      className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                    >
                       FAQ
-                    </Link>
+                    </button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              {/* Contact Link */}
-              <Link to="/pals" className={cn("transition-colors text-base font-medium px-3 py-2", isActivePath('/pals') ? "text-social-purple font-bold border-b-2 border-social-purple" : "text-muted-foreground hover:text-foreground")} onClick={() => setIsOpen(false)}>
+              {/* Meet the Pals Link */}
+              <button 
+                onClick={() => handlePageTransition('/pals')}
+                className={cn("transition-colors text-base font-medium px-3 py-2", isActivePath('/pals') ? "text-social-purple font-bold border-b-2 border-social-purple" : "text-muted-foreground hover:text-foreground")}
+              >
                 Meet the Pals
-              </Link>
+              </button>
 
               {/* Contact Link */}
-              <Link to="/contact" className={cn("transition-colors text-base font-medium px-3 py-2", isActivePath('/contact') ? "text-social-purple font-bold border-b-2 border-social-purple" : "text-muted-foreground hover:text-foreground")} onClick={() => setIsOpen(false)}>
+              <button 
+                onClick={() => handlePageTransition('/contact')}
+                className={cn("transition-colors text-base font-medium px-3 py-2", isActivePath('/contact') ? "text-social-purple font-bold border-b-2 border-social-purple" : "text-muted-foreground hover:text-foreground")}
+              >
                 Contact
-              </Link>
+              </button>
             </div>
           </div>
           
@@ -191,12 +237,18 @@ export const Navigation = () => {
             <div className="space-y-3">
               <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Services</div>
               <div className="space-y-1">
-                <Link to="/video-packages" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
+                <button 
+                  onClick={() => handlePageTransition('/video-packages')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
                   Video Packages
-                </Link>
-                <Link to="/services/diy-downloads" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/services/diy-downloads')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
                   DIY Downloads
-                </Link>
+                </button>
               </div>
             </div>
 
@@ -204,15 +256,24 @@ export const Navigation = () => {
             <div className="space-y-3">
               <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Company</div>
               <div className="space-y-1">
-                <Link to="/about-us" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
+                <button 
+                  onClick={() => handlePageTransition('/about-us')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
                   About Us
-                </Link>
-                <Link to="/company/team" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/company/team')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
                   Our Team
-                </Link>
-                <Link to="/company/values" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/company/values')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
                   Our Values
-                </Link>
+                </button>
               </div>
             </div>
 
@@ -220,21 +281,36 @@ export const Navigation = () => {
             <div className="space-y-3">
               <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Resources</div>
               <div className="space-y-1">
-                <Link to="/blog" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
+                <button 
+                  onClick={() => handlePageTransition('/blog')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
                   Blog
-                </Link>
-                <Link to="/content-strategy" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/content-strategy')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
                   Content Strategy
-                </Link>
-                <Link to="/video-use-cases" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/video-use-cases')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
                   Video Use Cases
-                </Link>
-                <Link to="/resources/reviews" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/resources/reviews')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
                   Client Reviews
-                </Link>
-                <Link to="/faq" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/faq')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
                   FAQ
-                </Link>
+                </button>
               </div>
             </div>
 
@@ -242,17 +318,23 @@ export const Navigation = () => {
             <div className="space-y-3">
               <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Meet the Pals</div>
               <div className="space-y-1">
-                <Link to="/pals" className="block px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center" onClick={() => setIsOpen(false)}>
+                <button 
+                  onClick={() => handlePageTransition('/pals')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
                   Palmer House Pals
-                </Link>
+                </button>
               </div>
             </div>
 
             {/* Contact CTA */}
             <div className="pt-4 border-t border-border">
-              <Link to="/contact" className={cn("block px-4 py-4 transition-colors font-medium rounded-lg text-center min-h-[48px] flex items-center justify-center", isActivePath('/contact') ? "text-white bg-social-purple font-bold" : "text-white bg-social-purple hover:bg-social-purple/90")} onClick={() => setIsOpen(false)}>
+              <button 
+                onClick={() => handlePageTransition('/contact')}
+                className={cn("block w-full px-4 py-4 transition-colors font-medium rounded-lg text-center min-h-[48px] flex items-center justify-center", isActivePath('/contact') ? "text-white bg-social-purple font-bold" : "text-white bg-social-purple hover:bg-social-purple/90")}
+              >
                 Get Started
-              </Link>
+              </button>
             </div>
           </div>
         </div>}

@@ -1,6 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { usePageTransition } from '@/components/PageTransition';
 
 interface BottomCTAProps {
   onStartAssessment: () => void;
@@ -9,6 +10,11 @@ interface BottomCTAProps {
 }
 
 export const BottomCTA = ({ onStartAssessment, onBookCall, onComprehensiveStrategy }: BottomCTAProps) => {
+  const { transitionTo } = usePageTransition();
+
+  const handleVideoReadinessAudit = () => {
+    transitionTo('/content-strategy?assessment=video-readiness');
+  };
   return (
     <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-12 text-center text-white">
       <h2 className="text-4xl font-bold mb-6">Choose Your Path Forward</h2>
@@ -41,7 +47,7 @@ export const BottomCTA = ({ onStartAssessment, onBookCall, onComprehensiveStrate
                 Assess your current video strategy foundations
               </p>
               <Button
-                onClick={() => window.location.href = '/content-strategy?assessment=video-readiness'}
+                onClick={handleVideoReadinessAudit}
                 className="bg-white text-purple-600 hover:bg-gray-100 font-bold px-3 py-2 text-xs w-full"
               >
                 Start Audit

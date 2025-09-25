@@ -157,7 +157,7 @@ export const VideoPackagesTabbed = () => {
   };
 
   const handleBooking = (title: string) => {
-    navigate('/contact', { state: { selectedService: title } });
+    transitionTo('/contact');
   };
 
   const handlePurchase = (paymentUrl: string) => {
@@ -741,7 +741,7 @@ export const VideoPackagesTabbed = () => {
                 Book Strategy Call
               </button>
               <button
-                onClick={() => navigate('/contact')}
+                onClick={() => transitionTo('/contact')}
                 className="px-8 py-4 bg-corporate-dark text-white font-bold text-lg rounded-xl hover:scale-105 transition-all duration-300 video-shadow-lg"
               >
                 Start Your Project

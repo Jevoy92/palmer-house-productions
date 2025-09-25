@@ -1,11 +1,13 @@
 
 import { useState, useEffect } from "react";
+import { usePageTransition } from '@/components/PageTransition';
 
 export const Hero = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [showHeadline, setShowHeadline] = useState(false);
   const [fadeOutQuestions, setFadeOutQuestions] = useState(false);
   const [scrollOpacity, setScrollOpacity] = useState(1);
+  const { transitionTo } = usePageTransition();
 
   const questions = [
     "Where do I post?",
@@ -16,11 +18,11 @@ export const Hero = () => {
   ];
 
   const handleExplorePackages = () => {
-    window.location.href = '/video-packages';
+    transitionTo('/video-packages');
   };
 
   const handleGetStarted = () => {
-    window.location.href = '/video-packages';
+    transitionTo('/video-packages');
   };
 
   const handleBookStrategyCall = () => {

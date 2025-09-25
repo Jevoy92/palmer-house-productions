@@ -41,45 +41,85 @@ export const PackagesHero = () => {
   }, [fadeOutQuestions]);
 
   return (
-    <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-12">
-      {!showHeadline ? (
-        <div className={`flex flex-col items-center justify-center min-h-[40vh] transition-opacity duration-700 ${fadeOutQuestions ? 'opacity-0' : 'opacity-100'}`}>
-          {questions.map((question, index) => (
+    <div className="relative bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-12 overflow-hidden">
+      {/* Animated Background Bars */}
+      <div className="absolute inset-0 flex opacity-20">
+        <div 
+          className={`h-full bg-pal-orange transition-all duration-1000 ${
+            currentQuestionIndex >= 0 ? 'w-1/4' : 'w-0'
+          }`}
+        />
+        <div 
+          className={`h-full bg-pal-purple transition-all duration-1000 delay-300 ${
+            currentQuestionIndex >= 1 ? 'w-1/4' : 'w-0'
+          }`}
+        />
+        <div 
+          className={`h-full bg-pal-green transition-all duration-1000 delay-600 ${
+            currentQuestionIndex >= 2 ? 'w-1/4' : 'w-0'
+          }`}
+        />
+        <div 
+          className={`h-full bg-pal-blue transition-all duration-1000 delay-900 ${
+            currentQuestionIndex >= 3 ? 'w-1/4' : 'w-0'
+          }`}
+        />
+      </div>
+
+      {/* Pulsing overlay on current question */}
+      {!showHeadline && currentQuestionIndex < questions.length && (
+        <div className="absolute inset-0 flex">
+          {[0, 1, 2, 3, 4].map((barIndex) => (
             <div
-              key={index}
-              className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl font-display font-medium text-corporate-dark mb-4 text-center transition-all duration-500 ${
-                index <= currentQuestionIndex ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+              key={barIndex}
+              className={`w-1/4 h-full transition-all duration-300 ${
+                barIndex === currentQuestionIndex ? 'bg-gradient-to-b from-transparent via-white/30 to-transparent animate-pulse' : ''
               }`}
-              style={{
-                animationDelay: `${index * 0.8}s`
-              }}
-            >
-              {question}
-            </div>
+            />
           ))}
         </div>
-      ) : (
-        <div className={`text-center transition-opacity duration-700 ${showHeadline ? 'opacity-100' : 'opacity-0'}`}>
-          <div className="inline-block px-6 py-3 bg-pal-orange text-white font-bold text-lg mb-8 rounded-full video-shadow">
-            🎬 Business Video Assets
-          </div>
-          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black mb-6 text-corporate-dark tracking-tight">
-            Choose Your Perfect{" "}
-            <span className="text-gradient-1">Content System</span>
-          </h1>
-          
-          <p className="text-base sm:text-lg md:text-xl text-corporate-gray mb-8 sm:mb-10 font-medium max-w-4xl mx-auto leading-relaxed">
-            Not social fluff — these are cinematic, repeatable videos that save your team time, cut training costs, and build customer trust.
-          </p>
-          
-          <button
-            onClick={handleBookStrategyCall}
-            className="inline-flex items-center px-8 py-4 bg-pal-purple text-white font-bold text-lg rounded-xl hover:scale-105 transition-all duration-300 video-shadow-lg"
-          >
-            Book Strategy Call
-          </button>
-        </div>
       )}
+
+      <div className="relative z-10">
+        {!showHeadline ? (
+          <div className={`flex flex-col items-center justify-center min-h-[40vh] transition-opacity duration-700 ${fadeOutQuestions ? 'opacity-0' : 'opacity-100'}`}>
+            {questions.map((question, index) => (
+              <div
+                key={index}
+                className={`text-xl sm:text-2xl md:text-3xl lg:text-4xl font-display font-medium text-corporate-dark mb-4 text-center transition-all duration-500 ${
+                  index <= currentQuestionIndex ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                }`}
+                style={{
+                  animationDelay: `${index * 0.8}s`
+                }}
+              >
+                {question}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className={`text-center transition-opacity duration-700 ${showHeadline ? 'opacity-100' : 'opacity-0'}`}>
+            <div className="inline-block px-6 py-3 bg-pal-orange text-white font-bold text-lg mb-8 rounded-full video-shadow">
+              🎬 Business Video Assets
+            </div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black mb-6 text-corporate-dark tracking-tight">
+              Choose Your Perfect{" "}
+              <span className="text-gradient-1">Content System</span>
+            </h1>
+            
+            <p className="text-base sm:text-lg md:text-xl text-corporate-gray mb-8 sm:mb-10 font-medium max-w-4xl mx-auto leading-relaxed">
+              Not social fluff — these are cinematic, repeatable videos that save your team time, cut training costs, and build customer trust.
+            </p>
+            
+            <button
+              onClick={handleBookStrategyCall}
+              className="inline-flex items-center px-8 py-4 bg-pal-purple text-white font-bold text-lg rounded-xl hover:scale-105 transition-all duration-300 video-shadow-lg"
+            >
+              Book Strategy Call
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

@@ -10,7 +10,17 @@ import { FAQSchema } from "@/components/seo/FAQSchema";
 
 const VideoPackagesPage = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen overflow-x-hidden font-sans relative">
+      {/* Fixed 4-Color Background Bars */}
+      <div className="fixed top-0 left-0 w-full h-full z-0">
+        <div className="w-full h-full flex">
+          <div className="w-1/4 h-full bg-pal-orange"></div>
+          <div className="w-1/4 h-full bg-pal-purple"></div>
+          <div className="w-1/4 h-full bg-pal-green"></div>
+          <div className="w-1/4 h-full bg-pal-blue"></div>
+        </div>
+      </div>
+      
       <MetaTags 
         title="Business Video Assets & Pricing | Palmer House Productions"
         description="Business video assets - Internal & External video systems, advanced compliance training, and DIY resources for evergreen business growth."

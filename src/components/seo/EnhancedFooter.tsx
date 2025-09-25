@@ -55,22 +55,22 @@ export const EnhancedFooter = () => {
                 <ul className="space-y-2 text-sm">
                   <li>
                     <Link to="/reel-pal" className="text-corporate-gray hover:text-pal-orange transition-colors">
-                      Reel Pal
+                      Social Content
                     </Link>
                   </li>
                   <li>
                     <Link to="/system-pal" className="text-corporate-gray hover:text-pal-purple transition-colors">
-                      System Pal
+                      Training Systems
                     </Link>
                   </li>
                   <li>
                     <Link to="/evergreen-pal" className="text-corporate-gray hover:text-pal-green transition-colors">
-                      Evergreen Pal
+                      Evergreen Content
                     </Link>
                   </li>
                   <li>
                     <Link to="/spotlight-pal" className="text-corporate-gray hover:text-pal-blue transition-colors">
-                      Spotlight Pal
+                      Premium Production
                     </Link>
                   </li>
                   <li>

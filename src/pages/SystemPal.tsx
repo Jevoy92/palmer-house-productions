@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
+import systemPalImage from '@/assets/pals/female-system-pal-knowledge-base.png';
 import { 
   Settings, 
   Users, 
@@ -13,7 +14,9 @@ import {
   Video, 
   Rocket,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Monitor,
+  Database
 } from 'lucide-react';
 
 const SystemPal = () => {
@@ -26,83 +29,66 @@ const SystemPal = () => {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen relative overflow-hidden">
+        {/* Static 4-Color Background Bars */}
+        <div className="fixed top-0 left-0 w-full h-screen -z-10">
+          <div className="w-full h-full flex">
+            <div className="w-1/4 h-full bg-gradient-to-b from-orange-400 to-orange-600"></div>
+            <div className="w-1/4 h-full bg-gradient-to-b from-purple-400 to-purple-600"></div>
+            <div className="w-1/4 h-full bg-gradient-to-b from-green-400 to-green-600"></div>
+            <div className="w-1/4 h-full bg-gradient-to-b from-blue-400 to-blue-600"></div>
+          </div>
+          {/* Static Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-purple-500/10 to-blue-500/20"></div>
+        </div>
+
+        {/* Floating Animation Elements */}
+        <div className="fixed inset-0 -z-5 pointer-events-none overflow-hidden">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl animate-bounce" style={{animationDuration: '3s'}}></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-purple-300/20 rounded-full blur-lg animate-bounce" style={{animationDelay: '1s', animationDuration: '4s'}}></div>
+          <div className="absolute bottom-32 left-1/4 w-28 h-28 bg-white/5 rounded-full blur-2xl animate-bounce" style={{animationDelay: '2s', animationDuration: '5s'}}></div>
+          <div className="absolute top-1/3 right-1/3 w-20 h-20 bg-purple-300/10 rounded-full blur-lg animate-bounce" style={{animationDelay: '0.5s', animationDuration: '3.5s'}}></div>
+        </div>
+
         {/* Hero Section */}
-        <section className="bg-gradient-to-br from-purple-600 to-purple-800 text-white min-h-[500px] flex items-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative min-h-[600px] flex items-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <div className="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mb-4">SYSTEM PAL</div>
-                <h1 className="text-5xl md:text-6xl font-bold mb-6">"Let's streamline your systems!"</h1>
-                <p className="text-xl mb-8 opacity-90">Your expert for training videos, employee onboarding, and internal system documentation that actually gets used and drives results.</p>
+              <div className="bg-white p-12 rounded-3xl shadow-2xl border border-gray-100">
+                <div className="bg-purple-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg">🎓 SYSTEM PAL</div>
+                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">"Let's streamline your systems!"</h1>
+                <p className="text-xl mb-8 text-muted-foreground">Your expert for training videos, employee onboarding, and internal system documentation that actually gets used and drives results.</p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button asChild size="lg" className="bg-purple-500 text-white hover:bg-purple-600">
-                    <Link to="/contact">Book a Strategy Call</Link>
+                  <Button asChild size="lg" className="bg-purple-500 text-white hover:bg-purple-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+                    <Link to="/contact">🚀 Book Strategy Call</Link>
+                  </Button>
+                  <Button asChild size="lg" variant="outline" className="border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white shadow-xl">
+                    <Link to="/pals">👥 Meet All Pals</Link>
                   </Button>
                 </div>
               </div>
-              <div className="text-center">
-                <img 
-                  className="w-80 h-80 mx-auto rounded-full border-4 border-white/20 object-cover object-center" 
-                  src="/lovable-uploads/1d3c7a2a-e5cb-4900-9b76-9eadb6620973.png" 
-                  alt="System Pal - professional male character in gray jacket with green accents, surrounded by workflow icons, gears, folders, and organizational elements" 
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Expertise Section */}
-        <section className="py-20 bg-background">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">What I Do Best</h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">From employee training to process documentation, I help you create systems that work and videos that actually get watched.</p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="bg-purple-50 rounded-2xl p-8 text-center">
-                <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Users className="text-white h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-4">Employee Training</h3>
-                <p className="text-muted-foreground">Comprehensive training videos that reduce onboarding time and improve retention.</p>
-              </div>
               
-              <div className="bg-blue-50 rounded-2xl p-8 text-center">
-                <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Settings className="text-white h-8 w-8" />
+              <div className="text-center relative">
+                <div className="relative z-10 transform hover:scale-105 transition-all duration-500">
+                  <img 
+                    className="relative w-full max-w-lg mx-auto object-contain" 
+                    src={systemPalImage} 
+                    alt="System Pal - Your Training & Systems Expert" 
+                  />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-4">Process Documentation</h3>
-                <p className="text-muted-foreground">Clear, step-by-step videos that document your processes and standard operating procedures.</p>
-              </div>
-              
-              <div className="bg-green-50 rounded-2xl p-8 text-center">
-                <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <BookOpen className="text-white h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-4">Learning Modules</h3>
-                <p className="text-muted-foreground">Interactive learning experiences that make complex topics easy to understand and remember.</p>
-              </div>
-              
-              <div className="bg-purple-50 rounded-2xl p-8 text-center">
-                <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <PlayCircle className="text-white h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-4">Software Tutorials</h3>
-                <p className="text-muted-foreground">Screen recordings and tutorials that help teams master the tools they use daily.</p>
               </div>
             </div>
           </div>
         </section>
 
         {/* Packages Section */}
-        <section className="py-20 bg-muted/5">
+        <section className="py-20 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">System Pal Packages</h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Build video systems that streamline operations and reduce repetitive tasks.</p>
-            </div>
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">System Pal Packages</h2>
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Build video systems that streamline operations and reduce repetitive tasks.</p>
+              </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Internal Assets */}
@@ -215,17 +201,19 @@ const SystemPal = () => {
                   <Link to="/contact">Get Quote</Link>
                 </Button>
               </div>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Process Section */}
-        <section className="py-20 bg-background">
+        <section className="py-20 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">How We Work Together</h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">My systematic 4-step approach ensures we create training systems that your team will actually use and love.</p>
-            </div>
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">How We Work Together</h2>
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">My systematic 4-step approach ensures we create training systems that your team will actually use and love.</p>
+              </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="text-center">
@@ -263,17 +251,19 @@ const SystemPal = () => {
                 <h3 className="text-xl font-bold text-foreground mb-4">Implementation</h3>
                 <p className="text-muted-foreground">Complete rollout with team training and ongoing support to ensure adoption and success.</p>
               </div>
+              </div>
             </div>
           </div>
         </section>
 
         {/* FAQ Section */}
-        <section className="py-20 bg-muted/5">
+        <section className="py-20 relative z-10">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Frequently Asked Questions</h2>
-              <p className="text-xl text-muted-foreground">Everything you need to know about working with System Pal.</p>
-            </div>
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Frequently Asked Questions</h2>
+                <p className="text-xl text-muted-foreground">Everything you need to know about working with System Pal.</p>
+              </div>
             
             <div className="space-y-6">
               {[
@@ -317,6 +307,7 @@ const SystemPal = () => {
                   )}
                 </div>
               ))}
+              </div>
             </div>
           </div>
         </section>

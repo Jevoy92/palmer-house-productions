@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
 import spotlightPalImage from '@/assets/pals/female-spotlight-pal-cinematography.png';
+import spotlightPalHeadshot from '@/assets/pals/female-spotlight-pal-circular-3.jpg';
 import reelPalHeadshot from '@/assets/pals/female-reel-pal-circular-headshot.jpg';
 import systemPalHeadshot from '@/assets/pals/female-system-pal-circular-3.jpg';
 import evergreenPalHeadshot from '@/assets/pals/male-evergreen-pal-circular-headshot.jpg';
@@ -331,8 +332,8 @@ const SpotlightPal = () => {
             <div className="mb-8">
               <img 
                 className="w-32 h-32 mx-auto rounded-full border-4 border-red-200 object-cover object-center" 
-                src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" 
-                alt="cartoon character red hair female wearing professional dark business suit, holding microphone, cinematic production mascot" 
+                src={spotlightPalHeadshot} 
+                alt="Female Spotlight Pal - Cinematic production expert with purple hair" 
               />
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">Ready to Shine with Spotlight Pal?</h2>

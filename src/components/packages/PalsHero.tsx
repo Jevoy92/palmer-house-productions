@@ -50,103 +50,124 @@ export const PalsHero = () => {
       const containerRect = container.getBoundingClientRect();
       const windowHeight = window.innerHeight;
       
-      // Calculate overall scroll progress
+      // Calculate overall scroll progress (0 to 1)
       const progress = Math.max(0, Math.min(1, 
         (windowHeight - containerRect.top) / (windowHeight + containerRect.height)
       ));
       setScrollProgress(progress);
 
-      // Check visibility of each pal section  
+      // Check visibility of each pal section with smooth staggered reveals
       const newVisibleSections = new Set<string>();
       
-      // Simple trigger based on scroll progress
-      const scrollTriggerPoint = 0.3; // Start revealing at 30% scroll
+      // Smooth progressive reveal based on scroll
+      const baseRevealPoint = 0.2; // Start at 20% scroll
+      const revealSpacing = 0.15;   // 15% spacing between reveals
       
-      if (progress > scrollTriggerPoint) {
-        pals.forEach((pal, index) => {
-          const individualTrigger = scrollTriggerPoint + (index * 0.1); // Stagger reveals
-          if (progress > individualTrigger) {
-            newVisibleSections.add(pal.id);
-            
-            // Play video when section becomes visible
-            const video = videoRefs.current[pal.id];
-            if (video && video.paused) {
-              video.play().catch(console.error);
-            }
+      pals.forEach((pal, index) => {
+        const revealPoint = baseRevealPoint + (index * revealSpacing);
+        if (progress >= revealPoint) {
+          newVisibleSections.add(pal.id);
+          
+          // Play video when section becomes visible
+          const video = videoRefs.current[pal.id];
+          if (video && video.paused) {
+            video.play().catch(console.error);
           }
-        });
-      }
+        }
+      });
 
       setVisibleSections(newVisibleSections);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll(); // Initial check
     
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
-    <div ref={containerRef} className="relative min-h-screen">
-      {/* Fixed Background Bars */}
+    <div ref={containerRef} className="relative min-h-screen overflow-hidden">
+      {/* Smooth Background Bars - Progressive Width Animation */}
       <div className="fixed top-0 left-0 w-full h-full z-0">
         <div className="w-full h-full flex">
           <div 
-            className="w-1/4 h-full bg-pal-orange transition-all duration-700"
+            className="h-full bg-pal-orange transition-all duration-1000 ease-out"
             style={{ 
-              transform: `translateY(${Math.max(0, 100 - (scrollProgress * 400))}%)` 
+              width: scrollProgress >= 0.2 ? '25%' : '0%'
             }}
           ></div>
           <div 
-            className="w-1/4 h-full bg-pal-purple transition-all duration-700 delay-200"
+            className="h-full bg-pal-purple transition-all duration-1000 ease-out delay-300"
             style={{ 
-              transform: `translateY(${Math.max(0, 100 - ((scrollProgress - 0.25) * 400))}%)` 
+              width: scrollProgress >= 0.35 ? '25%' : '0%'
             }}
           ></div>
           <div 
-            className="w-1/4 h-full bg-pal-green transition-all duration-700 delay-400"
+            className="h-full bg-pal-green transition-all duration-1000 ease-out delay-600"
             style={{ 
-              transform: `translateY(${Math.max(0, 100 - ((scrollProgress - 0.5) * 400))}%)` 
+              width: scrollProgress >= 0.5 ? '25%' : '0%'
             }}
           ></div>
           <div 
-            className="w-1/4 h-full bg-pal-blue transition-all duration-700 delay-600"
+            className="h-full bg-pal-blue transition-all duration-1000 ease-out delay-900"
             style={{ 
-              transform: `translateY(${Math.max(0, 100 - ((scrollProgress - 0.75) * 400))}%)` 
+              width: scrollProgress >= 0.65 ? '25%' : '0%'
             }}
           ></div>
         </div>
       </div>
 
-      {/* Fixed Title */}
-      <div className="fixed top-16 left-0 right-0 z-20 text-center">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-black text-white drop-shadow-2xl">
-          PALMER HOUSE PALS
-        </h1>
-        <p className="text-lg md:text-xl text-white/90 font-medium drop-shadow-lg mt-2">
-          Your AI-powered video production team
-        </p>
+      {/* Pulsing overlay effect on active section */}
+      <div className="fixed top-0 left-0 w-full h-full z-5 flex">
+        {pals.map((pal, index) => {
+          const isActive = visibleSections.has(pal.id) && scrollProgress >= 0.2 + (index * 0.15) && scrollProgress < 0.35 + (index * 0.15);
+          return (
+            <div
+              key={pal.id}
+              className={`w-1/4 h-full transition-all duration-500 ${
+                isActive ? 'bg-gradient-to-b from-transparent via-white/20 to-transparent animate-pulse' : ''
+              }`}
+            />
+          );
+        })}
       </div>
 
-      {/* Character Sections - Horizontal Layout */}
+      {/* Fixed Title */}
+      <div className="fixed top-16 left-0 right-0 z-20 text-center">
+        <div 
+          className="transition-all duration-700 ease-out"
+          style={{
+            opacity: scrollProgress >= 0.1 ? 1 : 0,
+            transform: `translateY(${scrollProgress >= 0.1 ? 0 : 20}px)`
+          }}
+        >
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-display font-black text-white drop-shadow-2xl">
+            PALMER HOUSE PALS
+          </h1>
+          <p className="text-lg md:text-xl text-white/90 font-medium drop-shadow-lg mt-2">
+            Your AI-powered video production team
+          </p>
+        </div>
+      </div>
+
+      {/* Character Sections - Smooth Staggered Reveals */}
       <div className="relative z-10 min-h-screen flex items-center">
         <div className="w-full max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-32">
             {pals.map((pal, index) => {
               const isVisible = visibleSections.has(pal.id);
-              const delay = index * 200;
+              const revealProgress = Math.max(0, Math.min(1, (scrollProgress - (0.2 + index * 0.15)) / 0.15));
               
               return (
                 <div
                   key={pal.id}
                   id={`pal-${pal.id}`}
-                  className="flex flex-col items-center transition-all duration-1000"
+                  className="flex flex-col items-center"
                   style={{ 
-                    transitionDelay: `${delay}ms`,
-                    transform: isVisible 
-                      ? 'translateX(0)' 
-                      : `translateX(${index % 2 === 0 ? '-100%' : '100%'})`,
-                    opacity: isVisible ? 1 : 0
+                    opacity: isVisible ? 1 : 0,
+                    transform: `translateY(${isVisible ? 0 : 40}px) scale(${isVisible ? 1 : 0.9})`,
+                    transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+                    transitionDelay: `${index * 100}ms`
                   }}
                 >
                   {/* Character Name Badge */}
@@ -194,10 +215,10 @@ export const PalsHero = () => {
           {/* CTA Section */}
           <div className="text-center mt-16">
             <div 
-              className="transition-all duration-1000"
+              className="transition-all duration-1000 ease-out"
               style={{
-                opacity: scrollProgress > 0.5 ? 1 : 0,
-                transform: scrollProgress > 0.5 ? 'translateY(0)' : 'translateY(50px)'
+                opacity: scrollProgress > 0.8 ? 1 : 0,
+                transform: `translateY(${scrollProgress > 0.8 ? 0 : 30}px) scale(${scrollProgress > 0.8 ? 1 : 0.95})`
               }}
             >
               <button

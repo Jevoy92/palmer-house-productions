@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
 import evergreenPalImage from '@/assets/pals/female-evergreen-pal-seo-strategy.png';
+import evergreenPalHeadshot from '@/assets/pals/female-evergreen-pal-headshot.jpg';
 import { 
   TrendingUp, 
   Youtube, 
@@ -360,8 +361,8 @@ const EvergreenPal = () => {
             <div className="mb-8">
               <img 
                 className="w-32 h-32 mx-auto rounded-full border-4 border-green-200 object-cover object-center" 
-                src="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png" 
-                alt="cartoon character male with gray hair and beard, teal coat, holding golden play button with plants and educational elements, evergreen content creator mascot" 
+                src={evergreenPalHeadshot} 
+                alt="Evergreen Pal - Female content strategist and SEO expert with brown hair and blue cardigan" 
               />
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">Ready to Build Authority with Evergreen Pal?</h2>
@@ -402,7 +403,7 @@ const EvergreenPal = () => {
         </section>
 
         {/* Related Pals Section */}
-        <section className="py-20 bg-background">
+        <section className="py-20 bg-muted/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Meet My Fellow Pals</h2>

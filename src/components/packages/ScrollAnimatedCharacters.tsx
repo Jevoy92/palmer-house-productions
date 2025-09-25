@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { VideoBackgroundRemover } from "./VideoBackgroundRemover";
 import systemPalVideo from "@/assets/pals/animations/female-system-pal.webm";
 
 interface CharacterSection {
@@ -134,14 +133,17 @@ export const ScrollAnimatedCharacters = () => {
                   </div>
                 </div>
 
-                {/* Character Video with Background Removal */}
-                <VideoBackgroundRemover
-                  src={section.videoSrc}
-                  width={320}
-                  height={320}
-                  isVisible={visibleSections.has(section.id)}
-                  className="w-80 h-80"
-                />
+                {/* Character Video */}
+                <video
+                  ref={(el) => {videoRefs.current[section.id] = el}}
+                  className="w-80 h-80 object-contain rounded-3xl"
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                >
+                  <source src={section.videoSrc} type="video/webm" />
+                </video>
               </div>
             </div>
 

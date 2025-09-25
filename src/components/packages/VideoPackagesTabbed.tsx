@@ -182,9 +182,9 @@ export const VideoPackagesTabbed = () => {
             {/* Reel Pal Tab */}
             <TabsContent value="reel" className="space-y-8">
               <div className="text-center">
-                <div className="w-24 h-24 mx-auto rounded-full bg-pal-orange/10 flex items-center justify-center mb-6">
+                <div className="w-48 h-48 mx-auto flex items-center justify-center mb-6">
                   <img 
-                    className="w-20 h-20 rounded-full object-cover object-center" 
+                    className="w-full h-full object-contain" 
                     src={reelPalAvatar} 
                     alt="Reel Pal 3D character avatar" 
                   />

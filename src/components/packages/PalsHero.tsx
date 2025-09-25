@@ -56,16 +56,16 @@ export const PalsHero = () => {
       ));
       setScrollProgress(progress);
 
-      // Check visibility of each pal section
+      // Check visibility of each pal section  
       const newVisibleSections = new Set<string>();
       
-      pals.forEach((pal, index) => {
-        const palElement = document.getElementById(`pal-${pal.id}`);
-        if (palElement) {
-          const palRect = palElement.getBoundingClientRect();
-          const isVisible = palRect.top < windowHeight * 0.8 && palRect.bottom > windowHeight * 0.2;
-          
-          if (isVisible) {
+      // Simple trigger based on scroll progress
+      const scrollTriggerPoint = 0.3; // Start revealing at 30% scroll
+      
+      if (progress > scrollTriggerPoint) {
+        pals.forEach((pal, index) => {
+          const individualTrigger = scrollTriggerPoint + (index * 0.1); // Stagger reveals
+          if (progress > individualTrigger) {
             newVisibleSections.add(pal.id);
             
             // Play video when section becomes visible
@@ -73,15 +73,9 @@ export const PalsHero = () => {
             if (video && video.paused) {
               video.play().catch(console.error);
             }
-          } else {
-            // Pause video when out of view
-            const video = videoRefs.current[pal.id];
-            if (video && !video.paused) {
-              video.pause();
-            }
           }
-        }
-      });
+        });
+      }
 
       setVisibleSections(newVisibleSections);
     };
@@ -93,7 +87,7 @@ export const PalsHero = () => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative min-h-[400vh]">
+    <div ref={containerRef} className="relative min-h-screen">
       {/* Fixed Background Bars */}
       <div className="fixed top-0 left-0 w-full h-full z-0">
         <div className="w-full h-full flex">
@@ -134,74 +128,85 @@ export const PalsHero = () => {
         </p>
       </div>
 
-      {/* Character Sections */}
-      <div className="relative z-10">
-        {pals.map((pal, index) => (
-          <div
-            key={pal.id}
-            id={`pal-${pal.id}`}
-            className="h-screen flex items-center justify-center"
-            style={{ 
-              marginTop: index === 0 ? '20vh' : '0',
-            }}
-          >
-            <div 
-              className={`flex flex-col items-center transition-all duration-1000 ${
-                visibleSections.has(pal.id) 
-                  ? 'opacity-100 translate-y-0' 
-                  : 'opacity-0 translate-y-20'
-              }`}
-            >
-              {/* Character Name Badge */}
-              <div className="bg-white/95 backdrop-blur-sm rounded-full px-8 py-4 mb-8 shadow-xl">
-                <h3 className="text-2xl font-display font-black text-corporate-dark">
-                  {pal.name}
-                </h3>
-              </div>
-
-              {/* Character Container */}
-              <div className="relative">
-                {/* Character Video or Placeholder */}
-                {pal.videoSrc ? (
-                  <video
-                    ref={(el) => {videoRefs.current[pal.id] = el}}
-                    className="w-80 h-80 object-contain rounded-3xl shadow-2xl bg-white/10 backdrop-blur-sm"
-                    loop
-                    muted
-                    playsInline
-                    preload="metadata"
-                  >
-                    <source src={pal.videoSrc} type="video/webm" />
-                  </video>
-                ) : (
-                  <div className="w-80 h-80 bg-white/10 backdrop-blur-sm rounded-3xl shadow-2xl flex items-center justify-center">
-                    <div className="text-8xl">🎬</div>
+      {/* Character Sections - Horizontal Layout */}
+      <div className="relative z-10 min-h-screen flex items-center">
+        <div className="w-full max-w-7xl mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-32">
+            {pals.map((pal, index) => {
+              const isVisible = visibleSections.has(pal.id);
+              const delay = index * 200;
+              
+              return (
+                <div
+                  key={pal.id}
+                  id={`pal-${pal.id}`}
+                  className="flex flex-col items-center transition-all duration-1000"
+                  style={{ 
+                    transitionDelay: `${delay}ms`,
+                    transform: isVisible 
+                      ? 'translateX(0)' 
+                      : `translateX(${index % 2 === 0 ? '-100%' : '100%'})`,
+                    opacity: isVisible ? 1 : 0
+                  }}
+                >
+                  {/* Character Name Badge */}
+                  <div className="bg-white/95 backdrop-blur-sm rounded-full px-6 py-3 mb-6 shadow-xl">
+                    <h3 className="text-xl font-display font-black text-corporate-dark">
+                      {pal.name}
+                    </h3>
                   </div>
-                )}
-              </div>
 
-              {/* Character Description */}
-              <div className="mt-8 text-center">
-                <p className="text-xl text-white font-bold drop-shadow-lg">
-                  {pal.id === 'reel-pal' && 'Social Content Creation'}
-                  {pal.id === 'system-pal' && 'Training & Internal Systems'}
-                  {pal.id === 'evergreen-pal' && 'Long-form Content Strategy'}
-                  {pal.id === 'spotlight-pal' && 'Premium Video Production'}
-                </p>
-              </div>
-            </div>
+                  {/* Character Container */}
+                  <div className="relative">
+                    {/* Character Video or Placeholder */}
+                    {pal.videoSrc ? (
+                      <video
+                        ref={(el) => {videoRefs.current[pal.id] = el}}
+                        className="w-64 h-64 object-contain rounded-3xl shadow-2xl bg-white/10 backdrop-blur-sm"
+                        loop
+                        muted
+                        playsInline
+                        preload="metadata"
+                      >
+                        <source src={pal.videoSrc} type="video/webm" />
+                      </video>
+                    ) : (
+                      <div className="w-64 h-64 bg-white/10 backdrop-blur-sm rounded-3xl shadow-2xl flex items-center justify-center">
+                        <div className="text-6xl">🎬</div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Character Description */}
+                  <div className="mt-6 text-center">
+                    <p className="text-lg text-white font-bold drop-shadow-lg">
+                      {pal.id === 'reel-pal' && 'Social Content Creation'}
+                      {pal.id === 'system-pal' && 'Training & Internal Systems'}
+                      {pal.id === 'evergreen-pal' && 'Long-form Content Strategy'}
+                      {pal.id === 'spotlight-pal' && 'Premium Video Production'}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
-        ))}
 
-        {/* CTA Section */}
-        <div className="h-screen flex items-center justify-center">
-          <div className="text-center">
-            <button
-              onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank')}
-              className="px-12 py-6 bg-white text-corporate-dark font-display font-black text-xl rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl"
+          {/* CTA Section */}
+          <div className="text-center mt-16">
+            <div 
+              className="transition-all duration-1000"
+              style={{
+                opacity: scrollProgress > 0.5 ? 1 : 0,
+                transform: scrollProgress > 0.5 ? 'translateY(0)' : 'translateY(50px)'
+              }}
             >
-              Meet Your Pals - Book Discovery Call
-            </button>
+              <button
+                onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank')}
+                className="px-12 py-6 bg-white text-corporate-dark font-display font-black text-xl rounded-2xl hover:scale-105 transition-all duration-300 shadow-2xl"
+              >
+                Meet Your Pals - Book Discovery Call
+              </button>
+            </div>
           </div>
         </div>
       </div>

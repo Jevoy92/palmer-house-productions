@@ -34,36 +34,32 @@ export const Services = () => {
   ];
 
   return (
-    <section id="services" className="py-16 sm:py-24 lg:py-32 bg-white relative z-20">
+    <section id="services" className="py-16 sm:py-24 lg:py-32 bg-corporate-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 sm:mb-16">
-          <div className="inline-block px-6 py-3 bg-pal-green/10 border border-pal-green/20 rounded-full text-pal-green font-semibold text-sm mb-6">
+          <div className="inline-block px-4 py-2.5 gradient-social-3 rounded-full text-white font-semibold text-sm mb-6 video-shadow">
             💼 Service Categories
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-black mb-6 text-corporate-dark tracking-tight leading-tight px-2">
-            Video Production Services for <span className="bg-gradient-to-r from-pal-purple to-pal-blue bg-clip-text text-transparent">Every Business Need</span>
+            Video Production Services for <span className="text-gradient-1">Every Business Need</span>
           </h2>
           <p className="text-base sm:text-lg md:text-xl text-corporate-gray max-w-4xl mx-auto font-medium leading-relaxed px-2">
             Professional video production company offering production video services that save time, increase efficiency, and drive results for your business.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-5xl mx-auto">
           {services.map((service, index) => {
             const IconComponent = service.icon;
-            const palColors = ['pal-orange', 'pal-purple', 'pal-green', 'pal-blue'];
-            const palColor = palColors[index % palColors.length];
-            
             return (
               <div 
                 key={index}
-                className="group p-8 sm:p-10 bg-white rounded-3xl shadow-xl border border-gray-100 hover:shadow-2xl hover:border-gray-200 transition-all duration-500 hover:scale-[1.02] animate-on-scroll opacity-0 transform translate-y-10"
-                style={{ animationDelay: `${index * 0.1}s` }}
+                className="group p-6 sm:p-8 bg-video-white rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-[1.02] touch-manipulation"
               >
-                <div className={`w-16 h-16 sm:w-18 sm:h-18 bg-${palColor}/10 border border-${palColor}/20 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <IconComponent size={32} className={`text-${palColor} sm:w-9 sm:h-9`} />
+                <div className={`w-14 h-14 sm:w-16 sm:h-16 ${service.gradient} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <IconComponent size={28} className="text-white sm:w-8 sm:h-8" />
                 </div>
-                <h3 className="text-xl sm:text-2xl font-display font-bold mb-4 text-corporate-dark leading-tight">
+                <h3 className={`text-xl sm:text-2xl font-display font-bold mb-4 ${service.textGradient} leading-tight`}>
                   {service.title}
                 </h3>
                 <p className="text-corporate-gray leading-relaxed text-base sm:text-lg font-medium">

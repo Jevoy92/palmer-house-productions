@@ -492,31 +492,4 @@
   .animate-float-slow {
     animation: animate-float-slow 10s ease-in-out infinite 1s;
   }
-
-  /* Scroll-triggered animations */
-  .animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .animate-on-scroll.opacity-100 {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(40px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .animate-slide-up {
-    animation: slideUp 0.8s ease-out forwards;
-  }
 }

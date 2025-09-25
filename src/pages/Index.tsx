@@ -10,11 +10,8 @@ import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { LaunchOptimization } from "@/components/LaunchOptimization";
 import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 import { ScrollBars } from "@/components/ScrollBars";
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const Index = () => {
-  useScrollAnimation();
-
   return (
     <div className="min-h-screen bg-gray-50 overflow-x-hidden font-sans">
       <ScrollBars />

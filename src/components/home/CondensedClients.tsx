@@ -34,58 +34,49 @@ export const CondensedClients = () => {
   };
 
   return (
-    <section className="py-24 bg-gray-50 relative z-20">
+    <section className="py-24 bg-video-white">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
-          <div className="inline-block px-6 py-3 bg-pal-purple/10 border border-pal-purple/20 rounded-full text-pal-purple font-semibold text-sm mb-6">
+          <div className="inline-block px-4 py-2 gradient-social-2 rounded-full text-white font-bold text-sm mb-6 video-shadow">
             ⭐ Client Success
           </div>
           <h2 className="text-3xl md:text-4xl font-display font-black mb-6 text-corporate-dark">
-            Trusted by <span className="bg-gradient-to-r from-pal-green to-pal-blue bg-clip-text text-transparent">Growing Businesses</span>
+            Trusted by <span className="text-gradient-2">Growing Businesses</span>
           </h2>
           <p className="text-lg text-corporate-gray max-w-3xl mx-auto">
             Join hundreds of businesses that have transformed their video strategy with Palmer House Productions.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
-          {testimonials.map((testimonial, index) => {
-            const palColors = ['pal-orange', 'pal-purple', 'pal-green'];
-            const palColor = palColors[index % palColors.length];
-            
-            return (
-              <div 
-                key={index} 
-                className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 hover:shadow-2xl hover:border-gray-200 transition-all duration-500 hover:scale-[1.02] animate-on-scroll opacity-0 transform translate-y-10"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                <div className="flex space-x-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className={`w-5 h-5 fill-${palColor} text-${palColor}`} />
-                  ))}
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
+          {testimonials.map((testimonial, index) => (
+            <div key={index} className="bg-video-white p-6 rounded-2xl video-shadow hover:video-shadow-lg transition-all">
+              <div className="flex space-x-1 mb-4">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 fill-social-yellow text-social-yellow" />
+                ))}
+              </div>
+              <p className="text-corporate-gray mb-6 leading-relaxed">
+                "{testimonial.content}"
+              </p>
+              <div className="flex items-center space-x-3">
+                <div className={`w-12 h-12 rounded-full ${testimonial.avatarColor} flex items-center justify-center text-white font-bold`}>
+                  {testimonial.initials}
                 </div>
-                <p className="text-corporate-gray mb-6 leading-relaxed">
-                  "{testimonial.content}"
-                </p>
-                <div className="flex items-center space-x-3">
-                  <div className={`w-12 h-12 rounded-full bg-${palColor}/10 border border-${palColor}/20 flex items-center justify-center text-${palColor} font-bold`}>
-                    {testimonial.initials}
-                  </div>
-                  <div>
-                    <div className="font-bold text-corporate-dark">{testimonial.name}</div>
-                    <div className="text-sm text-corporate-gray">{testimonial.role}</div>
-                  </div>
+                <div>
+                  <div className="font-bold text-corporate-dark">{testimonial.name}</div>
+                  <div className="text-sm text-corporate-gray">{testimonial.role}</div>
                 </div>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
 
         <div className="text-center">
           <Button 
             onClick={handleViewAllReviews}
             variant="outline"
-            className="px-8 py-3 border-2 border-pal-blue text-pal-blue hover:bg-pal-blue hover:text-white hover:scale-105 transition-all duration-300 rounded-xl font-semibold"
+            className="px-8 py-3 hover:scale-105 transition-all"
           >
             View All Reviews
             <ArrowRight className="w-4 h-4 ml-2" />

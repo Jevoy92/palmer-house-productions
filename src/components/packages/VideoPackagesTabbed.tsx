@@ -16,8 +16,7 @@ import {
   DollarSign
 } from "lucide-react";
 import { PRICING } from "@/lib/pricing";
-import { PackagesHero } from "./PackagesHero";
-import { ScrollAnimatedCharacters } from "./ScrollAnimatedCharacters";
+import { PalsHero } from "./PalsHero";
 
 // Import new character avatars
 import reelPalAvatar from "@/assets/pals/female-reel-pal-content-creation.png";
@@ -130,11 +129,8 @@ export const VideoPackagesTabbed = () => {
   return (
     <section className="pt-16 md:pt-24 pb-8 md:pb-16 relative z-10">
       <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
-        {/* Animated Hero Section */}
-        <PackagesHero />
-        
-        {/* Scroll-Animated Characters Section */}
-        <ScrollAnimatedCharacters />
+        {/* Pals Hero Section */}
+        <PalsHero />
 
         {/* Tabbed Interface - White Card */}
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl">

@@ -16,7 +16,6 @@ import {
   DollarSign
 } from "lucide-react";
 import { PRICING } from "@/lib/pricing";
-import { AnimatedPalsShowcase } from "./AnimatedPalsShowcase";
 
 // Import new character avatars
 import reelPalAvatar from "@/assets/pals/female-reel-pal-content-creation.png";
@@ -149,9 +148,6 @@ export const VideoPackagesTabbed = () => {
             </button>
           </div>
         </div>
-
-        {/* Animated Pals Showcase */}
-        <AnimatedPalsShowcase />
 
         {/* Tabbed Interface - White Card */}
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl">

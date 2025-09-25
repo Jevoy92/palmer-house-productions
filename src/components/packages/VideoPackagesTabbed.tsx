@@ -16,6 +16,7 @@ import {
   DollarSign
 } from "lucide-react";
 import { PRICING } from "@/lib/pricing";
+import { PackagesHero } from "./PackagesHero";
 
 // Import new character avatars
 import reelPalAvatar from "@/assets/pals/female-reel-pal-content-creation.png";
@@ -128,26 +129,8 @@ export const VideoPackagesTabbed = () => {
   return (
     <section className="pt-16 md:pt-24 pb-8 md:pb-16 relative z-10">
       <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
-        {/* Hero Section - White Card */}
-        <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-12">
-          <div className="text-center">
-            <div className="inline-block px-6 py-3 bg-pal-orange text-white font-bold text-lg mb-8 rounded-full video-shadow">
-              🎬 Business Video Assets
-            </div>
-            <h2 className="text-2xl md:text-4xl lg:text-5xl font-display font-black mb-6 text-corporate-dark tracking-tight">
-              Business Video Assets: <span className="text-pal-purple">Evergreen Tools for Growth</span>
-            </h2>
-            <p className="text-base md:text-lg xl:text-xl text-corporate-gray mb-8 max-w-4xl mx-auto font-medium">
-              Not social fluff — these are cinematic, repeatable videos that save your team time, cut training costs, and build customer trust.
-            </p>
-            <button
-              onClick={handleDiscoveryCall}
-              className="inline-flex items-center px-8 py-4 bg-pal-purple text-white font-bold text-lg rounded-xl hover:scale-105 transition-all duration-300 video-shadow-lg"
-            >
-              Book Strategy Call
-            </button>
-          </div>
-        </div>
+        {/* Animated Hero Section */}
+        <PackagesHero />
 
         {/* Tabbed Interface - White Card */}
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl">

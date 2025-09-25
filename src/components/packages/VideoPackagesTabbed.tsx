@@ -26,14 +26,10 @@ import evergreenPalAvatar from "@/assets/pals/female-evergreen-pal-content-plann
 import spotlightPalAvatar from "@/assets/pals/female-spotlight-pal-editing.png";
 
 // Import character images for hero section
-import reelPalImage from '@/assets/pals/female-reel-pal-edited.png';
-import maleReelPalImage from '@/assets/pals/male-reel-pal-edited.png';
-import systemPalImage from '@/assets/pals/female-system-pal-edited.png';
-import maleSystemPalImage from '@/assets/pals/male-system-pal-edited.png';
-import evergreenPalImage from '@/assets/pals/female-evergreen-pal-final.png';
-import maleEvergreenPalImage from '@/assets/pals/male-evergreen-pal-edited.png';
-import spotlightPalImage from '@/assets/pals/female-spotlight-pal-edited.png';
-import maleSpotlightPalImage from '@/assets/pals/male-spotlight-pal-edited.png';
+import reelPal3DAvatar from '@/assets/pals/reel-pal-3d-avatar.png';
+import systemPal3DAvatar from '@/assets/pals/system-pal-3d-avatar.png';
+import evergreenPal3DAvatar from '@/assets/pals/evergreen-pal-3d-avatar.png';
+import spotlightPal3DAvatar from '@/assets/pals/spotlight-pal-3d-avatar.png';
 
 export const VideoPackagesTabbed = () => {
   const navigate = useNavigate();
@@ -190,8 +186,8 @@ export const VideoPackagesTabbed = () => {
           <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_forwards]">
             <img 
               className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
-              src={reelPalImage} 
-              alt="Female Reel Pal character in orange hoodie"
+              src={reelPal3DAvatar} 
+              alt="Reel Pal 3D character avatar"
               loading="eager"
             />
             <video 
@@ -220,14 +216,14 @@ export const VideoPackagesTabbed = () => {
           <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.2s_forwards]">
             <img 
               className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
-              src={systemPalImage} 
-              alt="Female System Pal character in teal jacket"
+              src={systemPal3DAvatar} 
+              alt="System Pal 3D character avatar"
               loading="eager"
             />
             <img 
               className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
-              src={maleSystemPalImage} 
-              alt="Male System Pal character in teal jacket"
+              src={systemPal3DAvatar} 
+              alt="System Pal 3D character avatar hover state"
               loading="eager"
             />
           </div>
@@ -245,14 +241,14 @@ export const VideoPackagesTabbed = () => {
           <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.4s_forwards]">
             <img 
               className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
-              src={evergreenPalImage} 
-              alt="Female Evergreen Pal character in green cardigan"
+              src={evergreenPal3DAvatar} 
+              alt="Evergreen Pal 3D character avatar"
               loading="eager"
             />
             <img 
               className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
-              src={maleEvergreenPalImage} 
-              alt="Male Evergreen Pal character in blue cardigan"
+              src={evergreenPal3DAvatar} 
+              alt="Evergreen Pal 3D character avatar hover state"
               loading="eager"
             />
           </div>
@@ -270,14 +266,14 @@ export const VideoPackagesTabbed = () => {
           <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.6s_forwards]">
             <img 
               className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
-              src={spotlightPalImage} 
-              alt="Female Spotlight Pal character in blue jacket"
+              src={spotlightPal3DAvatar} 
+              alt="Spotlight Pal 3D character avatar"
               loading="eager"
             />
             <img 
               className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
-              src={maleSpotlightPalImage} 
-              alt="Male Spotlight Pal character in blue jacket"
+              src={spotlightPal3DAvatar} 
+              alt="Spotlight Pal 3D character avatar hover state"
               loading="eager"
             />
           </div>

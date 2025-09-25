@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
 import reelPalImage from '@/assets/pals/female-reel-pal-social-engagement.png';
+import systemPalHeadshot from '@/assets/pals/male-system-pal-headshot.jpg';
+import evergreenPalHeadshot from '@/assets/pals/male-evergreen-pal-headshot-2.jpg';
+import spotlightPalHeadshot from '@/assets/pals/male-spotlight-pal-headshot.jpg';
 import { 
   Video,
   PlayCircle,
@@ -425,8 +428,8 @@ const ReelPal = () => {
                   <div className="mb-6">
                     <img 
                       className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-purple-200" 
-                      src="/lovable-uploads/c70f84e1-b8ab-4479-a04d-7793a76d402f.png" 
-                      alt="System Pal - Training & Internal Video Expert" 
+                      src={systemPalHeadshot} 
+                      alt="System Pal - Male training systems expert with glasses and blue jacket" 
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-3">System Pal</h3>
@@ -440,8 +443,8 @@ const ReelPal = () => {
                   <div className="mb-6">
                     <img 
                       className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-green-200" 
-                      src="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png" 
-                      alt="Evergreen Pal - YouTube & Authority Content Expert" 
+                      src={evergreenPalHeadshot} 
+                      alt="Evergreen Pal - Male authority building expert with blue cardigan" 
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-3">Evergreen Pal</h3>
@@ -455,8 +458,8 @@ const ReelPal = () => {
                   <div className="mb-6">
                     <img 
                       className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-blue-200" 
-                      src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" 
-                      alt="Spotlight Pal - Cinematic Brand Video Expert" 
+                      src={spotlightPalHeadshot} 
+                      alt="Spotlight Pal - Male cinematic production expert in blue jacket" 
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-3">Spotlight Pal</h3>

@@ -183,7 +183,8 @@ export const VideoPackagesTabbed = () => {
           className="group relative w-full md:w-1/4 h-full bg-pal-orange flex flex-col justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
           onClick={() => navigateToPage('reel-pal')}
         >
-          <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-[5%] md:top-1/4 md:group-hover:top-[5%]">
+          {/* Desktop Hover Content */}
+          <div className="hidden md:block absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-[5%]">
             <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6 border border-white/30">
               <div className="text-lg font-bold opacity-95 mb-3">💡 Perfect For:</div>
               <div className="text-base opacity-90">Quick wins • Social media growth • DIY solutions</div>
@@ -198,23 +199,41 @@ export const VideoPackagesTabbed = () => {
               <div className="text-sm opacity-95">DIY resources • Starter sessions • 30-reel packages</div>
             </div>
           </div>
-          {/* Mobile/Tablet: Always show text, slide character to side */}
-          <div className="absolute top-0 left-0 w-full h-full p-4 sm:p-6 text-white flex flex-col justify-center items-start text-left md:hidden">
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 mb-4 border border-white/30 max-w-[60%]">
-              <div className="text-sm font-bold opacity-95 mb-2">💡 Perfect For:</div>
-              <div className="text-xs opacity-90">Quick wins • Social growth • DIY</div>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold mb-3">Reel Pal</h2>
-            <p className="text-sm sm:text-base font-medium leading-relaxed max-w-[60%] mb-4">Short-form social content that converts followers into customers.</p>
-            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-sm max-w-[60%]">
-              <div className="flex items-center mb-2">
-                <span className="text-xl mr-2">📱</span>
-                <span className="font-bold">Starting at $19</span>
+          
+          {/* Mobile/Tablet Layout - Horizontal Split */}
+          <div className="md:hidden absolute inset-0 flex">
+            {/* Left Side - Text Content */}
+            <div className="w-[65%] p-4 flex flex-col justify-center text-white">
+              <div className="bg-white/15 rounded-lg p-3 mb-3">
+                <div className="text-xs font-bold opacity-90 mb-1">💡 Perfect For:</div>
+                <div className="text-[10px] opacity-80">Quick wins • Social growth • DIY</div>
               </div>
-              <div className="text-xs opacity-95">DIY resources • Starter sessions</div>
+              <h2 className="text-xl font-bold mb-2">Reel Pal</h2>
+              <p className="text-sm mb-3 leading-snug opacity-90">Short-form social content that converts followers into customers.</p>
+              <div className="bg-white/15 rounded-lg p-2">
+                <div className="flex items-center mb-1">
+                  <span className="text-lg mr-2">📱</span>
+                  <span className="font-bold text-sm">Starting at $19</span>
+                </div>
+                <div className="text-[10px] opacity-85">DIY resources • Starter sessions</div>
+              </div>
+            </div>
+            
+            {/* Right Side - Character */}
+            <div className="w-[35%] flex items-end justify-center">
+              <div className="w-24 h-24 sm:w-32 sm:h-32">
+                <img 
+                  className="w-full h-full object-contain" 
+                  src={reelPalImage} 
+                  alt="Reel Pal character"
+                  loading="eager"
+                />
+              </div>
             </div>
           </div>
-          <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_forwards] md:translate-x-0 translate-x-[40%]">
+
+          {/* Desktop Character Images */}
+          <div className="hidden md:block relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_forwards]">
             <img 
               className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
               src={reelPalImage} 
@@ -235,7 +254,8 @@ export const VideoPackagesTabbed = () => {
           className="group relative w-full md:w-1/4 h-full bg-pal-purple flex flex-col justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
           onClick={() => navigateToPage('system-pal')}
         >
-          <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-[5%] md:top-1/4 md:group-hover:top-[5%]">
+          {/* Desktop Hover Content */}
+          <div className="hidden md:block absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-[5%]">
             <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6 border border-white/30">
               <div className="text-lg font-bold opacity-95 mb-3">🎯 Perfect For:</div>
               <div className="text-base opacity-90">Team efficiency • Process automation • Scaling operations</div>
@@ -250,23 +270,41 @@ export const VideoPackagesTabbed = () => {
               <div className="text-sm opacity-95">Training systems • FAQ buildouts • Onboarding flows</div>
             </div>
           </div>
-          {/* Mobile/Tablet: Always show text, slide character to side */}
-          <div className="absolute top-0 left-0 w-full h-full p-4 sm:p-6 text-white flex flex-col justify-center items-start text-left md:hidden">
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 mb-4 border border-white/30 max-w-[60%]">
-              <div className="text-sm font-bold opacity-95 mb-2">🎯 Perfect For:</div>
-              <div className="text-xs opacity-90">Team efficiency • Automation • Scaling</div>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold mb-3">System Pal</h2>
-            <p className="text-sm sm:text-base font-medium leading-relaxed max-w-[60%] mb-4">Backend systems that replace repetitive meetings and streamline operations.</p>
-            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-sm max-w-[60%]">
-              <div className="flex items-center mb-2">
-                <span className="text-xl mr-2">⚙️</span>
-                <span className="font-bold">$4,500 - $6,500</span>
+          
+          {/* Mobile/Tablet Layout - Horizontal Split */}
+          <div className="md:hidden absolute inset-0 flex">
+            {/* Left Side - Text Content */}
+            <div className="w-[65%] p-4 flex flex-col justify-center text-white">
+              <div className="bg-white/15 rounded-lg p-3 mb-3">
+                <div className="text-xs font-bold opacity-90 mb-1">🎯 Perfect For:</div>
+                <div className="text-[10px] opacity-80">Team efficiency • Automation • Scaling</div>
               </div>
-              <div className="text-xs opacity-95">Training • FAQ • Onboarding</div>
+              <h2 className="text-xl font-bold mb-2">System Pal</h2>
+              <p className="text-sm mb-3 leading-snug opacity-90">Backend systems that replace repetitive meetings and streamline operations.</p>
+              <div className="bg-white/15 rounded-lg p-2">
+                <div className="flex items-center mb-1">
+                  <span className="text-lg mr-2">⚙️</span>
+                  <span className="font-bold text-sm">$4,500 - $6,500</span>
+                </div>
+                <div className="text-[10px] opacity-85">Training • FAQ • Onboarding</div>
+              </div>
+            </div>
+            
+            {/* Right Side - Character */}
+            <div className="w-[35%] flex items-end justify-center">
+              <div className="w-24 h-24 sm:w-32 sm:h-32">
+                <img 
+                  className="w-full h-full object-contain" 
+                  src={systemPalImage} 
+                  alt="System Pal character"
+                  loading="eager"
+                />
+              </div>
             </div>
           </div>
-          <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.2s_forwards] md:translate-x-0 translate-x-[40%]">
+
+          {/* Desktop Character Images */}
+          <div className="hidden md:block relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.2s_forwards]">
             <img 
               className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
               src={systemPalImage} 
@@ -287,7 +325,8 @@ export const VideoPackagesTabbed = () => {
           className="group relative w-full md:w-1/4 h-full bg-pal-green flex flex-col justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
           onClick={() => navigateToPage('evergreen-pal')}
         >
-          <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-[5%] md:top-1/4 md:group-hover:top-[5%]">
+          {/* Desktop Hover Content */}
+          <div className="hidden md:block absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-[5%]">
             <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6 border border-white/30">
               <div className="text-lg font-bold opacity-95 mb-3">🌱 Perfect For:</div>
               <div className="text-base opacity-90">Authority building • Long-term growth • Brand positioning</div>
@@ -302,23 +341,41 @@ export const VideoPackagesTabbed = () => {
               <div className="text-sm opacity-95">YouTube engines • Brand kits • Authority content</div>
             </div>
           </div>
-          {/* Mobile/Tablet: Always show text, slide character to side */}
-          <div className="absolute top-0 left-0 w-full h-full p-4 sm:p-6 text-white flex flex-col justify-center items-start text-left md:hidden">
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 mb-4 border border-white/30 max-w-[60%]">
-              <div className="text-sm font-bold opacity-95 mb-2">🌱 Perfect For:</div>
-              <div className="text-xs opacity-90">Authority • Long-term growth • Brand</div>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold mb-3">Evergreen Pal</h2>
-            <p className="text-sm sm:text-base font-medium leading-relaxed max-w-[60%] mb-4">Strategic content that builds lasting authority and generates leads for years.</p>
-            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-sm max-w-[60%]">
-              <div className="flex items-center mb-2">
-                <span className="text-xl mr-2">🎬</span>
-                <span className="font-bold">$6,000 - $6,500</span>
+          
+          {/* Mobile/Tablet Layout - Horizontal Split */}
+          <div className="md:hidden absolute inset-0 flex">
+            {/* Left Side - Text Content */}
+            <div className="w-[65%] p-4 flex flex-col justify-center text-white">
+              <div className="bg-white/15 rounded-lg p-3 mb-3">
+                <div className="text-xs font-bold opacity-90 mb-1">🌱 Perfect For:</div>
+                <div className="text-[10px] opacity-80">Authority • Long-term growth • Brand</div>
               </div>
-              <div className="text-xs opacity-95">YouTube • Brand kits • Authority</div>
+              <h2 className="text-xl font-bold mb-2">Evergreen Pal</h2>
+              <p className="text-sm mb-3 leading-snug opacity-90">Strategic content that builds lasting authority and generates leads for years.</p>
+              <div className="bg-white/15 rounded-lg p-2">
+                <div className="flex items-center mb-1">
+                  <span className="text-lg mr-2">🎬</span>
+                  <span className="font-bold text-sm">$6,000 - $6,500</span>
+                </div>
+                <div className="text-[10px] opacity-85">YouTube • Brand kits • Authority</div>
+              </div>
+            </div>
+            
+            {/* Right Side - Character */}
+            <div className="w-[35%] flex items-end justify-center">
+              <div className="w-24 h-24 sm:w-32 sm:h-32">
+                <img 
+                  className="w-full h-full object-contain" 
+                  src={evergreenPalImage} 
+                  alt="Evergreen Pal character"
+                  loading="eager"
+                />
+              </div>
             </div>
           </div>
-          <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.4s_forwards] md:translate-x-0 translate-x-[40%]">
+
+          {/* Desktop Character Images */}
+          <div className="hidden md:block relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.4s_forwards]">
             <img 
               className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
               src={evergreenPalImage} 
@@ -339,7 +396,8 @@ export const VideoPackagesTabbed = () => {
           className="group relative w-full md:w-1/4 h-full bg-pal-blue flex flex-col justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
           onClick={() => navigateToPage('spotlight-pal')}
         >
-          <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-[5%] md:top-1/4 md:group-hover:top-[5%]">
+          {/* Desktop Hover Content */}
+          <div className="hidden md:block absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-[5%]">
             <div className="bg-white/20 backdrop-blur-sm rounded-xl p-6 mb-6 border border-white/30">
               <div className="text-lg font-bold opacity-95 mb-3">✨ Perfect For:</div>
               <div className="text-base opacity-90">Premium brands • Emotional impact • Cinematic quality</div>
@@ -354,23 +412,41 @@ export const VideoPackagesTabbed = () => {
               <div className="text-sm opacity-95">Music videos • Commercials • Hero brand content</div>
             </div>
           </div>
-          {/* Mobile/Tablet: Always show text, slide character to side */}
-          <div className="absolute top-0 left-0 w-full h-full p-4 sm:p-6 text-white flex flex-col justify-center items-start text-left md:hidden">
-            <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 mb-4 border border-white/30 max-w-[60%]">
-              <div className="text-sm font-bold opacity-95 mb-2">✨ Perfect For:</div>
-              <div className="text-xs opacity-90">Premium brands • Cinematic quality</div>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold mb-3">Spotlight Pal</h2>
-            <p className="text-sm sm:text-base font-medium leading-relaxed max-w-[60%] mb-4">Cinematic storytelling that elevates your brand and creates emotional connections.</p>
-            <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 text-sm max-w-[60%]">
-              <div className="flex items-center mb-2">
-                <span className="text-xl mr-2">🎭</span>
-                <span className="font-bold">Premium Projects</span>
+          
+          {/* Mobile/Tablet Layout - Horizontal Split */}
+          <div className="md:hidden absolute inset-0 flex">
+            {/* Left Side - Text Content */}
+            <div className="w-[65%] p-4 flex flex-col justify-center text-white">
+              <div className="bg-white/15 rounded-lg p-3 mb-3">
+                <div className="text-xs font-bold opacity-90 mb-1">✨ Perfect For:</div>
+                <div className="text-[10px] opacity-80">Premium brands • Cinematic quality</div>
               </div>
-              <div className="text-xs opacity-95">Music videos • Commercials • Hero content</div>
+              <h2 className="text-xl font-bold mb-2">Spotlight Pal</h2>
+              <p className="text-sm mb-3 leading-snug opacity-90">Cinematic storytelling that elevates your brand and creates emotional connections.</p>
+              <div className="bg-white/15 rounded-lg p-2">
+                <div className="flex items-center mb-1">
+                  <span className="text-lg mr-2">🎭</span>
+                  <span className="font-bold text-sm">Premium Projects</span>
+                </div>
+                <div className="text-[10px] opacity-85">Music videos • Commercials • Hero content</div>
+              </div>
+            </div>
+            
+            {/* Right Side - Character */}
+            <div className="w-[35%] flex items-end justify-center">
+              <div className="w-24 h-24 sm:w-32 sm:h-32">
+                <img 
+                  className="w-full h-full object-contain" 
+                  src={spotlightPalImage} 
+                  alt="Spotlight Pal character"
+                  loading="eager"
+                />
+              </div>
             </div>
           </div>
-          <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.6s_forwards] md:translate-x-0 translate-x-[40%]">
+
+          {/* Desktop Character Images */}
+          <div className="hidden md:block relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.6s_forwards]">
             <img 
               className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
               src={spotlightPalImage} 

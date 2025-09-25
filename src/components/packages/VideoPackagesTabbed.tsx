@@ -18,7 +18,7 @@ import {
 import { PRICING } from "@/lib/pricing";
 
 // Import new character avatars
-import reelPalAvatar from "@/assets/pals/reel-pal-3d-avatar.png";
+import reelPalAvatar from "@/assets/pals/female-reel-pal-content-creation.png";
 import systemPalAvatar from "@/assets/pals/system-pal-3d-avatar.png";
 import evergreenPalAvatar from "@/assets/pals/evergreen-pal-3d-avatar.png";
 import spotlightPalAvatar from "@/assets/pals/spotlight-pal-3d-avatar.png";

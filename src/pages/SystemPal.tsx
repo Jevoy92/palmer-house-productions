@@ -361,57 +361,59 @@ const SystemPal = () => {
         </section>
 
         {/* Related Pals Section */}
-        <section className="py-20 bg-muted/5">
+        <section className="py-20 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Meet My Fellow Pals</h2>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Need more than just training systems? Check out my fellow Palmer House Pals who can help with other aspects of your video journey.</p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-background rounded-2xl p-8 text-center transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer">
-                <div className="mb-6">
-                  <img 
-                    className="w-24 h-24 mx-auto rounded-full" 
-                    src="https://storage.googleapis.com/uxpilot-auth.appspot.com/25d8c66845-bb993d7dd66fd010bb42.png" 
-                    alt="cartoon character female with brown hair, yellow shirt, holding phone with social media icons" 
-                  />
-                </div>
-                <h3 className="text-xl font-bold text-foreground mb-3">Reel Pal</h3>
-                <p className="text-muted-foreground mb-4">Perfect for social media content and short-form videos</p>
-                <Button asChild className="bg-yellow-500 text-white hover:bg-yellow-600">
-                  <Link to="/reel-pal">Meet Reel Pal</Link>
-                </Button>
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
+              <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Meet My Fellow Pals</h2>
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Need more than just training systems? Check out my fellow Palmer House Pals who can help with other aspects of your video journey.</p>
               </div>
               
-              <div className="bg-background rounded-2xl p-8 text-center transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer">
-                <div className="mb-6">
-                  <img 
-                    className="w-24 h-24 mx-auto rounded-full object-cover object-center" 
-                    src="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png" 
-                    alt="cartoon character male with gray hair and beard, teal coat, holding golden play button with plants and educational elements, evergreen content creator mascot" 
-                  />
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-orange-500 transition-all hover:scale-105">
+                  <div className="mb-6">
+                    <img 
+                      className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-orange-200" 
+                      src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
+                      alt="cartoon character female with brown hair in bun, orange shirt and jeans, holding smartphone, social media creator mascot" 
+                    />
+                  </div>
+                  <h3 className="text-2xl font-bold text-foreground mb-3">Reel Pal</h3>
+                  <p className="text-muted-foreground mb-4">Perfect for social media content and short-form videos</p>
+                  <Button asChild className="bg-yellow-500 text-white hover:bg-yellow-600">
+                    <Link to="/reel-pal">🎥 Meet Reel Pal</Link>
+                  </Button>
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-3">Evergreen Pal</h3>
-                <p className="text-muted-foreground mb-4">Ideal for long-term YouTube growth and authority building</p>
-                <Button asChild className="bg-green-600 text-white hover:bg-green-700">
-                  <Link to="/evergreen-pal">Meet Evergreen Pal</Link>
-                </Button>
-              </div>
-              
-              <div className="bg-background rounded-2xl p-8 text-center transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer">
-                <div className="mb-6">
-                  <img 
-                    className="w-24 h-24 mx-auto rounded-full" 
-                    src="https://storage.googleapis.com/uxpilot-auth.appspot.com/8f0c5b28b6-3b90b01dce247861b422.png" 
-                    alt="cartoon character blonde female, red blazer, holding microphone with studio lights" 
-                  />
+                
+                <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105">
+                  <div className="mb-6">
+                    <img 
+                      className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-green-200" 
+                      src="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png" 
+                      alt="cartoon character male with gray hair and beard, teal coat, holding golden play button with plants and educational elements, evergreen content creator mascot" 
+                    />
+                  </div>
+                  <h3 className="text-2xl font-bold text-foreground mb-3">Evergreen Pal</h3>
+                  <p className="text-muted-foreground mb-4">Ideal for long-term YouTube growth and authority building</p>
+                  <Button asChild className="bg-green-600 text-white hover:bg-green-700">
+                    <Link to="/evergreen-pal">🌱 Meet Evergreen Pal</Link>
+                  </Button>
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-3">Spotlight Pal</h3>
-                <p className="text-muted-foreground mb-4">Your go-to for cinematic brand films and premium content</p>
-                <Button asChild className="bg-red-600 text-white hover:bg-red-700">
-                  <Link to="/spotlight-pal">Meet Spotlight Pal</Link>
-                </Button>
+                
+                <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-red-500 transition-all hover:scale-105">
+                  <div className="mb-6">
+                    <img 
+                      className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-red-200" 
+                      src="/lovable-uploads/04881cac-8132-4f58-b31d-07f97e89beaf.png" 
+                      alt="cartoon character red hair female wearing professional dark business suit, holding microphone, cinematic production mascot" 
+                    />
+                  </div>
+                  <h3 className="text-2xl font-bold text-foreground mb-3">Spotlight Pal</h3>
+                  <p className="text-muted-foreground mb-4">Your go-to for cinematic brand films and premium content</p>
+                  <Button asChild className="bg-red-600 text-white hover:bg-red-700">
+                    <Link to="/spotlight-pal">🎬 Meet Spotlight Pal</Link>
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

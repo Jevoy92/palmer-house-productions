@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
+import reelPalImage from '@/assets/pals/female-reel-pal-social-engagement.png';
 import { 
   Video,
   PlayCircle,
@@ -66,22 +67,13 @@ const ReelPal = () => {
               </div>
               
               <div className="text-center relative">
-                <div className="relative z-10 transform hover:scale-110 transition-all duration-500">
-                  <div className="absolute inset-0 bg-orange-400/30 rounded-full blur-3xl scale-125 animate-pulse"></div>
+                <div className="relative z-10 transform hover:scale-105 transition-all duration-500">
                   <img 
-                    className="relative w-80 h-80 mx-auto rounded-full border-4 border-white/30 object-cover object-center shadow-2xl" 
-                    src="/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png" 
+                    className="relative w-full max-w-lg mx-auto object-contain shadow-2xl" 
+                    src={reelPalImage} 
                     alt="Reel Pal - Your Social Content Creation Guide" 
                   />
                 </div>
-                
-                {/* Floating Elements Around Character */}
-                <div className="absolute -top-5 -left-10 text-5xl animate-bounce">📱</div>
-                <div className="absolute -top-3 -right-12 text-4xl animate-pulse">🎬</div>
-                <div className="absolute -bottom-8 left-5 text-4xl animate-bounce" style={{animationDelay: '0.5s'}}>✨</div>
-                <div className="absolute -bottom-5 -right-8 text-3xl animate-pulse" style={{animationDelay: '1s'}}>🚀</div>
-                <div className="absolute top-1/2 -left-16 text-3xl animate-bounce" style={{animationDelay: '0.3s'}}>📺</div>
-                <div className="absolute top-1/2 -right-16 text-3xl animate-bounce" style={{animationDelay: '1.2s'}}>🎭</div>
               </div>
             </div>
           </div>

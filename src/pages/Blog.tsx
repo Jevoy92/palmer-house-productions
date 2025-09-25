@@ -128,15 +128,25 @@ const Blog = () => {
       
       <Navigation />
       
-      <main className="min-h-screen bg-video-white pt-20">
+      <main className="min-h-screen overflow-x-hidden font-sans relative">
+        {/* Fixed 4-Color Background Bars */}
+        <div className="fixed top-0 left-0 w-full h-full z-0">
+          <div className="w-full h-full flex">
+            <div className="w-1/4 h-full bg-pal-orange"></div>
+            <div className="w-1/4 h-full bg-pal-purple"></div>
+            <div className="w-1/4 h-full bg-pal-green"></div>
+            <div className="w-1/4 h-full bg-pal-blue"></div>
+          </div>
+        </div>
         {/* Hero Section */}
-        <section className="py-16 bg-gradient-to-br from-social-purple/10 via-video-white to-social-pink/10">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center max-w-4xl mx-auto">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-corporate-dark mb-6">
-                Video Strategy <span className="text-gradient-1">Intelligence</span>
+        <section className="py-16 sm:py-24 lg:py-32 relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+            {/* Hero - White Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl text-center">
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+                Video Strategy <span className="text-pal-purple">Intelligence</span>
               </h1>
-              <p className="text-xl text-corporate-gray mb-8 leading-relaxed">
+              <p className="text-lg xl:text-xl text-corporate-gray mb-12 max-w-4xl mx-auto font-medium leading-relaxed">
                 Proven strategies, real-world insights, and actionable frameworks to transform your business through strategic video content.
               </p>
               
@@ -149,11 +159,11 @@ const Blog = () => {
                     placeholder="Search articles, topics, or strategies..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 py-3 text-base border-corporate-light/50 focus:border-social-purple"
+                    className="pl-10 py-3 text-base border-gray-200 focus:border-pal-purple focus:ring-pal-purple"
                   />
                 </div>
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger className="w-full md:w-48 py-3 border-corporate-light/50">
+                  <SelectTrigger className="w-full md:w-48 py-3 border-gray-200 focus:border-pal-purple">
                     <Filter className="h-4 w-4 mr-2" />
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
@@ -172,178 +182,187 @@ const Blog = () => {
 
         {/* Featured Articles */}
         {featuredArticles.length > 0 && (
-          <section className="py-16">
-            <div className="max-w-7xl mx-auto px-6">
-              <h2 className="text-3xl font-bold text-corporate-dark mb-8">Featured Articles</h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {featuredArticles.map((article) => (
-                  <Card key={article.id} className="group hover:shadow-lg transition-all duration-300 border-corporate-light/30">
-                    {/* Cover Image */}
-                    <div className="overflow-hidden rounded-t-lg">
-                      <AspectRatio ratio={16/9}>
-                        <OptimizedImage
-                          src={article.image || '/placeholder.svg'}
-                          alt={article.imageAlt || `${article.title} cover image`}
-                          className="w-full h-full object-cover"
-                        />
-                      </AspectRatio>
-                    </div>
-                    <CardHeader className="pb-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <Badge variant="secondary" className="bg-social-purple/10 text-social-purple">
-                          {article.category}
-                        </Badge>
-                        <div className="flex items-center text-sm text-corporate-gray">
-                          <Clock className="h-4 w-4 mr-1" />
-                          {article.readTime}
-                        </div>
+          <section className="py-16 sm:py-24 lg:py-32 relative z-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+              {/* Featured Articles - White Card */}
+              <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl">
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+                  Featured <span className="text-pal-orange">Articles</span>
+                </h2>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {featuredArticles.map((article) => (
+                    <Card key={article.id} className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-gray-50 to-white border border-gray-200">
+                      {/* Cover Image */}
+                      <div className="overflow-hidden rounded-t-lg">
+                        <AspectRatio ratio={16/9}>
+                          <OptimizedImage
+                            src={article.image || '/placeholder.svg'}
+                            alt={article.imageAlt || `${article.title} cover image`}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </AspectRatio>
                       </div>
-                      <h3 className="text-xl font-semibold text-corporate-dark group-hover:text-social-purple transition-colors">
-                        <Link to={article.slug} className="hover:underline focus:underline">{article.title}</Link>
-                      </h3>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-corporate-gray mb-4 leading-relaxed">
-                        {article.excerpt}
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center text-sm text-corporate-gray">
-                          <Calendar className="h-4 w-4 mr-1" />
-                          {formatDate(article.publishDate)}
+                      <CardHeader className="pb-4">
+                        <div className="flex items-center justify-between mb-3">
+                          <Badge variant="secondary" className="bg-pal-purple/10 text-pal-purple border-pal-purple/20">
+                            {article.category}
+                          </Badge>
+                          <div className="flex items-center text-sm text-corporate-gray">
+                            <Clock className="h-4 w-4 mr-1" />
+                            {article.readTime}
+                          </div>
                         </div>
-                        <Link
-                          to={article.slug}
-                          className="inline-flex items-center text-social-purple hover:text-social-pink transition-colors font-medium"
-                        >
-                          Read More
-                          <ChevronRight className="h-4 w-4 ml-1" />
-                        </Link>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+                        <h3 className="text-xl font-semibold text-corporate-dark group-hover:text-pal-purple transition-colors">
+                          <Link to={article.slug} className="hover:underline focus:underline">{article.title}</Link>
+                        </h3>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-corporate-gray mb-4 leading-relaxed">
+                          {article.excerpt}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center text-sm text-corporate-gray">
+                            <Calendar className="h-4 w-4 mr-1" />
+                            {formatDate(article.publishDate)}
+                          </div>
+                          <Link
+                            to={article.slug}
+                            className="inline-flex items-center text-pal-purple hover:text-pal-orange transition-colors font-medium"
+                          >
+                            Read More
+                            <ChevronRight className="h-4 w-4 ml-1" />
+                          </Link>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
               </div>
             </div>
           </section>
         )}
 
-        {/* Sort Controls */}
-        <section className="py-8 border-t border-corporate-light/30">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <h2 className="text-2xl font-bold text-corporate-dark">
-                All Articles ({filteredArticles.length})
-              </h2>
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-48">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="newest">Newest First</SelectItem>
-                  <SelectItem value="oldest">Oldest First</SelectItem>
-                  <SelectItem value="readTime">Read Time</SelectItem>
-                </SelectContent>
-              </Select>
+        {/* Sort Controls and All Articles */}
+        <section className="py-16 sm:py-24 lg:py-32 relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+            {/* All Articles - White Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl">
+              {/* Sort Controls */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-8 border-b border-gray-200">
+                <h2 className="text-2xl md:text-3xl font-display font-black text-corporate-dark">
+                  All <span className="text-pal-green">Articles</span> ({filteredArticles.length})
+                </h2>
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="w-48 border-gray-200 focus:border-pal-green">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="newest">Newest First</SelectItem>
+                    <SelectItem value="oldest">Oldest First</SelectItem>
+                    <SelectItem value="readTime">Read Time</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Articles Grid */}
+              {filteredArticles.length === 0 ? (
+                <div className="text-center py-16">
+                  <p className="text-xl text-corporate-gray mb-4">No articles found matching your criteria.</p>
+                  <Button
+                    onClick={() => {
+                      setSearchTerm('');
+                      setSelectedCategory('All');
+                    }}
+                    variant="outline"
+                    className="border-pal-blue text-pal-blue hover:bg-pal-blue hover:text-white"
+                  >
+                    Clear Filters
+                  </Button>
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {filteredArticles.map((article) => (
+                    <Card key={article.id} className="group hover:shadow-lg transition-all duration-300 bg-gradient-to-br from-gray-50 to-white border border-gray-200">
+                      {/* Cover Image */}
+                      <div className="overflow-hidden rounded-t-lg">
+                        <AspectRatio ratio={16/9}>
+                          <OptimizedImage
+                            src={article.image || '/placeholder.svg'}
+                            alt={article.imageAlt || `${article.title} cover image`}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </AspectRatio>
+                      </div>
+                      <CardHeader className="pb-4">
+                        <div className="flex items-center justify-between mb-3">
+                          <Badge variant="outline" className="border-pal-green text-pal-green">
+                            {article.category}
+                          </Badge>
+                          <div className="flex items-center text-sm text-corporate-gray">
+                            <Clock className="h-4 w-4 mr-1" />
+                            {article.readTime}
+                          </div>
+                        </div>
+                        <h3 className="text-lg font-semibold text-corporate-dark group-hover:text-pal-green transition-colors leading-tight">
+                          <Link to={article.slug} className="hover:underline focus:underline">{article.title}</Link>
+                        </h3>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-corporate-gray mb-4 leading-relaxed text-sm">
+                          {article.excerpt}
+                        </p>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {article.tags.slice(0, 2).map((tag) => (
+                            <Badge key={tag} variant="secondary" className="text-xs bg-pal-blue/10 text-pal-blue border-pal-blue/20">
+                              {tag}
+                            </Badge>
+                          ))}
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center text-sm text-corporate-gray">
+                            <Calendar className="h-4 w-4 mr-1" />
+                            {formatDate(article.publishDate)}
+                          </div>
+                          <Link
+                            to={article.slug}
+                            className="inline-flex items-center text-pal-green hover:text-pal-orange transition-colors font-medium text-sm"
+                          >
+                            Read More
+                            <ChevronRight className="h-4 w-4 ml-1" />
+                          </Link>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </section>
 
-        {/* All Articles Grid */}
-        <section className="pb-20">
-          <div className="max-w-7xl mx-auto px-6">
-            {filteredArticles.length === 0 ? (
-              <div className="text-center py-16">
-                <p className="text-xl text-corporate-gray mb-4">No articles found matching your criteria.</p>
-                <Button
-                  onClick={() => {
-                    setSearchTerm('');
-                    setSelectedCategory('All');
-                  }}
-                  variant="outline"
-                >
-                  Clear Filters
-                </Button>
-              </div>
-            ) : (
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredArticles.map((article) => (
-                  <Card key={article.id} className="group hover:shadow-lg transition-all duration-300 border-corporate-light/30">
-                    {/* Cover Image */}
-                    <div className="overflow-hidden rounded-t-lg">
-                      <AspectRatio ratio={16/9}>
-                        <OptimizedImage
-                          src={article.image || '/placeholder.svg'}
-                          alt={article.imageAlt || `${article.title} cover image`}
-                          className="w-full h-full object-cover"
-                        />
-                      </AspectRatio>
-                    </div>
-                    <CardHeader className="pb-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <Badge variant="outline" className="border-corporate-light text-corporate-gray">
-                          {article.category}
-                        </Badge>
-                        <div className="flex items-center text-sm text-corporate-gray">
-                          <Clock className="h-4 w-4 mr-1" />
-                          {article.readTime}
-                        </div>
-                      </div>
-                      <h3 className="text-lg font-semibold text-corporate-dark group-hover:text-social-purple transition-colors leading-tight">
-                        <Link to={article.slug} className="hover:underline focus:underline">{article.title}</Link>
-                      </h3>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-corporate-gray mb-4 leading-relaxed text-sm">
-                        {article.excerpt}
-                      </p>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {article.tags.slice(0, 2).map((tag) => (
-                          <Badge key={tag} variant="secondary" className="text-xs bg-corporate-light/50">
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center text-sm text-corporate-gray">
-                          <Calendar className="h-4 w-4 mr-1" />
-                          {formatDate(article.publishDate)}
-                        </div>
-                        <Link
-                          to={article.slug}
-                          className="inline-flex items-center text-social-purple hover:text-social-pink transition-colors font-medium text-sm"
-                        >
-                          Read More
-                          <ChevronRight className="h-4 w-4 ml-1" />
-                        </Link>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </div>
-        </section>
-
         {/* CTA Section */}
-        <section className="py-16 bg-gradient-to-r from-social-purple/10 to-social-pink/10">
-          <div className="max-w-4xl mx-auto px-6 text-center">
-            <h2 className="text-3xl font-bold text-corporate-dark mb-4">
-              Ready to Transform Your Business with Video?
-            </h2>
-            <p className="text-xl text-corporate-gray mb-8">
-              Get personalized insights and strategic recommendations for your unique situation.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/contact">
-                <Button size="lg" className="bg-social-purple hover:bg-social-purple/90 text-white px-8 py-4">
-                  Get Your Strategy Assessment
-                </Button>
-              </Link>
-              <Link to="/video-packages">
-                <Button size="lg" variant="outline" className="border-social-purple text-social-purple hover:bg-social-purple/10 px-8 py-4">
-                  View Our Packages
-                </Button>
-              </Link>
+        <section className="py-16 sm:py-24 lg:py-32 relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+            {/* CTA - White Card */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl text-center">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-black text-corporate-dark mb-6 tracking-tight">
+                Ready to Transform Your Business with <span className="text-pal-purple">Video</span>?
+              </h2>
+              <p className="text-lg xl:text-xl text-corporate-gray mb-8 max-w-4xl mx-auto font-medium leading-relaxed">
+                Get personalized insights and strategic recommendations for your unique situation.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/contact">
+                  <Button size="lg" className="bg-pal-purple hover:bg-pal-purple/90 text-white px-8 py-4">
+                    Get Your Strategy Assessment
+                  </Button>
+                </Link>
+                <Link to="/video-packages">
+                  <Button size="lg" variant="outline" className="border-pal-orange text-pal-orange hover:bg-pal-orange hover:text-white px-8 py-4">
+                    View Our Packages
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </section>

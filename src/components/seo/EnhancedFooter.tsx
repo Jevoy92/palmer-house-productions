@@ -21,7 +21,7 @@ export const EnhancedFooter = () => {
       <div className="relative z-10">
         {/* Main Footer Content - White Card */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-8">
-          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-8">
+          <div className="bg-white rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
               {/* Company Info */}
               <div className="space-y-4 lg:col-span-1">
@@ -160,108 +160,102 @@ export const EnhancedFooter = () => {
 
             {/* Bottom Bar */}
             <div className="border-t border-gray-200 pt-6">
-              <div className="flex flex-col md:flex-row justify-between items-center">
+              <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
                 <p className="text-corporate-gray text-sm">
                   © {currentYear} Palmer House Productions. All rights reserved. Crafting authentic stories since day one.
                 </p>
-                <div className="flex space-x-6 mt-4 md:mt-0">
-                  <Link to="/privacy" className="text-corporate-gray hover:text-corporate-dark text-sm transition-colors">
-                    Privacy Policy
-                  </Link>
-                  <Link to="/terms" className="text-corporate-gray hover:text-corporate-dark text-sm transition-colors">
-                    Terms of Service
-                  </Link>
+                
+                <div className="flex flex-col md:flex-row items-center gap-6">
+                  <div className="flex space-x-6">
+                    <Link to="/privacy" className="text-corporate-gray hover:text-corporate-dark text-sm transition-colors">
+                      Privacy Policy
+                    </Link>
+                    <Link to="/terms" className="text-corporate-gray hover:text-corporate-dark text-sm transition-colors">
+                      Terms of Service
+                    </Link>
+                  </div>
+                  
+                  {/* Social Media Icons */}
+                  <div className="flex gap-2">
+                    <SocialIcon
+                      url="https://www.facebook.com/profile.php?id=100092553086353"
+                      style={{ height: 32, width: 32 }}
+                      bgColor="#4267B2"
+                      className="hover:opacity-80 transition-opacity"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Facebook"
+                    />
+                    <SocialIcon
+                      url="https://www.instagram.com/palmerhouseproductions"
+                      style={{ height: 32, width: 32 }}
+                      bgColor="#E4405F"
+                      className="hover:opacity-80 transition-opacity"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Instagram"
+                    />
+                    <SocialIcon
+                      url="https://www.youtube.com/channel/UCe7_R47Klv_JdupA1exogMw"
+                      style={{ height: 32, width: 32 }}
+                      bgColor="#FF0000"
+                      className="hover:opacity-80 transition-opacity"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="YouTube"
+                    />
+                    <SocialIcon
+                      url="https://www.linkedin.com/company/palmer-house-productions/"
+                      style={{ height: 32, width: 32 }}
+                      bgColor="#0077B5"
+                      className="hover:opacity-80 transition-opacity"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn"
+                    />
+                    <SocialIcon
+                      url="https://x.com/palmerhouseviz"
+                      style={{ height: 32, width: 32 }}
+                      bgColor="#000000"
+                      className="hover:opacity-80 transition-opacity"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="X (Twitter)"
+                    />
+                    <SocialIcon
+                      url="https://www.pinterest.com/palmerhouseproductions/"
+                      style={{ height: 32, width: 32 }}
+                      bgColor="#BD081C"
+                      className="hover:opacity-80 transition-opacity"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Pinterest"
+                    />
+                    <SocialIcon
+                      url="https://www.tiktok.com/@palmerhouseproductions"
+                      style={{ height: 32, width: 32 }}
+                      bgColor="#000000"
+                      className="hover:opacity-80 transition-opacity"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="TikTok"
+                    />
+                    <SocialIcon
+                      url="https://www.threads.net/@palmerhouseproductions"
+                      style={{ height: 32, width: 32 }}
+                      bgColor="#000000"
+                      className="hover:opacity-80 transition-opacity"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Threads"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Social Media Icons - Positioned in Blue Section */}
-        <div className="absolute bottom-8 right-8 z-20">
-          <div className="grid grid-cols-4 gap-3">
-            <SocialIcon
-              url="https://www.facebook.com/profile.php?id=100092553086353"
-              style={{ height: 32, width: 32 }}
-              bgColor="rgba(255, 255, 255, 0.2)"
-              fgColor="white"
-              className="hover:opacity-80 transition-opacity"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook"
-            />
-            <SocialIcon
-              url="https://www.instagram.com/palmerhouseproductions"
-              style={{ height: 32, width: 32 }}
-              bgColor="rgba(255, 255, 255, 0.2)"
-              fgColor="white"
-              className="hover:opacity-80 transition-opacity"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram"
-            />
-            <SocialIcon
-              url="https://www.youtube.com/channel/UCe7_R47Klv_JdupA1exogMw"
-              style={{ height: 32, width: 32 }}
-              bgColor="rgba(255, 255, 255, 0.2)"
-              fgColor="white"
-              className="hover:opacity-80 transition-opacity"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="YouTube"
-            />
-            <SocialIcon
-              url="https://www.linkedin.com/company/palmer-house-productions/"
-              style={{ height: 32, width: 32 }}
-              bgColor="rgba(255, 255, 255, 0.2)"
-              fgColor="white"
-              className="hover:opacity-80 transition-opacity"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-            />
-            <SocialIcon
-              url="https://x.com/palmerhouseviz"
-              style={{ height: 32, width: 32 }}
-              bgColor="rgba(255, 255, 255, 0.2)"
-              fgColor="white"
-              className="hover:opacity-80 transition-opacity"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="X (Twitter)"
-            />
-            <SocialIcon
-              url="https://www.pinterest.com/palmerhouseproductions/"
-              style={{ height: 32, width: 32 }}
-              bgColor="rgba(255, 255, 255, 0.2)"
-              fgColor="white"
-              className="hover:opacity-80 transition-opacity"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Pinterest"
-            />
-            <SocialIcon
-              url="https://www.tiktok.com/@palmerhouseproductions"
-              style={{ height: 32, width: 32 }}
-              bgColor="rgba(255, 255, 255, 0.2)"
-              fgColor="white"
-              className="hover:opacity-80 transition-opacity"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="TikTok"
-            />
-            <SocialIcon
-              url="https://www.threads.net/@palmerhouseproductions"
-              style={{ height: 32, width: 32 }}
-              bgColor="rgba(255, 255, 255, 0.2)"
-              fgColor="white"
-              className="hover:opacity-80 transition-opacity"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Threads"
-            />
-          </div>
-        </div>
       </div>
     </footer>
   );

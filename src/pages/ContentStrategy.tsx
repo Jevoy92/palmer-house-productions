@@ -11,6 +11,7 @@ import { AssessmentPreview } from "@/components/assessments/AssessmentPreview";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { usePageTransition } from '@/components/PageTransition';
 import { 
   Target, 
   Calculator, 
@@ -22,6 +23,7 @@ import {
 
 const ContentStrategyPage = () => {
   const [activeAssessment, setActiveAssessment] = useState<string | null>(null);
+  const { transitionTo } = usePageTransition();
 
   // Handle URL parameters for direct assessment links
   useEffect(() => {
@@ -188,20 +190,20 @@ const ContentStrategyPage = () => {
         <section className="py-16 sm:py-24 lg:py-32 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
             <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl text-center">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-black mb-6 text-corporate-dark tracking-tight">
-                Need a Comprehensive <span className="text-pal-green">Strategy</span>?
+              <h2 className="text-2xl md:text-3xl font-display font-black mb-6 text-corporate-dark tracking-tight">
+                Need Comprehensive <span className="text-pal-green">Video Strategy</span>?
               </h2>
               <p className="text-lg xl:text-xl text-corporate-gray mb-8 max-w-4xl mx-auto font-medium leading-relaxed">
-                Get a complete business assessment with personalized video strategy recommendations tailored to your goals.
+                Explore our complete video production packages with personalized recommendations tailored to your goals.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
-                  onClick={() => window.location.href = '/video-packages'}
+                  onClick={() => transitionTo('/video-packages')}
                   variant="premium"
                   size="touch"
                   className="bg-pal-purple text-white hover:bg-pal-purple/90"
                 >
-                  Complete Strategy Assessment
+                  Explore Video Packages
                 </Button>
                 <Button 
                   onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}

@@ -19,7 +19,7 @@ export const BottomCTA = ({ onStartAssessment, onBookCall, onComprehensiveStrate
     <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl p-12 text-center text-white">
       <h2 className="text-4xl font-bold mb-6">Choose Your Path Forward</h2>
       <p className="text-xl mb-8 opacity-90">
-        Start with quick insights or get your complete strategy assessment.
+        Ready to get started? Book a call or explore our video packages.
       </p>
       
       {/* Book Strategy Call - Primary CTA */}
@@ -35,7 +35,7 @@ export const BottomCTA = ({ onStartAssessment, onBookCall, onComprehensiveStrate
 
       {/* Assessment Options */}
       <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 mb-6">
-        <h3 className="text-xl font-bold mb-4">Or Take a Strategy Assessment</h3>
+        <h3 className="text-xl font-bold mb-4">Or Explore Our Services</h3>
         
         <div className="grid md:grid-cols-2 gap-4 mb-6">
           {/* Video Readiness Audit */}
@@ -55,20 +55,20 @@ export const BottomCTA = ({ onStartAssessment, onBookCall, onComprehensiveStrate
             </CardContent>
           </Card>
 
-          {/* Complete Strategy */}
+          {/* Video Packages */}
           {onComprehensiveStrategy && (
             <Card className="bg-white/20 backdrop-blur-sm border-white/30">
               <CardContent className="p-6 text-center">
-                <div className="text-3xl mb-2">🎯</div>
-                <h4 className="font-bold text-lg mb-2">Complete Strategy</h4>
+                <div className="text-3xl mb-2">📦</div>
+                <h4 className="font-bold text-lg mb-2">Video Packages</h4>
                 <p className="text-sm opacity-90 mb-4">
-                  Full business assessment with custom recommendations
+                  Explore our comprehensive video production services
                 </p>
                 <Button
                   onClick={onComprehensiveStrategy}
                   className="bg-white text-purple-600 hover:bg-gray-100 font-bold px-4 py-2 text-sm w-full"
                 >
-                  Complete Assessment (10-15 min)
+                  Explore Packages
                 </Button>
               </CardContent>
             </Card>

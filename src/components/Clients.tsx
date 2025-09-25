@@ -1,7 +1,9 @@
 
 import { useState } from "react";
+import { usePageTransition } from '@/components/PageTransition';
 
 export const Clients = () => {
+  const { transitionTo } = usePageTransition();
   const clientTypes = [
     {
       title: "Growing Businesses",
@@ -42,7 +44,7 @@ export const Clients = () => {
   ];
 
   const handleGetStarted = () => {
-    window.location.href = '/video-packages';
+    transitionTo('/video-packages');
   };
 
   return (

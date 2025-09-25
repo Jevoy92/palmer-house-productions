@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { PRICING } from "@/lib/pricing";
 import { PricingFAQ } from "./pricing/PricingFAQ";
+import { usePageTransition } from '@/components/PageTransition';
 
 export const ServicePackages = () => {
   const navigate = useNavigate();
+  const { transitionTo } = usePageTransition();
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
 
   const pricingCategories = [
@@ -166,7 +168,7 @@ export const ServicePackages = () => {
             </p>
             
             <button 
-              onClick={() => navigate('/contact')}
+              onClick={() => transitionTo('/contact')}
               className="px-8 md:px-12 py-4 md:py-6 gradient-social-1 text-white font-bold rounded-3xl hover:scale-105 transition-all duration-300 text-lg md:text-xl video-shadow-lg mobile-touch-target"
             >
               Start Your Project →

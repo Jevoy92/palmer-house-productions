@@ -6,8 +6,10 @@ import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Navigation } from "@/components/Navigation";
+import { usePageTransition } from '@/components/PageTransition';
 
 const Reviews = () => {
+  const { transitionTo } = usePageTransition();
   // Real Google Reviews from Palmer House Productions clients
   const clientReviews = [
     {
@@ -195,13 +197,13 @@ const Reviews = () => {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
-                  onClick={() => window.location.href = '/contact'}
+                  onClick={() => transitionTo('/contact')}
                   className="px-10 py-5 bg-pal-purple text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300"
                 >
                   Start Your Journey
                 </button>
                 <button
-                  onClick={() => window.location.href = '/video-packages'}
+                  onClick={() => transitionTo('/video-packages')}
                   className="px-10 py-5 border-2 border-pal-orange text-pal-orange font-bold text-lg rounded-2xl hover:bg-pal-orange hover:text-white transition-all duration-300"
                 >
                   View Our Services

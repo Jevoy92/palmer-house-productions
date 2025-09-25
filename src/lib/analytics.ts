@@ -9,7 +9,7 @@ export const trackEvent = (eventName: string, parameters?: Record<string, any>) 
 };
 
 // Contact form tracking
-export const trackContactFormSubmit = (formType: 'wizard' | 'quick' | 'discovery') => {
+export const trackContactFormSubmit = (formType: 'contact' | 'quick' | 'discovery') => {
   trackEvent('contact_form_submit', {
     form_type: formType,
     event_category: 'engagement',

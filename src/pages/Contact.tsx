@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ZohoLeadForm } from "@/components/zoho/ZohoLeadForm";
 import { Calendar, Video, CheckCircle } from "lucide-react";
 import { TrustSidebar } from "@/components/contact/TrustSidebar";
+import { usePageTransition } from '@/components/PageTransition';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -19,6 +20,7 @@ const ContactPage = () => {
     email: '',
     message: ''
   });
+  const { transitionTo } = usePageTransition();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,12 +33,11 @@ const ContactPage = () => {
   };
 
   const handleVideoReadinessAudit = () => {
-    window.location.href = '/assessments/video-readiness';
+    transitionTo('/assessments/video-readiness');
   };
 
-
-  const handleCompleteStrategyAssessment = () => {
-    window.location.href = '/content-strategy';
+  const handleExplorePackages = () => {
+    transitionTo('/video-packages');
   };
 
   return (
@@ -110,7 +111,7 @@ const ContactPage = () => {
                     </CardContent>
                   </Card>
 
-                  {/* Complete Strategy Assessment */}
+                  {/* Explore Video Packages */}
                   <Card className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 hover:border-pal-purple/30 transition-all duration-300 group">
                     <CardContent className="p-6">
                       <div className="flex items-center gap-4">
@@ -118,16 +119,16 @@ const ContactPage = () => {
                           <CheckCircle className="w-6 h-6 text-white" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-corporate-dark mb-1 text-lg">Complete Strategy Assessment</h3>
-                          <p className="text-sm text-corporate-gray">Comprehensive 12-step video strategy audit</p>
+                          <h3 className="font-bold text-corporate-dark mb-1 text-lg">Explore Video Packages</h3>
+                          <p className="text-sm text-corporate-gray">Browse our comprehensive video production services</p>
                         </div>
                         <Button 
-                          onClick={handleCompleteStrategyAssessment} 
+                          onClick={handleExplorePackages} 
                           variant="outline" 
                           className="border-pal-purple text-pal-purple hover:bg-pal-purple hover:text-white px-6 py-3"
                           size="lg"
                         >
-                          Start Assessment
+                          Browse Packages
                         </Button>
                       </div>
                     </CardContent>

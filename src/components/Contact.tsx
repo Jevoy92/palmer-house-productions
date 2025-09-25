@@ -4,13 +4,10 @@ import { ContactHeader } from "./contact/ContactHeader";
 import { ProcessPreview } from "./contact/ProcessPreview";
 import { ReviewsSection } from "./contact/ReviewsSection";
 import { BottomCTA } from "./contact/BottomCTA";
+import { usePageTransition } from '@/components/PageTransition';
 
-
-interface ContactProps {
-  autoOpenWizard?: boolean;
-}
-
-export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
+export const Contact = () => {
+  const { transitionTo } = usePageTransition();
 
   const handleZohoBooking = () => {
     window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078320', '_blank', 'noopener,noreferrer');
@@ -30,9 +27,9 @@ export const Contact = ({ autoOpenWizard = false }: ContactProps) => {
         <ReviewsSection onViewAllReviews={handleViewAllReviews} />
 
         <BottomCTA 
-          onStartAssessment={() => window.location.href = '/content-strategy'}
+          onStartAssessment={() => transitionTo('/video-packages')}
           onBookCall={handleZohoBooking}
-          onComprehensiveStrategy={() => window.location.href = '/video-packages'}
+          onComprehensiveStrategy={() => transitionTo('/video-packages')}
         />
       </div>
     </section>

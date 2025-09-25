@@ -1,7 +1,9 @@
 import { Star, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { usePageTransition } from '@/components/PageTransition';
 
 export const CondensedClients = () => {
+  const { transitionTo } = usePageTransition();
   const testimonials = [
     {
       name: "Isabella Johnstun",
@@ -30,7 +32,7 @@ export const CondensedClients = () => {
   ];
 
   const handleViewAllReviews = () => {
-    window.location.href = '/resources/reviews';
+    transitionTo('/resources/reviews');
   };
 
   return (

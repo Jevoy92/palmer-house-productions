@@ -54,28 +54,28 @@ export const EnhancedFooter = () => {
                 <h4 className="font-bold text-corporate-dark">Services</h4>
                 <ul className="space-y-2 text-sm">
                   <li>
-                    <Link to="/video-packages" className="text-corporate-gray hover:text-pal-purple transition-colors">
-                      Video Packages
+                    <Link to="/reel-pal" className="text-corporate-gray hover:text-pal-orange transition-colors">
+                      Reel Pal
                     </Link>
                   </li>
                   <li>
-                    <Link to="/services/monthly-content" className="text-corporate-gray hover:text-pal-purple transition-colors">
-                      Monthly Content
+                    <Link to="/system-pal" className="text-corporate-gray hover:text-pal-purple transition-colors">
+                      System Pal
                     </Link>
                   </li>
                   <li>
-                    <Link to="/video-packages" className="text-corporate-gray hover:text-pal-purple transition-colors">
-                      DIY Coaching
+                    <Link to="/evergreen-pal" className="text-corporate-gray hover:text-pal-green transition-colors">
+                      Evergreen Pal
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/spotlight-pal" className="text-corporate-gray hover:text-pal-blue transition-colors">
+                      Spotlight Pal
                     </Link>
                   </li>
                   <li>
                     <Link to="/services/diy-downloads" className="text-corporate-gray hover:text-pal-purple transition-colors">
                       DIY Downloads
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/contact" className="text-corporate-gray hover:text-pal-purple transition-colors">
-                      Discovery Call
                     </Link>
                   </li>
                 </ul>

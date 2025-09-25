@@ -28,15 +28,15 @@ const ReelPal = () => {
     <>
       <Navigation />
       <div className="min-h-screen relative overflow-hidden">
-        {/* Animated 4-Color Background Bars */}
+        {/* Static 4-Color Background Bars */}
         <div className="fixed top-0 left-0 w-full h-screen -z-10">
           <div className="w-full h-full flex">
-            <div className="w-1/4 h-full bg-gradient-to-b from-orange-400 to-orange-600 animate-pulse"></div>
-            <div className="w-1/4 h-full bg-gradient-to-b from-purple-400 to-purple-600 animate-pulse" style={{animationDelay: '0.5s'}}></div>
-            <div className="w-1/4 h-full bg-gradient-to-b from-green-400 to-green-600 animate-pulse" style={{animationDelay: '1s'}}></div>
-            <div className="w-1/4 h-full bg-gradient-to-b from-blue-400 to-blue-600 animate-pulse" style={{animationDelay: '1.5s'}}></div>
+            <div className="w-1/4 h-full bg-gradient-to-b from-orange-400 to-orange-600"></div>
+            <div className="w-1/4 h-full bg-gradient-to-b from-purple-400 to-purple-600"></div>
+            <div className="w-1/4 h-full bg-gradient-to-b from-green-400 to-green-600"></div>
+            <div className="w-1/4 h-full bg-gradient-to-b from-blue-400 to-blue-600"></div>
           </div>
-          {/* Animated Overlay */}
+          {/* Static Overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-purple-500/10 to-blue-500/20"></div>
         </div>
 
@@ -69,7 +69,7 @@ const ReelPal = () => {
               <div className="text-center relative">
                 <div className="relative z-10 transform hover:scale-105 transition-all duration-500">
                   <img 
-                    className="relative w-full max-w-lg mx-auto object-contain shadow-2xl" 
+                    className="relative w-full max-w-lg mx-auto object-contain" 
                     src={reelPalImage} 
                     alt="Reel Pal - Your Social Content Creation Guide" 
                   />

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
 import evergreenPalImage from '@/assets/pals/female-evergreen-pal-seo-strategy.png';
-import evergreenPalHeadshot from '@/assets/pals/female-evergreen-pal-headshot.jpg';
+import evergreenPalHeadshot from '@/assets/pals/male-evergreen-pal-headshot.jpg';
 import { 
   TrendingUp, 
   Youtube, 
@@ -362,7 +362,7 @@ const EvergreenPal = () => {
               <img 
                 className="w-32 h-32 mx-auto rounded-full border-4 border-green-200 object-cover object-center" 
                 src={evergreenPalHeadshot} 
-                alt="Evergreen Pal - Female content strategist and SEO expert with brown hair and blue cardigan" 
+                alt="Evergreen Pal - Male content strategist and SEO expert with brown hair and blue cardigan" 
               />
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">Ready to Build Authority with Evergreen Pal?</h2>

@@ -196,7 +196,7 @@ export const VideoPackagesTabbed = () => {
             />
             <video 
               className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
-              src="/assets/reel_pal.mp4"
+              src="/assets/reel_pal.webm"
               autoPlay
               muted
               loop

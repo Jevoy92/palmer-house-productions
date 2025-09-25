@@ -265,190 +265,194 @@ export const UseCaseCategories = () => {
   };
 
   return (
-    <section className="py-24 bg-gradient-to-br from-video-white to-slate-50">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-5xl md:text-6xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-            Seven Seattle <span className="text-gradient-1">Success Stories</span>
+    <section className="py-16 sm:py-24 lg:py-32 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        {/* Header - White Card */}
+        <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl text-center mb-12">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+            Seven Seattle <span className="text-pal-green">Success Stories</span>
           </h2>
-          <p className="text-xl text-corporate-gray mb-8 max-w-3xl mx-auto">
+          <p className="text-lg xl:text-xl text-corporate-gray mb-8 max-w-4xl mx-auto font-medium leading-relaxed">
             Real business scenarios from across Seattle. See the specific challenges, processes, and projected results 
             for each strategic video content system.
           </p>
 
-          <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-8 max-w-2xl mx-auto">
-            <p className="text-amber-800 text-sm">
+          <div className="bg-gradient-to-br from-pal-orange/10 to-pal-orange/5 border border-pal-orange/20 rounded-lg p-4 mb-8 max-w-2xl mx-auto">
+            <p className="text-corporate-dark text-sm">
               <strong>Note:</strong> These are fictional scenarios based on typical client transformations and industry best practices.
             </p>
           </div>
           
-          <div className="flex gap-4 justify-center mb-12">
+          <div className="flex gap-4 justify-center">
             <Button 
               onClick={expandAll}
               variant="outline" 
-              className="border-corporate-light hover:border-corporate-primary"
+              className="border-pal-purple text-pal-purple hover:bg-pal-purple hover:text-white"
             >
               Expand All
             </Button>
             <Button 
               onClick={collapseAll}
               variant="outline"
-              className="border-corporate-light hover:border-corporate-primary"
+              className="border-pal-green text-pal-green hover:bg-pal-green hover:text-white"
             >
               Collapse All
             </Button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {caseStudies.map((caseStudy) => {
-            const isExpanded = expandedCards.includes(caseStudy.id);
-            
-            return (
-              <Collapsible key={caseStudy.id} open={isExpanded} onOpenChange={() => toggleCard(caseStudy.id)}>
-                <Card className="h-full border-2 border-corporate-light/30 hover:border-corporate-primary/50 transition-all duration-300 hover:shadow-lg">
-                  <CollapsibleTrigger asChild>
-                    <CardHeader className="cursor-pointer hover:bg-slate-50/50 transition-colors">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-start gap-4">
-                          <div className={`p-3 rounded-xl ${caseStudy.gradient} shadow-md flex-shrink-0`}>
-                            <MapPin className="w-6 h-6 text-white" />
-                          </div>
-                          <div className="text-left">
-                            <CardTitle className="text-xl font-bold text-corporate-dark mb-1">
-                              {caseStudy.businessName}
-                            </CardTitle>
-                            <p className="text-sm text-corporate-gray mb-2">
-                              {caseStudy.location} • {caseStudy.industry}
-                            </p>
-                            <p className="text-corporate-gray text-sm leading-relaxed">
-                              {caseStudy.problem}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex flex-col items-end gap-2">
-                          {isExpanded ? 
-                            <ChevronUp className="w-5 h-5 text-corporate-gray" /> : 
-                            <ChevronDown className="w-5 h-5 text-corporate-gray" />
-                          }
-                          <div className="text-right">
-                            <Badge variant="outline" className="text-xs font-semibold mb-1">
-                              {caseStudy.price}
-                            </Badge>
-                            <p className="text-xs text-corporate-gray">
-                              {caseStudy.timeline}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </CardHeader>
-                  </CollapsibleTrigger>
-                  
-                  <CollapsibleContent>
-                    <CardContent className="pt-0 space-y-6">
-                      {/* Before/After Metrics Toggle */}
-                      <div className="space-y-4">
-                        <div className="flex justify-center">
-                          <div className="bg-gray-100 rounded-lg p-1 flex">
-                            <button
-                              onClick={() => setViewMode('before')}
-                              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                                viewMode === 'before' 
-                                  ? 'bg-white text-red-600 shadow-sm' 
-                                  : 'text-gray-600 hover:text-gray-800'
-                              }`}
-                            >
-                              Before
-                            </button>
-                            <button
-                              onClick={() => setViewMode('after')}
-                              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                                viewMode === 'after' 
-                                  ? 'bg-white text-green-600 shadow-sm' 
-                                  : 'text-gray-600 hover:text-gray-800'
-                              }`}
-                            >
-                              After
-                            </button>
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-3">
-                          {(viewMode === 'before' ? caseStudy.beforeMetrics : caseStudy.afterMetrics).map((metric, idx) => (
-                            <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 border">
-                              <span className="text-sm font-medium text-corporate-dark">{metric.label}</span>
-                              <div className="flex items-center gap-2">
-                                {viewMode === 'before' ? (
-                                  <XCircle className="w-4 h-4 text-red-500" />
-                                ) : (
-                                  <CheckCircle className="w-4 h-4 text-green-500" />
-                                )}
-                                <span className={`text-sm font-semibold ${
-                                  viewMode === 'before' ? 'text-red-600' : 'text-green-600'
-                                }`}>
-                                  {metric.value}
-                                </span>
-                              </div>
+        {/* Case Studies - White Card */}
+        <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {caseStudies.map((caseStudy) => {
+              const isExpanded = expandedCards.includes(caseStudy.id);
+              
+              return (
+                <Collapsible key={caseStudy.id} open={isExpanded} onOpenChange={() => toggleCard(caseStudy.id)}>
+                  <Card className="h-full bg-gradient-to-br from-gray-50 to-white border-2 border-gray-200 hover:border-gray-300 transition-all duration-300 hover:shadow-lg">
+                    <CollapsibleTrigger asChild>
+                      <CardHeader className="cursor-pointer hover:bg-gray-100/50 transition-colors">
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-start gap-4">
+                            <div className={`p-3 rounded-xl bg-pal-purple shadow-md flex-shrink-0`}>
+                              <MapPin className="w-6 h-6 text-white" />
                             </div>
-                          ))}
+                            <div className="text-left">
+                              <CardTitle className="text-xl font-bold text-corporate-dark mb-1">
+                                {caseStudy.businessName}
+                              </CardTitle>
+                              <p className="text-sm text-corporate-gray mb-2">
+                                {caseStudy.location} • {caseStudy.industry}
+                              </p>
+                              <p className="text-corporate-gray text-sm leading-relaxed">
+                                {caseStudy.problem}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex flex-col items-end gap-2">
+                            {isExpanded ? 
+                              <ChevronUp className="w-5 h-5 text-corporate-gray" /> : 
+                              <ChevronDown className="w-5 h-5 text-corporate-gray" />
+                            }
+                            <div className="text-right">
+                              <Badge variant="outline" className="text-xs font-semibold mb-1 border-pal-orange text-pal-orange">
+                                {caseStudy.price}
+                              </Badge>
+                              <p className="text-xs text-corporate-gray">
+                                {caseStudy.timeline}
+                              </p>
+                            </div>
+                          </div>
                         </div>
-                      </div>
+                      </CardHeader>
+                    </CollapsibleTrigger>
+                    
+                    <CollapsibleContent>
+                      <CardContent className="pt-0 space-y-6">
+                        {/* Before/After Metrics Toggle */}
+                        <div className="space-y-4">
+                          <div className="flex justify-center">
+                            <div className="bg-gray-100 rounded-lg p-1 flex">
+                              <button
+                                onClick={() => setViewMode('before')}
+                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                                  viewMode === 'before' 
+                                    ? 'bg-white text-red-600 shadow-sm' 
+                                    : 'text-gray-600 hover:text-gray-800'
+                                }`}
+                              >
+                                Before
+                              </button>
+                              <button
+                                onClick={() => setViewMode('after')}
+                                className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                                  viewMode === 'after' 
+                                    ? 'bg-white text-green-600 shadow-sm' 
+                                    : 'text-gray-600 hover:text-gray-800'
+                                }`}
+                              >
+                                After
+                              </button>
+                            </div>
+                          </div>
 
-                      {/* Process Steps */}
-                      <div className="space-y-4">
-                        <h4 className="font-semibold text-corporate-dark flex items-center gap-2">
-                          <Clock className="w-4 h-4" />
-                          Transformation Process
-                        </h4>
-                        <ol className="space-y-3">
-                          {caseStudy.process.map((step, idx) => (
-                            <li key={idx} className="flex items-start gap-3">
-                              <div className="w-6 h-6 rounded-full bg-corporate-primary text-white text-xs font-bold flex items-center justify-center mt-0.5 flex-shrink-0">
-                                {idx + 1}
+                          <div className="grid grid-cols-1 gap-3">
+                            {(viewMode === 'before' ? caseStudy.beforeMetrics : caseStudy.afterMetrics).map((metric, idx) => (
+                              <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 border">
+                                <span className="text-sm font-medium text-corporate-dark">{metric.label}</span>
+                                <div className="flex items-center gap-2">
+                                  {viewMode === 'before' ? (
+                                    <XCircle className="w-4 h-4 text-red-500" />
+                                  ) : (
+                                    <CheckCircle className="w-4 h-4 text-green-500" />
+                                  )}
+                                  <span className={`text-sm font-semibold ${
+                                    viewMode === 'before' ? 'text-red-600' : 'text-green-600'
+                                  }`}>
+                                    {metric.value}
+                                  </span>
+                                </div>
                               </div>
-                              <span className="text-corporate-gray text-sm leading-relaxed">{step}</span>
-                            </li>
-                          ))}
-                        </ol>
-                      </div>
-
-                      {/* Projected Results */}
-                      <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200">
-                        <div className="flex items-center gap-3 mb-2">
-                          <TrendingUp className="w-5 h-5 text-green-600" />
-                          <h4 className="font-semibold text-green-800">Projected Results</h4>
+                            ))}
+                          </div>
                         </div>
-                        <p className="text-green-700 text-sm leading-relaxed">
-                          {caseStudy.results}
-                        </p>
-                      </div>
 
-                      {/* Service Package Info */}
-                      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-xl border border-blue-200">
-                        <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-semibold text-blue-800">{caseStudy.packageName}</h4>
-                          <Badge className="bg-blue-100 text-blue-800">{caseStudy.businessType}</Badge>
+                        {/* Process Steps */}
+                        <div className="space-y-4">
+                          <h4 className="font-semibold text-corporate-dark flex items-center gap-2">
+                            <Clock className="w-4 h-4" />
+                            Transformation Process
+                          </h4>
+                          <ol className="space-y-3">
+                            {caseStudy.process.map((step, idx) => (
+                              <li key={idx} className="flex items-start gap-3">
+                                <div className="w-6 h-6 rounded-full bg-pal-purple text-white text-xs font-bold flex items-center justify-center mt-0.5 flex-shrink-0">
+                                  {idx + 1}
+                                </div>
+                                <span className="text-corporate-gray text-sm leading-relaxed">{step}</span>
+                              </li>
+                            ))}
+                          </ol>
                         </div>
-                        <p className="text-blue-700 text-sm mb-3">
-                          This scenario demonstrates our <strong>{caseStudy.packageName}</strong> approach for {caseStudy.businessType.toLowerCase()} businesses.
-                        </p>
-                      </div>
-                      
-                      <div className="pt-4 border-t border-corporate-light/30">
-                        <Button 
-                          onClick={() => handleGetStarted(caseStudy.serviceUrl)}
-                          className="w-full bg-corporate-primary hover:bg-corporate-primary/90 text-white font-semibold py-3 rounded-xl"
-                        >
-                          Start Your {caseStudy.packageName}
-                          <ArrowRight className="w-4 h-4 ml-2" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </CollapsibleContent>
-                </Card>
-              </Collapsible>
-            );
-          })}
+
+                        {/* Projected Results */}
+                        <div className="bg-gradient-to-br from-pal-green/10 to-pal-green/5 p-4 rounded-xl border border-pal-green/20">
+                          <div className="flex items-center gap-3 mb-2">
+                            <TrendingUp className="w-5 h-5 text-pal-green" />
+                            <h4 className="font-semibold text-corporate-dark">Projected Results</h4>
+                          </div>
+                          <p className="text-corporate-gray text-sm leading-relaxed">
+                            {caseStudy.results}
+                          </p>
+                        </div>
+
+                        {/* Service Package Info */}
+                        <div className="bg-gradient-to-br from-pal-blue/10 to-pal-blue/5 p-4 rounded-xl border border-pal-blue/20">
+                          <div className="flex items-center justify-between mb-2">
+                            <h4 className="font-semibold text-corporate-dark">{caseStudy.packageName}</h4>
+                            <Badge className="bg-pal-orange/10 text-pal-orange border-pal-orange/20">{caseStudy.businessType}</Badge>
+                          </div>
+                          <p className="text-corporate-gray text-sm mb-3">
+                            This scenario demonstrates our <strong>{caseStudy.packageName}</strong> approach for {caseStudy.businessType.toLowerCase()} businesses.
+                          </p>
+                        </div>
+                        
+                        <div className="pt-4 border-t border-gray-200">
+                          <Button 
+                            onClick={() => handleGetStarted(caseStudy.serviceUrl)}
+                            className="w-full bg-pal-green hover:bg-pal-green/90 text-white font-semibold py-3 rounded-xl"
+                          >
+                            Start Your {caseStudy.packageName}
+                            <ArrowRight className="w-4 h-4 ml-2" />
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </CollapsibleContent>
+                  </Card>
+                </Collapsible>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { usePageTransition } from '@/components/PageTransition';
+import { useState, useEffect } from 'react';
 import { 
   Shield, 
   AlertTriangle, 
@@ -33,6 +34,43 @@ import {
 } from "lucide-react";
 import systemPalImage from '@/assets/pals/female-system-pal-edited.png';
 import maleSystemPalImage from '@/assets/pals/male-system-pal-edited.png';
+
+const AnimatedText = () => {
+  const phrases = [
+    "Save Lives",
+    "Save Time", 
+    "Save Money",
+    "Reduce Risk",
+    "Ensure Compliance",
+    "Build Confidence"
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsVisible(false);
+      
+      setTimeout(() => {
+        setCurrentIndex((prev) => (prev + 1) % phrases.length);
+        setIsVisible(true);
+      }, 300);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [phrases.length]);
+
+  return (
+    <span 
+      className={`block text-white/90 transition-all duration-300 ${
+        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+      }`}
+    >
+      {phrases[currentIndex]}
+    </span>
+  );
+};
 
 const SafetyVideosPage = () => {
   const { transitionTo } = usePageTransition();
@@ -157,7 +195,7 @@ const SafetyVideosPage = () => {
                 
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight">
                   Safety Training Videos That 
-                  <span className="block text-white/90">Save Lives</span>
+                  <AnimatedText />
                 </h1>
                 
                 <p className="text-base sm:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8 leading-relaxed max-w-lg">

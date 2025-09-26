@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { SocialIcon } from "react-social-icons";
+import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
 
 export const EnhancedFooter = () => {
   const currentYear = new Date().getFullYear();
@@ -167,6 +168,9 @@ export const EnhancedFooter = () => {
                 </div>
               </div>
             </div>
+
+            {/* Newsletter Signup */}
+            <NewsletterSignup />
 
             {/* Bottom Bar */}
             <div className="border-t border-gray-200 pt-6">

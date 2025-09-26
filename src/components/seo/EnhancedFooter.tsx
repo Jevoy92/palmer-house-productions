@@ -78,6 +78,11 @@ export const EnhancedFooter = () => {
                       DIY Downloads
                     </Link>
                   </li>
+                  <li>
+                    <Link to="/safety-videos" className="text-corporate-gray hover:text-pal-purple transition-colors">
+                      Safety Videos
+                    </Link>
+                  </li>
                 </ul>
               </div>
 

@@ -26,6 +26,7 @@ import AboutUs from "./pages/AboutUs";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import DIYDownloads from "./pages/services/DIYDownloads";
+import SafetyVideos from "./pages/SafetyVideos";
 import Team from "./pages/company/Team";
 import Values from "./pages/company/Values";
 import Reviews from "./pages/resources/Reviews";
@@ -92,9 +93,10 @@ const App = () => (
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/thank-you" element={<ThankYou />} />
-          <Route path="/locations/bellevue-wa" element={<BellevueWA />} />
-          <Route path="/locations/portland-or" element={<PortlandOR />} />
-          <Route path="/services/diy-downloads" element={<DIYDownloads />} />
+           <Route path="/locations/bellevue-wa" element={<BellevueWA />} />
+           <Route path="/locations/portland-or" element={<PortlandOR />} />
+           <Route path="/services/diy-downloads" element={<DIYDownloads />} />
+           <Route path="/safety-videos" element={<SafetyVideos />} />
           <Route path="/services/group-coaching" element={<Navigate to="/video-packages" replace />} />
           <Route path="/services/monthly-content" element={<Navigate to="/video-packages" replace />} />
           <Route path="/company/team" element={<Team />} />

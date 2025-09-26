@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Users, TrendingUp, FileText } from "lucide-react";
+import { Clock, Users, TrendingUp, FileText, Calculator } from "lucide-react";
 
 interface AssessmentOption {
   id: string;
@@ -36,6 +36,21 @@ const assessmentOptions: AssessmentOption[] = [
     ],
     difficulty: 'Beginner',
     recommended: true
+  },
+  {
+    id: 'training-roi',
+    title: 'Training ROI Calculator',
+    description: 'Calculate the potential return on investment for video-based training systems.',
+    estimatedTime: '3-5 minutes',
+    questionsCount: 5,
+    icon: <Calculator className="h-6 w-6" />,
+    benefits: [
+      'Training cost analysis',
+      'Support ticket reduction estimates',
+      'ROI and payback calculations',
+      'Investment recommendations'
+    ],
+    difficulty: 'Beginner'
   }
 ];
 
@@ -57,7 +72,7 @@ export const AssessmentPreview = ({ onSelectAssessment, currentPath }: Assessmen
         </p>
       </div>
 
-      <div className="grid md:grid-cols-1 gap-6 max-w-md mx-auto">
+      <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
         {assessmentOptions.map((assessment) => (
           <Card 
             key={assessment.id}

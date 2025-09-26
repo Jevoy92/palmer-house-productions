@@ -8,6 +8,7 @@ import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 import { MainContent } from "@/components/MainContent";
 import { VideoReadinessAudit } from "@/components/assessments/VideoReadinessAudit";
 import { AssessmentPreview } from "@/components/assessments/AssessmentPreview";
+import { TrainingROICalculator } from "@/components/assessments/TrainingROICalculator";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,7 +30,7 @@ const ContentStrategyPage = () => {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const assessment = params.get('assessment');
-    if (assessment && ['video-readiness'].includes(assessment)) {
+    if (assessment && ['video-readiness', 'training-roi'].includes(assessment)) {
       setActiveAssessment(assessment);
     }
   }, []);
@@ -49,6 +50,27 @@ const ContentStrategyPage = () => {
               ← Back to Strategy Hub
             </Button>
             <VideoReadinessAudit />
+          </div>
+        </MainContent>
+      </div>
+    );
+  }
+
+  if (activeAssessment === "training-roi") {
+    return (
+      <div className="min-h-screen bg-white">
+        <SkipLink href="#main-content">Skip to main content</SkipLink>
+        <Navigation />
+        <MainContent className="pt-20">
+          <div className="py-8">
+            <Button 
+              onClick={() => setActiveAssessment(null)}
+              variant="outline"
+              className="mb-6"
+            >
+              ← Back to Strategy Hub
+            </Button>
+            <TrainingROICalculator />
           </div>
         </MainContent>
       </div>

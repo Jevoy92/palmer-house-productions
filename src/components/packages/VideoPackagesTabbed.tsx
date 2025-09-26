@@ -210,9 +210,9 @@ export const VideoPackagesTabbed = () => {
                 <div className="text-xs opacity-85">DIY resources • Starter sessions</div>
               </div>
               
-              <div className="w-[clamp(5rem,12vw,8rem)] h-[clamp(5rem,12vw,8rem)] flex-shrink-0 ml-4">
+              <div className="w-[clamp(5rem,12vw,16rem)] h-[clamp(5rem,12vw,16rem)] flex-shrink-0 ml-4">
                 <img 
-                  className="w-full h-full object-contain transition-all duration-500 group-hover:scale-125 md:group-hover:scale-150" 
+                  className="w-full h-full object-contain transition-all duration-500 group-hover:scale-110 md:group-hover:scale-125" 
                   src={reelPalImage} 
                   alt="Reel Pal character"
                   loading="eager"
@@ -268,9 +268,9 @@ export const VideoPackagesTabbed = () => {
                 <div className="text-xs opacity-85">Training • FAQ • Onboarding</div>
               </div>
               
-              <div className="w-[clamp(5rem,12vw,8rem)] h-[clamp(5rem,12vw,8rem)] flex-shrink-0 ml-4">
+              <div className="w-[clamp(5rem,12vw,16rem)] h-[clamp(5rem,12vw,16rem)] flex-shrink-0 ml-4">
                 <img 
-                  className="w-full h-full object-contain transition-all duration-500 group-hover:scale-125 md:group-hover:scale-150" 
+                  className="w-full h-full object-contain transition-all duration-500 group-hover:scale-110 md:group-hover:scale-125" 
                   src={systemPalImage} 
                   alt="System Pal character"
                   loading="eager"
@@ -325,9 +325,9 @@ export const VideoPackagesTabbed = () => {
                 <div className="text-xs opacity-85">YouTube • Brand kits • Authority</div>
               </div>
               
-              <div className="w-[clamp(5rem,12vw,8rem)] h-[clamp(5rem,12vw,8rem)] flex-shrink-0 ml-4">
+              <div className="w-[clamp(5rem,12vw,16rem)] h-[clamp(5rem,12vw,16rem)] flex-shrink-0 ml-4">
                 <img 
-                  className="w-full h-full object-contain transition-all duration-500 group-hover:scale-125 md:group-hover:scale-150" 
+                  className="w-full h-full object-contain transition-all duration-500 group-hover:scale-110 md:group-hover:scale-125" 
                   src={evergreenPalImage} 
                   alt="Evergreen Pal character"
                   loading="eager"
@@ -382,9 +382,9 @@ export const VideoPackagesTabbed = () => {
                 <div className="text-xs opacity-85">Music videos • Commercials • Hero content</div>
               </div>
               
-              <div className="w-[clamp(5rem,12vw,8rem)] h-[clamp(5rem,12vw,8rem)] flex-shrink-0 ml-4">
+              <div className="w-[clamp(5rem,12vw,16rem)] h-[clamp(5rem,12vw,16rem)] flex-shrink-0 ml-4">
                 <img 
-                  className="w-full h-full object-contain transition-all duration-500 group-hover:scale-125 md:group-hover:scale-150" 
+                  className="w-full h-full object-contain transition-all duration-500 group-hover:scale-110 md:group-hover:scale-125" 
                   src={spotlightPalImage} 
                   alt="Spotlight Pal character"
                   loading="eager"

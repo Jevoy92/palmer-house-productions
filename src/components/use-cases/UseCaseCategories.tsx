@@ -265,14 +265,14 @@ export const UseCaseCategories = () => {
   };
 
   return (
-    <section className="py-16 sm:py-24 lg:py-32 relative z-10">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+    <section className="py-[clamp(4rem,12vw,8rem)] relative z-10">
+      <div className="max-w-7xl mx-auto px-[clamp(1rem,4vw,2rem)] relative z-10">
         {/* Header - White Card */}
-        <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl text-center mb-12">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black mb-8 text-corporate-dark tracking-tight">
+        <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-[clamp(2rem,8vw,4rem)] video-shadow-xl text-center mb-[clamp(3rem,8vw,3rem)]">
+          <h2 className="text-[clamp(2rem,6vw,3.5rem)] font-display font-black mb-[clamp(2rem,5vw,2rem)] text-corporate-dark tracking-tight">
             Seven Seattle <span className="text-pal-green">Success Stories</span>
           </h2>
-          <p className="text-lg xl:text-xl text-corporate-gray mb-8 max-w-4xl mx-auto font-medium leading-relaxed">
+          <p className="text-[clamp(1.125rem,3vw,1.25rem)] text-corporate-gray mb-[clamp(2rem,5vw,2rem)] max-w-4xl mx-auto font-medium leading-relaxed">
             Real business scenarios from across Seattle. See the specific challenges, processes, and projected results 
             for each strategic video content system.
           </p>
@@ -302,8 +302,8 @@ export const UseCaseCategories = () => {
         </div>
 
         {/* Case Studies - White Card */}
-        <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-[clamp(2rem,8vw,4rem)] video-shadow-xl">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-[clamp(2rem,5vw,2rem)]">
             {caseStudies.map((caseStudy) => {
               const isExpanded = expandedCards.includes(caseStudy.id);
               

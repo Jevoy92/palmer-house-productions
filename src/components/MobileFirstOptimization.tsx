@@ -2,56 +2,48 @@ import { useEffect } from 'react';
 
 export const MobileFirstOptimization = () => {
   useEffect(() => {
-    // Mobile-first responsive design enhancements
+    // Enhanced mobile-first responsive design optimizations
     const optimizeForMobile = () => {
-      // Fix button touch targets
-      const buttons = document.querySelectorAll('button, a[role="button"], .button');
-      buttons.forEach(button => {
-        const btn = button as HTMLElement;
-        const rect = btn.getBoundingClientRect();
+      // Ensure all interactive elements meet touch target requirements
+      const interactiveElements = document.querySelectorAll('button, a[role="button"], .button, input, select, textarea');
+      interactiveElements.forEach(element => {
+        const el = element as HTMLElement;
+        const rect = el.getBoundingClientRect();
         if (rect.height < 44 || rect.width < 44) {
-          btn.style.minHeight = '44px';
-          btn.style.minWidth = '44px';
-          btn.style.padding = '12px 16px';
+          el.classList.add('min-touch-target');
         }
       });
 
-      // Optimize text for mobile readability
-      const textElements = document.querySelectorAll('p, span, div');
-      textElements.forEach(element => {
-        const el = element as HTMLElement;
-        if (window.innerWidth < 768) {
-          const computedStyle = window.getComputedStyle(el);
+      // Optimize text readability - ensure minimum 16px font size on mobile to prevent zoom
+      if (window.innerWidth < 768) {
+        const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], textarea');
+        inputs.forEach(input => {
+          const inp = input as HTMLElement;
+          const computedStyle = window.getComputedStyle(inp);
           const fontSize = parseFloat(computedStyle.fontSize);
           if (fontSize < 16) {
-            el.style.fontSize = '16px';
+            inp.style.fontSize = '16px';
           }
-        }
-      });
+        });
+      }
 
-      // Fix horizontal overflow
-      const containers = document.querySelectorAll('div, section');
+      // Handle horizontal overflow gracefully
+      const containers = document.querySelectorAll('[data-overflow-check]');
       containers.forEach(container => {
         const cont = container as HTMLElement;
         if (cont.scrollWidth > cont.clientWidth) {
           cont.style.overflowX = 'auto';
+          cont.style.scrollbarWidth = 'thin';
         }
-      });
-
-      // Optimize form inputs for mobile
-      const inputs = document.querySelectorAll('input, textarea, select');
-      inputs.forEach(input => {
-        const inp = input as HTMLElement;
-        inp.style.minHeight = '44px';
-        inp.style.fontSize = '16px'; // Prevents zoom on iOS
       });
     };
 
-    // Run optimization on load and resize
-    optimizeForMobile();
-    window.addEventListener('resize', optimizeForMobile);
+    // Performance-optimized scroll observer for animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -10% 0px'
+    };
 
-    // Intersection Observer for performance
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -59,15 +51,28 @@ export const MobileFirstOptimization = () => {
           element.classList.add('animate-fade-in');
         }
       });
-    });
+    }, observerOptions);
 
-    // Observe all sections
-    const sections = document.querySelectorAll('section');
+    // Observe sections with animation potential
+    const sections = document.querySelectorAll('section[data-animate]');
     sections.forEach(section => observer.observe(section));
 
+    // Initial optimization
+    optimizeForMobile();
+
+    // Throttled resize handler for performance
+    let resizeTimeout: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(optimizeForMobile, 150);
+    };
+
+    window.addEventListener('resize', handleResize, { passive: true });
+
     return () => {
-      window.removeEventListener('resize', optimizeForMobile);
+      window.removeEventListener('resize', handleResize);
       observer.disconnect();
+      clearTimeout(resizeTimeout);
     };
   }, []);
 

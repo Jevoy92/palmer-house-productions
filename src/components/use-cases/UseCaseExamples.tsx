@@ -95,17 +95,17 @@ export const UseCaseExamples = () => {
   return (
     <section className="py-24 bg-corporate-light">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-5xl md:text-6xl font-display font-black mb-8 text-corporate-dark">
+        <div className="text-center mb-[clamp(4rem,10vw,4rem)]">
+          <h2 className="text-[clamp(3rem,8vw,4rem)] font-display font-black mb-[clamp(2rem,5vw,2rem)] text-corporate-dark">
             Real-World <span className="text-gradient-1">Examples</span>
           </h2>
-          <p className="text-xl text-corporate-gray max-w-3xl mx-auto font-medium">
+          <p className="text-[clamp(1.25rem,3vw,1.5rem)] text-corporate-gray max-w-3xl mx-auto font-medium">
             See how different industries leverage video for specific business outcomes
           </p>
         </div>
 
         {/* Filters */}
-        <div className="flex flex-col lg:flex-row gap-4 justify-center items-center mb-12">
+        <div className="flex flex-wrap gap-4 justify-center items-center mb-[clamp(3rem,8vw,3rem)]">
           <div className="flex items-center space-x-2">
             <Filter size={20} className="text-corporate-gray" />
             <span className="text-corporate-gray font-medium">Filter by:</span>
@@ -145,7 +145,7 @@ export const UseCaseExamples = () => {
         </div>
 
         {/* Examples Grid */}
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-[clamp(2rem,5vw,2rem)]">
           {filteredExamples.map((example) => (
             <div key={example.id} className="bg-white rounded-3xl p-6 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105 group">
               {/* Video Preview */}

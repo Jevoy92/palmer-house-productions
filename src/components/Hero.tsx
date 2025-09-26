@@ -71,14 +71,14 @@ export const Hero = () => {
     >
       
       {/* White Card Container */}
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl">
+      <div className="relative z-10 max-w-6xl mx-auto px-[clamp(1rem,4vw,2rem)]">
+        <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-[clamp(2rem,8vw,4rem)] video-shadow-xl">
           {!showHeadline ? (
             <div className={`flex flex-col items-center justify-center min-h-[50vh] transition-opacity duration-700 ${fadeOutQuestions ? 'opacity-0' : 'opacity-100'}`}>
               {questions.map((question, index) => (
                 <div
                   key={index}
-                  className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-medium text-corporate-dark mb-4 text-center ${
+                  className={`text-[clamp(1.5rem,5vw,3rem)] font-display font-medium text-corporate-dark mb-4 text-center ${
                     index <= currentQuestionIndex ? 'question-reveal' : 'opacity-0'
                   }`}
                   style={{
@@ -91,25 +91,25 @@ export const Hero = () => {
             </div>
           ) : (
             <div className={`text-center transition-opacity duration-700 ${showHeadline ? 'opacity-100' : 'opacity-0'}`}>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-display font-semibold mb-6 sm:mb-8 tracking-tight leading-[1.1]">
+              <h1 className="text-[clamp(1.75rem,6vw,4rem)] font-display font-semibold mb-[clamp(1.5rem,4vw,2rem)] tracking-tight leading-[1.1]">
                 We turn those questions into a{" "}
                 <span className="text-gradient-1">Content System</span>
               </h1>
               
-              <p className="text-base sm:text-lg md:text-xl text-corporate-gray mb-8 sm:mb-10 font-medium max-w-4xl mx-auto leading-relaxed">
+              <p className="text-[clamp(1rem,3vw,1.25rem)] text-corporate-gray mb-[clamp(2rem,5vw,2.5rem)] font-medium max-w-4xl mx-auto leading-relaxed">
                 One shoot day. Months of reusable video.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
+              <div className="flex flex-wrap gap-[clamp(1rem,3vw,1.5rem)] justify-center">
                 <button 
                   onClick={handleGetStarted}
-                  className="btn-primary w-full sm:w-auto"
+                  className="btn-primary min-w-[200px] flex-1 max-w-[300px]"
                 >
                   Build My Content System
                 </button>
                 <button 
                   onClick={handleBookStrategyCall}
-                  className="btn-secondary w-full sm:w-auto"
+                  className="btn-secondary min-w-[200px] flex-1 max-w-[300px]"
                 >
                   Book Strategy Call
                 </button>

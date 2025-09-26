@@ -99,21 +99,6 @@ const SafetyVideosPage = () => {
     }
   ];
 
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      title: "Safety Manager, Construction Plus",
-      content: "Our incident rate dropped by 60% after implementing Palmer House safety training videos. The content is engaging and our workers actually retain the information.",
-      rating: 5
-    },
-    {
-      name: "Michael Chen",
-      title: "HR Director, Tech Solutions Inc",
-      content: "The flexibility to train remote workers with consistent, high-quality safety content has been game-changing for our organization.",
-      rating: 5
-    }
-  ];
-
   return (
     <div className="min-h-screen bg-gray-50 overflow-x-hidden font-sans">
       <MetaTags 
@@ -165,7 +150,7 @@ const SafetyVideosPage = () => {
                 <div className="flex flex-col sm:flex-row gap-4 mb-12">
                   <Button 
                     size="lg"
-                    className="bg-white text-pal-purple hover:bg-white/90 text-lg px-8 py-4 h-auto"
+                    className="bg-white text-pal-purple hover:bg-white/90 font-semibold text-lg px-8 py-4 h-auto"
                     onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
                   >
                     <Video className="mr-2 h-5 w-5" />
@@ -174,7 +159,7 @@ const SafetyVideosPage = () => {
                   <Button 
                     variant="outline"
                     size="lg"
-                    className="border-white text-white hover:bg-white/10 text-lg px-8 py-4 h-auto"
+                    className="border-white text-white hover:bg-white hover:text-pal-purple font-semibold text-lg px-8 py-4 h-auto"
                     onClick={() => transitionTo('/system-pal')}
                   >
                     Learn More About System Pal
@@ -195,20 +180,20 @@ const SafetyVideosPage = () => {
                 </div>
               </div>
 
-              <div className="relative">
+              <div className="relative group">
                 <div className="relative w-full max-w-lg mx-auto">
                   {/* Character Images */}
                   <div className="relative w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] mx-auto">
                     <img 
                       src={systemPalImage} 
                       alt="Female System Pal character representing safety training expertise"
-                      className="absolute inset-0 w-full h-full object-contain hover:opacity-0 transition-opacity duration-500"
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-100"
                       loading="eager"
                     />
                     <img 
                       src={maleSystemPalImage} 
                       alt="Male System Pal character representing safety training expertise"
-                      className="absolute inset-0 w-full h-full object-contain opacity-0 hover:opacity-100 transition-opacity duration-500"
+                      className="absolute inset-0 w-full h-full object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                       loading="eager"
                     />
                   </div>
@@ -357,36 +342,6 @@ const SafetyVideosPage = () => {
           </div>
         </section>
 
-        {/* Testimonials */}
-        <section className="py-20 lg:py-32 bg-white">
-          <div className="container mx-auto px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
-                What Safety Professionals Say
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              {testimonials.map((testimonial, index) => (
-                <Card key={index} className="p-8">
-                  <CardContent className="space-y-4">
-                    <div className="flex gap-1 mb-4">
-                      {Array(testimonial.rating).fill(0).map((_, i) => (
-                        <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                      ))}
-                    </div>
-                    <p className="text-lg text-gray-700 leading-relaxed">"{testimonial.content}"</p>
-                    <div className="border-t pt-4">
-                      <div className="font-bold text-gray-900">{testimonial.name}</div>
-                      <div className="text-sm text-gray-600">{testimonial.title}</div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* CTA Section */}
         <section className="py-20 lg:py-32 bg-gradient-to-r from-pal-purple to-pal-purple/90">
           <div className="container mx-auto px-6 lg:px-8 text-center">
@@ -407,7 +362,7 @@ const SafetyVideosPage = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
                   size="lg"
-                  className="bg-white text-pal-purple hover:bg-white/90 text-lg px-8 py-4 h-auto"
+                  className="bg-white text-pal-purple hover:bg-white/90 font-semibold text-lg px-8 py-4 h-auto"
                   onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
                 >
                   Schedule Safety Consultation
@@ -415,7 +370,7 @@ const SafetyVideosPage = () => {
                 <Button 
                   variant="outline"
                   size="lg"
-                  className="border-white text-white hover:bg-white/10 text-lg px-8 py-4 h-auto"
+                  className="border-white text-white hover:bg-white hover:text-pal-purple font-semibold text-lg px-8 py-4 h-auto"
                   onClick={() => transitionTo('/contact')}
                 >
                   Get Custom Quote

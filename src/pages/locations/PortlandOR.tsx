@@ -6,6 +6,27 @@ import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Link } from "react-router-dom";
 import { LocationStructuredData } from "@/components/seo/LocationStructuredData";
 import { FAQSchema } from "@/components/seo/FAQSchema";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { 
+  MapPin, 
+  Clock, 
+  Users, 
+  Star, 
+  Building, 
+  Phone, 
+  Globe, 
+  CheckCircle,
+  ArrowRight,
+  Camera,
+  Video,
+  Edit3,
+  Target,
+  DollarSign,
+  Calendar,
+  Award
+} from "lucide-react";
 
 const PortlandOR = () => {
   return (
@@ -35,166 +56,275 @@ const PortlandOR = () => {
       />
       <Navigation />
       <MainContent>
-        <section className="py-32 relative overflow-hidden">
-          <div className="absolute inset-0 gradient-subtle-1 opacity-30"></div>
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+        <section className="py-16 sm:py-20 lg:py-32 relative overflow-hidden bg-gray-50">
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-10 left-10 w-16 sm:w-20 h-16 sm:h-20 border-2 border-corporate-dark rounded-full animate-pulse"></div>
+            <div className="absolute top-20 right-20 w-12 sm:w-16 h-12 sm:h-16 border-2 border-corporate-dark rotate-45 animate-pulse delay-300"></div>
+            <div className="absolute bottom-20 left-1/4 w-10 sm:w-12 h-10 sm:h-12 border-2 border-corporate-dark rounded-full animate-pulse delay-700"></div>
+          </div>
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <BreadcrumbNavigation />
-            <h1 className="text-4xl md:text-6xl font-display font-black mb-6 text-corporate-dark tracking-tight">
-              Portland, OR Video Production
-            </h1>
-            <p className="text-lg md:text-xl text-corporate-gray max-w-3xl mb-12">
-              Our Portland studio partners with local Oregon companies as well as remote-first and global teams. We build content systems—not one-off videos.
-            </p>
+            <div className="text-center mb-12 lg:mb-16">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 text-corporate-dark leading-tight">
+                Portland, OR Video Production
+              </h1>
+              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Our Portland studio partners with local Oregon companies as well as remote-first and global teams. We build content systems—not one-off videos.
+              </p>
+            </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-20">
-              <div className="bg-white rounded-2xl video-shadow p-6">
-                <h2 className="text-2xl font-bold text-corporate-dark mb-3">Services we offer</h2>
-                <ul className="list-disc list-inside text-corporate-gray space-y-1">
-                  <li>Corporate and brand storytelling</li>
-                  <li>Social content and reels bundles</li>
-                  <li>Internal training and onboarding libraries</li>
-                  <li>Customer testimonials and case studies</li>
-                </ul>
-                <Link to="/video-packages" className="inline-block mt-4 font-semibold text-social-purple hover:underline">
-                  Explore Video Packages
-                </Link>
-              </div>
-              <div className="bg-white rounded-2xl video-shadow p-6">
-                <h2 className="text-2xl font-bold text-corporate-dark mb-3">Start a project</h2>
-                <p className="text-corporate-gray mb-4">Tell us about your next shoot or system. We'll recommend the best path.</p>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Link to="/contact" className="px-6 py-3 gradient-social-1 text-white font-bold rounded-xl inline-block">
-                    Contact Us
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-16 lg:mb-20">
+              <Card className="group hover:shadow-2xl transition-all duration-300 border-l-6 border-blue-500 bg-white hover:scale-105 animate-fade-in">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 group-hover:scale-110 transition-transform">
+                      <Video className="h-6 sm:h-8 w-6 sm:w-8" />
+                    </div>
+                    <CardTitle className="text-xl sm:text-2xl text-corporate-dark">Services we offer</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="space-y-3 mb-6">
+                    {[
+                      "Corporate and brand storytelling",
+                      "Social content and reels bundles", 
+                      "Internal training and onboarding libraries",
+                      "Customer testimonials and case studies"
+                    ].map((service, index) => (
+                      <div key={index} className="flex items-center gap-3">
+                        <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                        <span className="text-gray-600">{service}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <Link to="/video-packages" className="inline-flex items-center font-semibold text-blue-600 hover:text-blue-700 transition-colors">
+                    Explore Video Packages
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
-                  <a
-                    href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078320"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-6 py-3 border-2 border-social-purple text-social-purple font-bold rounded-xl inline-block"
-                  >
-                    Book Strategy Call
-                  </a>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="group hover:shadow-2xl transition-all duration-300 border-l-6 border-green-500 bg-white hover:scale-105 animate-fade-in">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-green-50 rounded-xl flex items-center justify-center text-green-600 group-hover:scale-110 transition-transform">
+                      <Phone className="h-6 sm:h-8 w-6 sm:w-8" />
+                    </div>
+                    <CardTitle className="text-xl sm:text-2xl text-corporate-dark">Start a project</CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <CardDescription className="text-base text-gray-600 mb-6 leading-relaxed">
+                    Tell us about your next shoot or system. We'll recommend the best path.
+                  </CardDescription>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button asChild className="bg-green-600 hover:bg-green-700 text-white">
+                      <Link to="/contact">Contact Us</Link>
+                    </Button>
+                    <Button variant="outline" asChild className="border-green-500 text-green-600 hover:bg-green-50">
+                      <a
+                        href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078320"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Book Strategy Call
+                      </a>
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Oregon Service Areas */}
-            <div className="bg-white rounded-2xl video-shadow p-8 mb-20">
-              <h2 className="text-3xl font-bold text-corporate-dark mb-6">Oregon Service Coverage</h2>
-              <p className="text-lg text-corporate-gray mb-6">
-                From our Portland base, we serve businesses throughout Oregon and the Pacific Northwest with comprehensive video production services.
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div>
-                  <h3 className="text-xl font-bold text-corporate-dark mb-3">Metro Portland</h3>
-                  <ul className="space-y-2 text-corporate-gray">
-                    <li>Downtown Portland</li>
-                    <li>Beaverton & Tigard</li>
-                    <li>Lake Oswego & Milwaukie</li>
-                    <li>Gresham & East Portland</li>
-                  </ul>
+            <Card className="group hover:shadow-2xl transition-all duration-300 border-l-6 border-purple-500 bg-white mb-16 lg:mb-20 animate-fade-in">
+              <CardHeader>
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-purple-50 rounded-xl flex items-center justify-center text-purple-600">
+                    <MapPin className="h-6 sm:h-8 w-6 sm:w-8" />
+                  </div>
+                  <CardTitle className="text-2xl sm:text-3xl text-corporate-dark">Oregon Service Coverage</CardTitle>
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-corporate-dark mb-3">Production Options</h3>
-                  <ul className="space-y-2 text-corporate-gray">
-                    <li>Professional studio space</li>
-                    <li>Corporate office filming</li>
-                    <li>Outdoor location shoots</li>
-                    <li>Multi-location projects</li>
-                  </ul>
+              </CardHeader>
+              <CardContent>
+                <CardDescription className="text-base sm:text-lg text-gray-600 mb-6 leading-relaxed">
+                  From our Portland base, we serve businesses throughout Oregon and the Pacific Northwest with comprehensive video production services.
+                </CardDescription>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-bold text-corporate-dark mb-4 flex items-center gap-2">
+                      <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200">Metro Portland</Badge>
+                    </h3>
+                    <div className="space-y-2">
+                      {["Downtown Portland", "Beaverton & Tigard", "Lake Oswego & Milwaukie", "Gresham & East Portland"].map((area, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-500" />
+                          <span className="text-gray-600">{area}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-bold text-corporate-dark mb-4 flex items-center gap-2">
+                      <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200">Production Options</Badge>
+                    </h3>
+                    <div className="space-y-2">
+                      {["Professional studio space", "Corporate office filming", "Outdoor location shoots", "Multi-location projects"].map((option, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-500" />
+                          <span className="text-gray-600">{option}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-bold text-corporate-dark mb-4 flex items-center gap-2">
+                      <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200">Extended Coverage</Badge>
+                    </h3>
+                    <div className="space-y-2">
+                      {["Salem & Mid-Valley", "Bend & Central Oregon", "Coastal regions", "Remote collaboration"].map((range, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-500" />
+                          <span className="text-gray-600">{range}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-corporate-dark mb-3">Extended Coverage</h3>
-                  <ul className="space-y-2 text-corporate-gray">
-                    <li>Salem & Mid-Valley</li>
-                    <li>Bend & Central Oregon</li>
-                    <li>Coastal regions</li>
-                    <li>Remote collaboration</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
             {/* Content Systems Focus */}
-            <div className="bg-white rounded-2xl video-shadow p-8 mb-20">
-              <h2 className="text-3xl font-bold text-corporate-dark mb-6">Content Systems, Not One-Offs</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-xl font-bold text-corporate-dark mb-4">Scalable Video Programs</h3>
-                  <p className="text-corporate-gray mb-4">
-                    We specialize in building sustainable content systems that grow with your business. Instead of isolated videos, we create frameworks for ongoing content production.
-                  </p>
-                  <ul className="space-y-2 text-corporate-gray">
-                    <li>• Monthly content production schedules</li>
-                    <li>• Branded video templates and styles</li>
-                    <li>• Training libraries that expand over time</li>
-                  </ul>
+            <Card className="group hover:shadow-2xl transition-all duration-300 border-l-6 border-amber-500 bg-white mb-16 lg:mb-20 animate-fade-in">
+              <CardHeader>
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
+                    <Globe className="h-6 sm:h-8 w-6 sm:w-8" />
+                  </div>
+                  <CardTitle className="text-2xl sm:text-3xl text-corporate-dark">Content Systems, Not One-Offs</CardTitle>
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-corporate-dark mb-4">Remote-First Approach</h3>
-                  <p className="text-corporate-gray mb-4">
-                    Working with distributed teams across time zones? We've built our processes to support seamless collaboration whether you're local or global.
-                  </p>
-                  <ul className="space-y-2 text-corporate-gray">
-                    <li>• Cloud-based review and approval</li>
-                    <li>• Flexible scheduling across time zones</li>
-                    <li>• Digital-first delivery systems</li>
-                  </ul>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-bold text-corporate-dark mb-4 flex items-center gap-2">
+                      <Building className="w-5 h-5 text-amber-600" />
+                      Scalable Video Programs
+                    </h3>
+                    <CardDescription className="text-base text-gray-600 mb-4 leading-relaxed">
+                      We specialize in building sustainable content systems that grow with your business. Instead of isolated videos, we create frameworks for ongoing content production.
+                    </CardDescription>
+                    <div className="space-y-2">
+                      {[
+                        "Monthly content production schedules",
+                        "Branded video templates and styles", 
+                        "Training libraries that expand over time"
+                      ].map((benefit, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                          <span className="text-gray-600">{benefit}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-bold text-corporate-dark mb-4 flex items-center gap-2">
+                      <Users className="w-5 h-5 text-amber-600" />
+                      Remote-First Approach
+                    </h3>
+                    <CardDescription className="text-base text-gray-600 mb-4 leading-relaxed">
+                      Working with distributed teams across time zones? We've built our processes to support seamless collaboration whether you're local or global.
+                    </CardDescription>
+                    <div className="space-y-2">
+                      {[
+                        "Cloud-based review and approval",
+                        "Flexible scheduling across time zones",
+                        "Digital-first delivery systems"
+                      ].map((benefit, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                          <span className="text-gray-600">{benefit}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
 
             {/* Investment & Process */}
-            <div className="bg-white rounded-2xl video-shadow p-8">
-              <h2 className="text-3xl font-bold text-corporate-dark mb-6">Investment & Timeline</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div>
-                  <h3 className="text-xl font-bold text-corporate-dark mb-4">Project Types</h3>
-                  <div className="space-y-3">
-                    <div className="border-l-4 border-social-purple pl-4">
-                      <h4 className="font-semibold text-corporate-dark">Single Videos</h4>
-                      <p className="text-sm text-corporate-gray">Starting at $500</p>
+            <Card className="group hover:shadow-2xl transition-all duration-300 border-l-6 border-red-500 bg-white animate-fade-in">
+              <CardHeader>
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-red-50 rounded-xl flex items-center justify-center text-red-600">
+                    <DollarSign className="h-6 sm:h-8 w-6 sm:w-8" />
+                  </div>
+                  <CardTitle className="text-2xl sm:text-3xl text-corporate-dark">Investment & Timeline</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-bold text-corporate-dark mb-4 flex items-center gap-2">
+                      <DollarSign className="w-5 h-5 text-red-600" />
+                      Project Types
+                    </h3>
+                    <div className="space-y-4">
+                      {[
+                        { title: "Single Videos", price: "Starting at $500" },
+                        { title: "Video Packages", price: "Starting at $2,500" },
+                        { title: "Business Video Assets", price: "Starting at $4,500" }
+                      ].map((project, index) => (
+                        <Card key={index} className="border-l-4 border-red-400 bg-red-50">
+                          <CardContent className="p-4">
+                            <h4 className="font-semibold text-corporate-dark">{project.title}</h4>
+                            <p className="text-sm text-gray-600">{project.price}</p>
+                          </CardContent>
+                        </Card>
+                      ))}
                     </div>
-                    <div className="border-l-4 border-social-purple pl-4">
-                      <h4 className="font-semibold text-corporate-dark">Video Packages</h4>
-                      <p className="text-sm text-corporate-gray">Starting at $2,500</p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-bold text-corporate-dark mb-4 flex items-center gap-2">
+                      <Calendar className="w-5 h-5 text-red-600" />
+                      Timeline
+                    </h3>
+                    <div className="space-y-4">
+                      {[
+                        { phase: "Discovery & Planning", duration: "1-2 weeks" },
+                        { phase: "Production", duration: "1-3 days filming" },
+                        { phase: "Post-Production", duration: "2-4 weeks editing" }
+                      ].map((timeline, index) => (
+                        <div key={index} className="border-l-4 border-red-400 pl-4">
+                          <h4 className="font-semibold text-corporate-dark">{timeline.phase}</h4>
+                          <p className="text-sm text-gray-600">{timeline.duration}</p>
+                        </div>
+                      ))}
                     </div>
-                    <div className="border-l-4 border-social-purple pl-4">
-                      <h4 className="font-semibold text-corporate-dark">Business Video Assets</h4>
-                      <p className="text-sm text-corporate-gray">Starting at $4,500</p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg sm:text-xl font-bold text-corporate-dark mb-4 flex items-center gap-2">
+                      <Award className="w-5 h-5 text-red-600" />
+                      What's Included
+                    </h3>
+                    <div className="space-y-2">
+                      {[
+                        "Pre-production planning",
+                        "Professional crew & equipment", 
+                        "Multiple format delivery",
+                        "Two rounds of revisions",
+                        "Cloud-based asset delivery",
+                        "Usage rights included"
+                      ].map((included, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
+                          <span className="text-sm text-gray-600">{included}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-corporate-dark mb-4">Timeline</h3>
-                  <div className="space-y-3">
-                    <div>
-                      <h4 className="font-semibold text-corporate-dark">Discovery & Planning</h4>
-                      <p className="text-sm text-corporate-gray">1-2 weeks</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-corporate-dark">Production</h4>
-                      <p className="text-sm text-corporate-gray">1-3 days filming</p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-corporate-dark">Post-Production</h4>
-                      <p className="text-sm text-corporate-gray">2-4 weeks editing</p>
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-corporate-dark mb-4">What's Included</h3>
-                  <ul className="space-y-2 text-sm text-corporate-gray">
-                    <li>• Pre-production planning</li>
-                    <li>• Professional crew & equipment</li>
-                    <li>• Multiple format delivery</li>
-                    <li>• Two rounds of revisions</li>
-                    <li>• Cloud-based asset delivery</li>
-                    <li>• Usage rights included</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           </div>
         </section>
       </MainContent>

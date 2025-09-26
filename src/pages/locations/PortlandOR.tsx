@@ -31,13 +31,13 @@ import {
 const PortlandOR = () => {
   return (
     <div className="bg-gray-50 overflow-x-hidden relative">
-      {/* Fixed Background Bars */}
-      <div className="fixed top-0 left-0 w-full h-screen -z-10">
+      {/* Fixed Background Bars - Updated for visibility */}
+      <div className="fixed top-0 left-0 w-full h-screen z-0">
         <div className="w-full h-full flex">
-          <div className="w-1/4 h-full bg-pal-orange transition-all duration-700 ease-in-out"></div>
-          <div className="w-1/4 h-full bg-pal-purple transition-all duration-700 ease-in-out"></div>
-          <div className="w-1/4 h-full bg-pal-green transition-all duration-700 ease-in-out"></div>
-          <div className="w-1/4 h-full bg-pal-blue transition-all duration-700 ease-in-out"></div>
+          <div className="w-1/4 h-full bg-pal-orange"></div>
+          <div className="w-1/4 h-full bg-pal-purple"></div>
+          <div className="w-1/4 h-full bg-pal-green"></div>
+          <div className="w-1/4 h-full bg-pal-blue"></div>
         </div>
       </div>
 
@@ -66,7 +66,7 @@ const PortlandOR = () => {
       />
       <Navigation />
       <MainContent>
-        <section className="py-16 sm:py-20 lg:py-32 relative z-10 bg-white">
+        <section className="py-16 sm:py-20 lg:py-32 relative z-10 bg-white/95 backdrop-blur-sm">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <BreadcrumbNavigation />
             <div className="text-center mb-12 lg:mb-16">

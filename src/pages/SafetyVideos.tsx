@@ -180,20 +180,14 @@ const SafetyVideosPage = () => {
                 </div>
               </div>
 
-              <div className="relative group">
+              <div className="relative">
                 <div className="relative w-full max-w-lg mx-auto">
-                  {/* Character Images */}
+                  {/* Character Image */}
                   <div className="relative w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] mx-auto">
                     <img 
                       src={systemPalImage} 
-                      alt="Female System Pal character representing safety training expertise"
-                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 group-hover:opacity-100"
-                      loading="eager"
-                    />
-                    <img 
-                      src={maleSystemPalImage} 
-                      alt="Male System Pal character representing safety training expertise"
-                      className="absolute inset-0 w-full h-full object-contain opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      alt="System Pal character representing safety training expertise"
+                      className="w-full h-full object-contain"
                       loading="eager"
                     />
                   </div>

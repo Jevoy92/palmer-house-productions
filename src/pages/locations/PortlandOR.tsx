@@ -30,7 +30,17 @@ import {
 
 const PortlandOR = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="bg-gray-50 overflow-x-hidden relative">
+      {/* Fixed Background Bars */}
+      <div className="fixed top-0 left-0 w-full h-screen -z-10">
+        <div className="w-full h-full flex">
+          <div className="w-1/4 h-full bg-pal-orange transition-all duration-700 ease-in-out"></div>
+          <div className="w-1/4 h-full bg-pal-purple transition-all duration-700 ease-in-out"></div>
+          <div className="w-1/4 h-full bg-pal-green transition-all duration-700 ease-in-out"></div>
+          <div className="w-1/4 h-full bg-pal-blue transition-all duration-700 ease-in-out"></div>
+        </div>
+      </div>
+
       <MetaTags
         title="Portland Video Production Studio | Palmer House Productions"
         description="Portland, OR video production for brands that want results. Studio and on-location shoots, editing, and strategy—serving clients globally."
@@ -56,16 +66,11 @@ const PortlandOR = () => {
       />
       <Navigation />
       <MainContent>
-        <section className="py-16 sm:py-20 lg:py-32 relative overflow-hidden bg-gray-50">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-10 left-10 w-16 sm:w-20 h-16 sm:h-20 border-2 border-corporate-dark rounded-full animate-pulse"></div>
-            <div className="absolute top-20 right-20 w-12 sm:w-16 h-12 sm:h-16 border-2 border-corporate-dark rotate-45 animate-pulse delay-300"></div>
-            <div className="absolute bottom-20 left-1/4 w-10 sm:w-12 h-10 sm:h-12 border-2 border-corporate-dark rounded-full animate-pulse delay-700"></div>
-          </div>
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <section className="py-16 sm:py-20 lg:py-32 relative z-10 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <BreadcrumbNavigation />
             <div className="text-center mb-12 lg:mb-16">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 text-corporate-dark leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 text-gray-900 leading-tight">
                 Portland, OR Video Production
               </h1>
               <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">

@@ -27,7 +27,17 @@ import {
 
 const BellevueWA = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="bg-gray-50 overflow-x-hidden relative">
+      {/* Fixed Background Bars */}
+      <div className="fixed top-0 left-0 w-full h-screen -z-10">
+        <div className="w-full h-full flex">
+          <div className="w-1/4 h-full bg-pal-orange transition-all duration-700 ease-in-out"></div>
+          <div className="w-1/4 h-full bg-pal-purple transition-all duration-700 ease-in-out"></div>
+          <div className="w-1/4 h-full bg-pal-green transition-all duration-700 ease-in-out"></div>
+          <div className="w-1/4 h-full bg-pal-blue transition-all duration-700 ease-in-out"></div>
+        </div>
+      </div>
+
       <MetaTags
         title="Bellevue Video Production Studio | Palmer House Productions"
         description="Bellevue, WA video production studio crafting cinematic brand stories. Serving Seattle metro and global clients with strategy, filming, and editing."
@@ -53,31 +63,26 @@ const BellevueWA = () => {
       />
       <Navigation />
       <MainContent>
-        <section className="py-16 sm:py-20 lg:py-32 relative overflow-hidden bg-gray-50">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-10 left-10 w-16 sm:w-20 h-16 sm:h-20 border-2 border-corporate-dark rounded-full animate-pulse"></div>
-            <div className="absolute top-20 right-20 w-12 sm:w-16 h-12 sm:h-16 border-2 border-corporate-dark rotate-45 animate-pulse delay-300"></div>
-            <div className="absolute bottom-20 left-1/4 w-10 sm:w-12 h-10 sm:h-12 border-2 border-corporate-dark rounded-full animate-pulse delay-700"></div>
-          </div>
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <section className="py-16 sm:py-20 lg:py-32 relative z-10 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <BreadcrumbNavigation />
             <div className="text-center mb-12 lg:mb-16">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 text-corporate-dark leading-tight">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 text-gray-900 leading-tight">
                 Bellevue, WA Video Production
               </h1>
               <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Our Bellevue studio serves the greater Seattle area—and we regularly partner with clients around the world. From discovery to delivery, we craft cinematic stories that drive results.
+                Our Bellevue studio specializes in tech company video production. We build content systems for startups, SaaS platforms, and established tech brands throughout the Seattle metro area.
               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 mb-16 lg:mb-20">
-              <Card className="group hover:shadow-2xl transition-all duration-300 border-l-6 border-blue-500 bg-white hover:scale-105 animate-fade-in">
+              <Card className="group hover:shadow-xl transition-all duration-300 bg-white border-l-6 border-pal-blue hover:scale-105">
                 <CardHeader className="pb-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-blue-50 rounded-xl flex items-center justify-center text-blue-600 group-hover:scale-110 transition-transform">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-pal-blue/10 rounded-xl flex items-center justify-center text-pal-blue group-hover:scale-110 transition-transform">
                       <Video className="h-6 sm:h-8 w-6 sm:w-8" />
                     </div>
-                    <CardTitle className="text-xl sm:text-2xl text-corporate-dark">Services we offer</CardTitle>
+                    <CardTitle className="text-xl sm:text-2xl text-gray-900">Tech-Focused Services</CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent className="pt-0">
@@ -101,24 +106,24 @@ const BellevueWA = () => {
                 </CardContent>
               </Card>
               
-              <Card className="group hover:shadow-2xl transition-all duration-300 border-l-6 border-green-500 bg-white hover:scale-105 animate-fade-in">
+              <Card className="group hover:shadow-xl transition-all duration-300 bg-white border-l-6 border-pal-green hover:scale-105">
                 <CardHeader className="pb-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-green-50 rounded-xl flex items-center justify-center text-green-600 group-hover:scale-110 transition-transform">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-pal-green/10 rounded-xl flex items-center justify-center text-pal-green group-hover:scale-110 transition-transform">
                       <Phone className="h-6 sm:h-8 w-6 sm:w-8" />
                     </div>
-                    <CardTitle className="text-xl sm:text-2xl text-corporate-dark">Start a project</CardTitle>
+                    <CardTitle className="text-xl sm:text-2xl text-gray-900">Get Started Today</CardTitle>
                   </div>
                 </CardHeader>
                 <CardContent className="pt-0">
                   <CardDescription className="text-base text-gray-600 mb-6 leading-relaxed">
-                    Ready to talk through your goals? Book a strategy call or drop us a note.
+                    Tell us about your next shoot or system. We'll recommend the best path.
                   </CardDescription>
                   <div className="flex flex-col sm:flex-row gap-3">
-                    <Button asChild className="bg-green-600 hover:bg-green-700 text-white">
+                    <Button asChild className="bg-pal-green hover:bg-pal-green/90 text-white">
                       <Link to="/contact">Contact Us</Link>
                     </Button>
-                    <Button variant="outline" asChild className="border-green-500 text-green-600 hover:bg-green-50">
+                    <Button variant="outline" asChild className="border-pal-green text-pal-green hover:bg-pal-green/5">
                       <a
                         href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078320"
                         target="_blank"
@@ -133,13 +138,13 @@ const BellevueWA = () => {
             </div>
 
             {/* Local Service Areas */}
-            <Card className="group hover:shadow-2xl transition-all duration-300 border-l-6 border-purple-500 bg-white mb-16 lg:mb-20 animate-fade-in">
+            <Card className="group hover:shadow-xl transition-all duration-300 bg-white border-l-6 border-pal-purple mb-16 lg:mb-20">
               <CardHeader>
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-purple-50 rounded-xl flex items-center justify-center text-purple-600">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-pal-purple/10 rounded-xl flex items-center justify-center text-pal-purple">
                     <MapPin className="h-6 sm:h-8 w-6 sm:w-8" />
                   </div>
-                  <CardTitle className="text-2xl sm:text-3xl text-corporate-dark">Seattle Metro Service Area</CardTitle>
+                  <CardTitle className="text-2xl sm:text-3xl text-gray-900">Seattle Metro Coverage</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
@@ -148,8 +153,8 @@ const BellevueWA = () => {
                 </CardDescription>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-corporate-dark mb-4 flex items-center gap-2">
-                      <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200">Primary Areas</Badge>
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                      <Badge className="bg-pal-purple/10 text-pal-purple hover:bg-pal-purple/20">Eastside Tech Hub</Badge>
                     </h3>
                     <div className="space-y-2">
                       {["Bellevue & Eastside", "Seattle & Downtown", "Redmond & Tech Corridor", "Kirkland & Bothell"].map((area, index) => (
@@ -161,8 +166,8 @@ const BellevueWA = () => {
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-corporate-dark mb-4 flex items-center gap-2">
-                      <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200">Production Options</Badge>
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                      <Badge className="bg-pal-purple/10 text-pal-purple hover:bg-pal-purple/20">Production Capabilities</Badge>
                     </h3>
                     <div className="space-y-2">
                       {["Professional studio setup", "On-site at your office", "Event documentation", "Remote collaboration"].map((option, index) => (
@@ -174,8 +179,8 @@ const BellevueWA = () => {
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-corporate-dark mb-4 flex items-center gap-2">
-                      <Badge className="bg-purple-100 text-purple-700 hover:bg-purple-200">Travel Range</Badge>
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                      <Badge className="bg-pal-purple/10 text-pal-purple hover:bg-pal-purple/20">Extended Reach</Badge>
                     </h3>
                     <div className="space-y-2">
                       {["30-mile radius included", "Pacific Northwest region", "National projects available", "Global remote support"].map((range, index) => (

@@ -10,6 +10,8 @@ import { FAQSchema } from "@/components/seo/FAQSchema";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import reelPalMobile from "@/assets/reel-pal-mobile.png";
+import evergreenPalSEO from "@/assets/evergreen-pal-seo.png";
 import { 
   MapPin, 
   Clock, 
@@ -273,12 +275,12 @@ const PortlandOR = () => {
                   </div>
                   <div className="relative flex justify-center items-center h-[450px] lg:h-auto animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-300">
                     <div className="absolute w-full h-full bg-pal-orange rounded-3xl transform -rotate-6"></div>
-                    <div className="relative z-10 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] xl:w-[550px] xl:h-[550px] flex items-center justify-center">
-                      <div className="text-center text-white">
-                        <Coffee className="w-32 h-32 mx-auto mb-4" />
-                        <h3 className="text-2xl font-bold">Brand Story</h3>
-                        <p className="text-lg opacity-90">Visual Placeholder</p>
-                      </div>
+                    <div className="relative z-10 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] xl:w-[550px] xl:h-[550px] flex items-center justify-center p-8">
+                      <img 
+                        src={reelPalMobile} 
+                        alt="Reel Pal with Mobile Content Kit - Brand Storytelling and Content Creation" 
+                        className="w-full h-full object-contain rounded-2xl"
+                      />
                     </div>
                   </div>
                 </div>
@@ -291,12 +293,12 @@ const PortlandOR = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                   <div className="relative flex justify-center items-center h-[450px] lg:h-auto order-2 lg:order-1 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700">
                     <div className="absolute w-full h-full bg-pal-purple rounded-3xl transform rotate-6"></div>
-                    <div className="relative z-10 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] xl:w-[550px] xl:h-[550px] flex items-center justify-center">
-                      <div className="text-center text-white">
-                        <GraduationCap className="w-32 h-32 mx-auto mb-4" />
-                        <h3 className="text-2xl font-bold">Training Systems</h3>
-                        <p className="text-lg opacity-90">Visual Placeholder</p>
-                      </div>
+                    <div className="relative z-10 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] xl:w-[550px] xl:h-[550px] flex items-center justify-center p-8">
+                      <img 
+                        src={evergreenPalSEO} 
+                        alt="Evergreen Pal with SEO Strategy - Training Systems and Analytics" 
+                        className="w-full h-full object-contain rounded-2xl"
+                      />
                     </div>
                   </div>
                   <div className="text-center lg:text-left order-1 lg:order-2 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">

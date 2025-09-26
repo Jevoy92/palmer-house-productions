@@ -10,6 +10,8 @@ import { FAQSchema } from "@/components/seo/FAQSchema";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import systemPalAnalytics from "@/assets/system-pal-analytics.png";
+import spotlightPalDirector from "@/assets/spotlight-pal-director.png";
 import { 
   MapPin, 
   Clock, 
@@ -270,12 +272,12 @@ const BellevueWA = () => {
                   </div>
                   <div className="relative flex justify-center items-center h-[450px] lg:h-auto animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-300">
                     <div className="absolute w-full h-full bg-pal-blue rounded-3xl transform -rotate-6"></div>
-                    <div className="relative z-10 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] xl:w-[550px] xl:h-[550px] flex items-center justify-center">
-                      <div className="text-center text-white">
-                        <Video className="w-32 h-32 mx-auto mb-4" />
-                        <h3 className="text-2xl font-bold">Product Demo</h3>
-                        <p className="text-lg opacity-90">Visual Placeholder</p>
-                      </div>
+                    <div className="relative z-10 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] xl:w-[550px] xl:h-[550px] flex items-center justify-center p-8">
+                      <img 
+                        src={systemPalAnalytics} 
+                        alt="System Pal with Analytics Dashboard - Product Demo Visualization" 
+                        className="w-full h-full object-contain rounded-2xl"
+                      />
                     </div>
                   </div>
                 </div>
@@ -288,12 +290,12 @@ const BellevueWA = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                   <div className="relative flex justify-center items-center h-[450px] lg:h-auto order-2 lg:order-1 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700">
                     <div className="absolute w-full h-full bg-pal-purple rounded-3xl transform rotate-6"></div>
-                    <div className="relative z-10 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] xl:w-[550px] xl:h-[550px] flex items-center justify-center">
-                      <div className="text-center text-white">
-                        <Building className="w-32 h-32 mx-auto mb-4" />
-                        <h3 className="text-2xl font-bold">Enterprise Training</h3>
-                        <p className="text-lg opacity-90">Visual Placeholder</p>
-                      </div>
+                    <div className="relative z-10 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] xl:w-[550px] xl:h-[550px] flex items-center justify-center p-8">
+                      <img 
+                        src={spotlightPalDirector} 
+                        alt="Spotlight Pal Film Director - Enterprise Training and Communication" 
+                        className="w-full h-full object-contain rounded-2xl"
+                      />
                     </div>
                   </div>
                   <div className="text-center lg:text-left order-1 lg:order-2 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">

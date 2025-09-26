@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Calculator, TrendingUp, Clock, DollarSign, Users, ArrowLeft } from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Calculator, TrendingUp, Clock, DollarSign, Users, ArrowLeft, HelpCircle, Info } from "lucide-react";
 import { z } from 'zod';
 
 interface TrainingROICalculatorProps {
@@ -94,29 +95,50 @@ export const TrainingROICalculator = ({ onBack }: TrainingROICalculatorProps) =>
   }, [inputs]);
 
   return (
-    <div className="max-w-6xl mx-auto p-6">
-      <Card>
-        <CardHeader className="text-center">
-          <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
-            <Calculator className="h-8 w-8 text-primary" />
-          </div>
-          <CardTitle className="text-2xl">Training ROI Calculator</CardTitle>
-          <p className="text-muted-foreground">
-            Calculate the potential return on investment for implementing video-based training systems
-          </p>
-        </CardHeader>
+    <TooltipProvider>
+      <div className="max-w-6xl mx-auto p-6">
+        <Card>
+          <CardHeader className="text-center">
+            <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
+              <Calculator className="h-8 w-8 text-primary" />
+            </div>
+            <CardTitle className="text-2xl">Training ROI Calculator</CardTitle>
+            <p className="text-muted-foreground">
+              See how much money your company could save with video training systems
+            </p>
+          </CardHeader>
 
         <CardContent>
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Inputs Section */}
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-semibold mb-4 text-foreground">Inputs</h3>
-                <div className="space-y-4">
+                <h3 className="text-lg font-semibold mb-4 text-foreground flex items-center gap-2">
+                  Your Company Information
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="h-4 w-4 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p>Enter your company's current numbers to calculate potential savings from video training</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </h3>
+                <div className="space-y-6">
                   <div>
-                    <Label htmlFor="employees" className="text-foreground font-medium">
-                      Employees
-                    </Label>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Label htmlFor="employees" className="text-foreground font-medium">
+                        Number of Employees
+                      </Label>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-xs">
+                          <p>Total employees who need training (full-time, part-time, contractors)</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input
                       id="employees"
                       type="number"
@@ -128,12 +150,25 @@ export const TrainingROICalculator = ({ onBack }: TrainingROICalculatorProps) =>
                     {errors.employees && (
                       <p className="text-red-500 text-sm mt-1">{errors.employees}</p>
                     )}
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Example: A mid-size company might have 50-200 employees
+                    </p>
                   </div>
 
                   <div>
-                    <Label htmlFor="trainingHours" className="text-foreground font-medium">
-                      Training hours per employee (annual)
-                    </Label>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Label htmlFor="trainingHours" className="text-foreground font-medium">
+                        Hours of Training Per Employee (Each Year)
+                      </Label>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-xs">
+                          <p>Include onboarding, safety training, skills development, and compliance training. Most companies average 30-50 hours per year.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input
                       id="trainingHours"
                       type="number"
@@ -145,12 +180,25 @@ export const TrainingROICalculator = ({ onBack }: TrainingROICalculatorProps) =>
                     {errors.trainingHours && (
                       <p className="text-red-500 text-sm mt-1">{errors.trainingHours}</p>
                     )}
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Typical range: 30-50 hours (includes onboarding, safety, skills training)
+                    </p>
                   </div>
 
                   <div>
-                    <Label htmlFor="hourlyRate" className="text-foreground font-medium">
-                      Average hourly rate ($)
-                    </Label>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Label htmlFor="hourlyRate" className="text-foreground font-medium">
+                        Average Employee Cost Per Hour ($)
+                      </Label>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-xs">
+                          <p>Include salary + benefits + overhead. Typically 1.5-2x base hourly wage. For $20/hour wage, total cost is usually $25-30/hour.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input
                       id="hourlyRate"
                       type="number"
@@ -162,12 +210,25 @@ export const TrainingROICalculator = ({ onBack }: TrainingROICalculatorProps) =>
                     {errors.hourlyRate && (
                       <p className="text-red-500 text-sm mt-1">{errors.hourlyRate}</p>
                     )}
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Include benefits & overhead (usually 1.5-2x base wage)
+                    </p>
                   </div>
 
                   <div>
-                    <Label htmlFor="supportTickets" className="text-foreground font-medium">
-                      Support tickets per month
-                    </Label>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Label htmlFor="supportTickets" className="text-foreground font-medium">
+                        Help Requests Per Month
+                      </Label>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-xs">
+                          <p>How many times per month do employees ask for help with processes, systems, or procedures? Include IT tickets, HR questions, and training requests.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input
                       id="supportTickets"
                       type="number"
@@ -179,12 +240,25 @@ export const TrainingROICalculator = ({ onBack }: TrainingROICalculatorProps) =>
                     {errors.supportTickets && (
                       <p className="text-red-500 text-sm mt-1">{errors.supportTickets}</p>
                     )}
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Include IT help, process questions, and training requests
+                    </p>
                   </div>
 
                   <div>
-                    <Label htmlFor="costPerTicket" className="text-foreground font-medium">
-                      Cost per ticket ($)
-                    </Label>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Label htmlFor="costPerTicket" className="text-foreground font-medium">
+                        Cost To Handle Each Request ($)
+                      </Label>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-xs">
+                          <p>Time spent by support staff to answer questions (usually 15-30 minutes). If staff earns $20/hour, each 15-minute response costs about $5-10.</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </div>
                     <Input
                       id="costPerTicket"
                       type="number"
@@ -196,6 +270,9 @@ export const TrainingROICalculator = ({ onBack }: TrainingROICalculatorProps) =>
                     {errors.costPerTicket && (
                       <p className="text-red-500 text-sm mt-1">{errors.costPerTicket}</p>
                     )}
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Avg. 15-30 min response time × support staff hourly rate
+                    </p>
                   </div>
                 </div>
               </div>
@@ -204,53 +281,115 @@ export const TrainingROICalculator = ({ onBack }: TrainingROICalculatorProps) =>
             {/* Outputs Section */}
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-semibold mb-4 text-foreground">Outputs</h3>
+                <h3 className="text-lg font-semibold mb-4 text-foreground flex items-center gap-2">
+                  Your Potential Savings
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="h-4 w-4 text-muted-foreground" />
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p>These calculations are based on industry averages and typical video training effectiveness</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </h3>
                 {results ? (
                   <div className="space-y-4">
-                    <div className="flex justify-between items-center p-4 bg-muted rounded-lg">
-                      <div className="flex items-center space-x-2">
-                        <TrendingUp className="h-4 w-4 text-green-600" />
-                        <span className="font-medium">Annual Training Savings (75%)</span>
+                    <div className="flex justify-between items-start p-4 bg-muted rounded-lg">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <TrendingUp className="h-4 w-4 text-green-600" />
+                          <span className="font-medium">Training Cost Savings</span>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-sm">
+                              <p>Video training reduces instructor time, travel costs, and repeated sessions. You save 75% of current training costs while improving consistency.</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
+                        <p className="text-sm text-muted-foreground">75% reduction in training delivery costs</p>
                       </div>
-                      <span className="text-lg font-bold text-green-600">
+                      <span className="text-lg font-bold text-green-600 ml-4">
                         ${results.annualTrainingSavings.toLocaleString()}
                       </span>
                     </div>
 
-                    <div className="flex justify-between items-center p-4 bg-muted rounded-lg">
-                      <div className="flex items-center space-x-2">
-                        <Users className="h-4 w-4 text-blue-600" />
-                        <span className="font-medium">Support Cost Reduction (60%)</span>
+                    <div className="flex justify-between items-start p-4 bg-muted rounded-lg">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <Users className="h-4 w-4 text-blue-600" />
+                          <span className="font-medium">Fewer Help Requests</span>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-sm">
+                              <p>Well-trained employees need 60% less support. Video training provides clear, repeatable answers that reduce questions and mistakes.</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
+                        <p className="text-sm text-muted-foreground">60% fewer support tickets and questions</p>
                       </div>
-                      <span className="text-lg font-bold text-blue-600">
+                      <span className="text-lg font-bold text-blue-600 ml-4">
                         ${results.supportCostReduction.toLocaleString()}
                       </span>
                     </div>
 
-                    <div className="flex justify-between items-center p-4 bg-primary/10 rounded-lg border-2 border-primary/20">
-                      <div className="flex items-center space-x-2">
-                        <DollarSign className="h-4 w-4 text-primary" />
-                        <span className="font-bold">Total Annual ROI</span>
+                    <div className="flex justify-between items-start p-4 bg-primary/10 rounded-lg border-2 border-primary/20">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <DollarSign className="h-4 w-4 text-primary" />
+                          <span className="font-bold">Total Money Saved Per Year</span>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-sm">
+                              <p>Your total annual savings from reduced training costs and fewer support requests. This is money you can reinvest in growing your business.</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Combined training + support savings</p>
                       </div>
-                      <span className="text-xl font-bold text-primary">
+                      <span className="text-xl font-bold text-primary ml-4">
                         ${results.totalAnnualROI.toLocaleString()}
                       </span>
                     </div>
 
-                    <div className="flex justify-between items-center p-4 bg-muted rounded-lg">
-                      <div className="flex items-center space-x-2">
-                        <Clock className="h-4 w-4 text-orange-600" />
-                        <span className="font-medium">Payback (assumes $15,000)</span>
+                    <div className="flex justify-between items-start p-4 bg-muted rounded-lg">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-1">
+                          <Clock className="h-4 w-4 text-orange-600" />
+                          <span className="font-medium">Break-Even Timeline</span>
+                          <Tooltip>
+                            <TooltipTrigger>
+                              <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                            </TooltipTrigger>
+                            <TooltipContent className="max-w-sm">
+                              <p>How long until your video training system pays for itself. After this period, all savings go straight to your bottom line. Based on $15,000 investment.</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Time to recover $15,000 investment</p>
                       </div>
-                      <span className="text-lg font-bold text-orange-600">
+                      <span className="text-lg font-bold text-orange-600 ml-4">
                         {results.paybackMonths} months
                       </span>
                     </div>
 
                     <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                      <p className="text-sm text-blue-800">
-                        Edit reductions or investment in code if needed.
-                      </p>
+                      <div className="flex items-start gap-3">
+                        <Info className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                        <div>
+                          <h4 className="font-medium text-blue-900 mb-1">How We Calculate These Numbers</h4>
+                          <ul className="text-sm text-blue-800 space-y-1">
+                            <li>• <strong>Training Savings:</strong> Based on 75% reduction in delivery costs (industry average)</li>
+                            <li>• <strong>Support Reduction:</strong> Well-trained employees ask 60% fewer questions</li>
+                            <li>• <strong>Investment:</strong> Typical video training system costs $15,000 to develop</li>
+                          </ul>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ) : (
@@ -288,5 +427,6 @@ export const TrainingROICalculator = ({ onBack }: TrainingROICalculatorProps) =>
         </CardContent>
       </Card>
     </div>
+    </TooltipProvider>
   );
 };

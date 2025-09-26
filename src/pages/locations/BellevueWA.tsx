@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { Navigation } from "@/components/Navigation";
 import { MainContent } from "@/components/MainContent";
 import { MetaTags } from "@/components/seo/MetaTags";
@@ -22,10 +23,45 @@ import {
   Camera,
   Video,
   Edit3,
-  Target
+  Target,
+  DollarSign,
+  Calendar,
+  Award,
+  Rocket,
+  GraduationCap,
+  Smartphone,
+  CircleHelp,
+  Trophy,
+  Megaphone
 } from "lucide-react";
 
 const BellevueWA = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+    
+    // Trigger animations on scroll
+    const animateElements = () => {
+      const elements = document.querySelectorAll('.animate-on-scroll');
+      elements.forEach((element) => {
+        const rect = element.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        if (isVisible) {
+          element.classList.add('opacity-100', 'translate-y-0', 'translate-x-0');
+          element.classList.remove('opacity-0', 'translate-y-10', 'translate-x-10');
+        }
+      });
+    };
+
+    window.addEventListener('scroll', animateElements);
+    animateElements(); // Initial check
+
+    return () => {
+      window.removeEventListener('scroll', animateElements);
+    };
+  }, []);
+
   return (
     <div className="bg-gray-50 overflow-x-hidden relative">
       {/* Fixed Background Bars - Updated for visibility */}
@@ -40,10 +76,10 @@ const BellevueWA = () => {
 
       <MetaTags
         title="Bellevue Video Production Studio | Palmer House Productions"
-        description="Bellevue, WA video production studio crafting cinematic brand stories. Serving Seattle metro and global clients with strategy, filming, and editing."
-        keywords="Bellevue video production, Seattle video studio, corporate video Bellevue, brand storytelling Bellevue"
+        description="Bellevue, WA video production for tech companies and brands. Studio and on-location shoots, editing, and strategy—serving Seattle metro area."
+        keywords="Bellevue video production, Seattle video studio, tech video production, corporate video Bellevue"
         ogTitle="Bellevue, WA Video Production | Palmer House Productions"
-        ogDescription="Cinematic video production in Bellevue, serving Seattle and global clients."
+        ogDescription="Professional video production in Bellevue, serving Seattle metro and global tech clients."
         canonicalUrl="https://www.palmerhouseproductions.com/locations/bellevue-wa"
       />
       <StructuredData type="services" />
@@ -54,11 +90,11 @@ const BellevueWA = () => {
       />
       <FAQSchema
         faqs={[
-          { question: 'Do you serve the entire Seattle metro?', answer: 'Yes — Bellevue, Seattle, Redmond, Kirkland, and the broader Puget Sound region. Travel within ~30 miles is included.' },
-          { question: 'Studio or on-location?', answer: 'Both. We offer a professional studio setup in Bellevue and on-location shoots at your office or event.' },
-          { question: 'Can you work with distributed teams?', answer: 'Yes — we support remote-first workflows with cloud review, async feedback, and flexible scheduling.' },
-          { question: 'How do we start?', answer: 'Book a strategy call or share your bottleneck via our contact form. We’ll map the right video system for your goals.' },
-          { question: 'Do you do one-off videos?', answer: 'We prioritize content systems. Select one-time bundles are available when they function as a system (e.g., FAQ buildouts).'}
+          { question: 'Which areas around Bellevue do you cover?', answer: 'Greater Seattle metro including Redmond, Kirkland, Issaquah, Renton, and all Eastside communities. Remote collaboration is available.' },
+          { question: 'Do you specialize in tech companies?', answer: 'Yes — we work extensively with tech companies, startups, and SaaS platforms for product demos, corporate communications, and training content.' },
+          { question: 'What types of projects fit best?', answer: 'Brand storytelling, product demonstrations, internal training libraries, testimonials, and launch content.' },
+          { question: 'How fast can we start?', answer: 'Immediately. Book a strategy call and we will align on scope, timeline, and the right content system.' },
+          { question: 'Is long-form YouTube included?', answer: 'YouTube long-form is a separate ongoing plan. Social and brand assets are covered in our monthly and bundle systems.' }
         ]}
       />
       <Navigation />
@@ -88,10 +124,10 @@ const BellevueWA = () => {
                 <CardContent className="pt-0">
                   <div className="space-y-3 mb-6">
                     {[
-                      "Corporate and brand storytelling",
-                      "Social content and reels bundles", 
-                      "Internal training and onboarding libraries",
-                      "Customer testimonials and case studies"
+                      "SaaS product demonstrations",
+                      "Technical training libraries", 
+                      "Startup pitch and brand videos",
+                      "Enterprise communications"
                     ].map((service, index) => (
                       <div key={index} className="flex items-center gap-3">
                         <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
@@ -99,8 +135,8 @@ const BellevueWA = () => {
                       </div>
                     ))}
                   </div>
-                  <Link to="/video-packages" className="inline-flex items-center font-semibold text-blue-600 hover:text-blue-700 transition-colors">
-                    Explore Video Packages
+                  <Link to="/video-packages" className="inline-flex items-center font-semibold text-pal-blue hover:text-pal-blue/80 transition-colors">
+                    Explore Tech Packages
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </CardContent>
@@ -136,183 +172,303 @@ const BellevueWA = () => {
                 </CardContent>
               </Card>
             </div>
+            
+            {/* Spacer */}
+            <div className="h-[5vh] bg-white relative z-10"></div>
 
-            {/* Local Service Areas */}
-            <Card className="group hover:shadow-xl transition-all duration-300 bg-white border-l-6 border-pal-purple mb-16 lg:mb-20">
-              <CardHeader>
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-pal-purple/10 rounded-xl flex items-center justify-center text-pal-purple">
-                    <MapPin className="h-6 sm:h-8 w-6 sm:w-8" />
-                  </div>
-                  <CardTitle className="text-2xl sm:text-3xl text-gray-900">Seattle Metro Coverage</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base sm:text-lg text-gray-600 mb-6 leading-relaxed">
-                  Based in Bellevue, we serve the entire Seattle metropolitan area with both studio and on-location production services.
-                </CardDescription>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                      <Badge className="bg-pal-purple/10 text-pal-purple hover:bg-pal-purple/20">Eastside Tech Hub</Badge>
-                    </h3>
-                    <div className="space-y-2">
-                      {["Bellevue & Eastside", "Seattle & Downtown", "Redmond & Tech Corridor", "Kirkland & Bothell"].map((area, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-500" />
-                          <span className="text-gray-600">{area}</span>
-                        </div>
-                      ))}
+            {/* Intro Section */}
+            <section className="bg-white py-20 lg:py-32 relative z-20">
+              <div className="container mx-auto px-6 lg:px-8 text-center">
+                <div className="max-w-4xl mx-auto">
+                  <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
+                    Tech-Focused Video Solutions
+                  </h2>
+                  <p className="text-xl text-gray-600 mb-12 leading-relaxed animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-200">
+                    From startup launches to enterprise communications, we create video systems that scale with your tech company. Product demos, team training, and brand storytelling that resonates with your audience.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="p-6 bg-pal-blue/5 rounded-2xl border border-pal-blue/20 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-300">
+                      <div className="w-16 h-16 bg-pal-blue/20 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <Video className="text-2xl text-pal-blue" />
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-2">Product Demos</h3>
+                      <p className="text-gray-600 text-sm">Showcase your software and tech solutions with engaging demonstrations</p>
                     </div>
-                  </div>
-                  <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                      <Badge className="bg-pal-purple/10 text-pal-purple hover:bg-pal-purple/20">Production Capabilities</Badge>
-                    </h3>
-                    <div className="space-y-2">
-                      {["Professional studio setup", "On-site at your office", "Event documentation", "Remote collaboration"].map((option, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-500" />
-                          <span className="text-gray-600">{option}</span>
-                        </div>
-                      ))}
+                    <div className="p-6 bg-pal-purple/5 rounded-2xl border border-pal-purple/20 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-400">
+                      <div className="w-16 h-16 bg-pal-purple/20 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <Users className="text-2xl text-pal-purple" />
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-2">Team Training</h3>
+                      <p className="text-gray-600 text-sm">Scale your team's knowledge with comprehensive training libraries</p>
                     </div>
-                  </div>
-                  <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                      <Badge className="bg-pal-purple/10 text-pal-purple hover:bg-pal-purple/20">Extended Reach</Badge>
-                    </h3>
-                    <div className="space-y-2">
-                      {["30-mile radius included", "Pacific Northwest region", "National projects available", "Global remote support"].map((range, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-500" />
-                          <span className="text-gray-600">{range}</span>
-                        </div>
-                      ))}
+                    <div className="p-6 bg-pal-green/5 rounded-2xl border border-pal-green/20 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-500">
+                      <div className="w-16 h-16 bg-pal-green/20 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <Building className="text-2xl text-pal-green" />
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-2">Brand Stories</h3>
+                      <p className="text-gray-600 text-sm">Tell your company's story and connect with your target market</p>
+                    </div>
+                    <div className="p-6 bg-pal-orange/5 rounded-2xl border border-pal-orange/20 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-600">
+                      <div className="w-16 h-16 bg-pal-orange/20 rounded-full flex items-center justify-center mb-4 mx-auto">
+                        <Rocket className="text-2xl text-pal-orange" />
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-2">Launch Content</h3>
+                      <p className="text-gray-600 text-sm">Launch your products and features with maximum impact</p>
                     </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </section>
 
-            {/* Local Advantages */}
-            <Card className="group hover:shadow-2xl transition-all duration-300 border-l-6 border-amber-500 bg-white mb-16 lg:mb-20 animate-fade-in">
-              <CardHeader>
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
-                    <Star className="h-6 sm:h-8 w-6 sm:w-8" />
-                  </div>
-                  <CardTitle className="text-2xl sm:text-3xl text-corporate-dark">Why Choose Local Video Production</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-corporate-dark mb-4 flex items-center gap-2">
-                      <Building className="w-5 h-5 text-amber-600" />
-                      Local Market Knowledge
-                    </h3>
-                    <CardDescription className="text-base text-gray-600 mb-4 leading-relaxed">
-                      We understand the Seattle business landscape, from tech startups to established enterprises. This local insight helps us create content that resonates with your Pacific Northwest audience.
-                    </CardDescription>
-                    <div className="space-y-2">
-                      {[
-                        "Familiar with local business culture",
-                        "Knowledge of regional regulations", 
-                        "Understanding of tech industry needs"
-                      ].map((benefit, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                          <span className="text-gray-600">{benefit}</span>
+            {/* SaaS Solutions */}
+            <section className="bg-gray-50 py-20 lg:py-32 relative z-20">
+              <div className="container mx-auto px-6 lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                  <div className="text-center lg:text-left animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
+                    <h2 className="text-base font-semibold text-pal-blue uppercase tracking-wider">SaaS & Startups</h2>
+                    <h3 className="mt-2 text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">Product Demos That Convert</h3>
+                    <p className="mt-6 text-lg text-gray-600 leading-relaxed">
+                      Transform complex software into compelling stories. From onboarding flows to feature announcements, we create video content that helps your users understand and love your product while driving conversions.
+                    </p>
+                    <div className="mt-10 space-y-8">
+                      <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-200">
+                        <div className="flex-shrink-0 w-12 h-12 bg-pal-blue/10 text-pal-blue rounded-lg flex items-center justify-center">
+                          <Video className="text-2xl" />
                         </div>
-                      ))}
+                        <div>
+                          <h4 className="text-xl font-bold text-gray-900">Product Walkthroughs</h4>
+                          <p className="mt-1 text-gray-600">Clear, engaging demonstrations that showcase your software's key features and benefits.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-400">
+                        <div className="flex-shrink-0 w-12 h-12 bg-pal-blue/10 text-pal-blue rounded-lg flex items-center justify-center">
+                          <Users className="text-2xl" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-gray-900">User Onboarding</h4>
+                          <p className="mt-1 text-gray-600">Video-based onboarding that reduces churn and increases user activation rates.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-600">
+                        <div className="flex-shrink-0 w-12 h-12 bg-pal-blue/10 text-pal-blue rounded-lg flex items-center justify-center">
+                          <Rocket className="text-2xl" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-gray-900">Feature Launches</h4>
+                          <p className="mt-1 text-gray-600">Announce new features with excitement and clarity to drive adoption among existing users.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-12 flex justify-center lg:justify-start">
+                      <Link
+                        to="/contact"
+                        className="bg-pal-blue text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl animate-on-scroll opacity-0 transform translate-y-5 transition-all duration-700 delay-800"
+                      >
+                        Get Started
+                      </Link>
                     </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg sm:text-xl font-bold text-corporate-dark mb-4 flex items-center gap-2">
-                      <Clock className="w-5 h-5 text-amber-600" />
-                      Responsive Partnership
-                    </h3>
-                    <CardDescription className="text-base text-gray-600 mb-4 leading-relaxed">
-                      Being local means faster response times, easier collaboration, and the ability to handle last-minute changes or rush projects when needed.
-                    </CardDescription>
-                    <div className="space-y-2">
-                      {[
-                        "Same-day consultation availability",
-                        "Quick turnaround on urgent projects",
-                        "Face-to-face planning meetings"
-                      ].map((benefit, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
-                          <span className="text-gray-600">{benefit}</span>
-                        </div>
-                      ))}
+                  <div className="relative flex justify-center items-center h-[450px] lg:h-auto animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-300">
+                    <div className="absolute w-full h-full bg-pal-blue rounded-3xl transform -rotate-6"></div>
+                    <div className="relative z-10 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] xl:w-[550px] xl:h-[550px] flex items-center justify-center">
+                      <div className="text-center text-white">
+                        <Video className="w-32 h-32 mx-auto mb-4" />
+                        <h3 className="text-2xl font-bold">Product Demo</h3>
+                        <p className="text-lg opacity-90">Visual Placeholder</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </section>
 
-            {/* Process Overview */}
-            <Card className="group hover:shadow-2xl transition-all duration-300 border-l-6 border-red-500 bg-white animate-fade-in">
-              <CardHeader>
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 sm:w-16 sm:h-16 bg-red-50 rounded-xl flex items-center justify-center text-red-600">
-                    <Target className="h-6 sm:h-8 w-6 sm:w-8" />
+            {/* Enterprise Solutions */}
+            <section className="bg-white py-20 lg:py-32 relative z-20">
+              <div className="container mx-auto px-6 lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                  <div className="relative flex justify-center items-center h-[450px] lg:h-auto order-2 lg:order-1 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700">
+                    <div className="absolute w-full h-full bg-pal-purple rounded-3xl transform rotate-6"></div>
+                    <div className="relative z-10 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] xl:w-[550px] xl:h-[550px] flex items-center justify-center">
+                      <div className="text-center text-white">
+                        <Building className="w-32 h-32 mx-auto mb-4" />
+                        <h3 className="text-2xl font-bold">Enterprise Training</h3>
+                        <p className="text-lg opacity-90">Visual Placeholder</p>
+                      </div>
+                    </div>
                   </div>
-                  <CardTitle className="text-2xl sm:text-3xl text-corporate-dark">Our Process</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {[
-                    {
-                      step: "1",
-                      title: "Discovery Call",
-                      description: "We discuss your goals, timeline, and budget to recommend the best approach.",
-                      icon: <Phone className="h-6 w-6" />,
-                      color: "border-t-blue-400"
-                    },
-                    {
-                      step: "2",
-                      title: "Strategy & Planning", 
-                      description: "We develop a comprehensive plan including scripts, shot lists, and production timeline.",
-                      icon: <Edit3 className="h-6 w-6" />,
-                      color: "border-t-green-400"
-                    },
-                    {
-                      step: "3",
-                      title: "Production",
-                      description: "Professional filming at our studio or your location with full crew and equipment.",
-                      icon: <Camera className="h-6 w-6" />,
-                      color: "border-t-amber-400"
-                    },
-                    {
-                      step: "4",
-                      title: "Delivery",
-                      description: "Professional editing, color correction, and delivery in all formats you need.",
-                      icon: <CheckCircle className="h-6 w-6" />,
-                      color: "border-t-red-400"
-                    }
-                  ].map((step, index) => (
-                    <Card key={index} className={`text-center bg-gray-50 border-0 ${step.color} border-t-4 hover:shadow-lg transition-all duration-300 hover:scale-105`}>
-                      <CardContent className="p-4 sm:p-6">
-                        <div className="relative mb-4">
-                          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-white rounded-full flex items-center justify-center mx-auto text-gray-700 shadow-sm">
-                            {step.icon}
-                          </div>
-                          <div className="absolute -top-2 -right-2 w-6 h-6 sm:w-8 sm:h-8 bg-red-600 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-bold shadow-lg">
-                            {step.step}
-                          </div>
+                  <div className="text-center lg:text-left order-1 lg:order-2 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
+                    <h2 className="text-base font-semibold text-pal-purple uppercase tracking-wider">Enterprise</h2>
+                    <h3 className="mt-2 text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">Scale Your Team Training</h3>
+                    <p className="mt-6 text-lg text-gray-600 leading-relaxed">
+                      Empower your growing team with scalable video training systems. From technical onboarding to company culture videos, create a comprehensive learning library that grows with your organization.
+                    </p>
+                    <div className="mt-10 space-y-8">
+                      <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-200">
+                        <div className="flex-shrink-0 w-12 h-12 bg-pal-purple/10 text-pal-purple rounded-lg flex items-center justify-center">
+                          <GraduationCap className="text-2xl" />
                         </div>
-                        <h3 className="text-base sm:text-lg font-bold text-corporate-dark mb-2">{step.title}</h3>
-                        <p className="text-sm text-gray-600 leading-relaxed">{step.description}</p>
-                      </CardContent>
-                    </Card>
-                  ))}
+                        <div>
+                          <h4 className="text-xl font-bold text-gray-900">Technical Training</h4>
+                          <p className="mt-1 text-gray-600">Complex technical concepts made accessible through clear, structured video content.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-400">
+                        <div className="flex-shrink-0 w-12 h-12 bg-pal-purple/10 text-pal-purple rounded-lg flex items-center justify-center">
+                          <Users className="text-2xl" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-gray-900">Culture & Values</h4>
+                          <p className="mt-1 text-gray-600">Strengthen company culture with engaging videos that communicate your values and mission.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-600">
+                        <div className="flex-shrink-0 w-12 h-12 bg-pal-purple/10 text-pal-purple rounded-lg flex items-center justify-center">
+                          <CircleHelp className="text-2xl" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-gray-900">Knowledge Base</h4>
+                          <p className="mt-1 text-gray-600">Build comprehensive video libraries that reduce support tickets and empower self-service.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-12 flex justify-center lg:justify-start">
+                      <a
+                        href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078320"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-pal-purple text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl animate-on-scroll opacity-0 transform translate-y-5 transition-all duration-700 delay-800"
+                      >
+                        Book Strategy Call
+                      </a>
+                    </div>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </section>
+
+            {/* Brand Storytelling */}
+            <section className="bg-gray-50 py-20 lg:py-32 relative z-20">
+              <div className="container mx-auto px-6 lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                  <div className="text-center lg:text-left animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
+                    <h2 className="text-base font-semibold text-pal-green uppercase tracking-wider">Brand Story</h2>
+                    <h3 className="mt-2 text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">Connect With Your Market</h3>
+                    <p className="mt-6 text-lg text-gray-600 leading-relaxed">
+                      Stand out in the competitive tech landscape with authentic brand storytelling. From founder stories to customer success videos, create emotional connections that drive business growth.
+                    </p>
+                    <div className="mt-10 space-y-8">
+                      <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-200">
+                        <div className="flex-shrink-0 w-12 h-12 bg-pal-green/10 text-pal-green rounded-lg flex items-center justify-center">
+                          <Building className="text-2xl" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-gray-900">Company Origin</h4>
+                          <p className="mt-1 text-gray-600">Share your startup journey and mission to build trust with customers and investors.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-400">
+                        <div className="flex-shrink-0 w-12 h-12 bg-pal-green/10 text-pal-green rounded-lg flex items-center justify-center">
+                          <Star className="text-2xl" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-gray-900">Customer Success</h4>
+                          <p className="mt-1 text-gray-600">Showcase real results with authentic testimonials and case study videos.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-600">
+                        <div className="flex-shrink-0 w-12 h-12 bg-pal-green/10 text-pal-green rounded-lg flex items-center justify-center">
+                          <Trophy className="text-2xl" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-gray-900">Thought Leadership</h4>
+                          <p className="mt-1 text-gray-600">Position your executives as industry experts with strategic content and speaking videos.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-12 flex justify-center lg:justify-start">
+                      <Link
+                        to="/video-packages"
+                        className="bg-pal-green text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl animate-on-scroll opacity-0 transform translate-y-5 transition-all duration-700 delay-800"
+                      >
+                        View Packages
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="relative flex justify-center items-center h-[450px] lg:h-auto animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-300">
+                    <div className="absolute w-full h-full bg-pal-green rounded-3xl transform -rotate-6"></div>
+                    <div className="relative z-10 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] xl:w-[550px] xl:h-[550px] flex items-center justify-center">
+                      <div className="text-center text-white">
+                        <Camera className="w-32 h-32 mx-auto mb-4" />
+                        <h3 className="text-2xl font-bold">Brand Story</h3>
+                        <p className="text-lg opacity-90">Visual Placeholder</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Launch & Marketing */}
+            <section className="bg-white py-20 lg:py-32 relative z-20">
+              <div className="container mx-auto px-6 lg:px-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                  <div className="relative flex justify-center items-center h-[450px] lg:h-auto order-2 lg:order-1 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700">
+                    <div className="absolute w-full h-full bg-pal-orange rounded-3xl transform rotate-6"></div>
+                    <div className="relative z-10 w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] xl:w-[550px] xl:h-[550px] flex items-center justify-center">
+                      <div className="text-center text-white">
+                        <Rocket className="w-32 h-32 mx-auto mb-4" />
+                        <h3 className="text-2xl font-bold">Launch Campaign</h3>
+                        <p className="text-lg opacity-90">Visual Placeholder</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-center lg:text-left order-1 lg:order-2 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
+                    <h2 className="text-base font-semibold text-pal-orange uppercase tracking-wider">Launch & Marketing</h2>
+                    <h3 className="mt-2 text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">High-Impact Launch Content</h3>
+                    <p className="mt-6 text-lg text-gray-600 leading-relaxed">
+                      Launch your products, features, or company updates with maximum impact. From social campaigns to investor presentations, create content that generates buzz and drives action.
+                    </p>
+                    <div className="mt-10 space-y-8">
+                      <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-200">
+                        <div className="flex-shrink-0 w-12 h-12 bg-pal-orange/10 text-pal-orange rounded-lg flex items-center justify-center">
+                          <Megaphone className="text-2xl" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-gray-900">Product Launches</h4>
+                          <p className="mt-1 text-gray-600">Generate excitement and drive adoption with compelling launch campaigns across all channels.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-400">
+                        <div className="flex-shrink-0 w-12 h-12 bg-pal-orange/10 text-pal-orange rounded-lg flex items-center justify-center">
+                          <DollarSign className="text-2xl" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-gray-900">Investor Content</h4>
+                          <p className="mt-1 text-gray-600">Professional pitch videos and company overviews for funding rounds and partnerships.</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-600">
+                        <div className="flex-shrink-0 w-12 h-12 bg-pal-orange/10 text-pal-orange rounded-lg flex items-center justify-center">
+                          <Smartphone className="text-2xl" />
+                        </div>
+                        <div>
+                          <h4 className="text-xl font-bold text-gray-900">Social Campaigns</h4>
+                          <p className="mt-1 text-gray-600">Multi-platform content that amplifies your message across LinkedIn, Twitter, and beyond.</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-12 flex justify-center lg:justify-start">
+                      <Link
+                        to="/contact"
+                        className="bg-pal-orange text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl animate-on-scroll opacity-0 transform translate-y-5 transition-all duration-700 delay-800"
+                      >
+                        Launch Your Project
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
         </section>
       </MainContent>

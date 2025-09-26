@@ -176,12 +176,12 @@ export const VideoPackagesTabbed = () => {
         </div>
       </div>
 
-      {/* Hero Section - Responsive Grid Layout */}
-      <section className="min-h-[100vh] w-full grid grid-cols-1 md:grid-cols-4 relative z-10">
+      {/* Hero Section - Responsive Flex Layout */}
+      <section className="min-h-[100vh] w-full flex flex-col md:flex-row relative z-10">
         
         {/* Reel Pal Card */}
         <div 
-          className="group relative bg-pal-orange overflow-hidden cursor-pointer transition-all duration-500 ease-in-out hover:scale-105 md:hover:scale-100 md:hover:flex-grow"
+          className="group relative bg-pal-orange overflow-hidden cursor-pointer transition-all duration-500 ease-in-out hover:scale-105 md:hover:scale-100 md:flex-1 md:hover:flex-[2]"
           onClick={() => navigateToPage('reel-pal')}
         >
           <div className="h-full min-h-[50vh] md:min-h-[100vh] p-6 flex flex-col justify-between text-white">
@@ -241,7 +241,7 @@ export const VideoPackagesTabbed = () => {
 
         {/* System Pal Card */}
         <div 
-          className="group relative bg-pal-purple overflow-hidden cursor-pointer transition-all duration-500 ease-in-out hover:scale-105 md:hover:scale-100 md:hover:flex-grow"
+          className="group relative bg-pal-purple overflow-hidden cursor-pointer transition-all duration-500 ease-in-out hover:scale-105 md:hover:scale-100 md:flex-1 md:hover:flex-[2]"
           onClick={() => navigateToPage('system-pal')}
         >
           <div className="h-full min-h-[50vh] md:min-h-[100vh] p-6 flex flex-col justify-between text-white">
@@ -298,7 +298,7 @@ export const VideoPackagesTabbed = () => {
 
         {/* Evergreen Pal Card */}
         <div 
-          className="group relative bg-pal-green overflow-hidden cursor-pointer transition-all duration-500 ease-in-out hover:scale-105 md:hover:scale-100 md:hover:flex-grow"
+          className="group relative bg-pal-green overflow-hidden cursor-pointer transition-all duration-500 ease-in-out hover:scale-105 md:hover:scale-100 md:flex-1 md:hover:flex-[2]"
           onClick={() => navigateToPage('evergreen-pal')}
         >
           <div className="h-full min-h-[50vh] md:min-h-[100vh] p-6 flex flex-col justify-between text-white">
@@ -355,7 +355,7 @@ export const VideoPackagesTabbed = () => {
 
         {/* Spotlight Pal Card */}
         <div 
-          className="group relative bg-pal-blue overflow-hidden cursor-pointer transition-all duration-500 ease-in-out hover:scale-105 md:hover:scale-100 md:hover:flex-grow"
+          className="group relative bg-pal-blue overflow-hidden cursor-pointer transition-all duration-500 ease-in-out hover:scale-105 md:hover:scale-100 md:flex-1 md:hover:flex-[2]"
           onClick={() => navigateToPage('spotlight-pal')}
         >
           <div className="h-full min-h-[50vh] md:min-h-[100vh] p-6 flex flex-col justify-between text-white">

@@ -398,24 +398,24 @@ const StartupsPage = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 text-center">
               {[
                 {
-                  number: "3x",
-                  label: "Higher Engagement",
-                  description: "Video content vs. text alone"
+                  number: "Higher",
+                  label: "Engagement",
+                  description: "Video content captures attention better"
                 },
                 {
-                  number: "$10M+",
-                  label: "Funding Raised",
-                  description: "By startups using our videos"
+                  number: "Proven",
+                  label: "Funding Success",
+                  description: "Trusted by funded startups"
                 },
                 {
-                  number: "85%",
-                  label: "Better Retention",
-                  description: "Video messages vs. text"
+                  number: "Better",
+                  label: "Message Retention",
+                  description: "Video messages stick with audiences"
                 },
                 {
-                  number: "2 weeks",
-                  label: "Average Turnaround",
-                  description: "From concept to final delivery"
+                  number: "Fast",
+                  label: "Turnaround",
+                  description: "Quick concept to delivery"
                 }
               ].map((stat, index) => (
                 <div key={index} className="text-center animate-fade-in">

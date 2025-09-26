@@ -162,7 +162,7 @@ const FAQ = () => {
     {
       category: "measurement",
       question: "How long before we see results from our video content system?",
-      answer: "Most clients see immediate time savings and improved consistency within the first month, with measurable ROI typically appearing within 90 days of implementation."
+      answer: "Most clients see immediate time savings and improved consistency within the first month, with measurable improvements typically appearing quickly after implementation."
     },
 
     // Process & Next Steps (5 questions)

@@ -42,7 +42,7 @@ const caseStudies: CaseStudy[] = [
       "Develop 30-day content calendar template",
       "Provide posting schedule and best practices guide"
     ],
-    results: "Could achieve 3× more local reach and 40% more weekend bookings within 30 days",
+    results: "Could significantly increase local reach and drive more weekend bookings quickly",
     gradient: "gradient-social-1",
     beforeMetrics: [
       { label: "Social Posts/Month", value: "2-3", color: "red" },
@@ -162,7 +162,7 @@ const caseStudies: CaseStudy[] = [
       "Complete SEO optimization and thumbnail design",
       "Strategy for ongoing content series"
     ],
-    results: "Could dominate local search for financial planning services within 90 days",
+    results: "Could establish strong local search presence for financial planning services",
     gradient: "gradient-social-5",
     beforeMetrics: [
       { label: "YouTube Presence", value: "None", color: "red" },

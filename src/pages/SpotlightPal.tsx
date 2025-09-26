@@ -306,7 +306,7 @@ const SpotlightPal = () => {
                 },
                 {
                   question: "What kind of ROI can I expect from premium video content?",
-                  answer: "Premium content typically generates significantly higher engagement, brand recognition, and conversion rates. Many clients see 300-500% increases in brand inquiries and enhanced market positioning that drives long-term value."
+                  answer: "Premium content typically generates significantly higher engagement, brand recognition, and conversion rates. Many clients see substantial increases in brand inquiries and enhanced market positioning that drives long-term value."
                 }
               ].map((faq, index) => (
                 <div key={index} className="bg-background rounded-2xl p-8">

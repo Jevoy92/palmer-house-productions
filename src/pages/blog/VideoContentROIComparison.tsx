@@ -20,15 +20,15 @@ const VideoContentROIComparison = () => {
               <h4 className="text-xl font-bold text-corporate-dark mb-4 text-center">Traditional Training</h4>
               <div className="space-y-3 text-center">
                 <div>
-                  <div className="text-3xl font-bold text-social-orange">$3,200</div>
+                  <div className="text-3xl font-bold text-social-orange">Higher</div>
                   <div className="text-sm text-corporate-gray">Cost per employee</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-social-orange">45%</div>
-                  <div className="text-sm text-corporate-gray">Knowledge retention at 30 days</div>
+                  <div className="text-3xl font-bold text-social-orange">Lower</div>
+                  <div className="text-sm text-corporate-gray">Knowledge retention over time</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-social-orange">3 weeks</div>
+                  <div className="text-3xl font-bold text-social-orange">Longer</div>
                   <div className="text-sm text-corporate-gray">Time to competency</div>
                 </div>
               </div>
@@ -38,15 +38,15 @@ const VideoContentROIComparison = () => {
               <h4 className="text-xl font-bold text-corporate-dark mb-4 text-center">Video Training System</h4>
               <div className="space-y-3 text-center">
                 <div>
-                  <div className="text-3xl font-bold text-social-purple">$800</div>
+                  <div className="text-3xl font-bold text-social-purple">Lower</div>
                   <div className="text-sm text-corporate-gray">Cost per employee</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-social-purple">78%</div>
-                  <div className="text-sm text-corporate-gray">Knowledge retention at 30 days</div>
+                  <div className="text-3xl font-bold text-social-purple">Higher</div>
+                  <div className="text-sm text-corporate-gray">Knowledge retention over time</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-social-purple">1 week</div>
+                  <div className="text-3xl font-bold text-social-purple">Faster</div>
                   <div className="text-sm text-corporate-gray">Time to competency</div>
                 </div>
               </div>
@@ -302,7 +302,7 @@ const VideoContentROIComparison = () => {
                 </div>
               </div>
               <div className="text-xs text-corporate-gray">
-                Error rates in first 90 days post-training across all measured tasks
+                Error rates in early post-training period across all measured tasks
               </div>
             </div>
           </div>

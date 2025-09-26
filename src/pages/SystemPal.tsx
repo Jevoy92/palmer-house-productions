@@ -277,7 +277,7 @@ const SystemPal = () => {
                 },
                 {
                   question: "Do you provide ongoing support after implementation?",
-                  answer: "Yes! All packages include support periods. Foundation includes 30 days, Complete includes 90 days, and Enterprise includes ongoing maintenance options. I'm here to ensure your team adopts and succeeds with the new systems."
+                  answer: "Yes! All packages include support periods. Foundation includes initial support, Complete includes extended support, and Enterprise includes ongoing maintenance options. I'm here to ensure your team adopts and succeeds with the new systems."
                 },
                 {
                   question: "Can you integrate with our existing learning management system?",

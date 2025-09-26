@@ -268,8 +268,8 @@ export const ContentOverwhelmHub = () => {
             <div className="text-sm text-corporate-gray">Time Saved</div>
           </div>
           <div className="text-center">
-            <div className="text-3xl font-black text-gradient-3">30 Days</div>
-            <div className="text-sm text-corporate-gray">To Results</div>
+            <div className="text-3xl font-black text-gradient-3">Quick</div>
+            <div className="text-sm text-corporate-gray">Results</div>
           </div>
         </div>
       </section>

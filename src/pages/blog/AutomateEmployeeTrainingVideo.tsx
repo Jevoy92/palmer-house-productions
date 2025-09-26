@@ -212,7 +212,7 @@ const AutomateEmployeeTrainingVideo = () => {
             <h4 className="font-medium text-corporate-dark mb-2">Challenge: Measuring Real Learning vs. Completion</h4>
             <p className="text-corporate-gray text-sm mb-2">
               <strong>Solution:</strong> Implement spaced repetition quizzes and real-world application assessments. 
-              Track performance metrics 30-90 days post-training.
+              Track performance metrics consistently post-training.
             </p>
           </div>
         </div>

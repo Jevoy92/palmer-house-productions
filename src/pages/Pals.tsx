@@ -135,14 +135,14 @@ export default function Pals() {
         <section className="h-[950px] md:h-[850px] lg:h-[900px] xl:h-[1000px] w-full flex flex-col md:flex-row relative z-10">
           {/* Reel Pal Card */}
           <div 
-            className="group relative w-full md:w-1/4 h-full bg-pal-orange flex flex-col justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
+            className="group relative w-full md:w-1/4 h-full bg-pal-orange flex flex-row md:flex-col justify-between md:justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
             onClick={() => navigateToPage('reel-pal')}
           >
-            <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
-              <h2 className="text-4xl font-extrabold mb-4">Reel Pal</h2>
-              <p className="text-lg font-light leading-relaxed max-w-xs">Short-form social content, DIY kits, and our Starter Session.</p>
+            <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-100 md:opacity-0 group-hover:opacity-100 top-1/4 md:group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
+              <h2 className="text-2xl md:text-4xl font-extrabold mb-2 md:mb-4">Reel Pal</h2>
+              <p className="text-sm md:text-lg font-light leading-relaxed max-w-xs">Short-form social content, DIY kits, and our Starter Session.</p>
             </div>
-            <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_forwards]">
+            <div className="relative w-[200px] h-[200px] md:w-[300px] md:h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_forwards] ml-auto md:ml-0">
               <img 
                 className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
                 src={reelPalImage} 
@@ -160,14 +160,14 @@ export default function Pals() {
 
           {/* System Pal Card */}
           <div 
-            className="group relative w-full md:w-1/4 h-full bg-pal-purple flex flex-col justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
+            className="group relative w-full md:w-1/4 h-full bg-pal-purple flex flex-row md:flex-col justify-between md:justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
             onClick={() => navigateToPage('system-pal')}
           >
-            <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
-              <h2 className="text-4xl font-extrabold mb-4">System Pal</h2>
-              <p className="text-lg font-light leading-relaxed max-w-xs">Backend video systems like training, onboarding, and FAQ buildouts.</p>
+            <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-100 md:opacity-0 group-hover:opacity-100 top-1/4 md:group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
+              <h2 className="text-2xl md:text-4xl font-extrabold mb-2 md:mb-4">System Pal</h2>
+              <p className="text-sm md:text-lg font-light leading-relaxed max-w-xs">Backend video systems like training, onboarding, and FAQ buildouts.</p>
             </div>
-            <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.2s_forwards]">
+            <div className="relative w-[200px] h-[200px] md:w-[300px] md:h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.2s_forwards] ml-auto md:ml-0">
               <img 
                 className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
                 src={systemPalImage} 
@@ -185,14 +185,14 @@ export default function Pals() {
 
           {/* Evergreen Pal Card */}
           <div 
-            className="group relative w-full md:w-1/4 h-full bg-pal-green flex flex-col justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
+            className="group relative w-full md:w-1/4 h-full bg-pal-green flex flex-row md:flex-col justify-between md:justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
             onClick={() => navigateToPage('evergreen-pal')}
           >
-            <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
-              <h2 className="text-4xl font-extrabold mb-4">Evergreen Pal</h2>
-              <p className="text-lg font-light leading-relaxed max-w-xs">Long-term authority content like YouTube engines and monthly plans.</p>
+            <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-100 md:opacity-0 group-hover:opacity-100 top-1/4 md:group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
+              <h2 className="text-2xl md:text-4xl font-extrabold mb-2 md:mb-4">Evergreen Pal</h2>
+              <p className="text-sm md:text-lg font-light leading-relaxed max-w-xs">Long-term authority content like YouTube engines and monthly plans.</p>
             </div>
-            <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.4s_forwards]">
+            <div className="relative w-[200px] h-[200px] md:w-[300px] md:h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.4s_forwards] ml-auto md:ml-0">
               <img 
                 className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
                 src={evergreenPalImage} 
@@ -210,14 +210,14 @@ export default function Pals() {
 
           {/* Spotlight Pal Card */}
           <div 
-            className="group relative w-full md:w-1/4 h-full bg-pal-blue flex flex-col justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
+            className="group relative w-full md:w-1/4 h-full bg-pal-blue flex flex-row md:flex-col justify-between md:justify-end items-center overflow-hidden transition-all duration-500 ease-in-out md:hover:w-1/3 cursor-pointer"
             onClick={() => navigateToPage('spotlight-pal')}
           >
-            <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-0 group-hover:opacity-100 group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
-              <h2 className="text-4xl font-extrabold mb-4">Spotlight Pal</h2>
-              <p className="text-lg font-light leading-relaxed max-w-xs">Cinematic brand storytelling, music videos, commercials, and hero content.</p>
+            <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-100 md:opacity-0 group-hover:opacity-100 top-1/4 md:group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
+              <h2 className="text-2xl md:text-4xl font-extrabold mb-2 md:mb-4">Spotlight Pal</h2>
+              <p className="text-sm md:text-lg font-light leading-relaxed max-w-xs">Cinematic brand storytelling, music videos, commercials, and hero content.</p>
             </div>
-            <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.6s_forwards]">
+            <div className="relative w-[200px] h-[200px] md:w-[300px] md:h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.6s_forwards] ml-auto md:ml-0">
               <img 
                 className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
                 src={spotlightPalImage} 

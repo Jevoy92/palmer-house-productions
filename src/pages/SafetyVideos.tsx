@@ -336,8 +336,11 @@ const SafetyVideosPage = () => {
           </div>
         </section>
 
+        {/* Separator */}
+        <div className="h-16 bg-gradient-to-b from-pal-purple to-pal-purple/80"></div>
+
         {/* CTA Section */}
-        <section className="py-20 lg:py-32 bg-gradient-to-r from-pal-purple to-pal-purple/90">
+        <section className="py-20 lg:py-32 bg-gradient-to-br from-pal-purple/80 via-pal-purple/70 to-pal-purple/60">
           <div className="container mx-auto px-6 lg:px-8 text-center">
             <div className="max-w-4xl mx-auto text-white">
               <div className="flex justify-center mb-8">

@@ -83,6 +83,11 @@ export const EnhancedFooter = () => {
                       Safety Videos
                     </Link>
                   </li>
+                  <li>
+                    <Link to="/startups" className="text-corporate-gray hover:text-pal-orange transition-colors">
+                      Startups
+                    </Link>
+                  </li>
                 </ul>
               </div>
 

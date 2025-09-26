@@ -464,16 +464,6 @@ const StartupsPage = () => {
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>
-              
-              <div className="mt-12 lg:mt-16 text-center">
-                <p className="text-sm text-gray-500 mb-4">Trusted by startups from seed to Series A and beyond</p>
-                <div className="flex justify-center items-center gap-2">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
-                  <span className="ml-2 text-gray-600 font-medium">4.9/5 from 50+ startup clients</span>
-                </div>
-              </div>
             </div>
           </div>
         </section>

@@ -141,45 +141,63 @@ export default function Pals() {
           >
             <div className="h-full min-h-[50vh] md:min-h-[100vh] p-[clamp(1.5rem,4vw,2rem)] flex flex-col justify-between text-white">
               
-              {/* Top Section - Always Visible */}
-              <div className="space-y-4">
-                <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4">
-                  <div className="text-[clamp(0.875rem,2vw,1rem)] font-bold opacity-95 mb-2">📱 Perfect For:</div>
-                  <div className="text-[clamp(0.75rem,1.8vw,0.875rem)] space-y-1">
-                    <div>• Restaurants & local businesses</div>
-                    <div>• Service providers needing quick content</div>
-                    <div>• Entrepreneurs starting their video journey</div>
+              {/* Mobile: Side-by-side layout */}
+              <div className="md:hidden flex items-center h-full">
+                {/* Text on left */}
+                <div className="flex-1 pr-4">
+                  <h2 className="text-[clamp(2rem,8vw,2.5rem)] font-extrabold mb-2">Reel Pal</h2>
+                  <p className="text-[clamp(1rem,4vw,1.125rem)] font-light leading-relaxed mb-4">Short-form social content, DIY kits, and our Starter Session.</p>
+                  <div className="text-[clamp(0.875rem,3vw,1rem)] font-bold">Starting at $19</div>
+                </div>
+                {/* Character on right - moved to side */}
+                <div className="flex-shrink-0 w-[40%]">
+                  <div className="relative w-full aspect-square transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_forwards]">
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
+                      src={reelPalImage} 
+                      alt="Female Reel Pal character in orange hoodie"
+                      loading="eager"
+                    />
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
+                      src={maleReelPalImage} 
+                      alt="Male Reel Pal character in orange hoodie"
+                      loading="eager"
+                    />
                   </div>
                 </div>
-                <h2 className="text-[clamp(2rem,5vw,3rem)] font-extrabold">Reel Pal</h2>
-                <p className="text-[clamp(1rem,2.5vw,1.125rem)] font-light leading-relaxed">Short-form social content, DIY kits, and our Starter Session.</p>
               </div>
 
-              {/* Bottom Section - Character & Pricing */}
-              <div className="flex flex-col items-center space-y-4">
-                {/* Character Image Container */}
-                <div className="relative w-[clamp(200px,30vw,300px)] h-[clamp(200px,30vw,300px)] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_forwards]">
-                  <img 
-                    className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
-                    src={reelPalImage} 
-                    alt="Female Reel Pal character in orange hoodie"
-                    loading="eager"
-                  />
-                  <img 
-                    className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
-                    src={maleReelPalImage} 
-                    alt="Male Reel Pal character in orange hoodie"
-                    loading="eager"
-                  />
+              {/* Desktop: Original vertical layout */}
+              <div className="hidden md:flex flex-col justify-between h-full">
+                <div className="space-y-4">
+                  <h2 className="text-[clamp(2rem,5vw,3rem)] font-extrabold">Reel Pal</h2>
+                  <p className="text-[clamp(1rem,2.5vw,1.125rem)] font-light leading-relaxed">Short-form social content, DIY kits, and our Starter Session.</p>
                 </div>
 
-                {/* Pricing Section */}
-                <div className="text-center">
-                  <div className="flex items-center justify-center mb-2">
-                    <span className="text-[clamp(1.5rem,3vw,2rem)] mr-3">📱</span>
-                    <span className="font-bold text-[clamp(1rem,2.5vw,1.125rem)]">Starting at $19</span>
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="relative w-[clamp(200px,30vw,300px)] h-[clamp(200px,30vw,300px)] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_forwards]">
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
+                      src={reelPalImage} 
+                      alt="Female Reel Pal character in orange hoodie"
+                      loading="eager"
+                    />
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
+                      src={maleReelPalImage} 
+                      alt="Male Reel Pal character in orange hoodie"
+                      loading="eager"
+                    />
                   </div>
-                  <div className="text-[clamp(0.75rem,1.8vw,0.875rem)]">DIY resources • Starter sessions • 30-reel packages</div>
+
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mb-2">
+                      <span className="text-[clamp(1.5rem,3vw,2rem)] mr-3">📱</span>
+                      <span className="font-bold text-[clamp(1rem,2.5vw,1.125rem)]">Starting at $19</span>
+                    </div>
+                    <div className="text-[clamp(0.75rem,1.8vw,0.875rem)]">DIY resources • Starter sessions • 30-reel packages</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -192,41 +210,61 @@ export default function Pals() {
           >
             <div className="h-full min-h-[50vh] md:min-h-[100vh] p-[clamp(1.5rem,4vw,2rem)] flex flex-col justify-between text-white">
               
-              <div className="space-y-4">
-                <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4">
-                  <div className="text-[clamp(0.875rem,2vw,1rem)] font-bold opacity-95 mb-2">⚙️ Perfect For:</div>
-                  <div className="text-[clamp(0.75rem,1.8vw,0.875rem)] space-y-1">
-                    <div>• Growing teams needing training systems</div>
-                    <div>• Companies with repetitive onboarding</div>
-                    <div>• Businesses building internal processes</div>
+              {/* Mobile: Side-by-side layout */}
+              <div className="md:hidden flex items-center h-full">
+                <div className="flex-1 pr-4">
+                  <h2 className="text-[clamp(2rem,8vw,2.5rem)] font-extrabold mb-2">System Pal</h2>
+                  <p className="text-[clamp(1rem,4vw,1.125rem)] font-light leading-relaxed mb-4">Backend video systems like training, onboarding, and FAQ buildouts.</p>
+                  <div className="text-[clamp(0.875rem,3vw,1rem)] font-bold">$4,500 - $6,500</div>
+                </div>
+                <div className="flex-shrink-0 w-[40%]">
+                  <div className="relative w-full aspect-square transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.2s_forwards]">
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
+                      src={systemPalImage} 
+                      alt="Female System Pal character in teal jacket"
+                      loading="eager"
+                    />
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
+                      src={maleSystemPalImage} 
+                      alt="Male System Pal character in teal jacket"
+                      loading="eager"
+                    />
                   </div>
                 </div>
-                <h2 className="text-[clamp(2rem,5vw,3rem)] font-extrabold">System Pal</h2>
-                <p className="text-[clamp(1rem,2.5vw,1.125rem)] font-light leading-relaxed">Backend video systems like training, onboarding, and FAQ buildouts.</p>
               </div>
 
-              <div className="flex flex-col items-center space-y-4">
-                <div className="relative w-[clamp(200px,30vw,300px)] h-[clamp(200px,30vw,300px)] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.2s_forwards]">
-                  <img 
-                    className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
-                    src={systemPalImage} 
-                    alt="Female System Pal character in teal jacket"
-                    loading="eager"
-                  />
-                  <img 
-                    className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
-                    src={maleSystemPalImage} 
-                    alt="Male System Pal character in teal jacket"
-                    loading="eager"
-                  />
+              {/* Desktop: Original vertical layout */}
+              <div className="hidden md:flex flex-col justify-between h-full">
+                <div className="space-y-4">
+                  <h2 className="text-[clamp(2rem,5vw,3rem)] font-extrabold">System Pal</h2>
+                  <p className="text-[clamp(1rem,2.5vw,1.125rem)] font-light leading-relaxed">Backend video systems like training, onboarding, and FAQ buildouts.</p>
                 </div>
 
-                <div className="text-center">
-                  <div className="flex items-center justify-center mb-2">
-                    <span className="text-[clamp(1.5rem,3vw,2rem)] mr-3">⚙️</span>
-                    <span className="font-bold text-[clamp(1rem,2.5vw,1.125rem)]">$4,500 - $6,500</span>
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="relative w-[clamp(200px,30vw,300px)] h-[clamp(200px,30vw,300px)] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.2s_forwards]">
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
+                      src={systemPalImage} 
+                      alt="Female System Pal character in teal jacket"
+                      loading="eager"
+                    />
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
+                      src={maleSystemPalImage} 
+                      alt="Male System Pal character in teal jacket"
+                      loading="eager"
+                    />
                   </div>
-                  <div className="text-[clamp(0.75rem,1.8vw,0.875rem)]">Training systems • FAQ buildouts • Onboarding flows</div>
+
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mb-2">
+                      <span className="text-[clamp(1.5rem,3vw,2rem)] mr-3">⚙️</span>
+                      <span className="font-bold text-[clamp(1rem,2.5vw,1.125rem)]">$4,500 - $6,500</span>
+                    </div>
+                    <div className="text-[clamp(0.75rem,1.8vw,0.875rem)]">Training systems • FAQ buildouts • Onboarding flows</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -239,41 +277,61 @@ export default function Pals() {
           >
             <div className="h-full min-h-[50vh] md:min-h-[100vh] p-[clamp(1.5rem,4vw,2rem)] flex flex-col justify-between text-white">
               
-              <div className="space-y-4">
-                <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4">
-                  <div className="text-[clamp(0.875rem,2vw,1rem)] font-bold opacity-95 mb-2">🌱 Perfect For:</div>
-                  <div className="text-[clamp(0.75rem,1.8vw,0.875rem)] space-y-1">
-                    <div>• Thought leaders building authority</div>
-                    <div>• Coaches scaling their influence</div>
-                    <div>• Businesses creating evergreen content</div>
+              {/* Mobile: Side-by-side layout */}
+              <div className="md:hidden flex items-center h-full">
+                <div className="flex-1 pr-4">
+                  <h2 className="text-[clamp(2rem,8vw,2.5rem)] font-extrabold mb-2">Evergreen Pal</h2>
+                  <p className="text-[clamp(1rem,4vw,1.125rem)] font-light leading-relaxed mb-4">Long-term authority content like YouTube engines and monthly plans.</p>
+                  <div className="text-[clamp(0.875rem,3vw,1rem)] font-bold">$6,000 - $6,500</div>
+                </div>
+                <div className="flex-shrink-0 w-[40%]">
+                  <div className="relative w-full aspect-square transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.4s_forwards]">
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
+                      src={evergreenPalImage} 
+                      alt="Female Evergreen Pal character in green cardigan"
+                      loading="eager"
+                    />
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
+                      src={maleEvergreenPalImage} 
+                      alt="Male Evergreen Pal character in blue cardigan"
+                      loading="eager"
+                    />
                   </div>
                 </div>
-                <h2 className="text-[clamp(2rem,5vw,3rem)] font-extrabold">Evergreen Pal</h2>
-                <p className="text-[clamp(1rem,2.5vw,1.125rem)] font-light leading-relaxed">Long-term authority content like YouTube engines and monthly plans.</p>
               </div>
 
-              <div className="flex flex-col items-center space-y-4">
-                <div className="relative w-[clamp(200px,30vw,300px)] h-[clamp(200px,30vw,300px)] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.4s_forwards]">
-                  <img 
-                    className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
-                    src={evergreenPalImage} 
-                    alt="Female Evergreen Pal character in green cardigan"
-                    loading="eager"
-                  />
-                  <img 
-                    className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
-                    src={maleEvergreenPalImage} 
-                    alt="Male Evergreen Pal character in blue cardigan"
-                    loading="eager"
-                  />
+              {/* Desktop: Original vertical layout */}
+              <div className="hidden md:flex flex-col justify-between h-full">
+                <div className="space-y-4">
+                  <h2 className="text-[clamp(2rem,5vw,3rem)] font-extrabold">Evergreen Pal</h2>
+                  <p className="text-[clamp(1rem,2.5vw,1.125rem)] font-light leading-relaxed">Long-term authority content like YouTube engines and monthly plans.</p>
                 </div>
 
-                <div className="text-center">
-                  <div className="flex items-center justify-center mb-2">
-                    <span className="text-[clamp(1.5rem,3vw,2rem)] mr-3">🎬</span>
-                    <span className="font-bold text-[clamp(1rem,2.5vw,1.125rem)]">$6,000 - $6,500</span>
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="relative w-[clamp(200px,30vw,300px)] h-[clamp(200px,30vw,300px)] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.4s_forwards]">
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
+                      src={evergreenPalImage} 
+                      alt="Female Evergreen Pal character in green cardigan"
+                      loading="eager"
+                    />
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
+                      src={maleEvergreenPalImage} 
+                      alt="Male Evergreen Pal character in blue cardigan"
+                      loading="eager"
+                    />
                   </div>
-                  <div className="text-[clamp(0.75rem,1.8vw,0.875rem)]">YouTube engines • Brand kits • Authority content</div>
+
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mb-2">
+                      <span className="text-[clamp(1.5rem,3vw,2rem)] mr-3">🎬</span>
+                      <span className="font-bold text-[clamp(1rem,2.5vw,1.125rem)]">$6,000 - $6,500</span>
+                    </div>
+                    <div className="text-[clamp(0.75rem,1.8vw,0.875rem)]">YouTube engines • Brand kits • Authority content</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -286,41 +344,61 @@ export default function Pals() {
           >
             <div className="h-full min-h-[50vh] md:min-h-[100vh] p-[clamp(1.5rem,4vw,2rem)] flex flex-col justify-between text-white">
               
-              <div className="space-y-4">
-                <div className="bg-white/15 backdrop-blur-sm rounded-lg p-4">
-                  <div className="text-[clamp(0.875rem,2vw,1rem)] font-bold opacity-95 mb-2">✨ Perfect For:</div>
-                  <div className="text-[clamp(0.75rem,1.8vw,0.875rem)] space-y-1">
-                    <div>• Premium brands needing cinematic content</div>
-                    <div>• Product launches & brand campaigns</div>
-                    <div>• Businesses wanting award-quality video</div>
+              {/* Mobile: Side-by-side layout */}
+              <div className="md:hidden flex items-center h-full">
+                <div className="flex-1 pr-4">
+                  <h2 className="text-[clamp(2rem,8vw,2.5rem)] font-extrabold mb-2">Spotlight Pal</h2>
+                  <p className="text-[clamp(1rem,4vw,1.125rem)] font-light leading-relaxed mb-4">Cinematic brand storytelling, music videos, commercials, and hero content.</p>
+                  <div className="text-[clamp(0.875rem,3vw,1rem)] font-bold">$8,000+</div>
+                </div>
+                <div className="flex-shrink-0 w-[40%]">
+                  <div className="relative w-full aspect-square transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.6s_forwards]">
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
+                      src={spotlightPalImage} 
+                      alt="Female Spotlight Pal character in blue jacket"
+                      loading="eager"
+                    />
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
+                      src={maleSpotlightPalImage} 
+                      alt="Male Spotlight Pal character in blue jacket"
+                      loading="eager"
+                    />
                   </div>
                 </div>
-                <h2 className="text-[clamp(2rem,5vw,3rem)] font-extrabold">Spotlight Pal</h2>
-                <p className="text-[clamp(1rem,2.5vw,1.125rem)] font-light leading-relaxed">Cinematic brand storytelling, music videos, commercials, and hero content.</p>
               </div>
 
-              <div className="flex flex-col items-center space-y-4">
-                <div className="relative w-[clamp(200px,30vw,300px)] h-[clamp(200px,30vw,300px)] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.6s_forwards]">
-                  <img 
-                    className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
-                    src={spotlightPalImage} 
-                    alt="Female Spotlight Pal character in blue jacket"
-                    loading="eager"
-                  />
-                  <img 
-                    className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
-                    src={maleSpotlightPalImage} 
-                    alt="Male Spotlight Pal character in blue jacket"
-                    loading="eager"
-                  />
+              {/* Desktop: Original vertical layout */}
+              <div className="hidden md:flex flex-col justify-between h-full">
+                <div className="space-y-4">
+                  <h2 className="text-[clamp(2rem,5vw,3rem)] font-extrabold">Spotlight Pal</h2>
+                  <p className="text-[clamp(1rem,2.5vw,1.125rem)] font-light leading-relaxed">Cinematic brand storytelling, music videos, commercials, and hero content.</p>
                 </div>
 
-                <div className="text-center">
-                  <div className="flex items-center justify-center mb-2">
-                    <span className="text-[clamp(1.5rem,3vw,2rem)] mr-3">🎯</span>
-                    <span className="font-bold text-[clamp(1rem,2.5vw,1.125rem)]">$8,000+</span>
+                <div className="flex flex-col items-center space-y-4">
+                  <div className="relative w-[clamp(200px,30vw,300px)] h-[clamp(200px,30vw,300px)] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.6s_forwards]">
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-100 group-hover:opacity-0" 
+                      src={spotlightPalImage} 
+                      alt="Female Spotlight Pal character in blue jacket"
+                      loading="eager"
+                    />
+                    <img 
+                      className="absolute inset-0 w-full h-full object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100" 
+                      src={maleSpotlightPalImage} 
+                      alt="Male Spotlight Pal character in blue jacket"
+                      loading="eager"
+                    />
                   </div>
-                  <div className="text-[clamp(0.75rem,1.8vw,0.875rem)]">Commercials • Music videos • Brand films</div>
+
+                  <div className="text-center">
+                    <div className="flex items-center justify-center mb-2">
+                      <span className="text-[clamp(1.5rem,3vw,2rem)] mr-3">🎯</span>
+                      <span className="font-bold text-[clamp(1rem,2.5vw,1.125rem)]">$8,000+</span>
+                    </div>
+                    <div className="text-[clamp(0.75rem,1.8vw,0.875rem)]">Commercials • Music videos • Brand films</div>
+                  </div>
                 </div>
               </div>
             </div>

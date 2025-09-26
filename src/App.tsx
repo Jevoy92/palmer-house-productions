@@ -13,6 +13,7 @@ import { PageTransition } from '@/components/PageTransition';
 import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { trackPageView } from "@/lib/analytics";
 import { Canonical } from "@/components/seo/Canonical";
+import { AnimationOptimizer } from "@/components/performance/AnimationOptimizer";
 import Index from "./pages/Index";
 import VideoPackages from "./pages/VideoPackages";
 import Pals from "./pages/Pals";
@@ -75,6 +76,7 @@ const App = () => (
         <PageTransition>
           <CriticalCSS />
           <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
+          <AnimationOptimizer />
           <Navigation />
           <ScrollToTop />
           <StructuredData />

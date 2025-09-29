@@ -10,65 +10,29 @@ export const AnimationOptimizer = () => {
       document.documentElement.style.setProperty('--transition-duration', '0.01ms');
     }
 
-    // Optimize animations for better performance
-    const optimizeAnimations = () => {
-      const animatedElements = document.querySelectorAll('[class*="transition"], [class*="animate"]');
+    // For mobile, reduce animation complexity to prevent jank
+    const isMobile = window.innerWidth < 768;
+    
+    if (isMobile) {
+      // Reduce transition durations on mobile
+      document.documentElement.style.setProperty('--transition-duration', '200ms');
       
-      animatedElements.forEach((element) => {
-        const htmlElement = element as HTMLElement;
-        
-        // Add will-change only when needed
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              htmlElement.style.willChange = 'transform, opacity';
-            } else {
-              htmlElement.style.willChange = 'auto';
-            }
-          });
-        });
-        
-        observer.observe(htmlElement);
-      });
-    };
-
-    // Run optimization after DOM is loaded
-    setTimeout(optimizeAnimations, 100);
-
-    // Optimize scroll-triggered animations
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const viewportHeight = window.innerHeight;
-      
-      // Pause animations for elements far from viewport
-      const animatedElements = document.querySelectorAll('.animate-on-scroll');
-      animatedElements.forEach((element) => {
-        const rect = element.getBoundingClientRect();
-        const isNearViewport = rect.top < viewportHeight * 1.5 && rect.bottom > -viewportHeight * 0.5;
-        
-        if (!isNearViewport) {
-          (element as HTMLElement).style.animationPlayState = 'paused';
-        } else {
-          (element as HTMLElement).style.animationPlayState = 'running';
+      // Disable will-change manipulations on mobile (they cause more harm than good)
+      const style = document.createElement('style');
+      style.textContent = `
+        * {
+          will-change: auto !important;
         }
-      });
-    };
-
-    // Throttle scroll handler
-    let scrollTimeout: NodeJS.Timeout;
-    const throttledScroll = () => {
-      if (scrollTimeout) return;
-      scrollTimeout = setTimeout(() => {
-        handleScroll();
-        scrollTimeout = null as any;
-      }, 16); // ~60fps
-    };
-
-    window.addEventListener('scroll', throttledScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', throttledScroll);
-    };
+        .transition-opacity {
+          transition-duration: 200ms !important;
+        }
+      `;
+      document.head.appendChild(style);
+      
+      return () => {
+        document.head.removeChild(style);
+      };
+    }
   }, []);
 
   return null;

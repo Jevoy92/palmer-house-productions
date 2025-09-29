@@ -46,7 +46,7 @@ export const LazySection = ({
   return (
     <div 
       ref={sectionRef} 
-      className={`transition-opacity duration-500 ${
+      className={`transition-opacity duration-300 ${
         isVisible ? 'opacity-100' : 'opacity-0'
       } ${className}`}
     >

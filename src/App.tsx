@@ -15,7 +15,6 @@ import { trackPageView } from "@/lib/analytics";
 import { Canonical } from "@/components/seo/Canonical";
 import { AnimationOptimizer } from "@/components/performance/AnimationOptimizer";
 import Index from "./pages/Index";
-import VideoPackages from "./pages/VideoPackages";
 import Pals from "./pages/Pals";
 import ReelPal from "./pages/ReelPal";
 import SystemPal from "./pages/SystemPal";
@@ -90,7 +89,6 @@ const App = () => (
           <Route path="/system-pal" element={<SystemPal />} />
           <Route path="/evergreen-pal" element={<EvergreenPal />} />
           <Route path="/spotlight-pal" element={<SpotlightPal />} />
-          <Route path="/video-packages" element={<VideoPackages />} />
           <Route path="/discovery-call" element={<Navigate to="/contact" replace />} />
           <Route path="/video-use-cases" element={<VideoUseCases />} />
           <Route path="/about-us" element={<AboutUs />} />
@@ -101,8 +99,8 @@ const App = () => (
            <Route path="/services/diy-downloads" element={<DIYDownloads />} />
            <Route path="/safety-videos" element={<SafetyVideos />} />
            <Route path="/startups" element={<Startups />} />
-          <Route path="/services/group-coaching" element={<Navigate to="/video-packages" replace />} />
-          <Route path="/services/monthly-content" element={<Navigate to="/video-packages" replace />} />
+          <Route path="/services/group-coaching" element={<Navigate to="/contact" replace />} />
+          <Route path="/services/monthly-content" element={<Navigate to="/contact" replace />} />
           <Route path="/company/team" element={<Team />} />
           <Route path="/company/values" element={<Values />} />
           <Route path="/resources/reviews" element={<Reviews />} />
@@ -126,7 +124,8 @@ const App = () => (
            />
           
           {/* Legacy route redirects */}
-          <Route path="/pathways" element={<Navigate to="/video-packages" replace />} />
+          <Route path="/pathways" element={<Navigate to="/contact" replace />} />
+          <Route path="/video-packages" element={<Navigate to="/pals" replace />} />
           <Route path="/glimpse" element={<Navigate to="/contact" replace />} />
           <Route path="/reviews" element={<Navigate to="/resources/reviews" replace />} />
           <Route path="/arsenal" element={<Navigate to="/video-use-cases" replace />} />

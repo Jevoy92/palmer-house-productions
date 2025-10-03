@@ -104,10 +104,34 @@ export const Navigation = () => {
                 <DropdownMenuContent align="start" className="w-56 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
                   <DropdownMenuItem asChild>
                     <button 
-                      onClick={() => handlePageTransition('/video-packages')}
+                      onClick={() => handlePageTransition('/reel-pal')}
                       className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                     >
-                      Video Packages
+                      Social Content
+                    </button>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <button 
+                      onClick={() => handlePageTransition('/system-pal')}
+                      className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                    >
+                      Training Systems
+                    </button>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <button 
+                      onClick={() => handlePageTransition('/evergreen-pal')}
+                      className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                    >
+                      Evergreen Content
+                    </button>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <button 
+                      onClick={() => handlePageTransition('/spotlight-pal')}
+                      className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                    >
+                      Premium Production
                     </button>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
@@ -116,6 +140,22 @@ export const Navigation = () => {
                       className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                     >
                       DIY Downloads
+                    </button>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <button 
+                      onClick={() => handlePageTransition('/safety-videos')}
+                      className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                    >
+                      Safety Videos
+                    </button>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <button 
+                      onClick={() => handlePageTransition('/startups')}
+                      className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                    >
+                      Startups
                     </button>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
@@ -238,16 +278,46 @@ export const Navigation = () => {
               <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Services</div>
               <div className="space-y-1">
                 <button 
-                  onClick={() => handlePageTransition('/video-packages')}
+                  onClick={() => handlePageTransition('/reel-pal')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
-                  Video Packages
+                  Social Content
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/system-pal')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Training Systems
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/evergreen-pal')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Evergreen Content
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/spotlight-pal')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Premium Production
                 </button>
                 <button 
                   onClick={() => handlePageTransition('/services/diy-downloads')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
                   DIY Downloads
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/safety-videos')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Safety Videos
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/startups')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Startups
                 </button>
               </div>
             </div>

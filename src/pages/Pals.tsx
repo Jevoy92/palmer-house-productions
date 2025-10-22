@@ -92,11 +92,11 @@ export default function Pals() {
     <div className="bg-gray-50 overflow-x-hidden font-sans">
       <ScrollBars />
         <MetaTags 
-          title="Meet Your Video Production Specialists | Palmer House Productions"
-          description="Meet the Video Pals: Reel Pal for social content creation, System Pal for training systems, Evergreen Pal for authority building, and Spotlight Pal for cinematic storytelling. Seattle-based professional video production team."
-          keywords="video production specialists, social media content, training video systems, YouTube content, cinematic video production, Seattle video production team"
-          ogTitle="Meet Your Video Production Specialists | Palmer House Productions"
-          ogDescription="Meet the Video Pals: specialized video production experts for social content, training systems, authority building, and cinematic storytelling."
+          title="Video Systems That Remove Friction, Waste & Invisibility | Palmer House Productions"
+          description="Meet the Video Pals: specialized video systems that solve business problems. Remove friction with System Pal, invisibility with Reel Pal, confusion with Evergreen Pal, and weak proof with Spotlight Pal."
+          keywords="video production systems, business video solutions, training video systems, social media content systems, evergreen content, Seattle video production"
+          ogTitle="Video Systems That Remove Friction, Waste & Invisibility"
+          ogDescription="Specialized video systems that solve real business problems: training systems, social content, authority building, and proof content."
           canonicalUrl="https://www.palmerhouseproductions.com/pals"
         />
 
@@ -140,7 +140,7 @@ export default function Pals() {
           >
             <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-100 md:opacity-0 group-hover:opacity-100 top-1/4 md:group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
               <h2 className="text-2xl md:text-4xl font-extrabold mb-2 md:mb-4">Reel Pal</h2>
-              <p className="text-sm md:text-lg font-light leading-relaxed max-w-xs">Short-form social content, DIY kits, and our Starter Session.</p>
+              <p className="text-sm md:text-lg font-light leading-relaxed max-w-xs">Solving invisibility with consistent social presence.</p>
             </div>
             <div className="relative w-[200px] h-[200px] md:w-[300px] md:h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_forwards] ml-auto md:ml-0">
               <img 
@@ -165,7 +165,7 @@ export default function Pals() {
           >
             <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-100 md:opacity-0 group-hover:opacity-100 top-1/4 md:group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
               <h2 className="text-2xl md:text-4xl font-extrabold mb-2 md:mb-4">System Pal</h2>
-              <p className="text-sm md:text-lg font-light leading-relaxed max-w-xs">Backend video systems like training, onboarding, and FAQ buildouts.</p>
+              <p className="text-sm md:text-lg font-light leading-relaxed max-w-xs">Removing friction from internal processes.</p>
             </div>
             <div className="relative w-[200px] h-[200px] md:w-[300px] md:h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.2s_forwards] ml-auto md:ml-0">
               <img 
@@ -190,7 +190,7 @@ export default function Pals() {
           >
             <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-100 md:opacity-0 group-hover:opacity-100 top-1/4 md:group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
               <h2 className="text-2xl md:text-4xl font-extrabold mb-2 md:mb-4">Evergreen Pal</h2>
-              <p className="text-sm md:text-lg font-light leading-relaxed max-w-xs">Long-term authority content like YouTube engines and monthly plans.</p>
+              <p className="text-sm md:text-lg font-light leading-relaxed max-w-xs">Eliminating confusion about your offering.</p>
             </div>
             <div className="relative w-[200px] h-[200px] md:w-[300px] md:h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.4s_forwards] ml-auto md:ml-0">
               <img 
@@ -215,7 +215,7 @@ export default function Pals() {
           >
             <div className="absolute top-0 left-0 w-full h-full p-8 text-white flex flex-col items-center text-center transition-all duration-500 ease-in-out opacity-100 md:opacity-0 group-hover:opacity-100 top-1/4 md:group-hover:top-1/4 md:top-1/3 md:group-hover:top-[15%]">
               <h2 className="text-2xl md:text-4xl font-extrabold mb-2 md:mb-4">Spotlight Pal</h2>
-              <p className="text-sm md:text-lg font-light leading-relaxed max-w-xs">Cinematic brand storytelling, music videos, commercials, and hero content.</p>
+              <p className="text-sm md:text-lg font-light leading-relaxed max-w-xs">Making your wins and proof visible.</p>
             </div>
             <div className="relative w-[200px] h-[200px] md:w-[300px] md:h-[300px] lg:w-[400px] lg:h-[400px] xl:w-[450px] xl:h-[450px] transform transition-transform duration-500 ease-in-out group-hover:scale-110 opacity-0 animate-[slideUp_1s_ease-out_0.6s_forwards] ml-auto md:ml-0">
               <img 
@@ -237,15 +237,37 @@ export default function Pals() {
         {/* Spacer */}
         <div className="h-[5vh] bg-white relative z-10"></div>
 
+        {/* Campaign Hook Section */}
+        <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-20 lg:py-32 relative z-20">
+          <div className="container mx-auto px-6 lg:px-8 text-center">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-8 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
+                What's slowing down your business?
+              </h2>
+              <p className="text-2xl md:text-3xl text-gray-700 mb-12 leading-relaxed animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-200">
+                Your <span className="text-primary font-bold">people</span>, your <span className="text-secondary font-bold">process</span>, or your <span className="text-accent font-bold">visibility</span>?
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-300">
+                <button 
+                  onClick={() => transitionToPage('/contact')} 
+                  className="px-8 py-4 bg-primary text-white rounded-full font-bold text-lg hover:bg-primary/90 transition-all shadow-xl hover:shadow-2xl transform hover:scale-105"
+                >
+                  Let's Build the Video System That Solves It
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Intro Section */}
         <section className="bg-white py-20 lg:py-32 relative z-20">
           <div className="container mx-auto px-6 lg:px-8 text-center">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
-                Meet Your Video Production Dream Team
+                Meet Your Video Systems Specialists
               </h2>
               <p className="text-xl text-gray-600 mb-12 leading-relaxed animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-200">
-                Each Video Pal specializes in different aspects of video production, ensuring you get exactly the right expertise for your project. From quick social content to cinematic masterpieces, we've got you covered.
+                We help businesses remove friction, waste, and invisibility using video systems. Each Video Pal specializes in removing different types of waste from your business—whether it's friction in your processes, invisibility in your marketing, or confusion about your offering.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div className="p-6 bg-pal-orange/5 rounded-2xl border border-pal-orange/20 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-300">
@@ -253,28 +275,28 @@ export default function Pals() {
                     <Smartphone className="text-2xl text-pal-orange" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Reel Pal</h3>
-                  <p className="text-gray-600 text-sm">Perfect for social media and quick content creation</p>
+                  <p className="text-gray-600 text-sm">Removes invisibility with consistent social content systems</p>
                 </div>
                 <div className="p-6 bg-pal-purple/5 rounded-2xl border border-pal-purple/20 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-400">
                   <div className="w-16 h-16 bg-pal-purple/20 rounded-full flex items-center justify-center mb-4 mx-auto">
                     <Cog className="text-2xl text-pal-purple" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">System Pal</h3>
-                  <p className="text-gray-600 text-sm">Specializes in internal training and educational content</p>
+                  <p className="text-gray-600 text-sm">Removes friction from training, onboarding, and processes</p>
                 </div>
                 <div className="p-6 bg-pal-green/5 rounded-2xl border border-pal-green/20 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-500">
                   <div className="w-16 h-16 bg-pal-green/20 rounded-full flex items-center justify-center mb-4 mx-auto">
                     <Youtube className="text-2xl text-pal-green" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Evergreen Pal</h3>
-                  <p className="text-gray-600 text-sm">Builds long-term authority through strategic content</p>
+                  <p className="text-gray-600 text-sm">Eliminates confusion with clear explanatory content</p>
                 </div>
                 <div className="p-6 bg-pal-blue/5 rounded-2xl border border-pal-blue/20 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-600">
                   <div className="w-16 h-16 bg-pal-blue/20 rounded-full flex items-center justify-center mb-4 mx-auto">
                     <Film className="text-2xl text-pal-blue" />
                   </div>
                   <h3 className="text-lg font-bold text-gray-900 mb-2">Spotlight Pal</h3>
-                  <p className="text-gray-600 text-sm">Creates premium cinematic brand experiences</p>
+                  <p className="text-gray-600 text-sm">Makes your wins visible with testimonials and proof content</p>
                 </div>
               </div>
             </div>
@@ -287,9 +309,15 @@ export default function Pals() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               <div className="text-center lg:text-left animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
                 <h2 className="text-base font-semibold text-pal-purple uppercase tracking-wider">System Pal</h2>
-                <h3 className="mt-2 text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">Automate & Educate with Backend Video</h3>
+                <h3 className="mt-2 text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">Removing Friction From Your Business</h3>
                 <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-                  Build a powerful internal video library that streamlines your processes. From comprehensive employee training and seamless onboarding to a robust FAQ video hub, System Pal is your partner in creating efficient, scalable backend video systems.
+                  <strong className="text-gray-900">The Problem:</strong> Teams waste time answering the same questions. Onboarding is inconsistent. Processes exist only in people's heads.
+                </p>
+                <p className="mt-4 text-lg text-gray-600 leading-relaxed">
+                  <strong className="text-gray-900">The Solution:</strong> Video systems that document your processes once and scale them forever. Onboarding video series, role-specific training modules, step-by-step workflow videos, and digital SOP libraries that turn institutional knowledge into accessible assets.
+                </p>
+                <p className="mt-4 text-lg text-gray-900 leading-relaxed font-semibold">
+                  Business Impact: Reduce training time by 50%, eliminate repetitive explanations, and scale your operations without scaling your headcount.
                 </p>
                 <div className="mt-10 space-y-8">
                   <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-200">

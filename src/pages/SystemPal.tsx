@@ -60,8 +60,8 @@ const SystemPal = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="bg-white p-12 rounded-3xl shadow-2xl border border-gray-100">
                 <div className="bg-purple-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg">🎓 SYSTEM PAL</div>
-                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">"Let's streamline your systems!"</h1>
-                <p className="text-xl mb-8 text-muted-foreground">Your expert for training videos, employee onboarding, and internal system documentation that actually gets used and drives results.</p>
+                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">"Removing friction from your business"</h1>
+                <p className="text-xl mb-8 text-muted-foreground">Stop wasting time answering the same questions. Build video systems that train your team, document your processes, and scale your knowledge.</p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button asChild size="lg" className="bg-purple-500 text-white hover:bg-purple-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
                     <Link to="/contact">🚀 Book Strategy Call</Link>
@@ -85,20 +85,132 @@ const SystemPal = () => {
           </div>
         </section>
 
+        {/* Pain Points Section */}
+        <section className="py-20 bg-gradient-to-b from-background via-purple-500/5 to-background relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Problems I Solve</h2>
+              <p className="text-xl text-muted-foreground">Sound familiar? Let's fix it.</p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <MessageCircle className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">Teams wasting time answering the same questions</h3>
+                    <p className="text-sm text-muted-foreground">Your best people are stuck on repeat, explaining basics instead of doing their real work.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <Users className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">Inconsistent onboarding or training experiences</h3>
+                    <p className="text-sm text-muted-foreground">Every new hire gets different info. Quality depends on who's training that day.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <Database className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">Processes exist only in people's heads</h3>
+                    <p className="text-sm text-muted-foreground">If someone quits or goes on vacation, critical knowledge walks out the door.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <Monitor className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">Managers pulled off tasks to "re-explain" basic steps</h3>
+                    <p className="text-sm text-muted-foreground">Leadership can't focus on growth because they're constantly putting out fires.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* What It Makes Section */}
+        <section className="py-20 bg-background relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">What You Get</h2>
+              <p className="text-xl text-muted-foreground">Not just videos. A complete system.</p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              <div className="group text-center">
+                <div className="inline-flex w-16 h-16 rounded-2xl bg-purple-500/10 items-center justify-center mb-4 group-hover:bg-purple-500/20 transition-colors">
+                  <Users className="w-8 h-8 text-purple-500" />
+                </div>
+                <h3 className="font-semibold text-xl mb-3">Onboarding video series</h3>
+                <p className="text-muted-foreground">Get new hires productive faster with consistent, professional training.</p>
+              </div>
+              
+              <div className="group text-center">
+                <div className="inline-flex w-16 h-16 rounded-2xl bg-purple-500/10 items-center justify-center mb-4 group-hover:bg-purple-500/20 transition-colors">
+                  <PlayCircle className="w-8 h-8 text-purple-500" />
+                </div>
+                <h3 className="font-semibold text-xl mb-3">Role-specific training modules</h3>
+                <p className="text-muted-foreground">Targeted content for each position, reducing training time by 50%.</p>
+              </div>
+              
+              <div className="group text-center">
+                <div className="inline-flex w-16 h-16 rounded-2xl bg-purple-500/10 items-center justify-center mb-4 group-hover:bg-purple-500/20 transition-colors">
+                  <BookOpen className="w-8 h-8 text-purple-500" />
+                </div>
+                <h3 className="font-semibold text-xl mb-3">Step-by-step workflow videos</h3>
+                <p className="text-muted-foreground">Visual guides that eliminate confusion and reduce errors.</p>
+              </div>
+              
+              <div className="group text-center">
+                <div className="inline-flex w-16 h-16 rounded-2xl bg-purple-500/10 items-center justify-center mb-4 group-hover:bg-purple-500/20 transition-colors">
+                  <Database className="w-8 h-8 text-purple-500" />
+                </div>
+                <h3 className="font-semibold text-xl mb-3">Digital SOP or "how-to" libraries</h3>
+                <p className="text-muted-foreground">Searchable knowledge base that scales with your company.</p>
+              </div>
+              
+              <div className="group text-center">
+                <div className="inline-flex w-16 h-16 rounded-2xl bg-purple-500/10 items-center justify-center mb-4 group-hover:bg-purple-500/20 transition-colors">
+                  <Settings className="w-8 h-8 text-purple-500" />
+                </div>
+                <h3 className="font-semibold text-xl mb-3">Safety and compliance videos</h3>
+                <p className="text-muted-foreground">Meet regulations while keeping your team safe and informed.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Packages Section */}
         <section className="py-20 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">System Pal Packages</h2>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Build video systems that streamline operations and reduce repetitive tasks.</p>
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Remove friction from your operations with proven video systems.</p>
               </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Internal Assets */}
               <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-purple-500 transition-all hover:scale-105">
                 <div className="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">INTERNAL</div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">Internal Business Assets</h3>
+                <h3 className="text-2xl font-bold text-foreground mb-4">Onboarding & Training System</h3>
                 <div className="text-4xl font-bold text-purple-600 mb-6">$4,500</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
@@ -137,7 +249,7 @@ const SystemPal = () => {
                   <div className="bg-purple-500 text-white px-4 py-2 rounded-full text-sm font-semibold">MOST POPULAR</div>
                 </div>
                 <div className="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">EXTERNAL</div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">External Business Assets</h3>
+                <h3 className="text-2xl font-bold text-foreground mb-4">Customer Education System</h3>
                 <div className="text-4xl font-bold text-purple-600 mb-6">$4,500</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">

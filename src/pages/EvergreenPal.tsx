@@ -60,8 +60,8 @@ const EvergreenPal = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="bg-white p-12 rounded-3xl shadow-2xl border border-gray-100">
                 <div className="bg-green-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg">🌱 EVERGREEN PAL</div>
-                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">"Let's build lasting authority!"</h1>
-                <p className="text-xl mb-8 text-muted-foreground">Your strategic partner for YouTube growth, thought leadership content, and building sustainable authority that drives long-term business success.</p>
+                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">"Removing confusion from your offering"</h1>
+                <p className="text-xl mb-8 text-muted-foreground">Prospects don't understand what you do? Build evergreen content that makes your value crystal clear and brings in qualified leads while you sleep.</p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button asChild size="lg" className="bg-green-500 text-white hover:bg-green-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
                     <Link to="/contact">🚀 Book Strategy Call</Link>
@@ -90,8 +90,8 @@ const EvergreenPal = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">What I Do Best</h2>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">From YouTube optimization to thought leadership content, I help you build lasting authority that generates leads for years to come.</p>
+                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">What I Make</h2>
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Homepage explainers, FAQ videos, YouTube content, and educational content that makes your offering clear and drives inbound leads.</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -99,32 +99,32 @@ const EvergreenPal = () => {
                   <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Youtube className="text-white h-8 w-8" />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">YouTube Strategy</h3>
-                  <p className="text-muted-foreground">Strategic content that builds subscriber growth and establishes your expertise in your industry.</p>
+                  <h3 className="text-xl font-bold text-foreground mb-4">Homepage and product explainers</h3>
+                  <p className="text-muted-foreground">Get prospects to understand your value in 90 seconds or less.</p>
                 </div>
                 
                 <div className="bg-background rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all">
                   <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Search className="text-white h-8 w-8" />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">SEO Optimization</h3>
-                  <p className="text-muted-foreground">Content optimized for search that helps your ideal clients find you when they need your expertise.</p>
+                  <h3 className="text-xl font-bold text-foreground mb-4">Service walk-throughs and pricing primers</h3>
+                  <p className="text-muted-foreground">Answer objections before they happen with clear, educational content.</p>
                 </div>
                 
                 <div className="bg-background rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all">
                   <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Trophy className="text-white h-8 w-8" />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">Thought Leadership</h3>
-                  <p className="text-muted-foreground">Authority-building content that positions you as the go-to expert in your field.</p>
+                  <h3 className="text-xl font-bold text-foreground mb-4">Top 10 FAQ videos or knowledge base content</h3>
+                  <p className="text-muted-foreground">Reduce support burden while educating prospects at scale.</p>
                 </div>
                 
                 <div className="bg-background rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all">
                   <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
                     <TrendingUp className="text-white h-8 w-8" />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">Long-term Growth</h3>
-                  <p className="text-muted-foreground">Sustainable strategies that compound over time, creating lasting business value.</p>
+                  <h3 className="text-xl font-bold text-foreground mb-4">Long-form educational YouTube content</h3>
+                  <p className="text-muted-foreground">Build authority and get discovered by your ideal customers searching for solutions.</p>
                 </div>
               </div>
             </div>
@@ -137,7 +137,7 @@ const EvergreenPal = () => {
             <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Evergreen Pal Packages</h2>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Build lasting authority with content strategies designed for long-term growth and sustainable lead generation.</p>
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Remove confusion from your offering with clear, educational content that drives qualified leads.</p>
               </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

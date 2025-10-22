@@ -65,8 +65,8 @@ const SpotlightPal = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
               <div className="bg-white p-6 sm:p-8 lg:p-12 rounded-3xl shadow-2xl border border-gray-100">
                 <div className="bg-red-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm font-bold w-fit mb-4 sm:mb-6 shadow-lg">🎬 SPOTLIGHT PAL</div>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 text-foreground leading-tight">"Let's create cinematic magic!"</h1>
-                <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-muted-foreground">Your premier partner for cinematic brand films, premium commercials, and high-end video content that elevates your brand to iconic status.</p>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 text-foreground leading-tight">"Making your wins visible"</h1>
+                <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-muted-foreground">Great work going unseen? Turn customer wins, team achievements, and brand moments into proof that builds trust and drives sales.</p>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                   <Button asChild size="lg" className={`${mobileStyles.mobileButton} bg-red-500 text-white hover:bg-red-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105`}>
                     <Link to="/contact">🚀 Book Strategy Call</Link>
@@ -97,8 +97,8 @@ const SpotlightPal = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">What I Do Best</h2>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">From cinematic brand stories to premium commercials, I create video content that doesn't just look beautiful—it transforms how people see your brand.</p>
+                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">What I Make</h2>
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Customer testimonials, case studies, event coverage, and cinematic brand stories that make your wins impossible to ignore.</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -106,32 +106,32 @@ const SpotlightPal = () => {
                   <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Film className="text-white h-8 w-8" />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">Brand Films</h3>
-                  <p className="text-muted-foreground">Cinematic storytelling that captures your brand's essence and creates emotional connections with your audience.</p>
+                  <h3 className="text-xl font-bold text-foreground mb-4">Customer testimonial videos</h3>
+                  <p className="text-muted-foreground">Real stories from real customers that build trust and close more deals.</p>
                 </div>
                 
                 <div className="bg-background rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all">
                   <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Camera className="text-white h-8 w-8" />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">Premium Commercials</h3>
-                  <p className="text-muted-foreground">High-end advertising content that showcases your products and services with Hollywood-level production value.</p>
+                  <h3 className="text-xl font-bold text-foreground mb-4">Case study and "proof of result" reels</h3>
+                  <p className="text-muted-foreground">Show measurable impact and results that demonstrate your value.</p>
                 </div>
                 
                 <div className="bg-background rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all">
                   <div className="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Sparkles className="text-white h-8 w-8" />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">Award Shows & Events</h3>
-                  <p className="text-muted-foreground">Spectacular event coverage and promotional content that captures the energy and prestige of your special moments.</p>
+                  <h3 className="text-xl font-bold text-foreground mb-4">Event highlight capsules</h3>
+                  <p className="text-muted-foreground">Capture the energy of your launches, conferences, and milestone moments.</p>
                 </div>
                 
                 <div className="bg-background rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all">
                   <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
                     <Award className="text-white h-8 w-8" />
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">Executive Profiles</h3>
-                  <p className="text-muted-foreground">Distinguished leadership videos that position executives as industry visionaries and thought leaders.</p>
+                  <h3 className="text-xl font-bold text-foreground mb-4">Story-based hero videos for websites</h3>
+                  <p className="text-muted-foreground">Cinematic brand films that elevate your homepage and command attention.</p>
                 </div>
               </div>
             </div>
@@ -144,7 +144,7 @@ const SpotlightPal = () => {
             <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Spotlight Pal Packages</h2>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Premium video content that commands attention and creates lasting impact.</p>
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Make your wins visible with video content that builds proof and trust.</p>
               </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

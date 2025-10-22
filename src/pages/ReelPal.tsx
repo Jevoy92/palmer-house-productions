@@ -20,7 +20,8 @@ import {
   ChevronDown,
   ChevronUp,
   Smartphone,
-  Camera
+  Camera,
+  Calendar
 } from 'lucide-react';
 
 const ReelPal = () => {
@@ -62,8 +63,8 @@ const ReelPal = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="bg-white p-12 rounded-3xl shadow-2xl border border-gray-100">
                 <div className="bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg animate-pulse">📱 REEL PAL</div>
-                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">"Let's make content that connects!"</h1>
-                <p className="text-xl mb-8 text-muted-foreground">Your go-to guide for short-form social content that captures hearts and drives real engagement across all platforms.</p>
+                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">"Removing invisibility from your brand"</h1>
+                <p className="text-xl mb-8 text-muted-foreground">Stop posting inconsistently. Build a short-form content system that keeps your brand visible, relevant, and top-of-mind.</p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Button asChild size="lg" className="bg-orange-500 text-white hover:bg-orange-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
                     <Link to="/contact">🚀 Start Creating Content</Link>
@@ -82,6 +83,118 @@ const ReelPal = () => {
                     alt="Reel Pal - Your Social Content Creation Guide" 
                   />
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Pain Points Section */}
+        <section className="py-20 bg-gradient-to-b from-background via-orange-500/5 to-background relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Problems I Solve</h2>
+              <p className="text-xl text-muted-foreground">Sound familiar? Let's fix it.</p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-orange-500/10 hover:border-orange-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <Smartphone className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">Inconsistent posting and low online visibility</h3>
+                    <p className="text-sm text-muted-foreground">You post when you remember, but there's no rhythm. Your audience forgets you exist.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-orange-500/10 hover:border-orange-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <Calendar className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">No clear social media strategy or rhythm</h3>
+                    <p className="text-sm text-muted-foreground">You're throwing content at the wall hoping something sticks. No plan means no progress.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-orange-500/10 hover:border-orange-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <MessageCircle className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">Founders burning out trying to stay "visible"</h3>
+                    <p className="text-sm text-muted-foreground">Creating content feels like a full-time job on top of your actual job.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-orange-500/10 hover:border-orange-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <Video className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">Brand recognition dropping between launches</h3>
+                    <p className="text-sm text-muted-foreground">You spike when you have news, then disappear. People don't remember who you are.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* What It Makes Section */}
+        <section className="py-20 bg-background relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">What You Get</h2>
+              <p className="text-xl text-muted-foreground">Not just videos. A complete system.</p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              <div className="group text-center">
+                <div className="inline-flex w-16 h-16 rounded-2xl bg-orange-500/10 items-center justify-center mb-4 group-hover:bg-orange-500/20 transition-colors">
+                  <Smartphone className="w-8 h-8 text-orange-500" />
+                </div>
+                <h3 className="font-semibold text-xl mb-3">Short-form video systems</h3>
+                <p className="text-muted-foreground">Reels, Shorts, TikToks ready to post on a consistent schedule.</p>
+              </div>
+              
+              <div className="group text-center">
+                <div className="inline-flex w-16 h-16 rounded-2xl bg-orange-500/10 items-center justify-center mb-4 group-hover:bg-orange-500/20 transition-colors">
+                  <Calendar className="w-8 h-8 text-orange-500" />
+                </div>
+                <h3 className="font-semibold text-xl mb-3">Monthly content calendars with ready hooks</h3>
+                <p className="text-muted-foreground">Never stare at a blank screen again. Your content is planned and ready.</p>
+              </div>
+              
+              <div className="group text-center">
+                <div className="inline-flex w-16 h-16 rounded-2xl bg-orange-500/10 items-center justify-center mb-4 group-hover:bg-orange-500/20 transition-colors">
+                  <MessageCircle className="w-8 h-8 text-orange-500" />
+                </div>
+                <h3 className="font-semibold text-xl mb-3">Caption and CTA templates</h3>
+                <p className="text-muted-foreground">Copy-paste captions that drive engagement and conversions.</p>
+              </div>
+              
+              <div className="group text-center">
+                <div className="inline-flex w-16 h-16 rounded-2xl bg-orange-500/10 items-center justify-center mb-4 group-hover:bg-orange-500/20 transition-colors">
+                  <Lightbulb className="w-8 h-8 text-orange-500" />
+                </div>
+                <h3 className="font-semibold text-xl mb-3">Visual storytelling frameworks</h3>
+                <p className="text-muted-foreground">Turn your expertise into scroll-stopping content that positions you as a leader.</p>
+              </div>
+              
+              <div className="group text-center">
+                <div className="inline-flex w-16 h-16 rounded-2xl bg-orange-500/10 items-center justify-center mb-4 group-hover:bg-orange-500/20 transition-colors">
+                  <Camera className="w-8 h-8 text-orange-500" />
+                </div>
+                <h3 className="font-semibold text-xl mb-3">Cutdown libraries from long-form videos</h3>
+                <p className="text-muted-foreground">Maximize your content ROI by repurposing everything you create.</p>
               </div>
             </div>
           </div>
@@ -139,7 +252,7 @@ const ReelPal = () => {
             <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">Reel Pal Packages</h2>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Boost your social media presence with our proven content creation packages.</p>
+                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Remove invisibility from your brand with consistent, strategic content.</p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

@@ -58,9 +58,10 @@ const ReelPal = () => {
               </div>
               
               <div className="flex justify-center">
-                <IPhoneVideoPlayer
-                  imageSrc={reelPalImage}
+                <img 
+                  src={reelPalImage}
                   alt="Reel Pal - Your Social Content Creation Guide"
+                  className="w-full max-w-md object-contain"
                 />
               </div>
             </div>

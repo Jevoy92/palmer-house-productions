@@ -54,14 +54,14 @@ const SystemPal = () => {
             <div className="bg-white rounded-3xl p-8 md:p-12">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div>
-                  <div className="bg-purple-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg">🎓 SYSTEM PAL</div>
+                  <div className="bg-green-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg">🎓 SYSTEM PAL</div>
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">"Removing friction from your business"</h1>
                   <p className="text-lg md:text-xl mb-8 text-muted-foreground">Stop wasting time answering the same questions. Build video systems that train your team, document your processes, and scale your knowledge.</p>
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Button asChild size="lg" className="bg-purple-500 text-white hover:bg-purple-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+                    <Button asChild size="lg" className="bg-green-500 text-white hover:bg-green-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
                       <Link to="/contact">🚀 Book Strategy Call</Link>
                     </Button>
-                    <Button asChild size="lg" variant="outline" className="border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white shadow-xl">
+                    <Button asChild size="lg" variant="outline" className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white shadow-xl">
                       <Link to="/pals">👥 Meet All Pals</Link>
                     </Button>
                   </div>
@@ -82,7 +82,7 @@ const SystemPal = () => {
         </section>
 
         {/* Pain Points Section */}
-        <section className="py-20 bg-purple-50 relative z-10">
+        <section className="py-20 bg-green-50 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Problems I Solve</h2>
@@ -90,7 +90,7 @@ const SystemPal = () => {
             </div>
             
             <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-green-500/10 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
                     <MessageCircle className="w-6 h-6 text-red-600" />
@@ -102,7 +102,7 @@ const SystemPal = () => {
                 </div>
               </div>
               
-              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-green-500/10 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
                     <Users className="w-6 h-6 text-red-600" />
@@ -114,7 +114,7 @@ const SystemPal = () => {
                 </div>
               </div>
               
-              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-green-500/10 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
                     <Database className="w-6 h-6 text-red-600" />
@@ -126,7 +126,7 @@ const SystemPal = () => {
                 </div>
               </div>
               
-              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-green-500/10 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
                     <Monitor className="w-6 h-6 text-red-600" />
@@ -153,7 +153,7 @@ const SystemPal = () => {
               {/* Left Features */}
               <div className="space-y-6 lg:order-1">
                 <Collapsible open={openExpertise === 0} onOpenChange={() => toggleExpertise(0)}>
-                  <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
+                  <div className="bg-green-50 rounded-2xl p-6 border border-green-100">
                     <CollapsibleTrigger className="w-full text-left">
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1">
@@ -422,36 +422,36 @@ const SystemPal = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="w-20 h-20 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
                   <MessageCircle className="text-white h-8 w-8" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-4">Systems Audit</h3>
                 <p className="text-muted-foreground">We analyze your current processes, identify gaps, and map out the optimal learning journey.</p>
               </div>
               
               <div className="text-center">
-                <div className="w-20 h-20 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
                   <Lightbulb className="text-white h-8 w-8" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-4">Content Design</h3>
                 <p className="text-muted-foreground">I design engaging training modules that break down complex processes into digestible steps.</p>
               </div>
               
               <div className="text-center">
-                <div className="w-20 h-20 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
                   <Video className="text-white h-8 w-8" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-4">Production</h3>
                 <p className="text-muted-foreground">Professional recording and editing that creates clear, engaging training content.</p>
               </div>
               
               <div className="text-center">
-                <div className="w-20 h-20 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
                   <Rocket className="text-white h-8 w-8" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-4">Implementation</h3>
                 <p className="text-muted-foreground">Complete rollout with team training and ongoing support to ensure adoption and success.</p>

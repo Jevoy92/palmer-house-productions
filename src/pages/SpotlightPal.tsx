@@ -59,14 +59,14 @@ const SpotlightPal = () => {
             <div className="bg-white rounded-3xl p-6 sm:p-8 lg:p-12">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div>
-                  <div className="bg-red-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm font-bold w-fit mb-4 sm:mb-6 shadow-lg">🎬 SPOTLIGHT PAL</div>
+                  <div className="bg-purple-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm font-bold w-fit mb-4 sm:mb-6 shadow-lg">🎬 SPOTLIGHT PAL</div>
                   <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 text-foreground leading-tight">"Making your wins visible"</h1>
                   <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-muted-foreground">Great work going unseen? Turn customer wins, team achievements, and brand moments into proof that builds trust and drives sales.</p>
                   <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                    <Button asChild size="lg" className={`${mobileStyles.mobileButton} bg-red-500 text-white hover:bg-red-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105`}>
+                    <Button asChild size="lg" className={`${mobileStyles.mobileButton} bg-purple-500 text-white hover:bg-purple-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105`}>
                       <Link to="/contact">🚀 Book Strategy Call</Link>
                     </Button>
-                    <Button asChild size="lg" variant="outline" className={`${mobileStyles.mobileButton} border-red-500 text-red-500 hover:bg-red-500 hover:text-white shadow-xl`}>
+                    <Button asChild size="lg" variant="outline" className={`${mobileStyles.mobileButton} border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white shadow-xl`}>
                       <Link to="/pals">👥 Meet All Pals</Link>
                     </Button>
                   </div>
@@ -88,6 +88,66 @@ const SpotlightPal = () => {
           </div>
         </section>
 
+        {/* Pain Points Section */}
+        <section className="py-20 bg-purple-50 relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Problems I Solve</h2>
+              <p className="text-xl text-muted-foreground">Sound familiar? Let's fix it.</p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <Camera className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">Amazing work but no one sees it</h3>
+                    <p className="text-sm text-muted-foreground">You deliver incredible results for clients, but have no professional proof to show prospects.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <Film className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">Generic stock footage doesn't tell your story</h3>
+                    <p className="text-sm text-muted-foreground">Your brand deserves better than cookie-cutter visuals that look like everyone else's.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <Award className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">Prospects don't trust you without social proof</h3>
+                    <p className="text-sm text-muted-foreground">Written testimonials don't cut it anymore. People need to see real results on video.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <Sparkles className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">Your brand looks amateur compared to competitors</h3>
+                    <p className="text-sm text-muted-foreground">Competitors with cinematic content are winning deals because they look more established.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* What I Do Best Section */}
         <LazySection className="py-12 sm:py-16 lg:py-20 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -100,7 +160,7 @@ const SpotlightPal = () => {
               {/* Left Features */}
               <div className="space-y-6 lg:order-1">
                 <Collapsible open={openExpertise === 0} onOpenChange={() => toggleExpertise(0)}>
-                  <div className="bg-red-50 rounded-2xl p-6 border border-red-100">
+                  <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
                     <CollapsibleTrigger className="w-full text-left">
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1">

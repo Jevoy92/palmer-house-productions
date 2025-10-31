@@ -60,7 +60,7 @@ const palsData: PalData[] = [
     name: "Evergreen Pal",
     tagline: "Your Long-Form Content Specialist",
     description: "Evergreen Pal creates timeless, SEO-optimized content that continues to drive value. Perfect for tutorials, testimonials, and educational videos.",
-    avatar: evergreenPalAvatar,
+    video: "/assets/evergreen_pal.mp4",
     link: "/evergreen-pal",
     features: [
       {

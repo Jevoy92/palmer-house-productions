@@ -89,7 +89,7 @@ const palsData: PalData[] = [
     name: "Spotlight Pal",
     tagline: "Your Premium Production Expert",
     description: "Spotlight Pal delivers cinematic, high-end video production. Perfect for brand films, product launches, and premium content.",
-    avatar: spotlightPalAvatar,
+    video: "/assets/spotlight_pal.mp4",
     link: "/spotlight-pal",
     features: [
       {

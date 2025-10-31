@@ -215,11 +215,11 @@ const ReelPal = () => {
                         We create scroll-stopping TikToks optimized for virality. From trending sounds to hashtag strategy, we make sure your content hits the For You page and converts viewers into customers.
                       </p>
                     </CollapsibleContent>
-                    <div className="flex gap-2 mt-4">
-                      <div className="w-8 h-8 rounded-full bg-blue-400"></div>
-                      <div className="w-8 h-8 rounded-full bg-gray-400"></div>
-                      <div className="w-8 h-8 rounded-full bg-pink-400"></div>
-                      <div className="w-8 h-8 rounded-full bg-purple-400"></div>
+                    <div className="flex gap-3 text-2xl mt-4">
+                      <span>🎵</span>
+                      <span>✨</span>
+                      <span>🔥</span>
+                      <span>📱</span>
                     </div>
                   </div>
                 </Collapsible>
@@ -243,9 +243,10 @@ const ReelPal = () => {
                       </p>
                     </CollapsibleContent>
                     <div className="flex gap-3 text-2xl mt-3">
-                      <span>😊</span>
-                      <span>😐</span>
-                      <span>🎯</span>
+                      <span>📸</span>
+                      <span>❤️</span>
+                      <span>💬</span>
+                      <span>🔥</span>
                     </div>
                     <div className="h-2 bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 to-green-500 rounded-full mt-2"></div>
                   </div>
@@ -291,12 +292,11 @@ const ReelPal = () => {
                         Bite-sized videos optimized for YouTube's Shorts platform. We help you tap into YouTube's massive audience with content that drives channel growth and subscriber conversion.
                       </p>
                     </CollapsibleContent>
-                    <div className="flex gap-2 items-center mt-4">
-                      <span className="text-xs">✕</span>
-                      <span className="text-2xl">🎬</span>
-                      <span className="text-xs">📊</span>
-                      <span className="text-2xl">📈</span>
-                      <span className="text-xs">🚀</span>
+                    <div className="flex gap-3 text-2xl mt-4">
+                      <span>📺</span>
+                      <span>▶️</span>
+                      <span>👍</span>
+                      <span>🔔</span>
                     </div>
                   </div>
                 </Collapsible>
@@ -319,9 +319,11 @@ const ReelPal = () => {
                         Ready-to-use templates, scripts, and editing guides. Perfect for teams who want to maintain consistent quality while creating content independently. Includes training and ongoing support.
                       </p>
                     </CollapsibleContent>
-                    <div className="flex items-center gap-2 text-sm mt-4">
-                      <span className="inline-block w-4 h-4 rounded-full bg-green-500"></span>
-                      <span>100% guarantee</span>
+                    <div className="flex gap-3 text-2xl mt-4">
+                      <span>📦</span>
+                      <span>✨</span>
+                      <span>🎬</span>
+                      <span>📋</span>
                     </div>
                   </div>
                 </Collapsible>

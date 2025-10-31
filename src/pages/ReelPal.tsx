@@ -193,86 +193,139 @@ const ReelPal = () => {
               <p className="text-[clamp(1.125rem,2vw,1.25rem)] text-muted-foreground max-w-3xl mx-auto">From viral TikToks to Instagram Reels that convert, I help you create content that not only looks great but actually drives results for your business.</p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {/* TikTok Content */}
-              <Collapsible open={openExpertise === 0} onOpenChange={() => toggleExpertise(0)}>
-                <div className="bg-orange-50 rounded-2xl p-6 border border-orange-100">
-                  <CollapsibleTrigger className="w-full text-left">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
-                          <Video className="text-white h-6 w-6" />
+            {/* Main Content Grid */}
+            <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+              {/* Left Features */}
+              <div className="space-y-6 lg:order-1">
+                <Collapsible open={openExpertise === 0} onOpenChange={() => toggleExpertise(0)}>
+                  <div className="bg-orange-50 rounded-2xl p-6 border border-orange-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">TikTok Content</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Trending content that captures attention and drives engagement on the world's fastest-growing platform.
+                          </p>
                         </div>
-                        <h3 className="text-lg font-bold">TikTok Content</h3>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 0 ? 'rotate-180' : ''}`} />
                       </div>
-                      {openExpertise === 0 ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        We create scroll-stopping TikToks optimized for virality. From trending sounds to hashtag strategy, we make sure your content hits the For You page and converts viewers into customers.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex gap-2 mt-4">
+                      <div className="w-8 h-8 rounded-full bg-blue-400"></div>
+                      <div className="w-8 h-8 rounded-full bg-gray-400"></div>
+                      <div className="w-8 h-8 rounded-full bg-pink-400"></div>
+                      <div className="w-8 h-8 rounded-full bg-purple-400"></div>
                     </div>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className="mt-4">
-                    <p className="text-sm text-muted-foreground">Trending content that captures attention and drives engagement on the world's fastest-growing platform.</p>
-                  </CollapsibleContent>
-                </div>
-              </Collapsible>
+                  </div>
+                </Collapsible>
 
-              {/* Instagram Reels */}
-              <Collapsible open={openExpertise === 1} onOpenChange={() => toggleExpertise(1)}>
-                <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
-                  <CollapsibleTrigger className="w-full text-left">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
-                          <PlayCircle className="text-white h-6 w-6" />
+                <Collapsible open={openExpertise === 1} onOpenChange={() => toggleExpertise(1)}>
+                  <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">Instagram Reels</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Stories and Reels that showcase your brand personality and convert followers into customers.
+                          </p>
                         </div>
-                        <h3 className="text-lg font-bold">Instagram Reels</h3>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 1 ? 'rotate-180' : ''}`} />
                       </div>
-                      {openExpertise === 1 ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        Beautiful, on-brand Reels that work with Instagram's algorithm. We handle everything from filming to editing, ensuring your content stops thumbs mid-scroll and drives real engagement.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex gap-3 text-2xl mt-3">
+                      <span>😊</span>
+                      <span>😐</span>
+                      <span>🎯</span>
                     </div>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className="mt-4">
-                    <p className="text-sm text-muted-foreground">Stories and Reels that showcase your brand personality and convert followers into customers.</p>
-                  </CollapsibleContent>
-                </div>
-              </Collapsible>
+                    <div className="h-2 bg-gradient-to-r from-red-400 via-yellow-400 via-green-400 to-green-500 rounded-full mt-2"></div>
+                  </div>
+                </Collapsible>
+              </div>
 
-              {/* YouTube Shorts */}
-              <Collapsible open={openExpertise === 2} onOpenChange={() => toggleExpertise(2)}>
-                <div className="bg-green-50 rounded-2xl p-6 border border-green-100">
-                  <CollapsibleTrigger className="w-full text-left">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                          <Video className="text-white h-6 w-6" />
-                        </div>
-                        <h3 className="text-lg font-bold">YouTube Shorts</h3>
-                      </div>
-                      {openExpertise === 2 ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+              {/* Center Phone Mockup */}
+              <div className="relative flex flex-col items-center lg:order-2">
+                <div className="relative w-full flex items-center justify-center">
+                  <div className="relative w-[280px] h-[560px] bg-black rounded-[3rem] shadow-2xl border-[8px] border-gray-800 overflow-hidden">
+                    {/* Notch */}
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-7 bg-black rounded-b-3xl z-10"></div>
+                    
+                    {/* Screen Content */}
+                    <div className="relative h-full bg-white p-6 pt-12 flex items-center justify-center">
+                      <img 
+                        src={reelPalImage}
+                        alt="Reel Pal"
+                        className="w-full h-full object-contain"
+                      />
                     </div>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className="mt-4">
-                    <p className="text-sm text-muted-foreground">Quick, impactful videos that grow your YouTube presence and drive subscribers.</p>
-                  </CollapsibleContent>
+                  </div>
                 </div>
-              </Collapsible>
+              </div>
 
-              {/* DIY Kits */}
-              <Collapsible open={openExpertise === 3} onOpenChange={() => toggleExpertise(3)}>
-                <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
-                  <CollapsibleTrigger className="w-full text-left">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                          <Wrench className="text-white h-6 w-6" />
+              {/* Right Features */}
+              <div className="space-y-6 lg:order-3">
+                <Collapsible open={openExpertise === 2} onOpenChange={() => toggleExpertise(2)}>
+                  <div className="bg-green-50 rounded-2xl p-6 border border-green-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">YouTube Shorts</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Quick, impactful videos that grow your YouTube presence and drive subscribers.
+                          </p>
                         </div>
-                        <h3 className="text-lg font-bold">DIY Kits</h3>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 2 ? 'rotate-180' : ''}`} />
                       </div>
-                      {openExpertise === 3 ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        Bite-sized videos optimized for YouTube's Shorts platform. We help you tap into YouTube's massive audience with content that drives channel growth and subscriber conversion.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex gap-2 items-center mt-4">
+                      <span className="text-xs">✕</span>
+                      <span className="text-2xl">🎬</span>
+                      <span className="text-xs">📊</span>
+                      <span className="text-2xl">📈</span>
+                      <span className="text-xs">🚀</span>
                     </div>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent className="mt-4">
-                    <p className="text-sm text-muted-foreground">Complete content creation packages that enable you to create professional content in-house.</p>
-                  </CollapsibleContent>
-                </div>
-              </Collapsible>
+                  </div>
+                </Collapsible>
+
+                <Collapsible open={openExpertise === 3} onOpenChange={() => toggleExpertise(3)}>
+                  <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">DIY Kits</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Complete content creation packages that enable you to create professional content in-house.
+                          </p>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 3 ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        Ready-to-use templates, scripts, and editing guides. Perfect for teams who want to maintain consistent quality while creating content independently. Includes training and ongoing support.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex items-center gap-2 text-sm mt-4">
+                      <span className="inline-block w-4 h-4 rounded-full bg-green-500"></span>
+                      <span>100% guarantee</span>
+                    </div>
+                  </div>
+                </Collapsible>
+              </div>
             </div>
           </div>
         </section>

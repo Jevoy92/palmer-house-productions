@@ -113,7 +113,7 @@ export const ReelCarousel = () => {
       zIndex: 30 + diff
     };
   };
-  return <section className="py-8 bg-white overflow-hidden">
+  return <section className="py-8 md:py-12 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-16">

@@ -74,7 +74,15 @@ export const ReelCarousel = () => {
     }
   };
   const getItemStyle = (index: number) => {
-    const diff = index - currentIndex;
+    let diff = index - currentIndex;
+    
+    // Handle wrapping for continuous loop
+    if (diff > reelItems.length / 2) {
+      diff -= reelItems.length;
+    } else if (diff < -reelItems.length / 2) {
+      diff += reelItems.length;
+    }
+    
     const absDiff = Math.abs(diff);
     if (absDiff > 2) return {
       display: "none"
@@ -140,7 +148,7 @@ export const ReelCarousel = () => {
             ...getItemStyle(index)
           }}>
                 <div className="w-full h-full rounded-3xl overflow-hidden shadow-2xl bg-black">
-                  {item.type === "video" ? <video ref={el => videoRefs.current[index] = el} src={item.src} className="w-full h-full object-cover" loop muted playsInline aria-label={item.alt} /> : <img src={item.src} alt={item.alt} className="w-full h-full object-cover" />}
+                  {item.type === "video" ? <video ref={el => videoRefs.current[index] = el} src={item.src} className="w-full h-full object-cover scale-110" loop muted playsInline aria-label={item.alt} /> : <img src={item.src} alt={item.alt} className="w-full h-full object-cover scale-110" />}
                 </div>
               </div>)}
           </div>

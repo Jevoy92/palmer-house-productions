@@ -8,6 +8,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collap
 import evergreenPalAvatar from '@/assets/pals/evergreen-pal-3d-avatar.png';
 import spotlightPalAvatar from '@/assets/pals/spotlight-pal-3d-avatar.png';
 import systemPalAvatar from '@/assets/pals/system-pal-3d-avatar.png';
+import reelPalAvatar from '@/assets/pals/reel-pal-3d-avatar.png';
 
 interface PalFeature {
   title: string;
@@ -31,7 +32,7 @@ const palsData: PalData[] = [
     name: "Reel Pal",
     tagline: "Your Social Media Video Expert",
     description: "Reel Pal specializes in creating viral-worthy short-form content. From TikTok to Instagram Reels, it understands what makes your audience engage.",
-    video: "/assets/reel_pal.mp4",
+    avatar: reelPalAvatar,
     link: "/reel-pal",
     features: [
       {

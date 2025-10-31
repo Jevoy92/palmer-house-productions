@@ -126,7 +126,7 @@ export const ReelCarousel = () => {
   };
 
   return (
-    <section className="py-8 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
+    <section className="py-8 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-16">

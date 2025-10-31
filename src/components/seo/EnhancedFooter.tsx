@@ -2,22 +2,12 @@ import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { SocialIcon } from "react-social-icons";
 import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
-import footerCharacter from "@/assets/footer-character.png";
 
 export const EnhancedFooter = () => {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="relative mt-16 overflow-x-hidden">
-      {/* Character Peeking Over */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-64 h-64">
-        <img 
-          src={footerCharacter} 
-          alt="Palmer House Productions Mascot" 
-          className="w-full h-full object-contain drop-shadow-2xl"
-        />
-      </div>
-
       {/* 4-Color Background Bars */}
       <div className="absolute inset-0 w-full h-full">
         <div className="w-full h-full flex">
@@ -31,21 +21,8 @@ export const EnhancedFooter = () => {
       {/* Content */}
       <div className="relative z-10">
         {/* Main Footer Content - White Card */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-32 pb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-8">
           <div className="bg-white rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-8">
-            {/* CTA Speech Bubble */}
-            <div className="text-center mb-12 -mt-8">
-              <div className="inline-block bg-gradient-to-r from-pal-orange to-pal-purple text-white rounded-2xl px-8 py-6 video-shadow-lg">
-                <h3 className="text-2xl font-bold mb-2">Ready to Create Amazing Video Content?</h3>
-                <p className="text-white/90 mb-4">Let's bring your story to life with professional video production.</p>
-                <Link 
-                  to="/contact" 
-                  className="inline-block bg-white text-pal-purple px-6 py-3 rounded-full font-bold hover:scale-105 transition-transform"
-                >
-                  Get Started Today
-                </Link>
-              </div>
-            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
               {/* Company Info */}
               <div className="space-y-4 lg:col-span-1">

@@ -18,6 +18,21 @@ const reelItems = [
     src: "/assets/Martin_Vid_FInal.mov",
     alt: "Martin Video"
   },
+  { 
+    type: "video" as const,
+    src: "/assets/1030_2.mp4",
+    alt: "Client Video 4"
+  },
+  { 
+    type: "video" as const,
+    src: "/assets/1030_3.mp4",
+    alt: "Client Video 5"
+  },
+  { 
+    type: "video" as const,
+    src: "/assets/1030_4.mp4",
+    alt: "Client Video 6"
+  },
 ];
 
 export const ReelCarousel = () => {

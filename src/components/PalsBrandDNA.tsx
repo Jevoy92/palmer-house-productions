@@ -31,7 +31,7 @@ const palsData: PalData[] = [
     name: "Reel Pal",
     tagline: "Your Social Media Video Expert",
     description: "Reel Pal specializes in creating viral-worthy short-form content. From TikTok to Instagram Reels, it understands what makes your audience engage.",
-    video: "/assets/reel-pal-female.mp4",
+    video: "/assets/reel_pal.mp4",
     link: "/reel-pal",
     features: [
       {

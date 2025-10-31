@@ -23,9 +23,9 @@ export const EnhancedFooter = () => {
         {/* Main Footer Content - White Card */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-80 pb-8">
           <div className="bg-white rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-8">
               {/* Company Info */}
-              <div className="space-y-4 lg:col-span-1">
+              <div className="space-y-4 lg:col-span-2">
                 <h3 className="text-xl font-display font-bold text-corporate-dark">Palmer House Productions</h3>
                 <p className="text-corporate-gray text-sm leading-relaxed">
                   Crafting authentic stories since day one. We help businesses connect with their audience through powerful video content.
@@ -37,7 +37,7 @@ export const EnhancedFooter = () => {
                   </div>
                   <div className="flex items-start text-sm text-corporate-gray">
                     <Mail size={16} className="mr-2 mt-0.5 flex-shrink-0" />
-                    <a href="mailto:info@palmerhouseproductions.com" className="hover:text-corporate-dark transition-colors break-all">
+                    <a href="mailto:info@palmerhouseproductions.com" className="hover:text-corporate-dark transition-colors whitespace-nowrap">
                       info@palmerhouseproductions.com
                     </a>
                   </div>

@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 
 // Import Pal avatars
-import reelPalAvatar from '@/assets/pals/reel-pal-3d-avatar.png';
 import evergreenPalAvatar from '@/assets/pals/evergreen-pal-3d-avatar.png';
 import spotlightPalAvatar from '@/assets/pals/spotlight-pal-3d-avatar.png';
 import systemPalAvatar from '@/assets/pals/system-pal-3d-avatar.png';
@@ -21,7 +20,8 @@ interface PalData {
   name: string;
   tagline: string;
   description: string;
-  avatar: string;
+  avatar?: string;
+  video?: string;
   features: PalFeature[];
   link: string;
 }
@@ -31,7 +31,7 @@ const palsData: PalData[] = [
     name: "Reel Pal",
     tagline: "Your Social Media Video Expert",
     description: "Reel Pal specializes in creating viral-worthy short-form content. From TikTok to Instagram Reels, it understands what makes your audience engage.",
-    avatar: reelPalAvatar,
+    video: "/assets/reel-pal-female.mp4",
     link: "/reel-pal",
     features: [
       {
@@ -250,11 +250,23 @@ export const PalsBrandDNA = () => {
           {/* Center Avatar with Navigation */}
           <div className="relative flex flex-col items-center lg:order-2">
             <div className="relative w-full max-w-sm aspect-square flex items-center justify-center">
-              <img 
-                src={currentPal.avatar} 
-                alt={currentPal.name}
-                className="w-full h-full object-contain transition-opacity duration-300"
-              />
+              {currentPal.video ? (
+                <video 
+                  src={currentPal.video}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-contain transition-opacity duration-300"
+                  aria-label={currentPal.name}
+                />
+              ) : (
+                <img 
+                  src={currentPal.avatar} 
+                  alt={currentPal.name}
+                  className="w-full h-full object-contain transition-opacity duration-300"
+                />
+              )}
             </div>
             
             {/* Navigation Buttons */}

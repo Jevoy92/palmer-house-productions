@@ -1,6 +1,7 @@
-
 import { useState, useEffect } from "react";
 import { usePageTransition } from '@/components/PageTransition';
+import femalePalsGroup from "@/assets/pals/female-pals-group.png";
+import malePalsGroup from "@/assets/pals/male-pals-group.png";
 
 export const Hero = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -66,7 +67,7 @@ export const Hero = () => {
 
   return (
     <section 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden z-10"
+      className="relative flex items-center justify-center overflow-hidden z-10 py-12"
       style={{ opacity: scrollOpacity }}
     >
       
@@ -74,7 +75,7 @@ export const Hero = () => {
       <div className="relative z-10 max-w-6xl mx-auto px-[clamp(1rem,4vw,2rem)]">
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-[clamp(2rem,8vw,4rem)] video-shadow-xl">
           {!showHeadline ? (
-            <div className={`flex flex-col items-center justify-center min-h-[50vh] transition-opacity duration-700 ${fadeOutQuestions ? 'opacity-0' : 'opacity-100'}`}>
+            <div className={`flex flex-col items-center justify-center min-h-[40vh] transition-opacity duration-700 ${fadeOutQuestions ? 'opacity-0' : 'opacity-100'}`}>
               {questions.map((question, index) => (
                 <div
                   key={index}
@@ -90,29 +91,45 @@ export const Hero = () => {
               ))}
             </div>
           ) : (
-            <div className={`text-center transition-opacity duration-700 ${showHeadline ? 'opacity-100' : 'opacity-0'}`}>
-              <h1 className="text-[clamp(1.75rem,6vw,4rem)] font-display font-semibold mb-[clamp(1.5rem,4vw,2rem)] tracking-tight leading-[1.1]">
-                We turn those questions into a{" "}
-                <span className="text-gradient-1">Content System</span>
-              </h1>
-              
-              <p className="text-[clamp(1rem,3vw,1.25rem)] text-corporate-gray mb-[clamp(2rem,5vw,2.5rem)] font-medium max-w-4xl mx-auto leading-relaxed">
-                One shoot day. Months of reusable video.
-              </p>
-              
-              <div className="flex flex-wrap gap-[clamp(1rem,3vw,1.5rem)] justify-center">
-                <button 
-                  onClick={handleGetStarted}
-                  className="btn-primary min-w-[200px] flex-1 max-w-[300px]"
-                >
-                  Build My Content System
-                </button>
-                <button 
-                  onClick={handleBookStrategyCall}
-                  className="btn-secondary min-w-[200px] flex-1 max-w-[300px]"
-                >
-                  Book Strategy Call
-                </button>
+            <div className={`transition-opacity duration-700 ${showHeadline ? 'opacity-100' : 'opacity-0'}`}>
+              <div className="text-center mb-8">
+                <h1 className="text-[clamp(1.75rem,5vw,3.5rem)] font-display font-semibold mb-[clamp(1rem,3vw,1.5rem)] tracking-tight leading-[1.1]">
+                  We turn those questions into a{" "}
+                  <span className="text-gradient-1">Content System</span>
+                </h1>
+                
+                <p className="text-[clamp(1rem,2.5vw,1.25rem)] text-corporate-gray mb-[clamp(1.5rem,4vw,2rem)] font-medium max-w-4xl mx-auto leading-relaxed">
+                  One shoot day. Months of reusable video.
+                </p>
+                
+                <div className="flex flex-wrap gap-[clamp(1rem,3vw,1.5rem)] justify-center mb-12">
+                  <button 
+                    onClick={handleGetStarted}
+                    className="btn-primary min-w-[200px] flex-1 max-w-[300px]"
+                  >
+                    Build My Content System
+                  </button>
+                  <button 
+                    onClick={handleBookStrategyCall}
+                    className="btn-secondary min-w-[200px] flex-1 max-w-[300px]"
+                  >
+                    Book Strategy Call
+                  </button>
+                </div>
+              </div>
+
+              {/* Hover Image Transition */}
+              <div className="relative w-full max-w-5xl mx-auto group cursor-pointer">
+                <img 
+                  src={femalePalsGroup} 
+                  alt="Palmer House Productions Team - Female Pals" 
+                  className="w-full h-auto transition-opacity duration-500 group-hover:opacity-0"
+                />
+                <img 
+                  src={malePalsGroup} 
+                  alt="Palmer House Productions Team - Male Pals" 
+                  className="absolute top-0 left-0 w-full h-auto transition-opacity duration-500 opacity-0 group-hover:opacity-100"
+                />
               </div>
             </div>
           )}

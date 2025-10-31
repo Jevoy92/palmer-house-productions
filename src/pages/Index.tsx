@@ -5,6 +5,7 @@ import { CondensedClients } from "@/components/home/CondensedClients";
 import { ClientShowcase } from "@/components/ClientShowcase";
 import { AnimatedTextReveal } from "@/components/AnimatedTextReveal";
 import { HowItWorks } from "@/components/HowItWorks";
+import { PalsBrandDNA } from "@/components/PalsBrandDNA";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
 import { MetaTags } from "@/components/seo/MetaTags";
@@ -35,6 +36,7 @@ const Index = () => {
         <ClientShowcase />
         <AnimatedTextReveal />
         <HowItWorks />
+        <PalsBrandDNA />
         <div id="services">
           <Services />
         </div>

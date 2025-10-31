@@ -10,11 +10,13 @@ export const EnhancedFooter = () => {
   return (
     <footer className="relative overflow-x-hidden bg-white">
       {/* Pals Banner */}
-      <img 
-        src={palsFooterBanner} 
-        alt="Palmer House Productions Pals" 
-        className="w-full h-auto"
-      />
+      <div className="flex justify-center">
+        <img 
+          src={palsFooterBanner} 
+          alt="Palmer House Productions Pals" 
+          className="w-full max-w-5xl h-auto"
+        />
+      </div>
       
       {/* Content */}
       <div className="relative z-10">

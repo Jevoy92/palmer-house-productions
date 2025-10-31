@@ -6,6 +6,7 @@ import { ClientShowcase } from "@/components/ClientShowcase";
 import { AnimatedTextReveal } from "@/components/AnimatedTextReveal";
 import { HowItWorks } from "@/components/HowItWorks";
 import { PalsBrandDNA } from "@/components/PalsBrandDNA";
+import { ContentCalendarSection } from "@/components/ContentCalendarSection";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
 import { MetaTags } from "@/components/seo/MetaTags";
@@ -37,6 +38,7 @@ const Index = () => {
         <AnimatedTextReveal />
         <HowItWorks />
         <PalsBrandDNA />
+        <ContentCalendarSection />
         <div id="services">
           <Services />
         </div>

@@ -2,6 +2,7 @@
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
 import { CondensedClients } from "@/components/home/CondensedClients";
+import { ClientShowcase } from "@/components/ClientShowcase";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
 import { MetaTags } from "@/components/seo/MetaTags";
@@ -31,6 +32,7 @@ const Index = () => {
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <MainContent>
         <Hero />
+        <ClientShowcase />
         <div id="services">
           <Services />
         </div>

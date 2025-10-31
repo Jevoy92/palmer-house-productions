@@ -48,9 +48,9 @@ const SpotlightPal = () => {
         {/* Floating Animation Elements */}
         <div className="fixed inset-0 -z-5 pointer-events-none overflow-hidden">
           <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl animate-bounce" style={{animationDuration: '3s'}}></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-red-300/20 rounded-full blur-lg animate-bounce" style={{animationDelay: '1s', animationDuration: '4s'}}></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-purple-300/20 rounded-full blur-lg animate-bounce" style={{animationDelay: '1s', animationDuration: '4s'}}></div>
           <div className="absolute bottom-32 left-1/4 w-28 h-28 bg-white/5 rounded-full blur-2xl animate-bounce" style={{animationDelay: '2s', animationDuration: '5s'}}></div>
-          <div className="absolute top-1/3 right-1/3 w-20 h-20 bg-red-300/10 rounded-full blur-lg animate-bounce" style={{animationDelay: '0.5s', animationDuration: '3.5s'}}></div>
+          <div className="absolute top-1/3 right-1/3 w-20 h-20 bg-purple-300/10 rounded-full blur-lg animate-bounce" style={{animationDelay: '0.5s', animationDuration: '3.5s'}}></div>
         </div>
 
         {/* Hero Section */}
@@ -99,8 +99,8 @@ const SpotlightPal = () => {
             <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
               <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
-                    <Camera className="w-6 h-6 text-red-600" />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                    <Camera className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg mb-2">Amazing work but no one sees it</h3>
@@ -111,8 +111,8 @@ const SpotlightPal = () => {
               
               <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
-                    <Film className="w-6 h-6 text-red-600" />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                    <Film className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg mb-2">Generic stock footage doesn't tell your story</h3>
@@ -123,8 +123,8 @@ const SpotlightPal = () => {
               
               <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
-                    <Award className="w-6 h-6 text-red-600" />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                    <Award className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg mb-2">Prospects don't trust you without social proof</h3>
@@ -135,8 +135,8 @@ const SpotlightPal = () => {
               
               <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-purple-500/10 hover:border-purple-500/30 transition-all duration-300 hover:shadow-lg">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
-                    <Sparkles className="w-6 h-6 text-red-600" />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center group-hover:bg-purple-200 transition-colors">
+                    <Sparkles className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg mb-2">Your brand looks amateur compared to competitors</h3>
@@ -304,76 +304,76 @@ const SpotlightPal = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* 7-Day Launch */}
-              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-red-500 transition-all hover:scale-105 relative">
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-purple-500 transition-all hover:scale-105 relative">
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-red-500 text-white px-4 py-2 rounded-full text-sm font-semibold">MOST POPULAR</div>
+                  <div className="bg-purple-500 text-white px-4 py-2 rounded-full text-sm font-semibold">MOST POPULAR</div>
                 </div>
-                <div className="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">HERO</div>
+                <div className="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">HERO</div>
                 <h3 className="text-2xl font-bold text-foreground mb-4">The 7-Day Launch</h3>
-                <div className="text-4xl font-bold text-red-600 mb-6">$2,500</div>
+                <div className="text-4xl font-bold text-purple-600 mb-6">$2,500</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
+                    <Check className="text-purple-500 h-5 w-5" />
                     <span>1 strategy session + shoot day</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
+                    <Check className="text-purple-500 h-5 w-5" />
                     <span>1 hero brand video (90-120 sec)</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
+                    <Check className="text-purple-500 h-5 w-5" />
                     <span>3–5 cutdowns for social</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
+                    <Check className="text-purple-500 h-5 w-5" />
                     <span>Fast turnaround (7 business days)</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
+                    <Check className="text-purple-500 h-5 w-5" />
                     <span>Professional cinematic quality</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
+                    <Check className="text-purple-500 h-5 w-5" />
                     <span>8 spots available this month</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-red-500 text-white hover:bg-red-600" size="lg">
+                <Button asChild className="w-full bg-purple-500 text-white hover:bg-purple-600" size="lg">
                   <Link to="/contact">Book Launch</Link>
                 </Button>
               </div>
               
               {/* Music Video */}
-              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-red-500 transition-all hover:scale-105">
-                <div className="bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">MUSIC</div>
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-purple-500 transition-all hover:scale-105">
+                <div className="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">MUSIC</div>
                 <h3 className="text-2xl font-bold text-foreground mb-4">Music Video Production</h3>
-                <div className="text-4xl font-bold text-red-600 mb-6">Custom</div>
+                <div className="text-4xl font-bold text-purple-600 mb-6">Custom</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
+                    <Check className="text-purple-500 h-5 w-5" />
                     <span>Cinematic music video creation</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
+                    <Check className="text-purple-500 h-5 w-5" />
                     <span>Creative concept development</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
+                    <Check className="text-purple-500 h-5 w-5" />
                     <span>Professional video production</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
+                    <Check className="text-purple-500 h-5 w-5" />
                     <span>Multi-location shooting</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
+                    <Check className="text-purple-500 h-5 w-5" />
                     <span>Advanced post-production</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-red-500 h-5 w-5" />
+                    <Check className="text-purple-500 h-5 w-5" />
                     <span>Artist collaboration focused</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-red-500 text-white hover:bg-red-600" size="lg">
+                <Button asChild className="w-full bg-purple-500 text-white hover:bg-purple-600" size="lg">
                   <Link to="/contact">Get Quote</Link>
                 </Button>
               </div>
@@ -393,36 +393,36 @@ const SpotlightPal = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                <div className="w-20 h-20 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
                   <Star className="text-white h-8 w-8" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-4">Vision Development</h3>
                 <p className="text-muted-foreground">We craft a creative vision that captures your brand's essence and translates it into cinematic storytelling.</p>
               </div>
               
               <div className="text-center">
-                <div className="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                <div className="w-20 h-20 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
                   <Lightbulb className="text-white h-8 w-8" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-4">Pre-Production</h3>
                 <p className="text-muted-foreground">Detailed planning including location scouting, casting, storyboarding, and all logistics for a flawless shoot.</p>
               </div>
               
               <div className="text-center">
-                <div className="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                <div className="w-20 h-20 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
                   <Camera className="text-white h-8 w-8" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-4">Premium Production</h3>
                 <p className="text-muted-foreground">Hollywood-level filming with professional crews, premium equipment, and artistic direction that exceeds expectations.</p>
               </div>
               
               <div className="text-center">
-                <div className="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                <div className="w-20 h-20 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
                   <Zap className="text-white h-8 w-8" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-4">Post & Launch</h3>
                 <p className="text-muted-foreground">Award-worthy editing, color grading, and sound design, plus strategic launch support for maximum impact.</p>
@@ -495,7 +495,7 @@ const SpotlightPal = () => {
               <OptimizedImage 
                 src={spotlightPalHeadshot}
                 alt="Female Spotlight Pal - Cinematic production expert with purple hair"
-                className="w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-full border-4 border-red-200 object-cover object-center"
+                className="w-24 h-24 sm:w-32 sm:h-32 mx-auto rounded-full border-4 border-purple-200 object-cover object-center"
                 loading="lazy"
               />
             </div>
@@ -503,8 +503,8 @@ const SpotlightPal = () => {
             <p className="text-xl mb-12 max-w-3xl mx-auto text-muted-foreground">Let's create cinematic content that elevates your brand to iconic status. Book a strategy call and let's bring your vision to life with Hollywood-level production.</p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-              <div className="bg-red-50 border border-red-200 rounded-2xl p-6">
-                <div className="text-2xl font-bold text-red-600 mb-2">Cinematic Quality</div>
+              <div className="bg-purple-50 border border-purple-200 rounded-2xl p-6">
+                <div className="text-2xl font-bold text-purple-600 mb-2">Cinematic Quality</div>
                 <p className="text-sm text-muted-foreground">Hollywood-level production that makes your brand unforgettable</p>
               </div>
               <div className="bg-purple-50 border border-purple-200 rounded-2xl p-6">
@@ -518,7 +518,7 @@ const SpotlightPal = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button asChild size="lg" className="bg-red-500 text-white hover:bg-red-600">
+              <Button asChild size="lg" className="bg-purple-500 text-white hover:bg-purple-600">
                 <a 
                   href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
                   target="_blank"
@@ -527,7 +527,7 @@ const SpotlightPal = () => {
                   Book Your Strategy Call
                 </a>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-2 border-red-500 text-red-600 hover:bg-red-500 hover:text-white">
+              <Button asChild variant="outline" size="lg" className="border-2 border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white">
                 <Link to="/video-packages">View Premium Portfolio</Link>
               </Button>
             </div>

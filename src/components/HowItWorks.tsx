@@ -115,11 +115,7 @@ export const HowItWorks = () => {
           </p>
         </div>
 
-        <div className="max-w-6xl mx-auto space-y-20 relative">
-          {/* Vertical connecting line */}
-          <div className="absolute left-[28px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-secondary to-accent hidden md:block" 
-               style={{ height: 'calc(100% - 80px)' }} />
-          
+        <div className="max-w-6xl mx-auto space-y-20">
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
@@ -127,7 +123,11 @@ export const HowItWorks = () => {
                 key={index}
                 className="grid md:grid-cols-2 gap-8 items-center relative"
               >
-                <div className={`${index % 2 === 1 ? 'md:order-2' : ''}`}>
+                <div className={`${index % 2 === 1 ? 'md:order-2' : ''} relative`}>
+                  {/* Vertical line for each step */}
+                  {index < steps.length - 1 && (
+                    <div className="absolute left-[108px] top-[80px] w-0.5 h-[calc(100%+5rem)] bg-gradient-to-b from-primary via-secondary to-accent hidden md:block" />
+                  )}
                   <div className="flex items-start gap-4 mb-6">
                     <div className="text-6xl font-bold text-primary/20 relative z-10">
                       {step.number}
@@ -136,8 +136,8 @@ export const HowItWorks = () => {
                       <Icon className="w-6 h-6 text-primary" />
                     </div>
                   </div>
-                  <h3 className="text-3xl font-bold mb-4">{step.title}</h3>
-                  <p className="text-lg text-muted-foreground leading-relaxed">
+                  <h3 className="text-3xl font-bold mb-4 ml-[108px]">{step.title}</h3>
+                  <p className="text-lg text-muted-foreground leading-relaxed ml-[108px]">
                     {step.description}
                   </p>
                 </div>

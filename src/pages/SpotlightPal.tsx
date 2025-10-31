@@ -25,13 +25,19 @@ import {
   Star,
   Zap
 } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 const SpotlightPal = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const [openExpertise, setOpenExpertise] = useState<number | null>(0);
   const mobileStyles = useMobileStyles();
 
   const toggleFAQ = (num: number) => {
     setOpenFAQ(openFAQ === num ? null : num);
+  };
+
+  const toggleExpertise = (num: number) => {
+    setOpenExpertise(openExpertise === num ? null : num);
   };
 
   return (
@@ -92,47 +98,146 @@ const SpotlightPal = () => {
           </div>
         </section>
 
-        {/* Expertise Section */}
+        {/* What I Do Best Section */}
         <LazySection className="py-12 sm:py-16 lg:py-20 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">What I Make</h2>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Customer testimonials, case studies, event coverage, and cinematic brand stories that make your wins impossible to ignore.</p>
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">What I Do Best</h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">From testimonials to brand films, I capture your wins in cinematic quality that builds trust and makes your success impossible to ignore.</p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+              {/* Left Features */}
+              <div className="space-y-6 lg:order-1">
+                <Collapsible open={openExpertise === 0} onOpenChange={() => toggleExpertise(0)}>
+                  <div className="bg-red-50 rounded-2xl p-6 border border-red-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">Customer Testimonials</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Real stories from real customers that build trust and close more deals.
+                          </p>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 0 ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        Professional video testimonials that showcase authentic customer experiences. These powerful social proof pieces turn prospects into believers and dramatically increase conversion rates.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex gap-3 text-2xl mt-4">
+                      <span>⭐</span>
+                      <span>🎤</span>
+                      <span>💯</span>
+                      <span>🤝</span>
+                    </div>
+                  </div>
+                </Collapsible>
+
+                <Collapsible open={openExpertise === 1} onOpenChange={() => toggleExpertise(1)}>
+                  <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">Case Study Reels</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Show measurable impact and results that demonstrate your value.
+                          </p>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 1 ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        Data-driven proof of results videos that tell the story of transformation. Perfect for B2B companies that need to demonstrate ROI and tangible outcomes to close enterprise deals.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex gap-3 text-2xl mt-4">
+                      <span>📊</span>
+                      <span>📈</span>
+                      <span>🎯</span>
+                      <span>✅</span>
+                    </div>
+                  </div>
+                </Collapsible>
               </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div className="bg-background rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all">
-                  <div className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Film className="text-white h-8 w-8" />
+
+              {/* Center Phone Mockup */}
+              <div className="relative flex flex-col items-center lg:order-2">
+                <div className="relative w-full flex items-center justify-center">
+                  <div className="relative w-[280px] h-[560px] bg-black rounded-[3rem] shadow-2xl border-[8px] border-gray-800 overflow-hidden">
+                    {/* Notch */}
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-7 bg-black rounded-b-3xl z-10"></div>
+                    
+                    {/* Screen Content */}
+                    <div className="relative h-full bg-white p-6 pt-12 flex items-center justify-center">
+                      <OptimizedImage 
+                        src={spotlightPalImage}
+                        alt="Spotlight Pal"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">Customer testimonial videos</h3>
-                  <p className="text-muted-foreground">Real stories from real customers that build trust and close more deals.</p>
                 </div>
-                
-                <div className="bg-background rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all">
-                  <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Camera className="text-white h-8 w-8" />
+              </div>
+
+              {/* Right Features */}
+              <div className="space-y-6 lg:order-3">
+                <Collapsible open={openExpertise === 2} onOpenChange={() => toggleExpertise(2)}>
+                  <div className="bg-yellow-50 rounded-2xl p-6 border border-yellow-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">Event Highlights</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Capture the energy of your launches, conferences, and milestone moments.
+                          </p>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 2 ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        Dynamic event coverage that preserves the excitement and momentum of your biggest moments. Perfect for product launches, conferences, and company milestones that deserve cinematic treatment.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex gap-3 text-2xl mt-4">
+                      <span>🎉</span>
+                      <span>🎬</span>
+                      <span>✨</span>
+                      <span>🏆</span>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">Case study and "proof of result" reels</h3>
-                  <p className="text-muted-foreground">Show measurable impact and results that demonstrate your value.</p>
-                </div>
-                
-                <div className="bg-background rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all">
-                  <div className="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Sparkles className="text-white h-8 w-8" />
+                </Collapsible>
+
+                <Collapsible open={openExpertise === 3} onOpenChange={() => toggleExpertise(3)}>
+                  <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">Brand Hero Videos</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Cinematic brand films that elevate your homepage and command attention.
+                          </p>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 3 ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        Story-driven hero videos that capture your brand essence in stunning visual narratives. These premium pieces position you as an industry leader and create unforgettable first impressions.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex gap-3 text-2xl mt-4">
+                      <span>🎥</span>
+                      <span>🌟</span>
+                      <span>💎</span>
+                      <span>🎭</span>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">Event highlight capsules</h3>
-                  <p className="text-muted-foreground">Capture the energy of your launches, conferences, and milestone moments.</p>
-                </div>
-                
-                <div className="bg-background rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all">
-                  <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Award className="text-white h-8 w-8" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">Story-based hero videos for websites</h3>
-                  <p className="text-muted-foreground">Cinematic brand films that elevate your homepage and command attention.</p>
-                </div>
+                </Collapsible>
               </div>
             </div>
           </div>

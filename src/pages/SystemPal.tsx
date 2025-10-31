@@ -22,12 +22,18 @@ import {
   Monitor,
   Database
 } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 const SystemPal = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const [openExpertise, setOpenExpertise] = useState<number | null>(0);
 
   const toggleFAQ = (num: number) => {
     setOpenFAQ(openFAQ === num ? null : num);
+  };
+
+  const toggleExpertise = (num: number) => {
+    setOpenExpertise(openExpertise === num ? null : num);
   };
 
   return (
@@ -145,53 +151,146 @@ const SystemPal = () => {
           </div>
         </section>
 
-        {/* What It Makes Section */}
+        {/* What I Do Best Section */}
         <section className="py-20 bg-background relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">What You Get</h2>
-              <p className="text-xl text-muted-foreground">Not just videos. A complete system.</p>
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">What I Do Best</h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">From onboarding to compliance, I build video systems that train your team, document your processes, and scale your knowledge without the headaches.</p>
             </div>
-            
-            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              <div className="group text-center">
-                <div className="inline-flex w-16 h-16 rounded-2xl bg-purple-500/10 items-center justify-center mb-4 group-hover:bg-purple-500/20 transition-colors">
-                  <Users className="w-8 h-8 text-purple-500" />
-                </div>
-                <h3 className="font-semibold text-xl mb-3">Onboarding video series</h3>
-                <p className="text-muted-foreground">Get new hires productive faster with consistent, professional training.</p>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+              {/* Left Features */}
+              <div className="space-y-6 lg:order-1">
+                <Collapsible open={openExpertise === 0} onOpenChange={() => toggleExpertise(0)}>
+                  <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">Onboarding Systems</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Get new hires productive faster with consistent, professional training.
+                          </p>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 0 ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        Comprehensive video series that welcomes new team members and gets them up to speed fast. Every hire gets the same high-quality training experience, every single time.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex gap-3 text-2xl mt-4">
+                      <span>👋</span>
+                      <span>🎓</span>
+                      <span>📚</span>
+                      <span>✅</span>
+                    </div>
+                  </div>
+                </Collapsible>
+
+                <Collapsible open={openExpertise === 1} onOpenChange={() => toggleExpertise(1)}>
+                  <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">Training Modules</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Targeted content for each position, reducing training time by 50%.
+                          </p>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 1 ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        Role-specific training that cuts through the noise and teaches exactly what each team member needs to know. No more generic training that wastes everyone's time.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex gap-3 text-2xl mt-4">
+                      <span>🎯</span>
+                      <span>⚡</span>
+                      <span>🔧</span>
+                      <span>💡</span>
+                    </div>
+                  </div>
+                </Collapsible>
               </div>
-              
-              <div className="group text-center">
-                <div className="inline-flex w-16 h-16 rounded-2xl bg-purple-500/10 items-center justify-center mb-4 group-hover:bg-purple-500/20 transition-colors">
-                  <PlayCircle className="w-8 h-8 text-purple-500" />
+
+              {/* Center Phone Mockup */}
+              <div className="relative flex flex-col items-center lg:order-2">
+                <div className="relative w-full flex items-center justify-center">
+                  <div className="relative w-[280px] h-[560px] bg-black rounded-[3rem] shadow-2xl border-[8px] border-gray-800 overflow-hidden">
+                    {/* Notch */}
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-7 bg-black rounded-b-3xl z-10"></div>
+                    
+                    {/* Screen Content */}
+                    <div className="relative h-full bg-white p-6 pt-12 flex items-center justify-center">
+                      <img 
+                        src={systemPalImage}
+                        alt="System Pal"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <h3 className="font-semibold text-xl mb-3">Role-specific training modules</h3>
-                <p className="text-muted-foreground">Targeted content for each position, reducing training time by 50%.</p>
               </div>
-              
-              <div className="group text-center">
-                <div className="inline-flex w-16 h-16 rounded-2xl bg-purple-500/10 items-center justify-center mb-4 group-hover:bg-purple-500/20 transition-colors">
-                  <BookOpen className="w-8 h-8 text-purple-500" />
-                </div>
-                <h3 className="font-semibold text-xl mb-3">Step-by-step workflow videos</h3>
-                <p className="text-muted-foreground">Visual guides that eliminate confusion and reduce errors.</p>
-              </div>
-              
-              <div className="group text-center">
-                <div className="inline-flex w-16 h-16 rounded-2xl bg-purple-500/10 items-center justify-center mb-4 group-hover:bg-purple-500/20 transition-colors">
-                  <Database className="w-8 h-8 text-purple-500" />
-                </div>
-                <h3 className="font-semibold text-xl mb-3">Digital SOP or "how-to" libraries</h3>
-                <p className="text-muted-foreground">Searchable knowledge base that scales with your company.</p>
-              </div>
-              
-              <div className="group text-center">
-                <div className="inline-flex w-16 h-16 rounded-2xl bg-purple-500/10 items-center justify-center mb-4 group-hover:bg-purple-500/20 transition-colors">
-                  <Settings className="w-8 h-8 text-purple-500" />
-                </div>
-                <h3 className="font-semibold text-xl mb-3">Safety and compliance videos</h3>
-                <p className="text-muted-foreground">Meet regulations while keeping your team safe and informed.</p>
+
+              {/* Right Features */}
+              <div className="space-y-6 lg:order-3">
+                <Collapsible open={openExpertise === 2} onOpenChange={() => toggleExpertise(2)}>
+                  <div className="bg-green-50 rounded-2xl p-6 border border-green-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">Workflow Videos</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Visual guides that eliminate confusion and reduce errors.
+                          </p>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 2 ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        Step-by-step screen recordings and process walkthroughs that show exactly how things are done. Your team can watch, pause, and replay until they've got it down perfectly.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex gap-3 text-2xl mt-4">
+                      <span>📹</span>
+                      <span>🔄</span>
+                      <span>✨</span>
+                      <span>👌</span>
+                    </div>
+                  </div>
+                </Collapsible>
+
+                <Collapsible open={openExpertise === 3} onOpenChange={() => toggleExpertise(3)}>
+                  <div className="bg-orange-50 rounded-2xl p-6 border border-orange-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">Knowledge Libraries</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Searchable knowledge base that scales with your company.
+                          </p>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 3 ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        Organized video libraries and SOPs that become your company's brain. When someone has a question, they search, find the answer, and get back to work. No interruptions needed.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex gap-3 text-2xl mt-4">
+                      <span>📂</span>
+                      <span>🔍</span>
+                      <span>💾</span>
+                      <span>🚀</span>
+                    </div>
+                  </div>
+                </Collapsible>
               </div>
             </div>
           </div>

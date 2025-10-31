@@ -22,12 +22,18 @@ import {
   Target,
   BarChart
 } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 const EvergreenPal = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const [openExpertise, setOpenExpertise] = useState<number | null>(0);
 
   const toggleFAQ = (num: number) => {
     setOpenFAQ(openFAQ === num ? null : num);
+  };
+
+  const toggleExpertise = (num: number) => {
+    setOpenExpertise(openExpertise === num ? null : num);
   };
 
   return (
@@ -85,47 +91,146 @@ const EvergreenPal = () => {
           </div>
         </section>
 
-        {/* Expertise Section */}
+        {/* What I Do Best Section */}
         <section className="py-20 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">What I Make</h2>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Homepage explainers, FAQ videos, YouTube content, and educational content that makes your offering clear and drives inbound leads.</p>
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">What I Do Best</h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">From homepage explainers to YouTube series, I help you create content that makes your offering crystal clear and drives inbound leads on autopilot.</p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+              {/* Left Features */}
+              <div className="space-y-6 lg:order-1">
+                <Collapsible open={openExpertise === 0} onOpenChange={() => toggleExpertise(0)}>
+                  <div className="bg-green-50 rounded-2xl p-6 border border-green-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">Homepage Explainers</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Get prospects to understand your value in 90 seconds or less.
+                          </p>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 0 ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        Clear, concise videos that explain what you do and why it matters. Perfect for your homepage or product pages to convert confused visitors into qualified leads.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex gap-3 text-2xl mt-4">
+                      <span>🏠</span>
+                      <span>💡</span>
+                      <span>✅</span>
+                      <span>🎯</span>
+                    </div>
+                  </div>
+                </Collapsible>
+
+                <Collapsible open={openExpertise === 1} onOpenChange={() => toggleExpertise(1)}>
+                  <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">FAQ Videos</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Answer objections before they happen with clear, educational content.
+                          </p>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 1 ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        Turn your top 10 frequently asked questions into a searchable video knowledge base. Reduce support burden while educating prospects at scale.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex gap-3 text-2xl mt-4">
+                      <span>❓</span>
+                      <span>💬</span>
+                      <span>📚</span>
+                      <span>🎓</span>
+                    </div>
+                  </div>
+                </Collapsible>
               </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div className="bg-background rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all">
-                  <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Youtube className="text-white h-8 w-8" />
+
+              {/* Center Phone Mockup */}
+              <div className="relative flex flex-col items-center lg:order-2">
+                <div className="relative w-full flex items-center justify-center">
+                  <div className="relative w-[280px] h-[560px] bg-black rounded-[3rem] shadow-2xl border-[8px] border-gray-800 overflow-hidden">
+                    {/* Notch */}
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-7 bg-black rounded-b-3xl z-10"></div>
+                    
+                    {/* Screen Content */}
+                    <div className="relative h-full bg-white p-6 pt-12 flex items-center justify-center">
+                      <img 
+                        src={evergreenPalImage}
+                        alt="Evergreen Pal"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">Homepage and product explainers</h3>
-                  <p className="text-muted-foreground">Get prospects to understand your value in 90 seconds or less.</p>
                 </div>
-                
-                <div className="bg-background rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all">
-                  <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Search className="text-white h-8 w-8" />
+              </div>
+
+              {/* Right Features */}
+              <div className="space-y-6 lg:order-3">
+                <Collapsible open={openExpertise === 2} onOpenChange={() => toggleExpertise(2)}>
+                  <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">YouTube SEO Content</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Build authority and get discovered by your ideal customers searching for solutions.
+                          </p>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 2 ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        Long-form educational videos optimized for YouTube search. Position yourself as the go-to expert while generating qualified leads 24/7.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex gap-3 text-2xl mt-4">
+                      <span>📺</span>
+                      <span>🔍</span>
+                      <span>📈</span>
+                      <span>⭐</span>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">Service walk-throughs and pricing primers</h3>
-                  <p className="text-muted-foreground">Answer objections before they happen with clear, educational content.</p>
-                </div>
-                
-                <div className="bg-background rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all">
-                  <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Trophy className="text-white h-8 w-8" />
+                </Collapsible>
+
+                <Collapsible open={openExpertise === 3} onOpenChange={() => toggleExpertise(3)}>
+                  <div className="bg-orange-50 rounded-2xl p-6 border border-orange-100">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">
+                          <h3 className="text-lg font-semibold mb-2">Service Walkthroughs</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Show exactly how your service works and what results clients can expect.
+                          </p>
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-muted-foreground transition-transform duration-200 flex-shrink-0 mt-1 ${openExpertise === 3 ? 'rotate-180' : ''}`} />
+                      </div>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent className="mt-2">
+                      <p className="text-sm text-muted-foreground pt-2 border-t">
+                        Detailed walkthroughs and pricing primers that address common objections. Help prospects visualize working with you before they book a call.
+                      </p>
+                    </CollapsibleContent>
+                    <div className="flex gap-3 text-2xl mt-4">
+                      <span>🚶</span>
+                      <span>📋</span>
+                      <span>💰</span>
+                      <span>✨</span>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">Top 10 FAQ videos or knowledge base content</h3>
-                  <p className="text-muted-foreground">Reduce support burden while educating prospects at scale.</p>
-                </div>
-                
-                <div className="bg-background rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all">
-                  <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <TrendingUp className="text-white h-8 w-8" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">Long-form educational YouTube content</h3>
-                  <p className="text-muted-foreground">Build authority and get discovered by your ideal customers searching for solutions.</p>
-                </div>
+                </Collapsible>
               </div>
             </div>
           </div>

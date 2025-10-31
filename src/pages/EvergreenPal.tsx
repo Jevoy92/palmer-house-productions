@@ -81,6 +81,66 @@ const EvergreenPal = () => {
           </div>
         </section>
 
+        {/* Pain Points Section */}
+        <section className="py-20 bg-green-50 relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Problems I Solve</h2>
+              <p className="text-xl text-muted-foreground">Sound familiar? Let's fix it.</p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-green-500/10 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <MessageCircle className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">Prospects don't understand what you actually do</h3>
+                    <p className="text-sm text-muted-foreground">Your website sounds smart, but visitors leave confused. Leads ghost because they don't "get it."</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-green-500/10 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <Search className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">Zero visibility when people search for your solution</h3>
+                    <p className="text-sm text-muted-foreground">Your ideal customers are Googling their problems, but finding your competitors instead.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-green-500/10 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <Lightbulb className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">Support team drowning in the same basic questions</h3>
+                    <p className="text-sm text-muted-foreground">You're explaining pricing, process, and value over and over instead of closing deals.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-green-500/10 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
+                    <TrendingUp className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg mb-2">No consistent flow of qualified inbound leads</h3>
+                    <p className="text-sm text-muted-foreground">You're stuck chasing leads instead of attracting the right people who are ready to buy.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* What I Do Best Section */}
         <section className="py-20 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

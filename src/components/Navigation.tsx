@@ -128,10 +128,12 @@ export const Navigation = () => {
               {/* Sliding middle navigation */}
               <div 
                 className={cn(
-                  "flex items-center space-x-6 transition-all duration-500 ease-out overflow-hidden",
+                  "flex items-center space-x-6 overflow-hidden",
+                  "transition-opacity duration-200 ease-in",
+                  "transition-transform duration-400 ease-out",
                   isScrollingDown 
-                    ? "opacity-0 -translate-x-40 pointer-events-none absolute delay-0" 
-                    : "opacity-100 translate-x-0 delay-100"
+                    ? "opacity-0 -translate-x-52 pointer-events-none absolute scale-95" 
+                    : "opacity-100 translate-x-0 scale-100 delay-75"
                 )}
                 style={{ willChange: isScrollingDown ? 'transform, opacity' : 'auto' }}
               >

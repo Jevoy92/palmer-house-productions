@@ -118,27 +118,31 @@ export const ContentCalendarSection = () => {
         <div className="text-center space-y-8">
           <h3 className="text-3xl font-semibold">Every type of video content your business needs</h3>
           
-          {/* Categories Grid */}
-          <div className="space-y-4">
-            <div className="flex flex-wrap justify-center gap-4">
-              {categories.map((category, index) => (
-                <button
-                  key={index}
-                  className={`px-6 py-3 rounded-full bg-white border-2 border-gray-200 hover:border-gray-300 transition-all hover:scale-105 ${category.color} font-medium text-sm md:text-base`}
-                >
-                  {category.label}
-                </button>
-              ))}
+          {/* Categories Scrolling Container */}
+          <div className="space-y-4 overflow-hidden">
+            <div className="overflow-x-auto pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              <div className="flex gap-4 min-w-max px-6 animate-scroll-right">
+                {[...categories, ...categories].map((category, index) => (
+                  <button
+                    key={index}
+                    className={`px-6 py-3 rounded-full bg-white border-2 border-gray-200 hover:border-gray-300 transition-all hover:scale-105 ${category.color} font-medium text-sm md:text-base whitespace-nowrap`}
+                  >
+                    {category.label}
+                  </button>
+                ))}
+              </div>
             </div>
-            <div className="flex flex-wrap justify-center gap-4">
-              {categoriesRow2.map((category, index) => (
-                <button
-                  key={index}
-                  className={`px-6 py-3 rounded-full bg-white border-2 border-gray-200 hover:border-gray-300 transition-all hover:scale-105 ${category.color} font-medium text-sm md:text-base`}
-                >
-                  {category.label}
-                </button>
-              ))}
+            <div className="overflow-x-auto pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+              <div className="flex gap-4 min-w-max px-6 animate-scroll-left">
+                {[...categoriesRow2, ...categoriesRow2].map((category, index) => (
+                  <button
+                    key={index}
+                    className={`px-6 py-3 rounded-full bg-white border-2 border-gray-200 hover:border-gray-300 transition-all hover:scale-105 ${category.color} font-medium text-sm md:text-base whitespace-nowrap`}
+                  >
+                    {category.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>

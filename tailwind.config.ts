@@ -152,6 +152,22 @@ export default {
 						opacity: '1',
 						transform: 'scale(1)'
 					}
+				},
+				'scroll-right': {
+					'0%': {
+						transform: 'translateX(0)'
+					},
+					'100%': {
+						transform: 'translateX(-50%)'
+					}
+				},
+				'scroll-left': {
+					'0%': {
+						transform: 'translateX(-50%)'
+					},
+					'100%': {
+						transform: 'translateX(0)'
+					}
 				}
 			},
 			animation: {
@@ -159,7 +175,9 @@ export default {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.6s ease-out',
 				'slide-in-left': 'slide-in-left 0.6s ease-out',
-				'scale-in': 'scale-in 0.4s ease-out'
+				'scale-in': 'scale-in 0.4s ease-out',
+				'scroll-right': 'scroll-right 20s linear infinite',
+				'scroll-left': 'scroll-left 20s linear infinite'
 			}
 		}
 	},

@@ -531,12 +531,12 @@ const SystemPal = () => {
             <p className="text-xl mb-12 max-w-3xl mx-auto text-muted-foreground">Let's create training systems that your team will actually use and love. Book a strategy call and let's turn your processes into powerful learning experiences.</p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-              <div className="bg-purple-50 border border-purple-200 rounded-2xl p-6">
-                <div className="text-2xl font-bold text-purple-600 mb-2">Proven Systems</div>
+              <div className="bg-green-50 border border-green-200 rounded-2xl p-6">
+                <div className="text-2xl font-bold text-green-600 mb-2">Proven Systems</div>
                 <p className="text-sm text-muted-foreground">Training approaches that reduce onboarding time by up to 50%</p>
               </div>
-              <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
-                <div className="text-2xl font-bold text-blue-600 mb-2">Easy Adoption</div>
+              <div className="bg-green-50 border border-green-200 rounded-2xl p-6">
+                <div className="text-2xl font-bold text-green-600 mb-2">Easy Adoption</div>
                 <p className="text-sm text-muted-foreground">Systems designed for high engagement and team buy-in</p>
               </div>
               <div className="bg-green-50 border border-green-200 rounded-2xl p-6">
@@ -546,7 +546,7 @@ const SystemPal = () => {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button asChild size="lg" className="bg-purple-500 text-white hover:bg-purple-600">
+              <Button asChild size="lg" className="bg-green-500 text-white hover:bg-green-600">
                 <a 
                   href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
                   target="_blank"
@@ -555,7 +555,7 @@ const SystemPal = () => {
                   Book Your Strategy Call
                 </a>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-2 border-purple-500 text-purple-600 hover:bg-purple-500 hover:text-white">
+              <Button asChild variant="outline" size="lg" className="border-2 border-green-500 text-green-600 hover:bg-green-500 hover:text-white">
                 <Link to="/services/diy-downloads">View Training Samples</Link>
               </Button>
             </div>

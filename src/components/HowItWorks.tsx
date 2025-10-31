@@ -115,20 +115,24 @@ export const HowItWorks = () => {
           </p>
         </div>
 
-        <div className="max-w-6xl mx-auto space-y-20">
+        <div className="max-w-6xl mx-auto space-y-20 relative">
+          {/* Vertical connecting line */}
+          <div className="absolute left-[28px] top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-secondary to-accent hidden md:block" 
+               style={{ height: 'calc(100% - 80px)' }} />
+          
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
               <div 
                 key={index}
-                className="grid md:grid-cols-2 gap-8 items-center"
+                className="grid md:grid-cols-2 gap-8 items-center relative"
               >
                 <div className={`${index % 2 === 1 ? 'md:order-2' : ''}`}>
                   <div className="flex items-start gap-4 mb-6">
-                    <div className="text-6xl font-bold text-primary/20">
+                    <div className="text-6xl font-bold text-primary/20 relative z-10">
                       {step.number}
                     </div>
-                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center relative z-10">
                       <Icon className="w-6 h-6 text-primary" />
                     </div>
                   </div>

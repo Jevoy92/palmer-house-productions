@@ -3,6 +3,7 @@ import { ChevronLeft, ChevronRight, ChevronDown } from 'lucide-react';
 import { Button } from './ui/button';
 import { Link } from 'react-router-dom';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
+import { IPhoneVideoPlayer } from './ui/iphone-video-player';
 
 // Import Pal avatars
 import evergreenPalAvatar from '@/assets/pals/evergreen-pal-3d-avatar.png';
@@ -250,24 +251,15 @@ export const PalsBrandDNA = () => {
 
           {/* Center Avatar with Navigation */}
           <div className="relative flex flex-col items-center lg:order-2">
-            <div className="relative w-full max-w-sm aspect-square flex items-center justify-center">
-              {currentPal.video ? (
-                <video 
-                  src={currentPal.video}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-full object-contain transition-opacity duration-300"
-                  aria-label={currentPal.name}
-                />
-              ) : (
-                <img 
-                  src={currentPal.avatar} 
-                  alt={currentPal.name}
-                  className="w-full h-full object-contain transition-opacity duration-300"
-                />
-              )}
+            <div className="relative w-full flex items-center justify-center">
+              <IPhoneVideoPlayer
+                videoSrc={currentPal.video}
+                imageSrc={currentPal.avatar}
+                alt={currentPal.name}
+                autoplay={true}
+                loop={true}
+                muted={true}
+              />
             </div>
             
             {/* Navigation Buttons */}

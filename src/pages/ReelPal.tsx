@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navigation } from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { OptimizedImage } from '@/components/performance/OptimizedImage';
 import { LazySection } from '@/components/performance/LazySection';
 import { MobileOptimized, useMobileStyles } from '@/components/performance/MobileOptimized';
-import { IPhoneVideoPlayer } from '@/components/ui/iphone-video-player';
 import reelPalImage from '@/assets/pals/female-reel-pal-social-engagement.png';
 import systemPalHeadshot from '@/assets/pals/male-system-pal-headshot.jpg';
 import evergreenPalHeadshot from '@/assets/pals/male-evergreen-pal-headshot-2.jpg';
@@ -27,10 +27,15 @@ import {
 
 const ReelPal = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const [openExpertise, setOpenExpertise] = useState<number | null>(0);
   const mobileStyles = useMobileStyles();
 
   const toggleFAQ = (num: number) => {
     setOpenFAQ(openFAQ === num ? null : num);
+  };
+
+  const toggleExpertise = (num: number) => {
+    setOpenExpertise(openExpertise === num ? null : num);
   };
 
   return (
@@ -180,51 +185,97 @@ const ReelPal = () => {
           </div>
         </section>
 
-        {/* Expertise Section */}
-        <LazySection className="py-12 sm:py-16 lg:py-20 relative z-10">
+        {/* What I Do Best Section */}
+        <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 shadow-2xl border border-white/20">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">What I Do Best</h2>
-                <p className="text-xl text-muted-foreground max-w-3xl mx-auto">From viral TikToks to Instagram Reels that convert, I help you create content that not only looks great but actually drives results for your business.</p>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div className="bg-orange-50 rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Video className="text-white h-8 w-8" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">TikTok Content</h3>
-                  <p className="text-muted-foreground">Trending content that captures attention and drives engagement on the world's fastest-growing platform.</p>
+            <div className="text-center mb-12">
+              <h2 className="text-[clamp(1.875rem,4vw,2.5rem)] font-display font-bold mb-4">What I Do Best</h2>
+              <p className="text-[clamp(1.125rem,2vw,1.25rem)] text-muted-foreground max-w-3xl mx-auto">From viral TikToks to Instagram Reels that convert, I help you create content that not only looks great but actually drives results for your business.</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* TikTok Content */}
+              <Collapsible open={openExpertise === 0} onOpenChange={() => toggleExpertise(0)}>
+                <div className="bg-orange-50 rounded-2xl p-6 border border-orange-100">
+                  <CollapsibleTrigger className="w-full text-left">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Video className="text-white h-6 w-6" />
+                        </div>
+                        <h3 className="text-lg font-bold">TikTok Content</h3>
+                      </div>
+                      {openExpertise === 0 ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                    </div>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="mt-4">
+                    <p className="text-sm text-muted-foreground">Trending content that captures attention and drives engagement on the world's fastest-growing platform.</p>
+                  </CollapsibleContent>
                 </div>
-                
-                <div className="bg-purple-50 rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  <div className="w-16 h-16 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <PlayCircle className="text-white h-8 w-8" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">Instagram Reels</h3>
-                  <p className="text-muted-foreground">Stories and Reels that showcase your brand personality and convert followers into customers.</p>
+              </Collapsible>
+
+              {/* Instagram Reels */}
+              <Collapsible open={openExpertise === 1} onOpenChange={() => toggleExpertise(1)}>
+                <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
+                  <CollapsibleTrigger className="w-full text-left">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                          <PlayCircle className="text-white h-6 w-6" />
+                        </div>
+                        <h3 className="text-lg font-bold">Instagram Reels</h3>
+                      </div>
+                      {openExpertise === 1 ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                    </div>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="mt-4">
+                    <p className="text-sm text-muted-foreground">Stories and Reels that showcase your brand personality and convert followers into customers.</p>
+                  </CollapsibleContent>
                 </div>
-                
-                <div className="bg-green-50 rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Video className="text-white h-8 w-8" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">YouTube Shorts</h3>
-                  <p className="text-muted-foreground">Quick, impactful videos that grow your YouTube presence and drive subscribers.</p>
+              </Collapsible>
+
+              {/* YouTube Shorts */}
+              <Collapsible open={openExpertise === 2} onOpenChange={() => toggleExpertise(2)}>
+                <div className="bg-green-50 rounded-2xl p-6 border border-green-100">
+                  <CollapsibleTrigger className="w-full text-left">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Video className="text-white h-6 w-6" />
+                        </div>
+                        <h3 className="text-lg font-bold">YouTube Shorts</h3>
+                      </div>
+                      {openExpertise === 2 ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                    </div>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="mt-4">
+                    <p className="text-sm text-muted-foreground">Quick, impactful videos that grow your YouTube presence and drive subscribers.</p>
+                  </CollapsibleContent>
                 </div>
-                
-                <div className="bg-blue-50 rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-                  <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Wrench className="text-white h-8 w-8" />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground mb-4">DIY Kits</h3>
-                  <p className="text-muted-foreground">Complete content creation packages that enable you to create professional content in-house.</p>
+              </Collapsible>
+
+              {/* DIY Kits */}
+              <Collapsible open={openExpertise === 3} onOpenChange={() => toggleExpertise(3)}>
+                <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+                  <CollapsibleTrigger className="w-full text-left">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Wrench className="text-white h-6 w-6" />
+                        </div>
+                        <h3 className="text-lg font-bold">DIY Kits</h3>
+                      </div>
+                      {openExpertise === 3 ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                    </div>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent className="mt-4">
+                    <p className="text-sm text-muted-foreground">Complete content creation packages that enable you to create professional content in-house.</p>
+                  </CollapsibleContent>
                 </div>
-              </div>
+              </Collapsible>
             </div>
           </div>
-        </LazySection>
+        </section>
 
         {/* Packages Section */}
         <section className="py-20 relative z-10">

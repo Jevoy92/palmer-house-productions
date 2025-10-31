@@ -111,8 +111,8 @@ export const Navigation = () => {
         : "bg-white/80 backdrop-blur-lg border-border/50"
     )} role="navigation" aria-label="Main navigation">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="relative flex justify-between items-center h-16">
-          <div className="flex-shrink-0">
+        <div className="relative flex justify-center items-center h-16">
+          <div className="absolute left-6 flex-shrink-0">
             <button onClick={handleLogoClick} className="flex items-center gap-3 whitespace-nowrap focus:outline-none" aria-label="Go to homepage">
               <img 
                 src={LOGO.url} 
@@ -123,17 +123,15 @@ export const Navigation = () => {
             </button>
           </div>
           
-          <div className="hidden md:block">
-            <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4">
               {/* Sliding middle navigation */}
               <div 
                 className={cn(
-                  "flex items-center space-x-6 overflow-hidden",
-                  "transition-opacity duration-200 ease-in",
-                  "transition-transform duration-400 ease-out",
+                  "flex items-center space-x-6 overflow-hidden origin-left",
+                  "transition-all duration-300 ease-out",
                   isScrollingDown 
-                    ? "opacity-0 -translate-x-52 pointer-events-none absolute scale-95" 
-                    : "opacity-100 translate-x-0 scale-100 delay-75"
+                    ? "opacity-0 -translate-x-full pointer-events-none scale-90" 
+                    : "opacity-100 translate-x-0 scale-100 delay-100"
                 )}
                 style={{ willChange: isScrollingDown ? 'transform, opacity' : 'auto' }}
               >
@@ -300,7 +298,7 @@ export const Navigation = () => {
               <button 
                 onClick={() => handlePageTransition('/contact')}
                 className={cn(
-                  "transition-all duration-300 text-base font-medium px-4 py-2 rounded-lg",
+                  "transition-all duration-300 text-base font-medium px-4 py-2 rounded-lg whitespace-nowrap",
                   isActivePath('/contact') 
                     ? "text-white bg-social-purple font-bold shadow-lg" 
                     : "text-white bg-social-purple hover:bg-social-purple/90 hover:shadow-lg hover:scale-105"
@@ -308,10 +306,9 @@ export const Navigation = () => {
               >
                 Contact
               </button>
-            </div>
           </div>
           
-          <div className="md:hidden">
+          <div className="absolute right-6 md:hidden">
             <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-muted-foreground hover:text-foreground focus:outline-none interactive-element min-h-[44px] min-w-[44px] flex items-center justify-center" aria-expanded={isOpen} aria-controls="mobile-menu" aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}>
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>

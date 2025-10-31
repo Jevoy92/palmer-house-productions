@@ -2,7 +2,7 @@
 import { Hero } from "@/components/Hero";
 import { Services } from "@/components/Services";
 import { CondensedClients } from "@/components/home/CondensedClients";
-import { ClientShowcase } from "@/components/ClientShowcase";
+import { ReelCarousel } from "@/components/ReelCarousel";
 import { AnimatedTextReveal } from "@/components/AnimatedTextReveal";
 import { HowItWorks } from "@/components/HowItWorks";
 import { PalsBrandDNA } from "@/components/PalsBrandDNA";
@@ -34,7 +34,7 @@ const Index = () => {
       <SkipLink href="#main-content">Skip to main content</SkipLink>
       <MainContent>
         <Hero />
-        <ClientShowcase />
+        <ReelCarousel />
         <AnimatedTextReveal />
         <HowItWorks />
         <PalsBrandDNA />

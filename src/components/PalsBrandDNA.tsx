@@ -50,9 +50,9 @@ const palsData: PalData[] = [
         detailedDescription: "Reel Pal goes deep into audience intelligence, analyzing engagement patterns across platforms to understand what resonates with your specific demographic. It tracks which content types perform best at different times, which topics generate the most saves and shares, and what pain points drive the most meaningful conversations. This insight powers content that doesn't just get views—it builds genuine connections and community around your brand.",
       },
       {
-        title: "Keeps Data Private",
-        description: "Your brand data stays private. It's never shared, trained on, or reused.",
-        detailedDescription: "Your proprietary brand information, customer insights, and creative assets are protected with enterprise-grade security. Unlike generic AI tools that use your data to improve their models for everyone, Reel Pal keeps your competitive advantages locked down. Your data is encrypted, never shared with third parties, and never used to train models that could benefit your competitors. What you build with Reel Pal stays yours—forever.",
+        title: "Solves Content Burnout",
+        description: "No more scrambling for ideas or staring at blank screens. Reel Pal eliminates the creative drain.",
+        detailedDescription: "Creating daily content shouldn't feel like a second job. Reel Pal solves the biggest pain point in social media marketing: consistent, quality content production without the burnout. It understands your brand voice deeply enough to generate authentic ideas that resonate, maintains a content calendar that never runs dry, and can produce multiple variations of winning content formats. Whether you're a solo creator posting daily or a team managing multiple accounts, Reel Pal keeps the pipeline full so you can focus on strategy and engagement instead of constantly hunting for your next post idea.",
       },
     ]
   },

@@ -2,12 +2,20 @@ import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { SocialIcon } from "react-social-icons";
 import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
+import palsFooterBanner from "@/assets/pals-footer-banner.png";
 
 export const EnhancedFooter = () => {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="relative overflow-x-hidden bg-white">
+      {/* Pals Banner */}
+      <img 
+        src={palsFooterBanner} 
+        alt="Palmer House Productions Pals" 
+        className="w-full h-auto"
+      />
+      
       {/* Content */}
       <div className="relative z-10">
         {/* Main Footer Content - White Card */}

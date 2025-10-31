@@ -178,17 +178,17 @@ export const AnimatedTextReveal = () => {
   const totalWords = content.reduce((sum, paragraph) => sum + paragraph.length, 0);
 
   // Calculate which words should be visible based on scroll progress
-  const visibleWordCount = Math.floor(progress * totalWords * 1.2); // Adjusted multiplier for faster reveal
+  const visibleWordCount = Math.floor(progress * totalWords * 0.8); // Slower reveal for better visibility
 
   const getWordStyle = (globalIndex: number): React.CSSProperties => {
     const distance = Math.max(0, globalIndex - visibleWordCount);
-    const opacity = Math.max(0, Math.min(1, 1 - distance * 0.3));
-    const blur = Math.min(8, distance * 2);
+    const opacity = Math.max(0, Math.min(1, 1 - distance * 0.2));
+    const blur = Math.min(10, distance * 1.5);
 
     return {
       opacity,
       filter: `blur(${blur}px)`,
-      transition: "opacity 0.6s ease-out, filter 0.6s ease-out",
+      transition: "opacity 0.8s ease-out, filter 0.8s ease-out",
     };
   };
 
@@ -197,7 +197,7 @@ export const AnimatedTextReveal = () => {
   return (
     <section
       ref={sectionRef}
-      className="min-h-[150vh] py-12 bg-white flex items-center justify-center"
+      className="min-h-[250vh] py-12 bg-white flex items-center justify-center"
     >
       <div className="max-w-4xl mx-auto px-6">
         <div className="space-y-8">

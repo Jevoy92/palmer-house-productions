@@ -37,16 +37,11 @@ const ReelPal = () => {
       <Navigation />
       <MobileOptimized>
         <div className="min-h-screen relative overflow-hidden">
-        {/* Static 4-Color Background Bars */}
+        {/* Static Orange Background */}
         <div className="fixed top-0 left-0 w-full h-screen -z-10">
-          <div className="w-full h-full flex">
-            <div className="w-1/4 h-full bg-gradient-to-b from-orange-400 to-orange-600"></div>
-            <div className="w-1/4 h-full bg-gradient-to-b from-purple-400 to-purple-600"></div>
-            <div className="w-1/4 h-full bg-gradient-to-b from-green-400 to-green-600"></div>
-            <div className="w-1/4 h-full bg-gradient-to-b from-blue-400 to-blue-600"></div>
-          </div>
+          <div className="w-full h-full bg-gradient-to-b from-orange-400 to-orange-600"></div>
           {/* Static Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-purple-500/10 to-blue-500/20"></div>
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-orange-400/10 to-orange-600/20"></div>
         </div>
 
         {/* Floating Animation Elements */}
@@ -58,7 +53,7 @@ const ReelPal = () => {
         </div>
 
         {/* Hero Section */}
-        <section className="relative min-h-[600px] flex items-center">
+        <section className="relative min-h-[600px] flex items-center pt-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="bg-white p-12 rounded-3xl shadow-2xl border border-gray-100">

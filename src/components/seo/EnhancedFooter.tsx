@@ -2,16 +2,25 @@ import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { SocialIcon } from "react-social-icons";
 import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
+import palsFooterBanner from "@/assets/pals-footer-banner.png";
 
 export const EnhancedFooter = () => {
   const currentYear = new Date().getFullYear();
 
   return (
     <footer className="relative overflow-x-hidden bg-white">
+      {/* Pals Banner Background */}
+      <div className="relative w-full">
+        <img 
+          src={palsFooterBanner} 
+          alt="Palmer House Pals" 
+          className="w-full h-auto object-cover"
+        />
+      </div>
       {/* Content */}
-      <div className="relative z-10">
+      <div className="relative z-10 -mt-8">
         {/* Main Footer Content - White Card */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-8">
           <div className="bg-white rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
               {/* Company Info */}

@@ -68,12 +68,11 @@ export const AnimatedTextReveal = () => {
 
       const rect = sectionRef.current.getBoundingClientRect();
       const windowHeight = window.innerHeight;
-      const sectionHeight = rect.height;
 
-      // Calculate how far the section has scrolled through the viewport
+      // Calculate scroll progress: 0 when section enters viewport, 1 when at top
       const scrollProgress = Math.max(
         0,
-        Math.min(1, (windowHeight - rect.top) / (windowHeight + sectionHeight))
+        Math.min(1, (windowHeight - rect.top) / windowHeight)
       );
 
       setProgress(scrollProgress);
@@ -89,7 +88,7 @@ export const AnimatedTextReveal = () => {
   const totalWords = content.reduce((sum, paragraph) => sum + paragraph.length, 0);
 
   // Calculate which words should be visible based on scroll progress
-  const visibleWordCount = Math.floor(progress * totalWords * 1.5); // 1.5 for smoother reveal
+  const visibleWordCount = Math.floor(progress * totalWords * 1.2); // Adjusted multiplier for faster reveal
 
   const getWordStyle = (globalIndex: number): React.CSSProperties => {
     const distance = Math.max(0, globalIndex - visibleWordCount);

@@ -7,7 +7,7 @@ export const EnhancedFooter = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative mt-16 overflow-x-hidden bg-white">
+    <footer className="relative overflow-x-hidden bg-white">
       {/* Content */}
       <div className="relative z-10">
         {/* Main Footer Content - White Card */}

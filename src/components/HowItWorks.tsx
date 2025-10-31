@@ -148,18 +148,14 @@ export const HowItWorks = () => {
           </h1>
         </div>
 
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-16">
-          {steps.map((step, index) => (
-            <>
-              {/* Step Visual - appears first on mobile, second on desktop */}
-              <div key={`visual-${index}`} className="flex items-center justify-center h-64 order-1 md:order-2">
-                {step.mockup}
-              </div>
-              
-              {/* Step Content - appears second on mobile, first on desktop */}
-              <div key={`content-${index}`} className="flex items-start space-x-8 order-2 md:order-1">
+        {/* Mobile: All content first, then all visuals */}
+        <div className="md:hidden space-y-12">
+          {/* All step content */}
+          <div className="space-y-12">
+            {steps.map((step, index) => (
+              <div key={`mobile-content-${index}`} className="flex items-start space-x-8">
                 <div className="relative flex-shrink-0">
-                  {step.hasLine && (
+                  {step.hasLine && index < steps.length - 1 && (
                     <div className={`absolute -left-1.5 top-12 h-full w-0.5 bg-gradient-to-b ${step.lineGradient}`}></div>
                   )}
                   <p className="text-4xl font-bold text-gray-800">{step.number}</p>
@@ -169,7 +165,42 @@ export const HowItWorks = () => {
                   <p className="text-muted-foreground text-base">{step.description}</p>
                 </div>
               </div>
-            </>
+            ))}
+          </div>
+          
+          {/* All mockups */}
+          <div className="grid grid-cols-1 gap-12 mt-12">
+            {steps.map((step, index) => (
+              <div key={`mobile-visual-${index}`} className="flex items-center justify-center">
+                {step.mockup}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop: Step content next to its mockup */}
+        <div className="hidden md:block max-w-6xl mx-auto space-y-16">
+          {steps.map((step, index) => (
+            <div key={`desktop-${index}`} className="grid grid-cols-2 gap-x-24 items-center">
+              {/* Step Content */}
+              <div className="flex items-start space-x-8">
+                <div className="relative flex-shrink-0">
+                  {step.hasLine && index < steps.length - 1 && (
+                    <div className={`absolute -left-1.5 top-12 h-full w-0.5 bg-gradient-to-b ${step.lineGradient}`}></div>
+                  )}
+                  <p className="text-4xl font-bold text-gray-800">{step.number}</p>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-semibold mb-2">{step.title}</h3>
+                  <p className="text-muted-foreground text-base">{step.description}</p>
+                </div>
+              </div>
+              
+              {/* Step Visual */}
+              <div className="flex items-center justify-center">
+                {step.mockup}
+              </div>
+            </div>
           ))}
         </div>
       </div>

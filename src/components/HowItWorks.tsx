@@ -82,8 +82,8 @@ export const HowItWorks = () => {
       number: "04",
       title: "Launch & Optimize",
       description: "Publish your content and watch your engagement soar. We're with you every step.",
-      hasLine: false,
-      lineGradient: "",
+      hasLine: true,
+      lineGradient: "from-orange-400 to-red-400",
       mockup: (
         <div className="bg-card backdrop-blur-sm rounded-2xl p-6 shadow-2xl w-full max-w-sm" style={{ animation: 'float 6s ease-in-out infinite, pulse-glow 4s ease-in-out infinite' }}>
           <div className="flex items-center space-x-4">

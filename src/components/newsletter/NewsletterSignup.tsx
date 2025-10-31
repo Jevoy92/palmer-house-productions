@@ -56,38 +56,38 @@ export const NewsletterSignup = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-pal-orange/10 to-pal-purple/10 rounded-lg p-6 mb-6">
-      <div className="max-w-md mx-auto text-center">
-        <div className="flex items-center justify-center mb-4">
+    <div className="bg-purple-50 rounded-2xl p-8 mb-6 border border-purple-100">
+      <div className="max-w-2xl mx-auto text-center">
+        <div className="flex items-center justify-center mb-3">
           <Mail className="text-pal-purple mr-2" size={24} />
-          <h3 className="text-lg font-bold text-corporate-dark">Stay Updated</h3>
+          <h3 className="text-xl font-bold text-corporate-dark">Stay Updated</h3>
         </div>
         
-        <p className="text-corporate-gray text-sm mb-4">
+        <p className="text-corporate-gray text-sm mb-6">
           Get the latest video production tips, client stories, and exclusive offers delivered to your inbox.
         </p>
         
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
           <Input
             type="email"
             placeholder="Enter your email address"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="flex-1"
+            className="flex-1 bg-white border-purple-200 focus:border-pal-purple"
             disabled={isSubmitting}
             maxLength={255}
           />
           <Button 
             type="submit"
             disabled={isSubmitting}
-            className="bg-pal-purple hover:bg-pal-purple/90 text-white"
+            className="bg-pal-purple hover:bg-pal-purple/90 text-white px-8 shadow-lg hover:shadow-xl transition-all"
           >
             {isSubmitting ? 'Subscribing...' : 'Subscribe'}
           </Button>
         </form>
         
-        <p className="text-xs text-corporate-gray mt-2">
+        <p className="text-xs text-corporate-gray mt-3">
           We respect your privacy. Unsubscribe at any time.
         </p>
       </div>

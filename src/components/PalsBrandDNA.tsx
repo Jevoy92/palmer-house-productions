@@ -170,6 +170,27 @@ export const PalsBrandDNA = () => {
   return (
     <section className="py-24 bg-background relative overflow-hidden">
       <div className="container mx-auto px-6">
+        {/* Intro Section */}
+        <div className="text-center mb-16 max-w-4xl mx-auto">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 leading-tight">
+            We don't just make videos; we solve business problems with them. 🎯
+          </h2>
+          
+          <div className="space-y-6 text-lg md:text-xl text-muted-foreground font-medium">
+            <p>
+              Maybe your <strong className="text-foreground">onboarding takes too long</strong>. Your <strong className="text-foreground">message isn't landing</strong>. Your <strong className="text-foreground">brand isn't getting seen</strong> where it counts. Whatever the challenge, we start by understanding what's getting in the way — and then design a video system built to fix it. 🔧
+            </p>
+            
+            <p>
+              From <strong className="text-foreground">training 📚</strong> to <strong className="text-foreground">visibility 👀</strong> to <strong className="text-foreground">customer education 🎓</strong>, our process turns complex pain points into clear, measurable solutions. Every project is tailored to your team, your goals, and your bottom line — so you get more than beautiful footage. You get content that performs, scales, and delivers real ROI. 📈
+            </p>
+            
+            <p className="text-2xl font-bold text-foreground pt-4">
+              Because video isn't the goal. It's the tool that gets you there. 🚀
+            </p>
+          </div>
+        </div>
+
         {/* Powered By Badge */}
         <div className="flex justify-center mb-6">
           <div className="px-4 py-2 rounded-full border-2 border-primary text-sm font-medium">

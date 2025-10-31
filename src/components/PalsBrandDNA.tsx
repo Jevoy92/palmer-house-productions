@@ -193,7 +193,7 @@ export const PalsBrandDNA = () => {
         {/* Main Content Grid */}
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-center relative">
           {/* Left Features */}
-          <div className="space-y-6 lg:order-1">
+          <div className="space-y-6 order-2 lg:order-1">
             <Collapsible open={openFeatures[0]} onOpenChange={() => toggleFeature(0)}>
               <div className="bg-card rounded-2xl p-6 border border-border shadow-sm">
                 <CollapsibleTrigger className="w-full text-left">
@@ -250,7 +250,7 @@ export const PalsBrandDNA = () => {
           </div>
 
           {/* Center Avatar with Navigation */}
-          <div className="relative flex flex-col items-center lg:order-2">
+          <div className="relative flex flex-col items-center order-1 lg:order-2">
             <div className="relative w-full flex items-center justify-center">
               <IPhoneVideoPlayer
                 videoSrc={currentPal.video}
@@ -305,7 +305,7 @@ export const PalsBrandDNA = () => {
           </div>
 
           {/* Right Features */}
-          <div className="space-y-6 lg:order-3">
+          <div className="space-y-6 order-3 lg:order-3">
             <Collapsible open={openFeatures[2]} onOpenChange={() => toggleFeature(2)}>
               <div className="bg-card rounded-2xl p-6 border border-border shadow-sm">
                 <CollapsibleTrigger className="w-full text-left">

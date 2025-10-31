@@ -1,38 +1,102 @@
-import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useRef, useEffect, useState } from "react";
 
 // Placeholder images - replace these with your actual client work
 const clientImages = [
-  { id: 1, src: "/placeholder.svg", alt: "Client Project 1" },
-  { id: 2, src: "/placeholder.svg", alt: "Client Project 2" },
-  { id: 3, src: "/placeholder.svg", alt: "Client Project 3" },
-  { id: 4, src: "/placeholder.svg", alt: "Client Project 4" },
-  { id: 5, src: "/placeholder.svg", alt: "Client Project 5" },
+  { src: "/placeholder.svg", alt: "Client Project 1" },
+  { src: "/placeholder.svg", alt: "Client Project 2" },
+  { src: "/placeholder.svg", alt: "Client Project 3" },
+  { src: "/placeholder.svg", alt: "Client Project 4" },
+  { src: "/placeholder.svg", alt: "Client Project 5" },
 ];
 
 export const ClientShowcase = () => {
-  const [startIndex, setStartIndex] = useState(0);
-  const visibleCount = 5;
+  const [rotation, setRotation] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const lastX = useRef(0);
+  const velocity = useRef(0);
+  const raf = useRef<number | null>(null);
 
-  const handlePrevious = () => {
-    setStartIndex((prev) => Math.max(0, prev - 1));
-  };
+  const radius = 320;
+  const itemWidth = 260;
+  const itemHeight = 360;
+  const perspective = 1200;
+  const rotationSpeed = 0.18;
+  const tiltAngle = -18;
 
-  const handleNext = () => {
-    setStartIndex((prev) => 
-      Math.min(clientImages.length - visibleCount, prev + 1)
-    );
-  };
+  // Mouse/touch drag to rotate
+  useEffect(() => {
+    function onPointerMove(e: MouseEvent | TouchEvent) {
+      if (!dragging) return;
+      let x: number;
+      if (e.type.startsWith("touch") && "touches" in e) {
+        x = e.touches[0].clientX;
+      } else {
+        x = (e as MouseEvent).clientX;
+      }
+      const dx = x - lastX.current;
+      lastX.current = x;
+      velocity.current = dx * 0.5;
+      setRotation((r) => r + dx * 0.5);
+    }
 
-  const visibleImages = clientImages.slice(startIndex, startIndex + visibleCount);
-  const canGoPrevious = startIndex > 0;
-  const canGoNext = startIndex < clientImages.length - visibleCount;
+    function onPointerUp() {
+      setDragging(false);
+    }
+
+    if (dragging) {
+      window.addEventListener("pointermove", onPointerMove);
+      window.addEventListener("pointerup", onPointerUp);
+      window.addEventListener("touchmove", onPointerMove);
+      window.addEventListener("touchend", onPointerUp);
+    }
+
+    return () => {
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("touchmove", onPointerMove);
+      window.removeEventListener("touchend", onPointerUp);
+    };
+  }, [dragging]);
+
+  // Inertia
+  useEffect(() => {
+    let running = true;
+    function animate() {
+      if (!dragging && Math.abs(velocity.current) > 0.01) {
+        setRotation((r) => r + velocity.current);
+        velocity.current *= 0.94;
+      }
+      if (running) raf.current = requestAnimationFrame(animate);
+    }
+    raf.current = requestAnimationFrame(animate);
+    return () => {
+      running = false;
+      if (raf.current) cancelAnimationFrame(raf.current);
+    };
+  }, [dragging]);
+
+  // Auto-rotate
+  useEffect(() => {
+    if (dragging) return;
+    let running = true;
+    function tick() {
+      setRotation((r) => r + rotationSpeed);
+      if (running) raf.current = requestAnimationFrame(tick);
+    }
+    raf.current = requestAnimationFrame(tick);
+    return () => {
+      running = false;
+      if (raf.current) cancelAnimationFrame(raf.current);
+    };
+  }, [dragging, rotationSpeed]);
+
+  const angleStep = 360 / clientImages.length;
 
   return (
     <section className="py-20 bg-gray-50">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-16">
           <h2 className="text-[clamp(1.75rem,4vw,3rem)] font-display font-semibold mb-2">
             You've probably seen our work.
           </h2>
@@ -41,55 +105,91 @@ export const ClientShowcase = () => {
           </p>
         </div>
 
-        {/* Carousel Container */}
-        <section className="relative flex flex-col items-center box-border">
-          {/* Image Track */}
-          <div className="w-full overflow-hidden py-4">
-            <div 
-              className="flex gap-6 transition-transform duration-500 ease-out"
-              style={{
-                transform: `translateX(-${startIndex * (200 + 24)}px)` // 200px width + 24px gap
-              }}
-            >
-              {clientImages.map((image) => (
+        {/* 3D Circular Carousel */}
+        <div
+          style={{
+            width: "100%",
+            height: "500px",
+            perspective: `${perspective}px`,
+            perspectiveOrigin: "50% 50%",
+            overflow: "visible",
+            position: "relative",
+            cursor: dragging ? "grabbing" : "grab",
+            userSelect: "none",
+          }}
+          onPointerDown={(e) => {
+            e.preventDefault();
+            setDragging(true);
+            if (e.type === "touchstart" && "touches" in e) {
+              lastX.current = (e as any).touches[0].clientX;
+            } else {
+              lastX.current = e.clientX;
+            }
+          }}
+          onTouchStart={(e) => {
+            setDragging(true);
+            if (e.touches && e.touches.length > 0) {
+              lastX.current = e.touches[0].clientX;
+            }
+          }}
+          role="region"
+          aria-label="3D Carousel"
+        >
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+              left: 0,
+              top: 0,
+              transformStyle: "preserve-3d",
+              transform: `translateZ(0px) rotateY(${rotation}deg)`,
+              transition: dragging ? "none" : "transform 0.2s cubic-bezier(.4,1,.4,1)",
+            }}
+          >
+            {clientImages.map((img, i) => {
+              const theta = angleStep * i;
+              return (
                 <div
-                  key={image.id}
-                  className="flex-shrink-0 w-[200px] h-[280px] bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+                  key={i}
+                  style={{
+                    position: "absolute",
+                    left: "50%",
+                    top: "50%",
+                    width: itemWidth,
+                    height: itemHeight,
+                    marginLeft: -itemWidth / 2,
+                    marginTop: -itemHeight / 2,
+                    boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
+                    borderRadius: 18,
+                    overflow: "hidden",
+                    background: "#fff",
+                    transformStyle: "preserve-3d",
+                    transform: `rotateY(${theta}deg) translateZ(${radius}px) rotateX(${tiltAngle}deg)`,
+                    transition: dragging
+                      ? "none"
+                      : "box-shadow 0.2s cubic-bezier(.4,1,.4,1)",
+                  }}
+                  aria-label={img.alt || `Carousel item ${i + 1}`}
                 >
                   <img
-                    src={image.src}
-                    alt={image.alt}
-                    className="w-full h-full object-cover"
+                    src={img.src}
+                    alt={img.alt}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",
+                      pointerEvents: "none",
+                      userSelect: "none",
+                    }}
+                    draggable={false}
                   />
                 </div>
-              ))}
-            </div>
+              );
+            })}
           </div>
-
-          {/* Slideshow Controls */}
-          <fieldset className="flex items-center justify-center gap-3 mt-4 border-0 p-0 m-0">
-            <div className="flex gap-3">
-              <button
-                onClick={handlePrevious}
-                disabled={!canGoPrevious}
-                className="w-10 h-10 rounded-full bg-white border-2 border-corporate-gray/20 flex items-center justify-center hover:border-corporate-gray/40 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                aria-label="Previous images"
-                type="button"
-              >
-                <ChevronLeft className="w-5 h-5 text-corporate-dark" />
-              </button>
-              <button
-                onClick={handleNext}
-                disabled={!canGoNext}
-                className="w-10 h-10 rounded-full bg-white border-2 border-corporate-gray/20 flex items-center justify-center hover:border-corporate-gray/40 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-                aria-label="Next images"
-                type="button"
-              >
-                <ChevronRight className="w-5 h-5 text-corporate-dark" />
-              </button>
-            </div>
-          </fieldset>
-        </section>
+        </div>
       </div>
     </section>
   );

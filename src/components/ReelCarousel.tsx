@@ -2,36 +2,21 @@ import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-// Example video/content items - replace with your actual content
 const reelItems = [
   { 
     type: "video" as const,
-    src: "/assets/reel_pal.webm",
-    poster: "/placeholder.svg",
-    alt: "Client Reel 1"
+    src: "/assets/COLORFUL_NO_WIFI.mov",
+    alt: "Colorful No WiFi"
   },
   { 
     type: "video" as const,
-    src: "/assets/system_pal.mp4",
-    poster: "/placeholder.svg",
-    alt: "Client Reel 2"
+    src: "/assets/DiscovertheExcitingPop-UpEventsinDowntownBothell.mov",
+    alt: "Downtown Bothell Pop-Up Events"
   },
   { 
     type: "video" as const,
-    src: "/assets/evergreen_pal.mp4",
-    poster: "/placeholder.svg",
-    alt: "Client Reel 3"
-  },
-  { 
-    type: "video" as const,
-    src: "/assets/spotlight_pal.mp4",
-    poster: "/placeholder.svg",
-    alt: "Client Reel 4"
-  },
-  { 
-    type: "image" as const,
-    src: "/placeholder.svg",
-    alt: "Client Work 5"
+    src: "/assets/Martin_Vid_FInal.mov",
+    alt: "Martin Video"
   },
 ];
 
@@ -179,7 +164,6 @@ export const ReelCarousel = () => {
                     <video
                       ref={(el) => (videoRefs.current[index] = el)}
                       src={item.src}
-                      poster={item.poster}
                       className="w-full h-full object-cover"
                       loop
                       muted

@@ -10,13 +10,11 @@ import { StructuredData } from "@/components/seo/StructuredData";
 import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { LaunchOptimization } from "@/components/LaunchOptimization";
 import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
-import { ScrollBars } from "@/components/ScrollBars";
 
 const Index = () => {
   return (
     <div className="min-h-screen overflow-x-hidden font-sans relative bg-white">
-      <ScrollBars />
-      <MetaTags 
+      <MetaTags
         title="Palmer House Productions | Professional Video Production & Cinematic Storytelling"
         description="Professional video production services that drive results. Expert cinematic storytelling, business videos, and content creation that saves time and builds your brand."
         keywords="video production, professional video, cinematic storytelling, business videos, content creation, video marketing"

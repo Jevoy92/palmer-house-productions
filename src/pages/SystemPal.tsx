@@ -51,7 +51,7 @@ const SystemPal = () => {
         {/* Hero Section */}
         <section className="relative min-h-[600px] flex items-center pt-24">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20">
+            <div className="bg-white rounded-3xl p-8 md:p-12">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div>
                   <div className="bg-purple-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg">🎓 SYSTEM PAL</div>

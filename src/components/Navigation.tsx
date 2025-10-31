@@ -111,8 +111,8 @@ export const Navigation = () => {
         : "bg-white/80 backdrop-blur-lg border-border/50"
     )} role="navigation" aria-label="Main navigation">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="relative flex justify-center items-center h-16">
-          <div className="absolute left-6 flex-shrink-0">
+        <div className="relative flex justify-between items-center h-16">
+          <div className="flex-shrink-0">
             <button onClick={handleLogoClick} className="flex items-center gap-3 whitespace-nowrap focus:outline-none" aria-label="Go to homepage">
               <img 
                 src={LOGO.url} 
@@ -123,7 +123,7 @@ export const Navigation = () => {
             </button>
           </div>
           
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-4 flex-1 justify-center">
               {/* Sliding middle navigation */}
               <div 
                 className={cn(
@@ -308,7 +308,7 @@ export const Navigation = () => {
               </button>
           </div>
           
-          <div className="absolute right-6 md:hidden">
+          <div className="md:hidden">
             <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-muted-foreground hover:text-foreground focus:outline-none interactive-element min-h-[44px] min-w-[44px] flex items-center justify-center" aria-expanded={isOpen} aria-controls="mobile-menu" aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}>
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>

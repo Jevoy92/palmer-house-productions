@@ -117,7 +117,7 @@ export const HowItWorks = () => {
   ];
 
   return (
-    <section className="pt-8 pb-24 md:pt-12 md:pb-32 bg-background">
+    <section className="pt-0 pb-24 md:pt-0 md:pb-32 bg-background">
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes float {
           0%, 100% { transform: translateY(0px); }

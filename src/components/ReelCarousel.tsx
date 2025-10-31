@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 const reelItems = [{
   type: "video" as const,
   src: "/assets/COLORFUL_NO_WIFI.mov",
@@ -31,18 +30,17 @@ const reelItems = [{
   src: "/assets/EmpowerYourBusiness_HRSolutionsfromExperts.mp4",
   alt: "HR Solutions for Business"
 }];
-
 export const ReelCarousel = () => {
-  const [rotation, setRotation] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const [lastX, setLastX] = useState(0);
-  const [velocity, setVelocity] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // Calculate the angle between each item for even distribution
-  const angleStep = 360 / reelItems.length;
-  const radius = 600; // Distance from center
+  const autoPlayInterval = useRef<NodeJS.Timeout | null>(null);
+  const goToPrevious = () => {
+    setCurrentIndex(prev => prev === 0 ? reelItems.length - 1 : prev - 1);
+  };
+  const goToNext = () => {
+    setCurrentIndex(prev => prev === reelItems.length - 1 ? 0 : prev + 1);
+  };
 
   // Handle video playback - keep all videos playing
   useEffect(() => {
@@ -55,185 +53,113 @@ export const ReelCarousel = () => {
     });
   }, []);
 
-  // Handle drag/touch
-  const handlePointerDown = (e: React.PointerEvent | React.TouchEvent) => {
-    setIsDragging(true);
-    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    setLastX(clientX);
-    setVelocity(0);
-  };
-
+  // Auto-advance carousel
   useEffect(() => {
-    const handlePointerMove = (e: PointerEvent | TouchEvent) => {
-      if (!isDragging) return;
-      
-      const clientX = 'touches' in e ? (e as TouchEvent).touches[0].clientX : (e as PointerEvent).clientX;
-      const deltaX = clientX - lastX;
-      const rotationChange = deltaX * 0.5;
-      
-      setRotation(prev => prev + rotationChange);
-      setVelocity(rotationChange);
-      setLastX(clientX);
+    if (!isAutoPlaying) return;
+    autoPlayInterval.current = setInterval(() => {
+      goToNext();
+    }, 5000);
+    return () => {
+      if (autoPlayInterval.current) {
+        clearInterval(autoPlayInterval.current);
+      }
+    };
+  }, [isAutoPlaying, currentIndex]);
+
+  // Pause autoplay on user interaction
+  const handleUserInteraction = () => {
+    setIsAutoPlaying(false);
+    if (autoPlayInterval.current) {
+      clearInterval(autoPlayInterval.current);
+    }
+  };
+  const getItemStyle = (index: number) => {
+    const diff = index - currentIndex;
+    const absDiff = Math.abs(diff);
+    if (absDiff > 2) return {
+      display: "none"
     };
 
-    const handlePointerUp = () => {
-      setIsDragging(false);
-    };
-
-    if (isDragging) {
-      window.addEventListener('pointermove', handlePointerMove);
-      window.addEventListener('touchmove', handlePointerMove);
-      window.addEventListener('pointerup', handlePointerUp);
-      window.addEventListener('touchend', handlePointerUp);
+    // Center item
+    if (diff === 0) {
+      return {
+        transform: "translateX(0%) scale(1)",
+        opacity: 1,
+        zIndex: 30
+      };
     }
 
-    return () => {
-      window.removeEventListener('pointermove', handlePointerMove);
-      window.removeEventListener('touchmove', handlePointerMove);
-      window.removeEventListener('pointerup', handlePointerUp);
-      window.removeEventListener('touchend', handlePointerUp);
+    // Right items
+    if (diff > 0) {
+      return {
+        transform: `translateX(${60 + (diff - 1) * 20}%) scale(${0.75 - (diff - 1) * 0.1})`,
+        opacity: 0.4 - (diff - 1) * 0.2,
+        zIndex: 30 - diff
+      };
+    }
+
+    // Left items
+    return {
+      transform: `translateX(${-60 + (diff + 1) * 20}%) scale(${0.75 + (diff + 1) * 0.1})`,
+      opacity: 0.4 + (diff + 1) * 0.2,
+      zIndex: 30 + diff
     };
-  }, [isDragging, lastX]);
-
-  // Inertia effect
-  useEffect(() => {
-    if (isDragging || Math.abs(velocity) < 0.1) return;
-
-    const inertiaInterval = setInterval(() => {
-      setVelocity(prev => prev * 0.95);
-      setRotation(prev => prev + velocity);
-    }, 16);
-
-    return () => clearInterval(inertiaInterval);
-  }, [velocity, isDragging]);
-
-  // Auto-rotation
-  useEffect(() => {
-    if (isDragging) return;
-
-    const autoRotateInterval = setInterval(() => {
-      setRotation(prev => prev + 0.2);
-    }, 30);
-
-    return () => clearInterval(autoRotateInterval);
-  }, [isDragging]);
-
-  const goToPrevious = () => {
-    setRotation(prev => prev + angleStep);
   };
-
-  const goToNext = () => {
-    setRotation(prev => prev - angleStep);
-  };
-  return (
-    <section className="py-8 bg-white overflow-hidden">
+  return <section className="py-8 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         {/* Header */}
         <div className="text-center mb-16">
           <h2 className="text-[clamp(1.75rem,4vw,3rem)] font-display font-semibold mb-2">
             You've probably seen our work.
           </h2>
-          <p className="text-[clamp(1.25rem,3vw,1.75rem)] text-corporate-gray font-medium">
-            You just didn't know it was us.
-          </p>
+          <p className="text-[clamp(1.25rem,3vw,1.75rem)] text-corporate-gray font-medium">You just didn't know it was us.</p>
         </div>
 
-        {/* 3D Circular Carousel Container */}
-        <div className="relative h-[700px] flex items-center justify-center">
+        {/* Carousel Container */}
+        <div className="relative h-[600px] flex items-center justify-center">
           {/* Navigation Buttons */}
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={goToPrevious}
-            className="absolute left-4 z-40 h-12 w-12 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white shadow-lg" 
-            aria-label="Previous slide"
-          >
+          <Button variant="ghost" size="icon" onClick={() => {
+          handleUserInteraction();
+          goToPrevious();
+        }} className="absolute left-4 z-40 h-12 w-12 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white shadow-lg" aria-label="Previous slide">
             <ChevronLeft className="h-6 w-6" />
           </Button>
 
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={goToNext}
-            className="absolute right-4 z-40 h-12 w-12 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white shadow-lg" 
-            aria-label="Next slide"
-          >
+          <Button variant="ghost" size="icon" onClick={() => {
+          handleUserInteraction();
+          goToNext();
+        }} className="absolute right-4 z-40 h-12 w-12 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white shadow-lg" aria-label="Next slide">
             <ChevronRight className="h-6 w-6" />
           </Button>
 
-          {/* 3D Carousel Container */}
-          <div 
-            ref={containerRef}
-            className="relative w-full h-full flex items-center justify-center"
-            style={{ 
-              perspective: '2000px',
-              perspectiveOrigin: 'center center'
-            }}
-            onPointerDown={handlePointerDown}
-            onTouchStart={handlePointerDown}
-          >
-            <div
-              className="relative w-full h-full transition-transform duration-100 ease-out"
-              style={{
-                transformStyle: 'preserve-3d',
-                transform: `rotateY(${rotation}deg)`,
-              }}
-            >
-              {reelItems.map((item, index) => {
-                const angle = angleStep * index;
-                const scale = Math.cos((angle - rotation) * Math.PI / 180) * 0.15 + 0.85;
-                const zIndex = Math.round(Math.cos((angle - rotation) * Math.PI / 180) * 100);
-                
-                return (
-                  <div
-                    key={index}
-                    className="absolute top-1/2 left-1/2"
-                    style={{
-                      transform: `
-                        translate(-50%, -50%)
-                        rotateY(${angle}deg)
-                        translateZ(${radius}px)
-                        scale(${scale})
-                      `,
-                      transformStyle: 'preserve-3d',
-                      width: '380px',
-                      height: '620px',
-                      zIndex: zIndex,
-                    }}
-                  >
-                    <div className="w-full h-full rounded-3xl overflow-hidden shadow-2xl bg-black">
-                      {item.type === "video" ? (
-                        <video
-                          ref={el => videoRefs.current[index] = el}
-                          src={item.src}
-                          className="w-full h-full object-cover"
-                          loop
-                          muted
-                          playsInline
-                          aria-label={item.alt}
-                        />
-                      ) : (
-                        <img
-                          src={item.src}
-                          alt={item.alt}
-                          className="w-full h-full object-cover"
-                        />
-                      )}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+          {/* Carousel Items */}
+          <div className="relative w-full h-full flex items-center justify-center">
+            {reelItems.map((item, index) => <div key={index} className="absolute transition-all duration-700 ease-out" style={{
+            width: "min(380px, 90vw)",
+            height: "min(620px, 80vh)",
+            ...getItemStyle(index)
+          }}>
+                <div className="w-full h-full rounded-3xl overflow-hidden shadow-2xl bg-black">
+                  {item.type === "video" ? <video ref={el => videoRefs.current[index] = el} src={item.src} className="w-full h-full object-cover" loop muted playsInline aria-label={item.alt} /> : <img src={item.src} alt={item.alt} className="w-full h-full object-cover" />}
+                </div>
+              </div>)}
+          </div>
+
+          {/* Dots Indicator */}
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-40">
+            {reelItems.map((_, index) => <button key={index} onClick={() => {
+            handleUserInteraction();
+            setCurrentIndex(index);
+          }} className={`h-2 rounded-full transition-all duration-300 ${index === currentIndex ? "w-8 bg-white" : "w-2 bg-white/50 hover:bg-white/75"}`} aria-label={`Go to slide ${index + 1}`} />)}
           </div>
         </div>
 
         {/* Optional Caption */}
         <div className="text-center mt-8">
           <p className="text-corporate-gray text-sm">
-            Drag to rotate or use arrows to explore our work
+            Swipe or use arrows to explore our work
           </p>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };

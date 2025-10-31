@@ -37,41 +37,27 @@ const ReelPal = () => {
     <>
       <Navigation />
       <MobileOptimized>
-        <div className="min-h-screen relative overflow-hidden">
-        {/* Static Orange Background */}
-        <div className="fixed top-0 left-0 w-full h-screen -z-10">
-          <div className="w-full h-full bg-gradient-to-b from-orange-400 to-orange-600"></div>
-          {/* Static Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 via-orange-400/10 to-orange-600/20"></div>
-        </div>
-
-        {/* Floating Animation Elements */}
-        <div className="fixed inset-0 -z-5 pointer-events-none overflow-hidden">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl animate-bounce" style={{animationDuration: '3s'}}></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-orange-300/20 rounded-full blur-lg animate-bounce" style={{animationDelay: '1s', animationDuration: '4s'}}></div>
-          <div className="absolute bottom-32 left-1/4 w-28 h-28 bg-white/5 rounded-full blur-2xl animate-bounce" style={{animationDelay: '2s', animationDuration: '5s'}}></div>
-          <div className="absolute top-1/3 right-1/3 w-20 h-20 bg-purple-300/10 rounded-full blur-lg animate-bounce" style={{animationDelay: '0.5s', animationDuration: '3.5s'}}></div>
-        </div>
-
+        <div className="min-h-screen bg-white">
+        
         {/* Hero Section */}
-        <section className="relative min-h-[600px] flex items-center pt-24">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="bg-white p-12 rounded-3xl shadow-2xl border border-gray-100">
-                <div className="bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg animate-pulse">📱 REEL PAL</div>
-                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">"Removing invisibility from your brand"</h1>
-                <p className="text-xl mb-8 text-muted-foreground">Stop posting inconsistently. Build a short-form content system that keeps your brand visible, relevant, and top-of-mind.</p>
+        <section className="relative py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+              <div>
+                <div className="bg-orange-500 text-white px-4 py-2 rounded-full text-xs font-bold w-fit mb-6">📱 REEL PAL</div>
+                <h1 className="text-[clamp(2rem,5vw,3.5rem)] font-display font-bold mb-6">"Removing invisibility from your brand"</h1>
+                <p className="text-[clamp(1.125rem,2vw,1.25rem)] mb-8 text-muted-foreground">Stop posting inconsistently. Build a short-form content system that keeps your brand visible, relevant, and top-of-mind.</p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Button asChild size="lg" className="bg-orange-500 text-white hover:bg-orange-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+                  <Button asChild size="lg" className="bg-orange-500 text-white hover:bg-orange-600">
                     <Link to="/contact">🚀 Start Creating Content</Link>
                   </Button>
-                  <Button asChild size="lg" variant="outline" className="border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white shadow-xl">
+                  <Button asChild size="lg" variant="outline" className="border-2">
                     <Link to="/pals">👥 Meet All Pals</Link>
                   </Button>
                 </div>
               </div>
               
-              <div className="text-center relative">
+              <div className="flex justify-center">
                 <IPhoneVideoPlayer
                   imageSrc={reelPalImage}
                   alt="Reel Pal - Your Social Content Creation Guide"
@@ -82,18 +68,18 @@ const ReelPal = () => {
         </section>
 
         {/* Pain Points Section */}
-        <section className="py-20 bg-white relative z-10">
+        <section className="py-16 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Problems I Solve</h2>
-              <p className="text-xl text-muted-foreground">Sound familiar? Let's fix it.</p>
+              <h2 className="text-[clamp(1.875rem,4vw,2.5rem)] font-display font-bold mb-4">Problems I Solve</h2>
+              <p className="text-[clamp(1.125rem,2vw,1.25rem)] text-muted-foreground">Sound familiar? Let's fix it.</p>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-orange-500/10 hover:border-orange-500/30 transition-all duration-300 hover:shadow-lg">
+            <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+              <div className="p-8 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
-                    <Smartphone className="w-6 h-6 text-red-600" />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
+                    <Smartphone className="w-6 h-6 text-orange-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg mb-2">Inconsistent posting and low online visibility</h3>
@@ -102,10 +88,10 @@ const ReelPal = () => {
                 </div>
               </div>
               
-              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-orange-500/10 hover:border-orange-500/30 transition-all duration-300 hover:shadow-lg">
+              <div className="p-8 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
-                    <Calendar className="w-6 h-6 text-red-600" />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
+                    <Calendar className="w-6 h-6 text-orange-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg mb-2">No clear social media strategy or rhythm</h3>
@@ -114,10 +100,10 @@ const ReelPal = () => {
                 </div>
               </div>
               
-              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-orange-500/10 hover:border-orange-500/30 transition-all duration-300 hover:shadow-lg">
+              <div className="p-8 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
-                    <MessageCircle className="w-6 h-6 text-red-600" />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
+                    <MessageCircle className="w-6 h-6 text-orange-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg mb-2">Founders burning out trying to stay "visible"</h3>
@@ -126,10 +112,10 @@ const ReelPal = () => {
                 </div>
               </div>
               
-              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-orange-500/10 hover:border-orange-500/30 transition-all duration-300 hover:shadow-lg">
+              <div className="p-8 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow">
                 <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
-                    <Video className="w-6 h-6 text-red-600" />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
+                    <Video className="w-6 h-6 text-orange-600" />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg mb-2">Brand recognition dropping between launches</h3>
@@ -141,53 +127,53 @@ const ReelPal = () => {
           </div>
         </section>
 
-        {/* What It Makes Section */}
-        <section className="py-20 bg-white relative z-10">
+        {/* What You Get Section */}
+        <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">What You Get</h2>
-              <p className="text-xl text-muted-foreground">Not just videos. A complete system.</p>
+              <h2 className="text-[clamp(1.875rem,4vw,2.5rem)] font-display font-bold mb-4">What You Get</h2>
+              <p className="text-[clamp(1.125rem,2vw,1.25rem)] text-muted-foreground">Not just videos. A complete system.</p>
             </div>
             
-            <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              <div className="group text-center">
-                <div className="inline-flex w-16 h-16 rounded-2xl bg-orange-500/10 items-center justify-center mb-4 group-hover:bg-orange-500/20 transition-colors">
-                  <Smartphone className="w-8 h-8 text-orange-500" />
+            <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-8 max-w-6xl mx-auto">
+              <div className="text-center">
+                <div className="inline-flex w-14 h-14 rounded-xl bg-orange-100 items-center justify-center mb-4">
+                  <Smartphone className="w-7 h-7 text-orange-600" />
                 </div>
-                <h3 className="font-semibold text-xl mb-3">Short-form video systems</h3>
-                <p className="text-muted-foreground">Reels, Shorts, TikToks ready to post on a consistent schedule.</p>
+                <h3 className="font-semibold text-base mb-2">Short-form video systems</h3>
+                <p className="text-sm text-muted-foreground">Reels, Shorts, TikToks ready to post on a consistent schedule.</p>
               </div>
               
-              <div className="group text-center">
-                <div className="inline-flex w-16 h-16 rounded-2xl bg-orange-500/10 items-center justify-center mb-4 group-hover:bg-orange-500/20 transition-colors">
-                  <Calendar className="w-8 h-8 text-orange-500" />
+              <div className="text-center">
+                <div className="inline-flex w-14 h-14 rounded-xl bg-orange-100 items-center justify-center mb-4">
+                  <Calendar className="w-7 h-7 text-orange-600" />
                 </div>
-                <h3 className="font-semibold text-xl mb-3">Monthly content calendars with ready hooks</h3>
-                <p className="text-muted-foreground">Never stare at a blank screen again. Your content is planned and ready.</p>
+                <h3 className="font-semibold text-base mb-2">Monthly content calendars with ready hooks</h3>
+                <p className="text-sm text-muted-foreground">Never stare at a blank screen again. Your content is planned and ready.</p>
               </div>
               
-              <div className="group text-center">
-                <div className="inline-flex w-16 h-16 rounded-2xl bg-orange-500/10 items-center justify-center mb-4 group-hover:bg-orange-500/20 transition-colors">
-                  <MessageCircle className="w-8 h-8 text-orange-500" />
+              <div className="text-center">
+                <div className="inline-flex w-14 h-14 rounded-xl bg-orange-100 items-center justify-center mb-4">
+                  <MessageCircle className="w-7 h-7 text-orange-600" />
                 </div>
-                <h3 className="font-semibold text-xl mb-3">Caption and CTA templates</h3>
-                <p className="text-muted-foreground">Copy-paste captions that drive engagement and conversions.</p>
+                <h3 className="font-semibold text-base mb-2">Caption and CTA templates</h3>
+                <p className="text-sm text-muted-foreground">Copy-paste captions that drive engagement and conversions.</p>
               </div>
               
-              <div className="group text-center">
-                <div className="inline-flex w-16 h-16 rounded-2xl bg-orange-500/10 items-center justify-center mb-4 group-hover:bg-orange-500/20 transition-colors">
-                  <Lightbulb className="w-8 h-8 text-orange-500" />
+              <div className="text-center">
+                <div className="inline-flex w-14 h-14 rounded-xl bg-orange-100 items-center justify-center mb-4">
+                  <Lightbulb className="w-7 h-7 text-orange-600" />
                 </div>
-                <h3 className="font-semibold text-xl mb-3">Visual storytelling frameworks</h3>
-                <p className="text-muted-foreground">Turn your expertise into scroll-stopping content that positions you as a leader.</p>
+                <h3 className="font-semibold text-base mb-2">Visual storytelling frameworks</h3>
+                <p className="text-sm text-muted-foreground">Turn your expertise into scroll-stopping content that positions you as a leader.</p>
               </div>
               
-              <div className="group text-center">
-                <div className="inline-flex w-16 h-16 rounded-2xl bg-orange-500/10 items-center justify-center mb-4 group-hover:bg-orange-500/20 transition-colors">
-                  <Camera className="w-8 h-8 text-orange-500" />
+              <div className="text-center">
+                <div className="inline-flex w-14 h-14 rounded-xl bg-orange-100 items-center justify-center mb-4">
+                  <Camera className="w-7 h-7 text-orange-600" />
                 </div>
-                <h3 className="font-semibold text-xl mb-3">Cutdown libraries from long-form videos</h3>
-                <p className="text-muted-foreground">Maximize your content ROI by repurposing everything you create.</p>
+                <h3 className="font-semibold text-base mb-2">Cutdown libraries from long-form videos</h3>
+                <p className="text-sm text-muted-foreground">Maximize your content ROI by repurposing everything you create.</p>
               </div>
             </div>
           </div>

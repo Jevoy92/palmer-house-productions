@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { OptimizedImage } from '@/components/performance/OptimizedImage';
 import { LazySection } from '@/components/performance/LazySection';
 import { MobileOptimized, useMobileStyles } from '@/components/performance/MobileOptimized';
+import { IPhoneVideoPlayer } from '@/components/ui/iphone-video-player';
 import reelPalImage from '@/assets/pals/female-reel-pal-social-engagement.png';
 import systemPalHeadshot from '@/assets/pals/male-system-pal-headshot.jpg';
 import evergreenPalHeadshot from '@/assets/pals/male-evergreen-pal-headshot-2.jpg';
@@ -71,13 +72,10 @@ const ReelPal = () => {
               </div>
               
               <div className="text-center relative">
-                <div className="relative z-10 transform hover:scale-105 transition-all duration-500">
-                  <img 
-                    className="relative w-full max-w-lg mx-auto object-contain" 
-                    src={reelPalImage} 
-                    alt="Reel Pal - Your Social Content Creation Guide" 
-                  />
-                </div>
+                <IPhoneVideoPlayer
+                  imageSrc={reelPalImage}
+                  alt="Reel Pal - Your Social Content Creation Guide"
+                />
               </div>
             </div>
           </div>

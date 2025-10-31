@@ -119,30 +119,51 @@ export const ContentCalendarSection = () => {
           <h3 className="text-3xl font-semibold">Every type of video content your business needs</h3>
           
           {/* Categories Scrolling Container */}
-          <div className="space-y-4 overflow-hidden">
-            <div className="overflow-x-auto pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              <div className="flex gap-4 min-w-max px-6 animate-scroll-right">
-                {[...categories, ...categories].map((category, index) => (
-                  <button
-                    key={index}
-                    className={`px-6 py-3 rounded-full bg-white border-2 border-gray-200 hover:border-gray-300 transition-all hover:scale-105 ${category.color} font-medium text-sm md:text-base whitespace-nowrap`}
-                  >
-                    {category.label}
-                  </button>
-                ))}
+          <div className="space-y-4">
+            {/* First Row with Gradient Masks */}
+            <div className="relative overflow-hidden">
+              {/* Left Gradient Mask */}
+              <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 to-transparent z-10 pointer-events-none"></div>
+              
+              {/* Scrolling Content */}
+              <div className="overflow-hidden">
+                <div className="flex gap-4 min-w-max animate-scroll-right">
+                  {[...categories, ...categories].map((category, index) => (
+                    <span
+                      key={index}
+                      className={`px-6 py-3 rounded-full bg-white border-2 border-gray-200 ${category.color} font-medium text-sm md:text-base whitespace-nowrap`}
+                    >
+                      {category.label}
+                    </span>
+                  ))}
+                </div>
               </div>
+              
+              {/* Right Gradient Mask */}
+              <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 to-transparent z-10 pointer-events-none"></div>
             </div>
-            <div className="overflow-x-auto pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              <div className="flex gap-4 min-w-max px-6 animate-scroll-left">
-                {[...categoriesRow2, ...categoriesRow2].map((category, index) => (
-                  <button
-                    key={index}
-                    className={`px-6 py-3 rounded-full bg-white border-2 border-gray-200 hover:border-gray-300 transition-all hover:scale-105 ${category.color} font-medium text-sm md:text-base whitespace-nowrap`}
-                  >
-                    {category.label}
-                  </button>
-                ))}
+
+            {/* Second Row with Gradient Masks */}
+            <div className="relative overflow-hidden">
+              {/* Left Gradient Mask */}
+              <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 to-transparent z-10 pointer-events-none"></div>
+              
+              {/* Scrolling Content */}
+              <div className="overflow-hidden">
+                <div className="flex gap-4 min-w-max animate-scroll-left">
+                  {[...categoriesRow2, ...categoriesRow2].map((category, index) => (
+                    <span
+                      key={index}
+                      className={`px-6 py-3 rounded-full bg-white border-2 border-gray-200 ${category.color} font-medium text-sm md:text-base whitespace-nowrap`}
+                    >
+                      {category.label}
+                    </span>
+                  ))}
+                </div>
               </div>
+              
+              {/* Right Gradient Mask */}
+              <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-gray-50 to-transparent z-10 pointer-events-none"></div>
             </div>
           </div>
         </div>

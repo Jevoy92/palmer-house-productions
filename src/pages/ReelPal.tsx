@@ -195,8 +195,27 @@ const ReelPal = () => {
             
             {/* Main Content Grid */}
             <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-              {/* Left Features */}
-              <div className="space-y-6 lg:order-1">
+              {/* Center Phone Mockup - appears first on mobile, center on desktop */}
+              <div className="relative flex flex-col items-center order-1 lg:order-2">
+                <div className="relative w-full flex items-center justify-center">
+                  <div className="relative w-[280px] h-[560px] bg-black rounded-[3rem] shadow-2xl border-[8px] border-gray-800 overflow-hidden">
+                    {/* Notch */}
+                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-7 bg-black rounded-b-3xl z-10"></div>
+                    
+                    {/* Screen Content */}
+                    <div className="relative h-full bg-white p-6 pt-12 flex items-center justify-center">
+                      <img 
+                        src={reelPalImage}
+                        alt="Reel Pal"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Left Features - appears second on mobile, left on desktop */}
+              <div className="space-y-6 order-2 lg:order-1">
                 <Collapsible open={openExpertise === 0} onOpenChange={() => toggleExpertise(0)}>
                   <div className="bg-orange-50 rounded-2xl p-6 border border-orange-100">
                     <CollapsibleTrigger className="w-full text-left">
@@ -253,27 +272,8 @@ const ReelPal = () => {
                 </Collapsible>
               </div>
 
-              {/* Center Phone Mockup */}
-              <div className="relative flex flex-col items-center lg:order-2">
-                <div className="relative w-full flex items-center justify-center">
-                  <div className="relative w-[280px] h-[560px] bg-black rounded-[3rem] shadow-2xl border-[8px] border-gray-800 overflow-hidden">
-                    {/* Notch */}
-                    <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-7 bg-black rounded-b-3xl z-10"></div>
-                    
-                    {/* Screen Content */}
-                    <div className="relative h-full bg-white p-6 pt-12 flex items-center justify-center">
-                      <img 
-                        src={reelPalImage}
-                        alt="Reel Pal"
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Features */}
-              <div className="space-y-6 lg:order-3">
+              {/* Right Features - appears third on mobile, right on desktop */}
+              <div className="space-y-6 order-3 lg:order-3">
                 <Collapsible open={openExpertise === 2} onOpenChange={() => toggleExpertise(2)}>
                   <div className="bg-green-50 rounded-2xl p-6 border border-green-100">
                     <CollapsibleTrigger className="w-full text-left">

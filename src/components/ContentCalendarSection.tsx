@@ -119,28 +119,51 @@ export const ContentCalendarSection = () => {
           <h3 className="text-3xl font-semibold">Every type of video content your business needs</h3>
           
           {/* Categories Scrolling Container */}
-          <div className="space-y-4 overflow-hidden">
-            <div className="overflow-x-auto pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              <div className="flex gap-4 min-w-max px-6 animate-scroll-right">
-                {[...categories, ...categories].map((category, index) => (
-                  <button
+          <div className="space-y-4">
+            {/* First Row - Scrolling Right */}
+            <div className="relative flex overflow-x-hidden">
+              <div className="flex animate-scroll-right whitespace-nowrap">
+                {categories.map((category, index) => (
+                  <span
                     key={index}
-                    className={`px-6 py-3 rounded-full bg-white border-2 border-gray-200 hover:border-gray-300 transition-all hover:scale-105 ${category.color} font-medium text-sm md:text-base whitespace-nowrap`}
+                    className={`mx-2 px-6 py-3 rounded-full bg-white border-2 border-gray-200 hover:border-gray-300 transition-all hover:scale-105 ${category.color} font-medium text-sm md:text-base whitespace-nowrap`}
                   >
                     {category.label}
-                  </button>
+                  </span>
+                ))}
+              </div>
+              <div className="flex animate-scroll-right whitespace-nowrap" aria-hidden="true">
+                {categories.map((category, index) => (
+                  <span
+                    key={`dup-${index}`}
+                    className={`mx-2 px-6 py-3 rounded-full bg-white border-2 border-gray-200 hover:border-gray-300 transition-all hover:scale-105 ${category.color} font-medium text-sm md:text-base whitespace-nowrap`}
+                  >
+                    {category.label}
+                  </span>
                 ))}
               </div>
             </div>
-            <div className="overflow-x-auto pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-              <div className="flex gap-4 min-w-max px-6 animate-scroll-left">
-                {[...categoriesRow2, ...categoriesRow2].map((category, index) => (
-                  <button
+            
+            {/* Second Row - Scrolling Left */}
+            <div className="relative flex overflow-x-hidden">
+              <div className="flex animate-scroll-left whitespace-nowrap">
+                {categoriesRow2.map((category, index) => (
+                  <span
                     key={index}
-                    className={`px-6 py-3 rounded-full bg-white border-2 border-gray-200 hover:border-gray-300 transition-all hover:scale-105 ${category.color} font-medium text-sm md:text-base whitespace-nowrap`}
+                    className={`mx-2 px-6 py-3 rounded-full bg-white border-2 border-gray-200 hover:border-gray-300 transition-all hover:scale-105 ${category.color} font-medium text-sm md:text-base whitespace-nowrap`}
                   >
                     {category.label}
-                  </button>
+                  </span>
+                ))}
+              </div>
+              <div className="flex animate-scroll-left whitespace-nowrap" aria-hidden="true">
+                {categoriesRow2.map((category, index) => (
+                  <span
+                    key={`dup-${index}`}
+                    className={`mx-2 px-6 py-3 rounded-full bg-white border-2 border-gray-200 hover:border-gray-300 transition-all hover:scale-105 ${category.color} font-medium text-sm md:text-base whitespace-nowrap`}
+                  >
+                    {category.label}
+                  </span>
                 ))}
               </div>
             </div>

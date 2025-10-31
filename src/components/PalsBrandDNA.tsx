@@ -118,7 +118,7 @@ const palsData: PalData[] = [
     name: "System Pal",
     tagline: "Your Content Operations Manager",
     description: "System Pal orchestrates your entire video content operation. It manages workflows, coordinates teams, and ensures consistent output.",
-    avatar: systemPalAvatar,
+    video: "/assets/system_pal.mp4",
     link: "/system-pal",
     features: [
       {

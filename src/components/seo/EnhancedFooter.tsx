@@ -21,7 +21,7 @@ export const EnhancedFooter = () => {
       {/* Content */}
       <div className="relative z-10 overflow-hidden">
         {/* Main Footer Content - White Card */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-32 sm:-mt-48 lg:-mt-64 pb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-24 sm:-mt-32 lg:-mt-40 pb-8">
           <div className="bg-white rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-8">
               {/* Company Info */}

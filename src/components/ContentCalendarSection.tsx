@@ -1,22 +1,22 @@
 export const ContentCalendarSection = () => {
   const categories = [
-    { label: "Mythbuster", color: "text-red-400" },
-    { label: "Features", color: "text-pink-500" },
-    { label: "Us vs Them", color: "text-gray-400" },
+    { label: "Product Demos", color: "text-red-400" },
+    { label: "Team Stories", color: "text-pink-500" },
+    { label: "Training Videos", color: "text-gray-400" },
     { label: "Testimonials", color: "text-orange-500" },
-    { label: "Best-sellers", color: "text-blue-500" },
-    { label: "Media", color: "text-purple-500" },
-    { label: "Negative Hook", color: "text-orange-500" },
+    { label: "Brand Stories", color: "text-blue-500" },
+    { label: "Social Content", color: "text-purple-500" },
+    { label: "Event Coverage", color: "text-orange-500" },
   ];
 
   const categoriesRow2 = [
-    { label: "FAQ", color: "text-red-300" },
+    { label: "Explainer Videos", color: "text-red-300" },
     { label: "Before & After", color: "text-pink-500" },
-    { label: "Top X Reasons", color: "text-purple-500" },
-    { label: "Problem-solution", color: "text-orange-500" },
-    { label: "Statistics", color: "text-blue-500" },
-    { label: "Notes", color: "text-red-500" },
-    { label: "What's Inside", color: "text-pink-500" },
+    { label: "Client Success", color: "text-purple-500" },
+    { label: "How-To Guides", color: "text-orange-500" },
+    { label: "Company Culture", color: "text-blue-500" },
+    { label: "Industry Insights", color: "text-red-500" },
+    { label: "Behind the Scenes", color: "text-pink-500" },
   ];
 
   return (
@@ -27,28 +27,28 @@ export const ContentCalendarSection = () => {
           {/* Left Content */}
           <div className="space-y-6">
             <p className="text-sm text-gray-600 uppercase tracking-wider">
-              Unlimited Ads and Social Media Post Ideas
+              Strategic Video Content Production
             </p>
             
             <h2 className="text-4xl md:text-5xl font-bold leading-tight">
-              Fill Your Content Calendar,<br />
-              <span className="block">3 Months In Advance</span>
+              Build Your Video Library,<br />
+              <span className="block">One Shoot At A Time</span>
             </h2>
             
             <p className="text-lg text-gray-600 leading-relaxed">
-              You rest. Holo doesn't. It works in the background to generate marketing visuals 
-              while you sleep. So you can swipe in the morning and launch just before lunch.
+              We capture multiple video formats in a single production day. Your brand gets a 
+              content library ready to deploy across every platform—social, web, training, and more.
             </p>
 
-            {/* Tinder Card */}
+            {/* Info Card */}
             <div className="flex items-center gap-4 p-6 bg-gray-50 rounded-2xl border border-gray-200 max-w-md">
-              <div className="text-4xl">🤖</div>
+              <div className="text-4xl">🎬</div>
               <div>
                 <p className="text-sm font-semibold text-orange-500">
-                  Like Tinder, but for content.
+                  Maximum output, minimal effort.
                 </p>
                 <p className="text-sm text-gray-600">
-                  Swipe to skip, save, or generate what you like best.
+                  One shoot day delivers weeks of content across all your channels.
                 </p>
               </div>
             </div>
@@ -116,7 +116,7 @@ export const ContentCalendarSection = () => {
 
         {/* Ideas Categories Section */}
         <div className="text-center space-y-8">
-          <h3 className="text-3xl font-semibold">1000's of available ideas</h3>
+          <h3 className="text-3xl font-semibold">Every type of video content your business needs</h3>
           
           {/* Categories Grid */}
           <div className="space-y-4">

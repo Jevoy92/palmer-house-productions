@@ -8,9 +8,9 @@ export const EnhancedFooter = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-x-hidden bg-white">
+    <footer className="relative overflow-hidden bg-white">
       {/* Pals Banner */}
-      <div className="flex justify-center">
+      <div className="flex justify-center overflow-hidden">
         <img 
           src={palsFooterBanner} 
           alt="Palmer House Productions Pals" 
@@ -19,10 +19,10 @@ export const EnhancedFooter = () => {
       </div>
       
       {/* Content */}
-      <div className="relative z-10">
+      <div className="relative z-10 overflow-hidden">
         {/* Main Footer Content - White Card */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-80 pb-8">
-          <div className="bg-white rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-8">
+          <div className="bg-white rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-8 overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-8">
               {/* Company Info */}
               <div className="space-y-4 lg:col-span-2">
@@ -51,9 +51,9 @@ export const EnhancedFooter = () => {
               </div>
 
               {/* Services */}
-              <div className="space-y-4">
+              <div className="space-y-4 min-w-0">
                 <h4 className="font-bold text-corporate-dark">Services</h4>
-                <ul className="space-y-2 text-sm">
+                <ul className="space-y-2 text-sm break-words">
                   <li>
                     <Link to="/reel-pal" className="text-corporate-gray hover:text-pal-orange transition-colors">
                       Social Content
@@ -93,9 +93,9 @@ export const EnhancedFooter = () => {
               </div>
 
               {/* Locations */}
-              <div className="space-y-4">
+              <div className="space-y-4 min-w-0">
                 <h4 className="font-bold text-corporate-dark">Locations</h4>
-                <ul className="space-y-2 text-sm">
+                <ul className="space-y-2 text-sm break-words">
                   <li>
                     <Link to="/locations/bellevue-wa" className="text-corporate-gray hover:text-pal-blue transition-colors">
                       Bellevue, WA
@@ -115,9 +115,9 @@ export const EnhancedFooter = () => {
               </div>
 
               {/* Company & Resources */}
-              <div className="space-y-4">
+              <div className="space-y-4 min-w-0">
                 <h4 className="font-bold text-corporate-dark">Company</h4>
-                <ul className="space-y-2 text-sm">
+                <ul className="space-y-2 text-sm break-words">
                   <li>
                     <Link to="/about-us" className="text-corporate-gray hover:text-pal-green transition-colors">
                       About Us
@@ -147,9 +147,9 @@ export const EnhancedFooter = () => {
               </div>
 
               {/* Contact */}
-              <div className="space-y-4">
+              <div className="space-y-4 min-w-0">
                 <h4 className="font-bold text-corporate-dark">Connect</h4>
-                <div className="space-y-2 text-sm">
+                <div className="space-y-2 text-sm break-words">
                   <p className="text-corporate-gray">
                     <Link to="/contact" className="hover:text-pal-orange transition-colors">
                       Get Started Today

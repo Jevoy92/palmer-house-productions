@@ -562,34 +562,34 @@ const SpotlightPal = () => {
                   </Button>
                 </div>
                 
-                <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-purple-500 transition-all hover:scale-105">
+                <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105">
                   <div className="mb-6">
                     <OptimizedImage 
                       src={systemPalHeadshot}
                       alt="Female System Pal - Workflow optimization expert with glasses"
-                      className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full object-cover object-center border-4 border-purple-200"
+                      className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full object-cover object-center border-4 border-green-200"
                       loading="lazy"
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-3">System Pal</h3>
                   <p className="text-muted-foreground mb-4">Perfect for businesses needing training videos and internal systems</p>
-                  <Button asChild className="bg-purple-600 text-white hover:bg-purple-700">
+                  <Button asChild className="bg-green-600 text-white hover:bg-green-700">
                     <Link to="/system-pal">🎓 Meet System Pal</Link>
                   </Button>
                 </div>
                 
-                <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105">
+                <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-blue-500 transition-all hover:scale-105">
                   <div className="mb-6">
                     <OptimizedImage 
                       src={evergreenPalHeadshot}
                       alt="Male Evergreen Pal - Authority building expert in blue cardigan"
-                      className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full object-cover object-center border-4 border-green-200"
+                      className="w-20 h-20 sm:w-24 sm:h-24 mx-auto rounded-full object-cover object-center border-4 border-blue-200"
                       loading="lazy"
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-3">Evergreen Pal</h3>
                   <p className="text-muted-foreground mb-4">Ideal for long-term YouTube growth and authority building</p>
-                  <Button asChild className="bg-green-600 text-white hover:bg-green-700">
+                  <Button asChild className="bg-blue-600 text-white hover:bg-blue-700">
                     <Link to="/evergreen-pal">🌱 Meet Evergreen Pal</Link>
                   </Button>
                 </div>

@@ -628,33 +628,18 @@ const ReelPal = () => {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-purple-500 transition-all hover:scale-105">
+                <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105">
                   <div className="mb-6">
                     <img 
-                      className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-purple-200" 
+                      className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-green-200" 
                       src={systemPalHeadshot} 
                       alt="System Pal - Male training systems expert with glasses and blue jacket" 
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-3">System Pal</h3>
                   <p className="text-muted-foreground mb-4">Perfect for training videos, onboarding, and internal business content</p>
-                  <Button asChild className="bg-purple-500 text-white hover:bg-purple-600">
-                    <Link to="/system-pal">🎓 Meet System Pal</Link>
-                  </Button>
-                </div>
-                
-                <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105">
-                  <div className="mb-6">
-                    <img 
-                      className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-green-200" 
-                      src={evergreenPalHeadshot} 
-                      alt="Evergreen Pal - Male authority building expert with blue cardigan" 
-                    />
-                  </div>
-                  <h3 className="text-2xl font-bold text-foreground mb-3">Evergreen Pal</h3>
-                  <p className="text-muted-foreground mb-4">Ideal for long-term YouTube growth and authority building</p>
                   <Button asChild className="bg-green-500 text-white hover:bg-green-600">
-                    <Link to="/evergreen-pal">🌱 Meet Evergreen Pal</Link>
+                    <Link to="/system-pal">🎓 Meet System Pal</Link>
                   </Button>
                 </div>
                 
@@ -662,13 +647,28 @@ const ReelPal = () => {
                   <div className="mb-6">
                     <img 
                       className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-blue-200" 
+                      src={evergreenPalHeadshot} 
+                      alt="Evergreen Pal - Male authority building expert with blue cardigan" 
+                    />
+                  </div>
+                  <h3 className="text-2xl font-bold text-foreground mb-3">Evergreen Pal</h3>
+                  <p className="text-muted-foreground mb-4">Ideal for long-term YouTube growth and authority building</p>
+                  <Button asChild className="bg-blue-500 text-white hover:bg-blue-600">
+                    <Link to="/evergreen-pal">🌱 Meet Evergreen Pal</Link>
+                  </Button>
+                </div>
+                
+                <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-purple-500 transition-all hover:scale-105">
+                  <div className="mb-6">
+                    <img 
+                      className="w-24 h-24 mx-auto rounded-full object-cover object-center border-4 border-purple-200" 
                       src={spotlightPalHeadshot} 
                       alt="Spotlight Pal - Male cinematic production expert in blue jacket" 
                     />
                   </div>
                   <h3 className="text-2xl font-bold text-foreground mb-3">Spotlight Pal</h3>
                   <p className="text-muted-foreground mb-4">Your go-to for cinematic brand films and premium content</p>
-                  <Button asChild className="bg-blue-500 text-white hover:bg-blue-600">
+                  <Button asChild className="bg-purple-500 text-white hover:bg-purple-600">
                     <Link to="/spotlight-pal">🎬 Meet Spotlight Pal</Link>
                   </Button>
                 </div>

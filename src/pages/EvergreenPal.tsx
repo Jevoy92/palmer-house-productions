@@ -54,14 +54,14 @@ const EvergreenPal = () => {
             <div className="bg-white rounded-3xl p-8 md:p-12">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                 <div>
-                  <div className="bg-green-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg">🌱 EVERGREEN PAL</div>
+                  <div className="bg-blue-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg">🌱 EVERGREEN PAL</div>
                   <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">"Removing confusion from your offering"</h1>
                   <p className="text-lg md:text-xl mb-8 text-muted-foreground">Prospects don't understand what you do? Build evergreen content that makes your value crystal clear and brings in qualified leads while you sleep.</p>
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Button asChild size="lg" className="bg-green-500 text-white hover:bg-green-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+                    <Button asChild size="lg" className="bg-blue-500 text-white hover:bg-blue-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
                       <Link to="/contact">🚀 Book Strategy Call</Link>
                     </Button>
-                    <Button asChild size="lg" variant="outline" className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white shadow-xl">
+                    <Button asChild size="lg" variant="outline" className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white shadow-xl">
                       <Link to="/pals">👥 Meet All Pals</Link>
                     </Button>
                   </div>
@@ -82,7 +82,7 @@ const EvergreenPal = () => {
         </section>
 
         {/* Pain Points Section */}
-        <section className="py-20 bg-green-50 relative z-10">
+        <section className="py-20 bg-blue-50 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Problems I Solve</h2>
@@ -90,7 +90,7 @@ const EvergreenPal = () => {
             </div>
             
             <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-green-500/10 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg">
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-blue-500/10 hover:border-blue-500/30 transition-all duration-300 hover:shadow-lg">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
                     <MessageCircle className="w-6 h-6 text-red-600" />
@@ -102,7 +102,7 @@ const EvergreenPal = () => {
                 </div>
               </div>
               
-              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-green-500/10 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg">
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-blue-500/10 hover:border-blue-500/30 transition-all duration-300 hover:shadow-lg">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
                     <Search className="w-6 h-6 text-red-600" />
@@ -114,7 +114,7 @@ const EvergreenPal = () => {
                 </div>
               </div>
               
-              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-green-500/10 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg">
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-blue-500/10 hover:border-blue-500/30 transition-all duration-300 hover:shadow-lg">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
                     <Lightbulb className="w-6 h-6 text-red-600" />
@@ -126,7 +126,7 @@ const EvergreenPal = () => {
                 </div>
               </div>
               
-              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-green-500/10 hover:border-green-500/30 transition-all duration-300 hover:shadow-lg">
+              <div className="group p-6 rounded-2xl bg-white/95 backdrop-blur-sm border border-blue-500/10 hover:border-blue-500/30 transition-all duration-300 hover:shadow-lg">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
                     <TrendingUp className="w-6 h-6 text-red-600" />
@@ -153,7 +153,7 @@ const EvergreenPal = () => {
               {/* Left Features */}
               <div className="space-y-6 lg:order-1">
                 <Collapsible open={openExpertise === 0} onOpenChange={() => toggleExpertise(0)}>
-                  <div className="bg-green-50 rounded-2xl p-6 border border-green-100">
+                  <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
                     <CollapsibleTrigger className="w-full text-left">
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1">
@@ -180,7 +180,7 @@ const EvergreenPal = () => {
                 </Collapsible>
 
                 <Collapsible open={openExpertise === 1} onOpenChange={() => toggleExpertise(1)}>
-                  <div className="bg-blue-50 rounded-2xl p-6 border border-blue-100">
+                  <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
                     <CollapsibleTrigger className="w-full text-left">
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1">
@@ -229,7 +229,7 @@ const EvergreenPal = () => {
               {/* Right Features */}
               <div className="space-y-6 lg:order-3">
                 <Collapsible open={openExpertise === 2} onOpenChange={() => toggleExpertise(2)}>
-                  <div className="bg-purple-50 rounded-2xl p-6 border border-purple-100">
+                  <div className="bg-orange-50 rounded-2xl p-6 border border-orange-100">
                     <CollapsibleTrigger className="w-full text-left">
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex-1">
@@ -297,108 +297,108 @@ const EvergreenPal = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Strategy Blueprint */}
-              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105">
-                <div className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">STRATEGY</div>
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-blue-500 transition-all hover:scale-105">
+                <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">STRATEGY</div>
                 <h3 className="text-2xl font-bold text-foreground mb-4">Video Strategy Blueprint</h3>
-                <div className="text-4xl font-bold text-green-600 mb-6">$19</div>
+                <div className="text-4xl font-bold text-blue-600 mb-6">$19</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>Step-by-step video guide</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>Growth stage strategies</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>Audience behavior insights</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>Content planning framework</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>Instant PDF download</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600" size="lg">
+                <Button asChild className="w-full bg-blue-500 text-white hover:bg-blue-600" size="lg">
                   <a href="https://payhip.com/b/nIagA" target="_blank" rel="noopener noreferrer">Get Strategy</a>
                 </Button>
               </div>
               
               {/* Founder Brand Kit */}
-              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105 relative">
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-blue-500 transition-all hover:scale-105 relative">
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold">MOST POPULAR</div>
+                  <div className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-semibold">MOST POPULAR</div>
                 </div>
-                <div className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">PERSONAL BRAND</div>
+                <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">PERSONAL BRAND</div>
                 <h3 className="text-2xl font-bold text-foreground mb-4">Founder's Brand Kit</h3>
-                <div className="text-4xl font-bold text-green-600 mb-6">$6,000</div>
+                <div className="text-4xl font-bold text-blue-600 mb-6">$6,000</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>1 shoot day + strategy</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>Founder bio video (90-120 sec)</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>2 hook/top-of-funnel videos</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>Vibe montage/sizzle reel</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>Multi-platform delivery</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>Only 4 spots available</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600" size="lg">
+                <Button asChild className="w-full bg-blue-500 text-white hover:bg-blue-600" size="lg">
                   <Link to="/contact">Book Now</Link>
                 </Button>
               </div>
               
               {/* YouTube Engine */}
-              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105">
-                <div className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">YOUTUBE</div>
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-blue-500 transition-all hover:scale-105">
+                <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">YOUTUBE</div>
                 <h3 className="text-2xl font-bold text-foreground mb-4">YouTube Visibility Engine</h3>
-                <div className="text-4xl font-bold text-green-600 mb-6">$6,500</div>
+                <div className="text-4xl font-bold text-blue-600 mb-6">$6,500</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>3 long-form videos (8-10 min)</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>Content strategy + series plan</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>Full scripting + outlines</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>Teleprompter support</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>SEO titles + descriptions</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-green-500 h-5 w-5" />
+                    <Check className="text-blue-500 h-5 w-5" />
                     <span>Only 2 spots this quarter</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600" size="lg">
+                <Button asChild className="w-full bg-blue-500 text-white hover:bg-blue-600" size="lg">
                   <Link to="/contact">Book Now</Link>
                 </Button>
               </div>
@@ -418,36 +418,36 @@ const EvergreenPal = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               <div className="text-center">
-                <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
                   <Target className="text-white h-8 w-8" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">1</div>
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-4">Strategic Planning</h3>
                 <p className="text-muted-foreground">We identify your unique expertise and create a content strategy that builds lasting authority in your niche.</p>
               </div>
               
               <div className="text-center">
-                <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
                   <Lightbulb className="text-white h-8 w-8" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-4">Content Architecture</h3>
                 <p className="text-muted-foreground">I design comprehensive content series that educate your audience and demonstrate your expertise systematically.</p>
               </div>
               
               <div className="text-center">
-                <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
                   <Video className="text-white h-8 w-8" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-4">Premium Production</h3>
                 <p className="text-muted-foreground">High-quality video production that reflects your expertise and positions you as the authority in your field.</p>
               </div>
               
               <div className="text-center">
-                <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
+                <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 relative">
                   <BarChart className="text-white h-8 w-8" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-4">Growth & Optimization</h3>
                 <p className="text-muted-foreground">Continuous optimization based on performance data to maximize reach, engagement, and lead generation.</p>
@@ -527,22 +527,22 @@ const EvergreenPal = () => {
             <p className="text-xl mb-12 max-w-3xl mx-auto text-muted-foreground">Let's create content that establishes you as the go-to expert in your field. Book a strategy call and let's build your lasting authority together.</p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-              <div className="bg-green-50 border border-green-200 rounded-2xl p-6">
-                <div className="text-2xl font-bold text-green-600 mb-2">Strategic Focus</div>
+              <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
+                <div className="text-2xl font-bold text-blue-600 mb-2">Strategic Focus</div>
                 <p className="text-sm text-muted-foreground">Content that builds genuine expertise and authority over time</p>
               </div>
               <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
                 <div className="text-2xl font-bold text-blue-600 mb-2">Lasting Impact</div>
                 <p className="text-sm text-muted-foreground">Videos that continue generating leads and building credibility for years</p>
               </div>
-              <div className="bg-purple-50 border border-purple-200 rounded-2xl p-6">
-                <div className="text-2xl font-bold text-purple-600 mb-2">Proven Growth</div>
+              <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6">
+                <div className="text-2xl font-bold text-blue-600 mb-2">Proven Growth</div>
                 <p className="text-sm text-muted-foreground">Sustainable strategies that compound over time for exponential results</p>
               </div>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
-              <Button asChild size="lg" className="bg-green-500 text-white hover:bg-green-600">
+              <Button asChild size="lg" className="bg-blue-500 text-white hover:bg-blue-600">
                 <a 
                   href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
                   target="_blank"
@@ -551,7 +551,7 @@ const EvergreenPal = () => {
                   Book Your Strategy Call
                 </a>
               </Button>
-              <Button asChild variant="outline" size="lg" className="border-2 border-green-500 text-green-600 hover:bg-green-500 hover:text-white">
+              <Button asChild variant="outline" size="lg" className="border-2 border-blue-500 text-blue-600 hover:bg-blue-500 hover:text-white">
                 <Link to="/video-packages">View Authority Examples</Link>
               </Button>
             </div>

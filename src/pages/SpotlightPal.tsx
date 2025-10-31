@@ -66,32 +66,34 @@ const SpotlightPal = () => {
         </div>
 
         {/* Hero Section */}
-        <section className="relative min-h-[500px] sm:min-h-[600px] flex items-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-              <div className="bg-white p-6 sm:p-8 lg:p-12 rounded-3xl shadow-2xl border border-gray-100">
-                <div className="bg-red-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm font-bold w-fit mb-4 sm:mb-6 shadow-lg">🎬 SPOTLIGHT PAL</div>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 text-foreground leading-tight">"Making your wins visible"</h1>
-                <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-muted-foreground">Great work going unseen? Turn customer wins, team achievements, and brand moments into proof that builds trust and drives sales.</p>
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                  <Button asChild size="lg" className={`${mobileStyles.mobileButton} bg-red-500 text-white hover:bg-red-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105`}>
-                    <Link to="/contact">🚀 Book Strategy Call</Link>
-                  </Button>
-                  <Button asChild size="lg" variant="outline" className={`${mobileStyles.mobileButton} border-red-500 text-red-500 hover:bg-red-500 hover:text-white shadow-xl`}>
-                    <Link to="/pals">👥 Meet All Pals</Link>
-                  </Button>
+        <section className="relative min-h-[500px] sm:min-h-[600px] flex items-center pt-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-6 sm:p-8 lg:p-12 shadow-2xl border border-white/20">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div>
+                  <div className="bg-red-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm font-bold w-fit mb-4 sm:mb-6 shadow-lg">🎬 SPOTLIGHT PAL</div>
+                  <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 text-foreground leading-tight">"Making your wins visible"</h1>
+                  <p className="text-lg sm:text-xl mb-6 sm:mb-8 text-muted-foreground">Great work going unseen? Turn customer wins, team achievements, and brand moments into proof that builds trust and drives sales.</p>
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                    <Button asChild size="lg" className={`${mobileStyles.mobileButton} bg-red-500 text-white hover:bg-red-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105`}>
+                      <Link to="/contact">🚀 Book Strategy Call</Link>
+                    </Button>
+                    <Button asChild size="lg" variant="outline" className={`${mobileStyles.mobileButton} border-red-500 text-red-500 hover:bg-red-500 hover:text-white shadow-xl`}>
+                      <Link to="/pals">👥 Meet All Pals</Link>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              
-              <div className="text-center relative order-first lg:order-last">
-                <div className="relative z-10 transform hover:scale-105 transition-all duration-500">
-                  <OptimizedImage 
-                    src={spotlightPalImage}
-                    alt="Spotlight Pal - Your Cinematic Production Expert"
-                    className="relative w-full max-w-lg mx-auto object-contain"
-                    priority={true}
-                    loading="eager"
-                  />
+                
+                <div className="text-center relative">
+                  <div className="relative z-10 transform hover:scale-105 transition-all duration-500">
+                    <OptimizedImage 
+                      src={spotlightPalImage}
+                      alt="Spotlight Pal - Your Cinematic Production Expert"
+                      className="relative w-full max-w-lg mx-auto object-contain"
+                      priority={true}
+                      loading="eager"
+                    />
+                  </div>
                 </div>
               </div>
             </div>

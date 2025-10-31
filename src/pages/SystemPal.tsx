@@ -61,30 +61,32 @@ const SystemPal = () => {
         </div>
 
         {/* Hero Section */}
-        <section className="relative min-h-[600px] flex items-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="bg-white p-12 rounded-3xl shadow-2xl border border-gray-100">
-                <div className="bg-purple-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg">🎓 SYSTEM PAL</div>
-                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">"Removing friction from your business"</h1>
-                <p className="text-xl mb-8 text-muted-foreground">Stop wasting time answering the same questions. Build video systems that train your team, document your processes, and scale your knowledge.</p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button asChild size="lg" className="bg-purple-500 text-white hover:bg-purple-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-                    <Link to="/contact">🚀 Book Strategy Call</Link>
-                  </Button>
-                  <Button asChild size="lg" variant="outline" className="border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white shadow-xl">
-                    <Link to="/pals">👥 Meet All Pals</Link>
-                  </Button>
+        <section className="relative min-h-[600px] flex items-center pt-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div>
+                  <div className="bg-purple-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg">🎓 SYSTEM PAL</div>
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">"Removing friction from your business"</h1>
+                  <p className="text-lg md:text-xl mb-8 text-muted-foreground">Stop wasting time answering the same questions. Build video systems that train your team, document your processes, and scale your knowledge.</p>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button asChild size="lg" className="bg-purple-500 text-white hover:bg-purple-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+                      <Link to="/contact">🚀 Book Strategy Call</Link>
+                    </Button>
+                    <Button asChild size="lg" variant="outline" className="border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white shadow-xl">
+                      <Link to="/pals">👥 Meet All Pals</Link>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              
-              <div className="text-center relative">
-                <div className="relative z-10 transform hover:scale-105 transition-all duration-500">
-                  <img 
-                    className="relative w-full max-w-lg mx-auto object-contain" 
-                    src={systemPalImage} 
-                    alt="System Pal - Your Training & Systems Expert" 
-                  />
+                
+                <div className="text-center relative">
+                  <div className="relative z-10 transform hover:scale-105 transition-all duration-500">
+                    <img 
+                      className="relative w-full max-w-lg mx-auto object-contain" 
+                      src={systemPalImage} 
+                      alt="System Pal - Your Training & Systems Expert" 
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -92,7 +94,7 @@ const SystemPal = () => {
         </section>
 
         {/* Pain Points Section */}
-        <section className="py-20 bg-gradient-to-b from-background via-purple-500/5 to-background relative z-10">
+        <section className="py-20 bg-purple-50 relative z-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Problems I Solve</h2>

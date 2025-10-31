@@ -61,30 +61,32 @@ const EvergreenPal = () => {
         </div>
 
         {/* Hero Section */}
-        <section className="relative min-h-[600px] flex items-center">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="bg-white p-12 rounded-3xl shadow-2xl border border-gray-100">
-                <div className="bg-green-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg">🌱 EVERGREEN PAL</div>
-                <h1 className="text-5xl md:text-6xl font-bold mb-6 text-foreground">"Removing confusion from your offering"</h1>
-                <p className="text-xl mb-8 text-muted-foreground">Prospects don't understand what you do? Build evergreen content that makes your value crystal clear and brings in qualified leads while you sleep.</p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Button asChild size="lg" className="bg-green-500 text-white hover:bg-green-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
-                    <Link to="/contact">🚀 Book Strategy Call</Link>
-                  </Button>
-                  <Button asChild size="lg" variant="outline" className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white shadow-xl">
-                    <Link to="/pals">👥 Meet All Pals</Link>
-                  </Button>
+        <section className="relative min-h-[600px] flex items-center pt-24">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 md:p-12 shadow-2xl border border-white/20">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div>
+                  <div className="bg-green-500 text-white px-6 py-3 rounded-full text-sm font-bold w-fit mb-6 shadow-lg">🌱 EVERGREEN PAL</div>
+                  <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-foreground">"Removing confusion from your offering"</h1>
+                  <p className="text-lg md:text-xl mb-8 text-muted-foreground">Prospects don't understand what you do? Build evergreen content that makes your value crystal clear and brings in qualified leads while you sleep.</p>
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    <Button asChild size="lg" className="bg-green-500 text-white hover:bg-green-600 shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+                      <Link to="/contact">🚀 Book Strategy Call</Link>
+                    </Button>
+                    <Button asChild size="lg" variant="outline" className="border-green-500 text-green-500 hover:bg-green-500 hover:text-white shadow-xl">
+                      <Link to="/pals">👥 Meet All Pals</Link>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-              
-              <div className="text-center relative">
-                <div className="relative z-10 transform hover:scale-105 transition-all duration-500">
-                  <img 
-                    className="relative w-full max-w-lg mx-auto object-contain" 
-                    src={evergreenPalImage} 
-                    alt="Evergreen Pal - Your SEO & Content Strategy Expert" 
-                  />
+                
+                <div className="text-center relative">
+                  <div className="relative z-10 transform hover:scale-105 transition-all duration-500">
+                    <img 
+                      className="relative w-full max-w-lg mx-auto object-contain" 
+                      src={evergreenPalImage} 
+                      alt="Evergreen Pal - Your SEO & Content Strategy Expert" 
+                    />
+                  </div>
                 </div>
               </div>
             </div>

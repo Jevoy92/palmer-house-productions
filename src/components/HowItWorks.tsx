@@ -151,8 +151,13 @@ export const HowItWorks = () => {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-16">
           {steps.map((step, index) => (
             <>
-              {/* Step Content */}
-              <div key={`content-${index}`} className="flex items-start space-x-8">
+              {/* Step Visual - appears first on mobile, second on desktop */}
+              <div key={`visual-${index}`} className="flex items-center justify-center h-64 order-1 md:order-2">
+                {step.mockup}
+              </div>
+              
+              {/* Step Content - appears second on mobile, first on desktop */}
+              <div key={`content-${index}`} className="flex items-start space-x-8 order-2 md:order-1">
                 <div className="relative flex-shrink-0">
                   {step.hasLine && (
                     <div className={`absolute -left-1.5 top-12 h-full w-0.5 bg-gradient-to-b ${step.lineGradient}`}></div>
@@ -163,11 +168,6 @@ export const HowItWorks = () => {
                   <h3 className="text-2xl font-semibold mb-2">{step.title}</h3>
                   <p className="text-muted-foreground text-base">{step.description}</p>
                 </div>
-              </div>
-              
-              {/* Step Visual */}
-              <div key={`visual-${index}`} className="flex items-center justify-center h-64">
-                {step.mockup}
               </div>
             </>
           ))}

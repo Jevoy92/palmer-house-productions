@@ -2,24 +2,49 @@ import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { SocialIcon } from "react-social-icons";
 import { NewsletterSignup } from "@/components/newsletter/NewsletterSignup";
-import palsFooterBanner from "@/assets/pals-footer-banner.png";
+import reelPal from "@/assets/pals/footer-reel-pal.png";
+import systemPal from "@/assets/pals/footer-system-pal.png";
+import evergreenPal from "@/assets/pals/footer-evergreen-pal.png";
+import spotlightPal from "@/assets/pals/footer-spotlight-pal.png";
 
 export const EnhancedFooter = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-x-hidden bg-white">
-      {/* Pals Banner Background with Content Overlay */}
-      <div className="relative w-full">
-        <img 
-          src={palsFooterBanner} 
-          alt="Palmer House Pals" 
-          className="w-full h-auto object-cover"
-        />
-        
-        {/* Content Overlay */}
-        <div className="absolute inset-0 top-[25%] z-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 h-full pt-8 pb-8">
+    <footer className="relative overflow-hidden bg-white">
+      {/* Pals Characters holding the footer */}
+      <div className="absolute top-0 left-0 right-0 z-20 pointer-events-none">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex justify-between items-end -translate-y-1/3">
+            <img 
+              src={reelPal} 
+              alt="Reel Pal" 
+              className="w-24 sm:w-32 md:w-40 h-auto drop-shadow-xl hidden sm:block"
+            />
+            <img 
+              src={systemPal} 
+              alt="System Pal" 
+              className="w-24 sm:w-32 md:w-40 h-auto drop-shadow-xl"
+            />
+            <img 
+              src={evergreenPal} 
+              alt="Evergreen Pal" 
+              className="w-24 sm:w-32 md:w-40 h-auto drop-shadow-xl"
+            />
+            <img 
+              src={spotlightPal} 
+              alt="Spotlight Pal" 
+              className="w-24 sm:w-32 md:w-40 h-auto drop-shadow-xl hidden sm:block"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10">
+        {/* Main Footer Content - White Card */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-32 sm:pt-40 pb-8">
+          <div className="bg-white rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-8">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
               {/* Company Info */}
               <div className="space-y-4 lg:col-span-1">
@@ -170,7 +195,7 @@ export const EnhancedFooter = () => {
             <NewsletterSignup />
 
             {/* Bottom Bar */}
-            <div className="border-t border-gray-200 pt-6 mt-6">
+            <div className="border-t border-gray-200 pt-6">
               <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
                 <p className="text-corporate-gray text-sm">
                   © {currentYear} Palmer House Productions. All rights reserved. Crafting authentic stories since day one.
@@ -266,6 +291,7 @@ export const EnhancedFooter = () => {
             </div>
           </div>
         </div>
+
       </div>
     </footer>
   );

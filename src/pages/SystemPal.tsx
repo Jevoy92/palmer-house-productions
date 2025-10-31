@@ -297,112 +297,112 @@ const SystemPal = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Internal Assets */}
-              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-purple-500 transition-all hover:scale-105">
-                <div className="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">INTERNAL</div>
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105">
+                <div className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">INTERNAL</div>
                 <h3 className="text-2xl font-bold text-foreground mb-4">Onboarding & Training System</h3>
-                <div className="text-4xl font-bold text-purple-600 mb-6">$4,500</div>
+                <div className="text-4xl font-bold text-green-600 mb-6">$4,500</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>15 videos @ 1–2 min each</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>Onboarding & training</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>Software walkthroughs</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>Process & policy explainers</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>Culture & retention content</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>Only 4 spots available</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-purple-500 text-white hover:bg-purple-600" size="lg">
+                <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600" size="lg">
                   <Link to="/contact">Book Now</Link>
                 </Button>
               </div>
               
               {/* External Assets */}
-              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-purple-500 transition-all hover:scale-105 relative">
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105 relative">
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-purple-500 text-white px-4 py-2 rounded-full text-sm font-semibold">MOST POPULAR</div>
+                  <div className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold">MOST POPULAR</div>
                 </div>
-                <div className="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">EXTERNAL</div>
+                <div className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">EXTERNAL</div>
                 <h3 className="text-2xl font-bold text-foreground mb-4">Customer Education System</h3>
-                <div className="text-4xl font-bold text-purple-600 mb-6">$4,500</div>
+                <div className="text-4xl font-bold text-green-600 mb-6">$4,500</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>15 videos @ 1–2 min each</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>Customer FAQ libraries</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>Product/service explainers</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>Testimonial capsules</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>Behind-the-scenes content</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>Only 5 spots available</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-purple-500 text-white hover:bg-purple-600" size="lg">
+                <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600" size="lg">
                   <Link to="/contact">Book Now</Link>
                 </Button>
               </div>
               
               {/* Advanced Package */}
-              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-purple-500 transition-all hover:scale-105">
-                <div className="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">ADVANCED</div>
+              <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105">
+                <div className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">ADVANCED</div>
                 <h3 className="text-2xl font-bold text-foreground mb-4">Safety & Compliance</h3>
-                <div className="text-4xl font-bold text-purple-600 mb-6">$10,000+</div>
+                <div className="text-4xl font-bold text-green-600 mb-6">$10,000+</div>
                 <ul className="space-y-4 mb-8 text-left">
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>8–10 videos @ up to 5 min</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>Safety & compliance training</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>Sales training modules</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>Advanced software training</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>Regulatory compliance</span>
                   </li>
                   <li className="flex items-center space-x-3">
-                    <Check className="text-purple-500 h-5 w-5" />
+                    <Check className="text-green-500 h-5 w-5" />
                     <span>Only 2 spots this quarter</span>
                   </li>
                 </ul>
-                <Button asChild className="w-full bg-purple-500 text-white hover:bg-purple-600" size="lg">
+                <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600" size="lg">
                   <Link to="/contact">Get Quote</Link>
                 </Button>
               </div>

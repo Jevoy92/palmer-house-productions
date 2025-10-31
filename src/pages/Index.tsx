@@ -39,9 +39,6 @@ const Index = () => {
         <HowItWorks />
         <PalsBrandDNA />
         <ContentCalendarSection />
-        <div id="services">
-          <Services />
-        </div>
         <CondensedClients />
       </MainContent>
     </div>

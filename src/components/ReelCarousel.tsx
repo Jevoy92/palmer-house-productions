@@ -33,6 +33,11 @@ const reelItems = [
     src: "/assets/1030_4.mp4",
     alt: "Client Video 6"
   },
+  { 
+    type: "video" as const,
+    src: "/assets/EmpowerYourBusiness_HRSolutionsfromExperts.mp4",
+    alt: "HR Solutions for Business"
+  },
 ];
 
 export const ReelCarousel = () => {

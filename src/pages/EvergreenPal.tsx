@@ -39,19 +39,7 @@ const EvergreenPal = () => {
   return (
     <>
       <Navigation />
-      <div className="min-h-screen relative overflow-hidden">
-        {/* Static 4-Color Background Bars */}
-        <div className="fixed top-0 left-0 w-full h-screen -z-10">
-          <div className="w-full h-full flex">
-            <div className="w-1/4 h-full bg-gradient-to-b from-orange-400 to-orange-600"></div>
-            <div className="w-1/4 h-full bg-gradient-to-b from-purple-400 to-purple-600"></div>
-            <div className="w-1/4 h-full bg-gradient-to-b from-green-400 to-green-600"></div>
-            <div className="w-1/4 h-full bg-gradient-to-b from-blue-400 to-blue-600"></div>
-          </div>
-          {/* Static Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-green-500/20 via-green-500/10 to-blue-500/20"></div>
-        </div>
-
+      <div className="min-h-screen relative overflow-hidden bg-background">
         {/* Floating Animation Elements */}
         <div className="fixed inset-0 -z-5 pointer-events-none overflow-hidden">
           <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-full blur-xl animate-bounce" style={{animationDuration: '3s'}}></div>

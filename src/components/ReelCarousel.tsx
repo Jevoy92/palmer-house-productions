@@ -42,21 +42,16 @@ export const ReelCarousel = () => {
     setCurrentIndex(prev => prev === reelItems.length - 1 ? 0 : prev + 1);
   };
 
-  // Handle video playback
+  // Handle video playback - keep all videos playing
   useEffect(() => {
-    videoRefs.current.forEach((video, index) => {
+    videoRefs.current.forEach((video) => {
       if (video) {
-        if (index === currentIndex) {
-          video.play().catch(() => {
-            // Handle autoplay restrictions
-          });
-        } else {
-          video.pause();
-          video.currentTime = 0;
-        }
+        video.play().catch(() => {
+          // Handle autoplay restrictions
+        });
       }
     });
-  }, [currentIndex]);
+  }, []);
 
   // Auto-advance carousel
   useEffect(() => {

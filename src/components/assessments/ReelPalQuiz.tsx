@@ -167,6 +167,7 @@ export const ReelPalQuiz = () => {
   const [currentSection, setCurrentSection] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [showResults, setShowResults] = useState(false);
+  const [openCategories, setOpenCategories] = useState<string[]>([]);
 
   const handleAnswer = (questionId: number, value: string | number) => {
     const newAnswers = answers.filter(
@@ -385,14 +386,14 @@ export const ReelPalQuiz = () => {
           angle: 60,
           spread: 55,
           origin: { x: 0 },
-          colors: ['#14b8a6', '#f97316', '#8b5cf6']
+          colors: ['#f97316', '#fb923c', '#fdba74']
         });
         confetti({
           particleCount: 3,
           angle: 120,
           spread: 55,
           origin: { x: 1 },
-          colors: ['#14b8a6', '#f97316', '#8b5cf6']
+          colors: ['#f97316', '#fb923c', '#fdba74']
         });
 
         if (Date.now() < end) {
@@ -407,7 +408,6 @@ export const ReelPalQuiz = () => {
     const recommendation = getRecommendation();
     const { percentage, categoryScores } = calculateDetailedScore();
     const actionItems = getActionItems();
-    const [openCategories, setOpenCategories] = useState<string[]>([]);
 
     const toggleCategory = (category: string) => {
       setOpenCategories(prev => 
@@ -420,7 +420,7 @@ export const ReelPalQuiz = () => {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fade-in">
         {/* Hero Score Section */}
-        <div className="bg-teal-500 rounded-3xl shadow-2xl p-8 lg:p-12 mb-8 text-white text-center">
+        <div className="bg-orange-500 rounded-3xl shadow-2xl p-8 lg:p-12 mb-8 text-white text-center">
           <Trophy className="w-20 h-20 mx-auto mb-4 animate-scale-in" />
           <h2 className="text-5xl font-bold mb-4">Your Content Readiness Score</h2>
           <div className="text-8xl font-bold mb-4">{percentage}%</div>
@@ -462,7 +462,7 @@ export const ReelPalQuiz = () => {
                         <div className="flex-1">
                           <div className="w-full bg-gray-200 rounded-full h-3">
                             <div 
-                              className="bg-teal-500 h-3 rounded-full transition-all duration-1000"
+                              className="bg-orange-500 h-3 rounded-full transition-all duration-1000"
                               style={{ width: `${catPercentage}%` }}
                             />
                           </div>
@@ -495,8 +495,8 @@ export const ReelPalQuiz = () => {
           <h3 className="text-3xl font-bold mb-6 text-center text-gray-800">Your Personalized Action Plan</h3>
           <div className="space-y-4">
             {actionItems.map((item, idx) => (
-              <div key={idx} className="flex items-start gap-4 p-4 bg-teal-50 rounded-xl border-2 border-teal-200">
-                <div className="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
+              <div key={idx} className="flex items-start gap-4 p-4 bg-orange-50 rounded-xl border-2 border-orange-200">
+                <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
                   {idx + 1}
                 </div>
                 <p className="text-lg text-gray-700 pt-1">{item}</p>
@@ -566,7 +566,7 @@ export const ReelPalQuiz = () => {
         </div>
         <div className="w-full bg-gray-200 rounded-full h-1.5">
           <div 
-            className="bg-teal-500 h-1.5 rounded-full transition-all duration-300"
+            className="bg-orange-500 h-1.5 rounded-full transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -579,7 +579,7 @@ export const ReelPalQuiz = () => {
             {/* Section Header */}
             <div className="flex items-center justify-center space-x-4 mb-8">
               <h1 className="text-3xl font-bold text-gray-800">{currentSectionData.title}</h1>
-              <currentSectionData.icon className="w-8 h-8 text-teal-500" />
+              <currentSectionData.icon className="w-8 h-8 text-orange-500" />
             </div>
 
             {/* Questions */}
@@ -599,8 +599,8 @@ export const ReelPalQuiz = () => {
                             onClick={() => handleAnswer(question.id, option)}
                             className={`font-semibold px-6 py-2 rounded-full transition-colors ${
                               isSelected 
-                                ? 'bg-teal-500 text-white' 
-                                : 'bg-teal-100 text-teal-700 hover:bg-teal-200'
+                                ? 'bg-orange-500 text-white' 
+                                : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
                             }`}
                           >
                             {option}
@@ -612,7 +612,7 @@ export const ReelPalQuiz = () => {
 
                   {question.type === 'toggle' && question.options && (
                     <div className="flex items-center space-x-3">
-                      <span className={`text-lg font-semibold ${getAnswer(question.id) === 'Yes' ? 'text-teal-600' : 'text-gray-400'}`}>
+                      <span className={`text-lg font-semibold ${getAnswer(question.id) === 'Yes' ? 'text-orange-600' : 'text-gray-400'}`}>
                         {(getAnswer(question.id) as string) || 'No'}
                       </span>
                       <label className="flex items-center cursor-pointer">
@@ -624,7 +624,7 @@ export const ReelPalQuiz = () => {
                             onChange={(e) => handleAnswer(question.id, e.target.checked ? 'Yes' : 'No')}
                           />
                           <div className={`block w-16 h-9 rounded-full relative transition-colors ${
-                            getAnswer(question.id) === 'Yes' ? 'bg-teal-500' : 'bg-gray-200'
+                            getAnswer(question.id) === 'Yes' ? 'bg-orange-500' : 'bg-gray-200'
                           }`}>
                             <div className={`absolute top-1 left-1 bg-white w-7 h-7 rounded-full transition-transform ${
                               getAnswer(question.id) === 'Yes' ? 'transform translate-x-7' : ''
@@ -645,8 +645,8 @@ export const ReelPalQuiz = () => {
                             onClick={() => handleAnswer(question.id, option)}
                             className={`px-4 py-2 rounded-full font-semibold transition-colors text-sm ${
                               isSelected
-                                ? 'bg-teal-500 text-white'
-                                : 'bg-teal-100 text-teal-700 hover:bg-teal-200'
+                                ? 'bg-orange-500 text-white'
+                                : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
                             }`}
                           >
                             {option}
@@ -672,7 +672,7 @@ export const ReelPalQuiz = () => {
               <button
                 onClick={handleNext}
                 disabled={!isSectionComplete()}
-                className="bg-teal-500 text-white font-semibold px-10 py-3.5 rounded-full hover:bg-teal-600 transition-colors shadow-lg shadow-teal-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-orange-500 text-white font-semibold px-10 py-3.5 rounded-full hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {currentSection === sections.length - 1 ? 'See Results' : 'Next Section'}
               </button>

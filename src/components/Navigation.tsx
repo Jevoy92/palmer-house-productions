@@ -137,9 +137,11 @@ export const Navigation = () => {
               >
                 {/* Services Dropdown */}
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center text-base font-medium text-muted-foreground hover:text-foreground transition-colors">
-                    Services
-                    <ChevronDown className="ml-1 h-4 w-4" />
+                  <DropdownMenuTrigger asChild>
+                    <button className="flex items-center text-base font-medium text-muted-foreground hover:text-foreground transition-colors focus:outline-none">
+                      Services
+                      <ChevronDown className="ml-1 h-4 w-4" />
+                    </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className="w-56 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
                     <DropdownMenuItem asChild>
@@ -203,9 +205,11 @@ export const Navigation = () => {
 
                 {/* Company Dropdown */}
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center text-base font-medium text-muted-foreground hover:text-foreground transition-colors">
-                    Company
-                    <ChevronDown className="ml-1 h-4 w-4" />
+                  <DropdownMenuTrigger asChild>
+                    <button className="flex items-center text-base font-medium text-muted-foreground hover:text-foreground transition-colors focus:outline-none">
+                      Company
+                      <ChevronDown className="ml-1 h-4 w-4" />
+                    </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className="w-48 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
                     <DropdownMenuItem asChild>
@@ -237,9 +241,11 @@ export const Navigation = () => {
 
                 {/* Resources Dropdown */}
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center text-base font-medium text-muted-foreground hover:text-foreground transition-colors">
-                    Resources
-                    <ChevronDown className="ml-1 h-4 w-4" />
+                  <DropdownMenuTrigger asChild>
+                    <button className="flex items-center text-base font-medium text-muted-foreground hover:text-foreground transition-colors focus:outline-none">
+                      Resources
+                      <ChevronDown className="ml-1 h-4 w-4" />
+                    </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className="w-48 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
                     <DropdownMenuItem asChild>

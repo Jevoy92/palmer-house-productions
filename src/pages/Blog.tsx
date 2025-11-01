@@ -324,9 +324,27 @@ const Blog = () => {
         <section className="pt-24 pb-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             {/* Featured Article - Large Hero Card */}
-            {featuredArticles.length > 0 && (
+            {featuredArticles.length > 0 && (() => {
+              // Map author to Pal color for featured article
+              const getPalColor = (author?: string) => {
+                switch(author) {
+                  case 'System Pal':
+                    return 'from-green-50/80 to-green-100/80 dark:from-green-950/40 dark:to-green-900/40';
+                  case 'Reel Pal':
+                    return 'from-orange-50/80 to-orange-100/80 dark:from-orange-950/40 dark:to-orange-900/40';
+                  case 'Spotlight Pal':
+                    return 'from-purple-50/80 to-purple-100/80 dark:from-purple-950/40 dark:to-purple-900/40';
+                  case 'Evergreen Pal':
+                    return 'from-blue-50/80 to-blue-100/80 dark:from-blue-950/40 dark:to-blue-900/40';
+                  default:
+                    return 'from-gray-50/80 to-gray-100/80 dark:from-gray-950/40 dark:to-gray-900/40';
+                }
+              };
+              const featuredBgColor = getPalColor(featuredArticles[0].author);
+              
+              return (
               <Link to={featuredArticles[0].slug}>
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 group">
+                <div className={`bg-gradient-to-br ${featuredBgColor} rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 group`}>
                   <div className="grid md:grid-cols-5 gap-0">
                     {/* Image - Left Side */}
                     <div className="md:col-span-2 relative">
@@ -369,7 +387,8 @@ const Blog = () => {
                   </div>
                 </div>
               </Link>
-            )}
+              );
+            })()}
           </div>
         </section>
 
@@ -484,15 +503,15 @@ const Blog = () => {
                 const getPalColor = (author?: string) => {
                   switch(author) {
                     case 'System Pal':
-                      return 'from-emerald-50 to-emerald-100';
+                      return 'from-green-50/80 to-green-100/80 dark:from-green-950/40 dark:to-green-900/40';
                     case 'Reel Pal':
-                      return 'from-orange-50 to-orange-100';
+                      return 'from-orange-50/80 to-orange-100/80 dark:from-orange-950/40 dark:to-orange-900/40';
                     case 'Spotlight Pal':
-                      return 'from-purple-50 to-purple-100';
+                      return 'from-purple-50/80 to-purple-100/80 dark:from-purple-950/40 dark:to-purple-900/40';
                     case 'Evergreen Pal':
-                      return 'from-blue-50 to-blue-100';
+                      return 'from-blue-50/80 to-blue-100/80 dark:from-blue-950/40 dark:to-blue-900/40';
                     default:
-                      return 'from-gray-50 to-gray-100';
+                      return 'from-gray-50/80 to-gray-100/80 dark:from-gray-950/40 dark:to-gray-900/40';
                   }
                 };
                 const bgColor = getPalColor(article.author);

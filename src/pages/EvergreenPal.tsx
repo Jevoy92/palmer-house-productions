@@ -158,11 +158,14 @@ const EvergreenPal = () => {
                     <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-7 bg-black rounded-b-3xl z-10"></div>
                     
                     {/* Screen Content */}
-                    <div className="relative h-full bg-white p-6 pt-12 flex items-center justify-center">
-                      <img 
-                        src={evergreenPalImage}
-                        alt="Evergreen Pal"
-                        className="w-full h-full object-contain"
+                    <div className="relative h-full bg-black flex items-center justify-center overflow-hidden">
+                      <video 
+                        src="/assets/evergreen_pal_female_2.mp4"
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="w-full h-full object-cover"
                       />
                     </div>
                   </div>

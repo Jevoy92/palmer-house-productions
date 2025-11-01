@@ -580,82 +580,93 @@ const HealthcarePage = () => {
         </section>
 
         {/* Trusted Across Healthcare */}
-        <section className="py-24 bg-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="py-24 bg-gradient-to-b from-[#DDEEFF] to-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="text-center mb-16">
-              <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">
+              <h2 className="text-5xl lg:text-6xl font-bold text-[#0D244F] tracking-tight">
                 Trusted Across Healthcare
               </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                From hospital systems to private practices, we understand your unique challenges.
-              </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-              {/* Hospital Systems */}
-              <div className="bg-white border-2 border-blue-400 rounded-3xl p-8 hover:shadow-lg transition-all">
-                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
-                  <Building className="h-7 w-7 text-blue-600" />
+            <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
+              {/* Character Illustration */}
+              <div className="w-full lg:w-1/3 flex-shrink-0">
+                <div className="h-[550px] overflow-hidden">
+                  <img 
+                    src={systemPalImage}
+                    alt="Healthcare professional illustration" 
+                    className="w-full h-full object-contain"
+                  />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Hospital Systems</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Enterprise-wide training for multi-facility healthcare organizations. Standardize procedures, ensure regulatory compliance, reduce liability risk, and improve patient safety scores across all locations with scalable video training systems.
-                </p>
               </div>
 
-              {/* Private Practices */}
-              <div className="bg-white border-2 border-blue-400 rounded-3xl p-8 hover:shadow-lg transition-all">
-                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
-                  <Stethoscope className="h-7 w-7 text-blue-600" />
+              {/* Services Grid */}
+              <div className="w-full lg:w-2/3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {/* Hospital Systems */}
+                <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 text-center shadow-[0_10px_40px_-10px_rgba(74,144,226,0.2)] transition-transform duration-300 hover:-translate-y-2">
+                  <div className="mb-4 flex justify-center">
+                    <Building className="h-12 w-12 text-[#4A90E2]" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-[#0D244F] mb-2">Hospital Systems</h3>
+                  <p className="text-[#6B7A99] text-sm leading-relaxed">
+                    Comprehensive solutions to streamline operations and enhance patient care within large-scale hospital networks.
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Private Practices</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Professional marketing and patient education for specialty practices. Attract new patients with authentic storytelling, explain complex procedures clearly, build online authority, and differentiate your practice in competitive markets.
-                </p>
-              </div>
 
-              {/* Long-Term Care Facilities */}
-              <div className="bg-white border-2 border-blue-400 rounded-3xl p-8 hover:shadow-lg transition-all">
-                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
-                  <Heart className="h-7 w-7 text-blue-600" />
+                {/* Private Practices */}
+                <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 text-center shadow-[0_10px_40px_-10px_rgba(74,144,226,0.2)] transition-transform duration-300 hover:-translate-y-2">
+                  <div className="mb-4 flex justify-center">
+                    <Stethoscope className="h-12 w-12 text-[#4A90E2]" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-[#0D244F] mb-2">Private Practices</h3>
+                  <p className="text-[#6B7A99] text-sm leading-relaxed">
+                    Tailored support for private clinics, enabling efficient management and personalized patient engagement.
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Long-Term Care Facilities</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Safety protocols and compliance training for nursing homes and assisted living. Train caregivers on proper techniques, document staff competencies, reduce workplace injuries, and maintain state licensing requirements.
-                </p>
-              </div>
 
-              {/* Medical Device Companies */}
-              <div className="bg-white border-2 border-blue-400 rounded-3xl p-8 hover:shadow-lg transition-all">
-                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
-                  <Microscope className="h-7 w-7 text-blue-600" />
+                {/* Long-Term Care Facilities */}
+                <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 text-center shadow-[0_10px_40px_-10px_rgba(74,144,226,0.2)] transition-transform duration-300 hover:-translate-y-2">
+                  <div className="mb-4 flex justify-center">
+                    <Heart className="h-12 w-12 text-[#4A90E2]" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-[#0D244F] mb-2">Long-Term Care Facilities</h3>
+                  <p className="text-[#6B7A99] text-sm leading-relaxed">
+                    Dedicated tools for nursing homes and assisted living to ensure consistent, high-quality resident care.
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Medical Device Companies</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Product training and sales enablement for healthcare technology. Create clinical education materials, demonstrate proper device usage, support regulatory submissions, and accelerate market adoption with clear visual communication.
-                </p>
-              </div>
 
-              {/* Pharmaceutical Companies */}
-              <div className="bg-white border-2 border-blue-400 rounded-3xl p-8 hover:shadow-lg transition-all">
-                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
-                  <Pill className="h-7 w-7 text-blue-600" />
+                {/* Medical Device Companies */}
+                <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 text-center shadow-[0_10px_40px_-10px_rgba(74,144,226,0.2)] transition-transform duration-300 hover:-translate-y-2">
+                  <div className="mb-4 flex justify-center">
+                    <Microscope className="h-12 w-12 text-[#4A90E2]" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-[#0D244F] mb-2">Medical Device Companies</h3>
+                  <p className="text-[#6B7A99] text-sm leading-relaxed">
+                    Partnering with innovators to integrate cutting-edge medical devices into clinical workflows seamlessly.
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Pharmaceutical Companies</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Drug education and professional training for pharma organizations. Develop sales training materials, create patient education resources, support clinical trials, and communicate complex scientific data effectively.
-                </p>
-              </div>
 
-              {/* Behavioral Health */}
-              <div className="bg-white border-2 border-blue-400 rounded-3xl p-8 hover:shadow-lg transition-all">
-                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
-                  <Brain className="h-7 w-7 text-blue-600" />
+                {/* Pharmaceutical Companies */}
+                <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 text-center shadow-[0_10px_40px_-10px_rgba(74,144,226,0.2)] transition-transform duration-300 hover:-translate-y-2">
+                  <div className="mb-4 flex justify-center">
+                    <Pill className="h-12 w-12 text-[#4A90E2]" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-[#0D244F] mb-2">Pharmaceutical Companies</h3>
+                  <p className="text-[#6B7A99] text-sm leading-relaxed">
+                    Facilitating research and distribution channels to bring vital medications to patients faster and safer.
+                  </p>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Behavioral Health</h3>
-                <p className="text-gray-600 leading-relaxed">
-                  Sensitive training and stigma-reduction content for mental health providers. Train staff on trauma-informed care, create patient-facing mental health resources, promote services with empathy, and support community mental health initiatives.
-                </p>
+
+                {/* Behavioral Health */}
+                <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 text-center shadow-[0_10px_40px_-10px_rgba(74,144,226,0.2)] transition-transform duration-300 hover:-translate-y-2">
+                  <div className="mb-4 flex justify-center">
+                    <Brain className="h-12 w-12 text-[#4A90E2]" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-[#0D244F] mb-2">Behavioral Health</h3>
+                  <p className="text-[#6B7A99] text-sm leading-relaxed">
+                    Providing secure and compassionate platforms for mental health professionals to connect with clients.
+                  </p>
+                </div>
               </div>
             </div>
           </div>

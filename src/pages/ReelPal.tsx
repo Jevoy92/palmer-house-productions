@@ -383,72 +383,72 @@ const ReelPal = () => {
                 </div>
                 
                 {/* DIY Package */}
-                <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-purple-500 transition-all hover:scale-105">
-                  <div className="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">DIY</div>
+                <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-teal-500 transition-all hover:scale-105">
+                  <div className="bg-teal-100 text-teal-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6">DIY</div>
                   <h3 className="text-2xl font-bold text-foreground mb-4">25 DIY Reels</h3>
-                  <div className="text-4xl font-bold text-purple-600 mb-6">$47</div>
+                  <div className="text-4xl font-bold text-teal-600 mb-6">$47</div>
                   <ul className="space-y-4 mb-8 text-left">
                     <li className="flex items-center space-x-3">
-                      <Check className="text-purple-500 h-5 w-5" />
+                      <Check className="text-teal-500 h-5 w-5" />
                       <span>25 talking-head reel ideas</span>
                     </li>
                     <li className="flex items-center space-x-3">
-                      <Check className="text-purple-500 h-5 w-5" />
+                      <Check className="text-teal-500 h-5 w-5" />
                       <span>Platform breakdowns included</span>
                     </li>
                     <li className="flex items-center space-x-3">
-                      <Check className="text-purple-500 h-5 w-5" />
+                      <Check className="text-teal-500 h-5 w-5" />
                       <span>Sample scripts provided</span>
                     </li>
                     <li className="flex items-center space-x-3">
-                      <Check className="text-purple-500 h-5 w-5" />
+                      <Check className="text-teal-500 h-5 w-5" />
                       <span>Film from home setup</span>
                     </li>
                     <li className="flex items-center space-x-3">
-                      <Check className="text-purple-500 h-5 w-5" />
+                      <Check className="text-teal-500 h-5 w-5" />
                       <span>Instant PDF download</span>
                     </li>
                   </ul>
-                  <Button asChild className="w-full bg-purple-500 text-white hover:bg-purple-600" size="lg">
+                  <Button asChild className="w-full bg-teal-500 text-white hover:bg-teal-600" size="lg">
                     <a href="https://payhip.com/b/u8wvz" target="_blank" rel="noopener noreferrer">🛒 Buy Now</a>
                   </Button>
                 </div>
                 
                 {/* Content Creation Package */}
-                <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-green-500 transition-all hover:scale-105 relative">
+                <div className="bg-background rounded-2xl p-8 text-center shadow-lg border-2 border-transparent hover:border-orange-500 transition-all hover:scale-105 relative">
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <div className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold">POPULAR</div>
+                    <div className="bg-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold">POPULAR</div>
                   </div>
-                  <div className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">CONTENT</div>
+                  <div className="bg-orange-100 text-orange-800 px-4 py-2 rounded-full text-sm font-semibold w-fit mx-auto mb-6 mt-4">CONTENT</div>
                   <h3 className="text-2xl font-bold text-foreground mb-4">30 Reels in a Day</h3>
-                  <div className="text-4xl font-bold text-green-600 mb-6">$3,000</div>
+                  <div className="text-4xl font-bold text-orange-600 mb-6">$3,000</div>
                   <ul className="space-y-4 mb-8 text-left">
                     <li className="flex items-center space-x-3">
-                      <Check className="text-green-500 h-5 w-5" />
+                      <Check className="text-orange-500 h-5 w-5" />
                       <span>1 full-day shoot (8 hours)</span>
                     </li>
                     <li className="flex items-center space-x-3">
-                      <Check className="text-green-500 h-5 w-5" />
+                      <Check className="text-orange-500 h-5 w-5" />
                       <span>30 social-ready videos</span>
                     </li>
                     <li className="flex items-center space-x-3">
-                      <Check className="text-green-500 h-5 w-5" />
+                      <Check className="text-orange-500 h-5 w-5" />
                       <span>15-30 seconds each</span>
                     </li>
                     <li className="flex items-center space-x-3">
-                      <Check className="text-green-500 h-5 w-5" />
+                      <Check className="text-orange-500 h-5 w-5" />
                       <span>Captions + formatting</span>
                     </li>
                     <li className="flex items-center space-x-3">
-                      <Check className="text-green-500 h-5 w-5" />
+                      <Check className="text-orange-500 h-5 w-5" />
                       <span>IG/LinkedIn/TikTok ready</span>
                     </li>
                     <li className="flex items-center space-x-3">
-                      <Check className="text-green-500 h-5 w-5" />
+                      <Check className="text-orange-500 h-5 w-5" />
                       <span>Only 3 spots available</span>
                     </li>
                   </ul>
-                  <Button asChild className="w-full bg-green-500 text-white hover:bg-green-600" size="lg">
+                  <Button asChild className="w-full bg-orange-500 text-white hover:bg-orange-600" size="lg">
                     <Link to="/contact">🚀 Book Now</Link>
                   </Button>
                 </div>
@@ -477,27 +477,27 @@ const ReelPal = () => {
                 </div>
                 
                 <div className="text-center">
-                  <div className="w-20 h-20 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-6 relative shadow-lg">
+                  <div className="w-20 h-20 bg-teal-500 rounded-full flex items-center justify-center mx-auto mb-6 relative shadow-lg">
                     <Lightbulb className="text-white h-8 w-8" />
-                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
                   </div>
                   <h3 className="text-xl font-bold text-foreground mb-4">Content Planning</h3>
                   <p className="text-muted-foreground">I create a detailed content calendar with trending topics and platform-specific optimizations.</p>
                 </div>
                 
                 <div className="text-center">
-                  <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-6 relative shadow-lg">
+                  <div className="w-20 h-20 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-6 relative shadow-lg">
                     <Video className="text-white h-8 w-8" />
-                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-orange-600 rounded-full flex items-center justify-center text-white text-sm font-bold">3</div>
                   </div>
                   <h3 className="text-xl font-bold text-foreground mb-4">Production</h3>
                   <p className="text-muted-foreground">Professional filming and editing that brings your content to life with trending effects and music.</p>
                 </div>
                 
                 <div className="text-center">
-                  <div className="w-20 h-20 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-6 relative shadow-lg">
+                  <div className="w-20 h-20 bg-teal-500 rounded-full flex items-center justify-center mx-auto mb-6 relative shadow-lg">
                     <Rocket className="text-white h-8 w-8" />
-                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
+                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
                   </div>
                   <h3 className="text-xl font-bold text-foreground mb-4">Launch & Optimize</h3>
                   <p className="text-muted-foreground">Strategic posting schedule with performance tracking and continuous optimization for maximum reach.</p>

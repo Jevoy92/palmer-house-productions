@@ -146,7 +146,7 @@ export const Navigation = () => {
                   <DropdownMenuContent align="start" className="w-64 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
                     <DropdownMenuItem asChild>
                       <button 
-                        onClick={() => handlePageTransition('/')}
+                        onClick={() => handlePageTransition('/services/video-production')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
                         Video Production
@@ -154,7 +154,7 @@ export const Navigation = () => {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <button 
-                        onClick={() => handlePageTransition('/spotlight-pal')}
+                        onClick={() => handlePageTransition('/services/post-production')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
                         Post-Production

@@ -26,6 +26,8 @@ import AboutUs from "./pages/AboutUs";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import DIYDownloads from "./pages/services/DIYDownloads";
+import VideoProduction from "./pages/services/VideoProduction";
+import PostProduction from "./pages/services/PostProduction";
 import Startups from "./pages/Startups";
 import Team from "./pages/company/Team";
 import Values from "./pages/company/Values";
@@ -101,6 +103,8 @@ const App = () => (
            <Route path="/locations/bellevue-wa" element={<BellevueWA />} />
            <Route path="/locations/portland-or" element={<PortlandOR />} />
            <Route path="/services/diy-downloads" element={<DIYDownloads />} />
+           <Route path="/services/video-production" element={<VideoProduction />} />
+           <Route path="/services/post-production" element={<PostProduction />} />
            <Route path="/startups" element={<Startups />} />
            <Route path="/industries/healthcare" element={<Healthcare />} />
            <Route path="/industries/manufacturing" element={<Manufacturing />} />

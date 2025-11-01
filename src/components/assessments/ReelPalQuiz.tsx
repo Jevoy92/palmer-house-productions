@@ -17,11 +17,11 @@ import {
   Check
 } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import femaleProTip from '@/assets/pals/female-reel-pal-pro-tip.png';
-import femaleThinking from '@/assets/pals/female-reel-pal-thinking.png';
-import femaleThumbsUp from '@/assets/pals/female-reel-pal-thumbs-up.png';
-import maleProTip from '@/assets/pals/male-reel-pal-pro-tip.png';
-import maleThinking from '@/assets/pals/male-reel-pal-thinking.png';
+import femaleProTip from '@/assets/pals/female-reel-pal-pro-tip-transparent.png';
+import femaleThinking from '@/assets/pals/female-reel-pal-thinking-transparent.png';
+import femaleThumbsUp from '@/assets/pals/female-reel-pal-thumbs-up-transparent.png';
+import maleProTip from '@/assets/pals/male-reel-pal-pro-tip-transparent.png';
+import maleThinking from '@/assets/pals/male-reel-pal-thinking-transparent.png';
 
 type Answer = {
   sectionId: number;
@@ -844,7 +844,7 @@ export const ReelPalQuiz = () => {
         </div>
 
         {/* Character Illustration - Tablet and Desktop Only */}
-        <div className="hidden md:flex md:flex-col md:items-center md:w-[350px] lg:w-[450px] flex-shrink-0 md:-mt-8 lg:-mt-16 md:ml-4 lg:ml-8">
+        <div className="hidden md:flex md:flex-col md:items-center md:w-[350px] lg:w-[450px] flex-shrink-0 md:mt-12 lg:mt-16 md:ml-4 lg:ml-8">
           <img 
             src={characterConfigs[currentSection].image}
             alt="Reel Pal character illustration"

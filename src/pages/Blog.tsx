@@ -374,62 +374,96 @@ const Blog = () => {
         </section>
 
         {/* Filters and Sort Section */}
-        <section className="py-8 border-b border-border">
+        <section className="py-8 border-b border-border bg-muted/30">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-6">
               {/* Search Bar */}
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+              <div className="relative max-w-2xl">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input
                   type="text"
-                  placeholder="Search articles..."
+                  placeholder="Search articles by title, topic, or keyword..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 bg-background"
+                  className="pl-12 h-12 bg-background border-2 focus:border-primary transition-colors"
                 />
               </div>
 
-              {/* Filters Row */}
-              <div className="flex flex-wrap items-center gap-3">
+              {/* Filters Row with Labels */}
+              <div className="flex flex-wrap items-end gap-6">
                 {/* Category Filter */}
-                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger className="w-[160px] bg-background">
-                    <SelectValue placeholder="Category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map(category => (
-                      <SelectItem key={category} value={category}>
-                        {category}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+                    <Filter className="h-4 w-4" />
+                    Category
+                  </label>
+                  <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                    <SelectTrigger className="w-[180px] bg-background border-2 h-11">
+                      <SelectValue placeholder="All Categories" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background">
+                      {categories.map(category => (
+                        <SelectItem key={category} value={category}>
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
                 {/* Pal Filter */}
-                <Select value={selectedPal} onValueChange={setSelectedPal}>
-                  <SelectTrigger className="w-[160px] bg-background">
-                    <SelectValue placeholder="Filter by Pal" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {pals.map(pal => (
-                      <SelectItem key={pal} value={pal}>
-                        {pal}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+                    <Filter className="h-4 w-4" />
+                    Author (Pal)
+                  </label>
+                  <Select value={selectedPal} onValueChange={setSelectedPal}>
+                    <SelectTrigger className="w-[180px] bg-background border-2 h-11">
+                      <SelectValue placeholder="All Authors" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background">
+                      {pals.map(pal => (
+                        <SelectItem key={pal} value={pal}>
+                          {pal}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
                 {/* Sort By */}
-                <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-[160px] bg-background">
-                    <SelectValue placeholder="Sort by" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="newest">Newest First</SelectItem>
-                    <SelectItem value="oldest">Oldest First</SelectItem>
-                    <SelectItem value="readTime">Reading Time</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-col gap-2">
+                  <label className="text-sm font-semibold text-foreground flex items-center gap-2">
+                    <Clock className="h-4 w-4" />
+                    Sort By
+                  </label>
+                  <Select value={sortBy} onValueChange={setSortBy}>
+                    <SelectTrigger className="w-[180px] bg-background border-2 h-11">
+                      <SelectValue placeholder="Sort by" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background">
+                      <SelectItem value="newest">Newest First</SelectItem>
+                      <SelectItem value="oldest">Oldest First</SelectItem>
+                      <SelectItem value="readTime">Reading Time</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* Active Filters Count */}
+                {(selectedCategory !== 'All' || selectedPal !== 'All' || searchTerm) && (
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => {
+                      setSelectedCategory('All');
+                      setSelectedPal('All');
+                      setSearchTerm('');
+                    }}
+                    className="ml-auto mb-1"
+                  >
+                    Clear Filters
+                  </Button>
+                )}
               </div>
             </div>
           </div>

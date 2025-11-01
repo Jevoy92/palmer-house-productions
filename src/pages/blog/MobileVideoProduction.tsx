@@ -354,7 +354,11 @@ The future of business video is mobile-first. Master these techniques now to sta
     canonicalUrl: "https://www.palmerhouseproductions.com/blog/mobile-video-production",
     heroImage: mobileVideoImage,
     heroAlt: "Mobile video production setup with smartphone on gimbal and professional equipment",
-    ogImage: mobileVideoImage
+    ogImage: mobileVideoImage,
+    author: "Reel Pal",
+    authorRole: "Social Media & Short-Form Expert",
+    authorBio: "Reel Pal is the go-to expert for social media content and short-form video creation. Specializing in mobile-first production and platform optimization, Reel Pal helps businesses create engaging content that performs across Instagram, TikTok, YouTube Shorts, and beyond.",
+    authorImage: "/lovable-uploads/5d98b294-ca3c-40a4-8b87-6dae295d4294.png"
   };
 
   return (

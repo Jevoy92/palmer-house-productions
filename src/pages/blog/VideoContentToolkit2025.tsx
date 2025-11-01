@@ -241,6 +241,10 @@ const VideoContentToolkit2025 = () => {
       publishDate="2025-01-15"
       tags={['video-strategy', 'content-creation', 'business-growth', 'toolkits']}
       metaDescription="Complete guide to building a scalable video content system for business growth. Includes equipment recommendations, production workflows, and proven frameworks."
+      author="System Pal"
+      authorRole="Operations & Systems Expert"
+      authorBio="System Pal specializes in building automated training systems and operational workflows. With expertise in video-based training architecture, System Pal helps organizations scale their employee development programs while reducing costs and improving outcomes."
+      authorImage="/lovable-uploads/cb07dfcd-6a7e-480c-95bb-833a66f4057e.png"
       keywords="video content strategy, business video toolkit, content creation system, video production workflow, business communication"
       canonicalUrl="https://palmerhouseproductions.com/blog/video-content-toolkit-2025"
       heroImage={editingLikeProImage}

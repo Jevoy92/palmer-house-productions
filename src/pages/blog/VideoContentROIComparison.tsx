@@ -503,6 +503,10 @@ const VideoContentROIComparison = () => {
     publishDate="2025-01-01"
     tags={['roi-analysis', 'video-training', 'business-metrics', 'cost-comparison']}
     metaDescription="Comprehensive ROI analysis of video training vs traditional methods. Learn how video content delivers 4-6x better returns with detailed cost breakdowns and industry data."
+    author="Evergreen Pal"
+    authorRole="Content Strategy & SEO Expert"
+    authorBio="Evergreen Pal specializes in long-term content strategy and SEO optimization. With a focus on data-driven decision making and sustainable content growth, Evergreen Pal helps businesses build content assets that deliver compounding returns over time."
+    authorImage="/lovable-uploads/a21e6847-9612-495a-8413-097941406e9e.png"
     keywords="video training ROI, training cost analysis, video vs traditional training, employee training metrics, business training ROI"
     canonicalUrl="https://palmerhouseproductions.com/blog/video-content-roi-comparison"
     heroImage={videoMetricsMatterImage}

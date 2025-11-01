@@ -435,6 +435,10 @@ const ContentCreationTools2025 = () => {
       publishDate="2025-01-05"
       tags={['content-tools', 'productivity', 'video-production', 'efficiency']}
       metaDescription="Essential content creation tools for business owners. Streamline video production with tools like Loom, Descript, and Canva for efficient content creation."
+      author="Spotlight Pal"
+      authorRole="Professional Production Expert"
+      authorBio="Spotlight Pal brings years of professional production experience to help businesses create high-quality video content. Specializing in production tools and workflows, Spotlight Pal guides teams toward efficiency without compromising on quality."
+      authorImage="/lovable-uploads/19c6453a-bac9-4e63-999a-5d7f6410b852.png"
       keywords="content creation tools, video production software, business productivity tools, video editing tools, content management"
       canonicalUrl="https://palmerhouseproductions.com/blog/content-creation-tools-2025"
       heroImage={mobileVideoProductionImage}

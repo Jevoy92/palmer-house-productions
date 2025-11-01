@@ -296,6 +296,10 @@ const AutomateEmployeeTrainingVideo = () => {
     publishDate="2025-01-10"
     tags={['employee-training', 'automation', 'video-systems', 'hr']}
     metaDescription="Learn how to automate employee training with video systems. Reduce costs by 60-80% while improving completion rates and knowledge retention."
+    author="System Pal"
+    authorRole="Operations & Systems Expert"
+    authorBio="System Pal specializes in building automated training systems and operational workflows. With expertise in video-based training architecture, System Pal helps organizations scale their employee development programs while reducing costs and improving outcomes."
+    authorImage="/lovable-uploads/cb07dfcd-6a7e-480c-95bb-833a66f4057e.png"
     keywords="employee training automation, video training systems, HR video solutions, automated onboarding, training ROI"
     canonicalUrl="https://palmerhouseproductions.com/blog/automate-employee-training-video"
     heroImage={employeeTrainingAutomationImage}

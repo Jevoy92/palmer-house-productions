@@ -27,6 +27,10 @@ interface BlogPostProps {
   heroImage?: string;
   heroAlt?: string;
   ogImage?: string;
+  author?: string;
+  authorRole?: string;
+  authorBio?: string;
+  authorImage?: string;
   relatedLinks?: Array<{
     title: string;
     href: string;
@@ -48,6 +52,10 @@ export const BlogPost = ({
   heroImage,
   heroAlt,
   ogImage,
+  author,
+  authorRole,
+  authorBio,
+  authorImage,
   relatedLinks
 }: BlogPostProps) => {
   const formatDate = (dateString: string) => {
@@ -188,7 +196,36 @@ export const BlogPost = ({
 
             <Separator className="my-12" />
 
-            {/* CTA Section */}
+            {/* Author Section */}
+            {author && (
+              <div className="mb-12">
+                <div className="flex items-start gap-6">
+                  {authorImage && (
+                    <div className="flex-shrink-0">
+                      <div className="w-24 h-24 rounded-2xl overflow-hidden bg-gradient-to-br from-purple-100 to-pink-100 p-1">
+                        <img 
+                          src={authorImage}
+                          alt={author}
+                          className="w-full h-full object-cover rounded-xl"
+                        />
+                      </div>
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <div className="text-sm text-muted-foreground mb-1">Written by</div>
+                    <h3 className="text-3xl font-bold text-foreground mb-2">{author}</h3>
+                    {authorRole && (
+                      <p className="text-sm font-medium text-primary mb-3">{authorRole}</p>
+                    )}
+                    {authorBio && (
+                      <p className="text-base text-muted-foreground leading-relaxed">{authorBio}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <Separator className="my-12" />
             <div className="bg-gradient-to-r from-social-purple/10 to-social-pink/10 rounded-lg p-8 mb-12">
               <div className="text-center">
                 <BookOpen className="h-12 w-12 text-social-purple mx-auto mb-4" />

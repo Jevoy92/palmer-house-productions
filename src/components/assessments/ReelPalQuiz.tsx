@@ -17,6 +17,11 @@ import {
   Check
 } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import femaleProTip from '@/assets/pals/female-reel-pal-pro-tip.png';
+import femaleThinking from '@/assets/pals/female-reel-pal-thinking.png';
+import femaleThumbsUp from '@/assets/pals/female-reel-pal-thumbs-up.png';
+import maleProTip from '@/assets/pals/male-reel-pal-pro-tip.png';
+import maleThinking from '@/assets/pals/male-reel-pal-thinking.png';
 
 type Answer = {
   sectionId: number;
@@ -166,6 +171,30 @@ const sections: QuizSection[] = [
         options: ["No", "Considering", "Yes"]
       }
     ]
+  }
+];
+
+// Character configurations for each section
+const characterConfigs = [
+  {
+    image: femaleProTip,
+    tip: "Consistency beats perfection! Post regularly, even if it's not perfect."
+  },
+  {
+    image: maleThinking,
+    tip: "Great content starts with the right tools. Invest in what matters most!"
+  },
+  {
+    image: femaleThumbsUp,
+    tip: "Batch your content creation - film multiple videos in one session!"
+  },
+  {
+    image: maleProTip,
+    tip: "Set clear goals before you start. Know what success looks like!"
+  },
+  {
+    image: femaleThinking,
+    tip: "Track your ROI! Understanding your content's value is key to growth."
   }
 ];
 
@@ -815,12 +844,17 @@ export const ReelPalQuiz = () => {
         </div>
 
         {/* Character Illustration - Desktop Only */}
-        <div className="hidden lg:block w-[450px] h-[700px] flex-shrink-0 -mt-16 ml-8">
+        <div className="hidden lg:flex lg:flex-col lg:items-center w-[450px] flex-shrink-0 -mt-16 ml-8">
           <img 
-            src="https://storage.googleapis.com/uxpilot-auth.appspot.com/8d044c2b51-0865f11dd64a7ebb4c23.png"
+            src={characterConfigs[currentSection].image}
             alt="Reel Pal character illustration"
-            className="w-full h-full object-contain"
+            className="w-full h-auto max-h-[600px] object-contain"
           />
+          <div className="mt-6 bg-orange-50 rounded-2xl p-6 border-2 border-orange-200 shadow-lg">
+            <p className="text-orange-800 font-semibold text-lg text-center">
+              💡 Pro Tip: {characterConfigs[currentSection].tip}
+            </p>
+          </div>
         </div>
       </div>
     </div>

@@ -28,7 +28,11 @@ import {
   FileCheck,
   ArrowRight
 } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import systemPalImage from '@/assets/pals/male-system-pal-edited.png';
+import reelPalImage from '@/assets/pals/female-reel-pal-edited.png';
+import evergreenPalImage from '@/assets/pals/female-evergreen-pal-final.png';
+import spotlightPalImage from '@/assets/pals/female-spotlight-pal-edited.png';
 
 const ManufacturingPage = () => {
   const { transitionTo } = usePageTransition();
@@ -299,6 +303,305 @@ const ManufacturingPage = () => {
                 </Card>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* How Each Pal Serves Manufacturing */}
+        <section className="py-24 bg-gradient-to-b from-white to-gray-50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                How Each Pal Serves Manufacturing
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Every manufacturing operation needs different video solutions. Our specialized Pals deliver exactly what you need—from safety training to equipment operation to workforce development.
+              </p>
+            </div>
+
+            <Tabs defaultValue="system" className="w-full">
+              <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-4 mb-12 h-auto p-2 bg-gray-100">
+                <TabsTrigger 
+                  value="system" 
+                  className="data-[state=active]:bg-purple-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
+                  System Pal
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="reel" 
+                  className="data-[state=active]:bg-orange-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
+                  Reel Pal
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="spotlight" 
+                  className="data-[state=active]:bg-pink-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
+                  Spotlight Pal
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="evergreen" 
+                  className="data-[state=active]:bg-teal-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
+                  Evergreen Pal
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="system" className="animate-fade-in">
+                <div className="bg-gradient-to-br from-purple-50 to-white rounded-3xl border-2 border-purple-200 overflow-hidden">
+                  <div className="grid lg:grid-cols-2 gap-8 p-8 lg:p-12">
+                    <div className="space-y-6">
+                      <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium">
+                        <HardHat className="h-4 w-4" />
+                        System Pal
+                      </div>
+                      <h3 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                        Safety & Operations Training
+                      </h3>
+                      <p className="text-lg text-gray-600 leading-relaxed">
+                        Create safer, more efficient operations with OSHA-compliant safety training, equipment operation guides, SOPs, and workforce development programs.
+                      </p>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Essential Training Solutions:</h4>
+                          <ul className="space-y-2 text-gray-600">
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
+                              <span>OSHA-compliant safety training and compliance documentation</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
+                              <span>Equipment operation guides and maintenance procedures</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
+                              <span>Standard operating procedures and quality control processes</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
+                              <span>New hire onboarding and cross-training programs</span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 pt-2">
+                          <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">Safety Training</Badge>
+                          <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">Equipment Operation</Badge>
+                          <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">SOPs</Badge>
+                          <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">Workforce Dev</Badge>
+                        </div>
+                      </div>
+
+                      <Button 
+                        onClick={() => transitionTo('/system-pal')}
+                        className="bg-purple-500 hover:bg-purple-600 text-white mt-4"
+                      >
+                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src={systemPalImage}
+                        alt="System Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="reel" className="animate-fade-in">
+                <div className="bg-gradient-to-br from-orange-50 to-white rounded-3xl border-2 border-orange-200 overflow-hidden">
+                  <div className="grid lg:grid-cols-2 gap-8 p-8 lg:p-12">
+                    <div className="space-y-6">
+                      <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-2 rounded-full text-sm font-medium">
+                        <Video className="h-4 w-4" />
+                        Reel Pal
+                      </div>
+                      <h3 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                        Industry Presence & Engagement
+                      </h3>
+                      <p className="text-lg text-gray-600 leading-relaxed">
+                        Showcase your manufacturing excellence with behind-the-scenes content, employee stories, innovation highlights, and social media content that builds your industry reputation.
+                      </p>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Perfect For:</h4>
+                          <ul className="space-y-2 text-gray-600">
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                              <span>Behind-the-scenes manufacturing process showcases</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                              <span>Employee spotlights and team member recognition</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                              <span>Innovation and technology showcases for industry leadership</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                              <span>Sustainability initiatives and responsible manufacturing stories</span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 pt-2">
+                          <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200">Behind-the-Scenes</Badge>
+                          <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200">Employee Stories</Badge>
+                          <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200">Innovation</Badge>
+                          <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200">Industry Leadership</Badge>
+                        </div>
+                      </div>
+
+                      <Button 
+                        onClick={() => transitionTo('/reel-pal')}
+                        className="bg-orange-500 hover:bg-orange-600 text-white mt-4"
+                      >
+                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src={reelPalImage}
+                        alt="Reel Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="spotlight" className="animate-fade-in">
+                <div className="bg-gradient-to-br from-pink-50 to-white rounded-3xl border-2 border-pink-200 overflow-hidden">
+                  <div className="grid lg:grid-cols-2 gap-8 p-8 lg:p-12">
+                    <div className="space-y-6">
+                      <div className="inline-flex items-center gap-2 bg-pink-100 text-pink-700 px-4 py-2 rounded-full text-sm font-medium">
+                        <TrendingUp className="h-4 w-4" />
+                        Spotlight Pal
+                      </div>
+                      <h3 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                        Branding & Recruitment
+                      </h3>
+                      <p className="text-lg text-gray-600 leading-relaxed">
+                        Attract skilled workers and showcase capabilities with facility tours, recruitment videos, company culture content, and compelling brand storytelling.
+                      </p>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Showcase Your Excellence:</h4>
+                          <ul className="space-y-2 text-gray-600">
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-pink-500 mt-0.5 flex-shrink-0" />
+                              <span>Cinematic facility tours highlighting advanced capabilities</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-pink-500 mt-0.5 flex-shrink-0" />
+                              <span>Recruitment videos that attract skilled manufacturing talent</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-pink-500 mt-0.5 flex-shrink-0" />
+                              <span>Company culture videos and employee testimonials</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-pink-500 mt-0.5 flex-shrink-0" />
+                              <span>Trade show content and capabilities presentations</span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 pt-2">
+                          <Badge variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200">Facility Tours</Badge>
+                          <Badge variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200">Recruitment</Badge>
+                          <Badge variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200">Culture Videos</Badge>
+                          <Badge variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200">Trade Shows</Badge>
+                        </div>
+                      </div>
+
+                      <Button 
+                        onClick={() => transitionTo('/spotlight-pal')}
+                        className="bg-pink-500 hover:bg-pink-600 text-white mt-4"
+                      >
+                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src={spotlightPalImage}
+                        alt="Spotlight Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="evergreen" className="animate-fade-in">
+                <div className="bg-gradient-to-br from-teal-50 to-white rounded-3xl border-2 border-teal-200 overflow-hidden">
+                  <div className="grid lg:grid-cols-2 gap-8 p-8 lg:p-12">
+                    <div className="space-y-6">
+                      <div className="inline-flex items-center gap-2 bg-teal-100 text-teal-700 px-4 py-2 rounded-full text-sm font-medium">
+                        <Settings className="h-4 w-4" />
+                        Evergreen Pal
+                      </div>
+                      <h3 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                        Technical Documentation & Expertise
+                      </h3>
+                      <p className="text-lg text-gray-600 leading-relaxed">
+                        Create lasting value with technical documentation, process explanations, industry education, and thought leadership content that establishes manufacturing expertise.
+                      </p>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Build Authority With:</h4>
+                          <ul className="space-y-2 text-gray-600">
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                              <span>Technical process documentation and best practices guides</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                              <span>Quality assurance procedures and ISO compliance materials</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                              <span>Industry thought leadership and manufacturing education</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                              <span>Lean manufacturing and continuous improvement resources</span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 pt-2">
+                          <Badge variant="secondary" className="bg-teal-100 text-teal-700 hover:bg-teal-200">Technical Docs</Badge>
+                          <Badge variant="secondary" className="bg-teal-100 text-teal-700 hover:bg-teal-200">Quality Assurance</Badge>
+                          <Badge variant="secondary" className="bg-teal-100 text-teal-700 hover:bg-teal-200">Thought Leadership</Badge>
+                          <Badge variant="secondary" className="bg-teal-100 text-teal-700 hover:bg-teal-200">Lean Manufacturing</Badge>
+                        </div>
+                      </div>
+
+                      <Button 
+                        onClick={() => transitionTo('/evergreen-pal')}
+                        className="bg-teal-500 hover:bg-teal-600 text-white mt-4"
+                      >
+                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src={evergreenPalImage}
+                        alt="Evergreen Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </section>
 

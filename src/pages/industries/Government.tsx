@@ -30,7 +30,11 @@ import {
   BookOpen,
   ArrowRight
 } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import systemPalImage from '@/assets/pals/male-system-pal-edited.png';
+import reelPalImage from '@/assets/pals/female-reel-pal-edited.png';
+import evergreenPalImage from '@/assets/pals/female-evergreen-pal-final.png';
+import spotlightPalImage from '@/assets/pals/female-spotlight-pal-edited.png';
 
 const GovernmentPage = () => {
   const { transitionTo } = usePageTransition();
@@ -301,6 +305,305 @@ const GovernmentPage = () => {
                 </Card>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* How Each Pal Serves Government */}
+        <section className="py-24 bg-gradient-to-b from-white to-gray-50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                How Each Pal Serves Government
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Every government agency needs different video solutions. Our specialized Pals deliver exactly what you need—from public safety training to citizen engagement to transparency initiatives.
+              </p>
+            </div>
+
+            <Tabs defaultValue="system" className="w-full">
+              <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-4 mb-12 h-auto p-2 bg-gray-100">
+                <TabsTrigger 
+                  value="system" 
+                  className="data-[state=active]:bg-purple-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
+                  System Pal
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="evergreen" 
+                  className="data-[state=active]:bg-teal-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
+                  Evergreen Pal
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="reel" 
+                  className="data-[state=active]:bg-orange-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
+                  Reel Pal
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="spotlight" 
+                  className="data-[state=active]:bg-pink-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
+                  Spotlight Pal
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="system" className="animate-fade-in">
+                <div className="bg-gradient-to-br from-purple-50 to-white rounded-3xl border-2 border-purple-200 overflow-hidden">
+                  <div className="grid lg:grid-cols-2 gap-8 p-8 lg:p-12">
+                    <div className="space-y-6">
+                      <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium">
+                        <Shield className="h-4 w-4" />
+                        System Pal
+                      </div>
+                      <h3 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                        Public Safety & Compliance Training
+                      </h3>
+                      <p className="text-lg text-gray-600 leading-relaxed">
+                        Ensure consistent, high-quality training across your agency with compliance education, emergency protocols, policy training, and standardized procedures.
+                      </p>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Essential Training Solutions:</h4>
+                          <ul className="space-y-2 text-gray-600">
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
+                              <span>Emergency response protocols and disaster preparedness training</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
+                              <span>Compliance and regulatory training for government employees</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
+                              <span>Public safety procedures and first responder coordination</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
+                              <span>Employee onboarding and continuing education programs</span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 pt-2">
+                          <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">Emergency Training</Badge>
+                          <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">Compliance</Badge>
+                          <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">Public Safety</Badge>
+                          <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">Employee Dev</Badge>
+                        </div>
+                      </div>
+
+                      <Button 
+                        onClick={() => transitionTo('/system-pal')}
+                        className="bg-purple-500 hover:bg-purple-600 text-white mt-4"
+                      >
+                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src={systemPalImage}
+                        alt="System Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="evergreen" className="animate-fade-in">
+                <div className="bg-gradient-to-br from-teal-50 to-white rounded-3xl border-2 border-teal-200 overflow-hidden">
+                  <div className="grid lg:grid-cols-2 gap-8 p-8 lg:p-12">
+                    <div className="space-y-6">
+                      <div className="inline-flex items-center gap-2 bg-teal-100 text-teal-700 px-4 py-2 rounded-full text-sm font-medium">
+                        <Megaphone className="h-4 w-4" />
+                        Evergreen Pal
+                      </div>
+                      <h3 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                        Public Information & Education
+                      </h3>
+                      <p className="text-lg text-gray-600 leading-relaxed">
+                        Educate and inform citizens with public service announcements, community education programs, service explanations, and transparent communication.
+                      </p>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Build Public Trust With:</h4>
+                          <ul className="space-y-2 text-gray-600">
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                              <span>Public service announcements for community awareness</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                              <span>Program explanations and service accessibility information</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                              <span>Citizen education on rights, responsibilities, and resources</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                              <span>Policy updates and transparent government communications</span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 pt-2">
+                          <Badge variant="secondary" className="bg-teal-100 text-teal-700 hover:bg-teal-200">PSAs</Badge>
+                          <Badge variant="secondary" className="bg-teal-100 text-teal-700 hover:bg-teal-200">Community Ed</Badge>
+                          <Badge variant="secondary" className="bg-teal-100 text-teal-700 hover:bg-teal-200">Service Info</Badge>
+                          <Badge variant="secondary" className="bg-teal-100 text-teal-700 hover:bg-teal-200">Transparency</Badge>
+                        </div>
+                      </div>
+
+                      <Button 
+                        onClick={() => transitionTo('/evergreen-pal')}
+                        className="bg-teal-500 hover:bg-teal-600 text-white mt-4"
+                      >
+                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src={evergreenPalImage}
+                        alt="Evergreen Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="reel" className="animate-fade-in">
+                <div className="bg-gradient-to-br from-orange-50 to-white rounded-3xl border-2 border-orange-200 overflow-hidden">
+                  <div className="grid lg:grid-cols-2 gap-8 p-8 lg:p-12">
+                    <div className="space-y-6">
+                      <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-2 rounded-full text-sm font-medium">
+                        <Video className="h-4 w-4" />
+                        Reel Pal
+                      </div>
+                      <h3 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                        Community Engagement & Transparency
+                      </h3>
+                      <p className="text-lg text-gray-600 leading-relaxed">
+                        Build public trust with behind-the-scenes government operations, community spotlights, program updates, and social media content that humanizes public service.
+                      </p>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Perfect For:</h4>
+                          <ul className="space-y-2 text-gray-600">
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                              <span>Behind-the-scenes looks at government operations and services</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                              <span>Community success stories and citizen spotlights</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                              <span>Quick updates on programs, initiatives, and public meetings</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                              <span>Public servant spotlights showing the human side of government</span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 pt-2">
+                          <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200">Behind-the-Scenes</Badge>
+                          <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200">Community Stories</Badge>
+                          <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200">Updates</Badge>
+                          <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200">Transparency</Badge>
+                        </div>
+                      </div>
+
+                      <Button 
+                        onClick={() => transitionTo('/reel-pal')}
+                        className="bg-orange-500 hover:bg-orange-600 text-white mt-4"
+                      >
+                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src={reelPalImage}
+                        alt="Reel Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="spotlight" className="animate-fade-in">
+                <div className="bg-gradient-to-br from-pink-50 to-white rounded-3xl border-2 border-pink-200 overflow-hidden">
+                  <div className="grid lg:grid-cols-2 gap-8 p-8 lg:p-12">
+                    <div className="space-y-6">
+                      <div className="inline-flex items-center gap-2 bg-pink-100 text-pink-700 px-4 py-2 rounded-full text-sm font-medium">
+                        <Building2 className="h-4 w-4" />
+                        Spotlight Pal
+                      </div>
+                      <h3 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                        Agency Branding & Recruitment
+                      </h3>
+                      <p className="text-lg text-gray-600 leading-relaxed">
+                        Attract quality public servants with recruitment videos, agency culture showcases, career information, and compelling stories that inspire people to serve.
+                      </p>
+                      
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Attract Top Talent With:</h4>
+                          <ul className="space-y-2 text-gray-600">
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-pink-500 mt-0.5 flex-shrink-0" />
+                              <span>Compelling recruitment videos showcasing public service careers</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-pink-500 mt-0.5 flex-shrink-0" />
+                              <span>Agency culture videos and employee testimonials</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-pink-500 mt-0.5 flex-shrink-0" />
+                              <span>Career pathway information and benefits explanations</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-pink-500 mt-0.5 flex-shrink-0" />
+                              <span>Community impact stories showing the difference you make</span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 pt-2">
+                          <Badge variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200">Recruitment</Badge>
+                          <Badge variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200">Agency Culture</Badge>
+                          <Badge variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200">Career Paths</Badge>
+                          <Badge variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200">Impact Stories</Badge>
+                        </div>
+                      </div>
+
+                      <Button 
+                        onClick={() => transitionTo('/spotlight-pal')}
+                        className="bg-pink-500 hover:bg-pink-600 text-white mt-4"
+                      >
+                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src={spotlightPalImage}
+                        alt="Spotlight Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </section>
 

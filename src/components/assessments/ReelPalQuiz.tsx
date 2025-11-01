@@ -13,14 +13,15 @@ import {
   Zap,
   ArrowRight,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  Check
 } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 type Answer = {
   sectionId: number;
   questionId: number;
-  value: string | number;
+  value: string | number | string[];
 };
 
 type QuizSection = {
@@ -30,8 +31,10 @@ type QuizSection = {
   questions: {
     id: number;
     question: string;
-    type: 'toggle' | 'buttons' | 'scale';
+    type: 'toggle' | 'buttons' | 'scale' | 'emoji' | 'slider' | 'checkbox' | 'cards';
     options?: string[];
+    min?: number;
+    max?: number;
   }[];
 };
 
@@ -43,21 +46,22 @@ const sections: QuizSection[] = [
     questions: [
       {
         id: 1,
-        question: "Do you post consistently on social media?",
-        type: "buttons",
-        options: ["No", "Partially", "Yes"]
+        question: "How satisfied are you with your current posting consistency?",
+        type: "emoji",
+        options: ["😢", "😕", "😐", "🙂", "😄"]
       },
       {
         id: 2,
         question: "Do you have a content calendar for Reels/TikToks?",
-        type: "buttons",
-        options: ["No", "Partially", "Yes"]
+        type: "toggle",
+        options: ["No", "Yes"]
       },
       {
         id: 3,
-        question: "Are you tracking engagement on your short-form videos?",
-        type: "toggle",
-        options: ["No", "Yes"]
+        question: "On a scale of 1-10, how trackable is your content performance?",
+        type: "slider",
+        min: 1,
+        max: 10
       }
     ]
   },
@@ -68,21 +72,22 @@ const sections: QuizSection[] = [
     questions: [
       {
         id: 1,
-        question: "Do you have equipment for filming content?",
-        type: "buttons",
-        options: ["No", "Partially", "Yes"]
+        question: "Which tools do you currently have? (Select all that apply)",
+        type: "checkbox",
+        options: ["Smartphone", "Camera/DSLR", "Microphone", "Lighting", "Editing Software"]
       },
       {
         id: 2,
         question: "Is someone on your team comfortable being on camera?",
-        type: "toggle",
-        options: ["No", "Yes"]
+        type: "buttons",
+        options: ["No", "Maybe", "Yes"]
       },
       {
         id: 3,
-        question: "Do you have video editing capabilities?",
-        type: "buttons",
-        options: ["No", "Partially", "Yes"]
+        question: "How confident are you in creating video content?",
+        type: "slider",
+        min: 1,
+        max: 10
       }
     ]
   },
@@ -93,21 +98,21 @@ const sections: QuizSection[] = [
     questions: [
       {
         id: 1,
-        question: "Can you dedicate 3-5 hours weekly to content?",
-        type: "toggle",
-        options: ["No", "Yes"]
+        question: "How many hours per week can you dedicate to content creation?",
+        type: "scale",
+        options: ["Less than 1", "1-3", "3-5", "5-10", "10+"]
       },
       {
         id: 2,
-        question: "Do you have team buy-in for regular content creation?",
-        type: "buttons",
-        options: ["No", "Partially", "Yes"]
+        question: "What's your biggest challenge with content creation?",
+        type: "cards",
+        options: ["Time Constraints", "Limited Resources", "Lack of Ideas", "Technical Skills"]
       },
       {
         id: 3,
-        question: "How quickly do you need to see results?",
-        type: "scale",
-        options: ["Immediately", "1 month", "3 months", "6+ months"]
+        question: "Do you have team buy-in for regular content creation?",
+        type: "toggle",
+        options: ["No", "Yes"]
       }
     ]
   },
@@ -118,19 +123,19 @@ const sections: QuizSection[] = [
     questions: [
       {
         id: 1,
-        question: "Is building a content library a priority for your business?",
-        type: "toggle",
-        options: ["No", "Yes"]
+        question: "Rate your commitment to building a content library",
+        type: "emoji",
+        options: ["😴", "😐", "🤔", "😊", "🔥"]
       },
       {
         id: 2,
-        question: "Are you ready to invest in professional content production?",
+        question: "When do you want to see results?",
         type: "buttons",
-        options: ["No", "Maybe", "Yes"]
+        options: ["Immediately", "1-3 months", "6+ months"]
       },
       {
         id: 3,
-        question: "Do you understand the long-term value of consistent posting?",
+        question: "Is content creation a strategic priority for your business?",
         type: "toggle",
         options: ["No", "Yes"]
       }
@@ -143,21 +148,22 @@ const sections: QuizSection[] = [
     questions: [
       {
         id: 1,
-        question: "What's your monthly budget for content creation?",
+        question: "What's your monthly content creation budget?",
         type: "scale",
         options: ["Under $500", "$500-$1,500", "$1,500-$3,000", "$3,000+"]
       },
       {
         id: 2,
-        question: "Are you willing to batch-create content (30+ videos in one day)?",
-        type: "toggle",
-        options: ["No", "Yes"]
+        question: "How important is ROI tracking for your content?",
+        type: "slider",
+        min: 1,
+        max: 10
       },
       {
         id: 3,
-        question: "Do you see content creation as an ongoing investment?",
+        question: "Are you ready to invest in professional content production?",
         type: "buttons",
-        options: ["No", "Unsure", "Yes"]
+        options: ["No", "Considering", "Yes"]
       }
     ]
   }
@@ -169,7 +175,7 @@ export const ReelPalQuiz = () => {
   const [showResults, setShowResults] = useState(false);
   const [openCategories, setOpenCategories] = useState<string[]>([]);
 
-  const handleAnswer = (questionId: number, value: string | number) => {
+  const handleAnswer = (questionId: number, value: string | number | string[]) => {
     const newAnswers = answers.filter(
       a => !(a.sectionId === sections[currentSection].id && a.questionId === questionId)
     );
@@ -224,7 +230,16 @@ export const ReelPalQuiz = () => {
       if (question.type === 'toggle') {
         questionMax = 1;
         questionScore = answer.value === 'Yes' ? 1 : 0;
-      } else if (question.type === 'buttons') {
+      } else if (question.type === 'emoji') {
+        questionMax = question.options!.length - 1;
+        questionScore = question.options!.indexOf(answer.value as string);
+      } else if (question.type === 'slider') {
+        questionMax = question.max! - question.min!;
+        questionScore = (answer.value as number) - question.min!;
+      } else if (question.type === 'checkbox') {
+        questionMax = question.options!.length;
+        questionScore = Array.isArray(answer.value) ? answer.value.length : 0;
+      } else if (question.type === 'cards' || question.type === 'buttons') {
         questionMax = question.options!.length - 1;
         questionScore = question.options!.indexOf(answer.value as string);
       } else if (question.type === 'scale') {
@@ -589,6 +604,105 @@ export const ReelPalQuiz = () => {
                   <p className="text-lg text-gray-600 mb-4 text-center">{question.question}</p>
                   
                   <div className="flex flex-wrap gap-2 justify-center">
+                  {question.type === 'emoji' && question.options && (
+                    <>
+                      {question.options.map((emoji) => {
+                        const isSelected = getAnswer(question.id) === emoji;
+                        return (
+                          <button
+                            key={emoji}
+                            onClick={() => handleAnswer(question.id, emoji)}
+                            className={`text-5xl p-3 rounded-full transition-all ${
+                              isSelected 
+                                ? 'bg-orange-100 scale-125 ring-4 ring-orange-500' 
+                                : 'hover:bg-gray-100 hover:scale-110'
+                            }`}
+                          >
+                            {emoji}
+                          </button>
+                        );
+                      })}
+                    </>
+                  )}
+
+                  {question.type === 'slider' && question.min && question.max && (
+                    <div className="w-full max-w-md mx-auto">
+                      <input
+                        type="range"
+                        min={question.min}
+                        max={question.max}
+                        value={(getAnswer(question.id) as number) || Math.floor((question.min + question.max) / 2)}
+                        onChange={(e) => handleAnswer(question.id, parseInt(e.target.value))}
+                        className="w-full h-3 bg-gray-200 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-orange-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-orange-500 [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer"
+                      />
+                      <div className="flex justify-between text-sm text-gray-500 mt-2">
+                        <span>{question.min}</span>
+                        <span className="text-2xl font-bold text-orange-600">{getAnswer(question.id) || Math.floor((question.min + question.max) / 2)}</span>
+                        <span>{question.max}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {question.type === 'checkbox' && question.options && (
+                    <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      {question.options.map((option) => {
+                        const currentAnswers = (getAnswer(question.id) as string[]) || [];
+                        const isSelected = currentAnswers.includes(option);
+                        return (
+                          <button
+                            key={option}
+                            onClick={() => {
+                              const current = (getAnswer(question.id) as string[]) || [];
+                              const updated = isSelected 
+                                ? current.filter(item => item !== option)
+                                : [...current, option];
+                              handleAnswer(question.id, updated);
+                            }}
+                            className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all text-left ${
+                              isSelected
+                                ? 'border-orange-500 bg-orange-50'
+                                : 'border-gray-200 hover:border-orange-200 hover:bg-orange-50/50'
+                            }`}
+                          >
+                            <div className={`w-6 h-6 rounded flex items-center justify-center border-2 transition-all ${
+                              isSelected ? 'bg-orange-500 border-orange-500' : 'border-gray-300'
+                            }`}>
+                              {isSelected && <Check className="w-4 h-4 text-white" />}
+                            </div>
+                            <span className={isSelected ? 'font-semibold' : ''}>{option}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {question.type === 'cards' && question.options && (
+                    <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {question.options.map((option) => {
+                        const isSelected = getAnswer(question.id) === option;
+                        return (
+                          <button
+                            key={option}
+                            onClick={() => handleAnswer(question.id, option)}
+                            className={`p-6 rounded-2xl border-2 transition-all hover:scale-105 ${
+                              isSelected
+                                ? 'border-orange-500 bg-orange-50 shadow-lg'
+                                : 'border-gray-200 hover:border-orange-200 hover:shadow-md'
+                            }`}
+                          >
+                            <div className={`text-4xl mb-3 ${isSelected ? 'scale-110' : ''} transition-transform`}>
+                              {option === 'Time Constraints' && '⏰'}
+                              {option === 'Limited Resources' && '💰'}
+                              {option === 'Lack of Ideas' && '💡'}
+                              {option === 'Technical Skills' && '🔧'}
+                            </div>
+                            <h4 className={`font-semibold ${isSelected ? 'text-orange-700' : 'text-gray-700'}`}>{option}</h4>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+
                   {question.type === 'buttons' && question.options && (
                     <>
                       {question.options.map((option) => {

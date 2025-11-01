@@ -32,7 +32,12 @@ import {
   Cog,
   Star
 } from "lucide-react";
+import { useState } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import systemPalImage from '@/assets/pals/female-system-pal-edited.png';
+import reelPalImage from '@/assets/pals/female-reel-pal-edited.png';
+import evergreenPalImage from '@/assets/pals/female-evergreen-pal-final.png';
+import spotlightPalImage from '@/assets/pals/female-spotlight-pal-edited.png';
 
 const HealthcarePage = () => {
   const { transitionTo } = usePageTransition();
@@ -579,99 +584,218 @@ const HealthcarePage = () => {
           </div>
         </section>
 
-        {/* Trusted Across Healthcare */}
-        <section className="py-24 bg-gradient-to-b from-[#DDEEFF] to-white">
+        {/* How Each Pal Serves Healthcare */}
+        <section className="py-24 bg-gradient-to-b from-white to-gray-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-            <div className="text-center mb-16">
-              <h2 className="text-5xl lg:text-6xl font-bold text-[#0D244F] tracking-tight">
-                Trusted Across Healthcare
+            <div className="text-center mb-12">
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                How Each Pal Serves Healthcare
               </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Every healthcare organization needs different video solutions. Our specialized Pals deliver exactly what you need—from social engagement to training systems to brand authority.
+              </p>
             </div>
 
-            <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
-              {/* Left Cards */}
-              <div className="w-full lg:w-1/3 space-y-8">
-                {/* Hospital Systems */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 text-center shadow-[0_10px_40px_-10px_rgba(74,144,226,0.2)] transition-transform duration-300 hover:-translate-y-2">
-                  <div className="mb-4 flex justify-center">
-                    <Building className="h-12 w-12 text-[#4A90E2]" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-[#0D244F] mb-2">Hospital Systems</h3>
-                  <p className="text-[#6B7A99] text-sm leading-relaxed">
-                    Comprehensive solutions to streamline operations and enhance patient care within large-scale hospital networks.
-                  </p>
-                </div>
+            <Tabs defaultValue="reel" className="w-full">
+              <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-4 mb-12 h-auto p-2 bg-gray-100">
+                <TabsTrigger 
+                  value="reel" 
+                  className="data-[state=active]:bg-orange-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
+                  Reel Pal
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="system" 
+                  className="data-[state=active]:bg-purple-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
+                  System Pal
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="evergreen" 
+                  className="data-[state=active]:bg-teal-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
+                  Evergreen Pal
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="spotlight" 
+                  className="data-[state=active]:bg-pink-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
+                  Spotlight Pal
+                </TabsTrigger>
+              </TabsList>
 
-                {/* Private Practices */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 text-center shadow-[0_10px_40px_-10px_rgba(74,144,226,0.2)] transition-transform duration-300 hover:-translate-y-2">
-                  <div className="mb-4 flex justify-center">
-                    <Stethoscope className="h-12 w-12 text-[#4A90E2]" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-[#0D244F] mb-2">Private Practices</h3>
-                  <p className="text-[#6B7A99] text-sm leading-relaxed">
-                    Tailored support for private clinics, enabling efficient management and personalized patient engagement.
-                  </p>
-                </div>
+              {/* Reel Pal Content */}
+              <TabsContent value="reel" className="animate-fade-in">
+                <div className="bg-gradient-to-br from-orange-50 to-white rounded-3xl border-2 border-orange-200 overflow-hidden">
+                  <div className="grid lg:grid-cols-2 gap-8 p-8 lg:p-12">
+                    <div className="space-y-6">
+                      <div className="inline-flex items-center gap-2 bg-orange-100 text-orange-700 px-4 py-2 rounded-full text-sm font-medium">
+                        <Video className="h-4 w-4" />
+                        Reel Pal
+                      </div>
+                      <h3 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                        Social Media & Patient Engagement
+                      </h3>
+                      <p className="text-lg text-gray-600 leading-relaxed">
+                        Boost patient engagement with health tips, doctor Q&As, behind-the-scenes content, and community health awareness campaigns that build trust on social platforms.
+                      </p>
+                      
+                      <div className="space-y-3">
+                        <div className="flex flex-wrap gap-2">
+                          <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200">Health Tips</Badge>
+                          <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200">Doctor Q&A</Badge>
+                          <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200">Patient Stories</Badge>
+                          <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200">Community Health</Badge>
+                        </div>
+                      </div>
 
-                {/* Long-Term Care Facilities */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 text-center shadow-[0_10px_40px_-10px_rgba(74,144,226,0.2)] transition-transform duration-300 hover:-translate-y-2">
-                  <div className="mb-4 flex justify-center">
-                    <Heart className="h-12 w-12 text-[#4A90E2]" />
+                      <Button 
+                        onClick={() => transitionTo('/reel-pal')}
+                        className="bg-orange-500 hover:bg-orange-600 text-white mt-4"
+                      >
+                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src={reelPalImage}
+                        alt="Reel Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
+                    </div>
                   </div>
-                  <h3 className="text-xl font-semibold text-[#0D244F] mb-2">Long-Term Care Facilities</h3>
-                  <p className="text-[#6B7A99] text-sm leading-relaxed">
-                    Dedicated tools for nursing homes and assisted living to ensure consistent, high-quality resident care.
-                  </p>
                 </div>
-              </div>
+              </TabsContent>
 
-              {/* Center Character Illustration */}
-              <div className="w-full lg:w-1/3 flex justify-center items-center">
-                <div className="w-full max-w-md">
-                  <img 
-                    src={systemPalImage}
-                    alt="Healthcare professional illustration" 
-                    className="w-full h-auto object-contain animate-fade-in"
-                  />
-                </div>
-              </div>
+              {/* System Pal Content */}
+              <TabsContent value="system" className="animate-fade-in">
+                <div className="bg-gradient-to-br from-purple-50 to-white rounded-3xl border-2 border-purple-200 overflow-hidden">
+                  <div className="grid lg:grid-cols-2 gap-8 p-8 lg:p-12">
+                    <div className="space-y-6">
+                      <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium">
+                        <Cog className="h-4 w-4" />
+                        System Pal
+                      </div>
+                      <h3 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                        Training & Compliance Systems
+                      </h3>
+                      <p className="text-lg text-gray-600 leading-relaxed">
+                        HIPAA-compliant training videos, clinical procedures, safety protocols, and onboarding content that scales across your entire healthcare organization.
+                      </p>
+                      
+                      <div className="space-y-3">
+                        <div className="flex flex-wrap gap-2">
+                          <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">HIPAA Training</Badge>
+                          <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">Clinical SOPs</Badge>
+                          <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">Safety Protocols</Badge>
+                          <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">Staff Onboarding</Badge>
+                        </div>
+                      </div>
 
-              {/* Right Cards */}
-              <div className="w-full lg:w-1/3 space-y-8">
-                {/* Medical Device Companies */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 text-center shadow-[0_10px_40px_-10px_rgba(74,144,226,0.2)] transition-transform duration-300 hover:-translate-y-2">
-                  <div className="mb-4 flex justify-center">
-                    <Microscope className="h-12 w-12 text-[#4A90E2]" />
+                      <Button 
+                        onClick={() => transitionTo('/system-pal')}
+                        className="bg-purple-500 hover:bg-purple-600 text-white mt-4"
+                      >
+                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src={systemPalImage}
+                        alt="System Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
+                    </div>
                   </div>
-                  <h3 className="text-xl font-semibold text-[#0D244F] mb-2">Medical Device Companies</h3>
-                  <p className="text-[#6B7A99] text-sm leading-relaxed">
-                    Partnering with innovators to integrate cutting-edge medical devices into clinical workflows seamlessly.
-                  </p>
                 </div>
+              </TabsContent>
 
-                {/* Pharmaceutical Companies */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 text-center shadow-[0_10px_40px_-10px_rgba(74,144,226,0.2)] transition-transform duration-300 hover:-translate-y-2">
-                  <div className="mb-4 flex justify-center">
-                    <Pill className="h-12 w-12 text-[#4A90E2]" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-[#0D244F] mb-2">Pharmaceutical Companies</h3>
-                  <p className="text-[#6B7A99] text-sm leading-relaxed">
-                    Facilitating research and distribution channels to bring vital medications to patients faster and safer.
-                  </p>
-                </div>
+              {/* Evergreen Pal Content */}
+              <TabsContent value="evergreen" className="animate-fade-in">
+                <div className="bg-gradient-to-br from-teal-50 to-white rounded-3xl border-2 border-teal-200 overflow-hidden">
+                  <div className="grid lg:grid-cols-2 gap-8 p-8 lg:p-12">
+                    <div className="space-y-6">
+                      <div className="inline-flex items-center gap-2 bg-teal-100 text-teal-700 px-4 py-2 rounded-full text-sm font-medium">
+                        <BookOpen className="h-4 w-4" />
+                        Evergreen Pal
+                      </div>
+                      <h3 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                        Patient Education & Authority
+                      </h3>
+                      <p className="text-lg text-gray-600 leading-relaxed">
+                        Build patient trust with treatment explanations, wellness resources, disease management guides, and expert medical content that establishes your authority.
+                      </p>
+                      
+                      <div className="space-y-3">
+                        <div className="flex flex-wrap gap-2">
+                          <Badge variant="secondary" className="bg-teal-100 text-teal-700 hover:bg-teal-200">Treatment Guides</Badge>
+                          <Badge variant="secondary" className="bg-teal-100 text-teal-700 hover:bg-teal-200">Wellness Tips</Badge>
+                          <Badge variant="secondary" className="bg-teal-100 text-teal-700 hover:bg-teal-200">Disease Management</Badge>
+                          <Badge variant="secondary" className="bg-teal-100 text-teal-700 hover:bg-teal-200">Expert Content</Badge>
+                        </div>
+                      </div>
 
-                {/* Behavioral Health */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 text-center shadow-[0_10px_40px_-10px_rgba(74,144,226,0.2)] transition-transform duration-300 hover:-translate-y-2">
-                  <div className="mb-4 flex justify-center">
-                    <Brain className="h-12 w-12 text-[#4A90E2]" />
+                      <Button 
+                        onClick={() => transitionTo('/evergreen-pal')}
+                        className="bg-teal-500 hover:bg-teal-600 text-white mt-4"
+                      >
+                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src={evergreenPalImage}
+                        alt="Evergreen Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
+                    </div>
                   </div>
-                  <h3 className="text-xl font-semibold text-[#0D244F] mb-2">Behavioral Health</h3>
-                  <p className="text-[#6B7A99] text-sm leading-relaxed">
-                    Providing secure and compassionate platforms for mental health professionals to connect with clients.
-                  </p>
                 </div>
-              </div>
-            </div>
+              </TabsContent>
+
+              {/* Spotlight Pal Content */}
+              <TabsContent value="spotlight" className="animate-fade-in">
+                <div className="bg-gradient-to-br from-pink-50 to-white rounded-3xl border-2 border-pink-200 overflow-hidden">
+                  <div className="grid lg:grid-cols-2 gap-8 p-8 lg:p-12">
+                    <div className="space-y-6">
+                      <div className="inline-flex items-center gap-2 bg-pink-100 text-pink-700 px-4 py-2 rounded-full text-sm font-medium">
+                        <Star className="h-4 w-4" />
+                        Spotlight Pal
+                      </div>
+                      <h3 className="text-3xl lg:text-4xl font-bold text-gray-900">
+                        Marketing & Recruitment
+                      </h3>
+                      <p className="text-lg text-gray-600 leading-relaxed">
+                        Attract physicians and patients with facility tours, testimonials, service promotion, and high-impact recruitment videos that showcase your excellence.
+                      </p>
+                      
+                      <div className="space-y-3">
+                        <div className="flex flex-wrap gap-2">
+                          <Badge variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200">Facility Tours</Badge>
+                          <Badge variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200">Testimonials</Badge>
+                          <Badge variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200">Recruitment</Badge>
+                          <Badge variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200">Service Promotion</Badge>
+                        </div>
+                      </div>
+
+                      <Button 
+                        onClick={() => transitionTo('/spotlight-pal')}
+                        className="bg-pink-500 hover:bg-pink-600 text-white mt-4"
+                      >
+                        Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                    <div className="flex items-center justify-center">
+                      <img 
+                        src={spotlightPalImage}
+                        alt="Spotlight Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </section>
 

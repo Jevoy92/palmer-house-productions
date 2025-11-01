@@ -420,14 +420,14 @@ export const ReelPalQuiz = () => {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fade-in">
         {/* Hero Score Section */}
-        <div className="bg-gradient-to-br from-teal-500 to-orange-500 rounded-3xl shadow-2xl p-8 lg:p-12 mb-8 text-white text-center">
+        <div className="bg-teal-500 rounded-3xl shadow-2xl p-8 lg:p-12 mb-8 text-white text-center">
           <Trophy className="w-20 h-20 mx-auto mb-4 animate-scale-in" />
           <h2 className="text-5xl font-bold mb-4">Your Content Readiness Score</h2>
           <div className="text-8xl font-bold mb-4">{percentage}%</div>
-          <div className="inline-block bg-white/20 backdrop-blur-sm px-8 py-3 rounded-full mb-6">
+          <div className="inline-block bg-white/20 px-8 py-3 rounded-full mb-6">
             <p className="text-2xl font-semibold">{recommendation.level}</p>
           </div>
-          <p className="text-xl max-w-2xl mx-auto opacity-90">
+          <p className="text-xl max-w-2xl mx-auto">
             {recommendation.title}
           </p>
         </div>
@@ -462,7 +462,7 @@ export const ReelPalQuiz = () => {
                         <div className="flex-1">
                           <div className="w-full bg-gray-200 rounded-full h-3">
                             <div 
-                              className="bg-gradient-to-r from-teal-500 to-orange-500 h-3 rounded-full transition-all duration-1000"
+                              className="bg-teal-500 h-3 rounded-full transition-all duration-1000"
                               style={{ width: `${catPercentage}%` }}
                             />
                           </div>
@@ -506,7 +506,7 @@ export const ReelPalQuiz = () => {
         </div>
 
         {/* Recommendation CTA */}
-        <div className="bg-gradient-to-br from-orange-50 to-purple-50 rounded-3xl shadow-xl p-8 lg:p-12 mb-8">
+        <div className="bg-orange-50 rounded-3xl shadow-xl p-8 lg:p-12 mb-8">
           <div className="text-center mb-8">
             <div className="text-6xl mb-4">{recommendation.icon}</div>
             <h3 className="text-3xl font-bold mb-4 text-gray-800">My Recommendation for You</h3>

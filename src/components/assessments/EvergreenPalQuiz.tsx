@@ -1,12 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import confetti from 'canvas-confetti';
 import { 
   TrendingUp,
   Target,
-  BarChart,
   Search,
   FileText,
+  Users,
+  CheckCircle2,
+  AlertCircle,
+  Trophy,
+  Zap,
+  ArrowRight,
+  ChevronDown,
+  ChevronUp,
+  Check
 } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import placeholderImage from '@/assets/pals/female-evergreen-pal-final.png';
 
 type Answer = {
@@ -22,7 +32,7 @@ type QuizSection = {
   questions: {
     id: number;
     question: string;
-    type: 'toggle' | 'buttons' | 'scale' | 'emoji' | 'slider';
+    type: 'toggle' | 'buttons' | 'scale' | 'emoji' | 'slider' | 'checkbox' | 'cards';
     options?: string[];
     min?: number;
     max?: number;
@@ -32,7 +42,7 @@ type QuizSection = {
 const sections: QuizSection[] = [
   {
     id: 1,
-    title: "SEO & Search Visibility",
+    title: "SEO & Search Strategy",
     icon: Search,
     questions: [
       {
@@ -45,52 +55,116 @@ const sections: QuizSection[] = [
         id: 2,
         question: "Do you have a documented SEO strategy?",
         type: 'toggle',
-        options: ['Yes', 'No']
+        options: ['No', 'Yes']
       },
       {
         id: 3,
         question: "On a scale of 1-10, how optimized is your video content for search?",
         type: 'slider',
-        min: 1,
+        min: 0,
         max: 10
       }
     ]
   },
   {
     id: 2,
-    title: "Content Clarity",
+    title: "Content Clarity & Messaging",
     icon: Target,
     questions: [
       {
-        id: 4,
-        question: "How often do prospects say they don't understand what you do?",
-        type: 'scale',
-        options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Always']
+        id: 1,
+        question: "Do you have explainer videos for your core offerings? (Select all that apply)",
+        type: 'checkbox',
+        options: ['Services Overview', 'Product Demos', 'FAQ Videos', 'Case Studies', 'None Yet']
       },
       {
-        id: 5,
-        question: "Do you have explainer videos for your core services?",
-        type: 'toggle',
-        options: ['Yes', 'No']
+        id: 2,
+        question: "How clear is your value proposition?",
+        type: 'buttons',
+        options: ['Unclear', 'Somewhat Clear', 'Very Clear']
+      },
+      {
+        id: 3,
+        question: "How often do prospects say they don\'t understand what you do?",
+        type: 'slider',
+        min: 0,
+        max: 10
       }
     ]
   },
   {
     id: 3,
-    title: "Lead Generation",
+    title: "Content Production Capacity",
+    icon: FileText,
+    questions: [
+      {
+        id: 1,
+        question: "How many hours per month can you dedicate to evergreen content?",
+        type: 'scale',
+        options: ['Less than 5', '5-10', '10-20', '20-40', '40+']
+      },
+      {
+        id: 2,
+        question: "What\'s your biggest challenge with long-form content?",
+        type: 'cards',
+        options: ['Time Constraints', 'Technical Know-how', 'Content Ideas', 'Production Quality']
+      },
+      {
+        id: 3,
+        question: "Do you have someone who can manage your YouTube/blog?",
+        type: 'toggle',
+        options: ['No', 'Yes']
+      }
+    ]
+  },
+  {
+    id: 4,
+    title: "Lead Generation Goals",
     icon: TrendingUp,
     questions: [
       {
-        id: 6,
-        question: "How satisfied are you with inbound lead quality?",
+        id: 1,
+        question: "Rate your satisfaction with current inbound lead quality",
         type: 'emoji',
-        options: ['😢', '😕', '😐', '🙂', '😁']
+        options: ['😴', '😐', '🤔', '😊', '🔥']
       },
       {
-        id: 7,
-        question: "Do you have lead magnets powered by video?",
+        id: 2,
+        question: "When do you expect to see SEO results?",
+        type: 'buttons',
+        options: ['3 months', '6 months', '12+ months']
+      },
+      {
+        id: 3,
+        question: "Is evergreen content a strategic priority for your business?",
         type: 'toggle',
-        options: ['Yes', 'No']
+        options: ['No', 'Yes']
+      }
+    ]
+  },
+  {
+    id: 5,
+    title: "Budget & Investment",
+    icon: Zap,
+    questions: [
+      {
+        id: 1,
+        question: "What\'s your monthly budget for evergreen content?",
+        type: 'scale',
+        options: ['Under $1,000', '$1,000-$3,000', '$3,000-$5,000', '$5,000+']
+      },
+      {
+        id: 2,
+        question: "How important is long-term ROI vs. immediate results?",
+        type: 'slider',
+        min: 0,
+        max: 10
+      },
+      {
+        id: 3,
+        question: "Are you ready to invest in professional evergreen production?",
+        type: 'buttons',
+        options: ['No', 'Considering', 'Yes']
       }
     ]
   }
@@ -107,7 +181,15 @@ const characterConfigs = [
   },
   {
     image: placeholderImage,
+    tip: "Batch create to save time and stay consistent!"
+  },
+  {
+    image: placeholderImage,
     tip: "Quality leads come from quality content!"
+  },
+  {
+    image: placeholderImage,
+    tip: "Invest in assets that work while you sleep!"
   }
 ];
 
@@ -115,6 +197,7 @@ export const EvergreenPalQuiz = () => {
   const [currentSection, setCurrentSection] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [showResults, setShowResults] = useState(false);
+  const [openCategories, setOpenCategories] = useState<string[]>([]);
 
   const handleAnswer = (questionId: number, value: string | number | string[]) => {
     const newAnswer: Answer = {
@@ -159,17 +242,61 @@ export const EvergreenPalQuiz = () => {
     }
   };
 
+  // Auto-initialize slider questions with their default value
+  useEffect(() => {
+    sections[currentSection].questions.forEach(question => {
+      if (question.type === 'slider' && question.min !== undefined && question.max !== undefined) {
+        const hasAnswer = answers.some(
+          a => a.sectionId === sections[currentSection].id && a.questionId === question.id
+        );
+        if (!hasAnswer) {
+          const defaultValue = Math.round((question.min + question.max) / 2);
+          handleAnswer(question.id, defaultValue);
+        }
+      }
+    });
+  }, [currentSection]);
+
+  useEffect(() => {
+    if (showResults) {
+      const duration = 3000;
+      const end = Date.now() + duration;
+
+      const frame = () => {
+        confetti({
+          particleCount: 3,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#3b82f6', '#60a5fa', '#93c5fd']
+        });
+        confetti({
+          particleCount: 3,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#3b82f6', '#60a5fa', '#93c5fd']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      };
+      frame();
+    }
+  }, [showResults]);
+
   if (showResults) {
     return (
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fade-in">
         <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-12 text-center">
-          <div className="text-6xl mb-6">🌱</div>
-          <h2 className="text-4xl font-bold mb-6 text-gray-800">Your Evergreen Strategy Assessment</h2>
-          <p className="text-xl text-gray-600 mb-8">
-            Thanks for completing the quiz! Based on your answers, let's discuss how evergreen content can work for you.
+          <Trophy className="w-20 h-20 mx-auto mb-6 text-blue-500 animate-scale-in" />
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-800">Your Evergreen Strategy Assessment Complete!</h2>
+          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+            Thanks for completing the quiz! Based on your answers, let's discuss how evergreen content can build lasting visibility and qualified leads for your business.
           </p>
-          <Link to="/contact" className="inline-block bg-blue-500 text-white font-semibold px-8 py-4 rounded-full hover:bg-blue-600 transition-colors shadow-lg">
-            Book Strategy Call
+          <Link to="/contact" className="inline-block bg-blue-500 text-white font-semibold px-8 py-4 rounded-full hover:bg-blue-600 transition-colors shadow-lg hover:shadow-xl transform hover:scale-105">
+            Book Strategy Call →
           </Link>
         </div>
       </div>
@@ -285,6 +412,87 @@ export const EvergreenPalQuiz = () => {
                       </div>
                     )}
 
+                    {question.type === 'checkbox' && question.options && (
+                      <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {question.options.map((option) => {
+                          const currentAnswers = (getAnswer(question.id) as string[]) || [];
+                          const isSelected = currentAnswers.includes(option);
+                          return (
+                            <button
+                              key={option}
+                              onClick={() => {
+                                const current = (getAnswer(question.id) as string[]) || [];
+                                const updated = isSelected 
+                                  ? current.filter(item => item !== option)
+                                  : [...current, option];
+                                handleAnswer(question.id, updated);
+                              }}
+                              className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all text-left ${
+                                isSelected
+                                  ? 'border-blue-500 bg-blue-50'
+                                  : 'border-gray-200 hover:border-blue-200 hover:bg-blue-50/50'
+                              }`}
+                            >
+                              <div className={`w-6 h-6 rounded flex items-center justify-center border-2 transition-all ${
+                                isSelected ? 'bg-blue-500 border-blue-500' : 'border-gray-300'
+                              }`}>
+                                {isSelected && <Check className="w-4 h-4 text-white" />}
+                              </div>
+                              <span className={isSelected ? 'font-semibold' : ''}>{option}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {question.type === 'cards' && question.options && (
+                      <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {question.options.map((option) => {
+                          const isSelected = getAnswer(question.id) === option;
+                          return (
+                            <button
+                              key={option}
+                              onClick={() => handleAnswer(question.id, option)}
+                              className={`p-6 rounded-2xl border-2 transition-all hover:scale-105 ${
+                                isSelected
+                                  ? 'border-blue-500 bg-blue-50 shadow-lg'
+                                  : 'border-gray-200 hover:border-blue-200 hover:shadow-md'
+                              }`}
+                            >
+                              <div className={`text-4xl mb-3 ${isSelected ? 'scale-110' : ''} transition-transform`}>
+                                {option === 'Time Constraints' && '⏰'}
+                                {option === 'Technical Know-how' && '🔧'}
+                                {option === 'Content Ideas' && '💡'}
+                                {option === 'Production Quality' && '🎬'}
+                              </div>
+                              <h4 className={`font-semibold ${isSelected ? 'text-blue-700' : 'text-gray-700'}`}>{option}</h4>
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+
+                    {question.type === 'buttons' && question.options && (
+                      <>
+                        {question.options.map((option, idx) => {
+                          const isSelected = getAnswer(question.id) === option;
+                          return (
+                            <button
+                              key={idx}
+                              onClick={() => handleAnswer(question.id, option)}
+                              className={`px-6 py-3 rounded-full font-semibold transition-colors ${
+                                isSelected
+                                  ? 'bg-blue-500 text-white shadow-lg'
+                                  : 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                              }`}
+                            >
+                              {option}
+                            </button>
+                          );
+                        })}
+                      </>
+                    )}
+
                     {question.type === 'scale' && question.options && (
                       <>
                         {question.options.map((option, idx) => {
@@ -330,13 +538,13 @@ export const EvergreenPalQuiz = () => {
           </div>
 
           {/* Character Illustration - Tablet and Desktop Only */}
-          <div className="hidden md:flex md:flex-col md:items-center md:w-[350px] lg:w-[450px] flex-shrink-0 md:mt-0 lg:mt-2 md:ml-4 lg:ml-8">
+          <div className="hidden md:flex md:flex-col md:items-center md:w-[350px] lg:w-[450px] flex-shrink-0 md:mt-4 lg:mt-8 md:ml-4 lg:ml-8">
             <img 
               src={characterConfigs[currentSection].image}
               alt="Evergreen Pal character illustration"
               className="w-full h-auto max-h-[500px] lg:max-h-[600px] object-contain animate-fade-in"
             />
-            <div className="mt-2 lg:mt-3 bg-blue-50 rounded-2xl p-4 lg:p-6 border-2 border-blue-200 shadow-lg animate-scale-in">
+            <div className="mt-3 lg:mt-4 bg-blue-50 rounded-2xl p-4 lg:p-6 border-2 border-blue-200 shadow-lg animate-scale-in">
               <p className="text-blue-800 font-semibold text-base lg:text-lg text-center">
                 💡 Pro Tip: {characterConfigs[currentSection].tip}
               </p>

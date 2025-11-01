@@ -240,7 +240,7 @@ const caseStudies: CaseStudy[] = [
 
 export const UseCaseCategories = () => {
   const [expandedCards, setExpandedCards] = useState<string[]>([]);
-  const [viewMode, setViewMode] = useState<'before' | 'after'>('before');
+  const [cardViewModes, setCardViewModes] = useState<Record<string, 'before' | 'after'>>({});
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
@@ -250,6 +250,17 @@ export const UseCaseCategories = () => {
         ? prev.filter(id => id !== caseStudyId)
         : [...prev, caseStudyId]
     );
+  };
+
+  const toggleCardViewMode = (caseStudyId: string, mode: 'before' | 'after') => {
+    setCardViewModes(prev => ({
+      ...prev,
+      [caseStudyId]: mode
+    }));
+  };
+
+  const getCardViewMode = (caseStudyId: string): 'before' | 'after' => {
+    return cardViewModes[caseStudyId] || 'before';
   };
 
   const handleGetStarted = (serviceUrl: string) => {
@@ -270,16 +281,16 @@ export const UseCaseCategories = () => {
         {/* Header - White Card */}
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-[clamp(2rem,8vw,4rem)] video-shadow-xl text-center mb-[clamp(3rem,8vw,3rem)]">
           <h2 className="text-[clamp(2rem,6vw,3.5rem)] font-display font-black mb-[clamp(2rem,5vw,2rem)] text-corporate-dark tracking-tight">
-            Seven Seattle <span className="text-pal-green">Success Stories</span>
+            Video Use Case <span className="text-pal-green">Examples</span>
           </h2>
           <p className="text-[clamp(1.125rem,3vw,1.25rem)] text-corporate-gray mb-[clamp(2rem,5vw,2rem)] max-w-4xl mx-auto font-medium leading-relaxed">
-            Real business scenarios from across Seattle. See the specific challenges, processes, and projected results 
-            for each strategic video content system.
+            Discover how businesses leverage our Pals to solve specific pain points with strategic video solutions. 
+            Each example shows the challenge, the video solution, and the projected impact.
           </p>
 
           <div className="bg-gradient-to-br from-pal-orange/10 to-pal-orange/5 border border-pal-orange/20 rounded-lg p-4 mb-8 max-w-2xl mx-auto">
             <p className="text-corporate-dark text-sm">
-              <strong>Note:</strong> These are fictional scenarios based on typical client transformations and industry best practices.
+              <strong>Note:</strong> These are example scenarios showing how different Pals address common business pain points with video solutions.
             </p>
           </div>
           
@@ -306,6 +317,7 @@ export const UseCaseCategories = () => {
           <div className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-[clamp(2rem,5vw,2rem)]">
             {caseStudies.map((caseStudy) => {
               const isExpanded = expandedCards.includes(caseStudy.id);
+              const currentViewMode = getCardViewMode(caseStudy.id);
               
               return (
                 <Collapsible key={caseStudy.id} open={isExpanded} onOpenChange={() => toggleCard(caseStudy.id)}>
@@ -354,9 +366,12 @@ export const UseCaseCategories = () => {
                           <div className="flex justify-center">
                             <div className="bg-gray-100 rounded-lg p-1 flex">
                               <button
-                                onClick={() => setViewMode('before')}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleCardViewMode(caseStudy.id, 'before');
+                                }}
                                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                                  viewMode === 'before' 
+                                  currentViewMode === 'before' 
                                     ? 'bg-white text-red-600 shadow-sm' 
                                     : 'text-gray-600 hover:text-gray-800'
                                 }`}
@@ -364,9 +379,12 @@ export const UseCaseCategories = () => {
                                 Before
                               </button>
                               <button
-                                onClick={() => setViewMode('after')}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleCardViewMode(caseStudy.id, 'after');
+                                }}
                                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                                  viewMode === 'after' 
+                                  currentViewMode === 'after' 
                                     ? 'bg-white text-green-600 shadow-sm' 
                                     : 'text-gray-600 hover:text-gray-800'
                                 }`}
@@ -377,17 +395,17 @@ export const UseCaseCategories = () => {
                           </div>
 
                           <div className="grid grid-cols-1 gap-3">
-                            {(viewMode === 'before' ? caseStudy.beforeMetrics : caseStudy.afterMetrics).map((metric, idx) => (
+                            {(currentViewMode === 'before' ? caseStudy.beforeMetrics : caseStudy.afterMetrics).map((metric, idx) => (
                               <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 border">
                                 <span className="text-sm font-medium text-corporate-dark">{metric.label}</span>
                                 <div className="flex items-center gap-2">
-                                  {viewMode === 'before' ? (
+                                  {currentViewMode === 'before' ? (
                                     <XCircle className="w-4 h-4 text-red-500" />
                                   ) : (
                                     <CheckCircle className="w-4 h-4 text-green-500" />
                                   )}
                                   <span className={`text-sm font-semibold ${
-                                    viewMode === 'before' ? 'text-red-600' : 'text-green-600'
+                                    currentViewMode === 'before' ? 'text-red-600' : 'text-green-600'
                                   }`}>
                                     {metric.value}
                                   </span>

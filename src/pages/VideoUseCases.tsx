@@ -21,11 +21,11 @@ const VideoUseCasesPage = () => {
         </div>
       </div>
       <MetaTags 
-        title="Seattle Business Video Case Studies | Palmer House Productions"
-        description="Real Seattle business video case studies showing transformation through strategic content systems. See specific challenges, processes, and projected results for local businesses."
-        keywords="Seattle business video case studies, video content systems, business transformation, Seattle video production, local business examples"
-        ogTitle="Seattle Business Video Case Studies | Palmer House Productions"
-        ogDescription="Real Seattle business video case studies showing transformation through strategic content systems."
+        title="Business Video Use Cases | Palmer House Productions"
+        description="Explore how businesses use video to solve pain points: boost visibility with Reel Pal, train staff with System Pal, establish authority with Evergreen Pal, and create premium content with Spotlight Pal."
+        keywords="video use cases, business video solutions, Reel Pal, System Pal, Evergreen Pal, Spotlight Pal, video marketing examples, training videos, social media video"
+        ogTitle="Business Video Use Cases | Palmer House Productions"
+        ogDescription="Discover how businesses leverage video with our Pals to address specific pain points and drive results."
         canonicalUrl="https://www.palmerhouseproductions.com/video-use-cases"
       />
       <StructuredData type="services" />

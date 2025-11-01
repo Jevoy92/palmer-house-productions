@@ -31,6 +31,10 @@ import reelWritingHooksImage from '@/assets/blog/reel-writing-hooks.jpg';
 import spotlightAudioQualityImage from '@/assets/blog/spotlight-audio-quality.jpg';
 import spotlightProfessionalLightingImage from '@/assets/blog/spotlight-professional-lighting.jpg';
 import spotlightVideoEditingImage from '@/assets/blog/spotlight-video-editing.jpg';
+import systemVideoContentToolkitImage from '@/assets/blog/system-video-content-toolkit.jpg';
+import systemAutomateEmployeeTrainingImage from '@/assets/blog/system-automate-employee-training.jpg';
+import systemVideoTrainingLibraryImage from '@/assets/blog/system-video-training-library.jpg';
+import systemScalingVideoOperationsImage from '@/assets/blog/system-scaling-video-operations.jpg';
 
 // Blog articles data - Focused on core strategic content
 const blogArticles = [
@@ -44,8 +48,8 @@ const blogArticles = [
     featured: true,
     slug: '/blog/video-content-toolkit-2025',
     tags: ['video-strategy', 'content-creation', 'business-growth', 'toolkits'],
-    image: editingLikeProImage,
-    imageAlt: 'Video content creation toolkit and editing workflow',
+    image: systemVideoContentToolkitImage,
+    imageAlt: 'Video content system toolkit with complete business tools and resources',
     author: 'System Pal',
     authorRole: 'Operations & Systems Expert'
   },
@@ -59,8 +63,8 @@ const blogArticles = [
     featured: true,
     slug: '/blog/automate-employee-training-video',
     tags: ['employee-training', 'automation', 'video-systems', 'hr'],
-    image: employeeTrainingAutomationImage,
-    imageAlt: 'Automated employee training with video modules',
+    image: systemAutomateEmployeeTrainingImage,
+    imageAlt: 'Automated employee training pipeline with video onboarding system',
     author: 'System Pal',
     authorRole: 'Operations & Systems Expert'
   },
@@ -74,8 +78,8 @@ const blogArticles = [
     featured: false,
     slug: '/blog/build-video-training-library',
     tags: ['video-library', 'training-systems', 'knowledge-management', 'onboarding'],
-    image: employeeTrainingAutomationImage,
-    imageAlt: 'Organized video training library system',
+    image: systemVideoTrainingLibraryImage,
+    imageAlt: 'Scalable video training library showing organized content pyramid',
     author: 'System Pal',
     authorRole: 'Operations & Systems Expert'
   },
@@ -89,8 +93,8 @@ const blogArticles = [
     featured: false,
     slug: '/blog/scale-video-operations',
     tags: ['video-operations', 'scaling', 'workflows', 'production-management'],
-    image: editingLikeProImage,
-    imageAlt: 'Video production operations dashboard',
+    image: systemScalingVideoOperationsImage,
+    imageAlt: 'Scaling video operations from 1 to 100 videos with production pipeline',
     author: 'System Pal',
     authorRole: 'Operations & Systems Expert'
   },

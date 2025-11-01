@@ -143,29 +143,13 @@ export const Navigation = () => {
                       <ChevronDown className="ml-1 h-4 w-4" />
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-56 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
+                  <DropdownMenuContent align="start" className="w-64 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
                     <DropdownMenuItem asChild>
                       <button 
-                        onClick={() => handlePageTransition('/reel-pal')}
+                        onClick={() => handlePageTransition('/')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
-                        Social Content
-                      </button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <button 
-                        onClick={() => handlePageTransition('/system-pal')}
-                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      >
-                        Training Systems
-                      </button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <button 
-                        onClick={() => handlePageTransition('/evergreen-pal')}
-                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      >
-                        Evergreen Content
+                        Video Production
                       </button>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
@@ -173,7 +157,15 @@ export const Navigation = () => {
                         onClick={() => handlePageTransition('/spotlight-pal')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
-                        Premium Production
+                        Post-Production
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/content-strategy')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Consulting & Strategy
                       </button>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
@@ -181,7 +173,27 @@ export const Navigation = () => {
                         onClick={() => handlePageTransition('/services/diy-downloads')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
-                        DIY Downloads
+                        DIY Tools & Downloads
+                      </button>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                {/* Industries Dropdown */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="flex items-center text-base font-medium text-muted-foreground hover:text-foreground transition-colors focus:outline-none">
+                      Industries
+                      <ChevronDown className="ml-1 h-4 w-4" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-56 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/safety-videos')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Healthcare
                       </button>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
@@ -189,7 +201,15 @@ export const Navigation = () => {
                         onClick={() => handlePageTransition('/safety-videos')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
-                        Safety Videos
+                        Manufacturing
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/about-us')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Professional Services
                       </button>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
@@ -197,7 +217,171 @@ export const Navigation = () => {
                         onClick={() => handlePageTransition('/startups')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
-                        Startups
+                        Technology
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/about-us')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Education
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/about-us')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Government
+                      </button>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                {/* Assessments Dropdown */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="flex items-center text-base font-medium text-muted-foreground hover:text-foreground transition-colors focus:outline-none">
+                      Assessments
+                      <ChevronDown className="ml-1 h-4 w-4" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-56 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/assessments/video-readiness')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Quick Assessment
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/pals')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Find Your Pal Quiz
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/assessments/video-readiness')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Video Health Check
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/assessments/video-readiness')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Visibility Audit
+                      </button>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                {/* Meet the Pals Dropdown */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className={cn("flex items-center text-base font-medium transition-colors focus:outline-none", isActivePath('/pals') || isActivePath('/reel-pal') || isActivePath('/system-pal') || isActivePath('/evergreen-pal') || isActivePath('/spotlight-pal') ? "text-social-purple font-bold" : "text-muted-foreground hover:text-foreground")}>
+                      Meet the Pals
+                      <ChevronDown className="ml-1 h-4 w-4" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-56 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/pals')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer font-medium"
+                      >
+                        Palmer House Pals
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/reel-pal')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Reel Pal
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/system-pal')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        System Pal
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/evergreen-pal')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Evergreen Pal
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/spotlight-pal')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Spotlight Pal
+                      </button>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                {/* Resources Dropdown */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="flex items-center text-base font-medium text-muted-foreground hover:text-foreground transition-colors focus:outline-none">
+                      Resources
+                      <ChevronDown className="ml-1 h-4 w-4" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="start" className="w-56 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/blog')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Blog / Insights
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/video-use-cases')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Video Use Cases
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/resources/reviews')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Client Reviews
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/services/diy-downloads')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Downloads & Templates
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/faq')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        FAQ
                       </button>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -238,66 +422,6 @@ export const Navigation = () => {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-
-                {/* Resources Dropdown */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button className="flex items-center text-base font-medium text-muted-foreground hover:text-foreground transition-colors focus:outline-none">
-                      Resources
-                      <ChevronDown className="ml-1 h-4 w-4" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-48 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
-                    <DropdownMenuItem asChild>
-                      <button 
-                        onClick={() => handlePageTransition('/blog')}
-                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      >
-                        Blog
-                      </button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <button 
-                        onClick={() => handlePageTransition('/content-strategy')}
-                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      >
-                        Content Strategy
-                      </button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <button 
-                        onClick={() => handlePageTransition('/video-use-cases')}
-                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      >
-                        Video Use Cases
-                      </button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <button 
-                        onClick={() => handlePageTransition('/resources/reviews')}
-                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      >
-                        Client Reviews
-                      </button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <button 
-                        onClick={() => handlePageTransition('/faq')}
-                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      >
-                        FAQ
-                      </button>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-
-                {/* Meet the Pals Link */}
-                <button 
-                  onClick={() => handlePageTransition('/pals')}
-                  className={cn("transition-colors text-base font-medium px-3 py-2", isActivePath('/pals') ? "text-social-purple font-bold border-b-2 border-social-purple" : "text-muted-foreground hover:text-foreground")}
-                >
-                  Meet the Pals
-                </button>
               </div>
 
               {/* Contact Button - Always visible */}
@@ -329,46 +453,176 @@ export const Navigation = () => {
               <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Services</div>
               <div className="space-y-1">
                 <button 
-                  onClick={() => handlePageTransition('/reel-pal')}
+                  onClick={() => handlePageTransition('/')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
-                  Social Content
-                </button>
-                <button 
-                  onClick={() => handlePageTransition('/system-pal')}
-                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  Training Systems
-                </button>
-                <button 
-                  onClick={() => handlePageTransition('/evergreen-pal')}
-                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  Evergreen Content
+                  Video Production
                 </button>
                 <button 
                   onClick={() => handlePageTransition('/spotlight-pal')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
-                  Premium Production
+                  Post-Production
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/content-strategy')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Consulting & Strategy
                 </button>
                 <button 
                   onClick={() => handlePageTransition('/services/diy-downloads')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
-                  DIY Downloads
+                  DIY Tools & Downloads
+                </button>
+              </div>
+            </div>
+
+            {/* Industries Section */}
+            <div className="space-y-3">
+              <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Industries</div>
+              <div className="space-y-1">
+                <button 
+                  onClick={() => handlePageTransition('/safety-videos')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Healthcare
                 </button>
                 <button 
                   onClick={() => handlePageTransition('/safety-videos')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
-                  Safety Videos
+                  Manufacturing
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/about-us')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Professional Services
                 </button>
                 <button 
                   onClick={() => handlePageTransition('/startups')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
-                  Startups
+                  Technology
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/about-us')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Education
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/about-us')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Government
+                </button>
+              </div>
+            </div>
+
+            {/* Assessments Section */}
+            <div className="space-y-3">
+              <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Assessments</div>
+              <div className="space-y-1">
+                <button 
+                  onClick={() => handlePageTransition('/assessments/video-readiness')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Quick Assessment
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/pals')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Find Your Pal Quiz
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/assessments/video-readiness')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Video Health Check
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/assessments/video-readiness')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Visibility Audit
+                </button>
+              </div>
+            </div>
+
+            {/* Meet the Pals Section */}
+            <div className="space-y-3">
+              <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Meet the Pals</div>
+              <div className="space-y-1">
+                <button 
+                  onClick={() => handlePageTransition('/pals')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center font-medium"
+                >
+                  Palmer House Pals
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/reel-pal')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Reel Pal
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/system-pal')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  System Pal
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/evergreen-pal')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Evergreen Pal
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/spotlight-pal')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Spotlight Pal
+                </button>
+              </div>
+            </div>
+
+            {/* Resources Section */}
+            <div className="space-y-3">
+              <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Resources</div>
+              <div className="space-y-1">
+                <button 
+                  onClick={() => handlePageTransition('/blog')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Blog / Insights
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/video-use-cases')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Video Use Cases
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/resources/reviews')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Client Reviews
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/services/diy-downloads')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Downloads & Templates
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/faq')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  FAQ
                 </button>
               </div>
             </div>
@@ -394,56 +648,6 @@ export const Navigation = () => {
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
                   Our Values
-                </button>
-              </div>
-            </div>
-
-            {/* Resources Section */}
-            <div className="space-y-3">
-              <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Resources</div>
-              <div className="space-y-1">
-                <button 
-                  onClick={() => handlePageTransition('/blog')}
-                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  Blog
-                </button>
-                <button 
-                  onClick={() => handlePageTransition('/content-strategy')}
-                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  Content Strategy
-                </button>
-                <button 
-                  onClick={() => handlePageTransition('/video-use-cases')}
-                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  Video Use Cases
-                </button>
-                <button 
-                  onClick={() => handlePageTransition('/resources/reviews')}
-                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  Client Reviews
-                </button>
-                <button 
-                  onClick={() => handlePageTransition('/faq')}
-                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  FAQ
-                </button>
-              </div>
-            </div>
-
-            {/* Pals Section */}
-            <div className="space-y-3">
-              <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Meet the Pals</div>
-              <div className="space-y-1">
-                <button 
-                  onClick={() => handlePageTransition('/pals')}
-                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  Palmer House Pals
                 </button>
               </div>
             </div>

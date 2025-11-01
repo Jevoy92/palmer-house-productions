@@ -350,7 +350,7 @@ export const ReelPalQuiz = () => {
         <div className="flex-grow max-w-3xl">
           <div className="bg-white rounded-3xl shadow-2xl p-10 lg:p-12">
             {/* Section Header */}
-            <div className="flex items-center space-x-4 mb-8">
+            <div className="flex items-center justify-center space-x-4 mb-8">
               <h1 className="text-3xl font-bold text-gray-800">{currentSectionData.title}</h1>
               <currentSectionData.icon className="w-8 h-8 text-teal-500" />
             </div>

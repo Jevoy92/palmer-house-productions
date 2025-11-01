@@ -606,69 +606,6 @@ const EducationPage = () => {
           </div>
         </section>
 
-        {/* Industry Use Cases */}
-        <section className="py-24 bg-gray-50">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">
-                Serving Educational Institutions at Every Level
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                From K-12 to higher education and beyond, we understand the unique communication needs, 
-                compliance requirements, and stakeholder relationships that define educational environments.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {useCases.map((useCase, index) => (
-                <Card key={index} className="group hover:shadow-xl transition-all duration-300 bg-white border-t-4 border-teal-600 hover:scale-105">
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center text-teal-600 mb-4 group-hover:scale-110 transition-transform">
-                      {useCase.icon}
-                    </div>
-                    <CardTitle className="text-xl text-gray-900 mb-3">{useCase.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base text-gray-600 leading-relaxed">
-                      {useCase.description}
-                    </CardDescription>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Educational Impact */}
-        <section className="py-24 bg-teal-600 text-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto text-center">
-              <Sparkles className="h-16 w-16 mx-auto mb-6 opacity-90" />
-              <h2 className="text-4xl lg:text-5xl font-extrabold mb-6">
-                Video Content That Transforms Educational Experiences
-              </h2>
-              <p className="text-xl text-white/90 mb-8 leading-relaxed">
-                Quality video content doesn't just inform—it inspires. Our education video production creates 
-                engaging learning experiences, showcases institutional excellence, builds emotional connections 
-                with stakeholders, and helps educational organizations achieve their mission of student success 
-                and community impact.
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12">
-                {[
-                  { label: "Engaging Content", icon: <Lightbulb className="h-8 w-8 mx-auto mb-2" /> },
-                  { label: "Accessible Learning", icon: <Globe className="h-8 w-8 mx-auto mb-2" /> },
-                  { label: "Student-Centered", icon: <Heart className="h-8 w-8 mx-auto mb-2" /> },
-                  { label: "Evidence-Based", icon: <Brain className="h-8 w-8 mx-auto mb-2" /> }
-                ].map((item, index) => (
-                  <div key={index} className="text-center">
-                    {item.icon}
-                    <div className="font-semibold">{item.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* CTA Section */}
         <section className="py-24 bg-white">

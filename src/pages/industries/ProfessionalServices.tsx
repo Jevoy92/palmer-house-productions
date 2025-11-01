@@ -605,68 +605,6 @@ const ProfessionalServicesPage = () => {
           </div>
         </section>
 
-        {/* Industry Use Cases */}
-        <section className="py-24 bg-gray-50">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">
-                Serving Professional Service Firms Across Industries
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                From law to consulting to financial services, we understand the unique communication challenges 
-                and ethical considerations of professional services marketing and create content that builds trust.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {useCases.map((useCase, index) => (
-                <Card key={index} className="group hover:shadow-xl transition-all duration-300 bg-white border-t-4 border-indigo-600 hover:scale-105">
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 mb-4 group-hover:scale-110 transition-transform">
-                      {useCase.icon}
-                    </div>
-                    <CardTitle className="text-xl text-gray-900 mb-3">{useCase.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base text-gray-600 leading-relaxed">
-                      {useCase.description}
-                    </CardDescription>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Trust & Credibility */}
-        <section className="py-24 bg-indigo-700 text-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto text-center">
-              <Award className="h-16 w-16 mx-auto mb-6 opacity-90" />
-              <h2 className="text-4xl lg:text-5xl font-extrabold mb-6">
-                Build Trust & Authority with Professional Video Content
-              </h2>
-              <p className="text-xl text-white/90 mb-8 leading-relaxed">
-                In professional services, trust is everything. Video allows you to demonstrate expertise, showcase results, 
-                and build relationships before the first meeting. Our professional services video production creates content 
-                that positions your firm as the trusted advisor clients seek when making important decisions.
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12">
-                {[
-                  { label: "Authentic Storytelling", icon: <Users className="h-8 w-8 mx-auto mb-2" /> },
-                  { label: "Ethical Marketing", icon: <Shield className="h-8 w-8 mx-auto mb-2" /> },
-                  { label: "Authority Building", icon: <Award className="h-8 w-8 mx-auto mb-2" /> },
-                  { label: "Results-Focused", icon: <Target className="h-8 w-8 mx-auto mb-2" /> }
-                ].map((item, index) => (
-                  <div key={index} className="text-center">
-                    {item.icon}
-                    <div className="font-semibold">{item.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* CTA Section */}
         <section className="py-24 bg-white">

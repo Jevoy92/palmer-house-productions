@@ -607,68 +607,6 @@ const GovernmentPage = () => {
           </div>
         </section>
 
-        {/* Industry Use Cases */}
-        <section className="py-24 bg-gray-50">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">
-                Serving Government Agencies at All Levels
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                From federal departments to local municipalities, we understand the unique challenges, 
-                regulations, and accountability requirements of government video production.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {useCases.map((useCase, index) => (
-                <Card key={index} className="group hover:shadow-xl transition-all duration-300 bg-white border-t-4 border-blue-900 hover:scale-105">
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-900 mb-4 group-hover:scale-110 transition-transform">
-                      {useCase.icon}
-                    </div>
-                    <CardTitle className="text-xl text-gray-900 mb-3">{useCase.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base text-gray-600 leading-relaxed">
-                      {useCase.description}
-                    </CardDescription>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Trust & Transparency */}
-        <section className="py-24 bg-blue-900 text-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto text-center">
-              <Eye className="h-16 w-16 mx-auto mb-6 opacity-90" />
-              <h2 className="text-4xl lg:text-5xl font-extrabold mb-6">
-                Secure, Compliant, & Transparent Video Production
-              </h2>
-              <p className="text-xl text-white/90 mb-8 leading-relaxed">
-                We understand government requirements for security clearances, data protection, accessibility compliance (Section 508), 
-                public records laws, and transparent procurement processes. Our government video production services meet federal, 
-                state, and local regulations while delivering content that serves the public interest and builds citizen trust.
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12">
-                {[
-                  { label: "Section 508 Compliant", icon: <Eye className="h-8 w-8 mx-auto mb-2" /> },
-                  { label: "Secure Production", icon: <Shield className="h-8 w-8 mx-auto mb-2" /> },
-                  { label: "Public Records Ready", icon: <FileText className="h-8 w-8 mx-auto mb-2" /> },
-                  { label: "Transparent Process", icon: <Scale className="h-8 w-8 mx-auto mb-2" /> }
-                ].map((item, index) => (
-                  <div key={index} className="text-center">
-                    {item.icon}
-                    <div className="font-semibold">{item.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* CTA Section */}
         <section className="py-24 bg-white">

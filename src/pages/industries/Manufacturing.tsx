@@ -605,69 +605,6 @@ const ManufacturingPage = () => {
           </div>
         </section>
 
-        {/* Industry Use Cases */}
-        <section className="py-24 bg-gray-50">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">
-                Serving Every Manufacturing Sector
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                From discrete manufacturing to process industries, we understand the unique training and 
-                communication challenges of different manufacturing environments and regulatory requirements.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {useCases.map((useCase, index) => (
-                <Card key={index} className="group hover:shadow-xl transition-all duration-300 bg-white border-t-4 border-gray-800 hover:scale-105">
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-700 mb-4 group-hover:scale-110 transition-transform">
-                      {useCase.icon}
-                    </div>
-                    <CardTitle className="text-xl text-gray-900 mb-3">{useCase.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base text-gray-600 leading-relaxed">
-                      {useCase.description}
-                    </CardDescription>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Compliance & Standards */}
-        <section className="py-24 bg-gray-800 text-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto text-center">
-              <Shield className="h-16 w-16 mx-auto mb-6 opacity-90" />
-              <h2 className="text-4xl lg:text-5xl font-extrabold mb-6">
-                OSHA-Compliant & Standards-Ready Video Training
-              </h2>
-              <p className="text-xl text-white/90 mb-8 leading-relaxed">
-                We understand manufacturing compliance requirements. All safety training videos meet OSHA standards, 
-                ANSI guidelines, and industry-specific regulations. Our manufacturing video production services 
-                support ISO certification, lean manufacturing initiatives, continuous improvement programs, 
-                and regulatory audit requirements.
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12">
-                {[
-                  { label: "OSHA Compliant", icon: <Shield className="h-8 w-8 mx-auto mb-2" /> },
-                  { label: "ISO Standards", icon: <Award className="h-8 w-8 mx-auto mb-2" /> },
-                  { label: "ANSI Guidelines", icon: <FileCheck className="h-8 w-8 mx-auto mb-2" /> },
-                  { label: "Lean Certified", icon: <BookOpen className="h-8 w-8 mx-auto mb-2" /> }
-                ].map((item, index) => (
-                  <div key={index} className="text-center">
-                    {item.icon}
-                    <div className="font-semibold">{item.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* CTA Section */}
         <section className="py-24 bg-white">

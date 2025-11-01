@@ -15,9 +15,18 @@ import {
   ChevronDown,
   ChevronUp,
   Check,
-  Users
+  Users,
+  BarChart3,
+  Sparkles,
+  Target
 } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import placeholderImage from '@/assets/pals/female-spotlight-pal.png';
 
 type Answer = {
@@ -258,6 +267,138 @@ export const SpotlightPalQuiz = () => {
     });
   }, [currentSection]);
 
+  const calculateDetailedScore = () => {
+    const categoryScores: { [key: string]: { score: number; max: number } } = {};
+    
+    sections.forEach(section => {
+      let sectionScore = 0;
+      let sectionMax = 0;
+      
+      section.questions.forEach(question => {
+        const answer = answers.find(a => a.sectionId === section.id && a.questionId === question.id);
+        if (answer) {
+          if (question.type === 'slider') {
+            const value = answer.value as number;
+            const range = (question.max || 10) - (question.min || 0);
+            sectionScore += ((value - (question.min || 0)) / range) * 10;
+            sectionMax += 10;
+          } else if (question.type === 'emoji') {
+            const emojiValues: { [key: string]: number } = { '😫': 2, '😕': 4, '😐': 6, '😊': 8, '🚀': 10 };
+            sectionScore += emojiValues[answer.value as string] || 5;
+            sectionMax += 10;
+          } else if (question.type === 'checkbox' && Array.isArray(answer.value)) {
+            sectionScore += (answer.value.length / (question.options?.length || 1)) * 10;
+            sectionMax += 10;
+          } else {
+            sectionScore += 7;
+            sectionMax += 10;
+          }
+        }
+      });
+      
+      categoryScores[section.title] = {
+        score: sectionScore,
+        max: sectionMax
+      };
+    });
+    
+    const totalScore = Object.values(categoryScores).reduce((sum, cat) => sum + cat.score, 0);
+    const totalMax = Object.values(categoryScores).reduce((sum, cat) => sum + cat.max, 0);
+    const percentage = Math.round((totalScore / totalMax) * 100);
+    
+    return { categoryScores, totalScore, totalMax, percentage };
+  };
+
+  const getCategoryInsight = (categoryTitle: string, score: number, max: number): string => {
+    const percentage = (score / max) * 100;
+    
+    const insights: { [key: string]: { high: string; medium: string; low: string } } = {
+      "Visual Quality": {
+        high: "Your visual standards are exceptional! This foundation will elevate your brand's cinematic presence.",
+        medium: "You appreciate quality visuals, but refining production techniques could take your content from good to stunning.",
+        low: "Visual quality differentiates premium brands. Let's develop your eye for cinematography and production values."
+      },
+      "Storytelling": {
+        high: "Excellent storytelling awareness! You understand how narrative structure creates emotional connection and drives action.",
+        medium: "Your storytelling instincts are solid, but crafting compelling video narratives requires intentional structure and pacing.",
+        low: "Story is what transforms viewers into customers. Let's build your framework for video storytelling that converts."
+      },
+      "Production Planning": {
+        high: "Your production planning approach is thorough! Preparation at this level ensures efficient shoots and polished results.",
+        medium: "Good planning instincts, but tightening pre-production workflows will save time and improve final output quality.",
+        low: "Professional production starts with solid planning. Let's create systems for scripting, shot lists, and production logistics."
+      },
+      "Technical Skills": {
+        high: "Strong technical foundation! Your understanding of lighting, audio, and editing will produce professional-grade content.",
+        medium: "You grasp the basics, but mastering technical elements like lighting and sound design will elevate production value dramatically.",
+        low: "Technical skills are learnable and transformative. Let's develop your proficiency in the tools that create cinematic quality."
+      },
+      "Brand Alignment": {
+        high: "You excel at maintaining brand consistency! This ensures every video reinforces your positioning and message.",
+        medium: "Good brand awareness, but tighter alignment between visual style and brand identity will strengthen market perception.",
+        low: "Brand alignment in video creates recognition and trust. Let's define your visual identity and messaging framework."
+      }
+    };
+    
+    if (percentage >= 70) return insights[categoryTitle]?.high || "";
+    if (percentage >= 40) return insights[categoryTitle]?.medium || "";
+    return insights[categoryTitle]?.low || "";
+  };
+
+  const getActionItems = (categoryScores: { [key: string]: { score: number; max: number } }): string[] => {
+    const actions: string[] = [];
+    
+    Object.entries(categoryScores).forEach(([category, { score, max }]) => {
+      const percentage = (score / max) * 100;
+      
+      if (category === "Visual Quality" && percentage < 70) {
+        actions.push("Study cinematography fundamentals: composition, color theory, and camera movement to elevate visual storytelling");
+      }
+      if (category === "Storytelling" && percentage < 70) {
+        actions.push("Develop a video storytelling framework with clear hooks, emotional arcs, and compelling calls-to-action");
+      }
+      if (category === "Production Planning" && percentage < 70) {
+        actions.push("Create production templates for shot lists, scripts, and schedules to streamline professional shoots");
+      }
+      if (category === "Technical Skills" && percentage < 70) {
+        actions.push("Invest in learning professional lighting setups and audio recording techniques for broadcast-quality production");
+      }
+      if (category === "Brand Alignment" && percentage < 70) {
+        actions.push("Define a visual brand guide for video: color palettes, music style, pacing, and on-screen text standards");
+      }
+    });
+    
+    if (actions.length === 0) {
+      actions.push("Experiment with cinematic techniques like depth of field, camera angles, and color grading");
+      actions.push("Build a library of brand-approved music, graphics, and visual assets for efficient production");
+      actions.push("Document your production workflows to maintain quality as you scale video output");
+    }
+    
+    return actions;
+  };
+
+  const getRecommendation = (percentage: number): { title: string; description: string; cta: string } => {
+    if (percentage >= 75) {
+      return {
+        title: "You're Ready for Cinematic Excellence",
+        description: "Your strong production foundation positions you perfectly for creating premium video content. Let's leverage your readiness to produce spotlight-worthy videos that showcase your brand with Hollywood-level quality.",
+        cta: "Launch Spotlight Production"
+      };
+    } else if (percentage >= 50) {
+      return {
+        title: "Elevate Your Production Game",
+        description: "You have solid fundamentals but strategic support will unlock cinematic quality. Let's refine your technical skills, storytelling, and production planning to create videos that command attention and build trust.",
+        cta: "Develop Production Skills"
+      };
+    } else {
+      return {
+        title: "Begin Your Spotlight Journey",
+        description: "Premium production might seem out of reach, but it's more accessible than you think. Let's start with foundational training and guided projects to build your confidence and capability in creating stunning video content.",
+        cta: "Start Discovery Call"
+      };
+    }
+  };
+
   useEffect(() => {
     if (showResults) {
       const duration = 3000;
@@ -288,17 +429,90 @@ export const SpotlightPalQuiz = () => {
   }, [showResults]);
 
   if (showResults) {
+    const { categoryScores, percentage } = calculateDetailedScore();
+    const actionItems = getActionItems(categoryScores);
+    const recommendation = getRecommendation(percentage);
+
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fade-in">
-        <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-12 text-center">
-          <Trophy className="w-20 h-20 mx-auto mb-6 text-purple-500 animate-scale-in" />
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-800">Your Spotlight Strategy Assessment Complete!</h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Thanks for completing the quiz! Based on your answers, let's discuss how cinematic production can showcase your brand and build trust through powerful storytelling.
-          </p>
-          <Link to="/contact" className="inline-block bg-purple-500 text-white font-semibold px-8 py-4 rounded-full hover:bg-purple-600 transition-colors shadow-lg hover:shadow-xl transform hover:scale-105">
-            Book Strategy Call →
-          </Link>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 animate-fade-in">
+        {/* Overall Score */}
+        <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-12 text-white text-center mb-6 sm:mb-8">
+          <Trophy className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 animate-scale-in" />
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">Quiz Complete!</h2>
+          <div className="text-6xl sm:text-7xl md:text-8xl font-bold mb-3 sm:mb-4">{percentage}%</div>
+          <p className="text-lg sm:text-xl md:text-2xl opacity-90 max-w-2xl mx-auto">Cinematic Production Readiness Score</p>
+        </div>
+
+        {/* Category Breakdown */}
+        <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-gray-800 flex items-center gap-3">
+            <BarChart3 className="w-7 h-7 sm:w-8 sm:h-8 text-purple-500" />
+            Your Production Breakdown
+          </h3>
+          
+          <Accordion type="multiple" value={openCategories} onValueChange={setOpenCategories} className="space-y-3 sm:space-y-4">
+            {Object.entries(categoryScores).map(([category, { score, max }]) => {
+              const categoryPercentage = Math.round((score / max) * 100);
+              const insight = getCategoryInsight(category, score, max);
+              
+              return (
+                <AccordionItem key={category} value={category} className="border border-gray-200 rounded-2xl px-4 sm:px-6 overflow-hidden">
+                  <AccordionTrigger className="hover:no-underline py-4 sm:py-6">
+                    <div className="flex items-center justify-between w-full pr-4">
+                      <div className="flex items-center gap-3 sm:gap-4">
+                        <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-purple-500 flex-shrink-0" />
+                        <span className="font-semibold text-base sm:text-lg text-left">{category}</span>
+                      </div>
+                      <span className="text-xl sm:text-2xl font-bold text-purple-500">{categoryPercentage}%</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-4 sm:pb-6">
+                    <div className="bg-gray-50 rounded-xl p-4 sm:p-6 mt-2">
+                      <p className="text-sm sm:text-base text-gray-700 leading-relaxed">{insight}</p>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
+          </Accordion>
+        </div>
+
+        {/* Action Items */}
+        <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-gray-800 flex items-center gap-3">
+            <Target className="w-7 h-7 sm:w-8 sm:h-8 text-purple-500" />
+            Your Personalized Action Plan
+          </h3>
+          <div className="space-y-3 sm:space-y-4">
+            {actionItems.map((item, index) => (
+              <div key={index} className="flex gap-3 sm:gap-4 p-4 sm:p-5 bg-purple-50 rounded-xl hover:bg-purple-100 transition-colors">
+                <div className="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-purple-500 text-white flex items-center justify-center font-bold text-sm sm:text-base">
+                  {index + 1}
+                </div>
+                <p className="text-sm sm:text-base text-gray-700 leading-relaxed pt-0.5">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Recommendation */}
+        <div className="bg-gradient-to-br from-gray-50 to-purple-50 rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 border-2 border-purple-200">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-gray-800">{recommendation.title}</h3>
+          <p className="text-base sm:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">{recommendation.description}</p>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <Link 
+              to="/contact" 
+              className="flex-1 bg-purple-500 text-white text-center font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-purple-600 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
+              {recommendation.cta} →
+            </Link>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="flex-1 bg-white text-purple-500 border-2 border-purple-500 text-center font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-purple-50 transition-all"
+            >
+              Retake Quiz
+            </button>
+          </div>
         </div>
       </div>
     );

@@ -15,9 +15,18 @@ import {
   ChevronDown,
   ChevronUp,
   Check,
-  Monitor
+  Monitor,
+  BarChart3,
+  Sparkles,
+  Target
 } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import placeholderImage from '@/assets/pals/female-system-pal.png';
 
 type Answer = {
@@ -258,6 +267,138 @@ export const SystemPalQuiz = () => {
     });
   }, [currentSection]);
 
+  const calculateDetailedScore = () => {
+    const categoryScores: { [key: string]: { score: number; max: number } } = {};
+    
+    sections.forEach(section => {
+      let sectionScore = 0;
+      let sectionMax = 0;
+      
+      section.questions.forEach(question => {
+        const answer = answers.find(a => a.sectionId === section.id && a.questionId === question.id);
+        if (answer) {
+          if (question.type === 'slider') {
+            const value = answer.value as number;
+            const range = (question.max || 10) - (question.min || 0);
+            sectionScore += ((value - (question.min || 0)) / range) * 10;
+            sectionMax += 10;
+          } else if (question.type === 'emoji') {
+            const emojiValues: { [key: string]: number } = { '😫': 2, '😕': 4, '😐': 6, '😊': 8, '🚀': 10 };
+            sectionScore += emojiValues[answer.value as string] || 5;
+            sectionMax += 10;
+          } else if (question.type === 'checkbox' && Array.isArray(answer.value)) {
+            sectionScore += (answer.value.length / (question.options?.length || 1)) * 10;
+            sectionMax += 10;
+          } else {
+            sectionScore += 7;
+            sectionMax += 10;
+          }
+        }
+      });
+      
+      categoryScores[section.title] = {
+        score: sectionScore,
+        max: sectionMax
+      };
+    });
+    
+    const totalScore = Object.values(categoryScores).reduce((sum, cat) => sum + cat.score, 0);
+    const totalMax = Object.values(categoryScores).reduce((sum, cat) => sum + cat.max, 0);
+    const percentage = Math.round((totalScore / totalMax) * 100);
+    
+    return { categoryScores, totalScore, totalMax, percentage };
+  };
+
+  const getCategoryInsight = (categoryTitle: string, score: number, max: number): string => {
+    const percentage = (score / max) * 100;
+    
+    const insights: { [key: string]: { high: string; medium: string; low: string } } = {
+      "Process & Workflow": {
+        high: "Excellent process thinking! Your workflow awareness creates the foundation for scalable, efficient video systems.",
+        medium: "You understand workflows but systematizing and documenting processes will unlock team efficiency and consistency.",
+        low: "Structured processes transform chaos into predictability. Let's map your workflows and build repeatable systems."
+      },
+      "Team & Training": {
+        high: "Strong training mindset! Empowering your team through video knowledge bases will multiply your organization's capabilities.",
+        medium: "Good team awareness, but creating systematic training content will reduce onboarding time and improve performance.",
+        low: "Video-based training scales expertise across your organization. Let's build a library that empowers every team member."
+      },
+      "Automation": {
+        high: "You're thinking automation-first! This approach will free your team from repetitive tasks and drive operational efficiency.",
+        medium: "You see automation potential, but identifying and implementing video automation opportunities will yield significant time savings.",
+        low: "Automation is your leverage point. Let's identify manual video tasks that can be systematized or eliminated entirely."
+      },
+      "Knowledge Management": {
+        high: "Fantastic knowledge management approach! Capturing institutional knowledge in video prevents expertise loss and accelerates problem-solving.",
+        medium: "You value documentation, but video knowledge bases make information more accessible and retain team members longer.",
+        low: "Knowledge disappears when people leave. Let's create video systems that preserve expertise and make it searchable and actionable."
+      },
+      "Scalability": {
+        high: "You're building for scale! Your systems thinking will ensure video operations grow smoothly with your organization.",
+        medium: "Good growth awareness, but planning for video scalability now prevents bottlenecks as demand increases.",
+        low: "Scalable systems compound value over time. Let's design video workflows that work at 10x your current volume."
+      }
+    };
+    
+    if (percentage >= 70) return insights[categoryTitle]?.high || "";
+    if (percentage >= 40) return insights[categoryTitle]?.medium || "";
+    return insights[categoryTitle]?.low || "";
+  };
+
+  const getActionItems = (categoryScores: { [key: string]: { score: number; max: number } }): string[] => {
+    const actions: string[] = [];
+    
+    Object.entries(categoryScores).forEach(([category, { score, max }]) => {
+      const percentage = (score / max) * 100;
+      
+      if (category === "Process & Workflow" && percentage < 70) {
+        actions.push("Document your current video workflows and identify bottlenecks where systematization would save the most time");
+      }
+      if (category === "Team & Training" && percentage < 70) {
+        actions.push("Create a video training library for onboarding, best practices, and common processes to scale team knowledge");
+      }
+      if (category === "Automation" && percentage < 70) {
+        actions.push("Audit repetitive video tasks and implement templates, presets, or tools to automate manual work");
+      }
+      if (category === "Knowledge Management" && percentage < 70) {
+        actions.push("Build a searchable video knowledge base that captures expert insights, troubleshooting, and institutional memory");
+      }
+      if (category === "Scalability" && percentage < 70) {
+        actions.push("Design video systems with 10x capacity in mind: standardize formats, organize assets, and plan for growth");
+      }
+    });
+    
+    if (actions.length === 0) {
+      actions.push("Create standard operating procedures (SOPs) in video format for consistent execution across your team");
+      actions.push("Implement a content management system to organize and make video assets easily discoverable");
+      actions.push("Measure time saved and productivity gained from systematic video workflows to prove ROI");
+    }
+    
+    return actions;
+  };
+
+  const getRecommendation = (percentage: number): { title: string; description: string; cta: string } => {
+    if (percentage >= 75) {
+      return {
+        title: "You're Ready to Build Video Systems",
+        description: "Your systems thinking and operational awareness position you perfectly for implementing scalable video workflows. Let's leverage your readiness to create automated processes that multiply team efficiency and preserve institutional knowledge.",
+        cta: "Launch System Strategy"
+      };
+    } else if (percentage >= 50) {
+      return {
+        title: "Systematize Your Video Operations",
+        description: "You understand operations but need strategic guidance to transform video from a bottleneck into a scalable asset. Let's build workflows, training libraries, and automation that free your team to focus on high-value work.",
+        cta: "Develop Video Systems"
+      };
+    } else {
+      return {
+        title: "Start Your Systems Journey",
+        description: "Video systems might be a new concept, but they're game-changing for operational efficiency. Let's begin by identifying your biggest time drains and building simple video solutions that deliver immediate ROI and scale as you grow.",
+        cta: "Begin Discovery Call"
+      };
+    }
+  };
+
   useEffect(() => {
     if (showResults) {
       const duration = 3000;
@@ -288,17 +429,90 @@ export const SystemPalQuiz = () => {
   }, [showResults]);
 
   if (showResults) {
+    const { categoryScores, percentage } = calculateDetailedScore();
+    const actionItems = getActionItems(categoryScores);
+    const recommendation = getRecommendation(percentage);
+
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 animate-fade-in">
-        <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-12 text-center">
-          <Trophy className="w-20 h-20 mx-auto mb-6 text-green-500 animate-scale-in" />
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gray-800">Your System Strategy Assessment Complete!</h2>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Thanks for completing the quiz! Based on your answers, let's discuss how video systems can streamline operations, scale your team, and free up valuable time.
-          </p>
-          <Link to="/contact" className="inline-block bg-green-500 text-white font-semibold px-8 py-4 rounded-full hover:bg-green-600 transition-colors shadow-lg hover:shadow-xl transform hover:scale-105">
-            Book Strategy Call →
-          </Link>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 animate-fade-in">
+        {/* Overall Score */}
+        <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-12 text-white text-center mb-6 sm:mb-8">
+          <Trophy className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 animate-scale-in" />
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">Quiz Complete!</h2>
+          <div className="text-6xl sm:text-7xl md:text-8xl font-bold mb-3 sm:mb-4">{percentage}%</div>
+          <p className="text-lg sm:text-xl md:text-2xl opacity-90 max-w-2xl mx-auto">Video Systems Readiness Score</p>
+        </div>
+
+        {/* Category Breakdown */}
+        <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-gray-800 flex items-center gap-3">
+            <BarChart3 className="w-7 h-7 sm:w-8 sm:h-8 text-green-500" />
+            Your Systems Breakdown
+          </h3>
+          
+          <Accordion type="multiple" value={openCategories} onValueChange={setOpenCategories} className="space-y-3 sm:space-y-4">
+            {Object.entries(categoryScores).map(([category, { score, max }]) => {
+              const categoryPercentage = Math.round((score / max) * 100);
+              const insight = getCategoryInsight(category, score, max);
+              
+              return (
+                <AccordionItem key={category} value={category} className="border border-gray-200 rounded-2xl px-4 sm:px-6 overflow-hidden">
+                  <AccordionTrigger className="hover:no-underline py-4 sm:py-6">
+                    <div className="flex items-center justify-between w-full pr-4">
+                      <div className="flex items-center gap-3 sm:gap-4">
+                        <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 flex-shrink-0" />
+                        <span className="font-semibold text-base sm:text-lg text-left">{category}</span>
+                      </div>
+                      <span className="text-xl sm:text-2xl font-bold text-green-500">{categoryPercentage}%</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-4 sm:pb-6">
+                    <div className="bg-gray-50 rounded-xl p-4 sm:p-6 mt-2">
+                      <p className="text-sm sm:text-base text-gray-700 leading-relaxed">{insight}</p>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
+          </Accordion>
+        </div>
+
+        {/* Action Items */}
+        <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-gray-800 flex items-center gap-3">
+            <Target className="w-7 h-7 sm:w-8 sm:h-8 text-green-500" />
+            Your Personalized Action Plan
+          </h3>
+          <div className="space-y-3 sm:space-y-4">
+            {actionItems.map((item, index) => (
+              <div key={index} className="flex gap-3 sm:gap-4 p-4 sm:p-5 bg-green-50 rounded-xl hover:bg-green-100 transition-colors">
+                <div className="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-green-500 text-white flex items-center justify-center font-bold text-sm sm:text-base">
+                  {index + 1}
+                </div>
+                <p className="text-sm sm:text-base text-gray-700 leading-relaxed pt-0.5">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Recommendation */}
+        <div className="bg-gradient-to-br from-gray-50 to-green-50 rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 border-2 border-green-200">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-gray-800">{recommendation.title}</h3>
+          <p className="text-base sm:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">{recommendation.description}</p>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <Link 
+              to="/contact" 
+              className="flex-1 bg-green-500 text-white text-center font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-green-600 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
+              {recommendation.cta} →
+            </Link>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="flex-1 bg-white text-green-500 border-2 border-green-500 text-center font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-green-50 transition-all"
+            >
+              Retake Quiz
+            </button>
+          </div>
         </div>
       </div>
     );

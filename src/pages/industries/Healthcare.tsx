@@ -28,7 +28,9 @@ import {
   Brain,
   UserCheck,
   ArrowRight,
-  Building
+  Building,
+  Cog,
+  Star
 } from "lucide-react";
 import systemPalImage from '@/assets/pals/female-system-pal-edited.png';
 
@@ -176,130 +178,221 @@ const HealthcarePage = () => {
 
       <MainContent>
         {/* Hero Section */}
-        <section className="relative py-16 sm:py-20 lg:py-32 bg-gradient-to-br from-blue-600 via-blue-500 to-teal-500 overflow-hidden">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-10 left-10 w-20 h-20 border-2 border-white rounded-full animate-pulse"></div>
-            <div className="absolute top-20 right-20 w-16 h-16 border-2 border-white rotate-45 animate-pulse delay-300"></div>
-            <div className="absolute bottom-20 left-1/4 w-12 h-12 border-2 border-white rounded-full animate-pulse delay-700"></div>
-          </div>
-          
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="text-white">
-                <Badge className="bg-white/20 text-white border-white/30 mb-6 text-lg px-4 py-2">
-                  Healthcare Industry Solutions
-                </Badge>
-                
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
-                  Healthcare Video Production That Saves Lives & Drives Growth
-                </h1>
-                
-                <p className="text-xl text-white/90 mb-8 leading-relaxed">
-                  From HIPAA-compliant staff training to patient education and physician recruitment, 
-                  we create video content that improves clinical outcomes, ensures regulatory compliance, 
-                  and positions your healthcare organization as a leader in patient care.
-                </p>
+        <section className="relative py-20 lg:py-32 bg-gradient-to-br from-white via-gray-50 to-blue-50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto text-center">
+              <Badge variant="secondary" className="mb-6 text-sm px-4 py-1.5">
+                Healthcare Industry
+              </Badge>
+              
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight text-gray-900">
+                Healthcare Video Production That Saves Lives & Drives Growth
+              </h1>
+              
+              <p className="text-xl text-gray-600 mb-10 leading-relaxed max-w-3xl mx-auto">
+                From HIPAA-compliant staff training to patient education and physician recruitment, 
+                we create video content that improves clinical outcomes and positions your organization as a leader.
+              </p>
 
-                <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                  <Button 
-                    size="lg"
-                    className="bg-white text-blue-600 hover:bg-white/95 font-semibold text-lg px-8 py-4 h-auto shadow-lg"
-                    onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
-                  >
-                    <Video className="mr-2 h-5 w-5" />
-                    Schedule Healthcare Consultation
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    size="lg"
-                    className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-blue-600 font-semibold text-lg px-8 py-4 h-auto"
-                    onClick={() => transitionTo('/pals')}
-                  >
-                    Explore Video Solutions
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </div>
-
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                  {industryBenefits.map((benefit, index) => (
-                    <div key={index} className="text-white/90">
-                      <div className="flex justify-center mb-2">
-                        {benefit.icon}
-                      </div>
-                      <div className="text-2xl font-bold mb-1">{benefit.stat}</div>
-                      <h3 className="font-semibold text-sm mb-1">{benefit.title}</h3>
-                      <p className="text-xs text-white/70 leading-tight">{benefit.description}</p>
-                    </div>
-                  ))}
-                </div>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <Button 
+                  size="lg"
+                  className="bg-blue-600 text-white hover:bg-blue-700 font-semibold text-lg px-8 py-6 h-auto shadow-lg"
+                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+                >
+                  <Video className="mr-2 h-5 w-5" />
+                  Schedule Consultation
+                </Button>
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold text-lg px-8 py-6 h-auto"
+                  onClick={() => transitionTo('/pals')}
+                >
+                  Meet the Pals
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
               </div>
 
-              <div className="relative">
-                <div className="relative w-full max-w-lg mx-auto">
-                  <div className="relative w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] mx-auto">
-                    <img 
-                      src={systemPalImage} 
-                      alt="Healthcare video production expert"
-                      className="w-full h-full object-contain animate-fade-in"
-                      loading="eager"
-                    />
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                {industryBenefits.map((benefit, index) => (
+                  <div key={index} className="text-center">
+                    <div className="flex justify-center mb-3">
+                      <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
+                        {benefit.icon}
+                      </div>
+                    </div>
+                    <div className="text-2xl font-bold text-gray-900 mb-1">{benefit.stat}</div>
+                    <h3 className="font-semibold text-sm text-gray-700 mb-1">{benefit.title}</h3>
+                    <p className="text-xs text-gray-500 leading-tight">{benefit.description}</p>
                   </div>
-                  
-                  <div className="absolute -top-4 -right-4 bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-white animate-pulse">
-                    <Heart className="h-8 w-8" />
-                  </div>
-                  <div className="absolute bottom-10 -left-6 bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-white animate-pulse delay-500">
-                    <Shield className="h-8 w-8" />
-                  </div>
-                </div>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
-        {/* Video Solutions Grid */}
+        {/* How Each Pal Serves Healthcare */}
         <section className="py-24 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">
-                Comprehensive Video Solutions for Healthcare Organizations
+                How Each Pal Serves Healthcare
               </h2>
-              <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-                Whether you need clinical training videos, patient education materials, compliance documentation, 
-                or marketing content to attract patients and providers, our specialized healthcare video production 
-                services help you improve outcomes, reduce risk, and grow your practice.
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                Every healthcare organization needs different video solutions. Our specialized Pals deliver 
+                exactly what you need—from social engagement to training systems to brand authority.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {videoSolutions.map((solution, index) => (
-                <Card key={index} className={`group hover:shadow-2xl transition-all duration-300 ${solution.color} border-l-6 bg-white hover:scale-105`}>
-                  <CardHeader>
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className={`w-16 h-16 ${solution.bgColor} rounded-xl flex items-center justify-center ${solution.iconColor} group-hover:scale-110 transition-transform`}>
-                        {solution.icon}
-                      </div>
-                      <Badge variant="secondary" className="text-xs">
-                        {solution.palType}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {/* Reel Pal Card */}
+              <Card className="group hover:shadow-2xl transition-all duration-300 border-l-4 border-orange-400 bg-gradient-to-br from-white to-orange-50/30 hover:scale-105">
+                <CardHeader>
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center text-orange-600 group-hover:scale-110 transition-transform">
+                      <Video className="h-8 w-8" />
+                    </div>
+                    <div className="flex-1">
+                      <Badge variant="secondary" className="mb-2 text-xs bg-orange-100 text-orange-700">
+                        Reel Pal
                       </Badge>
+                      <CardTitle className="text-2xl text-gray-900">Social Media & Patient Engagement</CardTitle>
                     </div>
-                    <CardTitle className="text-xl text-gray-900 mb-3">{solution.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base text-gray-600 mb-6 leading-relaxed">
-                      {solution.description}
-                    </CardDescription>
-                    <div className="space-y-2">
-                      {solution.features.map((feature, idx) => (
-                        <div key={idx} className="flex items-center text-sm text-gray-700">
-                          <CheckCircle className="w-4 h-4 mr-2 text-green-500 flex-shrink-0" />
-                          <span>{feature}</span>
-                        </div>
-                      ))}
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base text-gray-700 mb-6 leading-relaxed">
+                    Boost patient engagement with health tips, doctor Q&As, behind-the-scenes content, 
+                    and community health awareness campaigns that build trust on social platforms.
+                  </CardDescription>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {["Health Tips", "Doctor Q&A", "Patient Stories", "Community Health"].map((item, idx) => (
+                      <Badge key={idx} variant="outline" className="text-xs bg-white border-orange-200">
+                        {item}
+                      </Badge>
+                    ))}
+                  </div>
+                  <Button 
+                    variant="link" 
+                    className="text-orange-600 hover:text-orange-700 p-0 h-auto font-semibold"
+                    onClick={() => transitionTo('/reel-pal')}
+                  >
+                    Learn More →
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* System Pal Card */}
+              <Card className="group hover:shadow-2xl transition-all duration-300 border-l-4 border-purple-400 bg-gradient-to-br from-white to-purple-50/30 hover:scale-105">
+                <CardHeader>
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform">
+                      <Cog className="h-8 w-8" />
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    <div className="flex-1">
+                      <Badge variant="secondary" className="mb-2 text-xs bg-purple-100 text-purple-700">
+                        System Pal
+                      </Badge>
+                      <CardTitle className="text-2xl text-gray-900">Training & Compliance Systems</CardTitle>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base text-gray-700 mb-6 leading-relaxed">
+                    HIPAA-compliant training videos, clinical procedures, safety protocols, and onboarding 
+                    content that scales across your entire healthcare organization.
+                  </CardDescription>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {["HIPAA Training", "Clinical SOPs", "Safety Protocols", "Staff Onboarding"].map((item, idx) => (
+                      <Badge key={idx} variant="outline" className="text-xs bg-white border-purple-200">
+                        {item}
+                      </Badge>
+                    ))}
+                  </div>
+                  <Button 
+                    variant="link" 
+                    className="text-purple-600 hover:text-purple-700 p-0 h-auto font-semibold"
+                    onClick={() => transitionTo('/system-pal')}
+                  >
+                    Learn More →
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Evergreen Pal Card */}
+              <Card className="group hover:shadow-2xl transition-all duration-300 border-l-4 border-teal-400 bg-gradient-to-br from-white to-teal-50/30 hover:scale-105">
+                <CardHeader>
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-16 h-16 bg-teal-100 rounded-2xl flex items-center justify-center text-teal-600 group-hover:scale-110 transition-transform">
+                      <BookOpen className="h-8 w-8" />
+                    </div>
+                    <div className="flex-1">
+                      <Badge variant="secondary" className="mb-2 text-xs bg-teal-100 text-teal-700">
+                        Evergreen Pal
+                      </Badge>
+                      <CardTitle className="text-2xl text-gray-900">Patient Education & Authority</CardTitle>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base text-gray-700 mb-6 leading-relaxed">
+                    Build patient trust with treatment explanations, wellness resources, disease management 
+                    guides, and expert medical content that establishes your authority.
+                  </CardDescription>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {["Treatment Guides", "Wellness Tips", "Disease Management", "Expert Content"].map((item, idx) => (
+                      <Badge key={idx} variant="outline" className="text-xs bg-white border-teal-200">
+                        {item}
+                      </Badge>
+                    ))}
+                  </div>
+                  <Button 
+                    variant="link" 
+                    className="text-teal-600 hover:text-teal-700 p-0 h-auto font-semibold"
+                    onClick={() => transitionTo('/evergreen-pal')}
+                  >
+                    Learn More →
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Spotlight Pal Card */}
+              <Card className="group hover:shadow-2xl transition-all duration-300 border-l-4 border-pink-400 bg-gradient-to-br from-white to-pink-50/30 hover:scale-105">
+                <CardHeader>
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center text-pink-600 group-hover:scale-110 transition-transform">
+                      <Star className="h-8 w-8" />
+                    </div>
+                    <div className="flex-1">
+                      <Badge variant="secondary" className="mb-2 text-xs bg-pink-100 text-pink-700">
+                        Spotlight Pal
+                      </Badge>
+                      <CardTitle className="text-2xl text-gray-900">Marketing & Recruitment</CardTitle>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base text-gray-700 mb-6 leading-relaxed">
+                    Attract physicians and patients with facility tours, testimonials, service promotion, 
+                    and high-impact recruitment videos that showcase your excellence.
+                  </CardDescription>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {["Facility Tours", "Testimonials", "Recruitment", "Service Promotion"].map((item, idx) => (
+                      <Badge key={idx} variant="outline" className="text-xs bg-white border-pink-200">
+                        {item}
+                      </Badge>
+                    ))}
+                  </div>
+                  <Button 
+                    variant="link" 
+                    className="text-pink-600 hover:text-pink-700 p-0 h-auto font-semibold"
+                    onClick={() => transitionTo('/spotlight-pal')}
+                  >
+                    Learn More →
+                  </Button>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
@@ -309,25 +402,24 @@ const HealthcarePage = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">
-                Trusted by Healthcare Organizations Nationwide
+                Trusted Across Healthcare
               </h2>
               <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                From academic medical centers to rural clinics, we understand the unique video needs 
-                of every healthcare segment and deliver content that meets stringent regulatory requirements.
+                From hospital systems to private practices, we understand your unique challenges.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
               {useCases.map((useCase, index) => (
-                <Card key={index} className="group hover:shadow-xl transition-all duration-300 bg-white border-t-4 border-blue-500 hover:scale-105">
+                <Card key={index} className="group hover:shadow-xl transition-all duration-300 bg-white hover:scale-105 border-t-4 border-blue-500">
                   <CardHeader>
-                    <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 mb-4 group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-4 group-hover:scale-110 transition-transform">
                       {useCase.icon}
                     </div>
-                    <CardTitle className="text-xl text-gray-900 mb-3">{useCase.title}</CardTitle>
+                    <CardTitle className="text-lg text-gray-900 mb-2">{useCase.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <CardDescription className="text-base text-gray-600 leading-relaxed">
+                    <CardDescription className="text-sm text-gray-600 leading-relaxed">
                       {useCase.description}
                     </CardDescription>
                   </CardContent>
@@ -371,18 +463,18 @@ const HealthcarePage = () => {
         {/* CTA Section */}
         <section className="py-24 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center">
+            <div className="max-w-4xl mx-auto text-center bg-gradient-to-br from-blue-50 to-teal-50 rounded-3xl p-12">
               <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">
-                Ready to Improve Patient Care with Professional Video?
+                Ready to Improve Patient Care with Video?
               </h2>
-              <p className="text-xl text-gray-600 mb-8">
+              <p className="text-xl text-gray-600 mb-10">
                 Let's discuss how video can help your healthcare organization reduce errors, 
-                improve compliance, attract talent, and deliver better patient outcomes.
+                improve compliance, and deliver better outcomes.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
                   size="lg"
-                  className="bg-blue-600 text-white hover:bg-blue-700 font-semibold text-lg px-8 py-4 h-auto"
+                  className="bg-blue-600 text-white hover:bg-blue-700 font-semibold text-lg px-8 py-6 h-auto shadow-lg"
                   onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
                 >
                   <Video className="mr-2 h-5 w-5" />
@@ -391,10 +483,10 @@ const HealthcarePage = () => {
                 <Button 
                   variant="outline"
                   size="lg"
-                  className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-semibold text-lg px-8 py-4 h-auto"
+                  className="border-2 border-gray-300 bg-white text-gray-700 hover:bg-gray-50 font-semibold text-lg px-8 py-6 h-auto"
                   onClick={() => transitionTo('/contact')}
                 >
-                  Get Healthcare Video Quote
+                  Request Proposal
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>

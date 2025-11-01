@@ -844,13 +844,13 @@ export const ReelPalQuiz = () => {
         </div>
 
         {/* Character Illustration - Tablet and Desktop Only */}
-        <div className="hidden md:flex md:flex-col md:items-center md:w-[350px] lg:w-[450px] flex-shrink-0 md:mt-12 lg:mt-16 md:ml-4 lg:ml-8">
+        <div className="hidden md:flex md:flex-col md:items-center md:w-[350px] lg:w-[450px] flex-shrink-0 md:mt-4 lg:mt-8 md:ml-4 lg:ml-8">
           <img 
             src={characterConfigs[currentSection].image}
             alt="Reel Pal character illustration"
-            className="w-full h-auto max-h-[500px] lg:max-h-[600px] object-contain"
+            className="w-full h-auto max-h-[500px] lg:max-h-[600px] object-contain animate-fade-in"
           />
-          <div className="mt-4 lg:mt-6 bg-orange-50 rounded-2xl p-4 lg:p-6 border-2 border-orange-200 shadow-lg">
+          <div className="mt-3 lg:mt-4 bg-orange-50 rounded-2xl p-4 lg:p-6 border-2 border-orange-200 shadow-lg animate-scale-in">
             <p className="text-orange-800 font-semibold text-base lg:text-lg text-center">
               💡 Pro Tip: {characterConfigs[currentSection].tip}
             </p>

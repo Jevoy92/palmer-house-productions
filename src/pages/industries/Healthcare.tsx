@@ -640,8 +640,30 @@ const HealthcarePage = () => {
                         Boost patient engagement with health tips, doctor Q&As, behind-the-scenes content, and community health awareness campaigns that build trust on social platforms.
                       </p>
                       
-                      <div className="space-y-3">
-                        <div className="flex flex-wrap gap-2">
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Perfect For:</h4>
+                          <ul className="space-y-2 text-gray-600">
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                              <span>Weekly health tips and wellness advice for patient communities</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                              <span>Doctor Q&A sessions addressing common health concerns</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                              <span>Behind-the-scenes content showcasing your healthcare team</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                              <span>Community health awareness and preventive care campaigns</span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 pt-2">
                           <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200">Health Tips</Badge>
                           <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200">Doctor Q&A</Badge>
                           <Badge variant="secondary" className="bg-orange-100 text-orange-700 hover:bg-orange-200">Patient Stories</Badge>
@@ -683,8 +705,30 @@ const HealthcarePage = () => {
                         HIPAA-compliant training videos, clinical procedures, safety protocols, and onboarding content that scales across your entire healthcare organization.
                       </p>
                       
-                      <div className="space-y-3">
-                        <div className="flex flex-wrap gap-2">
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Essential Training Solutions:</h4>
+                          <ul className="space-y-2 text-gray-600">
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
+                              <span>HIPAA compliance training and privacy policy procedures</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
+                              <span>Clinical standard operating procedures and best practices</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
+                              <span>Infection control, PPE usage, and workplace safety standards</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-purple-500 mt-0.5 flex-shrink-0" />
+                              <span>New hire onboarding and continuing education programs</span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 pt-2">
                           <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">HIPAA Training</Badge>
                           <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">Clinical SOPs</Badge>
                           <Badge variant="secondary" className="bg-purple-100 text-purple-700 hover:bg-purple-200">Safety Protocols</Badge>
@@ -726,8 +770,30 @@ const HealthcarePage = () => {
                         Build patient trust with treatment explanations, wellness resources, disease management guides, and expert medical content that establishes your authority.
                       </p>
                       
-                      <div className="space-y-3">
-                        <div className="flex flex-wrap gap-2">
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Build Trust & Authority With:</h4>
+                          <ul className="space-y-2 text-gray-600">
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                              <span>Comprehensive treatment explanations and procedure overviews</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                              <span>Pre-op and post-op care instructions for better outcomes</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                              <span>Chronic disease management resources and wellness education</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                              <span>Expert medical content that positions you as a thought leader</span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 pt-2">
                           <Badge variant="secondary" className="bg-teal-100 text-teal-700 hover:bg-teal-200">Treatment Guides</Badge>
                           <Badge variant="secondary" className="bg-teal-100 text-teal-700 hover:bg-teal-200">Wellness Tips</Badge>
                           <Badge variant="secondary" className="bg-teal-100 text-teal-700 hover:bg-teal-200">Disease Management</Badge>
@@ -769,8 +835,30 @@ const HealthcarePage = () => {
                         Attract physicians and patients with facility tours, testimonials, service promotion, and high-impact recruitment videos that showcase your excellence.
                       </p>
                       
-                      <div className="space-y-3">
-                        <div className="flex flex-wrap gap-2">
+                      <div className="space-y-4">
+                        <div>
+                          <h4 className="font-semibold text-gray-900 mb-2">Showcase Your Excellence:</h4>
+                          <ul className="space-y-2 text-gray-600">
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-pink-500 mt-0.5 flex-shrink-0" />
+                              <span>Cinematic facility tours highlighting state-of-the-art equipment</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-pink-500 mt-0.5 flex-shrink-0" />
+                              <span>Powerful patient testimonials and success story documentaries</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-pink-500 mt-0.5 flex-shrink-0" />
+                              <span>Physician and nursing recruitment videos to attract top talent</span>
+                            </li>
+                            <li className="flex items-start gap-2">
+                              <CheckCircle className="h-5 w-5 text-pink-500 mt-0.5 flex-shrink-0" />
+                              <span>Service line promotion and specialty center marketing campaigns</span>
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 pt-2">
                           <Badge variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200">Facility Tours</Badge>
                           <Badge variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200">Testimonials</Badge>
                           <Badge variant="secondary" className="bg-pink-100 text-pink-700 hover:bg-pink-200">Recruitment</Badge>

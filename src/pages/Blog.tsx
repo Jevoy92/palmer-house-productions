@@ -31,6 +31,7 @@ import reelWritingHooksImage from '@/assets/blog/reel-writing-hooks.jpg';
 import spotlightAudioQualityImage from '@/assets/blog/spotlight-audio-quality.jpg';
 import spotlightProfessionalLightingImage from '@/assets/blog/spotlight-professional-lighting.jpg';
 import spotlightVideoEditingImage from '@/assets/blog/spotlight-video-editing.jpg';
+import spotlightContentCreationToolsImage from '@/assets/blog/spotlight-content-creation-tools.jpg';
 import systemVideoContentToolkitImage from '@/assets/blog/system-video-content-toolkit.jpg';
 import systemAutomateEmployeeTrainingImage from '@/assets/blog/system-automate-employee-training.jpg';
 import systemVideoTrainingLibraryImage from '@/assets/blog/system-video-training-library.jpg';
@@ -168,8 +169,8 @@ const blogArticles = [
     featured: true,
     slug: '/blog/content-creation-tools-2025',
     tags: ['content-tools', 'productivity', 'video-production', 'efficiency'],
-    image: editingLikeProImage,
-    imageAlt: 'Essential content creation tools and editing workspace',
+    image: spotlightContentCreationToolsImage,
+    imageAlt: '10 essential content creation tools for video production and business',
     author: 'Spotlight Pal',
     authorRole: 'Professional Production Expert'
   },

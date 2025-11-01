@@ -588,20 +588,9 @@ const HealthcarePage = () => {
               </h2>
             </div>
 
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-              {/* Character Illustration */}
-              <div className="w-full lg:w-1/3 flex-shrink-0">
-                <div className="h-[550px] overflow-hidden">
-                  <img 
-                    src={systemPalImage}
-                    alt="Healthcare professional illustration" 
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-              </div>
-
-              {/* Services Grid */}
-              <div className="w-full lg:w-2/3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
+              {/* Left Cards */}
+              <div className="w-full lg:w-1/3 space-y-8">
                 {/* Hospital Systems */}
                 <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 text-center shadow-[0_10px_40px_-10px_rgba(74,144,226,0.2)] transition-transform duration-300 hover:-translate-y-2">
                   <div className="mb-4 flex justify-center">
@@ -634,7 +623,21 @@ const HealthcarePage = () => {
                     Dedicated tools for nursing homes and assisted living to ensure consistent, high-quality resident care.
                   </p>
                 </div>
+              </div>
 
+              {/* Center Character Illustration */}
+              <div className="w-full lg:w-1/3 flex justify-center items-center">
+                <div className="w-full max-w-md">
+                  <img 
+                    src={systemPalImage}
+                    alt="Healthcare professional illustration" 
+                    className="w-full h-auto object-contain animate-fade-in"
+                  />
+                </div>
+              </div>
+
+              {/* Right Cards */}
+              <div className="w-full lg:w-1/3 space-y-8">
                 {/* Medical Device Companies */}
                 <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 text-center shadow-[0_10px_40px_-10px_rgba(74,144,226,0.2)] transition-transform duration-300 hover:-translate-y-2">
                   <div className="mb-4 flex justify-center">
@@ -667,37 +670,6 @@ const HealthcarePage = () => {
                     Providing secure and compassionate platforms for mental health professionals to connect with clients.
                   </p>
                 </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Compliance & Standards */}
-        <section className="py-24 bg-blue-600 text-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto text-center">
-              <Shield className="h-16 w-16 mx-auto mb-6 opacity-90" />
-              <h2 className="text-4xl lg:text-5xl font-extrabold mb-6">
-                HIPAA-Compliant & Accreditation-Ready Video Production
-              </h2>
-              <p className="text-xl text-white/90 mb-8 leading-relaxed">
-                We understand healthcare compliance requirements. All videos meet HIPAA privacy standards, 
-                Joint Commission requirements, CMS guidelines, and state licensing documentation needs. 
-                Our healthcare video production services include secure file handling, proper consent documentation, 
-                and audit trail capabilities to support your accreditation and compliance efforts.
-              </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-12">
-                {[
-                  { label: "HIPAA Compliant", icon: <Shield className="h-8 w-8 mx-auto mb-2" /> },
-                  { label: "Joint Commission", icon: <Award className="h-8 w-8 mx-auto mb-2" /> },
-                  { label: "CMS Standards", icon: <FileCheck className="h-8 w-8 mx-auto mb-2" /> },
-                  { label: "CE Credit Support", icon: <BookOpen className="h-8 w-8 mx-auto mb-2" /> }
-                ].map((item, index) => (
-                  <div key={index} className="text-center">
-                    {item.icon}
-                    <div className="font-semibold">{item.label}</div>
-                  </div>
-                ))}
               </div>
             </div>
           </div>

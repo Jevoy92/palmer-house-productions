@@ -8,7 +8,7 @@ export const EnhancedFooter = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden bg-white">
+    <footer className="relative isolate bg-white">
       {/* Pals Banner */}
       <div className="relative z-20 flex justify-center overflow-hidden">
         <img 
@@ -21,8 +21,8 @@ export const EnhancedFooter = () => {
       {/* Content */}
       <div className="relative z-0">
         {/* Main Footer Content - White Card */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-16 sm:-mt-24 lg:-mt-28 pb-8">
-          <div className="bg-white rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 lg:pt-28 pb-8">
+          <div className="bg-white rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-8 -translate-y-16 sm:-translate-y-24 lg:-translate-y-28">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-8">
               {/* Company Info */}
               <div className="space-y-4 lg:col-span-2">

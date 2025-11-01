@@ -579,8 +579,8 @@ const HealthcarePage = () => {
           </div>
         </section>
 
-        {/* Industry Use Cases */}
-        <section className="py-24 bg-gray-50">
+        {/* Trusted Across Healthcare */}
+        <section className="py-24 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">
@@ -591,22 +591,72 @@ const HealthcarePage = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              {useCases.map((useCase, index) => (
-                <Card key={index} className="group hover:shadow-xl transition-all duration-300 bg-white hover:scale-105 border-t-4 border-blue-500">
-                  <CardHeader>
-                    <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 mb-4 group-hover:scale-110 transition-transform">
-                      {useCase.icon}
-                    </div>
-                    <CardTitle className="text-lg text-gray-900 mb-2">{useCase.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-sm text-gray-600 leading-relaxed">
-                      {useCase.description}
-                    </CardDescription>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+              {/* Hospital Systems */}
+              <div className="bg-white border-2 border-blue-400 rounded-3xl p-8 hover:shadow-lg transition-all">
+                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                  <Building className="h-7 w-7 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Hospital Systems</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Enterprise-wide training for multi-facility healthcare organizations. Standardize procedures, ensure regulatory compliance, reduce liability risk, and improve patient safety scores across all locations with scalable video training systems.
+                </p>
+              </div>
+
+              {/* Private Practices */}
+              <div className="bg-white border-2 border-blue-400 rounded-3xl p-8 hover:shadow-lg transition-all">
+                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                  <Stethoscope className="h-7 w-7 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Private Practices</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Professional marketing and patient education for specialty practices. Attract new patients with authentic storytelling, explain complex procedures clearly, build online authority, and differentiate your practice in competitive markets.
+                </p>
+              </div>
+
+              {/* Long-Term Care Facilities */}
+              <div className="bg-white border-2 border-blue-400 rounded-3xl p-8 hover:shadow-lg transition-all">
+                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                  <Heart className="h-7 w-7 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Long-Term Care Facilities</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Safety protocols and compliance training for nursing homes and assisted living. Train caregivers on proper techniques, document staff competencies, reduce workplace injuries, and maintain state licensing requirements.
+                </p>
+              </div>
+
+              {/* Medical Device Companies */}
+              <div className="bg-white border-2 border-blue-400 rounded-3xl p-8 hover:shadow-lg transition-all">
+                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                  <Microscope className="h-7 w-7 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Medical Device Companies</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Product training and sales enablement for healthcare technology. Create clinical education materials, demonstrate proper device usage, support regulatory submissions, and accelerate market adoption with clear visual communication.
+                </p>
+              </div>
+
+              {/* Pharmaceutical Companies */}
+              <div className="bg-white border-2 border-blue-400 rounded-3xl p-8 hover:shadow-lg transition-all">
+                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                  <Pill className="h-7 w-7 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Pharmaceutical Companies</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Drug education and professional training for pharma organizations. Develop sales training materials, create patient education resources, support clinical trials, and communicate complex scientific data effectively.
+                </p>
+              </div>
+
+              {/* Behavioral Health */}
+              <div className="bg-white border-2 border-blue-400 rounded-3xl p-8 hover:shadow-lg transition-all">
+                <div className="w-14 h-14 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                  <Brain className="h-7 w-7 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">Behavioral Health</h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Sensitive training and stigma-reduction content for mental health providers. Train staff on trauma-informed care, create patient-facing mental health resources, promote services with empathy, and support community mental health initiatives.
+                </p>
+              </div>
             </div>
           </div>
         </section>

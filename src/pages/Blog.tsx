@@ -28,6 +28,9 @@ import reelMobileVideoProductionImage from '@/assets/blog/reel-mobile-video-prod
 import reelInstagramReelsStrategyImage from '@/assets/blog/reel-instagram-reels-strategy.jpg';
 import reelTiktokBusinessImage from '@/assets/blog/reel-tiktok-business.jpg';
 import reelWritingHooksImage from '@/assets/blog/reel-writing-hooks.jpg';
+import spotlightAudioQualityImage from '@/assets/blog/spotlight-audio-quality.jpg';
+import spotlightProfessionalLightingImage from '@/assets/blog/spotlight-professional-lighting.jpg';
+import spotlightVideoEditingImage from '@/assets/blog/spotlight-video-editing.jpg';
 
 // Blog articles data - Focused on core strategic content
 const blogArticles = [
@@ -158,7 +161,7 @@ const blogArticles = [
     category: 'Tools',
     readTime: '8 min read',
     publishDate: '2025-01-09',
-    featured: false,
+    featured: true,
     slug: '/blog/content-creation-tools-2025',
     tags: ['content-tools', 'productivity', 'video-production', 'efficiency'],
     image: editingLikeProImage,
@@ -176,8 +179,8 @@ const blogArticles = [
     featured: false,
     slug: '/blog/professional-lighting-budget',
     tags: ['lighting', 'video-production', 'budget-friendly', 'cinematography'],
-    image: editingLikeProImage,
-    imageAlt: 'Professional video lighting setup',
+    image: spotlightProfessionalLightingImage,
+    imageAlt: 'Professional video lighting setup with ring lights and LED panels',
     author: 'Spotlight Pal',
     authorRole: 'Professional Production Expert'
   },
@@ -191,8 +194,8 @@ const blogArticles = [
     featured: false,
     slug: '/blog/audio-quality-business-video',
     tags: ['audio', 'sound-quality', 'microphones', 'production-value'],
-    image: editingLikeProImage,
-    imageAlt: 'Professional audio recording setup',
+    image: spotlightAudioQualityImage,
+    imageAlt: 'Professional audio recording setup comparing poor vs crystal-clear audio',
     author: 'Spotlight Pal',
     authorRole: 'Professional Production Expert'
   },
@@ -206,8 +209,8 @@ const blogArticles = [
     featured: false,
     slug: '/blog/video-editing-workflows',
     tags: ['video-editing', 'workflows', 'productivity', 'time-saving'],
-    image: editingLikeProImage,
-    imageAlt: 'Efficient video editing workflow',
+    image: spotlightVideoEditingImage,
+    imageAlt: 'Efficient video editing workflow showing time-saving techniques',
     author: 'Spotlight Pal',
     authorRole: 'Professional Production Expert'
   },

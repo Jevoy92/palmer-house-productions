@@ -11,8 +11,11 @@ import {
   AlertCircle,
   Trophy,
   Zap,
-  ArrowRight
+  ArrowRight,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 type Answer = {
   sectionId: number;
@@ -277,35 +280,44 @@ export const ReelPalQuiz = () => {
     return items.slice(0, 5); // Return top 5 action items
   };
 
-  const getInsights = () => {
-    const { categoryScores } = calculateDetailedScore();
-    const insights: { category: string; message: string; status: 'strong' | 'developing' | 'opportunity' }[] = [];
-    
-    Object.entries(categoryScores).forEach(([category, scores]) => {
-      const percentage = (scores.score / scores.max) * 100;
-      
-      if (percentage >= 70) {
-        insights.push({
-          category,
-          message: "You're doing great here! Keep building on this strength.",
-          status: 'strong'
-        });
-      } else if (percentage >= 40) {
-        insights.push({
-          category,
-          message: "Good foundation - some improvements will make a big difference.",
-          status: 'developing'
-        });
-      } else {
-        insights.push({
-          category,
-          message: "This is a growth opportunity - focus here for maximum impact.",
-          status: 'opportunity'
-        });
+  const getCategoryInsight = (category: string, percentage: number) => {
+    const insights: { [key: string]: { high: string; medium: string; low: string } } = {
+      'Short-Form Content Strategy': {
+        high: "Your strategy foundation is solid! You're posting consistently and tracking results. Focus on optimizing what's working and experimenting with new formats.",
+        medium: "You have some systems in place, but consistency is key. Building a content calendar and tracking engagement will amplify your results significantly.",
+        low: "Let's build your strategy from the ground up. Start with a simple posting schedule and one platform to master before expanding."
+      },
+      'Content Creation Resources': {
+        high: "You're well-equipped to create quality content! Your team and tools are ready. Now it's about maintaining momentum and refining your production process.",
+        medium: "You have the basics covered. Consider investing in a few key tools (like a ring light or simple editing software) to elevate production quality.",
+        low: "The good news? You don't need much to start. A smartphone, natural lighting, and free editing apps are enough to begin building your content library."
+      },
+      'Time & Team Capacity': {
+        high: "Time management is your strength! You've carved out dedicated content creation time and have team support. This consistency will compound over time.",
+        medium: "You're making time, but it's stretched thin. Consider batch filming sessions to maximize efficiency - create multiple videos in one focused block.",
+        low: "Time is tight, and that's normal. Start small: even one hour per week of batch filming can create 4-6 weeks of content with the right approach."
+      },
+      'Goals & Commitment': {
+        high: "Your commitment level is exceptional! You understand content is a long-term investment and you're ready to prioritize it. This mindset is what separates success stories from the rest.",
+        medium: "You see the value but may need to align it more closely with business priorities. Getting leadership buy-in will unlock the consistency you need.",
+        low: "Content creation needs to become a strategic priority. The businesses winning on social are those that view it as essential, not optional. Let's shift that mindset."
+      },
+      'Budget & Investment': {
+        high: "Your budget shows you're serious about content. With this investment level, you can build a comprehensive content system that generates ROI for years.",
+        medium: "Your budget allows for strategic investments. Focus on high-impact areas: quality filming sessions, editing support, or a batch production day with professional guidance.",
+        low: "Budget is lean, but that doesn't mean you can't start. DIY approaches and free tools can get you 80% of the way there. Invest your time before your money."
       }
-    });
-    
-    return insights;
+    };
+
+    const messages = insights[category] || {
+      high: "You're doing great here! Keep building on this strength.",
+      medium: "Good foundation - some improvements will make a big difference.",
+      low: "This is a growth opportunity - focus here for maximum impact."
+    };
+
+    if (percentage >= 70) return messages.high;
+    if (percentage >= 40) return messages.medium;
+    return messages.low;
   };
 
   const getRecommendation = () => {
@@ -395,7 +407,15 @@ export const ReelPalQuiz = () => {
     const recommendation = getRecommendation();
     const { percentage, categoryScores } = calculateDetailedScore();
     const actionItems = getActionItems();
-    const insights = getInsights();
+    const [openCategories, setOpenCategories] = useState<string[]>([]);
+
+    const toggleCategory = (category: string) => {
+      setOpenCategories(prev => 
+        prev.includes(category) 
+          ? prev.filter(c => c !== category)
+          : [...prev, category]
+      );
+    };
 
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fade-in">
@@ -412,59 +432,61 @@ export const ReelPalQuiz = () => {
           </p>
         </div>
 
-        {/* Category Breakdown */}
+        {/* Category Breakdown with Insights */}
         <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-10 mb-8">
           <h3 className="text-3xl font-bold mb-6 text-center text-gray-800">Your Breakdown by Category</h3>
           <div className="grid md:grid-cols-2 gap-6">
             {Object.entries(categoryScores).map(([category, scores]) => {
               const catPercentage = Math.round((scores.score / scores.max) * 100);
+              const isOpen = openCategories.includes(category);
+              const insight = getCategoryInsight(category, catPercentage);
+              const status = catPercentage >= 70 ? 'strong' : catPercentage >= 40 ? 'developing' : 'opportunity';
+              
               return (
-                <div key={category} className="border-2 border-gray-200 rounded-xl p-6">
-                  <h4 className="font-bold text-lg mb-3 text-gray-800">{category}</h4>
-                  <div className="flex items-center gap-4">
-                    <div className="flex-1">
-                      <div className="w-full bg-gray-200 rounded-full h-3">
-                        <div 
-                          className="bg-gradient-to-r from-teal-500 to-orange-500 h-3 rounded-full transition-all duration-1000"
-                          style={{ width: `${catPercentage}%` }}
-                        />
+                <Collapsible key={category} open={isOpen} onOpenChange={() => toggleCategory(category)}>
+                  <div className={`border-2 rounded-xl overflow-hidden transition-colors ${
+                    status === 'strong' ? 'border-green-300 bg-green-50/50' :
+                    status === 'developing' ? 'border-yellow-300 bg-yellow-50/50' :
+                    'border-orange-300 bg-orange-50/50'
+                  }`}>
+                    <CollapsibleTrigger className="w-full p-6 text-left hover:bg-white/50 transition-colors">
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="font-bold text-lg text-gray-800 flex-1">{category}</h4>
+                        {isOpen ? (
+                          <ChevronUp className="w-5 h-5 text-gray-600 flex-shrink-0" />
+                        ) : (
+                          <ChevronDown className="w-5 h-5 text-gray-600 flex-shrink-0" />
+                        )}
                       </div>
-                    </div>
-                    <span className="text-2xl font-bold text-gray-700">{catPercentage}%</span>
+                      <div className="flex items-center gap-4">
+                        <div className="flex-1">
+                          <div className="w-full bg-gray-200 rounded-full h-3">
+                            <div 
+                              className="bg-gradient-to-r from-teal-500 to-orange-500 h-3 rounded-full transition-all duration-1000"
+                              style={{ width: `${catPercentage}%` }}
+                            />
+                          </div>
+                        </div>
+                        <span className="text-2xl font-bold text-gray-700">{catPercentage}%</span>
+                      </div>
+                    </CollapsibleTrigger>
+                    
+                    <CollapsibleContent>
+                      <div className="px-6 pb-6 pt-2">
+                        <div className="flex items-start gap-3 pt-3 border-t border-gray-200">
+                          {status === 'strong' ? (
+                            <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                          ) : (
+                            <AlertCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+                          )}
+                          <p className="text-gray-700 leading-relaxed">{insight}</p>
+                        </div>
+                      </div>
+                    </CollapsibleContent>
                   </div>
-                </div>
+                </Collapsible>
               );
             })}
-          </div>
-        </div>
-
-        {/* Key Insights */}
-        <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-10 mb-8">
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <Zap className="w-8 h-8 text-orange-500" />
-            <h3 className="text-3xl font-bold text-gray-800">Key Insights</h3>
-          </div>
-          <div className="space-y-4">
-            {insights.map((insight, idx) => (
-              <div 
-                key={idx}
-                className={`flex items-start gap-4 p-4 rounded-xl ${
-                  insight.status === 'strong' ? 'bg-green-50 border-2 border-green-200' :
-                  insight.status === 'developing' ? 'bg-yellow-50 border-2 border-yellow-200' :
-                  'bg-orange-50 border-2 border-orange-200'
-                }`}
-              >
-                {insight.status === 'strong' ? (
-                  <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
-                ) : (
-                  <AlertCircle className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" />
-                )}
-                <div>
-                  <h4 className="font-bold text-lg mb-1 text-gray-800">{insight.category}</h4>
-                  <p className="text-gray-600">{insight.message}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
 

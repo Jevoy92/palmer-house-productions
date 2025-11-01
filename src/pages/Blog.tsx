@@ -20,6 +20,10 @@ import mobileVideoProductionImage from '@/assets/blog/mobile-video-production.jp
 import videoMetricsMatterImage from '@/assets/blog/video-metrics-matter.jpg';
 import editingLikeProImage from '@/assets/blog/editing-like-pro.jpg';
 import employeeTrainingAutomationImage from '@/assets/blog/employee-training-automation.jpg';
+import evergreenRoiComparisonImage from '@/assets/blog/evergreen-roi-comparison.jpg';
+import evergreenVideoSeoImage from '@/assets/blog/evergreen-video-seo.jpg';
+import evergreenRepurposeVideoImage from '@/assets/blog/evergreen-repurpose-video.jpg';
+import evergreenLongTermStrategyImage from '@/assets/blog/evergreen-long-term-strategy.jpg';
 
 // Blog articles data - Focused on core strategic content
 const blogArticles = [
@@ -213,8 +217,8 @@ const blogArticles = [
     featured: true,
     slug: '/blog/video-content-roi-comparison',
     tags: ['roi-analysis', 'video-training', 'business-metrics', 'cost-comparison'],
-    image: videoMetricsMatterImage,
-    imageAlt: 'Video ROI analytics and performance dashboard',
+    image: evergreenRoiComparisonImage,
+    imageAlt: 'Video ROI analytics comparison between video content and traditional training',
     author: 'Evergreen Pal',
     authorRole: 'Content Strategy & SEO Expert'
   },
@@ -228,8 +232,8 @@ const blogArticles = [
     featured: false,
     slug: '/blog/video-seo-guide',
     tags: ['video-seo', 'youtube-seo', 'organic-traffic', 'search-optimization'],
-    image: videoMetricsMatterImage,
-    imageAlt: 'Video SEO optimization dashboard',
+    image: evergreenVideoSeoImage,
+    imageAlt: 'Video SEO strategy showing Google and YouTube ranking optimization',
     author: 'Evergreen Pal',
     authorRole: 'Content Strategy & SEO Expert'
   },
@@ -243,8 +247,8 @@ const blogArticles = [
     featured: false,
     slug: '/blog/repurpose-video-content',
     tags: ['content-repurposing', 'content-strategy', 'efficiency', 'multi-platform'],
-    image: videoMetricsMatterImage,
-    imageAlt: 'Content repurposing workflow',
+    image: evergreenRepurposeVideoImage,
+    imageAlt: 'Repurposing one video into 20+ pieces of content across platforms',
     author: 'Evergreen Pal',
     authorRole: 'Content Strategy & SEO Expert'
   },
@@ -258,8 +262,8 @@ const blogArticles = [
     featured: false,
     slug: '/blog/long-term-content-strategy',
     tags: ['content-strategy', 'evergreen-content', 'long-term-growth', 'seo'],
-    image: videoMetricsMatterImage,
-    imageAlt: 'Long-term content strategy roadmap',
+    image: evergreenLongTermStrategyImage,
+    imageAlt: 'Long-term video content strategy showing compound growth over time',
     author: 'Evergreen Pal',
     authorRole: 'Content Strategy & SEO Expert'
   }

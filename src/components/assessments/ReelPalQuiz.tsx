@@ -358,8 +358,8 @@ export const ReelPalQuiz = () => {
             {/* Questions */}
             <div className="space-y-6">
               {currentSectionData.questions.map((question) => (
-                <div key={question.id} className="flex justify-between items-center py-4 border-b border-gray-200 last:border-b-0">
-                  <p className="text-lg text-gray-600 flex-1">{question.question}</p>
+                <div key={question.id} className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 py-4 border-b border-gray-200 last:border-b-0">
+                  <p className="text-lg text-gray-600 flex-1 min-w-0">{question.question}</p>
                   
                   {question.type === 'buttons' && question.options && (
                     <div className="flex gap-2">

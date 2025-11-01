@@ -60,7 +60,7 @@ const sections: QuizSection[] = [
         id: 3,
         question: "On a scale of 1-10, how trackable is your content performance?",
         type: "slider",
-        min: 1,
+        min: 0,
         max: 10
       }
     ]
@@ -86,7 +86,7 @@ const sections: QuizSection[] = [
         id: 3,
         question: "How confident are you in creating video content?",
         type: "slider",
-        min: 1,
+        min: 0,
         max: 10
       }
     ]
@@ -156,7 +156,7 @@ const sections: QuizSection[] = [
         id: 2,
         question: "How important is ROI tracking for your content?",
         type: "slider",
-        min: 1,
+        min: 0,
         max: 10
       },
       {
@@ -234,8 +234,8 @@ export const ReelPalQuiz = () => {
         questionMax = question.options!.length - 1;
         questionScore = question.options!.indexOf(answer.value as string);
       } else if (question.type === 'slider') {
-        questionMax = question.max! - question.min!;
-        questionScore = (answer.value as number) - question.min!;
+        questionMax = question.max!;
+        questionScore = (answer.value as number);
       } else if (question.type === 'checkbox') {
         questionMax = question.options!.length;
         questionScore = Array.isArray(answer.value) ? answer.value.length : 0;
@@ -388,6 +388,22 @@ export const ReelPalQuiz = () => {
 
   const currentSectionData = sections[currentSection];
   const progress = ((currentSection + 1) / sections.length) * 100;
+
+  // Auto-initialize slider questions with their default value
+  useEffect(() => {
+    sections[currentSection].questions.forEach(question => {
+      if (question.type === 'slider' && question.min !== undefined && question.max !== undefined) {
+        const hasAnswer = answers.some(
+          a => a.sectionId === sections[currentSection].id && a.questionId === question.id
+        );
+        if (!hasAnswer) {
+          // Initialize with middle value
+          const defaultValue = Math.round((question.min + question.max) / 2);
+          handleAnswer(question.id, defaultValue);
+        }
+      }
+    });
+  }, [currentSection]);
 
   useEffect(() => {
     if (showResults) {
@@ -625,20 +641,21 @@ export const ReelPalQuiz = () => {
                     </>
                   )}
 
-                  {question.type === 'slider' && question.min && question.max && (
+                  {question.type === 'slider' && question.min !== undefined && question.max !== undefined && (
                     <div className="w-full max-w-md mx-auto">
                       <input
                         type="range"
                         min={question.min}
                         max={question.max}
-                        value={(getAnswer(question.id) as number) || Math.floor((question.min + question.max) / 2)}
+                        step={1}
+                        value={(getAnswer(question.id) as number) ?? Math.round((question.min + question.max) / 2)}
                         onChange={(e) => handleAnswer(question.id, parseInt(e.target.value))}
                         className="w-full h-3 bg-gray-200 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-orange-500 [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:w-6 [&::-moz-range-thumb]:h-6 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-orange-500 [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:cursor-pointer"
                       />
                       <div className="flex justify-between text-sm text-gray-500 mt-2">
-                        <span>{question.min}</span>
-                        <span className="text-2xl font-bold text-orange-600">{getAnswer(question.id) || Math.floor((question.min + question.max) / 2)}</span>
-                        <span>{question.max}</span>
+                        <span>1</span>
+                        <span className="text-2xl font-bold text-orange-600">{(getAnswer(question.id) as number) ?? Math.round((question.min + question.max) / 2)}</span>
+                        <span>10</span>
                       </div>
                     </div>
                   )}

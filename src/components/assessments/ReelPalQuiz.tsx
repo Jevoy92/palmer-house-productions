@@ -362,17 +362,24 @@ export const ReelPalQuiz = () => {
                   <p className="text-lg text-gray-600 flex-1">{question.question}</p>
                   
                   {question.type === 'buttons' && question.options && (
-                    <button
-                      onClick={() => {
-                        const currentAnswer = getAnswer(question.id);
-                        const currentIndex = question.options!.indexOf(currentAnswer as string);
-                        const nextIndex = (currentIndex + 1) % question.options!.length;
-                        handleAnswer(question.id, question.options![nextIndex]);
-                      }}
-                      className="bg-teal-100 text-teal-700 font-semibold px-8 py-2 rounded-full hover:bg-teal-200 transition-colors"
-                    >
-                      {(getAnswer(question.id) as string) || question.options[0]}
-                    </button>
+                    <div className="flex gap-2">
+                      {question.options.map((option) => {
+                        const isSelected = getAnswer(question.id) === option;
+                        return (
+                          <button
+                            key={option}
+                            onClick={() => handleAnswer(question.id, option)}
+                            className={`font-semibold px-6 py-2 rounded-full transition-colors ${
+                              isSelected 
+                                ? 'bg-teal-500 text-white' 
+                                : 'bg-teal-100 text-teal-700 hover:bg-teal-200'
+                            }`}
+                          >
+                            {option}
+                          </button>
+                        );
+                      })}
+                    </div>
                   )}
 
                   {question.type === 'toggle' && question.options && (

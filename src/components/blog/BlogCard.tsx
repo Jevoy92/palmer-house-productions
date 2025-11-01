@@ -13,6 +13,8 @@ interface BlogCardProps {
   featured?: boolean;
   slug: string;
   tags: string[];
+  author?: string;
+  authorRole?: string;
 }
 
 export const BlogCard = ({
@@ -23,7 +25,9 @@ export const BlogCard = ({
   publishDate,
   featured = false,
   slug,
-  tags
+  tags,
+  author,
+  authorRole
 }: BlogCardProps) => {
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -59,6 +63,16 @@ export const BlogCard = ({
         </h3>
       </CardHeader>
       <CardContent>
+        {author && (
+          <div className="mb-3 flex items-center gap-2">
+            <Badge variant="outline" className="text-xs font-medium border-primary/30 text-primary">
+              {author}
+            </Badge>
+            {authorRole && (
+              <span className="text-xs text-muted-foreground">{authorRole}</span>
+            )}
+          </div>
+        )}
         <p className="text-corporate-gray mb-4 leading-relaxed text-sm">
           {excerpt}
         </p>

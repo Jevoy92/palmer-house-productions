@@ -34,7 +34,9 @@ const blogArticles = [
     slug: '/blog/video-content-toolkit-2025',
     tags: ['video-strategy', 'content-creation', 'business-growth', 'toolkits'],
     image: editingLikeProImage,
-    imageAlt: 'Video content creation toolkit and editing workflow'
+    imageAlt: 'Video content creation toolkit and editing workflow',
+    author: 'System Pal',
+    authorRole: 'Operations & Systems Expert'
   },
   {
     id: 'automate-employee-training-video',
@@ -47,7 +49,24 @@ const blogArticles = [
     slug: '/blog/automate-employee-training-video',
     tags: ['employee-training', 'automation', 'video-systems', 'hr'],
     image: employeeTrainingAutomationImage,
-    imageAlt: 'Automated employee training with video modules'
+    imageAlt: 'Automated employee training with video modules',
+    author: 'System Pal',
+    authorRole: 'Operations & Systems Expert'
+  },
+  {
+    id: 'mobile-video-production',
+    title: 'Mobile Video Production: Create Pro Content Anywhere',
+    excerpt: 'Learn how to produce professional-quality video content using just your smartphone and a few essential accessories.',
+    category: 'Production',
+    readTime: '9 min read',
+    publishDate: '2025-01-08',
+    featured: true,
+    slug: '/blog/mobile-video-production',
+    tags: ['mobile-video', 'on-the-go', 'content-creation', 'smartphone'],
+    image: mobileVideoProductionImage,
+    imageAlt: 'Mobile video production setup with smartphone',
+    author: 'Reel Pal',
+    authorRole: 'Social Media & Short-Form Expert'
   },
   {
     id: 'content-creation-tools-2025',
@@ -59,8 +78,10 @@ const blogArticles = [
     featured: false,
     slug: '/blog/content-creation-tools-2025',
     tags: ['content-tools', 'productivity', 'video-production', 'efficiency'],
-    image: mobileVideoProductionImage,
-    imageAlt: 'Essential content creation tools and mobile production setup'
+    image: editingLikeProImage,
+    imageAlt: 'Essential content creation tools and editing workspace',
+    author: 'Spotlight Pal',
+    authorRole: 'Professional Production Expert'
   },
   {
     id: 'video-content-roi-comparison',
@@ -73,11 +94,13 @@ const blogArticles = [
     slug: '/blog/video-content-roi-comparison',
     tags: ['roi-analysis', 'video-training', 'business-metrics', 'cost-comparison'],
     image: videoMetricsMatterImage,
-    imageAlt: 'Video ROI analytics and performance dashboard'
+    imageAlt: 'Video ROI analytics and performance dashboard',
+    author: 'Evergreen Pal',
+    authorRole: 'Content Strategy & SEO Expert'
   }
 ];
 
-const categories = ['All', 'Strategy', 'Training', 'Tools', 'ROI'];
+const categories = ['All', 'Strategy', 'Training', 'Production', 'Tools', 'ROI'];
 
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -153,10 +176,20 @@ const Blog = () => {
                       </AspectRatio>
                     </div>
                     
-                    {/* Content - Right Side */}
+                      {/* Content - Right Side */}
                     <div className="md:col-span-3 p-8 sm:p-12 flex flex-col justify-center">
-                      <div className="text-sm text-muted-foreground mb-4">
-                        {formatDate(featuredArticles[0].publishDate)}
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="text-sm text-muted-foreground">
+                          {formatDate(featuredArticles[0].publishDate)}
+                        </div>
+                        {featuredArticles[0].author && (
+                          <>
+                            <span className="text-muted-foreground">•</span>
+                            <div className="text-sm font-medium text-foreground">
+                              By {featuredArticles[0].author}
+                            </div>
+                          </>
+                        )}
                       </div>
                       <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-foreground group-hover:text-primary transition-colors">
                         {featuredArticles[0].title}
@@ -217,6 +250,11 @@ const Blog = () => {
                       
                       {/* Content */}
                       <div className="px-6 pb-6">
+                        {article.author && (
+                          <div className="text-xs font-medium text-muted-foreground mb-2">
+                            By {article.author}
+                          </div>
+                        )}
                         <h3 className="text-xl sm:text-2xl font-bold mb-3 text-foreground group-hover:text-primary transition-colors leading-tight">
                           {article.title}
                         </h3>

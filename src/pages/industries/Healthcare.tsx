@@ -232,8 +232,190 @@ const HealthcarePage = () => {
           </div>
         </section>
 
+        {/* Our Video Production Process */}
+        <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+              {[
+                {
+                  number: "1",
+                  title: "Discovery",
+                  description: "Understanding your goals, audience, and compliance requirements through detailed consultation.",
+                  color: "bg-orange-100",
+                  textColor: "text-orange-600"
+                },
+                {
+                  number: "2",
+                  title: "Planning",
+                  description: "Developing scripts, storyboards, and production timelines tailored to your healthcare environment.",
+                  color: "bg-pink-100",
+                  textColor: "text-pink-600"
+                },
+                {
+                  number: "3",
+                  title: "Production",
+                  description: "Professional filming with healthcare-specific equipment and techniques, ensuring minimal disruption.",
+                  color: "bg-blue-100",
+                  textColor: "text-blue-600"
+                },
+                {
+                  number: "4",
+                  title: "Delivery",
+                  description: "Final videos optimized for your platforms with accessibility features and compliance documentation.",
+                  color: "bg-green-100",
+                  textColor: "text-green-600"
+                }
+              ].map((step, index) => (
+                <div key={index} className="text-center">
+                  <div className={`w-20 h-20 ${step.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
+                    <span className={`text-3xl font-bold ${step.textColor}`}>{step.number}</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Healthcare Video Specialties */}
+            <div className="mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">Healthcare Video Specialties</h2>
+              <p className="text-lg text-gray-600 mb-12 max-w-3xl">
+                Our expertise spans across various healthcare sectors, ensuring we understand the unique challenges and opportunities in your field.
+              </p>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div className="space-y-6">
+                  {[
+                    {
+                      icon: <Building className="h-6 w-6" />,
+                      title: "Hospitals & Health Systems",
+                      description: "Large-scale video projects for complex healthcare environments.",
+                      color: "bg-blue-100",
+                      iconColor: "text-blue-600"
+                    },
+                    {
+                      icon: <Stethoscope className="h-6 w-6" />,
+                      title: "Private Practices",
+                      description: "Personalized content for specialty clinics and individual practitioners.",
+                      color: "bg-green-100",
+                      iconColor: "text-green-600"
+                    },
+                    {
+                      icon: <Pill className="h-6 w-6" />,
+                      title: "Pharmaceutical",
+                      description: "Educational and promotional content for medical products and treatments.",
+                      color: "bg-purple-100",
+                      iconColor: "text-purple-600"
+                    },
+                    {
+                      icon: <Brain className="h-6 w-6" />,
+                      title: "Medical Education",
+                      description: "Training materials for medical schools and continuing education programs.",
+                      color: "bg-orange-100",
+                      iconColor: "text-orange-600"
+                    }
+                  ].map((specialty, index) => (
+                    <div key={index} className="flex items-start gap-4">
+                      <div className={`w-14 h-14 ${specialty.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                        <span className={specialty.iconColor}>{specialty.icon}</span>
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-1">{specialty.title}</h3>
+                        <p className="text-gray-600">{specialty.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Decorative Grid */}
+                <div className="hidden lg:grid grid-cols-2 gap-4 h-full">
+                  <div className="bg-blue-200 rounded-3xl flex items-center justify-center h-48">
+                    <Video className="h-16 w-16 text-blue-600" />
+                  </div>
+                  <div className="bg-green-200 rounded-3xl flex items-center justify-center h-48">
+                    <Activity className="h-16 w-16 text-green-600" />
+                  </div>
+                  <div className="bg-purple-200 rounded-3xl flex items-center justify-center h-48">
+                    <FileCheck className="h-16 w-16 text-purple-600" />
+                  </div>
+                  <div className="bg-orange-200 rounded-3xl flex items-center justify-center h-48">
+                    <Microscope className="h-16 w-16 text-orange-600" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Our Healthcare Video Services */}
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Healthcare Video Services</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Comprehensive video production solutions tailored for healthcare organizations, 
+                designed to educate, inform, and inspire confidence.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {[
+                {
+                  icon: <Users className="h-8 w-8" />,
+                  badge: "Patient Education",
+                  title: "Educational Videos",
+                  description: "Clear, accessible content that helps patients understand procedures, treatments, and wellness practices.",
+                  features: ["Treatment explanations", "Pre/post-op instructions", "Wellness programs"],
+                  color: "bg-blue-100",
+                  iconColor: "text-blue-600",
+                  badgeColor: "bg-blue-100 text-blue-700"
+                },
+                {
+                  icon: <Shield className="h-8 w-8" />,
+                  badge: "Staff Training",
+                  title: "Training Content",
+                  description: "Professional development videos that enhance skills and ensure consistent care standards.",
+                  features: ["Compliance training", "Safety protocols", "New technology guides"],
+                  color: "bg-green-100",
+                  iconColor: "text-green-600",
+                  badgeColor: "bg-green-100 text-green-700"
+                },
+                {
+                  icon: <Heart className="h-8 w-8" />,
+                  badge: "Brand Stories",
+                  title: "Promotional Videos",
+                  description: "Compelling narratives that showcase your organization's mission and build community trust.",
+                  features: ["Patient testimonials", "Facility tours", "Staff spotlights"],
+                  color: "bg-purple-100",
+                  iconColor: "text-purple-600",
+                  badgeColor: "bg-purple-100 text-purple-700"
+                }
+              ].map((service, index) => (
+                <Card key={index} className="border border-gray-200 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                  <CardContent className="p-8 text-center">
+                    <div className={`w-20 h-20 ${service.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
+                      <span className={service.iconColor}>{service.icon}</span>
+                    </div>
+                    <Badge className={`mb-4 ${service.badgeColor}`}>{service.badge}</Badge>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h3>
+                    <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
+                    <div className="space-y-2">
+                      {service.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center justify-center gap-2 text-sm text-gray-700">
+                          <CheckCircle className="h-4 w-4 text-green-600" />
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* How Each Pal Serves Healthcare */}
-        <section className="py-24 bg-white">
+        <section className="py-24 bg-gray-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">

@@ -266,10 +266,12 @@ const blogArticles = [
 ];
 
 const categories = ['All', 'Strategy', 'Training', 'Production', 'Tools', 'ROI', 'Social Media', 'SEO', 'Operations'];
+const pals = ['All', 'System Pal', 'Reel Pal', 'Spotlight Pal', 'Evergreen Pal'];
 
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedPal, setSelectedPal] = useState('All');
   const [sortBy, setSortBy] = useState('newest');
 
   // Filter and sort articles
@@ -279,7 +281,8 @@ const Blog = () => {
                            article.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            article.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
       const matchesCategory = selectedCategory === 'All' || article.category === selectedCategory;
-      return matchesSearch && matchesCategory;
+      const matchesPal = selectedPal === 'All' || article.author === selectedPal;
+      return matchesSearch && matchesCategory && matchesPal;
     })
     .sort((a, b) => {
       if (sortBy === 'newest') {
@@ -370,16 +373,75 @@ const Blog = () => {
           </div>
         </section>
 
+        {/* Filters and Sort Section */}
+        <section className="py-8 border-b border-border">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col gap-4">
+              {/* Search Bar */}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10 bg-background"
+                />
+              </div>
+
+              {/* Filters Row */}
+              <div className="flex flex-wrap items-center gap-3">
+                {/* Category Filter */}
+                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                  <SelectTrigger className="w-[160px] bg-background">
+                    <SelectValue placeholder="Category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map(category => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {/* Pal Filter */}
+                <Select value={selectedPal} onValueChange={setSelectedPal}>
+                  <SelectTrigger className="w-[160px] bg-background">
+                    <SelectValue placeholder="Filter by Pal" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {pals.map(pal => (
+                      <SelectItem key={pal} value={pal}>
+                        {pal}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {/* Sort By */}
+                <Select value={sortBy} onValueChange={setSortBy}>
+                  <SelectTrigger className="w-[160px] bg-background">
+                    <SelectValue placeholder="Sort by" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="newest">Newest First</SelectItem>
+                    <SelectItem value="oldest">Oldest First</SelectItem>
+                    <SelectItem value="readTime">Reading Time</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Top Stories Section */}
         <section className="py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-                Top stories
+                {selectedPal !== 'All' ? `${selectedPal} Articles` : selectedCategory !== 'All' ? `${selectedCategory} Articles` : 'Top stories'}
               </h2>
-              <button className="p-2 hover:bg-muted rounded-full transition-colors">
-                <Search className="h-6 w-6 text-foreground" />
-              </button>
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">

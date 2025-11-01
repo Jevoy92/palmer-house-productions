@@ -28,7 +28,11 @@ import {
   UserCheck,
   Eye,
   BookOpen,
-  ArrowRight
+  ArrowRight,
+  Lock,
+  FileCheck,
+  Package,
+  Zap
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import systemPalImage from '@/assets/pals/male-system-pal-edited.png';
@@ -180,80 +184,169 @@ const GovernmentPage = () => {
 
       <MainContent>
         {/* Hero Section */}
-        <section className="relative py-16 sm:py-20 lg:py-32 bg-gradient-to-br from-blue-900 via-blue-700 to-indigo-800 overflow-hidden">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-10 left-10 w-20 h-20 border-2 border-white rounded-full animate-pulse"></div>
-            <div className="absolute top-20 right-20 w-16 h-16 border-2 border-white rotate-45 animate-pulse delay-300"></div>
-            <div className="absolute bottom-20 left-1/4 w-12 h-12 border-2 border-white rounded-full animate-pulse delay-700"></div>
-          </div>
-          
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="text-white">
-                <Badge className="bg-white/20 text-white border-white/30 mb-6 text-lg px-4 py-2">
-                  Government & Public Sector Solutions
-                </Badge>
-                
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
-                  Government Video Production That Serves the Public Good
-                </h1>
-                
-                <p className="text-xl text-white/90 mb-8 leading-relaxed">
-                  From public safety training to citizen engagement and employee development, we create video 
-                  content that helps government agencies operate efficiently, serve citizens effectively, 
-                  and build public trust through transparency and clear communication.
-                </p>
+        <section className="relative py-20 lg:py-32 bg-gradient-to-br from-white via-gray-50 to-blue-50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto text-center">
+              <Badge variant="secondary" className="mb-6 text-sm px-4 py-1.5">
+                Government Industry
+              </Badge>
+              
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight text-gray-900">
+                Government Video Production That Serves the Public Good
+              </h1>
+              
+              <p className="text-xl text-gray-600 mb-10 leading-relaxed max-w-3xl mx-auto">
+                From public safety training to citizen engagement and transparency initiatives, 
+                we create compliant, accessible video content that helps government agencies 
+                fulfill their mission and build public trust.
+              </p>
 
-                <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                  <Button 
-                    size="lg"
-                    className="bg-white text-blue-900 hover:bg-white/95 font-semibold text-lg px-8 py-4 h-auto shadow-lg"
-                    onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
-                  >
-                    <Video className="mr-2 h-5 w-5" />
-                    Schedule Government Consultation
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    size="lg"
-                    className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-blue-900 font-semibold text-lg px-8 py-4 h-auto"
-                    onClick={() => transitionTo('/system-pal')}
-                  >
-                    Explore Training Solutions
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </div>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <Button 
+                  size="lg"
+                  className="bg-blue-600 text-white hover:bg-blue-700 font-semibold text-lg px-8 py-6 h-auto shadow-lg"
+                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+                >
+                  <Video className="mr-2 h-5 w-5" />
+                  Schedule Consultation
+                </Button>
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold text-lg px-8 py-6 h-auto"
+                  onClick={() => transitionTo('/pals')}
+                >
+                  Meet the Pals
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </div>
 
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                  {industryBenefits.map((benefit, index) => (
-                    <div key={index} className="text-white/90">
-                      <div className="flex justify-center mb-2">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                {industryBenefits.map((benefit, index) => (
+                  <div key={index} className="text-center">
+                    <div className="flex justify-center mb-3">
+                      <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
                         {benefit.icon}
                       </div>
-                      <div className="text-2xl font-bold mb-1">{benefit.stat}</div>
-                      <h3 className="font-semibold text-sm mb-1">{benefit.title}</h3>
-                      <p className="text-xs text-white/70 leading-tight">{benefit.description}</p>
+                    </div>
+                    <div className="text-2xl font-bold text-gray-900 mb-1">{benefit.stat}</div>
+                    <h3 className="font-semibold text-sm text-gray-700 mb-1">{benefit.title}</h3>
+                    <p className="text-xs text-gray-500 leading-tight">{benefit.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Our Video Production Process */}
+        <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+              {[
+                {
+                  number: "1",
+                  title: "Discovery",
+                  description: "Understanding your agency's mission, audience, and compliance requirements through detailed consultation.",
+                  color: "bg-orange-100",
+                  textColor: "text-orange-600"
+                },
+                {
+                  number: "2",
+                  title: "Planning",
+                  description: "Developing scripts, storyboards, and production timelines that meet government standards and regulations.",
+                  color: "bg-pink-100",
+                  textColor: "text-pink-600"
+                },
+                {
+                  number: "3",
+                  title: "Production",
+                  description: "Professional filming with security clearances and protocols ensuring minimal disruption to operations.",
+                  color: "bg-blue-100",
+                  textColor: "text-blue-600"
+                },
+                {
+                  number: "4",
+                  title: "Delivery",
+                  description: "Final videos with Section 508 compliance, public records documentation, and approved file formats.",
+                  color: "bg-green-100",
+                  textColor: "text-green-600"
+                }
+              ].map((step, index) => (
+                <div key={index} className="text-center">
+                  <div className={`w-20 h-20 ${step.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
+                    <span className={`text-3xl font-bold ${step.textColor}`}>{step.number}</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Government Video Specialties */}
+            <div className="mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">Government Video Specialties</h2>
+              <p className="text-lg text-gray-600 mb-12 max-w-3xl">
+                Our expertise spans across various government sectors, ensuring we understand the unique compliance and communication requirements of your agency.
+              </p>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div className="space-y-6">
+                  {[
+                    {
+                      icon: <Landmark className="h-6 w-6" />,
+                      title: "Federal Agencies",
+                      description: "Large-scale training and communication for federal departments.",
+                      color: "bg-blue-100",
+                      iconColor: "text-blue-600"
+                    },
+                  {
+                    icon: <Building2 className="h-6 w-6" />,
+                    title: "State & Local Government",
+                    description: "Municipal video content for community engagement and services.",
+                    color: "bg-green-100",
+                    iconColor: "text-green-600"
+                  },
+                    {
+                      icon: <Shield className="h-6 w-6" />,
+                      title: "Law Enforcement",
+                      description: "Training and transparency videos for police departments.",
+                      color: "bg-purple-100",
+                      iconColor: "text-purple-600"
+                    },
+                    {
+                      icon: <Users className="h-6 w-6" />,
+                      title: "Public Services",
+                      description: "Educational content for citizen information and engagement.",
+                      color: "bg-orange-100",
+                      iconColor: "text-orange-600"
+                    }
+                  ].map((specialty, index) => (
+                    <div key={index} className="flex items-start gap-4">
+                      <div className={`w-14 h-14 ${specialty.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                        <span className={specialty.iconColor}>{specialty.icon}</span>
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-1">{specialty.title}</h3>
+                        <p className="text-gray-600">{specialty.description}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
-              </div>
 
-              <div className="relative">
-                <div className="relative w-full max-w-lg mx-auto">
-                  <div className="relative w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] mx-auto">
-                    <img 
-                      src={systemPalImage} 
-                      alt="Government video production expert"
-                      className="w-full h-full object-contain animate-fade-in"
-                      loading="eager"
-                    />
+                {/* Decorative Grid */}
+                <div className="hidden lg:grid grid-cols-2 gap-4 h-full">
+                  <div className="bg-blue-200 rounded-3xl flex items-center justify-center h-48">
+                    <Video className="h-16 w-16 text-blue-600" />
                   </div>
-                  
-                  <div className="absolute -top-4 -right-4 bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-white animate-pulse">
-                    <Landmark className="h-8 w-8" />
+                  <div className="bg-green-200 rounded-3xl flex items-center justify-center h-48">
+                    <Shield className="h-16 w-16 text-green-600" />
                   </div>
-                  <div className="absolute bottom-10 -left-6 bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-white animate-pulse delay-500">
-                    <Shield className="h-8 w-8" />
+                  <div className="bg-purple-200 rounded-3xl flex items-center justify-center h-48">
+                    <FileCheck className="h-16 w-16 text-purple-600" />
+                  </div>
+                  <div className="bg-orange-200 rounded-3xl flex items-center justify-center h-48">
+                    <Users className="h-16 w-16 text-orange-600" />
                   </div>
                 </div>
               </div>

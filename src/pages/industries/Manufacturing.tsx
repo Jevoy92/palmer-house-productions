@@ -26,7 +26,9 @@ import {
   TrendingUp,
   BookOpen,
   FileCheck,
-  ArrowRight
+  ArrowRight,
+  Package,
+  Zap
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import systemPalImage from '@/assets/pals/male-system-pal-edited.png';

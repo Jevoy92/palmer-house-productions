@@ -190,7 +190,7 @@ export const Navigation = () => {
                   <DropdownMenuContent align="start" className="w-56 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
                     <DropdownMenuItem asChild>
                       <button 
-                        onClick={() => handlePageTransition('/safety-videos')}
+                        onClick={() => handlePageTransition('/industries/healthcare')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
                         Healthcare
@@ -198,7 +198,7 @@ export const Navigation = () => {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <button 
-                        onClick={() => handlePageTransition('/safety-videos')}
+                        onClick={() => handlePageTransition('/industries/manufacturing')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
                         Manufacturing
@@ -206,7 +206,7 @@ export const Navigation = () => {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <button 
-                        onClick={() => handlePageTransition('/about-us')}
+                        onClick={() => handlePageTransition('/industries/professional-services')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
                         Professional Services
@@ -222,7 +222,7 @@ export const Navigation = () => {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <button 
-                        onClick={() => handlePageTransition('/about-us')}
+                        onClick={() => handlePageTransition('/industries/education')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
                         Education
@@ -230,7 +230,7 @@ export const Navigation = () => {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <button 
-                        onClick={() => handlePageTransition('/about-us')}
+                        onClick={() => handlePageTransition('/industries/government')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
                         Government
@@ -484,19 +484,19 @@ export const Navigation = () => {
               <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Industries</div>
               <div className="space-y-1">
                 <button 
-                  onClick={() => handlePageTransition('/safety-videos')}
+                  onClick={() => handlePageTransition('/industries/healthcare')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
                   Healthcare
                 </button>
                 <button 
-                  onClick={() => handlePageTransition('/safety-videos')}
+                  onClick={() => handlePageTransition('/industries/manufacturing')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
                   Manufacturing
                 </button>
                 <button 
-                  onClick={() => handlePageTransition('/about-us')}
+                  onClick={() => handlePageTransition('/industries/professional-services')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
                   Professional Services
@@ -508,13 +508,13 @@ export const Navigation = () => {
                   Technology
                 </button>
                 <button 
-                  onClick={() => handlePageTransition('/about-us')}
+                  onClick={() => handlePageTransition('/industries/education')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
                   Education
                 </button>
                 <button 
-                  onClick={() => handlePageTransition('/about-us')}
+                  onClick={() => handlePageTransition('/industries/government')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
                   Government

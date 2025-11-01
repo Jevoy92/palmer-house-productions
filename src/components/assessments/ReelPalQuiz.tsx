@@ -1,11 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import confetti from 'canvas-confetti';
 import { 
   Video,
   Sparkles,
   Users,
   Target,
-  TrendingUp
+  TrendingUp,
+  CheckCircle2,
+  AlertCircle,
+  Trophy,
+  Zap,
+  ArrowRight
 } from 'lucide-react';
 
 type Answer = {
@@ -197,29 +203,113 @@ export const ReelPalQuiz = () => {
     }
   };
 
-  const calculateScore = () => {
-    // Simple scoring system - could be made more sophisticated
-    let score = 0;
+  const calculateDetailedScore = () => {
+    let totalScore = 0;
+    let maxScore = 0;
+    const categoryScores: { [key: string]: { score: number; max: number } } = {};
+
     answers.forEach(answer => {
-      if (typeof answer.value === 'number') {
-        score += answer.value;
-      } else if (typeof answer.value === 'string') {
-        // Give points based on option index
-        const section = sections.find(s => s.id === answer.sectionId);
-        const question = section?.questions.find(q => q.id === answer.questionId);
-        const optionIndex = question?.options?.indexOf(answer.value) ?? 0;
-        score += optionIndex;
+      const section = sections.find(s => s.id === answer.sectionId);
+      const question = section?.questions.find(q => q.id === answer.questionId);
+      
+      if (!section || !question) return;
+      
+      let questionScore = 0;
+      let questionMax = 0;
+
+      if (question.type === 'toggle') {
+        questionMax = 1;
+        questionScore = answer.value === 'Yes' ? 1 : 0;
+      } else if (question.type === 'buttons') {
+        questionMax = question.options!.length - 1;
+        questionScore = question.options!.indexOf(answer.value as string);
+      } else if (question.type === 'scale') {
+        questionMax = question.options!.length - 1;
+        questionScore = question.options!.indexOf(answer.value as string);
+      }
+
+      totalScore += questionScore;
+      maxScore += questionMax;
+
+      if (!categoryScores[section.title]) {
+        categoryScores[section.title] = { score: 0, max: 0 };
+      }
+      categoryScores[section.title].score += questionScore;
+      categoryScores[section.title].max += questionMax;
+    });
+
+    const percentage = maxScore > 0 ? Math.round((totalScore / maxScore) * 100) : 0;
+    
+    return { totalScore, maxScore, percentage, categoryScores };
+  };
+
+  const getActionItems = () => {
+    const items: string[] = [];
+    
+    answers.forEach(answer => {
+      const section = sections.find(s => s.id === answer.sectionId);
+      const question = section?.questions.find(q => q.id === answer.questionId);
+      
+      if (section?.id === 1 && answer.value === 'No') {
+        if (question?.id === 1) items.push("Create a consistent posting schedule for social media");
+        if (question?.id === 2) items.push("Build a content calendar for your Reels/TikToks");
+      }
+      
+      if (section?.id === 2 && (answer.value === 'No' || answer.value === 'Partially')) {
+        if (question?.id === 1) items.push("Invest in basic filming equipment (ring light, tripod)");
+        if (question?.id === 3) items.push("Learn basic video editing skills or hire support");
+      }
+      
+      if (section?.id === 3 && answer.value === 'No') {
+        if (question?.id === 1) items.push("Block out dedicated time weekly for content creation");
+        if (question?.id === 2) items.push("Get leadership buy-in for regular content initiatives");
+      }
+      
+      if (section?.id === 4 && answer.value === 'No') {
+        if (question?.id === 1) items.push("Prioritize content creation in your business strategy");
       }
     });
-    return score;
+
+    // Always add a few universal action items
+    items.push("Start with batch filming - create multiple videos in one session");
+    items.push("Focus on authentic, personality-driven content");
+    
+    return items.slice(0, 5); // Return top 5 action items
+  };
+
+  const getInsights = () => {
+    const { categoryScores } = calculateDetailedScore();
+    const insights: { category: string; message: string; status: 'strong' | 'developing' | 'opportunity' }[] = [];
+    
+    Object.entries(categoryScores).forEach(([category, scores]) => {
+      const percentage = (scores.score / scores.max) * 100;
+      
+      if (percentage >= 70) {
+        insights.push({
+          category,
+          message: "You're doing great here! Keep building on this strength.",
+          status: 'strong'
+        });
+      } else if (percentage >= 40) {
+        insights.push({
+          category,
+          message: "Good foundation - some improvements will make a big difference.",
+          status: 'developing'
+        });
+      } else {
+        insights.push({
+          category,
+          message: "This is a growth opportunity - focus here for maximum impact.",
+          status: 'opportunity'
+        });
+      }
+    });
+    
+    return insights;
   };
 
   const getRecommendation = () => {
-    const score = calculateScore();
-    const maxScore = sections.reduce((acc, section) => 
-      acc + section.questions.length * 4, 0
-    );
-    const percentage = (score / maxScore) * 100;
+    const { percentage } = calculateDetailedScore();
 
     if (percentage < 30) {
       return {
@@ -271,59 +361,174 @@ export const ReelPalQuiz = () => {
   const currentSectionData = sections[currentSection];
   const progress = ((currentSection + 1) / sections.length) * 100;
 
+  useEffect(() => {
+    if (showResults) {
+      // Trigger confetti celebration
+      const duration = 3000;
+      const end = Date.now() + duration;
+
+      const frame = () => {
+        confetti({
+          particleCount: 3,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#14b8a6', '#f97316', '#8b5cf6']
+        });
+        confetti({
+          particleCount: 3,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#14b8a6', '#f97316', '#8b5cf6']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      };
+      frame();
+    }
+  }, [showResults]);
+
   if (showResults) {
     const recommendation = getRecommendation();
+    const { percentage, categoryScores } = calculateDetailedScore();
+    const actionItems = getActionItems();
+    const insights = getInsights();
+
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-3xl shadow-2xl p-10 lg:p-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fade-in">
+        {/* Hero Score Section */}
+        <div className="bg-gradient-to-br from-teal-500 to-orange-500 rounded-3xl shadow-2xl p-8 lg:p-12 mb-8 text-white text-center">
+          <Trophy className="w-20 h-20 mx-auto mb-4 animate-scale-in" />
+          <h2 className="text-5xl font-bold mb-4">Your Content Readiness Score</h2>
+          <div className="text-8xl font-bold mb-4">{percentage}%</div>
+          <div className="inline-block bg-white/20 backdrop-blur-sm px-8 py-3 rounded-full mb-6">
+            <p className="text-2xl font-semibold">{recommendation.level}</p>
+          </div>
+          <p className="text-xl max-w-2xl mx-auto opacity-90">
+            {recommendation.title}
+          </p>
+        </div>
+
+        {/* Category Breakdown */}
+        <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-10 mb-8">
+          <h3 className="text-3xl font-bold mb-6 text-center text-gray-800">Your Breakdown by Category</h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            {Object.entries(categoryScores).map(([category, scores]) => {
+              const catPercentage = Math.round((scores.score / scores.max) * 100);
+              return (
+                <div key={category} className="border-2 border-gray-200 rounded-xl p-6">
+                  <h4 className="font-bold text-lg mb-3 text-gray-800">{category}</h4>
+                  <div className="flex items-center gap-4">
+                    <div className="flex-1">
+                      <div className="w-full bg-gray-200 rounded-full h-3">
+                        <div 
+                          className="bg-gradient-to-r from-teal-500 to-orange-500 h-3 rounded-full transition-all duration-1000"
+                          style={{ width: `${catPercentage}%` }}
+                        />
+                      </div>
+                    </div>
+                    <span className="text-2xl font-bold text-gray-700">{catPercentage}%</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Key Insights */}
+        <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-10 mb-8">
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <Zap className="w-8 h-8 text-orange-500" />
+            <h3 className="text-3xl font-bold text-gray-800">Key Insights</h3>
+          </div>
+          <div className="space-y-4">
+            {insights.map((insight, idx) => (
+              <div 
+                key={idx}
+                className={`flex items-start gap-4 p-4 rounded-xl ${
+                  insight.status === 'strong' ? 'bg-green-50 border-2 border-green-200' :
+                  insight.status === 'developing' ? 'bg-yellow-50 border-2 border-yellow-200' :
+                  'bg-orange-50 border-2 border-orange-200'
+                }`}
+              >
+                {insight.status === 'strong' ? (
+                  <CheckCircle2 className="w-6 h-6 text-green-600 flex-shrink-0 mt-1" />
+                ) : (
+                  <AlertCircle className="w-6 h-6 text-orange-600 flex-shrink-0 mt-1" />
+                )}
+                <div>
+                  <h4 className="font-bold text-lg mb-1 text-gray-800">{insight.category}</h4>
+                  <p className="text-gray-600">{insight.message}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Action Items */}
+        <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-10 mb-8">
+          <h3 className="text-3xl font-bold mb-6 text-center text-gray-800">Your Personalized Action Plan</h3>
+          <div className="space-y-4">
+            {actionItems.map((item, idx) => (
+              <div key={idx} className="flex items-start gap-4 p-4 bg-teal-50 rounded-xl border-2 border-teal-200">
+                <div className="w-8 h-8 bg-teal-500 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
+                  {idx + 1}
+                </div>
+                <p className="text-lg text-gray-700 pt-1">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Recommendation CTA */}
+        <div className="bg-gradient-to-br from-orange-50 to-purple-50 rounded-3xl shadow-xl p-8 lg:p-12 mb-8">
           <div className="text-center mb-8">
             <div className="text-6xl mb-4">{recommendation.icon}</div>
-            <div className="inline-block bg-orange-100 text-orange-700 font-semibold px-6 py-2 rounded-full mb-4">
-              {recommendation.level}
-            </div>
-            <h2 className="text-4xl font-bold mb-4 text-gray-800">{recommendation.title}</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+            <h3 className="text-3xl font-bold mb-4 text-gray-800">My Recommendation for You</h3>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-4">
               {recommendation.description}
             </p>
+            <p className="text-2xl font-bold text-gray-800 mb-8">{recommendation.recommendation}</p>
           </div>
-
-          <div className="bg-gradient-to-br from-orange-50 to-purple-50 rounded-2xl p-8 mb-8">
-            <h3 className="text-2xl font-bold mb-4 text-center text-gray-800">My Recommendation</h3>
-            <p className="text-center text-xl font-semibold mb-6 text-gray-700">{recommendation.recommendation}</p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              {recommendation.link.startsWith('http') ? (
-                <a 
-                  href={recommendation.link} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-10 py-3.5 rounded-full transition-colors shadow-lg shadow-orange-500/30 text-center"
-                >
-                  {recommendation.action} →
-                </a>
-              ) : (
-                <Link 
-                  to={recommendation.link}
-                  className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-10 py-3.5 rounded-full transition-colors shadow-lg shadow-orange-500/30 text-center"
-                >
-                  {recommendation.action} →
-                </Link>
-              )}
-              <button 
-                onClick={() => {
-                  setShowResults(false);
-                  setCurrentSection(0);
-                  setAnswers([]);
-                }}
-                className="bg-gray-200 hover:bg-gray-300 text-gray-600 font-semibold px-10 py-3.5 rounded-full transition-colors"
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {recommendation.link.startsWith('http') ? (
+              <a 
+                href={recommendation.link} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-10 py-4 rounded-full transition-all hover:scale-105 shadow-lg shadow-orange-500/30 text-center flex items-center justify-center gap-2"
               >
-                Retake Quiz
-              </button>
-            </div>
+                {recommendation.action}
+                <ArrowRight className="w-5 h-5" />
+              </a>
+            ) : (
+              <Link 
+                to={recommendation.link}
+                className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-10 py-4 rounded-full transition-all hover:scale-105 shadow-lg shadow-orange-500/30 text-center flex items-center justify-center gap-2"
+              >
+                {recommendation.action}
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+            )}
+            <button 
+              onClick={() => {
+                setShowResults(false);
+                setCurrentSection(0);
+                setAnswers([]);
+              }}
+              className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold px-10 py-4 rounded-full transition-all hover:scale-105"
+            >
+              Retake Quiz
+            </button>
           </div>
+        </div>
 
-          <div className="text-center text-sm text-gray-600">
-            <p>Not sure? <Link to="/contact" className="text-orange-500 hover:underline font-semibold">Schedule a free discovery call</Link> to discuss your unique situation.</p>
-          </div>
+        <div className="text-center text-gray-600 pb-8">
+          <p className="text-lg">Want to discuss your results? <Link to="/contact" className="text-orange-500 hover:underline font-semibold">Schedule a free discovery call</Link></p>
         </div>
       </div>
     );

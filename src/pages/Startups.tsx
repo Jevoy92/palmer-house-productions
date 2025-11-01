@@ -9,160 +9,162 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { usePageTransition } from '@/components/PageTransition';
-import { useState, useEffect } from 'react';
 import { 
   Rocket, 
   TrendingUp, 
-  CheckCircle, 
-  Users, 
-  Clock,
-  Target,
-  Lightbulb,
-  PlayCircle,
-  FileText,
-  Camera,
-  Zap,
-  Eye,
-  Building2,
-  ArrowRight,
-  Star,
-  Award,
   Video,
+  CheckCircle,
+  Target,
+  Users,
+  Zap,
   DollarSign,
-  Globe,
-  Briefcase
+  BarChart,
+  Lightbulb,
+  Award,
+  Clock,
+  ArrowRight,
+  Play
 } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import reelPalImage from '@/assets/pals/female-reel-pal-edited.png';
-import maleReelPalImage from '@/assets/pals/male-reel-pal-edited.png';
-
-const AnimatedText = () => {
-  const phrases = [
-    "Launch Strong",
-    "Raise Funding", 
-    "Tell Your Story",
-    "Build Authority",
-    "Scale Fast",
-    "Stand Out"
-  ];
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(true);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setIsVisible(false);
-      
-      setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % phrases.length);
-        setIsVisible(true);
-      }, 300);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [phrases.length]);
-
-  return (
-    <span 
-      className={`block text-white/90 transition-all duration-300 ${
-        isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-      }`}
-    >
-      {phrases[currentIndex]}
-    </span>
-  );
-};
+import systemPalImage from '@/assets/pals/female-system-pal-edited.png';
+import evergreenPalImage from '@/assets/pals/female-evergreen-pal-final.png';
+import spotlightPalImage from '@/assets/pals/female-spotlight-pal-edited.png';
 
 const StartupsPage = () => {
   const { transitionTo } = usePageTransition();
 
-  const startupCategories = [
+  const videoSolutions = [
     {
       icon: <Rocket className="h-8 w-8" />,
-      title: "Launch Videos",
-      description: "Compelling launch content that generates buzz and drives adoption",
-      modules: ["Product Demos", "Founder Stories", "Launch Campaigns", "Press Kit Videos"],
+      title: "Pitch Deck & Investor Videos",
+      description: "Compelling pitch videos that capture investor attention, communicate your vision, showcase traction, demonstrate product-market fit, and increase fundraising success rates.",
+      palType: "Spotlight Pal",
       color: "border-blue-500",
       bgColor: "bg-blue-50",
-      iconColor: "text-blue-600"
+      iconColor: "text-blue-600",
+      features: ["Investor Pitch Videos", "Demo Day Content", "Vision Communication", "Traction Showcase"]
     },
     {
-      icon: <DollarSign className="h-8 w-8" />,
-      title: "Fundraising Content",
-      description: "Professional pitch videos that capture investor attention",
-      modules: ["Pitch Decks", "Product Demos", "Team Introductions", "Vision Videos"],
-      color: "border-green-500",
-      bgColor: "bg-green-50",
-      iconColor: "text-green-600"
+      icon: <Play className="h-8 w-8" />,
+      title: "Product Demo & Explainer Videos",
+      description: "Clear, engaging product demonstrations that showcase features, highlight benefits, simplify complex technology, and convert prospects into customers.",
+      palType: "Evergreen Pal",
+      color: "border-teal-500",
+      bgColor: "bg-teal-50",
+      iconColor: "text-teal-600",
+      features: ["Product Demos", "Feature Highlights", "Use Case Videos", "Explainer Content"]
     },
     {
       icon: <Users className="h-8 w-8" />,
-      title: "Team & Culture",
-      description: "Showcase your team and company culture to attract talent",
-      modules: ["Team Introductions", "Culture Videos", "Recruitment Content", "Behind the Scenes"],
+      title: "Social Media & Growth Marketing",
+      description: "High-impact social content that drives viral growth, builds community, showcases company culture, attracts early adopters, and amplifies your startup's voice.",
+      palType: "Reel Pal",
+      color: "border-orange-500",
+      bgColor: "bg-orange-50",
+      iconColor: "text-orange-600",
+      features: ["Viral Content", "Community Building", "Culture Videos", "Growth Marketing"]
+    },
+    {
+      icon: <Award className="h-8 w-8" />,
+      title: "Brand Story & Mission Videos",
+      description: "Authentic storytelling that communicates your founding story, showcases team passion, builds emotional connection with customers, and differentiates your brand.",
+      palType: "Spotlight Pal",
       color: "border-purple-500",
       bgColor: "bg-purple-50",
-      iconColor: "text-purple-600"
+      iconColor: "text-purple-600",
+      features: ["Founding Story", "Team Culture", "Mission Videos", "Brand Identity"]
     },
     {
       icon: <TrendingUp className="h-8 w-8" />,
-      title: "Growth Marketing",
-      description: "Video content that scales your marketing and drives growth",
-      modules: ["Social Media Content", "Customer Stories", "Feature Announcements", "Growth Campaigns"],
-      color: "border-orange-500",
-      bgColor: "bg-orange-50",
-      iconColor: "text-orange-600"
+      title: "Customer Success & Testimonials",
+      description: "Powerful social proof through customer stories, success metrics, use case demonstrations, and testimonials that accelerate sales cycles and build credibility.",
+      palType: "Spotlight Pal",
+      color: "border-green-500",
+      bgColor: "bg-green-50",
+      iconColor: "text-green-600",
+      features: ["Customer Stories", "Success Metrics", "Social Proof", "Case Studies"]
     },
     {
-      icon: <Globe className="h-8 w-8" />,
-      title: "Brand Storytelling",
-      description: "Build your brand narrative and establish market presence",
-      modules: ["Origin Stories", "Mission Videos", "Value Propositions", "Brand Campaigns"],
-      color: "border-teal-500",
-      bgColor: "bg-teal-50",
-      iconColor: "text-teal-600"
-    },
-    {
-      icon: <Briefcase className="h-8 w-8" />,
-      title: "Product Education",
-      description: "Help customers understand and adopt your product faster",
-      modules: ["Product Tutorials", "Onboarding Videos", "Feature Walkthroughs", "Use Case Demos"],
+      icon: <Lightbulb className="h-8 w-8" />,
+      title: "Internal Training & Onboarding",
+      description: "Scalable training systems that onboard new hires faster, standardize processes, document knowledge, and maintain company culture as you grow.",
+      palType: "System Pal",
       color: "border-red-500",
       bgColor: "bg-red-50",
-      iconColor: "text-red-600"
+      iconColor: "text-red-600",
+      features: ["New Hire Onboarding", "Process Documentation", "Culture Training", "Knowledge Base"]
     }
   ];
 
-  const benefits = [
+  const industryBenefits = [
     {
-      icon: <Target className="h-6 w-6 text-pal-orange" />,
-      title: "Faster Growth",
-      description: "Video content drives 3x more engagement than text"
+      icon: <DollarSign className="h-6 w-6" />,
+      title: "Increase Funding",
+      stat: "2x More Likely",
+      description: "Startups with pitch videos raise significantly more capital"
     },
     {
-      icon: <Clock className="h-6 w-6 text-pal-orange" />,
-      title: "Quick Turnaround",
-      description: "Fast production cycles to match startup speed"
+      icon: <TrendingUp className="h-6 w-6" />,
+      title: "Accelerate Growth",
+      stat: "5x Conversion",
+      description: "Video content converts visitors to customers faster"
     },
     {
-      icon: <DollarSign className="h-6 w-6 text-pal-orange" />,
-      title: "Cost Effective",
-      description: "Startup-friendly pricing and flexible packages"
+      icon: <Clock className="h-6 w-6" />,
+      title: "Scale Faster",
+      stat: "60% Time Saved",
+      description: "Video training systems enable rapid team scaling"
     },
     {
-      icon: <CheckCircle className="h-6 w-6 text-pal-orange" />,
-      title: "Proven Results",
-      description: "Helping startups raise $10M+ with compelling video"
+      icon: <BarChart className="h-6 w-6" />,
+      title: "Boost Engagement",
+      stat: "10x Reach",
+      description: "Social video content increases brand awareness"
+    }
+  ];
+
+  const useCases = [
+    {
+      title: "Pre-Seed & Seed Stage",
+      description: "Pitch videos for accelerators and angel investors, MVP product demos, founder story videos, early customer testimonials, and social content to build initial traction.",
+      icon: <Rocket className="h-6 w-6" />
+    },
+    {
+      title: "Series A & Growth Stage",
+      description: "Professional investor presentations, product marketing videos, customer success stories, recruiting content, thought leadership videos, and brand awareness campaigns.",
+      icon: <TrendingUp className="h-6 w-6" />
+    },
+    {
+      title: "SaaS & B2B Tech",
+      description: "Product demos, feature explainers, customer onboarding videos, training systems, webinar content, and sales enablement materials that shorten sales cycles.",
+      icon: <Zap className="h-6 w-6" />
+    },
+    {
+      title: "D2C & E-commerce",
+      description: "Product showcase videos, user-generated content campaigns, social media content, influencer collaborations, brand storytelling, and conversion-optimized product videos.",
+      icon: <Target className="h-6 w-6" />
+    },
+    {
+      title: "Mobile Apps & Platforms",
+      description: "App store videos, feature demos, user testimonials, tutorial content, growth marketing videos, and social proof content that drives downloads and engagement.",
+      icon: <Play className="h-6 w-6" />
+    },
+    {
+      title: "Impact & Social Ventures",
+      description: "Mission videos, impact stories, donor engagement content, community building videos, awareness campaigns, and storytelling that attracts supporters and customers.",
+      icon: <Award className="h-6 w-6" />
     }
   ];
 
   return (
     <div className="min-h-screen bg-gray-50 overflow-x-hidden font-sans">
       <MetaTags 
-        title="Startup Video Production | Launch & Fundraising Videos | Palmer House Productions"
-        description="Video production for startups: launch videos, pitch decks, fundraising content, and growth marketing. Help your startup stand out and scale faster."
-        keywords="startup video production, pitch deck videos, fundraising videos, startup marketing, product launch videos, investor pitch videos"
-        ogTitle="Startup Video Production | Palmer House Productions"
-        ogDescription="Launch strong with professional video content. Fundraising, product demos, and growth marketing videos for startups."
+        title="Startup Video Production | Pitch Videos & Product Demos | Palmer House Productions"
+        description="Video production for startups: investor pitch videos, product demos, social media content, brand storytelling, customer testimonials, and training systems that accelerate growth and funding."
+        keywords="startup video production, pitch deck videos, product demo videos, investor videos, startup marketing videos, saas demo videos, startup storytelling, growth marketing videos"
+        ogTitle="Startup Video Production | Accelerate Growth & Funding"
+        ogDescription="Help your startup grow faster with compelling video content: pitch videos, product demos, social media, and customer stories that drive results."
         canonicalUrl="https://www.palmerhouseproductions.com/startups"
       />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
@@ -173,297 +175,169 @@ const StartupsPage = () => {
 
       <MainContent>
         {/* Hero Section */}
-        <section className="relative py-16 sm:py-20 lg:py-32 bg-gradient-to-br from-pal-orange via-pal-orange/90 to-pal-orange/80 overflow-hidden">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-10 left-10 w-16 sm:w-20 h-16 sm:h-20 border-2 border-white rounded-full animate-pulse"></div>
-            <div className="absolute top-20 right-20 w-12 sm:w-16 h-12 sm:h-16 border-2 border-white rotate-45 animate-pulse delay-300"></div>
-            <div className="absolute bottom-20 left-1/4 w-10 sm:w-12 h-10 sm:h-12 border-2 border-white rounded-full animate-pulse delay-700"></div>
-          </div>
-          
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-              <div className="text-white order-2 lg:order-1">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
-                  <div className="w-12 sm:w-16 h-12 sm:h-16 bg-white/20 rounded-xl flex items-center justify-center animate-pulse">
-                    <Rocket className="h-6 sm:h-8 w-6 sm:w-8 text-white" />
-                  </div>
-                  <Badge className="bg-white/20 text-white border-white/30 text-sm sm:text-lg px-3 sm:px-4 py-1 sm:py-2">
-                    Reel Pal + Spotlight Pal
-                  </Badge>
-                </div>
-                
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-6 leading-tight">
-                  Startup Videos That 
-                  <AnimatedText />
-                </h1>
-                
-                <p className="text-base sm:text-lg lg:text-xl text-white/90 mb-6 sm:mb-8 leading-relaxed max-w-lg">
-                  From MVP demos to investor pitches, we create video content that helps startups 
-                  capture attention, communicate value, and accelerate growth.
-                </p>
-
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8 sm:mb-12">
-                  <Button 
-                    size="lg"
-                    className="bg-white text-corporate-dark hover:bg-white/95 border-0 font-semibold text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 h-auto shadow-lg"
-                    onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078320', '_blank', 'noopener,noreferrer')}
-                  >
-                    <Video className="mr-2 h-4 sm:h-5 w-4 sm:w-5 text-corporate-dark" />
-                    Get Startup Video Quote
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    size="lg"
-                    className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-corporate-dark hover:border-white font-semibold text-base sm:text-lg px-6 sm:px-8 py-3 sm:py-4 h-auto"
-                    onClick={() => transitionTo('/reel-pal')}
-                  >
-                    Explore Video Pals
-                    <ArrowRight className="ml-2 h-4 sm:h-5 w-4 sm:w-5" />
-                  </Button>
-                </div>
-
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-center">
-                  {benefits.map((benefit, index) => (
-                    <div key={index} className="text-white/90">
-                      <div className="flex justify-center mb-2">
-                        {benefit.icon}
-                      </div>
-                      <h3 className="font-bold text-xs sm:text-sm mb-1">{benefit.title}</h3>
-                      <p className="text-xs text-white/70 leading-tight">{benefit.description}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="relative order-1 lg:order-2">
-                <div className="relative w-full max-w-md sm:max-w-lg mx-auto">
-                  {/* Character Image */}
-                  <div className="relative w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] lg:w-[500px] lg:h-[500px] mx-auto">
-                    <img 
-                      src={reelPalImage} 
-                      alt="Reel Pal character representing startup video expertise"
-                      className="w-full h-full object-contain animate-fade-in"
-                      loading="eager"
-                    />
-                  </div>
-                  
-                  {/* Floating Elements */}
-                  <div className="absolute -top-2 sm:-top-4 -right-2 sm:-right-4 bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl p-2 sm:p-4 text-white animate-pulse">
-                    <Rocket className="h-6 sm:h-8 w-6 sm:w-8" />
-                  </div>
-                  <div className="absolute bottom-8 sm:bottom-10 -left-4 sm:-left-6 bg-white/20 backdrop-blur-sm rounded-xl sm:rounded-2xl p-2 sm:p-4 text-white animate-pulse delay-500">
-                    <TrendingUp className="h-6 sm:h-8 w-6 sm:w-8" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Startup Video Categories */}
-        <section className="py-16 lg:py-24 bg-gray-50">
+        <section className="relative py-16 sm:py-20 lg:py-32 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12 lg:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 lg:mb-6">
-                Video Solutions for Every Stage
-              </h2>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                From idea to IPO, we create video content that accelerates your startup's growth 
-                and helps you stand out in competitive markets.
+            <div className="max-w-4xl mx-auto text-center mb-16">
+              <Badge className="mb-6 text-lg px-4 py-2">
+                Startup Video Solutions
+              </Badge>
+              
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight text-foreground">
+                Startup Video Production That Accelerates Growth & Funding
+              </h1>
+              
+              <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+                From pitch videos that wow investors to product demos that convert customers, we create video 
+                content that helps startups grow faster, raise more capital, and build stronger brands.
               </p>
-            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {startupCategories.map((category, index) => (
-                <Card key={index} className={`group hover:shadow-2xl transition-all duration-300 ${category.color} border-l-6 bg-white hover:scale-105 animate-fade-in`}>
-                  <CardHeader className="pb-4">
-                    <div className="flex items-start gap-4">
-                      <div className={`w-14 h-14 sm:w-16 sm:h-16 ${category.bgColor} rounded-xl flex items-center justify-center ${category.iconColor} group-hover:scale-110 transition-transform`}>
-                        {category.icon}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <CardTitle className="text-lg sm:text-xl text-gray-900 leading-tight">{category.title}</CardTitle>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <CardDescription className="text-base text-gray-600 mb-6 leading-relaxed">
-                      {category.description}
-                    </CardDescription>
-                    <div className="space-y-3">
-                      <h4 className="font-semibold text-sm text-gray-800 uppercase tracking-wide">Includes:</h4>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                        {category.modules.map((module, moduleIndex) => (
-                          <Badge key={moduleIndex} variant="secondary" className="text-xs py-1 px-3 justify-start">
-                            <CheckCircle className="w-3 h-3 mr-2 text-green-500" />
-                            {module}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Process Section */}
-        <section className="py-16 lg:py-24 bg-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12 lg:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-4 lg:mb-6">
-                Our Startup-Focused Process
-              </h2>
-              <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-                Fast, flexible, and designed for the unique needs of growing startups.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-              {[
-                {
-                  step: "01",
-                  title: "Strategy Session",
-                  description: "We understand your goals, audience, and key messages",
-                  icon: <Lightbulb className="h-8 w-8" />,
-                  color: "border-purple-500",
-                  bgColor: "bg-purple-50",
-                  iconColor: "text-purple-600"
-                },
-                {
-                  step: "02", 
-                  title: "Rapid Production",
-                  description: "Fast turnaround without compromising quality",
-                  icon: <Camera className="h-8 w-8" />,
-                  color: "border-teal-500",
-                  bgColor: "bg-teal-50",
-                  iconColor: "text-teal-600"
-                },
-                {
-                  step: "03",
-                  title: "Iterative Feedback",
-                  description: "Quick review cycles to ensure perfect messaging",
-                  icon: <PlayCircle className="h-8 w-8" />,
-                  color: "border-orange-500",
-                  bgColor: "bg-orange-50",
-                  iconColor: "text-orange-600"
-                },
-                {
-                  step: "04",
-                  title: "Launch Support",
-                  description: "Multiple formats optimized for different platforms",
-                  icon: <Rocket className="h-8 w-8" />,
-                  color: "border-emerald-500",
-                  bgColor: "bg-emerald-50",
-                  iconColor: "text-emerald-600"
-                }
-              ].map((step, index) => (
-                <Card key={index} className={`group text-center hover:shadow-2xl transition-all duration-300 ${step.color} border-l-6 bg-white hover:scale-105 animate-fade-in`}>
-                  <CardHeader className="pb-4">
-                    <div className="relative mb-4">
-                      <div className={`w-16 h-16 sm:w-20 sm:h-20 ${step.bgColor} rounded-full flex items-center justify-center mx-auto ${step.iconColor} group-hover:scale-110 transition-transform`}>
-                        {step.icon}
-                      </div>
-                      <div className="absolute -top-2 -right-2 w-8 h-8 bg-gray-900 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
-                        {step.step}
-                      </div>
-                    </div>
-                    <CardTitle className="text-lg sm:text-xl text-gray-900 mb-3">{step.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <CardDescription className="text-base text-gray-600 leading-relaxed">
-                      {step.description}
-                    </CardDescription>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Statistics Section */}
-        <section className="py-16 lg:py-24 bg-pal-orange text-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12 lg:mb-16">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4 lg:mb-6">
-                Video Content That Drives Results
-              </h2>
-              <p className="text-lg sm:text-xl text-white/90 max-w-3xl mx-auto leading-relaxed">
-                See why startups choose video to accelerate their growth and fundraising success.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 text-center">
-              {[
-                {
-                  number: "Higher",
-                  label: "Engagement",
-                  description: "Video content captures attention better"
-                },
-                {
-                  number: "Proven",
-                  label: "Funding Success",
-                  description: "Trusted by funded startups"
-                },
-                {
-                  number: "Better",
-                  label: "Message Retention",
-                  description: "Video messages stick with audiences"
-                },
-                {
-                  number: "Fast",
-                  label: "Turnaround",
-                  description: "Quick concept to delivery"
-                }
-              ].map((stat, index) => (
-                <div key={index} className="text-center animate-fade-in">
-                  <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-2 text-white">
-                    {stat.number}
-                  </div>
-                  <div className="text-lg sm:text-xl font-semibold mb-2 text-white/90">
-                    {stat.label}
-                  </div>
-                  <div className="text-sm sm:text-base text-white/80 leading-relaxed">
-                    {stat.description}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-16 lg:py-24 bg-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">
-                Ready to Launch Your Video Strategy?
-              </h2>
-              <p className="text-lg sm:text-xl text-gray-600 mb-8 lg:mb-12 leading-relaxed">
-                Join hundreds of startups who've accelerated their growth with compelling video content. 
-                Let's create something amazing together.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <Button 
                   size="lg"
-                  className="bg-pal-orange hover:bg-pal-orange/90 text-white font-semibold text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-5 h-auto shadow-lg hover:shadow-xl transition-all"
-                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078320', '_blank', 'noopener,noreferrer')}
+                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
                 >
-                  <Rocket className="mr-2 h-5 w-5" />
-                  Book Your Strategy Call
+                  <Video className="mr-2 h-5 w-5" />
+                  Schedule Startup Consultation
                 </Button>
                 <Button 
                   variant="outline"
                   size="lg"
-                  className="border-2 border-pal-orange text-pal-orange hover:bg-pal-orange hover:text-white font-semibold text-base sm:text-lg px-8 sm:px-12 py-4 sm:py-5 h-auto transition-all"
-                  onClick={() => transitionTo('/video-packages')}
+                  onClick={() => transitionTo('/pals')}
                 >
-                  View Startup Packages
+                  Explore Video Solutions
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>
+
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+                {industryBenefits.map((benefit, index) => (
+                  <div key={index} className="text-center">
+                    <div className="flex justify-center mb-2 text-primary">
+                      {benefit.icon}
+                    </div>
+                    <div className="text-2xl font-bold mb-1 text-foreground">{benefit.stat}</div>
+                    <h3 className="font-semibold text-sm mb-1 text-foreground">{benefit.title}</h3>
+                    <p className="text-xs text-muted-foreground leading-tight">{benefit.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative max-w-2xl mx-auto">
+              <div className="relative w-full max-w-lg mx-auto">
+                <img 
+                  src={reelPalImage} 
+                  alt="Startup video production expert"
+                  className="w-full h-auto object-contain animate-fade-in"
+                  loading="eager"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Video Solutions Grid */}
+        <section className="py-24 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">
+                Complete Video Solutions for Startup Success
+              </h2>
+              <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                Whether you need investor pitch videos, product demos, social media content, or training systems, 
+                our startup-focused video production helps you grow faster, raise more capital, and build a stronger brand.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {videoSolutions.map((solution, index) => (
+                <Card key={index} className={`group hover:shadow-2xl transition-all duration-300 ${solution.color} border-l-6 bg-white hover:scale-105`}>
+                  <CardHeader>
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className={`w-16 h-16 ${solution.bgColor} rounded-xl flex items-center justify-center ${solution.iconColor} group-hover:scale-110 transition-transform`}>
+                        {solution.icon}
+                      </div>
+                      <Badge variant="secondary" className="text-xs">
+                        {solution.palType}
+                      </Badge>
+                    </div>
+                    <CardTitle className="text-xl text-gray-900 mb-3">{solution.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-base text-gray-600 mb-6 leading-relaxed">
+                      {solution.description}
+                    </CardDescription>
+                    <div className="space-y-2">
+                      {solution.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center text-sm text-gray-700">
+                          <CheckCircle className="w-4 h-4 mr-2 text-green-500 flex-shrink-0" />
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Who We Serve */}
+        <section className="py-24 bg-gradient-to-b from-white to-gray-50">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">
+                Who We Serve in the Startup Ecosystem
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                From pre-seed to Series A and beyond, we help startups at every stage.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {useCases.map((useCase, index) => (
+                <Card key={index} className="hover:shadow-lg transition-all duration-300 border-2 hover:border-primary">
+                  <CardHeader>
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary mb-4">
+                      {useCase.icon}
+                    </div>
+                    <CardTitle className="text-xl text-gray-900">{useCase.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-base text-gray-600 leading-relaxed">
+                      {useCase.description}
+                    </CardDescription>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Final CTA */}
+        <section className="py-24 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+              Ready to Accelerate Your Startup's Growth?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-10">
+              Let's create video content that helps you raise more capital, grow faster, and build a stronger brand.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                size="lg"
+                onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+              >
+                Schedule Startup Consultation
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button 
+                variant="outline"
+                size="lg"
+                onClick={() => transitionTo('/contact')}
+              >
+                Request a Quote
+              </Button>
             </div>
           </div>
         </section>

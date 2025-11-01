@@ -180,82 +180,63 @@ const ManufacturingPage = () => {
 
       <MainContent>
         {/* Hero Section */}
-        <section className="relative py-16 sm:py-20 lg:py-32 bg-gradient-to-br from-gray-800 via-gray-700 to-blue-900 overflow-hidden">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-10 left-10 w-20 h-20 border-2 border-white rounded-full animate-pulse"></div>
-            <div className="absolute top-20 right-20 w-16 h-16 border-2 border-white rotate-45 animate-pulse delay-300"></div>
-            <div className="absolute bottom-20 left-1/4 w-12 h-12 border-2 border-white rounded-full animate-pulse delay-700"></div>
-          </div>
-          
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="text-white">
-                <Badge className="bg-white/20 text-white border-white/30 mb-6 text-lg px-4 py-2">
-                  Manufacturing Industry Solutions
-                </Badge>
-                
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight">
-                  Manufacturing Video Production That Builds Safer, Smarter Operations
-                </h1>
-                
-                <p className="text-xl text-white/90 mb-8 leading-relaxed">
-                  From OSHA-compliant safety training to lean manufacturing implementation and workforce development, 
-                  we create video content that reduces accidents, improves quality, standardizes processes, 
-                  and scales training across your entire manufacturing operation.
-                </p>
+        <section className="relative py-16 sm:py-20 lg:py-32 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto text-center mb-16">
+              <Badge className="mb-6 text-lg px-4 py-2">
+                Manufacturing Industry Solutions
+              </Badge>
+              
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight text-foreground">
+                Manufacturing Video Production That Builds Safer, Smarter Operations
+              </h1>
+              
+              <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+                From OSHA-compliant safety training to lean manufacturing implementation and workforce development, 
+                we create video content that reduces accidents, improves quality, standardizes processes, 
+                and scales training across your entire manufacturing operation.
+              </p>
 
-                <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                  <Button 
-                    size="lg"
-                    className="bg-white text-gray-800 hover:bg-white/95 font-semibold text-lg px-8 py-4 h-auto shadow-lg"
-                    onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
-                  >
-                    <Video className="mr-2 h-5 w-5" />
-                    Schedule Manufacturing Consultation
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    size="lg"
-                    className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-gray-800 font-semibold text-lg px-8 py-4 h-auto"
-                    onClick={() => transitionTo('/system-pal')}
-                  >
-                    Explore Training Solutions
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </div>
-
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                  {industryBenefits.map((benefit, index) => (
-                    <div key={index} className="text-white/90">
-                      <div className="flex justify-center mb-2">
-                        {benefit.icon}
-                      </div>
-                      <div className="text-2xl font-bold mb-1">{benefit.stat}</div>
-                      <h3 className="font-semibold text-sm mb-1">{benefit.title}</h3>
-                      <p className="text-xs text-white/70 leading-tight">{benefit.description}</p>
-                    </div>
-                  ))}
-                </div>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+                <Button 
+                  size="lg"
+                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+                >
+                  <Video className="mr-2 h-5 w-5" />
+                  Schedule Manufacturing Consultation
+                </Button>
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  onClick={() => transitionTo('/system-pal')}
+                >
+                  Explore Training Solutions
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
               </div>
 
-              <div className="relative">
-                <div className="relative w-full max-w-lg mx-auto">
-                  <div className="relative w-[400px] h-[400px] lg:w-[500px] lg:h-[500px] mx-auto">
-                    <img 
-                      src={systemPalImage} 
-                      alt="Manufacturing video production expert"
-                      className="w-full h-full object-contain animate-fade-in"
-                      loading="eager"
-                    />
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+                {industryBenefits.map((benefit, index) => (
+                  <div key={index} className="text-center">
+                    <div className="flex justify-center mb-2 text-primary">
+                      {benefit.icon}
+                    </div>
+                    <div className="text-2xl font-bold mb-1 text-foreground">{benefit.stat}</div>
+                    <h3 className="font-semibold text-sm mb-1 text-foreground">{benefit.title}</h3>
+                    <p className="text-xs text-muted-foreground leading-tight">{benefit.description}</p>
                   </div>
-                  
-                  <div className="absolute -top-4 -right-4 bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-white animate-pulse">
-                    <HardHat className="h-8 w-8" />
-                  </div>
-                  <div className="absolute bottom-10 -left-6 bg-white/20 backdrop-blur-sm rounded-2xl p-4 text-white animate-pulse delay-500">
-                    <Cog className="h-8 w-8" />
-                  </div>
-                </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="relative max-w-2xl mx-auto">
+              <div className="relative w-full max-w-lg mx-auto">
+                <img 
+                  src={systemPalImage} 
+                  alt="Manufacturing video production expert"
+                  className="w-full h-auto object-contain animate-fade-in"
+                  loading="eager"
+                />
               </div>
             </div>
           </div>

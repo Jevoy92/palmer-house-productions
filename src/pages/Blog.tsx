@@ -54,12 +54,42 @@ const blogArticles = [
     authorRole: 'Operations & Systems Expert'
   },
   {
+    id: 'build-video-training-library',
+    title: 'How to Build a Scalable Video Training Library',
+    excerpt: 'Create an organized, searchable video training library that grows with your team and reduces onboarding time by 70%.',
+    category: 'Training',
+    readTime: '11 min read',
+    publishDate: '2025-01-08',
+    featured: false,
+    slug: '/blog/build-video-training-library',
+    tags: ['video-library', 'training-systems', 'knowledge-management', 'onboarding'],
+    image: employeeTrainingAutomationImage,
+    imageAlt: 'Organized video training library system',
+    author: 'System Pal',
+    authorRole: 'Operations & Systems Expert'
+  },
+  {
+    id: 'scale-video-operations',
+    title: 'Scaling Video Operations: From 1 to 100 Videos per Month',
+    excerpt: 'Proven systems and workflows to scale your video production from occasional content to consistent, high-volume output.',
+    category: 'Operations',
+    readTime: '13 min read',
+    publishDate: '2025-01-03',
+    featured: false,
+    slug: '/blog/scale-video-operations',
+    tags: ['video-operations', 'scaling', 'workflows', 'production-management'],
+    image: editingLikeProImage,
+    imageAlt: 'Video production operations dashboard',
+    author: 'System Pal',
+    authorRole: 'Operations & Systems Expert'
+  },
+  {
     id: 'mobile-video-production',
     title: 'Mobile Video Production: Create Pro Content Anywhere',
     excerpt: 'Learn how to produce professional-quality video content using just your smartphone and a few essential accessories.',
     category: 'Production',
     readTime: '9 min read',
-    publishDate: '2025-01-08',
+    publishDate: '2025-01-12',
     featured: true,
     slug: '/blog/mobile-video-production',
     tags: ['mobile-video', 'on-the-go', 'content-creation', 'smartphone'],
@@ -69,12 +99,57 @@ const blogArticles = [
     authorRole: 'Social Media & Short-Form Expert'
   },
   {
+    id: 'instagram-reels-strategy',
+    title: 'Instagram Reels Strategy: What Works in 2025',
+    excerpt: 'Master Instagram Reels with data-backed strategies that increase reach, engagement, and drive business results.',
+    category: 'Social Media',
+    readTime: '8 min read',
+    publishDate: '2025-01-07',
+    featured: false,
+    slug: '/blog/instagram-reels-strategy',
+    tags: ['instagram', 'reels', 'social-media-strategy', 'engagement'],
+    image: mobileVideoProductionImage,
+    imageAlt: 'Instagram Reels content strategy',
+    author: 'Reel Pal',
+    authorRole: 'Social Media & Short-Form Expert'
+  },
+  {
+    id: 'tiktok-business-guide',
+    title: 'TikTok for Business: The Complete 2025 Guide',
+    excerpt: 'Transform TikTok from entertainment platform to powerful business tool with strategies that drive real leads and sales.',
+    category: 'Social Media',
+    readTime: '10 min read',
+    publishDate: '2025-01-04',
+    featured: false,
+    slug: '/blog/tiktok-business-guide',
+    tags: ['tiktok', 'business-marketing', 'social-selling', 'lead-generation'],
+    image: mobileVideoProductionImage,
+    imageAlt: 'TikTok business marketing strategy',
+    author: 'Reel Pal',
+    authorRole: 'Social Media & Short-Form Expert'
+  },
+  {
+    id: 'short-form-video-hooks',
+    title: 'Writing Hooks That Stop the Scroll: Short-Form Video Mastery',
+    excerpt: 'Learn the psychology and techniques behind viral hooks that capture attention in the first 3 seconds.',
+    category: 'Social Media',
+    readTime: '7 min read',
+    publishDate: '2025-01-02',
+    featured: false,
+    slug: '/blog/short-form-video-hooks',
+    tags: ['video-hooks', 'copywriting', 'engagement', 'viral-content'],
+    image: mobileVideoProductionImage,
+    imageAlt: 'Short-form video hooks and engagement',
+    author: 'Reel Pal',
+    authorRole: 'Social Media & Short-Form Expert'
+  },
+  {
     id: 'content-creation-tools-2025',
     title: '10 Content Creation Tools Every Business Owner Should Know',
     excerpt: 'Discover the essential tools that streamline video content creation and help busy founders create professional content efficiently.',
     category: 'Tools',
     readTime: '8 min read',
-    publishDate: '2025-01-05',
+    publishDate: '2025-01-09',
     featured: false,
     slug: '/blog/content-creation-tools-2025',
     tags: ['content-tools', 'productivity', 'video-production', 'efficiency'],
@@ -84,12 +159,57 @@ const blogArticles = [
     authorRole: 'Professional Production Expert'
   },
   {
+    id: 'professional-lighting-budget',
+    title: 'Professional Video Lighting on Any Budget',
+    excerpt: 'Achieve cinematic lighting for your business videos without breaking the bank. From $50 to $5000 setups.',
+    category: 'Production',
+    readTime: '9 min read',
+    publishDate: '2025-01-06',
+    featured: false,
+    slug: '/blog/professional-lighting-budget',
+    tags: ['lighting', 'video-production', 'budget-friendly', 'cinematography'],
+    image: editingLikeProImage,
+    imageAlt: 'Professional video lighting setup',
+    author: 'Spotlight Pal',
+    authorRole: 'Professional Production Expert'
+  },
+  {
+    id: 'audio-quality-business-video',
+    title: 'Audio Quality: The Secret to Professional Business Videos',
+    excerpt: 'Why good audio matters more than video quality, and how to capture crystal-clear sound for any budget.',
+    category: 'Production',
+    readTime: '8 min read',
+    publishDate: '2024-12-30',
+    featured: false,
+    slug: '/blog/audio-quality-business-video',
+    tags: ['audio', 'sound-quality', 'microphones', 'production-value'],
+    image: editingLikeProImage,
+    imageAlt: 'Professional audio recording setup',
+    author: 'Spotlight Pal',
+    authorRole: 'Professional Production Expert'
+  },
+  {
+    id: 'video-editing-workflows',
+    title: 'Video Editing Workflows That Save 10+ Hours per Week',
+    excerpt: 'Streamline your editing process with proven workflows, keyboard shortcuts, and organization systems.',
+    category: 'Tools',
+    readTime: '11 min read',
+    publishDate: '2024-12-28',
+    featured: false,
+    slug: '/blog/video-editing-workflows',
+    tags: ['video-editing', 'workflows', 'productivity', 'time-saving'],
+    image: editingLikeProImage,
+    imageAlt: 'Efficient video editing workflow',
+    author: 'Spotlight Pal',
+    authorRole: 'Professional Production Expert'
+  },
+  {
     id: 'video-content-roi-comparison',
     title: 'The Real ROI of Video Content vs Old-School Training',
     excerpt: 'Data-driven analysis showing how video content delivers measurable returns compared to traditional training methods.',
     category: 'ROI',
     readTime: '15 min read',
-    publishDate: '2025-01-01',
+    publishDate: '2025-01-11',
     featured: true,
     slug: '/blog/video-content-roi-comparison',
     tags: ['roi-analysis', 'video-training', 'business-metrics', 'cost-comparison'],
@@ -97,10 +217,55 @@ const blogArticles = [
     imageAlt: 'Video ROI analytics and performance dashboard',
     author: 'Evergreen Pal',
     authorRole: 'Content Strategy & SEO Expert'
+  },
+  {
+    id: 'video-seo-guide',
+    title: 'Video SEO: Rank Your Videos on Google and YouTube',
+    excerpt: 'Complete guide to optimizing video content for search engines and driving organic traffic to your business.',
+    category: 'SEO',
+    readTime: '12 min read',
+    publishDate: '2025-01-05',
+    featured: false,
+    slug: '/blog/video-seo-guide',
+    tags: ['video-seo', 'youtube-seo', 'organic-traffic', 'search-optimization'],
+    image: videoMetricsMatterImage,
+    imageAlt: 'Video SEO optimization dashboard',
+    author: 'Evergreen Pal',
+    authorRole: 'Content Strategy & SEO Expert'
+  },
+  {
+    id: 'repurpose-video-content',
+    title: 'How to Repurpose One Video into 20+ Pieces of Content',
+    excerpt: 'Maximize your video ROI by transforming single videos into blogs, social posts, podcasts, and more.',
+    category: 'Strategy',
+    readTime: '10 min read',
+    publishDate: '2024-12-29',
+    featured: false,
+    slug: '/blog/repurpose-video-content',
+    tags: ['content-repurposing', 'content-strategy', 'efficiency', 'multi-platform'],
+    image: videoMetricsMatterImage,
+    imageAlt: 'Content repurposing workflow',
+    author: 'Evergreen Pal',
+    authorRole: 'Content Strategy & SEO Expert'
+  },
+  {
+    id: 'long-term-content-strategy',
+    title: 'Building a Long-Term Video Content Strategy That Compounds',
+    excerpt: 'Create evergreen video content that drives consistent traffic and leads for years, not just weeks.',
+    category: 'Strategy',
+    readTime: '13 min read',
+    publishDate: '2024-12-27',
+    featured: false,
+    slug: '/blog/long-term-content-strategy',
+    tags: ['content-strategy', 'evergreen-content', 'long-term-growth', 'seo'],
+    image: videoMetricsMatterImage,
+    imageAlt: 'Long-term content strategy roadmap',
+    author: 'Evergreen Pal',
+    authorRole: 'Content Strategy & SEO Expert'
   }
 ];
 
-const categories = ['All', 'Strategy', 'Training', 'Production', 'Tools', 'ROI'];
+const categories = ['All', 'Strategy', 'Training', 'Production', 'Tools', 'ROI', 'Social Media', 'SEO', 'Operations'];
 
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -218,16 +383,23 @@ const Blog = () => {
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredArticles.slice(1).map((article, index) => {
-                const bgColors = [
-                  'from-pink-50 to-pink-100',
-                  'from-purple-50 to-purple-100',
-                  'from-orange-50 to-orange-100',
-                  'from-yellow-50 to-yellow-100',
-                  'from-blue-50 to-blue-100',
-                  'from-green-50 to-green-100'
-                ];
-                const bgColor = bgColors[index % bgColors.length];
+              {filteredArticles.slice(1).map((article) => {
+                // Map author to Pal color
+                const getPalColor = (author?: string) => {
+                  switch(author) {
+                    case 'System Pal':
+                      return 'from-pink-50 to-pink-100';
+                    case 'Reel Pal':
+                      return 'from-purple-50 to-purple-100';
+                    case 'Spotlight Pal':
+                      return 'from-amber-50 to-amber-100';
+                    case 'Evergreen Pal':
+                      return 'from-emerald-50 to-emerald-100';
+                    default:
+                      return 'from-blue-50 to-blue-100';
+                  }
+                };
+                const bgColor = getPalColor(article.author);
                 
                 return (
                   <Link key={article.id} to={article.slug}>

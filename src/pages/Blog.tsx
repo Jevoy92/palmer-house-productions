@@ -24,6 +24,10 @@ import evergreenRoiComparisonImage from '@/assets/blog/evergreen-roi-comparison.
 import evergreenVideoSeoImage from '@/assets/blog/evergreen-video-seo.jpg';
 import evergreenRepurposeVideoImage from '@/assets/blog/evergreen-repurpose-video.jpg';
 import evergreenLongTermStrategyImage from '@/assets/blog/evergreen-long-term-strategy.jpg';
+import reelMobileVideoProductionImage from '@/assets/blog/reel-mobile-video-production.jpg';
+import reelInstagramReelsStrategyImage from '@/assets/blog/reel-instagram-reels-strategy.jpg';
+import reelTiktokBusinessImage from '@/assets/blog/reel-tiktok-business.jpg';
+import reelWritingHooksImage from '@/assets/blog/reel-writing-hooks.jpg';
 
 // Blog articles data - Focused on core strategic content
 const blogArticles = [
@@ -97,8 +101,8 @@ const blogArticles = [
     featured: true,
     slug: '/blog/mobile-video-production',
     tags: ['mobile-video', 'on-the-go', 'content-creation', 'smartphone'],
-    image: mobileVideoProductionImage,
-    imageAlt: 'Mobile video production setup with smartphone',
+    image: reelMobileVideoProductionImage,
+    imageAlt: 'Mobile video production with smartphone gimbal and on-the-go setup',
     author: 'Reel Pal',
     authorRole: 'Social Media & Short-Form Expert'
   },
@@ -112,8 +116,8 @@ const blogArticles = [
     featured: false,
     slug: '/blog/instagram-reels-strategy',
     tags: ['instagram', 'reels', 'social-media-strategy', 'engagement'],
-    image: mobileVideoProductionImage,
-    imageAlt: 'Instagram Reels content strategy',
+    image: reelInstagramReelsStrategyImage,
+    imageAlt: 'Instagram Reels strategy showing engagement and growth metrics',
     author: 'Reel Pal',
     authorRole: 'Social Media & Short-Form Expert'
   },
@@ -127,8 +131,8 @@ const blogArticles = [
     featured: false,
     slug: '/blog/tiktok-business-guide',
     tags: ['tiktok', 'business-marketing', 'social-selling', 'lead-generation'],
-    image: mobileVideoProductionImage,
-    imageAlt: 'TikTok business marketing strategy',
+    image: reelTiktokBusinessImage,
+    imageAlt: 'TikTok for business showing lead generation and business growth',
     author: 'Reel Pal',
     authorRole: 'Social Media & Short-Form Expert'
   },
@@ -142,8 +146,8 @@ const blogArticles = [
     featured: false,
     slug: '/blog/short-form-video-hooks',
     tags: ['video-hooks', 'copywriting', 'engagement', 'viral-content'],
-    image: mobileVideoProductionImage,
-    imageAlt: 'Short-form video hooks and engagement',
+    image: reelWritingHooksImage,
+    imageAlt: 'Writing viral hooks that stop the scroll and capture attention',
     author: 'Reel Pal',
     authorRole: 'Social Media & Short-Form Expert'
   },

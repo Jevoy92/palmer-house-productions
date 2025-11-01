@@ -619,8 +619,8 @@ export const ReelPalQuiz = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Progress Header */}
-      <div className="px-8 mb-4">
-        <div className="flex justify-between items-center text-gray-500 font-medium mb-2">
+      <div className="px-4 sm:px-6 lg:px-8 mb-4">
+        <div className="flex justify-between items-center text-gray-500 font-medium mb-2 text-sm sm:text-base">
           <span>Section {currentSection + 1} of {sections.length}</span>
           <span>{Math.round(progress)}% Complete</span>
         </div>
@@ -632,23 +632,23 @@ export const ReelPalQuiz = () => {
         </div>
       </div>
 
-      <div className="flex gap-8 items-start">
+      <div className="flex flex-col md:flex-row gap-8 items-start">
         {/* Main Quiz Card */}
-        <div className="flex-grow max-w-3xl">
-          <div className="bg-white rounded-3xl shadow-2xl p-10 lg:p-12">
+        <div className="flex-grow w-full md:max-w-3xl">
+          <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-12">
             {/* Section Header */}
-            <div className="flex items-center justify-center space-x-4 mb-8">
-              <h1 className="text-3xl font-bold text-gray-800">{currentSectionData.title}</h1>
-              <currentSectionData.icon className="w-8 h-8 text-orange-500" />
+            <div className="flex items-center justify-center space-x-3 mb-6 sm:mb-8">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 text-center">{currentSectionData.title}</h1>
+              <currentSectionData.icon className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500 flex-shrink-0" />
             </div>
 
             {/* Questions */}
-            <div className="space-y-8">
+            <div className="space-y-6 sm:space-y-8">
               {currentSectionData.questions.map((question) => (
-                <div key={question.id} className="py-4 border-b border-gray-200 last:border-b-0">
-                  <p className="text-lg text-gray-600 mb-4 text-center">{question.question}</p>
+                <div key={question.id} className="py-3 sm:py-4 border-b border-gray-200 last:border-b-0">
+                  <p className="text-base sm:text-lg text-gray-600 mb-4 text-center">{question.question}</p>
                   
-                  <div className="flex flex-wrap gap-2 justify-center">
+                  <div className="flex flex-wrap gap-2 sm:gap-3 justify-center">
                   {question.type === 'emoji' && question.options && (
                     <>
                       {question.options.map((emoji) => {
@@ -657,10 +657,10 @@ export const ReelPalQuiz = () => {
                           <button
                             key={emoji}
                             onClick={() => handleAnswer(question.id, emoji)}
-                            className={`text-5xl p-3 rounded-full transition-all ${
+                            className={`text-4xl sm:text-5xl p-2 sm:p-3 rounded-full transition-all ${
                               isSelected 
-                                ? 'bg-orange-100 scale-125 ring-4 ring-orange-500' 
-                                : 'hover:bg-gray-100 hover:scale-110'
+                                ? 'bg-orange-100 scale-110 sm:scale-125 ring-4 ring-orange-500' 
+                                : 'hover:bg-gray-100 hover:scale-105 sm:hover:scale-110'
                             }`}
                           >
                             {emoji}
@@ -824,18 +824,18 @@ export const ReelPalQuiz = () => {
             </div>
 
             {/* Navigation Buttons */}
-            <div className="mt-12 flex items-center justify-center space-x-4">
+            <div className="mt-8 sm:mt-12 flex items-center justify-center gap-3 sm:gap-4 flex-wrap">
               <button
                 onClick={handlePrevious}
                 disabled={currentSection === 0}
-                className="bg-gray-200 text-gray-600 font-semibold px-10 py-3.5 rounded-full hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-gray-200 text-gray-600 font-semibold px-6 sm:px-10 py-3 sm:py-3.5 rounded-full hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
               >
                 Previous
               </button>
               <button
                 onClick={handleNext}
                 disabled={!isSectionComplete()}
-                className="bg-orange-500 text-white font-semibold px-10 py-3.5 rounded-full hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-orange-500 text-white font-semibold px-6 sm:px-10 py-3 sm:py-3.5 rounded-full hover:bg-orange-600 transition-colors shadow-lg shadow-orange-500/30 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
               >
                 {currentSection === sections.length - 1 ? 'See Results' : 'Next Section'}
               </button>
@@ -843,15 +843,15 @@ export const ReelPalQuiz = () => {
           </div>
         </div>
 
-        {/* Character Illustration - Desktop Only */}
-        <div className="hidden lg:flex lg:flex-col lg:items-center w-[450px] flex-shrink-0 -mt-16 ml-8">
+        {/* Character Illustration - Tablet and Desktop Only */}
+        <div className="hidden md:flex md:flex-col md:items-center md:w-[350px] lg:w-[450px] flex-shrink-0 md:-mt-8 lg:-mt-16 md:ml-4 lg:ml-8">
           <img 
             src={characterConfigs[currentSection].image}
             alt="Reel Pal character illustration"
-            className="w-full h-auto max-h-[600px] object-contain"
+            className="w-full h-auto max-h-[500px] lg:max-h-[600px] object-contain"
           />
-          <div className="mt-6 bg-orange-50 rounded-2xl p-6 border-2 border-orange-200 shadow-lg">
-            <p className="text-orange-800 font-semibold text-lg text-center">
+          <div className="mt-4 lg:mt-6 bg-orange-50 rounded-2xl p-4 lg:p-6 border-2 border-orange-200 shadow-lg">
+            <p className="text-orange-800 font-semibold text-base lg:text-lg text-center">
               💡 Pro Tip: {characterConfigs[currentSection].tip}
             </p>
           </div>

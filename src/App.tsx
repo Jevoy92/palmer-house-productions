@@ -26,7 +26,6 @@ import AboutUs from "./pages/AboutUs";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import DIYDownloads from "./pages/services/DIYDownloads";
-import SafetyVideos from "./pages/SafetyVideos";
 import Startups from "./pages/Startups";
 import Team from "./pages/company/Team";
 import Values from "./pages/company/Values";
@@ -36,6 +35,11 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import BellevueWA from "./pages/locations/BellevueWA";
 import PortlandOR from "./pages/locations/PortlandOR";
+import Healthcare from "./pages/industries/Healthcare";
+import Manufacturing from "./pages/industries/Manufacturing";
+import ProfessionalServices from "./pages/industries/ProfessionalServices";
+import Education from "./pages/industries/Education";
+import Government from "./pages/industries/Government";
 import { CriticalCSS } from "./components/performance/CriticalCSS";
 import ContentStrategy from "./pages/ContentStrategy";
 import Blog from "./pages/Blog";
@@ -97,8 +101,12 @@ const App = () => (
            <Route path="/locations/bellevue-wa" element={<BellevueWA />} />
            <Route path="/locations/portland-or" element={<PortlandOR />} />
            <Route path="/services/diy-downloads" element={<DIYDownloads />} />
-           <Route path="/safety-videos" element={<SafetyVideos />} />
            <Route path="/startups" element={<Startups />} />
+           <Route path="/industries/healthcare" element={<Healthcare />} />
+           <Route path="/industries/manufacturing" element={<Manufacturing />} />
+           <Route path="/industries/professional-services" element={<ProfessionalServices />} />
+           <Route path="/industries/education" element={<Education />} />
+           <Route path="/industries/government" element={<Government />} />
           <Route path="/services/group-coaching" element={<Navigate to="/contact" replace />} />
           <Route path="/services/monthly-content" element={<Navigate to="/contact" replace />} />
           <Route path="/company/team" element={<Team />} />

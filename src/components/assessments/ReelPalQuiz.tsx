@@ -356,13 +356,14 @@ export const ReelPalQuiz = () => {
             </div>
 
             {/* Questions */}
-            <div className="space-y-6">
+            <div className="space-y-8">
               {currentSectionData.questions.map((question) => (
-                <div key={question.id} className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 py-4 border-b border-gray-200 last:border-b-0">
-                  <p className="text-lg text-gray-600 flex-1 min-w-0">{question.question}</p>
+                <div key={question.id} className="py-4 border-b border-gray-200 last:border-b-0">
+                  <p className="text-lg text-gray-600 mb-4">{question.question}</p>
                   
+                  <div className="flex flex-wrap gap-2 justify-end">
                   {question.type === 'buttons' && question.options && (
-                    <div className="flex gap-2">
+                    <>
                       {question.options.map((option) => {
                         const isSelected = getAnswer(question.id) === option;
                         return (
@@ -379,7 +380,7 @@ export const ReelPalQuiz = () => {
                           </button>
                         );
                       })}
-                    </div>
+                    </>
                   )}
 
                   {question.type === 'toggle' && question.options && (
@@ -408,7 +409,7 @@ export const ReelPalQuiz = () => {
                   )}
 
                   {question.type === 'scale' && question.options && (
-                    <div className="flex gap-2">
+                    <>
                       {question.options.map((option, idx) => {
                         const isSelected = getAnswer(question.id) === option;
                         return (
@@ -425,8 +426,9 @@ export const ReelPalQuiz = () => {
                           </button>
                         );
                       })}
-                    </div>
+                    </>
                   )}
+                  </div>
                 </div>
               ))}
             </div>

@@ -388,15 +388,15 @@ const Blog = () => {
                 const getPalColor = (author?: string) => {
                   switch(author) {
                     case 'System Pal':
-                      return 'from-pink-50 to-pink-100';
-                    case 'Reel Pal':
-                      return 'from-purple-50 to-purple-100';
-                    case 'Spotlight Pal':
-                      return 'from-amber-50 to-amber-100';
-                    case 'Evergreen Pal':
                       return 'from-emerald-50 to-emerald-100';
-                    default:
+                    case 'Reel Pal':
+                      return 'from-orange-50 to-orange-100';
+                    case 'Spotlight Pal':
+                      return 'from-purple-50 to-purple-100';
+                    case 'Evergreen Pal':
                       return 'from-blue-50 to-blue-100';
+                    default:
+                      return 'from-gray-50 to-gray-100';
                   }
                 };
                 const bgColor = getPalColor(article.author);

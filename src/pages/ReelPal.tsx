@@ -506,6 +506,104 @@ const ReelPal = () => {
           </div>
         </section>
 
+        {/* Quiz Section */}
+        <section className="py-20 bg-gradient-to-b from-orange-50 to-white relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Quiz Header */}
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+                Think You Have What It Takes?
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                Take my quiz and find out if you're ready to build your dream content library! 
+                Discover your content creation style and get personalized recommendations.
+              </p>
+            </div>
+
+            {/* Quiz Container */}
+            <div className="flex items-start justify-center">
+              <div className="flex-grow max-w-3xl">
+                {/* Progress Bar */}
+                <div className="px-8 mb-4">
+                  <div className="flex justify-between items-center text-muted-foreground font-medium mb-2">
+                    <span>Section 1 of 4</span>
+                    <span>0% Complete</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-1.5">
+                    <div className="bg-orange-500 h-1.5 rounded-full" style={{width: '0%'}}></div>
+                  </div>
+                </div>
+
+                {/* Quiz Card */}
+                <div className="bg-white rounded-3xl shadow-2xl p-10 lg:p-12">
+                  <div className="flex items-center space-x-4 mb-8">
+                    <h3 className="text-3xl font-bold text-foreground">Training & Operations Systems</h3>
+                    <Wrench className="text-orange-500 w-8 h-8" />
+                  </div>
+
+                  {/* Questions List */}
+                  <div className="space-y-6">
+                    <div className="flex justify-between items-center py-4 border-b border-gray-200">
+                      <p className="text-lg text-muted-foreground">Do you have documented training processes?</p>
+                      <button className="bg-orange-100 text-orange-700 font-semibold px-8 py-2 rounded-full hover:bg-orange-200 transition-colors">
+                        No
+                      </button>
+                    </div>
+
+                    <div className="flex justify-between items-center py-4 border-b border-gray-200">
+                      <p className="text-lg text-muted-foreground">Are your team onboarding procedures standardized?</p>
+                      <button className="bg-orange-100 text-orange-700 font-semibold px-8 py-2 rounded-full hover:bg-orange-200 transition-colors">
+                        Partially
+                      </button>
+                    </div>
+                    
+                    <div className="flex justify-between items-center py-4 border-b border-gray-200">
+                      <p className="text-lg text-muted-foreground">Do employees know where to find answers to common questions?</p>
+                      <div className="flex items-center space-x-3">
+                        <span className="text-lg text-orange-600 font-semibold">Yes</span>
+                        <label htmlFor="toggle-yes" className="flex items-center cursor-pointer">
+                          <div className="relative">
+                            <input type="checkbox" id="toggle-yes" className="sr-only" defaultChecked />
+                            <div className="toggle-bg block bg-orange-500 w-16 h-9 rounded-full relative">
+                              <div className="absolute top-1 left-1 bg-white rounded-full w-7 h-7 transition-transform translate-x-7"></div>
+                            </div>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-center py-4">
+                      <p className="text-lg text-muted-foreground">Are performance reviews conducted regularly?</p>
+                      <button className="bg-orange-100 text-orange-700 font-semibold px-8 py-2 rounded-full hover:bg-orange-200 transition-colors">
+                        Yes
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Navigation Buttons */}
+                  <div className="mt-12 flex items-center justify-center space-x-4">
+                    <button className="bg-gray-200 text-gray-600 font-semibold px-10 py-3.5 rounded-full hover:bg-gray-300 transition-colors">
+                      Previous
+                    </button>
+                    <button className="bg-orange-500 text-white font-semibold px-10 py-3.5 rounded-full hover:bg-orange-600 transition-colors shadow-lg">
+                      Next Section
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Character Illustration - Only on large screens */}
+              <div className="hidden lg:block w-[450px] h-[700px] flex-shrink-0 -mt-16 ml-8">
+                <img 
+                  className="w-full h-full object-contain" 
+                  src="https://storage.googleapis.com/uxpilot-auth.appspot.com/8d044c2b51-0865f11dd64a7ebb4c23.png" 
+                  alt="3D illustration of a friendly character with a tablet" 
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* FAQ Section */}
         <section className="py-20 relative z-10">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

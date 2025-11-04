@@ -241,26 +241,138 @@ const EducationPage = () => {
           </div>
         </section>
 
-        {/* Video Solutions Grid */}
-        <section className="py-24 bg-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Our Video Production Process */}
+        <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+              {[
+                {
+                  number: "1",
+                  title: "Discovery",
+                  description: "Understanding your goals, audience, and learning objectives through detailed consultation.",
+                  color: "bg-orange-100",
+                  textColor: "text-orange-600"
+                },
+                {
+                  number: "2",
+                  title: "Planning",
+                  description: "Developing scripts, storyboards, and production timelines tailored to your educational environment.",
+                  color: "bg-pink-100",
+                  textColor: "text-pink-600"
+                },
+                {
+                  number: "3",
+                  title: "Production",
+                  description: "Professional filming with education-specific equipment and techniques, ensuring minimal disruption.",
+                  color: "bg-blue-100",
+                  textColor: "text-blue-600"
+                },
+                {
+                  number: "4",
+                  title: "Delivery",
+                  description: "Final videos optimized for your platforms with accessibility features and learning analytics.",
+                  color: "bg-green-100",
+                  textColor: "text-green-600"
+                }
+              ].map((step, index) => (
+                <div key={index} className="text-center">
+                  <div className={`w-20 h-20 ${step.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
+                    <span className={`text-3xl font-bold ${step.textColor}`}>{step.number}</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Education Video Specialties */}
+            <div className="mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">Education Video Specialties</h2>
+              <p className="text-lg text-gray-600 mb-12 max-w-3xl">
+                Our expertise spans across various educational sectors, ensuring we understand the unique challenges and opportunities in your field.
+              </p>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div className="space-y-6">
+                  {[
+                    {
+                      icon: <School className="h-6 w-6" />,
+                      title: "K-12 Schools & Districts",
+                      description: "Parent communication, teacher training, and student safety education.",
+                      color: "bg-blue-100",
+                      iconColor: "text-blue-600"
+                    },
+                    {
+                      icon: <GraduationCap className="h-6 w-6" />,
+                      title: "Colleges & Universities",
+                      description: "Recruitment videos, course content, and institutional branding.",
+                      color: "bg-green-100",
+                      iconColor: "text-green-600"
+                    },
+                    {
+                      icon: <Globe className="h-6 w-6" />,
+                      title: "Online Learning Platforms",
+                      description: "Scalable course production and platform tutorials.",
+                      color: "bg-purple-100",
+                      iconColor: "text-purple-600"
+                    },
+                    {
+                      icon: <Library className="h-6 w-6" />,
+                      title: "Museums & Libraries",
+                      description: "Exhibit tours, educational programming, and virtual events.",
+                      color: "bg-orange-100",
+                      iconColor: "text-orange-600"
+                    }
+                  ].map((specialty, index) => (
+                    <div key={index} className="flex items-start gap-4">
+                      <div className={`w-14 h-14 ${specialty.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                        <span className={specialty.iconColor}>{specialty.icon}</span>
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-1">{specialty.title}</h3>
+                        <p className="text-gray-600">{specialty.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Decorative Grid */}
+                <div className="hidden lg:grid grid-cols-2 gap-4 h-full">
+                  <div className="bg-blue-200 rounded-3xl flex items-center justify-center h-48">
+                    <Video className="h-16 w-16 text-blue-600" />
+                  </div>
+                  <div className="bg-green-200 rounded-3xl flex items-center justify-center h-48">
+                    <BookOpen className="h-16 w-16 text-green-600" />
+                  </div>
+                  <div className="bg-purple-200 rounded-3xl flex items-center justify-center h-48">
+                    <Lightbulb className="h-16 w-16 text-purple-600" />
+                  </div>
+                  <div className="bg-orange-200 rounded-3xl flex items-center justify-center h-48">
+                    <Brain className="h-16 w-16 text-orange-600" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Our Education Video Services */}
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="text-center mb-16">
-              <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">
-                Comprehensive Video Solutions for Educational Excellence
-              </h2>
-              <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-                Whether you need online course content, student recruitment videos, faculty training, donor cultivation 
-                materials, or campus safety education, our education-focused video production services help you achieve 
-                institutional goals and enhance student success.
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Education Video Services</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Comprehensive video production solutions tailored for educational organizations, 
+                designed to inspire learning, attract students, and build community.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
               {videoSolutions.map((solution, index) => (
-                <Card key={index} className={`group hover:shadow-2xl transition-all duration-300 ${solution.color} border-l-6 bg-white hover:scale-105`}>
+                <Card key={index} className={`group hover:shadow-lg transition-all duration-300 ${solution.color} border-2`}>
                   <CardHeader>
                     <div className="flex items-start gap-4 mb-4">
-                      <div className={`w-16 h-16 ${solution.bgColor} rounded-xl flex items-center justify-center ${solution.iconColor} group-hover:scale-110 transition-transform`}>
+                      <div className={`w-16 h-16 ${solution.bgColor} rounded-xl flex items-center justify-center ${solution.iconColor}`}>
                         {solution.icon}
                       </div>
                       <Badge variant="secondary" className="text-xs">

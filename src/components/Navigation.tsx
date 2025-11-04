@@ -214,7 +214,7 @@ export const Navigation = () => {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <button 
-                        onClick={() => handlePageTransition('/startups')}
+                        onClick={() => handlePageTransition('/industries/technology')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
                         Technology
@@ -234,6 +234,14 @@ export const Navigation = () => {
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
                         Government
+                      </button>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/startups')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Startups
                       </button>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -502,7 +510,7 @@ export const Navigation = () => {
                   Professional Services
                 </button>
                 <button 
-                  onClick={() => handlePageTransition('/startups')}
+                  onClick={() => handlePageTransition('/industries/technology')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
                   Technology
@@ -518,6 +526,12 @@ export const Navigation = () => {
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
                   Government
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/startups')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Startups
                 </button>
               </div>
             </div>

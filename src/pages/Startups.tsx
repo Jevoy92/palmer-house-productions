@@ -175,18 +175,18 @@ const StartupsPage = () => {
 
       <MainContent>
         {/* Hero Section */}
-        <section className="relative py-16 sm:py-20 lg:py-32 bg-white">
+        <section className="relative py-20 lg:py-32 bg-gradient-to-br from-white via-gray-50 to-purple-50">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto text-center mb-16">
-              <Badge className="mb-6 text-lg px-4 py-2">
-                Startup Video Solutions
+            <div className="max-w-4xl mx-auto text-center">
+              <Badge variant="secondary" className="mb-6 text-sm px-4 py-1.5">
+                Startup Solutions
               </Badge>
               
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight text-foreground">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight text-gray-900">
                 Startup Video Production That Accelerates Growth & Funding
               </h1>
               
-              <p className="text-xl text-muted-foreground mb-8 leading-relaxed">
+              <p className="text-xl text-gray-600 mb-10 leading-relaxed max-w-3xl mx-auto">
                 From pitch videos that wow investors to product demos that convert customers, we create video 
                 content that helps startups grow faster, raise more capital, and build stronger brands.
               </p>
@@ -194,50 +194,158 @@ const StartupsPage = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
                 <Button 
                   size="lg"
+                  className="bg-purple-600 text-white hover:bg-purple-700 font-semibold text-lg px-8 py-6 h-auto shadow-lg"
                   onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
                 >
                   <Video className="mr-2 h-5 w-5" />
-                  Schedule Startup Consultation
+                  Schedule Consultation
                 </Button>
                 <Button 
                   variant="outline"
                   size="lg"
+                  className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold text-lg px-8 py-6 h-auto"
                   onClick={() => transitionTo('/pals')}
                 >
-                  Explore Video Solutions
+                  Meet the Pals
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>
 
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
                 {industryBenefits.map((benefit, index) => (
                   <div key={index} className="text-center">
-                    <div className="flex justify-center mb-2 text-primary">
-                      {benefit.icon}
+                    <div className="flex justify-center mb-3">
+                      <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
+                        {benefit.icon}
+                      </div>
                     </div>
-                    <div className="text-2xl font-bold mb-1 text-foreground">{benefit.stat}</div>
-                    <h3 className="font-semibold text-sm mb-1 text-foreground">{benefit.title}</h3>
-                    <p className="text-xs text-muted-foreground leading-tight">{benefit.description}</p>
+                    <div className="text-2xl font-bold text-gray-900 mb-1">{benefit.stat}</div>
+                    <h3 className="font-semibold text-sm text-gray-700 mb-1">{benefit.title}</h3>
+                    <p className="text-xs text-gray-500 leading-tight">{benefit.description}</p>
                   </div>
                 ))}
               </div>
             </div>
+          </div>
+        </section>
 
-            <div className="relative max-w-2xl mx-auto">
-              <div className="relative w-full max-w-lg mx-auto">
-                <img 
-                  src={reelPalImage} 
-                  alt="Startup video production expert"
-                  className="w-full h-auto object-contain animate-fade-in"
-                  loading="eager"
-                />
+        {/* Our Video Production Process */}
+        <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+              {[
+                {
+                  number: "1",
+                  title: "Discovery",
+                  description: "Understanding your startup's vision, target market, and growth goals through detailed consultation.",
+                  color: "bg-orange-100",
+                  textColor: "text-orange-600"
+                },
+                {
+                  number: "2",
+                  title: "Planning",
+                  description: "Developing compelling scripts and storyboards that communicate your unique value proposition.",
+                  color: "bg-pink-100",
+                  textColor: "text-pink-600"
+                },
+                {
+                  number: "3",
+                  title: "Production",
+                  description: "Professional filming that captures your team's passion and showcases your product's potential.",
+                  color: "bg-purple-100",
+                  textColor: "text-purple-600"
+                },
+                {
+                  number: "4",
+                  title: "Delivery",
+                  description: "Optimized videos ready for pitches, social media, websites, and investor presentations.",
+                  color: "bg-blue-100",
+                  textColor: "text-blue-600"
+                }
+              ].map((step, index) => (
+                <div key={index} className="text-center">
+                  <div className={`w-20 h-20 ${step.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
+                    <span className={`text-3xl font-bold ${step.textColor}`}>{step.number}</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Startup Video Specialties */}
+            <div className="mb-12">
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">Startup Video Specialties</h2>
+              <p className="text-lg text-gray-600 mb-12 max-w-3xl">
+                We understand the unique challenges startups face at every stage, from pre-seed to Series A and beyond.
+              </p>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div className="space-y-6">
+                  {[
+                    {
+                      icon: <Rocket className="h-6 w-6" />,
+                      title: "Investor Pitch Videos",
+                      description: "Compelling narratives that capture attention and communicate traction.",
+                      color: "bg-blue-100",
+                      iconColor: "text-blue-600"
+                    },
+                    {
+                      icon: <Play className="h-6 w-6" />,
+                      title: "Product Demonstrations",
+                      description: "Clear showcases of features, benefits, and competitive advantages.",
+                      color: "bg-green-100",
+                      iconColor: "text-green-600"
+                    },
+                    {
+                      icon: <TrendingUp className="h-6 w-6" />,
+                      title: "Growth Marketing",
+                      description: "Viral-ready social content that drives customer acquisition.",
+                      color: "bg-purple-100",
+                      iconColor: "text-purple-600"
+                    },
+                    {
+                      icon: <Award className="h-6 w-6" />,
+                      title: "Brand Storytelling",
+                      description: "Authentic stories that build emotional connections with customers.",
+                      color: "bg-orange-100",
+                      iconColor: "text-orange-600"
+                    }
+                  ].map((specialty, index) => (
+                    <div key={index} className="flex items-start gap-4">
+                      <div className={`w-14 h-14 ${specialty.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                        <span className={specialty.iconColor}>{specialty.icon}</span>
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-1">{specialty.title}</h3>
+                        <p className="text-gray-600">{specialty.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Decorative Grid */}
+                <div className="hidden lg:grid grid-cols-2 gap-4 h-full">
+                  <div className="bg-purple-200 rounded-3xl flex items-center justify-center h-48">
+                    <Rocket className="h-16 w-16 text-purple-600" />
+                  </div>
+                  <div className="bg-blue-200 rounded-3xl flex items-center justify-center h-48">
+                    <TrendingUp className="h-16 w-16 text-blue-600" />
+                  </div>
+                  <div className="bg-green-200 rounded-3xl flex items-center justify-center h-48">
+                    <Target className="h-16 w-16 text-green-600" />
+                  </div>
+                  <div className="bg-orange-200 rounded-3xl flex items-center justify-center h-48">
+                    <Video className="h-16 w-16 text-orange-600" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* Video Solutions Grid */}
-        <section className="py-24 bg-white">
+        <section className="py-20 bg-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">

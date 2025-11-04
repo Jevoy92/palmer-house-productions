@@ -367,28 +367,51 @@ const ProfessionalServicesPage = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              {videoSolutions.map((solution, index) => (
-                <Card key={index} className={`group hover:shadow-lg transition-all duration-300 ${solution.color} border-2`}>
-                  <CardHeader>
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className={`w-16 h-16 ${solution.bgColor} rounded-xl flex items-center justify-center ${solution.iconColor}`}>
-                        {solution.icon}
-                      </div>
-                      <Badge variant="secondary" className="text-xs">
-                        {solution.palType}
-                      </Badge>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {[
+                {
+                  icon: <Briefcase className="h-8 w-8" />,
+                  badge: "Thought Leadership",
+                  title: "Authority Videos",
+                  description: "Expert content that positions your firm as trusted advisors and industry leaders.",
+                  features: ["Expert interviews", "Industry insights", "Webinar content"],
+                  color: "bg-blue-100",
+                  iconColor: "text-blue-600",
+                  badgeColor: "bg-blue-100 text-blue-700"
+                },
+                {
+                  icon: <Users className="h-8 w-8" />,
+                  badge: "Client Stories",
+                  title: "Social Proof",
+                  description: "Compelling client testimonials and case studies that build trust and credibility.",
+                  features: ["Case studies", "Client testimonials", "Success stories"],
+                  color: "bg-green-100",
+                  iconColor: "text-green-600",
+                  badgeColor: "bg-green-100 text-green-700"
+                },
+                {
+                  icon: <TrendingUp className="h-8 w-8" />,
+                  badge: "Business Development",
+                  title: "Marketing Videos",
+                  description: "Professional content that supports new business development and differentiates your firm.",
+                  features: ["Firm introductions", "Service explanations", "Pitch support"],
+                  color: "bg-purple-100",
+                  iconColor: "text-purple-600",
+                  badgeColor: "bg-purple-100 text-purple-700"
+                }
+              ].map((service, index) => (
+                <Card key={index} className="border border-gray-200 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                  <CardContent className="p-8 text-center">
+                    <div className={`w-20 h-20 ${service.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
+                      <span className={service.iconColor}>{service.icon}</span>
                     </div>
-                    <CardTitle className="text-xl text-gray-900 mb-3">{solution.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base text-gray-600 mb-6 leading-relaxed">
-                      {solution.description}
-                    </CardDescription>
+                    <Badge className={`mb-4 ${service.badgeColor}`}>{service.badge}</Badge>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h3>
+                    <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
                     <div className="space-y-2">
-                      {solution.features.map((feature, idx) => (
-                        <div key={idx} className="flex items-center text-sm text-gray-700">
-                          <CheckCircle className="w-4 h-4 mr-2 text-green-500 flex-shrink-0" />
+                      {service.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center justify-center gap-2 text-sm text-gray-700">
+                          <CheckCircle className="h-4 w-4 text-green-600" />
                           <span>{feature}</span>
                         </div>
                       ))}

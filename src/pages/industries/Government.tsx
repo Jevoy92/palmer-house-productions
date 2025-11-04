@@ -354,42 +354,62 @@ const GovernmentPage = () => {
           </div>
         </section>
 
-        {/* Video Solutions Grid */}
-        <section className="py-24 bg-white">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Our Government Video Services */}
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="text-center mb-16">
-              <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6">
-                Complete Video Solutions for Government Agencies
-              </h2>
-              <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
-                Whether you need public safety training, compliance education, citizen engagement content, 
-                or recruitment videos, our government-focused video production services help you fulfill your 
-                mission, serve citizens better, and build public trust.
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Government Video Services</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                Comprehensive video production solutions tailored for government agencies, 
+                designed to train personnel, engage citizens, and build public trust.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {videoSolutions.map((solution, index) => (
-                <Card key={index} className={`group hover:shadow-2xl transition-all duration-300 ${solution.color} border-l-6 bg-white hover:scale-105`}>
-                  <CardHeader>
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className={`w-16 h-16 ${solution.bgColor} rounded-xl flex items-center justify-center ${solution.iconColor} group-hover:scale-110 transition-transform`}>
-                        {solution.icon}
-                      </div>
-                      <Badge variant="secondary" className="text-xs">
-                        {solution.palType}
-                      </Badge>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {[
+                {
+                  icon: <Shield className="h-8 w-8" />,
+                  badge: "Staff Training",
+                  title: "Training Content",
+                  description: "Professional development videos that ensure consistent procedures and enhance workforce capabilities.",
+                  features: ["Compliance training", "Safety protocols", "Technology training"],
+                  color: "bg-blue-100",
+                  iconColor: "text-blue-600",
+                  badgeColor: "bg-blue-100 text-blue-700"
+                },
+                {
+                  icon: <Users className="h-8 w-8" />,
+                  badge: "Public Engagement",
+                  title: "Citizen Education",
+                  description: "Clear, accessible content that helps citizens understand services, rights, and procedures.",
+                  features: ["Service explanations", "Public awareness", "Community resources"],
+                  color: "bg-green-100",
+                  iconColor: "text-green-600",
+                  badgeColor: "bg-green-100 text-green-700"
+                },
+                {
+                  icon: <FileCheck className="h-8 w-8" />,
+                  badge: "Transparency",
+                  title: "Promotional Videos",
+                  description: "Compelling narratives that showcase your agency's mission and build community trust.",
+                  features: ["Agency updates", "Success stories", "Recruitment videos"],
+                  color: "bg-purple-100",
+                  iconColor: "text-purple-600",
+                  badgeColor: "bg-purple-100 text-purple-700"
+                }
+              ].map((service, index) => (
+                <Card key={index} className="border border-gray-200 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                  <CardContent className="p-8 text-center">
+                    <div className={`w-20 h-20 ${service.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
+                      <span className={service.iconColor}>{service.icon}</span>
                     </div>
-                    <CardTitle className="text-xl text-gray-900 mb-3">{solution.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base text-gray-600 mb-6 leading-relaxed">
-                      {solution.description}
-                    </CardDescription>
+                    <Badge className={`mb-4 ${service.badgeColor}`}>{service.badge}</Badge>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h3>
+                    <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
                     <div className="space-y-2">
-                      {solution.features.map((feature, idx) => (
-                        <div key={idx} className="flex items-center text-sm text-gray-700">
-                          <CheckCircle className="w-4 h-4 mr-2 text-green-500 flex-shrink-0" />
+                      {service.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center justify-center gap-2 text-sm text-gray-700">
+                          <CheckCircle className="h-4 w-4 text-green-600" />
                           <span>{feature}</span>
                         </div>
                       ))}

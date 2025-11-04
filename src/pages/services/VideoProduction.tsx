@@ -185,79 +185,10 @@ const VideoProduction = () => {
       </section>
 
       {/* Industries We Serve */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="text-primary">Industry-Specific</span> Video Solutions
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Tailored video production services for your industry's unique needs and regulations.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {industries.map((industry, index) => <Link key={index} to={industry.path} className="group p-6 bg-card rounded-lg border-2 hover:border-primary transition-all text-center hover:shadow-lg">
-                <p className="font-semibold group-hover:text-primary transition-colors">
-                  {industry.name}
-                </p>
-              </Link>)}
-          </div>
-        </div>
-      </section>
+      
 
       {/* Meet Our Video Production Team */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
-        <div className="max-w-7xl mx-auto">
-          <div className="bg-card rounded-2xl p-8 md:p-12 border-2">
-            <div className="grid md:grid-cols-2 gap-8 items-center">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                  Meet the <span className="text-primary">Palmer House Pals</span>
-                </h2>
-                <p className="text-lg text-muted-foreground mb-6">
-                  Our specialized video production experts—Reel Pal, System Pal, Evergreen Pal, 
-                  and Spotlight Pal—each bring unique expertise to ensure your project exceeds expectations.
-                </p>
-                <Button onClick={() => transitionTo('/pals')} className="group">
-                  Meet Your Production Team
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <Card className="text-center p-4 hover:shadow-lg transition-shadow">
-                  <CardContent className="pt-4">
-                    <Video className="w-8 h-8 text-primary mx-auto mb-2" />
-                    <h3 className="font-bold">Reel Pal</h3>
-                    <p className="text-sm text-muted-foreground">Social Video</p>
-                  </CardContent>
-                </Card>
-                <Card className="text-center p-4 hover:shadow-lg transition-shadow">
-                  <CardContent className="pt-4">
-                    <Users className="w-8 h-8 text-primary mx-auto mb-2" />
-                    <h3 className="font-bold">System Pal</h3>
-                    <p className="text-sm text-muted-foreground">Training Videos</p>
-                  </CardContent>
-                </Card>
-                <Card className="text-center p-4 hover:shadow-lg transition-shadow">
-                  <CardContent className="pt-4">
-                    <TrendingUp className="w-8 h-8 text-primary mx-auto mb-2" />
-                    <h3 className="font-bold">Evergreen Pal</h3>
-                    <p className="text-sm text-muted-foreground">SEO Videos</p>
-                  </CardContent>
-                </Card>
-                <Card className="text-center p-4 hover:shadow-lg transition-shadow">
-                  <CardContent className="pt-4">
-                    <Sparkles className="w-8 h-8 text-primary mx-auto mb-2" />
-                    <h3 className="font-bold">Spotlight Pal</h3>
-                    <p className="text-sm text-muted-foreground">Premium Production</p>
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      
 
       {/* CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">

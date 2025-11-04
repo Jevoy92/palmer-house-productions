@@ -124,19 +124,19 @@ const PostProduction = () => {
 
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 via-transparent to-primary/5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 via-transparent to-blue-500/5" />
         <div className="max-w-7xl mx-auto relative">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/10 rounded-full mb-6">
-              <Film className="w-4 h-4 text-secondary" />
-              <span className="text-sm font-semibold text-secondary">Professional Post-Production</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/10 rounded-full mb-6 border border-purple-500/20">
+              <Film className="w-4 h-4 text-purple-500" />
+              <span className="text-sm font-semibold text-purple-600 dark:text-purple-400">Professional Post-Production</span>
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
               Polish Your Vision With
               <br />
-              <span className="text-secondary">Expert Post-Production</span>
+              <span className="text-purple-600 dark:text-purple-400">Expert Post-Production</span>
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed mb-8">
+            <p className="text-xl text-foreground/90 max-w-3xl mx-auto leading-relaxed mb-8">
               Transform raw footage into captivating content with professional editing, color grading, 
               audio engineering, and motion graphics that elevate your brand.
             </p>
@@ -144,7 +144,7 @@ const PostProduction = () => {
               <Button 
                 size="lg"
                 onClick={() => transitionTo('/contact')}
-                className="group"
+                className="group bg-purple-600 hover:bg-purple-700 text-white"
               >
                 Start Your Edit
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -153,6 +153,7 @@ const PostProduction = () => {
                 size="lg"
                 variant="outline"
                 onClick={() => transitionTo('/spotlight-pal')}
+                className="border-purple-500/50 hover:bg-purple-500/10"
               >
                 Meet Spotlight Pal
               </Button>
@@ -166,73 +167,101 @@ const PostProduction = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="text-secondary">Complete</span> Post-Production Services
+              Complete <span className="text-purple-600 dark:text-purple-400">Post-Production Services</span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-foreground/90 max-w-2xl mx-auto">
               Every detail matters. Our comprehensive post-production services ensure 
               your video looks and sounds exceptional across all platforms.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {postProductionServices.map((service, index) => (
-              <Card key={index} className="border-2 hover:border-secondary/50 transition-all hover:shadow-lg">
-                <CardContent className="pt-6">
-                  <div className="flex flex-col items-center gap-4 mb-4">
-                    <div className="p-3 bg-secondary/10 rounded-lg">
-                      <service.icon className="w-8 h-8 text-secondary mx-auto" />
-                    </div>
-                    <h3 className="text-lg font-bold text-center">{service.title}</h3>
-                  </div>
-                  <p className="text-sm text-foreground/80 mb-4">{service.description}</p>
-                  <div className="space-y-2">
-                    {service.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
-                        <CheckCircle className="w-4 h-4 text-secondary flex-shrink-0" />
-                        <span className="text-sm">{feature}</span>
+            {postProductionServices.map((service, index) => {
+              const iconColors = [
+                'text-blue-600 dark:text-blue-400 bg-blue-500/10',
+                'text-pink-600 dark:text-pink-400 bg-pink-500/10',
+                'text-green-600 dark:text-green-400 bg-green-500/10',
+                'text-purple-600 dark:text-purple-400 bg-purple-500/10',
+                'text-orange-600 dark:text-orange-400 bg-orange-500/10',
+                'text-cyan-600 dark:text-cyan-400 bg-cyan-500/10'
+              ];
+              const [textColor, bgColor] = iconColors[index].split(' ');
+              
+              return (
+                <Card key={index} className="border-2 hover:border-purple-500/50 transition-all hover:shadow-lg group">
+                  <CardContent className="pt-6">
+                    <div className="flex flex-col items-center gap-4 mb-4">
+                      <div className={`p-4 rounded-xl ${bgColor} group-hover:scale-110 transition-transform`}>
+                        <service.icon className={`w-10 h-10 ${textColor}`} />
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                      <h3 className="text-lg font-bold text-center">{service.title}</h3>
+                    </div>
+                    <p className="text-sm text-foreground/90 mb-4">{service.description}</p>
+                    <div className="space-y-2">
+                      {service.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center gap-2">
+                          <CheckCircle className="w-4 h-4 text-purple-600 dark:text-purple-400 flex-shrink-0" />
+                          <span className="text-sm text-foreground/90">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* Post-Production Process */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-purple-500/5 to-transparent">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="text-secondary">Our</span> Editing Workflow
+              Our <span className="text-purple-600 dark:text-purple-400">Editing Workflow</span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-foreground/90 max-w-2xl mx-auto">
               A streamlined process that delivers exceptional results while keeping you 
               involved and informed at every stage.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {postProductionProcess.map((phase, index) => (
-              <div key={index} className="relative group">
-                <div className="bg-card rounded-xl p-6 h-full border-2 hover:border-primary transition-all hover:shadow-xl">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-sm font-bold text-white">{index + 1}</span>
+            {postProductionProcess.map((phase, index) => {
+              const stepColors = [
+                'bg-blue-600',
+                'bg-purple-600',
+                'bg-pink-600',
+                'bg-orange-600'
+              ];
+              const iconColors = [
+                'text-blue-600 dark:text-blue-400 bg-blue-500/10',
+                'text-purple-600 dark:text-purple-400 bg-purple-500/10',
+                'text-pink-600 dark:text-pink-400 bg-pink-500/10',
+                'text-orange-600 dark:text-orange-400 bg-orange-500/10'
+              ];
+              const [textColor, bgColor] = iconColors[index].split(' ');
+              
+              return (
+                <div key={index} className="relative group">
+                  <div className="bg-card rounded-xl p-6 h-full border-2 hover:border-purple-500/50 transition-all hover:shadow-xl">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className={`w-8 h-8 ${stepColors[index]} rounded-full flex items-center justify-center flex-shrink-0 shadow-lg`}>
+                        <span className="text-sm font-bold text-white">{index + 1}</span>
+                      </div>
+                      <div className={`w-12 h-12 ${bgColor} rounded-xl flex items-center justify-center`}>
+                        <phase.icon className={`w-6 h-6 ${textColor}`} />
+                      </div>
                     </div>
-                    <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center">
-                      <phase.icon className="w-6 h-6 text-secondary" />
-                    </div>
+                    <h3 className="text-xl font-bold mb-3">{phase.step}</h3>
+                    <p className="text-foreground/90">{phase.description}</p>
                   </div>
-                  <h3 className="text-xl font-bold mb-3">{phase.step}</h3>
-                  <p className="text-muted-foreground">{phase.description}</p>
+                  {index < postProductionProcess.length - 1 && (
+                    <ArrowRight className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 text-purple-600 dark:text-purple-400 z-10 w-6 h-6" />
+                  )}
                 </div>
-                {index < postProductionProcess.length - 1 && (
-                  <ArrowRight className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 text-primary z-10 w-6 h-6" />
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -242,9 +271,9 @@ const PostProduction = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="text-secondary">Advanced</span> Post-Production Capabilities
+              Advanced <span className="text-purple-600 dark:text-purple-400">Post-Production Capabilities</span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-foreground/90 max-w-2xl mx-auto">
               Cutting-edge tools and techniques to bring your vision to life with 
               professional polish and technical excellence.
             </p>
@@ -252,10 +281,10 @@ const PostProduction = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {capabilities.map((capability, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
+              <Card key={index} className="hover:shadow-lg transition-all hover:border-purple-500/50 border-2 group">
                 <CardContent className="pt-6">
-                  <h3 className="text-lg font-bold mb-2 text-secondary">{capability.title}</h3>
-                  <p className="text-foreground/80 text-sm">{capability.description}</p>
+                  <h3 className="text-lg font-bold mb-2 text-purple-600 dark:text-purple-400 group-hover:text-purple-700 dark:group-hover:text-purple-300 transition-colors">{capability.title}</h3>
+                  <p className="text-foreground/90 text-sm">{capability.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -264,28 +293,28 @@ const PostProduction = () => {
       </section>
 
       {/* Spotlight Pal Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-purple-500/10 via-purple-500/5 to-transparent">
         <div className="max-w-7xl mx-auto">
-          <div className="bg-card rounded-2xl p-8 md:p-12 border-2">
+          <div className="bg-gradient-to-br from-purple-500/5 to-pink-500/5 rounded-2xl p-8 md:p-12 border-2 border-purple-500/20">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               <div>
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/10 rounded-full mb-6">
-                  <Sparkles className="w-4 h-4 text-secondary" />
-                  <span className="text-sm font-semibold text-secondary">Meet Your Editor</span>
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-500/10 rounded-full mb-6 border border-purple-500/20">
+                  <Sparkles className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+                  <span className="text-sm font-semibold text-purple-600 dark:text-purple-400">Meet Your Editor</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                  <span className="text-secondary">Spotlight Pal</span>
+                  <span className="text-purple-600 dark:text-purple-400">Spotlight Pal</span>
                   <br />
                   Your Post-Production Expert
                 </h2>
-                <p className="text-lg text-foreground/80 mb-6">
+                <p className="text-lg text-foreground/90 mb-6">
                   Spotlight Pal specializes in transforming raw footage into polished, 
                   professional content. With expertise in editing, color grading, and audio 
                   post-production, Spotlight ensures every frame tells your story perfectly.
                 </p>
                 <Button 
                   onClick={() => transitionTo('/spotlight-pal')}
-                  className="group"
+                  className="group bg-purple-600 hover:bg-purple-700 text-white"
                 >
                   Learn More About Spotlight Pal
                   <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -293,18 +322,30 @@ const PostProduction = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 {[
-                  { icon: Film, label: "Expert Editing" },
-                  { icon: Palette, label: "Color Grading" },
-                  { icon: Volume2, label: "Audio Mixing" },
-                  { icon: Wand2, label: "Motion Graphics" }
-                ].map((item, index) => (
-                  <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow">
-                    <CardContent className="pt-4">
-                      <item.icon className="w-8 h-8 text-secondary mx-auto mb-2" />
-                      <p className="font-semibold text-sm">{item.label}</p>
-                    </CardContent>
-                  </Card>
-                ))}
+                  { icon: Film, label: "Expert Editing", color: "blue" },
+                  { icon: Palette, label: "Color Grading", color: "pink" },
+                  { icon: Volume2, label: "Audio Mixing", color: "green" },
+                  { icon: Wand2, label: "Motion Graphics", color: "purple" }
+                ].map((item, index) => {
+                  const colors = {
+                    blue: 'text-blue-600 dark:text-blue-400 bg-blue-500/10',
+                    pink: 'text-pink-600 dark:text-pink-400 bg-pink-500/10',
+                    green: 'text-green-600 dark:text-green-400 bg-green-500/10',
+                    purple: 'text-purple-600 dark:text-purple-400 bg-purple-500/10'
+                  };
+                  const [textColor, bgColor] = colors[item.color as keyof typeof colors].split(' ');
+                  
+                  return (
+                    <Card key={index} className="text-center p-6 hover:shadow-lg transition-all hover:border-purple-500/50 border-2 group">
+                      <CardContent className="pt-4">
+                        <div className={`w-16 h-16 ${bgColor} rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform`}>
+                          <item.icon className={`w-8 h-8 ${textColor}`} />
+                        </div>
+                        <p className="font-semibold text-sm">{item.label}</p>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -316,55 +357,61 @@ const PostProduction = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              <span className="text-secondary">Related</span> Video Services
+              Related <span className="text-purple-600 dark:text-purple-400">Video Services</span>
             </h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
             <Link
               to="/services/video-production"
-              className="group p-8 bg-card rounded-xl border-2 hover:border-primary transition-all hover:shadow-lg"
+              className="group p-8 bg-card rounded-xl border-2 hover:border-blue-500/50 transition-all hover:shadow-lg text-center"
             >
-              <Film className="w-10 h-10 text-primary mb-4 mx-auto" />
-              <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+              <div className="w-16 h-16 bg-blue-500/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <Film className="w-10 h-10 text-blue-600 dark:text-blue-400" />
+              </div>
+              <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                 Video Production
               </h3>
-              <p className="text-foreground/80 mb-4">
+              <p className="text-foreground/90 mb-4">
                 Professional filming services for all your video content needs.
               </p>
-              <div className="flex items-center text-primary font-semibold">
+              <div className="flex items-center justify-center text-blue-600 dark:text-blue-400 font-semibold">
                 Learn More <ArrowRight className="ml-2 h-4 w-4" />
               </div>
             </Link>
 
             <Link
               to="/content-strategy"
-              className="group p-8 bg-card rounded-xl border-2 hover:border-primary transition-all hover:shadow-lg"
+              className="group p-8 bg-card rounded-xl border-2 hover:border-green-500/50 transition-all hover:shadow-lg text-center"
             >
-              <Target className="w-10 h-10 text-primary mb-4 mx-auto" />
-              <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+              <div className="w-16 h-16 bg-green-500/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <Target className="w-10 h-10 text-green-600 dark:text-green-400" />
+              </div>
+              <h3 className="text-xl font-bold mb-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
                 Consulting & Strategy
               </h3>
-              <p className="text-foreground/80 mb-4">
+              <p className="text-foreground/90 mb-4">
                 Strategic planning to maximize your video content ROI.
               </p>
-              <div className="flex items-center text-primary font-semibold">
+              <div className="flex items-center justify-center text-green-600 dark:text-green-400 font-semibold">
                 Learn More <ArrowRight className="ml-2 h-4 w-4" />
               </div>
             </Link>
 
             <Link
               to="/services/diy-downloads"
-              className="group p-8 bg-card rounded-xl border-2 hover:border-primary transition-all hover:shadow-lg"
+              className="group p-8 bg-card rounded-xl border-2 hover:border-orange-500/50 transition-all hover:shadow-lg text-center"
             >
-              <Zap className="w-10 h-10 text-primary mb-4 mx-auto" />
-              <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
+              <div className="w-16 h-16 bg-orange-500/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <Zap className="w-10 h-10 text-orange-600 dark:text-orange-400" />
+              </div>
+              <h3 className="text-xl font-bold mb-2 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
                 DIY Tools & Downloads
               </h3>
-              <p className="text-foreground/80 mb-4">
+              <p className="text-foreground/90 mb-4">
                 Templates and resources for self-service video creation.
               </p>
-              <div className="flex items-center text-primary font-semibold">
+              <div className="flex items-center justify-center text-orange-600 dark:text-orange-400 font-semibold">
                 Learn More <ArrowRight className="ml-2 h-4 w-4" />
               </div>
             </Link>
@@ -373,12 +420,12 @@ const PostProduction = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent to-purple-500/5">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to Transform Your <span className="text-secondary">Raw Footage</span>?
+            Ready to Transform Your <span className="text-purple-600 dark:text-purple-400">Raw Footage</span>?
           </h2>
-          <p className="text-xl text-foreground/80 mb-8">
+          <p className="text-xl text-foreground/90 mb-8">
             Let's discuss how professional post-production can elevate your video content 
             and maximize its impact across all platforms.
           </p>
@@ -386,7 +433,7 @@ const PostProduction = () => {
             <Button 
               size="lg"
               onClick={() => transitionTo('/contact')}
-              className="group"
+              className="group bg-purple-600 hover:bg-purple-700 text-white"
             >
               Get Started Today
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -395,6 +442,7 @@ const PostProduction = () => {
               size="lg"
               variant="outline"
               onClick={() => transitionTo('/about-us')}
+              className="border-purple-500/50 hover:bg-purple-500/10"
             >
               Learn About Our Process
             </Button>

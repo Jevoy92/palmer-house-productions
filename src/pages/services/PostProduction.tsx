@@ -131,7 +131,7 @@ const PostProduction = () => {
               <Film className="w-4 h-4 text-secondary" />
               <span className="text-sm font-semibold text-secondary">Professional Post-Production</span>
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
               Polish Your Vision With
               <br />
               <span className="text-secondary">Expert Post-Production</span>
@@ -166,7 +166,7 @@ const PostProduction = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Complete <span className="text-secondary">Post-Production Services</span>
+              <span className="text-secondary">Complete</span> Post-Production Services
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Every detail matters. Our comprehensive post-production services ensure 
@@ -178,15 +178,13 @@ const PostProduction = () => {
             {postProductionServices.map((service, index) => (
               <Card key={index} className="border-2 hover:border-secondary/50 transition-all hover:shadow-lg">
                 <CardContent className="pt-6">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="p-3 bg-secondary/10 rounded-lg flex-shrink-0">
-                      <service.icon className="w-6 h-6 text-secondary" />
+                  <div className="flex flex-col items-center gap-4 mb-4">
+                    <div className="p-3 bg-secondary/10 rounded-lg">
+                      <service.icon className="w-8 h-8 text-secondary mx-auto" />
                     </div>
-                    <div>
-                      <h3 className="text-lg font-bold mb-2">{service.title}</h3>
-                      <p className="text-sm text-muted-foreground mb-4">{service.description}</p>
-                    </div>
+                    <h3 className="text-lg font-bold text-center">{service.title}</h3>
                   </div>
+                  <p className="text-sm text-foreground/80 mb-4">{service.description}</p>
                   <div className="space-y-2">
                     {service.features.map((feature, idx) => (
                       <div key={idx} className="flex items-center gap-2">
@@ -207,7 +205,7 @@ const PostProduction = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Our <span className="text-secondary">Editing Workflow</span>
+              <span className="text-secondary">Our</span> Editing Workflow
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               A streamlined process that delivers exceptional results while keeping you 
@@ -244,7 +242,7 @@ const PostProduction = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Advanced <span className="text-secondary">Post-Production Capabilities</span>
+              <span className="text-secondary">Advanced</span> Post-Production Capabilities
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Cutting-edge tools and techniques to bring your vision to life with 
@@ -256,8 +254,8 @@ const PostProduction = () => {
             {capabilities.map((capability, index) => (
               <Card key={index} className="hover:shadow-lg transition-shadow">
                 <CardContent className="pt-6">
-                  <h3 className="text-lg font-bold mb-2">{capability.title}</h3>
-                  <p className="text-muted-foreground text-sm">{capability.description}</p>
+                  <h3 className="text-lg font-bold mb-2 text-secondary">{capability.title}</h3>
+                  <p className="text-foreground/80 text-sm">{capability.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -280,7 +278,7 @@ const PostProduction = () => {
                   <br />
                   Your Post-Production Expert
                 </h2>
-                <p className="text-lg text-muted-foreground mb-6">
+                <p className="text-lg text-foreground/80 mb-6">
                   Spotlight Pal specializes in transforming raw footage into polished, 
                   professional content. With expertise in editing, color grading, and audio 
                   post-production, Spotlight ensures every frame tells your story perfectly.
@@ -318,7 +316,7 @@ const PostProduction = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Related <span className="text-secondary">Video Services</span>
+              <span className="text-secondary">Related</span> Video Services
             </h2>
           </div>
 
@@ -327,11 +325,11 @@ const PostProduction = () => {
               to="/services/video-production"
               className="group p-8 bg-card rounded-xl border-2 hover:border-primary transition-all hover:shadow-lg"
             >
-              <Film className="w-10 h-10 text-primary mb-4" />
+              <Film className="w-10 h-10 text-primary mb-4 mx-auto" />
               <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
                 Video Production
               </h3>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-foreground/80 mb-4">
                 Professional filming services for all your video content needs.
               </p>
               <div className="flex items-center text-primary font-semibold">
@@ -343,11 +341,11 @@ const PostProduction = () => {
               to="/content-strategy"
               className="group p-8 bg-card rounded-xl border-2 hover:border-primary transition-all hover:shadow-lg"
             >
-              <Target className="w-10 h-10 text-primary mb-4" />
+              <Target className="w-10 h-10 text-primary mb-4 mx-auto" />
               <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
                 Consulting & Strategy
               </h3>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-foreground/80 mb-4">
                 Strategic planning to maximize your video content ROI.
               </p>
               <div className="flex items-center text-primary font-semibold">
@@ -359,11 +357,11 @@ const PostProduction = () => {
               to="/services/diy-downloads"
               className="group p-8 bg-card rounded-xl border-2 hover:border-primary transition-all hover:shadow-lg"
             >
-              <Zap className="w-10 h-10 text-primary mb-4" />
+              <Zap className="w-10 h-10 text-primary mb-4 mx-auto" />
               <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors">
                 DIY Tools & Downloads
               </h3>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-foreground/80 mb-4">
                 Templates and resources for self-service video creation.
               </p>
               <div className="flex items-center text-primary font-semibold">
@@ -380,7 +378,7 @@ const PostProduction = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
             Ready to Transform Your <span className="text-secondary">Raw Footage</span>?
           </h2>
-          <p className="text-xl text-muted-foreground mb-8">
+          <p className="text-xl text-foreground/80 mb-8">
             Let's discuss how professional post-production can elevate your video content 
             and maximize its impact across all platforms.
           </p>

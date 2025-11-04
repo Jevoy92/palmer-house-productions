@@ -42,6 +42,7 @@ import Manufacturing from "./pages/industries/Manufacturing";
 import ProfessionalServices from "./pages/industries/ProfessionalServices";
 import Education from "./pages/industries/Education";
 import Government from "./pages/industries/Government";
+import Technology from "./pages/industries/Technology";
 import { CriticalCSS } from "./components/performance/CriticalCSS";
 import ContentStrategy from "./pages/ContentStrategy";
 import Blog from "./pages/Blog";
@@ -111,6 +112,7 @@ const App = () => (
            <Route path="/industries/professional-services" element={<ProfessionalServices />} />
            <Route path="/industries/education" element={<Education />} />
            <Route path="/industries/government" element={<Government />} />
+           <Route path="/industries/technology" element={<Technology />} />
           <Route path="/services/group-coaching" element={<Navigate to="/contact" replace />} />
           <Route path="/services/monthly-content" element={<Navigate to="/contact" replace />} />
           <Route path="/company/team" element={<Team />} />

@@ -171,12 +171,14 @@ const VideoProduction = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {productionProcess.map((phase, index) => <div key={index} className="relative">
-                <div className="bg-card rounded-xl p-6 h-full border-2 hover:border-primary/50 transition-all">
-                  <div className="text-6xl font-bold text-primary/10 mb-4">{phase.step}</div>
-                  <h3 className="text-xl font-bold mb-3">{phase.title}</h3>
+                <div className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl p-6 h-full border-2 hover:border-primary transition-all hover:shadow-xl group">
+                  <div className="inline-block px-4 py-2 bg-primary rounded-lg mb-4">
+                    <div className="text-4xl font-bold text-white">{phase.step}</div>
+                  </div>
+                  <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">{phase.title}</h3>
                   <p className="text-muted-foreground">{phase.description}</p>
                 </div>
-                {index < productionProcess.length - 1 && <ArrowRight className="hidden lg:block absolute top-1/2 -right-4 text-primary/30" />}
+                {index < productionProcess.length - 1 && <ArrowRight className="hidden lg:block absolute top-1/2 -right-4 text-primary" />}
               </div>)}
           </div>
         </div>

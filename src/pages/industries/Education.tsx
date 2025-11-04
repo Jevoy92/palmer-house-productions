@@ -9,168 +9,119 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { usePageTransition } from '@/components/PageTransition';
-import { 
-  GraduationCap, 
-  BookOpen, 
-  Users, 
-  Video,
-  CheckCircle,
-  School,
-  Library,
-  Award,
-  Target,
-  Clock,
-  Heart,
-  Lightbulb,
-  Globe,
-  TrendingUp,
-  UserCheck,
-  Sparkles,
-  Brain,
-  ArrowRight
-} from "lucide-react";
+import { GraduationCap, BookOpen, Users, Video, CheckCircle, School, Library, Award, Target, Clock, Heart, Lightbulb, Globe, TrendingUp, UserCheck, Sparkles, Brain, ArrowRight } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import systemPalImage from '@/assets/pals/female-system-pal-edited.png';
 import reelPalImage from '@/assets/pals/female-reel-pal-edited.png';
 import evergreenPalImage from '@/assets/pals/female-evergreen-pal-final.png';
 import spotlightPalImage from '@/assets/pals/female-spotlight-pal-edited.png';
-
 const EducationPage = () => {
-  const { transitionTo } = usePageTransition();
-
-  const videoSolutions = [
-    {
-      icon: <BookOpen className="h-8 w-8" />,
-      title: "Online Learning & Course Content",
-      description: "Lecture capture, course modules, instructional videos, skill demonstrations, tutorial content, flipped classroom materials, and asynchronous learning resources for online and hybrid education.",
-      palType: "System Pal + Evergreen Pal",
-      color: "border-blue-500",
-      bgColor: "bg-blue-50",
-      iconColor: "text-blue-600",
-      features: ["Course Modules", "Lectures", "Tutorials", "Skill Demos"]
-    },
-    {
-      icon: <Users className="h-8 w-8" />,
-      title: "Faculty & Staff Training",
-      description: "Professional development, teaching methodology training, technology training, compliance requirements, safety protocols, diversity and inclusion training, and institutional policy updates.",
-      palType: "System Pal",
-      color: "border-purple-500",
-      bgColor: "bg-purple-50",
-      iconColor: "text-purple-600",
-      features: ["PD Training", "Tech Training", "Compliance", "Best Practices"]
-    },
-    {
-      icon: <School className="h-8 w-8" />,
-      title: "Student Recruitment & Admissions",
-      description: "Campus tours, program showcases, student testimonials, welcome videos, orientation content, parent information sessions, and virtual open house materials that attract prospective students.",
-      palType: "Spotlight Pal",
-      color: "border-green-500",
-      bgColor: "bg-green-50",
-      iconColor: "text-green-600",
-      features: ["Campus Tours", "Program Showcases", "Student Stories", "Virtual Events"]
-    },
-    {
-      icon: <Award className="h-8 w-8" />,
-      title: "Donor Relations & Fundraising",
-      description: "Impact stories, campaign videos, donor recognition content, giving day promotions, endowment showcases, alumni success stories, and capital campaign materials that inspire giving.",
-      palType: "Spotlight Pal",
-      color: "border-orange-500",
-      bgColor: "bg-orange-50",
-      iconColor: "text-orange-600",
-      features: ["Impact Stories", "Campaign Videos", "Donor Recognition", "Alumni Stories"]
-    },
-    {
-      icon: <Globe className="h-8 w-8" />,
-      title: "Social Media & Student Engagement",
-      description: "Campus life highlights, student takeovers, event coverage, quick tips for students, behind-the-scenes content, sports highlights, and community-building social content.",
-      palType: "Reel Pal",
-      color: "border-teal-500",
-      bgColor: "bg-teal-50",
-      iconColor: "text-teal-600",
-      features: ["Campus Life", "Events", "Student Content", "Community Building"]
-    },
-    {
-      icon: <Heart className="h-8 w-8" />,
-      title: "Safety & Wellness Education",
-      description: "Campus safety protocols, emergency procedures, mental health resources, wellness initiatives, Title IX training, health education, and student support service information.",
-      palType: "System Pal",
-      color: "border-red-500",
-      bgColor: "bg-red-50",
-      iconColor: "text-red-600",
-      features: ["Safety Training", "Wellness", "Mental Health", "Support Services"]
-    }
-  ];
-
-  const industryBenefits = [
-    {
-      icon: <Target className="h-6 w-6" />,
-      title: "Boost Enrollment",
-      stat: "45% Increase",
-      description: "Video tours and testimonials drive enrollment growth"
-    },
-    {
-      icon: <Clock className="h-6 w-6" />,
-      title: "Scale Learning",
-      stat: "10x Reach",
-      description: "Deliver quality education to unlimited students"
-    },
-    {
-      icon: <UserCheck className="h-6 w-6" />,
-      title: "Improve Retention",
-      stat: "60% Better",
-      description: "Video learning increases information retention"
-    },
-    {
-      icon: <TrendingUp className="h-6 w-6" />,
-      title: "Increase Giving",
-      stat: "3x More Donors",
-      description: "Compelling stories inspire more generous giving"
-    }
-  ];
-
-  const useCases = [
-    {
-      title: "K-12 Schools & Districts",
-      description: "Parent communication videos, teacher training, student safety education, virtual open houses, curriculum showcases, and community engagement content that builds trust and involvement.",
-      icon: <School className="h-6 w-6" />
-    },
-    {
-      title: "Colleges & Universities",
-      description: "Recruitment videos, online course content, faculty training, research showcases, donor cultivation, alumni engagement, and institutional branding that attracts students and support.",
-      icon: <GraduationCap className="h-6 w-6" />
-    },
-    {
-      title: "Training & Certificate Programs",
-      description: "Professional development courses, skill certification content, industry training programs, continuing education materials, and workforce development that delivers measurable outcomes.",
-      icon: <Award className="h-6 w-6" />
-    },
-    {
-      title: "Online Learning Platforms",
-      description: "Scalable course production, instructor training, platform tutorials, student success resources, marketing content, and instructional design support for digital learning environments.",
-      icon: <Globe className="h-6 w-6" />
-    },
-    {
-      title: "Educational Nonprofits",
-      description: "Program showcase videos, impact storytelling, volunteer training, donor engagement content, community education materials, and advocacy campaigns that drive mission forward.",
-      icon: <Heart className="h-6 w-6" />
-    },
-    {
-      title: "Museums & Libraries",
-      description: "Exhibit tours, educational programming, virtual events, collection showcases, behind-the-scenes content, and community engagement that expands access and impact.",
-      icon: <Library className="h-6 w-6" />
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-gray-50 overflow-x-hidden font-sans">
-      <MetaTags 
-        title="Education Video Production | E-Learning & School Videos | Palmer House Productions"
-        description="Video production for education: online courses, student recruitment, faculty training, donor engagement, campus tours, and safety education for schools, colleges, and educational organizations."
-        keywords="education video production, e-learning videos, online course production, school recruitment videos, campus tours, faculty training videos, educational content, student testimonials"
-        ogTitle="Education Video Production | Learning Content & School Marketing"
-        ogDescription="Specialized video production for education: online learning, student recruitment, faculty training, and donor engagement for schools and educational institutions."
-        canonicalUrl="https://www.palmerhouseproductions.com/industries/education"
-      />
+  const {
+    transitionTo
+  } = usePageTransition();
+  const videoSolutions = [{
+    icon: <BookOpen className="h-8 w-8" />,
+    title: "Online Learning & Course Content",
+    description: "Lecture capture, course modules, instructional videos, skill demonstrations, tutorial content, flipped classroom materials, and asynchronous learning resources for online and hybrid education.",
+    palType: "System Pal + Evergreen Pal",
+    color: "border-blue-500",
+    bgColor: "bg-blue-50",
+    iconColor: "text-blue-600",
+    features: ["Course Modules", "Lectures", "Tutorials", "Skill Demos"]
+  }, {
+    icon: <Users className="h-8 w-8" />,
+    title: "Faculty & Staff Training",
+    description: "Professional development, teaching methodology training, technology training, compliance requirements, safety protocols, diversity and inclusion training, and institutional policy updates.",
+    palType: "System Pal",
+    color: "border-purple-500",
+    bgColor: "bg-purple-50",
+    iconColor: "text-purple-600",
+    features: ["PD Training", "Tech Training", "Compliance", "Best Practices"]
+  }, {
+    icon: <School className="h-8 w-8" />,
+    title: "Student Recruitment & Admissions",
+    description: "Campus tours, program showcases, student testimonials, welcome videos, orientation content, parent information sessions, and virtual open house materials that attract prospective students.",
+    palType: "Spotlight Pal",
+    color: "border-green-500",
+    bgColor: "bg-green-50",
+    iconColor: "text-green-600",
+    features: ["Campus Tours", "Program Showcases", "Student Stories", "Virtual Events"]
+  }, {
+    icon: <Award className="h-8 w-8" />,
+    title: "Donor Relations & Fundraising",
+    description: "Impact stories, campaign videos, donor recognition content, giving day promotions, endowment showcases, alumni success stories, and capital campaign materials that inspire giving.",
+    palType: "Spotlight Pal",
+    color: "border-orange-500",
+    bgColor: "bg-orange-50",
+    iconColor: "text-orange-600",
+    features: ["Impact Stories", "Campaign Videos", "Donor Recognition", "Alumni Stories"]
+  }, {
+    icon: <Globe className="h-8 w-8" />,
+    title: "Social Media & Student Engagement",
+    description: "Campus life highlights, student takeovers, event coverage, quick tips for students, behind-the-scenes content, sports highlights, and community-building social content.",
+    palType: "Reel Pal",
+    color: "border-teal-500",
+    bgColor: "bg-teal-50",
+    iconColor: "text-teal-600",
+    features: ["Campus Life", "Events", "Student Content", "Community Building"]
+  }, {
+    icon: <Heart className="h-8 w-8" />,
+    title: "Safety & Wellness Education",
+    description: "Campus safety protocols, emergency procedures, mental health resources, wellness initiatives, Title IX training, health education, and student support service information.",
+    palType: "System Pal",
+    color: "border-red-500",
+    bgColor: "bg-red-50",
+    iconColor: "text-red-600",
+    features: ["Safety Training", "Wellness", "Mental Health", "Support Services"]
+  }];
+  const industryBenefits = [{
+    icon: <Target className="h-6 w-6" />,
+    title: "Boost Enrollment",
+    stat: "45% Increase",
+    description: "Video tours and testimonials drive enrollment growth"
+  }, {
+    icon: <Clock className="h-6 w-6" />,
+    title: "Scale Learning",
+    stat: "10x Reach",
+    description: "Deliver quality education to unlimited students"
+  }, {
+    icon: <UserCheck className="h-6 w-6" />,
+    title: "Improve Retention",
+    stat: "60% Better",
+    description: "Video learning increases information retention"
+  }, {
+    icon: <TrendingUp className="h-6 w-6" />,
+    title: "Increase Giving",
+    stat: "3x More Donors",
+    description: "Compelling stories inspire more generous giving"
+  }];
+  const useCases = [{
+    title: "K-12 Schools & Districts",
+    description: "Parent communication videos, teacher training, student safety education, virtual open houses, curriculum showcases, and community engagement content that builds trust and involvement.",
+    icon: <School className="h-6 w-6" />
+  }, {
+    title: "Colleges & Universities",
+    description: "Recruitment videos, online course content, faculty training, research showcases, donor cultivation, alumni engagement, and institutional branding that attracts students and support.",
+    icon: <GraduationCap className="h-6 w-6" />
+  }, {
+    title: "Training & Certificate Programs",
+    description: "Professional development courses, skill certification content, industry training programs, continuing education materials, and workforce development that delivers measurable outcomes.",
+    icon: <Award className="h-6 w-6" />
+  }, {
+    title: "Online Learning Platforms",
+    description: "Scalable course production, instructor training, platform tutorials, student success resources, marketing content, and instructional design support for digital learning environments.",
+    icon: <Globe className="h-6 w-6" />
+  }, {
+    title: "Educational Nonprofits",
+    description: "Program showcase videos, impact storytelling, volunteer training, donor engagement content, community education materials, and advocacy campaigns that drive mission forward.",
+    icon: <Heart className="h-6 w-6" />
+  }, {
+    title: "Museums & Libraries",
+    description: "Exhibit tours, educational programming, virtual events, collection showcases, behind-the-scenes content, and community engagement that expands access and impact.",
+    icon: <Library className="h-6 w-6" />
+  }];
+  return <div className="min-h-screen bg-gray-50 overflow-x-hidden font-sans">
+      <MetaTags title="Education Video Production | E-Learning & School Videos | Palmer House Productions" description="Video production for education: online courses, student recruitment, faculty training, donor engagement, campus tours, and safety education for schools, colleges, and educational organizations." keywords="education video production, e-learning videos, online course production, school recruitment videos, campus tours, faculty training videos, educational content, student testimonials" ogTitle="Education Video Production | Learning Content & School Marketing" ogDescription="Specialized video production for education: online learning, student recruitment, faculty training, and donor engagement for schools and educational institutions." canonicalUrl="https://www.palmerhouseproductions.com/industries/education" />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <StructuredData type="services" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
@@ -197,47 +148,29 @@ const EducationPage = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                <Button 
-                  size="lg"
-                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
-                >
+                <Button size="lg" onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}>
                   <Video className="mr-2 h-5 w-5" />
                   Schedule Education Consultation
                 </Button>
-                <Button 
-                  variant="outline"
-                  size="lg"
-                  onClick={() => transitionTo('/pals')}
-                >
+                <Button variant="outline" size="lg" onClick={() => transitionTo('/pals')}>
                   Explore Video Solutions
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-                {industryBenefits.map((benefit, index) => (
-                  <div key={index} className="text-center">
+                {industryBenefits.map((benefit, index) => <div key={index} className="text-center">
                     <div className="flex justify-center mb-2 text-primary">
                       {benefit.icon}
                     </div>
                     <div className="text-2xl font-bold mb-1 text-foreground">{benefit.stat}</div>
                     <h3 className="font-semibold text-sm mb-1 text-foreground">{benefit.title}</h3>
                     <p className="text-xs text-muted-foreground leading-tight">{benefit.description}</p>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </div>
 
-            <div className="relative max-w-2xl mx-auto">
-              <div className="relative w-full max-w-lg mx-auto">
-                <img 
-                  src={systemPalImage} 
-                  alt="Education video production expert"
-                  className="w-full h-auto object-contain animate-fade-in"
-                  loading="eager"
-                />
-              </div>
-            </div>
+            
           </div>
         </section>
 
@@ -245,44 +178,37 @@ const EducationPage = () => {
         <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
-              {[
-                {
-                  number: "1",
-                  title: "Discovery",
-                  description: "Understanding your goals, audience, and learning objectives through detailed consultation.",
-                  color: "bg-orange-100",
-                  textColor: "text-orange-600"
-                },
-                {
-                  number: "2",
-                  title: "Planning",
-                  description: "Developing scripts, storyboards, and production timelines tailored to your educational environment.",
-                  color: "bg-pink-100",
-                  textColor: "text-pink-600"
-                },
-                {
-                  number: "3",
-                  title: "Production",
-                  description: "Professional filming with education-specific equipment and techniques, ensuring minimal disruption.",
-                  color: "bg-blue-100",
-                  textColor: "text-blue-600"
-                },
-                {
-                  number: "4",
-                  title: "Delivery",
-                  description: "Final videos optimized for your platforms with accessibility features and learning analytics.",
-                  color: "bg-green-100",
-                  textColor: "text-green-600"
-                }
-              ].map((step, index) => (
-                <div key={index} className="text-center">
+              {[{
+              number: "1",
+              title: "Discovery",
+              description: "Understanding your goals, audience, and learning objectives through detailed consultation.",
+              color: "bg-orange-100",
+              textColor: "text-orange-600"
+            }, {
+              number: "2",
+              title: "Planning",
+              description: "Developing scripts, storyboards, and production timelines tailored to your educational environment.",
+              color: "bg-pink-100",
+              textColor: "text-pink-600"
+            }, {
+              number: "3",
+              title: "Production",
+              description: "Professional filming with education-specific equipment and techniques, ensuring minimal disruption.",
+              color: "bg-blue-100",
+              textColor: "text-blue-600"
+            }, {
+              number: "4",
+              title: "Delivery",
+              description: "Final videos optimized for your platforms with accessibility features and learning analytics.",
+              color: "bg-green-100",
+              textColor: "text-green-600"
+            }].map((step, index) => <div key={index} className="text-center">
                   <div className={`w-20 h-20 ${step.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
                     <span className={`text-3xl font-bold ${step.textColor}`}>{step.number}</span>
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
                   <p className="text-gray-600 leading-relaxed">{step.description}</p>
-                </div>
-              ))}
+                </div>)}
             </div>
 
             {/* Education Video Specialties */}
@@ -294,37 +220,31 @@ const EducationPage = () => {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                 <div className="space-y-6">
-                  {[
-                    {
-                      icon: <School className="h-6 w-6" />,
-                      title: "K-12 Schools & Districts",
-                      description: "Parent communication, teacher training, and student safety education.",
-                      color: "bg-blue-100",
-                      iconColor: "text-blue-600"
-                    },
-                    {
-                      icon: <GraduationCap className="h-6 w-6" />,
-                      title: "Colleges & Universities",
-                      description: "Recruitment videos, course content, and institutional branding.",
-                      color: "bg-green-100",
-                      iconColor: "text-green-600"
-                    },
-                    {
-                      icon: <Globe className="h-6 w-6" />,
-                      title: "Online Learning Platforms",
-                      description: "Scalable course production and platform tutorials.",
-                      color: "bg-purple-100",
-                      iconColor: "text-purple-600"
-                    },
-                    {
-                      icon: <Library className="h-6 w-6" />,
-                      title: "Museums & Libraries",
-                      description: "Exhibit tours, educational programming, and virtual events.",
-                      color: "bg-orange-100",
-                      iconColor: "text-orange-600"
-                    }
-                  ].map((specialty, index) => (
-                    <div key={index} className="flex items-start gap-4">
+                  {[{
+                  icon: <School className="h-6 w-6" />,
+                  title: "K-12 Schools & Districts",
+                  description: "Parent communication, teacher training, and student safety education.",
+                  color: "bg-blue-100",
+                  iconColor: "text-blue-600"
+                }, {
+                  icon: <GraduationCap className="h-6 w-6" />,
+                  title: "Colleges & Universities",
+                  description: "Recruitment videos, course content, and institutional branding.",
+                  color: "bg-green-100",
+                  iconColor: "text-green-600"
+                }, {
+                  icon: <Globe className="h-6 w-6" />,
+                  title: "Online Learning Platforms",
+                  description: "Scalable course production and platform tutorials.",
+                  color: "bg-purple-100",
+                  iconColor: "text-purple-600"
+                }, {
+                  icon: <Library className="h-6 w-6" />,
+                  title: "Museums & Libraries",
+                  description: "Exhibit tours, educational programming, and virtual events.",
+                  color: "bg-orange-100",
+                  iconColor: "text-orange-600"
+                }].map((specialty, index) => <div key={index} className="flex items-start gap-4">
                       <div className={`w-14 h-14 ${specialty.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
                         <span className={specialty.iconColor}>{specialty.icon}</span>
                       </div>
@@ -332,8 +252,7 @@ const EducationPage = () => {
                         <h3 className="text-lg font-bold text-gray-900 mb-1">{specialty.title}</h3>
                         <p className="text-gray-600">{specialty.description}</p>
                       </div>
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
 
                 {/* Decorative Grid */}
@@ -368,39 +287,34 @@ const EducationPage = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {[
-                {
-                  icon: <BookOpen className="h-8 w-8" />,
-                  badge: "Learning Content",
-                  title: "Educational Videos",
-                  description: "Clear, engaging content that enhances learning outcomes and scales your teaching impact.",
-                  features: ["Course modules", "Lecture capture", "Tutorial content"],
-                  color: "bg-blue-100",
-                  iconColor: "text-blue-600",
-                  badgeColor: "bg-blue-100 text-blue-700"
-                },
-                {
-                  icon: <Users className="h-8 w-8" />,
-                  badge: "Faculty Training",
-                  title: "Training Content",
-                  description: "Professional development videos that enhance teaching skills and ensure institutional compliance.",
-                  features: ["PD training", "Technology training", "Best practices"],
-                  color: "bg-green-100",
-                  iconColor: "text-green-600",
-                  badgeColor: "bg-green-100 text-green-700"
-                },
-                {
-                  icon: <School className="h-8 w-8" />,
-                  badge: "Marketing",
-                  title: "Promotional Videos",
-                  description: "Compelling narratives that showcase your institution's mission and attract students.",
-                  features: ["Campus tours", "Student testimonials", "Program showcases"],
-                  color: "bg-purple-100",
-                  iconColor: "text-purple-600",
-                  badgeColor: "bg-purple-100 text-purple-700"
-                }
-              ].map((service, index) => (
-                <Card key={index} className="border border-gray-200 hover:shadow-xl transition-all duration-300 overflow-hidden">
+              {[{
+              icon: <BookOpen className="h-8 w-8" />,
+              badge: "Learning Content",
+              title: "Educational Videos",
+              description: "Clear, engaging content that enhances learning outcomes and scales your teaching impact.",
+              features: ["Course modules", "Lecture capture", "Tutorial content"],
+              color: "bg-blue-100",
+              iconColor: "text-blue-600",
+              badgeColor: "bg-blue-100 text-blue-700"
+            }, {
+              icon: <Users className="h-8 w-8" />,
+              badge: "Faculty Training",
+              title: "Training Content",
+              description: "Professional development videos that enhance teaching skills and ensure institutional compliance.",
+              features: ["PD training", "Technology training", "Best practices"],
+              color: "bg-green-100",
+              iconColor: "text-green-600",
+              badgeColor: "bg-green-100 text-green-700"
+            }, {
+              icon: <School className="h-8 w-8" />,
+              badge: "Marketing",
+              title: "Promotional Videos",
+              description: "Compelling narratives that showcase your institution's mission and attract students.",
+              features: ["Campus tours", "Student testimonials", "Program showcases"],
+              color: "bg-purple-100",
+              iconColor: "text-purple-600",
+              badgeColor: "bg-purple-100 text-purple-700"
+            }].map((service, index) => <Card key={index} className="border border-gray-200 hover:shadow-xl transition-all duration-300 overflow-hidden">
                   <CardContent className="p-8 text-center">
                     <div className={`w-20 h-20 ${service.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
                       <span className={service.iconColor}>{service.icon}</span>
@@ -409,16 +323,13 @@ const EducationPage = () => {
                     <h3 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h3>
                     <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
                     <div className="space-y-2">
-                      {service.features.map((feature, idx) => (
-                        <div key={idx} className="flex items-center justify-center gap-2 text-sm text-gray-700">
+                      {service.features.map((feature, idx) => <div key={idx} className="flex items-center justify-center gap-2 text-sm text-gray-700">
                           <CheckCircle className="h-4 w-4 text-green-600" />
                           <span>{feature}</span>
-                        </div>
-                      ))}
+                        </div>)}
                     </div>
                   </CardContent>
-                </Card>
-              ))}
+                </Card>)}
             </div>
           </div>
         </section>
@@ -437,28 +348,16 @@ const EducationPage = () => {
 
             <Tabs defaultValue="reel" className="w-full">
               <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-4 mb-12 h-auto p-2 bg-gray-100">
-                <TabsTrigger 
-                  value="reel" 
-                  className="data-[state=active]:bg-orange-500 data-[state=active]:text-white py-3 text-sm font-medium"
-                >
+                <TabsTrigger value="reel" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white py-3 text-sm font-medium">
                   Reel Pal
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="system" 
-                  className="data-[state=active]:bg-purple-500 data-[state=active]:text-white py-3 text-sm font-medium"
-                >
+                <TabsTrigger value="system" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white py-3 text-sm font-medium">
                   System Pal
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="evergreen" 
-                  className="data-[state=active]:bg-teal-500 data-[state=active]:text-white py-3 text-sm font-medium"
-                >
+                <TabsTrigger value="evergreen" className="data-[state=active]:bg-teal-500 data-[state=active]:text-white py-3 text-sm font-medium">
                   Evergreen Pal
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="spotlight" 
-                  className="data-[state=active]:bg-pink-500 data-[state=active]:text-white py-3 text-sm font-medium"
-                >
+                <TabsTrigger value="spotlight" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white py-3 text-sm font-medium">
                   Spotlight Pal
                 </TabsTrigger>
               </TabsList>
@@ -509,19 +408,12 @@ const EducationPage = () => {
                         </div>
                       </div>
 
-                      <Button 
-                        onClick={() => transitionTo('/reel-pal')}
-                        className="bg-orange-500 hover:bg-orange-600 text-white mt-4"
-                      >
+                      <Button onClick={() => transitionTo('/reel-pal')} className="bg-orange-500 hover:bg-orange-600 text-white mt-4">
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                     <div className="flex items-center justify-center">
-                      <img 
-                        src={reelPalImage}
-                        alt="Reel Pal character" 
-                        className="w-full max-w-md h-auto object-contain animate-fade-in"
-                      />
+                      <img src={reelPalImage} alt="Reel Pal character" className="w-full max-w-md h-auto object-contain animate-fade-in" />
                     </div>
                   </div>
                 </div>
@@ -573,19 +465,12 @@ const EducationPage = () => {
                         </div>
                       </div>
 
-                      <Button 
-                        onClick={() => transitionTo('/system-pal')}
-                        className="bg-purple-500 hover:bg-purple-600 text-white mt-4"
-                      >
+                      <Button onClick={() => transitionTo('/system-pal')} className="bg-purple-500 hover:bg-purple-600 text-white mt-4">
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                     <div className="flex items-center justify-center">
-                      <img 
-                        src={systemPalImage}
-                        alt="System Pal character" 
-                        className="w-full max-w-md h-auto object-contain animate-fade-in"
-                      />
+                      <img src={systemPalImage} alt="System Pal character" className="w-full max-w-md h-auto object-contain animate-fade-in" />
                     </div>
                   </div>
                 </div>
@@ -637,19 +522,12 @@ const EducationPage = () => {
                         </div>
                       </div>
 
-                      <Button 
-                        onClick={() => transitionTo('/evergreen-pal')}
-                        className="bg-teal-500 hover:bg-teal-600 text-white mt-4"
-                      >
+                      <Button onClick={() => transitionTo('/evergreen-pal')} className="bg-teal-500 hover:bg-teal-600 text-white mt-4">
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                     <div className="flex items-center justify-center">
-                      <img 
-                        src={evergreenPalImage}
-                        alt="Evergreen Pal character" 
-                        className="w-full max-w-md h-auto object-contain animate-fade-in"
-                      />
+                      <img src={evergreenPalImage} alt="Evergreen Pal character" className="w-full max-w-md h-auto object-contain animate-fade-in" />
                     </div>
                   </div>
                 </div>
@@ -701,19 +579,12 @@ const EducationPage = () => {
                         </div>
                       </div>
 
-                      <Button 
-                        onClick={() => transitionTo('/spotlight-pal')}
-                        className="bg-pink-500 hover:bg-pink-600 text-white mt-4"
-                      >
+                      <Button onClick={() => transitionTo('/spotlight-pal')} className="bg-pink-500 hover:bg-pink-600 text-white mt-4">
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                     <div className="flex items-center justify-center">
-                      <img 
-                        src={spotlightPalImage}
-                        alt="Spotlight Pal character" 
-                        className="w-full max-w-md h-auto object-contain animate-fade-in"
-                      />
+                      <img src={spotlightPalImage} alt="Spotlight Pal character" className="w-full max-w-md h-auto object-contain animate-fade-in" />
                     </div>
                   </div>
                 </div>
@@ -735,20 +606,11 @@ const EducationPage = () => {
                 attract support, scale learning, and achieve your mission.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  size="lg"
-                  className="bg-teal-600 text-white hover:bg-teal-700 font-semibold text-lg px-8 py-4 h-auto"
-                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
-                >
+                <Button size="lg" className="bg-teal-600 text-white hover:bg-teal-700 font-semibold text-lg px-8 py-4 h-auto" onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}>
                   <Video className="mr-2 h-5 w-5" />
                   Schedule Strategy Call
                 </Button>
-                <Button 
-                  variant="outline"
-                  size="lg"
-                  className="border-2 border-teal-600 text-teal-600 hover:bg-teal-50 font-semibold text-lg px-8 py-4 h-auto"
-                  onClick={() => transitionTo('/contact')}
-                >
+                <Button variant="outline" size="lg" className="border-2 border-teal-600 text-teal-600 hover:bg-teal-50 font-semibold text-lg px-8 py-4 h-auto" onClick={() => transitionTo('/contact')}>
                   Get Education Video Quote
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -757,8 +619,6 @@ const EducationPage = () => {
           </div>
         </section>
       </MainContent>
-    </div>
-  );
+    </div>;
 };
-
 export default EducationPage;

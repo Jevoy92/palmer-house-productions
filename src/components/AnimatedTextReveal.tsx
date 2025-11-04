@@ -196,7 +196,7 @@ export const AnimatedTextReveal = () => {
   return (
     <section
       ref={sectionRef}
-      className="min-h-[120vh] md:min-h-[150vh] pt-12 pb-24 md:pt-16 md:pb-32 lg:pb-40 bg-white flex items-center justify-center"
+      className="min-h-screen pt-12 pb-16 md:pt-16 md:pb-24 bg-white flex items-center justify-center"
     >
       <div className="max-w-4xl mx-auto px-6">
         <div className="space-y-4">

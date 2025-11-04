@@ -9,168 +9,119 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { usePageTransition } from '@/components/PageTransition';
-import { 
-  Briefcase, 
-  Users, 
-  Video,
-  CheckCircle,
-  TrendingUp,
-  Award,
-  Target,
-  BookOpen,
-  Building2,
-  Scale,
-  Calculator,
-  Shield,
-  FileText,
-  Lightbulb,
-  UserCheck,
-  Globe,
-  MessageSquare,
-  ArrowRight
-} from "lucide-react";
+import { Briefcase, Users, Video, CheckCircle, TrendingUp, Award, Target, BookOpen, Building2, Scale, Calculator, Shield, FileText, Lightbulb, UserCheck, Globe, MessageSquare, ArrowRight } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import evergreenPalImage from '@/assets/pals/female-evergreen-pal-final.png';
 import reelPalImage from '@/assets/pals/female-reel-pal-edited.png';
 import systemPalImage from '@/assets/pals/female-system-pal-edited.png';
 import spotlightPalImage from '@/assets/pals/female-spotlight-pal-edited.png';
-
 const ProfessionalServicesPage = () => {
-  const { transitionTo } = usePageTransition();
-
-  const videoSolutions = [
-    {
-      icon: <Briefcase className="h-8 w-8" />,
-      title: "Thought Leadership & Authority Building",
-      description: "Executive interviews, industry insights, expert commentary, webinar content, conference presentations, white paper videos, and professional expertise showcases that position your firm as industry leaders.",
-      palType: "Evergreen Pal",
-      color: "border-blue-500",
-      bgColor: "bg-blue-50",
-      iconColor: "text-blue-600",
-      features: ["Expert Interviews", "Industry Insights", "Webinar Content", "Authority Building"]
-    },
-    {
-      icon: <Users className="h-8 w-8" />,
-      title: "Client Testimonials & Case Studies",
-      description: "Client success stories, project case studies, outcome showcases, before-and-after narratives, ROI demonstrations, and social proof content that builds trust and credibility.",
-      palType: "Spotlight Pal",
-      color: "border-green-500",
-      bgColor: "bg-green-50",
-      iconColor: "text-green-600",
-      features: ["Success Stories", "Case Studies", "ROI Proof", "Client Testimonials"]
-    },
-    {
-      icon: <BookOpen className="h-8 w-8" />,
-      title: "Service Explanations & Education",
-      description: "Service overview videos, process explanations, complex topic simplification, FAQ videos, how-to guides, industry education, and client onboarding content.",
-      palType: "Evergreen Pal",
-      color: "border-purple-500",
-      bgColor: "bg-purple-50",
-      iconColor: "text-purple-600",
-      features: ["Service Overviews", "Process Explanations", "FAQ Videos", "Educational Content"]
-    },
-    {
-      icon: <TrendingUp className="h-8 w-8" />,
-      title: "Firm Marketing & Business Development",
-      description: "Firm introduction videos, capabilities presentations, practice area highlights, conference booth content, proposal support videos, and new business pitch materials.",
-      palType: "Spotlight Pal",
-      color: "border-orange-500",
-      bgColor: "bg-orange-50",
-      iconColor: "text-orange-600",
-      features: ["Firm Introductions", "Capabilities", "Pitch Support", "BD Materials"]
-    },
-    {
-      icon: <Globe className="h-8 w-8" />,
-      title: "Social Media & LinkedIn Presence",
-      description: "Professional insights, quick tips, industry updates, behind-the-scenes firm culture, partner spotlights, networking content, and LinkedIn thought leadership videos.",
-      palType: "Reel Pal",
-      color: "border-teal-500",
-      bgColor: "bg-teal-50",
-      iconColor: "text-teal-600",
-      features: ["LinkedIn Content", "Quick Tips", "Firm Culture", "Partner Spotlights"]
-    },
-    {
-      icon: <FileText className="h-8 w-8" />,
-      title: "Internal Training & Compliance",
-      description: "Professional development, compliance training, standard operating procedures, client service protocols, technology training, and firm policy communication.",
-      palType: "System Pal",
-      color: "border-red-500",
-      bgColor: "bg-red-50",
-      iconColor: "text-red-600",
-      features: ["Compliance Training", "SOPs", "Tech Training", "Policy Updates"]
-    }
-  ];
-
-  const industryBenefits = [
-    {
-      icon: <Target className="h-6 w-6" />,
-      title: "Generate More Leads",
-      stat: "5x More Inquiries",
-      description: "Video content drives significantly more qualified leads"
-    },
-    {
-      icon: <Award className="h-6 w-6" />,
-      title: "Build Authority",
-      stat: "3x Trust Factor",
-      description: "Video establishes expertise faster than written content"
-    },
-    {
-      icon: <UserCheck className="h-6 w-6" />,
-      title: "Win More Business",
-      stat: "40% Higher Close Rate",
-      description: "Prospects who watch videos are more likely to engage"
-    },
-    {
-      icon: <TrendingUp className="h-6 w-6" />,
-      title: "Scale Your Expertise",
-      stat: "24/7 Availability",
-      description: "Multiply your reach without multiplying your time"
-    }
-  ];
-
-  const useCases = [
-    {
-      title: "Law Firms",
-      description: "Practice area explanations, attorney profiles, client success stories, legal education content, firm culture videos, and thought leadership that demonstrates expertise and builds trust with potential clients.",
-      icon: <Scale className="h-6 w-6" />
-    },
-    {
-      title: "Accounting & Financial Services",
-      description: "Tax planning tips, financial education, service explanations, advisor introductions, compliance updates, market insights, and client testimonials that simplify complex financial concepts.",
-      icon: <Calculator className="h-6 w-6" />
-    },
-    {
-      title: "Consulting Firms",
-      description: "Methodology explanations, case study showcases, industry expertise demonstrations, consultant profiles, transformation stories, and thought leadership that differentiates your approach.",
-      icon: <Lightbulb className="h-6 w-6" />
-    },
-    {
-      title: "Architecture & Engineering",
-      description: "Project showcases, design process videos, technical expertise demonstrations, sustainability initiatives, innovation highlights, and client collaboration stories that bring projects to life.",
-      icon: <Building2 className="h-6 w-6" />
-    },
-    {
-      title: "Marketing & Advertising Agencies",
-      description: "Campaign showcases, creative process videos, client results, team culture content, industry insights, and portfolio presentations that demonstrate creative excellence and strategic thinking.",
-      icon: <MessageSquare className="h-6 w-6" />
-    },
-    {
-      title: "Insurance & Risk Management",
-      description: "Coverage explanations, risk assessment education, claims process walkthroughs, agent introductions, client protection stories, and industry insights that build confidence and trust.",
-      icon: <Shield className="h-6 w-6" />
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-gray-50 overflow-x-hidden font-sans">
-      <MetaTags 
-        title="Professional Services Video Production | Law Firm & Consulting Videos | Palmer House"
-        description="Video production for professional services: law firms, consulting, accounting, architecture, and agencies. Build authority, attract clients, and showcase expertise with compelling video content."
-        keywords="professional services video production, law firm videos, consulting videos, accounting videos, thought leadership videos, client testimonials, case study videos, professional services marketing"
-        ogTitle="Professional Services Video Production | Authority & Client Attraction"
-        ogDescription="Build authority and attract high-value clients with professional video content for law firms, consultants, accountants, and professional service firms."
-        canonicalUrl="https://www.palmerhouseproductions.com/industries/professional-services"
-      />
+  const {
+    transitionTo
+  } = usePageTransition();
+  const videoSolutions = [{
+    icon: <Briefcase className="h-8 w-8" />,
+    title: "Thought Leadership & Authority Building",
+    description: "Executive interviews, industry insights, expert commentary, webinar content, conference presentations, white paper videos, and professional expertise showcases that position your firm as industry leaders.",
+    palType: "Evergreen Pal",
+    color: "border-blue-500",
+    bgColor: "bg-blue-50",
+    iconColor: "text-blue-600",
+    features: ["Expert Interviews", "Industry Insights", "Webinar Content", "Authority Building"]
+  }, {
+    icon: <Users className="h-8 w-8" />,
+    title: "Client Testimonials & Case Studies",
+    description: "Client success stories, project case studies, outcome showcases, before-and-after narratives, ROI demonstrations, and social proof content that builds trust and credibility.",
+    palType: "Spotlight Pal",
+    color: "border-green-500",
+    bgColor: "bg-green-50",
+    iconColor: "text-green-600",
+    features: ["Success Stories", "Case Studies", "ROI Proof", "Client Testimonials"]
+  }, {
+    icon: <BookOpen className="h-8 w-8" />,
+    title: "Service Explanations & Education",
+    description: "Service overview videos, process explanations, complex topic simplification, FAQ videos, how-to guides, industry education, and client onboarding content.",
+    palType: "Evergreen Pal",
+    color: "border-purple-500",
+    bgColor: "bg-purple-50",
+    iconColor: "text-purple-600",
+    features: ["Service Overviews", "Process Explanations", "FAQ Videos", "Educational Content"]
+  }, {
+    icon: <TrendingUp className="h-8 w-8" />,
+    title: "Firm Marketing & Business Development",
+    description: "Firm introduction videos, capabilities presentations, practice area highlights, conference booth content, proposal support videos, and new business pitch materials.",
+    palType: "Spotlight Pal",
+    color: "border-orange-500",
+    bgColor: "bg-orange-50",
+    iconColor: "text-orange-600",
+    features: ["Firm Introductions", "Capabilities", "Pitch Support", "BD Materials"]
+  }, {
+    icon: <Globe className="h-8 w-8" />,
+    title: "Social Media & LinkedIn Presence",
+    description: "Professional insights, quick tips, industry updates, behind-the-scenes firm culture, partner spotlights, networking content, and LinkedIn thought leadership videos.",
+    palType: "Reel Pal",
+    color: "border-teal-500",
+    bgColor: "bg-teal-50",
+    iconColor: "text-teal-600",
+    features: ["LinkedIn Content", "Quick Tips", "Firm Culture", "Partner Spotlights"]
+  }, {
+    icon: <FileText className="h-8 w-8" />,
+    title: "Internal Training & Compliance",
+    description: "Professional development, compliance training, standard operating procedures, client service protocols, technology training, and firm policy communication.",
+    palType: "System Pal",
+    color: "border-red-500",
+    bgColor: "bg-red-50",
+    iconColor: "text-red-600",
+    features: ["Compliance Training", "SOPs", "Tech Training", "Policy Updates"]
+  }];
+  const industryBenefits = [{
+    icon: <Target className="h-6 w-6" />,
+    title: "Generate More Leads",
+    stat: "5x More Inquiries",
+    description: "Video content drives significantly more qualified leads"
+  }, {
+    icon: <Award className="h-6 w-6" />,
+    title: "Build Authority",
+    stat: "3x Trust Factor",
+    description: "Video establishes expertise faster than written content"
+  }, {
+    icon: <UserCheck className="h-6 w-6" />,
+    title: "Win More Business",
+    stat: "40% Higher Close Rate",
+    description: "Prospects who watch videos are more likely to engage"
+  }, {
+    icon: <TrendingUp className="h-6 w-6" />,
+    title: "Scale Your Expertise",
+    stat: "24/7 Availability",
+    description: "Multiply your reach without multiplying your time"
+  }];
+  const useCases = [{
+    title: "Law Firms",
+    description: "Practice area explanations, attorney profiles, client success stories, legal education content, firm culture videos, and thought leadership that demonstrates expertise and builds trust with potential clients.",
+    icon: <Scale className="h-6 w-6" />
+  }, {
+    title: "Accounting & Financial Services",
+    description: "Tax planning tips, financial education, service explanations, advisor introductions, compliance updates, market insights, and client testimonials that simplify complex financial concepts.",
+    icon: <Calculator className="h-6 w-6" />
+  }, {
+    title: "Consulting Firms",
+    description: "Methodology explanations, case study showcases, industry expertise demonstrations, consultant profiles, transformation stories, and thought leadership that differentiates your approach.",
+    icon: <Lightbulb className="h-6 w-6" />
+  }, {
+    title: "Architecture & Engineering",
+    description: "Project showcases, design process videos, technical expertise demonstrations, sustainability initiatives, innovation highlights, and client collaboration stories that bring projects to life.",
+    icon: <Building2 className="h-6 w-6" />
+  }, {
+    title: "Marketing & Advertising Agencies",
+    description: "Campaign showcases, creative process videos, client results, team culture content, industry insights, and portfolio presentations that demonstrate creative excellence and strategic thinking.",
+    icon: <MessageSquare className="h-6 w-6" />
+  }, {
+    title: "Insurance & Risk Management",
+    description: "Coverage explanations, risk assessment education, claims process walkthroughs, agent introductions, client protection stories, and industry insights that build confidence and trust.",
+    icon: <Shield className="h-6 w-6" />
+  }];
+  return <div className="min-h-screen bg-gray-50 overflow-x-hidden font-sans">
+      <MetaTags title="Professional Services Video Production | Law Firm & Consulting Videos | Palmer House" description="Video production for professional services: law firms, consulting, accounting, architecture, and agencies. Build authority, attract clients, and showcase expertise with compelling video content." keywords="professional services video production, law firm videos, consulting videos, accounting videos, thought leadership videos, client testimonials, case study videos, professional services marketing" ogTitle="Professional Services Video Production | Authority & Client Attraction" ogDescription="Build authority and attract high-value clients with professional video content for law firms, consultants, accountants, and professional service firms." canonicalUrl="https://www.palmerhouseproductions.com/industries/professional-services" />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <StructuredData type="services" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
@@ -197,47 +148,29 @@ const ProfessionalServicesPage = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                <Button 
-                  size="lg"
-                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
-                >
+                <Button size="lg" onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}>
                   <Video className="mr-2 h-5 w-5" />
                   Schedule Consultation
                 </Button>
-                <Button 
-                  variant="outline"
-                  size="lg"
-                  onClick={() => transitionTo('/evergreen-pal')}
-                >
+                <Button variant="outline" size="lg" onClick={() => transitionTo('/evergreen-pal')}>
                   Explore Authority Building
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-                {industryBenefits.map((benefit, index) => (
-                  <div key={index} className="text-center">
+                {industryBenefits.map((benefit, index) => <div key={index} className="text-center">
                     <div className="flex justify-center mb-2 text-primary">
                       {benefit.icon}
                     </div>
                     <div className="text-2xl font-bold mb-1 text-foreground">{benefit.stat}</div>
                     <h3 className="font-semibold text-sm mb-1 text-foreground">{benefit.title}</h3>
                     <p className="text-xs text-muted-foreground leading-tight">{benefit.description}</p>
-                  </div>
-                ))}
+                  </div>)}
               </div>
             </div>
 
-            <div className="relative max-w-2xl mx-auto">
-              <div className="relative w-full max-w-lg mx-auto">
-                <img 
-                  src={evergreenPalImage} 
-                  alt="Professional services video production expert"
-                  className="w-full h-auto object-contain animate-fade-in"
-                  loading="eager"
-                />
-              </div>
-            </div>
+            
           </div>
         </section>
 
@@ -245,44 +178,37 @@ const ProfessionalServicesPage = () => {
         <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
-              {[
-                {
-                  number: "1",
-                  title: "Discovery",
-                  description: "Understanding your firm, clients, and competitive positioning through detailed consultation.",
-                  color: "bg-orange-100",
-                  textColor: "text-orange-600"
-                },
-                {
-                  number: "2",
-                  title: "Planning",
-                  description: "Developing messaging, content strategy, and production timelines tailored to your practice.",
-                  color: "bg-pink-100",
-                  textColor: "text-pink-600"
-                },
-                {
-                  number: "3",
-                  title: "Production",
-                  description: "Professional filming with equipment and expertise that reflects your firm's professionalism.",
-                  color: "bg-blue-100",
-                  textColor: "text-blue-600"
-                },
-                {
-                  number: "4",
-                  title: "Delivery",
-                  description: "Final videos optimized for your website, social media, and business development needs.",
-                  color: "bg-green-100",
-                  textColor: "text-green-600"
-                }
-              ].map((step, index) => (
-                <div key={index} className="text-center">
+              {[{
+              number: "1",
+              title: "Discovery",
+              description: "Understanding your firm, clients, and competitive positioning through detailed consultation.",
+              color: "bg-orange-100",
+              textColor: "text-orange-600"
+            }, {
+              number: "2",
+              title: "Planning",
+              description: "Developing messaging, content strategy, and production timelines tailored to your practice.",
+              color: "bg-pink-100",
+              textColor: "text-pink-600"
+            }, {
+              number: "3",
+              title: "Production",
+              description: "Professional filming with equipment and expertise that reflects your firm's professionalism.",
+              color: "bg-blue-100",
+              textColor: "text-blue-600"
+            }, {
+              number: "4",
+              title: "Delivery",
+              description: "Final videos optimized for your website, social media, and business development needs.",
+              color: "bg-green-100",
+              textColor: "text-green-600"
+            }].map((step, index) => <div key={index} className="text-center">
                   <div className={`w-20 h-20 ${step.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
                     <span className={`text-3xl font-bold ${step.textColor}`}>{step.number}</span>
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
                   <p className="text-gray-600 leading-relaxed">{step.description}</p>
-                </div>
-              ))}
+                </div>)}
             </div>
 
             {/* Professional Services Video Specialties */}
@@ -294,37 +220,31 @@ const ProfessionalServicesPage = () => {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                 <div className="space-y-6">
-                  {[
-                    {
-                      icon: <Scale className="h-6 w-6" />,
-                      title: "Law Firms",
-                      description: "Practice area explanations and thought leadership for legal professionals.",
-                      color: "bg-blue-100",
-                      iconColor: "text-blue-600"
-                    },
-                    {
-                      icon: <Calculator className="h-6 w-6" />,
-                      title: "Accounting & Finance",
-                      description: "Financial education and service explanations that build trust.",
-                      color: "bg-green-100",
-                      iconColor: "text-green-600"
-                    },
-                    {
-                      icon: <Lightbulb className="h-6 w-6" />,
-                      title: "Consulting Firms",
-                      description: "Methodology showcases and transformation stories.",
-                      color: "bg-purple-100",
-                      iconColor: "text-purple-600"
-                    },
-                    {
-                      icon: <Building2 className="h-6 w-6" />,
-                      title: "Architecture & Engineering",
-                      description: "Project showcases and technical expertise demonstrations.",
-                      color: "bg-orange-100",
-                      iconColor: "text-orange-600"
-                    }
-                  ].map((specialty, index) => (
-                    <div key={index} className="flex items-start gap-4">
+                  {[{
+                  icon: <Scale className="h-6 w-6" />,
+                  title: "Law Firms",
+                  description: "Practice area explanations and thought leadership for legal professionals.",
+                  color: "bg-blue-100",
+                  iconColor: "text-blue-600"
+                }, {
+                  icon: <Calculator className="h-6 w-6" />,
+                  title: "Accounting & Finance",
+                  description: "Financial education and service explanations that build trust.",
+                  color: "bg-green-100",
+                  iconColor: "text-green-600"
+                }, {
+                  icon: <Lightbulb className="h-6 w-6" />,
+                  title: "Consulting Firms",
+                  description: "Methodology showcases and transformation stories.",
+                  color: "bg-purple-100",
+                  iconColor: "text-purple-600"
+                }, {
+                  icon: <Building2 className="h-6 w-6" />,
+                  title: "Architecture & Engineering",
+                  description: "Project showcases and technical expertise demonstrations.",
+                  color: "bg-orange-100",
+                  iconColor: "text-orange-600"
+                }].map((specialty, index) => <div key={index} className="flex items-start gap-4">
                       <div className={`w-14 h-14 ${specialty.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
                         <span className={specialty.iconColor}>{specialty.icon}</span>
                       </div>
@@ -332,8 +252,7 @@ const ProfessionalServicesPage = () => {
                         <h3 className="text-lg font-bold text-gray-900 mb-1">{specialty.title}</h3>
                         <p className="text-gray-600">{specialty.description}</p>
                       </div>
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
 
                 {/* Decorative Grid */}
@@ -368,39 +287,34 @@ const ProfessionalServicesPage = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {[
-                {
-                  icon: <Briefcase className="h-8 w-8" />,
-                  badge: "Thought Leadership",
-                  title: "Authority Videos",
-                  description: "Expert content that positions your firm as trusted advisors and industry leaders.",
-                  features: ["Expert interviews", "Industry insights", "Webinar content"],
-                  color: "bg-blue-100",
-                  iconColor: "text-blue-600",
-                  badgeColor: "bg-blue-100 text-blue-700"
-                },
-                {
-                  icon: <Users className="h-8 w-8" />,
-                  badge: "Client Stories",
-                  title: "Social Proof",
-                  description: "Compelling client testimonials and case studies that build trust and credibility.",
-                  features: ["Case studies", "Client testimonials", "Success stories"],
-                  color: "bg-green-100",
-                  iconColor: "text-green-600",
-                  badgeColor: "bg-green-100 text-green-700"
-                },
-                {
-                  icon: <TrendingUp className="h-8 w-8" />,
-                  badge: "Business Development",
-                  title: "Marketing Videos",
-                  description: "Professional content that supports new business development and differentiates your firm.",
-                  features: ["Firm introductions", "Service explanations", "Pitch support"],
-                  color: "bg-purple-100",
-                  iconColor: "text-purple-600",
-                  badgeColor: "bg-purple-100 text-purple-700"
-                }
-              ].map((service, index) => (
-                <Card key={index} className="border border-gray-200 hover:shadow-xl transition-all duration-300 overflow-hidden">
+              {[{
+              icon: <Briefcase className="h-8 w-8" />,
+              badge: "Thought Leadership",
+              title: "Authority Videos",
+              description: "Expert content that positions your firm as trusted advisors and industry leaders.",
+              features: ["Expert interviews", "Industry insights", "Webinar content"],
+              color: "bg-blue-100",
+              iconColor: "text-blue-600",
+              badgeColor: "bg-blue-100 text-blue-700"
+            }, {
+              icon: <Users className="h-8 w-8" />,
+              badge: "Client Stories",
+              title: "Social Proof",
+              description: "Compelling client testimonials and case studies that build trust and credibility.",
+              features: ["Case studies", "Client testimonials", "Success stories"],
+              color: "bg-green-100",
+              iconColor: "text-green-600",
+              badgeColor: "bg-green-100 text-green-700"
+            }, {
+              icon: <TrendingUp className="h-8 w-8" />,
+              badge: "Business Development",
+              title: "Marketing Videos",
+              description: "Professional content that supports new business development and differentiates your firm.",
+              features: ["Firm introductions", "Service explanations", "Pitch support"],
+              color: "bg-purple-100",
+              iconColor: "text-purple-600",
+              badgeColor: "bg-purple-100 text-purple-700"
+            }].map((service, index) => <Card key={index} className="border border-gray-200 hover:shadow-xl transition-all duration-300 overflow-hidden">
                   <CardContent className="p-8 text-center">
                     <div className={`w-20 h-20 ${service.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
                       <span className={service.iconColor}>{service.icon}</span>
@@ -409,16 +323,13 @@ const ProfessionalServicesPage = () => {
                     <h3 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h3>
                     <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
                     <div className="space-y-2">
-                      {service.features.map((feature, idx) => (
-                        <div key={idx} className="flex items-center justify-center gap-2 text-sm text-gray-700">
+                      {service.features.map((feature, idx) => <div key={idx} className="flex items-center justify-center gap-2 text-sm text-gray-700">
                           <CheckCircle className="h-4 w-4 text-green-600" />
                           <span>{feature}</span>
-                        </div>
-                      ))}
+                        </div>)}
                     </div>
                   </CardContent>
-                </Card>
-              ))}
+                </Card>)}
             </div>
           </div>
         </section>
@@ -437,28 +348,16 @@ const ProfessionalServicesPage = () => {
 
             <Tabs defaultValue="evergreen" className="w-full">
               <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-4 mb-12 h-auto p-2 bg-gray-100">
-                <TabsTrigger 
-                  value="evergreen" 
-                  className="data-[state=active]:bg-teal-500 data-[state=active]:text-white py-3 text-sm font-medium"
-                >
+                <TabsTrigger value="evergreen" className="data-[state=active]:bg-teal-500 data-[state=active]:text-white py-3 text-sm font-medium">
                   Evergreen Pal
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="spotlight" 
-                  className="data-[state=active]:bg-pink-500 data-[state=active]:text-white py-3 text-sm font-medium"
-                >
+                <TabsTrigger value="spotlight" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white py-3 text-sm font-medium">
                   Spotlight Pal
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="reel" 
-                  className="data-[state=active]:bg-orange-500 data-[state=active]:text-white py-3 text-sm font-medium"
-                >
+                <TabsTrigger value="reel" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white py-3 text-sm font-medium">
                   Reel Pal
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="system" 
-                  className="data-[state=active]:bg-purple-500 data-[state=active]:text-white py-3 text-sm font-medium"
-                >
+                <TabsTrigger value="system" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white py-3 text-sm font-medium">
                   System Pal
                 </TabsTrigger>
               </TabsList>
@@ -509,19 +408,12 @@ const ProfessionalServicesPage = () => {
                         </div>
                       </div>
 
-                      <Button 
-                        onClick={() => transitionTo('/evergreen-pal')}
-                        className="bg-teal-500 hover:bg-teal-600 text-white mt-4"
-                      >
+                      <Button onClick={() => transitionTo('/evergreen-pal')} className="bg-teal-500 hover:bg-teal-600 text-white mt-4">
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                     <div className="flex items-center justify-center">
-                      <img 
-                        src={evergreenPalImage}
-                        alt="Evergreen Pal character" 
-                        className="w-full max-w-md h-auto object-contain animate-fade-in"
-                      />
+                      <img src={evergreenPalImage} alt="Evergreen Pal character" className="w-full max-w-md h-auto object-contain animate-fade-in" />
                     </div>
                   </div>
                 </div>
@@ -573,19 +465,12 @@ const ProfessionalServicesPage = () => {
                         </div>
                       </div>
 
-                      <Button 
-                        onClick={() => transitionTo('/spotlight-pal')}
-                        className="bg-pink-500 hover:bg-pink-600 text-white mt-4"
-                      >
+                      <Button onClick={() => transitionTo('/spotlight-pal')} className="bg-pink-500 hover:bg-pink-600 text-white mt-4">
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                     <div className="flex items-center justify-center">
-                      <img 
-                        src={spotlightPalImage}
-                        alt="Spotlight Pal character" 
-                        className="w-full max-w-md h-auto object-contain animate-fade-in"
-                      />
+                      <img src={spotlightPalImage} alt="Spotlight Pal character" className="w-full max-w-md h-auto object-contain animate-fade-in" />
                     </div>
                   </div>
                 </div>
@@ -637,19 +522,12 @@ const ProfessionalServicesPage = () => {
                         </div>
                       </div>
 
-                      <Button 
-                        onClick={() => transitionTo('/reel-pal')}
-                        className="bg-orange-500 hover:bg-orange-600 text-white mt-4"
-                      >
+                      <Button onClick={() => transitionTo('/reel-pal')} className="bg-orange-500 hover:bg-orange-600 text-white mt-4">
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                     <div className="flex items-center justify-center">
-                      <img 
-                        src={reelPalImage}
-                        alt="Reel Pal character" 
-                        className="w-full max-w-md h-auto object-contain animate-fade-in"
-                      />
+                      <img src={reelPalImage} alt="Reel Pal character" className="w-full max-w-md h-auto object-contain animate-fade-in" />
                     </div>
                   </div>
                 </div>
@@ -701,19 +579,12 @@ const ProfessionalServicesPage = () => {
                         </div>
                       </div>
 
-                      <Button 
-                        onClick={() => transitionTo('/system-pal')}
-                        className="bg-purple-500 hover:bg-purple-600 text-white mt-4"
-                      >
+                      <Button onClick={() => transitionTo('/system-pal')} className="bg-purple-500 hover:bg-purple-600 text-white mt-4">
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                     <div className="flex items-center justify-center">
-                      <img 
-                        src={systemPalImage}
-                        alt="System Pal character" 
-                        className="w-full max-w-md h-auto object-contain animate-fade-in"
-                      />
+                      <img src={systemPalImage} alt="System Pal character" className="w-full max-w-md h-auto object-contain animate-fade-in" />
                     </div>
                   </div>
                 </div>
@@ -735,20 +606,11 @@ const ProfessionalServicesPage = () => {
                 command premium fees, and establish unquestionable authority in your market.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  size="lg"
-                  className="bg-indigo-700 text-white hover:bg-indigo-800 font-semibold text-lg px-8 py-4 h-auto"
-                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
-                >
+                <Button size="lg" className="bg-indigo-700 text-white hover:bg-indigo-800 font-semibold text-lg px-8 py-4 h-auto" onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}>
                   <Video className="mr-2 h-5 w-5" />
                   Schedule Strategy Call
                 </Button>
-                <Button 
-                  variant="outline"
-                  size="lg"
-                  className="border-2 border-indigo-700 text-indigo-700 hover:bg-indigo-50 font-semibold text-lg px-8 py-4 h-auto"
-                  onClick={() => transitionTo('/contact')}
-                >
+                <Button variant="outline" size="lg" className="border-2 border-indigo-700 text-indigo-700 hover:bg-indigo-50 font-semibold text-lg px-8 py-4 h-auto" onClick={() => transitionTo('/contact')}>
                   Request Video Proposal
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -757,8 +619,6 @@ const ProfessionalServicesPage = () => {
           </div>
         </section>
       </MainContent>
-    </div>
-  );
+    </div>;
 };
-
 export default ProfessionalServicesPage;

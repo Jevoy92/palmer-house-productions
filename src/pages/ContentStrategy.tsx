@@ -1,244 +1,280 @@
-import { Navigation } from "@/components/Navigation";
-import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
-import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
-import { SkipLink } from "@/components/ui/skip-link";
-import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
-import { MainContent } from "@/components/MainContent";
-import { VideoReadinessAudit } from "@/components/assessments/VideoReadinessAudit";
-import { AssessmentPreview } from "@/components/assessments/AssessmentPreview";
-import { TrainingROICalculator } from "@/components/assessments/TrainingROICalculator";
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { usePageTransition } from '@/components/PageTransition';
 import { 
   Target, 
-  Calculator, 
+  Compass,
+  Users,
+  Cog,
+  MessageSquare,
+  Calendar,
   TrendingUp,
+  Wrench,
+  Rocket,
   CheckCircle,
   ArrowRight,
-  Lightbulb
+  Lightbulb,
+  Brain,
+  Zap,
+  LineChart
 } from "lucide-react";
 
 const ContentStrategyPage = () => {
-  const [activeAssessment, setActiveAssessment] = useState<string | null>(null);
   const { transitionTo } = usePageTransition();
 
-  // Handle URL parameters for direct assessment links
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const assessment = params.get('assessment');
-    if (assessment && ['video-readiness', 'training-roi'].includes(assessment)) {
-      setActiveAssessment(assessment);
+  const strategySteps = [
+    {
+      icon: Lightbulb,
+      iconColor: 'text-blue-600 dark:text-blue-400',
+      bgColor: 'bg-blue-500/10',
+      title: "Why Content Strategy Matters",
+      subtitle: "Content as a business asset, not marketing fluff",
+      description: "Most businesses post randomly or reactively. We treat content like a system: repeatable, scalable, optimized for ROI. Our goal isn't views — it's business outcomes.",
+      takeaway: "This isn't about trends — it's about building a library that works for me while I sleep."
+    },
+    {
+      icon: Compass,
+      iconColor: 'text-purple-600 dark:text-purple-400',
+      bgColor: 'bg-purple-500/10',
+      title: "Discovery & Diagnosis",
+      subtitle: "Understand your business at its roots",
+      description: "We examine your business goals, ideal client profile, current bottlenecks, and existing content. Understanding your revenue targets, service mix, and buying triggers before creating anything.",
+      takeaway: "They actually understand my business before hitting record."
+    },
+    {
+      icon: Users,
+      iconColor: 'text-pink-600 dark:text-pink-400',
+      bgColor: 'bg-pink-500/10',
+      title: "Interest + Identity Mapping",
+      subtitle: "Align your personality with content formats",
+      description: "What do you enjoy talking about? Where are you most natural — teaching, storytelling, demonstrating? We match that to videos you can sustain for months, not days.",
+      takeaway: "I don't have to become a TikTok star — I just need a strategy that works for me."
+    },
+    {
+      icon: Cog,
+      iconColor: 'text-green-600 dark:text-green-400',
+      bgColor: 'bg-green-500/10',
+      title: "Content as a System",
+      subtitle: "A repeatable engine, not random posts",
+      description: "Core pillars of Authority, Trust, Systems, Evergreen, and Social Proof. Internal vs external content — FAQs, onboarding, training, sales tools. Every video solves a business problem.",
+      takeaway: "Every piece of content solves a business problem — not just entertains."
+    },
+    {
+      icon: MessageSquare,
+      iconColor: 'text-orange-600 dark:text-orange-400',
+      bgColor: 'bg-orange-500/10',
+      title: "The Strategy Workshop",
+      subtitle: "90-minute deep dive into your business",
+      description: "Questions, worksheets, goal mapping. We identify 'Core Video Assets' that your business needs first — not what's trending. Script frameworks and brand messaging templates included.",
+      takeaway: "Within one call, I know exactly what content my business actually needs."
+    },
+    {
+      icon: Calendar,
+      iconColor: 'text-cyan-600 dark:text-cyan-400',
+      bgColor: 'bg-cyan-500/10',
+      title: "3-Month Content Roadmap",
+      subtitle: "Timeline and execution plan",
+      description: "Prioritized deliverables, video order based on ROI and urgency. Clear roles: what we do vs what you handle. Shooting calendar with review checkpoints.",
+      takeaway: "This isn't random. I know what's coming and when."
+    },
+    {
+      icon: TrendingUp,
+      iconColor: 'text-indigo-600 dark:text-indigo-400',
+      bgColor: 'bg-indigo-500/10',
+      title: "Optimization & Iteration",
+      subtitle: "Strategy that evolves as you grow",
+      description: "Analytics review tracking reach, conversions, and sales impact. What videos get repurposed, extended, or retired. When to add podcasts, speaking, YouTube, or training portals.",
+      takeaway: "This system grows with me — it's not a one-and-done package."
+    },
+    {
+      icon: Wrench,
+      iconColor: 'text-yellow-600 dark:text-yellow-400',
+      bgColor: 'bg-yellow-500/10',
+      title: "Sustained Success & Handover",
+      subtitle: "Equip you to keep winning",
+      description: "Video templates, scripting guides, repurposing handbook. Train your team to record updates in-house. Ongoing support options available: retainer, consulting, or full production team.",
+      takeaway: "They don't leave me hanging. I get tools to keep the momentum going."
     }
-  }, []);
-
-  if (activeAssessment === "video-readiness") {
-    return (
-      <div className="min-h-screen bg-white">
-        <SkipLink href="#main-content">Skip to main content</SkipLink>
-        <Navigation />
-        <MainContent className="pt-20">
-          <div className="py-8">
-            <Button 
-              onClick={() => setActiveAssessment(null)}
-              variant="outline"
-              className="mb-6"
-            >
-              ← Back to Strategy Hub
-            </Button>
-            <VideoReadinessAudit />
-          </div>
-        </MainContent>
-      </div>
-    );
-  }
-
-  if (activeAssessment === "training-roi") {
-    return (
-      <div className="min-h-screen bg-white">
-        <SkipLink href="#main-content">Skip to main content</SkipLink>
-        <Navigation />
-        <MainContent className="pt-20">
-          <div className="py-8">
-            <Button 
-              onClick={() => setActiveAssessment(null)}
-              variant="outline"
-              className="mb-6"
-            >
-              ← Back to Strategy Hub
-            </Button>
-            <TrainingROICalculator />
-          </div>
-        </MainContent>
-      </div>
-    );
-  }
-
-
-
+  ];
 
   return (
-    <div className="min-h-screen overflow-x-hidden font-sans relative">
-      {/* Fixed 4-Color Background Bars */}
-      <div className="fixed top-0 left-0 w-full h-full z-0">
-        <div className="w-full h-full flex">
-          <div className="w-1/4 h-full bg-pal-orange"></div>
-          <div className="w-1/4 h-full bg-pal-purple"></div>
-          <div className="w-1/4 h-full bg-pal-green"></div>
-          <div className="w-1/4 h-full bg-pal-blue"></div>
-        </div>
-      </div>
+    <div className="min-h-screen bg-background">
       <MetaTags 
-        title="Video Readiness Audit | Quick Assessment | Palmer House"
-        description="Take our Video Readiness Audit for instant insights and a tailored roadmap to improve your video marketing."
-        keywords="video readiness audit, video strategy assessment, video marketing audit, Palmer House Productions"
-        ogTitle="Video Readiness Audit | Palmer House Productions"
-        ogDescription="Quick video readiness assessment with personalized recommendations."
+        title="Content Strategy Services | Business-Driven Video Planning | Palmer House"
+        description="Build a content system that works while you sleep. Strategic video planning aligned with your business goals, personality, and long-term success."
+        keywords="content strategy, video strategy, business content planning, video marketing strategy, content systems"
+        ogTitle="Content Strategy Services | Palmer House Productions"
+        ogDescription="Transform your business with strategic content planning that drives real results."
       />
-      <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
-      <StructuredData />
-      <MobileFirstOptimization />
-      <SkipLink href="#main-content">Skip to main content</SkipLink>
-      <Navigation />
-      <BreadcrumbNavigation />
-      <MainContent>
-        {/* Hero Section */}
-        <section className="py-16 sm:py-24 lg:py-32 relative z-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-            {/* Hero - White Card */}
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl text-center mb-12">
-              <div className="inline-block px-6 py-3 bg-pal-orange text-white font-bold text-lg mb-8 rounded-full video-shadow">
-                🎯 Quick Assessment Tools
-              </div>
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-display font-black mb-8 text-corporate-dark tracking-tight">
-                Quick <span className="text-pal-orange">Assessment</span>
-              </h1>
-              <p className="text-lg xl:text-xl text-corporate-gray max-w-4xl mx-auto font-medium leading-relaxed mb-12">
-                Take a quick assessment to get instant insights about your video strategy.
-                Perfect for quick wins and identifying immediate opportunities.
-              </p>
-              
-              <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
-                <div className="flex items-center space-x-2 text-corporate-gray">
-                  <CheckCircle className="w-5 h-5 text-pal-green" />
-                  <span>3-5 minute assessment</span>
-                </div>
-                <div className="flex items-center space-x-2 text-corporate-gray">
-                  <CheckCircle className="w-5 h-5 text-pal-green" />
-                  <span>Instant actionable insights</span>
-                </div>
-                <div className="flex items-center space-x-2 text-corporate-gray">
-                  <CheckCircle className="w-5 h-5 text-pal-green" />
-                  <span>Smart booking recommendations</span>
-                </div>
-              </div>
+      <StructuredData type="services" />
+
+      {/* Hero Section */}
+      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5" />
+        <div className="max-w-7xl mx-auto relative">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full mb-6 border border-blue-500/20">
+              <Brain className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">Strategic Content Planning</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+              Build a <span className="text-blue-600 dark:text-blue-400">Content Engine</span>
+              <br />
+              That Works While You Sleep
+            </h1>
+            <p className="text-xl text-foreground/90 max-w-3xl mx-auto leading-relaxed mb-8">
+              Not random posts. Not marketing fluff. A strategic content system aligned with your business goals, 
+              your personality, and your long-term success.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button 
+                size="lg"
+                onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+                className="group bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Book Your Strategy Session
+                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+              <Button 
+                size="lg"
+                variant="outline"
+                onClick={() => transitionTo('/contact')}
+                className="border-blue-500/50 hover:bg-blue-500/10"
+              >
+                Learn More
+              </Button>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Assessment Preview */}
-        <section className="py-16 sm:py-24 lg:py-32 relative z-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl">
-              <AssessmentPreview 
-                onSelectAssessment={setActiveAssessment}
-                currentPath="/content-strategy"
-              />
-            </div>
+      {/* Strategy Process */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              Our <span className="text-blue-600 dark:text-blue-400">Strategic Framework</span>
+            </h2>
+            <p className="text-lg text-foreground/90 max-w-2xl mx-auto">
+              A proven system for turning your expertise into a content library that generates 
+              qualified leads and drives real business outcomes.
+            </p>
           </div>
-        </section>
 
-        {/* Content Strategy Framework */}
-        <section className="py-16 sm:py-24 lg:py-32 relative z-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl text-center">
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-black mb-6 text-corporate-dark tracking-tight">
-                Our Content Strategy <span className="text-pal-purple">Framework</span>
+          <div className="grid md:grid-cols-2 gap-6 mb-12">
+            {strategySteps.map((step, index) => (
+              <Card key={index} className="border-2 hover:border-blue-500/50 transition-all hover:shadow-lg group">
+                <CardContent className="pt-6">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className={`p-4 rounded-xl ${step.bgColor} group-hover:scale-110 transition-transform flex-shrink-0`}>
+                      <step.icon className={`w-8 h-8 ${step.iconColor}`} />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-bold mb-1">{step.title}</h3>
+                      <p className="text-sm text-foreground/70 mb-3">{step.subtitle}</p>
+                    </div>
+                  </div>
+                  <p className="text-foreground/90 mb-4">{step.description}</p>
+                  <div className="pt-4 border-t border-border">
+                    <p className="text-sm italic text-blue-600 dark:text-blue-400">
+                      "{step.takeaway}"
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent">
+        <div className="max-w-4xl mx-auto">
+          <Card className="border-2 border-blue-500/20 bg-gradient-to-br from-blue-500/5 to-purple-500/5">
+            <CardContent className="p-12 text-center">
+              <div className="w-20 h-20 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <Rocket className="w-10 h-10 text-white" />
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Ready to Build Your <span className="text-blue-600 dark:text-blue-400">Content Strategy</span>?
               </h2>
-              <p className="text-lg xl:text-xl text-corporate-gray max-w-4xl mx-auto font-medium leading-relaxed mb-12">
-                Beyond SEO-first thinking: We help you create demand-driven content 
-                that generates qualified leads and drives real business results.
-              </p>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-pal-orange rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <Target className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold text-corporate-dark mb-2">Audience-Centric</h3>
-                  <p className="text-corporate-gray">
-                    Build content around real audience problems, not just keywords
-                  </p>
-                </div>
-                
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-pal-purple rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <Lightbulb className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold text-corporate-dark mb-2">Interactive Experiences</h3>
-                  <p className="text-corporate-gray">
-                    Engage prospects with assessments and personalized recommendations
-                  </p>
-                </div>
-                
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-pal-green rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <TrendingUp className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold text-corporate-dark mb-2">Demand Generation</h3>
-                  <p className="text-corporate-gray">
-                    Create content that generates demand, not just captures existing demand
-                  </p>
-                </div>
-                
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-pal-blue rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <Calculator className="w-8 h-8 text-white" />
-                  </div>
-                  <h3 className="text-xl font-bold text-corporate-dark mb-2">ROI-Focused</h3>
-                  <p className="text-corporate-gray">
-                    Every piece of content is designed to drive measurable business outcomes
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-16 sm:py-24 lg:py-32 relative z-10">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl text-center">
-              <h2 className="text-2xl md:text-3xl font-display font-black mb-6 text-corporate-dark tracking-tight">
-                Need Comprehensive <span className="text-pal-green">Video Strategy</span>?
-              </h2>
-              <p className="text-lg xl:text-xl text-corporate-gray mb-8 max-w-4xl mx-auto font-medium leading-relaxed">
-                Explore our complete video production packages with personalized recommendations tailored to your goals.
+              <p className="text-xl text-foreground/90 mb-8">
+                No camera needed — just your brain, your goals, and your biggest problems. 
+                Let's turn your expertise into a content system that works.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
-                  onClick={() => transitionTo('/video-packages')}
-                  variant="premium"
-                  size="touch"
-                  className="bg-pal-purple text-white hover:bg-pal-purple/90"
+                  size="lg"
+                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+                  className="group bg-blue-600 hover:bg-blue-700 text-white"
                 >
-                  Explore Video Packages
+                  Book Strategy Session
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Button 
-                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+                  size="lg"
                   variant="outline"
-                  className="px-8 py-3 hover:scale-105 transition-all border-pal-purple text-pal-purple hover:bg-pal-purple hover:text-white"
+                  onClick={() => transitionTo('/pals')}
+                  className="border-blue-500/50 hover:bg-blue-500/10"
                 >
-                  Book Strategy Call
+                  Meet The Pals
                 </Button>
               </div>
-            </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Supporting Benefits */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+              What Makes Our Strategy <span className="text-blue-600 dark:text-blue-400">Different</span>
+            </h2>
           </div>
-        </section>
-      </MainContent>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            <Card className="text-center hover:shadow-lg transition-all hover:border-green-500/50 border-2 group">
+              <CardContent className="pt-8">
+                <div className="w-16 h-16 bg-green-500/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <LineChart className="w-8 h-8 text-green-600 dark:text-green-400" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Business-First Approach</h3>
+                <p className="text-foreground/90">
+                  We start with your revenue goals, not trending formats. Every video has a job to do in your business.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover:shadow-lg transition-all hover:border-purple-500/50 border-2 group">
+              <CardContent className="pt-8">
+                <div className="w-16 h-16 bg-purple-500/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <Zap className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Sustainable Systems</h3>
+                <p className="text-foreground/90">
+                  Build content you can maintain long-term, aligned with what you actually enjoy and excel at.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center hover:shadow-lg transition-all hover:border-orange-500/50 border-2 group">
+              <CardContent className="pt-8">
+                <div className="w-16 h-16 bg-orange-500/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                  <Target className="w-8 h-8 text-orange-600 dark:text-orange-400" />
+                </div>
+                <h3 className="text-xl font-bold mb-3">Measurable Outcomes</h3>
+                <p className="text-foreground/90">
+                  Track what matters: qualified leads, conversion rates, and real ROI — not just vanity metrics.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

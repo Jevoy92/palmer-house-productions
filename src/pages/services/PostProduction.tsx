@@ -217,14 +217,22 @@ const PostProduction = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {postProductionProcess.map((phase, index) => (
-              <div key={index} className="relative">
-                <div className="bg-card rounded-xl p-6 h-full border-2 hover:border-secondary/50 transition-all">
-                  <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4">
-                    <phase.icon className="w-6 h-6 text-secondary" />
+              <div key={index} className="relative group">
+                <div className="bg-gradient-to-br from-primary/5 to-secondary/5 rounded-xl p-6 h-full border-2 hover:border-primary transition-all hover:shadow-xl">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-sm font-bold text-white">{index + 1}</span>
+                    </div>
+                    <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center">
+                      <phase.icon className="w-6 h-6 text-secondary group-hover:text-primary transition-colors" />
+                    </div>
                   </div>
                   <h3 className="text-xl font-bold mb-3">{phase.step}</h3>
                   <p className="text-muted-foreground">{phase.description}</p>
                 </div>
+                {index < postProductionProcess.length - 1 && (
+                  <ArrowRight className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 text-primary z-10 w-6 h-6" />
+                )}
               </div>
             ))}
           </div>

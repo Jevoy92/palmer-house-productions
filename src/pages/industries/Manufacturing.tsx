@@ -9,119 +9,169 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { usePageTransition } from '@/components/PageTransition';
-import { HardHat, Cog, Users, Video, CheckCircle, Shield, Clock, Target, Award, Wrench, Settings, Factory, AlertTriangle, TrendingUp, BookOpen, FileCheck, ArrowRight, Package, Zap } from "lucide-react";
+import { 
+  HardHat, 
+  Cog, 
+  Users, 
+  Video,
+  CheckCircle,
+  Shield,
+  Clock,
+  Target,
+  Award,
+  Wrench,
+  Settings,
+  Factory,
+  AlertTriangle,
+  TrendingUp,
+  BookOpen,
+  FileCheck,
+  ArrowRight,
+  Package,
+  Zap
+} from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import systemPalImage from '@/assets/pals/male-system-pal-edited.png';
 import reelPalImage from '@/assets/pals/female-reel-pal-edited.png';
 import evergreenPalImage from '@/assets/pals/female-evergreen-pal-final.png';
 import spotlightPalImage from '@/assets/pals/female-spotlight-pal-edited.png';
+
 const ManufacturingPage = () => {
-  const {
-    transitionTo
-  } = usePageTransition();
-  const videoSolutions = [{
-    icon: <HardHat className="h-8 w-8" />,
-    title: "Safety Training & Compliance",
-    description: "OSHA-compliant safety videos, lockout/tagout procedures, machine guarding, PPE requirements, hazard communication, fall protection, confined space entry, and emergency response protocols.",
-    palType: "System Pal",
-    color: "border-red-500",
-    bgColor: "bg-red-50",
-    iconColor: "text-red-600",
-    features: ["OSHA Compliance", "Safety Protocols", "PPE Training", "Emergency Response"]
-  }, {
-    icon: <Settings className="h-8 w-8" />,
-    title: "Equipment Operation & Maintenance",
-    description: "Machine operation guides, preventive maintenance procedures, troubleshooting protocols, equipment setup instructions, calibration procedures, and technical maintenance training.",
-    palType: "System Pal",
-    color: "border-blue-500",
-    bgColor: "bg-blue-50",
-    iconColor: "text-blue-600",
-    features: ["Machine Operation", "Maintenance SOPs", "Troubleshooting", "Calibration"]
-  }, {
-    icon: <Factory className="h-8 w-8" />,
-    title: "Standard Operating Procedures",
-    description: "Production workflows, quality control processes, assembly instructions, lean manufacturing techniques, 5S methodology, continuous improvement practices, and ISO compliance documentation.",
-    palType: "System Pal",
-    color: "border-purple-500",
-    bgColor: "bg-purple-50",
-    iconColor: "text-purple-600",
-    features: ["Production SOPs", "Quality Control", "Lean Manufacturing", "ISO Standards"]
-  }, {
-    icon: <Users className="h-8 w-8" />,
-    title: "Workforce Training & Onboarding",
-    description: "New hire orientation, role-specific training, cross-training programs, supervisor development, soft skills training, and continuous learning initiatives for manufacturing teams.",
-    palType: "System Pal",
-    color: "border-teal-500",
-    bgColor: "bg-teal-50",
-    iconColor: "text-teal-600",
-    features: ["Onboarding", "Skills Training", "Leadership Dev", "Cross-Training"]
-  }, {
-    icon: <TrendingUp className="h-8 w-8" />,
-    title: "Company Branding & Recruitment",
-    description: "Facility tours, company culture videos, employee testimonials, recruitment marketing, capabilities presentations, trade show content, and corporate brand storytelling.",
-    palType: "Spotlight Pal",
-    color: "border-green-500",
-    bgColor: "bg-green-50",
-    iconColor: "text-green-600",
-    features: ["Facility Tours", "Culture Videos", "Recruitment", "Brand Content"]
-  }, {
-    icon: <Video className="h-8 w-8" />,
-    title: "Social Media & Industry Presence",
-    description: "Behind-the-scenes manufacturing content, employee spotlights, innovation showcases, sustainability initiatives, industry thought leadership, and manufacturing process transparency.",
-    palType: "Reel Pal",
-    color: "border-orange-500",
-    bgColor: "bg-orange-50",
-    iconColor: "text-orange-600",
-    features: ["Behind-the-Scenes", "Employee Stories", "Innovation", "Thought Leadership"]
-  }];
-  const industryBenefits = [{
-    icon: <Target className="h-6 w-6" />,
-    title: "Reduce Accidents",
-    stat: "Up to 70%",
-    description: "Video safety training dramatically reduces workplace incidents"
-  }, {
-    icon: <Clock className="h-6 w-6" />,
-    title: "Faster Training",
-    stat: "3x Faster",
-    description: "Get workers productive faster with video training"
-  }, {
-    icon: <Cog className="h-6 w-6" />,
-    title: "Improve Quality",
-    stat: "45% Fewer Defects",
-    description: "Standardized training reduces production errors"
-  }, {
-    icon: <Award className="h-6 w-6" />,
-    title: "Better Retention",
-    stat: "35% Increase",
-    description: "Strong culture videos improve employee retention"
-  }];
-  const useCases = [{
-    title: "Automotive Manufacturing",
-    description: "Assembly line training, quality assurance procedures, lean manufacturing implementation, safety protocols, supplier training, and continuous improvement documentation for automotive production environments.",
-    icon: <Factory className="h-6 w-6" />
-  }, {
-    title: "Aerospace & Defense",
-    description: "Precision manufacturing procedures, quality control documentation, compliance training for strict regulatory requirements, technical assembly instructions, and security protocol training.",
-    icon: <Award className="h-6 w-6" />
-  }, {
-    title: "Food & Beverage Production",
-    description: "Food safety training, HACCP compliance, sanitation procedures, equipment cleaning protocols, allergen management, quality assurance, and FDA regulatory compliance documentation.",
-    icon: <Shield className="h-6 w-6" />
-  }, {
-    title: "Chemical Processing",
-    description: "Hazardous materials handling, chemical safety protocols, process safety management, emergency response procedures, environmental compliance, and specialized equipment operation training.",
-    icon: <AlertTriangle className="h-6 w-6" />
-  }, {
-    title: "Electronics Manufacturing",
-    description: "ESD safety training, clean room procedures, precision assembly techniques, quality testing protocols, equipment calibration, and IPC standards compliance training.",
-    icon: <Settings className="h-6 w-6" />
-  }, {
-    title: "Heavy Equipment & Machinery",
-    description: "Equipment operation training, maintenance procedures, hydraulics and pneumatics training, welding and fabrication techniques, and heavy machinery safety protocols.",
-    icon: <Wrench className="h-6 w-6" />
-  }];
-  return <div className="min-h-screen bg-gray-50 overflow-x-hidden font-sans">
-      <MetaTags title="Manufacturing Video Production | Industrial Training Videos | Palmer House Productions" description="Manufacturing video production: safety training, equipment operation, SOPs, quality control, workforce development, and compliance videos for industrial facilities, factories, and production environments." keywords="manufacturing video production, industrial training videos, safety training manufacturing, equipment operation videos, SOP videos, factory training, OSHA compliance videos, lean manufacturing training" ogTitle="Manufacturing Video Production | Industrial Training & Safety" ogDescription="Specialized video production for manufacturing: safety training, equipment operation, SOPs, and workforce development for industrial facilities." canonicalUrl="https://www.palmerhouseproductions.com/industries/manufacturing" />
+  const { transitionTo } = usePageTransition();
+
+  const videoSolutions = [
+    {
+      icon: <HardHat className="h-8 w-8" />,
+      title: "Safety Training & Compliance",
+      description: "OSHA-compliant safety videos, lockout/tagout procedures, machine guarding, PPE requirements, hazard communication, fall protection, confined space entry, and emergency response protocols.",
+      palType: "System Pal",
+      color: "border-red-500",
+      bgColor: "bg-red-50",
+      iconColor: "text-red-600",
+      features: ["OSHA Compliance", "Safety Protocols", "PPE Training", "Emergency Response"]
+    },
+    {
+      icon: <Settings className="h-8 w-8" />,
+      title: "Equipment Operation & Maintenance",
+      description: "Machine operation guides, preventive maintenance procedures, troubleshooting protocols, equipment setup instructions, calibration procedures, and technical maintenance training.",
+      palType: "System Pal",
+      color: "border-blue-500",
+      bgColor: "bg-blue-50",
+      iconColor: "text-blue-600",
+      features: ["Machine Operation", "Maintenance SOPs", "Troubleshooting", "Calibration"]
+    },
+    {
+      icon: <Factory className="h-8 w-8" />,
+      title: "Standard Operating Procedures",
+      description: "Production workflows, quality control processes, assembly instructions, lean manufacturing techniques, 5S methodology, continuous improvement practices, and ISO compliance documentation.",
+      palType: "System Pal",
+      color: "border-purple-500",
+      bgColor: "bg-purple-50",
+      iconColor: "text-purple-600",
+      features: ["Production SOPs", "Quality Control", "Lean Manufacturing", "ISO Standards"]
+    },
+    {
+      icon: <Users className="h-8 w-8" />,
+      title: "Workforce Training & Onboarding",
+      description: "New hire orientation, role-specific training, cross-training programs, supervisor development, soft skills training, and continuous learning initiatives for manufacturing teams.",
+      palType: "System Pal",
+      color: "border-teal-500",
+      bgColor: "bg-teal-50",
+      iconColor: "text-teal-600",
+      features: ["Onboarding", "Skills Training", "Leadership Dev", "Cross-Training"]
+    },
+    {
+      icon: <TrendingUp className="h-8 w-8" />,
+      title: "Company Branding & Recruitment",
+      description: "Facility tours, company culture videos, employee testimonials, recruitment marketing, capabilities presentations, trade show content, and corporate brand storytelling.",
+      palType: "Spotlight Pal",
+      color: "border-green-500",
+      bgColor: "bg-green-50",
+      iconColor: "text-green-600",
+      features: ["Facility Tours", "Culture Videos", "Recruitment", "Brand Content"]
+    },
+    {
+      icon: <Video className="h-8 w-8" />,
+      title: "Social Media & Industry Presence",
+      description: "Behind-the-scenes manufacturing content, employee spotlights, innovation showcases, sustainability initiatives, industry thought leadership, and manufacturing process transparency.",
+      palType: "Reel Pal",
+      color: "border-orange-500",
+      bgColor: "bg-orange-50",
+      iconColor: "text-orange-600",
+      features: ["Behind-the-Scenes", "Employee Stories", "Innovation", "Thought Leadership"]
+    }
+  ];
+
+  const industryBenefits = [
+    {
+      icon: <Target className="h-6 w-6" />,
+      title: "Reduce Accidents",
+      stat: "Up to 70%",
+      description: "Video safety training dramatically reduces workplace incidents"
+    },
+    {
+      icon: <Clock className="h-6 w-6" />,
+      title: "Faster Training",
+      stat: "3x Faster",
+      description: "Get workers productive faster with video training"
+    },
+    {
+      icon: <Cog className="h-6 w-6" />,
+      title: "Improve Quality",
+      stat: "45% Fewer Defects",
+      description: "Standardized training reduces production errors"
+    },
+    {
+      icon: <Award className="h-6 w-6" />,
+      title: "Better Retention",
+      stat: "35% Increase",
+      description: "Strong culture videos improve employee retention"
+    }
+  ];
+
+  const useCases = [
+    {
+      title: "Automotive Manufacturing",
+      description: "Assembly line training, quality assurance procedures, lean manufacturing implementation, safety protocols, supplier training, and continuous improvement documentation for automotive production environments.",
+      icon: <Factory className="h-6 w-6" />
+    },
+    {
+      title: "Aerospace & Defense",
+      description: "Precision manufacturing procedures, quality control documentation, compliance training for strict regulatory requirements, technical assembly instructions, and security protocol training.",
+      icon: <Award className="h-6 w-6" />
+    },
+    {
+      title: "Food & Beverage Production",
+      description: "Food safety training, HACCP compliance, sanitation procedures, equipment cleaning protocols, allergen management, quality assurance, and FDA regulatory compliance documentation.",
+      icon: <Shield className="h-6 w-6" />
+    },
+    {
+      title: "Chemical Processing",
+      description: "Hazardous materials handling, chemical safety protocols, process safety management, emergency response procedures, environmental compliance, and specialized equipment operation training.",
+      icon: <AlertTriangle className="h-6 w-6" />
+    },
+    {
+      title: "Electronics Manufacturing",
+      description: "ESD safety training, clean room procedures, precision assembly techniques, quality testing protocols, equipment calibration, and IPC standards compliance training.",
+      icon: <Settings className="h-6 w-6" />
+    },
+    {
+      title: "Heavy Equipment & Machinery",
+      description: "Equipment operation training, maintenance procedures, hydraulics and pneumatics training, welding and fabrication techniques, and heavy machinery safety protocols.",
+      icon: <Wrench className="h-6 w-6" />
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gray-50 overflow-x-hidden font-sans">
+      <MetaTags 
+        title="Manufacturing Video Production | Industrial Training Videos | Palmer House Productions"
+        description="Manufacturing video production: safety training, equipment operation, SOPs, quality control, workforce development, and compliance videos for industrial facilities, factories, and production environments."
+        keywords="manufacturing video production, industrial training videos, safety training manufacturing, equipment operation videos, SOP videos, factory training, OSHA compliance videos, lean manufacturing training"
+        ogTitle="Manufacturing Video Production | Industrial Training & Safety"
+        ogDescription="Specialized video production for manufacturing: safety training, equipment operation, SOPs, and workforce development for industrial facilities."
+        canonicalUrl="https://www.palmerhouseproductions.com/industries/manufacturing"
+      />
       <GoogleAnalytics measurementId="G-HTFNMQRWLL" />
       <StructuredData type="services" />
       <SkipLink href="#main-content">Skip to main content</SkipLink>
@@ -148,31 +198,45 @@ const ManufacturingPage = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                <Button size="lg" onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}>
+                <Button 
+                  size="lg"
+                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+                >
                   <Video className="mr-2 h-5 w-5" />
                   Schedule Manufacturing Consultation
                 </Button>
-                <Button variant="outline" size="lg" onClick={() => transitionTo('/system-pal')}>
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  onClick={() => transitionTo('/system-pal')}
+                >
                   Explore Training Solutions
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </div>
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mt-12">
-                {industryBenefits.map((benefit, index) => <div key={index} className="text-center">
+                {industryBenefits.map((benefit, index) => (
+                  <div key={index} className="text-center">
                     <div className="flex justify-center mb-2 text-primary">
                       {benefit.icon}
                     </div>
                     <div className="text-2xl font-bold mb-1 text-foreground">{benefit.stat}</div>
                     <h3 className="font-semibold text-sm mb-1 text-foreground">{benefit.title}</h3>
                     <p className="text-xs text-muted-foreground leading-tight">{benefit.description}</p>
-                  </div>)}
+                  </div>
+                ))}
               </div>
             </div>
 
             <div className="relative max-w-2xl mx-auto">
               <div className="relative w-full max-w-lg mx-auto">
-                
+                <img 
+                  src={systemPalImage} 
+                  alt="Manufacturing video production expert"
+                  className="w-full h-auto object-contain animate-fade-in"
+                  loading="eager"
+                />
               </div>
             </div>
           </div>
@@ -182,37 +246,44 @@ const ManufacturingPage = () => {
         <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
-              {[{
-              number: "1",
-              title: "Discovery",
-              description: "Understanding your goals, audience, and compliance requirements through detailed consultation.",
-              color: "bg-orange-100",
-              textColor: "text-orange-600"
-            }, {
-              number: "2",
-              title: "Planning",
-              description: "Developing scripts, storyboards, and production timelines tailored to your manufacturing environment.",
-              color: "bg-pink-100",
-              textColor: "text-pink-600"
-            }, {
-              number: "3",
-              title: "Production",
-              description: "Professional filming with manufacturing-specific equipment and techniques, ensuring minimal disruption.",
-              color: "bg-blue-100",
-              textColor: "text-blue-600"
-            }, {
-              number: "4",
-              title: "Delivery",
-              description: "Final videos optimized for your platforms with accessibility features and compliance documentation.",
-              color: "bg-green-100",
-              textColor: "text-green-600"
-            }].map((step, index) => <div key={index} className="text-center">
+              {[
+                {
+                  number: "1",
+                  title: "Discovery",
+                  description: "Understanding your goals, audience, and compliance requirements through detailed consultation.",
+                  color: "bg-orange-100",
+                  textColor: "text-orange-600"
+                },
+                {
+                  number: "2",
+                  title: "Planning",
+                  description: "Developing scripts, storyboards, and production timelines tailored to your manufacturing environment.",
+                  color: "bg-pink-100",
+                  textColor: "text-pink-600"
+                },
+                {
+                  number: "3",
+                  title: "Production",
+                  description: "Professional filming with manufacturing-specific equipment and techniques, ensuring minimal disruption.",
+                  color: "bg-blue-100",
+                  textColor: "text-blue-600"
+                },
+                {
+                  number: "4",
+                  title: "Delivery",
+                  description: "Final videos optimized for your platforms with accessibility features and compliance documentation.",
+                  color: "bg-green-100",
+                  textColor: "text-green-600"
+                }
+              ].map((step, index) => (
+                <div key={index} className="text-center">
                   <div className={`w-20 h-20 ${step.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
                     <span className={`text-3xl font-bold ${step.textColor}`}>{step.number}</span>
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">{step.title}</h3>
                   <p className="text-gray-600 leading-relaxed">{step.description}</p>
-                </div>)}
+                </div>
+              ))}
             </div>
 
             {/* Manufacturing Video Specialties */}
@@ -224,31 +295,37 @@ const ManufacturingPage = () => {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                 <div className="space-y-6">
-                  {[{
-                  icon: <Factory className="h-6 w-6" />,
-                  title: "Automotive Manufacturing",
-                  description: "Assembly line training and quality assurance for automotive production.",
-                  color: "bg-blue-100",
-                  iconColor: "text-blue-600"
-                }, {
-                  icon: <Award className="h-6 w-6" />,
-                  title: "Aerospace & Defense",
-                  description: "Precision manufacturing and compliance for strict regulatory requirements.",
-                  color: "bg-green-100",
-                  iconColor: "text-green-600"
-                }, {
-                  icon: <Package className="h-6 w-6" />,
-                  title: "Food & Beverage",
-                  description: "Food safety, HACCP compliance, and sanitation procedures.",
-                  color: "bg-purple-100",
-                  iconColor: "text-purple-600"
-                }, {
-                  icon: <AlertTriangle className="h-6 w-6" />,
-                  title: "Chemical Processing",
-                  description: "Hazardous materials handling and process safety management.",
-                  color: "bg-orange-100",
-                  iconColor: "text-orange-600"
-                }].map((specialty, index) => <div key={index} className="flex items-start gap-4">
+                  {[
+                    {
+                      icon: <Factory className="h-6 w-6" />,
+                      title: "Automotive Manufacturing",
+                      description: "Assembly line training and quality assurance for automotive production.",
+                      color: "bg-blue-100",
+                      iconColor: "text-blue-600"
+                    },
+                    {
+                      icon: <Award className="h-6 w-6" />,
+                      title: "Aerospace & Defense",
+                      description: "Precision manufacturing and compliance for strict regulatory requirements.",
+                      color: "bg-green-100",
+                      iconColor: "text-green-600"
+                    },
+                    {
+                      icon: <Package className="h-6 w-6" />,
+                      title: "Food & Beverage",
+                      description: "Food safety, HACCP compliance, and sanitation procedures.",
+                      color: "bg-purple-100",
+                      iconColor: "text-purple-600"
+                    },
+                    {
+                      icon: <AlertTriangle className="h-6 w-6" />,
+                      title: "Chemical Processing",
+                      description: "Hazardous materials handling and process safety management.",
+                      color: "bg-orange-100",
+                      iconColor: "text-orange-600"
+                    }
+                  ].map((specialty, index) => (
+                    <div key={index} className="flex items-start gap-4">
                       <div className={`w-14 h-14 ${specialty.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
                         <span className={specialty.iconColor}>{specialty.icon}</span>
                       </div>
@@ -256,7 +333,8 @@ const ManufacturingPage = () => {
                         <h3 className="text-lg font-bold text-gray-900 mb-1">{specialty.title}</h3>
                         <p className="text-gray-600">{specialty.description}</p>
                       </div>
-                    </div>)}
+                    </div>
+                  ))}
                 </div>
 
                 {/* Decorative Grid */}
@@ -290,31 +368,58 @@ const ManufacturingPage = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              {videoSolutions.map((solution, index) => <Card key={index} className={`group hover:shadow-lg transition-all duration-300 ${solution.color} border-2`}>
-                  <CardHeader>
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className={`w-16 h-16 ${solution.bgColor} rounded-xl flex items-center justify-center ${solution.iconColor}`}>
-                        {solution.icon}
-                      </div>
-                      <Badge variant="secondary" className="text-xs">
-                        {solution.palType}
-                      </Badge>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {[
+                {
+                  icon: <HardHat className="h-8 w-8" />,
+                  badge: "Safety Training",
+                  title: "Training Content",
+                  description: "Professional development videos that ensure OSHA compliance and reduce workplace incidents.",
+                  features: ["Safety protocols", "Equipment operation", "Emergency response"],
+                  color: "bg-blue-100",
+                  iconColor: "text-blue-600",
+                  badgeColor: "bg-blue-100 text-blue-700"
+                },
+                {
+                  icon: <Cog className="h-8 w-8" />,
+                  badge: "Operations",
+                  title: "Operational Videos",
+                  description: "Standard operating procedures and quality control content that improves efficiency.",
+                  features: ["SOPs", "Quality control", "Lean manufacturing"],
+                  color: "bg-green-100",
+                  iconColor: "text-green-600",
+                  badgeColor: "bg-green-100 text-green-700"
+                },
+                {
+                  icon: <TrendingUp className="h-8 w-8" />,
+                  badge: "Culture",
+                  title: "Brand Videos",
+                  description: "Compelling narratives that showcase your capabilities and attract top talent.",
+                  features: ["Facility tours", "Recruitment", "Company culture"],
+                  color: "bg-purple-100",
+                  iconColor: "text-purple-600",
+                  badgeColor: "bg-purple-100 text-purple-700"
+                }
+              ].map((service, index) => (
+                <Card key={index} className="border border-gray-200 hover:shadow-xl transition-all duration-300 overflow-hidden">
+                  <CardContent className="p-8 text-center">
+                    <div className={`w-20 h-20 ${service.color} rounded-full flex items-center justify-center mx-auto mb-6`}>
+                      <span className={service.iconColor}>{service.icon}</span>
                     </div>
-                    <CardTitle className="text-xl text-gray-900 mb-3">{solution.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base text-gray-600 mb-6 leading-relaxed">
-                      {solution.description}
-                    </CardDescription>
+                    <Badge className={`mb-4 ${service.badgeColor}`}>{service.badge}</Badge>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-4">{service.title}</h3>
+                    <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
                     <div className="space-y-2">
-                      {solution.features.map((feature, idx) => <div key={idx} className="flex items-center text-sm text-gray-700">
-                          <CheckCircle className="w-4 h-4 mr-2 text-green-500 flex-shrink-0" />
+                      {service.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center justify-center gap-2 text-sm text-gray-700">
+                          <CheckCircle className="h-4 w-4 text-green-600" />
                           <span>{feature}</span>
-                        </div>)}
+                        </div>
+                      ))}
                     </div>
                   </CardContent>
-                </Card>)}
+                </Card>
+              ))}
             </div>
           </div>
         </section>
@@ -333,16 +438,28 @@ const ManufacturingPage = () => {
 
             <Tabs defaultValue="system" className="w-full">
               <TabsList className="grid w-full max-w-3xl mx-auto grid-cols-4 mb-12 h-auto p-2 bg-gray-100">
-                <TabsTrigger value="system" className="data-[state=active]:bg-purple-500 data-[state=active]:text-white py-3 text-sm font-medium">
+                <TabsTrigger 
+                  value="system" 
+                  className="data-[state=active]:bg-purple-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
                   System Pal
                 </TabsTrigger>
-                <TabsTrigger value="reel" className="data-[state=active]:bg-orange-500 data-[state=active]:text-white py-3 text-sm font-medium">
+                <TabsTrigger 
+                  value="reel" 
+                  className="data-[state=active]:bg-orange-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
                   Reel Pal
                 </TabsTrigger>
-                <TabsTrigger value="spotlight" className="data-[state=active]:bg-pink-500 data-[state=active]:text-white py-3 text-sm font-medium">
+                <TabsTrigger 
+                  value="spotlight" 
+                  className="data-[state=active]:bg-pink-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
                   Spotlight Pal
                 </TabsTrigger>
-                <TabsTrigger value="evergreen" className="data-[state=active]:bg-teal-500 data-[state=active]:text-white py-3 text-sm font-medium">
+                <TabsTrigger 
+                  value="evergreen" 
+                  className="data-[state=active]:bg-teal-500 data-[state=active]:text-white py-3 text-sm font-medium"
+                >
                   Evergreen Pal
                 </TabsTrigger>
               </TabsList>
@@ -393,12 +510,19 @@ const ManufacturingPage = () => {
                         </div>
                       </div>
 
-                      <Button onClick={() => transitionTo('/system-pal')} className="bg-purple-500 hover:bg-purple-600 text-white mt-4">
+                      <Button 
+                        onClick={() => transitionTo('/system-pal')}
+                        className="bg-purple-500 hover:bg-purple-600 text-white mt-4"
+                      >
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                     <div className="flex items-center justify-center">
-                      <img src={systemPalImage} alt="System Pal character" className="w-full max-w-md h-auto object-contain animate-fade-in" />
+                      <img 
+                        src={systemPalImage}
+                        alt="System Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
                     </div>
                   </div>
                 </div>
@@ -450,12 +574,19 @@ const ManufacturingPage = () => {
                         </div>
                       </div>
 
-                      <Button onClick={() => transitionTo('/reel-pal')} className="bg-orange-500 hover:bg-orange-600 text-white mt-4">
+                      <Button 
+                        onClick={() => transitionTo('/reel-pal')}
+                        className="bg-orange-500 hover:bg-orange-600 text-white mt-4"
+                      >
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                     <div className="flex items-center justify-center">
-                      <img src={reelPalImage} alt="Reel Pal character" className="w-full max-w-md h-auto object-contain animate-fade-in" />
+                      <img 
+                        src={reelPalImage}
+                        alt="Reel Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
                     </div>
                   </div>
                 </div>
@@ -507,12 +638,19 @@ const ManufacturingPage = () => {
                         </div>
                       </div>
 
-                      <Button onClick={() => transitionTo('/spotlight-pal')} className="bg-pink-500 hover:bg-pink-600 text-white mt-4">
+                      <Button 
+                        onClick={() => transitionTo('/spotlight-pal')}
+                        className="bg-pink-500 hover:bg-pink-600 text-white mt-4"
+                      >
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                     <div className="flex items-center justify-center">
-                      <img src={spotlightPalImage} alt="Spotlight Pal character" className="w-full max-w-md h-auto object-contain animate-fade-in" />
+                      <img 
+                        src={spotlightPalImage}
+                        alt="Spotlight Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
                     </div>
                   </div>
                 </div>
@@ -564,12 +702,19 @@ const ManufacturingPage = () => {
                         </div>
                       </div>
 
-                      <Button onClick={() => transitionTo('/evergreen-pal')} className="bg-teal-500 hover:bg-teal-600 text-white mt-4">
+                      <Button 
+                        onClick={() => transitionTo('/evergreen-pal')}
+                        className="bg-teal-500 hover:bg-teal-600 text-white mt-4"
+                      >
                         Learn More <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                     </div>
                     <div className="flex items-center justify-center">
-                      <img src={evergreenPalImage} alt="Evergreen Pal character" className="w-full max-w-md h-auto object-contain animate-fade-in" />
+                      <img 
+                        src={evergreenPalImage}
+                        alt="Evergreen Pal character" 
+                        className="w-full max-w-md h-auto object-contain animate-fade-in"
+                      />
                     </div>
                   </div>
                 </div>
@@ -591,11 +736,20 @@ const ManufacturingPage = () => {
                 improve quality, standardize processes, and scale workforce development.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-gray-800 text-white hover:bg-gray-900 font-semibold text-lg px-8 py-4 h-auto" onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}>
+                <Button 
+                  size="lg"
+                  className="bg-gray-800 text-white hover:bg-gray-900 font-semibold text-lg px-8 py-4 h-auto"
+                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+                >
                   <Video className="mr-2 h-5 w-5" />
                   Schedule Strategy Call
                 </Button>
-                <Button variant="outline" size="lg" className="border-2 border-gray-800 text-gray-800 hover:bg-gray-50 font-semibold text-lg px-8 py-4 h-auto" onClick={() => transitionTo('/contact')}>
+                <Button 
+                  variant="outline"
+                  size="lg"
+                  className="border-2 border-gray-800 text-gray-800 hover:bg-gray-50 font-semibold text-lg px-8 py-4 h-auto"
+                  onClick={() => transitionTo('/contact')}
+                >
                   Get Manufacturing Video Quote
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -604,6 +758,8 @@ const ManufacturingPage = () => {
           </div>
         </section>
       </MainContent>
-    </div>;
+    </div>
+  );
 };
+
 export default ManufacturingPage;

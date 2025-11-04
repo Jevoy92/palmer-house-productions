@@ -109,7 +109,10 @@ const VideoProduction = () => {
               <Shield className="w-8 h-8 text-primary mx-auto mb-2" />
               <p className="font-semibold">Quality Guaranteed</p>
             </div>
-            
+            <div className="text-center">
+              <Award className="w-8 h-8 text-primary mx-auto mb-2" />
+              <p className="font-semibold">Proven Results</p>
+            </div>
             <div className="text-center">
               <Sparkles className="w-8 h-8 text-primary mx-auto mb-2" />
               <p className="font-semibold">Creative Excellence</p>

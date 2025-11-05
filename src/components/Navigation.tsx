@@ -405,7 +405,7 @@ export const Navigation = () => {
               <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Services</div>
               <div className="space-y-1">
                 <button 
-                  onClick={() => handlePageTransition('/')}
+                  onClick={() => handlePageTransition('/services/video-production')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
                   Video Production
@@ -482,25 +482,7 @@ export const Navigation = () => {
                   onClick={() => handlePageTransition('/assessments/video-readiness')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
-                  Quick Assessment
-                </button>
-                <button 
-                  onClick={() => handlePageTransition('/pals')}
-                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  Find Your Pal Quiz
-                </button>
-                <button 
-                  onClick={() => handlePageTransition('/assessments/video-readiness')}
-                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  Video Health Check
-                </button>
-                <button 
-                  onClick={() => handlePageTransition('/assessments/video-readiness')}
-                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  Visibility Audit
+                  Video Readiness Audit
                 </button>
               </div>
             </div>

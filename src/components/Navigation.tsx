@@ -411,7 +411,7 @@ export const Navigation = () => {
                   Video Production
                 </button>
                 <button 
-                  onClick={() => handlePageTransition('/spotlight-pal')}
+                  onClick={() => handlePageTransition('/services/post-production')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
                   Post-Production

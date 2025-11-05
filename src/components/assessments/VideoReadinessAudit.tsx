@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { 
   CheckCircle, 
   AlertTriangle, 
@@ -15,14 +16,15 @@ import {
   BarChart3,
   ArrowLeft,
   ArrowRight,
-  Star
+  Star,
+  Trophy,
+  Sparkles
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useAssessmentProgress } from "@/hooks/useAssessmentProgress";
 import { useAssessmentData } from "@/hooks/useAssessmentData";
 import { ProgressResume } from "./ProgressResume";
-import { ResultsExport } from "./ResultsExport";
-import { EnhancedResults } from "./EnhancedResults";
-import { SmartBookingButton } from "./SmartBookingButton";
+import confetti from 'canvas-confetti';
 
 interface VideoReadinessAuditProps {
   onBack?: () => void;
@@ -88,6 +90,7 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
     currentVideoUse: ''
   });
   const [showResumePrompt, setShowResumePrompt] = useState(hasProgress && !showResults);
+  const [openCategories, setOpenCategories] = useState<string[]>([]);
 
   const sections: AssessmentSection[] = [
     {
@@ -342,6 +345,40 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
     clearProgress(); // Clear saved progress once results are shown
   };
 
+  // Confetti effect for results
+  useEffect(() => {
+    if (showResults) {
+      const duration = 3000;
+      const animationEnd = Date.now() + duration;
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+      const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+
+      const interval = window.setInterval(() => {
+        const timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+          return clearInterval(interval);
+        }
+
+        const particleCount = 50 * (timeLeft / duration);
+        
+        confetti({
+          ...defaults,
+          particleCount,
+          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+        });
+        confetti({
+          ...defaults,
+          particleCount,
+          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+        });
+      }, 250);
+
+      return () => clearInterval(interval);
+    }
+  }, [showResults]);
+
   const handleEmailSubmit = () => {
     // Email results functionality
   };
@@ -377,97 +414,109 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
     const results = calculateResults();
     
     return (
-      <div className="max-w-4xl mx-auto p-6">
-        <Card>
-          <CardHeader className="text-center">
-            <div className="w-16 h-16 mx-auto mb-4 bg-primary/10 rounded-full flex items-center justify-center">
-              <BarChart3 className="h-8 w-8 text-primary" />
-            </div>
-            <CardTitle className="text-2xl">Your Video Readiness Assessment</CardTitle>
-            <CardDescription>
-              Based on your responses, here's your personalized video marketing readiness report
-            </CardDescription>
-          </CardHeader>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 animate-fade-in">
+        {/* Overall Score */}
+        <div className="bg-gradient-to-br from-primary to-primary/80 rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-12 text-white text-center mb-6 sm:mb-8">
+          <Trophy className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 animate-scale-in" />
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">Assessment Complete!</h2>
+          <div className="text-6xl sm:text-7xl md:text-8xl font-bold mb-3 sm:mb-4">{results.overallScore}%</div>
+          <p className="text-lg sm:text-xl md:text-2xl opacity-90 max-w-2xl mx-auto">{results.readinessLevel}</p>
+          <p className="text-base sm:text-lg opacity-80 max-w-2xl mx-auto mt-2">{results.description}</p>
+        </div>
+
+        {/* Category Breakdown */}
+        <div className="bg-card rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-foreground flex items-center gap-3">
+            <BarChart3 className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
+            Category Breakdown
+          </h3>
           
-          <CardContent>
-            <EnhancedResults
-              score={results.overallScore}
-              level={results.readinessLevel}
-              sectionScores={results.sectionPerformance.reduce((acc, section) => ({
-                ...acc,
-                [section.name.toLowerCase().replace(/\s+/g, '')]: section.percentage
-              }), {})}
-              priorities={results.immediateActions.map((action, index) => ({
-                id: `action-${index}`,
-                title: action.title,
-                description: action.description,
-                impact: action.priority as 'High' | 'Medium' | 'Low',
-                effort: 'Medium' as 'High' | 'Medium' | 'Low',
-                timeline: action.timeline,
-                category: action.phase || 'General'
-              }))}
-              milestones={results.monthlyMilestones || []}
-              industryBenchmark={65}
-              confidenceScore={85}
-              onGetDetailedPlan={() => {/* Book consultation */}}
-            />
+          <Accordion type="multiple" value={openCategories} onValueChange={setOpenCategories} className="space-y-3 sm:space-y-4">
+            {results.sectionPerformance.map((section) => {
+              return (
+                <AccordionItem key={section.name} value={section.name} className="border border-border rounded-2xl px-4 sm:px-6 overflow-hidden">
+                  <AccordionTrigger className="hover:no-underline py-4 sm:py-6">
+                    <div className="flex items-center justify-between w-full pr-4">
+                      <div className="flex items-center gap-3 sm:gap-4">
+                        <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+                        <span className="font-semibold text-base sm:text-lg text-left">{section.name}</span>
+                      </div>
+                      <span className="text-xl sm:text-2xl font-bold text-primary">{section.percentage}%</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-4 sm:pb-6">
+                    <div className="bg-muted rounded-xl p-4 sm:p-6 mt-2 space-y-3">
+                      <div className="mb-2">
+                        <Progress value={section.percentage} className="h-2" />
+                        <p className="text-sm text-muted-foreground mt-1">Score: {section.score} / {section.maxScore} points</p>
+                      </div>
+                      {section.recommendations.length > 0 && (
+                        <div>
+                          <h4 className="font-semibold text-sm mb-2">Recommendations:</h4>
+                          <ul className="space-y-1">
+                            {section.recommendations.slice(0, 3).map((rec, i) => (
+                              <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
+                                <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
+                                <span>{rec}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              );
+            })}
+          </Accordion>
+        </div>
 
-            <div className="mt-6 flex justify-center">
-              <SmartBookingButton
-                assessmentType="Video Readiness Audit"
-                score={results.overallScore}
-                level={results.readinessLevel}
-                recommendations={results.immediateActions.map(a => a.title)}
-                businessContext={businessContext}
-                onDownloadResults={() => {
-                  const content = `
-Video Readiness Audit Results
-Assessment Score: ${results.overallScore}%
-Readiness Level: ${results.readinessLevel}
+        {/* Action Items */}
+        <div className="bg-card rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-foreground flex items-center gap-3">
+            <Target className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
+            Your Next Steps
+          </h3>
+          <div className="space-y-3 sm:space-y-4">
+            {results.immediateActions.slice(0, 5).map((item, index) => (
+              <div key={index} className="flex gap-3 sm:gap-4 p-4 sm:p-5 bg-muted rounded-xl hover:bg-muted/80 transition-colors">
+                <div className="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm sm:text-base">
+                  {index + 1}
+                </div>
+                <div className="flex-1">
+                  <p className="font-semibold text-sm sm:text-base text-foreground mb-1">{item.title}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">{item.description}</p>
+                  <div className="flex gap-2 mt-2">
+                    <Badge variant="outline" className="text-xs">{item.priority} Priority</Badge>
+                    <Badge variant="outline" className="text-xs">{item.timeline}</Badge>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
-Top Recommendations:
-${results.immediateActions.slice(0, 5).map((action, i) => `${i + 1}. ${action.title}`).join('\n')}
-
-Generated on: ${new Date().toLocaleDateString()}
-                  `.trim();
-                  
-                  const blob = new Blob([content], { type: 'text/plain' });
-                  const url = URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.href = url;
-                  a.download = `video-readiness-audit-${Date.now()}.txt`;
-                  document.body.appendChild(a);
-                  a.click();
-                  document.body.removeChild(a);
-                  URL.revokeObjectURL(url);
-                }}
-                buttonText="Schedule Strategy Call Based on Results"
-                size="lg"
-              />
-            </div>
-
-            <ResultsExport
-              assessmentType="Video Readiness Audit"
-              score={results.overallScore}
-              level={results.readinessLevel}
-              recommendations={results.immediateActions.map(a => a.title)}
-              businessContext={businessContext}
-            />
-
-            {/* Navigation */}
-            <div className="flex justify-between pt-6">
-              {onBack && (
-                <Button variant="outline" onClick={onBack}>
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back
-                </Button>
-              )}
-              <Button onClick={() => window.location.reload()} className="ml-auto">
-                Take Another Assessment
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Recommendation CTA */}
+        <div className="bg-gradient-to-br from-muted to-primary/10 rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 border-2 border-primary/20">
+          <h3 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-foreground">Ready to Level Up Your Video Strategy?</h3>
+          <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed">
+            Based on your assessment, we can help you implement these recommendations and accelerate your video marketing success.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <Link 
+              to="/contact" 
+              className="flex-1 bg-primary text-primary-foreground text-center font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-primary/90 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
+              Schedule Strategy Call →
+            </Link>
+            <button 
+              onClick={() => window.location.reload()} 
+              className="flex-1 bg-card text-foreground border-2 border-border text-center font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-muted transition-all"
+            >
+              Retake Assessment
+            </button>
+          </div>
+        </div>
       </div>
     );
   }

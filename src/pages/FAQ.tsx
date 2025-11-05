@@ -203,17 +203,7 @@ const FAQ = () => {
 
   return (
     <div className="min-h-screen overflow-x-hidden font-sans relative">
-      {/* Fixed 4-Color Background Bars */}
-      <div className="fixed top-0 left-0 w-full h-full z-0">
-        <div className="w-full h-full flex">
-          <div className="w-1/4 h-full bg-pal-orange"></div>
-          <div className="w-1/4 h-full bg-pal-purple"></div>
-          <div className="w-1/4 h-full bg-pal-green"></div>
-          <div className="w-1/4 h-full bg-pal-blue"></div>
-        </div>
-      </div>
-      
-      <MetaTags 
+      <MetaTags
         title="Frequently Asked Questions | Palmer House Productions"
         description="Complete FAQ covering Palmer House Productions video content systems, pricing, processes, and services for business growth. Get answers to all your video production questions."
         keywords="video production FAQ, Palmer House Productions questions, video content systems, video production pricing, business video services"

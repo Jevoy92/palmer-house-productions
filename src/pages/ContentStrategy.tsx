@@ -42,10 +42,10 @@ const ContentStrategyPage = () => {
       shortTitle: "Business Asset",
       description: "Treat content like a system: repeatable, scalable, optimized for ROI. Not views — business outcomes.",
       details: "We don't create content for likes or followers. Every video we produce is designed to solve a specific business problem: onboarding new customers, reducing support calls, closing sales, or training your team.",
-      deliverables: [
-        "Business impact analysis",
-        "ROI framework setup",
-        "Content-to-revenue mapping"
+      whyItMatters: [
+        "Shifts focus from vanity metrics to real business impact",
+        "Ensures every video has a clear job to do in your operations",
+        "Creates measurable ROI from your content investments"
       ],
       duration: "Ongoing mindset",
     },
@@ -56,10 +56,10 @@ const ContentStrategyPage = () => {
       shortTitle: "Discovery",
       description: "Examine business goals, ideal clients, and revenue targets before creating anything.",
       details: "Before we touch a camera, we need to understand where your business is leaking time, money, or momentum. We identify the highest-impact video opportunities—the ones that will actually move the needle.",
-      deliverables: [
-        "Business bottleneck audit",
-        "Customer journey mapping",
-        "Priority video opportunities list"
+      whyItMatters: [
+        "Prevents wasted effort on content that doesn't solve real problems",
+        "Identifies your biggest operational bottlenecks that video can fix",
+        "Prioritizes what will save you the most time or make you the most money"
       ],
       duration: "1-2 weeks",
     },
@@ -70,10 +70,10 @@ const ContentStrategyPage = () => {
       shortTitle: "Identity Mapping",
       description: "Match your personality to content formats you can sustain long-term.",
       details: "You can't fake authenticity long-term. We match content formats to your natural communication style—whether that's teaching, storytelling, or structured walkthroughs—so you can show up consistently without burning out.",
-      deliverables: [
-        "Personal strengths assessment",
-        "Format-personality alignment",
-        "Sustainable content calendar"
+      whyItMatters: [
+        "Ensures you can maintain consistency without burning out",
+        "Aligns content creation with your natural strengths",
+        "Builds authentic connection with your audience over time"
       ],
       duration: "1 week",
     },
@@ -84,10 +84,10 @@ const ContentStrategyPage = () => {
       shortTitle: "Workshop",
       description: "90-minute deep dive to identify core video assets your business needs first.",
       details: "In this focused session, we map out your content infrastructure: the evergreen videos that answer your most common questions, the training content that scales your team, and the sales assets that close deals while you sleep.",
-      deliverables: [
-        "Core content blueprint",
-        "Priority production list",
-        "Distribution strategy"
+      whyItMatters: [
+        "Creates a clear blueprint for your content infrastructure",
+        "Eliminates guesswork about what to create next",
+        "Maps directly to your business operations and customer journey"
       ],
       duration: "90 minutes",
     },
@@ -98,10 +98,10 @@ const ContentStrategyPage = () => {
       shortTitle: "Roadmap",
       description: "Prioritized deliverables with clear roles and shooting calendar.",
       details: "No more guessing what to create next. You get a clear production roadmap with specific videos, shoot dates, and expected business impact. We build what matters first—the assets that will save you the most time or make you the most money.",
-      deliverables: [
-        "12-week production schedule",
-        "Shot list and script templates",
-        "Resource allocation plan"
+      whyItMatters: [
+        "Provides concrete action steps and clear priorities",
+        "Prevents overwhelm by breaking the strategy into manageable phases",
+        "Ensures steady progress toward your content infrastructure goals"
       ],
       duration: "Quarterly planning",
     },
@@ -112,10 +112,10 @@ const ContentStrategyPage = () => {
       shortTitle: "Optimization",
       description: "Analytics review and content evolution as your business scales.",
       details: "We track real metrics: reduced support tickets, faster onboarding times, increased conversion rates. As your business evolves, we adjust the content strategy to match—adding new assets, retiring outdated ones, and optimizing what's working.",
-      deliverables: [
-        "Performance analytics dashboard",
-        "Quarterly optimization sessions",
-        "Evolution roadmap"
+      whyItMatters: [
+        "Measures impact on actual business metrics, not vanity numbers",
+        "Adapts your content system as your business evolves",
+        "Maximizes ROI by doubling down on what works and cutting what doesn't"
       ],
       duration: "Ongoing support",
     }
@@ -308,7 +308,7 @@ const ContentStrategyPage = () => {
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-2">
                         <p className="text-sm font-semibold text-muted-foreground">
-                          STEP {String.fromCharCode(65 + activeStep)}
+                          STEP {activeStep + 1}
                         </p>
                         <span className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground font-medium">
                           {strategySteps[activeStep].duration}
@@ -326,14 +326,14 @@ const ContentStrategyPage = () => {
                     </div>
                   </div>
 
-                  {/* Deliverables Section */}
+                  {/* Why This Matters Section */}
                   <div className="border-t pt-6">
                     <h4 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
                       <Target className="w-4 h-4" />
-                      Key Deliverables
+                      Why This Matters
                     </h4>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                      {strategySteps[activeStep].deliverables.map((deliverable, idx) => (
+                      {strategySteps[activeStep].whyItMatters.map((reason, idx) => (
                         <div 
                           key={idx}
                           className="flex items-start gap-2 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
@@ -342,7 +342,7 @@ const ContentStrategyPage = () => {
                             className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
                             style={{ backgroundColor: strategySteps[activeStep].color }}
                           />
-                          <span className="text-sm text-foreground/80">{deliverable}</span>
+                          <span className="text-sm text-foreground/80">{reason}</span>
                         </div>
                       ))}
                     </div>

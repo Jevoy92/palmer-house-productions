@@ -150,9 +150,9 @@ const ContentStrategyPage = () => {
         </div>
       </section>
 
-      {/* Strategy Process */}
+      {/* Strategy Process - Vertical Timeline */}
       <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Our <span className="text-blue-600 dark:text-blue-400">Strategic Framework</span>
@@ -163,28 +163,56 @@ const ContentStrategyPage = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-12">
-            {strategySteps.map((step, index) => (
-              <Card key={index} className="border-2 hover:border-blue-500/50 transition-all hover:shadow-lg group">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className={`p-4 rounded-xl ${step.bgColor} group-hover:scale-110 transition-transform flex-shrink-0`}>
-                      <step.icon className={`w-8 h-8 ${step.iconColor}`} />
+          {/* Timeline Container */}
+          <div className="relative">
+            {/* Center vertical line - hidden on mobile */}
+            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500/50 via-purple-500/50 to-blue-500/50 -translate-x-1/2" />
+            
+            {/* Timeline Steps */}
+            <div className="space-y-12 md:space-y-16">
+              {strategySteps.map((step, index) => {
+                const isEven = index % 2 === 0;
+                
+                return (
+                  <div key={index} className="relative">
+                    {/* Step Number Circle */}
+                    <div className="md:absolute md:left-1/2 md:top-8 md:-translate-x-1/2 md:z-10 flex justify-center md:justify-start mb-4 md:mb-0">
+                      <div className={`w-16 h-16 rounded-full ${step.bgColor} border-4 border-background flex items-center justify-center shadow-lg`}>
+                        <span className={`text-2xl font-bold ${step.iconColor}`}>{index + 1}</span>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-xl font-bold mb-1">{step.title}</h3>
-                      <p className="text-sm text-foreground/70 mb-3">{step.subtitle}</p>
+
+                    {/* Content Card - Alternating sides on desktop */}
+                    <div className={`md:w-[calc(50%-3rem)] ${isEven ? 'md:ml-0' : 'md:ml-auto'}`}>
+                      <Card className="border-2 hover:border-blue-500/50 transition-all hover:shadow-lg group">
+                        <CardContent className="p-6">
+                          <div className="flex items-start gap-4 mb-4">
+                            <div className={`p-3 rounded-xl ${step.bgColor} group-hover:scale-110 transition-transform flex-shrink-0`}>
+                              <step.icon className={`w-6 h-6 ${step.iconColor}`} />
+                            </div>
+                            <div className="flex-1">
+                              <h3 className="text-lg font-bold mb-1">{step.title}</h3>
+                              <p className="text-xs text-foreground/70">{step.subtitle}</p>
+                            </div>
+                          </div>
+                          <p className="text-sm text-foreground/90 mb-3 leading-relaxed">{step.description}</p>
+                          <div className="pt-3 border-t border-border">
+                            <p className="text-xs italic text-blue-600 dark:text-blue-400">
+                              "{step.takeaway}"
+                            </p>
+                          </div>
+                        </CardContent>
+                      </Card>
                     </div>
+
+                    {/* Connector dot - only on desktop between steps */}
+                    {index < strategySteps.length - 1 && (
+                      <div className="hidden md:block absolute left-1/2 -bottom-8 w-3 h-3 rounded-full bg-blue-500/30 -translate-x-1/2" />
+                    )}
                   </div>
-                  <p className="text-foreground/90 mb-4">{step.description}</p>
-                  <div className="pt-4 border-t border-border">
-                    <p className="text-sm italic text-blue-600 dark:text-blue-400">
-                      "{step.takeaway}"
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>

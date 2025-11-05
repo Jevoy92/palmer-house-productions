@@ -2,88 +2,74 @@ import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { usePageTransition } from '@/components/PageTransition';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { 
   Target, 
   Compass,
   Users,
-  Cog,
   MessageSquare,
   Calendar,
   TrendingUp,
-  Wrench,
   Rocket,
-  CheckCircle,
   ArrowRight,
   Lightbulb,
   Brain,
   Zap,
-  LineChart,
-  ChevronDown
+  LineChart
 } from "lucide-react";
 
 const ContentStrategyPage = () => {
   const { transitionTo } = usePageTransition();
-  const [openSteps, setOpenSteps] = useState<number[]>([]);
+  const [activeStep, setActiveStep] = useState<number>(0);
+  const [initialState, setInitialState] = useState(true);
 
-  const toggleStep = (index: number) => {
-    setOpenSteps(prev => 
-      prev.includes(index) 
-        ? prev.filter(i => i !== index)
-        : [...prev, index]
-    );
+  useEffect(() => {
+    // Set first step as active by default and remove initial state
+    setInitialState(false);
+  }, []);
+
+  const handleStepClick = (index: number) => {
+    setInitialState(false);
+    setActiveStep(index);
   };
 
   const strategySteps = [
     {
       icon: Lightbulb,
-      iconColor: 'text-blue-600 dark:text-blue-400',
-      bgColor: 'bg-blue-500/10',
+      color: '#A8D08D',
       title: "Content as Business Asset",
       description: "Treat content like a system: repeatable, scalable, optimized for ROI. Not views — business outcomes.",
-      details: "We help you build a content infrastructure that generates predictable results. Every piece of content has a clear purpose in your sales funnel, customer journey, or brand positioning. We focus on creating systems, not one-offs—content that compounds in value over time."
     },
     {
       icon: Compass,
-      iconColor: 'text-purple-600 dark:text-purple-400',
-      bgColor: 'bg-purple-500/10',
+      color: '#F4B183',
       title: "Discovery & Diagnosis",
       description: "Examine business goals, ideal clients, and revenue targets before creating anything.",
-      details: "Through in-depth interviews and analysis, we uncover what makes your business unique, who you serve best, and what content will actually move the needle. We map your customer journey, identify content gaps, and prioritize opportunities based on potential ROI."
     },
     {
       icon: Users,
-      iconColor: 'text-pink-600 dark:text-pink-400',
-      bgColor: 'bg-pink-500/10',
+      color: '#B4A7D6',
       title: "Interest + Identity Mapping",
       description: "Match your personality to content formats you can sustain long-term.",
-      details: "Successful content requires consistency. We assess your strengths, communication style, and genuine interests to design a content approach you'll actually maintain. Whether you're better on camera, behind the mic, or in writing—we align strategy with what energizes you."
     },
     {
       icon: MessageSquare,
-      iconColor: 'text-orange-600 dark:text-orange-400',
-      bgColor: 'bg-orange-500/10',
+      color: '#A3D9E2',
       title: "Strategy Workshop",
       description: "90-minute deep dive to identify core video assets your business needs first.",
-      details: "In this collaborative session, we prioritize your highest-impact content opportunities. You'll leave with a clear understanding of what to create first, how each piece serves your business, and a realistic production timeline that fits your resources and schedule."
     },
     {
       icon: Calendar,
-      iconColor: 'text-cyan-600 dark:text-cyan-400',
-      bgColor: 'bg-cyan-500/10',
+      color: '#4A86E8',
       title: "3-Month Roadmap",
       description: "Prioritized deliverables with clear roles and shooting calendar.",
-      details: "Your custom roadmap includes specific video concepts, production dates, platform strategies, and distribution plans. We define who's responsible for what, set realistic deadlines, and build in buffer time for revisions and optimization."
     },
     {
       icon: TrendingUp,
-      iconColor: 'text-indigo-600 dark:text-indigo-400',
-      bgColor: 'bg-indigo-500/10',
+      color: '#434343',
       title: "Optimization & Growth",
       description: "Analytics review and content evolution as your business scales.",
-      details: "We track performance metrics that matter to your business—not just views and likes. Regular reviews help us identify what's working, double down on winners, and pivot away from underperformers. As your business grows, your content strategy evolves with it."
     }
   ];
 
@@ -139,7 +125,7 @@ const ContentStrategyPage = () => {
       </section>
 
       {/* Strategy Process - Interactive Timeline */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-3">
@@ -151,17 +137,41 @@ const ContentStrategyPage = () => {
           </div>
 
           {/* Desktop Timeline */}
-          <div className="relative w-full h-[500px] hidden md:block">
+          <div className={`relative w-full h-[500px] hidden md:block ${initialState ? 'initial-state' : ''}`}>
+            <style>{`
+              .timeline-step .step-point {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+              }
+              .timeline-step.active .step-point {
+                transform: scale(1.3);
+                box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.8), 0 0 15px 5px rgba(59, 130, 246, 0.4);
+              }
+              .timeline-step .info-card,
+              .timeline-step .dash-line {
+                transition: opacity 0.3s ease, transform 0.3s ease;
+              }
+              .timeline-container:not(.initial-state) .timeline-step:not(.active) .info-card,
+              .timeline-container:not(.initial-state) .timeline-step:not(.active) .dash-line {
+                opacity: 0.5;
+              }
+              .timeline-step.active .info-card {
+                transform: translateY(-5px);
+              }
+              .timeline-step.step-bottom.active .info-card {
+                transform: translateY(5px);
+              }
+            `}</style>
+
             {/* Wavy SVG Path */}
             <svg className="absolute top-1/2 left-0 w-full h-auto -translate-y-1/2" viewBox="0 0 1200 150" preserveAspectRatio="none">
               <defs>
                 <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" style={{ stopColor: '#93c5fd', stopOpacity: 1 }} />
-                  <stop offset="20%" style={{ stopColor: '#c084fc', stopOpacity: 1 }} />
-                  <stop offset="40%" style={{ stopColor: '#f472b6', stopOpacity: 1 }} />
-                  <stop offset="60%" style={{ stopColor: '#fb923c', stopOpacity: 1 }} />
-                  <stop offset="80%" style={{ stopColor: '#22d3ee', stopOpacity: 1 }} />
-                  <stop offset="100%" style={{ stopColor: '#818cf8', stopOpacity: 1 }} />
+                  <stop offset="0%" style={{ stopColor: '#A8D08D', stopOpacity: 1 }} />
+                  <stop offset="20%" style={{ stopColor: '#F4B183', stopOpacity: 1 }} />
+                  <stop offset="40%" style={{ stopColor: '#B4A7D6', stopOpacity: 1 }} />
+                  <stop offset="60%" style={{ stopColor: '#A3D9E2', stopOpacity: 1 }} />
+                  <stop offset="80%" style={{ stopColor: '#4A86E8', stopOpacity: 1 }} />
+                  <stop offset="100%" style={{ stopColor: '#434343', stopOpacity: 1 }} />
                 </linearGradient>
               </defs>
               <path 
@@ -173,67 +183,47 @@ const ContentStrategyPage = () => {
               />
             </svg>
 
-            {/* Timeline Steps */}
-            <div className="relative w-full h-full">
+            {/* Steps Container */}
+            <div className="timeline-container relative w-full h-full">
               {strategySteps.map((step, index) => {
                 const positions = [4.16, 20.83, 37.5, 54.16, 70.83, 87.5];
                 const isBottom = index % 2 === 1;
-                const isActive = openSteps.includes(index);
+                const isActive = activeStep === index;
 
                 return (
                   <div
                     key={index}
-                    className="absolute cursor-pointer transition-all duration-300"
+                    className={`timeline-step absolute cursor-pointer ${isBottom ? 'step-bottom' : ''} ${isActive ? 'active' : ''}`}
                     style={{ left: `${positions[index]}%`, top: '50%' }}
-                    onClick={() => toggleStep(index)}
+                    onClick={() => handleStepClick(index)}
                   >
                     {/* Step Point */}
                     <div 
-                      className={`step-point absolute -translate-x-1/2 -translate-y-1/2 w-5 h-5 bg-background border-4 rounded-full z-10 transition-all duration-300 ${step.bgColor.replace('/10', '/50')} ${
-                        isActive ? 'scale-[1.6] shadow-[0_0_0_4px_rgba(255,255,255,0.8),0_0_15px_5px_rgba(59,130,246,0.4)]' : ''
-                      }`}
-                      style={{ borderColor: `hsl(var(--${step.iconColor.split('-')[1]}-500))` }}
+                      className="step-point absolute -translate-x-1/2 -translate-y-1/2 w-5 h-5 bg-white border-4 rounded-full z-10"
+                      style={{ borderColor: step.color }}
                     />
 
                     {/* Dashed Line */}
                     <div 
-                      className={`absolute left-0 w-px border-l-2 border-dashed transition-opacity duration-300 ${
-                        isActive ? 'border-border' : 'border-border/30'
-                      } ${isBottom ? 'top-2 h-28' : '-top-32 h-28'}`}
+                      className={`dash-line absolute left-0 w-px border-l-2 border-dashed border-gray-300 ${
+                        isBottom ? 'top-8 h-28' : '-top-32 h-28'
+                      }`}
                     />
 
                     {/* Info Card */}
                     <div 
-                      className={`absolute -translate-x-1/2 w-56 transition-all duration-300 ${
-                        isBottom ? 'top-36' : '-top-44'
-                      } ${
-                        isActive ? (isBottom ? 'translate-y-1' : '-translate-y-1') : ''
-                      } ${
-                        !isActive ? 'opacity-50' : 'opacity-100'
+                      className={`info-card absolute -translate-x-1/2 flex items-start space-x-4 w-52 ${
+                        isBottom ? 'top-40' : '-top-48'
                       }`}
                     >
-                      <Card className={`border-2 transition-all ${isActive ? 'border-blue-500/50 shadow-xl' : 'border-border'} bg-background/95 backdrop-blur`}>
-                        <CardContent className="p-3">
-                          <div className="flex items-start space-x-3">
-                            <div className={`p-2 rounded-lg ${step.bgColor} flex-shrink-0`}>
-                              <step.icon className={`w-6 h-6 ${step.iconColor}`} />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-xs font-semibold text-muted-foreground mb-1">STEP {index + 1}</p>
-                              <h3 className="text-sm font-bold mb-1">{step.title}</h3>
-                              <p className="text-xs text-foreground/70 leading-relaxed">{step.description}</p>
-                              
-                              {isActive && (
-                                <div className="mt-2 pt-2 border-t border-border">
-                                  <p className="text-xs text-foreground/60 leading-relaxed">
-                                    {step.details}
-                                  </p>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
+                      <div className="text-4xl" style={{ color: step.color }}>
+                        <step.icon className="w-10 h-10" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-500">STEP {String.fromCharCode(65 + index)}</p>
+                        <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">{step.title}</h3>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">{step.description}</p>
+                      </div>
                     </div>
                   </div>
                 );
@@ -244,36 +234,27 @@ const ContentStrategyPage = () => {
           {/* Mobile: Simple Vertical List */}
           <div className="md:hidden space-y-4">
             {strategySteps.map((step, index) => (
-              <Collapsible key={index} open={openSteps.includes(index)} onOpenChange={() => toggleStep(index)}>
-                <Card className="border-2 hover:border-blue-500/50 transition-all">
-                  <CardContent className="p-4">
-                    <CollapsibleTrigger className="w-full text-left">
-                      <div className="flex items-start gap-3">
-                        <div className={`w-12 h-12 rounded-full ${step.bgColor} border-2 border-background flex items-center justify-center flex-shrink-0`}>
-                          <step.icon className={`w-6 h-6 ${step.iconColor}`} />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-center justify-between mb-2">
-                            <h3 className="text-base font-bold">{step.title}</h3>
-                            <ChevronDown 
-                              className={`w-4 h-4 transition-transform ${openSteps.includes(index) ? 'rotate-180' : ''}`}
-                            />
-                          </div>
-                          <p className="text-sm text-foreground/80">{step.description}</p>
-                        </div>
-                      </div>
-                    </CollapsibleTrigger>
-                    
-                    <CollapsibleContent>
-                      <div className="mt-3 pl-15 pt-3 border-t border-border">
-                        <p className="text-sm text-foreground/70 leading-relaxed">
-                          {step.details}
-                        </p>
-                      </div>
-                    </CollapsibleContent>
-                  </CardContent>
-                </Card>
-              </Collapsible>
+              <Card 
+                key={index} 
+                className="border-2 hover:border-blue-500/50 transition-all cursor-pointer"
+                onClick={() => setActiveStep(index)}
+              >
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-3">
+                    <div 
+                      className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
+                      style={{ backgroundColor: `${step.color}20`, color: step.color }}
+                    >
+                      <step.icon className="w-6 h-6" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-xs font-semibold text-muted-foreground mb-1">STEP {index + 1}</p>
+                      <h3 className="text-base font-bold mb-1">{step.title}</h3>
+                      <p className="text-sm text-foreground/80">{step.description}</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>

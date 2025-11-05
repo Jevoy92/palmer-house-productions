@@ -26,7 +26,7 @@ import {
   Zap
 } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-
+import { SpotlightPalQuiz } from '@/components/assessments/SpotlightPalQuiz';
 
 const SpotlightPal = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
@@ -435,6 +435,8 @@ const SpotlightPal = () => {
             </div>
           </div>
         </section>
+
+        <SpotlightPalQuiz />
 
         {/* FAQ Section */}
         <section className="py-20 relative z-10">

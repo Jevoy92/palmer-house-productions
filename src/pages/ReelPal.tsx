@@ -6,7 +6,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { OptimizedImage } from '@/components/performance/OptimizedImage';
 import { LazySection } from '@/components/performance/LazySection';
 import { MobileOptimized, useMobileStyles } from '@/components/performance/MobileOptimized';
-
+import { ReelPalQuiz } from '@/components/assessments/ReelPalQuiz';
 import reelPalImage from '@/assets/pals/female-reel-pal-social-engagement.png';
 import systemPalHeadshot from '@/assets/pals/male-system-pal-headshot.jpg';
 import evergreenPalHeadshot from '@/assets/pals/male-evergreen-pal-headshot-2.jpg';
@@ -520,6 +520,8 @@ const ReelPal = () => {
                 Discover your content creation readiness and get personalized recommendations.
               </p>
             </div>
+
+            <ReelPalQuiz />
           </div>
         </section>
 

@@ -23,7 +23,7 @@ import {
   Database
 } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-
+import { SystemPalQuiz } from '@/components/assessments/SystemPalQuiz';
 
 const SystemPal = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
@@ -464,6 +464,8 @@ const SystemPal = () => {
             </div>
           </div>
         </section>
+
+        <SystemPalQuiz />
 
         {/* FAQ Section */}
         <section className="py-20 relative z-10">

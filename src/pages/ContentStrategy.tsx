@@ -138,10 +138,10 @@ const ContentStrategyPage = () => {
         </div>
       </section>
 
-      {/* Strategy Process - Vertical Timeline */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
+      {/* Strategy Process - Winding Path */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-3">
               Our <span className="text-blue-600 dark:text-blue-400">Strategic Framework</span>
             </h2>
@@ -150,67 +150,122 @@ const ContentStrategyPage = () => {
             </p>
           </div>
 
-          {/* Timeline Container */}
-          <div className="relative">
-            {/* Center vertical line - hidden on mobile */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500/50 via-purple-500/50 to-blue-500/50 -translate-x-1/2" />
-            
-            {/* Timeline Steps */}
-            <div className="space-y-6 md:space-y-8">
-              {strategySteps.map((step, index) => {
-                const isEven = index % 2 === 0;
-                
-                return (
-                  <div key={index} className="relative">
-                    {/* Step Number Circle */}
-                    <div className="md:absolute md:left-1/2 md:top-4 md:-translate-x-1/2 md:z-10 flex justify-center md:justify-start mb-3 md:mb-0">
-                      <div className={`w-12 h-12 rounded-full ${step.bgColor} border-4 border-background flex items-center justify-center shadow-lg`}>
-                        <span className={`text-lg font-bold ${step.iconColor}`}>{index + 1}</span>
-                      </div>
-                    </div>
+          {/* Winding Path Container */}
+          <div className="relative min-h-[800px] hidden md:block">
+            {/* SVG Curved Path */}
+            <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid meet">
+              <defs>
+                <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" style={{ stopColor: 'hsl(var(--blue-500))', stopOpacity: 0.3 }} />
+                  <stop offset="50%" style={{ stopColor: 'hsl(var(--purple-500))', stopOpacity: 0.3 }} />
+                  <stop offset="100%" style={{ stopColor: 'hsl(var(--blue-500))', stopOpacity: 0.3 }} />
+                </linearGradient>
+              </defs>
+              <path
+                d="M 150,80 Q 400,100 450,200 T 200,350 Q 100,400 250,500 T 500,650 Q 600,700 450,750"
+                fill="none"
+                stroke="url(#pathGradient)"
+                strokeWidth="8"
+                strokeLinecap="round"
+              />
+            </svg>
 
-                    {/* Content Card - Alternating sides on desktop */}
-                    <div className={`md:w-[calc(50%-2.5rem)] ${isEven ? 'md:ml-0' : 'md:ml-auto'}`}>
-                      <Collapsible open={openSteps.includes(index)} onOpenChange={() => toggleStep(index)}>
-                        <Card className="border-2 hover:border-blue-500/50 transition-all hover:shadow-lg group">
-                          <CardContent className="p-4">
-                            <CollapsibleTrigger className="w-full text-left">
-                              <div className="flex items-start gap-3">
-                                <div className={`p-2 rounded-lg ${step.bgColor} group-hover:scale-110 transition-transform flex-shrink-0`}>
-                                  <step.icon className={`w-5 h-5 ${step.iconColor}`} />
-                                </div>
-                                <div className="flex-1">
-                                  <div className="flex items-center justify-between mb-2">
-                                    <h3 className="text-base font-bold">{step.title}</h3>
-                                    <ChevronDown 
-                                      className={`w-4 h-4 transition-transform ${openSteps.includes(index) ? 'rotate-180' : ''}`}
-                                    />
-                                  </div>
-                                  <p className="text-sm text-foreground/80">{step.description}</p>
-                                </div>
-                              </div>
-                            </CollapsibleTrigger>
-                            
-                            <CollapsibleContent>
-                              <div className="mt-3 pl-11 pt-3 border-t border-border">
-                                <p className="text-sm text-foreground/70 leading-relaxed">
-                                  {step.details}
-                                </p>
-                              </div>
-                            </CollapsibleContent>
-                          </CardContent>
-                        </Card>
-                      </Collapsible>
-                    </div>
+            {/* Milestone Points */}
+            {strategySteps.map((step, index) => {
+              const positions = [
+                { x: '150px', y: '80px', cardX: '220px', cardY: '30px' },
+                { x: '450px', y: '200px', cardX: '520px', cardY: '150px' },
+                { x: '200px', y: '350px', cardX: '20px', cardY: '300px' },
+                { x: '250px', y: '500px', cardX: '320px', cardY: '450px' },
+                { x: '500px', y: '650px', cardX: '40px', cardY: '600px' },
+                { x: '450px', y: '750px', cardX: '520px', cardY: '700px' },
+              ];
 
-                    {/* Connector dot */}
-                    {index < strategySteps.length - 1 && (
-                      <div className="hidden md:block absolute left-1/2 -bottom-4 w-2 h-2 rounded-full bg-blue-500/30 -translate-x-1/2" />
-                    )}
+              const pos = positions[index];
+
+              return (
+                <div key={index}>
+                  {/* Milestone Circle */}
+                  <div 
+                    className="absolute z-20 -translate-x-1/2 -translate-y-1/2"
+                    style={{ left: pos.x, top: pos.y }}
+                  >
+                    <div className={`w-20 h-20 rounded-full ${step.bgColor} border-4 border-background shadow-2xl flex items-center justify-center group hover:scale-110 transition-transform cursor-pointer`}>
+                      <step.icon className={`w-10 h-10 ${step.iconColor}`} />
+                    </div>
+                    <div className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full ${step.bgColor} border-2 border-background flex items-center justify-center`}>
+                      <span className={`text-xs font-bold ${step.iconColor}`}>{index + 1}</span>
+                    </div>
                   </div>
-                );
-              })}
-            </div>
+
+                  {/* Content Card */}
+                  <div 
+                    className="absolute z-10"
+                    style={{ left: pos.cardX, top: pos.cardY, width: '280px' }}
+                  >
+                    <Collapsible open={openSteps.includes(index)} onOpenChange={() => toggleStep(index)}>
+                      <Card className="border-2 hover:border-blue-500/50 transition-all hover:shadow-xl group bg-background/95 backdrop-blur">
+                        <CardContent className="p-3">
+                          <CollapsibleTrigger className="w-full text-left">
+                            <div className="flex items-center justify-between mb-2">
+                              <h3 className="text-sm font-bold pr-2">{step.title}</h3>
+                              <ChevronDown 
+                                className={`w-4 h-4 flex-shrink-0 transition-transform ${openSteps.includes(index) ? 'rotate-180' : ''}`}
+                              />
+                            </div>
+                            <p className="text-xs text-foreground/80">{step.description}</p>
+                          </CollapsibleTrigger>
+                          
+                          <CollapsibleContent>
+                            <div className="mt-2 pt-2 border-t border-border">
+                              <p className="text-xs text-foreground/70 leading-relaxed">
+                                {step.details}
+                              </p>
+                            </div>
+                          </CollapsibleContent>
+                        </CardContent>
+                      </Card>
+                    </Collapsible>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Mobile: Simple Vertical List */}
+          <div className="md:hidden space-y-4">
+            {strategySteps.map((step, index) => (
+              <Collapsible key={index} open={openSteps.includes(index)} onOpenChange={() => toggleStep(index)}>
+                <Card className="border-2 hover:border-blue-500/50 transition-all">
+                  <CardContent className="p-4">
+                    <CollapsibleTrigger className="w-full text-left">
+                      <div className="flex items-start gap-3">
+                        <div className={`w-12 h-12 rounded-full ${step.bgColor} border-2 border-background flex items-center justify-center flex-shrink-0`}>
+                          <step.icon className={`w-6 h-6 ${step.iconColor}`} />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-2">
+                            <h3 className="text-base font-bold">{step.title}</h3>
+                            <ChevronDown 
+                              className={`w-4 h-4 transition-transform ${openSteps.includes(index) ? 'rotate-180' : ''}`}
+                            />
+                          </div>
+                          <p className="text-sm text-foreground/80">{step.description}</p>
+                        </div>
+                      </div>
+                    </CollapsibleTrigger>
+                    
+                    <CollapsibleContent>
+                      <div className="mt-3 pl-15 pt-3 border-t border-border">
+                        <p className="text-sm text-foreground/70 leading-relaxed">
+                          {step.details}
+                        </p>
+                      </div>
+                    </CollapsibleContent>
+                  </CardContent>
+                </Card>
+              </Collapsible>
+            ))}
           </div>
         </div>
       </section>

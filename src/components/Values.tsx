@@ -5,26 +5,30 @@ export const Values = () => {
   const values = [
     { 
       icon: Compass, 
-      title: "Freedom over Formulas", 
-      description: "We break the template. Every brand has a wild edge—we help you find it and film it.",
+      title: "Systems over Shortcuts", 
+      tagline: "We don't follow trends — we build systems. Anyone can post a video. We build assets that answer questions, close sales, train teams, and keep working long after they're published.",
+      description: "Templates create noise. Systems create results. We uncover what your business actually needs — then design video tools that reduce friction, save time, and increase trust at every step of your customer journey.",
       palColor: "pal-purple"
     },
     { 
       icon: Search, 
-      title: "Truth over Trendiness", 
-      description: "We don't chase what's viral. We tell stories with soul that actually mean something.",
+      title: "Clarity over Clicks", 
+      tagline: "We don't make content for algorithms. We create videos that solve real business problems — confused customers, slow sales calls, repetitive onboarding, and untrained staff.",
+      description: "Trends disappear. Clear communication compounds. When your message is understood, your business grows — even if the video gets 200 views instead of 200,000.",
       palColor: "pal-orange"
     },
     { 
       icon: Sparkles, 
-      title: "Clarity over Complexity", 
-      description: "Clear beats clever. Simple beats busy. If your audience doesn't feel it, they won't follow.",
+      title: "Efficiency over Excess", 
+      tagline: "Most businesses waste time explaining the same things over and over. We turn those answers into video assets — once, clearly — so they can be used again and again.",
+      description: "Simple scripts. Direct language. No fluff. If your audience can't understand it in 30 seconds, they won't act on it. Clarity drives action. Efficiency drives profit.",
       palColor: "pal-blue"
     },
     { 
       icon: Heart, 
-      title: "Emotion over Ego", 
-      description: "Connection > performance. We capture presence, not performance—because impact starts with honesty.",
+      title: "Connection over Performance", 
+      tagline: "People don't buy the best company — they buy the one they trust the most. That trust doesn't come from perfect scripts. It comes from honesty, presence, and proof.",
+      description: "Our videos don't try to make you look perfect — they show why you're real, reliable, and worth choosing. Vulnerability builds loyalty. Humanity builds brands.",
       palColor: "pal-green"
     }
   ];
@@ -46,7 +50,7 @@ export const Values = () => {
             </p>
           </div>
           
-          <div className="space-y-6 max-w-4xl mx-auto mb-12">
+          <div className="grid md:grid-cols-2 gap-6 max-w-6xl mx-auto mb-12">
             {values.map((value, index) => {
               const IconComponent = value.icon;
               return (
@@ -54,19 +58,20 @@ export const Values = () => {
                   key={index}
                   className="group p-6 md:p-8 bg-gradient-to-br from-gray-50 to-white rounded-2xl border hover:border-gray-200 transition-all duration-300"
                 >
-                  <div className="flex items-start space-x-6">
-                    <div className={`w-16 h-16 bg-${value.palColor} rounded-2xl flex items-center justify-center mt-1 group-hover:scale-110 transition-transform duration-300`}>
-                      <IconComponent size={28} className="text-white" />
+                  <div className="flex items-start space-x-4 mb-4">
+                    <div className={`w-14 h-14 bg-${value.palColor} rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                      <IconComponent size={24} className="text-white" />
                     </div>
-                    <div>
-                      <h3 className="text-lg md:text-xl font-display font-black text-corporate-dark mb-3">
-                        {value.title}
-                      </h3>
-                      <p className="text-corporate-gray leading-relaxed text-sm md:text-base font-medium">
-                        {value.description}
-                      </p>
-                    </div>
+                    <h3 className="text-xl md:text-2xl font-display font-black text-corporate-dark pt-2">
+                      {value.title}
+                    </h3>
                   </div>
+                  <p className="text-corporate-gray leading-relaxed text-base font-medium mb-3">
+                    {value.tagline}
+                  </p>
+                  <p className="text-corporate-gray/80 leading-relaxed text-sm font-medium">
+                    {value.description}
+                  </p>
                 </div>
               );
             })}

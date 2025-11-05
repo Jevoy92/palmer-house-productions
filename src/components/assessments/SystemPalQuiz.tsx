@@ -377,24 +377,33 @@ export const SystemPalQuiz = () => {
     return actions;
   };
 
-  const getRecommendation = (percentage: number): { title: string; description: string; cta: string } => {
+  const getRecommendation = (percentage: number): { level: string; title: string; description: string; recommendation: string; cta: string; icon: string } => {
     if (percentage >= 75) {
       return {
+        level: "Systems Expert",
         title: "You're Ready to Build Video Systems",
         description: "Your systems thinking and operational awareness position you perfectly for implementing scalable video workflows. Let's leverage your readiness to create automated processes that multiply team efficiency and preserve institutional knowledge.",
-        cta: "Launch System Strategy"
+        recommendation: "Full Video Systems Implementation",
+        cta: "Launch System Strategy",
+        icon: "🎯"
       };
     } else if (percentage >= 50) {
       return {
+        level: "Growing Systems Thinker",
         title: "Systematize Your Video Operations",
         description: "You understand operations but need strategic guidance to transform video from a bottleneck into a scalable asset. Let's build workflows, training libraries, and automation that free your team to focus on high-value work.",
-        cta: "Develop Video Systems"
+        recommendation: "Guided Systems Development",
+        cta: "Develop Video Systems",
+        icon: "⚙️"
       };
     } else {
       return {
+        level: "Systems Beginner",
         title: "Start Your Systems Journey",
         description: "Video systems might be a new concept, but they're game-changing for operational efficiency. Let's begin by identifying your biggest time drains and building simple video solutions that deliver immediate ROI and scale as you grow.",
-        cta: "Begin Discovery Call"
+        recommendation: "Systems Discovery & Foundation",
+        cta: "Begin Discovery Call",
+        icon: "🌱"
       };
     }
   };
@@ -433,86 +442,136 @@ export const SystemPalQuiz = () => {
     const actionItems = getActionItems(categoryScores);
     const recommendation = getRecommendation(percentage);
 
+    const toggleCategory = (category: string) => {
+      setOpenCategories(prev => 
+        prev.includes(category) 
+          ? prev.filter(c => c !== category)
+          : [...prev, category]
+      );
+    };
+
     return (
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 animate-fade-in">
-        {/* Overall Score */}
-        <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-12 text-white text-center mb-6 sm:mb-8">
-          <Trophy className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 animate-scale-in" />
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">Quiz Complete!</h2>
-          <div className="text-6xl sm:text-7xl md:text-8xl font-bold mb-3 sm:mb-4">{percentage}%</div>
-          <p className="text-lg sm:text-xl md:text-2xl opacity-90 max-w-2xl mx-auto">Video Systems Readiness Score</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fade-in">
+        {/* Hero Score Section */}
+        <div className="bg-green-600 rounded-3xl shadow-2xl p-8 lg:p-12 mb-8 text-white text-center">
+          <Trophy className="w-20 h-20 mx-auto mb-4 animate-scale-in" />
+          <h2 className="text-5xl font-bold mb-4">Your Video System Readiness Score</h2>
+          <div className="text-8xl font-bold mb-4">{percentage}%</div>
+          <div className="inline-block bg-white/20 px-8 py-3 rounded-full mb-6">
+            <p className="text-2xl font-semibold">{recommendation.level}</p>
+          </div>
+          <p className="text-xl max-w-2xl mx-auto">
+            {recommendation.title}
+          </p>
         </div>
 
-        {/* Category Breakdown */}
-        <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8">
-          <h3 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-gray-800 flex items-center gap-3">
-            <BarChart3 className="w-7 h-7 sm:w-8 sm:h-8 text-green-500" />
-            Your Systems Breakdown
-          </h3>
-          
-          <Accordion type="multiple" value={openCategories} onValueChange={setOpenCategories} className="space-y-3 sm:space-y-4">
+        {/* Category Breakdown with Insights */}
+        <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-10 mb-8">
+          <h3 className="text-3xl font-bold mb-6 text-center text-gray-800">Your Breakdown by Category</h3>
+          <div className="grid md:grid-cols-2 gap-6">
             {Object.entries(categoryScores).map(([category, { score, max }]) => {
-              const categoryPercentage = Math.round((score / max) * 100);
+              const catPercentage = Math.round((score / max) * 100);
+              const isOpen = openCategories.includes(category);
               const insight = getCategoryInsight(category, score, max);
+              const status = catPercentage >= 70 ? 'strong' : catPercentage >= 40 ? 'developing' : 'opportunity';
               
               return (
-                <AccordionItem key={category} value={category} className="border border-gray-200 rounded-2xl px-4 sm:px-6 overflow-hidden">
-                  <AccordionTrigger className="hover:no-underline py-4 sm:py-6">
-                    <div className="flex items-center justify-between w-full pr-4">
-                      <div className="flex items-center gap-3 sm:gap-4">
-                        <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-green-500 flex-shrink-0" />
-                        <span className="font-semibold text-base sm:text-lg text-left">{category}</span>
+                <Collapsible key={category} open={isOpen} onOpenChange={() => toggleCategory(category)}>
+                  <div className={`border-2 rounded-xl overflow-hidden transition-colors ${
+                    status === 'strong' ? 'border-green-300 bg-green-50/50' :
+                    status === 'developing' ? 'border-yellow-300 bg-yellow-50/50' :
+                    'border-green-300 bg-green-50/50'
+                  }`}>
+                    <CollapsibleTrigger className="w-full p-6 text-left hover:bg-white/50 transition-colors">
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="font-bold text-lg text-gray-800 flex-1">{category}</h4>
+                        {isOpen ? (
+                          <ChevronUp className="w-5 h-5 text-gray-600 flex-shrink-0" />
+                        ) : (
+                          <ChevronDown className="w-5 h-5 text-gray-600 flex-shrink-0" />
+                        )}
                       </div>
-                      <span className="text-xl sm:text-2xl font-bold text-green-500">{categoryPercentage}%</span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="pb-4 sm:pb-6">
-                    <div className="bg-gray-50 rounded-xl p-4 sm:p-6 mt-2">
-                      <p className="text-sm sm:text-base text-gray-700 leading-relaxed">{insight}</p>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
+                      <div className="flex items-center gap-4">
+                        <div className="flex-1">
+                          <div className="w-full bg-gray-200 rounded-full h-3">
+                            <div 
+                              className="bg-green-600 h-3 rounded-full transition-all duration-1000"
+                              style={{ width: `${catPercentage}%` }}
+                            />
+                          </div>
+                        </div>
+                        <span className="text-2xl font-bold text-gray-700">{catPercentage}%</span>
+                      </div>
+                    </CollapsibleTrigger>
+                    
+                    <CollapsibleContent>
+                      <div className="px-6 pb-6 pt-2">
+                        <div className="flex items-start gap-3 pt-3 border-t border-gray-200">
+                          {status === 'strong' ? (
+                            <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                          ) : (
+                            <AlertCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                          )}
+                          <p className="text-gray-700 leading-relaxed">{insight}</p>
+                        </div>
+                      </div>
+                    </CollapsibleContent>
+                  </div>
+                </Collapsible>
               );
             })}
-          </Accordion>
+          </div>
         </div>
 
         {/* Action Items */}
-        <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8">
-          <h3 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-gray-800 flex items-center gap-3">
-            <Target className="w-7 h-7 sm:w-8 sm:h-8 text-green-500" />
-            Your Personalized Action Plan
-          </h3>
-          <div className="space-y-3 sm:space-y-4">
-            {actionItems.map((item, index) => (
-              <div key={index} className="flex gap-3 sm:gap-4 p-4 sm:p-5 bg-green-50 rounded-xl hover:bg-green-100 transition-colors">
-                <div className="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-green-500 text-white flex items-center justify-center font-bold text-sm sm:text-base">
-                  {index + 1}
+        <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-10 mb-8">
+          <h3 className="text-3xl font-bold mb-6 text-center text-gray-800">Your Personalized Action Plan</h3>
+          <div className="space-y-4">
+            {actionItems.map((item, idx) => (
+              <div key={idx} className="flex items-start gap-4 p-4 bg-green-50 rounded-xl border-2 border-green-200">
+                <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
+                  {idx + 1}
                 </div>
-                <p className="text-sm sm:text-base text-gray-700 leading-relaxed pt-0.5">{item}</p>
+                <p className="text-lg text-gray-700 pt-1">{item}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Recommendation */}
-        <div className="bg-gradient-to-br from-gray-50 to-green-50 rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 border-2 border-green-200">
-          <h3 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-gray-800">{recommendation.title}</h3>
-          <p className="text-base sm:text-lg text-gray-700 mb-6 sm:mb-8 leading-relaxed">{recommendation.description}</p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+        {/* Recommendation CTA */}
+        <div className="bg-green-50 rounded-3xl shadow-xl p-8 lg:p-12 mb-8">
+          <div className="text-center mb-8">
+            <div className="text-6xl mb-4">{recommendation.icon}</div>
+            <h3 className="text-3xl font-bold mb-4 text-gray-800">My Recommendation for You</h3>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-4">
+              {recommendation.description}
+            </p>
+            <p className="text-2xl font-bold text-gray-800 mb-8">{recommendation.recommendation}</p>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
-              to="/contact" 
-              className="flex-1 bg-green-500 text-white text-center font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-green-600 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+              to="/contact"
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold px-10 py-4 rounded-full transition-all hover:scale-105 shadow-lg shadow-green-600/30 text-center flex items-center justify-center gap-2"
             >
-              {recommendation.cta} →
+              {recommendation.cta}
+              <ArrowRight className="w-5 h-5" />
             </Link>
             <button 
-              onClick={() => window.location.reload()} 
-              className="flex-1 bg-white text-green-500 border-2 border-green-500 text-center font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-green-50 transition-all"
+              onClick={() => {
+                setShowResults(false);
+                setCurrentSection(0);
+                setAnswers([]);
+              }}
+              className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold px-10 py-4 rounded-full transition-all hover:scale-105"
             >
               Retake Quiz
             </button>
           </div>
+        </div>
+
+        <div className="text-center text-gray-600 pb-8">
+          <p className="text-lg">Want to discuss your results? <Link to="/contact" className="text-green-600 hover:underline font-semibold">Schedule a free discovery call</Link></p>
         </div>
       </div>
     );

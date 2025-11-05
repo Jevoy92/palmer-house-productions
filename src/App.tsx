@@ -28,9 +28,8 @@ import NotFound from "./pages/NotFound";
 import VideoProduction from "./pages/services/VideoProduction";
 import PostProduction from "./pages/services/PostProduction";
 import Startups from "./pages/Startups";
-import Team from "./pages/company/Team";
-import Values from "./pages/company/Values";
 import Reviews from "./pages/resources/Reviews";
+import DIYDownloads from "./pages/services/DIYDownloads";
 import FAQ from "./pages/FAQ";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -110,11 +109,10 @@ const App = () => (
            <Route path="/industries/education" element={<Education />} />
            <Route path="/industries/government" element={<Government />} />
            <Route path="/industries/technology" element={<Technology />} />
-          <Route path="/services/group-coaching" element={<Navigate to="/contact" replace />} />
-          <Route path="/services/monthly-content" element={<Navigate to="/contact" replace />} />
-          <Route path="/company/team" element={<Team />} />
-          <Route path="/company/values" element={<Values />} />
-          <Route path="/resources/reviews" element={<Reviews />} />
+           <Route path="/services/group-coaching" element={<Navigate to="/contact" replace />} />
+           <Route path="/services/monthly-content" element={<Navigate to="/contact" replace />} />
+           <Route path="/services/diy-downloads" element={<DIYDownloads />} />
+           <Route path="/resources/reviews" element={<Reviews />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />

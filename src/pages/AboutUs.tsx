@@ -13,18 +13,8 @@ import { InternalLinking } from "@/components/seo/InternalLinking";
 
 const AboutUsPage = () => {
   return (
-    <div className="min-h-screen overflow-x-hidden font-sans relative">
-      {/* Fixed 4-Color Background Bars */}
-      <div className="fixed top-0 left-0 w-full h-full z-0">
-        <div className="w-full h-full flex">
-          <div className="w-1/4 h-full bg-pal-orange"></div>
-          <div className="w-1/4 h-full bg-pal-purple"></div>
-          <div className="w-1/4 h-full bg-pal-green"></div>
-          <div className="w-1/4 h-full bg-pal-blue"></div>
-        </div>
-      </div>
-      
-      <MetaTags 
+    <div className="min-h-screen overflow-x-hidden font-sans">
+      <MetaTags
         title="About Palmer House Productions | Professional Video Production Team"
         description="Meet the Palmer House Productions team. Professional video production experts specializing in cinematic storytelling and business content creation."
         keywords="about Palmer House Productions, video production team, professional videographers, cinematic storytelling experts"

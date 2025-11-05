@@ -29,73 +29,43 @@ const ContentStrategyPage = () => {
       icon: Lightbulb,
       iconColor: 'text-blue-600 dark:text-blue-400',
       bgColor: 'bg-blue-500/10',
-      title: "Why Content Strategy Matters",
-      subtitle: "Content as a business asset, not marketing fluff",
-      description: "Most businesses post randomly or reactively. We treat content like a system: repeatable, scalable, optimized for ROI. Our goal isn't views — it's business outcomes.",
-      takeaway: "This isn't about trends — it's about building a library that works for me while I sleep."
+      title: "Content as Business Asset",
+      description: "Treat content like a system: repeatable, scalable, optimized for ROI. Not views — business outcomes.",
     },
     {
       icon: Compass,
       iconColor: 'text-purple-600 dark:text-purple-400',
       bgColor: 'bg-purple-500/10',
       title: "Discovery & Diagnosis",
-      subtitle: "Understand your business at its roots",
-      description: "We examine your business goals, ideal client profile, current bottlenecks, and existing content. Understanding your revenue targets, service mix, and buying triggers before creating anything.",
-      takeaway: "They actually understand my business before hitting record."
+      description: "Examine business goals, ideal clients, and revenue targets before creating anything.",
     },
     {
       icon: Users,
       iconColor: 'text-pink-600 dark:text-pink-400',
       bgColor: 'bg-pink-500/10',
       title: "Interest + Identity Mapping",
-      subtitle: "Align your personality with content formats",
-      description: "What do you enjoy talking about? Where are you most natural — teaching, storytelling, demonstrating? We match that to videos you can sustain for months, not days.",
-      takeaway: "I don't have to become a TikTok star — I just need a strategy that works for me."
-    },
-    {
-      icon: Cog,
-      iconColor: 'text-green-600 dark:text-green-400',
-      bgColor: 'bg-green-500/10',
-      title: "Content as a System",
-      subtitle: "A repeatable engine, not random posts",
-      description: "Core pillars of Authority, Trust, Systems, Evergreen, and Social Proof. Internal vs external content — FAQs, onboarding, training, sales tools. Every video solves a business problem.",
-      takeaway: "Every piece of content solves a business problem — not just entertains."
+      description: "Match your personality to content formats you can sustain long-term.",
     },
     {
       icon: MessageSquare,
       iconColor: 'text-orange-600 dark:text-orange-400',
       bgColor: 'bg-orange-500/10',
-      title: "The Strategy Workshop",
-      subtitle: "90-minute deep dive into your business",
-      description: "Questions, worksheets, goal mapping. We identify 'Core Video Assets' that your business needs first — not what's trending. Script frameworks and brand messaging templates included.",
-      takeaway: "Within one call, I know exactly what content my business actually needs."
+      title: "Strategy Workshop",
+      description: "90-minute deep dive to identify core video assets your business needs first.",
     },
     {
       icon: Calendar,
       iconColor: 'text-cyan-600 dark:text-cyan-400',
       bgColor: 'bg-cyan-500/10',
-      title: "3-Month Content Roadmap",
-      subtitle: "Timeline and execution plan",
-      description: "Prioritized deliverables, video order based on ROI and urgency. Clear roles: what we do vs what you handle. Shooting calendar with review checkpoints.",
-      takeaway: "This isn't random. I know what's coming and when."
+      title: "3-Month Roadmap",
+      description: "Prioritized deliverables with clear roles and shooting calendar.",
     },
     {
       icon: TrendingUp,
       iconColor: 'text-indigo-600 dark:text-indigo-400',
       bgColor: 'bg-indigo-500/10',
-      title: "Optimization & Iteration",
-      subtitle: "Strategy that evolves as you grow",
-      description: "Analytics review tracking reach, conversions, and sales impact. What videos get repurposed, extended, or retired. When to add podcasts, speaking, YouTube, or training portals.",
-      takeaway: "This system grows with me — it's not a one-and-done package."
-    },
-    {
-      icon: Wrench,
-      iconColor: 'text-yellow-600 dark:text-yellow-400',
-      bgColor: 'bg-yellow-500/10',
-      title: "Sustained Success & Handover",
-      subtitle: "Equip you to keep winning",
-      description: "Video templates, scripting guides, repurposing handbook. Train your team to record updates in-house. Ongoing support options available: retainer, consulting, or full production team.",
-      takeaway: "They don't leave me hanging. I get tools to keep the momentum going."
+      title: "Optimization & Growth",
+      description: "Analytics review and content evolution as your business scales.",
     }
   ];
 
@@ -111,7 +81,7 @@ const ContentStrategyPage = () => {
       <StructuredData type="services" />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative pt-28 pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-purple-500/5" />
         <div className="max-w-7xl mx-auto relative">
           <div className="text-center mb-16">
@@ -151,15 +121,14 @@ const ContentStrategyPage = () => {
       </section>
 
       {/* Strategy Process - Vertical Timeline */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+      <section className="py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold mb-3">
               Our <span className="text-blue-600 dark:text-blue-400">Strategic Framework</span>
             </h2>
-            <p className="text-lg text-foreground/90 max-w-2xl mx-auto">
-              A proven system for turning your expertise into a content library that generates 
-              qualified leads and drives real business outcomes.
+            <p className="text-base text-foreground/90">
+              A proven system for turning your expertise into a content library that drives results.
             </p>
           </div>
 
@@ -169,45 +138,39 @@ const ContentStrategyPage = () => {
             <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500/50 via-purple-500/50 to-blue-500/50 -translate-x-1/2" />
             
             {/* Timeline Steps */}
-            <div className="space-y-12 md:space-y-16">
+            <div className="space-y-6 md:space-y-8">
               {strategySteps.map((step, index) => {
                 const isEven = index % 2 === 0;
                 
                 return (
                   <div key={index} className="relative">
                     {/* Step Number Circle */}
-                    <div className="md:absolute md:left-1/2 md:top-8 md:-translate-x-1/2 md:z-10 flex justify-center md:justify-start mb-4 md:mb-0">
-                      <div className={`w-16 h-16 rounded-full ${step.bgColor} border-4 border-background flex items-center justify-center shadow-lg`}>
-                        <span className={`text-2xl font-bold ${step.iconColor}`}>{index + 1}</span>
+                    <div className="md:absolute md:left-1/2 md:top-4 md:-translate-x-1/2 md:z-10 flex justify-center md:justify-start mb-3 md:mb-0">
+                      <div className={`w-12 h-12 rounded-full ${step.bgColor} border-4 border-background flex items-center justify-center shadow-lg`}>
+                        <span className={`text-lg font-bold ${step.iconColor}`}>{index + 1}</span>
                       </div>
                     </div>
 
                     {/* Content Card - Alternating sides on desktop */}
-                    <div className={`md:w-[calc(50%-3rem)] ${isEven ? 'md:ml-0' : 'md:ml-auto'}`}>
+                    <div className={`md:w-[calc(50%-2.5rem)] ${isEven ? 'md:ml-0' : 'md:ml-auto'}`}>
                       <Card className="border-2 hover:border-blue-500/50 transition-all hover:shadow-lg group">
-                        <CardContent className="p-6">
-                          <div className="flex items-start gap-4 mb-4">
-                            <div className={`p-3 rounded-xl ${step.bgColor} group-hover:scale-110 transition-transform flex-shrink-0`}>
-                              <step.icon className={`w-6 h-6 ${step.iconColor}`} />
+                        <CardContent className="p-4">
+                          <div className="flex items-start gap-3">
+                            <div className={`p-2 rounded-lg ${step.bgColor} group-hover:scale-110 transition-transform flex-shrink-0`}>
+                              <step.icon className={`w-5 h-5 ${step.iconColor}`} />
                             </div>
                             <div className="flex-1">
-                              <h3 className="text-lg font-bold mb-1">{step.title}</h3>
-                              <p className="text-xs text-foreground/70">{step.subtitle}</p>
+                              <h3 className="text-base font-bold mb-2">{step.title}</h3>
+                              <p className="text-sm text-foreground/80">{step.description}</p>
                             </div>
-                          </div>
-                          <p className="text-sm text-foreground/90 mb-3 leading-relaxed">{step.description}</p>
-                          <div className="pt-3 border-t border-border">
-                            <p className="text-xs italic text-blue-600 dark:text-blue-400">
-                              "{step.takeaway}"
-                            </p>
                           </div>
                         </CardContent>
                       </Card>
                     </div>
 
-                    {/* Connector dot - only on desktop between steps */}
+                    {/* Connector dot */}
                     {index < strategySteps.length - 1 && (
-                      <div className="hidden md:block absolute left-1/2 -bottom-8 w-3 h-3 rounded-full bg-blue-500/30 -translate-x-1/2" />
+                      <div className="hidden md:block absolute left-1/2 -bottom-4 w-2 h-2 rounded-full bg-blue-500/30 -translate-x-1/2" />
                     )}
                   </div>
                 );
@@ -218,7 +181,7 @@ const ContentStrategyPage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent">
+      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-transparent via-blue-500/5 to-transparent">
         <div className="max-w-4xl mx-auto">
           <Card className="border-2 border-blue-500/20 bg-gradient-to-br from-blue-500/5 to-purple-500/5">
             <CardContent className="p-12 text-center">
@@ -256,7 +219,7 @@ const ContentStrategyPage = () => {
       </section>
 
       {/* Supporting Benefits */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
+      <section className="py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">

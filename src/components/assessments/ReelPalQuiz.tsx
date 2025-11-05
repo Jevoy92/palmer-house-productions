@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import confetti from 'canvas-confetti';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -15,7 +15,8 @@ import {
   ArrowRight,
   ChevronDown,
   ChevronUp,
-  Check
+  Check,
+  X
 } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import femaleProTip from '@/assets/pals/female-reel-pal-pro-tip-transparent.png';
@@ -205,11 +206,8 @@ export const ReelPalQuiz = () => {
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [showResults, setShowResults] = useState(false);
   const [openCategories, setOpenCategories] = useState<string[]>([]);
-
-  // Debug mobile detection
-  useEffect(() => {
-    console.log('ReelPalQuiz - isMobile:', isMobile, 'viewport width:', window.innerWidth);
-  }, [isMobile]);
+  const [isQuizActive, setIsQuizActive] = useState(false);
+  const quizContainerRef = useRef<HTMLDivElement>(null);
 
   const handleAnswer = (questionId: number, value: string | number | string[]) => {
     const newAnswers = answers.filter(
@@ -630,12 +628,49 @@ export const ReelPalQuiz = () => {
     );
   }
 
+  // Intersection Observer to auto-activate on scroll
+  useEffect(() => {
+    if (!isMobile || isQuizActive || !quizContainerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            setIsQuizActive(true);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(quizContainerRef.current);
+
+    return () => observer.disconnect();
+  }, [isMobile, isQuizActive]);
+
   return (
-    <div className={`${
-      isMobile 
-        ? 'fixed inset-0 z-50 bg-white overflow-hidden flex flex-col' 
-        : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
-    }`}>
+    <div 
+      ref={quizContainerRef}
+      onClick={() => isMobile && !isQuizActive && setIsQuizActive(true)}
+      className={`${
+        isMobile && isQuizActive
+          ? 'fixed inset-0 z-50 bg-white overflow-hidden flex flex-col' 
+          : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
+      } ${isMobile && !isQuizActive ? 'cursor-pointer' : ''}`}
+    >
+      {/* Close button for mobile full-screen */}
+      {isMobile && isQuizActive && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsQuizActive(false);
+          }}
+          className="absolute top-4 right-4 z-10 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+          aria-label="Close full-screen quiz"
+        >
+          <X className="w-6 h-6 text-gray-700" />
+        </button>
+      )}
       {/* Progress Header */}
       <div className={`px-4 sm:px-6 lg:px-8 mb-4 ${isMobile ? 'pt-4 flex-shrink-0' : ''}`}>
         <div className="flex justify-between items-center text-gray-500 font-medium mb-2 text-sm sm:text-base">

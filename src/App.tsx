@@ -21,7 +21,6 @@ import SystemPal from "./pages/SystemPal";
 import EvergreenPal from "./pages/EvergreenPal";
 import SpotlightPal from "./pages/SpotlightPal";
 
-import VideoUseCases from "./pages/VideoUseCases";
 import AboutUs from "./pages/AboutUs";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
@@ -29,8 +28,6 @@ import DIYDownloads from "./pages/services/DIYDownloads";
 import VideoProduction from "./pages/services/VideoProduction";
 import PostProduction from "./pages/services/PostProduction";
 import Startups from "./pages/Startups";
-import Team from "./pages/company/Team";
-import Values from "./pages/company/Values";
 import Reviews from "./pages/resources/Reviews";
 import FAQ from "./pages/FAQ";
 import Privacy from "./pages/Privacy";
@@ -97,7 +94,6 @@ const App = () => (
           <Route path="/evergreen-pal" element={<EvergreenPal />} />
           <Route path="/spotlight-pal" element={<SpotlightPal />} />
           <Route path="/discovery-call" element={<Navigate to="/contact" replace />} />
-          <Route path="/video-use-cases" element={<VideoUseCases />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/thank-you" element={<ThankYou />} />
@@ -113,11 +109,9 @@ const App = () => (
            <Route path="/industries/education" element={<Education />} />
            <Route path="/industries/government" element={<Government />} />
            <Route path="/industries/technology" element={<Technology />} />
-          <Route path="/services/group-coaching" element={<Navigate to="/contact" replace />} />
-          <Route path="/services/monthly-content" element={<Navigate to="/contact" replace />} />
-          <Route path="/company/team" element={<Team />} />
-          <Route path="/company/values" element={<Values />} />
-          <Route path="/resources/reviews" element={<Reviews />} />
+           <Route path="/services/group-coaching" element={<Navigate to="/contact" replace />} />
+           <Route path="/services/monthly-content" element={<Navigate to="/contact" replace />} />
+           <Route path="/resources/reviews" element={<Reviews />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
@@ -137,14 +131,17 @@ const App = () => (
              }
            />
           
-          {/* Legacy route redirects */}
-          <Route path="/pathways" element={<Navigate to="/contact" replace />} />
-          <Route path="/video-packages" element={<Navigate to="/pals" replace />} />
-          <Route path="/glimpse" element={<Navigate to="/contact" replace />} />
-          <Route path="/reviews" element={<Navigate to="/resources/reviews" replace />} />
-          <Route path="/arsenal" element={<Navigate to="/video-use-cases" replace />} />
-          <Route path="/about" element={<Navigate to="/about-us" replace />} />
-          <Route path="/team" element={<Navigate to="/company/team" replace />} />
+           {/* Legacy route redirects */}
+           <Route path="/pathways" element={<Navigate to="/contact" replace />} />
+           <Route path="/video-packages" element={<Navigate to="/pals" replace />} />
+           <Route path="/glimpse" element={<Navigate to="/contact" replace />} />
+           <Route path="/reviews" element={<Navigate to="/resources/reviews" replace />} />
+           <Route path="/arsenal" element={<Navigate to="/about-us" replace />} />
+           <Route path="/video-use-cases" element={<Navigate to="/about-us" replace />} />
+           <Route path="/about" element={<Navigate to="/about-us" replace />} />
+           <Route path="/team" element={<Navigate to="/about-us" replace />} />
+           <Route path="/company/team" element={<Navigate to="/about-us" replace />} />
+           <Route path="/company/values" element={<Navigate to="/about-us" replace />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

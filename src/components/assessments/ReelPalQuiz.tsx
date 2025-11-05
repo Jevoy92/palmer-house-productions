@@ -206,6 +206,11 @@ export const ReelPalQuiz = () => {
   const [showResults, setShowResults] = useState(false);
   const [openCategories, setOpenCategories] = useState<string[]>([]);
 
+  // Debug mobile detection
+  useEffect(() => {
+    console.log('ReelPalQuiz - isMobile:', isMobile, 'viewport width:', window.innerWidth);
+  }, [isMobile]);
+
   const handleAnswer = (questionId: number, value: string | number | string[]) => {
     const newAnswers = answers.filter(
       a => !(a.sectionId === sections[currentSection].id && a.questionId === questionId)

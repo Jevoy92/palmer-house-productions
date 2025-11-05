@@ -148,55 +148,27 @@ export const HowItWorks = () => {
           </h1>
         </div>
 
-        {/* Mobile: Alternating layout - graphic/number positions swap */}
+        {/* Mobile: Sequential layout - number+content, then graphic */}
         <div className="md:hidden space-y-12">
-          {steps.map((step, index) => {
-            const isEven = index % 2 === 0;
-            
-            return (
-              <div key={`mobile-${index}`} className="space-y-6">
-                {/* Even steps (0, 2): Number + Content first, then Graphic */}
-                {isEven ? (
-                  <>
-                    <div className="flex items-start space-x-8">
-                      <div className="relative flex-shrink-0">
-                        {step.hasLine && index < steps.length - 1 && (
-                          <div className={`absolute -left-1.5 top-12 h-full w-0.5 bg-gradient-to-b ${step.lineGradient}`}></div>
-                        )}
-                        <p className="text-4xl font-bold text-gray-800">{step.number}</p>
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-semibold mb-2">{step.title}</h3>
-                        <p className="text-muted-foreground text-base">{step.description}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-center">
-                      {step.mockup}
-                    </div>
-                  </>
-                ) : (
-                  /* Odd steps (1, 3): Graphic first, then Number + Content */
-                  <>
-                    <div className="flex items-center justify-center">
-                      {step.mockup}
-                    </div>
-                    <div className="flex items-start space-x-8">
-                      <div className="relative flex-shrink-0">
-                        {step.hasLine && index < steps.length - 1 && (
-                          <div className={`absolute -left-1.5 top-12 h-full w-0.5 bg-gradient-to-b ${step.lineGradient}`}></div>
-                        )}
-                        <p className="text-4xl font-bold text-gray-800">{step.number}</p>
-                      </div>
-                      <div>
-                        <h3 className="text-2xl font-semibold mb-2">{step.title}</h3>
-                        <p className="text-muted-foreground text-base">{step.description}</p>
-                      </div>
-                    </div>
-                  </>
-                )}
+          {steps.map((step, index) => (
+            <div key={`mobile-${index}`} className="space-y-6">
+              <div className="flex items-start space-x-8">
+                <div className="relative flex-shrink-0">
+                  {step.hasLine && index < steps.length - 1 && (
+                    <div className={`absolute -left-1.5 top-12 h-full w-0.5 bg-gradient-to-b ${step.lineGradient}`}></div>
+                  )}
+                  <p className="text-4xl font-bold text-gray-800">{step.number}</p>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-semibold mb-2">{step.title}</h3>
+                  <p className="text-muted-foreground text-base">{step.description}</p>
+                </div>
               </div>
-            );
-          })}
+              <div className="flex items-center justify-center">
+                {step.mockup}
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Desktop: Step content next to its mockup */}

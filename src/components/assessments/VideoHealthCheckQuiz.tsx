@@ -479,9 +479,9 @@ export const VideoHealthCheckQuiz = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Quiz Card */}
           <div className="lg:col-span-2">
-            <Card className="border-2">
+            <Card className="border-2 animate-fade-in" key={currentSection}>
               <CardHeader className="space-y-4">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 animate-slide-in-right">
                   <div className="p-3 bg-primary/10 rounded-xl">
                     <SectionIcon className="h-6 w-6 text-primary" />
                   </div>

@@ -6,9 +6,11 @@ import { Progress } from "@/components/ui/progress";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { 
   CheckCircle, 
+  CheckCircle2,
+  AlertCircle,
   AlertTriangle, 
   TrendingUp, 
   Video, 
@@ -18,7 +20,9 @@ import {
   ArrowRight,
   Star,
   Trophy,
-  Sparkles
+  Sparkles,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAssessmentProgress } from "@/hooks/useAssessmentProgress";
@@ -349,33 +353,29 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
   useEffect(() => {
     if (showResults) {
       const duration = 3000;
-      const animationEnd = Date.now() + duration;
-      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+      const end = Date.now() + duration;
 
-      const randomInRange = (min: number, max: number) => Math.random() * (max - min) + min;
+      const frame = () => {
+        confetti({
+          particleCount: 3,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#3b82f6', '#60a5fa', '#93c5fd']
+        });
+        confetti({
+          particleCount: 3,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#3b82f6', '#60a5fa', '#93c5fd']
+        });
 
-      const interval = window.setInterval(() => {
-        const timeLeft = animationEnd - Date.now();
-
-        if (timeLeft <= 0) {
-          return clearInterval(interval);
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
         }
-
-        const particleCount = 50 * (timeLeft / duration);
-        
-        confetti({
-          ...defaults,
-          particleCount,
-          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
-        });
-        confetti({
-          ...defaults,
-          particleCount,
-          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
-        });
-      }, 250);
-
-      return () => clearInterval(interval);
+      };
+      frame();
     }
   }, [showResults]);
 
@@ -412,83 +412,120 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
 
   if (showResults) {
     const results = calculateResults();
+
+    const toggleCategory = (category: string) => {
+      setOpenCategories(prev => 
+        prev.includes(category) 
+          ? prev.filter(c => c !== category)
+          : [...prev, category]
+      );
+    };
     
     return (
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 animate-fade-in">
-        {/* Overall Score */}
-        <div className="bg-gradient-to-br from-primary to-primary/80 rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-12 text-white text-center mb-6 sm:mb-8">
-          <Trophy className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-4 sm:mb-6 animate-scale-in" />
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">Assessment Complete!</h2>
-          <div className="text-6xl sm:text-7xl md:text-8xl font-bold mb-3 sm:mb-4">{results.overallScore}%</div>
-          <p className="text-lg sm:text-xl md:text-2xl opacity-90 max-w-2xl mx-auto">{results.readinessLevel}</p>
-          <p className="text-base sm:text-lg opacity-80 max-w-2xl mx-auto mt-2">{results.description}</p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fade-in">
+        {/* Hero Score Section */}
+        <div className="bg-blue-600 rounded-3xl shadow-2xl p-8 lg:p-12 mb-8 text-white text-center">
+          <Trophy className="w-20 h-20 mx-auto mb-4 animate-scale-in" />
+          <h2 className="text-5xl font-bold mb-4">Your Video Readiness Score</h2>
+          <div className="text-8xl font-bold mb-4">{results.overallScore}%</div>
+          <div className="inline-block bg-white/20 px-8 py-3 rounded-full mb-6">
+            <p className="text-2xl font-semibold">{results.readinessLevel}</p>
+          </div>
+          <p className="text-xl max-w-2xl mx-auto">
+            {results.description}
+          </p>
         </div>
 
-        {/* Category Breakdown */}
-        <div className="bg-card rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8">
-          <h3 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-foreground flex items-center gap-3">
-            <BarChart3 className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
-            Category Breakdown
-          </h3>
-          
-          <Accordion type="multiple" value={openCategories} onValueChange={setOpenCategories} className="space-y-3 sm:space-y-4">
+        {/* Category Breakdown with Insights */}
+        <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-10 mb-8">
+          <h3 className="text-3xl font-bold mb-6 text-center text-gray-800">Your Breakdown by Category</h3>
+          <div className="grid md:grid-cols-2 gap-6">
             {results.sectionPerformance.map((section) => {
+              const isOpen = openCategories.includes(section.name);
+              const status = section.percentage >= 70 ? 'strong' : section.percentage >= 40 ? 'developing' : 'opportunity';
+              
               return (
-                <AccordionItem key={section.name} value={section.name} className="border border-border rounded-2xl px-4 sm:px-6 overflow-hidden">
-                  <AccordionTrigger className="hover:no-underline py-4 sm:py-6">
-                    <div className="flex items-center justify-between w-full pr-4">
-                      <div className="flex items-center gap-3 sm:gap-4">
-                        <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
-                        <span className="font-semibold text-base sm:text-lg text-left">{section.name}</span>
+                <Collapsible key={section.name} open={isOpen} onOpenChange={() => toggleCategory(section.name)}>
+                  <div className={`border-2 rounded-xl overflow-hidden transition-colors ${
+                    status === 'strong' ? 'border-green-300 bg-green-50/50' :
+                    status === 'developing' ? 'border-yellow-300 bg-yellow-50/50' :
+                    'border-blue-300 bg-blue-50/50'
+                  }`}>
+                    <CollapsibleTrigger className="w-full p-6 text-left hover:bg-white/50 transition-colors">
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="font-bold text-lg text-gray-800 flex-1">{section.name}</h4>
+                        {isOpen ? (
+                          <ChevronUp className="w-5 h-5 text-gray-600 flex-shrink-0" />
+                        ) : (
+                          <ChevronDown className="w-5 h-5 text-gray-600 flex-shrink-0" />
+                        )}
                       </div>
-                      <span className="text-xl sm:text-2xl font-bold text-primary">{section.percentage}%</span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="pb-4 sm:pb-6">
-                    <div className="bg-muted rounded-xl p-4 sm:p-6 mt-2 space-y-3">
-                      <div className="mb-2">
-                        <Progress value={section.percentage} className="h-2" />
-                        <p className="text-sm text-muted-foreground mt-1">Score: {section.score} / {section.maxScore} points</p>
-                      </div>
-                      {section.recommendations.length > 0 && (
-                        <div>
-                          <h4 className="font-semibold text-sm mb-2">Recommendations:</h4>
-                          <ul className="space-y-1">
-                            {section.recommendations.slice(0, 3).map((rec, i) => (
-                              <li key={i} className="text-sm text-muted-foreground flex items-start gap-2">
-                                <CheckCircle className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                                <span>{rec}</span>
-                              </li>
-                            ))}
-                          </ul>
+                      <div className="flex items-center gap-4">
+                        <div className="flex-1">
+                          <div className="w-full bg-gray-200 rounded-full h-3">
+                            <div 
+                              className="bg-blue-600 h-3 rounded-full transition-all duration-1000"
+                              style={{ width: `${section.percentage}%` }}
+                            />
+                          </div>
                         </div>
-                      )}
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
+                        <span className="text-2xl font-bold text-gray-700">{section.percentage}%</span>
+                      </div>
+                    </CollapsibleTrigger>
+                    
+                    <CollapsibleContent>
+                      <div className="px-6 pb-6 pt-2">
+                        <div className="space-y-3 pt-3 border-t border-gray-200">
+                          <div className="flex items-start gap-2 text-sm text-gray-600">
+                            <span className="font-semibold">Score:</span>
+                            <span>{section.score} / {section.maxScore} points</span>
+                          </div>
+                          {section.recommendations.length > 0 && (
+                            <div>
+                              <h5 className="font-semibold text-sm mb-2 text-gray-700">Top Recommendations:</h5>
+                              <ul className="space-y-2">
+                                {section.recommendations.slice(0, 3).map((rec, i) => (
+                                  <li key={i} className="text-sm text-gray-700 flex items-start gap-2">
+                                    {status === 'strong' ? (
+                                      <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+                                    ) : (
+                                      <AlertCircle className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                                    )}
+                                    <span>{rec}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </CollapsibleContent>
+                  </div>
+                </Collapsible>
               );
             })}
-          </Accordion>
+          </div>
         </div>
 
         {/* Action Items */}
-        <div className="bg-card rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8">
-          <h3 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-foreground flex items-center gap-3">
-            <Target className="w-7 h-7 sm:w-8 sm:h-8 text-primary" />
-            Your Next Steps
-          </h3>
-          <div className="space-y-3 sm:space-y-4">
-            {results.immediateActions.slice(0, 5).map((item, index) => (
-              <div key={index} className="flex gap-3 sm:gap-4 p-4 sm:p-5 bg-muted rounded-xl hover:bg-muted/80 transition-colors">
-                <div className="flex-shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm sm:text-base">
-                  {index + 1}
+        <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-10 mb-8">
+          <h3 className="text-3xl font-bold mb-6 text-center text-gray-800">Your Personalized Action Plan</h3>
+          <div className="space-y-4">
+            {results.immediateActions.slice(0, 5).map((item, idx) => (
+              <div key={idx} className="flex items-start gap-4 p-4 bg-blue-50 rounded-xl border-2 border-blue-200">
+                <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0 text-white font-bold">
+                  {idx + 1}
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold text-sm sm:text-base text-foreground mb-1">{item.title}</p>
-                  <p className="text-xs sm:text-sm text-muted-foreground">{item.description}</p>
-                  <div className="flex gap-2 mt-2">
-                    <Badge variant="outline" className="text-xs">{item.priority} Priority</Badge>
-                    <Badge variant="outline" className="text-xs">{item.timeline}</Badge>
+                  <p className="text-lg text-gray-800 font-semibold mb-1">{item.title}</p>
+                  <p className="text-sm text-gray-600 mb-2">{item.description}</p>
+                  <div className="flex gap-2">
+                    <Badge variant="outline" className="text-xs bg-white">
+                      {item.priority} Priority
+                    </Badge>
+                    <Badge variant="outline" className="text-xs bg-white">
+                      {item.timeline}
+                    </Badge>
                   </div>
                 </div>
               </div>
@@ -497,25 +534,38 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
         </div>
 
         {/* Recommendation CTA */}
-        <div className="bg-gradient-to-br from-muted to-primary/10 rounded-3xl shadow-xl p-6 sm:p-8 lg:p-10 border-2 border-primary/20">
-          <h3 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4 text-foreground">Ready to Level Up Your Video Strategy?</h3>
-          <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed">
-            Based on your assessment, we can help you implement these recommendations and accelerate your video marketing success.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+        <div className="bg-blue-50 rounded-3xl shadow-xl p-8 lg:p-12 mb-8">
+          <div className="text-center mb-8">
+            <div className="text-6xl mb-4">🎯</div>
+            <h3 className="text-3xl font-bold mb-4 text-gray-800">Ready to Level Up Your Video Strategy?</h3>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-4">
+              Based on your assessment, we can help you implement these recommendations and accelerate your video marketing success.
+            </p>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
-              to="/contact" 
-              className="flex-1 bg-primary text-primary-foreground text-center font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-primary/90 transition-all shadow-lg hover:shadow-xl transform hover:scale-105"
+              to="/contact"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-10 py-4 rounded-full transition-all hover:scale-105 shadow-lg shadow-blue-600/30 text-center flex items-center justify-center gap-2"
             >
-              Schedule Strategy Call →
+              Schedule Strategy Call
+              <ArrowRight className="w-5 h-5" />
             </Link>
             <button 
-              onClick={() => window.location.reload()} 
-              className="flex-1 bg-card text-foreground border-2 border-border text-center font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-full hover:bg-muted transition-all"
+              onClick={() => {
+                setShowResults(false);
+                setCurrentSection(0);
+                setAnswers({});
+              }}
+              className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold px-10 py-4 rounded-full transition-all hover:scale-105"
             >
               Retake Assessment
             </button>
           </div>
+        </div>
+
+        <div className="text-center text-gray-600 pb-8">
+          <p className="text-lg">Want to discuss your results? <Link to="/contact" className="text-blue-600 hover:underline font-semibold">Schedule a free discovery call</Link></p>
         </div>
       </div>
     );

@@ -21,11 +21,10 @@ import SystemPal from "./pages/SystemPal";
 import EvergreenPal from "./pages/EvergreenPal";
 import SpotlightPal from "./pages/SpotlightPal";
 
-import VideoUseCases from "./pages/VideoUseCases";
+
 import AboutUs from "./pages/AboutUs";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
-import DIYDownloads from "./pages/services/DIYDownloads";
 import VideoProduction from "./pages/services/VideoProduction";
 import PostProduction from "./pages/services/PostProduction";
 import Startups from "./pages/Startups";
@@ -97,13 +96,11 @@ const App = () => (
           <Route path="/evergreen-pal" element={<EvergreenPal />} />
           <Route path="/spotlight-pal" element={<SpotlightPal />} />
           <Route path="/discovery-call" element={<Navigate to="/contact" replace />} />
-          <Route path="/video-use-cases" element={<VideoUseCases />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/thank-you" element={<ThankYou />} />
            <Route path="/locations/bellevue-wa" element={<BellevueWA />} />
            <Route path="/locations/portland-or" element={<PortlandOR />} />
-           <Route path="/services/diy-downloads" element={<DIYDownloads />} />
            <Route path="/services/video-production" element={<VideoProduction />} />
            <Route path="/services/post-production" element={<PostProduction />} />
            <Route path="/startups" element={<Startups />} />

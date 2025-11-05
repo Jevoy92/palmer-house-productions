@@ -338,26 +338,10 @@ export const Navigation = () => {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <button 
-                        onClick={() => handlePageTransition('/video-use-cases')}
-                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      >
-                        Video Use Cases
-                      </button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <button 
                         onClick={() => handlePageTransition('/resources/reviews')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
                         Client Reviews
-                      </button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <button 
-                        onClick={() => handlePageTransition('/services/diy-downloads')}
-                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      >
-                        Downloads & Templates
                       </button>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
@@ -591,22 +575,10 @@ export const Navigation = () => {
                   Blog / Insights
                 </button>
                 <button 
-                  onClick={() => handlePageTransition('/video-use-cases')}
-                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  Video Use Cases
-                </button>
-                <button 
                   onClick={() => handlePageTransition('/resources/reviews')}
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
                   Client Reviews
-                </button>
-                <button 
-                  onClick={() => handlePageTransition('/services/diy-downloads')}
-                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  Downloads & Templates
                 </button>
                 <button 
                   onClick={() => handlePageTransition('/faq')}

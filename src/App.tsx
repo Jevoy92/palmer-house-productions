@@ -21,15 +21,17 @@ import SystemPal from "./pages/SystemPal";
 import EvergreenPal from "./pages/EvergreenPal";
 import SpotlightPal from "./pages/SpotlightPal";
 
-
+import VideoUseCases from "./pages/VideoUseCases";
 import AboutUs from "./pages/AboutUs";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import DIYDownloads from "./pages/services/DIYDownloads";
 import VideoProduction from "./pages/services/VideoProduction";
 import PostProduction from "./pages/services/PostProduction";
 import Startups from "./pages/Startups";
+import Team from "./pages/company/Team";
+import Values from "./pages/company/Values";
 import Reviews from "./pages/resources/Reviews";
-import DIYDownloads from "./pages/services/DIYDownloads";
 import FAQ from "./pages/FAQ";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -95,11 +97,13 @@ const App = () => (
           <Route path="/evergreen-pal" element={<EvergreenPal />} />
           <Route path="/spotlight-pal" element={<SpotlightPal />} />
           <Route path="/discovery-call" element={<Navigate to="/contact" replace />} />
+          <Route path="/video-use-cases" element={<VideoUseCases />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/thank-you" element={<ThankYou />} />
            <Route path="/locations/bellevue-wa" element={<BellevueWA />} />
            <Route path="/locations/portland-or" element={<PortlandOR />} />
+           <Route path="/services/diy-downloads" element={<DIYDownloads />} />
            <Route path="/services/video-production" element={<VideoProduction />} />
            <Route path="/services/post-production" element={<PostProduction />} />
            <Route path="/startups" element={<Startups />} />
@@ -109,10 +113,11 @@ const App = () => (
            <Route path="/industries/education" element={<Education />} />
            <Route path="/industries/government" element={<Government />} />
            <Route path="/industries/technology" element={<Technology />} />
-           <Route path="/services/group-coaching" element={<Navigate to="/contact" replace />} />
-           <Route path="/services/monthly-content" element={<Navigate to="/contact" replace />} />
-           <Route path="/services/diy-downloads" element={<DIYDownloads />} />
-           <Route path="/resources/reviews" element={<Reviews />} />
+          <Route path="/services/group-coaching" element={<Navigate to="/contact" replace />} />
+          <Route path="/services/monthly-content" element={<Navigate to="/contact" replace />} />
+          <Route path="/company/team" element={<Team />} />
+          <Route path="/company/values" element={<Values />} />
+          <Route path="/resources/reviews" element={<Reviews />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />

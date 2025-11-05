@@ -96,8 +96,17 @@ const Reviews = () => {
   ];
 
   return (
-    <div className="min-h-screen overflow-x-hidden font-sans">
-      <MetaTags
+    <div className="min-h-screen overflow-x-hidden font-sans relative">
+      {/* Fixed 4-Color Background Bars */}
+      <div className="fixed top-0 left-0 w-full h-full z-0">
+        <div className="w-full h-full flex">
+          <div className="w-1/4 h-full bg-pal-orange"></div>
+          <div className="w-1/4 h-full bg-pal-purple"></div>
+          <div className="w-1/4 h-full bg-pal-green"></div>
+          <div className="w-1/4 h-full bg-pal-blue"></div>
+        </div>
+      </div>
+      <MetaTags 
         title="Client Reviews & Testimonials | Palmer House Video"
         description="Authentic Palmer House client reviews. See how video content systems transformed businesses and increased ROI by 45% on average."
         keywords="Palmer House Productions reviews, client testimonials, video production results, business transformation, ROI increase"

@@ -484,8 +484,8 @@ export const VideoReadinessQuiz = () => {
               </CardHeader>
               <CardContent className="space-y-8">
                 {currentSectionData.questions.map((question) => (
-                  <div key={question.id} className="space-y-4">
-                    <h3 className="font-semibold text-lg">{question.question}</h3>
+                  <div key={question.id} className="space-y-4 pb-6 border-b border-border last:border-0 last:pb-0">
+                    <h3 className="font-semibold text-lg text-foreground">{question.question}</h3>
 
                     {question.type === 'emoji' && (
                       <div className="flex justify-between gap-2">
@@ -506,7 +506,7 @@ export const VideoReadinessQuiz = () => {
                     )}
 
                     {question.type === 'slider' && (
-                      <div className="space-y-4">
+                      <div className="space-y-4 pt-2">
                         <Slider
                           value={[Number(getAnswer(question.id)) || 5]}
                           onValueChange={(value) => handleAnswer(question.id, value[0])}
@@ -526,19 +526,19 @@ export const VideoReadinessQuiz = () => {
                     )}
 
                     {question.type === 'toggle' && (
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-4 pt-2">
                         <Switch
                           checked={Boolean(getAnswer(question.id))}
                           onCheckedChange={(checked) => handleAnswer(question.id, checked as any)}
                         />
-                        <span className="text-sm font-medium">
-                          {getAnswer(question.id) ? 'Yes' : 'No'}
+                        <span className="text-base font-semibold text-foreground">
+                          {getAnswer(question.id) ? '✓ Yes' : '✗ No'}
                         </span>
                       </div>
                     )}
 
                     {question.type === 'buttons' && question.options && (
-                      <div className="grid gap-3">
+                      <div className="grid gap-3 pt-2">
                         {question.options.map((option) => (
                           <button
                             key={option.value}
@@ -556,7 +556,7 @@ export const VideoReadinessQuiz = () => {
                     )}
 
                     {question.type === 'cards' && question.options && (
-                      <div className="grid grid-cols-2 gap-3">
+                      <div className="grid grid-cols-2 gap-3 pt-2">
                         {question.options.map((option) => {
                           const selected = (getAnswer(question.id) as string[]) || [];
                           const isSelected = selected.includes(option.value);

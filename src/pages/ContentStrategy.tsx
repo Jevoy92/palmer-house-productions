@@ -151,9 +151,9 @@ const ContentStrategyPage = () => {
           </div>
 
           {/* Winding Path Container */}
-          <div className="relative min-h-[1200px] hidden md:block">
+          <div className="relative min-h-[1400px] hidden md:block">
             {/* SVG Curved Path */}
-            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 700 1200" preserveAspectRatio="xMidYMid meet">
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 1400" preserveAspectRatio="xMidYMid meet">
               <defs>
                 <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                   <stop offset="0%" style={{ stopColor: 'hsl(var(--blue-500))', stopOpacity: 0.3 }} />
@@ -162,7 +162,7 @@ const ContentStrategyPage = () => {
                 </linearGradient>
               </defs>
               <path
-                d="M 120,60 Q 300,80 350,180 Q 400,280 200,360 Q 100,400 180,520 Q 260,640 480,720 Q 600,760 520,900 Q 480,980 380,1080"
+                d="M 180,80 Q 500,100 520,250 Q 540,400 250,480 Q 150,520 180,680 Q 210,840 520,920 Q 680,970 600,1120 Q 560,1200 400,1300"
                 fill="none"
                 stroke="url(#pathGradient)"
                 strokeWidth="8"
@@ -173,12 +173,12 @@ const ContentStrategyPage = () => {
             {/* Milestone Points */}
             {strategySteps.map((step, index) => {
               const positions = [
-                { x: '17%', y: '60px', cardX: '25%', cardY: '20px', align: 'left' },
-                { x: '50%', y: '180px', cardX: '60%', cardY: '140px', align: 'right' },
-                { x: '28%', y: '360px', cardX: '5%', cardY: '320px', align: 'left' },
-                { x: '25%', y: '520px', cardX: '35%', cardY: '480px', align: 'right' },
-                { x: '68%', y: '720px', cardX: '5%', cardY: '680px', align: 'left' },
-                { x: '54%', y: '1080px', cardX: '60%', cardY: '1040px', align: 'right' },
+                { circleX: '180px', circleY: '80px', cardX: '280px', cardY: '30px' },
+                { circleX: '520px', circleY: '250px', cardX: '620px', cardY: '200px' },
+                { circleX: '250px', circleY: '480px', cardX: '30px', cardY: '430px' },
+                { circleX: '180px', circleY: '680px', cardX: '280px', cardY: '630px' },
+                { circleX: '520px', circleY: '920px', cardX: '30px', cardY: '870px' },
+                { circleX: '400px', circleY: '1300px', cardX: '500px', cardY: '1250px' },
               ];
 
               const pos = positions[index];
@@ -188,7 +188,7 @@ const ContentStrategyPage = () => {
                   {/* Milestone Circle */}
                   <div 
                     className="absolute z-20 -translate-x-1/2 -translate-y-1/2"
-                    style={{ left: pos.x, top: pos.y }}
+                    style={{ left: pos.circleX, top: pos.circleY }}
                   >
                     <div className={`w-16 h-16 rounded-full ${step.bgColor} border-4 border-background shadow-2xl flex items-center justify-center group hover:scale-110 transition-transform cursor-pointer`}>
                       <step.icon className={`w-7 h-7 ${step.iconColor}`} />
@@ -201,7 +201,7 @@ const ContentStrategyPage = () => {
                   {/* Content Card */}
                   <div 
                     className="absolute z-10"
-                    style={{ left: pos.cardX, top: pos.cardY, maxWidth: '320px', width: '40%', minWidth: '280px' }}
+                    style={{ left: pos.cardX, top: pos.cardY, width: '300px' }}
                   >
                     <Collapsible open={openSteps.includes(index)} onOpenChange={() => toggleStep(index)}>
                       <Card className="border-2 hover:border-blue-500/50 transition-all hover:shadow-xl group bg-background/95 backdrop-blur">

@@ -578,80 +578,122 @@ export const VideoReadinessAudit = ({ onBack }: VideoReadinessAuditProps) => {
   const overallProgress = Math.round(((currentSection + (sectionProgress / 100)) / sections.length) * 100);
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between mb-4">
-            <Badge variant="outline">
-              Section {currentSection + 1} of {sections.length}
-            </Badge>
-            <Badge variant="secondary">
-              {overallProgress}% Complete
-            </Badge>
-          </div>
-          
-          <Progress value={overallProgress} className="mb-4" />
-          
-          <CardTitle className="flex items-center gap-3">
-            <Video className="h-6 w-6 text-primary" />
-            {currentSectionData.title}
-          </CardTitle>
-          <CardDescription>
-            {currentSectionData.description}
-          </CardDescription>
-        </CardHeader>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Progress Header */}
+      <div className="px-4 sm:px-6 lg:px-8 mb-4">
+        <div className="flex justify-between items-center text-gray-500 font-medium mb-2 text-sm sm:text-base">
+          <span>Section {currentSection + 1} of {sections.length}</span>
+          <span>{Math.round(overallProgress)}% Complete</span>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-1.5">
+          <div 
+            className="bg-blue-600 h-1.5 rounded-full transition-all duration-300"
+            style={{ width: `${overallProgress}%` }}
+          />
+        </div>
+      </div>
 
-        <CardContent className="space-y-6">
-          {currentSectionData.questions.map((question) => (
-            <div key={question.id} className="space-y-3">
-              <Label className="text-base font-medium">
-                {question.text}
-              </Label>
-              <ToggleGroup
-                type="single"
-                value={answers[question.id]?.toString()}
-                onValueChange={(value) => value && handleAnswer(question.id, parseInt(value))}
-                className="flex flex-wrap gap-2"
-                variant="outline"
-                size="sm"
-              >
-                <ToggleGroupItem value="0" aria-label="No">No</ToggleGroupItem>
-                <ToggleGroupItem value={Math.round(question.points * 0.5).toString()} aria-label="Partially">Partially</ToggleGroupItem>
-                <ToggleGroupItem value={question.points.toString()} aria-label="Yes">Yes</ToggleGroupItem>
-              </ToggleGroup>
+      <div className="flex flex-col md:flex-row gap-8 items-start">
+        {/* Main Quiz Card */}
+        <div className="flex-grow w-full md:max-w-3xl">
+          <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-12">
+            {/* Section Header */}
+            <div className="flex items-center justify-center space-x-3 mb-6 sm:mb-8">
+              <Video className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 flex-shrink-0" />
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 text-center">{currentSectionData.title}</h1>
             </div>
-          ))}
 
-          <div className="flex justify-between pt-6">
-            <Button
-              variant="outline"
-              onClick={() => setCurrentSection(Math.max(0, currentSection - 1))}
-              disabled={currentSection === 0}
-            >
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Previous
-            </Button>
+            <p className="text-center text-gray-600 mb-6 sm:mb-8">{currentSectionData.description}</p>
 
-            {currentSection === sections.length - 1 ? (
-              <Button 
-                onClick={handleShowResults}
-                disabled={answeredQuestions.length < currentSectionData.questions.length}
+            {/* Questions */}
+            <div className="space-y-6 sm:space-y-8">
+              {currentSectionData.questions.map((question) => {
+                const answer = answers[question.id];
+                const hasAnswer = answer !== undefined;
+                
+                return (
+                  <div key={question.id} className="py-3 sm:py-4 border-b border-gray-200 last:border-b-0">
+                    <p className="text-base sm:text-lg text-gray-700 mb-4 font-medium">{question.text}</p>
+                    
+                    <div className="flex items-center justify-center space-x-3">
+                      <span className={`text-lg font-semibold ${answer === question.points ? 'text-blue-600' : 'text-gray-400'}`}>
+                        {answer === question.points ? '✓ Yes' : answer === 0 ? '✗ No' : answer === Math.round(question.points * 0.5) ? '~ Partially' : 'No'}
+                      </span>
+                      <label className="flex items-center cursor-pointer">
+                        <div className="relative">
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => handleAnswer(question.id, 0)}
+                              className={`px-4 py-2 rounded-full font-semibold transition-colors text-sm ${
+                                answer === 0
+                                  ? 'bg-red-500 text-white'
+                                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                              }`}
+                            >
+                              No
+                            </button>
+                            <button
+                              onClick={() => handleAnswer(question.id, Math.round(question.points * 0.5))}
+                              className={`px-4 py-2 rounded-full font-semibold transition-colors text-sm ${
+                                answer === Math.round(question.points * 0.5)
+                                  ? 'bg-yellow-500 text-white'
+                                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                              }`}
+                            >
+                              Partially
+                            </button>
+                            <button
+                              onClick={() => handleAnswer(question.id, question.points)}
+                              className={`px-4 py-2 rounded-full font-semibold transition-colors text-sm ${
+                                answer === question.points
+                                  ? 'bg-blue-600 text-white'
+                                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                              }`}
+                            >
+                              Yes
+                            </button>
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="mt-8 sm:mt-12 flex items-center justify-center gap-3 sm:gap-4 flex-wrap">
+              <button
+                onClick={() => setCurrentSection(Math.max(0, currentSection - 1))}
+                disabled={currentSection === 0}
+                className="bg-gray-200 text-gray-600 font-semibold px-6 sm:px-10 py-3 sm:py-3.5 rounded-full hover:bg-gray-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
               >
-                View Results
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Button>
-            ) : (
-              <Button 
-                onClick={handleNextSection}
+                Previous
+              </button>
+              <button
+                onClick={currentSection === sections.length - 1 ? handleShowResults : handleNextSection}
                 disabled={answeredQuestions.length < currentSectionData.questions.length}
+                className="bg-blue-600 text-white font-semibold px-6 sm:px-10 py-3 sm:py-3.5 rounded-full hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/30 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
               >
-                Next Section
-                <ArrowRight className="h-4 w-4 ml-2" />
-              </Button>
-            )}
+                {currentSection === sections.length - 1 ? 'View Results' : 'Next Section'}
+              </button>
+            </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+
+        {/* Pro Tip Sidebar - Tablet and Desktop Only */}
+        <div className="hidden md:flex md:flex-col md:items-center md:w-[350px] lg:w-[450px] flex-shrink-0 md:mt-4 lg:mt-8 md:ml-4 lg:ml-8">
+          <div className="w-full bg-blue-50 rounded-2xl p-6 lg:p-8 border-2 border-blue-200 shadow-lg">
+            <div className="flex items-center justify-center mb-4">
+              <Target className="w-12 h-12 text-blue-600" />
+            </div>
+            <h3 className="text-xl font-bold text-center text-gray-800 mb-3">Pro Tip</h3>
+            <p className="text-blue-800 font-medium text-base text-center">
+              Be honest with your answers to get the most accurate recommendations for your video journey!
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

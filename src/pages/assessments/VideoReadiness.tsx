@@ -5,7 +5,7 @@ import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
-import { VideoReadinessQuiz } from "@/components/assessments/VideoReadinessQuiz";
+import { VideoReadinessAudit } from "@/components/assessments/VideoReadinessAudit";
 
 const VideoReadinessPage = () => {
   return (
@@ -39,7 +39,7 @@ const VideoReadinessPage = () => {
         </section>
 
         <section className="pb-12">
-          <VideoReadinessQuiz />
+          <VideoReadinessAudit />
         </section>
       </MainContent>
     </div>

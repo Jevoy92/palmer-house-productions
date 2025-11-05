@@ -23,7 +23,7 @@ import {
   BarChart
 } from 'lucide-react';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { EvergreenPalQuiz } from '@/components/assessments/EvergreenPalQuiz';
+
 
 const EvergreenPal = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
@@ -460,8 +460,6 @@ const EvergreenPal = () => {
             </div>
           </div>
         </section>
-
-        <EvergreenPalQuiz />
 
         {/* FAQ Section */}
         <section className="py-20 relative z-10">

@@ -264,22 +264,6 @@ export const Navigation = () => {
                         Video Readiness Audit
                       </button>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <button 
-                        onClick={() => handlePageTransition('/assessments/find-your-pal')}
-                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      >
-                        Find Your Pal Quiz
-                      </button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <button 
-                        onClick={() => handlePageTransition('/assessments/video-health-check')}
-                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      >
-                        Video Health & Visibility Check
-                      </button>
-                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
 

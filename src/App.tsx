@@ -55,8 +55,6 @@ import ThankYou from "./pages/ThankYou";
 import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 
 const VideoReadinessPage = lazy(() => import("./pages/assessments/VideoReadiness"));
-const FindYourPalPage = lazy(() => import("./pages/assessments/FindYourPal"));
-const VideoHealthCheckPage = lazy(() => import("./pages/assessments/VideoHealthCheck"));
 
 const queryClient = new QueryClient();
 
@@ -135,22 +133,6 @@ const App = () => (
              element={
                <Suspense fallback={<div className="p-8 text-center">Loading assessment...</div>}>
                  <VideoReadinessPage />
-               </Suspense>
-             }
-           />
-           <Route
-             path="/assessments/find-your-pal"
-             element={
-               <Suspense fallback={<div className="p-8 text-center">Loading quiz...</div>}>
-                 <FindYourPalPage />
-               </Suspense>
-             }
-           />
-           <Route
-             path="/assessments/video-health-check"
-             element={
-               <Suspense fallback={<div className="p-8 text-center">Loading assessment...</div>}>
-                 <VideoHealthCheckPage />
                </Suspense>
              }
            />

@@ -3,7 +3,7 @@ import { StructuredData } from "@/components/seo/StructuredData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { usePageTransition } from '@/components/PageTransition';
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Target, 
   Compass,
@@ -127,43 +127,27 @@ const ContentStrategyPage = () => {
       {/* Strategy Process - Interactive Timeline */}
       <section className="py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-3">
               Our <span className="text-blue-600 dark:text-blue-400">Strategic Framework</span>
             </h2>
-            <p className="text-base text-foreground/90">
+            <p className="text-base text-foreground/90 mb-2">
               A proven system for turning your expertise into a content library that drives results.
+            </p>
+            <p className="text-sm text-muted-foreground hidden md:block">
+              Click each step to learn more
             </p>
           </div>
 
-          {/* Desktop Timeline */}
-          <div className={`relative w-full h-[500px] hidden md:block ${initialState ? 'initial-state' : ''}`}>
-            <style>{`
-              .timeline-step .step-point {
-                transition: transform 0.3s ease, box-shadow 0.3s ease;
-              }
-              .timeline-step.active .step-point {
-                transform: scale(1.3);
-                box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.8), 0 0 15px 5px rgba(59, 130, 246, 0.4);
-              }
-              .timeline-step .info-card,
-              .timeline-step .dash-line {
-                transition: opacity 0.3s ease, transform 0.3s ease;
-              }
-              .timeline-container:not(.initial-state) .timeline-step:not(.active) .info-card,
-              .timeline-container:not(.initial-state) .timeline-step:not(.active) .dash-line {
-                opacity: 0.5;
-              }
-              .timeline-step.active .info-card {
-                transform: translateY(-5px);
-              }
-              .timeline-step.step-bottom.active .info-card {
-                transform: translateY(5px);
-              }
-            `}</style>
-
+          {/* Desktop Timeline with Clickable Bubbles */}
+          <div className="hidden md:block relative w-full mb-8">
             {/* Wavy SVG Path */}
-            <svg className="absolute top-1/2 left-0 w-full h-auto -translate-y-1/2" viewBox="0 0 1200 150" preserveAspectRatio="none">
+            <svg 
+              className="w-full h-auto" 
+              viewBox="0 0 1200 150" 
+              preserveAspectRatio="xMidYMid meet"
+              style={{ minHeight: '150px' }}
+            >
               <defs>
                 <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" style={{ stopColor: '#A8D08D', stopOpacity: 1 }} />
@@ -181,54 +165,76 @@ const ContentStrategyPage = () => {
                 fill="none" 
                 strokeLinecap="round"
               />
-            </svg>
-
-            {/* Steps Container */}
-            <div className="timeline-container relative w-full h-full">
+              
+              {/* Clickable Step Bubbles */}
               {strategySteps.map((step, index) => {
-                const positions = [4.16, 20.83, 37.5, 54.16, 70.83, 87.5];
-                const isBottom = index % 2 === 1;
+                const positions = [50, 250, 450, 650, 850, 1050];
+                const cx = positions[index];
+                const cy = 75;
                 const isActive = activeStep === index;
-
+                
                 return (
-                  <div
+                  <g 
                     key={index}
-                    className={`timeline-step absolute cursor-pointer ${isBottom ? 'step-bottom' : ''} ${isActive ? 'active' : ''}`}
-                    style={{ left: `${positions[index]}%`, top: '50%' }}
                     onClick={() => handleStepClick(index)}
+                    className="cursor-pointer"
+                    style={{ transformOrigin: `${cx}px ${cy}px` }}
                   >
-                    {/* Step Point */}
-                    <div 
-                      className="step-point absolute -translate-x-1/2 -translate-y-1/2 w-5 h-5 bg-white border-4 rounded-full z-10"
-                      style={{ borderColor: step.color }}
+                    <circle
+                      cx={cx}
+                      cy={cy}
+                      r={isActive ? 22 : 18}
+                      fill="white"
+                      stroke={step.color}
+                      strokeWidth={isActive ? 5 : 3}
+                      className="transition-all duration-300"
+                      style={{
+                        filter: isActive 
+                          ? `drop-shadow(0 0 12px ${step.color}80)` 
+                          : 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
+                      }}
                     />
-
-                    {/* Dashed Line */}
-                    <div 
-                      className={`dash-line absolute left-0 w-px border-l-2 border-dashed border-gray-300 ${
-                        isBottom ? 'top-8 h-28' : '-top-32 h-28'
-                      }`}
+                    <circle
+                      cx={cx}
+                      cy={cy}
+                      r={isActive ? 28 : 24}
+                      fill="transparent"
+                      className="transition-all duration-300"
                     />
-
-                    {/* Info Card */}
-                    <div 
-                      className={`info-card absolute -translate-x-1/2 flex items-start space-x-4 w-52 ${
-                        isBottom ? 'top-40' : '-top-48'
-                      }`}
-                    >
-                      <div className="text-4xl" style={{ color: step.color }}>
-                        <step.icon className="w-10 h-10" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-gray-500">STEP {String.fromCharCode(65 + index)}</p>
-                        <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">{step.title}</h3>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">{step.description}</p>
-                      </div>
-                    </div>
-                  </div>
+                  </g>
                 );
               })}
-            </div>
+            </svg>
+
+            {/* Step Details Card */}
+            {activeStep !== null && (
+              <Card className="max-w-3xl mx-auto shadow-xl border-2 mt-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                <CardContent className="p-8">
+                  <div className="flex items-start gap-6">
+                    <div 
+                      className="text-5xl flex-shrink-0 w-16 h-16 rounded-xl flex items-center justify-center"
+                      style={{ 
+                        backgroundColor: `${strategySteps[activeStep].color}20`,
+                        color: strategySteps[activeStep].color 
+                      }}
+                    >
+                      {React.createElement(strategySteps[activeStep].icon, { className: "w-8 h-8" })}
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold text-muted-foreground mb-2">
+                        STEP {String.fromCharCode(65 + activeStep)}
+                      </p>
+                      <h3 className="text-2xl font-bold mb-3">
+                        {strategySteps[activeStep].title}
+                      </h3>
+                      <p className="text-base text-foreground/80 leading-relaxed">
+                        {strategySteps[activeStep].description}
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
 
           {/* Mobile: Simple Vertical List */}

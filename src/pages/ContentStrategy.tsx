@@ -41,6 +41,13 @@ const ContentStrategyPage = () => {
       title: "Content as Business Asset",
       shortTitle: "Business Asset",
       description: "Treat content like a system: repeatable, scalable, optimized for ROI. Not views — business outcomes.",
+      details: "We don't create content for likes or followers. Every video we produce is designed to solve a specific business problem: onboarding new customers, reducing support calls, closing sales, or training your team.",
+      deliverables: [
+        "Business impact analysis",
+        "ROI framework setup",
+        "Content-to-revenue mapping"
+      ],
+      duration: "Ongoing mindset",
     },
     {
       icon: Compass,
@@ -48,6 +55,13 @@ const ContentStrategyPage = () => {
       title: "Discovery & Diagnosis",
       shortTitle: "Discovery",
       description: "Examine business goals, ideal clients, and revenue targets before creating anything.",
+      details: "Before we touch a camera, we need to understand where your business is leaking time, money, or momentum. We identify the highest-impact video opportunities—the ones that will actually move the needle.",
+      deliverables: [
+        "Business bottleneck audit",
+        "Customer journey mapping",
+        "Priority video opportunities list"
+      ],
+      duration: "1-2 weeks",
     },
     {
       icon: Users,
@@ -55,6 +69,13 @@ const ContentStrategyPage = () => {
       title: "Interest + Identity Mapping",
       shortTitle: "Identity Mapping",
       description: "Match your personality to content formats you can sustain long-term.",
+      details: "You can't fake authenticity long-term. We match content formats to your natural communication style—whether that's teaching, storytelling, or structured walkthroughs—so you can show up consistently without burning out.",
+      deliverables: [
+        "Personal strengths assessment",
+        "Format-personality alignment",
+        "Sustainable content calendar"
+      ],
+      duration: "1 week",
     },
     {
       icon: MessageSquare,
@@ -62,6 +83,13 @@ const ContentStrategyPage = () => {
       title: "Strategy Workshop",
       shortTitle: "Workshop",
       description: "90-minute deep dive to identify core video assets your business needs first.",
+      details: "In this focused session, we map out your content infrastructure: the evergreen videos that answer your most common questions, the training content that scales your team, and the sales assets that close deals while you sleep.",
+      deliverables: [
+        "Core content blueprint",
+        "Priority production list",
+        "Distribution strategy"
+      ],
+      duration: "90 minutes",
     },
     {
       icon: Calendar,
@@ -69,6 +97,13 @@ const ContentStrategyPage = () => {
       title: "3-Month Roadmap",
       shortTitle: "Roadmap",
       description: "Prioritized deliverables with clear roles and shooting calendar.",
+      details: "No more guessing what to create next. You get a clear production roadmap with specific videos, shoot dates, and expected business impact. We build what matters first—the assets that will save you the most time or make you the most money.",
+      deliverables: [
+        "12-week production schedule",
+        "Shot list and script templates",
+        "Resource allocation plan"
+      ],
+      duration: "Quarterly planning",
     },
     {
       icon: TrendingUp,
@@ -76,6 +111,13 @@ const ContentStrategyPage = () => {
       title: "Optimization & Growth",
       shortTitle: "Optimization",
       description: "Analytics review and content evolution as your business scales.",
+      details: "We track real metrics: reduced support tickets, faster onboarding times, increased conversion rates. As your business evolves, we adjust the content strategy to match—adding new assets, retiring outdated ones, and optimizing what's working.",
+      deliverables: [
+        "Performance analytics dashboard",
+        "Quarterly optimization sessions",
+        "Evolution roadmap"
+      ],
+      duration: "Ongoing support",
     }
   ];
 
@@ -251,9 +293,9 @@ const ContentStrategyPage = () => {
 
             {/* Step Details Card */}
             {activeStep !== null && (
-              <Card className="max-w-3xl mx-auto shadow-xl border-2 mt-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
+              <Card className="max-w-4xl mx-auto shadow-xl border-2 mt-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
                 <CardContent className="p-8">
-                  <div className="flex items-start gap-6">
+                  <div className="flex items-start gap-6 mb-6">
                     <div 
                       className="text-5xl flex-shrink-0 w-16 h-16 rounded-xl flex items-center justify-center"
                       style={{ 
@@ -264,15 +306,45 @@ const ContentStrategyPage = () => {
                       {React.createElement(strategySteps[activeStep].icon, { className: "w-8 h-8" })}
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-semibold text-muted-foreground mb-2">
-                        STEP {String.fromCharCode(65 + activeStep)}
-                      </p>
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-sm font-semibold text-muted-foreground">
+                          STEP {String.fromCharCode(65 + activeStep)}
+                        </p>
+                        <span className="text-xs px-3 py-1 rounded-full bg-muted text-muted-foreground font-medium">
+                          {strategySteps[activeStep].duration}
+                        </span>
+                      </div>
                       <h3 className="text-2xl font-bold mb-3">
                         {strategySteps[activeStep].title}
                       </h3>
-                      <p className="text-base text-foreground/80 leading-relaxed">
+                      <p className="text-base text-foreground/80 leading-relaxed mb-4">
                         {strategySteps[activeStep].description}
                       </p>
+                      <p className="text-sm text-foreground/70 leading-relaxed">
+                        {strategySteps[activeStep].details}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Deliverables Section */}
+                  <div className="border-t pt-6">
+                    <h4 className="text-sm font-semibold text-muted-foreground mb-3 flex items-center gap-2">
+                      <Target className="w-4 h-4" />
+                      Key Deliverables
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                      {strategySteps[activeStep].deliverables.map((deliverable, idx) => (
+                        <div 
+                          key={idx}
+                          className="flex items-start gap-2 p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors"
+                        >
+                          <div 
+                            className="w-1.5 h-1.5 rounded-full mt-1.5 flex-shrink-0"
+                            style={{ backgroundColor: strategySteps[activeStep].color }}
+                          />
+                          <span className="text-sm text-foreground/80">{deliverable}</span>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </CardContent>

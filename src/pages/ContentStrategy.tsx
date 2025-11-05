@@ -2,7 +2,9 @@ import { MetaTags } from "@/components/seo/MetaTags";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { usePageTransition } from '@/components/PageTransition';
+import { useState } from "react";
 import { 
   Target, 
   Compass,
@@ -18,11 +20,21 @@ import {
   Lightbulb,
   Brain,
   Zap,
-  LineChart
+  LineChart,
+  ChevronDown
 } from "lucide-react";
 
 const ContentStrategyPage = () => {
   const { transitionTo } = usePageTransition();
+  const [openSteps, setOpenSteps] = useState<number[]>([]);
+
+  const toggleStep = (index: number) => {
+    setOpenSteps(prev => 
+      prev.includes(index) 
+        ? prev.filter(i => i !== index)
+        : [...prev, index]
+    );
+  };
 
   const strategySteps = [
     {
@@ -31,6 +43,7 @@ const ContentStrategyPage = () => {
       bgColor: 'bg-blue-500/10',
       title: "Content as Business Asset",
       description: "Treat content like a system: repeatable, scalable, optimized for ROI. Not views — business outcomes.",
+      details: "We help you build a content infrastructure that generates predictable results. Every piece of content has a clear purpose in your sales funnel, customer journey, or brand positioning. We focus on creating systems, not one-offs—content that compounds in value over time."
     },
     {
       icon: Compass,
@@ -38,6 +51,7 @@ const ContentStrategyPage = () => {
       bgColor: 'bg-purple-500/10',
       title: "Discovery & Diagnosis",
       description: "Examine business goals, ideal clients, and revenue targets before creating anything.",
+      details: "Through in-depth interviews and analysis, we uncover what makes your business unique, who you serve best, and what content will actually move the needle. We map your customer journey, identify content gaps, and prioritize opportunities based on potential ROI."
     },
     {
       icon: Users,
@@ -45,6 +59,7 @@ const ContentStrategyPage = () => {
       bgColor: 'bg-pink-500/10',
       title: "Interest + Identity Mapping",
       description: "Match your personality to content formats you can sustain long-term.",
+      details: "Successful content requires consistency. We assess your strengths, communication style, and genuine interests to design a content approach you'll actually maintain. Whether you're better on camera, behind the mic, or in writing—we align strategy with what energizes you."
     },
     {
       icon: MessageSquare,
@@ -52,6 +67,7 @@ const ContentStrategyPage = () => {
       bgColor: 'bg-orange-500/10',
       title: "Strategy Workshop",
       description: "90-minute deep dive to identify core video assets your business needs first.",
+      details: "In this collaborative session, we prioritize your highest-impact content opportunities. You'll leave with a clear understanding of what to create first, how each piece serves your business, and a realistic production timeline that fits your resources and schedule."
     },
     {
       icon: Calendar,
@@ -59,6 +75,7 @@ const ContentStrategyPage = () => {
       bgColor: 'bg-cyan-500/10',
       title: "3-Month Roadmap",
       description: "Prioritized deliverables with clear roles and shooting calendar.",
+      details: "Your custom roadmap includes specific video concepts, production dates, platform strategies, and distribution plans. We define who's responsible for what, set realistic deadlines, and build in buffer time for revisions and optimization."
     },
     {
       icon: TrendingUp,
@@ -66,6 +83,7 @@ const ContentStrategyPage = () => {
       bgColor: 'bg-indigo-500/10',
       title: "Optimization & Growth",
       description: "Analytics review and content evolution as your business scales.",
+      details: "We track performance metrics that matter to your business—not just views and likes. Regular reviews help us identify what's working, double down on winners, and pivot away from underperformers. As your business grows, your content strategy evolves with it."
     }
   ];
 
@@ -153,19 +171,36 @@ const ContentStrategyPage = () => {
 
                     {/* Content Card - Alternating sides on desktop */}
                     <div className={`md:w-[calc(50%-2.5rem)] ${isEven ? 'md:ml-0' : 'md:ml-auto'}`}>
-                      <Card className="border-2 hover:border-blue-500/50 transition-all hover:shadow-lg group">
-                        <CardContent className="p-4">
-                          <div className="flex items-start gap-3">
-                            <div className={`p-2 rounded-lg ${step.bgColor} group-hover:scale-110 transition-transform flex-shrink-0`}>
-                              <step.icon className={`w-5 h-5 ${step.iconColor}`} />
-                            </div>
-                            <div className="flex-1">
-                              <h3 className="text-base font-bold mb-2">{step.title}</h3>
-                              <p className="text-sm text-foreground/80">{step.description}</p>
-                            </div>
-                          </div>
-                        </CardContent>
-                      </Card>
+                      <Collapsible open={openSteps.includes(index)} onOpenChange={() => toggleStep(index)}>
+                        <Card className="border-2 hover:border-blue-500/50 transition-all hover:shadow-lg group">
+                          <CardContent className="p-4">
+                            <CollapsibleTrigger className="w-full text-left">
+                              <div className="flex items-start gap-3">
+                                <div className={`p-2 rounded-lg ${step.bgColor} group-hover:scale-110 transition-transform flex-shrink-0`}>
+                                  <step.icon className={`w-5 h-5 ${step.iconColor}`} />
+                                </div>
+                                <div className="flex-1">
+                                  <div className="flex items-center justify-between mb-2">
+                                    <h3 className="text-base font-bold">{step.title}</h3>
+                                    <ChevronDown 
+                                      className={`w-4 h-4 transition-transform ${openSteps.includes(index) ? 'rotate-180' : ''}`}
+                                    />
+                                  </div>
+                                  <p className="text-sm text-foreground/80">{step.description}</p>
+                                </div>
+                              </div>
+                            </CollapsibleTrigger>
+                            
+                            <CollapsibleContent>
+                              <div className="mt-3 pl-11 pt-3 border-t border-border">
+                                <p className="text-sm text-foreground/70 leading-relaxed">
+                                  {step.details}
+                                </p>
+                              </div>
+                            </CollapsibleContent>
+                          </CardContent>
+                        </Card>
+                      </Collapsible>
                     </div>
 
                     {/* Connector dot */}

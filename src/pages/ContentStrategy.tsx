@@ -313,9 +313,9 @@ const ContentStrategyPage = () => {
                 <div className="w-16 h-16 bg-green-500/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                   <LineChart className="w-8 h-8 text-green-600 dark:text-green-400" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">Business-First Approach</h3>
+                <h3 className="text-xl font-bold mb-3">Solve Operational Bottlenecks</h3>
                 <p className="text-foreground/90">
-                  We start with your revenue goals, not trending formats. Every video has a job to do in your business.
+                  We don&apos;t chase viral trends—we identify where video can eliminate repetitive work, confusing onboarding, or endless customer questions.
                 </p>
               </CardContent>
             </Card>
@@ -325,9 +325,9 @@ const ContentStrategyPage = () => {
                 <div className="w-16 h-16 bg-purple-500/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                   <Zap className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">Sustainable Systems</h3>
+                <h3 className="text-xl font-bold mb-3">Video as Infrastructure</h3>
                 <p className="text-foreground/90">
-                  Build content you can maintain long-term, aligned with what you actually enjoy and excel at.
+                  Build a communication system that replaces repetitive explanations, speeds up training, and automates your most common answers.
                 </p>
               </CardContent>
             </Card>
@@ -337,9 +337,9 @@ const ContentStrategyPage = () => {
                 <div className="w-16 h-16 bg-orange-500/10 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                   <Target className="w-8 h-8 text-orange-600 dark:text-orange-400" />
                 </div>
-                <h3 className="text-xl font-bold mb-3">Measurable Outcomes</h3>
+                <h3 className="text-xl font-bold mb-3">Real Business Metrics</h3>
                 <p className="text-foreground/90">
-                  Track what matters: qualified leads, conversion rates, and real ROI — not just vanity metrics.
+                  Fewer support tickets. Faster onboarding. More booked jobs. We measure success by how much time and friction we remove from your business.
                 </p>
               </CardContent>
             </Card>

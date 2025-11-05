@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import confetti from 'canvas-confetti';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { 
   Video,
   Sparkles,
@@ -199,6 +200,7 @@ const characterConfigs = [
 ];
 
 export const ReelPalQuiz = () => {
+  const isMobile = useIsMobile();
   const [currentSection, setCurrentSection] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [showResults, setShowResults] = useState(false);
@@ -464,6 +466,13 @@ export const ReelPalQuiz = () => {
     }
   }, [showResults]);
 
+  // Scroll to top on section change for mobile
+  useEffect(() => {
+    if (isMobile) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [currentSection, isMobile]);
+
   if (showResults) {
     const recommendation = getRecommendation();
     const { percentage, categoryScores } = calculateDetailedScore();
@@ -617,9 +626,13 @@ export const ReelPalQuiz = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className={`${
+      isMobile 
+        ? 'fixed inset-0 z-50 bg-white overflow-hidden flex flex-col' 
+        : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
+    }`}>
       {/* Progress Header */}
-      <div className="px-4 sm:px-6 lg:px-8 mb-4">
+      <div className={`px-4 sm:px-6 lg:px-8 mb-4 ${isMobile ? 'pt-4 flex-shrink-0' : ''}`}>
         <div className="flex justify-between items-center text-gray-500 font-medium mb-2 text-sm sm:text-base">
           <span>Section {currentSection + 1} of {sections.length}</span>
           <span>{Math.round(progress)}% Complete</span>
@@ -632,7 +645,9 @@ export const ReelPalQuiz = () => {
         </div>
       </div>
 
-      <div className="flex flex-col md:flex-row gap-8 items-start">
+      <div className={`flex flex-col md:flex-row gap-8 items-start ${
+        isMobile ? 'flex-1 overflow-y-auto pb-32' : ''
+      }`}>
         {/* Main Quiz Card */}
         <div className="flex-grow w-full md:max-w-3xl">
           <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-12">
@@ -824,7 +839,9 @@ export const ReelPalQuiz = () => {
             </div>
 
             {/* Navigation Buttons */}
-            <div className="mt-8 sm:mt-12 flex items-center justify-center gap-3 sm:gap-4 flex-wrap">
+            <div className={`mt-8 sm:mt-12 flex items-center justify-center gap-3 sm:gap-4 flex-wrap ${
+              isMobile ? 'fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 z-10' : ''
+            }`}>
               <button
                 onClick={handlePrevious}
                 disabled={currentSection === 0}

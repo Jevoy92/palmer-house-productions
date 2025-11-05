@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import confetti from 'canvas-confetti';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { 
   Settings,
   Users,
@@ -204,6 +205,7 @@ const characterConfigs = [
 ];
 
 export const SystemPalQuiz = () => {
+  const isMobile = useIsMobile();
   const [currentSection, setCurrentSection] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [showResults, setShowResults] = useState(false);
@@ -437,6 +439,13 @@ export const SystemPalQuiz = () => {
     }
   }, [showResults]);
 
+  // Scroll to top on section change for mobile
+  useEffect(() => {
+    if (isMobile) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }, [currentSection, isMobile]);
+
   if (showResults) {
     const { categoryScores, percentage } = calculateDetailedScore();
     const actionItems = getActionItems(categoryScores);
@@ -581,9 +590,9 @@ export const SystemPalQuiz = () => {
   const progress = ((currentSection + 1) / sections.length) * 100;
 
   return (
-    <div className="relative bg-white py-12 sm:py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8 sm:mb-12">
+    <div className={`relative bg-white ${isMobile ? 'fixed inset-0 z-50 overflow-hidden flex flex-col' : 'py-12 sm:py-16'}`}>
+      <div className={`${isMobile ? 'flex-1 overflow-y-auto flex flex-col' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'}`}>
+        <div className={`text-center mb-8 sm:mb-12 ${isMobile ? 'px-4 pt-4 flex-shrink-0' : ''}`}>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 text-gray-800">
             Think You Have What It Takes?
           </h2>
@@ -593,7 +602,7 @@ export const SystemPalQuiz = () => {
         </div>
 
         {/* Progress Bar */}
-        <div className="mb-6 sm:mb-8">
+        <div className={`mb-6 sm:mb-8 ${isMobile ? 'px-4 flex-shrink-0' : ''}`}>
           <div className="flex justify-between text-sm text-gray-600 mb-2">
             <span>Section {currentSection + 1} of {sections.length}</span>
             <span>{Math.round(progress)}% Complete</span>
@@ -606,7 +615,7 @@ export const SystemPalQuiz = () => {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-6 lg:gap-8 items-start">
+        <div className={`flex flex-col md:flex-row gap-6 lg:gap-8 items-start ${isMobile ? 'flex-1 overflow-y-auto pb-32 px-4' : ''}`}>
           {/* Quiz Card */}
           <div className="w-full md:flex-1 bg-white rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10 border border-gray-100">
             <div className="flex items-center gap-3 sm:gap-4 mb-6 sm:mb-8">
@@ -793,7 +802,9 @@ export const SystemPalQuiz = () => {
             </div>
 
             {/* Navigation Buttons */}
-            <div className="mt-8 sm:mt-12 flex items-center justify-center gap-3 sm:gap-4 flex-wrap">
+            <div className={`mt-8 sm:mt-12 flex items-center justify-center gap-3 sm:gap-4 flex-wrap ${
+              isMobile ? 'fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 z-10' : ''
+            }`}>
               <button
                 onClick={handlePrevious}
                 disabled={currentSection === 0}

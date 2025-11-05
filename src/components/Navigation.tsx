@@ -261,12 +261,12 @@ export const Navigation = () => {
                         onClick={() => handlePageTransition('/assessments/video-readiness')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
-                        Quick Assessment
+                        Video Readiness Audit
                       </button>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <button 
-                        onClick={() => handlePageTransition('/pals')}
+                        onClick={() => handlePageTransition('/assessments/find-your-pal')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
                         Find Your Pal Quiz
@@ -274,18 +274,10 @@ export const Navigation = () => {
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <button 
-                        onClick={() => handlePageTransition('/assessments/video-readiness')}
+                        onClick={() => handlePageTransition('/assessments/video-health-check')}
                         className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
                       >
-                        Video Health Check
-                      </button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <button 
-                        onClick={() => handlePageTransition('/assessments/video-readiness')}
-                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      >
-                        Visibility Audit
+                        Video Health & Visibility Check
                       </button>
                     </DropdownMenuItem>
                   </DropdownMenuContent>

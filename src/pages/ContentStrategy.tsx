@@ -151,9 +151,9 @@ const ContentStrategyPage = () => {
           </div>
 
           {/* Winding Path Container */}
-          <div className="relative min-h-[800px] hidden md:block">
+          <div className="relative min-h-[1200px] hidden md:block">
             {/* SVG Curved Path */}
-            <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid meet">
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 700 1200" preserveAspectRatio="xMidYMid meet">
               <defs>
                 <linearGradient id="pathGradient" x1="0%" y1="0%" x2="0%" y2="100%">
                   <stop offset="0%" style={{ stopColor: 'hsl(var(--blue-500))', stopOpacity: 0.3 }} />
@@ -162,7 +162,7 @@ const ContentStrategyPage = () => {
                 </linearGradient>
               </defs>
               <path
-                d="M 150,80 Q 400,100 450,200 T 200,350 Q 100,400 250,500 T 500,650 Q 600,700 450,750"
+                d="M 120,60 Q 300,80 350,180 Q 400,280 200,360 Q 100,400 180,520 Q 260,640 480,720 Q 600,760 520,900 Q 480,980 380,1080"
                 fill="none"
                 stroke="url(#pathGradient)"
                 strokeWidth="8"
@@ -173,12 +173,12 @@ const ContentStrategyPage = () => {
             {/* Milestone Points */}
             {strategySteps.map((step, index) => {
               const positions = [
-                { x: '150px', y: '80px', cardX: '220px', cardY: '30px' },
-                { x: '450px', y: '200px', cardX: '520px', cardY: '150px' },
-                { x: '200px', y: '350px', cardX: '20px', cardY: '300px' },
-                { x: '250px', y: '500px', cardX: '320px', cardY: '450px' },
-                { x: '500px', y: '650px', cardX: '40px', cardY: '600px' },
-                { x: '450px', y: '750px', cardX: '520px', cardY: '700px' },
+                { x: '17%', y: '60px', cardX: '25%', cardY: '20px', align: 'left' },
+                { x: '50%', y: '180px', cardX: '60%', cardY: '140px', align: 'right' },
+                { x: '28%', y: '360px', cardX: '5%', cardY: '320px', align: 'left' },
+                { x: '25%', y: '520px', cardX: '35%', cardY: '480px', align: 'right' },
+                { x: '68%', y: '720px', cardX: '5%', cardY: '680px', align: 'left' },
+                { x: '54%', y: '1080px', cardX: '60%', cardY: '1040px', align: 'right' },
               ];
 
               const pos = positions[index];
@@ -190,10 +190,10 @@ const ContentStrategyPage = () => {
                     className="absolute z-20 -translate-x-1/2 -translate-y-1/2"
                     style={{ left: pos.x, top: pos.y }}
                   >
-                    <div className={`w-20 h-20 rounded-full ${step.bgColor} border-4 border-background shadow-2xl flex items-center justify-center group hover:scale-110 transition-transform cursor-pointer`}>
-                      <step.icon className={`w-10 h-10 ${step.iconColor}`} />
+                    <div className={`w-16 h-16 rounded-full ${step.bgColor} border-4 border-background shadow-2xl flex items-center justify-center group hover:scale-110 transition-transform cursor-pointer`}>
+                      <step.icon className={`w-7 h-7 ${step.iconColor}`} />
                     </div>
-                    <div className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full ${step.bgColor} border-2 border-background flex items-center justify-center`}>
+                    <div className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full ${step.bgColor} border-2 border-background flex items-center justify-center`}>
                       <span className={`text-xs font-bold ${step.iconColor}`}>{index + 1}</span>
                     </div>
                   </div>
@@ -201,7 +201,7 @@ const ContentStrategyPage = () => {
                   {/* Content Card */}
                   <div 
                     className="absolute z-10"
-                    style={{ left: pos.cardX, top: pos.cardY, width: '280px' }}
+                    style={{ left: pos.cardX, top: pos.cardY, maxWidth: '320px', width: '40%', minWidth: '280px' }}
                   >
                     <Collapsible open={openSteps.includes(index)} onOpenChange={() => toggleStep(index)}>
                       <Card className="border-2 hover:border-blue-500/50 transition-all hover:shadow-xl group bg-background/95 backdrop-blur">

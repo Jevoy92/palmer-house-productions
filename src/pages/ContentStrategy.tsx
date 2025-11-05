@@ -39,36 +39,42 @@ const ContentStrategyPage = () => {
       icon: Lightbulb,
       color: '#A8D08D',
       title: "Content as Business Asset",
+      shortTitle: "Business Asset",
       description: "Treat content like a system: repeatable, scalable, optimized for ROI. Not views — business outcomes.",
     },
     {
       icon: Compass,
       color: '#F4B183',
       title: "Discovery & Diagnosis",
+      shortTitle: "Discovery",
       description: "Examine business goals, ideal clients, and revenue targets before creating anything.",
     },
     {
       icon: Users,
       color: '#B4A7D6',
       title: "Interest + Identity Mapping",
+      shortTitle: "Identity Mapping",
       description: "Match your personality to content formats you can sustain long-term.",
     },
     {
       icon: MessageSquare,
       color: '#A3D9E2',
       title: "Strategy Workshop",
+      shortTitle: "Workshop",
       description: "90-minute deep dive to identify core video assets your business needs first.",
     },
     {
       icon: Calendar,
       color: '#4A86E8',
       title: "3-Month Roadmap",
+      shortTitle: "Roadmap",
       description: "Prioritized deliverables with clear roles and shooting calendar.",
     },
     {
       icon: TrendingUp,
       color: '#434343',
       title: "Optimization & Growth",
+      shortTitle: "Optimization",
       description: "Analytics review and content evolution as your business scales.",
     }
   ];
@@ -144,9 +150,9 @@ const ContentStrategyPage = () => {
             {/* Wavy SVG Path */}
             <svg 
               className="w-full h-auto" 
-              viewBox="0 0 1200 150" 
+              viewBox="0 0 1200 200" 
               preserveAspectRatio="xMidYMid meet"
-              style={{ minHeight: '150px' }}
+              style={{ minHeight: '200px' }}
             >
               <defs>
                 <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -166,7 +172,7 @@ const ContentStrategyPage = () => {
                 strokeLinecap="round"
               />
               
-              {/* Clickable Step Bubbles */}
+              {/* Clickable Step Bubbles with Icons */}
               {strategySteps.map((step, index) => {
                 const positions = [50, 250, 450, 650, 850, 1050];
                 const cx = positions[index];
@@ -177,30 +183,67 @@ const ContentStrategyPage = () => {
                   <g 
                     key={index}
                     onClick={() => handleStepClick(index)}
-                    className="cursor-pointer"
+                    className="cursor-pointer transition-all duration-300"
                     style={{ transformOrigin: `${cx}px ${cy}px` }}
                   >
+                    {/* Outer glow ring for active state */}
+                    {isActive && (
+                      <circle
+                        cx={cx}
+                        cy={cy}
+                        r={30}
+                        fill="none"
+                        stroke={step.color}
+                        strokeWidth={2}
+                        opacity={0.3}
+                        className="animate-pulse"
+                      />
+                    )}
+                    
+                    {/* Main circle */}
                     <circle
                       cx={cx}
                       cy={cy}
-                      r={isActive ? 22 : 18}
-                      fill="white"
+                      r={isActive ? 24 : 20}
+                      fill={isActive ? step.color : 'white'}
                       stroke={step.color}
-                      strokeWidth={isActive ? 5 : 3}
+                      strokeWidth={isActive ? 4 : 3}
                       className="transition-all duration-300"
                       style={{
                         filter: isActive 
-                          ? `drop-shadow(0 0 12px ${step.color}80)` 
+                          ? `drop-shadow(0 4px 12px ${step.color}80)` 
                           : 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
                       }}
                     />
-                    <circle
-                      cx={cx}
-                      cy={cy}
-                      r={isActive ? 28 : 24}
-                      fill="transparent"
-                      className="transition-all duration-300"
-                    />
+                    
+                    {/* Icon as foreignObject */}
+                    <foreignObject
+                      x={cx - 12}
+                      y={cy - 12}
+                      width={24}
+                      height={24}
+                      className="pointer-events-none"
+                    >
+                      <div className="w-full h-full flex items-center justify-center">
+                        {React.createElement(step.icon, { 
+                          size: isActive ? 16 : 14,
+                          color: isActive ? 'white' : step.color,
+                          className: "transition-all duration-300"
+                        })}
+                      </div>
+                    </foreignObject>
+                    
+                    {/* Step label */}
+                    <text
+                      x={cx}
+                      y={cy + 50}
+                      textAnchor="middle"
+                      className="text-xs font-semibold transition-all duration-300"
+                      fill={isActive ? step.color : '#666'}
+                      style={{ fontSize: isActive ? '13px' : '11px' }}
+                    >
+                      {step.shortTitle}
+                    </text>
                   </g>
                 );
               })}

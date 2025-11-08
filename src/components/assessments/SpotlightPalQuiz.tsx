@@ -463,7 +463,25 @@ export const SpotlightPalQuiz = () => {
     };
 
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-fade-in">
+      <div className={`${
+        isMobile && isQuizActive
+          ? 'fixed inset-0 z-50 bg-white overflow-y-auto' 
+          : ''
+      }`}>
+        {/* Close button for mobile full-screen */}
+        {isMobile && isQuizActive && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsQuizActive(false);
+            }}
+            className="fixed top-4 right-4 z-10 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+            aria-label="Close full-screen quiz"
+          >
+            <X className="w-6 h-6 text-gray-700" />
+          </button>
+        )}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-fade-in">
         {/* Hero Score Section */}
         <div className="bg-purple-600 rounded-3xl shadow-2xl p-8 lg:p-12 mb-8 text-white text-center">
           <Trophy className="w-20 h-20 mx-auto mb-4 animate-scale-in" />
@@ -583,8 +601,9 @@ export const SpotlightPalQuiz = () => {
         </div>
 
         <div className="text-center text-gray-600 pb-8">
-          <p className="text-lg">Want to discuss your results? <Link to="/contact" className="text-purple-600 hover:underline font-semibold">Schedule a free discovery call</Link></p>
+          <p className="text-lg">Ready to create cinematic content? <Link to="/contact" className="text-purple-500 hover:underline font-semibold">Schedule a free discovery call</Link></p>
         </div>
+      </div>
       </div>
     );
   }

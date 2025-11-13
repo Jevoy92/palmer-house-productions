@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Maximize, Sparkles, Download, RotateCcw } from 'lucide-react';
+import { Maximize, Sparkles, Download, RotateCcw, Coins, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 
@@ -24,11 +24,20 @@ const PLATFORMS = [
   { id: 'email', label: 'Email/Newsletter' },
 ];
 
+const LOADING_TIPS = [
+  "Analyzing your content...",
+  "Adapting for platform-specific formats...",
+  "Crafting platform-optimized captions...",
+  "Generating hashtag strategies...",
+  "Creating your content calendar..."
+];
+
 export default function ContentMaximizer() {
   const [content, setContent] = useState('');
   const [contentType, setContentType] = useState('');
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [currentTip, setCurrentTip] = useState(0);
   const [results, setResults] = useState<any>(null);
 
   const handlePlatformToggle = (platformId: string) => {
@@ -46,9 +55,20 @@ export default function ContentMaximizer() {
     }
 
     setLoading(true);
+    setCurrentTip(0);
     setResults(null);
 
+    const tipInterval = setInterval(() => {
+      setCurrentTip((prev) => (prev + 1) % LOADING_TIPS.length);
+    }, 3000);
+
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        throw new Error('You must be logged in to use this tool');
+      }
+
       const { data, error } = await supabase.functions.invoke('generate-content', {
         body: {
           toolType: 'content-maximizer',
@@ -56,21 +76,35 @@ export default function ContentMaximizer() {
         }
       });
 
+      clearInterval(tipInterval);
+
       if (error) throw error;
 
-      const parsedContent = JSON.parse(data.content);
-      setResults(parsedContent);
-      toast.success('Content repurposed!');
-    } catch (error: any) {
-      console.error('Generation error:', error);
-      
-      if (error.message?.includes('429')) {
-        toast.error('Rate limit reached. Please try again in a moment.');
-      } else if (error.message?.includes('402')) {
-        toast.error('AI credits exhausted. Please add credits to continue.');
-      } else {
-        toast.error('Failed to repurpose content. Please try again.');
+      // Check for insufficient credits
+      if (data?.error) {
+        if (data.error === 'Insufficient credits') {
+          toast.error(data.message || `This tool requires ${data.required} credits. You have ${data.current} credits remaining.`);
+          setLoading(false);
+          return;
+        }
+        throw new Error(data.error);
       }
+
+      const parsedContent = typeof data.content === 'string' 
+        ? JSON.parse(data.content) 
+        : data.content;
+      
+      setResults(parsedContent);
+      
+      if (data.credits) {
+        toast.success(`Content repurposed! Used ${data.credits.consumed} credits. ${data.credits.remaining} credits remaining.`);
+      } else {
+        toast.success('Content repurposed successfully!');
+      }
+    } catch (error: any) {
+      clearInterval(tipInterval);
+      console.error('Generation error:', error);
+      toast.error(error.message || 'Failed to repurpose content. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -110,21 +144,13 @@ export default function ContentMaximizer() {
               <DashboardHeader />
               <main className="flex-1 bg-white flex items-center justify-center p-8">
                 <div className="text-center max-w-md">
-                  <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-pal-orange/10 flex items-center justify-center animate-pulse">
-                    <Sparkles className="w-8 h-8 text-pal-orange" />
-                  </div>
+                  <Loader2 className="w-16 h-16 mx-auto mb-6 text-pal-orange animate-spin" />
                   <h2 className="text-2xl font-bold text-foreground mb-4">
                     Repurposing Your Content...
                   </h2>
-                  <div className="flex justify-center gap-2">
-                    {[...Array(3)].map((_, i) => (
-                      <div
-                        key={i}
-                        className="w-3 h-3 rounded-full bg-pal-orange animate-bounce"
-                        style={{ animationDelay: `${i * 0.15}s` }}
-                      />
-                    ))}
-                  </div>
+                  <p className="text-lg text-muted-foreground bg-muted/50 rounded-xl p-6 animate-pulse">
+                    💡 {LOADING_TIPS[currentTip]}
+                  </p>
                 </div>
               </main>
             </div>
@@ -311,17 +337,23 @@ export default function ContentMaximizer() {
                           </div>
                         ))}
                       </div>
-                    </div>
+                  </div>
 
-                    <Button 
-                      onClick={handleGenerate} 
-                      className="w-full"
-                      size="lg"
-                      disabled={!content.trim() || !contentType || selectedPlatforms.length === 0}
-                    >
-                      <Sparkles className="w-5 h-5 mr-2" />
-                      Maximize This Content
-                    </Button>
+                  {/* Credit Cost Info */}
+                  <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground py-2">
+                    <Coins className="w-4 h-4" />
+                    <span>This tool uses 6 credits per generation</span>
+                  </div>
+
+                  <Button 
+                    onClick={handleGenerate} 
+                    className="w-full"
+                    size="lg"
+                    disabled={!content.trim() || !contentType || selectedPlatforms.length === 0}
+                  >
+                    <Sparkles className="w-5 h-5 mr-2" />
+                    Maximize This Content
+                  </Button>
                   </CardContent>
                 </Card>
               </div>

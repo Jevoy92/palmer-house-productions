@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Sparkles, Clapperboard, CheckSquare, Camera, Loader2, Download, RefreshCw, MapPin, Clock } from 'lucide-react';
+import { Sparkles, Clapperboard, CheckSquare, Camera, Loader2, Download, RefreshCw, MapPin, Clock, Coins } from 'lucide-react';
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -50,6 +50,12 @@ export default function ProductionAssistant() {
     }, 2500);
 
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        throw new Error('You must be logged in to use this tool');
+      }
+
       const { data, error } = await supabase.functions.invoke('generate-content', {
         body: {
           toolType: 'production-assistant',
@@ -61,13 +67,37 @@ export default function ProductionAssistant() {
 
       if (error) throw error;
 
-      const parsedContent = JSON.parse(data.content);
+      // Check for insufficient credits
+      if (data?.error) {
+        if (data.error === 'Insufficient credits') {
+          toast({
+            title: '⚡ Not Enough Credits',
+            description: data.message || `This tool requires ${data.required} credits. You have ${data.current} credits remaining.`,
+            variant: 'destructive',
+          });
+          setIsLoading(false);
+          return;
+        }
+        throw new Error(data.error);
+      }
+
+      const parsedContent = typeof data.content === 'string' 
+        ? JSON.parse(data.content) 
+        : data.content;
+      
       setResults(parsedContent);
       
-      toast({
-        title: "Production Plan Ready!",
-        description: "Your complete production guide has been generated"
-      });
+      if (data.credits) {
+        toast({
+          title: "✨ Production Plan Ready!",
+          description: `Used ${data.credits.consumed} credits. ${data.credits.remaining} credits remaining.`
+        });
+      } else {
+        toast({
+          title: "Production Plan Ready!",
+          description: "Your complete production guide has been generated"
+        });
+      }
     } catch (error: any) {
       clearInterval(tipInterval);
       console.error('Generation error:', error);
@@ -222,17 +252,23 @@ export default function ProductionAssistant() {
                             value={budget}
                             onChange={(e) => setBudget(e.target.value)}
                           />
-                        </div>
                       </div>
+                    </div>
 
-                      <Button 
-                        onClick={handleGenerate} 
-                        className="w-full bg-pal-blue hover:bg-pal-blue/90"
-                        size="lg"
-                      >
-                        <Sparkles className="w-4 h-4 mr-2" />
-                        Generate Production Plan
-                      </Button>
+                    {/* Credit Cost Info */}
+                    <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground py-2">
+                      <Coins className="w-4 h-4" />
+                      <span>This tool uses 7 credits per generation</span>
+                    </div>
+
+                    <Button 
+                      onClick={handleGenerate} 
+                      className="w-full bg-pal-blue hover:bg-pal-blue/90"
+                      size="lg"
+                    >
+                      <Sparkles className="w-4 h-4 mr-2" />
+                      Generate Production Plan
+                    </Button>
                     </CardContent>
                   </Card>
                 )}

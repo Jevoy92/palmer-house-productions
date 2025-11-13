@@ -3,8 +3,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle2, Plus, Minus } from "lucide-react";
+import { CheckCircle2, Plus, Minus, ArrowRight } from "lucide-react";
 import { MetaTags } from "@/components/seo/MetaTags";
+import { useNavigate } from "react-router-dom";
 
 type Problem = {
   id: number;
@@ -120,9 +121,9 @@ const addOns: AddOn[] = [
 ];
 
 const ProductionPricing = () => {
-  const [step, setStep] = useState(1);
-  const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
-  const [useAutoPackage, setUseAutoPackage] = useState<boolean | null>(null);
+  const navigate = useNavigate();
+  const [selectedPal, setSelectedPal] = useState<string | null>(null);
+  const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
   const [customVideos, setCustomVideos] = useState<VideoCategory[]>([]);
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);

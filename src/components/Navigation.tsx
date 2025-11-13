@@ -371,6 +371,14 @@ export const Navigation = () => {
                         Memberships
                       </button>
                     </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <button 
+                        onClick={() => handlePageTransition('/production-pricing')}
+                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
+                      >
+                        Pricing
+                      </button>
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
@@ -561,6 +569,18 @@ export const Navigation = () => {
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
                   About Us
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/memberships')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Memberships
+                </button>
+                <button 
+                  onClick={() => handlePageTransition('/production-pricing')}
+                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
+                >
+                  Pricing
                 </button>
               </div>
             </div>

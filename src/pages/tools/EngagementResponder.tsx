@@ -20,10 +20,10 @@ export default function EngagementResponder() {
           <div className="flex-1 flex flex-col">
             <DashboardHeader />
             
-            <main className="flex-1 bg-gradient-to-br from-background via-muted/20 to-background">
+            <main className="flex-1 bg-white">
               <div className="container mx-auto px-4 py-8 max-w-5xl">
                 <div className="mb-12 text-center">
-                  <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-pal-purple to-pal-pink flex items-center justify-center shadow-lg">
+                  <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-pal-purple flex items-center justify-center">
                     <MessageCircle className="w-10 h-10 text-white" />
                   </div>
                   <h1 className="text-4xl font-bold text-foreground mb-3">
@@ -34,9 +34,9 @@ export default function EngagementResponder() {
                   </p>
                 </div>
 
-                <Card className="max-w-2xl mx-auto bg-gradient-to-br from-pal-purple/5 to-pal-pink/5">
+                <Card className="max-w-2xl mx-auto border-2">
                   <CardHeader className="text-center pb-4">
-                    <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-gradient-to-br from-pal-purple to-pal-pink flex items-center justify-center">
+                    <div className="w-16 h-16 mx-auto mb-4 rounded-xl bg-pal-purple flex items-center justify-center">
                       <Sparkles className="w-8 h-8 text-white" />
                     </div>
                     <CardTitle className="text-2xl">Coming Very Soon!</CardTitle>

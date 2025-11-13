@@ -25,35 +25,35 @@ export default function Dashboard() {
       name: 'Video Series Builder',
       description: 'Turn one idea into a complete content system',
       icon: Video,
-      gradient: 'from-pal-purple to-pal-orange',
+      color: 'bg-pal-purple',
     },
     {
       id: 'persona-generator',
       name: 'Persona Generator',
       description: 'Define your ideal audience and brand voice',
       icon: User,
-      gradient: 'from-pal-blue to-pal-purple',
+      color: 'bg-pal-blue',
     },
     {
       id: 'production-assistant',
       name: 'Production Assistant',
       description: 'Streamline your pre-production workflow',
       icon: Sparkles,
-      gradient: 'from-pal-green to-pal-blue',
+      color: 'bg-pal-green',
     },
     {
       id: 'content-maximizer',
       name: 'Content Maximizer',
       description: 'Repurpose content across all platforms',
       icon: Maximize,
-      gradient: 'from-pal-orange to-pal-purple',
+      color: 'bg-pal-orange',
     },
     {
       id: 'engagement-responder',
       name: 'Engagement Responder',
       description: 'Automate community engagement',
       icon: MessageCircle,
-      gradient: 'from-pal-purple to-pal-pink',
+      color: 'bg-pal-purple',
     },
   ];
 
@@ -72,15 +72,10 @@ export default function Dashboard() {
             <DashboardHeader />
             
             {/* Main Content */}
-            <main className="flex-1 bg-gradient-to-br from-background via-muted/20 to-background">
+            <main className="flex-1 bg-white">
               <div className="container mx-auto px-4 py-8 max-w-7xl">
                 {/* Welcome Hero */}
                 <div className="mb-12 text-center">
-                  <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-pal-purple via-pal-blue to-pal-orange p-1 shadow-lg">
-                    <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
-                      <Sparkles className="w-10 h-10 text-pal-purple" />
-                    </div>
-                  </div>
                   <h2 className="text-4xl font-bold text-foreground mb-3">
                     Welcome back, {userName}!
                   </h2>
@@ -93,14 +88,14 @@ export default function Dashboard() {
                 <div className="mb-8">
                   <h3 className="text-xl font-semibold text-foreground mb-4">Start Creating</h3>
                   <Card 
-                    className="bg-gradient-to-br from-pal-purple/10 via-background to-pal-orange/10 border-2 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                    className="border-2 hover:shadow-md transition-all duration-300 cursor-pointer group"
                     onClick={() => handleToolClick('video-series-builder')}
                   >
                     <CardHeader>
                       <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-4">
-                          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pal-purple to-pal-orange flex items-center justify-center shadow-lg">
-                            <Video className="w-8 h-8 text-white" />
+                          <div className="w-14 h-14 rounded-xl bg-pal-purple flex items-center justify-center">
+                            <Video className="w-7 h-7 text-white" />
                           </div>
                           <div>
                             <CardTitle className="text-2xl mb-1">Video Series Builder</CardTitle>
@@ -126,13 +121,13 @@ export default function Dashboard() {
                     return (
                       <Card
                         key={tool.id}
-                        className="hover:shadow-lg transition-all duration-300 cursor-pointer group"
+                        className="hover:shadow-md transition-all duration-300 cursor-pointer group"
                         onClick={() => handleToolClick(tool.id)}
                       >
                         <CardHeader>
                           <div className="flex items-center gap-4 mb-3">
                             <div
-                              className={`w-12 h-12 rounded-xl bg-gradient-to-br ${tool.gradient} flex items-center justify-center shadow-md`}
+                              className={`w-12 h-12 rounded-xl ${tool.color} flex items-center justify-center`}
                             >
                               <Icon className="w-6 h-6 text-white" />
                             </div>

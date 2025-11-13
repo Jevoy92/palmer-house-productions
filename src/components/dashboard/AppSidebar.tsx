@@ -2,6 +2,7 @@ import { Home, Video, User, Sparkles, Maximize, MessageCircle, Settings, LogOut 
 import { NavLink } from '@/components/NavLink';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { LOGO } from '@/lib/branding';
 import {
   Sidebar,
   SidebarContent,
@@ -77,22 +78,22 @@ export function AppSidebar() {
         {!isCollapsed && (
           <div className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pal-purple to-pal-orange flex items-center justify-center">
-                <Video className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <h2 className="font-bold text-foreground">Content OS</h2>
-                <p className="text-xs text-muted-foreground">Palmer House</p>
-              </div>
+              <img 
+                src={LOGO.url} 
+                alt={LOGO.alt}
+                className="h-10 w-auto object-contain"
+              />
             </div>
           </div>
         )}
 
         {isCollapsed && (
           <div className="p-2 flex justify-center">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pal-purple to-pal-orange flex items-center justify-center">
-              <Video className="w-5 h-5 text-white" />
-            </div>
+            <img 
+              src={LOGO.url} 
+              alt={LOGO.alt}
+              className="h-8 w-auto object-contain"
+            />
           </div>
         )}
 

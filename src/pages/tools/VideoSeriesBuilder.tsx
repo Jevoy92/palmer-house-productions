@@ -4,8 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card } from '@/components/ui/card';
-import { Loader2, Sparkles, Download, Save, RotateCcw } from 'lucide-react';
+import { Loader2, Sparkles, Download, Save, RotateCcw, Video } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/dashboard/AppSidebar';
+import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 
 const EXAMPLE_PROMPTS = [
   {
@@ -66,17 +69,13 @@ export default function VideoSeriesBuilder() {
     setLoading(true);
     setCurrentTip(0);
 
-    // Cycle through tips during loading
     const tipInterval = setInterval(() => {
       setCurrentTip((prev) => (prev + 1) % LOADING_TIPS.length);
     }, 3000);
 
     try {
-      // TODO: Replace with actual API call to generate content
-      // For now, simulating API call
       await new Promise((resolve) => setTimeout(resolve, 3000));
 
-      // Mock response structure
       const mockPlan = {
         strategy: `This comprehensive content system leverages your core idea to build authority, drive engagement, and convert viewers into customers. By creating a multi-platform approach, we ensure your message reaches your ${industry} audience wherever they are most active.`,
         youtube: {
@@ -192,17 +191,25 @@ export default function VideoSeriesBuilder() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-pal-purple/10 via-background to-pal-orange/10 px-4">
-        <Loader2 className="w-16 h-16 animate-spin text-primary mb-8" />
-        <h2 className="text-2xl font-bold text-corporate-dark mb-4">
-          Crafting Your Content System...
-        </h2>
-        <div className="max-w-md text-center">
-          <p className="text-lg text-corporate-gray bg-background/80 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-            💡 {LOADING_TIPS[currentTip]}
-          </p>
+      <SidebarProvider>
+        <div className="min-h-screen flex w-full">
+          <AppSidebar />
+          <div className="flex-1 flex flex-col">
+            <DashboardHeader />
+            <main className="flex-1 flex flex-col items-center justify-center bg-white px-4">
+              <Loader2 className="w-16 h-16 animate-spin text-primary mb-8" />
+              <h2 className="text-2xl font-bold text-foreground mb-4">
+                Crafting Your Content System...
+              </h2>
+              <div className="max-w-md text-center">
+                <p className="text-lg text-muted-foreground bg-muted/50 rounded-xl p-6">
+                  💡 {LOADING_TIPS[currentTip]}
+                </p>
+              </div>
+            </main>
+          </div>
         </div>
-      </div>
+      </SidebarProvider>
     );
   }
 
@@ -214,155 +221,161 @@ export default function VideoSeriesBuilder() {
           description="Your complete multi-platform content strategy"
           canonicalUrl="https://www.palmerhouseproductions.com/tools/video-series-builder"
         />
-        <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background px-4 py-12">
-          <div className="container mx-auto max-w-6xl">
-            {/* Header with Actions */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-              <div>
-                <h1 className="text-3xl font-bold text-corporate-dark mb-2">
-                  Your Content System
-                </h1>
-                <p className="text-corporate-gray">Based on: "{idea}"</p>
-              </div>
-              <div className="flex gap-2">
-                <Button onClick={handleDownload} variant="outline" size="sm">
-                  <Download className="w-4 h-4 mr-2" />
-                  Download
-                </Button>
-                <Button onClick={handleSave} variant="outline" size="sm" disabled={isSaved}>
-                  <Save className="w-4 h-4 mr-2" />
-                  {isSaved ? 'Saved!' : 'Save'}
-                </Button>
-                <Button onClick={handleReset} variant="default" size="sm">
-                  <RotateCcw className="w-4 h-4 mr-2" />
-                  Generate New
-                </Button>
-              </div>
-            </div>
-
-            {/* Results Cards */}
-            <div className="space-y-6">
-              {/* Strategy Card */}
-              <Card className="p-6">
-                <h3 className="text-xl font-bold text-corporate-dark mb-3">
-                  🎯 How It All Ties Together
-                </h3>
-                <p className="text-corporate-gray leading-relaxed">
-                  {contentPlan.strategy}
-                </p>
-              </Card>
-
-              {/* Platform-specific content cards */}
-              <div className="grid md:grid-cols-2 gap-6">
-                {/* YouTube */}
-                <Card className="p-6">
-                  <h3 className="text-lg font-bold text-corporate-dark mb-4">📺 YouTube</h3>
-                  <div className="space-y-3">
+        <SidebarProvider>
+          <div className="min-h-screen flex w-full">
+            <AppSidebar />
+            <div className="flex-1 flex flex-col">
+              <DashboardHeader />
+              <main className="flex-1 bg-white px-4 py-8">
+                <div className="container mx-auto max-w-6xl">
+                  {/* Header with Actions */}
+                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
                     <div>
-                      <p className="text-sm font-semibold text-muted-foreground mb-1">SEO Title:</p>
-                      <p className="text-corporate-dark">{contentPlan.youtube.title}</p>
+                      <h1 className="text-3xl font-bold text-foreground mb-2">
+                        Your Content System
+                      </h1>
+                      <p className="text-muted-foreground">Based on: "{idea}"</p>
                     </div>
-                    <div>
-                      <p className="text-sm font-semibold text-muted-foreground mb-1">Script Hook (First 15 sec):</p>
-                      <p className="text-corporate-gray text-sm">{contentPlan.youtube.scriptHook}</p>
+                    <div className="flex gap-2">
+                      <Button onClick={handleDownload} variant="outline" size="sm">
+                        <Download className="w-4 h-4 mr-2" />
+                        Download
+                      </Button>
+                      <Button onClick={handleSave} variant="outline" size="sm" disabled={isSaved}>
+                        <Save className="w-4 h-4 mr-2" />
+                        {isSaved ? 'Saved!' : 'Save'}
+                      </Button>
+                      <Button onClick={handleReset} variant="default" size="sm">
+                        <RotateCcw className="w-4 h-4 mr-2" />
+                        Generate New
+                      </Button>
                     </div>
                   </div>
-                </Card>
 
-                {/* LinkedIn */}
-                <Card className="p-6">
-                  <h3 className="text-lg font-bold text-corporate-dark mb-4">💼 LinkedIn Post</h3>
-                  <p className="text-corporate-gray text-sm whitespace-pre-line">
-                    {contentPlan.linkedin.post}
-                  </p>
-                </Card>
+                  {/* Results Cards */}
+                  <div className="space-y-6">
+                    {/* Strategy Card */}
+                    <Card className="p-6 border-2">
+                      <h3 className="text-xl font-bold text-foreground mb-3">
+                        🎯 How It All Ties Together
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        {contentPlan.strategy}
+                      </p>
+                    </Card>
 
-                {/* Twitter Thread */}
-                <Card className="p-6">
-                  <h3 className="text-lg font-bold text-corporate-dark mb-4">𝕏 Twitter Thread</h3>
-                  <div className="space-y-2">
-                    <div className="bg-muted p-3 rounded-lg">
-                      <p className="text-sm font-semibold text-corporate-dark mb-1">Thread Intro:</p>
-                      <p className="text-corporate-gray text-sm">{contentPlan.twitter.threadIntro}</p>
+                    {/* Platform-specific content cards */}
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {/* YouTube */}
+                      <Card className="p-6">
+                        <h3 className="text-lg font-bold text-foreground mb-4">📺 YouTube</h3>
+                        <div className="space-y-3">
+                          <div>
+                            <p className="text-sm font-semibold text-muted-foreground mb-1">SEO Title:</p>
+                            <p className="text-foreground">{contentPlan.youtube.title}</p>
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-muted-foreground mb-1">Script Hook (First 15 sec):</p>
+                            <p className="text-muted-foreground text-sm">{contentPlan.youtube.scriptHook}</p>
+                          </div>
+                        </div>
+                      </Card>
+
+                      {/* LinkedIn */}
+                      <Card className="p-6">
+                        <h3 className="text-lg font-bold text-foreground mb-4">💼 LinkedIn Post</h3>
+                        <p className="text-muted-foreground text-sm whitespace-pre-line">
+                          {contentPlan.linkedin.post}
+                        </p>
+                      </Card>
+
+                      {/* Twitter Thread */}
+                      <Card className="p-6">
+                        <h3 className="text-lg font-bold text-foreground mb-4">𝕏 Twitter Thread</h3>
+                        <div className="space-y-2">
+                          <div className="bg-muted p-3 rounded-lg">
+                            <p className="text-sm font-semibold text-foreground mb-1">Thread Intro:</p>
+                            <p className="text-muted-foreground text-sm">{contentPlan.twitter.threadIntro}</p>
+                          </div>
+                          {contentPlan.twitter.tweets.map((tweet: string, idx: number) => (
+                            <div key={idx} className="bg-muted/50 p-3 rounded-lg">
+                              <p className="text-xs font-semibold text-muted-foreground mb-1">Tweet {idx + 1}:</p>
+                              <p className="text-muted-foreground text-sm">{tweet}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </Card>
+
+                      {/* Instagram Carousel */}
+                      <Card className="p-6">
+                        <h3 className="text-lg font-bold text-foreground mb-4">📷 Instagram Carousel</h3>
+                        <div className="mb-3">
+                          <p className="text-sm font-semibold text-muted-foreground mb-1">Carousel Concept:</p>
+                          <p className="text-foreground">{contentPlan.instagram.carouselIdea}</p>
+                        </div>
+                        <div className="space-y-2">
+                          {contentPlan.instagram.slides.map((slide: any, idx: number) => (
+                            <div key={idx} className="bg-muted p-3 rounded-lg">
+                              <p className="text-sm font-semibold text-foreground">{slide.title}</p>
+                              <p className="text-sm text-muted-foreground">{slide.content}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </Card>
+
+                      {/* Blog Post */}
+                      <Card className="p-6">
+                        <h3 className="text-lg font-bold text-foreground mb-4">📝 Blog Post</h3>
+                        <div className="space-y-3">
+                          <div>
+                            <p className="text-sm font-semibold text-muted-foreground mb-1">SEO Title:</p>
+                            <p className="text-foreground">{contentPlan.blog.seoTitle}</p>
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-muted-foreground mb-2">Outline:</p>
+                            <ul className="space-y-1">
+                              {contentPlan.blog.outline.map((item: string, idx: number) => (
+                                <li key={idx} className="text-sm text-muted-foreground">• {item}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </Card>
+
+                      {/* Email/Newsletter */}
+                      <Card className="p-6">
+                        <h3 className="text-lg font-bold text-foreground mb-4">📧 Email / Newsletter</h3>
+                        <div className="space-y-3">
+                          <div>
+                            <p className="text-sm font-semibold text-muted-foreground mb-1">Subject Line:</p>
+                            <p className="text-foreground">{contentPlan.email.subject}</p>
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-muted-foreground mb-1">Opening Hook:</p>
+                            <p className="text-muted-foreground text-sm">{contentPlan.email.bodyHook}</p>
+                          </div>
+                        </div>
+                      </Card>
+
+                      {/* Digital Downloads */}
+                      <Card className="p-6 md:col-span-2">
+                        <h3 className="text-lg font-bold text-foreground mb-4">📥 Suggested Digital Downloads</h3>
+                        <div className="grid md:grid-cols-2 gap-3">
+                          {contentPlan.downloads.map((download: any, idx: number) => (
+                            <div key={idx} className="bg-muted p-4 rounded-lg">
+                              <p className="font-semibold text-foreground mb-1">{download.title}</p>
+                              <p className="text-sm text-muted-foreground">{download.description}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </Card>
                     </div>
-                    {contentPlan.twitter.tweets.map((tweet: string, idx: number) => (
-                      <div key={idx} className="bg-muted/50 p-3 rounded-lg">
-                        <p className="text-xs font-semibold text-muted-foreground mb-1">Tweet {idx + 1}:</p>
-                        <p className="text-corporate-gray text-sm">{tweet}</p>
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-
-                {/* Instagram Carousel */}
-                <Card className="p-6">
-                  <h3 className="text-lg font-bold text-corporate-dark mb-4">📸 Instagram Carousel</h3>
-                  <div className="space-y-2">
-                    <p className="text-sm font-semibold text-muted-foreground mb-2">
-                      Idea: {contentPlan.instagram.carouselIdea}
-                    </p>
-                    {contentPlan.instagram.slides.map((slide: any, idx: number) => (
-                      <div key={idx} className="bg-muted p-3 rounded-lg">
-                        <p className="text-sm font-semibold text-corporate-dark">{slide.title}</p>
-                        <p className="text-xs text-corporate-gray mt-1">{slide.content}</p>
-                      </div>
-                    ))}
-                  </div>
-                </Card>
-              </div>
-
-              {/* Blog Post */}
-              <Card className="p-6">
-                <h3 className="text-lg font-bold text-corporate-dark mb-4">📝 Blog Post</h3>
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-1">SEO Title:</p>
-                    <p className="text-corporate-dark">{contentPlan.blog.seoTitle}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-2">Outline:</p>
-                    <ul className="space-y-1">
-                      {contentPlan.blog.outline.map((item: string, idx: number) => (
-                        <li key={idx} className="text-corporate-gray text-sm flex gap-2">
-                          <span className="text-primary">•</span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
                   </div>
                 </div>
-              </Card>
-
-              {/* Email Newsletter */}
-              <Card className="p-6">
-                <h3 className="text-lg font-bold text-corporate-dark mb-4">📧 Email / Newsletter</h3>
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-1">Subject Line:</p>
-                    <p className="text-corporate-dark">{contentPlan.email.subject}</p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-1">Opening Hook:</p>
-                    <p className="text-corporate-gray text-sm">{contentPlan.email.bodyHook}</p>
-                  </div>
-                </div>
-              </Card>
-
-              {/* Digital Downloads */}
-              <Card className="p-6">
-                <h3 className="text-lg font-bold text-corporate-dark mb-4">📥 Suggested Digital Downloads</h3>
-                <div className="space-y-3">
-                  {contentPlan.downloads.map((download: any, idx: number) => (
-                    <div key={idx} className="bg-muted p-4 rounded-lg">
-                      <p className="font-semibold text-corporate-dark mb-1">{download.title}</p>
-                      <p className="text-sm text-corporate-gray">{download.description}</p>
-                    </div>
-                  ))}
-                </div>
-              </Card>
+              </main>
             </div>
           </div>
-        </div>
+        </SidebarProvider>
       </>
     );
   }
@@ -374,121 +387,127 @@ export default function VideoSeriesBuilder() {
         description="Turn one idea into a complete content system across YouTube, LinkedIn, Instagram, Twitter, blog posts, and email."
         canonicalUrl="https://www.palmerhouseproductions.com/tools/video-series-builder"
       />
-      <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background px-4 py-12">
-        <div className="container mx-auto max-w-4xl">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-pal-purple/10 rounded-full mb-6">
-              <Sparkles className="w-5 h-5 text-pal-purple" />
-              <span className="text-sm font-semibold text-pal-purple">Video Series Builder</span>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-corporate-dark mb-4">
-              Turn one idea into a complete content system.
-            </h1>
-            <p className="text-lg text-corporate-gray">
-              Transform your single video concept into a multi-platform content strategy
-            </p>
-          </div>
-
-          {/* Main Input Card */}
-          <Card className="p-8 mb-8">
-            <div className="space-y-6">
-              {/* Core Video Idea */}
-              <div>
-                <label className="block text-sm font-semibold text-corporate-dark mb-2">
-                  Core Video Idea
-                </label>
-                <Textarea
-                  placeholder="e.g., A 5-part series on how first-time homebuyers can secure a loan."
-                  value={idea}
-                  onChange={(e) => setIdea(e.target.value)}
-                  rows={4}
-                  className="resize-none"
-                />
-              </div>
-
-              {/* Tweaking Options */}
-              <div>
-                <h3 className="text-sm font-semibold text-corporate-dark mb-4">
-                  Tweaking Options
-                </h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">
-                      Industry
-                    </label>
-                    <Select value={industry} onValueChange={setIndustry}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Real Estate">Real Estate</SelectItem>
-                        <SelectItem value="Fitness">Fitness</SelectItem>
-                        <SelectItem value="Coaching">Coaching</SelectItem>
-                        <SelectItem value="Trades">Trades</SelectItem>
-                        <SelectItem value="E-Commerce">E-Commerce</SelectItem>
-                        <SelectItem value="Hospitality">Hospitality</SelectItem>
-                        <SelectItem value="Nonprofit">Nonprofit</SelectItem>
-                        <SelectItem value="Healthcare">Healthcare</SelectItem>
-                        <SelectItem value="Law/Finance">Law/Finance</SelectItem>
-                        <SelectItem value="Corporate/HR">Corporate/HR</SelectItem>
-                        <SelectItem value="Other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
+      <SidebarProvider>
+        <div className="min-h-screen flex w-full">
+          <AppSidebar />
+          <div className="flex-1 flex flex-col">
+            <DashboardHeader />
+            <main className="flex-1 bg-white px-4 py-8">
+              <div className="container mx-auto max-w-4xl">
+                {/* Header */}
+                <div className="text-center mb-12">
+                  <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-pal-purple flex items-center justify-center">
+                    <Video className="w-10 h-10 text-white" />
                   </div>
+                  <h1 className="text-4xl font-bold text-foreground mb-3">
+                    Video Series Builder
+                  </h1>
+                  <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    Turn one idea into a complete content system
+                  </p>
+                </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-muted-foreground mb-2">
-                      Primary Goal
-                    </label>
-                    <Select value={goal} onValueChange={setGoal}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Educate">Educate</SelectItem>
-                        <SelectItem value="Sell">Sell</SelectItem>
-                        <SelectItem value="Train">Train</SelectItem>
-                        <SelectItem value="Build Trust">Build Trust</SelectItem>
-                      </SelectContent>
-                    </Select>
+                {/* Input Card */}
+                <Card className="mb-8 p-6 border-2">
+                  <div className="space-y-6">
+                    <div>
+                      <label className="block text-sm font-semibold text-foreground mb-2">
+                        Core Video Idea
+                      </label>
+                      <Textarea
+                        placeholder="e.g., A 5-part series on how first-time homebuyers can secure a loan."
+                        value={idea}
+                        onChange={(e) => setIdea(e.target.value)}
+                        rows={4}
+                        className="resize-none"
+                      />
+                    </div>
+
+                    {/* Tweaking Options */}
+                    <div>
+                      <h3 className="text-sm font-semibold text-foreground mb-4">
+                        Tweaking Options
+                      </h3>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-sm font-medium text-muted-foreground mb-2">
+                            Industry
+                          </label>
+                          <Select value={industry} onValueChange={setIndustry}>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Real Estate">Real Estate</SelectItem>
+                              <SelectItem value="Fitness">Fitness</SelectItem>
+                              <SelectItem value="Coaching">Coaching</SelectItem>
+                              <SelectItem value="Trades">Trades</SelectItem>
+                              <SelectItem value="E-Commerce">E-Commerce</SelectItem>
+                              <SelectItem value="Hospitality">Hospitality</SelectItem>
+                              <SelectItem value="Nonprofit">Nonprofit</SelectItem>
+                              <SelectItem value="Healthcare">Healthcare</SelectItem>
+                              <SelectItem value="Law/Finance">Law/Finance</SelectItem>
+                              <SelectItem value="Corporate/HR">Corporate/HR</SelectItem>
+                              <SelectItem value="Other">Other</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-muted-foreground mb-2">
+                            Primary Goal
+                          </label>
+                          <Select value={goal} onValueChange={setGoal}>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="Educate">Educate</SelectItem>
+                              <SelectItem value="Sell">Sell</SelectItem>
+                              <SelectItem value="Train">Train</SelectItem>
+                              <SelectItem value="Build Trust">Build Trust</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Button
+                      onClick={handleGenerate}
+                      className="w-full"
+                      size="lg"
+                    >
+                      <Sparkles className="w-5 h-5 mr-2" />
+                      Generate Content System
+                    </Button>
+                  </div>
+                </Card>
+
+                {/* Example Prompts */}
+                <div className="text-center">
+                  <p className="text-sm text-muted-foreground mb-4 uppercase tracking-wide">
+                    Get Started With An Example Below
+                  </p>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    {EXAMPLE_PROMPTS.map((prompt, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => handlePromptClick(prompt)}
+                        className="p-4 bg-background border border-border rounded-xl hover:shadow-md hover:scale-105 transition-all text-left"
+                      >
+                        <div className="flex items-start gap-3">
+                          <span className="text-2xl">{prompt.icon}</span>
+                          <p className="text-sm text-muted-foreground">{prompt.text}</p>
+                        </div>
+                      </button>
+                    ))}
                   </div>
                 </div>
               </div>
-
-              <Button
-                onClick={handleGenerate}
-                className="w-full"
-                size="lg"
-              >
-                <Sparkles className="w-5 h-5 mr-2" />
-                Generate Content System
-              </Button>
-            </div>
-          </Card>
-
-          {/* Example Prompts */}
-          <div className="text-center">
-            <p className="text-sm text-muted-foreground mb-4 uppercase tracking-wide">
-              Get Started With An Example Below
-            </p>
-            <div className="grid md:grid-cols-2 gap-4">
-              {EXAMPLE_PROMPTS.map((prompt, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => handlePromptClick(prompt)}
-                  className="p-4 bg-background border border-border rounded-xl hover:shadow-lg hover:scale-105 transition-all text-left"
-                >
-                  <div className="flex items-start gap-3">
-                    <span className="text-2xl">{prompt.icon}</span>
-                    <p className="text-sm text-corporate-gray">{prompt.text}</p>
-                  </div>
-                </button>
-              ))}
-            </div>
+            </main>
           </div>
         </div>
-      </div>
+      </SidebarProvider>
     </>
   );
 }

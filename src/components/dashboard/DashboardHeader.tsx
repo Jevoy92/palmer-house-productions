@@ -1,6 +1,5 @@
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useAuth } from '@/contexts/AuthContext';
-import { Sparkles } from 'lucide-react';
 
 export function DashboardHeader() {
   const { user } = useAuth();
@@ -17,7 +16,7 @@ export function DashboardHeader() {
   };
 
   return (
-    <header className="h-16 flex items-center border-b border-border bg-background/95 backdrop-blur-sm sticky top-0 z-50">
+    <header className="h-16 flex items-center border-b border-border bg-white sticky top-0 z-50">
       <div className="container mx-auto px-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
@@ -32,8 +31,7 @@ export function DashboardHeader() {
         </div>
         
         <div className="flex items-center gap-2">
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-pal-purple/10 rounded-full">
-            <Sparkles className="w-4 h-4 text-pal-purple" />
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-pal-purple/10 rounded-full border border-pal-purple/20">
             <span className="text-sm font-medium text-pal-purple">Member</span>
           </div>
         </div>

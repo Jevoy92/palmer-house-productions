@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "@/hooks/use-toast";
 
 interface FreshworksFormProps {
   title?: string;
@@ -14,6 +16,7 @@ export const FreshworksForm = ({
 }: FreshworksFormProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const scriptLoadedRef = useRef(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Only load the script once
@@ -39,6 +42,60 @@ export const FreshworksForm = ({
       }
     };
   }, []);
+
+  // Listen for form submission success
+  useEffect(() => {
+    const handleFormSubmit = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      // Freshworks forms typically dispatch custom events on submission
+      if (customEvent.detail?.success || event.type === 'fs-form-submit-success') {
+        toast({
+          title: "Message Sent! 🎉",
+          description: "Thank you for reaching out. We'll get back to you within 24 hours.",
+          duration: 5000,
+        });
+        
+        // Redirect to thank you page after a short delay
+        setTimeout(() => {
+          navigate('/thank-you');
+        }, 2000);
+      }
+    };
+
+    // Monitor for success message in the DOM as fallback
+    const observer = new MutationObserver(() => {
+      const successMessage = containerRef.current?.querySelector('.crm-success-message, .success-message, [class*="success"]');
+      if (successMessage && successMessage.textContent) {
+        toast({
+          title: "Message Sent! 🎉",
+          description: "Thank you for reaching out. We'll get back to you within 24 hours.",
+          duration: 5000,
+        });
+        
+        setTimeout(() => {
+          navigate('/thank-you');
+        }, 2000);
+        
+        observer.disconnect();
+      }
+    });
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        characterData: true
+      });
+    }
+
+    window.addEventListener('fs-form-submit-success', handleFormSubmit);
+    
+    return () => {
+      window.removeEventListener('fs-form-submit-success', handleFormSubmit);
+      observer.disconnect();
+    };
+  }, [navigate]);
 
   const FormContainer = (
     <div 

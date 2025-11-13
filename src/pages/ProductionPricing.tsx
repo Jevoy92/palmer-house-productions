@@ -41,18 +41,21 @@ interface PalBuildConfig {
 
 const ProductionPricing = () => {
   const videoOptions: VideoOption[] = [
-    { name: "Additional 1-min video", price: 150, length: "1 min" },
-    { name: "Additional 3-min video", price: 450, length: "3 min" },
-    { name: "Additional 5-min video", price: 1050, length: "5 min" },
+    { name: "1-minute video", price: 150, length: "1 min" },
+    { name: "3-minute video", price: 450, length: "3 min" },
+    { name: "5-minute video", price: 1050, length: "5 min" },
     { name: "FAQ video", price: 150, length: "1 min" },
     { name: "Training video", price: 150, length: "1 min" },
     { name: "SOP walkthrough", price: 150, length: "1 min" },
-    { name: "Social media clip", price: 150, length: "30-60 sec" },
+    { name: "Social reel", price: 150, length: "30-60 sec" },
     { name: "Testimonial video", price: 150, length: "1 min" },
     { name: "Product explainer", price: 150, length: "1 min" },
-    { name: "Brand story segment", price: 150, length: "1 min" },
+    { name: "Website explainer", price: 150, length: "1 min" },
+    { name: "Brand story", price: 150, length: "1 min" },
     { name: "Recruitment video", price: 150, length: "1 min" },
     { name: "Onboarding video", price: 150, length: "1 min" },
+    { name: "About us video", price: 150, length: "1 min" },
+    { name: "Service overview", price: 150, length: "1 min" }
   ];
 
   const [palBuilds, setPalBuilds] = useState<PalBuildConfig[]>([
@@ -63,10 +66,9 @@ const ProductionPricing = () => {
       description: "Designed to keep your business visible, consistent, and active.",
       icon: TrendingUp,
       items: [
-        { name: "One-minute anchor video", basePrice: 450, quantity: 1, perUnit: false },
-        { name: "Short-form clips", basePrice: 150, quantity: 3, perUnit: true },
-        { name: "Hook variations", basePrice: 150, quantity: 2, perUnit: true },
-        { name: "Mini brand intro/lifestyle clip", basePrice: 300, quantity: 1, perUnit: false }
+        { name: "1-minute anchor video", basePrice: 450, quantity: 1, perUnit: false },
+        { name: "Short-form social clips", basePrice: 150, quantity: 3, perUnit: true },
+        { name: "Reels/TikToks", basePrice: 150, quantity: 2, perUnit: true }
       ]
     },
     {
@@ -76,11 +78,9 @@ const ProductionPricing = () => {
       description: "Built for onboarding, training, SOPs, and reducing repetitive tasks.",
       icon: Layers,
       items: [
-        { name: "Anchor video (FAQ/onboarding)", basePrice: 450, quantity: 1, perUnit: false },
-        { name: "SOP/FAQ clips", basePrice: 150, quantity: 4, perUnit: true },
-        { name: "Mid-length explainer (3-5 min)", basePrice: 450, quantity: 1, perUnit: false },
-        { name: "Library organization", basePrice: 250, quantity: 1, perUnit: false },
-        { name: "On-camera coaching", basePrice: 0, quantity: 1, perUnit: false, included: true }
+        { name: "FAQ video", basePrice: 450, quantity: 1, perUnit: false },
+        { name: "Training videos", basePrice: 150, quantity: 4, perUnit: true },
+        { name: "SOP walkthrough videos", basePrice: 150, quantity: 2, perUnit: true }
       ]
     },
     {
@@ -90,10 +90,8 @@ const ProductionPricing = () => {
       description: "Perfect for YouTube, training, education, and deep teaching.",
       icon: Star,
       items: [
-        { name: "Five-minute video", basePrice: 1050, quantity: 1, perUnit: false },
-        { name: "Short derivative clips", basePrice: 150, quantity: 2, perUnit: true },
-        { name: "Pillar summary video", basePrice: 150, quantity: 1, perUnit: false },
-        { name: "Long-form clarity coaching", basePrice: 0, quantity: 1, perUnit: false, included: true }
+        { name: "5-minute long-form video", basePrice: 1050, quantity: 1, perUnit: false },
+        { name: "Short derivative clips", basePrice: 150, quantity: 2, perUnit: true }
       ]
     },
     {
@@ -103,11 +101,9 @@ const ProductionPricing = () => {
       description: "Cinematic, emotional, story-driven content that elevates your presence.",
       icon: Film,
       items: [
-        { name: "One-minute brand moment", basePrice: 450, quantity: 1, perUnit: false },
-        { name: "Mini-story clips", basePrice: 150, quantity: 3, perUnit: true },
-        { name: "Testimonial/value clip", basePrice: 150, quantity: 1, perUnit: false },
-        { name: "Cinematic color grade upgrade", basePrice: 300, quantity: 1, perUnit: false },
-        { name: "Visual identity alignment", basePrice: 150, quantity: 1, perUnit: false }
+        { name: "Brand story video", basePrice: 450, quantity: 1, perUnit: false },
+        { name: "Website explainer videos", basePrice: 150, quantity: 2, perUnit: true },
+        { name: "Testimonial videos", basePrice: 150, quantity: 2, perUnit: true }
       ]
     }
   ]);
@@ -314,65 +310,52 @@ const ProductionPricing = () => {
                             className="flex items-center justify-between py-2 border-b border-border/40 last:border-0"
                           >
                             <div className="flex-1 min-w-0">
-                              <div className="flex items-center gap-2">
-                                <p className="text-sm font-medium text-foreground truncate">
-                                  {item.name}
-                                </p>
-                                {item.included && (
-                                  <Badge variant="secondary" className="text-xs">Included</Badge>
-                                )}
-                              </div>
+                              <p className="text-sm font-medium text-foreground truncate">
+                                {item.name}
+                              </p>
                               <p className="text-xs text-muted-foreground">
-                                {item.included ? 'Complimentary' : `$${item.basePrice}${item.perUnit ? ' each' : ''}`}
+                                ${item.basePrice}{item.perUnit ? ' each' : ''}
                               </p>
                             </div>
                             
                             <div className="flex items-center gap-3 ml-4">
-                              {item.included ? (
-                                <span className="text-sm font-medium text-muted-foreground">
-                                  Included
+                              <div className="flex items-center gap-1 border rounded-md">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-7 w-7 p-0 hover:bg-muted"
+                                  onClick={() => updateQuantity(pal.id, idx, item.quantity - 1)}
+                                  disabled={item.quantity === 0}
+                                >
+                                  <Minus className="w-3 h-3" />
+                                </Button>
+                                <span className="w-8 text-center text-sm font-medium">
+                                  {item.quantity}
                                 </span>
-                              ) : (
-                                <>
-                                  <div className="flex items-center gap-1 border rounded-md">
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      className="h-7 w-7 p-0 hover:bg-muted"
-                                      onClick={() => updateQuantity(pal.id, idx, item.quantity - 1)}
-                                      disabled={item.quantity === 0}
-                                    >
-                                      <Minus className="w-3 h-3" />
-                                    </Button>
-                                    <span className="w-8 text-center text-sm font-medium">
-                                      {item.quantity}
-                                    </span>
-                                    <Button
-                                      variant="ghost"
-                                      size="sm"
-                                      className="h-7 w-7 p-0 hover:bg-muted"
-                                      onClick={() => updateQuantity(pal.id, idx, item.quantity + 1)}
-                                    >
-                                      <Plus className="w-3 h-3" />
-                                    </Button>
-                                  </div>
-                                  <div className="flex items-center gap-2">
-                                    <span className="text-sm font-semibold text-foreground w-16 text-right">
-                                      ${(item.basePrice * item.quantity).toLocaleString()}
-                                    </span>
-                                    {idx >= (pal.items.findIndex(i => i.included) || pal.items.length) && (
-                                      <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        className="h-7 w-7 p-0 hover:bg-destructive/10 hover:text-destructive"
-                                        onClick={() => removeItem(pal.id, idx)}
-                                      >
-                                        <Minus className="w-3 h-3" />
-                                      </Button>
-                                    )}
-                                  </div>
-                                </>
-                              )}
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-7 w-7 p-0 hover:bg-muted"
+                                  onClick={() => updateQuantity(pal.id, idx, item.quantity + 1)}
+                                >
+                                  <Plus className="w-3 h-3" />
+                                </Button>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-semibold text-foreground w-16 text-right">
+                                  ${(item.basePrice * item.quantity).toLocaleString()}
+                                </span>
+                                {idx >= 3 && (
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-7 w-7 p-0 hover:bg-destructive/10 hover:text-destructive"
+                                    onClick={() => removeItem(pal.id, idx)}
+                                  >
+                                    <Minus className="w-3 h-3" />
+                                  </Button>
+                                )}
+                              </div>
                             </div>
                           </div>
                         ))}

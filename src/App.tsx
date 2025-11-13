@@ -65,6 +65,7 @@ import ContentMaximizer from "./pages/tools/ContentMaximizer";
 import EngagementResponder from "./pages/tools/EngagementResponder";
 import AppPricing from "./pages/AppPricing";
 import Memberships from "./pages/Memberships";
+import ProductionPricing from "./pages/ProductionPricing";
 
 const queryClient = new QueryClient();
 
@@ -121,8 +122,9 @@ const App = () => (
           <Route path="/spotlight-pal" element={<SpotlightPal />} />
           <Route path="/discovery-call" element={<Navigate to="/contact" replace />} />
           <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/memberships" element={<Memberships />} />
-          <Route path="/contact" element={<Contact />} />
+           <Route path="/memberships" element={<Memberships />} />
+           <Route path="/production-pricing" element={<ProductionPricing />} />
+           <Route path="/contact" element={<Contact />} />
           <Route path="/thank-you" element={<ThankYou />} />
            <Route path="/locations/bellevue-wa" element={<BellevueWA />} />
            <Route path="/locations/portland-or" element={<PortlandOR />} />

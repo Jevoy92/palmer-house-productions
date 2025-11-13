@@ -34,25 +34,25 @@ const toolItems = [
     title: 'Persona Generator', 
     url: '/tools/persona-generator', 
     icon: User,
-    available: false,
+    available: true,
   },
   { 
     title: 'Production Assistant', 
     url: '/tools/production-assistant', 
     icon: Sparkles,
-    available: false,
+    available: true,
   },
   { 
     title: 'Content Maximizer', 
     url: '/tools/content-maximizer', 
     icon: Maximize,
-    available: false,
+    available: true,
   },
   { 
     title: 'Engagement Responder', 
     url: '/tools/engagement-responder', 
     icon: MessageCircle,
-    available: false,
+    available: true,
   },
 ];
 
@@ -105,22 +105,15 @@ export function AppSidebar() {
             <SidebarMenu>
               {toolItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild disabled={!item.available}>
-                    <NavLink 
+                  <SidebarMenuButton asChild>
+                    <NavLink
                       to={item.url} 
                       end={item.url === '/dashboard'}
                       className="hover:bg-muted/50 transition-colors"
                       activeClassName="bg-muted text-primary font-medium"
                     >
                       <item.icon className={isCollapsed ? 'h-5 w-5' : 'mr-2 h-4 w-4'} />
-                      {!isCollapsed && (
-                        <span className="flex items-center gap-2">
-                          {item.title}
-                          {!item.available && (
-                            <span className="ml-auto text-xs text-muted-foreground">Soon</span>
-                          )}
-                        </span>
-                      )}
+                      {!isCollapsed && <span>{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

@@ -88,6 +88,7 @@ export default {
 					'purple': 'hsl(var(--pal-purple))',
 					'green': 'hsl(var(--pal-green))',
 					'blue': 'hsl(var(--pal-blue))',
+					'pink': 'hsl(var(--social-pink))',
 					'footer-green': 'hsl(var(--pal-footer-green))',
 				}
 			},

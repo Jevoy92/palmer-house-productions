@@ -18,6 +18,13 @@ export const Navigation = () => {
   const { transitionTo } = usePageTransition();
   const { user } = useAuth();
 
+  // Hide navigation on dashboard and tool pages
+  const isDashboardRoute = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/tools/');
+  
+  if (isDashboardRoute) {
+    return null;
+  }
+
   // Helper function to handle page transitions
   const handlePageTransition = (path: string) => {
     if (location.pathname !== path) {

@@ -12,60 +12,50 @@ export default function Dashboard() {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const tools = [
+  const handleToolClick = (toolId: string) => {
+    navigate(`/tools/${toolId}`);
+  };
+
+  const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'there';
+
+  // All tools are now available
+  const allTools = [
     {
       id: 'video-series-builder',
       name: 'Video Series Builder',
       description: 'Turn one idea into a complete content system',
       icon: Video,
-      color: 'bg-pal-purple',
-      available: true,
-      comingSoon: false,
+      gradient: 'from-pal-purple to-pal-orange',
     },
     {
       id: 'persona-generator',
       name: 'Persona Generator',
       description: 'Define your ideal audience and brand voice',
       icon: User,
-      color: 'bg-pal-blue',
-      available: false,
-      comingSoon: true,
+      gradient: 'from-pal-blue to-pal-purple',
     },
     {
       id: 'production-assistant',
       name: 'Production Assistant',
       description: 'Streamline your pre-production workflow',
       icon: Sparkles,
-      color: 'bg-pal-green',
-      available: false,
-      comingSoon: true,
+      gradient: 'from-pal-green to-pal-blue',
     },
     {
       id: 'content-maximizer',
       name: 'Content Maximizer',
       description: 'Repurpose content across all platforms',
       icon: Maximize,
-      color: 'bg-pal-orange',
-      available: false,
-      comingSoon: true,
+      gradient: 'from-pal-orange to-pal-purple',
     },
     {
       id: 'engagement-responder',
       name: 'Engagement Responder',
       description: 'Automate community engagement',
       icon: MessageCircle,
-      color: 'bg-pal-purple',
-      available: false,
-      comingSoon: true,
+      gradient: 'from-pal-purple to-pal-pink',
     },
   ];
-
-  const handleToolClick = (toolId: string, available: boolean) => {
-    if (!available) return;
-    navigate(`/tools/${toolId}`);
-  };
-
-  const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'there';
 
   return (
     <>
@@ -100,10 +90,11 @@ export default function Dashboard() {
                 </div>
 
                 {/* Featured Tool - Video Series Builder */}
-                <div className="mb-12">
+                <div className="mb-8">
+                  <h3 className="text-xl font-semibold text-foreground mb-4">Start Creating</h3>
                   <Card 
                     className="bg-gradient-to-br from-pal-purple/10 via-background to-pal-orange/10 border-2 hover:shadow-xl transition-all duration-300 cursor-pointer group"
-                    onClick={() => handleToolClick('video-series-builder', true)}
+                    onClick={() => handleToolClick('video-series-builder')}
                   >
                     <CardHeader>
                       <div className="flex items-center justify-between mb-4">
@@ -124,34 +115,35 @@ export default function Dashboard() {
                   </Card>
                 </div>
 
-                {/* Coming Soon Tools */}
+                {/* All Tools Grid */}
                 <div className="mb-6">
-                  <h3 className="text-xl font-semibold text-foreground mb-4">Coming Soon</h3>
+                  <h3 className="text-xl font-semibold text-foreground mb-4">All Tools</h3>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {tools.filter(tool => tool.comingSoon).map((tool) => {
+                  {allTools.map((tool) => {
                     const Icon = tool.icon;
                     return (
                       <Card
                         key={tool.id}
-                        className="opacity-60 hover:opacity-70 transition-opacity"
+                        className="hover:shadow-lg transition-all duration-300 cursor-pointer group"
+                        onClick={() => handleToolClick(tool.id)}
                       >
                         <CardHeader>
                           <div className="flex items-center gap-4 mb-3">
                             <div
-                              className={`w-12 h-12 rounded-xl ${tool.color} flex items-center justify-center`}
+                              className={`w-12 h-12 rounded-xl bg-gradient-to-br ${tool.gradient} flex items-center justify-center shadow-md`}
                             >
                               <Icon className="w-6 h-6 text-white" />
                             </div>
-                            <span className="px-2 py-1 bg-muted text-xs font-semibold rounded-full">
-                              Coming Soon
-                            </span>
+                            <div className="flex-1">
+                              <CardTitle className="text-lg mb-1">{tool.name}</CardTitle>
+                              <CardDescription className="text-sm">
+                                {tool.description}
+                              </CardDescription>
+                            </div>
+                            <ArrowRight className="w-5 h-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
                           </div>
-                          <CardTitle className="text-lg">{tool.name}</CardTitle>
-                          <CardDescription>
-                            {tool.description}
-                          </CardDescription>
                         </CardHeader>
                       </Card>
                     );

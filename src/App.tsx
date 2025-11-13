@@ -59,6 +59,10 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import VideoSeriesBuilder from "./pages/tools/VideoSeriesBuilder";
+import PersonaGenerator from "./pages/tools/PersonaGenerator";
+import ProductionAssistant from "./pages/tools/ProductionAssistant";
+import ContentMaximizer from "./pages/tools/ContentMaximizer";
+import EngagementResponder from "./pages/tools/EngagementResponder";
 
 const queryClient = new QueryClient();
 
@@ -102,6 +106,10 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/tools/video-series-builder" element={<ProtectedRoute><VideoSeriesBuilder /></ProtectedRoute>} />
+          <Route path="/tools/persona-generator" element={<ProtectedRoute><PersonaGenerator /></ProtectedRoute>} />
+          <Route path="/tools/production-assistant" element={<ProtectedRoute><ProductionAssistant /></ProtectedRoute>} />
+          <Route path="/tools/content-maximizer" element={<ProtectedRoute><ContentMaximizer /></ProtectedRoute>} />
+          <Route path="/tools/engagement-responder" element={<ProtectedRoute><EngagementResponder /></ProtectedRoute>} />
           <Route path="/pals" element={<Pals />} />
           <Route path="/reel-pal" element={<ReelPal />} />
           <Route path="/system-pal" element={<SystemPal />} />

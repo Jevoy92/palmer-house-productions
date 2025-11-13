@@ -97,6 +97,153 @@ export const FreshworksForm = ({
     };
   }, [navigate]);
 
+  // Add validation feedback
+  useEffect(() => {
+    const setupValidation = () => {
+      if (!containerRef.current) return;
+
+      const formInputs = containerRef.current.querySelectorAll('input, textarea, select');
+      
+      formInputs.forEach((input) => {
+        const element = input as HTMLInputElement;
+        
+        // Add blur event to validate on field exit
+        element.addEventListener('blur', () => {
+          validateField(element);
+        });
+
+        // Add input event to clear errors while typing
+        element.addEventListener('input', () => {
+          clearFieldError(element);
+        });
+      });
+
+      // Intercept form submission to validate
+      const form = containerRef.current.querySelector('form');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          const invalidFields: string[] = [];
+          
+          formInputs.forEach((input) => {
+            const element = input as HTMLInputElement;
+            if (!validateField(element)) {
+              const label = getFieldLabel(element);
+              invalidFields.push(label);
+            }
+          });
+
+          if (invalidFields.length > 0) {
+            toast({
+              title: "Please check your form",
+              description: `Required fields missing: ${invalidFields.join(', ')}`,
+              variant: "destructive",
+              duration: 4000,
+            });
+          }
+        });
+      }
+    };
+
+    const validateField = (element: HTMLInputElement): boolean => {
+      const isRequired = element.hasAttribute('required') || element.getAttribute('aria-required') === 'true';
+      
+      if (!isRequired) return true;
+
+      let isValid = true;
+      let errorMessage = '';
+
+      if (!element.value.trim()) {
+        isValid = false;
+        errorMessage = 'This field is required';
+      } else if (element.type === 'email' && !isValidEmail(element.value)) {
+        isValid = false;
+        errorMessage = 'Please enter a valid email address';
+      } else if (element.type === 'tel' && element.value.trim().length < 10) {
+        isValid = false;
+        errorMessage = 'Please enter a valid phone number';
+      }
+
+      if (!isValid) {
+        showFieldError(element, errorMessage);
+      } else {
+        clearFieldError(element);
+      }
+
+      return isValid;
+    };
+
+    const showFieldError = (element: HTMLInputElement, message: string) => {
+      element.classList.add('error-field');
+      
+      // Remove existing error message if any
+      const existingError = element.parentElement?.querySelector('.custom-error-message');
+      if (existingError) {
+        existingError.remove();
+      }
+
+      // Add error message
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'custom-error-message';
+      errorDiv.textContent = message;
+      errorDiv.style.cssText = `
+        color: hsl(var(--destructive));
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+        animation: slideDown 0.2s ease-out;
+      `;
+      
+      element.parentElement?.appendChild(errorDiv);
+    };
+
+    const clearFieldError = (element: HTMLInputElement) => {
+      element.classList.remove('error-field');
+      const errorMessage = element.parentElement?.querySelector('.custom-error-message');
+      if (errorMessage) {
+        errorMessage.remove();
+      }
+    };
+
+    const getFieldLabel = (element: HTMLInputElement): string => {
+      const label = element.parentElement?.querySelector('label');
+      return label?.textContent?.trim() || element.placeholder || 'Field';
+    };
+
+    const isValidEmail = (email: string): boolean => {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+
+    // Add custom CSS for error states
+    const style = document.createElement('style');
+    style.textContent = `
+      .error-field {
+        border-color: hsl(var(--destructive)) !important;
+        box-shadow: 0 0 0 3px hsla(var(--destructive), 0.1) !important;
+      }
+      
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Wait for form to load
+    const timer = setTimeout(setupValidation, 1000);
+
+    return () => {
+      clearTimeout(timer);
+      if (style.parentElement) {
+        style.parentElement.removeChild(style);
+      }
+    };
+  }, []);
+
   const FormContainer = (
     <div 
       ref={containerRef} 

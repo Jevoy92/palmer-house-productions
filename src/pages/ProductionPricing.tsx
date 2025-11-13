@@ -415,39 +415,7 @@ const ProductionPricing = () => {
             </div>
           </div>
 
-          {/* Section 5: How to Use This Page */}
-          <Card className="mb-12 bg-muted/30">
-            <CardHeader>
-              <CardTitle className="text-2xl">How to Use This Page</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-5 gap-4">
-                {[
-                  { step: "1", text: "Choose the Pal that matches your goals" },
-                  { step: "2", text: "Start with their $1,500 Monthly Build" },
-                  { step: "3", text: "Add/Remove/Swap videos at $150 each" },
-                  { step: "4", text: "Add longer content at $150/min" },
-                  { step: "5", text: "Add optional upgrades" }
-                ].map((item) => (
-                  <div key={item.step} className="text-center">
-                    <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground font-bold text-xl flex items-center justify-center mx-auto mb-3">
-                      {item.step}
-                    </div>
-                    <p className="text-sm font-medium">{item.text}</p>
-                  </div>
-                ))}
-              </div>
-              <Separator className="my-6" />
-              <p className="text-center text-muted-foreground">
-                The entire pricing system is designed to be: <strong className="text-foreground">Fair. Flexible. Predictable. Scalable. And premium.</strong>
-              </p>
-              <p className="text-center text-muted-foreground mt-2">
-                Perfect for founders, teams, and growing brands.
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* Section 6: CTA Area */}
+          {/* CTA Area */}
           <div className="text-center space-y-4">
             <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Build Your System?</h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

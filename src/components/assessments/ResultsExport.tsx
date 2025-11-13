@@ -108,13 +108,10 @@ Generated on: ${new Date().toLocaleDateString()}
         businessContext
       };
       
-      // For quick booking without user info collection, use basic routing
-      const isHighScore = score >= 75;
-      const zohoUrl = isHighScore 
-        ? 'https://palmerhouseproductions.zohobookings.com/#/4740771000000078004' // Strategy Call for high scores
-        : 'https://palmerhouseproductions.zohobookings.com/#/4740771000000078320'; // General Consultation for lower scores
+      // Use Google Calendar booking link
+      const bookingUrl = 'https://calendar.app.google/TjXSG2EjNF7KZzcJ8';
       
-      window.open(zohoUrl, '_blank', 'noopener,noreferrer');
+      window.open(bookingUrl, '_blank', 'noopener,noreferrer');
     }
   };
 

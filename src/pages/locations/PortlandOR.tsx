@@ -168,7 +168,7 @@ const PortlandOR = () => {
                     </Button>
                     <Button variant="outline" asChild className="border-pal-green text-pal-green hover:bg-pal-green/5">
                       <a
-                        href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078320"
+                        href="https://calendar.app.google/TjXSG2EjNF7KZzcJ8"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -340,7 +340,7 @@ const PortlandOR = () => {
                     </div>
                     <div className="mt-12 flex justify-center lg:justify-start">
                       <a
-                        href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078320"
+                        href="https://calendar.app.google/TjXSG2EjNF7KZzcJ8"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="bg-pal-purple text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl animate-on-scroll opacity-0 transform translate-y-5 transition-all duration-700 delay-800"

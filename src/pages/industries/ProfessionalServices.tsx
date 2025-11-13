@@ -148,7 +148,7 @@ const ProfessionalServicesPage = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                <Button size="lg" onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}>
+                <Button size="lg" onClick={() => window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer')}>
                   <Video className="mr-2 h-5 w-5" />
                   Schedule Consultation
                 </Button>
@@ -606,7 +606,7 @@ const ProfessionalServicesPage = () => {
                 command premium fees, and establish unquestionable authority in your market.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-indigo-700 text-white hover:bg-indigo-800 font-semibold text-lg px-8 py-4 h-auto" onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}>
+                <Button size="lg" className="bg-indigo-700 text-white hover:bg-indigo-800 font-semibold text-lg px-8 py-4 h-auto" onClick={() => window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer')}>
                   <Video className="mr-2 h-5 w-5" />
                   Schedule Strategy Call
                 </Button>

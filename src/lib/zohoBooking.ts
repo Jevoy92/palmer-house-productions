@@ -1,7 +1,9 @@
-// Centralized Zoho booking URL management
+// Centralized booking URL management
+export const BOOKING_URL = 'https://calendar.app.google/TjXSG2EjNF7KZzcJ8' as const;
+
 export const ZOHO_BOOKING_URLS = {
-  STRATEGY_CALL: 'https://palmerhouseproductions.zohobookings.com/#/4740771000000078004',
-  GENERAL_CONSULTATION: 'https://palmerhouseproductions.zohobookings.com/#/4740771000000078320'
+  STRATEGY_CALL: BOOKING_URL,
+  GENERAL_CONSULTATION: BOOKING_URL
 } as const;
 
 export type BookingType = keyof typeof ZOHO_BOOKING_URLS;

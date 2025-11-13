@@ -10,7 +10,7 @@ export const Contact = () => {
   const { transitionTo } = usePageTransition();
 
   const handleZohoBooking = () => {
-    window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078320', '_blank', 'noopener,noreferrer');
+    window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer');
   };
 
   const handleViewAllReviews = () => {

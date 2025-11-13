@@ -26,10 +26,8 @@ interface ZohoBookingConfig {
 export const getSmartAssessmentZohoUrl = (assessmentData: AssessmentData): ZohoBookingConfig => {
   const isHighScore = assessmentData.score >= 75;
   
-  // Choose the appropriate Zoho booking link based on score
-  const baseUrl = isHighScore 
-    ? 'https://palmerhouseproductions.zohobookings.com/#/4740771000000078004' // Strategy Call for high scores
-    : 'https://palmerhouseproductions.zohobookings.com/#/4740771000000078320'; // General Consultation for lower scores
+  // Use Google Calendar booking link
+  const baseUrl = 'https://calendar.app.google/TjXSG2EjNF7KZzcJ8';
   
   // Prepare prefill data for Zoho (different format than previous booking system)
   const prefillData = {

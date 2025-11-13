@@ -147,7 +147,7 @@ const StartupsPage = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-                <Button size="lg" className="bg-purple-600 text-white hover:bg-purple-700 font-semibold text-lg px-8 py-6 h-auto shadow-lg" onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}>
+                <Button size="lg" className="bg-purple-600 text-white hover:bg-purple-700 font-semibold text-lg px-8 py-6 h-auto shadow-lg" onClick={() => window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer')}>
                   <Video className="mr-2 h-5 w-5" />
                   Schedule Consultation
                 </Button>
@@ -290,7 +290,7 @@ const StartupsPage = () => {
               Let's create video content that helps you raise more capital, grow faster, and build a stronger brand.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}>
+              <Button size="lg" onClick={() => window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer')}>
                 Schedule Startup Consultation
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>

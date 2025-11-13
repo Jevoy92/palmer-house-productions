@@ -417,7 +417,7 @@ export const TrainingROICalculator = ({ onBack }: TrainingROICalculatorProps) =>
             
             {results && (
               <Button 
-                onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+                onClick={() => window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer')}
                 className="ml-auto"
               >
                 Schedule Consultation

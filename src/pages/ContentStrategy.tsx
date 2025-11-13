@@ -153,7 +153,7 @@ const ContentStrategyPage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 size="lg"
-                onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+                onClick={() => window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer')}
                 className="group bg-blue-600 hover:bg-blue-700 text-white"
               >
                 Book Your Strategy Session
@@ -399,7 +399,7 @@ const ContentStrategyPage = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button 
                   size="lg"
-                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+                  onClick={() => window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer')}
                   className="group bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   Book Strategy Session

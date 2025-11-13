@@ -200,7 +200,7 @@ const TechnologyPage = () => {
                 <Button 
                   size="lg"
                   className="bg-blue-600 text-white hover:bg-blue-700 font-semibold text-lg px-8 py-6 h-auto shadow-lg"
-                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+                  onClick={() => window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer')}
                 >
                   <Video className="mr-2 h-5 w-5" />
                   Schedule Consultation
@@ -757,7 +757,7 @@ const TechnologyPage = () => {
               <Button 
                 size="lg"
                 className="bg-white text-blue-600 hover:bg-gray-100 font-semibold text-lg px-8 py-6 h-auto shadow-lg"
-                onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+                onClick={() => window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer')}
               >
                 Schedule Consultation
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -766,7 +766,7 @@ const TechnologyPage = () => {
                 variant="outline"
                 size="lg"
                 className="border-2 border-white text-white hover:bg-white/10 font-semibold text-lg px-8 py-6 h-auto"
-                onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000116032', '_blank', 'noopener,noreferrer')}
+                onClick={() => window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer')}
               >
                 Request Quote
               </Button>

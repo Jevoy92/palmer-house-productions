@@ -620,7 +620,7 @@ const ReelPal = () => {
                 <div className="flex flex-col sm:flex-row gap-6 justify-center">
                   <Button asChild size="lg" className="bg-orange-500 text-white hover:bg-orange-600 shadow-xl">
                     <a 
-                      href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
+                      href="https://calendar.app.google/TjXSG2EjNF7KZzcJ8"
                       target="_blank"
                       rel="noopener noreferrer"
                     >

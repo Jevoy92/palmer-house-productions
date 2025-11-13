@@ -185,7 +185,7 @@ export default function Arsenal() {
 
   const handleBookDiscoveryCall = () => {
     trackConversion('discovery_call');
-    window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078320', '_blank', 'noopener,noreferrer');
+    window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer');
   };
 
   const solutions = filteredSolutions();

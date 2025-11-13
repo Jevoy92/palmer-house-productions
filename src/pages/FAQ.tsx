@@ -340,7 +340,7 @@ const FAQ = () => {
                   Get In Touch
                 </a>
                 <a
-                  href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
+                  href="https://calendar.app.google/TjXSG2EjNF7KZzcJ8"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-block px-8 py-4 border-2 border-pal-purple text-pal-purple font-bold rounded-2xl hover:bg-pal-purple hover:text-white transition-all duration-300"

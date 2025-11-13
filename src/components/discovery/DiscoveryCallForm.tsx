@@ -20,8 +20,8 @@ export const DiscoveryCallForm = () => {
     // Handle form submission
     trackContactFormSubmit('discovery');
     trackConversion('discovery_call');
-    // Open Zoho booking for general consultation
-    window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078320', '_blank', 'noopener,noreferrer');
+    // Open Google Calendar booking
+    window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer');
   };
 
   const handleInputChange = (field: string, value: string) => {

@@ -37,7 +37,7 @@ const ThankYou = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
               <Button asChild className="gradient-social-1 text-white min-h-[44px] px-6">
                 <a
-                  href="https://palmerhouseproductions.zohobookings.com/#/4740771000000078004"
+                  href="https://calendar.app.google/TjXSG2EjNF7KZzcJ8"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Book a Strategy Call"

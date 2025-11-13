@@ -205,7 +205,7 @@ const GovernmentPage = () => {
                 <Button 
                   size="lg"
                   className="bg-blue-600 text-white hover:bg-blue-700 font-semibold text-lg px-8 py-6 h-auto shadow-lg"
-                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+                  onClick={() => window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer')}
                 >
                   <Video className="mr-2 h-5 w-5" />
                   Schedule Consultation
@@ -736,7 +736,7 @@ const GovernmentPage = () => {
                 <Button 
                   size="lg"
                   className="bg-blue-900 text-white hover:bg-blue-950 font-semibold text-lg px-8 py-4 h-auto"
-                  onClick={() => window.open('https://palmerhouseproductions.zohobookings.com/#/4740771000000078004', '_blank', 'noopener,noreferrer')}
+                  onClick={() => window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer')}
                 >
                   <Video className="mr-2 h-5 w-5" />
                   Schedule Strategy Call

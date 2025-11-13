@@ -9,7 +9,6 @@ import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Navigation } from "@/components/Navigation";
 import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
-import { ZohoLeadForm } from "@/components/zoho/ZohoLeadForm";
 import { FAQSchema } from "@/components/seo/FAQSchema";
 
 

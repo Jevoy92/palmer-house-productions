@@ -9,7 +9,7 @@ import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ZohoLeadForm } from "@/components/zoho/ZohoLeadForm";
+import { FreshworksForm } from "@/components/freshworks/FreshworksForm";
 import { Calendar, Video, CheckCircle } from "lucide-react";
 import { TrustSidebar } from "@/components/contact/TrustSidebar";
 import { usePageTransition } from '@/components/PageTransition';
@@ -164,7 +164,7 @@ const ContactPage = () => {
                   <h2 className="text-2xl md:text-3xl font-display font-black text-corporate-dark mb-6">
                     Send Us a <span className="text-pal-green">Quick Message</span>
                   </h2>
-                  <ZohoLeadForm title="Quick Message" leadSource="Website" />
+                  <FreshworksForm title="Quick Message" />
                 </div>
               </div>
             </div>

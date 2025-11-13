@@ -52,6 +52,7 @@ import MobileVideoProduction from "./pages/blog/MobileVideoProduction";
 import ThankYou from "./pages/ThankYou";
 import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 import StyleGuide from "./pages/StyleGuide";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 
 
@@ -74,11 +75,12 @@ function RouteTracker() {
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <PageTransition>
+    <ErrorBoundary>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <PageTransition>
           <CriticalCSS />
           <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
           <AnimationOptimizer />
@@ -146,6 +148,7 @@ const App = () => (
         </PageTransition>
       </BrowserRouter>
     </TooltipProvider>
+    </ErrorBoundary>
   </QueryClientProvider>
 );
 

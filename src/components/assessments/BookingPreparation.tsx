@@ -88,7 +88,11 @@ export const BookingPreparation = ({
       });
 
     } catch (error) {
-      console.error('Booking error:', error);
+      // Log error in development only
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Booking error:', error);
+      }
+      
       toast({
         title: "Booking Error",
         description: "There was an issue processing your booking. Please try again.",

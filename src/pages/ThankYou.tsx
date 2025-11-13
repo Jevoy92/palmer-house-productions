@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import confetti from "canvas-confetti";
+import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { SkipLink } from "@/components/ui/skip-link";
 import { MainContent } from "@/components/MainContent";
@@ -46,10 +47,10 @@ const ThankYou = () => {
                 </a>
               </Button>
               <Button asChild variant="outline" className="min-h-[44px] px-6">
-                <a href="/" aria-label="Back to Home">Back to Home</a>
+                <Link to="/" aria-label="Back to Home">Back to Home</Link>
               </Button>
               <Button asChild variant="secondary" className="min-h-[44px] px-6">
-                <a href="/video-packages" aria-label="Explore Packages">Explore Packages</a>
+                <Link to="/pals" aria-label="Explore Pals">Explore Pals</Link>
               </Button>
             </div>
           </div>

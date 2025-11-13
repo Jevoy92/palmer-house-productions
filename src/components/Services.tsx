@@ -59,7 +59,7 @@ export const Services = () => {
               return (
                 <div 
                   key={index}
-                  className="group p-[clamp(2rem,6vw,2rem)] bg-white rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-[1.02] border border-gray-100"
+                  className="group p-[clamp(2rem,6vw,2rem)] bg-background rounded-2xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-[1.02] border border-border"
                 >
                   <div className={`w-[clamp(4rem,10vw,4rem)] h-[clamp(4rem,10vw,4rem)] ${palColors[index]} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                     <IconComponent size={32} className="text-white" />

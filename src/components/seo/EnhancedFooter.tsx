@@ -190,7 +190,7 @@ export const EnhancedFooter = () => {
             <NewsletterSignup />
 
             {/* Bottom Bar */}
-            <div className="border-t border-gray-200 pt-6">
+            <div className="border-t border-border pt-6">
               <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
                 <p className="text-corporate-gray text-sm">
                   © {currentYear} Palmer House Productions. All rights reserved. Crafting authentic stories since day one.

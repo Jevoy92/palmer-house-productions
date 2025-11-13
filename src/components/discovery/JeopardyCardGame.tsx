@@ -148,14 +148,14 @@ const DangerCard = ({ front, back, isFlipped, onFlip, index = 0 }: FlipCardProps
         };
       default:
         return {
-          gradient: 'bg-gradient-to-br from-gray-400 to-gray-500',
-          borderColor: 'border-gray-300/50',
-          iconBg: 'bg-gray-200/30',
+          gradient: 'bg-gradient-to-br from-muted to-muted/80',
+          borderColor: 'border-border',
+          iconBg: 'bg-muted/30',
           emoji: '✨',
-          backBg: 'bg-gradient-to-br from-gray-50 to-gray-50',
-          backBorder: 'border-gray-200',
-          backText: 'text-gray-700',
-          buttonGradient: 'bg-gradient-to-r from-gray-500 to-gray-600'
+          backBg: 'bg-gradient-to-br from-muted to-muted',
+          backBorder: 'border-border',
+          backText: 'text-foreground',
+          buttonGradient: 'bg-gradient-to-r from-muted-foreground to-muted-foreground/80'
         };
     }
   };

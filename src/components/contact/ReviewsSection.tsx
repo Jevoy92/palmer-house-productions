@@ -46,28 +46,28 @@ export const ReviewsSection = ({ onViewAllReviews }: ReviewsSectionProps) => {
 
   return (
     <div className="mb-16">
-      <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Client Reviews</h2>
+      <h2 className="text-3xl font-bold text-corporate-dark text-center mb-12">Client Reviews</h2>
       <div className="grid md:grid-cols-3 gap-8">
         {reviews.map((review, index) => (
-          <div key={index} className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
+          <div key={index} className="bg-background rounded-xl p-6 shadow-lg border border-border">
             {renderStars()}
             
             <div className="mb-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-1">
+              <h3 className="text-xl font-bold text-corporate-dark mb-1">
                 {review.name}
               </h3>
-              <p className="text-gray-600 text-sm mb-1">{review.reviewCount}</p>
-              <p className="text-gray-600 text-sm">{review.timeAgo}</p>
+              <p className="text-corporate-gray text-sm mb-1">{review.reviewCount}</p>
+              <p className="text-corporate-gray text-sm">{review.timeAgo}</p>
             </div>
             
-            <p className="text-gray-700 leading-relaxed mb-4">
+            <p className="text-foreground leading-relaxed mb-4">
               "{review.text}"
             </p>
             
             {/* Google Badge */}
             <div className="flex items-center space-x-2">
               <div className="w-6 h-6 bg-gradient-to-r from-blue-500 via-red-500 via-yellow-500 to-green-500 rounded-full"></div>
-              <span className="text-gray-600 text-sm font-medium">Google Review</span>
+              <span className="text-corporate-gray text-sm font-medium">Google Review</span>
             </div>
           </div>
         ))}

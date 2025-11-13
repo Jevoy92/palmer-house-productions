@@ -23,7 +23,7 @@ export const BottomCTA = ({ onStartAssessment, onBookCall, onComprehensiveStrate
       <div className="mb-8">
         <Button
           onClick={onBookCall}
-          className="bg-white text-purple-600 hover:bg-gray-100 font-bold px-8 py-4 text-lg"
+          className="bg-background text-purple-600 hover:bg-muted font-bold px-8 py-4 text-lg"
         >
           <span className="text-2xl mr-2">📞</span>
           Book Strategy Call (30 min)
@@ -46,7 +46,7 @@ export const BottomCTA = ({ onStartAssessment, onBookCall, onComprehensiveStrate
                 </p>
                 <Button
                   onClick={onComprehensiveStrategy}
-                  className="bg-white text-purple-600 hover:bg-gray-100 font-bold px-4 py-2 text-sm w-full"
+                  className="bg-background text-purple-600 hover:bg-muted font-bold px-4 py-2 text-sm w-full"
                 >
                   Explore Packages
                 </Button>

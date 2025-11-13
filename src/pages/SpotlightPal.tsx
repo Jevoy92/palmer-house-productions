@@ -161,7 +161,7 @@ const SpotlightPal = () => {
               {/* Center Phone Mockup - appears first on mobile, center on desktop */}
               <div className="relative flex flex-col items-center order-1 lg:order-2">
                 <div className="relative w-full flex items-center justify-center">
-                  <div className="relative w-[280px] h-[560px] bg-black rounded-[3rem] shadow-2xl border-[8px] border-gray-800 overflow-hidden">
+                  <div className="relative w-[280px] h-[560px] bg-black rounded-[3rem] shadow-2xl border-[8px] border-corporate-dark overflow-hidden">
                     {/* Notch */}
                     <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-7 bg-black rounded-b-3xl z-10"></div>
                     

@@ -242,7 +242,7 @@ export default function StyleGuide() {
       />
 
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <header className="bg-background border-b border-border sticky top-0 z-50">
         <div className="container mx-auto px-6 py-6">
           <h1 className="text-4xl font-bold text-corporate-dark mb-2">Visual Style Guide</h1>
           <p className="text-lg text-corporate-gray">
@@ -317,7 +317,7 @@ export default function StyleGuide() {
 
               <div className="grid gap-8">
                 {category.colors.map((color, colorIdx) => (
-                  <div key={colorIdx} className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
+                  <div key={colorIdx} className="bg-background rounded-2xl shadow-lg overflow-hidden border border-border">
                     {/* Color Header with Swatch */}
                     <div className="grid md:grid-cols-3 gap-0">
                       {/* Large Color Swatch */}
@@ -364,13 +364,13 @@ export default function StyleGuide() {
                     </div>
 
                     {/* Live Examples */}
-                    <div className="border-t border-gray-200 p-8 bg-gray-50">
+                    <div className="border-t border-border p-8 bg-muted">
                       <h4 className="font-bold text-sm uppercase text-corporate-gray mb-4 tracking-wide">
                         Live Examples:
                       </h4>
                       <div className="grid md:grid-cols-2 gap-4">
                         {/* Example 1: As Text */}
-                        <div className="bg-white p-6 rounded-lg border border-gray-200">
+                        <div className="bg-background p-6 rounded-lg border border-border">
                           <div className="text-xs uppercase font-bold text-corporate-gray mb-3">As Text Color</div>
                           <h3 className={`text-2xl font-bold ${color.cssClass} mb-2`}>
                             Heading Example
@@ -381,7 +381,7 @@ export default function StyleGuide() {
                         </div>
 
                         {/* Example 2: As Background */}
-                        <div className="bg-white p-6 rounded-lg border border-gray-200">
+                        <div className="bg-background p-6 rounded-lg border border-border">
                           <div className="text-xs uppercase font-bold text-corporate-gray mb-3">As Background</div>
                           <div className={`${color.bg} p-6 rounded-lg ${color.textOn === 'white' ? 'text-white' : 'text-corporate-dark'}`}>
                             <h3 className="text-xl font-bold mb-2">Section Title</h3>
@@ -445,12 +445,12 @@ export default function StyleGuide() {
       </section>
 
       {/* Best Practices */}
-      <section className="py-16 bg-gray-50">
+      <section className="py-16 bg-muted">
         <div className="container mx-auto px-6">
           <h2 className="text-3xl font-bold text-corporate-dark mb-8">Best Practices</h2>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl">
-            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+            <div className="bg-background p-6 rounded-xl shadow-lg border border-border">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <Check className="w-6 h-6 text-primary" />
               </div>
@@ -460,7 +460,7 @@ export default function StyleGuide() {
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+            <div className="bg-background p-6 rounded-xl shadow-lg border border-border">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <Check className="w-6 h-6 text-primary" />
               </div>
@@ -470,7 +470,7 @@ export default function StyleGuide() {
               </p>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+            <div className="bg-background p-6 rounded-xl shadow-lg border border-border">
               <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                 <Check className="w-6 h-6 text-primary" />
               </div>

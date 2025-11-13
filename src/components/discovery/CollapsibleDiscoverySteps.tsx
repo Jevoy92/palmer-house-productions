@@ -104,7 +104,7 @@ export const CollapsibleDiscoverySteps = () => {
                           <h3 className="text-xl font-bold text-corporate-dark">
                             Step {index + 1}: {step.title}
                           </h3>
-                          <span className="text-sm text-corporate-gray bg-gray-100 px-3 py-1 rounded-full">
+                          <span className="text-sm text-corporate-gray bg-muted px-3 py-1 rounded-full">
                             {step.duration}
                           </span>
                         </div>

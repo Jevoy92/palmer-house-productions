@@ -83,7 +83,7 @@ const ReelPal = () => {
             </div>
             
             <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-              <div className="p-8 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow">
+              <div className="p-8 rounded-2xl bg-background border border-border hover:shadow-lg transition-shadow">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
                     <Smartphone className="w-6 h-6 text-orange-600" />
@@ -95,7 +95,7 @@ const ReelPal = () => {
                 </div>
               </div>
               
-              <div className="p-8 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow">
+              <div className="p-8 rounded-2xl bg-background border border-border hover:shadow-lg transition-shadow">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
                     <Calendar className="w-6 h-6 text-orange-600" />
@@ -107,7 +107,7 @@ const ReelPal = () => {
                 </div>
               </div>
               
-              <div className="p-8 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow">
+              <div className="p-8 rounded-2xl bg-background border border-border hover:shadow-lg transition-shadow">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
                     <MessageCircle className="w-6 h-6 text-orange-600" />
@@ -119,7 +119,7 @@ const ReelPal = () => {
                 </div>
               </div>
               
-              <div className="p-8 rounded-2xl bg-white border border-gray-200 hover:shadow-lg transition-shadow">
+              <div className="p-8 rounded-2xl bg-background border border-border hover:shadow-lg transition-shadow">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center">
                     <Video className="w-6 h-6 text-orange-600" />
@@ -199,7 +199,7 @@ const ReelPal = () => {
               {/* Center Phone Mockup - appears first on mobile, center on desktop */}
               <div className="relative flex flex-col items-center order-1 lg:order-2">
                 <div className="relative w-full flex items-center justify-center">
-                  <div className="relative w-[280px] h-[560px] bg-black rounded-[3rem] shadow-2xl border-[8px] border-gray-800 overflow-hidden">
+                  <div className="relative w-[280px] h-[560px] bg-black rounded-[3rem] shadow-2xl border-[8px] border-corporate-dark overflow-hidden">
                     {/* Notch */}
                     <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-32 h-7 bg-black rounded-b-3xl z-10"></div>
                     

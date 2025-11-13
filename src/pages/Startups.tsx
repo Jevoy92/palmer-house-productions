@@ -151,7 +151,7 @@ const StartupsPage = () => {
                   <Video className="mr-2 h-5 w-5" />
                   Schedule Consultation
                 </Button>
-                <Button variant="outline" size="lg" className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold text-lg px-8 py-6 h-auto" onClick={() => transitionTo('/pals')}>
+                <Button variant="outline" size="lg" className="border-2 border-border text-foreground hover:bg-muted font-semibold text-lg px-8 py-6 h-auto" onClick={() => transitionTo('/pals')}>
                   Meet the Pals
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>

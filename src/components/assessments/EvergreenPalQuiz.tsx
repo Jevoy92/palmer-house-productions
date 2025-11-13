@@ -618,6 +618,47 @@ export const EvergreenPalQuiz = () => {
           </div>
         </div>
 
+        {/* Other Quizzes Section */}
+        <div className="bg-white rounded-3xl shadow-xl p-8 lg:p-10 mb-8">
+          <h3 className="text-3xl font-bold mb-2 text-center text-gray-800">Discover Your Complete Video Strategy</h3>
+          <p className="text-center text-gray-600 mb-8">Take another quiz to find the perfect fit for your needs</p>
+          
+          <div className="grid md:grid-cols-3 gap-6">
+            <Link to="/reel-pal#quiz" className="group">
+              <div className="p-6 rounded-2xl border-2 border-gray-200 hover:border-orange-500 transition-all hover:shadow-lg bg-gradient-to-br from-orange-50 to-white">
+                <div className="text-4xl mb-3">📱</div>
+                <h4 className="font-bold text-lg mb-2 text-gray-800 group-hover:text-orange-600 transition-colors">Reel Pal Quiz</h4>
+                <p className="text-sm text-gray-600 mb-4">For short-form content, Reels, and TikTok strategies</p>
+                <div className="flex items-center gap-2 text-orange-600 font-semibold">
+                  Take Quiz <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </Link>
+
+            <Link to="/spotlight-pal#quiz" className="group">
+              <div className="p-6 rounded-2xl border-2 border-gray-200 hover:border-purple-500 transition-all hover:shadow-lg bg-gradient-to-br from-purple-50 to-white">
+                <div className="text-4xl mb-3">🎬</div>
+                <h4 className="font-bold text-lg mb-2 text-gray-800 group-hover:text-purple-600 transition-colors">Spotlight Pal Quiz</h4>
+                <p className="text-sm text-gray-600 mb-4">For cinematic brand films and high-production storytelling</p>
+                <div className="flex items-center gap-2 text-purple-600 font-semibold">
+                  Take Quiz <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </Link>
+
+            <Link to="/system-pal#quiz" className="group">
+              <div className="p-6 rounded-2xl border-2 border-gray-200 hover:border-blue-500 transition-all hover:shadow-lg bg-gradient-to-br from-blue-50 to-white">
+                <div className="text-4xl mb-3">⚙️</div>
+                <h4 className="font-bold text-lg mb-2 text-gray-800 group-hover:text-blue-600 transition-colors">System Pal Quiz</h4>
+                <p className="text-sm text-gray-600 mb-4">For building automated training and scalable video systems</p>
+                <div className="flex items-center gap-2 text-blue-600 font-semibold">
+                  Take Quiz <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+
         <div className="text-center text-gray-600 pb-8">
           <p className="text-lg">Ready to start building evergreen content? <Link to="/contact" className="text-blue-500 hover:underline font-semibold">Schedule a free discovery call</Link></p>
         </div>

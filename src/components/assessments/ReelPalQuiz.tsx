@@ -476,6 +476,26 @@ export const ReelPalQuiz = () => {
     }
   }, [currentSection, isMobile]);
 
+  // Intersection Observer to auto-activate on scroll
+  useEffect(() => {
+    if (!isMobile || isQuizActive || !quizContainerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            setIsQuizActive(true);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(quizContainerRef.current);
+
+    return () => observer.disconnect();
+  }, [isMobile, isQuizActive]);
+
   if (showResults) {
     const recommendation = getRecommendation();
     const { percentage, categoryScores } = calculateDetailedScore();
@@ -646,26 +666,6 @@ export const ReelPalQuiz = () => {
       </div>
     );
   }
-
-  // Intersection Observer to auto-activate on scroll
-  useEffect(() => {
-    if (!isMobile || isQuizActive || !quizContainerRef.current) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-            setIsQuizActive(true);
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    observer.observe(quizContainerRef.current);
-
-    return () => observer.disconnect();
-  }, [isMobile, isQuizActive]);
 
   return (
     <div 

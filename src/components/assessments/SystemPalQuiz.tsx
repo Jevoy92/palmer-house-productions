@@ -449,6 +449,26 @@ export const SystemPalQuiz = () => {
     }
   }, [currentSection, isMobile]);
 
+  // Intersection Observer to auto-activate on scroll
+  useEffect(() => {
+    if (!isMobile || isQuizActive || !quizContainerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+            setIsQuizActive(true);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    observer.observe(quizContainerRef.current);
+
+    return () => observer.disconnect();
+  }, [isMobile, isQuizActive]);
+
   if (showResults) {
     const { categoryScores, percentage } = calculateDetailedScore();
     const actionItems = getActionItems(categoryScores);
@@ -610,26 +630,6 @@ export const SystemPalQuiz = () => {
 
   const currentSectionData = sections[currentSection];
   const progress = ((currentSection + 1) / sections.length) * 100;
-
-  // Intersection Observer to auto-activate on scroll
-  useEffect(() => {
-    if (!isMobile || isQuizActive || !quizContainerRef.current) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-            setIsQuizActive(true);
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    observer.observe(quizContainerRef.current);
-
-    return () => observer.disconnect();
-  }, [isMobile, isQuizActive]);
 
   return (
     <div 

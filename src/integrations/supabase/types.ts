@@ -14,6 +14,44 @@ export type Database = {
   }
   public: {
     Tables: {
+      credit_transactions: {
+        Row: {
+          amount: number
+          created_at: string | null
+          id: string
+          metadata: Json | null
+          tool_used: string | null
+          transaction_type: Database["public"]["Enums"]["transaction_type"]
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          tool_used?: string | null
+          transaction_type: Database["public"]["Enums"]["transaction_type"]
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string | null
+          id?: string
+          metadata?: Json | null
+          tool_used?: string | null
+          transaction_type?: Database["public"]["Enums"]["transaction_type"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "credit_transactions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string
@@ -38,15 +76,231 @@ export type Database = {
         }
         Relationships: []
       }
+      subscription_plans: {
+        Row: {
+          created_at: string | null
+          features: Json
+          id: string
+          is_active: boolean | null
+          monthly_credits: number
+          name: string
+          strategy_sessions_per_month: number
+          tier: Database["public"]["Enums"]["subscription_tier"]
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          features?: Json
+          id?: string
+          is_active?: boolean | null
+          monthly_credits: number
+          name: string
+          strategy_sessions_per_month: number
+          tier: Database["public"]["Enums"]["subscription_tier"]
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          features?: Json
+          id?: string
+          is_active?: boolean | null
+          monthly_credits?: number
+          name?: string
+          strategy_sessions_per_month?: number
+          tier?: Database["public"]["Enums"]["subscription_tier"]
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      tool_costs: {
+        Row: {
+          created_at: string | null
+          credit_cost: number
+          description: string | null
+          id: string
+          is_active: boolean | null
+          tool_name: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          credit_cost: number
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          tool_name: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          credit_cost?: number
+          description?: string | null
+          id?: string
+          is_active?: boolean | null
+          tool_name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      user_addons: {
+        Row: {
+          addon_type: string
+          created_at: string | null
+          expires_at: string | null
+          id: string
+          is_active: boolean | null
+          purchased_at: string | null
+          user_id: string
+        }
+        Insert: {
+          addon_type: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          purchased_at?: string | null
+          user_id: string
+        }
+        Update: {
+          addon_type?: string
+          created_at?: string | null
+          expires_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          purchased_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_addons_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_credits: {
+        Row: {
+          balance: number
+          created_at: string | null
+          id: string
+          last_refill_date: string | null
+          monthly_allowance: number
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          balance?: number
+          created_at?: string | null
+          id?: string
+          last_refill_date?: string | null
+          monthly_allowance?: number
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          balance?: number
+          created_at?: string | null
+          id?: string
+          last_refill_date?: string | null
+          monthly_allowance?: number
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_credits_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_subscriptions: {
+        Row: {
+          cancel_at_period_end: boolean | null
+          created_at: string | null
+          current_period_end: string
+          current_period_start: string
+          id: string
+          plan_id: string
+          status: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          cancel_at_period_end?: boolean | null
+          created_at?: string | null
+          current_period_end: string
+          current_period_start?: string
+          id?: string
+          plan_id: string
+          status?: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          cancel_at_period_end?: boolean | null
+          created_at?: string | null
+          current_period_end?: string
+          current_period_start?: string
+          id?: string
+          plan_id?: string
+          status?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_subscriptions_plan_id_fkey"
+            columns: ["plan_id"]
+            isOneToOne: false
+            referencedRelation: "subscription_plans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_subscriptions_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      add_credits: {
+        Args: {
+          p_amount: number
+          p_metadata?: Json
+          p_transaction_type: Database["public"]["Enums"]["transaction_type"]
+          p_user_id: string
+        }
+        Returns: boolean
+      }
+      check_credits: {
+        Args: { p_required_credits: number; p_user_id: string }
+        Returns: boolean
+      }
+      consume_credits: {
+        Args: {
+          p_amount: number
+          p_metadata?: Json
+          p_tool_name: string
+          p_user_id: string
+        }
+        Returns: boolean
+      }
+      refill_monthly_credits: { Args: never; Returns: undefined }
     }
     Enums: {
-      [_ in never]: never
+      subscription_tier: "free" | "core" | "guided"
+      transaction_type: "usage" | "refill" | "purchase" | "bonus" | "migration"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -173,6 +427,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      subscription_tier: ["free", "core", "guided"],
+      transaction_type: ["usage", "refill", "purchase", "bonus", "migration"],
+    },
   },
 } as const

@@ -51,6 +51,7 @@ import VideoContentROIComparison from "./pages/blog/VideoContentROIComparison";
 import MobileVideoProduction from "./pages/blog/MobileVideoProduction";
 import ThankYou from "./pages/ThankYou";
 import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
+import StyleGuide from "./pages/StyleGuide";
 
 
 
@@ -123,7 +124,8 @@ const App = () => (
            <Route path="/blog/automate-employee-training-video" element={<AutomateEmployeeTrainingVideo />} />
             <Route path="/blog/content-creation-tools-2025" element={<ContentCreationTools2025 />} />
              <Route path="/blog/video-content-roi-comparison" element={<VideoContentROIComparison />} />
-             <Route path="/blog/mobile-video-production" element={<MobileVideoProduction />} />
+              <Route path="/blog/mobile-video-production" element={<MobileVideoProduction />} />
+             <Route path="/style-guide" element={<StyleGuide />} />
            
             {/* Legacy route redirects */}
            <Route path="/pathways" element={<Navigate to="/contact" replace />} />

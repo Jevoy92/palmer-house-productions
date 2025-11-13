@@ -239,26 +239,6 @@ export const Navigation = () => {
                   </DropdownMenuContent>
                 </DropdownMenu>
 
-                {/* Assessments Dropdown */}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button className="flex items-center text-base font-medium text-muted-foreground hover:text-foreground transition-colors focus:outline-none">
-                      Assessments
-                      <ChevronDown className="ml-1 h-4 w-4" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-56 bg-background border border-border shadow-lg rounded-md z-50" sideOffset={5}>
-                    <DropdownMenuItem asChild>
-                      <button 
-                        onClick={() => handlePageTransition('/assessments/video-readiness')}
-                        className="block w-full text-left px-3 py-2 text-sm text-muted-foreground hover:text-foreground hover:bg-accent rounded-md transition-colors cursor-pointer"
-                      >
-                        Video Readiness Audit
-                      </button>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-
                 {/* Meet the Pals Dropdown */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -470,19 +450,6 @@ export const Navigation = () => {
                   className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
                 >
                   Startups
-                </button>
-              </div>
-            </div>
-
-            {/* Assessments Section */}
-            <div className="space-y-3">
-              <div className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Assessments</div>
-              <div className="space-y-1">
-                <button 
-                  onClick={() => handlePageTransition('/assessments/video-readiness')}
-                  className="block w-full text-left px-4 py-3 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition-colors min-h-[44px] flex items-center"
-                >
-                  Video Readiness Audit
                 </button>
               </div>
             </div>

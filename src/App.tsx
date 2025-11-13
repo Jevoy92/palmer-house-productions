@@ -52,7 +52,7 @@ import MobileVideoProduction from "./pages/blog/MobileVideoProduction";
 import ThankYou from "./pages/ThankYou";
 import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 
-const VideoReadinessPage = lazy(() => import("./pages/assessments/VideoReadiness"));
+
 
 const queryClient = new QueryClient();
 
@@ -117,23 +117,15 @@ const App = () => (
           <Route path="/faq" element={<FAQ />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
-          <Route path="/content-strategy" element={<ContentStrategy />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/video-content-toolkit-2025" element={<VideoContentToolkit2025 />} />
-          <Route path="/blog/automate-employee-training-video" element={<AutomateEmployeeTrainingVideo />} />
-           <Route path="/blog/content-creation-tools-2025" element={<ContentCreationTools2025 />} />
-            <Route path="/blog/video-content-roi-comparison" element={<VideoContentROIComparison />} />
-            <Route path="/blog/mobile-video-production" element={<MobileVideoProduction />} />
-            <Route
-             path="/assessments/video-readiness"
-             element={
-               <Suspense fallback={<div className="p-8 text-center">Loading assessment...</div>}>
-                 <VideoReadinessPage />
-               </Suspense>
-             }
-           />
-          
-           {/* Legacy route redirects */}
+           <Route path="/content-strategy" element={<ContentStrategy />} />
+           <Route path="/blog" element={<Blog />} />
+           <Route path="/blog/video-content-toolkit-2025" element={<VideoContentToolkit2025 />} />
+           <Route path="/blog/automate-employee-training-video" element={<AutomateEmployeeTrainingVideo />} />
+            <Route path="/blog/content-creation-tools-2025" element={<ContentCreationTools2025 />} />
+             <Route path="/blog/video-content-roi-comparison" element={<VideoContentROIComparison />} />
+             <Route path="/blog/mobile-video-production" element={<MobileVideoProduction />} />
+           
+            {/* Legacy route redirects */}
            <Route path="/pathways" element={<Navigate to="/contact" replace />} />
            <Route path="/video-packages" element={<Navigate to="/pals" replace />} />
            <Route path="/glimpse" element={<Navigate to="/contact" replace />} />

@@ -31,9 +31,6 @@ const ContactPage = () => {
     window.open('https://calendar.app.google/TjXSG2EjNF7KZzcJ8', '_blank', 'noopener,noreferrer');
   };
 
-  const handleVideoReadinessAudit = () => {
-    transitionTo('/assessments/video-readiness');
-  };
 
   const handleExplorePackages = () => {
     transitionTo('/video-packages');
@@ -128,29 +125,6 @@ const ContactPage = () => {
                           size="lg"
                         >
                           Browse Packages
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Video Readiness Audit */}
-                  <Card className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 hover:border-pal-blue/30 transition-all duration-300 group">
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-pal-blue rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                          <Video className="w-6 h-6 text-white" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-corporate-dark mb-1 text-lg">Video Readiness Audit</h3>
-                          <p className="text-sm text-corporate-gray">Assess your current video capabilities</p>
-                        </div>
-                        <Button 
-                          onClick={handleVideoReadinessAudit} 
-                          variant="outline" 
-                          className="border-pal-blue text-pal-blue hover:bg-pal-blue hover:text-white px-6 py-3"
-                          size="lg"
-                        >
-                          Start Audit
                         </Button>
                       </div>
                     </CardContent>

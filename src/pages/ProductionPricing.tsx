@@ -256,64 +256,38 @@ const ProductionPricing = () => {
             </Card>
           )}
 
-          {/* Step 2: Pal Assignment & Package Choice */}
+          {/* Step 2: Pal Assignment */}
           {step === 2 && selectedProblem && (
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Your Assigned Pal{selectedProblem.pal.length > 1 ? "s" : ""}</CardTitle>
-                  <CardDescription>Based on your challenge, we recommend:</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    {selectedProblem.pal.map((pal) => (
-                      <div key={pal} className="p-4 rounded-lg bg-accent">
-                        <h3 className="font-semibold text-lg">{pal}</h3>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          {pal === "System Pal" && "Internal clarity. Structure. SOPs. Training. Onboarding."}
-                          {pal === "Spotlight Pal" && "Identity. Narrative. Premium brand perception."}
-                          {pal === "Reel Pal" && "Momentum. Visibility. Attention."}
-                          {pal === "Evergreen Pal" && "Long-form authority. YouTube. Deep teaching."}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Choose Your Package Type</CardTitle>
-                  <CardDescription>Select a curated auto-package or build your own custom solution</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <Button
-                    variant={useAutoPackage === true ? "default" : "outline"}
-                    onClick={() => {
-                      setUseAutoPackage(true);
-                      setStep(3);
-                    }}
-                    className="w-full h-auto p-6 flex flex-col items-start"
-                  >
-                    <div className="font-semibold text-lg mb-2">Auto-Package (Recommended)</div>
-                    <div className="text-sm opacity-90">{selectedProblem.systemType}</div>
-                    <Badge className="mt-2">Most Popular</Badge>
-                  </Button>
-
-                  <Button
-                    variant={useAutoPackage === false ? "default" : "outline"}
-                    onClick={() => {
-                      setUseAutoPackage(false);
-                      setStep(3);
-                    }}
-                    className="w-full h-auto p-6 flex flex-col items-start"
-                  >
-                    <div className="font-semibold text-lg mb-2">Custom Build</div>
-                    <div className="text-sm opacity-90">Configure your own package from scratch</div>
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Your Assigned Pal{selectedProblem.pal.length > 1 ? "s" : ""}</CardTitle>
+                <CardDescription>Based on your challenge, we recommend:</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-4">
+                  {selectedProblem.pal.map((pal) => (
+                    <div key={pal} className="p-4 rounded-lg bg-accent">
+                      <h3 className="font-semibold text-lg">{pal}</h3>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {pal === "System Pal" && "Internal clarity. Structure. SOPs. Training. Onboarding."}
+                        {pal === "Spotlight Pal" && "Identity. Narrative. Premium brand perception."}
+                        {pal === "Reel Pal" && "Momentum. Visibility. Attention."}
+                        {pal === "Evergreen Pal" && "Long-form authority. YouTube. Deep teaching."}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <Button 
+                  onClick={() => {
+                    setUseAutoPackage(true);
+                    setStep(3);
+                  }}
+                  className="w-full"
+                >
+                  Continue to Build Your Package
+                </Button>
+              </CardContent>
+            </Card>
           )}
 
           {/* Step 3: Package Details */}

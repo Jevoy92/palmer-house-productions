@@ -6,12 +6,28 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Check, ChevronRight, Star, Target, TrendingUp, Sparkles, Package, Layers, Film, Zap, Plus, Minus } from "lucide-react";
 import { Link } from "react-router-dom";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface BuildItem {
   name: string;
   basePrice: number;
   quantity: number;
   perUnit: boolean;
+  included?: boolean; // For items like "included" on-camera coaching
+}
+
+interface VideoOption {
+  name: string;
+  price: number;
+  length: string;
 }
 
 interface PalBuildConfig {
@@ -24,6 +40,21 @@ interface PalBuildConfig {
 }
 
 const ProductionPricing = () => {
+  const videoOptions: VideoOption[] = [
+    { name: "Additional 1-min video", price: 150, length: "1 min" },
+    { name: "Additional 3-min video", price: 450, length: "3 min" },
+    { name: "Additional 5-min video", price: 1050, length: "5 min" },
+    { name: "FAQ video", price: 150, length: "1 min" },
+    { name: "Training video", price: 150, length: "1 min" },
+    { name: "SOP walkthrough", price: 150, length: "1 min" },
+    { name: "Social media clip", price: 150, length: "30-60 sec" },
+    { name: "Testimonial video", price: 150, length: "1 min" },
+    { name: "Product explainer", price: 150, length: "1 min" },
+    { name: "Brand story segment", price: 150, length: "1 min" },
+    { name: "Recruitment video", price: 150, length: "1 min" },
+    { name: "Onboarding video", price: 150, length: "1 min" },
+  ];
+
   const [palBuilds, setPalBuilds] = useState<PalBuildConfig[]>([
     {
       id: "reel-pal",
@@ -49,7 +80,7 @@ const ProductionPricing = () => {
         { name: "SOP/FAQ clips", basePrice: 150, quantity: 4, perUnit: true },
         { name: "Mid-length explainer (3-5 min)", basePrice: 450, quantity: 1, perUnit: false },
         { name: "Library organization", basePrice: 250, quantity: 1, perUnit: false },
-        { name: "On-camera coaching", basePrice: 0, quantity: 1, perUnit: false }
+        { name: "On-camera coaching", basePrice: 0, quantity: 1, perUnit: false, included: true }
       ]
     },
     {
@@ -62,7 +93,7 @@ const ProductionPricing = () => {
         { name: "Five-minute video", basePrice: 1050, quantity: 1, perUnit: false },
         { name: "Short derivative clips", basePrice: 150, quantity: 2, perUnit: true },
         { name: "Pillar summary video", basePrice: 150, quantity: 1, perUnit: false },
-        { name: "Long-form clarity coaching", basePrice: 100, quantity: 1, perUnit: false }
+        { name: "Long-form clarity coaching", basePrice: 0, quantity: 1, perUnit: false, included: true }
       ]
     },
     {
@@ -91,6 +122,40 @@ const ProductionPricing = () => {
               items: pal.items.map((item, idx) => 
                 idx === itemIndex ? { ...item, quantity: newQuantity } : item
               )
+            }
+          : pal
+      )
+    );
+  };
+
+  const addVideoToPackage = (palId: string, videoOption: VideoOption) => {
+    setPalBuilds(prev =>
+      prev.map(pal =>
+        pal.id === palId
+          ? {
+              ...pal,
+              items: [
+                ...pal.items,
+                {
+                  name: videoOption.name,
+                  basePrice: videoOption.price,
+                  quantity: 1,
+                  perUnit: true
+                }
+              ]
+            }
+          : pal
+      )
+    );
+  };
+
+  const removeItem = (palId: string, itemIndex: number) => {
+    setPalBuilds(prev =>
+      prev.map(pal =>
+        pal.id === palId
+          ? {
+              ...pal,
+              items: pal.items.filter((_, idx) => idx !== itemIndex)
             }
           : pal
       )
@@ -249,44 +314,98 @@ const ProductionPricing = () => {
                             className="flex items-center justify-between py-2 border-b border-border/40 last:border-0"
                           >
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-foreground truncate">
-                                {item.name}
-                              </p>
+                              <div className="flex items-center gap-2">
+                                <p className="text-sm font-medium text-foreground truncate">
+                                  {item.name}
+                                </p>
+                                {item.included && (
+                                  <Badge variant="secondary" className="text-xs">Included</Badge>
+                                )}
+                              </div>
                               <p className="text-xs text-muted-foreground">
-                                ${item.basePrice}{item.perUnit && ' each'}
+                                {item.included ? 'Complimentary' : `$${item.basePrice}${item.perUnit ? ' each' : ''}`}
                               </p>
                             </div>
                             
                             <div className="flex items-center gap-3 ml-4">
-                              <div className="flex items-center gap-1 border rounded-md">
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-7 w-7 p-0 hover:bg-muted"
-                                  onClick={() => updateQuantity(pal.id, idx, item.quantity - 1)}
-                                  disabled={item.quantity === 0 || (item.basePrice === 0 && item.quantity === 1)}
-                                >
-                                  <Minus className="w-3 h-3" />
-                                </Button>
-                                <span className="w-8 text-center text-sm font-medium">
-                                  {item.quantity}
+                              {item.included ? (
+                                <span className="text-sm font-medium text-muted-foreground">
+                                  Included
                                 </span>
-                                <Button
-                                  variant="ghost"
-                                  size="sm"
-                                  className="h-7 w-7 p-0 hover:bg-muted"
-                                  onClick={() => updateQuantity(pal.id, idx, item.quantity + 1)}
-                                  disabled={item.basePrice === 0}
-                                >
-                                  <Plus className="w-3 h-3" />
-                                </Button>
-                              </div>
-                              <span className="text-sm font-semibold text-foreground w-16 text-right">
-                                ${(item.basePrice * item.quantity).toLocaleString()}
-                              </span>
+                              ) : (
+                                <>
+                                  <div className="flex items-center gap-1 border rounded-md">
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-7 w-7 p-0 hover:bg-muted"
+                                      onClick={() => updateQuantity(pal.id, idx, item.quantity - 1)}
+                                      disabled={item.quantity === 0}
+                                    >
+                                      <Minus className="w-3 h-3" />
+                                    </Button>
+                                    <span className="w-8 text-center text-sm font-medium">
+                                      {item.quantity}
+                                    </span>
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="h-7 w-7 p-0 hover:bg-muted"
+                                      onClick={() => updateQuantity(pal.id, idx, item.quantity + 1)}
+                                    >
+                                      <Plus className="w-3 h-3" />
+                                    </Button>
+                                  </div>
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-sm font-semibold text-foreground w-16 text-right">
+                                      ${(item.basePrice * item.quantity).toLocaleString()}
+                                    </span>
+                                    {idx >= (pal.items.findIndex(i => i.included) || pal.items.length) && (
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="h-7 w-7 p-0 hover:bg-destructive/10 hover:text-destructive"
+                                        onClick={() => removeItem(pal.id, idx)}
+                                      >
+                                        <Minus className="w-3 h-3" />
+                                      </Button>
+                                    )}
+                                  </div>
+                                </>
+                              )}
                             </div>
                           </div>
                         ))}
+                      </div>
+
+                      <div className="pt-2">
+                        <Select onValueChange={(value) => {
+                          const option = videoOptions.find(v => v.name === value);
+                          if (option) addVideoToPackage(pal.id, option);
+                        }}>
+                          <SelectTrigger className="w-full bg-background border-dashed">
+                            <SelectValue placeholder="+ Add video to package" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-background z-50">
+                            <SelectGroup>
+                              <SelectLabel>Choose Video Type</SelectLabel>
+                              {videoOptions.map((option) => (
+                                <SelectItem 
+                                  key={option.name} 
+                                  value={option.name}
+                                  className="cursor-pointer"
+                                >
+                                  <div className="flex justify-between items-center w-full gap-4">
+                                    <span>{option.name}</span>
+                                    <span className="text-xs text-muted-foreground">
+                                      {option.length} • ${option.price}
+                                    </span>
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
                       </div>
 
                       <Separator />

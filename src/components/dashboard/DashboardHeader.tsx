@@ -1,5 +1,6 @@
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useAuth } from '@/contexts/AuthContext';
+import { CreditsBalance } from './CreditsBalance';
 
 export function DashboardHeader() {
   const { user } = useAuth();
@@ -30,7 +31,8 @@ export function DashboardHeader() {
           </div>
         </div>
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <CreditsBalance />
           <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-pal-purple/10 rounded-full border border-pal-purple/20">
             <span className="text-sm font-medium text-pal-purple">Member</span>
           </div>

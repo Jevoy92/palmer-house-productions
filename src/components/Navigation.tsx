@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, User } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { LOGO, COMPANY } from "@/lib/branding";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { usePageTransition } from '@/components/PageTransition';
+import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
+
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -13,6 +16,7 @@ export const Navigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { transitionTo } = usePageTransition();
+  const { user } = useAuth();
 
   // Helper function to handle page transitions
   const handlePageTransition = (path: string) => {
@@ -368,6 +372,17 @@ export const Navigation = () => {
               >
                 Contact
               </button>
+              
+              {/* Auth Button */}
+              <Button
+                onClick={() => handlePageTransition(user ? '/dashboard' : '/auth')}
+                variant="outline"
+                size="sm"
+                className="gap-2"
+              >
+                <User className="w-4 h-4" />
+                {user ? 'Dashboard' : 'Login'}
+              </Button>
           </div>
           
           <div className="lg:hidden">
@@ -536,12 +551,20 @@ export const Navigation = () => {
             </div>
 
             {/* Contact CTA */}
-            <div className="pt-4 border-t border-border">
+            <div className="pt-4 border-t border-border space-y-2">
               <button 
                 onClick={() => handlePageTransition('/contact')}
                 className={cn("block w-full px-4 py-4 transition-colors font-medium rounded-lg text-center min-h-[48px] flex items-center justify-center", isActivePath('/contact') ? "text-white bg-social-purple font-bold" : "text-white bg-social-purple hover:bg-social-purple/90")}
               >
                 Get Started
+              </button>
+              
+              <button 
+                onClick={() => handlePageTransition(user ? '/dashboard' : '/auth')}
+                className="block w-full px-4 py-4 transition-colors font-medium rounded-lg text-center min-h-[48px] flex items-center justify-center gap-2 border-2 border-border hover:bg-muted"
+              >
+                <User className="w-4 h-4" />
+                {user ? 'My Dashboard' : 'Member Login'}
               </button>
             </div>
           </div>

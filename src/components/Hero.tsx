@@ -23,7 +23,7 @@ export const Hero = () => {
   };
 
   const handleGetStarted = () => {
-    transitionTo('/video-packages');
+    transitionTo('/auth');
   };
 
   const handleBookStrategyCall = () => {
@@ -107,7 +107,7 @@ export const Hero = () => {
                     onClick={handleGetStarted}
                     className="btn-primary min-w-[200px] flex-1 max-w-[300px]"
                   >
-                    Build My Content System
+                    Access Content OS
                   </button>
                   <button 
                     onClick={handleBookStrategyCall}

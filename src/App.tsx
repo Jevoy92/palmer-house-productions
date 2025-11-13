@@ -5,6 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
+import { AuthProvider } from "@/contexts/AuthContext";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { ScrollToTopButton } from "@/components/ScrollToTopButton";
 import { StructuredData } from "@/components/seo/StructuredData";
@@ -53,8 +55,9 @@ import ThankYou from "./pages/ThankYou";
 import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 import StyleGuide from "./pages/StyleGuide";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-
-
+import Auth from "./pages/Auth";
+import Dashboard from "./pages/Dashboard";
+import VideoSeriesBuilder from "./pages/tools/VideoSeriesBuilder";
 
 const queryClient = new QueryClient();
 
@@ -80,6 +83,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <AuthProvider>
           <PageTransition>
           <CriticalCSS />
           <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
@@ -93,6 +97,9 @@ const App = () => (
           <RouteTracker />
           <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/tools/video-series-builder" element={<ProtectedRoute><VideoSeriesBuilder /></ProtectedRoute>} />
           <Route path="/pals" element={<Pals />} />
           <Route path="/reel-pal" element={<ReelPal />} />
           <Route path="/system-pal" element={<SystemPal />} />
@@ -146,6 +153,7 @@ const App = () => (
           </Routes>
           <EnhancedFooter />
         </PageTransition>
+          </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
     </ErrorBoundary>

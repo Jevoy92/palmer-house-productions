@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Check, ChevronRight, Star, Target, TrendingUp, Sparkles, Package, Layers, Film, Zap, Plus, Minus } from "lucide-react";
+import { Check, ChevronRight, Star, TrendingUp, Sparkles, Package, Layers, Film, Zap, Plus, Minus } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   Select,
@@ -238,6 +238,7 @@ const ProductionPricing = () => {
     }
   ];
 
+
   return (
     <>
       <MetaTags
@@ -411,71 +412,6 @@ const ProductionPricing = () => {
                   </Card>
                 );
               })}
-            </div>
-          </div>
-
-          {/* Section 3: Add-Ons & Upgrades */}
-          <Card className="mb-12">
-            <CardHeader>
-              <div className="flex items-center gap-2 mb-2">
-                <Sparkles className="w-6 h-6 text-primary" />
-                <CardTitle className="text-3xl">Add-Ons & Upgrades</CardTitle>
-              </div>
-              <CardDescription className="text-lg">
-                These can be attached to any Pal build or custom package.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-3 gap-8">
-                {addOns.map((category, idx) => (
-                  <div key={idx}>
-                    <h3 className="font-bold text-lg mb-4 text-foreground">{category.category}</h3>
-                    <ul className="space-y-3">
-                      {category.items.map((item, itemIdx) => (
-                        <li key={itemIdx} className="text-sm">
-                          <div className="font-medium text-foreground">{item.name}</div>
-                          <div className="text-primary font-semibold">{item.price}</div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Section 4: Suggested Sample Builds */}
-          <div className="mb-12">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold mb-4 text-foreground">Suggested Sample Builds</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                These aren't packages — just inspiration. Click to explore and modify to fit your needs.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              {suggestedBuilds.map((build) => (
-                <Card key={build.id} className="hover:shadow-lg transition-all border">
-                  <CardHeader>
-                    <div className="flex items-center gap-2 mb-2">
-                      <Target className="w-5 h-5 text-primary" />
-                      <Badge variant="secondary">{build.pal}</Badge>
-                    </div>
-                    <CardTitle className="text-lg">{build.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">{build.description}</p>
-                    <div className="flex items-baseline justify-between mb-4">
-                      <span className="text-2xl font-bold text-primary">{build.total}</span>
-                      {build.note && <span className="text-xs text-muted-foreground">{build.note}</span>}
-                    </div>
-                    <Button variant="outline" className="w-full" size="sm">
-                      View Details
-                      <ChevronRight className="w-4 h-4 ml-2" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
             </div>
           </div>
 

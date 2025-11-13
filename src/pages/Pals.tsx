@@ -245,7 +245,7 @@ export default function Pals() {
                 What's slowing down your business?
               </h2>
               <p className="text-2xl md:text-3xl text-gray-700 mb-12 leading-relaxed animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-200">
-                Your <span className="text-primary font-bold">people</span>, your <span className="text-secondary font-bold">process</span>, or your <span className="text-accent font-bold">visibility</span>?
+                Your <span className="text-primary font-bold">people</span>, your <span className="text-gray-900 font-bold">process</span>, or your <span className="text-accent font-bold">visibility</span>?
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-300">
                 <button 

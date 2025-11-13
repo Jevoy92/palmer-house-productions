@@ -19,6 +19,7 @@ type AddOn = {
   description: string;
   price: number;
   category: string;
+  feedback?: string;
 };
 
 const autoPackages: Record<string, any> = {
@@ -98,16 +99,86 @@ const videoCategories = [
 ];
 
 const addOns: AddOn[] = [
-  { id: "strategy", name: "Extra Strategy Session", description: "Additional 90-minute planning call", price: 500, category: "Strategy" },
-  { id: "filming", name: "Extra Filming Day", description: "Additional on-location filming day", price: 2000, category: "Filming" },
-  { id: "travel", name: "Travel Beyond 1 Hour", description: "Per hour beyond standard radius", price: 200, category: "Filming" },
-  { id: "rush", name: "Rush Delivery", description: "30% surcharge for expedited timeline", price: 0, category: "Editing" },
-  { id: "aspect", name: "Additional Aspect Ratios", description: "Export in multiple formats (per video)", price: 75, category: "Editing" },
-  { id: "captions", name: "Captioned Versions", description: "Hardcoded captions (per video)", price: 50, category: "Editing" },
-  { id: "thumbnails", name: "Additional Thumbnails", description: "Extra custom thumbnails (5 pack)", price: 250, category: "Editing" },
-  { id: "library", name: "Full Content Library Setup", description: "Organize and tag existing assets", price: 1500, category: "Systems" },
-  { id: "brandkit", name: "Brand Kit Import", description: "Import and structure brand assets", price: 750, category: "Systems" },
-  { id: "ai-support", name: "Additional AI Content Support", description: "Extended AI assistance package", price: 500, category: "Systems" },
+  { 
+    id: "strategy", 
+    name: "Extra Strategy Session", 
+    description: "Additional 90-minute planning call", 
+    price: 500, 
+    category: "Strategy",
+    feedback: "Smart move! An extra strategy session ensures your content aligns perfectly with your business goals and audience needs."
+  },
+  { 
+    id: "filming", 
+    name: "Extra Filming Day", 
+    description: "Additional on-location filming day", 
+    price: 2000, 
+    category: "Filming",
+    feedback: "Great choice! More filming days mean more diverse content and better storytelling opportunities."
+  },
+  { 
+    id: "travel", 
+    name: "Travel Beyond 1 Hour", 
+    description: "Per hour beyond standard radius", 
+    price: 200, 
+    category: "Filming",
+    feedback: "Perfect! Capturing your authentic environment adds credibility and context to your story."
+  },
+  { 
+    id: "rush", 
+    name: "Rush Delivery", 
+    description: "30% surcharge for expedited timeline", 
+    price: 0, 
+    category: "Editing",
+    feedback: "We've got you covered! Fast turnaround without compromising quality—your timeline is our priority."
+  },
+  { 
+    id: "aspect", 
+    name: "Additional Aspect Ratios", 
+    description: "Export in multiple formats (per video)", 
+    price: 75, 
+    category: "Editing",
+    feedback: "Excellent thinking! Multiple aspect ratios maximize your reach across different platforms—one video, everywhere."
+  },
+  { 
+    id: "captions", 
+    name: "Captioned Versions", 
+    description: "Hardcoded captions (per video)", 
+    price: 50, 
+    category: "Editing",
+    feedback: "Brilliant! Captions boost accessibility, engagement, and watch time—especially for mobile viewers."
+  },
+  { 
+    id: "thumbnails", 
+    name: "Additional Thumbnails", 
+    description: "Extra custom thumbnails (5 pack)", 
+    price: 250, 
+    category: "Editing",
+    feedback: "Nice! Custom thumbnails dramatically increase click-through rates and help your content stand out."
+  },
+  { 
+    id: "library", 
+    name: "Full Content Library Setup", 
+    description: "Organize and tag existing assets", 
+    price: 1500, 
+    category: "Systems",
+    feedback: "Fantastic decision! A well-organized library transforms chaos into clarity—making every asset easy to find and repurpose."
+  },
+  { 
+    id: "brandkit", 
+    name: "Brand Kit Import", 
+    description: "Import and structure brand assets", 
+    price: 750, 
+    category: "Systems",
+    feedback: "Perfect! Your brand kit ensures visual consistency across all content, building recognition and trust."
+  },
+  { 
+    id: "ai-support", 
+    name: "Additional AI Content Support", 
+    description: "Extended AI assistance package", 
+    price: 500, 
+    category: "Systems",
+    feedback: "Smart investment! AI support accelerates content creation while maintaining your unique voice and style."
+  },
 ];
 
 const ProductionPricing = () => {
@@ -117,6 +188,7 @@ const ProductionPricing = () => {
   const [customVideos, setCustomVideos] = useState<VideoCategory[]>([]);
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [recentAddOnFeedback, setRecentAddOnFeedback] = useState<string | null>(null);
 
   const calculateVideoPrice = (length: number): number => {
     const BASE_PRICE = 150;
@@ -190,9 +262,20 @@ const ProductionPricing = () => {
   };
 
   const toggleAddOn = (id: string) => {
+    const isAdding = !selectedAddOns.includes(id);
     setSelectedAddOns(prev => 
       prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id]
     );
+    
+    // Show feedback when adding an add-on
+    if (isAdding) {
+      const addon = addOns.find(a => a.id === id);
+      if (addon?.feedback) {
+        setRecentAddOnFeedback(addon.feedback);
+        // Clear feedback after 5 seconds
+        setTimeout(() => setRecentAddOnFeedback(null), 5000);
+      }
+    }
   };
 
   const palAddOns: Record<string, AddOn[]> = {
@@ -222,17 +305,17 @@ const ProductionPricing = () => {
       <div className="container mx-auto px-4 py-16 max-w-7xl">
         {/* Hero Section */}
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-4 text-foreground">Production Pricing</h1>
+          <h1 className="text-5xl font-bold mb-4 text-foreground">Build Your Perfect Package</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Choose a curated package or build your own custom solution
+            Start with a suggested build or create your own custom solution—it's your package, your way
           </p>
         </div>
 
-        {/* Preset Packages Section */}
+        {/* Suggested Builds Section */}
         <section className="mb-20">
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold mb-3 text-foreground">Curated Packages</h2>
-            <p className="text-muted-foreground">Pre-built solutions for common challenges</p>
+            <h2 className="text-3xl font-bold mb-3 text-foreground">Suggested Builds</h2>
+            <p className="text-muted-foreground">Popular configurations to inspire your custom package—click to explore and customize</p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -298,8 +381,8 @@ const ProductionPricing = () => {
         {/* Custom Build Section */}
         <section>
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold mb-3 text-foreground">Custom Build Calculator</h2>
-            <p className="text-muted-foreground">Or create your own package from scratch</p>
+            <h2 className="text-3xl font-bold mb-3 text-foreground">Your Custom Build</h2>
+            <p className="text-muted-foreground">Build exactly what you need—every package is tailored to your goals</p>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
@@ -336,15 +419,15 @@ const ProductionPricing = () => {
                 </CardContent>
               </Card>
 
-              {/* Recommended Packages for Selected Pal */}
+              {/* Suggested Builds for Selected Pal */}
               {selectedPal && getRecommendedPackages(selectedPal).length > 0 && (
                 <Card className="bg-accent/30 border-primary/20">
                   <CardHeader>
                     <div className="flex items-center gap-2">
                       <Sparkles className="h-5 w-5 text-primary" />
-                      <CardTitle>Recommended for {selectedPal}</CardTitle>
+                      <CardTitle>Suggested Pathways for {selectedPal}</CardTitle>
                     </div>
-                    <CardDescription>Popular packages that match your selected approach</CardDescription>
+                    <CardDescription>Click any option to see how it might work—then customize to your needs</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="grid gap-3">
@@ -394,7 +477,7 @@ const ProductionPricing = () => {
                 <Card>
                   <CardHeader>
                     <CardTitle>2. Select Your Videos</CardTitle>
-                    <CardDescription>Choose video types and quantities (or use a recommended package above)</CardDescription>
+                    <CardDescription>Choose video types and quantities—mix and match to fit your needs</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-6">
@@ -456,6 +539,15 @@ const ProductionPricing = () => {
                     <CardDescription>Enhance your package with add-ons for {selectedPal}</CardDescription>
                   </CardHeader>
                   <CardContent>
+                    {/* Feedback Message */}
+                    {recentAddOnFeedback && (
+                      <div className="mb-4 p-4 bg-primary/10 border border-primary/20 rounded-lg">
+                        <p className="text-sm text-foreground italic">
+                          {recentAddOnFeedback}
+                        </p>
+                      </div>
+                    )}
+                    
                     <div className="space-y-3">
                       {palAddOns[selectedPal]?.map((addon) => (
                         <div 
@@ -570,7 +662,7 @@ const ProductionPricing = () => {
 
                   {!selectedPreset && !selectedPal && customVideos.length === 0 && (
                     <div className="text-center py-8 text-muted-foreground text-sm">
-                      Select a preset package or choose a Pal to start building your custom package
+                      Select a suggested build or choose a Pal to start creating your custom package
                     </div>
                   )}
                 </CardContent>

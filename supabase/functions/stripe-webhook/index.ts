@@ -1,37 +1,58 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import Stripe from 'https://esm.sh/stripe@14.21.0';
+import Stripe from 'https://esm.sh/stripe@18.5.0';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 
 const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
-  apiVersion: '2023-10-16',
+  apiVersion: '2025-08-27.basil',
 });
 
 const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
 const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET')!;
+
+const logStep = (step: string, details?: any) => {
+  const detailsStr = details ? ` - ${JSON.stringify(details)}` : '';
+  console.log(`[STRIPE-WEBHOOK] ${step}${detailsStr}`);
+};
 
 serve(async (req) => {
   const signature = req.headers.get('stripe-signature');
-  const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET');
 
-  if (!signature || !webhookSecret) {
-    return new Response('Missing signature or webhook secret', { status: 400 });
+  if (!signature) {
+    logStep('ERROR: Missing Stripe signature');
+    return new Response('Missing Stripe signature', { status: 400 });
+  }
+
+  if (!webhookSecret) {
+    logStep('ERROR: Webhook secret not configured');
+    return new Response('Webhook secret not configured', { status: 500 });
   }
 
   try {
+    logStep('Received webhook request');
     const body = await req.text();
     const event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-
-    console.log('Webhook event received:', event.type);
+    logStep('Webhook signature verified', { eventType: event.type });
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
     switch (event.type) {
       case 'checkout.session.completed': {
         const session = event.data.object as Stripe.Checkout.Session;
-        const userId = session.metadata?.user_id;
+        const userId = session.metadata?.user_id || session.client_reference_id;
         const type = session.metadata?.type;
 
-        console.log('Checkout completed:', { userId, type, sessionId: session.id });
+        logStep('Processing checkout.session.completed', { 
+          sessionId: session.id, 
+          userId,
+          mode: session.mode,
+          type
+        });
+        
+        if (!userId) {
+          logStep('ERROR: No user ID found in session metadata');
+          break;
+        }
 
         if (type === 'subscription') {
           const planId = session.metadata?.plan_id;

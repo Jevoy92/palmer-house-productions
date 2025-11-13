@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import Stripe from 'https://esm.sh/stripe@14.21.0';
+import Stripe from 'https://esm.sh/stripe@18.5.0';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,11 +12,14 @@ serve(async (req) => {
   }
 
   try {
+    console.log('[CREATE-CHECKOUT] Starting checkout session creation');
+    
     const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY') || '', {
-      apiVersion: '2023-10-16',
+      apiVersion: '2025-08-27.basil',
     });
 
     const { type, priceId, planId, userId, successUrl, cancelUrl } = await req.json();
+    console.log('[CREATE-CHECKOUT] Request details:', { type, planId, userId });
 
     console.log('Creating checkout session:', { type, priceId, planId, userId });
 
@@ -75,9 +78,9 @@ serve(async (req) => {
       };
     }
 
+    console.log('[CREATE-CHECKOUT] Creating Stripe session...');
     const session = await stripe.checkout.sessions.create(sessionParams);
-
-    console.log('Checkout session created:', session.id);
+    console.log('[CREATE-CHECKOUT] Session created successfully:', session.id);
 
     return new Response(
       JSON.stringify({ url: session.url, sessionId: session.id }),

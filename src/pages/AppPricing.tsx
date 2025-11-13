@@ -34,17 +34,17 @@ export default function AppPricing() {
       return;
     }
 
+    const tier = SUBSCRIPTION_TIERS.find(t => t.id === tierId);
+    if (!tier?.stripePriceId) {
+      toast.error('This plan is not available yet');
+      return;
+    }
+
     setLoading(tierId);
     try {
-      // In production, you would create Stripe products/prices via the Stripe dashboard
-      // For now, we'll use placeholder price IDs
-      const stripePriceId = tierId === 'core' 
-        ? 'price_core_monthly' 
-        : 'price_guided_monthly';
-
       await createCheckoutSession({
         type: 'subscription',
-        priceId: stripePriceId,
+        priceId: tier.stripePriceId,
         planId: tierId,
         userId: user.id,
       });
@@ -62,20 +62,26 @@ export default function AppPricing() {
       return;
     }
 
+    const addon = ADDONS.find(a => a.id === addonId);
+    if (!addon?.stripePriceId) {
+      toast.error('This add-on is not available yet');
+      return;
+    }
+
     setLoading(addonId);
     try {
-      // In production, create Stripe products/prices for addons
-      const stripePriceId = `price_addon_${addonId}`;
-
+      // For credit packages, use 'credits' type; for services, use 'addon' type
+      const checkoutType = addon.category === 'credits' ? 'credits' : 'addon';
+      
       await createCheckoutSession({
-        type: 'addon',
-        priceId: stripePriceId,
+        type: checkoutType,
+        priceId: addon.stripePriceId,
         planId: addonId,
         userId: user.id,
       });
     } catch (error) {
       console.error('Addon purchase error:', error);
-      toast.error('Failed to purchase addon. Please try again.');
+      toast.error('Failed to purchase add-on. Please try again.');
     } finally {
       setLoading(null);
     }

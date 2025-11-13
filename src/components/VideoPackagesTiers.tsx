@@ -213,7 +213,7 @@ export const VideoPackagesTiers = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <div className="bg-gray-50 p-6 rounded-2xl">
+              <div className="bg-muted p-6 rounded-2xl">
                 <h4 className="font-bold text-corporate-dark mb-4">Internal Business Video Assets:</h4>
                 <ul className="space-y-3">
                   <li className="flex items-center">
@@ -234,7 +234,7 @@ export const VideoPackagesTiers = () => {
                   </li>
                 </ul>
               </div>
-              <div className="bg-gray-50 p-6 rounded-2xl">
+              <div className="bg-muted p-6 rounded-2xl">
                 <h4 className="font-bold text-corporate-dark mb-4">External Business Video Assets:</h4>
                 <ul className="space-y-3">
                   <li className="flex items-center">
@@ -284,7 +284,7 @@ export const VideoPackagesTiers = () => {
               <div key={index} className="bg-white p-6 rounded-3xl video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-105">
                 <div className="text-center mb-4">
                   <div className="flex items-center justify-between mb-3">
-                    <div className="inline-block px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-bold">
+                    <div className="inline-block px-3 py-1 bg-muted text-foreground rounded-full text-xs font-bold">
                       {bundle.type}
                     </div>
                     <div className="bg-red-100 text-red-600 px-2 py-1 rounded-full text-xs font-bold">
@@ -352,7 +352,7 @@ export const VideoPackagesTiers = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {bonusItems.map((item, index) => (
-                  <div key={index} className="bg-gray-50 p-4 rounded-2xl border-2 border-yellow-400/20">
+                  <div key={index} className="bg-muted p-4 rounded-2xl border-2 border-yellow-400/20">
                     <div className="flex justify-between items-center">
                       <span className="text-sm font-medium text-corporate-gray">{item.item}</span>
                       <span className="font-bold text-corporate-dark">{item.value}</span>
@@ -375,15 +375,15 @@ export const VideoPackagesTiers = () => {
               YouTube Visibility Engine
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-              <div className="bg-gray-50 p-4 rounded-2xl">
+              <div className="bg-muted p-4 rounded-2xl">
                 <div className="text-2xl font-bold text-corporate-dark">$4,000-$5,000</div>
                 <div className="text-sm text-corporate-gray">per month</div>
               </div>
-              <div className="bg-gray-50 p-4 rounded-2xl">
+              <div className="bg-muted p-4 rounded-2xl">
                 <div className="text-2xl font-bold text-corporate-dark">2-3 Videos</div>
                 <div className="text-sm text-corporate-gray">long-form monthly</div>
               </div>
-              <div className="bg-gray-50 p-4 rounded-2xl">
+              <div className="bg-muted p-4 rounded-2xl">
                 <div className="text-2xl font-bold text-corporate-dark">Full Service</div>
                 <div className="text-sm text-corporate-gray">scripting to optimization</div>
               </div>

@@ -89,7 +89,7 @@ export default function Pals() {
   };
 
   return (
-    <div className="bg-gray-50 overflow-x-hidden font-sans">
+    <div className="bg-muted overflow-x-hidden font-sans">
       <ScrollBars />
         <MetaTags 
           title="Video Systems That Remove Friction, Waste & Invisibility | Palmer House Productions"
@@ -241,11 +241,11 @@ export default function Pals() {
         <section className="bg-gradient-to-br from-primary/5 via-background to-secondary/5 py-20 lg:py-32 relative z-20">
           <div className="container mx-auto px-6 lg:px-8 text-center">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-8 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
+              <h2 className="text-4xl md:text-5xl font-extrabold text-corporate-dark mb-8 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
                 What's slowing down your business?
               </h2>
-              <p className="text-2xl md:text-3xl text-gray-700 mb-12 leading-relaxed animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-200">
-                Your <span className="text-primary font-bold">people</span>, your <span className="text-gray-900 font-bold">process</span>, or your <span className="text-accent font-bold">visibility</span>?
+              <p className="text-2xl md:text-3xl text-corporate-gray mb-12 leading-relaxed animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-200">
+                Your <span className="text-primary font-bold">people</span>, your <span className="text-corporate-dark font-bold">process</span>, or your <span className="text-accent font-bold">visibility</span>?
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-300">
                 <button 
@@ -263,10 +263,10 @@ export default function Pals() {
         <section className="bg-white py-20 lg:py-32 relative z-20">
           <div className="container mx-auto px-6 lg:px-8 text-center">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
+              <h2 className="text-4xl md:text-5xl font-extrabold text-corporate-dark mb-6 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
                 Meet Your Video Systems Specialists
               </h2>
-              <p className="text-xl text-gray-600 mb-12 leading-relaxed animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-200">
+              <p className="text-xl text-corporate-gray mb-12 leading-relaxed animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-200">
                 We help businesses remove friction, waste, and invisibility using video systems. Each Video Pal specializes in removing different types of waste from your business—whether it's friction in your processes, invisibility in your marketing, or confusion about your offering.
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -274,29 +274,29 @@ export default function Pals() {
                   <div className="w-16 h-16 bg-pal-orange/20 rounded-full flex items-center justify-center mb-4 mx-auto">
                     <Smartphone className="text-2xl text-pal-orange" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">Reel Pal</h3>
-                  <p className="text-gray-600 text-sm">Removes invisibility with consistent social content systems</p>
+                  <h3 className="text-lg font-bold text-corporate-dark mb-2">Reel Pal</h3>
+                  <p className="text-corporate-gray text-sm">Removes invisibility with consistent social content systems</p>
                 </div>
                 <div className="p-6 bg-pal-purple/5 rounded-2xl border border-pal-purple/20 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-400">
                   <div className="w-16 h-16 bg-pal-purple/20 rounded-full flex items-center justify-center mb-4 mx-auto">
                     <Cog className="text-2xl text-pal-purple" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">System Pal</h3>
-                  <p className="text-gray-600 text-sm">Removes friction from training, onboarding, and processes</p>
+                  <h3 className="text-lg font-bold text-corporate-dark mb-2">System Pal</h3>
+                  <p className="text-corporate-gray text-sm">Removes friction from training, onboarding, and processes</p>
                 </div>
                 <div className="p-6 bg-pal-green/5 rounded-2xl border border-pal-green/20 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-500">
                   <div className="w-16 h-16 bg-pal-green/20 rounded-full flex items-center justify-center mb-4 mx-auto">
                     <Youtube className="text-2xl text-pal-green" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">Evergreen Pal</h3>
-                  <p className="text-gray-600 text-sm">Eliminates confusion with clear explanatory content</p>
+                  <h3 className="text-lg font-bold text-corporate-dark mb-2">Evergreen Pal</h3>
+                  <p className="text-corporate-gray text-sm">Eliminates confusion with clear explanatory content</p>
                 </div>
                 <div className="p-6 bg-pal-blue/5 rounded-2xl border border-pal-blue/20 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700 delay-600">
                   <div className="w-16 h-16 bg-pal-blue/20 rounded-full flex items-center justify-center mb-4 mx-auto">
                     <Film className="text-2xl text-pal-blue" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">Spotlight Pal</h3>
-                  <p className="text-gray-600 text-sm">Makes your wins visible with testimonials and proof content</p>
+                  <h3 className="text-lg font-bold text-corporate-dark mb-2">Spotlight Pal</h3>
+                  <p className="text-corporate-gray text-sm">Makes your wins visible with testimonials and proof content</p>
                 </div>
               </div>
             </div>
@@ -304,19 +304,19 @@ export default function Pals() {
         </section>
 
         {/* System Pal Solutions */}
-        <section className="bg-gray-50 py-20 lg:py-32 relative z-20">
+        <section className="bg-muted py-20 lg:py-32 relative z-20">
           <div className="container mx-auto px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               <div className="text-center lg:text-left animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
                 <h2 className="text-base font-semibold text-pal-purple uppercase tracking-wider">System Pal</h2>
-                <h3 className="mt-2 text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">Removing Friction From Your Business</h3>
-                <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-                  <strong className="text-gray-900">The Problem:</strong> Teams waste time answering the same questions. Onboarding is inconsistent. Processes exist only in people's heads.
+                <h3 className="mt-2 text-4xl md:text-5xl font-extrabold text-corporate-dark leading-tight">Removing Friction From Your Business</h3>
+                <p className="mt-6 text-lg text-corporate-gray leading-relaxed">
+                  <strong className="text-corporate-dark">The Problem:</strong> Teams waste time answering the same questions. Onboarding is inconsistent. Processes exist only in people's heads.
                 </p>
-                <p className="mt-4 text-lg text-gray-600 leading-relaxed">
-                  <strong className="text-gray-900">The Solution:</strong> Video systems that document your processes once and scale them forever. Onboarding video series, role-specific training modules, step-by-step workflow videos, and digital SOP libraries that turn institutional knowledge into accessible assets.
+                <p className="mt-4 text-lg text-corporate-gray leading-relaxed">
+                  <strong className="text-corporate-dark">The Solution:</strong> Video systems that document your processes once and scale them forever. Onboarding video series, role-specific training modules, step-by-step workflow videos, and digital SOP libraries that turn institutional knowledge into accessible assets.
                 </p>
-                <p className="mt-4 text-lg text-gray-900 leading-relaxed font-semibold">
+                <p className="mt-4 text-lg text-corporate-dark leading-relaxed font-semibold">
                   Business Impact: Reduce training time by 50%, eliminate repetitive explanations, and scale your operations without scaling your headcount.
                 </p>
                 <div className="mt-10 space-y-8">
@@ -325,8 +325,8 @@ export default function Pals() {
                       <GraduationCap className="text-2xl" />
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-gray-900">Training Videos</h4>
-                      <p className="mt-1 text-gray-600">Create engaging and repeatable training modules for any department, ensuring consistency and comprehension.</p>
+                      <h4 className="text-xl font-bold text-corporate-dark">Training Videos</h4>
+                      <p className="mt-1 text-corporate-gray">Create engaging and repeatable training modules for any department, ensuring consistency and comprehension.</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-400">
@@ -334,8 +334,8 @@ export default function Pals() {
                       <Rocket className="text-2xl" />
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-gray-900">Onboarding Flows</h4>
-                      <p className="mt-1 text-gray-600">Design a welcoming and informative video-based onboarding experience for new hires.</p>
+                      <h4 className="text-xl font-bold text-corporate-dark">Onboarding Flows</h4>
+                      <p className="mt-1 text-corporate-gray">Design a welcoming and informative video-based onboarding experience for new hires.</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-600">
@@ -343,8 +343,8 @@ export default function Pals() {
                       <CircleHelp className="text-2xl" />
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-gray-900">FAQ Buildouts</h4>
-                      <p className="mt-1 text-gray-600">Build a comprehensive library of video answers to common questions, saving your team time and effort.</p>
+                      <h4 className="text-xl font-bold text-corporate-dark">FAQ Buildouts</h4>
+                      <p className="mt-1 text-corporate-gray">Build a comprehensive library of video answers to common questions, saving your team time and effort.</p>
                     </div>
                   </div>
                 </div>
@@ -379,8 +379,8 @@ export default function Pals() {
               </div>
               <div className="text-center lg:text-left order-1 lg:order-2 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
                 <h2 className="text-base font-semibold text-pal-orange uppercase tracking-wider">Reel Pal</h2>
-                <h3 className="mt-2 text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">Quick & Creative Content</h3>
-                <p className="mt-6 text-lg text-gray-600 leading-relaxed">
+                <h3 className="mt-2 text-4xl md:text-5xl font-extrabold text-corporate-dark leading-tight">Quick & Creative Content</h3>
+                <p className="mt-6 text-lg text-corporate-gray leading-relaxed">
                   Perfect for entrepreneurs and small businesses ready to dive into video content. Get started with our DIY kits, short-form social content creation, and our signature Starter Session to launch your video journey.
                 </p>
                 <div className="mt-10 space-y-8">
@@ -389,8 +389,8 @@ export default function Pals() {
                       <Smartphone className="text-2xl" />
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-gray-900">Social Content</h4>
-                      <p className="mt-1 text-gray-600">Engaging short-form videos optimized for Instagram Reels, TikTok, and YouTube Shorts.</p>
+                      <h4 className="text-xl font-bold text-corporate-dark">Social Content</h4>
+                      <p className="mt-1 text-corporate-gray">Engaging short-form videos optimized for Instagram Reels, TikTok, and YouTube Shorts.</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-400">
@@ -398,8 +398,8 @@ export default function Pals() {
                       <Wand2 className="text-2xl" />
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-gray-900">DIY Kits</h4>
-                      <p className="mt-1 text-gray-600">Complete packages with templates, scripts, and guides for creating your own content.</p>
+                      <h4 className="text-xl font-bold text-corporate-dark">DIY Kits</h4>
+                      <p className="mt-1 text-corporate-gray">Complete packages with templates, scripts, and guides for creating your own content.</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-600">
@@ -407,8 +407,8 @@ export default function Pals() {
                       <Camera className="text-2xl" />
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-gray-900">Starter Session</h4>
-                      <p className="mt-1 text-gray-600">One-on-one consultation to plan your video strategy and get you started on the right path.</p>
+                      <h4 className="text-xl font-bold text-corporate-dark">Starter Session</h4>
+                      <p className="mt-1 text-corporate-gray">One-on-one consultation to plan your video strategy and get you started on the right path.</p>
                     </div>
                   </div>
                 </div>
@@ -426,13 +426,13 @@ export default function Pals() {
         </section>
 
         {/* Evergreen Pal Solutions */}
-        <section className="bg-gray-50 py-20 lg:py-32 relative z-20">
+        <section className="bg-muted py-20 lg:py-32 relative z-20">
           <div className="container mx-auto px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               <div className="text-center lg:text-left animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
                 <h2 className="text-base font-semibold text-pal-green uppercase tracking-wider">Evergreen Pal</h2>
-                <h3 className="mt-2 text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">Long-Term Authority Building</h3>
-                <p className="mt-6 text-lg text-gray-600 leading-relaxed">
+                <h3 className="mt-2 text-4xl md:text-5xl font-extrabold text-corporate-dark leading-tight">Long-Term Authority Building</h3>
+                <p className="mt-6 text-lg text-corporate-gray leading-relaxed">
                   Establish your expertise with consistent, high-quality content that builds trust over time. Our YouTube engine and monthly content plans ensure your brand stays top-of-mind while positioning you as an industry leader.
                 </p>
                 <div className="mt-10 space-y-8">
@@ -441,8 +441,8 @@ export default function Pals() {
                       <Youtube className="text-2xl" />
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-gray-900">YouTube Engine</h4>
-                      <p className="mt-1 text-gray-600">Systematic approach to building a thriving YouTube channel with optimized content and growth strategies.</p>
+                      <h4 className="text-xl font-bold text-corporate-dark">YouTube Engine</h4>
+                      <p className="mt-1 text-corporate-gray">Systematic approach to building a thriving YouTube channel with optimized content and growth strategies.</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-400">
@@ -450,8 +450,8 @@ export default function Pals() {
                       <Calendar className="text-2xl" />
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-gray-900">Monthly Plans</h4>
-                      <p className="mt-1 text-gray-600">Consistent content delivery with strategic planning to maintain audience engagement and growth.</p>
+                      <h4 className="text-xl font-bold text-corporate-dark">Monthly Plans</h4>
+                      <p className="mt-1 text-corporate-gray">Consistent content delivery with strategic planning to maintain audience engagement and growth.</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-600">
@@ -459,8 +459,8 @@ export default function Pals() {
                       <Trophy className="text-2xl" />
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-gray-900">Authority Content</h4>
-                      <p className="mt-1 text-gray-600">Thought leadership videos that showcase your expertise and build credibility in your industry.</p>
+                      <h4 className="text-xl font-bold text-corporate-dark">Authority Content</h4>
+                      <p className="mt-1 text-corporate-gray">Thought leadership videos that showcase your expertise and build credibility in your industry.</p>
                     </div>
                   </div>
                 </div>
@@ -495,8 +495,8 @@ export default function Pals() {
               </div>
               <div className="text-center lg:text-left order-1 lg:order-2 animate-on-scroll opacity-0 transform translate-y-10 transition-all duration-700">
                 <h2 className="text-base font-semibold text-pal-blue uppercase tracking-wider">Spotlight Pal</h2>
-                <h3 className="mt-2 text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">Cinematic Brand Storytelling</h3>
-                <p className="mt-6 text-lg text-gray-600 leading-relaxed">
+                <h3 className="mt-2 text-4xl md:text-5xl font-extrabold text-corporate-dark leading-tight">Cinematic Brand Storytelling</h3>
+                <p className="mt-6 text-lg text-corporate-gray leading-relaxed">
                   Elevate your brand with premium video content that captivates and converts. From cinematic brand stories and music videos to commercial productions and hero content, Spotlight Pal delivers Hollywood-quality results.
                 </p>
                 <div className="mt-10 space-y-8">
@@ -505,8 +505,8 @@ export default function Pals() {
                       <Film className="text-2xl" />
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-gray-900">Brand Storytelling</h4>
-                      <p className="mt-1 text-gray-600">Compelling narratives that connect emotionally with your audience and communicate your brand values.</p>
+                      <h4 className="text-xl font-bold text-corporate-dark">Brand Storytelling</h4>
+                      <p className="mt-1 text-corporate-gray">Compelling narratives that connect emotionally with your audience and communicate your brand values.</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-400">
@@ -514,8 +514,8 @@ export default function Pals() {
                       <Music className="text-2xl" />
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-gray-900">Music Videos</h4>
-                      <p className="mt-1 text-gray-600">Creative and artistic video productions that bring musical visions to life with stunning visuals.</p>
+                      <h4 className="text-xl font-bold text-corporate-dark">Music Videos</h4>
+                      <p className="mt-1 text-corporate-gray">Creative and artistic video productions that bring musical visions to life with stunning visuals.</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-4 animate-on-scroll opacity-0 transform translate-x-10 transition-all duration-700 delay-600">

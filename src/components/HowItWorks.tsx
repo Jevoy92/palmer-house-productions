@@ -59,7 +59,7 @@ export const HowItWorks = () => {
       lineGradient: "from-pink-500 to-orange-400",
       mockup: (
         <div className="bg-card backdrop-blur-sm rounded-2xl p-6 shadow-2xl w-full max-w-sm" style={{ animation: 'float 6s ease-in-out infinite, pulse-glow 4s ease-in-out infinite' }}>
-          <div className="w-full h-32 bg-gray-800 rounded-lg flex items-center justify-center relative">
+          <div className="w-full h-32 bg-corporate-dark rounded-lg flex items-center justify-center relative">
             <div className="absolute top-2 left-2 text-xs text-white bg-black/30 px-2 py-1 rounded">01:15 / 03:42</div>
             <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
               <path d="M8 5v14l11-7z"/>
@@ -157,7 +157,7 @@ export const HowItWorks = () => {
                   {step.hasLine && index < steps.length - 1 && (
                     <div className={`absolute -left-1.5 top-12 h-full w-0.5 bg-gradient-to-b ${step.lineGradient}`}></div>
                   )}
-                  <p className="text-4xl font-bold text-gray-800">{step.number}</p>
+                  <p className="text-4xl font-bold text-corporate-dark">{step.number}</p>
                 </div>
                 <div>
                   <h3 className="text-2xl font-semibold mb-2">{step.title}</h3>
@@ -181,7 +181,7 @@ export const HowItWorks = () => {
                   {step.hasLine && index < steps.length - 1 && (
                     <div className={`absolute -left-1.5 top-12 h-full w-0.5 bg-gradient-to-b ${step.lineGradient}`}></div>
                   )}
-                  <p className="text-4xl font-bold text-gray-800">{step.number}</p>
+                  <p className="text-4xl font-bold text-corporate-dark">{step.number}</p>
                 </div>
                 <div>
                   <h3 className="text-2xl font-semibold mb-2">{step.title}</h3>

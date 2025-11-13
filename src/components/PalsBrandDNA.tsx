@@ -214,7 +214,7 @@ export const PalsBrandDNA = () => {
                 </CollapsibleContent>
                 <div className="flex gap-2">
                   <div className="w-8 h-8 rounded-full bg-blue-400"></div>
-                  <div className="w-8 h-8 rounded-full bg-gray-400"></div>
+                  <div className="w-8 h-8 rounded-full bg-muted-foreground"></div>
                   <div className="w-8 h-8 rounded-full bg-pink-400"></div>
                   <div className="w-8 h-8 rounded-full bg-purple-400"></div>
                 </div>

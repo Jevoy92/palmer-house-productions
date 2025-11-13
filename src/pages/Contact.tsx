@@ -86,7 +86,7 @@ const ContactPage = () => {
                   </h2>
                   
                   {/* Book Strategy Call */}
-                  <Card className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 hover:border-pal-orange/30 transition-all duration-300 group">
+                  <Card className="bg-gradient-to-br from-muted to-background border border-border hover:border-pal-orange/30 transition-all duration-300 group">
                     <CardContent className="p-6">
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-pal-orange rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
@@ -108,7 +108,7 @@ const ContactPage = () => {
                   </Card>
 
                   {/* Explore Video Packages */}
-                  <Card className="bg-gradient-to-br from-gray-50 to-white border border-gray-200 hover:border-pal-purple/30 transition-all duration-300 group">
+                  <Card className="bg-gradient-to-br from-muted to-background border border-border hover:border-pal-purple/30 transition-all duration-300 group">
                     <CardContent className="p-6">
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 bg-pal-purple rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">

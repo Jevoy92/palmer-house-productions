@@ -19,7 +19,7 @@ export const About = () => {
             </header>
 
             <div className="max-w-5xl mx-auto mb-[clamp(4rem,10vw,4rem)]">
-              <div className="bg-gray-50 rounded-2xl p-[clamp(2rem,6vw,2rem)] video-shadow">
+              <div className="bg-muted rounded-2xl p-[clamp(2rem,6vw,2rem)] video-shadow">
                 <p className="text-[clamp(1rem,2.5vw,1.125rem)] text-corporate-gray leading-relaxed mb-[clamp(2rem,5vw,2rem)] text-center">
                   Founded with a vision to help businesses tell their stories authentically, Palmer House Productions combines <span className="text-pal-green font-bold">creative expertise</span> with strategic thinking.
                 </p>
@@ -57,7 +57,7 @@ export const About = () => {
               </div>
               
               <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-[clamp(2rem,5vw,2rem)]">
-                <div className="group bg-gray-50 rounded-2xl p-8 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-[1.02]">
+                <div className="group bg-muted rounded-2xl p-8 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-[1.02]">
                   <div className="flex items-center mb-6">
                     <div className="text-4xl mr-4">🗺️</div>
                     <h3 className="text-2xl font-bold text-pal-purple">Uncharted Paths</h3>
@@ -67,7 +67,7 @@ export const About = () => {
                   </p>
                 </div>
                 
-                <div className="group bg-gray-50 rounded-2xl p-8 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-[1.02]">
+                <div className="group bg-muted rounded-2xl p-8 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-[1.02]">
                   <div className="flex items-center mb-6">
                     <div className="text-4xl mr-4">🧭</div>
                     <h3 className="text-2xl font-bold text-pal-orange">True North</h3>
@@ -77,7 +77,7 @@ export const About = () => {
                   </p>
                 </div>
                 
-                <div className="group bg-gray-50 rounded-2xl p-8 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-[1.02]">
+                <div className="group bg-muted rounded-2xl p-8 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-[1.02]">
                   <div className="flex items-center mb-6">
                     <div className="text-4xl mr-4">⛰️</div>
                     <h3 className="text-2xl font-bold text-pal-green">Strategic Solutions</h3>
@@ -87,7 +87,7 @@ export const About = () => {
                   </p>
                 </div>
                 
-                <div className="group bg-gray-50 rounded-2xl p-8 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-[1.02]">
+                <div className="group bg-muted rounded-2xl p-8 video-shadow hover:video-shadow-lg transition-all duration-300 hover:scale-[1.02]">
                   <div className="flex items-center mb-6">
                     <div className="text-4xl mr-4">🌟</div>
                     <h3 className="text-2xl font-bold text-pal-blue">Fearless Creativity</h3>

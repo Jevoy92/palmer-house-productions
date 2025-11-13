@@ -238,11 +238,11 @@ const FAQ = () => {
             <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-12">
               <div className="max-w-2xl mx-auto mb-8">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
                   <input
                     type="text"
                     placeholder="Search questions..."
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pal-blue focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-pal-blue focus:border-transparent"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
@@ -258,7 +258,7 @@ const FAQ = () => {
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
                       selectedCategory === category.id
                         ? 'bg-pal-blue text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        : 'bg-muted text-foreground hover:bg-muted/80'
                     }`}
                   >
                     {category.label}
@@ -279,9 +279,9 @@ const FAQ = () => {
             <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-12">
               <div className="space-y-4">
                 {filteredFaqs.map((faq, index) => (
-                  <div key={index} className="bg-gradient-to-br from-gray-50 to-white rounded-2xl border overflow-hidden">
+                  <div key={index} className="bg-gradient-to-br from-muted to-background rounded-2xl border overflow-hidden">
                     <button
-                      className="w-full text-left p-6 hover:bg-gray-100 transition-colors duration-200 flex justify-between items-center min-h-[80px] touch-manipulation"
+                      className="w-full text-left p-6 hover:bg-muted transition-colors duration-200 flex justify-between items-center min-h-[80px] touch-manipulation"
                       onClick={() => toggleFAQ(index)}
                       aria-expanded={openIndex === index}
                       aria-controls={`faq-answer-${index}`}

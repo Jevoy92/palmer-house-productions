@@ -227,6 +227,7 @@ export type Database = {
           id: string
           plan_id: string
           status: string
+          stripe_subscription_id: string | null
           updated_at: string | null
           user_id: string
         }
@@ -238,6 +239,7 @@ export type Database = {
           id?: string
           plan_id: string
           status?: string
+          stripe_subscription_id?: string | null
           updated_at?: string | null
           user_id: string
         }
@@ -249,6 +251,7 @@ export type Database = {
           id?: string
           plan_id?: string
           status?: string
+          stripe_subscription_id?: string | null
           updated_at?: string | null
           user_id?: string
         }

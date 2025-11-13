@@ -7,6 +7,9 @@ import { MetaTags } from '@/components/seo/MetaTags';
 import { Canonical } from '@/components/seo/Canonical';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { createCheckoutSession } from '@/lib/stripe';
+import { toast } from 'sonner';
+import { useState } from 'react';
 
 const iconMap = {
   Zap,
@@ -18,23 +21,64 @@ const iconMap = {
 export default function AppPricing() {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState<string | null>(null);
 
-  const handleSelectPlan = (tierId: string) => {
+  const handleSelectPlan = async (tierId: string) => {
     if (!user) {
       navigate('/auth');
       return;
     }
-    // TODO: Implement Stripe checkout integration
-    console.log('Selected plan:', tierId);
+
+    if (tierId === 'free') {
+      toast.info('You are already on the free plan');
+      return;
+    }
+
+    setLoading(tierId);
+    try {
+      // In production, you would create Stripe products/prices via the Stripe dashboard
+      // For now, we'll use placeholder price IDs
+      const stripePriceId = tierId === 'core' 
+        ? 'price_core_monthly' 
+        : 'price_guided_monthly';
+
+      await createCheckoutSession({
+        type: 'subscription',
+        priceId: stripePriceId,
+        planId: tierId,
+        userId: user.id,
+      });
+    } catch (error) {
+      console.error('Checkout error:', error);
+      toast.error('Failed to start checkout. Please try again.');
+    } finally {
+      setLoading(null);
+    }
   };
 
-  const handleSelectAddon = (addonId: string) => {
+  const handleSelectAddon = async (addonId: string) => {
     if (!user) {
       navigate('/auth');
       return;
     }
-    // TODO: Implement addon purchase
-    console.log('Selected addon:', addonId);
+
+    setLoading(addonId);
+    try {
+      // In production, create Stripe products/prices for addons
+      const stripePriceId = `price_addon_${addonId}`;
+
+      await createCheckoutSession({
+        type: 'addon',
+        priceId: stripePriceId,
+        planId: addonId,
+        userId: user.id,
+      });
+    } catch (error) {
+      console.error('Addon purchase error:', error);
+      toast.error('Failed to purchase addon. Please try again.');
+    } finally {
+      setLoading(null);
+    }
   };
 
   return (
@@ -100,8 +144,9 @@ export default function AppPricing() {
                   onClick={() => handleSelectPlan(tier.id)}
                   variant={tier.isPopular ? 'default' : 'outline'}
                   className="w-full"
+                  disabled={loading === tier.id}
                 >
-                  {tier.ctaText}
+                  {loading === tier.id ? 'Loading...' : tier.ctaText}
                 </Button>
               </CardFooter>
             </Card>
@@ -146,8 +191,9 @@ export default function AppPricing() {
                       onClick={() => handleSelectAddon(addon.id)}
                       variant="outline"
                       size="sm"
+                      disabled={loading === addon.id}
                     >
-                      Add
+                      {loading === addon.id ? 'Loading...' : 'Add'}
                     </Button>
                   </CardFooter>
                 </Card>

@@ -23,7 +23,7 @@ export const EnhancedFooter = () => {
         {/* Main Footer Content - White Card */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 lg:pt-28 pb-8">
           <div className="bg-white rounded-3xl p-8 sm:p-12 lg:p-16 video-shadow-xl mb-8 -translate-y-16 sm:-translate-y-24 lg:-translate-y-28">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
               {/* Company Info */}
               <div className="space-y-4 lg:col-span-2">
                 <h3 className="text-xl font-display font-bold text-corporate-dark">Palmer House Productions</h3>
@@ -55,66 +55,83 @@ export const EnhancedFooter = () => {
                 <h4 className="font-bold text-corporate-dark">Services</h4>
                 <ul className="space-y-2 text-sm break-words">
                   <li>
+                    <Link to="/services/video-production" className="text-corporate-gray hover:text-pal-blue transition-colors">
+                      Video Production
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/services/post-production" className="text-corporate-gray hover:text-pal-blue transition-colors">
+                      Post-Production
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/content-strategy" className="text-corporate-gray hover:text-pal-green transition-colors">
+                      Consulting & Strategy
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Meet the Pals */}
+              <div className="space-y-4 min-w-0">
+                <h4 className="font-bold text-corporate-dark">Meet the Pals</h4>
+                <ul className="space-y-2 text-sm break-words">
+                  <li>
+                    <Link to="/pals" className="text-corporate-gray hover:text-pal-purple transition-colors">
+                      Palmer House Pals
+                    </Link>
+                  </li>
+                  <li>
                     <Link to="/reel-pal" className="text-corporate-gray hover:text-pal-orange transition-colors">
-                      Social Content
+                      Reel Pal
                     </Link>
                   </li>
                   <li>
-                    <Link to="/system-pal" className="text-corporate-gray hover:text-pal-purple transition-colors">
-                      Training Systems
+                    <Link to="/system-pal" className="text-corporate-gray hover:text-pal-green transition-colors">
+                      System Pal
                     </Link>
                   </li>
                   <li>
-                    <Link to="/evergreen-pal" className="text-corporate-gray hover:text-pal-green transition-colors">
-                      Evergreen Content
+                    <Link to="/evergreen-pal" className="text-corporate-gray hover:text-pal-blue transition-colors">
+                      Evergreen Pal
                     </Link>
                   </li>
                   <li>
-                    <Link to="/spotlight-pal" className="text-corporate-gray hover:text-pal-blue transition-colors">
-                      Premium Production
+                    <Link to="/spotlight-pal" className="text-corporate-gray hover:text-pal-purple transition-colors">
+                      Spotlight Pal
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Resources */}
+              <div className="space-y-4 min-w-0">
+                <h4 className="font-bold text-corporate-dark">Resources</h4>
+                <ul className="space-y-2 text-sm break-words">
+                  <li>
+                    <Link to="/blog" className="text-corporate-gray hover:text-pal-blue transition-colors">
+                      Blog / Insights
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/resources/reviews" className="text-corporate-gray hover:text-pal-green transition-colors">
+                      Client Reviews
                     </Link>
                   </li>
                   <li>
                     <Link to="/services/diy-downloads" className="text-corporate-gray hover:text-pal-purple transition-colors">
-                      DIY Downloads
+                      Downloads & Templates
                     </Link>
                   </li>
                   <li>
-                    <Link to="/safety-videos" className="text-corporate-gray hover:text-pal-purple transition-colors">
-                      Safety Videos
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/startups" className="text-corporate-gray hover:text-pal-orange transition-colors">
-                      Startups
+                    <Link to="/faq" className="text-corporate-gray hover:text-pal-green transition-colors">
+                      FAQ
                     </Link>
                   </li>
                 </ul>
               </div>
 
-              {/* Locations */}
-              <div className="space-y-4 min-w-0">
-                <h4 className="font-bold text-corporate-dark">Locations</h4>
-                <ul className="space-y-2 text-sm break-words">
-                  <li>
-                    <Link to="/locations/bellevue-wa" className="text-corporate-gray hover:text-pal-blue transition-colors">
-                      Bellevue, WA
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/locations/portland-or" className="text-corporate-gray hover:text-pal-blue transition-colors">
-                      Portland, OR
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/contact" className="text-corporate-gray hover:text-pal-blue transition-colors">
-                      Global / Remote Projects
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Company & Resources */}
+              {/* Company */}
               <div className="space-y-4 min-w-0">
                 <h4 className="font-bold text-corporate-dark">Company</h4>
                 <ul className="space-y-2 text-sm break-words">
@@ -133,26 +150,26 @@ export const EnhancedFooter = () => {
                       Our Values
                     </Link>
                   </li>
-                  <li>
-                    <Link to="/resources/reviews" className="text-corporate-gray hover:text-pal-green transition-colors">
-                      Client Reviews
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/faq" className="text-corporate-gray hover:text-pal-green transition-colors">
-                      FAQ
-                    </Link>
-                  </li>
                 </ul>
               </div>
 
-              {/* Contact */}
+              {/* Connect */}
               <div className="space-y-4 min-w-0">
                 <h4 className="font-bold text-corporate-dark">Connect</h4>
                 <div className="space-y-2 text-sm break-words">
                   <p className="text-corporate-gray">
                     <Link to="/contact" className="hover:text-pal-orange transition-colors">
-                      Get Started Today
+                      Get Started
+                    </Link>
+                  </p>
+                  <p className="text-corporate-gray">
+                    <Link to="/locations/bellevue-wa" className="hover:text-pal-blue transition-colors">
+                      Bellevue, WA
+                    </Link>
+                  </p>
+                  <p className="text-corporate-gray">
+                    <Link to="/locations/portland-or" className="hover:text-pal-blue transition-colors">
+                      Portland, OR
                     </Link>
                   </p>
                   <p className="text-corporate-gray">

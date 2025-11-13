@@ -3,16 +3,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle2, Plus, Minus, ArrowRight } from "lucide-react";
+import { CheckCircle2, Plus, Minus, ArrowRight, Sparkles } from "lucide-react";
 import { MetaTags } from "@/components/seo/MetaTags";
 import { useNavigate } from "react-router-dom";
-
-type Problem = {
-  id: number;
-  text: string;
-  pal: string[];
-  systemType: string;
-};
 
 type VideoCategory = {
   name: string;
@@ -28,19 +21,6 @@ type AddOn = {
   category: string;
 };
 
-const problems: Problem[] = [
-  { id: 1, text: "My customers keep asking the same questions", pal: ["System Pal"], systemType: "FAQ System" },
-  { id: 2, text: "New clients don't know what to do next", pal: ["System Pal"], systemType: "Onboarding System" },
-  { id: 3, text: "My team needs training", pal: ["System Pal"], systemType: "Internal Training System" },
-  { id: 4, text: "I can't hire the right people", pal: ["System Pal", "Spotlight Pal"], systemType: "Recruitment System" },
-  { id: 5, text: "Nobody knows who we are", pal: ["Reel Pal"], systemType: "Visibility Engine" },
-  { id: 6, text: "My social presence is weak", pal: ["Reel Pal"], systemType: "Visibility Engine" },
-  { id: 7, text: "I want YouTube to bring me leads", pal: ["Evergreen Pal"], systemType: "Authority Engine" },
-  { id: 8, text: "My brand story doesn't feel premium", pal: ["Spotlight Pal"], systemType: "Brand Narrative System" },
-  { id: 9, text: "I feel invisible or misunderstood", pal: ["Evergreen Pal", "Spotlight Pal"], systemType: "Authority + Brand System" },
-  { id: 10, text: "I need guidance — help me build the right system", pal: ["Evergreen Pal", "Spotlight Pal"], systemType: "Custom Guided Build" },
-];
-
 const autoPackages: Record<string, any> = {
   "FAQ System": {
     videos: [
@@ -50,6 +30,7 @@ const autoPackages: Record<string, any> = {
       { type: "What to expect next clip", count: 1, length: 1 },
     ],
     includes: ["AI FAQ outline", "Library organization", "1 strategy session"],
+    recommendedFor: ["System Pal"],
   },
   "Onboarding System": {
     videos: [
@@ -60,6 +41,7 @@ const autoPackages: Record<string, any> = {
       { type: "Contract/policy explainer", count: 1, length: 1 },
     ],
     includes: ["Onboarding email scripts", "Library setup", "1 strategy session"],
+    recommendedFor: ["System Pal"],
   },
   "Internal Training System": {
     videos: [
@@ -67,6 +49,8 @@ const autoPackages: Record<string, any> = {
       { type: "SOP clips (30-60s)", count: 10, length: 0.5 },
     ],
     includes: ["Tool walkthroughs", "Onboarding sequence", "Internal library setup"],
+    recommendedFor: ["System Pal"],
+    mostPopular: true,
   },
   "Visibility Engine": {
     videos: [
@@ -75,6 +59,8 @@ const autoPackages: Record<string, any> = {
       { type: "Hook variations", count: 3, length: 0.5 },
     ],
     includes: ["AI hook bank", "Content clarity map"],
+    recommendedFor: ["Reel Pal"],
+    mostPopular: true,
   },
   "Authority Engine": {
     videos: [
@@ -82,6 +68,8 @@ const autoPackages: Record<string, any> = {
       { type: "Brand introduction", count: 1, length: 5 },
     ],
     includes: ["Custom thumbnails (1 per video)", "CTA scripts", "Topic map for 90 days", "SEO description guidance", "2 strategy sessions"],
+    recommendedFor: ["Evergreen Pal"],
+    mostPopular: true,
   },
   "Brand Narrative System": {
     videos: [
@@ -92,32 +80,34 @@ const autoPackages: Record<string, any> = {
       { type: "Emotional testimonial", count: 1, length: 3 },
     ],
     includes: ["Custom moodboard", "Visual identity system", "Launch assets"],
+    recommendedFor: ["Spotlight Pal"],
+    mostPopular: true,
   },
 };
 
 const videoCategories = [
-  "Training",
-  "SOP",
-  "FAQ",
-  "Social clips",
-  "Long-form episodes",
-  "Story films",
-  "Recruitment videos",
-  "Onboarding steps",
-  "Product explainers",
+  "Training Videos",
+  "SOPs",
+  "FAQs",
+  "Social Clips",
+  "Long-form Content",
+  "Story Films",
+  "Recruitment Videos",
+  "Onboarding Videos",
+  "Product Explainers",
 ];
 
 const addOns: AddOn[] = [
-  { id: "strategy", name: "Extra Strategy Session", description: "Additional 90-minute strategy planning session", price: 500, category: "Strategy" },
-  { id: "filming-day", name: "Extra Filming Day", description: "Full day of filming with crew and equipment", price: 2500, category: "Production" },
-  { id: "travel", name: "Travel Beyond 1 Hour", description: "Per hour of travel time beyond local radius", price: 150, category: "Production" },
-  { id: "rush", name: "Rush Delivery", description: "Expedited editing and delivery timeline", price: 0, category: "Editing" }, // Calculated as percentage
-  { id: "aspect-ratios", name: "Additional Aspect Ratios", description: "9:16 or 1:1 versions per video", price: 75, category: "Editing" },
-  { id: "captions", name: "Captioned Versions", description: "Professionally captioned versions per video", price: 50, category: "Editing" },
-  { id: "thumbnails", name: "Additional Thumbnails", description: "Custom thumbnails per video", price: 100, category: "Editing" },
-  { id: "library-setup", name: "Full Content Library Setup", description: "Organize everything by series, category, and folder", price: 1500, category: "Systems" },
-  { id: "brand-kit", name: "Brand Kit Import", description: "Apply brand fonts/colors to all videos", price: 750, category: "Systems" },
-  { id: "ai-support", name: "Additional AI Content Support", description: "Templates, scripts, and outlines", price: 300, category: "Systems" },
+  { id: "strategy", name: "Extra Strategy Session", description: "Additional 90-minute planning call", price: 500, category: "Strategy" },
+  { id: "filming", name: "Extra Filming Day", description: "Additional on-location filming day", price: 2000, category: "Filming" },
+  { id: "travel", name: "Travel Beyond 1 Hour", description: "Per hour beyond standard radius", price: 200, category: "Filming" },
+  { id: "rush", name: "Rush Delivery", description: "30% surcharge for expedited timeline", price: 0, category: "Editing" },
+  { id: "aspect", name: "Additional Aspect Ratios", description: "Export in multiple formats (per video)", price: 75, category: "Editing" },
+  { id: "captions", name: "Captioned Versions", description: "Hardcoded captions (per video)", price: 50, category: "Editing" },
+  { id: "thumbnails", name: "Additional Thumbnails", description: "Extra custom thumbnails (5 pack)", price: 250, category: "Editing" },
+  { id: "library", name: "Full Content Library Setup", description: "Organize and tag existing assets", price: 1500, category: "Systems" },
+  { id: "brandkit", name: "Brand Kit Import", description: "Import and structure brand assets", price: 750, category: "Systems" },
+  { id: "ai-support", name: "Additional AI Content Support", description: "Extended AI assistance package", price: 500, category: "Systems" },
 ];
 
 const ProductionPricing = () => {
@@ -128,11 +118,14 @@ const ProductionPricing = () => {
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const BASE_COST_PER_MINUTE = 150;
-  const MARGIN = 3.5;
-
-  const calculateVideoPrice = (minutes: number): number => {
-    return BASE_COST_PER_MINUTE * minutes * MARGIN;
+  const calculateVideoPrice = (length: number): number => {
+    const BASE_PRICE = 150;
+    if (length === 0.5) return BASE_PRICE * 1;
+    if (length === 1) return BASE_PRICE * 2;
+    if (length === 3) return BASE_PRICE * 6;
+    if (length === 5) return BASE_PRICE * 10;
+    if (length === 10) return BASE_PRICE * 20;
+    return 0;
   };
 
   const calculateAutoPackagePrice = (systemType: string): number => {
@@ -143,6 +136,7 @@ const ProductionPricing = () => {
     pkg.videos.forEach((video: any) => {
       total += calculateVideoPrice(video.length) * video.count;
     });
+    
     return total;
   };
 
@@ -158,9 +152,8 @@ const ProductionPricing = () => {
       const addOn = addOns.find(a => a.id === id);
       if (addOn) {
         if (addOn.id === "rush") {
-          // Rush is 30% surcharge
-          const basePrice = useAutoPackage && selectedProblem 
-            ? calculateAutoPackagePrice(selectedProblem.systemType)
+          const basePrice = selectedPreset 
+            ? calculateAutoPackagePrice(selectedPreset)
             : calculateCustomBuildPrice();
           total += basePrice * 0.3;
         } else {
@@ -172,25 +165,28 @@ const ProductionPricing = () => {
   };
 
   useEffect(() => {
-    const videoPrice = useAutoPackage && selectedProblem
-      ? calculateAutoPackagePrice(selectedProblem.systemType)
-      : calculateCustomBuildPrice();
-    const addOnsPrice = calculateAddOnsPrice();
-    setTotalPrice(videoPrice + addOnsPrice);
-  }, [useAutoPackage, selectedProblem, customVideos, selectedAddOns]);
+    let price = 0;
+    if (selectedPreset) {
+      price = calculateAutoPackagePrice(selectedPreset);
+    } else {
+      price = calculateCustomBuildPrice();
+    }
+    price += calculateAddOnsPrice();
+    setTotalPrice(price);
+  }, [selectedPreset, customVideos, selectedAddOns]);
 
-  const addCustomVideo = (category: string) => {
-    setCustomVideos([...customVideos, { name: category, count: 1, length: 1 }]);
-  };
-
-  const updateCustomVideo = (index: number, field: keyof VideoCategory, value: any) => {
-    const updated = [...customVideos];
-    updated[index] = { ...updated[index], [field]: value };
-    setCustomVideos(updated);
-  };
-
-  const removeCustomVideo = (index: number) => {
-    setCustomVideos(customVideos.filter((_, i) => i !== index));
+  const updateCustomVideo = (category: string, count: number, length: 0.5 | 1 | 3 | 5 | 10) => {
+    const existingIndex = customVideos.findIndex(v => v.name === category);
+    
+    if (count === 0) {
+      setCustomVideos(customVideos.filter(v => v.name !== category));
+    } else if (existingIndex >= 0) {
+      const updated = [...customVideos];
+      updated[existingIndex] = { name: category, count, length };
+      setCustomVideos(updated);
+    } else {
+      setCustomVideos([...customVideos, { name: category, count, length }]);
+    }
   };
 
   const toggleAddOn = (id: string) => {
@@ -199,386 +195,391 @@ const ProductionPricing = () => {
     );
   };
 
+  const palAddOns: Record<string, AddOn[]> = {
+    "System Pal": addOns.filter(a => ["Strategy", "Filming", "Editing", "Systems"].includes(a.category)),
+    "Spotlight Pal": addOns.filter(a => ["Strategy", "Filming", "Editing"].includes(a.category)),
+    "Reel Pal": addOns.filter(a => ["Filming", "Editing"].includes(a.category)),
+    "Evergreen Pal": addOns.filter(a => ["Strategy", "Filming", "Editing"].includes(a.category)),
+  };
+
+  const getPresetPrice = (systemType: string) => {
+    return calculateAutoPackagePrice(systemType);
+  };
+
+  const getRecommendedPackages = (pal: string) => {
+    return Object.entries(autoPackages)
+      .filter(([_, pkg]) => pkg.recommendedFor?.includes(pal))
+      .map(([name, pkg]) => ({ name, ...pkg }));
+  };
+
   return (
-    <>
+    <div className="min-h-screen bg-background">
       <MetaTags 
-        title="Production Pricing - Video Production Services"
-        description="Custom video production pricing configurator. Build your perfect video package with transparent pricing based on your specific needs."
+        title="Production Pricing - Palmer House Productions"
+        description="Configure your video production package with our pricing calculator"
       />
       
-      <div className="min-h-screen bg-background py-12 px-4">
-        <div className="max-w-5xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold mb-4">Build Your Video Production Package</h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Premium video production, no publishing support. Pure production expertise guided by your specific business challenges.
-            </p>
+      <div className="container mx-auto px-4 py-16 max-w-7xl">
+        {/* Hero Section */}
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-bold mb-4 text-foreground">Production Pricing</h1>
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Choose a curated package or build your own custom solution
+          </p>
+        </div>
+
+        {/* Preset Packages Section */}
+        <section className="mb-20">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold mb-3 text-foreground">Curated Packages</h2>
+            <p className="text-muted-foreground">Pre-built solutions for common challenges</p>
           </div>
 
-          {/* Progress Indicator */}
-          <div className="flex justify-center items-center gap-2 mb-12">
-            {[1, 2, 3, 4, 5].map((s) => (
-              <div key={s} className="flex items-center">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
-                  step >= s ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
-                }`}>
-                  {s}
-                </div>
-                {s < 5 && <div className={`w-12 h-1 ${step > s ? "bg-primary" : "bg-muted"}`} />}
-              </div>
-            ))}
-          </div>
-
-          {/* Step 1: Choose Problem */}
-          {step === 1 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>What Challenge Are You Facing?</CardTitle>
-                <CardDescription>Choose the problem that best describes your current situation</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                {problems.map((problem) => (
-                  <button
-                    key={problem.id}
-                    onClick={() => {
-                      setSelectedProblem(problem);
-                      setStep(2);
-                    }}
-                    className="w-full text-left p-4 rounded-lg border hover:border-primary hover:bg-accent transition-colors"
-                  >
-                    <div className="flex items-start justify-between">
-                      <span className="font-medium">{problem.text}</span>
-                      <Badge variant="secondary" className="ml-2">{problem.pal.join(" + ")}</Badge>
-                    </div>
-                  </button>
-                ))}
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Step 2: Pal Assignment */}
-          {step === 2 && selectedProblem && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Your Assigned Pal{selectedProblem.pal.length > 1 ? "s" : ""}</CardTitle>
-                <CardDescription>Based on your challenge, we recommend:</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  {selectedProblem.pal.map((pal) => (
-                    <div key={pal} className="p-4 rounded-lg bg-accent">
-                      <h3 className="font-semibold text-lg">{pal}</h3>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {pal === "System Pal" && "Internal clarity. Structure. SOPs. Training. Onboarding."}
-                        {pal === "Spotlight Pal" && "Identity. Narrative. Premium brand perception."}
-                        {pal === "Reel Pal" && "Momentum. Visibility. Attention."}
-                        {pal === "Evergreen Pal" && "Long-form authority. YouTube. Deep teaching."}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-                <Button 
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Object.entries(autoPackages).map(([systemType, packageData]) => {
+              const price = getPresetPrice(systemType);
+              const isSelected = selectedPreset === systemType;
+              
+              return (
+                <Card 
+                  key={systemType}
+                  className={`cursor-pointer transition-all hover:shadow-lg ${
+                    isSelected ? 'ring-2 ring-primary' : ''
+                  }`}
                   onClick={() => {
-                    setUseAutoPackage(true);
-                    setStep(3);
+                    setSelectedPreset(systemType);
+                    setSelectedPal(null);
+                    setCustomVideos([]);
                   }}
-                  className="w-full"
                 >
-                  Continue to Build Your Package
-                </Button>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Step 3: Package Details */}
-          {step === 3 && selectedProblem && useAutoPackage !== null && (
-            <Card>
-              <CardHeader>
-                <CardTitle>{useAutoPackage ? selectedProblem.systemType : "Custom Build Configurator"}</CardTitle>
-                <CardDescription>
-                  {useAutoPackage ? "Your curated production package" : "Build your perfect video package"}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {useAutoPackage ? (
-                  <>
-                    {autoPackages[selectedProblem.systemType]?.videos.map((video: any, idx: number) => (
-                      <div key={idx} className="flex justify-between items-center">
-                        <div>
-                          <div className="font-medium">{video.type}</div>
-                          <div className="text-sm text-muted-foreground">Quantity: {video.count}</div>
-                        </div>
-                        <div className="text-right">
-                          <div className="font-semibold">
-                            ${(calculateVideoPrice(video.length) * video.count).toLocaleString()}
-                          </div>
-                        </div>
+                  <CardHeader>
+                    <div className="flex items-start justify-between mb-2">
+                      <CardTitle className="text-xl">{systemType}</CardTitle>
+                      <div className="flex flex-col gap-1">
+                        {isSelected && <Badge>Selected</Badge>}
+                        {packageData.mostPopular && <Badge variant="secondary">Most Popular</Badge>}
                       </div>
-                    ))}
-                    
-                    <Separator />
-                    
-                    <div>
-                      <h4 className="font-semibold mb-3">Includes:</h4>
-                      <ul className="space-y-2">
-                        {autoPackages[selectedProblem.systemType]?.includes.map((item: string, idx: number) => (
-                          <li key={idx} className="flex items-start gap-2">
-                            <CheckCircle2 className="w-5 h-5 text-primary mt-0.5" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
                     </div>
-                  </>
-                ) : (
-                  <>
-                    <div className="space-y-4">
-                      {customVideos.map((video, idx) => (
-                        <div key={idx} className="p-4 rounded-lg border space-y-3">
-                          <div className="flex justify-between items-start">
-                            <div className="flex-1">
-                              <input
-                                type="text"
-                                value={video.name}
-                                onChange={(e) => updateCustomVideo(idx, "name", e.target.value)}
-                                className="font-medium bg-transparent border-none outline-none"
-                                placeholder="Video category"
-                              />
+                    <div className="text-3xl font-bold text-primary">${price.toLocaleString()}</div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <h4 className="font-semibold text-sm mb-2">Videos Included:</h4>
+                      <div className="space-y-1">
+                        {packageData.videos.map((video: any, idx: number) => (
+                          <div key={idx} className="flex items-start gap-2 text-sm">
+                            <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                            <span>{video.count}x {video.type}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <Separator />
+                    <div>
+                      <h4 className="font-semibold text-sm mb-2">Also Includes:</h4>
+                      <div className="space-y-1">
+                        {packageData.includes.map((item: string, idx: number) => (
+                          <div key={idx} className="flex items-start gap-2 text-sm">
+                            <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                            <span>{item}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </section>
+
+        <Separator className="my-16" />
+
+        {/* Custom Build Section */}
+        <section>
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold mb-3 text-foreground">Custom Build Calculator</h2>
+            <p className="text-muted-foreground">Or create your own package from scratch</p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Builder */}
+            <div className="lg:col-span-2 space-y-6">
+              {/* Pal Selection */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>1. Choose Your Pal</CardTitle>
+                  <CardDescription>Select the production approach that fits your needs</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid sm:grid-cols-2 gap-3">
+                    {["System Pal", "Spotlight Pal", "Reel Pal", "Evergreen Pal"].map((pal) => (
+                      <Button
+                        key={pal}
+                        variant={selectedPal === pal ? "default" : "outline"}
+                        onClick={() => {
+                          setSelectedPal(pal);
+                          setSelectedPreset(null);
+                        }}
+                        className="h-auto p-4 flex flex-col items-start text-left"
+                      >
+                        <div className="font-semibold">{pal}</div>
+                        <div className="text-xs opacity-80 mt-1">
+                          {pal === "System Pal" && "Internal clarity & training"}
+                          {pal === "Spotlight Pal" && "Brand narrative & premium feel"}
+                          {pal === "Reel Pal" && "Social visibility & momentum"}
+                          {pal === "Evergreen Pal" && "Long-form authority content"}
+                        </div>
+                      </Button>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Recommended Packages for Selected Pal */}
+              {selectedPal && getRecommendedPackages(selectedPal).length > 0 && (
+                <Card className="bg-accent/30 border-primary/20">
+                  <CardHeader>
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="h-5 w-5 text-primary" />
+                      <CardTitle>Recommended for {selectedPal}</CardTitle>
+                    </div>
+                    <CardDescription>Popular packages that match your selected approach</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="grid gap-3">
+                      {getRecommendedPackages(selectedPal).map((pkg) => (
+                        <div 
+                          key={pkg.name}
+                          className="flex items-center justify-between p-3 bg-background rounded-lg border cursor-pointer hover:border-primary transition-colors"
+                          onClick={() => {
+                            setSelectedPreset(pkg.name);
+                            setCustomVideos([]);
+                          }}
+                        >
+                          <div className="flex-1">
+                            <div className="font-semibold flex items-center gap-2">
+                              {pkg.name}
+                              {pkg.mostPopular && (
+                                <Badge variant="secondary" className="text-xs">Most Popular</Badge>
+                              )}
                             </div>
-                            <Button
+                            <p className="text-sm text-muted-foreground">
+                              {pkg.videos.length} video types included
+                            </p>
+                          </div>
+                          <div className="text-right">
+                            <div className="font-bold text-primary">${getPresetPrice(pkg.name).toLocaleString()}</div>
+                            <Button 
+                              size="sm" 
                               variant="ghost"
-                              size="sm"
-                              onClick={() => removeCustomVideo(idx)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedPreset(pkg.name);
+                                setCustomVideos([]);
+                              }}
                             >
-                              <Minus className="w-4 h-4" />
+                              Select <ArrowRight className="ml-1 h-3 w-3" />
                             </Button>
                           </div>
-                          
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <label className="text-sm text-muted-foreground">Quantity</label>
-                              <input
-                                type="number"
-                                min="1"
-                                value={video.count}
-                                onChange={(e) => updateCustomVideo(idx, "count", parseInt(e.target.value) || 1)}
-                                className="w-full px-3 py-2 rounded-md border bg-background mt-1"
-                              />
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Video Builder */}
+              {selectedPal && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>2. Select Your Videos</CardTitle>
+                    <CardDescription>Choose video types and quantities (or use a recommended package above)</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-6">
+                      {videoCategories.map((category) => {
+                        const existingVideo = customVideos.find((v) => v.name === category);
+                        const count = existingVideo?.count || 0;
+                        const length = existingVideo?.length || 1;
+
+                        return (
+                          <div key={category} className="space-y-3 p-4 border rounded-lg">
+                            <div className="flex items-center justify-between">
+                              <span className="font-medium">{category}</span>
+                              <div className="flex items-center gap-3">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => count > 0 && updateCustomVideo(category, count - 1, length)}
+                                  disabled={count === 0}
+                                >
+                                  <Minus className="h-4 w-4" />
+                                </Button>
+                                <span className="w-8 text-center font-semibold">{count}</span>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => updateCustomVideo(category, count + 1, length)}
+                                >
+                                  <Plus className="h-4 w-4" />
+                                </Button>
+                              </div>
                             </div>
-                            
-                            <div>
-                              <label className="text-sm text-muted-foreground">Length (minutes)</label>
-                              <select
-                                value={video.length}
-                                onChange={(e) => updateCustomVideo(idx, "length", parseFloat(e.target.value) as any)}
-                                className="w-full px-3 py-2 rounded-md border bg-background mt-1"
-                              >
-                                <option value={0.5}>30 seconds</option>
-                                <option value={1}>1 minute</option>
-                                <option value={3}>3 minutes</option>
-                                <option value={5}>5 minutes</option>
-                                <option value={10}>10 minutes</option>
-                              </select>
-                            </div>
+                            {count > 0 && (
+                              <div className="flex gap-2 flex-wrap">
+                                {[0.5, 1, 3, 5, 10].map((len) => (
+                                  <Button
+                                    key={len}
+                                    size="sm"
+                                    variant={length === len ? "default" : "outline"}
+                                    onClick={() => updateCustomVideo(category, count, len as 0.5 | 1 | 3 | 5 | 10)}
+                                  >
+                                    {len === 0.5 ? "30s" : `${len}min`}
+                                  </Button>
+                                ))}
+                              </div>
+                            )}
                           </div>
-                          
-                          <div className="text-right">
-                            <span className="text-sm text-muted-foreground">Subtotal: </span>
+                        );
+                      })}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Add-Ons */}
+              {selectedPal && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>3. Add Optional Services</CardTitle>
+                    <CardDescription>Enhance your package with add-ons for {selectedPal}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {palAddOns[selectedPal]?.map((addon) => (
+                        <div 
+                          key={addon.id} 
+                          className={`flex items-start gap-3 p-4 border rounded-lg cursor-pointer transition-all ${
+                            selectedAddOns.includes(addon.id) ? 'bg-accent border-primary' : 'hover:bg-accent/50'
+                          }`}
+                          onClick={() => toggleAddOn(addon.id)}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedAddOns.includes(addon.id)}
+                            onChange={() => {}}
+                            className="mt-1"
+                          />
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-1">
+                              <h3 className="font-semibold">{addon.name}</h3>
+                              <Badge variant="outline">
+                                {addon.id === "rush" ? "30% surcharge" : `$${addon.price}`}
+                              </Badge>
+                            </div>
+                            <p className="text-sm text-muted-foreground">{addon.description}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+
+            {/* Price Tally - Sticky Sidebar */}
+            <div className="lg:col-span-1">
+              <Card className="sticky top-20">
+                <CardHeader>
+                  <CardTitle>Your Package</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {selectedPreset && (
+                    <div>
+                      <h4 className="font-semibold text-sm mb-2">Package:</h4>
+                      <div className="flex justify-between text-sm">
+                        <span>{selectedPreset}</span>
+                        <span className="font-semibold">${getPresetPrice(selectedPreset).toLocaleString()}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedPal && !selectedPreset && customVideos.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold text-sm mb-2">Videos:</h4>
+                      <div className="space-y-1">
+                        {customVideos.map((video, idx) => (
+                          <div key={idx} className="flex justify-between text-sm">
+                            <span>{video.count}x {video.name}</span>
                             <span className="font-semibold">
                               ${(calculateVideoPrice(video.length) * video.count).toLocaleString()}
                             </span>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-2">
-                      {videoCategories.map((category) => (
-                        <Button
-                          key={category}
-                          variant="outline"
-                          size="sm"
-                          onClick={() => addCustomVideo(category)}
-                        >
-                          <Plus className="w-4 h-4 mr-2" />
-                          {category}
-                        </Button>
-                      ))}
-                    </div>
-                  </>
-                )}
-
-                <div className="flex justify-between pt-6">
-                  <Button variant="outline" onClick={() => setStep(2)}>
-                    Back
-                  </Button>
-                  <Button onClick={() => setStep(4)}>
-                    Continue to Add-Ons
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Step 4: Add-Ons */}
-          {step === 4 && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Enhance Your Package</CardTitle>
-                <CardDescription>Select optional add-ons to customize your production experience</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {["Strategy", "Production", "Editing", "Systems"].map((category) => (
-                  <div key={category}>
-                    <h3 className="font-semibold text-lg mb-3">{category}</h3>
-                    <div className="space-y-2">
-                      {addOns.filter(a => a.category === category).map((addOn) => (
-                        <button
-                          key={addOn.id}
-                          onClick={() => toggleAddOn(addOn.id)}
-                          className={`w-full text-left p-4 rounded-lg border transition-colors ${
-                            selectedAddOns.includes(addOn.id)
-                              ? "border-primary bg-accent"
-                              : "hover:border-primary/50"
-                          }`}
-                        >
-                          <div className="flex justify-between items-start">
-                            <div className="flex-1">
-                              <div className="font-medium">{addOn.name}</div>
-                              <div className="text-sm text-muted-foreground mt-1">{addOn.description}</div>
-                            </div>
-                            <div className="ml-4 font-semibold whitespace-nowrap">
-                              {addOn.id === "rush" ? "+30%" : `$${addOn.price.toLocaleString()}`}
-                            </div>
-                          </div>
-                          {selectedAddOns.includes(addOn.id) && (
-                            <CheckCircle2 className="w-5 h-5 text-primary absolute top-4 right-4" />
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-
-                <div className="flex justify-between pt-6">
-                  <Button variant="outline" onClick={() => setStep(3)}>
-                    Back
-                  </Button>
-                  <Button onClick={() => setStep(5)}>
-                    Review Summary
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Step 5: Summary */}
-          {step === 5 && selectedProblem && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Your Production Package Summary</CardTitle>
-                <CardDescription>Review your custom video production package</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <div>
-                    <h3 className="font-semibold text-sm text-muted-foreground">Challenge</h3>
-                    <p className="mt-1">{selectedProblem.text}</p>
-                  </div>
-
-                  <div>
-                    <h3 className="font-semibold text-sm text-muted-foreground">Assigned Pal</h3>
-                    <p className="mt-1">{selectedProblem.pal.join(" + ")}</p>
-                  </div>
-
-                  <div>
-                    <h3 className="font-semibold text-sm text-muted-foreground">System Type</h3>
-                    <p className="mt-1">{useAutoPackage ? selectedProblem.systemType : "Custom Build"}</p>
-                  </div>
-
-                  <Separator />
-
-                  <div>
-                    <h3 className="font-semibold mb-3">Video Package</h3>
-                    {useAutoPackage && selectedProblem ? (
-                      <div className="space-y-2">
-                        {autoPackages[selectedProblem.systemType]?.videos.map((video: any, idx: number) => (
-                          <div key={idx} className="flex justify-between text-sm">
-                            <span>{video.count}x {video.type}</span>
-                            <span className="font-medium">
-                              ${(calculateVideoPrice(video.length) * video.count).toLocaleString()}
-                            </span>
-                          </div>
                         ))}
                       </div>
-                    ) : (
-                      <div className="space-y-2">
-                        {customVideos.map((video, idx) => (
-                          <div key={idx} className="flex justify-between text-sm">
-                            <span>{video.count}x {video.name} ({video.length === 0.5 ? "30s" : `${video.length}min`})</span>
-                            <span className="font-medium">
-                              ${(calculateVideoPrice(video.length) * video.count).toLocaleString()}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
 
                   {selectedAddOns.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold text-sm mb-2">Add-Ons:</h4>
+                      <div className="space-y-1">
+                        {selectedAddOns.map((id) => {
+                          const addon = addOns.find((a) => a.id === id);
+                          if (!addon) return null;
+                          
+                          let price = addon.price;
+                          if (addon.id === "rush") {
+                            const basePrice = selectedPreset 
+                              ? calculateAutoPackagePrice(selectedPreset)
+                              : calculateCustomBuildPrice();
+                            price = Math.round(basePrice * 0.3);
+                          }
+                          
+                          return (
+                            <div key={id} className="flex justify-between text-sm">
+                              <span>{addon.name}</span>
+                              <span className="font-semibold">${price.toLocaleString()}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {(selectedPreset || customVideos.length > 0) && (
                     <>
                       <Separator />
-                      <div>
-                        <h3 className="font-semibold mb-3">Selected Add-Ons</h3>
-                        <div className="space-y-2">
-                          {selectedAddOns.map((id) => {
-                            const addOn = addOns.find(a => a.id === id);
-                            if (!addOn) return null;
-                            const price = addOn.id === "rush" 
-                              ? (useAutoPackage && selectedProblem 
-                                  ? calculateAutoPackagePrice(selectedProblem.systemType)
-                                  : calculateCustomBuildPrice()) * 0.3
-                              : addOn.price;
-                            return (
-                              <div key={id} className="flex justify-between text-sm">
-                                <span>{addOn.name}</span>
-                                <span className="font-medium">${price.toLocaleString()}</span>
-                              </div>
-                            );
-                          })}
-                        </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-lg font-bold">Total:</span>
+                        <span className="text-2xl font-bold text-primary">
+                          ${totalPrice.toLocaleString()}
+                        </span>
                       </div>
+                      <Button 
+                        className="w-full" 
+                        size="lg"
+                        onClick={() => navigate('/contact')}
+                      >
+                        Get Started
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
                     </>
                   )}
 
-                  <Separator />
-
-                  <div className="bg-primary/10 p-6 rounded-lg">
-                    <div className="flex justify-between items-center">
-                      <span className="text-xl font-bold">Total Investment</span>
-                      <span className="text-3xl font-bold">${totalPrice.toLocaleString()}</span>
+                  {!selectedPreset && !selectedPal && customVideos.length === 0 && (
+                    <div className="text-center py-8 text-muted-foreground text-sm">
+                      Select a preset package or choose a Pal to start building your custom package
                     </div>
-                    <p className="text-sm text-muted-foreground mt-2">
-                      Payment plans available
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <Button variant="outline" onClick={() => setStep(4)} className="flex-1">
-                    Back
-                  </Button>
-                  <Button onClick={() => window.location.href = "/contact"} className="flex-1">
-                    Get Started
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-        </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </section>
       </div>
-    </>
+    </div>
   );
 };
 

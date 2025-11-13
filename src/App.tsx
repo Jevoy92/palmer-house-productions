@@ -64,6 +64,7 @@ import ProductionAssistant from "./pages/tools/ProductionAssistant";
 import ContentMaximizer from "./pages/tools/ContentMaximizer";
 import EngagementResponder from "./pages/tools/EngagementResponder";
 import AppPricing from "./pages/AppPricing";
+import Memberships from "./pages/Memberships";
 
 const queryClient = new QueryClient();
 
@@ -102,7 +103,8 @@ const App = () => (
           <Canonical />
           <BreadcrumbNavigation />
           <RouteTracker />
-          <Routes>
+          <div className="pt-20">
+            <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
@@ -119,6 +121,7 @@ const App = () => (
           <Route path="/spotlight-pal" element={<SpotlightPal />} />
           <Route path="/discovery-call" element={<Navigate to="/contact" replace />} />
           <Route path="/about-us" element={<AboutUs />} />
+          <Route path="/memberships" element={<Memberships />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/thank-you" element={<ThankYou />} />
            <Route path="/locations/bellevue-wa" element={<BellevueWA />} />
@@ -160,10 +163,11 @@ const App = () => (
            <Route path="/company/team" element={<Navigate to="/about-us" replace />} />
            <Route path="/company/values" element={<Navigate to="/about-us" replace />} />
           
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-          </Routes>
-          <EnhancedFooter />
+           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+           <Route path="*" element={<NotFound />} />
+           </Routes>
+          </div>
+           <EnhancedFooter />
         </PageTransition>
           </AuthProvider>
       </BrowserRouter>

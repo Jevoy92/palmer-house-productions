@@ -2,11 +2,14 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { MetaTags } from '@/components/seo/MetaTags';
-import { Video, User, Sparkles, Maximize, MessageCircle, LogOut } from 'lucide-react';
+import { Video, User, Sparkles, Maximize, MessageCircle, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/dashboard/AppSidebar';
+import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 
 export default function Dashboard() {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const tools = [
@@ -59,15 +62,10 @@ export default function Dashboard() {
 
   const handleToolClick = (toolId: string, available: boolean) => {
     if (!available) return;
-    // Navigate to the tool - for now, just show a toast
-    // Later you'll implement these tools
     navigate(`/tools/${toolId}`);
   };
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/');
-  };
+  const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'there';
 
   return (
     <>
@@ -76,92 +74,94 @@ export default function Dashboard() {
         description="Access your video series builder, persona generator, production assistant, and more content creation tools."
         canonicalUrl="https://www.palmerhouseproductions.com/dashboard"
       />
-      <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background">
-        {/* Header */}
-        <header className="border-b border-border bg-background/95 backdrop-blur-sm sticky top-0 z-50">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-corporate-dark">Content OS</h1>
-              <p className="text-sm text-muted-foreground">Palmer House Productions</p>
-            </div>
-            <div className="flex items-center gap-4">
-              <div className="text-right">
-                <p className="text-sm font-medium text-corporate-dark">{user?.email}</p>
-                <p className="text-xs text-muted-foreground">Member</p>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleSignOut}
-                className="gap-2"
-              >
-                <LogOut className="w-4 h-4" />
-                Sign Out
-              </Button>
-            </div>
-          </div>
-        </header>
-
-        {/* Main Content */}
-        <main className="container mx-auto px-4 py-12">
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold text-corporate-dark mb-2">
-              Welcome to Content OS
-            </h2>
-            <p className="text-lg text-corporate-gray">
-              Your integrated suite for automating and elevating your content creation lifecycle
-            </p>
-          </div>
-
-          {/* Tools Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tools.map((tool) => {
-              const Icon = tool.icon;
-              return (
-                <Card
-                  key={tool.id}
-                  className={`transition-all duration-300 ${
-                    tool.available
-                      ? 'hover:shadow-lg hover:scale-105 cursor-pointer'
-                      : 'opacity-60 cursor-not-allowed'
-                  }`}
-                  onClick={() => handleToolClick(tool.id, tool.available)}
-                >
-                  <CardHeader>
-                    <div className="flex items-center gap-4 mb-4">
-                      <div
-                        className={`w-12 h-12 rounded-xl ${tool.color} flex items-center justify-center`}
-                      >
-                        <Icon className="w-6 h-6 text-white" />
-                      </div>
-                      {tool.comingSoon && (
-                        <span className="px-2 py-1 bg-muted text-xs font-semibold rounded-full">
-                          Coming Soon
-                        </span>
-                      )}
+      <SidebarProvider>
+        <div className="min-h-screen flex w-full">
+          <AppSidebar />
+          
+          <div className="flex-1 flex flex-col">
+            <DashboardHeader />
+            
+            {/* Main Content */}
+            <main className="flex-1 bg-gradient-to-br from-background via-muted/20 to-background">
+              <div className="container mx-auto px-4 py-8 max-w-7xl">
+                {/* Welcome Hero */}
+                <div className="mb-12 text-center">
+                  <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-pal-purple via-pal-blue to-pal-orange p-1 shadow-lg">
+                    <div className="w-full h-full rounded-full bg-background flex items-center justify-center">
+                      <Sparkles className="w-10 h-10 text-pal-purple" />
                     </div>
-                    <CardTitle className="text-xl">{tool.name}</CardTitle>
-                    <CardDescription className="text-base">
-                      {tool.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    {tool.available ? (
-                      <Button className="w-full" variant="default">
-                        Launch Tool
-                      </Button>
-                    ) : (
-                      <Button className="w-full" variant="outline" disabled>
-                        Coming Soon
-                      </Button>
-                    )}
-                  </CardContent>
-                </Card>
-              );
-            })}
+                  </div>
+                  <h2 className="text-4xl font-bold text-foreground mb-3">
+                    Welcome back, {userName}!
+                  </h2>
+                  <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    Your integrated suite for automating and elevating your content creation lifecycle
+                  </p>
+                </div>
+
+                {/* Featured Tool - Video Series Builder */}
+                <div className="mb-12">
+                  <Card 
+                    className="bg-gradient-to-br from-pal-purple/10 via-background to-pal-orange/10 border-2 hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                    onClick={() => handleToolClick('video-series-builder', true)}
+                  >
+                    <CardHeader>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-4">
+                          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pal-purple to-pal-orange flex items-center justify-center shadow-lg">
+                            <Video className="w-8 h-8 text-white" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-2xl mb-1">Video Series Builder</CardTitle>
+                            <CardDescription className="text-base">
+                              Turn one idea into a complete content system
+                            </CardDescription>
+                          </div>
+                        </div>
+                        <ArrowRight className="w-6 h-6 text-muted-foreground group-hover:text-pal-purple group-hover:translate-x-1 transition-all" />
+                      </div>
+                    </CardHeader>
+                  </Card>
+                </div>
+
+                {/* Coming Soon Tools */}
+                <div className="mb-6">
+                  <h3 className="text-xl font-semibold text-foreground mb-4">Coming Soon</h3>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {tools.filter(tool => tool.comingSoon).map((tool) => {
+                    const Icon = tool.icon;
+                    return (
+                      <Card
+                        key={tool.id}
+                        className="opacity-60 hover:opacity-70 transition-opacity"
+                      >
+                        <CardHeader>
+                          <div className="flex items-center gap-4 mb-3">
+                            <div
+                              className={`w-12 h-12 rounded-xl ${tool.color} flex items-center justify-center`}
+                            >
+                              <Icon className="w-6 h-6 text-white" />
+                            </div>
+                            <span className="px-2 py-1 bg-muted text-xs font-semibold rounded-full">
+                              Coming Soon
+                            </span>
+                          </div>
+                          <CardTitle className="text-lg">{tool.name}</CardTitle>
+                          <CardDescription>
+                            {tool.description}
+                          </CardDescription>
+                        </CardHeader>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+            </main>
           </div>
-        </main>
-      </div>
+        </div>
+      </SidebarProvider>
     </>
   );
 }

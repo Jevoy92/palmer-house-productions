@@ -123,7 +123,7 @@ export const Navigation = () => {
             </button>
           </div>
           
-          <div className="hidden md:flex items-center gap-4 flex-1 justify-center">
+          <div className="hidden lg:flex items-center gap-4 flex-1 justify-center">
               {/* Sliding middle navigation */}
               <div 
                 className={cn(
@@ -390,7 +390,7 @@ export const Navigation = () => {
               </button>
           </div>
           
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-muted-foreground hover:text-foreground focus:outline-none interactive-element min-h-[44px] min-w-[44px] flex items-center justify-center" aria-expanded={isOpen} aria-controls="mobile-menu" aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}>
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -398,7 +398,7 @@ export const Navigation = () => {
         </div>
       </div>
 
-      {isOpen && <div id="mobile-menu" className="md:hidden bg-background border-t border-border shadow-lg" role="menu">
+      {isOpen && <div id="mobile-menu" className="lg:hidden bg-background border-t border-border shadow-lg" role="menu">
           <div className="px-4 pt-4 pb-6 space-y-6 max-h-[calc(100vh-4rem)] overflow-y-auto">
             {/* Services Section */}
             <div className="space-y-3">

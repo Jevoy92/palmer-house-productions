@@ -4,76 +4,105 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Check, DollarSign, ChevronRight, Star, Target, TrendingUp, Sparkles, Package, Layers, Film, Zap } from "lucide-react";
+import { Check, ChevronRight, Star, Target, TrendingUp, Sparkles, Package, Layers, Film, Zap, Plus, Minus } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const ProductionPricing = () => {
-  const [selectedBuildId, setSelectedBuildId] = useState<string>("");
+interface BuildItem {
+  name: string;
+  basePrice: number;
+  quantity: number;
+  perUnit: boolean;
+}
 
-  const palBuilds = [
+interface PalBuildConfig {
+  id: string;
+  name: string;
+  subtitle: string;
+  description: string;
+  icon: any;
+  items: BuildItem[];
+}
+
+const ProductionPricing = () => {
+  const [palBuilds, setPalBuilds] = useState<PalBuildConfig[]>([
     {
       id: "reel-pal",
       name: "REEL PAL MONTHLY BUILD",
-      subtitle: "VISIBILITY & MOMENTUM PACKAGE",
-      price: "$1,500/mo",
+      subtitle: "Visibility & Momentum Package",
       description: "Designed to keep your business visible, consistent, and active.",
       icon: TrendingUp,
-      color: "from-blue-500 to-cyan-500",
-      includes: [
-        "1 one-minute anchor video — $450",
-        "3 short-form clips — $150 × 3 = $450",
-        "2 hook variations — $150 × 2 = $300",
-        "1 mini brand intro or lifestyle clip — $300 value"
+      items: [
+        { name: "One-minute anchor video", basePrice: 450, quantity: 1, perUnit: false },
+        { name: "Short-form clips", basePrice: 150, quantity: 3, perUnit: true },
+        { name: "Hook variations", basePrice: 150, quantity: 2, perUnit: true },
+        { name: "Mini brand intro/lifestyle clip", basePrice: 300, quantity: 1, perUnit: false }
       ]
     },
     {
       id: "system-pal",
       name: "SYSTEM PAL MONTHLY BUILD",
-      subtitle: "CLARITY & OPERATIONS PACKAGE",
-      price: "$1,500/mo",
+      subtitle: "Clarity & Operations Package",
       description: "Built for onboarding, training, SOPs, and reducing repetitive tasks.",
       icon: Layers,
-      color: "from-purple-500 to-pink-500",
-      includes: [
-        "1 anchor video (FAQ or onboarding step) — $450",
-        "4 SOP/FAQ clips — $150 × 4 = $600",
-        "1 mid-length explainer (3–5 min) — $450 + edits",
-        "Library organization — $250 value",
-        "On-camera coaching — included"
+      items: [
+        { name: "Anchor video (FAQ/onboarding)", basePrice: 450, quantity: 1, perUnit: false },
+        { name: "SOP/FAQ clips", basePrice: 150, quantity: 4, perUnit: true },
+        { name: "Mid-length explainer (3-5 min)", basePrice: 450, quantity: 1, perUnit: false },
+        { name: "Library organization", basePrice: 250, quantity: 1, perUnit: false },
+        { name: "On-camera coaching", basePrice: 0, quantity: 1, perUnit: false }
       ]
     },
     {
       id: "evergreen-pal",
       name: "EVERGREEN PAL MONTHLY BUILD",
-      subtitle: "AUTHORITY & LONG-FORM PACKAGE",
-      price: "$1,500/mo",
+      subtitle: "Authority & Long-Form Package",
       description: "Perfect for YouTube, training, education, and deep teaching.",
       icon: Star,
-      color: "from-green-500 to-emerald-500",
-      includes: [
-        "1 five-minute video — $450 + (4 × $150) = $1,050",
-        "2 short derivative clips — $150 × 2 = $300",
-        "1 'pillar summary' video — $150",
-        "Coaching for long-form clarity — $100 value"
+      items: [
+        { name: "Five-minute video", basePrice: 1050, quantity: 1, perUnit: false },
+        { name: "Short derivative clips", basePrice: 150, quantity: 2, perUnit: true },
+        { name: "Pillar summary video", basePrice: 150, quantity: 1, perUnit: false },
+        { name: "Long-form clarity coaching", basePrice: 100, quantity: 1, perUnit: false }
       ]
     },
     {
       id: "spotlight-pal",
       name: "SPOTLIGHT PAL MONTHLY BUILD",
-      subtitle: "BRAND STORY & IDENTITY PACKAGE",
-      price: "$1,500/mo",
+      subtitle: "Brand Story & Identity Package",
       description: "Cinematic, emotional, story-driven content that elevates your presence.",
       icon: Film,
-      color: "from-orange-500 to-red-500",
-      includes: [
-        "1 one-minute brand moment — $450",
-        "3 mini-story clips — $150 × 3 = $450",
-        "1 testimonial or value clip — $150",
-        "Cinematic color grade upgrade — $300",
-        "Visual identity alignment — $150"
+      items: [
+        { name: "One-minute brand moment", basePrice: 450, quantity: 1, perUnit: false },
+        { name: "Mini-story clips", basePrice: 150, quantity: 3, perUnit: true },
+        { name: "Testimonial/value clip", basePrice: 150, quantity: 1, perUnit: false },
+        { name: "Cinematic color grade upgrade", basePrice: 300, quantity: 1, perUnit: false },
+        { name: "Visual identity alignment", basePrice: 150, quantity: 1, perUnit: false }
       ]
     }
-  ];
+  ]);
+
+  const updateQuantity = (palId: string, itemIndex: number, newQuantity: number) => {
+    if (newQuantity < 0) return;
+    setPalBuilds(prev => 
+      prev.map(pal => 
+        pal.id === palId 
+          ? {
+              ...pal,
+              items: pal.items.map((item, idx) => 
+                idx === itemIndex ? { ...item, quantity: newQuantity } : item
+              )
+            }
+          : pal
+      )
+    );
+  };
+
+  const calculateTotal = (items: BuildItem[]) => {
+    return items.reduce((total, item) => {
+      return total + (item.basePrice * item.quantity);
+    }, 0);
+  };
+
 
   const addOns = [
     {
@@ -181,58 +210,100 @@ const ProductionPricing = () => {
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-4 text-foreground">The Monthly Pal Builds</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Every Pal offers a monthly content build valued at $1,500 — a curated, strategic set capturing the strengths of that Pal.
+                Customize each build to fit your needs. Adjust quantities and watch the price update in real-time.
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
               {palBuilds.map((pal) => {
                 const Icon = pal.icon;
+                const total = calculateTotal(pal.items);
+                
                 return (
                   <Card 
                     key={pal.id} 
-                    className={`relative overflow-hidden border-2 transition-all hover:shadow-lg ${
-                      selectedBuildId === pal.id ? 'border-primary' : ''
-                    }`}
+                    className="border hover:shadow-md transition-all bg-background"
                   >
-                    <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${pal.color} opacity-10 rounded-bl-full`}></div>
-                    <CardHeader>
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-2">
-                            <Icon className="w-6 h-6 text-primary" />
-                            <Badge variant="outline">{pal.price}</Badge>
+                    <CardHeader className="pb-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 rounded-lg bg-primary/10">
+                            <Icon className="w-5 h-5 text-primary" />
                           </div>
-                          <CardTitle className="text-xl mb-1">{pal.name}</CardTitle>
-                          <CardDescription className="font-semibold text-foreground">
-                            {pal.subtitle}
-                          </CardDescription>
+                          <div>
+                            <CardTitle className="text-lg font-bold">{pal.name}</CardTitle>
+                            <CardDescription className="text-sm mt-1">
+                              {pal.subtitle}
+                            </CardDescription>
+                          </div>
                         </div>
                       </div>
-                      <p className="text-sm text-muted-foreground mt-3">{pal.description}</p>
+                      <p className="text-sm text-muted-foreground">{pal.description}</p>
                     </CardHeader>
-                    <CardContent>
-                      <div className="mb-4">
-                        <h4 className="font-semibold mb-3 text-sm text-muted-foreground uppercase tracking-wide">Includes:</h4>
-                        <ul className="space-y-2">
-                          {pal.includes.map((item, idx) => (
-                            <li key={idx} className="flex items-start gap-2">
-                              <Check className="w-4 h-4 text-primary mt-1 flex-shrink-0" />
-                              <span className="text-sm">{item}</span>
-                            </li>
-                          ))}
-                        </ul>
+                    
+                    <CardContent className="space-y-4">
+                      <div className="space-y-3">
+                        {pal.items.map((item, idx) => (
+                          <div 
+                            key={idx} 
+                            className="flex items-center justify-between py-2 border-b border-border/40 last:border-0"
+                          >
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-foreground truncate">
+                                {item.name}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                ${item.basePrice}{item.perUnit && ' each'}
+                              </p>
+                            </div>
+                            
+                            <div className="flex items-center gap-3 ml-4">
+                              <div className="flex items-center gap-1 border rounded-md">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-7 w-7 p-0 hover:bg-muted"
+                                  onClick={() => updateQuantity(pal.id, idx, item.quantity - 1)}
+                                  disabled={item.quantity === 0 || (item.basePrice === 0 && item.quantity === 1)}
+                                >
+                                  <Minus className="w-3 h-3" />
+                                </Button>
+                                <span className="w-8 text-center text-sm font-medium">
+                                  {item.quantity}
+                                </span>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-7 w-7 p-0 hover:bg-muted"
+                                  onClick={() => updateQuantity(pal.id, idx, item.quantity + 1)}
+                                  disabled={item.basePrice === 0}
+                                >
+                                  <Plus className="w-3 h-3" />
+                                </Button>
+                              </div>
+                              <span className="text-sm font-semibold text-foreground w-16 text-right">
+                                ${(item.basePrice * item.quantity).toLocaleString()}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
                       </div>
-                      <p className="text-xs text-muted-foreground italic mb-4">
-                        Total Value: $1,500 (fully customizable)
-                      </p>
-                      <Button 
-                        className="w-full" 
-                        variant={selectedBuildId === pal.id ? "default" : "outline"}
-                        onClick={() => setSelectedBuildId(pal.id)}
-                      >
-                        {selectedBuildId === pal.id ? "Selected" : "Choose This Pal"}
-                        <ChevronRight className="w-4 h-4 ml-2" />
+
+                      <Separator />
+
+                      <div className="flex items-center justify-between pt-2">
+                        <span className="text-sm font-medium text-muted-foreground">Total Package Price</span>
+                        <span className="text-2xl font-bold text-primary">
+                          ${total.toLocaleString()}
+                          <span className="text-sm font-normal text-muted-foreground">/mo</span>
+                        </span>
+                      </div>
+
+                      <Button className="w-full mt-2" size="lg" asChild>
+                        <Link to="/contact">
+                          Get Started with This Build
+                          <ChevronRight className="w-4 h-4 ml-2" />
+                        </Link>
                       </Button>
                     </CardContent>
                   </Card>

@@ -1,18 +1,27 @@
 import { useState } from "react";
 import { MetaTags } from "@/components/seo/MetaTags";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ChevronRight, Star, TrendingUp, Layers, Film, Plus, Minus } from "lucide-react";
+import { Check, ChevronRight, Star, TrendingUp, Sparkles, Package, Layers, Film, Zap, Plus, Minus } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface BuildItem {
   name: string;
   basePrice: number;
   quantity: number;
   perUnit: boolean;
+  included?: boolean; // For items like "included" on-camera coaching
 }
 
 interface VideoOption {
@@ -28,251 +37,407 @@ interface PalBuildConfig {
   description: string;
   icon: any;
   items: BuildItem[];
-  missionStatement: string;
-  missionSubtitle: string;
-  palLabel: string;
-  colorTheme: {
-    primary: string;
-    background: string;
-    accent: string;
-  };
 }
 
 const ProductionPricing = () => {
   const videoOptions: VideoOption[] = [
     { name: "1-minute video", price: 150, length: "1 min" },
+    { name: "3-minute video", price: 450, length: "3 min" },
+    { name: "5-minute video", price: 1050, length: "5 min" },
     { name: "FAQ video", price: 150, length: "1 min" },
     { name: "Training video", price: 150, length: "1 min" },
+    { name: "SOP walkthrough", price: 150, length: "1 min" },
     { name: "Social reel", price: 150, length: "30-60 sec" },
-    { name: "Brand story", price: 150, length: "1 min" }
+    { name: "Testimonial video", price: 150, length: "1 min" },
+    { name: "Product explainer", price: 150, length: "1 min" },
+    { name: "Website explainer", price: 150, length: "1 min" },
+    { name: "Brand story", price: 150, length: "1 min" },
+    { name: "Recruitment video", price: 150, length: "1 min" },
+    { name: "Onboarding video", price: 150, length: "1 min" },
+    { name: "About us video", price: 150, length: "1 min" },
+    { name: "Service overview", price: 150, length: "1 min" }
   ];
 
   const [palBuilds, setPalBuilds] = useState<PalBuildConfig[]>([
     {
       id: "reel-pal",
-      name: "REEL PAL",
-      subtitle: "Visibility Package",
-      description: "Keep your business visible and active",
+      name: "REEL PAL MONTHLY BUILD",
+      subtitle: "Visibility & Momentum Package",
+      description: "Designed to keep your business visible, consistent, and active.",
       icon: TrendingUp,
-      missionStatement: "I need visibility.",
-      missionSubtitle: "Short-form videos designed to keep your business active, consistent, and top-of-mind.",
-      palLabel: "Guided by Reel Pal",
-      colorTheme: { primary: "24 100% 60%", background: "24 100% 97%", accent: "24 100% 50%" },
       items: [
         { name: "1-minute anchor video", basePrice: 450, quantity: 1, perUnit: false },
-        { name: "Short-form clips", basePrice: 150, quantity: 5, perUnit: true }
+        { name: "Short-form social clips", basePrice: 150, quantity: 3, perUnit: true },
+        { name: "Reels/TikToks", basePrice: 150, quantity: 2, perUnit: true }
       ]
     },
     {
       id: "system-pal",
-      name: "SYSTEM PAL",
-      subtitle: "Training Package",
-      description: "Internal clarity and operations",
+      name: "SYSTEM PAL MONTHLY BUILD",
+      subtitle: "Clarity & Operations Package",
+      description: "Built for onboarding, training, SOPs, and reducing repetitive tasks.",
       icon: Layers,
-      missionStatement: "I need training content.",
-      missionSubtitle: "Create internal clarity, reduce repetitive tasks, and standardize your operations.",
-      palLabel: "Guided by System Pal",
-      colorTheme: { primary: "215 79% 60%", background: "215 79% 97%", accent: "215 79% 50%" },
       items: [
         { name: "FAQ video", basePrice: 450, quantity: 1, perUnit: false },
-        { name: "Training videos", basePrice: 150, quantity: 6, perUnit: true }
+        { name: "Training videos", basePrice: 150, quantity: 4, perUnit: true },
+        { name: "SOP walkthrough videos", basePrice: 150, quantity: 2, perUnit: true }
       ]
     },
     {
       id: "evergreen-pal",
-      name: "EVERGREEN PAL",
-      subtitle: "Authority Package",
-      description: "Long-form educational content",
+      name: "EVERGREEN PAL MONTHLY BUILD",
+      subtitle: "Authority & Long-Form Package",
+      description: "Perfect for YouTube, training, education, and deep teaching.",
       icon: Star,
-      missionStatement: "I need long-form authority.",
-      missionSubtitle: "Build trust with educational, evergreen content that positions you as the expert.",
-      palLabel: "Guided by Evergreen Pal",
-      colorTheme: { primary: "158 64% 52%", background: "158 64% 97%", accent: "158 64% 42%" },
       items: [
-        { name: "5-minute video", basePrice: 1050, quantity: 1, perUnit: false },
-        { name: "Short clips", basePrice: 150, quantity: 2, perUnit: true }
+        { name: "5-minute long-form video", basePrice: 1050, quantity: 1, perUnit: false },
+        { name: "Short derivative clips", basePrice: 150, quantity: 2, perUnit: true }
       ]
     },
     {
       id: "spotlight-pal",
-      name: "SPOTLIGHT PAL",
-      subtitle: "Brand Story Package",
-      description: "Cinematic brand storytelling",
+      name: "SPOTLIGHT PAL MONTHLY BUILD",
+      subtitle: "Brand Story & Identity Package",
+      description: "Cinematic, emotional, story-driven content that elevates your presence.",
       icon: Film,
-      missionStatement: "I need brand story.",
-      missionSubtitle: "Tell a cinematic, emotional narrative that elevates your identity and wins attention.",
-      palLabel: "Guided by Spotlight Pal",
-      colorTheme: { primary: "258 90% 66%", background: "258 90% 97%", accent: "258 90% 56%" },
       items: [
         { name: "Brand story video", basePrice: 450, quantity: 1, perUnit: false },
-        { name: "Supporting videos", basePrice: 150, quantity: 4, perUnit: true }
+        { name: "Website explainer videos", basePrice: 150, quantity: 2, perUnit: true },
+        { name: "Testimonial videos", basePrice: 150, quantity: 2, perUnit: true }
       ]
     }
   ]);
 
-  const [selectedCard, setSelectedCard] = useState<string | null>(null);
-  const [isAnimating, setIsAnimating] = useState(false);
-
-  const handleCardSelect = (palId: string) => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setSelectedCard(palId);
-    setTimeout(() => setIsAnimating(false), 500);
+  const updateQuantity = (palId: string, itemIndex: number, newQuantity: number) => {
+    if (newQuantity < 0) return;
+    setPalBuilds(prev => 
+      prev.map(pal => 
+        pal.id === palId 
+          ? {
+              ...pal,
+              items: pal.items.map((item, idx) => 
+                idx === itemIndex ? { ...item, quantity: newQuantity } : item
+              )
+            }
+          : pal
+      )
+    );
   };
 
-  const handleCardClose = () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setSelectedCard(null);
-    setTimeout(() => setIsAnimating(false), 500);
+  const addVideoToPackage = (palId: string, videoOption: VideoOption) => {
+    setPalBuilds(prev =>
+      prev.map(pal =>
+        pal.id === palId
+          ? {
+              ...pal,
+              items: [
+                ...pal.items,
+                {
+                  name: videoOption.name,
+                  basePrice: videoOption.price,
+                  quantity: 1,
+                  perUnit: true
+                }
+              ]
+            }
+          : pal
+      )
+    );
   };
 
-  const updateQuantity = (palId: string, idx: number, newQty: number) => {
-    if (newQty < 0) return;
-    setPalBuilds(prev => prev.map(pal => 
-      pal.id === palId ? { ...pal, items: pal.items.map((item, i) => i === idx ? { ...item, quantity: newQty } : item) } : pal
-    ));
+  const removeItem = (palId: string, itemIndex: number) => {
+    setPalBuilds(prev =>
+      prev.map(pal =>
+        pal.id === palId
+          ? {
+              ...pal,
+              items: pal.items.filter((_, idx) => idx !== itemIndex)
+            }
+          : pal
+      )
+    );
   };
 
-  const addVideoToPackage = (palId: string, option: VideoOption) => {
-    setPalBuilds(prev => prev.map(pal => 
-      pal.id === palId ? { ...pal, items: [...pal.items, { name: option.name, basePrice: option.price, quantity: 1, perUnit: true }] } : pal
-    ));
+  const calculateTotal = (items: BuildItem[]) => {
+    return items.reduce((total, item) => {
+      return total + (item.basePrice * item.quantity);
+    }, 0);
   };
 
-  const calculateTotal = (items: BuildItem[]) => items.reduce((total, item) => total + (item.basePrice * item.quantity), 0);
+
+  const addOns = [
+    {
+      category: "Editing & Delivery",
+      items: [
+        { name: "Additional aspect ratios (9:16 / 1:1)", price: "$75/video" },
+        { name: "Extra thumbnails", price: "$100 each" },
+        { name: "Advanced editing (graphics, overlays)", price: "$200/video" },
+        { name: "Caption export file (SRT/VTT)", price: "$25" }
+      ]
+    },
+    {
+      category: "Production & Creative",
+      items: [
+        { name: "Extra Filming Hour", price: "$200/hr" },
+        { name: "Full new Filming Day", price: "$1,500–$2,200" },
+        { name: "Brand Kit Import", price: "$200" },
+        { name: "Content Library Setup", price: "$300–$700" },
+        { name: "AI Script/Outline boosts", price: "$200/session" }
+      ]
+    },
+    {
+      category: "Strategy & Direction",
+      items: [
+        { name: "Additional Strategy Session", price: "$250" },
+        { name: "Vision & Story Deep-Dive (Spotlight upgrade)", price: "$300" },
+        { name: "Evergreen Content Roadmap", price: "$250" }
+      ]
+    }
+  ];
+
+  const suggestedBuilds = [
+    {
+      id: "faq-system",
+      name: "FAQ SYSTEM",
+      pal: "System Pal",
+      description: "6 FAQs (1 minute each) + 1 deep-dive FAQ (3 minutes) + Library setup",
+      total: "$1,650",
+      note: "(all editable)"
+    },
+    {
+      id: "training-system",
+      name: "TRAINING SYSTEM",
+      pal: "System Pal",
+      description: "1 main training video (5 minutes) + 5 SOP clips (1 minute each)",
+      total: "$2,400",
+      note: ""
+    },
+    {
+      id: "social-visibility",
+      name: "SOCIAL VISIBILITY KIT",
+      pal: "Reel Pal",
+      description: "8 short clips (1 minute) + 1 hook variation",
+      total: "$1,500",
+      note: ""
+    },
+    {
+      id: "brand-narrative",
+      name: "BRAND NARRATIVE STARTER",
+      pal: "Spotlight Pal",
+      description: "1 brand moment + 3 mini narratives + 1 testimonial",
+      total: "$1,050–$1,500",
+      note: ""
+    },
+    {
+      id: "youtube-authority",
+      name: "YOUTUBE AUTHORITY STARTER",
+      pal: "Evergreen Pal",
+      description: "1 five-minute anchor video + 2 derivative clips",
+      total: "$1,200–$1,500",
+      note: ""
+    }
+  ];
+
 
   return (
     <>
-      <MetaTags title="Video Production Pricing | Palmer House Productions" description="Build your perfect video production package" />
-      <div className="min-h-screen transition-colors duration-500" style={{ backgroundColor: selectedCard ? `hsl(${palBuilds.find(p => p.id === selectedCard)?.colorTheme.background})` : 'hsl(var(--background))' }}>
-        <div className="container mx-auto px-4 py-16 max-w-7xl">
-          {!selectedCard && (
-            <div className="text-center mb-16 space-y-4 animate-fade-in">
-              <h1 className="text-5xl md:text-6xl font-bold text-foreground">Choose Your Mission. Build Your System.</h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">Select the mission that matches your business goals, then customize your perfect video package.</p>
-            </div>
-          )}
+      <MetaTags
+        title="Production Pricing & Packages | Palmer House Productions"
+        description="Build your video system with clear, flexible, production-driven pricing. Choose a monthly Pal build or create your custom package."
+        keywords="video production pricing, video packages, monthly video service, video production seattle, content production"
+      />
+      
+      <div className="min-h-screen bg-background pt-24 pb-16">
+        <div className="container mx-auto px-4 max-w-7xl">
           
-          <div className="mb-20 relative">
-            {!selectedCard ? (
-              <div className="relative max-w-4xl mx-auto" style={{ minHeight: '600px' }}>
-                {palBuilds.map((pal, index) => {
-                  const Icon = pal.icon;
-                  const isTop = index === palBuilds.length - 1;
-                  return (
-                    <div key={pal.id} onClick={() => handleCardSelect(pal.id)} className="absolute left-0 right-0 cursor-pointer transition-all duration-300 hover:scale-[1.02]" style={{ top: `${index * 20}px`, zIndex: index, transform: isTop ? 'scale(1)' : 'scale(0.98)', opacity: isTop ? 1 : 0.7 }}>
-                      <Card className="shadow-2xl overflow-hidden border-2" style={{ borderColor: `hsl(${pal.colorTheme.primary})`, boxShadow: isTop ? `0 20px 40px -10px hsla(${pal.colorTheme.primary}, 0.3)` : undefined }}>
-                        <div className="p-12 text-center space-y-6">
-                          <div className="w-20 h-20 mx-auto rounded-full flex items-center justify-center" style={{ backgroundColor: `hsl(${pal.colorTheme.background})` }}>
-                            <Icon className="w-10 h-10" style={{ color: `hsl(${pal.colorTheme.primary})` }} />
+          {/* Hero Section */}
+          <div className="text-center mb-16">
+            <Badge className="mb-4" variant="outline">
+              <Package className="w-3 h-3 mr-1" />
+              Production Pricing & Packages
+            </Badge>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-foreground">
+              Build Your Perfect Package
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
+              Start with a suggested build or create your own custom solution—it's your package, your way.
+            </p>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Pick a Pal that solves your current biggest business problem and customize it to your liking.
+            </p>
+          </div>
+
+          {/* Monthly Pal Builds */}
+          <div className="mb-12">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold mb-4 text-foreground">The Monthly Pal Builds</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Customize each build to fit your needs. Adjust quantities and watch the price update in real-time.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {palBuilds.map((pal) => {
+                const Icon = pal.icon;
+                const total = calculateTotal(pal.items);
+                
+                return (
+                  <Card 
+                    key={pal.id} 
+                    className="border hover:shadow-md transition-all bg-background"
+                  >
+                    <CardHeader className="pb-4">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 rounded-lg bg-primary/10">
+                            <Icon className="w-5 h-5 text-primary" />
                           </div>
-                          <div className="space-y-3">
-                            <h2 className="text-4xl md:text-5xl font-bold" style={{ color: `hsl(${pal.colorTheme.primary})` }}>{pal.missionStatement}</h2>
-                            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{pal.missionSubtitle}</p>
-                          </div>
-                          <div className="flex items-center justify-center gap-2 text-muted-foreground pt-4">
-                            <span className="text-sm">Tap to explore</span>
-                            <ChevronRight className="w-4 h-4" />
-                          </div>
-                        </div>
-                      </Card>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className="animate-fade-in">
-                {palBuilds.filter(pal => pal.id === selectedCard).map((pal) => {
-                  const Icon = pal.icon;
-                  const totalPrice = calculateTotal(pal.items);
-                  return (
-                    <Card key={pal.id} className="max-w-5xl mx-auto shadow-2xl border-2" style={{ borderColor: `hsl(${pal.colorTheme.primary})` }}>
-                      <CardHeader className="space-y-6 border-b" style={{ borderColor: `hsl(${pal.colorTheme.primary} / 0.2)` }}>
-                        <div className="flex items-start justify-between">
-                          <div className="space-y-4">
-                            <div className="flex items-center gap-3">
-                              <div className="p-3 rounded-lg" style={{ backgroundColor: `hsl(${pal.colorTheme.background})` }}>
-                                <Icon className="w-6 h-6" style={{ color: `hsl(${pal.colorTheme.primary})` }} />
-                              </div>
-                              <div>
-                                <CardTitle className="text-3xl md:text-4xl" style={{ color: `hsl(${pal.colorTheme.primary})` }}>{pal.missionStatement}</CardTitle>
-                                <p className="text-sm text-muted-foreground mt-2">{pal.palLabel}</p>
-                              </div>
-                            </div>
-                            <p className="text-lg text-muted-foreground max-w-2xl">{pal.missionSubtitle}</p>
-                          </div>
-                          <Button variant="ghost" onClick={handleCardClose} className="shrink-0">← Back</Button>
-                        </div>
-                      </CardHeader>
-                      <div className="space-y-8 p-8">
-                        <div>
-                          <h3 className="text-xl font-semibold mb-4 text-foreground">Your $1,500 Monthly Build</h3>
-                          <div className="space-y-4">
-                            {pal.items.map((item, idx) => (
-                              <div key={idx} className="flex items-center justify-between gap-4 p-4 rounded-lg border">
-                                <div className="flex-1">
-                                  <p className="font-medium text-foreground">{item.name}</p>
-                                  <p className="text-sm text-muted-foreground">{item.perUnit ? `$${item.basePrice} each` : `$${item.basePrice} base`}</p>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                  <Button size="sm" variant="outline" onClick={() => updateQuantity(pal.id, idx, Math.max(0, item.quantity - 1))} disabled={item.quantity === 0}><Minus className="w-4 h-4" /></Button>
-                                  <span className="w-12 text-center font-semibold text-lg text-foreground">{item.quantity}</span>
-                                  <Button size="sm" variant="outline" onClick={() => updateQuantity(pal.id, idx, item.quantity + 1)}><Plus className="w-4 h-4" /></Button>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="space-y-3">
-                          <label className="text-sm font-medium text-foreground">Customize Your Build</label>
-                          <Select onValueChange={(value) => { const option = videoOptions.find(v => v.name === value); if (option) addVideoToPackage(pal.id, option); }}>
-                            <SelectTrigger><SelectValue placeholder="Add more videos" /></SelectTrigger>
-                            <SelectContent><SelectGroup><SelectLabel>Video Options</SelectLabel>{videoOptions.map((option) => (<SelectItem key={option.name} value={option.name}>{option.name} - ${option.price} ({option.length})</SelectItem>))}</SelectGroup></SelectContent>
-                          </Select>
-                        </div>
-                        <Separator />
-                        <div className="flex items-center justify-between p-6 rounded-lg border-2" style={{ backgroundColor: `hsl(${pal.colorTheme.background})`, borderColor: `hsl(${pal.colorTheme.primary})` }}>
                           <div>
-                            <p className="text-sm text-muted-foreground">Total Monthly Investment</p>
-                            <p className="text-4xl font-bold" style={{ color: `hsl(${pal.colorTheme.primary})` }}>${totalPrice.toLocaleString()}</p>
+                            <CardTitle className="text-lg font-bold">{pal.name}</CardTitle>
+                            <CardDescription className="text-sm mt-1">
+                              {pal.subtitle}
+                            </CardDescription>
                           </div>
-                          <Badge className="text-base px-4 py-2" style={{ backgroundColor: `hsl(${pal.colorTheme.primary})`, color: 'white' }}>Per Month</Badge>
                         </div>
                       </div>
-                    </Card>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-          
-          {!selectedCard && (
-            <div className="text-center space-y-6 animate-fade-in">
-              <h2 className="text-3xl font-bold text-foreground">Ready to Build Your System?</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Choose a mission card above to get started with a customized video package.</p>
+                      <p className="text-sm text-muted-foreground">{pal.description}</p>
+                    </CardHeader>
+                    
+                    <CardContent className="space-y-4">
+                      <div className="space-y-3">
+                        {pal.items.map((item, idx) => (
+                          <div 
+                            key={idx} 
+                            className="flex items-center justify-between py-2 border-b border-border/40 last:border-0"
+                          >
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-foreground truncate">
+                                {item.name}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                ${item.basePrice}{item.perUnit ? ' each' : ''}
+                              </p>
+                            </div>
+                            
+                            <div className="flex items-center gap-3 ml-4">
+                              <div className="flex items-center gap-1 border rounded-md">
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-7 w-7 p-0 hover:bg-muted"
+                                  onClick={() => updateQuantity(pal.id, idx, item.quantity - 1)}
+                                  disabled={item.quantity === 0}
+                                >
+                                  <Minus className="w-3 h-3" />
+                                </Button>
+                                <span className="w-8 text-center text-sm font-medium">
+                                  {item.quantity}
+                                </span>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="h-7 w-7 p-0 hover:bg-muted"
+                                  onClick={() => updateQuantity(pal.id, idx, item.quantity + 1)}
+                                >
+                                  <Plus className="w-3 h-3" />
+                                </Button>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-semibold text-foreground w-16 text-right">
+                                  ${(item.basePrice * item.quantity).toLocaleString()}
+                                </span>
+                                {idx >= 3 && (
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="h-7 w-7 p-0 hover:bg-destructive/10 hover:text-destructive"
+                                    onClick={() => removeItem(pal.id, idx)}
+                                  >
+                                    <Minus className="w-3 h-3" />
+                                  </Button>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="pt-2">
+                        <Select onValueChange={(value) => {
+                          const option = videoOptions.find(v => v.name === value);
+                          if (option) addVideoToPackage(pal.id, option);
+                        }}>
+                          <SelectTrigger className="w-full bg-background border-dashed">
+                            <SelectValue placeholder="+ Add video to package" />
+                          </SelectTrigger>
+                          <SelectContent className="bg-background z-50">
+                            <SelectGroup>
+                              <SelectLabel>Choose Video Type</SelectLabel>
+                              {videoOptions.map((option) => (
+                                <SelectItem 
+                                  key={option.name} 
+                                  value={option.name}
+                                  className="cursor-pointer"
+                                >
+                                  <div className="flex justify-between items-center w-full gap-4">
+                                    <span>{option.name}</span>
+                                    <span className="text-xs text-muted-foreground">
+                                      {option.length} • ${option.price}
+                                    </span>
+                                  </div>
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <Separator />
+
+                      <div className="flex items-center justify-between pt-2">
+                        <span className="text-sm font-medium text-muted-foreground">Total Package Price</span>
+                        <span className="text-2xl font-bold text-primary">
+                          ${total.toLocaleString()}
+                          <span className="text-sm font-normal text-muted-foreground">/mo</span>
+                        </span>
+                      </div>
+
+                      <Button className="w-full mt-2" size="lg" asChild>
+                        <Link to="/contact">
+                          Get Started with This Build
+                          <ChevronRight className="w-4 h-4 ml-2" />
+                        </Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
-          )}
+          </div>
+
+          {/* CTA Area */}
+          <div className="text-center space-y-4">
+            <h2 className="text-3xl font-bold mb-6 text-foreground">Ready to Build Your System?</h2>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="text-lg px-8" asChild>
+                <Link to="/contact">
+                  Start With a Pal
+                  <ChevronRight className="w-5 h-5 ml-2" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="text-lg px-8" asChild>
+                <Link to="/contact">
+                  Build Your Own System
+                  <Zap className="w-5 h-5 ml-2" />
+                </Link>
+              </Button>
+            </div>
+            <p className="text-sm text-muted-foreground mt-4">
+              Questions? <Link to="/contact" className="text-primary hover:underline">Let's talk about your needs</Link>
+            </p>
+          </div>
+
         </div>
-        
-        {selectedCard && (
-          <div className="fixed bottom-0 left-0 right-0 z-50 animate-slide-in-bottom">
-            <div className="border-t shadow-2xl backdrop-blur-sm" style={{ backgroundColor: `hsla(${palBuilds.find(p => p.id === selectedCard)?.colorTheme.background}, 0.95)`, borderColor: `hsl(${palBuilds.find(p => p.id === selectedCard)?.colorTheme.primary} / 0.3)` }}>
-              <div className="container mx-auto px-4 py-6 max-w-7xl">
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="text-center sm:text-left">
-                    <p className="text-sm text-muted-foreground">Ready to proceed?</p>
-                    <p className="text-2xl font-bold" style={{ color: `hsl(${palBuilds.find(p => p.id === selectedCard)?.colorTheme.primary})` }}>${calculateTotal(palBuilds.find(p => p.id === selectedCard)?.items || []).toLocaleString()}/month</p>
-                  </div>
-                  <div className="flex gap-3">
-                    <Button size="lg" variant="outline" onClick={handleCardClose}>Explore Other Missions</Button>
-                    <Button size="lg" asChild style={{ backgroundColor: `hsl(${palBuilds.find(p => p.id === selectedCard)?.colorTheme.primary})`, color: 'white' }} className="hover:opacity-90"><Link to="/contact">Get Started With This Build</Link></Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </>
   );

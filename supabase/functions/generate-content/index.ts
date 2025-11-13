@@ -1,5 +1,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.81.1';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -19,7 +20,88 @@ serve(async (req) => {
       throw new Error('LOVABLE_API_KEY not configured');
     }
 
+    // Get authorization header for user authentication
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      console.error('No authorization header provided');
+      return new Response(
+        JSON.stringify({ error: 'Authentication required' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Create Supabase client with user's auth token
+    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+    const supabaseKey = Deno.env.get('SUPABASE_ANON_KEY')!;
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      global: {
+        headers: { Authorization: authHeader },
+      },
+    });
+
+    // Get authenticated user
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      console.error('Auth error:', authError);
+      return new Response(
+        JSON.stringify({ error: 'Invalid authentication' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    console.log('User authenticated:', user.id);
     console.log('Generating content for tool:', toolType);
+
+    // STEP 1: Get tool credit cost from database
+    const { data: toolCostData, error: toolCostError } = await supabase
+      .from('tool_costs')
+      .select('credit_cost')
+      .eq('tool_name', toolType)
+      .eq('is_active', true)
+      .single();
+
+    if (toolCostError || !toolCostData) {
+      console.error('Error fetching tool cost:', toolCostError);
+      return new Response(
+        JSON.stringify({ error: 'Tool configuration not found' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const creditCost = toolCostData.credit_cost;
+    console.log(`Tool ${toolType} costs ${creditCost} credits`);
+
+    // STEP 2: Check user's current credit balance
+    const { data: creditsData, error: creditsError } = await supabase
+      .from('user_credits')
+      .select('balance')
+      .eq('user_id', user.id)
+      .single();
+
+    if (creditsError || !creditsData) {
+      console.error('Error fetching user credits:', creditsError);
+      return new Response(
+        JSON.stringify({ error: 'Unable to verify credits' }),
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const currentBalance = creditsData.balance;
+    console.log(`User has ${currentBalance} credits, needs ${creditCost}`);
+
+    // STEP 3: Check if user has enough credits
+    if (currentBalance < creditCost) {
+      console.log('Insufficient credits');
+      return new Response(
+        JSON.stringify({ 
+          error: 'Insufficient credits',
+          required: creditCost,
+          current: currentBalance,
+          message: `This tool requires ${creditCost} credits. You currently have ${currentBalance} credits.`
+        }),
+        { status: 402, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
 
     // Build tool-specific prompts
     let systemPrompt = '';
@@ -165,8 +247,47 @@ Format as JSON with these exact keys: shotList (array), checklist (object), equi
 
     console.log('Content generated successfully');
 
+    // STEP 4: Consume credits after successful generation
+    const { data: consumeResult, error: consumeError } = await supabase.rpc('consume_credits', {
+      p_user_id: user.id,
+      p_amount: creditCost,
+      p_tool_name: toolType,
+      p_metadata: { 
+        generated_at: new Date().toISOString(),
+        tool_type: toolType
+      }
+    });
+
+    if (consumeError) {
+      console.error('Error consuming credits:', consumeError);
+      // Still return the content but log the error
+      // This is a trade-off: user got their content, so we don't want to fail
+      console.error('WARNING: Credits were not deducted due to error');
+    }
+
+    console.log(`Credits consumed successfully. Result:`, consumeResult);
+
+    // Get updated balance to return to user
+    const { data: updatedCredits, error: balanceError } = await supabase
+      .from('user_credits')
+      .select('balance, monthly_allowance')
+      .eq('user_id', user.id)
+      .single();
+
+    const newBalance = updatedCredits?.balance ?? (currentBalance - creditCost);
+    const monthlyAllowance = updatedCredits?.monthly_allowance ?? 0;
+
+    console.log(`New balance: ${newBalance}`);
+
     return new Response(
-      JSON.stringify({ content: generatedContent }),
+      JSON.stringify({ 
+        content: generatedContent,
+        credits: {
+          consumed: creditCost,
+          remaining: newBalance,
+          monthlyAllowance: monthlyAllowance
+        }
+      }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
 

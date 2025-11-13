@@ -4,11 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card } from '@/components/ui/card';
-import { Loader2, Sparkles, Download, Save, RotateCcw, Video } from 'lucide-react';
+import { Loader2, Sparkles, Download, Save, RotateCcw, Video, Coins } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/AppSidebar';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
+import { supabase } from '@/integrations/supabase/client';
 
 const EXAMPLE_PROMPTS = [
   {
@@ -74,73 +75,80 @@ export default function VideoSeriesBuilder() {
     }, 3000);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      // Get the current session to authenticate the request
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        throw new Error('You must be logged in to use this tool');
+      }
 
-      const mockPlan = {
-        strategy: `This comprehensive content system leverages your core idea to build authority, drive engagement, and convert viewers into customers. By creating a multi-platform approach, we ensure your message reaches your ${industry} audience wherever they are most active.`,
-        youtube: {
-          title: `${idea.split(' ').slice(0, 8).join(' ')} | ${industry} Guide`,
-          scriptHook: "Hook them in the first 15 seconds with a compelling question or statement that addresses their pain point...",
-        },
-        linkedin: {
-          post: "Professional LinkedIn post content here that frames the topic in a business context...",
-        },
-        twitter: {
-          threadIntro: "Thread intro tweet that hooks attention...",
-          tweets: [
-            "Tweet 1: Main concept introduction",
-            "Tweet 2: Key insight or data point",
-            "Tweet 3: Actionable tip or framework",
-            "Tweet 4: Call to action",
-          ],
-        },
-        instagram: {
-          carouselIdea: "Visual carousel concept",
-          slides: [
-            { title: "Slide 1: Hook", content: "Attention-grabbing opening" },
-            { title: "Slide 2: Problem", content: "Pain point description" },
-            { title: "Slide 3: Solution", content: "Your approach" },
-            { title: "Slide 4: Benefits", content: "What they'll gain" },
-            { title: "Slide 5: CTA", content: "Next steps" },
-          ],
-        },
-        blog: {
-          seoTitle: `Ultimate Guide to ${idea.split(' ').slice(0, 5).join(' ')}`,
-          outline: [
-            "Introduction: Why this matters",
-            "The problem your audience faces",
-            "Your unique solution approach",
-            "Step-by-step implementation",
-            "Common mistakes to avoid",
-            "Conclusion and next steps",
-          ],
-        },
-        email: {
-          subject: `Master This: ${idea.split(' ').slice(0, 6).join(' ')}`,
-          bodyHook: "Open with a relatable scenario or question that makes them want to read more...",
-        },
-        downloads: [
-          {
-            title: `${industry} Success Checklist`,
-            description: "A downloadable PDF checklist covering all key steps",
-          },
-          {
-            title: "Quick Reference Guide",
-            description: "One-page visual guide for easy implementation",
-          },
-        ],
-      };
+      // Call the edge function with authentication
+      const { data: functionData, error: functionError } = await supabase.functions.invoke('generate-content', {
+        body: { 
+          toolType: 'video-series-builder',
+          inputs: {
+            idea: idea.trim(),
+            industry,
+            goal
+          }
+        }
+      });
 
-      setContentPlan(mockPlan);
       clearInterval(tipInterval);
+
+      if (functionError) {
+        throw functionError;
+      }
+
+      // Check for 402 insufficient credits error
+      if (functionData?.error) {
+        if (functionData.error === 'Insufficient credits') {
+          toast({
+            title: '⚡ Not Enough Credits',
+            description: functionData.message || `This tool requires ${functionData.required} credits. You have ${functionData.current} credits remaining.`,
+            variant: 'destructive',
+          });
+          setLoading(false);
+          return;
+        }
+        throw new Error(functionData.error);
+      }
+
+      // Parse the generated content (it comes as a string, need to parse JSON)
+      let parsedContent;
+      try {
+        parsedContent = typeof functionData.content === 'string' 
+          ? JSON.parse(functionData.content) 
+          : functionData.content;
+      } catch (parseError) {
+        console.error('Error parsing content:', parseError);
+        throw new Error('Failed to parse generated content');
+      }
+
+      setContentPlan(parsedContent);
       setLoading(false);
       setIsSaved(false);
-    } catch (error) {
+
+      // Show success with credit information
+      if (functionData.credits) {
+        toast({
+          title: '✨ Content Plan Generated!',
+          description: `Used ${functionData.credits.consumed} credits. ${functionData.credits.remaining} credits remaining.`,
+        });
+      } else {
+        toast({
+          title: '✨ Content Plan Generated!',
+          description: 'Your multi-platform strategy is ready.',
+        });
+      }
+    } catch (error: any) {
       clearInterval(tipInterval);
       setLoading(false);
+      console.error('Generation error:', error);
+      
       toast({
         title: 'Generation Failed',
-        description: 'Unable to generate content plan. Please try again.',
+        description: error.message || 'Unable to generate content plan. Please try again.',
         variant: 'destructive',
       });
     }
@@ -470,6 +478,12 @@ export default function VideoSeriesBuilder() {
                           </Select>
                         </div>
                       </div>
+                    </div>
+
+                    {/* Credit Cost Info */}
+                    <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground py-2">
+                      <Coins className="w-4 h-4" />
+                      <span>This tool uses 5 credits per generation</span>
                     </div>
 
                     <Button

@@ -63,6 +63,7 @@ import PersonaGenerator from "./pages/tools/PersonaGenerator";
 import ProductionAssistant from "./pages/tools/ProductionAssistant";
 import ContentMaximizer from "./pages/tools/ContentMaximizer";
 import EngagementResponder from "./pages/tools/EngagementResponder";
+import AppPricing from "./pages/AppPricing";
 
 const queryClient = new QueryClient();
 
@@ -110,6 +111,7 @@ const App = () => (
           <Route path="/tools/production-assistant" element={<ProtectedRoute><ProductionAssistant /></ProtectedRoute>} />
           <Route path="/tools/content-maximizer" element={<ProtectedRoute><ContentMaximizer /></ProtectedRoute>} />
           <Route path="/tools/engagement-responder" element={<ProtectedRoute><EngagementResponder /></ProtectedRoute>} />
+          <Route path="/app-pricing" element={<AppPricing />} />
           <Route path="/pals" element={<Pals />} />
           <Route path="/reel-pal" element={<ReelPal />} />
           <Route path="/system-pal" element={<SystemPal />} />

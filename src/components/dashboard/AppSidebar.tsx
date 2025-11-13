@@ -1,4 +1,4 @@
-import { Home, Video, User, Sparkles, Maximize, MessageCircle, Settings, LogOut } from 'lucide-react';
+import { Home, Video, User, Sparkles, Maximize, MessageCircle, Settings, LogOut, CreditCard } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -53,6 +53,12 @@ const toolItems = [
     title: 'Engagement Responder', 
     url: '/tools/engagement-responder', 
     icon: MessageCircle,
+    available: true,
+  },
+  { 
+    title: 'Pricing', 
+    url: '/app-pricing', 
+    icon: CreditCard,
     available: true,
   },
 ];

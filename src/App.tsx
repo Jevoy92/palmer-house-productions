@@ -17,6 +17,7 @@ import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { trackPageView } from "@/lib/analytics";
 import { Canonical } from "@/components/seo/Canonical";
 import { AnimationOptimizer } from "@/components/performance/AnimationOptimizer";
+import { CriticalStyles } from "@/components/performance/CriticalStyles";
 import Index from "./pages/Index";
 import Pals from "./pages/Pals";
 import ReelPal from "./pages/ReelPal";
@@ -85,6 +86,7 @@ const App = () => (
         <BrowserRouter>
           <AuthProvider>
           <PageTransition>
+          <CriticalStyles />
           <CriticalCSS />
           <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
           <AnimationOptimizer />

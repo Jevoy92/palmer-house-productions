@@ -166,127 +166,17 @@ const ProductionPricing = () => {
               Production Pricing & Packages
             </Badge>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 text-foreground">
-              Build Your System. Add What You Need.
+              Build Your Perfect Package
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-4">
-              Start with the Pal that fits your goals.
+              Start with a suggested build or create your own custom solution—it's your package, your way.
             </p>
-            <p className="text-muted-foreground max-w-3xl mx-auto">
-              All production pricing • Monthly Pal builds ($1,500 each) • Add-ons and upgrades • 
-              Suggested sample builds • Total flexibility to design your perfect system
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Pick a Pal that solves your current biggest business problem and customize it to your liking.
             </p>
           </div>
 
-          {/* Section 1: How Our Pricing Works */}
-          <Card className="mb-12 border-2">
-            <CardHeader>
-              <div className="flex items-center gap-2 mb-2">
-                <DollarSign className="w-6 h-6 text-primary" />
-                <CardTitle className="text-3xl">How Our Pricing Works</CardTitle>
-              </div>
-              <CardDescription className="text-lg">
-                Simple. Fair. Predictable. Scalable.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-8">
-              <div>
-                <h3 className="text-2xl font-bold mb-4 text-foreground">
-                  One Filming Session. One Base Video. Discounted Add-Ons.
-                </h3>
-                <p className="text-muted-foreground mb-6">
-                  Every video type (FAQ, training, onboarding, reel, brand story, evergreen) uses one universal pricing rule:
-                </p>
-              </div>
-
-              <div className="grid md:grid-cols-3 gap-6">
-                <Card className="bg-primary/5 border-primary/20">
-                  <CardHeader>
-                    <CardTitle className="text-xl">Base Video</CardTitle>
-                    <div className="text-4xl font-bold text-primary mt-2">$450</div>
-                    <CardDescription>First 1-minute video</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2">
-                      <li className="flex items-start gap-2">
-                        <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">Studio-quality filming</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">Teleprompter</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">Captions</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">Color grading</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">Clean sound</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">1 round of revisions</span>
-                      </li>
-                      <li className="flex items-start gap-2">
-                        <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">Organized delivery</span>
-                      </li>
-                    </ul>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-primary/5 border-primary/20">
-                  <CardHeader>
-                    <CardTitle className="text-xl">Additional Videos</CardTitle>
-                    <div className="text-4xl font-bold text-primary mt-2">+$150</div>
-                    <CardDescription>Each (same session)</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      You're already on set. Lighting is up. Camera rolling.
-                    </p>
-                    <p className="text-sm font-medium text-foreground">
-                      So extra videos cost a fraction — and that's where your value stacks.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-primary/5 border-primary/20">
-                  <CardHeader>
-                    <CardTitle className="text-xl">Longer Videos</CardTitle>
-                    <CardDescription className="mt-2">Same session</CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div>
-                      <div className="font-semibold text-foreground">+1–3 additional minutes:</div>
-                      <div className="text-2xl font-bold text-primary">+$150/min</div>
-                    </div>
-                    <div>
-                      <div className="font-semibold text-foreground">+3–5 additional minutes:</div>
-                      <div className="text-2xl font-bold text-primary">+$125/min</div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              <div className="bg-muted/50 p-6 rounded-lg border">
-                <h4 className="font-bold text-lg mb-2 text-foreground">All video types cost the same.</h4>
-                <p className="text-muted-foreground mb-4">
-                  Whether it's FAQ, Training, SOP, Reel, Brand Story, Recruitment, Onboarding, or Long-form educational content — 
-                  the price only changes based on length, not category.
-                </p>
-                <p className="text-sm font-medium text-foreground">
-                  This keeps everything simple, fair, and scalable.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Section 2: Monthly Pal Builds */}
+          {/* Monthly Pal Builds */}
           <div className="mb-12">
             <div className="text-center mb-8">
               <h2 className="text-3xl font-bold mb-4 text-foreground">The Monthly Pal Builds</h2>

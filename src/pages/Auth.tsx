@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { IndustrySelection } from '@/components/dashboard/IndustrySelection';
 import { toast } from 'sonner';
 import { MetaTags } from '@/components/seo/MetaTags';
 
@@ -14,7 +12,6 @@ export default function Auth() {
   const navigate = useNavigate();
   const { signUp, signIn, signInWithGoogle, user } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [showIndustryOnboarding, setShowIndustryOnboarding] = useState(false);
   
   const [signUpData, setSignUpData] = useState({
     email: '',
@@ -29,25 +26,9 @@ export default function Auth() {
 
   useEffect(() => {
     if (user) {
-      checkIndustryOnboarding();
-    }
-  }, [user]);
-
-  const checkIndustryOnboarding = async () => {
-    if (!user) return;
-
-    const { data } = await supabase
-      .from('profiles')
-      .select('industry')
-      .eq('id', user.id)
-      .single();
-
-    if (!data?.industry) {
-      setShowIndustryOnboarding(true);
-    } else {
       navigate('/dashboard');
     }
-  };
+  }, [user, navigate]);
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,17 +71,6 @@ export default function Auth() {
         title="Sign In - Palmer House Content OS"
         description="Access your Palmer House Productions content creation dashboard"
       />
-      
-      {showIndustryOnboarding && user && (
-        <IndustrySelection
-          open={showIndustryOnboarding}
-          userId={user.id}
-          onComplete={() => {
-            setShowIndustryOnboarding(false);
-            navigate('/dashboard');
-          }}
-        />
-      )}
 
       <div className="min-h-screen flex items-center justify-center bg-background p-4">
         <Card className="w-full max-w-md">

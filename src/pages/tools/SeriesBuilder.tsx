@@ -225,7 +225,7 @@ export default function SeriesBuilder() {
           <AppSidebar />
           <div className="flex-1 flex flex-col">
             <DashboardHeader />
-            <main className="flex-1 flex flex-col items-center justify-center bg-white px-4 pb-8">
+            <main className="flex-1 flex flex-col items-center justify-center bg-white px-4 pb-8 mt-16">
               <Loader2 className="w-16 h-16 animate-spin text-primary mb-8" />
               <h2 className="text-2xl font-bold text-foreground mb-4">
                 Building Your Series...
@@ -248,7 +248,7 @@ export default function SeriesBuilder() {
           <AppSidebar />
           <div className="flex-1 flex flex-col">
             <DashboardHeader />
-            <main className="flex-1 bg-white px-4 pb-8 overflow-y-auto">
+            <main className="flex-1 bg-white px-4 pb-8 overflow-y-auto mt-16">
 
               <div className="max-w-6xl mx-auto py-8">
                 {/* Header Actions */}
@@ -345,7 +345,7 @@ export default function SeriesBuilder() {
         <AppSidebar />
         <div className="flex-1 flex flex-col">
           <DashboardHeader />
-          <main className="flex-1 bg-white px-4 pb-8 overflow-y-auto">
+          <main className="flex-1 bg-white px-4 pb-8 overflow-y-auto mt-16">
 
             <div className="max-w-4xl mx-auto py-8">
               <div className="mb-12">

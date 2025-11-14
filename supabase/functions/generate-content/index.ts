@@ -108,9 +108,9 @@ serve(async (req) => {
     let userPrompt = '';
 
     switch (toolType) {
-      case 'video-series-builder':
-        systemPrompt = `You are a content strategist expert. Generate a comprehensive multi-platform content strategy based on the user's video idea. Return detailed, actionable content for each platform.`;
-        userPrompt = `Create a complete content strategy for this video idea: "${inputs.idea}"
+      case 'content-system-builder':
+        systemPrompt = `You are a content strategist expert. Generate a comprehensive multi-platform content system based on the user's content idea. Return detailed, actionable content for each platform.`;
+        userPrompt = `Create a complete content system for this idea: "${inputs.idea}"
         
 Industry: ${inputs.industry}
 Goal: ${inputs.goal}
@@ -126,6 +126,36 @@ Generate a structured plan with:
 8. DOWNLOADS: 2-3 relevant digital download ideas with titles and descriptions
 
 Format as JSON with these exact keys: strategy, youtube, linkedin, twitter, instagram, blog, email, downloads`;
+        break;
+
+      case 'series-builder':
+        systemPrompt = `You are a content series strategist expert. Create cohesive content series that maintain audience engagement through a clear through-line and progressive structure.`;
+        userPrompt = `Create a ${inputs.seriesLength}-part ${inputs.contentType} series:
+
+Topic: ${inputs.topic}
+Industry: ${inputs.industry}
+${inputs.additionalContext ? `Additional Context: ${inputs.additionalContext}` : ''}
+
+Generate a comprehensive series plan with:
+1. SERIES_TITLE: Compelling overall series title
+2. SERIES_CONCEPT: 2-3 sentence overview (what, why, who for)
+3. THROUGH_LINE: The connecting theme that ties all entries together
+4. ENTRIES: Array of ${inputs.seriesLength} entries, each with:
+   - number: Entry number (1-${inputs.seriesLength})
+   - title: Specific entry title
+   - description: 2-3 sentence summary
+   - keyTopics: Array of 3-5 main topics covered
+   - hook: Opening hook/question to grab attention
+   - cta: Specific call-to-action for this entry
+5. PUBLISHING_CADENCE: Recommended publishing schedule (e.g., "Weekly on Tuesdays" or "Bi-weekly")
+
+Ensure each entry:
+- Builds on previous entries
+- Has a clear value proposition
+- Advances the overall series narrative
+- Includes specific, actionable content
+
+Format as JSON with these exact keys: seriesTitle, seriesConcept, throughLine, entries (array), publishingCadence`;
         break;
 
       case 'persona-generator':

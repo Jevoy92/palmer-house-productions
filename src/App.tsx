@@ -58,7 +58,8 @@ import StyleGuide from "./pages/StyleGuide";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
-import VideoSeriesBuilder from "./pages/tools/VideoSeriesBuilder";
+import ContentSystemBuilder from "./pages/tools/ContentSystemBuilder";
+import SeriesBuilder from "./pages/tools/SeriesBuilder";
 import PersonaGenerator from "./pages/tools/PersonaGenerator";
 import ProductionAssistant from "./pages/tools/ProductionAssistant";
 import ContentMaximizer from "./pages/tools/ContentMaximizer";
@@ -109,7 +110,8 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-          <Route path="/tools/video-series-builder" element={<ProtectedRoute><VideoSeriesBuilder /></ProtectedRoute>} />
+            <Route path="/tools/content-system-builder" element={<ProtectedRoute><ContentSystemBuilder /></ProtectedRoute>} />
+            <Route path="/tools/series-builder" element={<ProtectedRoute><SeriesBuilder /></ProtectedRoute>} />
           <Route path="/tools/persona-generator" element={<ProtectedRoute><PersonaGenerator /></ProtectedRoute>} />
           <Route path="/tools/production-assistant" element={<ProtectedRoute><ProductionAssistant /></ProtectedRoute>} />
           <Route path="/tools/content-maximizer" element={<ProtectedRoute><ContentMaximizer /></ProtectedRoute>} />

@@ -42,7 +42,7 @@ const LOADING_TIPS = [
   'End every piece of content with a clear call-to-action.',
 ];
 
-export default function VideoSeriesBuilder() {
+export default function ContentSystemBuilder() {
   const [idea, setIdea] = useState('');
   const [industry, setIndustry] = useState('Real Estate');
   const [goal, setGoal] = useState('Educate');
@@ -83,9 +83,9 @@ export default function VideoSeriesBuilder() {
       }
 
       // Call the edge function with authentication
-      const { data: functionData, error: functionError } = await supabase.functions.invoke('generate-content', {
-        body: { 
-          toolType: 'video-series-builder',
+    const { data: functionData, error: functionError } = await supabase.functions.invoke('generate-content', {
+      body: { 
+        toolType: 'content-system-builder',
           inputs: {
             idea: idea.trim(),
             industry,
@@ -408,7 +408,7 @@ export default function VideoSeriesBuilder() {
                     <Video className="w-10 h-10 text-white" />
                   </div>
                   <h1 className="text-4xl font-bold text-foreground mb-3">
-                    Video Series Builder
+                    Content System Builder
                   </h1>
                   <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                     Turn one idea into a complete content system
@@ -420,7 +420,7 @@ export default function VideoSeriesBuilder() {
                   <div className="space-y-6">
                     <div>
                       <label className="block text-sm font-semibold text-foreground mb-2">
-                        Core Video Idea
+                        Core Content Idea
                       </label>
                       <Textarea
                         placeholder="e.g., A 5-part series on how first-time homebuyers can secure a loan."

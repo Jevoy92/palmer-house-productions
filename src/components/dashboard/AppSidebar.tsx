@@ -1,4 +1,4 @@
-import { Home, Video, User, Sparkles, Maximize, MessageCircle, Settings, LogOut, CreditCard } from 'lucide-react';
+import { Home, Video, User, Sparkles, Maximize, MessageCircle, Settings, LogOut, CreditCard, BookOpen } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -26,9 +26,15 @@ const toolItems = [
     available: true,
   },
   { 
-    title: 'Video Series Builder', 
-    url: '/tools/video-series-builder', 
+    title: 'Content System Builder', 
+    url: '/tools/content-system-builder', 
     icon: Video,
+    available: true,
+  },
+  { 
+    title: 'Series Builder', 
+    url: '/tools/series-builder', 
+    icon: BookOpen,
     available: true,
   },
   { 

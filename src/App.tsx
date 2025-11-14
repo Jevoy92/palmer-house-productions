@@ -85,6 +85,18 @@ function RouteTracker() {
   return null;
 }
 
+// Footer wrapper that conditionally renders based on route
+function ConditionalFooter() {
+  const location = useLocation();
+  const isDashboardRoute = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/tools/');
+  
+  if (isDashboardRoute) {
+    return null;
+  }
+  
+  return <EnhancedFooter />;
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ErrorBoundary>
@@ -172,7 +184,7 @@ const App = () => (
            <Route path="*" element={<NotFound />} />
            </Routes>
           </div>
-           <EnhancedFooter />
+           <ConditionalFooter />
         </PageTransition>
           </AuthProvider>
       </BrowserRouter>

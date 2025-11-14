@@ -227,7 +227,7 @@ export default function PalHub() {
       />
       
       <DashboardLayout>
-        <div className="max-w-7xl mx-auto p-3 md:p-4 space-y-4">
+        <div className="max-w-7xl mx-auto px-3 md:px-4 pt-0 space-y-4">
           {/* Header */}
           <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-br ${pal.color} p-6 text-white`}>
             <h1 className="text-2xl md:text-3xl font-bold mb-2">{pal.name}</h1>

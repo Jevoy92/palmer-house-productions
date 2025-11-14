@@ -50,7 +50,7 @@ export default function Dashboard() {
           </div>
         }
       >
-        <div className="max-w-7xl mx-auto p-3 md:p-4 space-y-4">
+        <div className="max-w-7xl mx-auto px-3 md:px-4 pt-0 space-y-4">
           <HeroBanner />
 
           <div>

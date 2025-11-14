@@ -99,7 +99,7 @@ export default function SeriesBuilder() {
       />
 
       <DashboardLayout>
-        <div className="max-w-7xl mx-auto p-3 md:p-4 space-y-4">
+        <div className="max-w-7xl mx-auto px-3 md:px-4 pt-0 space-y-4">
           <div className="mb-8 text-center">
                 <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-pal-orange flex items-center justify-center">
                   <BookOpen className="w-10 h-10 text-white" />

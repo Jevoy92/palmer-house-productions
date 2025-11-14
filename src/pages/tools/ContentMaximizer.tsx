@@ -138,11 +138,11 @@ export default function ContentMaximizer() {
           canonicalUrl="https://www.palmerhouseproductions.com/tools/content-maximizer"
         />
         <SidebarProvider>
-          <div className="min-h-screen flex w-full">
+          <div className="flex w-full min-h-[calc(100vh-5rem)]">
             <AppSidebar />
             <div className="flex-1 flex flex-col">
               <DashboardHeader />
-              <main className="flex-1 bg-white flex items-center justify-center p-8">
+              <main className="flex-1 bg-white flex items-center justify-center p-8 pb-8">
                 <div className="text-center max-w-md">
                   <Loader2 className="w-16 h-16 mx-auto mb-6 text-pal-orange animate-spin" />
                   <h2 className="text-2xl font-bold text-foreground mb-4">
@@ -169,11 +169,11 @@ export default function ContentMaximizer() {
           canonicalUrl="https://www.palmerhouseproductions.com/tools/content-maximizer"
         />
         <SidebarProvider>
-          <div className="min-h-screen flex w-full">
+          <div className="flex w-full min-h-[calc(100vh-5rem)]">
             <AppSidebar />
             <div className="flex-1 flex flex-col">
               <DashboardHeader />
-              <main className="flex-1 bg-white">
+              <main className="flex-1 bg-white pb-8">
                 <div className="container mx-auto px-4 py-8 max-w-5xl">
                   <div className="flex justify-between items-start mb-8">
                     <div>
@@ -262,13 +262,13 @@ export default function ContentMaximizer() {
         canonicalUrl="https://www.palmerhouseproductions.com/tools/content-maximizer"
       />
       <SidebarProvider>
-        <div className="min-h-screen flex w-full">
+        <div className="flex w-full min-h-[calc(100vh-5rem)]">
           <AppSidebar />
           
           <div className="flex-1 flex flex-col">
             <DashboardHeader />
             
-            <main className="flex-1 bg-white">
+            <main className="flex-1 bg-white pb-8">
               <div className="container mx-auto px-4 py-8 max-w-4xl">
                 <div className="mb-12 text-center">
                   <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-pal-orange flex items-center justify-center">

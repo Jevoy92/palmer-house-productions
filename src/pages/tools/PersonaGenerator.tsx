@@ -137,7 +137,7 @@ export default function PersonaGenerator() {
         canonicalUrl="https://www.palmerhouseproductions.com/tools/persona-generator"
       />
       <SidebarProvider>
-        <div className="flex w-full min-h-screen pt-20">
+        <div className="flex w-full min-h-screen">
           <AppSidebar />
           
           <div className="flex-1 flex flex-col">

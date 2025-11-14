@@ -139,7 +139,7 @@ export default function ContentMaximizer() {
           canonicalUrl="https://www.palmerhouseproductions.com/tools/content-maximizer"
         />
       <SidebarProvider>
-        <div className="flex w-full min-h-screen pt-20">
+        <div className="flex w-full min-h-screen">
           <AppSidebar />
             <div className="flex-1 flex flex-col">
               <DashboardHeader />

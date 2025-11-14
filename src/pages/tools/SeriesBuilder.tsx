@@ -221,7 +221,7 @@ export default function SeriesBuilder() {
   if (loading) {
     return (
       <SidebarProvider>
-        <div className="flex w-full min-h-screen pt-20">
+        <div className="flex w-full min-h-screen">
           <AppSidebar />
           <div className="flex-1 flex flex-col">
             <DashboardHeader />

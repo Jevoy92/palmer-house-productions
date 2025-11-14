@@ -74,13 +74,13 @@ export default function PalHub() {
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
         const { data, error } = await supabase
-          .from('user_video_checklist')
+          .from('user_video_checklist' as any)
           .select('video_id, completed')
           .eq('pal', pal);
-        if (error) throw error;
+        if (error) throw error as any;
         if (!mounted) return;
         const map: Record<string, boolean> = {};
-        data?.forEach(row => { map[row.video_id as string] = !!row.completed; });
+        (data as any[])?.forEach((row: any) => { map[row.video_id as string] = !!row.completed; });
         setCompleted(map);
       } catch (e) {
         console.error(e);

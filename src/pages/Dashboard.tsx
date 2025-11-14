@@ -52,33 +52,33 @@ export default function Dashboard() {
       {/* Desktop Top Navigation */}
       <TopNavigation />
 
-      <div className="min-h-screen w-full flex pb-16 lg:pb-0">
+      <div className="min-h-screen w-full flex pb-16 lg:pb-0 lg:pt-16 lg:pl-64 xl:pr-80">
         {/* Desktop Left Sidebar */}
         <SimplifiedSidebar />
 
         {/* Main Content Area */}
         <main className="flex-1 overflow-auto bg-background">
-          <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8 space-y-8">
+          <div className="max-w-7xl mx-auto p-3 md:p-4 space-y-4">
             {/* Hero Banner */}
             <HeroBanner />
 
             {/* Tool Progress Cards */}
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-4">Recent Activity</h3>
+              <h3 className="text-base font-semibold text-foreground mb-2">Recent Activity</h3>
               <ToolProgressCards />
             </div>
 
             {/* Continue Creating Section */}
             <div>
-              <h3 className="text-lg font-semibold text-foreground mb-4">Continue Creating</h3>
+              <h3 className="text-base font-semibold text-foreground mb-2">Continue Creating</h3>
               <ContinueCreating />
             </div>
           </div>
         </main>
 
         {/* Right Stats Sidebar - Desktop Only */}
-        <aside className="hidden xl:block w-80 border-l border-border overflow-y-auto bg-background">
-          <div className="p-6">
+        <aside className="hidden xl:block xl:fixed xl:top-16 xl:right-0 xl:bottom-0 w-80 border-l border-border overflow-y-auto bg-background">
+          <div className="p-3">
             <DashboardStats 
               favoritePal={favoritePal}
               onChangePal={() => setShowPalSelector(true)}

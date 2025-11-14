@@ -90,35 +90,9 @@ export function AppSidebar() {
   return (
     <Sidebar
       collapsible="icon"
-      className="transition-all duration-300 ease-in-out top-0 h-screen"
+      className="transition-all duration-300 ease-in-out top-16 h-[calc(100vh-4rem)]"
     >
-      <SidebarContent className="transition-all duration-300">
-        {/* Logo / Brand with Trigger */}
-        {!isCollapsed && (
-          <div className="p-4 flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img 
-                src={LOGO.url} 
-                alt={LOGO.alt}
-                className="h-10 w-auto object-contain"
-              />
-            </div>
-            <SidebarTrigger className="ml-auto" />
-          </div>
-        )}
-
-        {isCollapsed && (
-          <div className="p-2 flex flex-col items-center gap-2">
-            <SidebarTrigger />
-            <img 
-              src={LOGO.url} 
-              alt={LOGO.alt}
-              className="h-8 w-auto object-contain"
-            />
-          </div>
-        )}
-
-        <Separator className="my-2" />
+      <SidebarContent className="transition-all duration-300 pt-4">
 
         <SidebarGroup>
           {!isCollapsed && <SidebarGroupLabel>Tools</SidebarGroupLabel>}

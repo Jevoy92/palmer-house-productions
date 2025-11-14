@@ -9,9 +9,10 @@ import { Loader2, BookOpen, Download, Save, RefreshCw, Sparkles } from 'lucide-r
 import { supabase } from '@/integrations/supabase/client';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/AppSidebar';
-import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
+import { TopNavigation } from '@/components/dashboard/TopNavigation';
 import { Input } from '@/components/ui/input';
 import { EnhancedFooter } from '@/components/seo/EnhancedFooter';
+import { MetaTags } from '@/components/seo/MetaTags';
 
 const CONTENT_TYPES = [
   { value: 'blog', label: '📝 Blog Posts' },
@@ -221,11 +222,11 @@ export default function SeriesBuilder() {
   if (loading) {
     return (
       <SidebarProvider>
-        <div className="flex w-full min-h-screen">
-          <AppSidebar />
-          <div className="flex-1 flex flex-col">
-            <DashboardHeader />
-            <main className="flex-1 flex flex-col items-center justify-center bg-white px-4 pb-8">
+        <div className="min-h-screen w-full">
+          <TopNavigation />
+          <div className="flex pt-16">
+            <AppSidebar />
+            <main className="flex-1 flex flex-col items-center justify-center bg-background px-4 min-h-[calc(100vh-4rem)]">
               <Loader2 className="w-16 h-16 animate-spin text-primary mb-8" />
               <h2 className="text-2xl font-bold text-foreground mb-4">
                 Building Your Series...
@@ -244,11 +245,11 @@ export default function SeriesBuilder() {
   if (seriesPlan) {
     return (
       <SidebarProvider>
-        <div className="flex w-full min-h-screen">
-          <AppSidebar />
-          <div className="flex-1 flex flex-col">
-            <DashboardHeader />
-            <main className="flex-1 bg-white px-4 pb-8 overflow-y-auto">
+        <div className="min-h-screen w-full">
+          <TopNavigation />
+          <div className="flex pt-16">
+            <AppSidebar />
+            <main className="flex-1 bg-background px-4 overflow-y-auto min-h-[calc(100vh-4rem)]">
 
               <div className="max-w-6xl mx-auto py-8">
                 {/* Header Actions */}
@@ -341,11 +342,11 @@ export default function SeriesBuilder() {
 
   return (
     <SidebarProvider>
-      <div className="flex w-full min-h-screen">
-        <AppSidebar />
-        <div className="flex-1 flex flex-col">
-          <DashboardHeader />
-          <main className="flex-1 bg-white px-4 pb-8 overflow-y-auto">
+      <div className="min-h-screen w-full">
+        <TopNavigation />
+        <div className="flex pt-16">
+          <AppSidebar />
+          <main className="flex-1 bg-background px-4 overflow-y-auto min-h-[calc(100vh-4rem)]">
 
             <div className="max-w-4xl mx-auto py-8">
               <div className="mb-12">

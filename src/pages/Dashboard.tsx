@@ -7,7 +7,7 @@ import { Video, User, Sparkles, Maximize, MessageCircle, ArrowRight } from 'luci
 import { useNavigate } from 'react-router-dom';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/AppSidebar';
-import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
+import { TopNavigation } from '@/components/dashboard/TopNavigation';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -66,14 +66,11 @@ export default function Dashboard() {
         canonicalUrl="https://www.palmerhouseproductions.com/dashboard"
       />
       <SidebarProvider>
-        <div className="flex w-full min-h-screen">
-          <AppSidebar />
-          
-          <div className="flex-1 flex flex-col">
-            <DashboardHeader />
-            
-            {/* Main Content */}
-            <main className="flex-1 bg-white pb-8">
+        <div className="min-h-screen w-full">
+          <TopNavigation />
+          <div className="flex pt-16">
+            <AppSidebar />
+            <main className="flex-1 p-6 md:p-8 overflow-auto bg-background min-h-[calc(100vh-4rem)]">
               <div className="container mx-auto px-4 py-8 max-w-7xl">
                 {/* Welcome Hero */}
                 <div className="mb-12 text-center">
@@ -147,8 +144,8 @@ export default function Dashboard() {
                 </div>
               </div>
             </main>
-            <EnhancedFooter />
           </div>
+          <EnhancedFooter />
         </div>
       </SidebarProvider>
     </>

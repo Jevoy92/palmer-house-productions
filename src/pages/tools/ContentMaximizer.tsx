@@ -138,9 +138,9 @@ export default function ContentMaximizer() {
           description="Repurpose your content across all platforms to maximize reach and engagement."
           canonicalUrl="https://www.palmerhouseproductions.com/tools/content-maximizer"
         />
-        <SidebarProvider>
-          <div className="flex w-full min-h-screen">
-            <AppSidebar />
+      <SidebarProvider>
+        <div className="flex w-full min-h-screen pt-20">
+          <AppSidebar />
             <div className="flex-1 flex flex-col">
               <DashboardHeader />
               <main className="flex-1 bg-white flex items-center justify-center p-8 pb-8">

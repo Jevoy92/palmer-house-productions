@@ -1,4 +1,3 @@
-import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useAuth } from '@/contexts/AuthContext';
 import { CreditsBalance } from './CreditsBalance';
 
@@ -17,10 +16,9 @@ export function DashboardHeader() {
   };
 
   return (
-    <header className="h-16 flex items-center border-b border-border bg-white sticky top-0 z-50">
+    <header className="h-16 flex items-center border-b border-border bg-white sticky top-20 z-40">
       <div className="container mx-auto px-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <SidebarTrigger className="text-muted-foreground hover:text-foreground" />
           <div className="hidden md:block">
             <h1 className="text-lg font-semibold text-foreground">
               {getGreeting()}, {userName}

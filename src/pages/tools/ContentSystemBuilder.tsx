@@ -201,7 +201,7 @@ export default function ContentSystemBuilder() {
   if (loading) {
     return (
       <SidebarProvider>
-        <div className="flex w-full min-h-screen">
+        <div className="flex w-full min-h-screen pt-20">
           <AppSidebar />
           <div className="flex-1 flex flex-col">
             <DashboardHeader />

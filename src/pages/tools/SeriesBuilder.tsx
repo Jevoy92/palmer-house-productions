@@ -7,11 +7,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, BookOpen, Download, Save, RefreshCw, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import { SidebarProvider } from '@/components/ui/sidebar';
-import { AppSidebar } from '@/components/dashboard/AppSidebar';
 import { TopNavigation } from '@/components/dashboard/TopNavigation';
+import { MobileTopBar } from '@/components/dashboard/MobileTopBar';
+import { SimplifiedSidebar } from '@/components/dashboard/SimplifiedSidebar';
+import { BottomNavigation } from '@/components/dashboard/BottomNavigation';
 import { Input } from '@/components/ui/input';
-import { EnhancedFooter } from '@/components/seo/EnhancedFooter';
 import { MetaTags } from '@/components/seo/MetaTags';
 
 const CONTENT_TYPES = [

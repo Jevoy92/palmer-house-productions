@@ -6,10 +6,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card } from '@/components/ui/card';
 import { Loader2, Sparkles, Download, Save, RotateCcw, Video, Coins } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { SidebarProvider } from '@/components/ui/sidebar';
-import { AppSidebar } from '@/components/dashboard/AppSidebar';
 import { TopNavigation } from '@/components/dashboard/TopNavigation';
-import { EnhancedFooter } from '@/components/seo/EnhancedFooter';
+import { MobileTopBar } from '@/components/dashboard/MobileTopBar';
+import { SimplifiedSidebar } from '@/components/dashboard/SimplifiedSidebar';
+import { BottomNavigation } from '@/components/dashboard/BottomNavigation';
 import { supabase } from '@/integrations/supabase/client';
 
 const EXAMPLE_PROMPTS = [

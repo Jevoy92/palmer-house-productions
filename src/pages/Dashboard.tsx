@@ -1,60 +1,39 @@
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState, useEffect } from 'react';
 import { MetaTags } from '@/components/seo/MetaTags';
-import { EnhancedFooter } from '@/components/seo/EnhancedFooter';
-import { Video, User, Sparkles, Maximize, MessageCircle, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { SidebarProvider } from '@/components/ui/sidebar';
-import { AppSidebar } from '@/components/dashboard/AppSidebar';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { TopNavigation } from '@/components/dashboard/TopNavigation';
+import { MobileTopBar } from '@/components/dashboard/MobileTopBar';
+import { SimplifiedSidebar } from '@/components/dashboard/SimplifiedSidebar';
+import { BottomNavigation } from '@/components/dashboard/BottomNavigation';
 import { HeroBanner } from '@/components/dashboard/HeroBanner';
 import { ToolProgressCards } from '@/components/dashboard/ToolProgressCards';
+import { ContinueCreating } from '@/components/dashboard/ContinueCreating';
 import { DashboardStats } from '@/components/dashboard/DashboardStats';
+import { PalAvatarSelector } from '@/components/dashboard/PalAvatarSelector';
 
 export default function Dashboard() {
-  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [favoritePal, setFavoritePal] = useState('reel');
+  const [showPalSelector, setShowPalSelector] = useState(false);
 
-  const handleToolClick = (toolId: string) => {
-    navigate(`/tools/${toolId}`);
-  };
+  useEffect(() => {
+    if (!user) return;
 
-  // All tools are now available
-  const allTools = [
-    {
-      id: 'video-series-builder',
-      name: 'Video Series Builder',
-      description: 'Turn one idea into a complete content system',
-      icon: Video,
-      color: 'bg-pal-purple',
-    },
-    {
-      id: 'persona-generator',
-      name: 'Persona Generator',
-      description: 'Define your ideal audience and brand voice',
-      icon: User,
-      color: 'bg-pal-blue',
-    },
-    {
-      id: 'production-assistant',
-      name: 'Production Assistant',
-      description: 'Streamline your pre-production workflow',
-      icon: Sparkles,
-      color: 'bg-pal-green',
-    },
-    {
-      id: 'content-maximizer',
-      name: 'Content Maximizer',
-      description: 'Repurpose content across all platforms',
-      icon: Maximize,
-      color: 'bg-pal-orange',
-    },
-    {
-      id: 'engagement-responder',
-      name: 'Engagement Responder',
-      description: 'Automate community engagement',
-      icon: MessageCircle,
-      color: 'bg-pal-purple',
-    },
-  ];
+    const fetchProfile = async () => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('favorite_pal')
+        .eq('id', user.id)
+        .single();
+
+      if (data?.favorite_pal) {
+        setFavoritePal(data.favorite_pal);
+      }
+    };
+
+    fetchProfile();
+  }, [user]);
 
   return (
     <>
@@ -63,66 +42,61 @@ export default function Dashboard() {
         description="Access your video series builder, persona generator, production assistant, and more content creation tools."
         canonicalUrl="https://www.palmerhouseproductions.com/dashboard"
       />
-      <SidebarProvider>
-        <div className="min-h-screen w-full">
-          <TopNavigation />
-          <div className="flex pt-16">
-            <AppSidebar />
-            
-            {/* Main Content Area */}
-            <main className="flex-1 p-6 md:p-8 overflow-auto bg-background min-h-[calc(100vh-4rem)]">
-              <div className="max-w-7xl mx-auto space-y-8">
-                {/* Hero Banner */}
-                <HeroBanner />
 
-                {/* Tool Progress Cards */}
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-4">Recent Activity</h3>
-                  <ToolProgressCards />
-                </div>
+      {/* Mobile Top Bar */}
+      <MobileTopBar 
+        favoritePal={favoritePal} 
+        onAvatarClick={() => setShowPalSelector(true)}
+      />
 
-                {/* All Tools Grid */}
-                <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-4">Your Tools</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {allTools.map((tool) => {
-                      const Icon = tool.icon;
-                      return (
-                        <Card
-                          key={tool.id}
-                          className="hover:shadow-lg transition-all duration-300 cursor-pointer group border-2 hover:border-pal-purple/20"
-                          onClick={() => handleToolClick(tool.id)}
-                        >
-                          <CardHeader>
-                            <div className="flex items-center gap-4">
-                              <div className={`w-14 h-14 rounded-xl ${tool.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                                <Icon className="w-7 h-7 text-white" />
-                              </div>
-                              <div className="flex-1">
-                                <CardTitle className="text-xl mb-1">{tool.name}</CardTitle>
-                                <CardDescription className="text-sm">
-                                  {tool.description}
-                                </CardDescription>
-                              </div>
-                              <ArrowRight className="w-6 h-6 text-muted-foreground group-hover:text-pal-purple group-hover:translate-x-1 transition-all flex-shrink-0" />
-                            </div>
-                          </CardHeader>
-                        </Card>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            </main>
+      {/* Desktop Top Navigation */}
+      <TopNavigation />
 
-            {/* Right Stats Sidebar */}
-            <aside className="hidden xl:block w-80 border-l border-border p-6 overflow-y-auto bg-background min-h-[calc(100vh-4rem)]">
-              <DashboardStats />
-            </aside>
+      <div className="min-h-screen w-full flex pt-16 lg:pt-16 pb-16 lg:pb-0">
+        {/* Desktop Left Sidebar */}
+        <SimplifiedSidebar />
+
+        {/* Main Content Area */}
+        <main className="flex-1 overflow-auto bg-background">
+          <div className="max-w-7xl mx-auto p-4 md:p-6 lg:p-8 space-y-8">
+            {/* Hero Banner */}
+            <HeroBanner />
+
+            {/* Tool Progress Cards */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-4">Recent Activity</h3>
+              <ToolProgressCards />
+            </div>
+
+            {/* Continue Creating Section */}
+            <div>
+              <h3 className="text-lg font-semibold text-foreground mb-4">Continue Creating</h3>
+              <ContinueCreating />
+            </div>
           </div>
-          <EnhancedFooter />
-        </div>
-      </SidebarProvider>
+        </main>
+
+        {/* Right Stats Sidebar - Desktop Only */}
+        <aside className="hidden xl:block w-80 border-l border-border overflow-y-auto bg-background">
+          <div className="p-6">
+            <DashboardStats 
+              favoritePal={favoritePal}
+              onChangePal={() => setShowPalSelector(true)}
+            />
+          </div>
+        </aside>
+      </div>
+
+      {/* Mobile Bottom Navigation */}
+      <BottomNavigation />
+
+      {/* Pal Avatar Selector Modal */}
+      <PalAvatarSelector
+        open={showPalSelector}
+        onOpenChange={setShowPalSelector}
+        currentPal={favoritePal}
+        onPalChange={setFavoritePal}
+      />
     </>
   );
 }

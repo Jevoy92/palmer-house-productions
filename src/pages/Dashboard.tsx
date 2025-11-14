@@ -208,9 +208,9 @@ export default function Dashboard() {
       `}</style>
 
       <div className="min-h-screen bg-[#F0F2F5] p-4 lg:p-8">
-        <div className="grid grid-cols-12 gap-6 max-w-[1600px] mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-[1600px] mx-auto">
           
-          <aside className="col-span-12 lg:col-span-2 bg-white rounded-3xl p-6 flex flex-col min-h-[95vh]">
+          <aside className="hidden lg:flex lg:col-span-2 bg-white rounded-3xl p-6 flex-col min-h-[95vh]">
             <div className="flex items-center gap-3 mb-10">
               <div className="bg-brand-purple p-2 rounded-lg">
                 <Layers className="w-6 h-6 text-white" />
@@ -304,7 +304,7 @@ export default function Dashboard() {
             </div>
           </aside>
 
-          <main className="col-span-12 lg:col-span-7 bg-brand-gray-light rounded-3xl p-6 flex flex-col gap-6 overflow-y-auto max-h-[95vh]">
+          <main className="col-span-1 lg:col-span-7 bg-brand-gray-light rounded-3xl p-4 md:p-6 flex flex-col gap-6 overflow-y-auto lg:max-h-[95vh]">
             <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
               <div className="relative w-full max-w-md">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-gray-dark w-5 h-5" />
@@ -343,7 +343,7 @@ export default function Dashboard() {
               </button>
             </section>
             
-            <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
               {allTools.slice(0, 3).map((tool) => {
                 const Icon = tool.icon;
                 return (
@@ -377,7 +377,7 @@ export default function Dashboard() {
                   </button>
                 </div>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                 {allTools.map((tool) => {
                   const Icon = tool.icon;
                   return (
@@ -461,7 +461,7 @@ export default function Dashboard() {
             </section>
           </main>
 
-          <aside className="col-span-12 lg:col-span-3 bg-white rounded-3xl p-6 flex flex-col gap-6 max-h-[95vh] overflow-y-auto">
+          <aside className="col-span-1 lg:col-span-3 bg-white rounded-3xl p-4 md:p-6 flex flex-col gap-6 lg:max-h-[95vh] overflow-y-auto">
             <div className="flex justify-between items-center">
               <h3 className="text-xl font-bold text-brand-text">Statistics</h3>
               <button className="text-brand-gray-dark hover:text-brand-text">

@@ -66,7 +66,7 @@ export default function Dashboard() {
         canonicalUrl="https://www.palmerhouseproductions.com/dashboard"
       />
       <SidebarProvider>
-        <div className="flex w-full min-h-screen">
+        <div className="flex w-full min-h-screen pt-20">
           <AppSidebar />
           
           <div className="flex-1 flex flex-col">

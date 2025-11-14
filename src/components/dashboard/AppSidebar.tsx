@@ -85,8 +85,9 @@ export function AppSidebar() {
   return (
     <Sidebar
       collapsible="icon"
+      className="transition-all duration-300 ease-in-out top-20 h-[calc(100vh-5rem)]"
     >
-      <SidebarContent>
+      <SidebarContent className="transition-all duration-300">
         {/* Logo / Brand with Trigger */}
         {!isCollapsed && (
           <div className="p-4 flex items-center justify-between">

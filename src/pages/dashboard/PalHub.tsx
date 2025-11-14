@@ -100,27 +100,27 @@ export default function PalHub() {
 
       // Check if row exists
       const { data: existing, error: selErr } = await supabase
-        .from('user_video_checklist')
+        .from('user_video_checklist' as any)
         .select('id, completed')
         .eq('video_id', itemId)
         .eq('pal', pal)
         .limit(1)
         .maybeSingle();
-      if (selErr && selErr.code !== 'PGRST116') throw selErr;
+      if (selErr && (selErr as any).code && (selErr as any).code !== 'PGRST116') throw selErr as any;
 
       const isCompleted = !completed[itemId];
 
-      if (existing?.id) {
+      if ((existing as any)?.id) {
         const { error } = await supabase
-          .from('user_video_checklist')
-          .update({ completed: isCompleted, completed_at: isCompleted ? new Date().toISOString() : null })
-          .eq('id', existing.id);
-        if (error) throw error;
+          .from('user_video_checklist' as any)
+          .update({ completed: isCompleted, completed_at: isCompleted ? new Date().toISOString() : null } as any)
+          .eq('id', (existing as any).id);
+        if (error) throw error as any;
       } else {
         const { error } = await supabase
-          .from('user_video_checklist')
-          .insert({ user_id: user.id, pal, video_id: itemId, completed: isCompleted, completed_at: isCompleted ? new Date().toISOString() : null });
-        if (error) throw error;
+          .from('user_video_checklist' as any)
+          .insert({ user_id: (user as any).id, pal, video_id: itemId, completed: isCompleted, completed_at: isCompleted ? new Date().toISOString() : null } as any);
+        if (error) throw error as any;
       }
     } catch (e) {
       console.error(e);

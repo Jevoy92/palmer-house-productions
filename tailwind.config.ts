@@ -82,15 +82,23 @@ export default {
 					'black': 'hsl(var(--video-black))',
 					'white': 'hsl(var(--video-white))',
 				},
-				// Pal colors
-				'pal': {
-					'orange': 'hsl(var(--pal-orange))',
-					'purple': 'hsl(var(--pal-purple))',
-					'green': 'hsl(var(--pal-green))',
-					'blue': 'hsl(var(--pal-blue))',
-					'pink': 'hsl(var(--social-pink))',
-					'footer-green': 'hsl(var(--pal-footer-green))',
-				}
+			// Pal colors
+			'pal': {
+				'orange': 'hsl(var(--pal-orange))',
+				'purple': 'hsl(var(--pal-purple))',
+				'green': 'hsl(var(--pal-green))',
+				'blue': 'hsl(var(--pal-blue))',
+				'pink': 'hsl(var(--social-pink))',
+				'footer-green': 'hsl(var(--pal-footer-green))',
+			},
+			// Brand colors for dashboard
+			'brand-purple': '#6C63FF',
+			'brand-purple-light': '#F0F0FF',
+			'brand-purple-dark': '#554fcc',
+			'brand-gray-light': '#F9FAFB',
+			'brand-gray-medium': '#E5E7EB',
+			'brand-gray-dark': '#6B7280',
+			'brand-text': '#1F2937',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

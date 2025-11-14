@@ -73,7 +73,7 @@ export default function Dashboard() {
             <DashboardHeader />
             
             {/* Main Content */}
-            <main className="flex-1 bg-white pb-8 mt-16">
+            <main className="flex-1 bg-white pb-8">
               <div className="container mx-auto px-4 py-8 max-w-7xl">
                 {/* Welcome Hero */}
                 <div className="mb-12 text-center">

@@ -205,7 +205,7 @@ export default function ContentSystemBuilder() {
           <AppSidebar />
           <div className="flex-1 flex flex-col">
             <DashboardHeader />
-            <main className="flex-1 flex flex-col items-center justify-center bg-white px-4 pb-8 mt-16">
+            <main className="flex-1 flex flex-col items-center justify-center bg-white px-4 pb-8">
               <Loader2 className="w-16 h-16 animate-spin text-primary mb-8" />
               <h2 className="text-2xl font-bold text-foreground mb-4">
                 Crafting Your Content System...
@@ -236,7 +236,7 @@ export default function ContentSystemBuilder() {
             <AppSidebar />
             <div className="flex-1 flex flex-col">
               <DashboardHeader />
-              <main className="flex-1 bg-white px-4 py-8 pb-8 mt-16">
+              <main className="flex-1 bg-white px-4 py-8 pb-8">
                 <div className="container mx-auto max-w-6xl">
                   {/* Header with Actions */}
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
@@ -403,7 +403,7 @@ export default function ContentSystemBuilder() {
             <AppSidebar />
             <div className="flex-1 flex flex-col">
               <DashboardHeader />
-              <main className="flex-1 bg-white px-4 py-8 pb-8 mt-16">
+              <main className="flex-1 bg-white px-4 py-8 pb-8">
               <div className="container mx-auto max-w-4xl">
                 {/* Header */}
                 <div className="text-center mb-12">

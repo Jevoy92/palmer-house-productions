@@ -1,4 +1,4 @@
-import { Home, Search, Video, User, Sparkles, Maximize, MessageCircle, Settings, LogOut } from 'lucide-react';
+import { Home, Search, Video, User, Sparkles, Maximize, MessageCircle, Settings, LogOut, BookOpen } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +15,8 @@ const overviewItems = [
 ];
 
 const toolItems = [
-  { title: 'Series Builder', url: '/tools/video-series-builder', icon: Video },
+  { title: 'Content System Builder', url: '/tools/content-system-builder', icon: Video },
+  { title: 'Series Builder', url: '/tools/video-series-builder', icon: BookOpen },
   { title: 'Persona Generator', url: '/tools/persona-generator', icon: User },
   { title: 'Production Assistant', url: '/tools/production-assistant', icon: Sparkles },
   { title: 'Content Maximizer', url: '/tools/content-maximizer', icon: Maximize },

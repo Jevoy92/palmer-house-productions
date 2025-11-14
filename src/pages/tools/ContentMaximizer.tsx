@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { MetaTags } from '@/components/seo/MetaTags';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/dashboard/AppSidebar';
 import { TopNavigation } from '@/components/dashboard/TopNavigation';
-import { MobileTopBar } from '@/components/dashboard/MobileTopBar';
-import { SimplifiedSidebar } from '@/components/dashboard/SimplifiedSidebar';
-import { BottomNavigation } from '@/components/dashboard/BottomNavigation';
+import { EnhancedFooter } from '@/components/seo/EnhancedFooter';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -138,23 +138,26 @@ export default function ContentMaximizer() {
           description="Repurpose your content across all platforms to maximize reach and engagement."
           canonicalUrl="https://www.palmerhouseproductions.com/tools/content-maximizer"
         />
-        <MobileTopBar />
-        <TopNavigation />
-        <div className="min-h-screen w-full flex pt-16 lg:pt-16 pb-16 lg:pb-0">
-          <SimplifiedSidebar />
-          <main className="flex-1 bg-background flex items-center justify-center p-8">
-            <div className="text-center max-w-md">
-              <Loader2 className="w-16 h-16 mx-auto mb-6 text-pal-orange animate-spin" />
-              <h2 className="text-2xl font-bold text-foreground mb-4">
-                Repurposing Your Content...
-              </h2>
-              <p className="text-lg text-muted-foreground bg-muted/50 rounded-xl p-6 animate-pulse">
-                💡 {LOADING_TIPS[currentTip]}
-              </p>
+      <SidebarProvider>
+        <div className="min-h-screen w-full">
+          <TopNavigation />
+          <div className="flex pt-16">
+            <AppSidebar />
+            <main className="flex-1 bg-background flex items-center justify-center p-8 min-h-[calc(100vh-4rem)]">
+                <div className="text-center max-w-md">
+                  <Loader2 className="w-16 h-16 mx-auto mb-6 text-pal-orange animate-spin" />
+                  <h2 className="text-2xl font-bold text-foreground mb-4">
+                    Repurposing Your Content...
+                  </h2>
+                  <p className="text-lg text-muted-foreground bg-muted/50 rounded-xl p-6 animate-pulse">
+                    💡 {LOADING_TIPS[currentTip]}
+                  </p>
+                </div>
+              </main>
+              <EnhancedFooter />
             </div>
-          </main>
-        </div>
-        <BottomNavigation />
+          </div>
+        </SidebarProvider>
       </>
     );
   }
@@ -167,11 +170,12 @@ export default function ContentMaximizer() {
           description="Repurpose your content across all platforms to maximize reach and engagement."
           canonicalUrl="https://www.palmerhouseproductions.com/tools/content-maximizer"
         />
-        <MobileTopBar />
-        <TopNavigation />
-        <div className="min-h-screen w-full flex pt-16 lg:pt-16 pb-16 lg:pb-0">
-          <SimplifiedSidebar />
-          <main className="flex-1 bg-background overflow-auto">
+        <SidebarProvider>
+          <div className="min-h-screen w-full">
+            <TopNavigation />
+            <div className="flex pt-16">
+              <AppSidebar />
+              <main className="flex-1 bg-background overflow-auto min-h-[calc(100vh-4rem)]">
                 <div className="container mx-auto px-4 py-8 max-w-5xl">
                   <div className="flex justify-between items-start mb-8">
                     <div>
@@ -245,8 +249,10 @@ export default function ContentMaximizer() {
                   </div>
                 </div>
               </main>
-        </div>
-        <BottomNavigation />
+              <EnhancedFooter />
+            </div>
+          </div>
+        </SidebarProvider>
       </>
     );
   }
@@ -258,11 +264,12 @@ export default function ContentMaximizer() {
         description="Repurpose your content across all platforms to maximize reach and engagement."
         canonicalUrl="https://www.palmerhouseproductions.com/tools/content-maximizer"
       />
-      <MobileTopBar />
-      <TopNavigation />
-        <div className="min-h-screen w-full flex pt-16 lg:pt-16 pb-16 lg:pb-0">
-        <SimplifiedSidebar />
-        <main className="flex-1 bg-background overflow-auto">
+      <SidebarProvider>
+        <div className="min-h-screen w-full">
+          <TopNavigation />
+          <div className="flex pt-16">
+            <AppSidebar />
+            <main className="flex-1 bg-background overflow-auto min-h-[calc(100vh-4rem)]">
               <div className="container mx-auto px-4 py-8 max-w-4xl">
                 <div className="mb-12 text-center">
                   <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-pal-orange flex items-center justify-center">
@@ -352,8 +359,10 @@ export default function ContentMaximizer() {
                 </Card>
               </div>
             </main>
+            <EnhancedFooter />
+          </div>
         </div>
-        <BottomNavigation />
-      </>
-    );
-  }
+      </SidebarProvider>
+    </>
+  );
+}

@@ -4,20 +4,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ActivityChart } from './ActivityChart';
-import { FavoritePalCard } from './FavoritePalCard';
 import { getUserTier } from '@/lib/gamification';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import femaleReelPal from '@/assets/pals/female-reel-pal-circular-headshot.jpg';
-import maleEvergreenPal from '@/assets/pals/male-evergreen-pal-circular-headshot.jpg';
-import femaleSpotlightPal from '@/assets/pals/female-spotlight-pal-circular-3.jpg';
-import femaleSystemPal from '@/assets/pals/female-system-pal-circular.jpg';
-
-const PAL_AVATARS: Record<string, string> = {
-  reel: femaleReelPal,
-  evergreen: maleEvergreenPal,
-  spotlight: femaleSpotlightPal,
-  system: femaleSystemPal,
-};
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 
 interface StatsData {
   totalCreditsUsed: number;
@@ -26,12 +14,7 @@ interface StatsData {
   topTools: Array<{ name: string; count: number }>;
 }
 
-interface DashboardStatsProps {
-  favoritePal?: string;
-  onChangePal?: () => void;
-}
-
-export function DashboardStats({ favoritePal = 'reel', onChangePal }: DashboardStatsProps) {
+export function DashboardStats() {
   const { user } = useAuth();
   const [stats, setStats] = useState<StatsData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -127,8 +110,7 @@ export function DashboardStats({ favoritePal = 'reel', onChangePal }: DashboardS
         <CardContent className="pt-6">
           <div className="text-center space-y-3">
             <div className="relative inline-block">
-              <Avatar className="w-20 h-20 border-4 border-pal-purple/20">
-                <AvatarImage src={PAL_AVATARS[favoritePal]} alt="Profile" />
+              <Avatar className="w-20 h-20">
                 <AvatarFallback className="text-lg font-semibold bg-pal-purple text-white">
                   {initials}
                 </AvatarFallback>
@@ -207,11 +189,6 @@ export function DashboardStats({ favoritePal = 'reel', onChangePal }: DashboardS
             ))}
           </CardContent>
         </Card>
-      )}
-
-      {/* Favorite Pal Card */}
-      {onChangePal && (
-        <FavoritePalCard favoritePal={favoritePal} onChangePal={onChangePal} />
       )}
     </div>
   );

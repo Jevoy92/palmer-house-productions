@@ -1,17 +1,52 @@
 import { useState } from 'react';
-import { MetaTags } from '@/components/seo/MetaTags';
-import { TopNavigation } from '@/components/dashboard/TopNavigation';
-import { MobileTopBar } from '@/components/dashboard/MobileTopBar';
-import { SimplifiedSidebar } from '@/components/dashboard/SimplifiedSidebar';
-import { BottomNavigation } from '@/components/dashboard/BottomNavigation';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { Loader2, BookOpen, Sparkles, RotateCcw, Coins } from 'lucide-react';
-import { toast } from 'sonner';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
+import { Loader2, BookOpen, Download, Save, RefreshCw, Sparkles } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { SidebarProvider } from '@/components/ui/sidebar';
+import { AppSidebar } from '@/components/dashboard/AppSidebar';
+import { TopNavigation } from '@/components/dashboard/TopNavigation';
+import { Input } from '@/components/ui/input';
+import { EnhancedFooter } from '@/components/seo/EnhancedFooter';
+import { MetaTags } from '@/components/seo/MetaTags';
+
+const CONTENT_TYPES = [
+  { value: 'blog', label: '📝 Blog Posts' },
+  { value: 'video', label: '🎥 Video Series' },
+  { value: 'social', label: '📱 Social Media Posts' },
+  { value: 'podcast', label: '🎙️ Podcast Episodes' },
+];
+
+const EXAMPLE_PROMPTS = [
+  { 
+    topic: 'Winter Wellness: Complete Seasonal Health Guide', 
+    industry: 'Healthcare',
+    contentType: 'blog',
+    icon: '🏥'
+  },
+  { 
+    topic: '8-Week Body Transformation Challenge', 
+    industry: 'Fitness',
+    contentType: 'video',
+    icon: '🏋️'
+  },
+  { 
+    topic: 'First-Time Homebuyer Journey', 
+    industry: 'Real Estate',
+    contentType: 'social',
+    icon: '🏡'
+  },
+  { 
+    topic: 'Productivity Mastery in 4 Weeks', 
+    industry: 'Business Coaching',
+    contentType: 'podcast',
+    icon: '💼'
+  },
+];
 
 const LOADING_TIPS = [
   "Analyzing your topic and industry...",
@@ -21,18 +56,48 @@ const LOADING_TIPS = [
   "Adding hooks and CTAs...",
 ];
 
+interface SeriesEntry {
+  number: number;
+  title: string;
+  description: string;
+  keyTopics: string[];
+  hook: string;
+  cta: string;
+}
+
+interface SeriesPlan {
+  seriesTitle: string;
+  seriesConcept: string;
+  throughLine: string;
+  entries: SeriesEntry[];
+  publishingCadence: string;
+}
+
 export default function SeriesBuilder() {
   const [topic, setTopic] = useState('');
   const [contentType, setContentType] = useState('blog');
   const [industry, setIndustry] = useState('');
   const [seriesLength, setSeriesLength] = useState('5');
+  const [additionalContext, setAdditionalContext] = useState('');
   const [loading, setLoading] = useState(false);
   const [currentTip, setCurrentTip] = useState(0);
-  const [seriesPlan, setSeriesPlan] = useState<any>(null);
+  const [seriesPlan, setSeriesPlan] = useState<SeriesPlan | null>(null);
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const { toast } = useToast();
+
+  const handlePromptClick = (prompt: typeof EXAMPLE_PROMPTS[0]) => {
+    setTopic(prompt.topic);
+    setIndustry(prompt.industry);
+    setContentType(prompt.contentType);
+  };
 
   const handleGenerate = async () => {
     if (!topic || !industry) {
-      toast.error('Please provide a topic and industry');
+      toast({
+        title: 'Missing Information',
+        description: 'Please provide a topic and industry.',
+        variant: 'destructive',
+      });
       return;
     }
 
@@ -44,44 +109,66 @@ export default function SeriesBuilder() {
     }, 3000);
 
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session) {
-        throw new Error('You must be logged in to use this tool');
-      }
-
-      const { data, error } = await supabase.functions.invoke('generate-content', {
+      const { data: functionData, error: functionError } = await supabase.functions.invoke('generate-content', {
         body: { 
           toolType: 'series-builder',
-          inputs: { topic, contentType, industry, seriesLength: parseInt(seriesLength) }
+          inputs: {
+            topic,
+            contentType,
+            industry,
+            seriesLength: parseInt(seriesLength),
+            additionalContext,
+          }
         }
       });
 
       clearInterval(tipInterval);
 
-      if (error) throw error;
-
-      if (data?.error) {
-        if (data.error === 'Insufficient credits') {
-          toast.error(data.message || `This tool requires ${data.required} credits. You have ${data.current} credits remaining.`);
-          setLoading(false);
-          return;
+      if (functionError) {
+        console.error('Function error:', functionError);
+        
+        if (functionError.message?.includes('Insufficient credits')) {
+          toast({
+            title: 'Insufficient Credits',
+            description: 'You need more credits to use this tool. Please upgrade your plan.',
+            variant: 'destructive',
+          });
+        } else {
+          toast({
+            title: 'Generation Failed',
+            description: functionError.message || 'An error occurred while generating your series.',
+            variant: 'destructive',
+          });
         }
-        throw new Error(data.error);
+        setLoading(false);
+        return;
       }
 
-      const parsedContent = typeof data.content === 'string' ? JSON.parse(data.content) : data.content;
-      setSeriesPlan(parsedContent);
-
-      if (data.credits) {
-        toast.success(`Series plan created! Used ${data.credits.consumed} credits. ${data.credits.remaining} credits remaining.`);
-      } else {
-        toast.success('Series plan created!');
+      if (!functionData?.generatedText) {
+        throw new Error('No content generated');
       }
-    } catch (error: any) {
+
+      const cleanedText = functionData.generatedText
+        .replace(/^```json\s*\n?/i, '')
+        .replace(/\n?```\s*$/i, '')
+        .trim();
+
+      const parsedPlan = JSON.parse(cleanedText);
+      setSeriesPlan(parsedPlan);
+
+      toast({
+        title: 'Series Generated!',
+        description: 'Your content series plan is ready.',
+      });
+    } catch (error) {
+      console.error('Error generating series:', error);
       clearInterval(tipInterval);
-      console.error('Generation error:', error);
-      toast.error(error.message || 'Failed to generate series plan');
+      
+      toast({
+        title: 'Generation Error',
+        description: error instanceof Error ? error.message : 'Failed to generate series plan.',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
@@ -91,175 +178,323 @@ export default function SeriesBuilder() {
     setSeriesPlan(null);
     setTopic('');
     setIndustry('');
+    setContentType('blog');
+    setSeriesLength('5');
+    setAdditionalContext('');
+    setSaveStatus('idle');
   };
 
-  return (
-    <>
-      <MetaTags
-        title="Series Builder | Palmer House Productions Content OS"
-        description="Plan your content series with AI-generated episode outlines."
-        canonicalUrl="https://www.palmerhouseproductions.com/tools/series-builder"
-      />
-      <div className="min-h-screen w-full bg-background">
-        <div className="lg:hidden">
-          <MobileTopBar />
-        </div>
-        <div className="hidden lg:block">
+  const handleDownload = () => {
+    if (!seriesPlan) return;
+    
+    const dataStr = JSON.stringify(seriesPlan, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `series-plan-${Date.now()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    toast({
+      title: 'Downloaded!',
+      description: 'Your series plan has been downloaded.',
+    });
+  };
+
+  const handleSave = () => {
+    if (!seriesPlan) return;
+    
+    setSaveStatus('saving');
+    localStorage.setItem(`series-plan-${Date.now()}`, JSON.stringify(seriesPlan));
+    
+    setTimeout(() => {
+      setSaveStatus('saved');
+      toast({
+        title: 'Saved!',
+        description: 'Your series plan has been saved to your library.',
+      });
+    }, 500);
+  };
+
+  if (loading) {
+    return (
+      <SidebarProvider>
+        <div className="min-h-screen w-full">
           <TopNavigation />
-        </div>
-
-        <div className="flex pt-14 lg:pt-16">
-          <div className="hidden lg:block">
-            <SimplifiedSidebar />
+          <div className="flex pt-16">
+            <AppSidebar />
+            <main className="flex-1 flex flex-col items-center justify-center bg-background px-4 min-h-[calc(100vh-4rem)]">
+              <Loader2 className="w-16 h-16 animate-spin text-primary mb-8" />
+              <h2 className="text-2xl font-bold text-foreground mb-4">
+                Building Your Series...
+              </h2>
+              <p className="text-muted-foreground text-center max-w-md">
+                {LOADING_TIPS[currentTip]}
+              </p>
+            </main>
+            <EnhancedFooter />
           </div>
+        </div>
+      </SidebarProvider>
+    );
+  }
 
-          <main className="flex-1 overflow-auto pb-20 lg:pb-8">
-            <div className="container mx-auto px-4 py-8 max-w-5xl">
-              <div className="mb-12 text-center">
-                <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-pal-orange flex items-center justify-center">
-                  <BookOpen className="w-10 h-10 text-white" />
-                </div>
-                <h1 className="text-4xl font-bold text-foreground mb-3">
-                  Series Builder
-                </h1>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Plan your content series with AI-generated episode outlines
-                </p>
-              </div>
+  if (seriesPlan) {
+    return (
+      <SidebarProvider>
+        <div className="min-h-screen w-full">
+          <TopNavigation />
+          <div className="flex pt-16">
+            <AppSidebar />
+            <main className="flex-1 bg-background px-4 overflow-y-auto min-h-[calc(100vh-4rem)]">
 
-              {loading && (
-                <Card className="max-w-2xl mx-auto border-2 p-12">
-                  <div className="text-center space-y-6">
-                    <Loader2 className="w-16 h-16 mx-auto text-pal-orange animate-spin" />
-                    <div>
-                      <p className="text-lg font-semibold text-foreground mb-2">
-                        Building Your Series...
-                      </p>
-                      <p className="text-sm text-muted-foreground animate-pulse">
-                        {LOADING_TIPS[currentTip]}
-                      </p>
-                    </div>
+              <div className="max-w-6xl mx-auto py-8">
+                {/* Header Actions */}
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                  <div>
+                    <h1 className="text-3xl font-bold text-foreground mb-2">Your Content Series</h1>
+                    <p className="text-muted-foreground">Ready to schedule and publish</p>
                   </div>
-                </Card>
-              )}
-
-              {!loading && !seriesPlan && (
-                <Card className="max-w-2xl mx-auto border-2">
-                  <CardHeader>
-                    <CardTitle>Create Your Series</CardTitle>
-                    <CardDescription>
-                      Generate a structured content series with episode-by-episode planning
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Series Topic *</label>
-                      <Input
-                        value={topic}
-                        onChange={(e) => setTopic(e.target.value)}
-                        placeholder="e.g., Winter Wellness: Complete Seasonal Health Guide"
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Content Type *</label>
-                        <Select value={contentType} onValueChange={setContentType}>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="blog">📝 Blog Posts</SelectItem>
-                            <SelectItem value="video">🎥 Video Series</SelectItem>
-                            <SelectItem value="social">📱 Social Media</SelectItem>
-                            <SelectItem value="podcast">🎙️ Podcast Episodes</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Series Length</label>
-                        <Select value={seriesLength} onValueChange={setSeriesLength}>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="3">3 Episodes</SelectItem>
-                            <SelectItem value="5">5 Episodes</SelectItem>
-                            <SelectItem value="7">7 Episodes</SelectItem>
-                            <SelectItem value="10">10 Episodes</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">Industry *</label>
-                      <Input
-                        value={industry}
-                        onChange={(e) => setIndustry(e.target.value)}
-                        placeholder="e.g., Healthcare, Fitness, Real Estate"
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground py-2">
-                      <Coins className="w-4 h-4" />
-                      <span>This tool uses 4 credits per generation</span>
-                    </div>
-
-                    <Button 
-                      onClick={handleGenerate} 
-                      className="w-full bg-pal-orange hover:bg-pal-orange/90"
-                      size="lg"
-                    >
-                      <Sparkles className="w-4 h-4 mr-2" />
-                      Generate Series Plan
+                  <div className="flex flex-wrap gap-2">
+                    <Button onClick={handleDownload} variant="outline" size="sm">
+                      <Download className="w-4 h-4 mr-2" />
+                      Download
                     </Button>
-                  </CardContent>
-                </Card>
-              )}
-
-              {!loading && seriesPlan && (
-                <div className="space-y-6">
-                  <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-bold">Your Series Plan</h2>
-                    <Button onClick={handleReset}>
-                      <RotateCcw className="w-4 h-4 mr-2" />
+                    <Button onClick={handleSave} variant="outline" size="sm" disabled={saveStatus === 'saved'}>
+                      <Save className="w-4 h-4 mr-2" />
+                      {saveStatus === 'saved' ? 'Saved' : 'Save'}
+                    </Button>
+                    <Button onClick={handleReset} variant="default" size="sm">
+                      <RefreshCw className="w-4 h-4 mr-2" />
                       New Series
                     </Button>
                   </div>
+                </div>
 
-                  <Card className="p-6 border-2">
-                    <h3 className="text-2xl font-bold mb-2">{seriesPlan.seriesTitle}</h3>
-                    <p className="text-muted-foreground mb-4">{seriesPlan.seriesConcept}</p>
-                    <p className="text-sm"><strong>Through Line:</strong> {seriesPlan.throughLine}</p>
-                  </Card>
+                {/* Series Overview */}
+                <Card className="mb-8 bg-gradient-to-br from-pal-purple/5 to-pal-blue/5">
+                  <CardHeader>
+                    <CardTitle className="text-2xl">{seriesPlan.seriesTitle}</CardTitle>
+                    <CardDescription className="text-base">{seriesPlan.seriesConcept}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <h3 className="font-semibold text-foreground mb-2">Series Through-Line</h3>
+                      <p className="text-muted-foreground">{seriesPlan.throughLine}</p>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground mb-2">Publishing Cadence</h3>
+                      <p className="text-muted-foreground">{seriesPlan.publishingCadence}</p>
+                    </div>
+                  </CardContent>
+                </Card>
 
-                  <div className="space-y-4">
-                    {seriesPlan.entries?.map((entry: any, idx: number) => (
-                      <Card key={idx} className="p-6">
-                        <h4 className="text-lg font-bold mb-2">
-                          Episode {entry.number}: {entry.title}
-                        </h4>
-                        <p className="text-sm text-muted-foreground mb-3">{entry.description}</p>
-                        <div className="space-y-2 text-sm">
-                          <p><strong>Key Topics:</strong> {entry.keyTopics?.join(', ')}</p>
-                          <p><strong>Hook:</strong> {entry.hook}</p>
-                          <p><strong>CTA:</strong> {entry.cta}</p>
+                {/* Individual Entries */}
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-bold text-foreground">Series Entries</h2>
+                  {seriesPlan.entries.map((entry) => (
+                    <Card key={entry.number} className="hover:shadow-lg transition-shadow">
+                      <CardHeader>
+                        <div className="flex items-start gap-4">
+                          <div className="w-12 h-12 rounded-full bg-pal-purple text-white flex items-center justify-center font-bold text-lg flex-shrink-0">
+                            {entry.number}
+                          </div>
+                          <div className="flex-1">
+                            <CardTitle className="text-xl mb-2">{entry.title}</CardTitle>
+                            <CardDescription>{entry.description}</CardDescription>
+                          </div>
                         </div>
-                      </Card>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div>
+                          <h4 className="font-semibold text-foreground mb-2">Key Topics</h4>
+                          <div className="flex flex-wrap gap-2">
+                            {entry.keyTopics.map((topic, idx) => (
+                              <span key={idx} className="px-3 py-1 bg-pal-blue/10 text-pal-blue rounded-full text-sm">
+                                {topic}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-foreground mb-2">Hook</h4>
+                          <p className="text-muted-foreground italic">"{entry.hook}"</p>
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-foreground mb-2">Call-to-Action</h4>
+                          <p className="text-muted-foreground">{entry.cta}</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </main>
+            <EnhancedFooter />
+          </div>
+        </div>
+      </SidebarProvider>
+    );
+  }
+
+  return (
+    <SidebarProvider>
+      <div className="min-h-screen w-full">
+        <TopNavigation />
+        <div className="flex pt-16">
+          <AppSidebar />
+          <main className="flex-1 bg-background px-4 overflow-y-auto min-h-[calc(100vh-4rem)]">
+
+            <div className="max-w-4xl mx-auto py-8">
+              <div className="mb-12">
+                {/* Header */}
+                <div className="text-center mb-12">
+                  <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-pal-blue flex items-center justify-center">
+                    <BookOpen className="w-10 h-10 text-white" />
+                  </div>
+                  <h1 className="text-4xl font-bold text-foreground mb-3">
+                    Series Builder
+                  </h1>
+                  <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                    Create a cohesive content series that keeps your audience engaged
+                  </p>
+                </div>
+
+                {/* Input Form */}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Series Details</CardTitle>
+                    <CardDescription>Tell us about the series you want to create</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-6">
+                    {/* Content Type */}
+                    <div>
+                      <Label htmlFor="contentType">Content Type *</Label>
+                      <Select value={contentType} onValueChange={setContentType}>
+                        <SelectTrigger id="contentType">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {CONTENT_TYPES.map((type) => (
+                            <SelectItem key={type.value} value={type.value}>
+                              {type.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Topic */}
+                    <div>
+                      <Label htmlFor="topic">Series Topic *</Label>
+                      <Textarea
+                        id="topic"
+                        placeholder="e.g., Winter Wellness: Complete Seasonal Health Guide"
+                        value={topic}
+                        onChange={(e) => setTopic(e.target.value)}
+                        rows={3}
+                        className="resize-none"
+                      />
+                    </div>
+
+                    {/* Industry */}
+                    <div>
+                      <Label htmlFor="industry">Industry *</Label>
+                      <Input
+                        id="industry"
+                        placeholder="e.g., Healthcare, Fitness, Real Estate"
+                        value={industry}
+                        onChange={(e) => setIndustry(e.target.value)}
+                      />
+                    </div>
+
+                    {/* Series Length */}
+                    <div>
+                      <Label htmlFor="seriesLength">Number of Entries *</Label>
+                      <Select value={seriesLength} onValueChange={setSeriesLength}>
+                        <SelectTrigger id="seriesLength">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {[3, 4, 5, 6, 7, 8, 10, 12].map((num) => (
+                            <SelectItem key={num} value={num.toString()}>
+                              {num} {contentType === 'blog' ? 'posts' : contentType === 'video' ? 'videos' : 'episodes'}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    {/* Additional Context */}
+                    <div>
+                      <Label htmlFor="additionalContext">Additional Context (Optional)</Label>
+                      <Textarea
+                        id="additionalContext"
+                        placeholder="Target audience, seasonal themes, specific goals, etc."
+                        value={additionalContext}
+                        onChange={(e) => setAdditionalContext(e.target.value)}
+                        rows={3}
+                        className="resize-none"
+                      />
+                    </div>
+                  </CardContent>
+                </Card>
+
+                {/* Example Prompts */}
+                <div className="mt-8">
+                  <h3 className="text-lg font-semibold text-foreground mb-4">
+                    <Sparkles className="w-5 h-5 inline mr-2" />
+                    Try These Examples
+                  </h3>
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {EXAMPLE_PROMPTS.map((prompt, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => handlePromptClick(prompt)}
+                        className="text-left p-4 rounded-lg border border-border hover:border-pal-purple hover:bg-pal-purple/5 transition-all"
+                      >
+                        <div className="text-2xl mb-2">{prompt.icon}</div>
+                        <div className="font-semibold text-foreground mb-1">{prompt.topic}</div>
+                        <div className="text-sm text-muted-foreground">{prompt.industry}</div>
+                      </button>
                     ))}
                   </div>
                 </div>
-              )}
+
+                {/* Credit Cost & Generate Button */}
+                <div className="mt-8 space-y-4">
+                  <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                    <Sparkles className="w-4 h-4" />
+                    <span>This tool costs 5 credits per generation</span>
+                  </div>
+                  <Button 
+                    onClick={handleGenerate}
+                    disabled={loading || !topic || !industry}
+                    size="lg"
+                    className="w-full"
+                  >
+                    {loading ? (
+                      <>
+                        <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                        Generating...
+                      </>
+                    ) : (
+                      <>
+                        <BookOpen className="w-5 h-5 mr-2" />
+                        Generate Series Plan
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </div>
             </div>
           </main>
-        </div>
-
-        <div className="lg:hidden">
-          <BottomNavigation />
+          <EnhancedFooter />
         </div>
       </div>
-    </>
+    </SidebarProvider>
   );
 }

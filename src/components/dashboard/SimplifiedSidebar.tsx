@@ -40,7 +40,7 @@ export function SimplifiedSidebar() {
   };
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 border-r border-border bg-background h-[calc(100vh-4rem)] overflow-y-auto">
+    <aside className="hidden lg:flex flex-col w-64 border-r border-border bg-background fixed top-16 left-0 bottom-0 overflow-y-auto">
       <div className="p-4 space-y-6">
         {/* Overview Section */}
         <div>

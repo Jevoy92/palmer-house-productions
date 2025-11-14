@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { MetaTags } from '@/components/seo/MetaTags';
-import { TopNavigation } from '@/components/dashboard/TopNavigation';
-import { MobileTopBar } from '@/components/dashboard/MobileTopBar';
-import { SimplifiedSidebar } from '@/components/dashboard/SimplifiedSidebar';
-import { BottomNavigation } from '@/components/dashboard/BottomNavigation';
+import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';

@@ -136,13 +136,13 @@ export default function PersonaGenerator() {
         canonicalUrl="https://www.palmerhouseproductions.com/tools/persona-generator"
       />
       <SidebarProvider>
-        <div className="min-h-screen flex w-full">
+        <div className="flex w-full min-h-[calc(100vh-5rem)]">
           <AppSidebar />
           
           <div className="flex-1 flex flex-col">
             <DashboardHeader />
             
-            <main className="flex-1 bg-white">
+            <main className="flex-1 bg-white pb-8">
               <div className="container mx-auto px-4 py-8 max-w-5xl">
                 <div className="mb-12 text-center">
                   <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-pal-blue flex items-center justify-center">

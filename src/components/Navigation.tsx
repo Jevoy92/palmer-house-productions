@@ -9,21 +9,23 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 
 export const Navigation = () => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isScrollingDown, setIsScrollingDown] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const location = useLocation();
-  const navigate = useNavigate();
-  const { transitionTo } = usePageTransition();
-  const { user } = useAuth();
 
-  // Hide navigation on dashboard and tool pages
+  // Hide navigation on dashboard and tool pages - Check BEFORE calling other hooks
   const isDashboardRoute = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/tools/');
   
   if (isDashboardRoute) {
     return null;
   }
+
+  // Now safe to call all other hooks after the early return check
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrollingDown, setIsScrollingDown] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const navigate = useNavigate();
+  const { transitionTo } = usePageTransition();
+  const { user } = useAuth();
 
   // Helper function to handle page transitions
   const handlePageTransition = (path: string) => {

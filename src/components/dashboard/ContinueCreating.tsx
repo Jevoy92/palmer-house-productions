@@ -7,7 +7,7 @@ import { ToolCard } from './ToolCard';
 
 const TOOLS = [
   {
-    id: 'video-series-builder',
+    id: 'series-builder',
     name: 'Video Series Builder',
     description: 'Turn one idea into a complete content system with AI-powered planning',
     category: 'VIDEO TOOLS',

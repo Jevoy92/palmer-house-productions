@@ -68,6 +68,10 @@ import AppPricing from "./pages/AppPricing";
 import Memberships from "./pages/Memberships";
 import ProductionPricing from "./pages/ProductionPricing";
 import Settings from "./pages/Settings";
+import ReelPalHub from "./pages/dashboard/ReelPalHub";
+import EvergreenPalHub from "./pages/dashboard/EvergreenPalHub";
+import SpotlightPalHub from "./pages/dashboard/SpotlightPalHub";
+import SystemPalHub from "./pages/dashboard/SystemPalHub";
 
 const queryClient = new QueryClient();
 
@@ -124,6 +128,10 @@ const App = () => (
           <Route path="/" element={<Index />} />
           {/* Dashboard and tool routes don't get the footer here - they render it inside their SidebarProvider */}
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/dashboard/pals/reel" element={<ProtectedRoute><ReelPalHub /></ProtectedRoute>} />
+            <Route path="/dashboard/pals/evergreen" element={<ProtectedRoute><EvergreenPalHub /></ProtectedRoute>} />
+            <Route path="/dashboard/pals/spotlight" element={<ProtectedRoute><SpotlightPalHub /></ProtectedRoute>} />
+            <Route path="/dashboard/pals/system" element={<ProtectedRoute><SystemPalHub /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
           <Route path="/tools/content-system-builder" element={<ProtectedRoute><ContentSystemBuilder /></ProtectedRoute>} />
           <Route path="/tools/series-builder" element={<ProtectedRoute><SeriesBuilder /></ProtectedRoute>} />

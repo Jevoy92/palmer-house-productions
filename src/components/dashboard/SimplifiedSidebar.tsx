@@ -16,7 +16,7 @@ const overviewItems = [
 
 const toolItems = [
   { title: 'Content System Builder', url: '/tools/content-system-builder', icon: Video },
-  { title: 'Series Builder', url: '/tools/video-series-builder', icon: BookOpen },
+  { title: 'Series Builder', url: '/tools/series-builder', icon: BookOpen },
   { title: 'Persona Generator', url: '/tools/persona-generator', icon: User },
   { title: 'Production Assistant', url: '/tools/production-assistant', icon: Sparkles },
   { title: 'Content Maximizer', url: '/tools/content-maximizer', icon: Maximize },
@@ -24,10 +24,10 @@ const toolItems = [
 ];
 
 const palItems = [
-  { title: 'Reel Pal', url: '/pals/reel-pal', image: femaleReelPal },
-  { title: 'Evergreen Pal', url: '/pals/evergreen-pal', image: maleEvergreenPal },
-  { title: 'Spotlight Pal', url: '/pals/spotlight-pal', image: femaleSpotlightPal },
-  { title: 'System Pal', url: '/pals/system-pal', image: femaleSystemPal },
+  { title: 'Reel Pal', url: '/dashboard/pals/reel', image: femaleReelPal },
+  { title: 'Evergreen Pal', url: '/dashboard/pals/evergreen', image: maleEvergreenPal },
+  { title: 'Spotlight Pal', url: '/dashboard/pals/spotlight', image: femaleSpotlightPal },
+  { title: 'System Pal', url: '/dashboard/pals/system', image: femaleSystemPal },
 ];
 
 export function SimplifiedSidebar() {

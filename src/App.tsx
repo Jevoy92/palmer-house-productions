@@ -58,6 +58,7 @@ import StyleGuide from "./pages/StyleGuide";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import PalHub from "./pages/dashboard/PalHub";
 import ContentSystemBuilder from "./pages/tools/ContentSystemBuilder";
 import SeriesBuilder from "./pages/tools/SeriesBuilder";
 import PersonaGenerator from "./pages/tools/PersonaGenerator";
@@ -86,15 +87,16 @@ function RouteTracker() {
 }
 
 // Footer wrapper that conditionally renders based on route
-function ConditionalFooter() {
+function ConditionalComponents() {
   const location = useLocation();
   const isDashboardRoute = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/tools/');
   
-  if (isDashboardRoute) {
-    return null;
-  }
-  
-  return <EnhancedFooter />;
+  return (
+    <>
+      {!isDashboardRoute && <Navigation />}
+      {!isDashboardRoute && <EnhancedFooter />}
+    </>
+  );
 }
 
 const App = () => (
@@ -110,7 +112,7 @@ const App = () => (
           <CriticalCSS />
           <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
           <AnimationOptimizer />
-          <Navigation />
+          <ConditionalComponents />
           <ScrollToTop />
           <ScrollToTopButton />
           <StructuredData />
@@ -121,7 +123,9 @@ const App = () => (
             <Routes>
           <Route path="/" element={<Index />} />
           {/* Dashboard and tool routes don't get the footer here - they render it inside their SidebarProvider */}
-          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/dashboard/pals/:palId" element={<ProtectedRoute><PalHub /></ProtectedRoute>} />
+            <Route path="/dashboard/pals/:palId" element={<ProtectedRoute><PalHub /></ProtectedRoute>} />
           <Route path="/tools/content-system-builder" element={<ProtectedRoute><ContentSystemBuilder /></ProtectedRoute>} />
           <Route path="/tools/series-builder" element={<ProtectedRoute><SeriesBuilder /></ProtectedRoute>} />
           <Route path="/tools/persona-generator" element={<ProtectedRoute><PersonaGenerator /></ProtectedRoute>} />
@@ -184,8 +188,7 @@ const App = () => (
            <Route path="*" element={<NotFound />} />
            </Routes>
           </div>
-           <ConditionalFooter />
-        </PageTransition>
+           </PageTransition>
           </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

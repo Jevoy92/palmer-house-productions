@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { MetaTags } from '@/components/seo/MetaTags';
-import { TopNavigation } from '@/components/dashboard/TopNavigation';
-import { MobileTopBar } from '@/components/dashboard/MobileTopBar';
-import { SimplifiedSidebar } from '@/components/dashboard/SimplifiedSidebar';
-import { BottomNavigation } from '@/components/dashboard/BottomNavigation';
+import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -97,25 +94,13 @@ export default function ContentSystemBuilder() {
         description="Turn one core video into a complete multi-platform content system."
         canonicalUrl="https://www.palmerhouseproductions.com/tools/content-system-builder"
       />
-      <div className="min-h-screen w-full bg-background">
-        <div className="lg:hidden">
-          <MobileTopBar />
-        </div>
-        <div className="hidden lg:block">
-          <TopNavigation />
-        </div>
 
-        <div className="flex pt-14 lg:pt-16">
-          <div className="hidden lg:block">
-            <SimplifiedSidebar />
-          </div>
-
-          <main className="flex-1 overflow-auto pb-20 lg:pb-8">
-            <div className="container mx-auto px-4 py-8 max-w-5xl">
-              <div className="mb-12 text-center">
-                <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-pal-teal flex items-center justify-center">
-                  <Video className="w-10 h-10 text-white" />
-                </div>
+      <DashboardLayout>
+        <div className="max-w-7xl mx-auto p-3 md:p-4 space-y-4">
+          <div className="mb-8 text-center">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-pal-teal flex items-center justify-center">
+              <Video className="w-10 h-10 text-white" />
+            </div>
                 <h1 className="text-4xl font-bold text-foreground mb-3">
                   Content System Builder
                 </h1>
@@ -243,13 +228,8 @@ export default function ContentSystemBuilder() {
                 </div>
               )}
             </div>
-          </main>
-        </div>
-
-        <div className="lg:hidden">
-          <BottomNavigation />
-        </div>
-      </div>
-    </>
-  );
-}
+          </div>
+        </DashboardLayout>
+      </>
+    );
+  }

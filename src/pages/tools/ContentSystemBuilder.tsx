@@ -9,7 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/AppSidebar';
 import { TopNavigation } from '@/components/dashboard/TopNavigation';
-import { EnhancedFooter } from '@/components/seo/EnhancedFooter';
+
 import { supabase } from '@/integrations/supabase/client';
 
 const EXAMPLE_PROMPTS = [
@@ -217,7 +217,6 @@ export default function ContentSystemBuilder() {
               </div>
             </main>
           </div>
-          <EnhancedFooter />
         </div>
       </SidebarProvider>
     );
@@ -383,7 +382,6 @@ export default function ContentSystemBuilder() {
                   </div>
                 </div>
               </main>
-              <EnhancedFooter />
             </div>
           </div>
         </SidebarProvider>
@@ -522,7 +520,6 @@ export default function ContentSystemBuilder() {
                 </div>
               </div>
               </main>
-              <EnhancedFooter />
             </div>
           </div>
         </SidebarProvider>

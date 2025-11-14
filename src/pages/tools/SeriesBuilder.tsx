@@ -11,7 +11,7 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/AppSidebar';
 import { TopNavigation } from '@/components/dashboard/TopNavigation';
 import { Input } from '@/components/ui/input';
-import { EnhancedFooter } from '@/components/seo/EnhancedFooter';
+
 import { MetaTags } from '@/components/seo/MetaTags';
 
 const CONTENT_TYPES = [
@@ -235,7 +235,6 @@ export default function SeriesBuilder() {
                 {LOADING_TIPS[currentTip]}
               </p>
             </main>
-            <EnhancedFooter />
           </div>
         </div>
       </SidebarProvider>
@@ -333,7 +332,6 @@ export default function SeriesBuilder() {
                 </div>
               </div>
             </main>
-            <EnhancedFooter />
           </div>
         </div>
       </SidebarProvider>
@@ -492,7 +490,6 @@ export default function SeriesBuilder() {
               </div>
             </div>
           </main>
-          <EnhancedFooter />
         </div>
       </div>
     </SidebarProvider>

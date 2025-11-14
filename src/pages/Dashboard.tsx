@@ -1,6 +1,6 @@
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { MetaTags } from '@/components/seo/MetaTags';
-import { EnhancedFooter } from '@/components/seo/EnhancedFooter';
+
 import { Video, User, Sparkles, Maximize, MessageCircle, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { SidebarProvider } from '@/components/ui/sidebar';
@@ -120,7 +120,6 @@ export default function Dashboard() {
               <DashboardStats />
             </aside>
           </div>
-          <EnhancedFooter />
         </div>
       </SidebarProvider>
     </>

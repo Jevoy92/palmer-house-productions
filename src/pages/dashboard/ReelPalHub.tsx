@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
-import { Video, TrendingUp, Upload } from 'lucide-react';
+import { Lightbulb, ArrowRight, MessageCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { Link } from 'react-router-dom';
 
@@ -110,70 +110,87 @@ export default function ReelPalHub() {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
+    <div className="container mx-auto p-6 space-y-6 max-w-7xl">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Reel Pal Video System</h1>
-          <p className="text-muted-foreground">Track your short-form content creation</p>
-        </div>
-        <Link to="/reel-pal">
-          <Button variant="outline">
-            <TrendingUp className="w-4 h-4 mr-2" />
-            Learn More
-          </Button>
-        </Link>
+      <div className="border-l-4 border-pal-purple pl-4">
+        <h1 className="text-3xl font-bold text-foreground">Reel Pal</h1>
+        <p className="text-muted-foreground">Master short-form content and social media</p>
       </div>
 
-      {/* Progress Card */}
+      {/* Video Production Progress */}
       <Card className="p-6">
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-xl font-semibold text-foreground">Overall Progress</h2>
+              <h2 className="text-lg font-semibold text-foreground">Video Production Progress</h2>
               <p className="text-sm text-muted-foreground">
-                {completedItems.size} of {REEL_PAL_CHECKLIST.length} videos completed
+                {completedItems.size} of {REEL_PAL_CHECKLIST.length} videos filmed
               </p>
             </div>
-            <div className="text-3xl font-bold text-pal-purple">{Math.round(progress)}%</div>
+            <div className="text-right">
+              <div className="text-3xl font-bold text-foreground">{Math.round(progress)}%</div>
+              <p className="text-xs text-muted-foreground">Complete</p>
+            </div>
           </div>
-          <Progress value={progress} className="h-3" />
+          <Progress value={progress} className="h-2" />
         </div>
       </Card>
 
-      {/* Checklist by Category */}
-      {categories.map(category => {
-        const categoryItems = REEL_PAL_CHECKLIST.filter(item => item.category === category);
-        const categoryCompleted = categoryItems.filter(item => completedItems.has(item.id)).length;
-        const categoryProgress = (categoryCompleted / categoryItems.length) * 100;
+      {/* Quick Actions */}
+      <div>
+        <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+          <Lightbulb className="w-5 h-5" />
+          Quick Actions
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <Link to="/tools/content-system-builder">
+            <Button variant="outline" className="w-full justify-start h-auto py-4">
+              <Lightbulb className="w-4 h-4 mr-2" />
+              Write 5 Hooks
+            </Button>
+          </Link>
+          <Link to="/tools/series-builder">
+            <Button variant="outline" className="w-full justify-start h-auto py-4">
+              <ArrowRight className="w-4 h-4 mr-2" />
+              Plan 10 Shorts
+            </Button>
+          </Link>
+          <Link to="/tools/engagement-responder">
+            <Button variant="outline" className="w-full justify-start h-auto py-4">
+              <MessageCircle className="w-4 h-4 mr-2" />
+              Engagement Starters
+            </Button>
+          </Link>
+        </div>
+      </div>
 
-        return (
-          <Card key={category} className="p-6">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-pal-purple/10 flex items-center justify-center">
-                    <Video className="w-5 h-5 text-pal-purple" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-foreground">{category}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      {categoryCompleted} of {categoryItems.length} completed
-                    </p>
-                  </div>
-                </div>
-                <span className="text-sm font-medium text-muted-foreground">
-                  {Math.round(categoryProgress)}%
+      {/* Video Production Checklist */}
+      <div>
+        <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+          <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+          Video Production Checklist
+        </h2>
+
+        {categories.map(category => {
+          const categoryItems = REEL_PAL_CHECKLIST.filter(item => item.category === category);
+          const categoryCompleted = categoryItems.filter(item => completedItems.has(item.id)).length;
+
+          return (
+            <Card key={category} className="mb-4">
+              <div className="p-4 border-b flex items-center justify-between bg-muted/30">
+                <h3 className="font-semibold text-foreground">{category}</h3>
+                <span className="text-sm text-muted-foreground">
+                  {categoryCompleted}/{categoryItems.length}
                 </span>
               </div>
-
-              <Progress value={categoryProgress} className="h-2" />
-
-              <div className="space-y-3 pt-2">
+              <div className="p-4 space-y-2">
                 {categoryItems.map(item => (
                   <div
                     key={item.id}
-                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors"
+                    className="flex items-center gap-3 p-2 rounded hover:bg-muted/50 transition-colors"
                   >
                     <Checkbox
                       id={item.id}
@@ -182,7 +199,7 @@ export default function ReelPalHub() {
                     />
                     <label
                       htmlFor={item.id}
-                      className={`flex-1 cursor-pointer ${
+                      className={`flex-1 cursor-pointer text-sm ${
                         completedItems.has(item.id) ? 'line-through text-muted-foreground' : 'text-foreground'
                       }`}
                     >
@@ -191,28 +208,10 @@ export default function ReelPalHub() {
                   </div>
                 ))}
               </div>
-            </div>
-          </Card>
-        );
-      })}
-
-      {/* CTA */}
-      <Card className="p-6 bg-gradient-to-br from-pal-purple/10 to-transparent">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">Ready to Create?</h3>
-            <p className="text-sm text-muted-foreground">
-              Start producing your short-form content with Reel Pal
-            </p>
-          </div>
-          <Link to="/tools/content-system-builder">
-            <Button>
-              <Upload className="w-4 h-4 mr-2" />
-              Start Creating
-            </Button>
-          </Link>
-        </div>
-      </Card>
+            </Card>
+          );
+        })}
+      </div>
     </div>
   );
 }

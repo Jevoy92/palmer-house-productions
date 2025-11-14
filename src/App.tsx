@@ -68,6 +68,7 @@ import AppPricing from "./pages/AppPricing";
 import Memberships from "./pages/Memberships";
 import ProductionPricing from "./pages/ProductionPricing";
 import Settings from "./pages/Settings";
+import PalHub from "./pages/dashboard/PalHub";
 
 const queryClient = new QueryClient();
 

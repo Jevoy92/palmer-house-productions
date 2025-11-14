@@ -27,8 +27,8 @@ export default function Dashboard() {
         .eq('id', user.id)
         .single();
 
-      if (data?.favorite_pal) {
-        setFavoritePal(data.favorite_pal);
+      if ((data as any)?.favorite_pal) {
+        setFavoritePal((data as any).favorite_pal);
       }
     };
 

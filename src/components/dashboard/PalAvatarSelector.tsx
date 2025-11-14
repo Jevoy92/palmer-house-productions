@@ -60,7 +60,7 @@ export function PalAvatarSelector({ open, onOpenChange, currentPal, onPalChange 
     try {
       const { error } = await supabase
         .from('profiles')
-        .update({ favorite_pal: selectedPal })
+        .update({ favorite_pal: selectedPal } as any)
         .eq('id', user.id);
 
       if (error) throw error;

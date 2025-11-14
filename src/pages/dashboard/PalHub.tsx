@@ -111,7 +111,7 @@ export default function PalHub() {
     if (!user || !palId) return;
     
     const { data, error } = await supabase
-      .from('user_videos')
+      .from('user_videos' as any)
       .select('*')
       .eq('user_id', user.id)
       .eq('pal', palId)
@@ -128,18 +128,18 @@ export default function PalHub() {
     if (!user || !palId) return;
     
     const { data: allAchievements } = await supabase
-      .from('achievements')
+      .from('achievements' as any)
       .select('*')
       .eq('pal', palId)
       .order('points', { ascending: true });
     
     const { data: earned } = await supabase
-      .from('user_achievements')
+      .from('user_achievements' as any)
       .select('achievement_code')
       .eq('user_id', user.id);
     
     setAchievements(allAchievements || []);
-    setUserAchievements(earned?.map(e => e.achievement_code) || []);
+    setUserAchievements(earned?.map((e: any) => e.achievement_code) || []);
   };
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -158,7 +158,7 @@ export default function PalHub() {
       if (uploadError) throw uploadError;
       
       const { error: dbError } = await supabase
-        .from('user_videos')
+        .from('user_videos' as any)
         .insert({
           user_id: user.id,
           pal: palId,
@@ -172,7 +172,7 @@ export default function PalHub() {
       // Check for first upload achievement
       if (videos.length === 0) {
         await supabase
-          .from('user_achievements')
+          .from('user_achievements' as any)
           .insert({
             user_id: user.id,
             achievement_code: `${palId}_first_upload`
@@ -196,7 +196,7 @@ export default function PalHub() {
     
     try {
       const { error } = await supabase
-        .from('user_videos')
+        .from('user_videos' as any)
         .delete()
         .eq('id', videoId)
         .eq('user_id', user.id);
@@ -214,7 +214,7 @@ export default function PalHub() {
   if (!pal) return null;
 
   const totalPoints = userAchievements.reduce((sum, code) => {
-    const achievement = achievements.find(a => a.code === code);
+    const achievement = achievements.find((a: any) => a.code === code);
     return sum + (achievement?.points || 0);
   }, 0);
 
@@ -351,7 +351,7 @@ export default function PalHub() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {achievements.map((achievement) => {
+                {achievements.map((achievement: any) => {
                   const isEarned = userAchievements.includes(achievement.code);
                   return (
                     <div

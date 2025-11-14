@@ -225,7 +225,6 @@ export default function PersonaGenerator() {
                 </div>
               )}
             </div>
-          </div>
         </DashboardLayout>
       </>
     );

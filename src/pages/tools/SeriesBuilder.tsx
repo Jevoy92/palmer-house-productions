@@ -238,7 +238,6 @@ export default function SeriesBuilder() {
                 </div>
               )}
             </div>
-          </div>
         </DashboardLayout>
       </>
     );

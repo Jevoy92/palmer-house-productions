@@ -228,7 +228,6 @@ export default function ContentSystemBuilder() {
                 </div>
               )}
             </div>
-          </div>
         </DashboardLayout>
       </>
     );

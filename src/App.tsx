@@ -68,6 +68,7 @@ import EngagementResponder from "./pages/tools/EngagementResponder";
 import AppPricing from "./pages/AppPricing";
 import Memberships from "./pages/Memberships";
 import ProductionPricing from "./pages/ProductionPricing";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -126,6 +127,7 @@ const App = () => (
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/dashboard/pals/:palId" element={<ProtectedRoute><PalHub /></ProtectedRoute>} />
             <Route path="/dashboard/pals/:palId" element={<ProtectedRoute><PalHub /></ProtectedRoute>} />
+            <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
           <Route path="/tools/content-system-builder" element={<ProtectedRoute><ContentSystemBuilder /></ProtectedRoute>} />
           <Route path="/tools/series-builder" element={<ProtectedRoute><SeriesBuilder /></ProtectedRoute>} />
           <Route path="/tools/persona-generator" element={<ProtectedRoute><PersonaGenerator /></ProtectedRoute>} />

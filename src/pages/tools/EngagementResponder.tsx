@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
-import { Sparkles, MessageCircle, Heart, Loader2, Copy, RotateCcw, Coins } from 'lucide-react';
+import { Sparkles, MessageCircle, Heart, Loader2, Copy, RotateCcw } from 'lucide-react';
 import { useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
@@ -104,198 +104,176 @@ export default function EngagementResponder() {
         description="Automate community engagement and build authentic connections at scale."
         canonicalUrl="https://www.palmerhouseproductions.com/tools/engagement-responder"
       />
-      <div className="min-h-screen w-full bg-background">
-        <div className="lg:hidden">
-          <MobileTopBar />
-        </div>
-        <div className="hidden lg:block">
-          <TopNavigation />
-        </div>
-
-        <div className="flex pt-14 lg:pt-16">
-          <div className="hidden lg:block">
-            <SimplifiedSidebar />
+      
+      <DashboardLayout>
+        <div className="max-w-4xl mx-auto px-3 md:px-4 pt-0 pb-6 space-y-4 min-h-[calc(100vh-4rem)] overflow-y-auto">
+          <div className="mb-8 text-center pt-6">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+              <MessageCircle className="w-10 h-10 text-white" />
+            </div>
+            <h1 className="text-3xl md:text-4xl font-bold mb-3">Engagement Responder</h1>
+            <p className="text-lg text-muted-foreground">AI-powered responses that build authentic connections</p>
           </div>
 
-          <main className="flex-1 overflow-auto pb-20 lg:pb-8">
-            <div className="container mx-auto px-4 py-8 max-w-5xl">
-              <div className="mb-12 text-center">
-                <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-pal-purple flex items-center justify-center">
-                  <MessageCircle className="w-10 h-10 text-white" />
+          {loading && (
+            <Card className="border-2 p-12">
+              <div className="text-center space-y-6">
+                <Loader2 className="w-16 h-16 mx-auto text-purple-500 animate-spin" />
+                <div>
+                  <p className="text-lg font-semibold mb-2">Generating Responses...</p>
+                  <p className="text-sm text-muted-foreground animate-pulse">{LOADING_TIPS[currentTip]}</p>
                 </div>
-                <h1 className="text-4xl font-bold text-foreground mb-3">
-                  Engagement Responder
-                </h1>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                  Build authentic community connections with AI-powered responses
-                </p>
+              </div>
+            </Card>
+          )}
+
+          {!loading && !results && (
+            <Card className="border-2">
+              <CardHeader>
+                <CardTitle>Generate Response</CardTitle>
+                <CardDescription>
+                  Get AI-powered response suggestions for your community engagement
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="comment">Comment/Message *</Label>
+                  <Textarea
+                    id="comment"
+                    placeholder="Paste the comment or message you want to respond to..."
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    rows={4}
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="platform">Platform *</Label>
+                    <Select value={platform} onValueChange={setPlatform}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select platform" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="instagram">Instagram</SelectItem>
+                        <SelectItem value="facebook">Facebook</SelectItem>
+                        <SelectItem value="linkedin">LinkedIn</SelectItem>
+                        <SelectItem value="twitter">Twitter/X</SelectItem>
+                        <SelectItem value="youtube">YouTube</SelectItem>
+                        <SelectItem value="tiktok">TikTok</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="tone">Response Tone *</Label>
+                    <Select value={tone} onValueChange={setTone}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select tone" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="friendly">Friendly</SelectItem>
+                        <SelectItem value="professional">Professional</SelectItem>
+                        <SelectItem value="enthusiastic">Enthusiastic</SelectItem>
+                        <SelectItem value="helpful">Helpful</SelectItem>
+                        <SelectItem value="empathetic">Empathetic</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="brandVoice">Brand Voice (Optional)</Label>
+                  <Textarea
+                    id="brandVoice"
+                    placeholder="Describe your brand's voice and personality..."
+                    value={brandVoice}
+                    onChange={(e) => setBrandVoice(e.target.value)}
+                    rows={2}
+                  />
+                </div>
+
+                <Button onClick={handleGenerate} className="w-full" size="lg">
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  Generate Responses
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {!loading && results && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-bold">Your Response Options</h2>
+                <Button onClick={handleReset} variant="outline">
+                  <RotateCcw className="w-4 h-4 mr-2" />
+                  New Response
+                </Button>
               </div>
 
-              {loading && (
-                <Card className="max-w-2xl mx-auto border-2 p-12">
-                  <div className="text-center space-y-6">
-                    <Loader2 className="w-16 h-16 mx-auto text-pal-purple animate-spin" />
-                    <div>
-                      <p className="text-lg font-semibold text-foreground mb-2">
-                        Generating Responses...
-                      </p>
-                      <p className="text-sm text-muted-foreground animate-pulse">
-                        {LOADING_TIPS[currentTip]}
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-              )}
-
-              {!loading && !results && (
-                <Card className="max-w-2xl mx-auto border-2">
+              {results.analysis && (
+                <Card>
                   <CardHeader>
-                    <CardTitle>Generate Response</CardTitle>
-                    <CardDescription>
-                      Get AI-powered response suggestions for your community engagement
-                    </CardDescription>
+                    <CardTitle>Comment Analysis</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="comment">Comment/Message *</Label>
-                      <Textarea
-                        id="comment"
-                        placeholder="Paste the comment or message you want to respond to..."
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                        rows={4}
-                      />
+                  <CardContent className="space-y-3">
+                    <div>
+                      <Label className="font-semibold">Sentiment</Label>
+                      <p className="text-foreground">{results.analysis.sentiment}</p>
                     </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="platform">Platform *</Label>
-                        <Select value={platform} onValueChange={setPlatform}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select platform" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="instagram">Instagram</SelectItem>
-                            <SelectItem value="facebook">Facebook</SelectItem>
-                            <SelectItem value="linkedin">LinkedIn</SelectItem>
-                            <SelectItem value="twitter">Twitter/X</SelectItem>
-                            <SelectItem value="youtube">YouTube</SelectItem>
-                            <SelectItem value="tiktok">TikTok</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div className="space-y-2">
-                        <Label htmlFor="tone">Desired Tone *</Label>
-                        <Select value={tone} onValueChange={setTone}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select tone" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="professional">Professional</SelectItem>
-                            <SelectItem value="friendly">Friendly</SelectItem>
-                            <SelectItem value="casual">Casual</SelectItem>
-                            <SelectItem value="enthusiastic">Enthusiastic</SelectItem>
-                            <SelectItem value="empathetic">Empathetic</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
+                    <div>
+                      <Label className="font-semibold">Key Points</Label>
+                      <p className="text-foreground">{results.analysis.keyPoints}</p>
                     </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="brandVoice">Brand Voice (Optional)</Label>
-                      <Textarea
-                        id="brandVoice"
-                        placeholder="Describe your brand voice or leave blank for default..."
-                        value={brandVoice}
-                        onChange={(e) => setBrandVoice(e.target.value)}
-                        rows={2}
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground py-2">
-                      <Coins className="w-4 h-4" />
-                      <span>This tool uses 3 credits per generation</span>
-                    </div>
-
-                    <Button 
-                      onClick={handleGenerate} 
-                      className="w-full bg-pal-purple hover:bg-pal-purple/90"
-                      size="lg"
-                    >
-                      <Sparkles className="w-4 h-4 mr-2" />
-                      Generate Responses
-                    </Button>
                   </CardContent>
                 </Card>
               )}
 
-              {!loading && results && (
-                <div className="space-y-6">
-                  <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-bold">Your Response Options</h2>
-                    <Button onClick={handleReset}>
-                      <RotateCcw className="w-4 h-4 mr-2" />
-                      New Response
-                    </Button>
-                  </div>
+              {results.responses && results.responses.map((response: any, index: number) => (
+                <Card key={index}>
+                  <CardHeader>
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <CardTitle>Option {index + 1}</CardTitle>
+                        <CardDescription>{response.style}</CardDescription>
+                      </div>
+                      <Button
+                        onClick={() => handleCopy(response.text)}
+                        variant="outline"
+                        size="sm"
+                      >
+                        <Copy className="w-4 h-4 mr-2" />
+                        Copy
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-foreground whitespace-pre-wrap">{response.text}</p>
+                  </CardContent>
+                </Card>
+              ))}
 
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Heart className="w-5 h-5 text-pal-pink" />
-                        Sentiment Analysis
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">{results.sentiment}</p>
-                    </CardContent>
-                  </Card>
-
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <MessageCircle className="w-5 h-5 text-pal-purple" />
-                        Response Options
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {results.responses?.map((response: string, idx: number) => (
-                        <div key={idx} className="p-4 bg-muted rounded-lg relative group">
-                          <p className="text-sm pr-12">{response}</p>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                            onClick={() => handleCopy(response)}
-                          >
-                            <Copy className="w-4 h-4" />
-                          </Button>
-                        </div>
+              {results.suggestions && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Additional Suggestions</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      {results.suggestions.map((suggestion: string, index: number) => (
+                        <li key={index} className="flex items-start">
+                          <Heart className="w-5 h-5 text-pink-500 mr-2 flex-shrink-0 mt-0.5" />
+                          <span className="text-foreground">{suggestion}</span>
+                        </li>
                       ))}
-                    </CardContent>
-                  </Card>
-
-                  {results.suggestions && (
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Suggestions</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-sm text-muted-foreground">{results.suggestions}</p>
-                      </CardContent>
-                    </Card>
-                  )}
-                </div>
+                    </ul>
+                  </CardContent>
+                </Card>
               )}
             </div>
-          </main>
+          )}
         </div>
-
-        <div className="lg:hidden">
-          <BottomNavigation />
-        </div>
-      </div>
+      </DashboardLayout>
     </>
   );
 }

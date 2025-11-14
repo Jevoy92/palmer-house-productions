@@ -122,7 +122,7 @@ export function SimplifiedSidebar() {
           </h3>
           <nav className="space-y-1">
             <NavLink
-              to="/dashboard/settings"
+              to="/settings"
               className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-foreground hover:bg-muted transition-colors"
               activeClassName="bg-muted text-pal-purple font-medium"
             >

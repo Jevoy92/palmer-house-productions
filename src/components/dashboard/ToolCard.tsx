@@ -1,6 +1,5 @@
 import { LucideIcon } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { ChevronRight } from 'lucide-react';
 
 interface ToolCardProps {
   name: string;
@@ -9,7 +8,6 @@ interface ToolCardProps {
   icon: LucideIcon;
   lastUsed?: string;
   usageCount?: number;
-  gradient: string;
   onClick: () => void;
 }
 
@@ -20,46 +18,46 @@ export function ToolCard({
   icon: Icon,
   lastUsed,
   usageCount,
-  gradient,
   onClick,
 }: ToolCardProps) {
   return (
-    <Card
+    <button
       onClick={onClick}
-      className="group cursor-pointer overflow-hidden hover:shadow-xl transition-all duration-300 border-2 hover:border-pal-purple/20"
+      className="w-full text-left group border-b border-border hover:bg-muted/50 transition-colors"
     >
-      {/* Image/Gradient Header */}
-      <div className={`relative h-40 ${gradient} flex items-center justify-center`}>
-        <div className="absolute inset-0 bg-black/10" />
-        <Icon className="w-16 h-16 text-white relative z-10 group-hover:scale-110 transition-transform" />
+      <div className="flex items-center gap-4 p-4">
+        {/* Icon */}
+        <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-background border-2 border-border flex items-center justify-center group-hover:border-primary transition-colors">
+          <Icon className="w-6 h-6 text-foreground" />
+        </div>
         
-        {/* Category Badge */}
-        <Badge className="absolute top-3 left-3 bg-white/90 text-foreground hover:bg-white">
-          {category}
-        </Badge>
-      </div>
-
-      {/* Content */}
-      <div className="p-4 space-y-2">
-        <h3 className="font-semibold text-lg group-hover:text-pal-purple transition-colors">
-          {name}
-        </h3>
-        <p className="text-sm text-muted-foreground line-clamp-2">
-          {description}
-        </p>
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="font-semibold text-base text-foreground group-hover:text-primary transition-colors">
+              {name}
+            </h3>
+          </div>
+          <p className="text-sm text-muted-foreground line-clamp-1">
+            {description}
+          </p>
+        </div>
         
-        {/* Usage Info */}
-        <div className="flex items-center justify-between text-xs text-muted-foreground pt-2">
-          {lastUsed ? (
-            <span>Last used: {lastUsed}</span>
-          ) : (
-            <span>Not used yet</span>
-          )}
-          {usageCount !== undefined && usageCount > 0 && (
-            <span className="font-medium">{usageCount}x used</span>
-          )}
+        {/* Metadata & Arrow */}
+        <div className="flex items-center gap-4 flex-shrink-0">
+          <div className="hidden sm:flex flex-col items-end gap-1 text-xs text-muted-foreground">
+            {lastUsed ? (
+              <span>{lastUsed}</span>
+            ) : (
+              <span>Not used yet</span>
+            )}
+            {usageCount !== undefined && usageCount > 0 && (
+              <span className="font-medium">{usageCount}x</span>
+            )}
+          </div>
+          <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
         </div>
       </div>
-    </Card>
+    </button>
   );
 }

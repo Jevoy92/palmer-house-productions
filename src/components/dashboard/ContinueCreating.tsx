@@ -12,7 +12,6 @@ const TOOLS = [
     description: 'Turn one idea into a complete content system with AI-powered planning',
     category: 'VIDEO TOOLS',
     icon: Video,
-    gradient: 'bg-gradient-to-br from-pal-purple to-pal-purple/70',
   },
   {
     id: 'persona-generator',
@@ -20,7 +19,6 @@ const TOOLS = [
     description: 'Define your ideal audience and brand voice for targeted content',
     category: 'AI ASSISTANT',
     icon: User,
-    gradient: 'bg-gradient-to-br from-pal-blue to-pal-blue/70',
   },
   {
     id: 'production-assistant',
@@ -28,7 +26,6 @@ const TOOLS = [
     description: 'Streamline your pre-production workflow with automated planning',
     category: 'PRODUCTION',
     icon: Sparkles,
-    gradient: 'bg-gradient-to-br from-pal-green to-pal-green/70',
   },
   {
     id: 'content-maximizer',
@@ -36,7 +33,6 @@ const TOOLS = [
     description: 'Repurpose content across all platforms to maximize reach',
     category: 'MARKETING',
     icon: Maximize,
-    gradient: 'bg-gradient-to-br from-pal-orange to-pal-orange/70',
   },
   {
     id: 'engagement-responder',
@@ -44,7 +40,6 @@ const TOOLS = [
     description: 'Automate community engagement with AI-powered responses',
     category: 'SOCIAL',
     icon: MessageCircle,
-    gradient: 'bg-gradient-to-br from-pal-purple to-pal-blue',
   },
 ];
 
@@ -112,41 +107,19 @@ export function ContinueCreating() {
   }
 
   return (
-    <div>
-      {/* Mobile: Horizontal Scroll */}
-      <div className="md:hidden overflow-x-auto -mx-6 px-6 pb-2">
-        <div className="flex gap-4" style={{ width: 'max-content' }}>
-          {TOOLS.map((tool) => {
-            const usage = toolUsage[tool.id];
-            return (
-              <div key={tool.id} style={{ width: '280px' }}>
-                <ToolCard
-                  {...tool}
-                  lastUsed={getLastUsedText(usage?.lastUsed)}
-                  usageCount={usage?.count}
-                  onClick={() => navigate(`/tools/${tool.id}`)}
-                />
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Desktop: Grid */}
-      <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-6">
-        {TOOLS.map((tool) => {
-          const usage = toolUsage[tool.id];
-          return (
-            <ToolCard
-              key={tool.id}
-              {...tool}
-              lastUsed={getLastUsedText(usage?.lastUsed)}
-              usageCount={usage?.count}
-              onClick={() => navigate(`/tools/${tool.id}`)}
-            />
-          );
-        })}
-      </div>
+    <div className="border border-border rounded-lg overflow-hidden bg-card">
+      {TOOLS.map((tool) => {
+        const usage = toolUsage[tool.id];
+        return (
+          <ToolCard
+            key={tool.id}
+            {...tool}
+            lastUsed={getLastUsedText(usage?.lastUsed)}
+            usageCount={usage?.count}
+            onClick={() => navigate(`/dashboard/tools/${tool.id}`)}
+          />
+        );
+      })}
     </div>
   );
 }

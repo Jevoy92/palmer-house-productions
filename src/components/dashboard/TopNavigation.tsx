@@ -2,7 +2,6 @@ import { Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CreditsBalance } from './CreditsBalance';
 import { MemberProfile } from './MemberProfile';
-import { SearchBar } from './SearchBar';
 import { LOGO } from '@/lib/branding';
 
 export function TopNavigation() {
@@ -17,10 +16,8 @@ export function TopNavigation() {
         />
       </div>
       
-      {/* Search Bar - Center */}
-      <div className="flex flex-1 max-w-2xl mx-auto">
-        <SearchBar />
-      </div>
+      {/* Spacer */}
+      <div className="flex-1" />
       
       {/* Right Side - Notifications, Credits, Profile */}
       <div className="flex items-center gap-3 flex-shrink-0">

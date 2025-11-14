@@ -52,7 +52,7 @@ export default function Dashboard() {
       {/* Desktop Top Navigation */}
       <TopNavigation />
 
-      <div className="min-h-screen w-full flex pt-16 lg:pt-16 pb-16 lg:pb-0">
+      <div className="min-h-screen w-full flex pb-16 lg:pb-0">
         {/* Desktop Left Sidebar */}
         <SimplifiedSidebar />
 

@@ -14,6 +14,7 @@ import {
   SidebarMenuItem,
   useSidebar,
   SidebarFooter,
+  SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -86,9 +87,9 @@ export function AppSidebar() {
       collapsible="icon"
     >
       <SidebarContent>
-        {/* Logo / Brand */}
+        {/* Logo / Brand with Trigger */}
         {!isCollapsed && (
-          <div className="p-4">
+          <div className="p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <img 
                 src={LOGO.url} 
@@ -96,11 +97,13 @@ export function AppSidebar() {
                 className="h-10 w-auto object-contain"
               />
             </div>
+            <SidebarTrigger className="ml-auto" />
           </div>
         )}
 
         {isCollapsed && (
-          <div className="p-2 flex justify-center">
+          <div className="p-2 flex flex-col items-center gap-2">
+            <SidebarTrigger />
             <img 
               src={LOGO.url} 
               alt={LOGO.alt}

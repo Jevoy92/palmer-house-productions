@@ -2,6 +2,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { MetaTags } from '@/components/seo/MetaTags';
+import { EnhancedFooter } from '@/components/seo/EnhancedFooter';
 import { Video, User, Sparkles, Maximize, MessageCircle, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { SidebarProvider } from '@/components/ui/sidebar';
@@ -65,7 +66,7 @@ export default function Dashboard() {
         canonicalUrl="https://www.palmerhouseproductions.com/dashboard"
       />
       <SidebarProvider>
-        <div className="flex w-full min-h-[calc(100vh-5rem)]">
+        <div className="flex w-full min-h-screen">
           <AppSidebar />
           
           <div className="flex-1 flex flex-col">
@@ -146,6 +147,7 @@ export default function Dashboard() {
                 </div>
               </div>
             </main>
+            <EnhancedFooter />
           </div>
         </div>
       </SidebarProvider>

@@ -9,6 +9,7 @@ import { useToast } from '@/hooks/use-toast';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/AppSidebar';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
+import { EnhancedFooter } from '@/components/seo/EnhancedFooter';
 import { supabase } from '@/integrations/supabase/client';
 
 const EXAMPLE_PROMPTS = [
@@ -200,7 +201,7 @@ export default function ContentSystemBuilder() {
   if (loading) {
     return (
       <SidebarProvider>
-        <div className="flex w-full min-h-[calc(100vh-5rem)]">
+        <div className="flex w-full min-h-screen">
           <AppSidebar />
           <div className="flex-1 flex flex-col">
             <DashboardHeader />
@@ -215,6 +216,7 @@ export default function ContentSystemBuilder() {
                 </p>
               </div>
             </main>
+            <EnhancedFooter />
           </div>
         </div>
       </SidebarProvider>
@@ -230,7 +232,7 @@ export default function ContentSystemBuilder() {
           canonicalUrl="https://www.palmerhouseproductions.com/tools/video-series-builder"
         />
         <SidebarProvider>
-          <div className="flex w-full min-h-[calc(100vh-5rem)]">
+          <div className="flex w-full min-h-screen">
             <AppSidebar />
             <div className="flex-1 flex flex-col">
               <DashboardHeader />
@@ -381,6 +383,7 @@ export default function ContentSystemBuilder() {
                   </div>
                 </div>
               </main>
+              <EnhancedFooter />
             </div>
           </div>
         </SidebarProvider>
@@ -395,12 +398,12 @@ export default function ContentSystemBuilder() {
         description="Turn one idea into a complete content system across YouTube, LinkedIn, Instagram, Twitter, blog posts, and email."
         canonicalUrl="https://www.palmerhouseproductions.com/tools/video-series-builder"
       />
-      <SidebarProvider>
-        <div className="flex w-full min-h-[calc(100vh-5rem)]">
-          <AppSidebar />
-          <div className="flex-1 flex flex-col">
-            <DashboardHeader />
-            <main className="flex-1 bg-white px-4 py-8 pb-8">
+        <SidebarProvider>
+          <div className="flex w-full min-h-screen">
+            <AppSidebar />
+            <div className="flex-1 flex flex-col">
+              <DashboardHeader />
+              <main className="flex-1 bg-white px-4 py-8 pb-8">
               <div className="container mx-auto max-w-4xl">
                 {/* Header */}
                 <div className="text-center mb-12">
@@ -518,10 +521,11 @@ export default function ContentSystemBuilder() {
                   </div>
                 </div>
               </div>
-            </main>
+              </main>
+              <EnhancedFooter />
+            </div>
           </div>
-        </div>
-      </SidebarProvider>
+        </SidebarProvider>
     </>
   );
 }

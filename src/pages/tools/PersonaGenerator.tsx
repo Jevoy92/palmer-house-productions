@@ -143,7 +143,7 @@ export default function PersonaGenerator() {
           <div className="flex-1 flex flex-col">
             <DashboardHeader />
             
-            <main className="flex-1 bg-white pb-8 mt-16">
+            <main className="flex-1 bg-white pb-8">
               <div className="container mx-auto px-4 py-8 max-w-5xl">
                 <div className="mb-12 text-center">
                   <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-pal-blue flex items-center justify-center">

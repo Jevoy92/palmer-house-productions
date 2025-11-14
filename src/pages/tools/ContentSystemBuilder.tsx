@@ -8,7 +8,7 @@ import { Loader2, Sparkles, Download, Save, RotateCcw, Video, Coins } from 'luci
 import { useToast } from '@/hooks/use-toast';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/AppSidebar';
-import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
+import { TopNavigation } from '@/components/dashboard/TopNavigation';
 import { EnhancedFooter } from '@/components/seo/EnhancedFooter';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -201,11 +201,11 @@ export default function ContentSystemBuilder() {
   if (loading) {
     return (
       <SidebarProvider>
-        <div className="flex w-full min-h-screen">
-          <AppSidebar />
-          <div className="flex-1 flex flex-col">
-            <DashboardHeader />
-            <main className="flex-1 flex flex-col items-center justify-center bg-white px-4 pb-8">
+        <div className="min-h-screen w-full">
+          <TopNavigation />
+          <div className="flex pt-16">
+            <AppSidebar />
+            <main className="flex-1 flex flex-col items-center justify-center bg-background px-4 min-h-[calc(100vh-4rem)]">
               <Loader2 className="w-16 h-16 animate-spin text-primary mb-8" />
               <h2 className="text-2xl font-bold text-foreground mb-4">
                 Crafting Your Content System...
@@ -216,8 +216,8 @@ export default function ContentSystemBuilder() {
                 </p>
               </div>
             </main>
-            <EnhancedFooter />
           </div>
+          <EnhancedFooter />
         </div>
       </SidebarProvider>
     );
@@ -232,11 +232,11 @@ export default function ContentSystemBuilder() {
           canonicalUrl="https://www.palmerhouseproductions.com/tools/video-series-builder"
         />
         <SidebarProvider>
-          <div className="flex w-full min-h-screen">
-            <AppSidebar />
-            <div className="flex-1 flex flex-col">
-              <DashboardHeader />
-              <main className="flex-1 bg-white px-4 py-8 pb-8">
+          <div className="min-h-screen w-full">
+            <TopNavigation />
+            <div className="flex pt-16">
+              <AppSidebar />
+              <main className="flex-1 bg-background px-4 py-8 overflow-auto min-h-[calc(100vh-4rem)]">
                 <div className="container mx-auto max-w-6xl">
                   {/* Header with Actions */}
                   <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
@@ -399,11 +399,11 @@ export default function ContentSystemBuilder() {
         canonicalUrl="https://www.palmerhouseproductions.com/tools/video-series-builder"
       />
         <SidebarProvider>
-          <div className="flex w-full min-h-screen">
-            <AppSidebar />
-            <div className="flex-1 flex flex-col">
-              <DashboardHeader />
-              <main className="flex-1 bg-white px-4 py-8 pb-8">
+          <div className="min-h-screen w-full">
+            <TopNavigation />
+            <div className="flex pt-16">
+              <AppSidebar />
+              <main className="flex-1 bg-background px-4 py-8 overflow-auto min-h-[calc(100vh-4rem)]">
               <div className="container mx-auto max-w-4xl">
                 {/* Header */}
                 <div className="text-center mb-12">

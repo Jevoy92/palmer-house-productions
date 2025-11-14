@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { MetaTags } from '@/components/seo/MetaTags';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/AppSidebar';
-import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
+import { TopNavigation } from '@/components/dashboard/TopNavigation';
 import { EnhancedFooter } from '@/components/seo/EnhancedFooter';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -137,13 +137,11 @@ export default function PersonaGenerator() {
         canonicalUrl="https://www.palmerhouseproductions.com/tools/persona-generator"
       />
       <SidebarProvider>
-        <div className="flex w-full min-h-screen">
-          <AppSidebar />
-          
-          <div className="flex-1 flex flex-col">
-            <DashboardHeader />
-            
-            <main className="flex-1 bg-white pb-8">
+        <div className="min-h-screen w-full">
+          <TopNavigation />
+          <div className="flex pt-16">
+            <AppSidebar />
+            <main className="flex-1 bg-background overflow-auto min-h-[calc(100vh-4rem)]">
               <div className="container mx-auto px-4 py-8 max-w-5xl">
                 <div className="mb-12 text-center">
                   <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-pal-blue flex items-center justify-center">

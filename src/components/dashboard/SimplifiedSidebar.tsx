@@ -4,6 +4,10 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import femaleReelPal from '@/assets/pals/female-reel-pal-circular-headshot.jpg';
+import maleEvergreenPal from '@/assets/pals/male-evergreen-pal-circular-headshot.jpg';
+import femaleSpotlightPal from '@/assets/pals/female-spotlight-pal-circular-3.jpg';
+import femaleSystemPal from '@/assets/pals/female-system-pal-circular.jpg';
 
 const overviewItems = [
   { title: 'Dashboard', url: '/dashboard', icon: Home },

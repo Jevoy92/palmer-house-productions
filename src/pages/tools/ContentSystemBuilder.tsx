@@ -178,7 +178,7 @@ export default function ContentSystemBuilder() {
 
                     <Button 
                       onClick={handleGenerate} 
-                      className="w-full bg-pal-teal hover:bg-pal-teal/90"
+                      className="w-full bg-white text-primary border-2 border-primary hover:bg-primary hover:text-white"
                       size="lg"
                     >
                       <Sparkles className="w-4 h-4 mr-2" />

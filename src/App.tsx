@@ -87,17 +87,40 @@ function RouteTracker() {
   return null;
 }
 
-// Footer wrapper that conditionally renders based on route
-function ConditionalComponents() {
+// Conditional navigation based on route (renders at top)
+function ConditionalNavigation() {
   const location = useLocation();
-  const isDashboardRoute = location.pathname.startsWith('/dashboard') || location.pathname.startsWith('/tools/');
+  const isDashboardRoute = location.pathname.startsWith('/dashboard');
+  const isAuthRoute = location.pathname === '/auth';
+  const isToolRoute = location.pathname.startsWith('/tools/');
+  const isSettingsRoute = location.pathname === '/settings';
+  const isAppPricingRoute = location.pathname === '/app-pricing';
   
-  return (
-    <>
-      {!isDashboardRoute && <Navigation />}
-      {!isDashboardRoute && <EnhancedFooter />}
-    </>
+  if (isDashboardRoute || isAuthRoute || isToolRoute || isSettingsRoute || isAppPricingRoute) {
+    return null;
+  }
+  
+  return <Navigation />;
+}
+
+// Conditional footer based on route (renders at bottom)
+function ConditionalFooter() {
+  const location = useLocation();
+  
+  // Routes that should NOT show footer (application pages)
+  const noFooterRoutes = [
+    '/dashboard',
+    '/tools/',
+    '/settings',
+    '/auth',
+    '/app-pricing'
+  ];
+  
+  const shouldHideFooter = noFooterRoutes.some(route => 
+    location.pathname.startsWith(route)
   );
+  
+  return shouldHideFooter ? null : <EnhancedFooter />;
 }
 
 const App = () => (
@@ -113,7 +136,7 @@ const App = () => (
           <CriticalCSS />
           <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
           <AnimationOptimizer />
-          <ConditionalComponents />
+          <ConditionalNavigation />
           <ScrollToTop />
           <ScrollToTopButton />
           <StructuredData />
@@ -188,9 +211,10 @@ const App = () => (
           
            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
            <Route path="*" element={<NotFound />} />
-           </Routes>
-          </div>
-           </PageTransition>
+            </Routes>
+           </div>
+           <ConditionalFooter />
+            </PageTransition>
           </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

@@ -58,7 +58,6 @@ import StyleGuide from "./pages/StyleGuide";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
-import PalHub from "./pages/dashboard/PalHub";
 import ContentSystemBuilder from "./pages/tools/ContentSystemBuilder";
 import SeriesBuilder from "./pages/tools/SeriesBuilder";
 import PersonaGenerator from "./pages/tools/PersonaGenerator";
@@ -125,8 +124,6 @@ const App = () => (
           <Route path="/" element={<Index />} />
           {/* Dashboard and tool routes don't get the footer here - they render it inside their SidebarProvider */}
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/dashboard/pals/:palId" element={<ProtectedRoute><PalHub /></ProtectedRoute>} />
-            <Route path="/dashboard/pals/:palId" element={<ProtectedRoute><PalHub /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
           <Route path="/tools/content-system-builder" element={<ProtectedRoute><ContentSystemBuilder /></ProtectedRoute>} />
           <Route path="/tools/series-builder" element={<ProtectedRoute><SeriesBuilder /></ProtectedRoute>} />

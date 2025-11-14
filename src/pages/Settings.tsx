@@ -17,7 +17,6 @@ export default function Settings() {
   const navigate = useNavigate();
   const [profile, setProfile] = useState({
     fullName: '',
-    industry: '',
   });
   const [notifications, setNotifications] = useState({
     email: true,
@@ -31,7 +30,7 @@ export default function Settings() {
     const fetchProfile = async () => {
       const { data, error } = await supabase
         .from('profiles')
-        .select('full_name, industry')
+        .select('full_name')
         .eq('id', user.id)
         .single();
 
@@ -43,7 +42,6 @@ export default function Settings() {
       if (data) {
         setProfile({ 
           fullName: data.full_name || '',
-          industry: data.industry || '',
         });
       }
     };
@@ -60,7 +58,6 @@ export default function Settings() {
         .from('profiles')
         .update({ 
           full_name: profile.fullName,
-          industry: profile.industry as any || null,
         })
         .eq('id', user.id);
 
@@ -100,7 +97,7 @@ export default function Settings() {
                 <User className="w-5 h-5" />
                 <CardTitle>Profile Information</CardTitle>
               </div>
-              <CardDescription>Manage your account information and industry settings</CardDescription>
+              <CardDescription>Manage your account information</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -110,34 +107,6 @@ export default function Settings() {
                   value={profile.fullName}
                   onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
                 />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="industry">Industry</Label>
-                <select
-                  id="industry"
-                  value={profile.industry}
-                  onChange={(e) => setProfile({ ...profile, industry: e.target.value })}
-                  className="w-full h-10 px-3 rounded-md border border-input bg-background"
-                >
-                  <option value="">Select your industry...</option>
-                  <option value="healthcare">Healthcare</option>
-                  <option value="fitness">Fitness & Wellness</option>
-                  <option value="manufacturing">Manufacturing</option>
-                  <option value="technology">Technology</option>
-                  <option value="professional_services">Professional Services</option>
-                  <option value="real_estate">Real Estate</option>
-                  <option value="education">Education</option>
-                  <option value="retail">Retail</option>
-                  <option value="hospitality">Hospitality</option>
-                  <option value="construction">Construction</option>
-                  <option value="financial_services">Financial Services</option>
-                  <option value="nonprofit">Nonprofit</option>
-                  <option value="creative_agency">Creative Agency</option>
-                  <option value="other">Other</option>
-                </select>
-                <p className="text-sm text-muted-foreground">
-                  Your industry helps personalize AI tools and examples
-                </p>
               </div>
               <Button onClick={handleSaveProfile} disabled={loading}>
                 {loading ? 'Saving...' : 'Save Changes'}

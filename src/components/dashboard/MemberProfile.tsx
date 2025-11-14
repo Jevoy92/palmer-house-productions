@@ -92,7 +92,7 @@ export function MemberProfile() {
           className="flex items-center gap-2 px-3 py-1.5 bg-pal-purple/10 rounded-full border border-pal-purple/20 hover:bg-pal-purple/20 transition-all"
         >
           <TierIcon className="w-4 h-4 text-pal-purple" />
-          <span className="text-sm font-medium text-pal-purple">Member</span>
+          <span className="text-sm font-medium text-pal-purple">{tier.name}</span>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80" align="end">

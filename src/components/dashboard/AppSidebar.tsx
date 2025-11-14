@@ -85,11 +85,12 @@ export function AppSidebar() {
   return (
     <Sidebar
       collapsible="icon"
+      className="transition-all duration-300 ease-in-out"
     >
-      <SidebarContent>
+      <SidebarContent className="transition-all duration-300">
         {/* Logo / Brand with Trigger */}
         {!isCollapsed && (
-          <div className="p-4 flex items-center justify-between">
+          <div className="p-4 flex items-center justify-between transition-opacity duration-200">
             <div className="flex items-center gap-3">
               <img 
                 src={LOGO.url} 
@@ -102,7 +103,7 @@ export function AppSidebar() {
         )}
 
         {isCollapsed && (
-          <div className="p-2 flex flex-col items-center gap-2">
+          <div className="p-2 flex flex-col items-center gap-2 transition-opacity duration-200">
             <SidebarTrigger />
             <img 
               src={LOGO.url} 
@@ -115,7 +116,7 @@ export function AppSidebar() {
         <Separator className="my-2" />
 
         <SidebarGroup>
-          {!isCollapsed && <SidebarGroupLabel>Tools</SidebarGroupLabel>}
+          {!isCollapsed && <SidebarGroupLabel className="transition-opacity duration-200">Tools</SidebarGroupLabel>}
           
           <SidebarGroupContent>
             <SidebarMenu>
@@ -125,11 +126,11 @@ export function AppSidebar() {
                     <NavLink
                       to={item.url} 
                       end={item.url === '/dashboard'}
-                      className="hover:bg-muted/50 transition-colors"
+                      className="hover:bg-muted/50 transition-all duration-200"
                       activeClassName="bg-muted text-primary font-medium"
                     >
-                      <item.icon className={isCollapsed ? 'h-5 w-5' : 'mr-2 h-4 w-4'} />
-                      {!isCollapsed && <span>{item.title}</span>}
+                      <item.icon className={`transition-all duration-200 ${isCollapsed ? 'h-5 w-5' : 'mr-2 h-4 w-4'}`} />
+                      {!isCollapsed && <span className="transition-opacity duration-200">{item.title}</span>}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -145,10 +146,17 @@ export function AppSidebar() {
             <SidebarMenuButton asChild>
               <button
                 onClick={handleSignOut}
-                className="hover:bg-muted/50 transition-colors w-full"
+                className="hover:bg-muted/50 transition-all duration-200 w-full"
               >
-                <LogOut className={isCollapsed ? 'h-5 w-5' : 'mr-2 h-4 w-4'} />
-                {!isCollapsed && <span>Sign Out</span>}
+                <LogOut className={`transition-all duration-200 ${isCollapsed ? 'h-5 w-5' : 'mr-2 h-4 w-4'}`} />
+                {!isCollapsed && <span className="transition-opacity duration-200">Sign Out</span>}
+              </button>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
+    </Sidebar>
+  );
               </button>
             </SidebarMenuButton>
           </SidebarMenuItem>

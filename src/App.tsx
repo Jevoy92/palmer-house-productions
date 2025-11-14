@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -85,6 +86,20 @@ function RouteTracker() {
   return null;
 }
 
+// Conditional Navigation component
+function ConditionalNavigation() {
+  const location = useLocation();
+  const isDashboardRoute = location.pathname.startsWith('/dashboard') || 
+                          location.pathname.startsWith('/tools/') ||
+                          location.pathname === '/app-pricing';
+  
+  if (isDashboardRoute) {
+    return null;
+  }
+  
+  return <Navigation />;
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ErrorBoundary>
@@ -98,7 +113,7 @@ const App = () => (
           <CriticalCSS />
           <GoogleAnalytics measurementId={GA_MEASUREMENT_ID} />
           <AnimationOptimizer />
-          <Navigation />
+          <ConditionalNavigation />
           <ScrollToTop />
           <ScrollToTopButton />
           <StructuredData />

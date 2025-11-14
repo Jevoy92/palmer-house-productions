@@ -105,17 +105,18 @@ const App = () => (
           <Canonical />
           <BreadcrumbNavigation />
           <RouteTracker />
-          <div className="pt-20">
+           <div className="pt-20">
             <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/auth" element={<Auth />} />
+          {/* Dashboard and tool routes don't get the footer here - they render it inside their SidebarProvider */}
           <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/tools/content-system-builder" element={<ProtectedRoute><ContentSystemBuilder /></ProtectedRoute>} />
-            <Route path="/tools/series-builder" element={<ProtectedRoute><SeriesBuilder /></ProtectedRoute>} />
+          <Route path="/tools/content-system-builder" element={<ProtectedRoute><ContentSystemBuilder /></ProtectedRoute>} />
+          <Route path="/tools/series-builder" element={<ProtectedRoute><SeriesBuilder /></ProtectedRoute>} />
           <Route path="/tools/persona-generator" element={<ProtectedRoute><PersonaGenerator /></ProtectedRoute>} />
           <Route path="/tools/production-assistant" element={<ProtectedRoute><ProductionAssistant /></ProtectedRoute>} />
           <Route path="/tools/content-maximizer" element={<ProtectedRoute><ContentMaximizer /></ProtectedRoute>} />
           <Route path="/tools/engagement-responder" element={<ProtectedRoute><EngagementResponder /></ProtectedRoute>} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/app-pricing" element={<AppPricing />} />
           <Route path="/pals" element={<Pals />} />
           <Route path="/reel-pal" element={<ReelPal />} />

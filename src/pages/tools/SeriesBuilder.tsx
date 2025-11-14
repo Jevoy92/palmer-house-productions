@@ -11,6 +11,7 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/AppSidebar';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
 import { Input } from '@/components/ui/input';
+import { EnhancedFooter } from '@/components/seo/EnhancedFooter';
 
 const CONTENT_TYPES = [
   { value: 'blog', label: '📝 Blog Posts' },
@@ -220,7 +221,7 @@ export default function SeriesBuilder() {
   if (loading) {
     return (
       <SidebarProvider>
-        <div className="flex w-full min-h-[calc(100vh-5rem)]">
+        <div className="flex w-full min-h-screen">
           <AppSidebar />
           <div className="flex-1 flex flex-col">
             <DashboardHeader />
@@ -233,6 +234,7 @@ export default function SeriesBuilder() {
                 {LOADING_TIPS[currentTip]}
               </p>
             </main>
+            <EnhancedFooter />
           </div>
         </div>
       </SidebarProvider>
@@ -242,7 +244,7 @@ export default function SeriesBuilder() {
   if (seriesPlan) {
     return (
       <SidebarProvider>
-        <div className="flex w-full min-h-[calc(100vh-5rem)]">
+        <div className="flex w-full min-h-screen">
           <AppSidebar />
           <div className="flex-1 flex flex-col">
             <DashboardHeader />
@@ -330,6 +332,7 @@ export default function SeriesBuilder() {
                 </div>
               </div>
             </main>
+            <EnhancedFooter />
           </div>
         </div>
       </SidebarProvider>
@@ -338,7 +341,7 @@ export default function SeriesBuilder() {
 
   return (
     <SidebarProvider>
-      <div className="flex w-full min-h-[calc(100vh-5rem)]">
+      <div className="flex w-full min-h-screen">
         <AppSidebar />
         <div className="flex-1 flex flex-col">
           <DashboardHeader />
@@ -488,6 +491,7 @@ export default function SeriesBuilder() {
               </div>
             </div>
           </main>
+          <EnhancedFooter />
         </div>
       </div>
     </SidebarProvider>

@@ -2,6 +2,7 @@ import { MetaTags } from '@/components/seo/MetaTags';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/dashboard/AppSidebar';
 import { DashboardHeader } from '@/components/dashboard/DashboardHeader';
+import { EnhancedFooter } from '@/components/seo/EnhancedFooter';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -137,7 +138,7 @@ export default function ProductionAssistant() {
         canonicalUrl="https://www.palmerhouseproductions.com/tools/production-assistant"
       />
       <SidebarProvider>
-        <div className="flex w-full min-h-[calc(100vh-5rem)]">
+        <div className="flex w-full min-h-screen">
           <AppSidebar />
           
           <div className="flex-1 flex flex-col">
@@ -384,6 +385,7 @@ export default function ProductionAssistant() {
                 )}
               </div>
             </main>
+            <EnhancedFooter />
           </div>
         </div>
       </SidebarProvider>

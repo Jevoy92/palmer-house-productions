@@ -37,17 +37,15 @@ export default function SpotlightPalHub() {
     if (!user) return;
 
     const fetchProgress = async () => {
-      // @ts-ignore - user_video_checklist table exists but types haven't regenerated yet
-      const { data } = await supabase
+      const { data } = await (supabase as any)
         .from('user_video_checklist')
         .select('video_id, completed')
         .eq('user_id', user.id)
         .eq('pal', 'spotlight');
 
       if (data) {
-        // @ts-ignore
-        const completed = new Set(
-          data.filter(item => item.completed).map(item => item.video_id)
+        const completed = new Set<string>(
+          data.filter((item: any) => item.completed).map((item: any) => item.video_id)
         );
         setCompletedItems(completed);
       }
@@ -71,8 +69,7 @@ export default function SpotlightPalHub() {
 
     setCompletedItems(newCompletedItems);
 
-    // @ts-ignore - user_video_checklist table exists but types haven't regenerated yet
-    const { error } = await supabase
+    const { error } = await (supabase as any)
       .from('user_video_checklist')
       .upsert({
         user_id: user.id,

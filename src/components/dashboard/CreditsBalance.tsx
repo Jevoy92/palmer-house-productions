@@ -81,10 +81,10 @@ export function CreditsBalance() {
       <PopoverTrigger asChild>
         <Button
           variant="ghost"
-          className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all hover:bg-accent/10 ${
+          className={`flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all ${
             isLow 
               ? 'bg-destructive/10 border-destructive/30 text-destructive hover:bg-destructive/20' 
-              : 'bg-primary/10 border-primary/30 text-primary hover:bg-primary/20'
+              : 'bg-pal-purple/10 border-pal-purple/30 text-pal-purple hover:bg-pal-purple/20'
           }`}
         >
           <Coins className="w-4 h-4" />
@@ -97,7 +97,7 @@ export function CreditsBalance() {
           {/* Header */}
           <div className="space-y-1">
             <h4 className="font-semibold text-foreground flex items-center gap-2">
-              <Coins className="w-4 h-4 text-primary" />
+              <Coins className="w-4 h-4 text-pal-purple" />
               Your Credits
             </h4>
             <p className="text-sm text-muted-foreground">
@@ -115,7 +115,7 @@ export function CreditsBalance() {
                 of {credits.monthly_allowance} credits
               </span>
             </div>
-            <Progress value={100 - percentageUsed} className="h-2" />
+            <Progress value={100 - percentageUsed} className="h-2 [&>div]:bg-pal-purple" />
             <p className="text-xs text-muted-foreground">
               {credits.balance === credits.monthly_allowance ? (
                 "✨ Full balance available"
@@ -144,7 +144,7 @@ export function CreditsBalance() {
           {/* Quick Actions */}
           <div className="space-y-2 pt-2 border-t border-border">
             <Button 
-              className="w-full" 
+              className="w-full bg-pal-purple hover:bg-pal-purple/90 text-white" 
               size="sm"
               disabled
             >

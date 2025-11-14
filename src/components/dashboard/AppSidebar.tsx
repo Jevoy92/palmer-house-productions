@@ -18,6 +18,11 @@ import {
 } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 const toolItems = [
   { 
@@ -122,17 +127,37 @@ export function AppSidebar() {
             <SidebarMenu>
               {toolItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <NavLink
-                      to={item.url} 
-                      end={item.url === '/dashboard'}
-                      className="hover:bg-muted/50 transition-colors"
-                      activeClassName="bg-muted text-primary font-medium"
-                    >
-                      <item.icon className={isCollapsed ? 'h-5 w-5' : 'mr-2 h-4 w-4'} />
-                      {!isCollapsed && <span>{item.title}</span>}
-                    </NavLink>
-                  </SidebarMenuButton>
+                  {isCollapsed ? (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <SidebarMenuButton asChild>
+                          <NavLink
+                            to={item.url} 
+                            end={item.url === '/dashboard'}
+                            className="hover:bg-muted/50 transition-colors"
+                            activeClassName="bg-muted text-primary font-medium"
+                          >
+                            <item.icon className="h-5 w-5" />
+                          </NavLink>
+                        </SidebarMenuButton>
+                      </TooltipTrigger>
+                      <TooltipContent side="right" className="font-medium">
+                        {item.title}
+                      </TooltipContent>
+                    </Tooltip>
+                  ) : (
+                    <SidebarMenuButton asChild>
+                      <NavLink
+                        to={item.url} 
+                        end={item.url === '/dashboard'}
+                        className="hover:bg-muted/50 transition-colors"
+                        activeClassName="bg-muted text-primary font-medium"
+                      >
+                        <item.icon className="mr-2 h-4 w-4" />
+                        <span>{item.title}</span>
+                      </NavLink>
+                    </SidebarMenuButton>
+                  )}
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
@@ -143,15 +168,33 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <button
-                onClick={handleSignOut}
-                className="hover:bg-muted/50 transition-colors w-full"
-              >
-                <LogOut className={isCollapsed ? 'h-5 w-5' : 'mr-2 h-4 w-4'} />
-                {!isCollapsed && <span>Sign Out</span>}
-              </button>
-            </SidebarMenuButton>
+            {isCollapsed ? (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <SidebarMenuButton asChild>
+                    <button
+                      onClick={handleSignOut}
+                      className="hover:bg-muted/50 transition-colors w-full"
+                    >
+                      <LogOut className="h-5 w-5" />
+                    </button>
+                  </SidebarMenuButton>
+                </TooltipTrigger>
+                <TooltipContent side="right" className="font-medium">
+                  Sign Out
+                </TooltipContent>
+              </Tooltip>
+            ) : (
+              <SidebarMenuButton asChild>
+                <button
+                  onClick={handleSignOut}
+                  className="hover:bg-muted/50 transition-colors w-full"
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Sign Out</span>
+                </button>
+              </SidebarMenuButton>
+            )}
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

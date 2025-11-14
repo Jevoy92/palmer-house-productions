@@ -1,5 +1,4 @@
-import { Bell } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { SidebarTrigger } from '@/components/ui/sidebar';
 import { CreditsBalance } from './CreditsBalance';
 import { MemberProfile } from './MemberProfile';
 import { SearchBar } from './SearchBar';
@@ -7,9 +6,9 @@ import { LOGO } from '@/lib/branding';
 
 export function TopNavigation() {
   return (
-    <header className="hidden lg:flex fixed top-0 left-0 right-0 h-16 bg-background border-b border-border z-50 items-center px-4 md:px-6 gap-4">
-      {/* Logo */}
-      <div className="flex items-center gap-3 flex-shrink-0">
+    <header className="fixed top-0 left-0 right-0 h-16 bg-background border-b border-border z-50 flex items-center px-4 md:px-6 gap-4">
+      <div className="flex items-center gap-3">
+        <SidebarTrigger />
         <img 
           src={LOGO.url} 
           alt={LOGO.alt}
@@ -17,19 +16,15 @@ export function TopNavigation() {
         />
       </div>
       
-      {/* Search Bar - Center */}
-      <div className="flex flex-1 max-w-2xl mx-auto">
+      <div className="hidden md:flex flex-1 max-w-2xl mx-auto">
         <SearchBar />
       </div>
       
-      {/* Right Side - Notifications, Credits, Profile */}
-      <div className="flex items-center gap-3 flex-shrink-0">
-        <Button variant="ghost" size="icon" className="relative">
-          <Bell className="w-5 h-5" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-pal-orange rounded-full" />
-        </Button>
+      <div className="ml-auto flex items-center gap-3">
         <CreditsBalance />
-        <MemberProfile />
+        <div className="hidden sm:block">
+          <MemberProfile />
+        </div>
       </div>
     </header>
   );

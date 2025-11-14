@@ -11,7 +11,7 @@ import { ScrollToTop } from "@/components/ScrollToTop";
 import { ScrollToTopButton } from "@/components/ScrollToTopButton";
 import { StructuredData } from "@/components/seo/StructuredData";
 import { BreadcrumbNavigation } from "@/components/seo/BreadcrumbNavigation";
-import { ConditionalFooter } from "@/components/ConditionalFooter";
+import { EnhancedFooter } from "@/components/seo/EnhancedFooter";
 import { PageTransition } from '@/components/PageTransition';
 import { GoogleAnalytics } from "@/components/seo/GoogleAnalytics";
 import { trackPageView } from "@/lib/analytics";
@@ -171,9 +171,9 @@ const App = () => (
            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
            <Route path="*" element={<NotFound />} />
            </Routes>
-           </div>
-            <ConditionalFooter />
-         </PageTransition>
+          </div>
+           <EnhancedFooter />
+        </PageTransition>
           </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>

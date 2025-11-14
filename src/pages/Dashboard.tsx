@@ -304,7 +304,7 @@ export default function Dashboard() {
             </div>
           </aside>
 
-          <main className="col-span-1 lg:col-span-7 bg-brand-gray-light rounded-3xl p-4 md:p-6 flex flex-col gap-6 overflow-y-auto lg:max-h-[95vh]">
+          <main className="col-span-1 lg:col-span-7 bg-brand-gray-light rounded-3xl p-4 md:p-6 flex flex-col gap-4 overflow-y-auto lg:max-h-[95vh]">
             <header className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
               <div className="relative w-full max-w-md">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-gray-dark w-5 h-5" />
@@ -328,18 +328,18 @@ export default function Dashboard() {
               </div>
             </header>
 
-            <section className="bg-brand-purple rounded-3xl p-8 text-white relative overflow-hidden">
+            <section className="bg-brand-purple rounded-3xl p-6 text-white relative overflow-hidden">
               <div className="absolute -right-10 -top-10 text-white/10">
-                <Sparkles className="w-48 h-48 rotate-12" />
+                <Sparkles className="w-32 h-32 rotate-12" />
               </div>
               <div className="absolute left-1/2 bottom-0 text-white/10">
-                <Sparkles className="w-36 h-36 -rotate-12" />
+                <Sparkles className="w-24 h-24 -rotate-12" />
               </div>
-              <p className="text-sm font-semibold uppercase tracking-wider mb-2 relative z-10">AI Content OS</p>
-              <h2 className="text-4xl font-bold max-w-md leading-tight mb-6 relative z-10">Automate Your Content Creation with AI-Powered Tools</h2>
-              <button className="bg-brand-text text-white font-semibold py-3 px-6 rounded-full flex items-center gap-3 hover:bg-gray-800 transition-colors relative z-10">
+              <p className="text-xs font-semibold uppercase tracking-wider mb-1 relative z-10">AI Content OS</p>
+              <h2 className="text-2xl md:text-3xl font-bold max-w-md leading-tight mb-4 relative z-10">Automate Your Content Creation with AI-Powered Tools</h2>
+              <button className="bg-brand-text text-white font-semibold py-2 px-5 rounded-full flex items-center gap-2 hover:bg-gray-800 transition-colors relative z-10 text-sm">
                 Get Started
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-4 h-4" />
               </button>
             </section>
             
@@ -347,18 +347,18 @@ export default function Dashboard() {
               {allTools.slice(0, 3).map((tool) => {
                 const Icon = tool.icon;
                 return (
-                  <div key={tool.id} className="bg-white p-4 rounded-2xl flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className={`w-14 h-14 ${tool.iconBg} ${tool.iconColor} rounded-full flex items-center justify-center`}>
-                        <Icon className="w-6 h-6" />
+                  <div key={tool.id} className="bg-white p-3 rounded-2xl flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className={`w-12 h-12 ${tool.iconBg} ${tool.iconColor} rounded-full flex items-center justify-center`}>
+                        <Icon className="w-5 h-5" />
                       </div>
                       <div>
-                        <p className="text-sm text-brand-gray-dark">In Progress</p>
-                        <p className="font-bold text-brand-text">{tool.name.split(' ')[0]}</p>
+                        <p className="text-xs text-brand-gray-dark">In Progress</p>
+                        <p className="font-bold text-brand-text text-sm">{tool.name.split(' ')[0]}</p>
                       </div>
                     </div>
                     <button className="text-brand-gray-dark hover:text-brand-text">
-                      <MoreVertical className="w-5 h-5" />
+                      <MoreVertical className="w-4 h-4" />
                     </button>
                   </div>
                 );
@@ -366,14 +366,14 @@ export default function Dashboard() {
             </section>
 
             <section>
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-2xl font-bold text-brand-text">Your AI Tools</h3>
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="text-xl font-bold text-brand-text">Your AI Tools</h3>
                 <div className="flex items-center gap-2">
-                  <button className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-brand-gray-dark hover:bg-brand-purple-light">
-                    <ChevronLeft className="w-5 h-5" />
+                  <button className="w-8 h-8 bg-white rounded-full flex items-center justify-center text-brand-gray-dark hover:bg-brand-purple-light">
+                    <ChevronLeft className="w-4 h-4" />
                   </button>
-                  <button className="w-10 h-10 bg-brand-purple rounded-full flex items-center justify-center text-white">
-                    <ChevronRight className="w-5 h-5" />
+                  <button className="w-8 h-8 bg-brand-purple rounded-full flex items-center justify-center text-white">
+                    <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
               </div>
@@ -383,29 +383,29 @@ export default function Dashboard() {
                   return (
                     <div 
                       key={tool.id} 
-                      className="bg-white p-4 rounded-2xl flex flex-col gap-4 cursor-pointer hover:shadow-lg transition-shadow"
+                      className="bg-white p-3 rounded-2xl flex flex-col gap-3 cursor-pointer hover:shadow-lg transition-shadow"
                       onClick={() => handleToolClick(tool.id)}
                     >
-                      <div className="relative h-40 rounded-xl overflow-hidden">
+                      <div className="relative h-32 rounded-xl overflow-hidden">
                         <img className="w-full h-full object-cover" src={tool.image} alt={tool.name} />
-                        <button className="absolute top-3 right-3 w-8 h-8 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/50">
-                          <Heart className="w-4 h-4" />
+                        <button className="absolute top-2 right-2 w-7 h-7 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/50">
+                          <Heart className="w-3.5 h-3.5" />
                         </button>
                       </div>
-                      <span className={`text-xs font-semibold ${tool.color} ${tool.textColor} py-1 px-3 rounded-full self-start flex items-center gap-1`}>
+                      <span className={`text-xs font-semibold ${tool.color} ${tool.textColor} py-1 px-2 rounded-full self-start flex items-center gap-1`}>
                         <Icon className="w-3 h-3" />
                         {tool.badge}
                       </span>
-                      <h4 className="font-bold text-brand-text leading-tight">{tool.name}</h4>
-                      <div className="w-full bg-brand-gray-medium rounded-full h-1.5">
-                        <div className="bg-brand-purple h-1.5 rounded-full" style={{ width: `${tool.progress}%` }}></div>
+                      <h4 className="font-bold text-brand-text leading-tight text-sm">{tool.name}</h4>
+                      <div className="w-full bg-brand-gray-medium rounded-full h-1">
+                        <div className="bg-brand-purple h-1 rounded-full" style={{ width: `${tool.progress}%` }}></div>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-brand-purple rounded-full flex items-center justify-center text-white text-xs font-bold">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 bg-brand-purple rounded-full flex items-center justify-center text-white text-xs font-bold">
                           {tool.mentor.charAt(0)}
                         </div>
                         <div>
-                          <p className="font-semibold text-sm text-brand-text">{tool.mentor}</p>
+                          <p className="font-semibold text-xs text-brand-text">{tool.mentor}</p>
                           <p className="text-xs text-brand-gray-dark">AI Assistant</p>
                         </div>
                       </div>
@@ -416,12 +416,12 @@ export default function Dashboard() {
             </section>
 
             <section>
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-2xl font-bold text-brand-text">Recent Activity</h3>
-                <a href="#" className="font-semibold text-brand-purple hover:underline">See All</a>
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="text-xl font-bold text-brand-text">Recent Activity</h3>
+                <a href="#" className="font-semibold text-brand-purple hover:underline text-sm">See All</a>
               </div>
-              <div className="bg-white rounded-2xl p-4">
-                <div className="grid grid-cols-10 gap-4 text-xs font-semibold text-brand-gray-dark uppercase py-2 px-4 border-b border-brand-gray-medium">
+              <div className="bg-white rounded-2xl p-3">
+                <div className="grid grid-cols-10 gap-4 text-xs font-semibold text-brand-gray-dark uppercase py-2 px-3 border-b border-brand-gray-medium">
                   <div className="col-span-3">Tool</div>
                   <div className="col-span-2">Type</div>
                   <div className="col-span-4">Description</div>
@@ -430,28 +430,28 @@ export default function Dashboard() {
                 {allTools.slice(0, 3).map((tool) => {
                   const Icon = tool.icon;
                   return (
-                    <div key={tool.id} className="grid grid-cols-10 gap-4 items-center py-4 px-4 hover:bg-brand-gray-light rounded-lg">
-                      <div className="col-span-3 flex items-center gap-3">
-                        <div className={`w-10 h-10 ${tool.iconBg} ${tool.iconColor} rounded-full flex items-center justify-center`}>
-                          <Icon className="w-5 h-5" />
+                    <div key={tool.id} className="grid grid-cols-10 gap-4 items-center py-3 px-3 hover:bg-brand-gray-light rounded-lg">
+                      <div className="col-span-3 flex items-center gap-2">
+                        <div className={`w-8 h-8 ${tool.iconBg} ${tool.iconColor} rounded-full flex items-center justify-center`}>
+                          <Icon className="w-4 h-4" />
                         </div>
                         <div>
-                          <p className="font-bold text-brand-text">{tool.name.split(' ')[0]}</p>
-                          <p className="text-sm text-brand-gray-dark">Recently used</p>
+                          <p className="font-bold text-brand-text text-sm">{tool.name.split(' ')[0]}</p>
+                          <p className="text-xs text-brand-gray-dark">Recently used</p>
                         </div>
                       </div>
                       <div className="col-span-2">
-                        <span className={`text-xs font-semibold ${tool.color} ${tool.textColor} py-1 px-3 rounded-full`}>
+                        <span className={`text-xs font-semibold ${tool.color} ${tool.textColor} py-1 px-2 rounded-full`}>
                           {tool.badge}
                         </span>
                       </div>
-                      <div className="col-span-4 text-brand-text font-medium">{tool.description}</div>
+                      <div className="col-span-4 text-brand-text font-medium text-sm">{tool.description}</div>
                       <div className="col-span-1 flex justify-end">
                         <button 
                           onClick={() => handleToolClick(tool.id)}
-                          className="w-8 h-8 border border-brand-gray-medium rounded-full flex items-center justify-center text-brand-gray-dark hover:bg-brand-purple-light hover:text-brand-purple"
+                          className="w-7 h-7 border border-brand-gray-medium rounded-full flex items-center justify-center text-brand-gray-dark hover:bg-brand-purple-light hover:text-brand-purple"
                         >
-                          <ChevronRight className="w-4 h-4" />
+                          <ChevronRight className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     </div>

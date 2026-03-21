@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   Dimensions,
+  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -16,6 +17,7 @@ import {
   PalId,
   getMissionsForPal,
 } from "@/constants/data";
+import { PAL_IMAGES } from "@/constants/images";
 
 const { width } = Dimensions.get("window");
 
@@ -140,12 +142,19 @@ export default function PalsScreen() {
               style={styles.palHeader}
               onPress={() => router.push(`/pal/${palId}`)}
             >
-              <View style={[styles.palIcon, { backgroundColor: meta.bg }]}>
-                <Feather name={meta.icon as any} size={20} color={meta.color} />
+              <View style={styles.palAvatars}>
+                <Image
+                  source={PAL_IMAGES[palId].male}
+                  style={[styles.palAvatar, styles.palAvatarLeft, { borderColor: meta.bg }]}
+                />
+                <Image
+                  source={PAL_IMAGES[palId].female}
+                  style={[styles.palAvatar, styles.palAvatarRight, { borderColor: meta.bg }]}
+                />
               </View>
               <View style={styles.palHeaderText}>
                 <Text style={styles.palName}>{pal.name}</Text>
-                <Text style={styles.palTagline}>{pal.tagline}</Text>
+                <Text style={styles.palTagline}>{pal.displayName} · {pal.tagline}</Text>
               </View>
               <View style={styles.palArrow}>
                 <Feather name="chevron-right" size={18} color={Colors.light.textTertiary} />
@@ -211,12 +220,26 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     gap: 12,
   },
-  palIcon: {
-    width: 44,
+  palAvatars: {
+    width: 56,
     height: 44,
-    borderRadius: 14,
-    alignItems: "center",
-    justifyContent: "center",
+    position: "relative",
+  },
+  palAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 2,
+    position: "absolute",
+    top: 2,
+  },
+  palAvatarLeft: {
+    left: 0,
+    zIndex: 2,
+  },
+  palAvatarRight: {
+    left: 18,
+    zIndex: 1,
   },
   palHeaderText: { flex: 1 },
   palName: {

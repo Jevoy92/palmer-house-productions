@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import React from "react";
 import {
   Dimensions,
+  Image,
   Linking,
   Pressable,
   ScrollView,
@@ -13,6 +14,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
 import { PALS, PAL_ORDER, PROCESS_STEPS, PalId } from "@/constants/data";
+import { PAL_IMAGES } from "@/constants/images";
 import { useAuth } from "@/contexts/AuthContext";
 
 const { width } = Dimensions.get("window");
@@ -45,12 +47,19 @@ function PalPill({ palId }: { palId: PalId }) {
       style={[styles.palPill, { backgroundColor: meta.bg }]}
       onPress={() => router.push(`/pal/${palId}`)}
     >
-      <View style={[styles.palPillIcon, { backgroundColor: meta.color + "15" }]}>
-        <Feather name={meta.icon as any} size={18} color={meta.color} />
+      <View style={styles.palPillAvatars}>
+        <Image
+          source={PAL_IMAGES[palId].male}
+          style={[styles.palPillAvatar, styles.palPillAvatarLeft]}
+        />
+        <Image
+          source={PAL_IMAGES[palId].female}
+          style={[styles.palPillAvatar, styles.palPillAvatarRight]}
+        />
       </View>
       <View style={styles.palPillText}>
         <Text style={[styles.palPillName, { color: meta.color }]}>{pal.name}</Text>
-        <Text style={styles.palPillTagline} numberOfLines={1}>{pal.tagline}</Text>
+        <Text style={styles.palPillTagline} numberOfLines={1}>{pal.displayName} · {pal.tagline}</Text>
       </View>
       <Feather name="chevron-right" size={16} color={Colors.light.textTertiary} />
     </Pressable>
@@ -295,12 +304,27 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     gap: 12,
   },
-  palPillIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
+  palPillAvatars: {
+    width: 48,
+    height: 36,
+    position: "relative",
+  },
+  palPillAvatar: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: "#fff",
+    position: "absolute",
+    top: 2,
+  },
+  palPillAvatarLeft: {
+    left: 0,
+    zIndex: 2,
+  },
+  palPillAvatarRight: {
+    left: 16,
+    zIndex: 1,
   },
   palPillText: { flex: 1 },
   palPillName: {

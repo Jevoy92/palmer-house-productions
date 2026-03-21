@@ -2,6 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
 import {
+  Image,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -11,6 +12,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
 import { PALS, PalId, getMissionsForPal } from "@/constants/data";
+import { PAL_IMAGES } from "@/constants/images";
 
 const PAL_META: Record<PalId, { color: string; bg: string; icon: string }> = {
   reel: { color: Colors.pal.reel, bg: Colors.pal.reelLight, icon: "smartphone" },
@@ -44,8 +46,13 @@ export default function PalDetailScreen() {
       showsVerticalScrollIndicator={false}
     >
       <View style={[styles.header, { paddingTop: insets.top + 56 }]}>
-        <View style={[styles.iconWrap, { backgroundColor: meta.bg }]}>
-          <Feather name={meta.icon as any} size={28} color={meta.color} />
+        <View style={styles.avatarRow}>
+          <View style={[styles.avatarWrap, { borderColor: meta.bg }]}>
+            <Image source={PAL_IMAGES[palId].male} style={styles.avatar} />
+          </View>
+          <View style={[styles.avatarWrap, styles.avatarOverlap, { borderColor: meta.bg }]}>
+            <Image source={PAL_IMAGES[palId].female} style={styles.avatar} />
+          </View>
         </View>
         <Text style={styles.palName}>{pal.name}</Text>
         <Text style={styles.characters}>{pal.displayName}</Text>
@@ -101,13 +108,27 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
     alignItems: "center",
   },
-  iconWrap: {
-    width: 64,
-    height: 64,
-    borderRadius: 20,
+  avatarRow: {
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 16,
+    height: 80,
+  },
+  avatarWrap: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    borderWidth: 3,
+    overflow: "hidden",
+  },
+  avatarOverlap: {
+    marginLeft: -16,
+  },
+  avatar: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 36,
   },
   palName: {
     fontFamily: "Inter_700Bold",

@@ -1,9 +1,10 @@
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
+import { PAL_IMAGES } from "@/constants/images";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function WelcomeScreen() {
@@ -24,6 +25,23 @@ export default function WelcomeScreen() {
         <Text style={styles.subtitle}>
           Explore services, build packages, and get AI-powered content guidance — all in one place.
         </Text>
+
+        <View style={styles.avatarStrip}>
+          {(["reel", "spotlight", "system", "evergreen"] as const).map((palId, i) => (
+            <Image
+              key={palId}
+              source={PAL_IMAGES[palId].male}
+              style={[styles.stripAvatar, i > 0 && { marginLeft: -10 }]}
+            />
+          ))}
+          {(["reel", "spotlight", "system", "evergreen"] as const).map((palId, i) => (
+            <Image
+              key={`f-${palId}`}
+              source={PAL_IMAGES[palId].female}
+              style={[styles.stripAvatar, { marginLeft: -10 }]}
+            />
+          ))}
+        </View>
       </View>
 
       <View style={styles.features}>
@@ -60,15 +78,24 @@ export default function WelcomeScreen() {
         >
           <Text style={styles.secondaryBtnText}>Sign In</Text>
         </Pressable>
-        <Pressable
-          style={styles.ghostBtn}
-          onPress={() => {
-            browseAsGuest();
-            router.replace("/(tabs)");
-          }}
-        >
-          <Text style={styles.ghostBtnText}>Browse as Guest</Text>
-        </Pressable>
+        <View style={styles.guestRow}>
+          <Pressable
+            style={styles.ghostBtn}
+            onPress={() => router.push("/onboarding")}
+          >
+            <Text style={styles.tourText}>Take a Tour</Text>
+          </Pressable>
+          <View style={styles.guestDot} />
+          <Pressable
+            style={styles.ghostBtn}
+            onPress={() => {
+              browseAsGuest();
+              router.replace("/(tabs)");
+            }}
+          >
+            <Text style={styles.ghostBtnText}>Browse as Guest</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );
@@ -165,9 +192,39 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.light.text,
   },
+  avatarStrip: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 24,
+  },
+  stripAvatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    borderWidth: 2,
+    borderColor: "#fff",
+  },
+  guestRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 12,
+  },
+  guestDot: {
+    width: 3,
+    height: 3,
+    borderRadius: 1.5,
+    backgroundColor: Colors.light.textTertiary,
+  },
   ghostBtn: {
     paddingVertical: 12,
     alignItems: "center",
+  },
+  tourText: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 15,
+    color: Colors.light.primary,
   },
   ghostBtnText: {
     fontFamily: "Inter_500Medium",

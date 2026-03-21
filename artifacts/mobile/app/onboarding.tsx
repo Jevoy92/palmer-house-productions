@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
-import { PAL_IMAGES } from "@/constants/images";
+import { PAL_PROFILES } from "@/constants/images";
 import { useAuth } from "@/contexts/AuthContext";
 
 const { width } = Dimensions.get("window");
@@ -49,7 +49,7 @@ const SLIDES: OnboardingSlide[] = [
     icon: "smartphone",
     color: Colors.pal.reel,
     bg: Colors.pal.reelLight,
-    images: PAL_IMAGES.reel,
+    images: PAL_PROFILES.reel,
   },
   {
     id: "spotlight",
@@ -60,7 +60,7 @@ const SLIDES: OnboardingSlide[] = [
     icon: "film",
     color: Colors.pal.spotlight,
     bg: Colors.pal.spotlightLight,
-    images: PAL_IMAGES.spotlight,
+    images: PAL_PROFILES.spotlight,
   },
   {
     id: "system",
@@ -71,7 +71,7 @@ const SLIDES: OnboardingSlide[] = [
     icon: "settings",
     color: Colors.pal.system,
     bg: Colors.pal.systemLight,
-    images: PAL_IMAGES.system,
+    images: PAL_PROFILES.system,
   },
   {
     id: "evergreen",
@@ -82,7 +82,7 @@ const SLIDES: OnboardingSlide[] = [
     icon: "play-circle",
     color: Colors.pal.evergreen,
     bg: Colors.pal.evergreenLight,
-    images: PAL_IMAGES.evergreen,
+    images: PAL_PROFILES.evergreen,
   },
   {
     id: "tools",

@@ -17,7 +17,7 @@ import {
   PalId,
   getMissionsForPal,
 } from "@/constants/data";
-import { PAL_IMAGES } from "@/constants/images";
+import { PAL_PROFILES } from "@/constants/images";
 
 const { width } = Dimensions.get("window");
 
@@ -144,11 +144,11 @@ export default function PalsScreen() {
             >
               <View style={styles.palAvatars}>
                 <Image
-                  source={PAL_IMAGES[palId].male}
+                  source={PAL_PROFILES[palId].male}
                   style={[styles.palAvatar, styles.palAvatarLeft, { borderColor: meta.bg }]}
                 />
                 <Image
-                  source={PAL_IMAGES[palId].female}
+                  source={PAL_PROFILES[palId].female}
                   style={[styles.palAvatar, styles.palAvatarRight, { borderColor: meta.bg }]}
                 />
               </View>

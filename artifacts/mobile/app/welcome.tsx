@@ -4,7 +4,7 @@ import React from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
-import { PAL_IMAGES } from "@/constants/images";
+import { PAL_PROFILES } from "@/constants/images";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function WelcomeScreen() {
@@ -29,18 +29,14 @@ export default function WelcomeScreen() {
         <View style={styles.avatarStrip}>
           {(["reel", "spotlight", "system", "evergreen"] as const).map((palId, i) => (
             <View key={palId} style={styles.palPairWrap}>
-              <View style={[styles.stripAvatarWrap, { zIndex: 2 }]}>
-                <Image
-                  source={PAL_IMAGES[palId].male}
-                  style={styles.stripAvatarImg}
-                />
-              </View>
-              <View style={[styles.stripAvatarWrap, { marginLeft: -12, zIndex: 1 }]}>
-                <Image
-                  source={PAL_IMAGES[palId].female}
-                  style={styles.stripAvatarImg}
-                />
-              </View>
+              <Image
+                source={PAL_PROFILES[palId].male}
+                style={[styles.profilePic, { zIndex: 2 }]}
+              />
+              <Image
+                source={PAL_PROFILES[palId].female}
+                style={[styles.profilePic, { marginLeft: -12, zIndex: 1 }]}
+              />
             </View>
           ))}
         </View>
@@ -205,21 +201,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  stripAvatarWrap: {
+  profilePic: {
     width: 48,
     height: 48,
     borderRadius: 24,
     borderWidth: 2.5,
     borderColor: "#fff",
-    overflow: "hidden",
-    backgroundColor: Colors.light.backgroundSecondary,
-  },
-  stripAvatarImg: {
-    width: 48,
-    height: 96,
-    position: "absolute",
-    top: 0,
-    left: 0,
   },
   guestRow: {
     flexDirection: "row",

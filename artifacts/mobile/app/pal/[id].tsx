@@ -12,7 +12,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
 import { PALS, PalId, getMissionsForPal } from "@/constants/data";
-import { PAL_IMAGES } from "@/constants/images";
+import { PAL_PROFILES } from "@/constants/images";
 
 const PAL_META: Record<PalId, { color: string; bg: string; icon: string }> = {
   reel: { color: Colors.pal.reel, bg: Colors.pal.reelLight, icon: "smartphone" },
@@ -48,10 +48,10 @@ export default function PalDetailScreen() {
       <View style={[styles.header, { paddingTop: insets.top + 56 }]}>
         <View style={styles.avatarRow}>
           <View style={[styles.avatarWrap, { borderColor: meta.bg }]}>
-            <Image source={PAL_IMAGES[palId].male} style={styles.avatar} />
+            <Image source={PAL_PROFILES[palId].male} style={styles.avatar} />
           </View>
           <View style={[styles.avatarWrap, styles.avatarOverlap, { borderColor: meta.bg }]}>
-            <Image source={PAL_IMAGES[palId].female} style={styles.avatar} />
+            <Image source={PAL_PROFILES[palId].female} style={styles.avatar} />
           </View>
         </View>
         <Text style={styles.palName}>{pal.name}</Text>

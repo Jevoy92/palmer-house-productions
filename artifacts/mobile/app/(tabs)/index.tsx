@@ -14,7 +14,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
 import { PALS, PAL_ORDER, PROCESS_STEPS, PalId } from "@/constants/data";
-import { PAL_IMAGES } from "@/constants/images";
+import { PAL_PROFILES } from "@/constants/images";
 import { useAuth } from "@/contexts/AuthContext";
 
 const { width } = Dimensions.get("window");
@@ -49,11 +49,11 @@ function PalPill({ palId }: { palId: PalId }) {
     >
       <View style={styles.palPillAvatars}>
         <Image
-          source={PAL_IMAGES[palId].male}
+          source={PAL_PROFILES[palId].male}
           style={[styles.palPillAvatar, styles.palPillAvatarLeft]}
         />
         <Image
-          source={PAL_IMAGES[palId].female}
+          source={PAL_PROFILES[palId].female}
           style={[styles.palPillAvatar, styles.palPillAvatarRight]}
         />
       </View>

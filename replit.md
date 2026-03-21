@@ -60,6 +60,7 @@ Express 5 API server. Routes live in `src/routes/` and use `@workspace/api-zod` 
 - App setup: `src/app.ts` — mounts CORS, JSON/urlencoded parsing, routes at `/api`
 - Routes: `src/routes/index.ts` mounts sub-routers; `src/routes/health.ts` exposes `GET /health` (full path: `/api/health`)
 - Route: `src/routes/projectRequests.ts` — `POST /api/project-requests` accepts project request submissions
+- Route: `src/routes/auth.ts` — `POST /api/auth/register`, `POST /api/auth/login`, `GET /api/auth/me/:userId` for user authentication
 - Depends on: `@workspace/db`, `@workspace/api-zod`
 - `pnpm --filter @workspace/api-server run dev` — run the dev server
 - `pnpm --filter @workspace/api-server run build` — production esbuild bundle (`dist/index.cjs`)
@@ -67,20 +68,29 @@ Express 5 API server. Routes live in `src/routes/` and use `@workspace/api-zod` 
 
 ### `artifacts/mobile` (`@workspace/mobile`)
 
-Palmer House Productions — Expo React Native mobile app for exploring video production services, building packages, and submitting project requests.
+Palmer House Productions — AI-powered content assistant mobile app for business owners. Explore video production services, build packages, submit project requests, and access AI-powered content tools.
 
 - **Framework**: Expo SDK 54, expo-router 6 (file-based routing)
-- **Tabs**: Home, Pals (service explorer), Build (cart/package builder), About
+- **Design**: Premium minimal aesthetic — Apple/DoorDash/Grok inspired. Frosted glass tab bar, Inter font family, generous whitespace, subtle shadows.
+- **Auth System**: Welcome screen → Sign In / Register / Browse as Guest. Three tiers: Guest (3 credits), Registered (10/month), Member (50/month + portal).
+- **Tabs (5)**: Home, Explore (Pals), Tools (AI), Package (Cart), More (About)
+- **Auth Screens**: `welcome.tsx`, `auth/login.tsx`, `auth/register.tsx`
 - **Detail Screens**: `pal/[id]` (Pal overview), `mission/[palId]/[missionId]` (mission configurator with pricing)
+- **AI Tools**: `tools/script-writer`, `tools/content-planner`, `tools/what-to-post`, `tools/hook-generator`, `tools/brief-builder`, `tools/content-audit` — all structure-only with "Coming Soon" placeholders
+- **Client Portal**: `portal/index.tsx` — project tracking, draft review, delivered assets (placeholder structure, ready for HoneyBook integration)
+- **Profile**: `profile.tsx` — account info, credits, sign out
 - **Checkout flow**: Build tab → Checkout modal → Confirmation screen
 - **Data**: All Pal categories (Reel, Spotlight, System, Evergreen), 20+ missions, pricing constants in `constants/data.ts`
 - **Brand Colors**: Primary purple `#6B3FA0`, Reel orange `#D97706`, System teal `#0F766E`, Evergreen sage `#6B8E23`
-- **API**: Submits project requests to `POST /api/project-requests`
-- **State**: React Context for cart (CartContext), no external state management
+- **API**: Submits project requests to `POST /api/project-requests`, auth via `POST /api/auth/register` and `POST /api/auth/login`
+- **State**: React Context for cart (CartContext) and auth (AuthContext), AsyncStorage for session persistence
+- **Pricing Constants**: Session=$450, Additional Video=$150, Evergreen 5/10/15min = $1050/$1650/$2250
+- **Contact**: info@palmerhouseproductions.com, (253) 338-0673, Bellevue WA & Portland OR
 - **Key files**:
   - `constants/data.ts` — All Pals, missions, pricing constants
-  - `constants/colors.ts` — Brand color palette
+  - `constants/colors.ts` — Brand color palette with shadows
   - `contexts/CartContext.tsx` — Cart state management
+  - `contexts/AuthContext.tsx` — Auth state management (guest/registered/member)
   - `lib/api.ts` — API URL helper
 
 ### `lib/db` (`@workspace/db`)
@@ -90,6 +100,7 @@ Database layer using Drizzle ORM with PostgreSQL. Exports a Drizzle client insta
 - `src/index.ts` — creates a `Pool` + Drizzle instance, exports schema
 - `src/schema/index.ts` — barrel re-export of all models
 - `src/schema/projectRequests.ts` — project_requests table (fullName, email, palCategory, missionId, packageDetails, estimatedTotal, etc.)
+- `src/schema/users.ts` — users table (email, passwordHash, fullName, companyName, role, credits, avatarUrl)
 - `drizzle.config.ts` — Drizzle Kit config (requires `DATABASE_URL`, automatically provided by Replit)
 - Exports: `.` (pool, db, schema), `./schema` (schema only)
 

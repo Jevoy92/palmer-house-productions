@@ -55,7 +55,7 @@ export default function TabLayout() {
         options={{
           title: "Home",
           headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
+          tabBarIcon: ({ color }) => (
             <Feather name="home" size={22} color={color} />
           ),
         }}
@@ -67,6 +67,16 @@ export default function TabLayout() {
           headerTitle: "Explore",
           tabBarIcon: ({ color }) => (
             <Feather name="compass" size={22} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="tools"
+        options={{
+          title: "Tools",
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <Feather name="zap" size={22} color={color} />
           ),
         }}
       />

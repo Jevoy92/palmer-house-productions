@@ -13,6 +13,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
 import { PALS, PAL_ORDER, PROCESS_STEPS, PalId } from "@/constants/data";
+import { useAuth } from "@/contexts/AuthContext";
 
 const { width } = Dimensions.get("window");
 
@@ -59,6 +60,9 @@ function PalPill({ palId }: { palId: PalId }) {
 export default function HomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
+  const { user } = useAuth();
+
+  const greeting = user ? `Hey, ${user.fullName.split(" ")[0]}` : "Palmer House";
 
   return (
     <ScrollView
@@ -68,7 +72,7 @@ export default function HomeScreen() {
     >
       <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
         <View>
-          <Text style={styles.greeting}>Palmer House</Text>
+          <Text style={styles.greeting}>{greeting}</Text>
           <Text style={styles.headline}>Video systems that{"\n"}solve problems.</Text>
         </View>
       </View>
@@ -97,14 +101,14 @@ export default function HomeScreen() {
           onPress={() => router.push("/(tabs)/pals")}
         />
         <QuickAction
+          icon="zap"
+          label="AI Tools"
+          onPress={() => router.push("/(tabs)/tools")}
+        />
+        <QuickAction
           icon="layers"
           label="Build Package"
           onPress={() => router.push("/(tabs)/build")}
-        />
-        <QuickAction
-          icon="calendar"
-          label="Book a Call"
-          onPress={() => Linking.openURL("https://palmerhouseproductions.com/contact")}
         />
       </View>
 

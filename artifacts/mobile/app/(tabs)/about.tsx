@@ -2,6 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
 import {
+  Alert,
   Linking,
   Pressable,
   ScrollView,
@@ -11,6 +12,7 @@ import {
 } from "react-native";
 import Colors from "@/constants/colors";
 import { PRICING } from "@/constants/data";
+import { useAuth } from "@/contexts/AuthContext";
 
 function MenuItem({
   icon,
@@ -44,6 +46,23 @@ function SectionCard({ children }: { children: React.ReactNode }) {
 }
 
 export default function AboutScreen() {
+  const router = useRouter();
+  const { user, isGuest, logout } = useAuth();
+
+  const handleLogout = () => {
+    Alert.alert("Sign Out", "Are you sure?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Sign Out",
+        style: "destructive",
+        onPress: async () => {
+          await logout();
+          router.replace("/welcome");
+        },
+      },
+    ]);
+  };
+
   return (
     <ScrollView
       style={styles.container}
@@ -170,6 +189,51 @@ export default function AboutScreen() {
             We don't just make videos — we build video systems that solve real business problems. Every business has a story worth telling. Our job is to turn that story into a strategic system that builds trust, creates clarity, and drives conversions.
           </Text>
         </View>
+      </SectionCard>
+
+      <View style={styles.sectionLabel}>
+        <Text style={styles.sectionLabelText}>ACCOUNT</Text>
+      </View>
+      <SectionCard>
+        {user ? (
+          <>
+            <MenuItem
+              icon="user"
+              label={user.fullName}
+              subtitle={user.email}
+              onPress={() => router.push("/profile")}
+            />
+            <View style={styles.menuSeparator} />
+            <MenuItem
+              icon="folder"
+              label="Client Portal"
+              subtitle="Track projects & review deliverables"
+              onPress={() => router.push("/portal")}
+            />
+            <View style={styles.menuSeparator} />
+            <MenuItem
+              icon="log-out"
+              label="Sign Out"
+              onPress={handleLogout}
+            />
+          </>
+        ) : (
+          <>
+            <MenuItem
+              icon="log-in"
+              label="Sign In"
+              subtitle="Access your account & projects"
+              onPress={() => router.push("/auth/login")}
+            />
+            <View style={styles.menuSeparator} />
+            <MenuItem
+              icon="user-plus"
+              label="Create Account"
+              subtitle="Get more AI credits & project tracking"
+              onPress={() => router.push("/auth/register")}
+            />
+          </>
+        )}
       </SectionCard>
 
       <Text style={styles.footerText}>

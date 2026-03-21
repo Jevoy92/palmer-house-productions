@@ -1,4 +1,5 @@
 import { Feather } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
@@ -6,6 +7,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
 import { PAL_PROFILES } from "@/constants/images";
 import { useAuth } from "@/contexts/AuthContext";
+
+const WALKTHROUGH_COMPLETE_KEY = "@palmer_walkthrough_complete";
 
 export default function WelcomeScreen() {
   const router = useRouter();
@@ -86,9 +89,18 @@ export default function WelcomeScreen() {
           <View style={styles.guestDot} />
           <Pressable
             style={styles.ghostBtn}
-            onPress={() => {
+            onPress={async () => {
               browseAsGuest();
-              router.replace("/(tabs)");
+              try {
+                const completed = await AsyncStorage.getItem(WALKTHROUGH_COMPLETE_KEY);
+                if (completed === "true") {
+                  router.replace("/(tabs)");
+                } else {
+                  router.replace("/guest-walkthrough");
+                }
+              } catch {
+                router.replace("/guest-walkthrough");
+              }
             }}
           >
             <Text style={styles.ghostBtnText}>Browse as Guest</Text>

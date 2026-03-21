@@ -34,7 +34,7 @@ function AuthGate({ children }: { children: React.ReactNode }) {
     if (isLoading) return;
 
     const firstSegment = segments[0];
-    const inAuthGroup = firstSegment === "auth" || firstSegment === "welcome" || firstSegment === "onboarding";
+    const inAuthGroup = firstSegment === "auth" || firstSegment === "welcome" || firstSegment === "onboarding" || firstSegment === "guest-walkthrough";
     const isAuthenticated = user || isGuest;
 
     if (!isAuthenticated && !inAuthGroup) {
@@ -56,6 +56,10 @@ function RootLayoutNav() {
         />
         <Stack.Screen
           name="onboarding"
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
+        <Stack.Screen
+          name="guest-walkthrough"
           options={{ headerShown: false, gestureEnabled: false }}
         />
         <Stack.Screen

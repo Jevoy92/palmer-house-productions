@@ -1,5 +1,5 @@
 import { Feather } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
+import { useRouter } from "expo-router";
 import React from "react";
 import {
   Linking,
@@ -10,379 +10,315 @@ import {
   View,
 } from "react-native";
 import Colors from "@/constants/colors";
+import { PRICING } from "@/constants/data";
 
-function TeamMember({
-  name,
-  role,
-  icon,
-}: {
-  name: string;
-  role: string;
-  icon: string;
-}) {
-  return (
-    <View style={styles.teamCard}>
-      <View style={styles.teamAvatar}>
-        <Feather name={icon as any} size={28} color={Colors.light.primary} />
-      </View>
-      <Text style={styles.teamName}>{name}</Text>
-      <Text style={styles.teamRole}>{role}</Text>
-    </View>
-  );
-}
-
-function ContactItem({
+function MenuItem({
   icon,
   label,
-  value,
+  subtitle,
   onPress,
+  trailing,
 }: {
   icon: string;
   label: string;
-  value: string;
+  subtitle?: string;
   onPress?: () => void;
+  trailing?: React.ReactNode;
 }) {
   return (
-    <Pressable style={styles.contactItem} onPress={onPress}>
-      <View style={styles.contactIcon}>
-        <Feather name={icon as any} size={20} color={Colors.light.primary} />
+    <Pressable style={styles.menuItem} onPress={onPress} disabled={!onPress}>
+      <View style={styles.menuIcon}>
+        <Feather name={icon as any} size={18} color={Colors.light.primary} />
       </View>
-      <View style={styles.contactInfo}>
-        <Text style={styles.contactLabel}>{label}</Text>
-        <Text
-          style={[styles.contactValue, onPress && styles.contactLink]}
-        >
-          {value}
-        </Text>
+      <View style={styles.menuContent}>
+        <Text style={styles.menuLabel}>{label}</Text>
+        {subtitle && <Text style={styles.menuSubtitle}>{subtitle}</Text>}
       </View>
-      {onPress && (
-        <Feather
-          name="external-link"
-          size={16}
-          color={Colors.light.textSecondary}
-        />
-      )}
+      {trailing || (onPress && <Feather name="chevron-right" size={16} color={Colors.light.textTertiary} />)}
     </Pressable>
   );
+}
+
+function SectionCard({ children }: { children: React.ReactNode }) {
+  return <View style={styles.sectionCard}>{children}</View>;
 }
 
 export default function AboutScreen() {
   return (
     <ScrollView
       style={styles.container}
-      contentContainerStyle={{ paddingBottom: 100 }}
+      contentContainerStyle={{ paddingBottom: 120 }}
       showsVerticalScrollIndicator={false}
     >
-      <View style={styles.section}>
-        <Text style={styles.sectionLabel}>WHO WE ARE</Text>
-        <Text style={styles.title}>Palmer House Productions</Text>
-        <Text style={styles.body}>
-          We're a video production company based in Bellevue, WA and Portland, OR.
-          We don't just make videos — we build video systems that solve real business
-          problems.
-        </Text>
-        <Text style={styles.body}>
-          Every business has a story worth telling. Our job is to turn that story
-          into a strategic system that builds trust, creates clarity, and drives
-          conversions — not just "content."
-        </Text>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionLabel}>OUR APPROACH</Text>
-        <Text style={styles.subtitle}>Video as a system, not a one-off</Text>
-        <View style={styles.valueCards}>
-          <View style={styles.valueCard}>
-            <Feather name="target" size={24} color={Colors.pal.reel} />
-            <Text style={styles.valueTitle}>Problem-First</Text>
-            <Text style={styles.valueDesc}>
-              We start with your business problem, then design the video to solve it.
-            </Text>
-          </View>
-          <View style={styles.valueCard}>
-            <Feather name="layers" size={24} color={Colors.pal.system} />
-            <Text style={styles.valueTitle}>Systematic</Text>
-            <Text style={styles.valueDesc}>
-              Each Pal category targets a specific lever in your business.
-            </Text>
-          </View>
-          <View style={styles.valueCard}>
-            <Feather name="trending-up" size={24} color={Colors.pal.evergreen} />
-            <Text style={styles.valueTitle}>Compounding</Text>
-            <Text style={styles.valueDesc}>
-              Videos that work harder over time, not content that expires.
-            </Text>
-          </View>
-          <View style={styles.valueCard}>
-            <Feather name="users" size={24} color={Colors.pal.spotlight} />
-            <Text style={styles.valueTitle}>Human</Text>
-            <Text style={styles.valueDesc}>
-              We make you feel confident on camera. No cringe, no pressure.
-            </Text>
-          </View>
+      <View style={styles.brandHeader}>
+        <View style={styles.brandLogo}>
+          <Feather name="film" size={24} color={Colors.light.primary} />
+        </View>
+        <Text style={styles.brandName}>Palmer House Productions</Text>
+        <Text style={styles.brandTagline}>Video systems that solve problems</Text>
+        <View style={styles.locationBadge}>
+          <Feather name="map-pin" size={12} color={Colors.light.textSecondary} />
+          <Text style={styles.locationText}>Bellevue, WA & Portland, OR</Text>
         </View>
       </View>
 
-      <View style={styles.section}>
-        <Text style={styles.sectionLabel}>PRICING</Text>
-        <Text style={styles.subtitle}>Transparent, fair pricing</Text>
-        <View style={styles.pricingCard}>
-          <View style={styles.pricingRow}>
-            <Text style={styles.pricingItem}>Filming Session (2 hours)</Text>
-            <Text style={styles.pricingPrice}>$450</Text>
-          </View>
-          <View style={styles.pricingDivider} />
-          <View style={styles.pricingRow}>
-            <Text style={styles.pricingItem}>Additional Video</Text>
-            <Text style={styles.pricingPrice}>$150</Text>
-          </View>
-          <View style={styles.pricingDivider} />
-          <View style={styles.pricingRow}>
-            <Text style={styles.pricingItem}>Evergreen (5 min)</Text>
-            <Text style={styles.pricingPrice}>$1,050</Text>
-          </View>
-          <View style={styles.pricingDivider} />
-          <View style={styles.pricingRow}>
-            <Text style={styles.pricingItem}>Evergreen (10 min)</Text>
-            <Text style={styles.pricingPrice}>$1,650</Text>
-          </View>
-          <View style={styles.pricingDivider} />
-          <View style={styles.pricingRow}>
-            <Text style={styles.pricingItem}>Evergreen (15 min)</Text>
-            <Text style={styles.pricingPrice}>$2,250</Text>
+      <View style={styles.sectionLabel}>
+        <Text style={styles.sectionLabelText}>CONTACT</Text>
+      </View>
+      <SectionCard>
+        <MenuItem
+          icon="mail"
+          label="Email"
+          subtitle="info@palmerhouseproductions.com"
+          onPress={() => Linking.openURL("mailto:info@palmerhouseproductions.com")}
+        />
+        <View style={styles.menuSeparator} />
+        <MenuItem
+          icon="phone"
+          label="Phone"
+          subtitle="(253) 338-0673"
+          onPress={() => Linking.openURL("tel:2533380673")}
+        />
+        <View style={styles.menuSeparator} />
+        <MenuItem
+          icon="globe"
+          label="Website"
+          subtitle="palmerhouseproductions.com"
+          onPress={() => Linking.openURL("https://palmerhouseproductions.com")}
+        />
+        <View style={styles.menuSeparator} />
+        <MenuItem
+          icon="calendar"
+          label="Book a Discovery Call"
+          onPress={() => Linking.openURL("https://palmerhouseproductions.com/contact")}
+        />
+      </SectionCard>
+
+      <View style={styles.sectionLabel}>
+        <Text style={styles.sectionLabelText}>PRICING</Text>
+      </View>
+      <SectionCard>
+        <View style={styles.priceRow}>
+          <Text style={styles.priceItem}>Filming Session (2 hrs)</Text>
+          <Text style={styles.priceValue}>${PRICING.SESSION}</Text>
+        </View>
+        <View style={styles.menuSeparator} />
+        <View style={styles.priceRow}>
+          <Text style={styles.priceItem}>Additional Video</Text>
+          <Text style={styles.priceValue}>${PRICING.ADDITIONAL_VIDEO}</Text>
+        </View>
+        <View style={styles.menuSeparator} />
+        <View style={styles.priceRow}>
+          <Text style={styles.priceItem}>Evergreen 5 min</Text>
+          <Text style={styles.priceValue}>${PRICING.EVERGREEN[5].toLocaleString()}</Text>
+        </View>
+        <View style={styles.menuSeparator} />
+        <View style={styles.priceRow}>
+          <Text style={styles.priceItem}>Evergreen 10 min</Text>
+          <Text style={styles.priceValue}>${PRICING.EVERGREEN[10].toLocaleString()}</Text>
+        </View>
+        <View style={styles.menuSeparator} />
+        <View style={styles.priceRow}>
+          <Text style={styles.priceItem}>Evergreen 15 min</Text>
+          <Text style={styles.priceValue}>${PRICING.EVERGREEN[15].toLocaleString()}</Text>
+        </View>
+      </SectionCard>
+
+      <View style={styles.sectionLabel}>
+        <Text style={styles.sectionLabelText}>OUR APPROACH</Text>
+      </View>
+      <SectionCard>
+        <View style={styles.approachItem}>
+          <Feather name="target" size={18} color={Colors.pal.reel} />
+          <View style={styles.approachContent}>
+            <Text style={styles.approachTitle}>Problem-First</Text>
+            <Text style={styles.approachDesc}>We start with your business problem, then design the video to solve it.</Text>
           </View>
         </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionLabel}>CONTACT</Text>
-        <Text style={styles.subtitle}>Get in touch</Text>
-        <View style={styles.contactList}>
-          <ContactItem
-            icon="mail"
-            label="Email"
-            value="info@palmerhouseproductions.com"
-            onPress={() =>
-              Linking.openURL("mailto:info@palmerhouseproductions.com")
-            }
-          />
-          <ContactItem
-            icon="phone"
-            label="Phone"
-            value="(253) 338-0673"
-            onPress={() => Linking.openURL("tel:2533380673")}
-          />
-          <ContactItem
-            icon="map-pin"
-            label="Locations"
-            value="Bellevue, WA & Portland, OR"
-          />
-          <ContactItem
-            icon="globe"
-            label="Website"
-            value="palmerhouseproductions.com"
-            onPress={() =>
-              Linking.openURL("https://palmerhouseproductions.com")
-            }
-          />
+        <View style={styles.menuSeparator} />
+        <View style={styles.approachItem}>
+          <Feather name="layers" size={18} color={Colors.pal.system} />
+          <View style={styles.approachContent}>
+            <Text style={styles.approachTitle}>Systematic</Text>
+            <Text style={styles.approachDesc}>Each Pal category targets a specific lever in your business.</Text>
+          </View>
         </View>
-      </View>
+        <View style={styles.menuSeparator} />
+        <View style={styles.approachItem}>
+          <Feather name="trending-up" size={18} color={Colors.pal.evergreen} />
+          <View style={styles.approachContent}>
+            <Text style={styles.approachTitle}>Compounding</Text>
+            <Text style={styles.approachDesc}>Videos that work harder over time, not content that expires.</Text>
+          </View>
+        </View>
+        <View style={styles.menuSeparator} />
+        <View style={styles.approachItem}>
+          <Feather name="heart" size={18} color={Colors.pal.spotlight} />
+          <View style={styles.approachContent}>
+            <Text style={styles.approachTitle}>Human</Text>
+            <Text style={styles.approachDesc}>We make you feel confident on camera. No cringe, no pressure.</Text>
+          </View>
+        </View>
+      </SectionCard>
 
-      <View style={styles.section}>
-        <LinearGradient
-          colors={["#6B3FA0", "#4A2B70"]}
-          style={styles.ctaCard}
-        >
-          <Feather name="calendar" size={32} color="#fff" />
-          <Text style={styles.ctaTitle}>Ready for a discovery call?</Text>
-          <Text style={styles.ctaSubtitle}>
-            Let's talk about your goals and design a video system that works for
-            your business.
+      <View style={styles.sectionLabel}>
+        <Text style={styles.sectionLabelText}>ABOUT</Text>
+      </View>
+      <SectionCard>
+        <View style={styles.aboutBlock}>
+          <Text style={styles.aboutText}>
+            We don't just make videos — we build video systems that solve real business problems. Every business has a story worth telling. Our job is to turn that story into a strategic system that builds trust, creates clarity, and drives conversions.
           </Text>
-          <Pressable
-            style={styles.ctaButton}
-            onPress={() =>
-              Linking.openURL("https://palmerhouseproductions.com/contact")
-            }
-          >
-            <Text style={styles.ctaButtonText}>Book a Discovery Call</Text>
-          </Pressable>
-        </LinearGradient>
-      </View>
+        </View>
+      </SectionCard>
+
+      <Text style={styles.footerText}>
+        Palmer House Productions{"\n"}Bellevue, WA & Portland, OR
+      </Text>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: Colors.light.background },
-  section: { paddingHorizontal: 24, paddingTop: 28 },
-  sectionLabel: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 12,
-    color: Colors.light.primary,
-    letterSpacing: 1.5,
-    marginBottom: 8,
+  container: { flex: 1, backgroundColor: Colors.light.backgroundSecondary },
+  brandHeader: {
+    alignItems: "center",
+    paddingTop: 12,
+    paddingBottom: 28,
+    backgroundColor: Colors.light.background,
   },
-  title: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 26,
-    color: Colors.light.text,
-    marginBottom: 16,
+  brandLogo: {
+    width: 56,
+    height: 56,
+    borderRadius: 16,
+    backgroundColor: Colors.light.primaryLight,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 12,
   },
-  subtitle: {
+  brandName: {
     fontFamily: "Inter_700Bold",
     fontSize: 20,
     color: Colors.light.text,
-    marginBottom: 16,
+    letterSpacing: -0.3,
+    marginBottom: 4,
   },
-  body: {
+  brandTagline: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 14,
+    color: Colors.light.textSecondary,
+    marginBottom: 10,
+  },
+  locationBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    backgroundColor: Colors.light.backgroundSecondary,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 100,
+  },
+  locationText: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 12,
+    color: Colors.light.textSecondary,
+  },
+  sectionLabel: {
+    paddingHorizontal: 20,
+    paddingTop: 24,
+    paddingBottom: 8,
+  },
+  sectionLabelText: {
+    fontFamily: "Inter_500Medium",
+    fontSize: 13,
+    color: Colors.light.textSecondary,
+    letterSpacing: 0.5,
+  },
+  sectionCard: {
+    marginHorizontal: 20,
+    backgroundColor: Colors.light.card,
+    borderRadius: 16,
+    overflow: "hidden",
+  },
+  menuItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    gap: 14,
+  },
+  menuIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    backgroundColor: Colors.light.primaryLight,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  menuContent: { flex: 1 },
+  menuLabel: {
+    fontFamily: "Inter_500Medium",
+    fontSize: 15,
+    color: Colors.light.text,
+  },
+  menuSubtitle: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 13,
+    color: Colors.light.textSecondary,
+    marginTop: 1,
+  },
+  menuSeparator: {
+    height: 1,
+    backgroundColor: Colors.light.separator,
+    marginLeft: 66,
+  },
+  priceRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 16,
+  },
+  priceItem: {
     fontFamily: "Inter_400Regular",
     fontSize: 15,
-    color: Colors.light.textSecondary,
-    lineHeight: 24,
-    marginBottom: 12,
+    color: Colors.light.text,
   },
-  valueCards: {
+  priceValue: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 15,
+    color: Colors.light.primary,
+  },
+  approachItem: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 12,
+    padding: 16,
+    gap: 14,
+    alignItems: "flex-start",
   },
-  valueCard: {
-    width: "47%",
-    backgroundColor: Colors.light.backgroundSecondary,
-    borderRadius: 16,
-    padding: 18,
-  },
-  valueTitle: {
+  approachContent: { flex: 1 },
+  approachTitle: {
     fontFamily: "Inter_600SemiBold",
     fontSize: 15,
     color: Colors.light.text,
-    marginTop: 12,
-    marginBottom: 4,
+    marginBottom: 2,
   },
-  valueDesc: {
+  approachDesc: {
     fontFamily: "Inter_400Regular",
     fontSize: 13,
     color: Colors.light.textSecondary,
     lineHeight: 18,
   },
-  pricingCard: {
-    backgroundColor: Colors.light.backgroundSecondary,
-    borderRadius: 16,
-    padding: 20,
-  },
-  pricingRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingVertical: 8,
-  },
-  pricingItem: {
-    fontFamily: "Inter_500Medium",
-    fontSize: 14,
-    color: Colors.light.text,
-  },
-  pricingPrice: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 16,
-    color: Colors.light.primary,
-  },
-  pricingDivider: {
-    height: 1,
-    backgroundColor: Colors.light.border,
-  },
-  teamRow: {
-    flexDirection: "row",
-    gap: 12,
-  },
-  teamCard: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: Colors.light.backgroundSecondary,
-    borderRadius: 16,
-    padding: 20,
-  },
-  teamAvatar: {
-    width: 64,
-    height: 64,
-    borderRadius: 32,
-    backgroundColor: Colors.light.primaryLight,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 12,
-  },
-  teamName: {
-    fontFamily: "Inter_600SemiBold",
+  aboutBlock: { padding: 16 },
+  aboutText: {
+    fontFamily: "Inter_400Regular",
     fontSize: 15,
-    color: Colors.light.text,
-    marginBottom: 2,
+    color: Colors.light.textSecondary,
+    lineHeight: 22,
   },
-  teamRole: {
+  footerText: {
     fontFamily: "Inter_400Regular",
     fontSize: 12,
-    color: Colors.light.textSecondary,
+    color: Colors.light.textTertiary,
     textAlign: "center",
-  },
-  contactList: { gap: 12 },
-  contactItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 14,
-    backgroundColor: Colors.light.backgroundSecondary,
-    borderRadius: 14,
-    padding: 16,
-  },
-  contactIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    backgroundColor: Colors.light.primaryLight,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  contactInfo: { flex: 1 },
-  contactLabel: {
-    fontFamily: "Inter_500Medium",
-    fontSize: 12,
-    color: Colors.light.textSecondary,
-    marginBottom: 2,
-  },
-  contactValue: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 14,
-    color: Colors.light.text,
-  },
-  contactLink: { color: Colors.light.primary },
-  ctaCard: {
-    borderRadius: 20,
-    padding: 28,
-    alignItems: "center",
-  },
-  ctaTitle: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 20,
-    color: "#fff",
-    textAlign: "center",
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  ctaSubtitle: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 14,
-    color: "rgba(255,255,255,0.8)",
-    textAlign: "center",
-    lineHeight: 20,
-    marginBottom: 20,
-  },
-  ctaButton: {
-    backgroundColor: "#fff",
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    borderRadius: 12,
-  },
-  ctaButtonText: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 15,
-    color: "#6B3FA0",
+    marginTop: 24,
+    lineHeight: 18,
   },
 });

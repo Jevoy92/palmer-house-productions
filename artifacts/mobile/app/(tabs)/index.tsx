@@ -1,5 +1,4 @@
 import { Feather } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React from "react";
 import {
@@ -17,47 +16,43 @@ import { PALS, PAL_ORDER, PROCESS_STEPS, PalId } from "@/constants/data";
 
 const { width } = Dimensions.get("window");
 
-const PAL_COLORS: Record<PalId, string> = {
-  reel: Colors.pal.reel,
-  spotlight: Colors.pal.spotlight,
-  system: Colors.pal.system,
-  evergreen: Colors.pal.evergreen,
+const PAL_META: Record<PalId, { color: string; bg: string; icon: string }> = {
+  reel: { color: Colors.pal.reel, bg: Colors.pal.reelLight, icon: "smartphone" },
+  system: { color: Colors.pal.system, bg: Colors.pal.systemLight, icon: "settings" },
+  evergreen: { color: Colors.pal.evergreen, bg: Colors.pal.evergreenLight, icon: "play-circle" },
+  spotlight: { color: Colors.pal.spotlight, bg: Colors.pal.spotlightLight, icon: "film" },
 };
 
-function PalCard({ palId }: { palId: PalId }) {
-  const router = useRouter();
-  const pal = PALS[palId];
-  const color = PAL_COLORS[palId];
-
+function QuickAction({ icon, label, onPress }: { icon: string; label: string; onPress: () => void }) {
   return (
-    <Pressable
-      style={styles.palCard}
-      onPress={() => router.push(`/pal/${palId}`)}
-    >
-      <View style={[styles.palCardIcon, { backgroundColor: color + "18" }]}>
-        <Feather name={pal.icon as any} size={24} color={color} />
+    <Pressable style={styles.quickAction} onPress={onPress}>
+      <View style={styles.quickActionIcon}>
+        <Feather name={icon as any} size={20} color={Colors.light.primary} />
       </View>
-      <Text style={styles.palCardName}>{pal.name}</Text>
-      <Text style={styles.palCardTagline}>{pal.tagline}</Text>
+      <Text style={styles.quickActionLabel}>{label}</Text>
     </Pressable>
   );
 }
 
-function ProcessStep({
-  step,
-}: {
-  step: (typeof PROCESS_STEPS)[0];
-}) {
+function PalPill({ palId }: { palId: PalId }) {
+  const router = useRouter();
+  const pal = PALS[palId];
+  const meta = PAL_META[palId];
+
   return (
-    <View style={styles.processStep}>
-      <View style={styles.processNumber}>
-        <Text style={styles.processNumberText}>{step.number}</Text>
+    <Pressable
+      style={[styles.palPill, { backgroundColor: meta.bg }]}
+      onPress={() => router.push(`/pal/${palId}`)}
+    >
+      <View style={[styles.palPillIcon, { backgroundColor: meta.color + "15" }]}>
+        <Feather name={meta.icon as any} size={18} color={meta.color} />
       </View>
-      <View style={styles.processContent}>
-        <Text style={styles.processTitle}>{step.title}</Text>
-        <Text style={styles.processDesc}>{step.description}</Text>
+      <View style={styles.palPillText}>
+        <Text style={[styles.palPillName, { color: meta.color }]}>{pal.name}</Text>
+        <Text style={styles.palPillTagline} numberOfLines={1}>{pal.tagline}</Text>
       </View>
-    </View>
+      <Feather name="chevron-right" size={16} color={Colors.light.textTertiary} />
+    </Pressable>
   );
 }
 
@@ -69,311 +64,308 @@ export default function HomeScreen() {
     <ScrollView
       style={styles.container}
       showsVerticalScrollIndicator={false}
-      contentContainerStyle={{ paddingBottom: 100 }}
+      contentContainerStyle={{ paddingBottom: 120 }}
     >
-      <LinearGradient
-        colors={["#6B3FA0", "#4A2B70", "#2D1B45"]}
-        style={[styles.hero, { paddingTop: insets.top + 20 }]}
-      >
-        <View style={styles.heroContent}>
-          <Text style={styles.heroBadge}>Palmer House Productions</Text>
-          <Text style={styles.heroTitle}>
-            Video systems that{"\n"}
-            <Text style={styles.heroHighlight}>solve problems</Text>
-          </Text>
-          <Text style={styles.heroSubtitle}>
-            Strategic video content for businesses that want to stop blending in
-            and start converting.
-          </Text>
-          <View style={styles.heroButtons}>
-            <Pressable
-              style={styles.heroPrimary}
-              onPress={() => router.push("/(tabs)/pals")}
-            >
-              <Text style={styles.heroPrimaryText}>Explore Services</Text>
-              <Feather name="arrow-right" size={18} color="#fff" />
-            </Pressable>
-            <Pressable
-              style={styles.heroSecondary}
-              onPress={() =>
-                Linking.openURL(
-                  "https://palmerhouseproductions.com/contact"
-                )
-              }
-            >
-              <Text style={styles.heroSecondaryText}>Book a Call</Text>
-            </Pressable>
-          </View>
+      <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
+        <View>
+          <Text style={styles.greeting}>Palmer House</Text>
+          <Text style={styles.headline}>Video systems that{"\n"}solve problems.</Text>
         </View>
+      </View>
 
-        <View style={styles.statsRow}>
-          <View style={styles.stat}>
-            <Text style={styles.statNumber}>4</Text>
-            <Text style={styles.statLabel}>Video Pals</Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.stat}>
-            <Text style={styles.statNumber}>20+</Text>
-            <Text style={styles.statLabel}>Missions</Text>
-          </View>
-          <View style={styles.statDivider} />
-          <View style={styles.stat}>
-            <Text style={styles.statNumber}>PNW</Text>
-            <Text style={styles.statLabel}>Based</Text>
-          </View>
+      <View style={styles.heroCard}>
+        <View style={styles.heroContent}>
+          <Text style={styles.heroLabel}>FOR BUSINESS OWNERS</Text>
+          <Text style={styles.heroTitle}>Build your content strategy with strategic video packages</Text>
+          <Text style={styles.heroSubtitle}>
+            Explore our Pals, configure your package, and submit a project request.
+          </Text>
+          <Pressable
+            style={styles.heroCta}
+            onPress={() => router.push("/(tabs)/pals")}
+          >
+            <Text style={styles.heroCtaText}>Get Started</Text>
+            <Feather name="arrow-right" size={16} color="#fff" />
+          </Pressable>
         </View>
-      </LinearGradient>
+      </View>
+
+      <View style={styles.quickActions}>
+        <QuickAction
+          icon="compass"
+          label="Explore Services"
+          onPress={() => router.push("/(tabs)/pals")}
+        />
+        <QuickAction
+          icon="layers"
+          label="Build Package"
+          onPress={() => router.push("/(tabs)/build")}
+        />
+        <QuickAction
+          icon="calendar"
+          label="Book a Call"
+          onPress={() => Linking.openURL("https://palmerhouseproductions.com/contact")}
+        />
+      </View>
 
       <View style={styles.section}>
-        <Text style={styles.sectionLabel}>YOUR VIDEO SYSTEM</Text>
-        <Text style={styles.sectionTitle}>Meet the Pals</Text>
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionTitle}>Video Pals</Text>
+          <Pressable onPress={() => router.push("/(tabs)/pals")}>
+            <Text style={styles.seeAll}>See All</Text>
+          </Pressable>
+        </View>
         <Text style={styles.sectionSubtitle}>
-          Each Pal solves a specific problem. Pick the one that matches where
-          you're stuck.
+          Each Pal solves a specific business problem
         </Text>
-        <View style={styles.palGrid}>
+        <View style={styles.palList}>
           {PAL_ORDER.map((id) => (
-            <PalCard key={id} palId={id} />
+            <PalPill key={id} palId={id} />
           ))}
         </View>
       </View>
 
-      <View style={[styles.section, styles.processSection]}>
-        <Text style={styles.sectionLabel}>HOW IT WORKS</Text>
-        <Text style={styles.sectionTitle}>Our Process</Text>
-        {PROCESS_STEPS.map((step) => (
-          <ProcessStep key={step.number} step={step} />
-        ))}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>How It Works</Text>
+        <Text style={styles.sectionSubtitle}>
+          From discovery to delivery in four steps
+        </Text>
+        <View style={styles.processGrid}>
+          {PROCESS_STEPS.map((step, i) => (
+            <View key={step.number} style={styles.processCard}>
+              <Text style={styles.processNumber}>{step.number}</Text>
+              <Text style={styles.processTitle}>{step.title}</Text>
+              <Text style={styles.processDesc}>{step.description}</Text>
+            </View>
+          ))}
+        </View>
       </View>
 
-      <View style={styles.section}>
-        <LinearGradient
-          colors={["#6B3FA0", "#4A2B70"]}
-          style={styles.ctaCard}
-        >
-          <Text style={styles.ctaTitle}>Ready to build your video system?</Text>
-          <Text style={styles.ctaSubtitle}>
-            Start by exploring our Pals, build your package, and submit your
-            request. We'll be in touch within 24 hours.
-          </Text>
-          <Pressable
-            style={styles.ctaButton}
-            onPress={() => router.push("/(tabs)/pals")}
-          >
-            <Text style={styles.ctaButtonText}>Get Started</Text>
-            <Feather name="arrow-right" size={18} color="#6B3FA0" />
-          </Pressable>
-        </LinearGradient>
-      </View>
+      <Pressable
+        style={styles.ctaBanner}
+        onPress={() => Linking.openURL("https://palmerhouseproductions.com/contact")}
+      >
+        <View style={styles.ctaBannerContent}>
+          <Text style={styles.ctaBannerTitle}>Ready to start?</Text>
+          <Text style={styles.ctaBannerSubtitle}>Book a free discovery call</Text>
+        </View>
+        <View style={styles.ctaBannerArrow}>
+          <Feather name="arrow-right" size={20} color={Colors.light.primary} />
+        </View>
+      </Pressable>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.light.background },
-  hero: { paddingBottom: 30 },
-  heroContent: { paddingHorizontal: 24 },
-  heroBadge: {
+  header: {
+    paddingHorizontal: 20,
+    paddingBottom: 24,
+  },
+  greeting: {
+    fontFamily: "Inter_500Medium",
+    fontSize: 14,
+    color: Colors.light.primary,
+    letterSpacing: 0.5,
+    marginBottom: 6,
+  },
+  headline: {
+    fontFamily: "Inter_700Bold",
+    fontSize: 30,
+    color: Colors.light.text,
+    lineHeight: 36,
+    letterSpacing: -0.5,
+  },
+  heroCard: {
+    marginHorizontal: 20,
+    backgroundColor: Colors.light.primary,
+    borderRadius: 20,
+    overflow: "hidden",
+    marginBottom: 24,
+    ...Colors.shadow.lg,
+  },
+  heroContent: {
+    padding: 24,
+  },
+  heroLabel: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 13,
-    color: "rgba(255,255,255,0.7)",
+    fontSize: 11,
+    color: "rgba(255,255,255,0.6)",
     letterSpacing: 1.5,
-    textTransform: "uppercase",
-    marginBottom: 16,
+    marginBottom: 12,
   },
   heroTitle: {
     fontFamily: "Inter_700Bold",
-    fontSize: 36,
-    color: "#fff",
-    lineHeight: 42,
-    marginBottom: 16,
-  },
-  heroHighlight: {
-    color: "#F59E0B",
+    fontSize: 22,
+    color: "#FFFFFF",
+    lineHeight: 28,
+    letterSpacing: -0.3,
+    marginBottom: 8,
   },
   heroSubtitle: {
     fontFamily: "Inter_400Regular",
-    fontSize: 16,
-    color: "rgba(255,255,255,0.8)",
-    lineHeight: 24,
-    marginBottom: 28,
-  },
-  heroButtons: { flexDirection: "row", gap: 12 },
-  heroPrimary: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    backgroundColor: "rgba(255,255,255,0.2)",
-    paddingHorizontal: 20,
-    paddingVertical: 14,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.3)",
-  },
-  heroPrimaryText: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 15,
-    color: "#fff",
-  },
-  heroSecondary: {
-    paddingHorizontal: 20,
-    paddingVertical: 14,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.3)",
-  },
-  heroSecondaryText: {
-    fontFamily: "Inter_500Medium",
-    fontSize: 15,
-    color: "rgba(255,255,255,0.9)",
-  },
-  statsRow: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 32,
-    paddingHorizontal: 24,
-    gap: 24,
-  },
-  stat: { alignItems: "center" },
-  statNumber: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 24,
-    color: "#fff",
-  },
-  statLabel: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 12,
-    color: "rgba(255,255,255,0.7)",
-    marginTop: 2,
-  },
-  statDivider: {
-    width: 1,
-    height: 32,
-    backgroundColor: "rgba(255,255,255,0.2)",
-  },
-  section: { paddingHorizontal: 24, paddingTop: 40 },
-  sectionLabel: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 12,
-    color: Colors.light.primary,
-    letterSpacing: 1.5,
-    marginBottom: 8,
-  },
-  sectionTitle: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 26,
-    color: Colors.light.text,
-    marginBottom: 8,
-  },
-  sectionSubtitle: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 15,
-    color: Colors.light.textSecondary,
-    lineHeight: 22,
+    fontSize: 14,
+    color: "rgba(255,255,255,0.75)",
+    lineHeight: 20,
     marginBottom: 20,
   },
-  palGrid: {
+  heroCta: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 12,
-  },
-  palCard: {
-    width: (width - 60) / 2,
-    backgroundColor: Colors.light.card,
-    borderRadius: 16,
-    padding: 20,
-    borderWidth: 1,
-    borderColor: Colors.light.cardBorder,
-  },
-  palCardIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 14,
     alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 12,
+    alignSelf: "flex-start",
+    gap: 6,
+    backgroundColor: "rgba(255,255,255,0.2)",
+    paddingHorizontal: 18,
+    paddingVertical: 11,
+    borderRadius: 100,
   },
-  palCardName: {
+  heroCtaText: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 15,
-    color: Colors.light.text,
-    marginBottom: 4,
+    fontSize: 14,
+    color: "#fff",
   },
-  palCardTagline: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 12,
-    color: Colors.light.textSecondary,
+  quickActions: {
+    flexDirection: "row",
+    paddingHorizontal: 20,
+    gap: 10,
+    marginBottom: 32,
   },
-  processSection: {
+  quickAction: {
+    flex: 1,
+    alignItems: "center",
     backgroundColor: Colors.light.backgroundSecondary,
-    marginHorizontal: 0,
-    paddingHorizontal: 24,
-    paddingBottom: 32,
+    borderRadius: 16,
+    paddingVertical: 18,
+    paddingHorizontal: 8,
   },
-  processStep: {
-    flexDirection: "row",
-    gap: 16,
-    marginBottom: 20,
-  },
-  processNumber: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
+  quickActionIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 14,
     backgroundColor: Colors.light.primaryLight,
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 8,
   },
-  processNumberText: {
+  quickActionLabel: {
+    fontFamily: "Inter_500Medium",
+    fontSize: 12,
+    color: Colors.light.text,
+    textAlign: "center",
+  },
+  section: {
+    paddingHorizontal: 20,
+    marginBottom: 32,
+  },
+  sectionHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 2,
+  },
+  sectionTitle: {
     fontFamily: "Inter_700Bold",
+    fontSize: 20,
+    color: Colors.light.text,
+    letterSpacing: -0.3,
+  },
+  seeAll: {
+    fontFamily: "Inter_500Medium",
     fontSize: 14,
     color: Colors.light.primary,
   },
-  processContent: { flex: 1 },
+  sectionSubtitle: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 14,
+    color: Colors.light.textSecondary,
+    marginBottom: 16,
+    marginTop: 4,
+  },
+  palList: { gap: 8 },
+  palPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderRadius: 16,
+    gap: 12,
+  },
+  palPillIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  palPillText: { flex: 1 },
+  palPillName: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 15,
+  },
+  palPillTagline: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 13,
+    color: Colors.light.textSecondary,
+    marginTop: 1,
+  },
+  processGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+  },
+  processCard: {
+    width: (width - 50) / 2,
+    backgroundColor: Colors.light.backgroundSecondary,
+    borderRadius: 16,
+    padding: 18,
+  },
+  processNumber: {
+    fontFamily: "Inter_700Bold",
+    fontSize: 24,
+    color: Colors.light.primaryMuted,
+    marginBottom: 8,
+  },
   processTitle: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 16,
+    fontSize: 15,
     color: Colors.light.text,
     marginBottom: 4,
   },
   processDesc: {
     fontFamily: "Inter_400Regular",
-    fontSize: 14,
+    fontSize: 13,
     color: Colors.light.textSecondary,
-    lineHeight: 20,
+    lineHeight: 18,
   },
-  ctaCard: {
-    borderRadius: 20,
-    padding: 28,
-    alignItems: "center",
-  },
-  ctaTitle: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 22,
-    color: "#fff",
-    textAlign: "center",
-    marginBottom: 12,
-  },
-  ctaSubtitle: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 14,
-    color: "rgba(255,255,255,0.8)",
-    textAlign: "center",
-    lineHeight: 20,
-    marginBottom: 24,
-  },
-  ctaButton: {
+  ctaBanner: {
+    marginHorizontal: 20,
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-    backgroundColor: "#fff",
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    borderRadius: 12,
+    backgroundColor: Colors.light.primaryLight,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 12,
   },
-  ctaButtonText: {
+  ctaBannerContent: { flex: 1 },
+  ctaBannerTitle: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 15,
-    color: "#6B3FA0",
+    fontSize: 16,
+    color: Colors.light.primary,
+    marginBottom: 2,
+  },
+  ctaBannerSubtitle: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 13,
+    color: Colors.light.primaryMuted,
+  },
+  ctaBannerArrow: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    ...Colors.shadow.sm,
   },
 });

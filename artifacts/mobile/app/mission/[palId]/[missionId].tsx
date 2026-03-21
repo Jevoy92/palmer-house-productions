@@ -19,15 +19,14 @@ import {
   calculateEvergreenPrice,
   PRICING,
   SessionBasedMission,
-  LengthBasedMission,
 } from "@/constants/data";
 import { useCart, CartItem } from "@/contexts/CartContext";
 
-const PAL_COLORS: Record<PalId, string> = {
-  reel: Colors.pal.reel,
-  spotlight: Colors.pal.spotlight,
-  system: Colors.pal.system,
-  evergreen: Colors.pal.evergreen,
+const PAL_META: Record<PalId, { color: string; bg: string; icon: string }> = {
+  reel: { color: Colors.pal.reel, bg: Colors.pal.reelLight, icon: "smartphone" },
+  spotlight: { color: Colors.pal.spotlight, bg: Colors.pal.spotlightLight, icon: "film" },
+  system: { color: Colors.pal.system, bg: Colors.pal.systemLight, icon: "settings" },
+  evergreen: { color: Colors.pal.evergreen, bg: Colors.pal.evergreenLight, icon: "play-circle" },
 };
 
 function Stepper({
@@ -37,7 +36,6 @@ function Stepper({
   onDecrement,
   min,
   max,
-  color,
 }: {
   label: string;
   value: number;
@@ -45,72 +43,26 @@ function Stepper({
   onDecrement: () => void;
   min: number;
   max: number;
-  color: string;
 }) {
   return (
     <View style={styles.stepper}>
       <Text style={styles.stepperLabel}>{label}</Text>
       <View style={styles.stepperControls}>
         <Pressable
-          style={[styles.stepperButton, value <= min && styles.stepperDisabled]}
+          style={[styles.stepperBtn, value <= min && styles.stepperBtnDisabled]}
           onPress={onDecrement}
           disabled={value <= min}
         >
-          <Feather name="minus" size={18} color={value <= min ? "#ccc" : color} />
+          <Feather name="minus" size={16} color={value <= min ? Colors.light.textTertiary : Colors.light.text} />
         </Pressable>
         <Text style={styles.stepperValue}>{value}</Text>
         <Pressable
-          style={[styles.stepperButton, value >= max && styles.stepperDisabled]}
+          style={[styles.stepperBtn, value >= max && styles.stepperBtnDisabled]}
           onPress={onIncrement}
           disabled={value >= max}
         >
-          <Feather name="plus" size={18} color={value >= max ? "#ccc" : color} />
+          <Feather name="plus" size={16} color={value >= max ? Colors.light.textTertiary : Colors.light.text} />
         </Pressable>
-      </View>
-    </View>
-  );
-}
-
-function LengthSelector({
-  selected,
-  onSelect,
-  color,
-}: {
-  selected: number;
-  onSelect: (len: number) => void;
-  color: string;
-}) {
-  return (
-    <View style={styles.lengthSelector}>
-      <Text style={styles.stepperLabel}>Episode Length</Text>
-      <View style={styles.lengthOptions}>
-        {[5, 10, 15].map((len) => (
-          <Pressable
-            key={len}
-            style={[
-              styles.lengthOption,
-              selected === len && { backgroundColor: color, borderColor: color },
-            ]}
-            onPress={() => onSelect(len)}
-          >
-            <Text
-              style={[
-                styles.lengthOptionText,
-                selected === len && { color: "#fff" },
-              ]}
-            >
-              {len} min
-            </Text>
-            <Text
-              style={[
-                styles.lengthOptionPrice,
-                selected === len && { color: "rgba(255,255,255,0.85)" },
-              ]}
-            >
-              ${PRICING.EVERGREEN[len].toLocaleString()}
-            </Text>
-          </Pressable>
-        ))}
       </View>
     </View>
   );
@@ -127,42 +79,34 @@ export default function MissionDetailScreen() {
 
   const palId = palIdParam as PalId;
   const pal = PALS[palId];
-  const color = PAL_COLORS[palId];
+  const meta = PAL_META[palId];
   const missions = getMissionsForPal(palId);
   const mission = missions.find((m) => m.id === missionId);
 
   const isSessionBased = mission?.pricingType === "session-based";
   const sessionMission = mission as SessionBasedMission | undefined;
-  const lengthMission = mission as LengthBasedMission | undefined;
 
-  const [sessions, setSessions] = useState(
-    sessionMission?.defaultSessions ?? 1
-  );
-  const [additionalVideos, setAdditionalVideos] = useState(
-    sessionMission?.defaultAdditionalVideos ?? 4
-  );
+  const [sessions, setSessions] = useState(sessionMission?.defaultSessions ?? 1);
+  const [additionalVideos, setAdditionalVideos] = useState(sessionMission?.defaultAdditionalVideos ?? 4);
   const [episodeLength, setEpisodeLength] = useState(5);
   const [additionalEpisodes, setAdditionalEpisodes] = useState(0);
 
   const price = useMemo(() => {
     if (!mission) return 0;
-    if (isSessionBased) {
-      return calculateSessionPrice(sessions, additionalVideos);
-    }
+    if (isSessionBased) return calculateSessionPrice(sessions, additionalVideos);
     return calculateEvergreenPrice(episodeLength, additionalEpisodes);
   }, [mission, isSessionBased, sessions, additionalVideos, episodeLength, additionalEpisodes]);
 
   if (!pal || !mission) {
     return (
       <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>Mission not found</Text>
+        <Text style={styles.errorText}>Not found</Text>
       </View>
     );
   }
 
   const handleAdd = () => {
-    const id =
-      Date.now().toString() + Math.random().toString(36).substr(2, 9);
+    const id = Date.now().toString() + Math.random().toString(36).substr(2, 9);
     const item: CartItem = {
       id,
       palId,
@@ -174,44 +118,38 @@ export default function MissionDetailScreen() {
       price,
     };
     addItem(item);
-    Alert.alert(
-      "Added to Package",
-      `${mission.name} has been added to your package.`,
-      [
-        { text: "Keep Browsing", style: "cancel" },
-        {
-          text: "View Package",
-          onPress: () => router.push("/(tabs)/build"),
-        },
-      ]
-    );
+    Alert.alert("Added to Package", `${mission.name} added.`, [
+      { text: "Keep Browsing", style: "cancel" },
+      { text: "View Package", onPress: () => router.push("/(tabs)/build") },
+    ]);
   };
 
   return (
     <View style={styles.container}>
       <ScrollView
-        contentContainerStyle={{ paddingBottom: 140, paddingTop: insets.top + 48 }}
+        contentContainerStyle={{ paddingBottom: 140, paddingTop: insets.top + 56 }}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.content}>
-          <View style={[styles.palBadge, { backgroundColor: color + "18" }]}>
-            <Feather name={pal.icon as any} size={16} color={color} />
-            <Text style={[styles.palBadgeText, { color }]}>{pal.name}</Text>
+          <View style={styles.breadcrumb}>
+            <View style={[styles.breadcrumbDot, { backgroundColor: meta.color }]} />
+            <Text style={[styles.breadcrumbText, { color: meta.color }]}>{pal.name}</Text>
           </View>
 
           <Text style={styles.missionName}>{mission.name}</Text>
-          <Text style={styles.problemStatement}>
-            "{mission.problemStatement}"
-          </Text>
+          <Text style={styles.problemStatement}>"{mission.problemStatement}"</Text>
           <Text style={styles.description}>{mission.description}</Text>
 
           <View style={styles.includesCard}>
-            <Text style={styles.includesLabel}>WHAT'S INCLUDED</Text>
+            <View style={styles.includesHeader}>
+              <Feather name="check-circle" size={16} color={Colors.light.primary} />
+              <Text style={styles.includesLabel}>What's Included</Text>
+            </View>
             <Text style={styles.includesText}>{mission.includes}</Text>
           </View>
 
           <View style={styles.configSection}>
-            <Text style={styles.configTitle}>Configure Your Package</Text>
+            <Text style={styles.configTitle}>Configure</Text>
 
             {isSessionBased ? (
               <>
@@ -222,13 +160,8 @@ export default function MissionDetailScreen() {
                   onDecrement={() => setSessions((s) => s - 1)}
                   min={1}
                   max={8}
-                  color={color}
                 />
-                <View style={styles.priceBreakdown}>
-                  <Text style={styles.breakdownText}>
-                    ${PRICING.SESSION}/session
-                  </Text>
-                </View>
+                <Text style={styles.rateHint}>${PRICING.SESSION} per session</Text>
 
                 <Stepper
                   label="Additional Videos"
@@ -237,21 +170,32 @@ export default function MissionDetailScreen() {
                   onDecrement={() => setAdditionalVideos((v) => v - 1)}
                   min={0}
                   max={30}
-                  color={color}
                 />
-                <View style={styles.priceBreakdown}>
-                  <Text style={styles.breakdownText}>
-                    ${PRICING.ADDITIONAL_VIDEO}/video
-                  </Text>
-                </View>
+                <Text style={styles.rateHint}>${PRICING.ADDITIONAL_VIDEO} per video</Text>
               </>
             ) : (
               <>
-                <LengthSelector
-                  selected={episodeLength}
-                  onSelect={setEpisodeLength}
-                  color={color}
-                />
+                <Text style={styles.stepperLabel}>Episode Length</Text>
+                <View style={styles.lengthOptions}>
+                  {[5, 10, 15].map((len) => (
+                    <Pressable
+                      key={len}
+                      style={[
+                        styles.lengthOption,
+                        episodeLength === len && { backgroundColor: meta.color, borderColor: meta.color },
+                      ]}
+                      onPress={() => setEpisodeLength(len)}
+                    >
+                      <Text style={[styles.lengthText, episodeLength === len && { color: "#fff" }]}>
+                        {len} min
+                      </Text>
+                      <Text style={[styles.lengthPrice, episodeLength === len && { color: "rgba(255,255,255,0.8)" }]}>
+                        ${PRICING.EVERGREEN[len].toLocaleString()}
+                      </Text>
+                    </Pressable>
+                  ))}
+                </View>
+
                 <Stepper
                   label="Additional Episodes"
                   value={additionalEpisodes}
@@ -259,18 +203,11 @@ export default function MissionDetailScreen() {
                   onDecrement={() => setAdditionalEpisodes((e) => e - 1)}
                   min={0}
                   max={10}
-                  color={color}
                 />
                 {additionalEpisodes > 0 && (
-                  <View style={styles.priceBreakdown}>
-                    <Text style={styles.breakdownText}>
-                      +$
-                      {(
-                        PRICING.EVERGREEN_ADDITIONAL[episodeLength] ?? 525
-                      ).toLocaleString()}
-                      /additional episode
-                    </Text>
-                  </View>
+                  <Text style={styles.rateHint}>
+                    +${(PRICING.EVERGREEN_ADDITIONAL[episodeLength] ?? 525).toLocaleString()} per episode
+                  </Text>
                 )}
               </>
             )}
@@ -280,16 +217,10 @@ export default function MissionDetailScreen() {
 
       <View style={[styles.footer, { paddingBottom: insets.bottom + 16 }]}>
         <View style={styles.footerPrice}>
-          <Text style={styles.footerPriceLabel}>Estimated Price</Text>
-          <Text style={[styles.footerPriceValue, { color }]}>
-            ${price.toLocaleString()}
-          </Text>
+          <Text style={styles.footerLabel}>Estimated</Text>
+          <Text style={styles.footerAmount}>${price.toLocaleString()}</Text>
         </View>
-        <Pressable
-          style={[styles.addButton, { backgroundColor: color }]}
-          onPress={handleAdd}
-        >
-          <Feather name="plus" size={18} color="#fff" />
+        <Pressable style={[styles.addButton, { backgroundColor: meta.color }]} onPress={handleAdd}>
           <Text style={styles.addButtonText}>Add to Package</Text>
         </Pressable>
       </View>
@@ -299,39 +230,27 @@ export default function MissionDetailScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.light.background },
-  errorContainer: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  errorText: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 16,
-    color: Colors.light.textSecondary,
-  },
-  content: { paddingHorizontal: 24 },
-  palBadge: {
+  errorContainer: { flex: 1, alignItems: "center", justifyContent: "center" },
+  errorText: { fontFamily: "Inter_500Medium", fontSize: 16, color: Colors.light.textSecondary },
+  content: { paddingHorizontal: 20 },
+  breadcrumb: {
     flexDirection: "row",
     alignItems: "center",
-    alignSelf: "flex-start",
     gap: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-    marginBottom: 16,
+    marginBottom: 12,
   },
-  palBadgeText: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 13,
-  },
+  breadcrumbDot: { width: 8, height: 8, borderRadius: 4 },
+  breadcrumbText: { fontFamily: "Inter_500Medium", fontSize: 14 },
   missionName: {
     fontFamily: "Inter_700Bold",
     fontSize: 28,
     color: Colors.light.text,
+    letterSpacing: -0.5,
     marginBottom: 12,
+    lineHeight: 34,
   },
   problemStatement: {
-    fontFamily: "Inter_500Medium",
+    fontFamily: "Inter_400Regular",
     fontSize: 16,
     color: Colors.light.textSecondary,
     fontStyle: "italic",
@@ -342,99 +261,102 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_400Regular",
     fontSize: 15,
     color: Colors.light.textSecondary,
-    lineHeight: 24,
+    lineHeight: 22,
     marginBottom: 24,
   },
   includesCard: {
     backgroundColor: Colors.light.backgroundSecondary,
     borderRadius: 16,
-    padding: 20,
+    padding: 18,
     marginBottom: 28,
+  },
+  includesHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 8,
   },
   includesLabel: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 11,
-    color: Colors.light.primary,
-    letterSpacing: 1.2,
-    marginBottom: 8,
+    fontSize: 14,
+    color: Colors.light.text,
   },
   includesText: {
     fontFamily: "Inter_400Regular",
     fontSize: 14,
-    color: Colors.light.text,
+    color: Colors.light.textSecondary,
     lineHeight: 20,
   },
-  configSection: { marginBottom: 20 },
+  configSection: {},
   configTitle: {
     fontFamily: "Inter_700Bold",
     fontSize: 20,
     color: Colors.light.text,
+    letterSpacing: -0.3,
     marginBottom: 20,
   },
   stepper: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 8,
+    marginBottom: 6,
   },
   stepperLabel: {
     fontFamily: "Inter_500Medium",
     fontSize: 15,
     color: Colors.light.text,
+    marginBottom: 4,
   },
   stepperControls: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 16,
+    gap: 14,
   },
-  stepperButton: {
-    width: 40,
-    height: 40,
+  stepperBtn: {
+    width: 36,
+    height: 36,
     borderRadius: 12,
-    borderWidth: 1.5,
-    borderColor: Colors.light.border,
+    backgroundColor: Colors.light.backgroundSecondary,
     alignItems: "center",
     justifyContent: "center",
   },
-  stepperDisabled: {
-    borderColor: "#eee",
-  },
+  stepperBtnDisabled: { opacity: 0.4 },
   stepperValue: {
-    fontFamily: "Inter_700Bold",
+    fontFamily: "Inter_600SemiBold",
     fontSize: 18,
     color: Colors.light.text,
-    minWidth: 30,
+    minWidth: 28,
     textAlign: "center",
   },
-  priceBreakdown: { marginBottom: 20, marginTop: 2 },
-  breakdownText: {
+  rateHint: {
     fontFamily: "Inter_400Regular",
     fontSize: 13,
-    color: Colors.light.textSecondary,
+    color: Colors.light.textTertiary,
+    marginBottom: 20,
   },
-  lengthSelector: { marginBottom: 20 },
   lengthOptions: {
     flexDirection: "row",
-    gap: 10,
-    marginTop: 12,
+    gap: 8,
+    marginBottom: 20,
+    marginTop: 8,
   },
   lengthOption: {
     flex: 1,
     alignItems: "center",
-    paddingVertical: 16,
+    paddingVertical: 14,
     borderRadius: 14,
-    borderWidth: 1.5,
-    borderColor: Colors.light.border,
     backgroundColor: Colors.light.backgroundSecondary,
+    borderWidth: 1.5,
+    borderColor: "transparent",
   },
-  lengthOptionText: {
+  lengthText: {
     fontFamily: "Inter_600SemiBold",
     fontSize: 15,
     color: Colors.light.text,
-    marginBottom: 4,
+    marginBottom: 2,
   },
-  lengthOptionPrice: {
-    fontFamily: "Inter_500Medium",
+  lengthPrice: {
+    fontFamily: "Inter_400Regular",
     fontSize: 13,
     color: Colors.light.textSecondary,
   },
@@ -445,28 +367,27 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: Colors.light.background,
     borderTopWidth: 1,
-    borderTopColor: Colors.light.border,
+    borderTopColor: Colors.light.separator,
     paddingHorizontal: 20,
-    paddingTop: 16,
+    paddingTop: 14,
     flexDirection: "row",
     alignItems: "center",
     gap: 16,
   },
   footerPrice: { flex: 1 },
-  footerPriceLabel: {
+  footerLabel: {
     fontFamily: "Inter_400Regular",
     fontSize: 12,
     color: Colors.light.textSecondary,
   },
-  footerPriceValue: {
+  footerAmount: {
     fontFamily: "Inter_700Bold",
-    fontSize: 24,
+    fontSize: 22,
+    color: Colors.light.text,
+    letterSpacing: -0.5,
   },
   addButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    paddingHorizontal: 22,
+    paddingHorizontal: 24,
     paddingVertical: 14,
     borderRadius: 14,
   },

@@ -1,6 +1,8 @@
 import { Tabs } from "expo-router";
 import { Feather } from "@expo/vector-icons";
 import React from "react";
+import { Platform, StyleSheet, View } from "react-native";
+import { BlurView } from "expo-blur";
 import Colors from "@/constants/colors";
 import { useCart } from "@/contexts/CartContext";
 
@@ -14,25 +16,38 @@ export default function TabLayout() {
         tabBarInactiveTintColor: Colors.light.tabIconDefault,
         headerShown: true,
         tabBarStyle: {
-          backgroundColor: Colors.light.background,
-          borderTopColor: Colors.light.border,
-          borderTopWidth: 1,
-          paddingBottom: 8,
-          paddingTop: 4,
-          height: 60,
+          position: "absolute",
+          borderTopWidth: 0,
+          backgroundColor: Platform.OS === "ios" ? "transparent" : "rgba(255,255,255,0.97)",
+          height: 88,
+          paddingTop: 8,
         },
+        tabBarBackground: () =>
+          Platform.OS === "ios" ? (
+            <BlurView intensity={80} tint="light" style={StyleSheet.absoluteFill} />
+          ) : (
+            <View style={[StyleSheet.absoluteFill, { backgroundColor: "rgba(255,255,255,0.97)" }]} />
+          ),
         tabBarLabelStyle: {
           fontFamily: "Inter_500Medium",
-          fontSize: 11,
+          fontSize: 10,
+          letterSpacing: 0.2,
+          marginTop: 2,
+        },
+        tabBarIconStyle: {
+          marginBottom: -2,
         },
         headerStyle: {
           backgroundColor: Colors.light.background,
+          shadowColor: "transparent",
+          elevation: 0,
         },
         headerTitleStyle: {
-          fontFamily: "Inter_700Bold",
+          fontFamily: "Inter_600SemiBold",
+          fontSize: 17,
           color: Colors.light.text,
-          fontSize: 18,
         },
+        headerShadowVisible: false,
       }}
     >
       <Tabs.Screen
@@ -40,44 +55,47 @@ export default function TabLayout() {
         options={{
           title: "Home",
           headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="home" size={size} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <Feather name="home" size={22} color={color} />
           ),
         }}
       />
       <Tabs.Screen
         name="pals"
         options={{
-          title: "Pals",
-          headerTitle: "Video Pals",
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="grid" size={size} color={color} />
+          title: "Explore",
+          headerTitle: "Explore",
+          tabBarIcon: ({ color }) => (
+            <Feather name="compass" size={22} color={color} />
           ),
         }}
       />
       <Tabs.Screen
         name="build"
         options={{
-          title: "Build",
+          title: "Package",
           headerTitle: "Your Package",
           tabBarBadge: items.length > 0 ? items.length : undefined,
           tabBarBadgeStyle: {
             backgroundColor: Colors.light.primary,
             fontSize: 10,
             fontFamily: "Inter_600SemiBold",
+            minWidth: 18,
+            height: 18,
+            lineHeight: 18,
           },
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="shopping-bag" size={size} color={color} />
+          tabBarIcon: ({ color }) => (
+            <Feather name="layers" size={22} color={color} />
           ),
         }}
       />
       <Tabs.Screen
         name="about"
         options={{
-          title: "About",
-          headerTitle: "About Us",
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="info" size={size} color={color} />
+          title: "More",
+          headerTitle: "Palmer House",
+          tabBarIcon: ({ color }) => (
+            <Feather name="menu" size={22} color={color} />
           ),
         }}
       />

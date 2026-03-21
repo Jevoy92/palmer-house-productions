@@ -17,7 +17,7 @@ import Colors from "@/constants/colors";
 import { useCart } from "@/contexts/CartContext";
 import { getApiUrl } from "@/lib/api";
 
-function FormField({
+function Field({
   label,
   value,
   onChangeText,
@@ -45,7 +45,7 @@ function FormField({
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
-        placeholderTextColor="#9CA3AF"
+        placeholderTextColor={Colors.light.textTertiary}
         keyboardType={keyboardType}
         multiline={multiline}
         numberOfLines={multiline ? 4 : 1}
@@ -114,10 +114,10 @@ export default function CheckoutScreen() {
       router.replace("/confirmation");
     } catch (error: any) {
       Alert.alert(
-        "Submission Error",
+        "Something went wrong",
         error?.message?.includes("Request failed")
           ? "We couldn't process your request right now. Please try again."
-          : "Something went wrong. Please try again or contact us directly at info@palmerhouseproductions.com."
+          : "Please try again or contact us at info@palmerhouseproductions.com."
       );
     } finally {
       setLoading(false);
@@ -135,68 +135,27 @@ export default function CheckoutScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.summary}>
-          <Text style={styles.summaryTitle}>Package Summary</Text>
           {items.map((item) => (
-            <View key={item.id} style={styles.summaryItem}>
-              <Text style={styles.summaryItemName}>{item.missionName}</Text>
-              <Text style={styles.summaryItemPrice}>
-                ${item.price.toLocaleString()}
-              </Text>
+            <View key={item.id} style={styles.summaryRow}>
+              <Text style={styles.summaryName}>{item.missionName}</Text>
+              <Text style={styles.summaryPrice}>${item.price.toLocaleString()}</Text>
             </View>
           ))}
           <View style={styles.summaryDivider} />
-          <View style={styles.summaryItem}>
-            <Text style={styles.summaryTotal}>Estimated Total</Text>
-            <Text style={styles.summaryTotalPrice}>
-              ${total.toLocaleString()}
-            </Text>
+          <View style={styles.summaryRow}>
+            <Text style={styles.totalLabel}>Estimated Total</Text>
+            <Text style={styles.totalPrice}>${total.toLocaleString()}</Text>
           </View>
         </View>
 
         <View style={styles.form}>
-          <Text style={styles.formTitle}>Your Information</Text>
-
-          <FormField
-            label="Full Name"
-            value={fullName}
-            onChangeText={setFullName}
-            placeholder="Your name"
-            required
-          />
-          <FormField
-            label="Company Name"
-            value={companyName}
-            onChangeText={setCompanyName}
-            placeholder="Your company (optional)"
-          />
-          <FormField
-            label="Email"
-            value={email}
-            onChangeText={setEmail}
-            placeholder="your@email.com"
-            required
-            keyboardType="email-address"
-          />
-          <FormField
-            label="Phone"
-            value={phone}
-            onChangeText={setPhone}
-            placeholder="(optional)"
-            keyboardType="phone-pad"
-          />
-          <FormField
-            label="Tell Us About Your Project"
-            value={projectDescription}
-            onChangeText={setProjectDescription}
-            placeholder="What are your goals? What problems are you trying to solve?"
-            multiline
-          />
-          <FormField
-            label="Preferred Timeline"
-            value={preferredTimeline}
-            onChangeText={setPreferredTimeline}
-            placeholder="When would you like to get started?"
-          />
+          <Text style={styles.formTitle}>Your details</Text>
+          <Field label="Full Name" value={fullName} onChangeText={setFullName} placeholder="Your name" required />
+          <Field label="Company" value={companyName} onChangeText={setCompanyName} placeholder="Optional" />
+          <Field label="Email" value={email} onChangeText={setEmail} placeholder="your@email.com" required keyboardType="email-address" />
+          <Field label="Phone" value={phone} onChangeText={setPhone} placeholder="Optional" keyboardType="phone-pad" />
+          <Field label="About your project" value={projectDescription} onChangeText={setProjectDescription} placeholder="Goals, challenges, or anything else we should know" multiline />
+          <Field label="Preferred timeline" value={preferredTimeline} onChangeText={setPreferredTimeline} placeholder="When would you like to start?" />
         </View>
       </ScrollView>
 
@@ -209,10 +168,7 @@ export default function CheckoutScreen() {
           {loading ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <>
-              <Text style={styles.submitText}>Submit Project Request</Text>
-              <Feather name="send" size={18} color="#fff" />
-            </>
+            <Text style={styles.submitText}>Submit Request</Text>
           )}
         </Pressable>
       </View>
@@ -226,74 +182,67 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: Colors.light.backgroundSecondary,
     borderRadius: 16,
-    padding: 20,
+    padding: 18,
   },
-  summaryTitle: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 18,
-    color: Colors.light.text,
-    marginBottom: 16,
-  },
-  summaryItem: {
+  summaryRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingVertical: 6,
   },
-  summaryItemName: {
+  summaryName: {
     fontFamily: "Inter_400Regular",
     fontSize: 14,
     color: Colors.light.textSecondary,
     flex: 1,
   },
-  summaryItemPrice: {
-    fontFamily: "Inter_600SemiBold",
+  summaryPrice: {
+    fontFamily: "Inter_500Medium",
     fontSize: 14,
     color: Colors.light.text,
   },
   summaryDivider: {
     height: 1,
     backgroundColor: Colors.light.border,
-    marginVertical: 10,
+    marginVertical: 8,
   },
-  summaryTotal: {
+  totalLabel: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 16,
+    fontSize: 15,
     color: Colors.light.text,
   },
-  summaryTotalPrice: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 20,
-    color: Colors.light.primary,
-  },
-  form: { paddingHorizontal: 20 },
-  formTitle: {
+  totalPrice: {
     fontFamily: "Inter_700Bold",
     fontSize: 18,
     color: Colors.light.text,
-    marginBottom: 20,
+    letterSpacing: -0.3,
   },
-  field: { marginBottom: 18 },
+  form: { paddingHorizontal: 20 },
+  formTitle: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 17,
+    color: Colors.light.text,
+    marginBottom: 16,
+  },
+  field: { marginBottom: 16 },
   fieldLabel: {
     fontFamily: "Inter_500Medium",
     fontSize: 14,
     color: Colors.light.text,
-    marginBottom: 8,
+    marginBottom: 6,
   },
   required: { color: Colors.light.error },
   input: {
     backgroundColor: Colors.light.backgroundSecondary,
     borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
+    paddingHorizontal: 14,
+    paddingVertical: 13,
     fontFamily: "Inter_400Regular",
     fontSize: 15,
     color: Colors.light.text,
-    borderWidth: 1,
-    borderColor: Colors.light.border,
   },
   inputMultiline: {
     minHeight: 100,
-    paddingTop: 14,
+    paddingTop: 13,
   },
   footer: {
     position: "absolute",
@@ -302,21 +251,18 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: Colors.light.background,
     borderTopWidth: 1,
-    borderTopColor: Colors.light.border,
+    borderTopColor: Colors.light.separator,
     paddingHorizontal: 20,
     paddingTop: 12,
-    paddingBottom: 32,
+    paddingBottom: 36,
   },
   submitButton: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 10,
     backgroundColor: Colors.light.primary,
     paddingVertical: 16,
     borderRadius: 14,
+    alignItems: "center",
   },
-  submitDisabled: { opacity: 0.5 },
+  submitDisabled: { opacity: 0.4 },
   submitText: {
     fontFamily: "Inter_600SemiBold",
     fontSize: 16,

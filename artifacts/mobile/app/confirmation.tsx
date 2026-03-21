@@ -1,5 +1,4 @@
 import { Feather } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import React from "react";
 import { Linking, Pressable, StyleSheet, Text, View } from "react-native";
@@ -11,163 +10,137 @@ export default function ConfirmationScreen() {
   const insets = useSafeAreaInsets();
 
   return (
-    <LinearGradient
-      colors={["#6B3FA0", "#4A2B70", "#2D1B45"]}
-      style={[styles.container, { paddingTop: insets.top + 60 }]}
-    >
-      <View style={styles.iconContainer}>
-        <View style={styles.iconCircle}>
-          <Feather name="check" size={48} color="#6B3FA0" />
-        </View>
+    <View style={[styles.container, { paddingTop: insets.top + 80 }]}>
+      <View style={styles.checkCircle}>
+        <Feather name="check" size={36} color={Colors.light.primary} />
       </View>
 
-      <Text style={styles.title}>Request Submitted!</Text>
+      <Text style={styles.title}>Request sent</Text>
       <Text style={styles.subtitle}>
-        Thank you for your interest in Palmer House Productions. We've received
-        your project request and will be in touch within 24 hours.
+        We've received your project request and will reach out within 24 hours to schedule a discovery call.
       </Text>
 
-      <View style={styles.nextSteps}>
-        <Text style={styles.nextStepsTitle}>What happens next?</Text>
-        <View style={styles.step}>
-          <View style={styles.stepNumber}>
-            <Text style={styles.stepNumberText}>1</Text>
+      <View style={styles.steps}>
+        {[
+          "We'll review your package and project details",
+          "A team member will reach out to schedule a call",
+          "We'll finalize everything and get you on the calendar",
+        ].map((step, i) => (
+          <View key={i} style={styles.step}>
+            <View style={styles.stepNum}>
+              <Text style={styles.stepNumText}>{i + 1}</Text>
+            </View>
+            <Text style={styles.stepText}>{step}</Text>
           </View>
-          <Text style={styles.stepText}>
-            We'll review your project details and package selections.
-          </Text>
-        </View>
-        <View style={styles.step}>
-          <View style={styles.stepNumber}>
-            <Text style={styles.stepNumberText}>2</Text>
-          </View>
-          <Text style={styles.stepText}>
-            A team member will reach out to schedule a discovery call.
-          </Text>
-        </View>
-        <View style={styles.step}>
-          <View style={styles.stepNumber}>
-            <Text style={styles.stepNumberText}>3</Text>
-          </View>
-          <Text style={styles.stepText}>
-            We'll finalize your package and get you on the calendar.
-          </Text>
-        </View>
+        ))}
       </View>
 
       <View style={styles.actions}>
         <Pressable
-          style={styles.primaryButton}
+          style={styles.primaryBtn}
           onPress={() => router.replace("/(tabs)")}
         >
-          <Text style={styles.primaryButtonText}>Back to Home</Text>
+          <Text style={styles.primaryBtnText}>Done</Text>
         </Pressable>
         <Pressable
-          style={styles.secondaryButton}
-          onPress={() =>
-            Linking.openURL("https://palmerhouseproductions.com/contact")
-          }
+          style={styles.secondaryBtn}
+          onPress={() => Linking.openURL("https://palmerhouseproductions.com/contact")}
         >
-          <Text style={styles.secondaryButtonText}>
-            Book a Discovery Call Now
-          </Text>
+          <Text style={styles.secondaryBtnText}>Book a Call Now</Text>
         </Pressable>
       </View>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: Colors.light.background,
     paddingHorizontal: 28,
     alignItems: "center",
   },
-  iconContainer: { marginBottom: 28 },
-  iconCircle: {
-    width: 96,
-    height: 96,
-    borderRadius: 48,
-    backgroundColor: "#fff",
+  checkCircle: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    backgroundColor: Colors.light.primaryLight,
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 24,
   },
   title: {
     fontFamily: "Inter_700Bold",
-    fontSize: 30,
-    color: "#fff",
-    textAlign: "center",
-    marginBottom: 14,
+    fontSize: 28,
+    color: Colors.light.text,
+    letterSpacing: -0.5,
+    marginBottom: 12,
   },
   subtitle: {
     fontFamily: "Inter_400Regular",
     fontSize: 15,
-    color: "rgba(255,255,255,0.8)",
+    color: Colors.light.textSecondary,
     textAlign: "center",
     lineHeight: 22,
     marginBottom: 36,
   },
-  nextSteps: {
+  steps: {
     width: "100%",
-    backgroundColor: "rgba(255,255,255,0.1)",
-    borderRadius: 20,
-    padding: 24,
-    marginBottom: 36,
-  },
-  nextStepsTitle: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 16,
-    color: "#fff",
-    marginBottom: 18,
+    backgroundColor: Colors.light.backgroundSecondary,
+    borderRadius: 16,
+    padding: 20,
+    marginBottom: 40,
+    gap: 16,
   },
   step: {
     flexDirection: "row",
     alignItems: "flex-start",
-    gap: 14,
-    marginBottom: 16,
+    gap: 12,
   },
-  stepNumber: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    backgroundColor: "rgba(255,255,255,0.2)",
+  stepNum: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: Colors.light.primaryLight,
     alignItems: "center",
     justifyContent: "center",
   },
-  stepNumberText: {
+  stepNumText: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 13,
-    color: "#fff",
+    fontSize: 12,
+    color: Colors.light.primary,
   },
   stepText: {
     fontFamily: "Inter_400Regular",
     fontSize: 14,
-    color: "rgba(255,255,255,0.85)",
+    color: Colors.light.textSecondary,
     lineHeight: 20,
     flex: 1,
   },
-  actions: { width: "100%", gap: 12 },
-  primaryButton: {
-    backgroundColor: "#fff",
+  actions: {
+    width: "100%",
+    gap: 10,
+  },
+  primaryBtn: {
+    backgroundColor: Colors.light.primary,
     paddingVertical: 16,
     borderRadius: 14,
     alignItems: "center",
   },
-  primaryButtonText: {
+  primaryBtnText: {
     fontFamily: "Inter_600SemiBold",
     fontSize: 16,
-    color: "#6B3FA0",
+    color: "#fff",
   },
-  secondaryButton: {
-    borderWidth: 1.5,
-    borderColor: "rgba(255,255,255,0.4)",
+  secondaryBtn: {
     paddingVertical: 16,
     borderRadius: 14,
     alignItems: "center",
+    backgroundColor: Colors.light.backgroundSecondary,
   },
-  secondaryButtonText: {
+  secondaryBtnText: {
     fontFamily: "Inter_600SemiBold",
     fontSize: 16,
-    color: "rgba(255,255,255,0.9)",
+    color: Colors.light.primary,
   },
 });

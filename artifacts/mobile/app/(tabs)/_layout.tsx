@@ -5,14 +5,16 @@ import { Platform, StyleSheet, View } from "react-native";
 import { BlurView } from "expo-blur";
 import Colors from "@/constants/colors";
 import { useCart } from "@/contexts/CartContext";
+import { useActivePal } from "@/contexts/ActivePalContext";
 
 export default function TabLayout() {
   const { items } = useCart();
+  const { accentColor } = useActivePal();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors.light.primary,
+        tabBarActiveTintColor: accentColor,
         tabBarInactiveTintColor: Colors.light.tabIconDefault,
         headerShown: true,
         tabBarStyle: {
@@ -87,7 +89,7 @@ export default function TabLayout() {
           headerTitle: "Your Package",
           tabBarBadge: items.length > 0 ? items.length : undefined,
           tabBarBadgeStyle: {
-            backgroundColor: Colors.light.primary,
+            backgroundColor: accentColor,
             fontSize: 10,
             fontFamily: "Inter_600SemiBold",
             minWidth: 18,

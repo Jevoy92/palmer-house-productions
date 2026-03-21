@@ -1,6 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import {
   Dimensions,
   Image,
@@ -18,6 +18,7 @@ import {
   getMissionsForPal,
 } from "@/constants/data";
 import { PAL_PROFILES } from "@/constants/images";
+import { useActivePal } from "@/contexts/ActivePalContext";
 
 const { width } = Dimensions.get("window");
 
@@ -92,8 +93,8 @@ function MissionCard({
 
 export default function PalsScreen() {
   const router = useRouter();
-  const [activeFilter, setActiveFilter] = useState<PalId | "all">("all");
-
+  const { activePal, setActivePal, accentColor } = useActivePal();
+  const activeFilter: PalId | "all" = activePal ?? "all";
   const filteredPals = activeFilter === "all" ? PAL_ORDER : [activeFilter];
 
   return (
@@ -103,9 +104,13 @@ export default function PalsScreen() {
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.intro}>
-        <Text style={styles.introTitle}>Find your fit</Text>
+        <Text style={styles.introTitle}>
+          {activePal ? PALS[activePal].name : "Find your fit"}
+        </Text>
         <Text style={styles.introSubtitle}>
-          Each Pal category targets a specific business challenge. Browse missions to build your package.
+          {activePal
+            ? PALS[activePal].description
+            : "Each Pal category targets a specific business challenge. Browse missions to build your package."}
         </Text>
       </View>
 
@@ -118,7 +123,7 @@ export default function PalsScreen() {
           label="All"
           active={activeFilter === "all"}
           color={Colors.light.text}
-          onPress={() => setActiveFilter("all")}
+          onPress={() => setActivePal(null)}
         />
         {PAL_ORDER.map((id) => (
           <FilterChip
@@ -126,7 +131,7 @@ export default function PalsScreen() {
             label={PALS[id].name}
             active={activeFilter === id}
             color={PAL_META[id].color}
-            onPress={() => setActiveFilter(id)}
+            onPress={() => setActivePal(activeFilter === id ? null : id)}
           />
         ))}
       </ScrollView>

@@ -1,6 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import {
   Alert,
   Pressable,
@@ -11,9 +11,10 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
-import { useAuth } from "@/contexts/AuthContext";
 import { TOOLS, getToolsForPal, ToolDefinition } from "@/constants/tools";
 import { PalId, PALS } from "@/constants/data";
+import { useAuth } from "@/contexts/AuthContext";
+import { useActivePal } from "@/contexts/ActivePalContext";
 
 interface ToolCardProps {
   tool: ToolDefinition;
@@ -77,11 +78,12 @@ export default function ToolsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { user, isGuest } = useAuth();
-  const [activeTab, setActiveTab] = useState<"all" | PalId>("all");
+  const { activePal, setActivePal, accentColor } = useActivePal();
 
   const credits = user?.credits ?? 3;
   const isLimited = isGuest;
 
+  const activeTab: "all" | PalId = activePal ?? "all";
   const filteredTools = activeTab === "all" ? TOOLS : getToolsForPal(activeTab);
 
   return (
@@ -94,7 +96,7 @@ export default function ToolsScreen() {
       }}
       showsVerticalScrollIndicator={false}
     >
-      <Text style={styles.screenTitle}>Tools</Text>
+      <Text style={[styles.screenTitle, { color: accentColor }]}>Tools</Text>
       <Text style={styles.headline}>AI content assistant</Text>
       <Text style={styles.subtitle}>
         {TOOLS.length} AI-powered tools to plan, write, and strategize your video content.
@@ -102,7 +104,7 @@ export default function ToolsScreen() {
 
       <View style={styles.creditsCard}>
         <View style={styles.creditsLeft}>
-          <Feather name="zap" size={18} color={Colors.light.primary} />
+          <Feather name="zap" size={18} color={accentColor} />
           <View>
             <Text style={styles.creditsLabel}>Available Credits</Text>
             <Text style={styles.creditsCount}>{credits} credits</Text>
@@ -142,7 +144,7 @@ export default function ToolsScreen() {
                 styles.tab,
                 isActive && { backgroundColor: color },
               ]}
-              onPress={() => setActiveTab(tab.id)}
+              onPress={() => setActivePal(tab.id === "all" ? null : tab.id)}
             >
               <Text
                 style={[

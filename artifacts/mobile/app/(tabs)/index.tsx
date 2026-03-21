@@ -1,10 +1,7 @@
 import { Feather } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import React from "react";
+import { useRouter, type Href } from "expo-router";
+import React, { type ComponentProps } from "react";
 import {
-  Dimensions,
-  Image,
-  Linking,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -13,55 +10,145 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
-import { PALS, PAL_ORDER, PROCESS_STEPS, PalId } from "@/constants/data";
-import { PAL_PROFILES } from "@/constants/images";
+import { PALS, PAL_ORDER, PalId } from "@/constants/data";
 import { useAuth } from "@/contexts/AuthContext";
+import { useActivePal } from "@/contexts/ActivePalContext";
 
-const { width } = Dimensions.get("window");
+type FeatherIcon = ComponentProps<typeof Feather>["name"];
 
-const PAL_META: Record<PalId, { color: string; bg: string; icon: string }> = {
-  reel: { color: Colors.pal.reel, bg: Colors.pal.reelLight, icon: "smartphone" },
-  system: { color: Colors.pal.system, bg: Colors.pal.systemLight, icon: "settings" },
-  evergreen: { color: Colors.pal.evergreen, bg: Colors.pal.evergreenLight, icon: "play-circle" },
-  spotlight: { color: Colors.pal.spotlight, bg: Colors.pal.spotlightLight, icon: "film" },
+const PAL_META: Record<PalId, { color: string; bg: string; icon: FeatherIcon; label: string }> = {
+  reel: { color: Colors.pal.reel, bg: Colors.pal.reelLight, icon: "smartphone", label: "Reel" },
+  system: { color: Colors.pal.system, bg: Colors.pal.systemLight, icon: "settings", label: "System" },
+  evergreen: { color: Colors.pal.evergreen, bg: Colors.pal.evergreenLight, icon: "play-circle", label: "Evergreen" },
+  spotlight: { color: Colors.pal.spotlight, bg: Colors.pal.spotlightLight, icon: "film", label: "Spotlight" },
 };
 
-function QuickAction({ icon, label, onPress }: { icon: string; label: string; onPress: () => void }) {
+const PAL_SUGGESTIONS: Record<PalId, { icon: FeatherIcon; title: string; subtitle: string; route: Href }[]> = {
+  reel: [
+    { icon: "edit-3", title: "Draft a script for your next Reel", subtitle: "Use AI to write a scroll-stopping hook", route: "/tools/video-script" as Href },
+    { icon: "hash", title: "Optimize your hashtag strategy", subtitle: "Get personalized hashtag recommendations", route: "/tools/hashtag-strategy" as Href },
+    { icon: "calendar", title: "Plan your 30-day content calendar", subtitle: "Stay consistent with a strategic plan", route: "/tools/content-calendar" as Href },
+  ],
+  system: [
+    { icon: "calendar", title: "Plan your internal video system", subtitle: "Map out onboarding & SOP content", route: "/tools/content-calendar" as Href },
+    { icon: "check-square", title: "Review your visibility checklist", subtitle: "Make sure nothing is missing", route: "/tools/visibility-checklist" as Href },
+    { icon: "clipboard", title: "Generate your SOPs", subtitle: "Document your production processes", route: "/tools/sop-generator" as Href },
+  ],
+  evergreen: [
+    { icon: "edit-3", title: "Write a long-form script", subtitle: "Authority content that compounds", route: "/tools/video-script" as Href },
+    { icon: "bar-chart-2", title: "Audit your existing content", subtitle: "Find gaps and opportunities", route: "/tools/content-audit" as Href },
+    { icon: "message-circle", title: "Generate compelling hooks", subtitle: "Open strong, keep attention", route: "/tools/hook-generator" as Href },
+  ],
+  spotlight: [
+    { icon: "users", title: "Plan your client spotlight", subtitle: "Create a brief for client stories", route: "/tools/client-spotlight-planner" as Href },
+    { icon: "edit-3", title: "Script your brand story", subtitle: "Tell your origin story with impact", route: "/tools/brand-story-builder" as Href },
+    { icon: "award", title: "Build your trust signals", subtitle: "Audit credibility strategically", route: "/tools/trust-signal-audit" as Href },
+  ],
+};
+
+const GUEST_CHIPS = [
+  { label: "I need more visibility", palId: "reel" as PalId },
+  { label: "I want to build trust", palId: "spotlight" as PalId },
+  { label: "I need better systems", palId: "system" as PalId },
+  { label: "I want to be an authority", palId: "evergreen" as PalId },
+];
+
+function PalSelectorPill({
+  palId,
+  isActive,
+  onPress,
+}: {
+  palId: PalId | null;
+  isActive: boolean;
+  onPress: () => void;
+}) {
+  if (palId === null) {
+    return (
+      <Pressable
+        style={[
+          styles.palSelectorPill,
+          isActive && { backgroundColor: Colors.light.text },
+        ]}
+        onPress={onPress}
+      >
+        <Text
+          style={[
+            styles.palSelectorText,
+            isActive && { color: "#fff" },
+          ]}
+        >
+          All
+        </Text>
+      </Pressable>
+    );
+  }
+
+  const meta = PAL_META[palId];
   return (
-    <Pressable style={styles.quickAction} onPress={onPress}>
-      <View style={styles.quickActionIcon}>
-        <Feather name={icon as any} size={20} color={Colors.light.primary} />
-      </View>
-      <Text style={styles.quickActionLabel}>{label}</Text>
+    <Pressable
+      style={[
+        styles.palSelectorPill,
+        isActive && { backgroundColor: meta.color },
+      ]}
+      onPress={onPress}
+    >
+      <View style={[styles.palSelectorDot, { backgroundColor: isActive ? "#fff" : meta.color }]} />
+      <Text
+        style={[
+          styles.palSelectorText,
+          isActive && { color: "#fff" },
+        ]}
+      >
+        {meta.label}
+      </Text>
     </Pressable>
   );
 }
 
-function PalPill({ palId }: { palId: PalId }) {
-  const router = useRouter();
-  const pal = PALS[palId];
-  const meta = PAL_META[palId];
-
+function SuggestionCard({
+  icon,
+  title,
+  subtitle,
+  accentColor,
+  onPress,
+}: {
+  icon: FeatherIcon;
+  title: string;
+  subtitle: string;
+  accentColor: string;
+  onPress: () => void;
+}) {
   return (
-    <Pressable
-      style={[styles.palPill, { backgroundColor: meta.bg }]}
-      onPress={() => router.push(`/pal/${palId}`)}
-    >
-      <View style={styles.palPillAvatars}>
-        <Image
-          source={PAL_PROFILES[palId].male}
-          style={[styles.palPillAvatar, styles.palPillAvatarLeft]}
-        />
-        <Image
-          source={PAL_PROFILES[palId].female}
-          style={[styles.palPillAvatar, styles.palPillAvatarRight]}
-        />
+    <Pressable style={styles.suggestionCard} onPress={onPress}>
+      <View style={[styles.suggestionIcon, { backgroundColor: accentColor + "15" }]}>
+        <Feather name={icon} size={18} color={accentColor} />
       </View>
-      <View style={styles.palPillText}>
-        <Text style={[styles.palPillName, { color: meta.color }]}>{pal.name}</Text>
-        <Text style={styles.palPillTagline} numberOfLines={1}>{pal.displayName} · {pal.tagline}</Text>
+      <View style={styles.suggestionContent}>
+        <Text style={styles.suggestionTitle}>{title}</Text>
+        <Text style={styles.suggestionSubtitle}>{subtitle}</Text>
       </View>
       <Feather name="chevron-right" size={16} color={Colors.light.textTertiary} />
+    </Pressable>
+  );
+}
+
+function QuickAction({
+  icon,
+  label,
+  accentColor,
+  onPress,
+}: {
+  icon: FeatherIcon;
+  label: string;
+  accentColor: string;
+  onPress: () => void;
+}) {
+  return (
+    <Pressable style={styles.quickAction} onPress={onPress}>
+      <View style={[styles.quickActionIcon, { backgroundColor: accentColor + "15" }]}>
+        <Feather name={icon} size={18} color={accentColor} />
+      </View>
+      <Text style={styles.quickActionLabel}>{label}</Text>
     </Pressable>
   );
 }
@@ -69,11 +156,27 @@ function PalPill({ palId }: { palId: PalId }) {
 export default function HomeScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { user } = useAuth();
+  const { user, isGuest } = useAuth();
+  const { activePal, setActivePal, accentColor } = useActivePal();
 
   const hour = new Date().getHours();
   const timeGreeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
-  const greeting = user ? `${timeGreeting}, ${user.fullName.split(" ")[0]}` : timeGreeting;
+  const displayName = user ? user.fullName.split(" ")[0] : "there";
+  const greeting = `${timeGreeting}, ${displayName}`;
+
+  const month = new Date().getMonth();
+  const seasonalEmoji = month >= 2 && month <= 4 ? "🌱" : month >= 5 && month <= 7 ? "☀️" : month >= 8 && month <= 10 ? "🍂" : "❄️";
+
+  const isNewUser = isGuest && !user;
+  const credits = user?.credits ?? 3;
+
+  const currentSuggestions = activePal
+    ? PAL_SUGGESTIONS[activePal]
+    : [
+        PAL_SUGGESTIONS.reel[0],
+        PAL_SUGGESTIONS.spotlight[0],
+        PAL_SUGGESTIONS.system[0],
+      ];
 
   return (
     <ScrollView
@@ -81,93 +184,155 @@ export default function HomeScreen() {
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{ paddingBottom: 120 }}
     >
-      <View style={[styles.header, { paddingTop: insets.top + 12 }]}>
-        <View>
-          <Text style={styles.greeting}>{greeting}</Text>
-          <Text style={styles.headline}>Video systems that{"\n"}solve problems.</Text>
-        </View>
-      </View>
-
-      <View style={styles.heroCard}>
-        <View style={styles.heroContent}>
-          <Text style={styles.heroLabel}>FOR BUSINESS OWNERS</Text>
-          <Text style={styles.heroTitle}>Build your content strategy with strategic video packages</Text>
-          <Text style={styles.heroSubtitle}>
-            Explore our Pals, configure your package, and submit a project request.
-          </Text>
+      <View style={[styles.header, { paddingTop: insets.top + 16 }]}>
+        <View style={styles.headerTop}>
+          <View style={styles.headerLeft}>
+            <Text style={styles.greeting}>{greeting} {seasonalEmoji}</Text>
+            <Text style={styles.headline}>
+              {isNewUser ? "Let's build your\ncontent strategy." : "What are we\nworking on today?"}
+            </Text>
+          </View>
           <Pressable
-            style={styles.heroCta}
-            onPress={() => router.push("/(tabs)/pals")}
+            style={[styles.profileButton, { borderColor: accentColor + "30" }]}
+            onPress={() => {
+              if (user) {
+                router.push("/profile");
+              } else {
+                router.push("/auth/register");
+              }
+            }}
           >
-            <Text style={styles.heroCtaText}>Get Started</Text>
-            <Feather name="arrow-right" size={16} color="#fff" />
+            <Feather name="user" size={18} color={accentColor} />
           </Pressable>
         </View>
       </View>
 
-      <View style={styles.quickActions}>
-        <QuickAction
-          icon="compass"
-          label="Explore Services"
-          onPress={() => router.push("/(tabs)/pals")}
-        />
-        <QuickAction
-          icon="zap"
-          label="AI Tools"
-          onPress={() => router.push("/(tabs)/tools")}
-        />
-        <QuickAction
-          icon="layers"
-          label="Build Package"
-          onPress={() => router.push("/(tabs)/build")}
-        />
-      </View>
-
-      <View style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Video Pals</Text>
-          <Pressable onPress={() => router.push("/(tabs)/pals")}>
-            <Text style={styles.seeAll}>See All</Text>
-          </Pressable>
-        </View>
-        <Text style={styles.sectionSubtitle}>
-          Each Pal solves a specific business problem
-        </Text>
-        <View style={styles.palList}>
-          {PAL_ORDER.map((id) => (
-            <PalPill key={id} palId={id} />
-          ))}
-        </View>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>How It Works</Text>
-        <Text style={styles.sectionSubtitle}>
-          From discovery to delivery in four steps
-        </Text>
-        <View style={styles.processGrid}>
-          {PROCESS_STEPS.map((step, i) => (
-            <View key={step.number} style={styles.processCard}>
-              <Text style={styles.processNumber}>{step.number}</Text>
-              <Text style={styles.processTitle}>{step.title}</Text>
-              <Text style={styles.processDesc}>{step.description}</Text>
-            </View>
-          ))}
-        </View>
-      </View>
-
-      <Pressable
-        style={styles.ctaBanner}
-        onPress={() => Linking.openURL("https://palmerhouseproductions.com/contact")}
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.palSelector}
       >
-        <View style={styles.ctaBannerContent}>
-          <Text style={styles.ctaBannerTitle}>Ready to start?</Text>
-          <Text style={styles.ctaBannerSubtitle}>Book a free discovery call</Text>
+        <PalSelectorPill palId={null} isActive={activePal === null} onPress={() => setActivePal(null)} />
+        {PAL_ORDER.map((id) => (
+          <PalSelectorPill
+            key={id}
+            palId={id}
+            isActive={activePal === id}
+            onPress={() => setActivePal(activePal === id ? null : id)}
+          />
+        ))}
+      </ScrollView>
+
+      <View style={styles.creditsInline}>
+        <View style={styles.creditsRow}>
+          <Feather name="zap" size={15} color={accentColor} />
+          <Text style={styles.creditsText}>
+            <Text style={[styles.creditsCount, { color: accentColor }]}>{credits}</Text> credits available
+          </Text>
         </View>
-        <View style={styles.ctaBannerArrow}>
-          <Feather name="arrow-right" size={20} color={Colors.light.primary} />
+        <Pressable onPress={() => router.push("/(tabs)/tools")}>
+          <Text style={[styles.creditsLink, { color: accentColor }]}>Use tools →</Text>
+        </Pressable>
+      </View>
+
+      {isNewUser && (
+        <View style={styles.welcomeCard}>
+          <Text style={styles.welcomeTitle}>What's your biggest content challenge?</Text>
+          <Text style={styles.welcomeSubtitle}>Pick one to get started — we'll customize your experience.</Text>
+          <View style={styles.welcomeChips}>
+            {GUEST_CHIPS.map((chip) => (
+              <Pressable
+                key={chip.palId}
+                style={[styles.welcomeChip, { borderColor: PAL_META[chip.palId].color + "40" }]}
+                onPress={() => {
+                  setActivePal(chip.palId);
+                  router.push(`/pal/${chip.palId}`);
+                }}
+              >
+                <View style={[styles.welcomeChipDot, { backgroundColor: PAL_META[chip.palId].color }]} />
+                <Text style={styles.welcomeChipText}>{chip.label}</Text>
+              </Pressable>
+            ))}
+          </View>
         </View>
-      </Pressable>
+      )}
+
+      {!isNewUser && (
+        <View style={styles.pickUpCard}>
+          <View style={styles.pickUpHeader}>
+            <Feather name="clock" size={16} color={accentColor} />
+            <Text style={styles.pickUpTitle}>Pick up where you left off</Text>
+          </View>
+          <View style={styles.pickUpActions}>
+            <Pressable
+              style={styles.pickUpAction}
+              onPress={() => router.push("/(tabs)/pals")}
+            >
+              <View style={[styles.pickUpActionDot, { backgroundColor: accentColor }]} />
+              <Text style={styles.pickUpActionText}>
+                {activePal ? `Continue with ${PALS[activePal].name}` : "Browse video services"}
+              </Text>
+              <Feather name="arrow-right" size={14} color={Colors.light.textTertiary} />
+            </Pressable>
+            <Pressable
+              style={styles.pickUpAction}
+              onPress={() => router.push("/(tabs)/tools")}
+            >
+              <View style={[styles.pickUpActionDot, { backgroundColor: Colors.pal.reel }]} />
+              <Text style={styles.pickUpActionText}>Use AI content tools</Text>
+              <Feather name="arrow-right" size={14} color={Colors.light.textTertiary} />
+            </Pressable>
+          </View>
+        </View>
+      )}
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>
+          {activePal ? `${PALS[activePal].name} suggestions` : "Suggested for you"}
+        </Text>
+        <View style={styles.suggestionList}>
+          {currentSuggestions.map((s, i) => (
+            <SuggestionCard
+              key={i}
+              icon={s.icon}
+              title={s.title}
+              subtitle={s.subtitle}
+              accentColor={accentColor}
+              onPress={() => router.push(s.route)}
+            />
+          ))}
+        </View>
+      </View>
+
+      <View style={styles.quickActionsSection}>
+        <Text style={styles.sectionTitle}>Quick actions</Text>
+        <View style={styles.quickActions}>
+          <QuickAction
+            icon="compass"
+            label="Explore"
+            accentColor={accentColor}
+            onPress={() => router.push("/(tabs)/pals")}
+          />
+          <QuickAction
+            icon="zap"
+            label="AI Tools"
+            accentColor={accentColor}
+            onPress={() => router.push("/(tabs)/tools")}
+          />
+          <QuickAction
+            icon="layers"
+            label="Package"
+            accentColor={accentColor}
+            onPress={() => router.push("/(tabs)/build")}
+          />
+          <QuickAction
+            icon="video"
+            label="Teleprompter"
+            accentColor={accentColor}
+            onPress={() => router.push("/tools/teleprompter" as Href)}
+          />
+        </View>
+      </View>
     </ScrollView>
   );
 }
@@ -176,222 +341,247 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.light.background },
   header: {
     paddingHorizontal: 20,
-    paddingBottom: 24,
+    paddingBottom: 16,
   },
+  headerTop: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+  },
+  headerLeft: { flex: 1, marginRight: 16 },
   greeting: {
-    fontFamily: "Inter_500Medium",
-    fontSize: 14,
-    color: Colors.light.primary,
-    letterSpacing: 0.5,
+    fontFamily: "Inter_400Regular",
+    fontSize: 15,
+    color: Colors.light.textSecondary,
     marginBottom: 6,
   },
   headline: {
     fontFamily: "Inter_700Bold",
-    fontSize: 30,
+    fontSize: 28,
     color: Colors.light.text,
-    lineHeight: 36,
+    lineHeight: 34,
     letterSpacing: -0.5,
   },
-  heroCard: {
-    marginHorizontal: 20,
-    backgroundColor: Colors.light.primary,
+  profileButton: {
+    width: 40,
+    height: 40,
     borderRadius: 20,
-    overflow: "hidden",
-    marginBottom: 24,
-    ...Colors.shadow.lg,
+    backgroundColor: Colors.light.backgroundSecondary,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1.5,
+    marginTop: 4,
   },
-  heroContent: {
-    padding: 24,
+  palSelector: {
+    paddingHorizontal: 20,
+    gap: 8,
+    flexDirection: "row",
+    paddingBottom: 20,
   },
-  heroLabel: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 11,
-    color: "rgba(255,255,255,0.6)",
-    letterSpacing: 1.5,
-    marginBottom: 12,
-  },
-  heroTitle: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 22,
-    color: "#FFFFFF",
-    lineHeight: 28,
-    letterSpacing: -0.3,
-    marginBottom: 8,
-  },
-  heroSubtitle: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 14,
-    color: "rgba(255,255,255,0.75)",
-    lineHeight: 20,
-    marginBottom: 20,
-  },
-  heroCta: {
+  palSelectorPill: {
     flexDirection: "row",
     alignItems: "center",
-    alignSelf: "flex-start",
     gap: 6,
-    backgroundColor: "rgba(255,255,255,0.2)",
-    paddingHorizontal: 18,
-    paddingVertical: 11,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
     borderRadius: 100,
+    backgroundColor: Colors.light.backgroundSecondary,
   },
-  heroCtaText: {
-    fontFamily: "Inter_600SemiBold",
+  palSelectorDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  palSelectorText: {
+    fontFamily: "Inter_500Medium",
     fontSize: 14,
-    color: "#fff",
+    color: Colors.light.text,
+  },
+  creditsInline: {
+    marginHorizontal: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: Colors.light.backgroundSecondary,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    marginBottom: 20,
+  },
+  creditsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  creditsText: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 14,
+    color: Colors.light.textSecondary,
+  },
+  creditsCount: {
+    fontFamily: "Inter_700Bold",
+    fontSize: 16,
+  },
+  creditsLink: {
+    fontFamily: "Inter_500Medium",
+    fontSize: 13,
+  },
+  welcomeCard: {
+    marginHorizontal: 20,
+    backgroundColor: Colors.light.backgroundSecondary,
+    borderRadius: 20,
+    padding: 24,
+    marginBottom: 24,
+  },
+  welcomeTitle: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 18,
+    color: Colors.light.text,
+    lineHeight: 24,
+    marginBottom: 6,
+  },
+  welcomeSubtitle: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 14,
+    color: Colors.light.textSecondary,
+    lineHeight: 20,
+    marginBottom: 18,
+  },
+  welcomeChips: {
+    gap: 10,
+  },
+  welcomeChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    borderRadius: 14,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+  },
+  welcomeChipDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  welcomeChipText: {
+    fontFamily: "Inter_500Medium",
+    fontSize: 15,
+    color: Colors.light.text,
+  },
+  pickUpCard: {
+    marginHorizontal: 20,
+    backgroundColor: Colors.light.backgroundSecondary,
+    borderRadius: 20,
+    padding: 20,
+    marginBottom: 24,
+  },
+  pickUpHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 14,
+  },
+  pickUpTitle: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 16,
+    color: Colors.light.text,
+  },
+  pickUpActions: {
+    gap: 8,
+  },
+  pickUpAction: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    paddingVertical: 13,
+  },
+  pickUpActionDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+  },
+  pickUpActionText: {
+    flex: 1,
+    fontFamily: "Inter_400Regular",
+    fontSize: 14,
+    color: Colors.light.text,
+  },
+  section: {
+    paddingHorizontal: 20,
+    marginBottom: 28,
+  },
+  sectionTitle: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 17,
+    color: Colors.light.text,
+    letterSpacing: -0.2,
+    marginBottom: 14,
+  },
+  suggestionList: {
+    gap: 10,
+  },
+  suggestionCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: Colors.light.backgroundSecondary,
+    borderRadius: 16,
+    padding: 16,
+    gap: 14,
+  },
+  suggestionIcon: {
+    width: 42,
+    height: 42,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  suggestionContent: { flex: 1 },
+  suggestionTitle: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 15,
+    color: Colors.light.text,
+    marginBottom: 2,
+    lineHeight: 20,
+  },
+  suggestionSubtitle: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 13,
+    color: Colors.light.textSecondary,
+    lineHeight: 18,
+  },
+  quickActionsSection: {
+    paddingHorizontal: 20,
+    marginBottom: 20,
   },
   quickActions: {
     flexDirection: "row",
-    paddingHorizontal: 20,
     gap: 10,
-    marginBottom: 32,
   },
   quickAction: {
     flex: 1,
     alignItems: "center",
     backgroundColor: Colors.light.backgroundSecondary,
-    borderRadius: 16,
-    paddingVertical: 18,
-    paddingHorizontal: 8,
+    borderRadius: 14,
+    paddingVertical: 16,
+    paddingHorizontal: 6,
   },
   quickActionIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
-    backgroundColor: Colors.light.primaryLight,
+    width: 40,
+    height: 40,
+    borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 8,
+    marginBottom: 6,
   },
   quickActionLabel: {
     fontFamily: "Inter_500Medium",
     fontSize: 12,
     color: Colors.light.text,
     textAlign: "center",
-  },
-  section: {
-    paddingHorizontal: 20,
-    marginBottom: 32,
-  },
-  sectionHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 2,
-  },
-  sectionTitle: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 20,
-    color: Colors.light.text,
-    letterSpacing: -0.3,
-  },
-  seeAll: {
-    fontFamily: "Inter_500Medium",
-    fontSize: 14,
-    color: Colors.light.primary,
-  },
-  sectionSubtitle: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 14,
-    color: Colors.light.textSecondary,
-    marginBottom: 16,
-    marginTop: 4,
-  },
-  palList: { gap: 8 },
-  palPill: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-    borderRadius: 16,
-    gap: 12,
-  },
-  palPillAvatars: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  palPillAvatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    borderWidth: 2,
-    borderColor: "#fff",
-  },
-  palPillAvatarLeft: {
-    zIndex: 2,
-  },
-  palPillAvatarRight: {
-    marginLeft: -10,
-    zIndex: 1,
-  },
-  palPillText: { flex: 1 },
-  palPillName: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 15,
-  },
-  palPillTagline: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 13,
-    color: Colors.light.textSecondary,
-    marginTop: 1,
-  },
-  processGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
-  },
-  processCard: {
-    width: (width - 50) / 2,
-    backgroundColor: Colors.light.backgroundSecondary,
-    borderRadius: 16,
-    padding: 18,
-  },
-  processNumber: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 24,
-    color: Colors.light.primaryMuted,
-    marginBottom: 8,
-  },
-  processTitle: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 15,
-    color: Colors.light.text,
-    marginBottom: 4,
-  },
-  processDesc: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 13,
-    color: Colors.light.textSecondary,
-    lineHeight: 18,
-  },
-  ctaBanner: {
-    marginHorizontal: 20,
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: Colors.light.primaryLight,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 12,
-  },
-  ctaBannerContent: { flex: 1 },
-  ctaBannerTitle: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 16,
-    color: Colors.light.primary,
-    marginBottom: 2,
-  },
-  ctaBannerSubtitle: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 13,
-    color: Colors.light.primaryMuted,
-  },
-  ctaBannerArrow: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    ...Colors.shadow.sm,
   },
 });

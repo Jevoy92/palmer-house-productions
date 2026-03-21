@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import Colors from "@/constants/colors";
 import { useCart } from "@/contexts/CartContext";
+import { useActivePal } from "@/contexts/ActivePalContext";
 import { PALS, PalId } from "@/constants/data";
 
 const PAL_META: Record<PalId, { color: string; bg: string; icon: string }> = {
@@ -68,22 +69,27 @@ function CartItemCard({
 export default function BuildScreen() {
   const router = useRouter();
   const { items, removeItem, total, clearCart } = useCart();
+  const { activePal, accentColor } = useActivePal();
 
   if (items.length === 0) {
     return (
       <View style={styles.emptyContainer}>
-        <View style={styles.emptyIconWrap}>
-          <Feather name="layers" size={40} color={Colors.light.primaryMuted} />
+        <View style={[styles.emptyIconWrap, { backgroundColor: accentColor + "15" }]}>
+          <Feather name="layers" size={40} color={accentColor} />
         </View>
         <Text style={styles.emptyTitle}>No items yet</Text>
         <Text style={styles.emptySubtitle}>
-          Browse our services and add missions to build your custom video package.
+          {activePal
+            ? `Browse ${PALS[activePal].name} missions to build your custom video package.`
+            : "Browse our services and add missions to build your custom video package."}
         </Text>
         <Pressable
-          style={styles.emptyButton}
+          style={[styles.emptyButton, { backgroundColor: accentColor }]}
           onPress={() => router.push("/(tabs)/pals")}
         >
-          <Text style={styles.emptyButtonText}>Explore Services</Text>
+          <Text style={styles.emptyButtonText}>
+            {activePal ? `Explore ${PALS[activePal].name}` : "Explore Services"}
+          </Text>
         </Pressable>
       </View>
     );
@@ -96,6 +102,15 @@ export default function BuildScreen() {
         contentContainerStyle={{ paddingBottom: 200 }}
         showsVerticalScrollIndicator={false}
       >
+        {activePal && (
+          <View style={[styles.palContextBanner, { backgroundColor: accentColor + "12" }]}>
+            <View style={[styles.palContextDot, { backgroundColor: accentColor }]} />
+            <Text style={[styles.palContextText, { color: accentColor }]}>
+              Building with {PALS[activePal].name}
+            </Text>
+          </View>
+        )}
+
         <View style={styles.listHeader}>
           <Text style={styles.itemCount}>
             {items.length} item{items.length > 1 ? "s" : ""}
@@ -120,8 +135,8 @@ export default function BuildScreen() {
             style={styles.addMoreButton}
             onPress={() => router.push("/(tabs)/pals")}
           >
-            <Feather name="plus" size={16} color={Colors.light.primary} />
-            <Text style={styles.addMoreText}>Add more services</Text>
+            <Feather name="plus" size={16} color={accentColor} />
+            <Text style={[styles.addMoreText, { color: accentColor }]}>Add more services</Text>
           </Pressable>
         </View>
       </ScrollView>
@@ -132,7 +147,7 @@ export default function BuildScreen() {
           <Text style={styles.totalAmount}>${total.toLocaleString()}</Text>
         </View>
         <Pressable
-          style={styles.checkoutButton}
+          style={[styles.checkoutButton, { backgroundColor: accentColor }]}
           onPress={() => router.push("/checkout")}
         >
           <Text style={styles.checkoutButtonText}>Continue</Text>
@@ -340,5 +355,24 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.light.textTertiary,
     textAlign: "center",
+  },
+  palContextBanner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginHorizontal: 20,
+    marginTop: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 10,
+  },
+  palContextDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  palContextText: {
+    fontFamily: "Inter_500Medium",
+    fontSize: 13,
   },
 });

@@ -14,3 +14,23 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * Submits a new project request from a potential client
+ * @summary Submit a project request
+ */
+export const CreateProjectRequestBody = zod.object({
+  fullName: zod.string(),
+  companyName: zod.string().optional(),
+  email: zod.string().email(),
+  phone: zod.string().optional(),
+  palCategory: zod.enum(["reel", "spotlight", "system", "evergreen"]),
+  missionId: zod.string(),
+  packageDetails: zod
+    .string()
+    .optional()
+    .describe("JSON string of selected package configuration"),
+  estimatedTotal: zod.number().optional(),
+  projectDescription: zod.string().optional(),
+  preferredTimeline: zod.string().optional(),
+});

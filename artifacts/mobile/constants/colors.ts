@@ -1,0 +1,35 @@
+const Colors = {
+  light: {
+    text: "#1A1A2E",
+    textSecondary: "#6B7280",
+    background: "#FFFFFF",
+    backgroundSecondary: "#F8F8FC",
+    card: "#FFFFFF",
+    cardBorder: "#E5E7EB",
+    tint: "#6B3FA0",
+    tabIconDefault: "#9CA3AF",
+    tabIconSelected: "#6B3FA0",
+    primary: "#6B3FA0",
+    primaryLight: "#E8DEF8",
+    accent: "#D97706",
+    border: "#E5E7EB",
+    success: "#059669",
+    error: "#DC2626",
+  },
+  pal: {
+    reel: "#D97706",
+    reelLight: "#FEF3C7",
+    reelBg: "#FFFBEB",
+    system: "#0F766E",
+    systemLight: "#CCFBF1",
+    systemBg: "#F0FDFA",
+    evergreen: "#6B8E23",
+    evergreenLight: "#ECFCCB",
+    evergreenBg: "#F7FEE7",
+    spotlight: "#6B3FA0",
+    spotlightLight: "#E8DEF8",
+    spotlightBg: "#F5F0FF",
+  },
+};
+
+export default Colors;

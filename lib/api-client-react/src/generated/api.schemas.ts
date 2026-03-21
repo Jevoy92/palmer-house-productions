@@ -8,3 +8,37 @@
 export interface HealthStatus {
   status: string;
 }
+
+export type CreateProjectRequestPalCategory =
+  (typeof CreateProjectRequestPalCategory)[keyof typeof CreateProjectRequestPalCategory];
+
+export const CreateProjectRequestPalCategory = {
+  reel: "reel",
+  spotlight: "spotlight",
+  system: "system",
+  evergreen: "evergreen",
+} as const;
+
+export interface CreateProjectRequest {
+  fullName: string;
+  companyName?: string;
+  email: string;
+  phone?: string;
+  palCategory: CreateProjectRequestPalCategory;
+  missionId: string;
+  /** JSON string of selected package configuration */
+  packageDetails?: string;
+  estimatedTotal?: number;
+  projectDescription?: string;
+  preferredTimeline?: string;
+}
+
+export interface ProjectRequestResponse {
+  id: number;
+  message: string;
+  createdAt: string;
+}
+
+export interface ErrorResponse {
+  error: string;
+}

@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: project-requests
+    description: Project request operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /project-requests:
+    post:
+      operationId: createProjectRequest
+      tags: [project-requests]
+      summary: Submit a project request
+      description: Submits a new project request from a potential client
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProjectRequest"
+      responses:
+        "201":
+          description: Project request created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProjectRequestResponse"
+        "400":
+          description: Invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     HealthStatus:
@@ -33,4 +60,55 @@ components:
           type: string
       required:
         - status
-
+    CreateProjectRequest:
+      type: object
+      properties:
+        fullName:
+          type: string
+        companyName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        palCategory:
+          type: string
+          enum: [reel, spotlight, system, evergreen]
+        missionId:
+          type: string
+        packageDetails:
+          type: string
+          description: JSON string of selected package configuration
+        estimatedTotal:
+          type: number
+        projectDescription:
+          type: string
+        preferredTimeline:
+          type: string
+      required:
+        - fullName
+        - email
+        - palCategory
+        - missionId
+    ProjectRequestResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - message
+        - createdAt
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error

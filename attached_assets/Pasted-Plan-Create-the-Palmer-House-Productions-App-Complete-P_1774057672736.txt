@@ -1,0 +1,555 @@
+Plan: Create the Palmer House Productions App — Complete Project Bible & Build Strategy
+
+What You Have Right Now (Audit Summary)
+
+Current State
+
+The existing site is a marketing website with a temporarily disabled backend dashboard. All dashboard, auth, tools, settings, and app-pricing routes currently redirect to / (see App.tsx lines 141-146). However, all the code still exists and is functional — it just needs to be re-enabled and evolved into a standalone app experience.
+
+
+
+Complete Data Bible
+
+1. BRAND IDENTITY
+
+
+
+
+
+
+
+Field
+
+
+
+Value
+
+
+
+
+
+Company
+
+
+
+Palmer House Productions
+
+
+
+
+
+Email
+
+
+
+info@palmerhouseproductions.com
+
+
+
+
+
+Phone
+
+
+
+(425) 533-9060
+
+
+
+
+
+Website
+
+
+
+palmerhouseproductions.com
+
+
+
+
+
+Identity
+
+
+
+"Translation company" — converts messy thoughts into clear messages and systems
+
+Social Links: Facebook, Instagram, YouTube, LinkedIn, X, Pinterest, TikTok, Threads
+
+
+
+2. THE PAL SYSTEM (4 Lanes, 8 Characters)
+
+Reel Pal — Visibility + Momentum (Short-form)
+
+
+
+
+
+Characters: Ryder (male) & Raquel (female)
+
+
+
+Color var: --pal-reel
+
+
+
+6 Missions: Services Pack, Objection Pack, Proof Pack, Day-in-the-Life Pack, POV/Hot Take Pack, 30-Day Momentum Pack
+
+
+
+Pricing: $450/session + $150/additional video
+
+
+
+Default configs range from 1 session + 4-6 additional videos up to 2 sessions + 12 additional videos
+
+Spotlight Pal — Trust Assets + Founder Presence (Premium 1-min videos)
+
+
+
+
+
+Characters: Kareem (male) & Kiana (female)
+
+
+
+Color var: --pal-spotlight
+
+
+
+5 Missions: Brand Presence Kit, Proof Builder Kit, Offer Clarity Kit, Objection Crusher Set, BTS Credibility Pack
+
+
+
+Pricing: $450/session + $150/additional video
+
+
+
+Default configs: 1 session + 3-4 additional videos
+
+System Pal — Internal Video Systems (Training/SOPs)
+
+
+
+
+
+Characters: Silas (male) & Samira (female)
+
+
+
+Color var: --pal-system
+
+
+
+6 Missions: Onboarding Kit, SOP Walkthrough Kit, Training Kit, Client Handoff System, Sales Enablement Library, Tool Tutorial Pack
+
+
+
+Pricing: $450/session + $150/additional video
+
+
+
+Default configs: 1 session + 4-8 additional videos
+
+Evergreen Pal — Authority + Long-Form (Length-based pricing)
+
+
+
+
+
+Characters: Cyrus (male) & Clara (female)
+
+
+
+Color var: --pal-evergreen
+
+
+
+5 Missions: FAQ Deep Dive, How It Works, Myth vs Reality, Case Study Breakdown, Founder POV
+
+
+
+Pricing: $1,050 (5 min) / $1,650 (10 min) / $2,250 (15 min)
+
+
+
+Additional episodes: $525 / $825 / $1,125
+
+
+
+Episode formats: FAQ Deep Dive, How It Works, Myth vs Reality, Case Study, Founder POV, Seasonal Authority
+
+
+
+3. ADD-ONS (11 total)
+
+Universal (any Pal):
+
+
+
+
+
+Caption Pack: $75
+
+
+
+Thumbnail Set: $50
+
+
+
+30-Day Posting Plan: $100
+
+
+
+Brand Kit Integration: $150
+
+
+
+Rush Delivery: $200
+
+Pal-Specific:
+
+
+
+
+
+Repurpose Pack (6 shorts): $250 (Evergreen)
+
+
+
+Repurpose Pack (12 shorts): $400 (Evergreen)
+
+
+
+Spotlight Proof Clips: $300 (Reel, Evergreen)
+
+
+
+Reel Proof Pack: $250 (Spotlight, System)
+
+
+
+Evergreen FAQ Episode: $1,050 (System)
+
+
+
+Reel "How We Work" Pack: $450 (System)
+
+
+
+Evergreen How-It-Works: $1,050 (Spotlight)
+
+
+
+4. DIY DIGITAL DOWNLOADS
+
+
+
+
+
+25 DIY Reels You Can Film From Home: $47 (Payhip)
+
+
+
+The Video Strategy Blueprint: $19 (Payhip)
+
+
+
+Owner/Founder Script Bundle: $47 (Payhip)
+
+Business Bonus Pack (free with $1,000+ orders): All 3 downloads + Personalized Script Feedback ($97) + On-Camera Coaching Session ($200) = $410 value
+
+
+
+5. SaaS SUBSCRIPTION TIERS (Content OS)
+
+
+
+
+
+
+
+Tier
+
+
+
+Price
+
+
+
+Credits
+
+
+
+Strategy Sessions
+
+
+
+Key Features
+
+
+
+
+
+Free
+
+
+
+$0/mo
+
+
+
+10
+
+
+
+0
+
+
+
+Series Builder only, preview-only, no downloads
+
+
+
+
+
+Core
+
+
+
+$49/mo
+
+
+
+200
+
+
+
+1/mo
+
+
+
+All AI tools, unlimited downloads, scheduling
+
+
+
+
+
+Guided
+
+
+
+$149/mo
+
+
+
+500
+
+
+
+2/mo
+
+
+
+Everything in Core + advanced builders, automation, priority support
+
+Stripe Price IDs: Core = price_1SSygOGcAcCB6YlQQptmaRuO, Guided = price_1SSyh2GcAcCB6YlQQ8rNTLdm
+
+Credit Add-ons:
+
+
+
+
+
+100 credits: $10 (price_1SSyiAGcAcCB6YlQfoOV70Qs)
+
+
+
+500 credits: $40 (price_1SSyirGcAcCB6YlQiNXI7ukX)
+
+
+
+1000 credits: $75 (price_1SSyjHGcAcCB6YlQ79WOY2hB)
+
+Credit Costs Per Tool:
+
+
+
+
+
+Video Series Builder: 10 | Persona Generator: 8 | Production Assistant: 7
+
+
+
+Content Maximizer: 6 | Script Generator: 6 | Music Generator: 5
+
+
+
+Thumbnail Generator: 4 | Engagement Responder: 3 | Metadata Writer: 2
+
+
+
+6. AI TOOLS (Content OS Dashboard)
+
+All tools call the generate-content edge function with a toolType parameter:
+
+
+
+
+
+Video Series Builder (series-builder) — Turn one idea into a multi-episode plan
+
+
+
+Persona Generator (persona-generator) — Define ideal audience + brand voice
+
+
+
+Production Assistant (production-assistant) — Shot lists, equipment, pre-production
+
+
+
+Content Maximizer (content-maximizer) — Repurpose across platforms
+
+
+
+Engagement Responder (engagement-responder) — AI-powered comment responses
+
+
+
+Content System Builder (content-system-builder) — Full system planning
+
+
+
+7. EXISTING DASHBOARD FEATURES (Currently Disabled)
+
+Routes that exist but redirect to /:
+
+
+
+
+
+/auth — Login/signup with email + Google OAuth + industry onboarding
+
+
+
+/dashboard — Main dashboard with system completion tracker, hero banner, tool progress, continue creating
+
+
+
+/dashboard/pals/:palId — Pal Hub with video checklists per Pal (Reel: 12 items, Evergreen: 10, Spotlight: 10, System: 10)
+
+
+
+/settings — Profile (name, industry), notifications, sign out
+
+
+
+/app-pricing — SaaS subscription tiers + credit add-ons with Stripe checkout
+
+
+
+/tools/* — All 6+ AI tools
+
+Dashboard Layout: Top nav (desktop), sidebar with tools/pals, bottom nav (mobile)
+
+Gamification System:
+
+
+
+
+
+Achievement tiers: Explorer → Creator → Master → Pro → Legend (based on credits used)
+
+
+
+Activity streaks, tools mastered count
+
+
+
+Video checklist completion per Pal with confetti celebrations
+
+
+
+System-wide completion percentage tracked via DB function
+
+Database Tables Supporting Dashboard:
+
+
+
+
+
+profiles (id, email, full_name, industry, favorite_pal)
+
+
+
+user_credits (balance, monthly_allowance, last_refill)
+
+
+
+credit_transactions (usage tracking per tool)
+
+
+
+user_subscriptions (plan, Stripe subscription ID)
+
+
+
+user_video_checklist (per-pal video completion tracking)
+
+
+
+user_achievements (earned achievements)
+
+
+
+subscription_plans (Free/Core/Guided definitions)
+
+
+
+tool_costs (credit cost per tool)
+
+
+
+8. LEAD GENERATION TOOLS (Public, No Login)
+
+
+
+
+
+Compass Game (/tools/compass-game) — AI-powered 3-video roadmap generator, lead-gated
+
+
+
+Video System Assessment (/video-system-assessment) — Diagnostic quiz: Starter/Builder/Ready to Scale
+
+
+
+Character Assessments — 8 unique per-character 5-question diagnostics
+
+
+
+9. CHECKOUT & SCARCITY
+
+
+
+
+
+Production Configurator (/production-pricing) — Guest checkout, no login required
+
+
+
+Scarcity System: 5 spots/month per Pal, pal_availability table, atomic decrement
+
+
+
+Waitlist: When spots = 0, HoneyBook lead form + Google Calendar link
+
+
+
+Stripe Integration: create-checkout edge function, stripe-webhook for fulfillment
+
+
+
+Thank You Page: Rich order summary from sessionStorage

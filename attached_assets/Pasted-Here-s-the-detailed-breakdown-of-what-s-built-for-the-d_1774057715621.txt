@@ -1,0 +1,75 @@
+Here's the detailed breakdown of what's built for the dashboard and Pal Hub pages:
+
+---
+
+## `/dashboard` — Main Dashboard
+
+The dashboard (`src/pages/Dashboard.tsx`) is wrapped in a `DashboardLayout` (3-column: left sidebar, center content, right stats panel). It renders these sections top to bottom:
+
+### 1. Industry-Personalized System Banner
+A card that pulls the user's `industry` from the `profiles` table and says "Building Your Complete [Industry] Video System" with an overall completion percentage from the `get_total_system_completion` RPC function.
+
+### 2. SystemCompletionCard
+Shows a master progress bar plus 4 individual Pal progress bars (Reel 📱, Evergreen 🌲, Spotlight 🎬, System ⚙️). Each percentage is calculated by querying `user_video_checklist` rows for that Pal and computing `completed / total`. When 100% is reached, a congratulations banner appears.
+
+### 3. HeroBanner
+A purple promotional card with the tagline "Automate Your Content Creation with AI-Powered Tools" and a CTA button "Start Creating" that navigates to `/tools/video-series-builder`.
+
+### 4. ToolProgressCards
+A 4-column grid showing usage stats for: Series Builder, Persona Generator, Production Assistant, Content Maximizer. Each card shows the usage count and "last used" timestamp, pulled from `credit_transactions` where `transaction_type = 'usage'`.
+
+### 5. ContinueCreating
+A list of 5 tool cards (Series Builder, Persona Generator, Production Assistant, Content Maximizer, Engagement Responder) with last-used timestamps and click-to-navigate to `/dashboard/tools/:id`.
+
+### 6. Right Sidebar (DashboardStats)
+- **User Profile Card**: Avatar (uses favorite Pal headshot), greeting by time of day, achievement tier icon, streak counter
+- **7-Day Activity Chart**: `ActivityChart` component
+- **Quick Stats**: Credits used, tools mastered (5+ uses), achievement tier name
+- **Top 3 Tools**: Ranked by usage count
+- **Favorite Pal Card**: Shows current favorite with option to change
+
+### 7. PalAvatarSelector (Dialog)
+A modal to switch your favorite Pal, stored in `profiles.favorite_pal`.
+
+---
+
+## `/dashboard/pals/:palId` — Pal Hub
+
+The Pal Hub (`src/pages/dashboard/PalHub.tsx`) is the per-Pal detail page with video checklists. Here's exactly what each Pal contains:
+
+### Checklist Items by Pal
+
+**Reel Pal (12 items, 2 categories):**
+- Social Reels (6): About the Business, About the Service/Product, How This Helps, Client Testimonials, Behind the Scenes, Educational Content
+- Web Video (6): About Video, Pricing Explainer, Process Explainer, FAQ Video, Service Overview, Portfolio Showcase
+
+**Evergreen Pal (10 items, 2 categories):**
+- Educational Content (5): How-To Tutorial, Industry Insights, Best Practices, Common Mistakes, Getting Started Guide
+- Long-Form Value (5): Ultimate Guide, Case Study, Deep Dive, Thought Leadership, Industry Trends
+
+**Spotlight Pal (10 items, 2 categories):**
+- Professional Productions (5): Company Overview, Executive Interviews, Culture Video, Event Coverage, Product Launch
+- Brand Story (5): Brand Documentary, Origin Story, Values Video, Mission Statement, Impact Story
+
+**System Pal (10 items, 2 categories):**
+- Training Videos (5): Employee Onboarding, Safety Training, Software Tutorial, Standard Procedures, Compliance Training
+- Internal Communications (5): Company Updates, Announcements, Town Hall Recording, Department Overview, Quarterly Review
+
+### Page Sections (top to bottom)
+1. **Back to Dashboard** button
+2. **Pal Header**: Emoji + name + description + industry badge
+3. **SystemCompletionCard**: Same cross-Pal progress widget as the main dashboard
+4. **Video Production Progress**: Per-Pal progress bar showing "X of Y videos filmed"
+5. **Quick Actions**: 3 buttons linking to AI tools (Write 5 Hooks → Series Builder, Plan 10 Shorts → Content System Builder, Engagement Starters → Engagement Responder)
+6. **Video Production Checklist**: Checkbox list grouped by category with counters (e.g., "0/6"). Clicking a checkbox upserts to `user_video_checklist` table
+7. **Pro Tips Card**: 3 static tips per Pal (e.g., "Hook viewers in the first 3 seconds" for Reel)
+8. **Achievement Popup**: When checking off items triggers a milestone (25%/50%/75%/100%), confetti fires and an achievement card appears showing the unlocked badge name, description, and points
+
+### Data Flow
+- Checklist state is persisted in `user_video_checklist` (columns: `user_id`, `pal`, `video_id`, `completed`, `completed_at`)
+- On toggle, a DB trigger `check_and_unlock_achievements` runs server-side to insert into `user_achievements` if milestones are hit
+- The client polls for new achievements 500ms after toggle and shows the confetti celebration if a new one is detected
+
+Re-enable dashboard routes
+Create generate-content edge function
+Add in-app order placement

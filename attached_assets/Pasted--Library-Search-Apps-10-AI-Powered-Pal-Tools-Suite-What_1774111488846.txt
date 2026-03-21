@@ -1,0 +1,81 @@
+
+Library
+Search
+Apps
+#10 - AI-Powered Pal Tools Suite
+What & Why
+Build out the full suite of AI-powered tools organized by Pal, plus cross-Pal instant-win tools. Every tool generates real, usable content — scripts, calendars, PDFs, checklists, outlines. Users get immediate value from every interaction, with outputs they can download, share, and use in their business. Nothing says "coming soon."
+
+Done looks like
+20+ new functional tool screens across all 4 Pals, each with real AI-generated output
+Each tool has an input form appropriate to its purpose (text fields, dropdowns, multi-select)
+AI generates results in real-time with a streaming text animation
+Results are formatted with clear sections, bullet points, and actionable steps
+Users can copy, share, or save generated results to their tool history
+PDF/document tools generate downloadable formatted content (lead magnets, worksheets, checklists, SOPs)
+Tools tab reorganized by Pal category with the active Pal's tools shown first
+Each Pal section color-coded with the Pal's accent color
+Credit cost clearly shown; generation deducts credits in real-time
+Reel Pal Tools (Visibility + Momentum)
+Script Writer — Update existing: input topic/platform/tone, AI writes a complete reel script with hook, body, CTA
+Hook Generator — Update existing: input topic, AI generates 10 scroll-stopping hooks
+Caption & Hashtag Writer — Input video topic, AI writes engaging caption + 20 strategic hashtags organized by reach tier
+30-Day Content Calendar — Input industry/goals, AI generates 30 days of reel topics with hooks and posting schedule
+Reel Companion Guide — Input reel topic, AI generates a downloadable PDF lead magnet (checklist/worksheet/mini-guide) to pair with the post
+Spotlight Pal Tools (Trust + Founder Presence)
+Brand Story Builder — Guided Q&A flow: AI asks about your journey, then crafts a compelling founder narrative for video or bio
+Testimonial Question Bank — Input your service type, AI generates 15+ strategic interview questions to get powerful client testimonials on camera
+Objection Crusher Script — Input top 3-5 buyer objections, AI writes video scripts that address each one with authority
+Client Case Study Writer — Input client name/industry/problem/result, AI writes a structured case study with story arc
+Trust Asset Checklist — Input your current content, AI audits what trust-building videos you're missing and prioritizes next steps
+System Pal Tools (Internal Video Systems)
+SOP Video Planner — Input a process name and steps, AI creates a detailed video outline with scenes, talking points, and screen recording notes
+Onboarding Script Builder — Input role/department, AI generates a complete onboarding video series outline with scripts
+Training Video Outline — Input tool/software name, AI creates a training video structure with key features to cover
+Meeting-to-Brief Converter — Input meeting topic/notes, AI turns it into a structured video production brief
+Process Documentation PDF — Input process details, AI generates a formatted SOP document with steps, screenshots placeholders, and tips
+Evergreen Pal Tools (Authority + Long-Form)
+Content Planner — Update existing: input niche/goals, AI creates a strategic content plan with topics mapped to funnel stages
+Topic Authority Map — Input your industry/expertise, AI maps 25+ content topics organized into a pillar-cluster strategy
+Podcast Episode Planner — Input show topic, AI generates 10 episode outlines with talking points, guest questions, and episode descriptions
+FAQ Deep Dive Script — Input top 5 questions you get asked, AI writes in-depth video scripts for each
+Thought Leadership Post Writer — Input a hot take or opinion, AI crafts a LinkedIn/blog post that positions you as an authority
+Cross-Pal / Instant Win Tools
+Teleprompter — Update existing: add actual teleprompter functionality (paste script, auto-scroll overlay, adjustable speed)
+Visibility Checklist — Update existing: input business type, AI generates personalized video roadmap across all 4 Pal stages
+Lead Magnet PDF Maker — Input any topic, AI generates a complete downloadable PDF guide/worksheet/checklist with professional formatting
+Content Audit — Update existing: input current content inventory, AI identifies gaps and priorities
+Brief Builder — Update existing: guided form that produces a complete video production brief
+What to Post Today — Update existing: input recent content + goals, AI recommends today's post with script and caption
+Tools Tab Reorganization
+Tools grouped by Pal category (Reel Tools, Spotlight Tools, System Tools, Evergreen Tools, Instant Win)
+Active Pal's tools section appears first when a Pal is selected via the Pal context
+"All" view shows all tools with Pal category headers
+Each tool card shows Pal color accent, credit cost, and brief description
+Out of scope
+Video generation or video editing
+Actual camera/recording functionality for teleprompter (placeholder UI for now — real camera integration is a future native feature)
+Payment processing for credits (use existing credit system)
+AI backend integration setup (handled by prerequisite task)
+Tasks
+Build Reel Pal tool screens — Create 3 new screens (Caption Writer, 30-Day Calendar, Companion Guide) and update 2 existing (Script Writer, Hook Generator) with AI input forms, streaming output display, and result actions (copy/save/share).
+Build Spotlight Pal tool screens — Create 5 new screens (Brand Story Builder, Testimonial Questions, Objection Crusher, Case Study Writer, Trust Checklist) with appropriate input flows and AI output formatting.
+Build System Pal tool screens — Create 5 new screens (SOP Planner, Onboarding Builder, Training Outline, Meeting-to-Brief, Process Doc PDF) with operations-focused input forms and structured output.
+Build Evergreen Pal tool screens — Create 3 new screens (Authority Map, Podcast Planner, FAQ Scripts, Leadership Posts) and update 1 existing (Content Planner) with authority-focused AI generation.
+Update Cross-Pal tools — Update existing screens (Teleprompter, Visibility Checklist, Content Audit, Brief Builder, What to Post) and add Lead Magnet PDF Maker with real AI functionality.
+Reorganize Tools tab by Pal category — Group tools under Pal-colored section headers, show active Pal's tools first, add category filtering.
+Relevant files
+artifacts/mobile/app/(tabs)/tools.tsx
+artifacts/mobile/app/tools/script-writer.tsx
+artifacts/mobile/app/tools/content-planner.tsx
+artifacts/mobile/app/tools/what-to-post.tsx
+artifacts/mobile/app/tools/hook-generator.tsx
+artifacts/mobile/app/tools/brief-builder.tsx
+artifacts/mobile/app/tools/content-audit.tsx
+artifacts/mobile/app/tools/teleprompter.tsx
+artifacts/mobile/app/tools/visibility-checklist.tsx
+artifacts/mobile/app/tools/_layout.tsx
+artifacts/mobile/constants/data.ts
+artifacts/mobile/constants/colors.ts
+artifacts/mobile/lib/api.ts
+Dependencies

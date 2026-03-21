@@ -14,7 +14,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
 import { PALS, PAL_ORDER, PROCESS_STEPS, PalId } from "@/constants/data";
-import { PAL_PROFILES } from "@/constants/images";
+import { PAL_IMAGES } from "@/constants/palImages";
 import { useAuth } from "@/contexts/AuthContext";
 
 const { width } = Dimensions.get("window");
@@ -47,14 +47,11 @@ function PalPill({ palId }: { palId: PalId }) {
       style={[styles.palPill, { backgroundColor: meta.bg }]}
       onPress={() => router.push(`/pal/${palId}`)}
     >
-      <View style={styles.palPillAvatars}>
+      <View style={[styles.palPillIcon, { backgroundColor: meta.color + "15" }]}>
         <Image
-          source={PAL_PROFILES[palId].male}
-          style={[styles.palPillAvatar, styles.palPillAvatarLeft]}
-        />
-        <Image
-          source={PAL_PROFILES[palId].female}
-          style={[styles.palPillAvatar, styles.palPillAvatarRight]}
+          source={PAL_IMAGES[palId].female}
+          style={styles.palPillAvatar}
+          resizeMode="cover"
         />
       </View>
       <View style={styles.palPillText}>
@@ -304,27 +301,18 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     gap: 12,
   },
-  palPillAvatars: {
-    width: 48,
-    height: 36,
-    position: "relative",
+  palPillIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
   },
   palPillAvatar: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    borderWidth: 2,
-    borderColor: "#fff",
-    position: "absolute",
-    top: 2,
-  },
-  palPillAvatarLeft: {
-    left: 0,
-    zIndex: 2,
-  },
-  palPillAvatarRight: {
-    left: 16,
-    zIndex: 1,
+    width: 40,
+    height: 40,
+    borderRadius: 12,
   },
   palPillText: { flex: 1 },
   palPillName: {

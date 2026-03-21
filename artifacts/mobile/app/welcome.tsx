@@ -2,7 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
 import React from "react";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
 import { PAL_PROFILES } from "@/constants/images";
@@ -16,21 +16,23 @@ export default function WelcomeScreen() {
   const { browseAsGuest } = useAuth();
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top + 60, paddingBottom: insets.bottom + 32 }]}>
-      <View style={styles.top}>
-        <View style={styles.logoWrap}>
-          <Feather name="film" size={32} color={Colors.light.primary} />
+    <View style={[styles.container, { paddingTop: insets.top + 40, paddingBottom: insets.bottom + 24 }]}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+      >
+        <View style={styles.hero}>
+          <Text style={styles.headline}>
+            Your video{"\n"}content partner
+          </Text>
+          <Text style={styles.subtitle}>
+            Everything you need to plan, create, and manage professional video content — in one place.
+          </Text>
         </View>
-        <Text style={styles.brand}>Palmer House</Text>
-        <Text style={styles.headline}>
-          Your video{"\n"}content partner.
-        </Text>
-        <Text style={styles.subtitle}>
-          Explore services, build packages, and get AI-powered content guidance — all in one place.
-        </Text>
 
         <View style={styles.avatarStrip}>
-          {(["reel", "spotlight", "system", "evergreen"] as const).map((palId, i) => (
+          {(["reel", "spotlight", "system", "evergreen"] as const).map((palId) => (
             <View key={palId} style={styles.palPairWrap}>
               <Image
                 source={PAL_PROFILES[palId].male}
@@ -43,42 +45,70 @@ export default function WelcomeScreen() {
             </View>
           ))}
         </View>
-      </View>
 
-      <View style={styles.features}>
-        <View style={styles.feature}>
-          <View style={[styles.featureIcon, { backgroundColor: Colors.pal.reelLight }]}>
-            <Feather name="compass" size={16} color={Colors.pal.reel} />
+        <View style={styles.features}>
+          <View style={styles.feature}>
+            <View style={[styles.featureIcon, { backgroundColor: Colors.pal.reelLight }]}>
+              <Feather name="compass" size={18} color={Colors.pal.reel} />
+            </View>
+            <View style={styles.featureTextWrap}>
+              <Text style={styles.featureTitle}>Explore & Build</Text>
+              <Text style={styles.featureDesc}>Browse video services and build custom packages</Text>
+            </View>
           </View>
-          <Text style={styles.featureText}>Explore video services & build packages</Text>
-        </View>
-        <View style={styles.feature}>
-          <View style={[styles.featureIcon, { backgroundColor: Colors.pal.systemLight }]}>
-            <Feather name="edit-3" size={16} color={Colors.pal.system} />
+          <View style={styles.feature}>
+            <View style={[styles.featureIcon, { backgroundColor: Colors.pal.systemLight }]}>
+              <Feather name="edit-3" size={18} color={Colors.pal.system} />
+            </View>
+            <View style={styles.featureTextWrap}>
+              <Text style={styles.featureTitle}>AI Content Guidance</Text>
+              <Text style={styles.featureDesc}>Get AI-powered script writing and content planning</Text>
+            </View>
           </View>
-          <Text style={styles.featureText}>AI-powered script writing & content planning</Text>
-        </View>
-        <View style={styles.feature}>
-          <View style={[styles.featureIcon, { backgroundColor: Colors.pal.spotlightLight }]}>
-            <Feather name="user" size={16} color={Colors.pal.spotlight} />
+          <View style={styles.feature}>
+            <View style={[styles.featureIcon, { backgroundColor: Colors.pal.spotlightLight }]}>
+              <Feather name="check-circle" size={18} color={Colors.pal.spotlight} />
+            </View>
+            <View style={styles.featureTextWrap}>
+              <Text style={styles.featureTitle}>Track Projects</Text>
+              <Text style={styles.featureDesc}>Monitor progress and review your deliverables</Text>
+            </View>
           </View>
-          <Text style={styles.featureText}>Track your projects & review deliverables</Text>
         </View>
-      </View>
 
-      <View style={styles.actions}>
+        <View style={styles.brandSection}>
+          <Image
+            source={require("@/assets/images/logo.png")}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+          <Text style={styles.brandText}>
+            Brought to you by{"\n"}
+            <Text style={styles.brandName}>Palmer House Productions</Text>
+          </Text>
+        </View>
+      </ScrollView>
+
+      <View style={styles.bottom}>
         <Pressable
-          style={styles.primaryBtn}
-          onPress={() => router.push("/auth/register")}
+          style={styles.guestBtn}
+          onPress={async () => {
+            browseAsGuest();
+            try {
+              const completed = await AsyncStorage.getItem(WALKTHROUGH_COMPLETE_KEY);
+              if (completed === "true") {
+                router.replace("/(tabs)");
+              } else {
+                router.replace("/guest-walkthrough");
+              }
+            } catch {
+              router.replace("/guest-walkthrough");
+            }
+          }}
         >
-          <Text style={styles.primaryBtnText}>Create Account</Text>
+          <Text style={styles.guestBtnText}>Browse as Guest</Text>
         </Pressable>
-        <Pressable
-          style={styles.secondaryBtn}
-          onPress={() => router.push("/auth/login")}
-        >
-          <Text style={styles.secondaryBtnText}>Sign In</Text>
-        </Pressable>
+
         <View style={styles.guestRow}>
           <Pressable
             style={styles.ghostBtn}
@@ -86,26 +116,25 @@ export default function WelcomeScreen() {
           >
             <Text style={styles.tourText}>Take a Tour</Text>
           </Pressable>
-          <View style={styles.guestDot} />
-          <Pressable
-            style={styles.ghostBtn}
-            onPress={async () => {
-              browseAsGuest();
-              try {
-                const completed = await AsyncStorage.getItem(WALKTHROUGH_COMPLETE_KEY);
-                if (completed === "true") {
-                  router.replace("/(tabs)");
-                } else {
-                  router.replace("/guest-walkthrough");
-                }
-              } catch {
-                router.replace("/guest-walkthrough");
-              }
-            }}
-          >
-            <Text style={styles.ghostBtnText}>Browse as Guest</Text>
-          </Pressable>
         </View>
+
+        <Text style={styles.clientPrompt}>
+          Already working with Palmer House Productions?{" "}
+          <Text
+            style={styles.clientLink}
+            onPress={() => router.push("/auth/login")}
+          >
+            Login
+          </Text>
+          {" or "}
+          <Text
+            style={styles.clientLink}
+            onPress={() => router.push("/auth/register")}
+          >
+            sign up
+          </Text>
+          .
+        </Text>
       </View>
     </View>
   );
@@ -116,35 +145,24 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.light.background,
     paddingHorizontal: 28,
-    justifyContent: "space-between",
   },
-  top: {
-    alignItems: "center",
-  },
-  logoWrap: {
-    width: 64,
-    height: 64,
-    borderRadius: 20,
-    backgroundColor: Colors.light.primaryLight,
-    alignItems: "center",
+  scrollContent: {
+    flexGrow: 1,
     justifyContent: "center",
-    marginBottom: 20,
+    paddingBottom: 16,
   },
-  brand: {
-    fontFamily: "Inter_500Medium",
-    fontSize: 14,
-    color: Colors.light.primary,
-    letterSpacing: 0.5,
-    marginBottom: 8,
+  hero: {
+    alignItems: "center",
+    marginBottom: 36,
   },
   headline: {
     fontFamily: "Inter_700Bold",
-    fontSize: 34,
+    fontSize: 36,
     color: Colors.light.text,
     textAlign: "center",
-    lineHeight: 40,
+    lineHeight: 42,
     letterSpacing: -0.8,
-    marginBottom: 12,
+    marginBottom: 14,
   },
   subtitle: {
     fontFamily: "Inter_400Regular",
@@ -152,61 +170,13 @@ const styles = StyleSheet.create({
     color: Colors.light.textSecondary,
     textAlign: "center",
     lineHeight: 24,
-    paddingHorizontal: 10,
-  },
-  features: {
-    gap: 16,
     paddingHorizontal: 8,
-  },
-  feature: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 14,
-  },
-  featureIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  featureText: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 15,
-    color: Colors.light.text,
-    flex: 1,
-    lineHeight: 21,
-  },
-  actions: {
-    gap: 10,
-  },
-  primaryBtn: {
-    backgroundColor: Colors.light.primary,
-    paddingVertical: 16,
-    borderRadius: 14,
-    alignItems: "center",
-  },
-  primaryBtnText: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 16,
-    color: "#fff",
-  },
-  secondaryBtn: {
-    backgroundColor: Colors.light.backgroundSecondary,
-    paddingVertical: 16,
-    borderRadius: 14,
-    alignItems: "center",
-  },
-  secondaryBtnText: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 16,
-    color: Colors.light.text,
   },
   avatarStrip: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 24,
+    marginBottom: 28,
     gap: 12,
   },
   palPairWrap: {
@@ -220,20 +190,87 @@ const styles = StyleSheet.create({
     borderWidth: 2.5,
     borderColor: "#fff",
   },
-  guestRow: {
+  features: {
+    gap: 20,
+    paddingHorizontal: 4,
+    marginBottom: 36,
+  },
+  feature: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 14,
+  },
+  featureIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: 12,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  featureTextWrap: {
+    flex: 1,
+    gap: 2,
+  },
+  featureTitle: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 15,
+    color: Colors.light.text,
+    lineHeight: 20,
+  },
+  featureDesc: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 14,
+    color: Colors.light.textSecondary,
+    lineHeight: 19,
+  },
+  brandSection: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 12,
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    backgroundColor: Colors.light.backgroundSecondary,
+    borderRadius: 14,
   },
-  guestDot: {
-    width: 3,
-    height: 3,
-    borderRadius: 1.5,
-    backgroundColor: Colors.light.textTertiary,
+  logo: {
+    width: 40,
+    height: 40,
+    borderRadius: 10,
+  },
+  brandText: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 13,
+    color: Colors.light.textSecondary,
+    lineHeight: 18,
+  },
+  brandName: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 14,
+    color: Colors.light.text,
+  },
+  bottom: {
+    gap: 14,
+    paddingTop: 16,
+  },
+  guestBtn: {
+    backgroundColor: Colors.light.primary,
+    paddingVertical: 16,
+    borderRadius: 14,
+    alignItems: "center",
+  },
+  guestBtnText: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 16,
+    color: "#fff",
+  },
+  guestRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   ghostBtn: {
-    paddingVertical: 12,
+    paddingVertical: 4,
     alignItems: "center",
   },
   tourText: {
@@ -241,9 +278,15 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: Colors.light.primary,
   },
-  ghostBtnText: {
-    fontFamily: "Inter_500Medium",
-    fontSize: 15,
+  clientPrompt: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 14,
     color: Colors.light.textSecondary,
+    textAlign: "center",
+    lineHeight: 20,
+  },
+  clientLink: {
+    fontFamily: "Inter_600SemiBold",
+    color: Colors.light.primary,
   },
 });

@@ -13,14 +13,14 @@ import { useCart } from "@/contexts/CartContext";
 import { useActivePal } from "@/contexts/ActivePalContext";
 import { PALS, PalId } from "@/constants/data";
 
-const PAL_META: Record<PalId, { color: string; bg: string; icon: string }> = {
-  reel: { color: Colors.pal.reel, bg: Colors.pal.reelLight, icon: "smartphone" },
-  spotlight: { color: Colors.pal.spotlight, bg: Colors.pal.spotlightLight, icon: "film" },
-  system: { color: Colors.pal.system, bg: Colors.pal.systemLight, icon: "settings" },
-  evergreen: { color: Colors.pal.evergreen, bg: Colors.pal.evergreenLight, icon: "play-circle" },
+const PAL_META: Record<PalId, { color: string }> = {
+  reel: { color: Colors.pal.reel },
+  spotlight: { color: Colors.pal.spotlight },
+  system: { color: Colors.pal.system },
+  evergreen: { color: Colors.pal.evergreen },
 };
 
-function CartItemCard({
+function CartItemRow({
   item,
   onRemove,
 }: {
@@ -32,36 +32,20 @@ function CartItemCard({
 
   return (
     <View style={styles.cartItem}>
-      <View style={styles.cartItemRow}>
-        <View style={[styles.cartItemDot, { backgroundColor: meta.color }]} />
-        <View style={styles.cartItemInfo}>
-          <Text style={styles.cartItemPal}>{pal.name}</Text>
-          <Text style={styles.cartItemMission}>{item.missionName}</Text>
-          <View style={styles.cartItemMeta}>
-            {item.episodeLength ? (
-              <Text style={styles.cartItemDetail}>{item.episodeLength} min</Text>
-            ) : (
-              <>
-                <Text style={styles.cartItemDetail}>
-                  {item.sessions} session{item.sessions > 1 ? "s" : ""}
-                </Text>
-                <View style={styles.metaDot} />
-                <Text style={styles.cartItemDetail}>
-                  {item.additionalVideos} video{item.additionalVideos > 1 ? "s" : ""}
-                </Text>
-              </>
-            )}
-          </View>
-        </View>
-        <View style={styles.cartItemRight}>
-          <Text style={styles.cartItemPrice}>
-            ${item.price.toLocaleString()}
-          </Text>
-          <Pressable style={styles.removeButton} onPress={onRemove} hitSlop={12}>
-            <Feather name="x" size={14} color={Colors.light.textSecondary} />
-          </Pressable>
-        </View>
+      <View style={[styles.cartDot, { backgroundColor: meta.color }]} />
+      <View style={styles.cartInfo}>
+        <Text style={styles.cartMission}>{item.missionName}</Text>
+        <Text style={styles.cartDetail}>
+          {pal.name}
+          {item.episodeLength
+            ? ` · ${item.episodeLength} min`
+            : ` · ${item.sessions}s · ${item.additionalVideos}v`}
+        </Text>
       </View>
+      <Text style={styles.cartPrice}>${item.price.toLocaleString()}</Text>
+      <Pressable onPress={onRemove} hitSlop={12} style={styles.removeBtn}>
+        <Feather name="x" size={14} color={Colors.light.textTertiary} />
+      </Pressable>
     </View>
   );
 }
@@ -69,27 +53,21 @@ function CartItemCard({
 export default function BuildScreen() {
   const router = useRouter();
   const { items, removeItem, total, clearCart } = useCart();
-  const { activePal, accentColor } = useActivePal();
+  const { accentColor } = useActivePal();
 
   if (items.length === 0) {
     return (
       <View style={styles.emptyContainer}>
-        <View style={[styles.emptyIconWrap, { backgroundColor: accentColor + "15" }]}>
-          <Feather name="layers" size={40} color={accentColor} />
-        </View>
+        <Feather name="layers" size={32} color={Colors.light.textTertiary} />
         <Text style={styles.emptyTitle}>No items yet</Text>
         <Text style={styles.emptySubtitle}>
-          {activePal
-            ? `Browse ${PALS[activePal].name} missions to build your custom video package.`
-            : "Browse our services and add missions to build your custom video package."}
+          Browse services to build your package.
         </Text>
         <Pressable
           style={[styles.emptyButton, { backgroundColor: accentColor }]}
           onPress={() => router.push("/(tabs)/pals")}
         >
-          <Text style={styles.emptyButtonText}>
-            {activePal ? `Explore ${PALS[activePal].name}` : "Explore Services"}
-          </Text>
+          <Text style={styles.emptyButtonText}>Explore Services</Text>
         </Pressable>
       </View>
     );
@@ -102,15 +80,6 @@ export default function BuildScreen() {
         contentContainerStyle={{ paddingBottom: 200 }}
         showsVerticalScrollIndicator={false}
       >
-        {activePal && (
-          <View style={[styles.palContextBanner, { backgroundColor: accentColor + "12" }]}>
-            <View style={[styles.palContextDot, { backgroundColor: accentColor }]} />
-            <Text style={[styles.palContextText, { color: accentColor }]}>
-              Building with {PALS[activePal].name}
-            </Text>
-          </View>
-        )}
-
         <View style={styles.listHeader}>
           <Text style={styles.itemCount}>
             {items.length} item{items.length > 1 ? "s" : ""}
@@ -122,7 +91,7 @@ export default function BuildScreen() {
 
         <View style={styles.cartList}>
           {items.map((item) => (
-            <CartItemCard
+            <CartItemRow
               key={item.id}
               item={item}
               onRemove={() => removeItem(item.id)}
@@ -130,31 +99,27 @@ export default function BuildScreen() {
           ))}
         </View>
 
-        <View style={styles.addMore}>
-          <Pressable
-            style={styles.addMoreButton}
-            onPress={() => router.push("/(tabs)/pals")}
-          >
-            <Feather name="plus" size={16} color={accentColor} />
-            <Text style={[styles.addMoreText, { color: accentColor }]}>Add more services</Text>
-          </Pressable>
-        </View>
+        <Pressable
+          style={styles.addMoreBtn}
+          onPress={() => router.push("/(tabs)/pals")}
+        >
+          <Feather name="plus" size={14} color={accentColor} />
+          <Text style={[styles.addMoreText, { color: accentColor }]}>Add more</Text>
+        </Pressable>
       </ScrollView>
 
       <View style={styles.footer}>
-        <View style={styles.totalSection}>
+        <View style={styles.totalRow}>
           <Text style={styles.totalLabel}>Estimated Total</Text>
           <Text style={styles.totalAmount}>${total.toLocaleString()}</Text>
         </View>
         <Pressable
-          style={[styles.checkoutButton, { backgroundColor: accentColor }]}
+          style={[styles.checkoutBtn, { backgroundColor: accentColor }]}
           onPress={() => router.push("/checkout")}
         >
-          <Text style={styles.checkoutButtonText}>Continue</Text>
+          <Text style={styles.checkoutText}>Continue</Text>
         </Pressable>
-        <Text style={styles.disclaimer}>
-          Final pricing confirmed after discovery call
-        </Text>
+        <Text style={styles.disclaimer}>Final pricing confirmed after discovery call</Text>
       </View>
     </View>
   );
@@ -169,39 +134,29 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 48,
     backgroundColor: Colors.light.background,
-  },
-  emptyIconWrap: {
-    width: 80,
-    height: 80,
-    borderRadius: 24,
-    backgroundColor: Colors.light.primaryLight,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 20,
+    gap: 8,
   },
   emptyTitle: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 20,
+    fontSize: 18,
     color: Colors.light.text,
-    marginBottom: 8,
+    marginTop: 8,
   },
   emptySubtitle: {
     fontFamily: "Inter_400Regular",
-    fontSize: 15,
+    fontSize: 14,
     color: Colors.light.textSecondary,
     textAlign: "center",
-    lineHeight: 22,
-    marginBottom: 24,
+    marginBottom: 16,
   },
   emptyButton: {
-    backgroundColor: Colors.light.primary,
-    paddingHorizontal: 28,
-    paddingVertical: 14,
-    borderRadius: 100,
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
   },
   emptyButtonText: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 15,
+    fontSize: 14,
     color: "#fff",
   },
   listHeader: {
@@ -210,104 +165,76 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 20,
     paddingTop: 12,
-    paddingBottom: 16,
+    paddingBottom: 8,
   },
   itemCount: {
     fontFamily: "Inter_500Medium",
-    fontSize: 14,
+    fontSize: 13,
     color: Colors.light.textSecondary,
+    textTransform: "uppercase",
+    letterSpacing: 0.3,
   },
   clearText: {
     fontFamily: "Inter_500Medium",
-    fontSize: 14,
+    fontSize: 13,
     color: Colors.light.error,
   },
   cartList: {
     paddingHorizontal: 20,
-    gap: 1,
   },
   cartItem: {
-    backgroundColor: Colors.light.background,
-    paddingVertical: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    paddingVertical: 12,
     borderBottomWidth: 1,
     borderBottomColor: Colors.light.separator,
   },
-  cartItemRow: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    gap: 12,
-  },
-  cartItemDot: {
+  cartDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    marginTop: 6,
   },
-  cartItemInfo: { flex: 1 },
-  cartItemPal: {
+  cartInfo: { flex: 1 },
+  cartMission: {
+    fontFamily: "Inter_500Medium",
+    fontSize: 15,
+    color: Colors.light.text,
+  },
+  cartDetail: {
     fontFamily: "Inter_400Regular",
     fontSize: 12,
     color: Colors.light.textSecondary,
-    marginBottom: 2,
+    marginTop: 1,
   },
-  cartItemMission: {
+  cartPrice: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 16,
-    color: Colors.light.text,
-    marginBottom: 4,
-  },
-  cartItemMeta: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-  cartItemDetail: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 13,
-    color: Colors.light.textSecondary,
-  },
-  metaDot: {
-    width: 3,
-    height: 3,
-    borderRadius: 1.5,
-    backgroundColor: Colors.light.textTertiary,
-  },
-  cartItemRight: {
-    alignItems: "flex-end",
-    gap: 8,
-  },
-  cartItemPrice: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 16,
+    fontSize: 15,
     color: Colors.light.text,
   },
-  removeButton: {
+  removeBtn: {
     width: 28,
     height: 28,
     borderRadius: 14,
-    backgroundColor: Colors.light.backgroundSecondary,
     alignItems: "center",
     justifyContent: "center",
   },
-  addMore: {
-    paddingHorizontal: 20,
-    paddingTop: 20,
-  },
-  addMoreButton: {
+  addMoreBtn: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 6,
-    paddingVertical: 14,
-    borderRadius: 14,
-    borderWidth: 1.5,
+    paddingVertical: 12,
+    marginHorizontal: 20,
+    marginTop: 12,
+    borderWidth: 1,
     borderColor: Colors.light.border,
+    borderRadius: 8,
     borderStyle: "dashed",
   },
   addMoreText: {
     fontFamily: "Inter_500Medium",
-    fontSize: 14,
-    color: Colors.light.primary,
+    fontSize: 13,
   },
   footer: {
     position: "absolute",
@@ -318,61 +245,41 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: Colors.light.separator,
     paddingHorizontal: 20,
-    paddingTop: 16,
+    paddingTop: 14,
     paddingBottom: 40,
   },
-  totalSection: {
+  totalRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 16,
+    marginBottom: 12,
   },
   totalLabel: {
     fontFamily: "Inter_400Regular",
-    fontSize: 15,
+    fontSize: 14,
     color: Colors.light.textSecondary,
   },
   totalAmount: {
     fontFamily: "Inter_700Bold",
-    fontSize: 24,
+    fontSize: 22,
     color: Colors.light.text,
     letterSpacing: -0.5,
   },
-  checkoutButton: {
-    backgroundColor: Colors.light.primary,
-    paddingVertical: 16,
-    borderRadius: 14,
+  checkoutBtn: {
+    paddingVertical: 14,
+    borderRadius: 10,
     alignItems: "center",
-    marginBottom: 8,
+    marginBottom: 6,
   },
-  checkoutButtonText: {
+  checkoutText: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 16,
+    fontSize: 15,
     color: "#fff",
   },
   disclaimer: {
     fontFamily: "Inter_400Regular",
-    fontSize: 12,
+    fontSize: 11,
     color: Colors.light.textTertiary,
     textAlign: "center",
-  },
-  palContextBanner: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginHorizontal: 20,
-    marginTop: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 10,
-  },
-  palContextDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  palContextText: {
-    fontFamily: "Inter_500Medium",
-    fontSize: 13,
   },
 });

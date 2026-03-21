@@ -16,7 +16,7 @@ export default function WelcomeScreen() {
   const { browseAsGuest } = useAuth();
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top + 40, paddingBottom: insets.bottom + 24 }]}>
+    <View style={[styles.container, { paddingTop: insets.top + 48, paddingBottom: insets.bottom + 24 }]}>
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
@@ -27,7 +27,7 @@ export default function WelcomeScreen() {
             Your video{"\n"}content partner
           </Text>
           <Text style={styles.subtitle}>
-            Everything you need to plan, create, and manage professional video content — in one place.
+            Plan, create, and manage professional video content — all in one place.
           </Text>
         </View>
 
@@ -40,7 +40,7 @@ export default function WelcomeScreen() {
               />
               <Image
                 source={PAL_PROFILES[palId].female}
-                style={[styles.profilePic, { marginLeft: -12, zIndex: 1 }]}
+                style={[styles.profilePic, { marginLeft: -10, zIndex: 1 }]}
               />
             </View>
           ))}
@@ -48,44 +48,29 @@ export default function WelcomeScreen() {
 
         <View style={styles.features}>
           <View style={styles.feature}>
-            <View style={[styles.featureIcon, { backgroundColor: Colors.pal.reelLight }]}>
-              <Feather name="compass" size={18} color={Colors.pal.reel} />
-            </View>
-            <View style={styles.featureTextWrap}>
-              <Text style={styles.featureTitle}>Explore & Build</Text>
-              <Text style={styles.featureDesc}>Browse video services and build custom packages</Text>
-            </View>
+            <Feather name="compass" size={16} color={Colors.pal.reel} />
+            <Text style={styles.featureText}>Browse video services and build packages</Text>
           </View>
           <View style={styles.feature}>
-            <View style={[styles.featureIcon, { backgroundColor: Colors.pal.systemLight }]}>
-              <Feather name="edit-3" size={18} color={Colors.pal.system} />
-            </View>
-            <View style={styles.featureTextWrap}>
-              <Text style={styles.featureTitle}>AI Content Guidance</Text>
-              <Text style={styles.featureDesc}>Get AI-powered script writing and content planning</Text>
-            </View>
+            <Feather name="edit-3" size={16} color={Colors.pal.system} />
+            <Text style={styles.featureText}>AI-powered script writing and content planning</Text>
           </View>
           <View style={styles.feature}>
-            <View style={[styles.featureIcon, { backgroundColor: Colors.pal.spotlightLight }]}>
-              <Feather name="check-circle" size={18} color={Colors.pal.spotlight} />
-            </View>
-            <View style={styles.featureTextWrap}>
-              <Text style={styles.featureTitle}>Track Projects</Text>
-              <Text style={styles.featureDesc}>Monitor progress and review your deliverables</Text>
-            </View>
+            <Feather name="check-circle" size={16} color={Colors.pal.spotlight} />
+            <Text style={styles.featureText}>Track projects and review deliverables</Text>
           </View>
         </View>
 
-        <View style={styles.brandSection}>
+        <View style={styles.brandRow}>
           <Image
             source={require("@/assets/images/logo.png")}
             style={styles.logo}
             resizeMode="contain"
           />
-          <Text style={styles.brandText}>
-            Brought to you by{"\n"}
+          <View>
+            <Text style={styles.brandLabel}>by</Text>
             <Text style={styles.brandName}>Palmer House Productions</Text>
-          </Text>
+          </View>
         </View>
       </ScrollView>
 
@@ -109,17 +94,15 @@ export default function WelcomeScreen() {
           <Text style={styles.guestBtnText}>Browse as Guest</Text>
         </Pressable>
 
-        <View style={styles.guestRow}>
-          <Pressable
-            style={styles.ghostBtn}
-            onPress={() => router.push("/onboarding")}
-          >
-            <Text style={styles.tourText}>Take a Tour</Text>
-          </Pressable>
-        </View>
+        <Pressable
+          style={styles.tourBtn}
+          onPress={() => router.push("/onboarding")}
+        >
+          <Text style={styles.tourText}>Take a Tour</Text>
+        </Pressable>
 
         <Text style={styles.clientPrompt}>
-          Already working with Palmer House Productions?{" "}
+          Already a client?{" "}
           <Text
             style={styles.clientLink}
             onPress={() => router.push("/auth/login")}
@@ -133,7 +116,6 @@ export default function WelcomeScreen() {
           >
             sign up
           </Text>
-          .
         </Text>
       </View>
     </View>
@@ -153,96 +135,81 @@ const styles = StyleSheet.create({
   },
   hero: {
     alignItems: "center",
-    marginBottom: 36,
+    marginBottom: 32,
   },
   headline: {
     fontFamily: "Inter_700Bold",
-    fontSize: 36,
+    fontSize: 34,
     color: Colors.light.text,
     textAlign: "center",
-    lineHeight: 42,
+    lineHeight: 40,
     letterSpacing: -0.8,
-    marginBottom: 14,
+    marginBottom: 12,
   },
   subtitle: {
     fontFamily: "Inter_400Regular",
-    fontSize: 16,
+    fontSize: 15,
     color: Colors.light.textSecondary,
     textAlign: "center",
-    lineHeight: 24,
-    paddingHorizontal: 8,
+    lineHeight: 22,
+    paddingHorizontal: 12,
   },
   avatarStrip: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 28,
-    gap: 12,
+    gap: 10,
   },
   palPairWrap: {
     flexDirection: "row",
     alignItems: "center",
   },
   profilePic: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    borderWidth: 2.5,
-    borderColor: "#fff",
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    borderWidth: 2,
+    borderColor: Colors.light.background,
   },
   features: {
-    gap: 20,
-    paddingHorizontal: 4,
-    marginBottom: 36,
+    gap: 0,
+    marginBottom: 28,
   },
   feature: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 14,
+    gap: 12,
+    paddingVertical: 11,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.light.separator,
   },
-  featureIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  featureTextWrap: {
+  featureText: {
     flex: 1,
-    gap: 2,
-  },
-  featureTitle: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 15,
+    fontFamily: "Inter_400Regular",
+    fontSize: 14,
     color: Colors.light.text,
     lineHeight: 20,
   },
-  featureDesc: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 14,
-    color: Colors.light.textSecondary,
-    lineHeight: 19,
-  },
-  brandSection: {
+  brandRow: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
     gap: 12,
-    paddingVertical: 16,
+    paddingVertical: 14,
     paddingHorizontal: 16,
-    backgroundColor: Colors.light.backgroundSecondary,
-    borderRadius: 14,
-  },
-  logo: {
-    width: 40,
-    height: 40,
+    borderWidth: 1,
+    borderColor: Colors.light.separator,
     borderRadius: 10,
   },
-  brandText: {
+  logo: {
+    width: 36,
+    height: 36,
+    borderRadius: 8,
+  },
+  brandLabel: {
     fontFamily: "Inter_400Regular",
-    fontSize: 13,
-    color: Colors.light.textSecondary,
-    lineHeight: 18,
+    fontSize: 12,
+    color: Colors.light.textTertiary,
   },
   brandName: {
     fontFamily: "Inter_600SemiBold",
@@ -250,37 +217,32 @@ const styles = StyleSheet.create({
     color: Colors.light.text,
   },
   bottom: {
-    gap: 14,
+    gap: 12,
     paddingTop: 16,
   },
   guestBtn: {
     backgroundColor: Colors.light.primary,
-    paddingVertical: 16,
-    borderRadius: 14,
+    paddingVertical: 14,
+    borderRadius: 10,
     alignItems: "center",
   },
   guestBtnText: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 16,
+    fontSize: 15,
     color: "#fff",
   },
-  guestRow: {
-    flexDirection: "row",
+  tourBtn: {
     alignItems: "center",
-    justifyContent: "center",
-  },
-  ghostBtn: {
     paddingVertical: 4,
-    alignItems: "center",
   },
   tourText: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 15,
+    fontFamily: "Inter_500Medium",
+    fontSize: 14,
     color: Colors.light.primary,
   },
   clientPrompt: {
     fontFamily: "Inter_400Regular",
-    fontSize: 14,
+    fontSize: 13,
     color: Colors.light.textSecondary,
     textAlign: "center",
     lineHeight: 20,

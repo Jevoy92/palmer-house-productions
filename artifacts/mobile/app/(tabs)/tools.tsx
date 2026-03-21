@@ -16,12 +16,6 @@ import { PalId, PALS } from "@/constants/data";
 import { useAuth } from "@/contexts/AuthContext";
 import { useActivePal } from "@/contexts/ActivePalContext";
 
-interface ToolCardProps {
-  tool: ToolDefinition;
-  locked?: boolean;
-  onPress: () => void;
-}
-
 const PAL_COLORS: Record<PalId, { main: string; light: string }> = {
   reel: { main: Colors.pal.reel, light: Colors.pal.reelLight },
   spotlight: { main: Colors.pal.spotlight, light: Colors.pal.spotlightLight },
@@ -29,38 +23,36 @@ const PAL_COLORS: Record<PalId, { main: string; light: string }> = {
   system: { main: Colors.pal.system, light: Colors.pal.systemLight },
 };
 
-function ToolCard({ tool, locked, onPress }: ToolCardProps) {
+function ToolRow({ tool, locked, onPress }: { tool: ToolDefinition; locked?: boolean; onPress: () => void }) {
   const palColor = PAL_COLORS[tool.palId];
   const isFree = tool.freeForAll;
 
   return (
     <Pressable
-      style={[styles.toolCard, locked && styles.toolCardLocked]}
+      style={[styles.toolRow, locked && styles.toolRowLocked]}
       onPress={onPress}
       disabled={locked}
     >
-      <View style={styles.toolCardHeader}>
-        <View style={[styles.toolIcon, { backgroundColor: palColor.light }]}>
-          <Feather name={tool.icon as any} size={20} color={palColor.main} />
-        </View>
-        <View style={[styles.creditBadge, isFree && styles.creditBadgeFree]}>
-          {isFree ? (
-            <Text style={[styles.creditText, styles.creditTextFree]}>FREE</Text>
-          ) : (
-            <>
-              <Feather name="zap" size={11} color={Colors.light.primary} />
-              <Text style={styles.creditText}>{tool.creditCost}</Text>
-            </>
-          )}
-        </View>
+      <View style={[styles.toolIcon, { backgroundColor: palColor.light }]}>
+        <Feather name={tool.icon as any} size={16} color={palColor.main} />
       </View>
-      <Text style={styles.toolTitle}>{tool.name}</Text>
-      <Text style={styles.toolDesc} numberOfLines={2}>{tool.description}</Text>
-      {locked && (
-        <View style={styles.lockedOverlay}>
-          <Feather name="lock" size={14} color={Colors.light.textTertiary} />
-          <Text style={styles.lockedText}>Create account to unlock</Text>
+      <View style={styles.toolInfo}>
+        <Text style={styles.toolTitle} numberOfLines={1}>{tool.name}</Text>
+      </View>
+      {isFree ? (
+        <View style={styles.freeBadge}>
+          <Text style={styles.freeText}>FREE</Text>
         </View>
+      ) : (
+        <View style={styles.creditBadge}>
+          <Feather name="zap" size={10} color={Colors.light.primary} />
+          <Text style={styles.creditText}>{tool.creditCost}</Text>
+        </View>
+      )}
+      {locked ? (
+        <Feather name="lock" size={12} color={Colors.light.textTertiary} />
+      ) : (
+        <Feather name="chevron-right" size={14} color={Colors.light.textTertiary} />
       )}
     </Pressable>
   );
@@ -82,10 +74,7 @@ function PalSectionHeader({ palId }: { palId: PalId }) {
   return (
     <View style={styles.sectionHeader}>
       <View style={[styles.sectionDot, { backgroundColor: color.main }]} />
-      <View style={styles.sectionHeaderText}>
-        <Text style={[styles.sectionTitle, { color: color.main }]}>{cat.label}</Text>
-        <Text style={styles.sectionSubtitle}>{cat.description}</Text>
-      </View>
+      <Text style={styles.sectionTitle}>{cat.label}</Text>
     </View>
   );
 }
@@ -111,102 +100,83 @@ export default function ToolsScreen() {
       contentContainerStyle={{
         paddingTop: insets.top + 16,
         paddingBottom: 120,
-        paddingHorizontal: 20,
       }}
       showsVerticalScrollIndicator={false}
     >
-      <Text style={[styles.screenTitle, { color: accentColor }]}>Tools</Text>
-      <Text style={styles.headline}>AI content assistant</Text>
-      <Text style={styles.subtitle}>
-        {TOOLS.length} AI-powered tools to plan, write, and strategize your video content.
-      </Text>
-
-      <View style={styles.creditsCard}>
-        <View style={styles.creditsLeft}>
-          <Feather name="zap" size={18} color={accentColor} />
-          <View>
-            <Text style={styles.creditsLabel}>Available Credits</Text>
-            <Text style={styles.creditsCount}>{credits} credits</Text>
-          </View>
+      <View style={styles.headerArea}>
+        <Text style={styles.headline}>Tools</Text>
+        <View style={styles.creditsInline}>
+          <Feather name="zap" size={14} color={accentColor} />
+          <Text style={styles.creditsCount}>{credits}</Text>
+          <Text style={styles.creditsLabel}>credits</Text>
+          {isLimited ? (
+            <Pressable
+              style={styles.upgradeLink}
+              onPress={() => router.push("/auth/register")}
+            >
+              <Text style={[styles.upgradeLinkText, { color: accentColor }]}>Get more</Text>
+            </Pressable>
+          ) : (
+            <Pressable
+              style={styles.upgradeLink}
+              onPress={() => Alert.alert("Buy Credits", "Credit purchasing will be available soon via the App Store.")}
+            >
+              <Text style={[styles.upgradeLinkText, { color: accentColor }]}>Buy more</Text>
+            </Pressable>
+          )}
         </View>
-        {isLimited ? (
-          <Pressable
-            style={styles.upgradeBtn}
-            onPress={() => router.push("/auth/register")}
-          >
-            <Text style={styles.upgradeBtnText}>Sign Up for More</Text>
-          </Pressable>
-        ) : (
-          <Pressable
-            style={styles.buyCreditsBtn}
-            onPress={() => Alert.alert("Buy Credits", "Credit purchasing will be available soon via the App Store. Stay tuned!")}
-          >
-            <Feather name="plus" size={14} color={Colors.light.primary} />
-            <Text style={styles.buyCreditsText}>Buy Credits</Text>
-          </Pressable>
-        )}
       </View>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.tabsContainer}
-        style={styles.tabsScroll}
-      >
-        {PAL_TABS.map((tab) => {
-          const isActive = activeTab === tab.id;
-          const color = tab.id !== "all" ? PAL_COLORS[tab.id].main : Colors.light.primary;
-          return (
-            <Pressable
-              key={tab.id}
-              style={[
-                styles.tab,
-                isActive && { backgroundColor: color },
-              ]}
-              onPress={() => setActivePal(tab.id === "all" ? null : tab.id)}
-            >
-              <Text
-                style={[
-                  styles.tabText,
-                  isActive && styles.tabTextActive,
-                ]}
+      <View style={styles.tabBar}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.tabBarInner}
+        >
+          {PAL_TABS.map((tab) => {
+            const isActive = activeTab === tab.id;
+            const color = tab.id !== "all" ? PAL_COLORS[tab.id].main : Colors.light.text;
+            return (
+              <Pressable
+                key={tab.id}
+                style={[styles.tab, isActive && { borderBottomColor: color }]}
+                onPress={() => setActivePal(tab.id === "all" ? null : tab.id)}
               >
-                {tab.label}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </ScrollView>
+                <Text
+                  style={[
+                    styles.tabText,
+                    isActive && { color, fontFamily: "Inter_600SemiBold" },
+                  ]}
+                >
+                  {tab.label}
+                </Text>
+              </Pressable>
+            );
+          })}
+        </ScrollView>
+      </View>
 
-      {activeTab !== "all" ? (
-        <>
-          <View style={styles.palInfo}>
-            <View style={[styles.palDot, { backgroundColor: PAL_COLORS[activeTab].main }]} />
-            <Text style={styles.palInfoText}>
-              {PALS[activeTab].name} — {PALS[activeTab].tagline}
-            </Text>
-          </View>
-          <View style={styles.toolsGrid}>
+      <View style={styles.toolsArea}>
+        {activeTab !== "all" ? (
+          <>
             {getToolsForPal(activeTab).map((tool) => (
-              <ToolCard
+              <ToolRow
                 key={tool.id}
                 tool={tool}
                 locked={isLimited && !tool.freeForAll}
                 onPress={() => router.push(`/tools/${tool.id}` as any)}
               />
             ))}
-          </View>
-        </>
-      ) : (
-        orderedPals.map((palId) => {
-          const palTools = getToolsForPal(palId);
-          if (palTools.length === 0) return null;
-          return (
-            <View key={palId} style={styles.categorySection}>
-              <PalSectionHeader palId={palId} />
-              <View style={styles.toolsGrid}>
+          </>
+        ) : (
+          orderedPals.map((palId) => {
+            const palTools = getToolsForPal(palId);
+            if (palTools.length === 0) return null;
+            return (
+              <View key={palId} style={styles.categorySection}>
+                <PalSectionHeader palId={palId} />
                 {palTools.map((tool) => (
-                  <ToolCard
+                  <ToolRow
                     key={tool.id}
                     tool={tool}
                     locked={isLimited && !tool.freeForAll}
@@ -214,224 +184,146 @@ export default function ToolsScreen() {
                   />
                 ))}
               </View>
-            </View>
-          );
-        })
-      )}
+            );
+          })
+        )}
+      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.light.background },
-  screenTitle: {
-    fontFamily: "Inter_500Medium",
-    fontSize: 14,
-    color: Colors.light.primary,
-    letterSpacing: 0.3,
-    marginBottom: 6,
+  headerArea: {
+    paddingHorizontal: 20,
+    marginBottom: 4,
   },
   headline: {
     fontFamily: "Inter_700Bold",
-    fontSize: 28,
+    fontSize: 24,
     color: Colors.light.text,
     letterSpacing: -0.5,
-    marginBottom: 6,
+    marginBottom: 8,
   },
-  subtitle: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 15,
-    color: Colors.light.textSecondary,
-    lineHeight: 22,
-    marginBottom: 24,
-  },
-  creditsCard: {
-    backgroundColor: Colors.light.primaryLight,
-    borderRadius: 16,
-    padding: 16,
+  creditsInline: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 20,
+    gap: 5,
   },
-  creditsLeft: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
+  creditsCount: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 14,
+    color: Colors.light.text,
   },
   creditsLabel: {
     fontFamily: "Inter_400Regular",
-    fontSize: 12,
-    color: Colors.light.textSecondary,
-  },
-  creditsCount: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 18,
-    color: Colors.light.text,
-  },
-  upgradeBtn: {
-    backgroundColor: Colors.light.primary,
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 10,
-  },
-  upgradeBtnText: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 12,
-    color: "#fff",
-  },
-  buyCreditsBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    backgroundColor: "#fff",
-    paddingHorizontal: 14,
-    paddingVertical: 8,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: Colors.light.primary + "30",
-  },
-  buyCreditsText: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 12,
-    color: Colors.light.primary,
-  },
-  tabsScroll: {
-    marginBottom: 16,
-    marginHorizontal: -20,
-  },
-  tabsContainer: {
-    paddingHorizontal: 20,
-    gap: 8,
-  },
-  tab: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    backgroundColor: Colors.light.backgroundSecondary,
-  },
-  tabText: {
-    fontFamily: "Inter_600SemiBold",
     fontSize: 13,
     color: Colors.light.textSecondary,
+    flex: 1,
   },
-  tabTextActive: {
-    color: "#fff",
-  },
-  palInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginBottom: 16,
-  },
-  palDot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-  },
-  palInfoText: {
+  upgradeLink: {},
+  upgradeLinkText: {
     fontFamily: "Inter_500Medium",
     fontSize: 13,
+  },
+  tabBar: {
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.light.separator,
+    marginBottom: 4,
+  },
+  tabBarInner: {
+    paddingHorizontal: 20,
+    flexDirection: "row",
+  },
+  tab: {
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderBottomWidth: 2,
+    borderBottomColor: "transparent",
+  },
+  tabText: {
+    fontFamily: "Inter_500Medium",
+    fontSize: 14,
     color: Colors.light.textSecondary,
   },
+  toolsArea: {
+    paddingHorizontal: 20,
+  },
   categorySection: {
-    marginBottom: 8,
+    marginBottom: 4,
   },
   sectionHeader: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
-    marginBottom: 14,
+    gap: 8,
+    paddingVertical: 10,
     marginTop: 8,
   },
   sectionDot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-  },
-  sectionHeaderText: {
-    flex: 1,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
   },
   sectionTitle: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 16,
-    letterSpacing: -0.2,
-  },
-  sectionSubtitle: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 12,
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 13,
     color: Colors.light.textSecondary,
-    marginTop: 1,
+    textTransform: "uppercase",
+    letterSpacing: 0.3,
   },
-  toolsGrid: {
+  toolRow: {
     flexDirection: "row",
-    flexWrap: "wrap",
+    alignItems: "center",
     gap: 10,
-    marginBottom: 16,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.light.separator,
   },
-  toolCard: {
-    width: "48.5%",
-    backgroundColor: Colors.light.backgroundSecondary,
-    borderRadius: 16,
-    padding: 16,
-  },
-  toolCardLocked: {
-    opacity: 0.5,
-  },
-  toolCardHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-start",
-    marginBottom: 12,
+  toolRowLocked: {
+    opacity: 0.45,
   },
   toolIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
+    width: 32,
+    height: 32,
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
+  },
+  toolInfo: {
+    flex: 1,
+  },
+  toolTitle: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 15,
+    color: Colors.light.text,
   },
   creditBadge: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 3,
-    backgroundColor: Colors.light.primaryLight,
-    paddingHorizontal: 7,
-    paddingVertical: 3,
-    borderRadius: 8,
+    gap: 2,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: Colors.light.separator,
   },
   creditText: {
-    fontFamily: "Inter_600SemiBold",
+    fontFamily: "Inter_500Medium",
     fontSize: 11,
     color: Colors.light.primary,
   },
-  creditBadgeFree: {
-    backgroundColor: "#ECFDF5",
+  freeBadge: {
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: "#BBF7D0",
+    backgroundColor: "#F0FDF4",
   },
-  creditTextFree: {
-    color: "#059669",
-  },
-  toolTitle: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 15,
-    color: Colors.light.text,
-    marginBottom: 4,
-  },
-  toolDesc: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 13,
-    color: Colors.light.textSecondary,
-    lineHeight: 18,
-  },
-  lockedOverlay: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    marginTop: 10,
-  },
-  lockedText: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 11,
-    color: Colors.light.textTertiary,
+  freeText: {
+    fontFamily: "Inter_500Medium",
+    fontSize: 10,
+    color: "#15803D",
+    letterSpacing: 0.3,
   },
 });

@@ -20,9 +20,6 @@ import {
 import { PAL_PROFILES } from "@/constants/images";
 import { useActivePal } from "@/contexts/ActivePalContext";
 
-const { width } = Dimensions.get("window");
-const CARD_WIDTH = (width - 50) / 2;
-
 const PAL_META: Record<PalId, { color: string; bg: string; icon: string }> = {
   reel: { color: Colors.pal.reel, bg: Colors.pal.reelLight, icon: "smartphone" },
   spotlight: { color: Colors.pal.spotlight, bg: Colors.pal.spotlightLight, icon: "film" },
@@ -54,7 +51,7 @@ const MISSION_ICONS: Record<string, string> = {
   "evergreen-webinar": "video",
 };
 
-function FilterChip({
+function FilterTab({
   label,
   active,
   color,
@@ -67,16 +64,13 @@ function FilterChip({
 }) {
   return (
     <Pressable
-      style={[
-        styles.chip,
-        active && { backgroundColor: color },
-      ]}
+      style={[styles.filterTab, active && { borderBottomColor: color }]}
       onPress={onPress}
     >
       <Text
         style={[
-          styles.chipText,
-          active && { color: "#fff" },
+          styles.filterTabText,
+          active && { color, fontFamily: "Inter_600SemiBold" },
         ]}
       >
         {label}
@@ -85,7 +79,7 @@ function FilterChip({
   );
 }
 
-function MissionCard({
+function MissionRow({
   palId,
   mission,
 }: {
@@ -98,14 +92,14 @@ function MissionCard({
 
   return (
     <Pressable
-      style={styles.missionCard}
+      style={styles.missionRow}
       onPress={() => router.push(`/mission/${palId}/${mission.id}`)}
     >
       <View style={[styles.missionIcon, { backgroundColor: meta.bg }]}>
-        <Feather name={iconName as any} size={18} color={meta.color} />
+        <Feather name={iconName as any} size={16} color={meta.color} />
       </View>
-      <Text style={styles.missionName} numberOfLines={2}>{mission.name}</Text>
-      <Feather name="arrow-right" size={14} color={meta.color} style={styles.missionArrow} />
+      <Text style={styles.missionName} numberOfLines={1}>{mission.name}</Text>
+      <Feather name="chevron-right" size={14} color={Colors.light.textTertiary} />
     </Pressable>
   );
 }
@@ -127,33 +121,33 @@ export default function PalsScreen() {
           {activePal ? PALS[activePal].name : "Explore"}
         </Text>
         <Text style={styles.introSubtitle}>
-          {activePal
-            ? PALS[activePal].tagline
-            : "Browse video packs by category."}
+          {activePal ? PALS[activePal].tagline : "Browse video packs by category."}
         </Text>
       </View>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.chips}
-      >
-        <FilterChip
-          label="All"
-          active={activeFilter === "all"}
-          color={Colors.light.text}
-          onPress={() => setActivePal(null)}
-        />
-        {PAL_ORDER.map((id) => (
-          <FilterChip
-            key={id}
-            label={PALS[id].name}
-            active={activeFilter === id}
-            color={PAL_META[id].color}
-            onPress={() => setActivePal(activeFilter === id ? null : id)}
+      <View style={styles.tabBar}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.tabBarInner}
+        >
+          <FilterTab
+            label="All"
+            active={activeFilter === "all"}
+            color={Colors.light.text}
+            onPress={() => setActivePal(null)}
           />
-        ))}
-      </ScrollView>
+          {PAL_ORDER.map((id) => (
+            <FilterTab
+              key={id}
+              label={PALS[id].name}
+              active={activeFilter === id}
+              color={PAL_META[id].color}
+              onPress={() => setActivePal(activeFilter === id ? null : id)}
+            />
+          ))}
+        </ScrollView>
+      </View>
 
       {filteredPals.map((palId) => {
         const pal = PALS[palId];
@@ -169,25 +163,23 @@ export default function PalsScreen() {
               <View style={styles.palAvatars}>
                 <Image
                   source={PAL_PROFILES[palId].male}
-                  style={[styles.palAvatar, styles.palAvatarLeft, { borderColor: meta.bg }]}
+                  style={[styles.palAvatar, styles.palAvatarLeft]}
                 />
                 <Image
                   source={PAL_PROFILES[palId].female}
-                  style={[styles.palAvatar, styles.palAvatarRight, { borderColor: meta.bg }]}
+                  style={[styles.palAvatar, styles.palAvatarRight]}
                 />
               </View>
               <View style={styles.palHeaderText}>
                 <Text style={styles.palName}>{pal.name}</Text>
                 <Text style={styles.palTagline}>{pal.tagline}</Text>
               </View>
-              <View style={styles.palArrow}>
-                <Feather name="chevron-right" size={18} color={Colors.light.textTertiary} />
-              </View>
+              <Feather name="chevron-right" size={16} color={Colors.light.textTertiary} />
             </Pressable>
 
-            <View style={styles.missionsGrid}>
+            <View style={styles.missionList}>
               {missions.map((mission) => (
-                <MissionCard
+                <MissionRow
                   key={mission.id}
                   palId={palId}
                   mission={mission}
@@ -206,7 +198,7 @@ const styles = StyleSheet.create({
   intro: { paddingHorizontal: 20, paddingTop: 8, paddingBottom: 4 },
   introTitle: {
     fontFamily: "Inter_700Bold",
-    fontSize: 26,
+    fontSize: 24,
     color: Colors.light.text,
     letterSpacing: -0.5,
     marginBottom: 2,
@@ -215,56 +207,61 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_400Regular",
     fontSize: 14,
     color: Colors.light.textSecondary,
-    lineHeight: 20,
   },
-  chips: {
+  tabBar: {
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.light.separator,
+    marginBottom: 8,
+  },
+  tabBarInner: {
     paddingHorizontal: 20,
-    paddingVertical: 14,
-    gap: 8,
     flexDirection: "row",
   },
-  chip: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 100,
-    backgroundColor: Colors.light.backgroundSecondary,
+  filterTab: {
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderBottomWidth: 2,
+    borderBottomColor: "transparent",
   },
-  chipText: {
+  filterTabText: {
     fontFamily: "Inter_500Medium",
     fontSize: 14,
-    color: Colors.light.text,
+    color: Colors.light.textSecondary,
   },
   palSection: {
     paddingHorizontal: 20,
-    marginBottom: 24,
+    marginBottom: 20,
   },
   palHeader: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 12,
-    gap: 12,
+    paddingVertical: 12,
+    gap: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.light.separator,
   },
   palAvatars: {
     flexDirection: "row",
     alignItems: "center",
   },
   palAvatar: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    borderWidth: 3,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    borderWidth: 2,
+    borderColor: Colors.light.background,
   },
   palAvatarLeft: {
     zIndex: 2,
   },
   palAvatarRight: {
-    marginLeft: -12,
+    marginLeft: -10,
     zIndex: 1,
   },
   palHeaderText: { flex: 1 },
   palName: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 16,
+    fontSize: 15,
     color: Colors.light.text,
   },
   palTagline: {
@@ -273,44 +270,28 @@ const styles = StyleSheet.create({
     color: Colors.light.textSecondary,
     marginTop: 1,
   },
-  palArrow: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    backgroundColor: Colors.light.backgroundSecondary,
-    alignItems: "center",
-    justifyContent: "center",
+  missionList: {
+    gap: 0,
   },
-  missionsGrid: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 10,
-  },
-  missionCard: {
-    width: CARD_WIDTH,
-    backgroundColor: Colors.light.backgroundSecondary,
-    borderRadius: 14,
-    paddingHorizontal: 14,
-    paddingVertical: 14,
+  missionRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
+    paddingVertical: 11,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.light.separator,
   },
   missionIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
+    width: 30,
+    height: 30,
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
   },
   missionName: {
     flex: 1,
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 13,
+    fontFamily: "Inter_400Regular",
+    fontSize: 15,
     color: Colors.light.text,
-    lineHeight: 17,
-  },
-  missionArrow: {
-    marginLeft: 2,
   },
 });

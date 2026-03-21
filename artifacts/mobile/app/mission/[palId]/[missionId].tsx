@@ -22,11 +22,11 @@ import {
 } from "@/constants/data";
 import { useCart, CartItem } from "@/contexts/CartContext";
 
-const PAL_META: Record<PalId, { color: string; bg: string; icon: string }> = {
-  reel: { color: Colors.pal.reel, bg: Colors.pal.reelLight, icon: "smartphone" },
-  spotlight: { color: Colors.pal.spotlight, bg: Colors.pal.spotlightLight, icon: "film" },
-  system: { color: Colors.pal.system, bg: Colors.pal.systemLight, icon: "settings" },
-  evergreen: { color: Colors.pal.evergreen, bg: Colors.pal.evergreenLight, icon: "play-circle" },
+const PAL_META: Record<PalId, { color: string; bg: string }> = {
+  reel: { color: Colors.pal.reel, bg: Colors.pal.reelLight },
+  spotlight: { color: Colors.pal.spotlight, bg: Colors.pal.spotlightLight },
+  system: { color: Colors.pal.system, bg: Colors.pal.systemLight },
+  evergreen: { color: Colors.pal.evergreen, bg: Colors.pal.evergreenLight },
 };
 
 function Stepper({
@@ -53,7 +53,7 @@ function Stepper({
           onPress={onDecrement}
           disabled={value <= min}
         >
-          <Feather name="minus" size={16} color={value <= min ? Colors.light.textTertiary : Colors.light.text} />
+          <Feather name="minus" size={14} color={value <= min ? Colors.light.textTertiary : Colors.light.text} />
         </Pressable>
         <Text style={styles.stepperValue}>{value}</Text>
         <Pressable
@@ -61,7 +61,7 @@ function Stepper({
           onPress={onIncrement}
           disabled={value >= max}
         >
-          <Feather name="plus" size={16} color={value >= max ? Colors.light.textTertiary : Colors.light.text} />
+          <Feather name="plus" size={14} color={value >= max ? Colors.light.textTertiary : Colors.light.text} />
         </Pressable>
       </View>
     </View>
@@ -140,16 +140,17 @@ export default function MissionDetailScreen() {
           <Text style={styles.problemStatement}>"{mission.problemStatement}"</Text>
           <Text style={styles.description}>{mission.description}</Text>
 
-          <View style={styles.includesCard}>
-            <View style={styles.includesHeader}>
-              <Feather name="check-circle" size={16} color={Colors.light.primary} />
-              <Text style={styles.includesLabel}>What's Included</Text>
-            </View>
+          <View style={styles.divider} />
+
+          <View style={styles.includesRow}>
+            <Feather name="check-circle" size={14} color={Colors.light.success} />
             <Text style={styles.includesText}>{mission.includes}</Text>
           </View>
 
+          <View style={styles.divider} />
+
           <View style={styles.configSection}>
-            <Text style={styles.configTitle}>Configure</Text>
+            <Text style={styles.configTitle}>CONFIGURE</Text>
 
             {isSessionBased ? (
               <>
@@ -182,14 +183,14 @@ export default function MissionDetailScreen() {
                       key={len}
                       style={[
                         styles.lengthOption,
-                        episodeLength === len && { backgroundColor: meta.color, borderColor: meta.color },
+                        episodeLength === len && { borderColor: meta.color },
                       ]}
                       onPress={() => setEpisodeLength(len)}
                     >
-                      <Text style={[styles.lengthText, episodeLength === len && { color: "#fff" }]}>
+                      <Text style={[styles.lengthText, episodeLength === len && { color: meta.color }]}>
                         {len} min
                       </Text>
-                      <Text style={[styles.lengthPrice, episodeLength === len && { color: "rgba(255,255,255,0.8)" }]}>
+                      <Text style={styles.lengthPrice}>
                         ${PRICING.EVERGREEN[len].toLocaleString()}
                       </Text>
                     </Pressable>
@@ -237,127 +238,121 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 6,
-    marginBottom: 12,
+    marginBottom: 10,
   },
   breadcrumbDot: { width: 8, height: 8, borderRadius: 4 },
-  breadcrumbText: { fontFamily: "Inter_500Medium", fontSize: 14 },
+  breadcrumbText: { fontFamily: "Inter_500Medium", fontSize: 13 },
   missionName: {
     fontFamily: "Inter_700Bold",
-    fontSize: 28,
+    fontSize: 24,
     color: Colors.light.text,
     letterSpacing: -0.5,
-    marginBottom: 12,
-    lineHeight: 34,
+    marginBottom: 10,
+    lineHeight: 30,
   },
   problemStatement: {
     fontFamily: "Inter_400Regular",
-    fontSize: 16,
+    fontSize: 15,
     color: Colors.light.textSecondary,
     fontStyle: "italic",
-    marginBottom: 16,
-    lineHeight: 24,
+    marginBottom: 12,
+    lineHeight: 22,
   },
   description: {
     fontFamily: "Inter_400Regular",
-    fontSize: 15,
-    color: Colors.light.textSecondary,
-    lineHeight: 22,
-    marginBottom: 24,
-  },
-  includesCard: {
-    backgroundColor: Colors.light.backgroundSecondary,
-    borderRadius: 16,
-    padding: 18,
-    marginBottom: 28,
-  },
-  includesHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginBottom: 8,
-  },
-  includesLabel: {
-    fontFamily: "Inter_600SemiBold",
     fontSize: 14,
-    color: Colors.light.text,
+    color: Colors.light.textSecondary,
+    lineHeight: 21,
+    marginBottom: 4,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: Colors.light.separator,
+    marginVertical: 16,
+  },
+  includesRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: 8,
   },
   includesText: {
+    flex: 1,
     fontFamily: "Inter_400Regular",
     fontSize: 14,
-    color: Colors.light.textSecondary,
+    color: Colors.light.text,
     lineHeight: 20,
   },
   configSection: {},
   configTitle: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 20,
-    color: Colors.light.text,
-    letterSpacing: -0.3,
-    marginBottom: 20,
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 11,
+    color: Colors.light.textTertiary,
+    letterSpacing: 0.8,
+    marginBottom: 16,
   },
   stepper: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 6,
+    marginBottom: 4,
   },
   stepperLabel: {
     fontFamily: "Inter_500Medium",
-    fontSize: 15,
+    fontSize: 14,
     color: Colors.light.text,
     marginBottom: 4,
   },
   stepperControls: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 14,
+    gap: 12,
   },
   stepperBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 12,
-    backgroundColor: Colors.light.backgroundSecondary,
+    width: 32,
+    height: 32,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: Colors.light.border,
     alignItems: "center",
     justifyContent: "center",
   },
-  stepperBtnDisabled: { opacity: 0.4 },
+  stepperBtnDisabled: { opacity: 0.3 },
   stepperValue: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 18,
+    fontSize: 16,
     color: Colors.light.text,
-    minWidth: 28,
+    minWidth: 24,
     textAlign: "center",
   },
   rateHint: {
     fontFamily: "Inter_400Regular",
-    fontSize: 13,
+    fontSize: 12,
     color: Colors.light.textTertiary,
-    marginBottom: 20,
+    marginBottom: 16,
   },
   lengthOptions: {
     flexDirection: "row",
     gap: 8,
-    marginBottom: 20,
-    marginTop: 8,
+    marginBottom: 16,
+    marginTop: 4,
   },
   lengthOption: {
     flex: 1,
     alignItems: "center",
-    paddingVertical: 14,
-    borderRadius: 14,
-    backgroundColor: Colors.light.backgroundSecondary,
+    paddingVertical: 12,
+    borderRadius: 8,
     borderWidth: 1.5,
-    borderColor: "transparent",
+    borderColor: Colors.light.border,
   },
   lengthText: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 15,
+    fontSize: 14,
     color: Colors.light.text,
     marginBottom: 2,
   },
   lengthPrice: {
     fontFamily: "Inter_400Regular",
-    fontSize: 13,
+    fontSize: 12,
     color: Colors.light.textSecondary,
   },
   footer: {
@@ -369,7 +364,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: Colors.light.separator,
     paddingHorizontal: 20,
-    paddingTop: 14,
+    paddingTop: 12,
     flexDirection: "row",
     alignItems: "center",
     gap: 16,
@@ -382,18 +377,18 @@ const styles = StyleSheet.create({
   },
   footerAmount: {
     fontFamily: "Inter_700Bold",
-    fontSize: 22,
+    fontSize: 20,
     color: Colors.light.text,
     letterSpacing: -0.5,
   },
   addButton: {
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    borderRadius: 14,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 8,
   },
   addButtonText: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 15,
+    fontSize: 14,
     color: "#fff",
   },
 });

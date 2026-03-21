@@ -77,7 +77,7 @@ Express 5 API server. Routes live in `src/routes/` and use `@workspace/api-zod` 
 Palmer House Productions — AI-powered content assistant mobile app for business owners. Explore video production services, build packages, submit project requests, and access AI-powered content tools.
 
 - **Framework**: Expo SDK 54, expo-router 6 (file-based routing)
-- **Design**: Premium minimal aesthetic — Apple/DoorDash/Grok inspired. Frosted glass tab bar, Inter font family, generous whitespace, subtle shadows.
+- **Design**: Clean, minimal aesthetic — starter.dev/GitHub-inspired patterns. Border-separated rows (1px divider), underline tab indicators, trimmed text, generous whitespace. Frosted glass tab bar, Inter font family. GitHub-style color palette (#1F2328 text, #656D76 secondary, rgba borders).
 - **Auth System**: Welcome screen → Sign In / Register / Browse as Guest. Three tiers: Guest (3 credits), Registered (10/month), Member (50/month + portal).
 - **Tabs (5)**: Home, Explore (Pals), Tools (AI), Package (Cart), More (About)
 - **Auth Screens**: `welcome.tsx`, `auth/login.tsx`, `auth/register.tsx`
@@ -88,7 +88,7 @@ Palmer House Productions — AI-powered content assistant mobile app for busines
 - **Profile**: `profile.tsx` — account info, credits, sign out
 - **Checkout flow**: Build tab → Checkout modal → Confirmation screen
 - **Data**: All Pal categories (Reel, Spotlight, System, Evergreen), 20+ missions, pricing constants in `constants/data.ts`
-- **Brand Colors**: Primary purple `#6B3FA0`, Reel orange `#D97706`, System teal `#0F766E`, Evergreen sage `#6B8E23`
+- **Brand Colors**: Primary purple `#6B3FA0`, Reel orange `#E8720C`, System teal `#0A9B8F`, Evergreen sage `#5B8A2D`, Spotlight purple `#6B3FA0`. Divider: `#D0D7DE`, separator: `rgba(31,35,40,0.08)`, border: `rgba(31,35,40,0.15)`
 - **API**: Submits project requests to `POST /api/project-requests`, auth via `POST /api/auth/register` and `POST /api/auth/login`
 - **State**: React Context for cart (CartContext) and auth (AuthContext), AsyncStorage for session persistence
 - **Pricing Constants**: Session=$450, Additional Video=$150, Evergreen 5/10/15min = $1050/$1650/$2250

@@ -84,7 +84,7 @@ export default function AIToolScreen({ tool }: AIToolScreenProps) {
       <View style={[styles.container, { paddingTop: insets.top + 56 }]}>
         <View style={styles.resultHeader}>
           <View style={[styles.toolIconSmall, { backgroundColor: palColor.light }]}>
-            <Feather name={tool.icon as any} size={16} color={palColor.main} />
+            <Feather name={tool.icon as any} size={14} color={palColor.main} />
           </View>
           <View style={styles.resultHeaderText}>
             <Text style={styles.resultTitle}>{tool.name}</Text>
@@ -96,7 +96,7 @@ export default function AIToolScreen({ tool }: AIToolScreenProps) {
           </View>
           {!isGenerating && (
             <Pressable style={styles.newBtn} onPress={handleReset}>
-              <Feather name="plus" size={16} color={palColor.main} />
+              <Feather name="plus" size={14} color={palColor.main} />
               <Text style={[styles.newBtnText, { color: palColor.main }]}>New</Text>
             </Pressable>
           )}
@@ -134,20 +134,20 @@ export default function AIToolScreen({ tool }: AIToolScreenProps) {
         {!isGenerating && output && (
           <View style={[styles.actionBar, { paddingBottom: insets.bottom + 12 }]}>
             <Pressable style={styles.actionBtn} onPress={handleCopy}>
-              <Feather name={copied ? "check" : "copy"} size={18} color={palColor.main} />
+              <Feather name={copied ? "check" : "copy"} size={16} color={palColor.main} />
               <Text style={[styles.actionBtnText, { color: palColor.main }]}>
                 {copied ? "Copied!" : "Copy"}
               </Text>
             </Pressable>
             <Pressable style={styles.actionBtn} onPress={handleShare}>
-              <Feather name="share" size={18} color={palColor.main} />
+              <Feather name="share" size={16} color={palColor.main} />
               <Text style={[styles.actionBtnText, { color: palColor.main }]}>Share</Text>
             </Pressable>
             <Pressable
               style={[styles.regenerateBtn, { backgroundColor: palColor.main }]}
               onPress={handleGenerate}
             >
-              <Feather name="refresh-cw" size={16} color="#fff" />
+              <Feather name="refresh-cw" size={14} color="#fff" />
               <Text style={styles.regenerateBtnText}>Regenerate</Text>
             </Pressable>
           </View>
@@ -156,7 +156,7 @@ export default function AIToolScreen({ tool }: AIToolScreenProps) {
         {isGenerating && (
           <View style={[styles.actionBar, { paddingBottom: insets.bottom + 12 }]}>
             <Pressable style={styles.cancelBtn} onPress={cancel}>
-              <Feather name="x" size={16} color={Colors.light.textSecondary} />
+              <Feather name="x" size={14} color={Colors.light.textSecondary} />
               <Text style={styles.cancelBtnText}>Cancel</Text>
             </Pressable>
           </View>
@@ -178,30 +178,28 @@ export default function AIToolScreen({ tool }: AIToolScreenProps) {
       keyboardShouldPersistTaps="handled"
     >
       <View style={[styles.toolIconLarge, { backgroundColor: palColor.light }]}>
-        <Feather name={tool.icon as any} size={28} color={palColor.main} />
+        <Feather name={tool.icon as any} size={24} color={palColor.main} />
       </View>
       <Text style={styles.title}>{tool.name}</Text>
       <Text style={styles.subtitle}>{tool.description}</Text>
 
       {!isFree && (
-        <View style={[styles.costBadge, { backgroundColor: palColor.light }]}>
-          <Feather name="zap" size={14} color={palColor.main} />
+        <View style={styles.costRow}>
+          <Feather name="zap" size={12} color={palColor.main} />
           <Text style={[styles.costText, { color: palColor.main }]}>
-            {tool.creditCost} credit{tool.creditCost > 1 ? "s" : ""} per use
+            {tool.creditCost} credit{tool.creditCost > 1 ? "s" : ""}
           </Text>
-          <Text style={styles.costDivider}>·</Text>
-          <Text style={[styles.costText, { color: Colors.light.textSecondary }]}>
-            {credits} available
-          </Text>
+          <Text style={styles.costSep}>·</Text>
+          <Text style={styles.costAvailable}>{credits} available</Text>
         </View>
       )}
       {isFree && (
-        <View style={[styles.costBadge, { backgroundColor: "#ECFDF5" }]}>
-          <Text style={[styles.costText, { color: "#059669", fontFamily: "Inter_600SemiBold" }]}>
-            FREE — No credits needed
-          </Text>
+        <View style={styles.costRow}>
+          <Text style={styles.freeLabel}>FREE</Text>
         </View>
       )}
+
+      <View style={styles.divider} />
 
       <View style={styles.fieldsContainer}>
         {tool.fields.map((field) => (
@@ -231,7 +229,7 @@ export default function AIToolScreen({ tool }: AIToolScreenProps) {
         onPress={handleGenerate}
         disabled={!hasRequiredFields || (!canGenerate && !isFree)}
       >
-        <Feather name="zap" size={18} color="#fff" />
+        <Feather name="zap" size={16} color="#fff" />
         <Text style={styles.generateBtnText}>Generate</Text>
       </Pressable>
 
@@ -286,89 +284,107 @@ function FieldInput({
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.light.background },
   toolIconLarge: {
-    width: 60,
-    height: 60,
-    borderRadius: 18,
+    width: 48,
+    height: 48,
+    borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 16,
+    marginBottom: 14,
   },
   title: {
     fontFamily: "Inter_700Bold",
-    fontSize: 28,
+    fontSize: 22,
     color: Colors.light.text,
-    letterSpacing: -0.5,
-    marginBottom: 8,
+    letterSpacing: -0.4,
+    marginBottom: 6,
   },
   subtitle: {
     fontFamily: "Inter_400Regular",
-    fontSize: 16,
+    fontSize: 14,
     color: Colors.light.textSecondary,
-    lineHeight: 24,
-    marginBottom: 20,
+    lineHeight: 21,
+    marginBottom: 14,
   },
-  costBadge: {
+  costRow: {
     flexDirection: "row",
     alignItems: "center",
-    alignSelf: "flex-start",
-    gap: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    borderRadius: 10,
-    marginBottom: 24,
+    gap: 5,
+    marginBottom: 4,
   },
   costText: {
-    fontFamily: "Inter_500Medium",
+    fontFamily: "Inter_600SemiBold",
     fontSize: 13,
   },
-  costDivider: {
+  costSep: {
     fontFamily: "Inter_400Regular",
     fontSize: 13,
     color: Colors.light.textTertiary,
   },
+  costAvailable: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 13,
+    color: Colors.light.textSecondary,
+  },
+  freeLabel: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 12,
+    color: "#15803D",
+    backgroundColor: "#F0FDF4",
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 4,
+    overflow: "hidden",
+    letterSpacing: 0.3,
+  },
+  divider: {
+    height: 1,
+    backgroundColor: Colors.light.separator,
+    marginVertical: 16,
+  },
   fieldsContainer: {
-    gap: 16,
-    marginBottom: 24,
+    gap: 14,
+    marginBottom: 20,
   },
   fieldContainer: {},
   fieldLabelRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 4,
-    marginBottom: 8,
+    gap: 3,
+    marginBottom: 6,
   },
   fieldLabel: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 14,
+    fontFamily: "Inter_500Medium",
+    fontSize: 13,
     color: Colors.light.text,
   },
   requiredStar: {
     fontFamily: "Inter_700Bold",
-    fontSize: 14,
+    fontSize: 13,
   },
   fieldInput: {
-    backgroundColor: Colors.light.backgroundSecondary,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
+    borderWidth: 1,
+    borderColor: Colors.light.border,
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
     fontFamily: "Inter_400Regular",
     fontSize: 15,
     color: Colors.light.text,
-    borderWidth: 2,
-    borderColor: "transparent",
+    backgroundColor: Colors.light.background,
   },
   fieldInputMultiline: {
     minHeight: 100,
-    paddingTop: 14,
+    paddingTop: 12,
   },
   errorBox: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    backgroundColor: "#FEF2F2",
-    borderRadius: 12,
-    padding: 14,
-    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#FECACA",
+    borderRadius: 8,
+    padding: 12,
+    marginBottom: 14,
   },
   errorBoxText: {
     fontFamily: "Inter_500Medium",
@@ -380,66 +396,67 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: 8,
-    paddingVertical: 16,
-    borderRadius: 14,
+    gap: 6,
+    paddingVertical: 14,
+    borderRadius: 8,
   },
   generateBtnDisabled: {
-    opacity: 0.5,
+    opacity: 0.4,
   },
   generateBtnText: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 16,
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 15,
     color: "#fff",
   },
   insufficientText: {
     fontFamily: "Inter_400Regular",
-    fontSize: 13,
+    fontSize: 12,
     color: Colors.light.error,
     textAlign: "center",
-    marginTop: 12,
+    marginTop: 10,
   },
   resultHeader: {
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingBottom: 16,
+    paddingBottom: 12,
     borderBottomWidth: 1,
     borderBottomColor: Colors.light.separator,
   },
   toolIconSmall: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
+    width: 32,
+    height: 32,
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
-    marginRight: 12,
+    marginRight: 10,
   },
   resultHeaderText: {
     flex: 1,
   },
   resultTitle: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 16,
+    fontSize: 15,
     color: Colors.light.text,
   },
   creditsUsedText: {
     fontFamily: "Inter_400Regular",
-    fontSize: 12,
+    fontSize: 11,
     color: Colors.light.textSecondary,
   },
   newBtn: {
     flexDirection: "row",
     alignItems: "center",
     gap: 4,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 8,
-    backgroundColor: Colors.light.backgroundSecondary,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: Colors.light.border,
   },
   newBtnText: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 13,
+    fontFamily: "Inter_500Medium",
+    fontSize: 12,
   },
   outputScroll: {
     flex: 1,
@@ -473,9 +490,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
     marginHorizontal: 20,
-    backgroundColor: "#FEF2F2",
-    borderRadius: 10,
-    padding: 12,
+    borderWidth: 1,
+    borderColor: "#FECACA",
+    borderRadius: 8,
+    padding: 10,
   },
   errorText: {
     fontFamily: "Inter_500Medium",
@@ -486,33 +504,34 @@ const styles = StyleSheet.create({
   actionBar: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
+    gap: 8,
     paddingHorizontal: 20,
-    paddingTop: 12,
+    paddingTop: 10,
     borderTopWidth: 1,
     borderTopColor: Colors.light.separator,
   },
   actionBtn: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
-    paddingHorizontal: 14,
-    paddingVertical: 10,
-    borderRadius: 10,
-    backgroundColor: Colors.light.backgroundSecondary,
+    gap: 5,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: Colors.light.border,
   },
   actionBtnText: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 13,
+    fontFamily: "Inter_500Medium",
+    fontSize: 12,
   },
   regenerateBtn: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: 6,
-    paddingVertical: 12,
-    borderRadius: 10,
+    gap: 5,
+    paddingVertical: 10,
+    borderRadius: 8,
   },
   regenerateBtnText: {
     fontFamily: "Inter_600SemiBold",
@@ -524,10 +543,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: 6,
-    paddingVertical: 12,
-    borderRadius: 10,
-    backgroundColor: Colors.light.backgroundSecondary,
+    gap: 5,
+    paddingVertical: 10,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: Colors.light.border,
   },
   cancelBtnText: {
     fontFamily: "Inter_500Medium",

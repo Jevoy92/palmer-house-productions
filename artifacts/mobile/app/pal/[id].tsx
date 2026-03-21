@@ -14,11 +14,11 @@ import Colors from "@/constants/colors";
 import { PALS, PalId, getMissionsForPal } from "@/constants/data";
 import { PAL_PROFILES } from "@/constants/images";
 
-const PAL_META: Record<PalId, { color: string; bg: string; icon: string }> = {
-  reel: { color: Colors.pal.reel, bg: Colors.pal.reelLight, icon: "smartphone" },
-  spotlight: { color: Colors.pal.spotlight, bg: Colors.pal.spotlightLight, icon: "film" },
-  system: { color: Colors.pal.system, bg: Colors.pal.systemLight, icon: "settings" },
-  evergreen: { color: Colors.pal.evergreen, bg: Colors.pal.evergreenLight, icon: "play-circle" },
+const PAL_META: Record<PalId, { color: string; bg: string }> = {
+  reel: { color: Colors.pal.reel, bg: Colors.pal.reelLight },
+  spotlight: { color: Colors.pal.spotlight, bg: Colors.pal.spotlightLight },
+  system: { color: Colors.pal.system, bg: Colors.pal.systemLight },
+  evergreen: { color: Colors.pal.evergreen, bg: Colors.pal.evergreenLight },
 };
 
 export default function PalDetailScreen() {
@@ -47,51 +47,39 @@ export default function PalDetailScreen() {
     >
       <View style={[styles.header, { paddingTop: insets.top + 56 }]}>
         <View style={styles.avatarRow}>
-          <View style={[styles.avatarWrap, { borderColor: meta.bg }]}>
-            <Image source={PAL_PROFILES[palId].male} style={styles.avatar} />
-          </View>
-          <View style={[styles.avatarWrap, styles.avatarOverlap, { borderColor: meta.bg }]}>
-            <Image source={PAL_PROFILES[palId].female} style={styles.avatar} />
-          </View>
+          <Image source={PAL_PROFILES[palId].male} style={[styles.avatar, { borderColor: meta.bg }]} />
+          <Image source={PAL_PROFILES[palId].female} style={[styles.avatar, styles.avatarOverlap, { borderColor: meta.bg }]} />
         </View>
         <Text style={styles.palName}>{pal.name}</Text>
-        <Text style={styles.characters}>{pal.displayName}</Text>
-        <View style={[styles.taglineBadge, { backgroundColor: meta.bg }]}>
-          <Text style={[styles.taglineText, { color: meta.color }]}>{pal.tagline}</Text>
-        </View>
+        <Text style={styles.characters}>{pal.displayName} · {pal.tagline}</Text>
         <Text style={styles.description}>{pal.description}</Text>
       </View>
 
+      <View style={styles.divider} />
+
       <View style={styles.missionsSection}>
-        <Text style={styles.missionsTitle}>
-          {missions.length} Available Missions
+        <Text style={styles.missionsLabel}>
+          {missions.length} MISSIONS
         </Text>
 
         {missions.map((mission, index) => (
           <Pressable
             key={mission.id}
-            style={styles.missionCard}
+            style={styles.missionRow}
             onPress={() => router.push(`/mission/${palId}/${mission.id}`)}
           >
-            <View style={styles.missionCardContent}>
-              <View style={styles.missionCardTop}>
-                <View style={[styles.indexBadge, { backgroundColor: meta.bg }]}>
-                  <Text style={[styles.indexText, { color: meta.color }]}>
-                    {String(index + 1).padStart(2, "0")}
-                  </Text>
-                </View>
-                <View style={styles.missionInfo}>
-                  <Text style={styles.missionName}>{mission.name}</Text>
-                  <Text style={styles.missionProblem} numberOfLines={1}>
-                    {mission.problemStatement}
-                  </Text>
-                </View>
-              </View>
-              <Text style={styles.missionDesc} numberOfLines={2}>
-                {mission.description}
+            <View style={[styles.indexBadge, { backgroundColor: meta.bg }]}>
+              <Text style={[styles.indexText, { color: meta.color }]}>
+                {String(index + 1).padStart(2, "0")}
               </Text>
             </View>
-            <Feather name="chevron-right" size={16} color={Colors.light.textTertiary} />
+            <View style={styles.missionInfo}>
+              <Text style={styles.missionName}>{mission.name}</Text>
+              <Text style={styles.missionProblem} numberOfLines={1}>
+                {mission.problemStatement}
+              </Text>
+            </View>
+            <Feather name="chevron-right" size={14} color={Colors.light.textTertiary} />
           </Pressable>
         ))}
       </View>
@@ -105,98 +93,80 @@ const styles = StyleSheet.create({
   errorText: { fontFamily: "Inter_500Medium", fontSize: 16, color: Colors.light.textSecondary },
   header: {
     paddingHorizontal: 20,
-    paddingBottom: 32,
+    paddingBottom: 24,
     alignItems: "center",
   },
   avatarRow: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 20,
-  },
-  avatarWrap: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    borderWidth: 4,
-    overflow: "hidden",
-  },
-  avatarOverlap: {
-    marginLeft: -16,
+    marginBottom: 16,
   },
   avatar: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 40,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    borderWidth: 3,
+  },
+  avatarOverlap: {
+    marginLeft: -14,
   },
   palName: {
     fontFamily: "Inter_700Bold",
-    fontSize: 28,
+    fontSize: 24,
     color: Colors.light.text,
     letterSpacing: -0.5,
     marginBottom: 4,
   },
   characters: {
     fontFamily: "Inter_400Regular",
-    fontSize: 15,
+    fontSize: 14,
     color: Colors.light.textSecondary,
     marginBottom: 12,
   },
-  taglineBadge: {
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 100,
-    marginBottom: 16,
-  },
-  taglineText: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 13,
-  },
   description: {
     fontFamily: "Inter_400Regular",
-    fontSize: 15,
+    fontSize: 14,
     color: Colors.light.textSecondary,
     textAlign: "center",
-    lineHeight: 22,
+    lineHeight: 21,
     paddingHorizontal: 20,
   },
-  missionsSection: { paddingHorizontal: 20 },
-  missionsTitle: {
+  divider: {
+    height: 1,
+    backgroundColor: Colors.light.separator,
+    marginHorizontal: 20,
+  },
+  missionsSection: { paddingHorizontal: 20, paddingTop: 16 },
+  missionsLabel: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 17,
-    color: Colors.light.text,
-    marginBottom: 16,
-  },
-  missionCard: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: Colors.light.backgroundSecondary,
-    borderRadius: 16,
-    padding: 16,
+    fontSize: 11,
+    color: Colors.light.textTertiary,
+    letterSpacing: 0.8,
     marginBottom: 8,
-    gap: 8,
   },
-  missionCardContent: { flex: 1 },
-  missionCardTop: {
+  missionRow: {
     flexDirection: "row",
     alignItems: "center",
     gap: 12,
-    marginBottom: 8,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.light.separator,
   },
   indexBadge: {
-    width: 32,
-    height: 32,
-    borderRadius: 10,
+    width: 30,
+    height: 30,
+    borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
   },
   indexText: {
     fontFamily: "Inter_700Bold",
-    fontSize: 12,
+    fontSize: 11,
   },
   missionInfo: { flex: 1 },
   missionName: {
-    fontFamily: "Inter_600SemiBold",
+    fontFamily: "Inter_500Medium",
     fontSize: 15,
     color: Colors.light.text,
   },
@@ -205,12 +175,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.light.textSecondary,
     marginTop: 1,
-  },
-  missionDesc: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 13,
-    color: Colors.light.textSecondary,
-    lineHeight: 18,
-    paddingLeft: 44,
   },
 });

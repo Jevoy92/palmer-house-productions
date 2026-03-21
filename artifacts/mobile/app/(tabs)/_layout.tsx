@@ -19,10 +19,11 @@ export default function TabLayout() {
         headerShown: true,
         tabBarStyle: {
           position: "absolute",
-          borderTopWidth: 0,
+          borderTopWidth: 1,
+          borderTopColor: Colors.light.separator,
           backgroundColor: Platform.OS === "ios" ? "transparent" : "rgba(255,255,255,0.97)",
-          height: 88,
-          paddingTop: 8,
+          height: 84,
+          paddingTop: 6,
         },
         tabBarBackground: () =>
           Platform.OS === "ios" ? (

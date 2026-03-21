@@ -60,12 +60,12 @@ export default function RegisterScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <Pressable style={styles.backBtn} onPress={() => router.back()}>
-          <Feather name="arrow-left" size={20} color={Colors.light.text} />
+          <Feather name="arrow-left" size={18} color={Colors.light.text} />
         </Pressable>
 
         <Text style={styles.title}>Create account</Text>
         <Text style={styles.subtitle}>
-          Get started with video content tools and service exploration
+          Get started with video content tools
         </Text>
 
         <View style={styles.form}>
@@ -122,7 +122,7 @@ export default function RegisterScreen() {
                 style={styles.eyeBtn}
                 onPress={() => setShowPassword(!showPassword)}
               >
-                <Feather name={showPassword ? "eye-off" : "eye"} size={18} color={Colors.light.textSecondary} />
+                <Feather name={showPassword ? "eye-off" : "eye"} size={16} color={Colors.light.textSecondary} />
               </Pressable>
             </View>
           </View>
@@ -155,84 +155,85 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: Colors.light.background },
   content: { paddingHorizontal: 24, paddingBottom: 40 },
   backBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 12,
-    backgroundColor: Colors.light.backgroundSecondary,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: Colors.light.border,
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 32,
+    marginBottom: 28,
   },
   title: {
     fontFamily: "Inter_700Bold",
-    fontSize: 28,
+    fontSize: 24,
     color: Colors.light.text,
-    letterSpacing: -0.5,
-    marginBottom: 6,
+    letterSpacing: -0.4,
+    marginBottom: 4,
   },
   subtitle: {
     fontFamily: "Inter_400Regular",
-    fontSize: 16,
+    fontSize: 14,
     color: Colors.light.textSecondary,
-    lineHeight: 22,
-    marginBottom: 36,
+    marginBottom: 32,
   },
-  form: { gap: 18 },
+  form: { gap: 16 },
   field: {},
   label: {
     fontFamily: "Inter_500Medium",
-    fontSize: 14,
+    fontSize: 13,
     color: Colors.light.text,
-    marginBottom: 8,
+    marginBottom: 6,
   },
   optional: {
     fontFamily: "Inter_400Regular",
     color: Colors.light.textTertiary,
   },
   input: {
-    backgroundColor: Colors.light.backgroundSecondary,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 14,
+    borderWidth: 1,
+    borderColor: Colors.light.border,
+    borderRadius: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
     fontFamily: "Inter_400Regular",
-    fontSize: 16,
+    fontSize: 15,
     color: Colors.light.text,
   },
   passwordWrap: { position: "relative" },
-  passwordInput: { paddingRight: 48 },
+  passwordInput: { paddingRight: 44 },
   eyeBtn: {
     position: "absolute",
-    right: 14,
-    top: 14,
+    right: 12,
+    top: 12,
   },
   submitBtn: {
     backgroundColor: Colors.light.primary,
-    paddingVertical: 16,
-    borderRadius: 14,
+    paddingVertical: 14,
+    borderRadius: 8,
     alignItems: "center",
-    marginTop: 8,
+    marginTop: 6,
   },
   submitDisabled: { opacity: 0.4 },
   submitText: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 16,
+    fontSize: 15,
     color: "#fff",
   },
   footer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    gap: 6,
-    marginTop: 32,
+    gap: 5,
+    marginTop: 28,
   },
   footerText: {
     fontFamily: "Inter_400Regular",
-    fontSize: 14,
+    fontSize: 13,
     color: Colors.light.textSecondary,
   },
   footerLink: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 14,
+    fontSize: 13,
     color: Colors.light.primary,
   },
 });

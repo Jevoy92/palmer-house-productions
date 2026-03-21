@@ -22,6 +22,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   browseAsGuest: () => void;
   refreshUser: () => Promise<void>;
+  updateCredits: (credits: number) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -103,6 +104,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify({ isGuest: true }));
   }, []);
 
+  const updateCredits = useCallback((credits: number) => {
+    if (user) {
+      const updated = { ...user, credits };
+      setUser(updated);
+      AsyncStorage.getItem(USER_STORAGE_KEY).then((stored) => {
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify({ ...parsed, credits }));
+        }
+      });
+    }
+  }, [user]);
+
   const refreshUser = useCallback(async () => {
     if (!user) return;
     try {
@@ -130,7 +144,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, isGuest, isLoading, login, register, logout, browseAsGuest, refreshUser }}
+      value={{ user, isGuest, isLoading, login, register, logout, browseAsGuest, refreshUser, updateCredits }}
     >
       {children}
     </AuthContext.Provider>

@@ -12,12 +12,7 @@ export default function ToolsLayout() {
         headerTintColor: Colors.light.primary,
       }}
     >
-      <Stack.Screen name="script-writer" />
-      <Stack.Screen name="content-planner" />
-      <Stack.Screen name="what-to-post" />
-      <Stack.Screen name="hook-generator" />
-      <Stack.Screen name="brief-builder" />
-      <Stack.Screen name="content-audit" />
+      <Stack.Screen name="[toolId]" />
     </Stack>
   );
 }

@@ -60,8 +60,14 @@ Express 5 API server. Routes live in `src/routes/` and use `@workspace/api-zod` 
 - App setup: `src/app.ts` — mounts CORS, JSON/urlencoded parsing, routes at `/api`
 - Routes: `src/routes/index.ts` mounts sub-routers; `src/routes/health.ts` exposes `GET /health` (full path: `/api/health`)
 - Route: `src/routes/projectRequests.ts` — `POST /api/project-requests` accepts project request submissions
-- Route: `src/routes/auth.ts` — `POST /api/auth/register`, `POST /api/auth/login`, `GET /api/auth/me/:userId` for user authentication
-- Depends on: `@workspace/db`, `@workspace/api-zod`
+- Route: `src/routes/auth.ts` — `POST /api/auth/register`, `POST /api/auth/login`, `POST /api/auth/refresh` for user authentication
+- Route: `src/routes/ai.ts` — `POST /api/ai/generate` (SSE streaming tool generation), `POST /api/ai/chat` (SSE streaming Pal chat), `GET /api/ai/history?userId=N` (tool result history)
+- AI tool prompts: `src/lib/toolPrompts.ts` — 26 tool prompt configs with Pal personas, system prompts, user prompt templates, model/maxTokens
+- Free tools (0 credits): teleprompter, about-page-script, faq-video-series, content-audit
+- 2-credit tools: content-calendar, course-outline-builder, workshop-planner
+- All other tools: 1 credit
+- Credit deduction is atomic: `WHERE credits >= cost` guard on UPDATE
+- Depends on: `@workspace/db`, `@workspace/api-zod`, `@workspace/integrations-openai-ai-server`
 - `pnpm --filter @workspace/api-server run dev` — run the dev server
 - `pnpm --filter @workspace/api-server run build` — production esbuild bundle (`dist/index.cjs`)
 - Build bundles an allowlist of deps (express, cors, pg, drizzle-orm, zod, etc.) and externalizes the rest
@@ -76,7 +82,7 @@ Palmer House Productions — AI-powered content assistant mobile app for busines
 - **Tabs (5)**: Home, Explore (Pals), Tools (AI), Package (Cart), More (About)
 - **Auth Screens**: `welcome.tsx`, `auth/login.tsx`, `auth/register.tsx`
 - **Detail Screens**: `pal/[id]` (Pal overview), `mission/[palId]/[missionId]` (mission configurator with pricing)
-- **AI Tools**: `tools/script-writer`, `tools/content-planner`, `tools/what-to-post`, `tools/hook-generator`, `tools/brief-builder`, `tools/content-audit` — all structure-only with "Coming Soon" placeholders
+- **AI Tools**: 26 fully functional AI-powered tools via dynamic route `tools/[toolId].tsx` + shared `AIToolScreen` component. Tools organized by Pal category with SSE streaming output, copy/share/regenerate actions. 4 free tools (teleprompter, about-page-script, faq-video-series, content-audit). Tool definitions in `constants/tools.ts`.
 - **Client Portal**: `portal/index.tsx` — project tracking, draft review, delivered assets (placeholder structure, ready for HoneyBook integration)
 - **Profile**: `profile.tsx` — account info, credits, sign out
 - **Checkout flow**: Build tab → Checkout modal → Confirmation screen
@@ -86,15 +92,19 @@ Palmer House Productions — AI-powered content assistant mobile app for busines
 - **State**: React Context for cart (CartContext) and auth (AuthContext), AsyncStorage for session persistence
 - **Pricing Constants**: Session=$450, Additional Video=$150, Evergreen 5/10/15min = $1050/$1650/$2250
 - **Contact**: info@palmerhouseproductions.com, (253) 338-0673, Bellevue WA & Portland OR
-- **Character Images**: 8 AI-generated character avatars in `assets/images/pals/` (ryder, raquel, kareem, kiana, silas, samira, cyrus, clara). Face-cropped 400x400 profile versions in `assets/images/pals/profiles/`. All mapped via `constants/images.ts` (`PAL_IMAGES` for full-body, `PAL_PROFILES` for headshots — use `PAL_PROFILES` for circle avatars).
+- **Character Images**: 8 AI-generated character avatars in `assets/images/pals/` (ryder, raquel, kareem, kiana, silas, samira, cyrus, clara). Face-cropped 400x400 profile versions in `assets/images/pals/profiles/`. Standing poses in `assets/images/pals/standing/`. Headshots in `assets/images/pals/headshots/`. Brand logo in `assets/images/brand/logo.png`. All mapped via `constants/images.ts` (`PAL_IMAGES` for full-body, `PAL_PROFILES` for circle avatars, `PAL_STANDING` for hero views, `PAL_HEADSHOTS` for detail views, `BRAND_LOGO` for logo).
 - **Onboarding Walkthrough**: `onboarding.tsx` — swipeable 6-slide tour introducing all 4 Pals and AI tools, accessible from Welcome screen "Take a Tour" link
 - **Guest Walkthrough**: `guest-walkthrough.tsx` — 6-step conversational AI-style walkthrough for first-time guests (shown once, tracked via AsyncStorage). Accessible via "Browse as Guest" on welcome screen.
 - **Key files**:
   - `constants/data.ts` — All Pals, missions, pricing constants
   - `constants/colors.ts` — Brand color palette with shadows
-  - `constants/images.ts` — Character avatar image mapping
+  - `constants/images.ts` — Character avatar image mapping (PAL_IMAGES, PAL_PROFILES, PAL_STANDING, PAL_HEADSHOTS, BRAND_LOGO)
+  - `constants/tools.ts` — 26 AI tool definitions with fields, credit costs, Pal assignments
   - `contexts/CartContext.tsx` — Cart state management
-  - `contexts/AuthContext.tsx` — Auth state management (guest/registered/member)
+  - `contexts/AuthContext.tsx` — Auth state management (guest/registered/member) with updateCredits
+  - `services/ai.ts` — AI service layer (SSE streaming for generate + chat)
+  - `hooks/useAIGeneration.ts` — React hook for AI generation state management
+  - `components/AIToolScreen.tsx` — Reusable AI tool screen with input form, streaming output, copy/share/regenerate
   - `lib/api.ts` — API URL helper
 
 ### `lib/db` (`@workspace/db`)
@@ -105,6 +115,9 @@ Database layer using Drizzle ORM with PostgreSQL. Exports a Drizzle client insta
 - `src/schema/index.ts` — barrel re-export of all models
 - `src/schema/projectRequests.ts` — project_requests table (fullName, email, palCategory, missionId, packageDetails, estimatedTotal, etc.)
 - `src/schema/users.ts` — users table (email, passwordHash, fullName, companyName, role, credits, avatarUrl)
+- `src/schema/toolResults.ts` — tool_results table (userId, toolId, palId, inputs, output, creditsCost)
+- `src/schema/conversations.ts` — conversations table (title)
+- `src/schema/messages.ts` — messages table (conversationId, role, content)
 - `drizzle.config.ts` — Drizzle Kit config (requires `DATABASE_URL`, automatically provided by Replit)
 - Exports: `.` (pool, db, schema), `./schema` (schema only)
 

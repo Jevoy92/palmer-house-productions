@@ -1,6 +1,6 @@
 import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import {
   Alert,
   Pressable,
@@ -12,19 +12,26 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
 import { useAuth } from "@/contexts/AuthContext";
+import { TOOLS, getToolsForPal, ToolDefinition } from "@/constants/tools";
+import { PalId, PALS } from "@/constants/data";
 
 interface ToolCardProps {
-  icon: string;
-  title: string;
-  description: string;
-  color: string;
-  bg: string;
-  credits: number;
+  tool: ToolDefinition;
   locked?: boolean;
   onPress: () => void;
 }
 
-function ToolCard({ icon, title, description, color, bg, credits, locked, onPress }: ToolCardProps) {
+const PAL_COLORS: Record<PalId, { main: string; light: string }> = {
+  reel: { main: Colors.pal.reel, light: Colors.pal.reelLight },
+  spotlight: { main: Colors.pal.spotlight, light: Colors.pal.spotlightLight },
+  evergreen: { main: Colors.pal.evergreen, light: Colors.pal.evergreenLight },
+  system: { main: Colors.pal.system, light: Colors.pal.systemLight },
+};
+
+function ToolCard({ tool, locked, onPress }: ToolCardProps) {
+  const palColor = PAL_COLORS[tool.palId];
+  const isFree = tool.freeForAll;
+
   return (
     <Pressable
       style={[styles.toolCard, locked && styles.toolCardLocked]}
@@ -32,22 +39,22 @@ function ToolCard({ icon, title, description, color, bg, credits, locked, onPres
       disabled={locked}
     >
       <View style={styles.toolCardHeader}>
-        <View style={[styles.toolIcon, { backgroundColor: bg }]}>
-          <Feather name={icon as any} size={20} color={color} />
+        <View style={[styles.toolIcon, { backgroundColor: palColor.light }]}>
+          <Feather name={tool.icon as any} size={20} color={palColor.main} />
         </View>
-        <View style={[styles.creditBadge, credits === 0 && styles.creditBadgeFree]}>
-          {credits === 0 ? (
+        <View style={[styles.creditBadge, isFree && styles.creditBadgeFree]}>
+          {isFree ? (
             <Text style={[styles.creditText, styles.creditTextFree]}>FREE</Text>
           ) : (
             <>
               <Feather name="zap" size={11} color={Colors.light.primary} />
-              <Text style={styles.creditText}>{credits}</Text>
+              <Text style={styles.creditText}>{tool.creditCost}</Text>
             </>
           )}
         </View>
       </View>
-      <Text style={styles.toolTitle}>{title}</Text>
-      <Text style={styles.toolDesc}>{description}</Text>
+      <Text style={styles.toolTitle}>{tool.name}</Text>
+      <Text style={styles.toolDesc} numberOfLines={2}>{tool.description}</Text>
       {locked && (
         <View style={styles.lockedOverlay}>
           <Feather name="lock" size={14} color={Colors.light.textTertiary} />
@@ -58,88 +65,24 @@ function ToolCard({ icon, title, description, color, bg, credits, locked, onPres
   );
 }
 
-const TOOLS = [
-  {
-    icon: "edit-3",
-    title: "Script Writer",
-    description: "Generate video scripts for any platform or format",
-    color: Colors.pal.reel,
-    bg: Colors.pal.reelLight,
-    credits: 1,
-    route: "/tools/script-writer",
-  },
-  {
-    icon: "calendar",
-    title: "Content Planner",
-    description: "Plan a month of strategic content in minutes",
-    color: Colors.pal.system,
-    bg: Colors.pal.systemLight,
-    credits: 2,
-    route: "/tools/content-planner",
-  },
-  {
-    icon: "trending-up",
-    title: "What to Post",
-    description: "Get personalized recommendations for your next post",
-    color: Colors.pal.spotlight,
-    bg: Colors.pal.spotlightLight,
-    credits: 1,
-    route: "/tools/what-to-post",
-  },
-  {
-    icon: "message-circle",
-    title: "Hook Generator",
-    description: "Create attention-grabbing hooks for your videos",
-    color: Colors.pal.evergreen,
-    bg: Colors.pal.evergreenLight,
-    credits: 1,
-    route: "/tools/hook-generator",
-  },
-  {
-    icon: "file-text",
-    title: "Brief Builder",
-    description: "Create a production brief for your next project",
-    color: "#3B82F6",
-    bg: "#EFF6FF",
-    credits: 2,
-    route: "/tools/brief-builder",
-  },
-  {
-    icon: "bar-chart-2",
-    title: "Content Audit",
-    description: "Analyze your existing content and find gaps",
-    color: "#EC4899",
-    bg: "#FDF2F8",
-    credits: 3,
-    route: "/tools/content-audit",
-  },
-  {
-    icon: "video",
-    title: "Teleprompter",
-    description: "Record yourself with your script scrolling on screen",
-    color: "#059669",
-    bg: "#ECFDF5",
-    credits: 0,
-    route: "/tools/teleprompter",
-  },
-  {
-    icon: "check-square",
-    title: "Visibility Checklist",
-    description: "Your personalized checklist of must-have videos",
-    color: Colors.pal.reel,
-    bg: Colors.pal.reelLight,
-    credits: 1,
-    route: "/tools/visibility-checklist",
-  },
+const PAL_TABS: { id: "all" | PalId; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "reel", label: "Reel" },
+  { id: "spotlight", label: "Spotlight" },
+  { id: "evergreen", label: "Evergreen" },
+  { id: "system", label: "System" },
 ];
 
 export default function ToolsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { user, isGuest } = useAuth();
+  const [activeTab, setActiveTab] = useState<"all" | PalId>("all");
 
   const credits = user?.credits ?? 3;
   const isLimited = isGuest;
+
+  const filteredTools = activeTab === "all" ? TOOLS : getToolsForPal(activeTab);
 
   return (
     <ScrollView
@@ -154,7 +97,7 @@ export default function ToolsScreen() {
       <Text style={styles.screenTitle}>Tools</Text>
       <Text style={styles.headline}>AI content assistant</Text>
       <Text style={styles.subtitle}>
-        Powered tools to plan, write, and strategize your video content.
+        {TOOLS.length} AI-powered tools to plan, write, and strategize your video content.
       </Text>
 
       <View style={styles.creditsCard}>
@@ -183,35 +126,53 @@ export default function ToolsScreen() {
         )}
       </View>
 
-      <View style={styles.tierInfo}>
-        <View style={styles.tierRow}>
-          <View style={[styles.tierDot, { backgroundColor: Colors.light.textTertiary }]} />
-          <Text style={styles.tierText}>Guest — 3 free credits</Text>
-        </View>
-        <View style={styles.tierRow}>
-          <View style={[styles.tierDot, { backgroundColor: Colors.light.primary }]} />
-          <Text style={styles.tierText}>Registered — 10 credits/month</Text>
-        </View>
-        <View style={styles.tierRow}>
-          <View style={[styles.tierDot, { backgroundColor: Colors.pal.evergreen }]} />
-          <Text style={styles.tierText}>Member — 50 credits/month + portal</Text>
-        </View>
-      </View>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={styles.tabsContainer}
+        style={styles.tabsScroll}
+      >
+        {PAL_TABS.map((tab) => {
+          const isActive = activeTab === tab.id;
+          const color = tab.id !== "all" ? PAL_COLORS[tab.id].main : Colors.light.primary;
+          return (
+            <Pressable
+              key={tab.id}
+              style={[
+                styles.tab,
+                isActive && { backgroundColor: color },
+              ]}
+              onPress={() => setActiveTab(tab.id)}
+            >
+              <Text
+                style={[
+                  styles.tabText,
+                  isActive && styles.tabTextActive,
+                ]}
+              >
+                {tab.label}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </ScrollView>
 
-      <Text style={styles.sectionTitle}>All Tools</Text>
+      {activeTab !== "all" && (
+        <View style={styles.palInfo}>
+          <View style={[styles.palDot, { backgroundColor: PAL_COLORS[activeTab].main }]} />
+          <Text style={styles.palInfoText}>
+            {PALS[activeTab].name} — {PALS[activeTab].tagline}
+          </Text>
+        </View>
+      )}
 
       <View style={styles.toolsGrid}>
-        {TOOLS.map((tool, index) => (
+        {filteredTools.map((tool, index) => (
           <ToolCard
-            key={tool.title}
-            icon={tool.icon}
-            title={tool.title}
-            description={tool.description}
-            color={tool.color}
-            bg={tool.bg}
-            credits={tool.credits}
-            locked={isLimited && index > 1}
-            onPress={() => router.push(tool.route as any)}
+            key={tool.id}
+            tool={tool}
+            locked={isLimited && !tool.freeForAll && index > 1}
+            onPress={() => router.push(`/tools/${tool.id}` as any)}
           />
         ))}
       </View>
@@ -249,7 +210,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: 16,
+    marginBottom: 20,
   },
   creditsLeft: {
     flexDirection: "row",
@@ -293,33 +254,43 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: Colors.light.primary,
   },
-  tierInfo: {
-    backgroundColor: Colors.light.backgroundSecondary,
-    borderRadius: 14,
-    padding: 16,
-    gap: 10,
-    marginBottom: 28,
+  tabsScroll: {
+    marginBottom: 16,
+    marginHorizontal: -20,
   },
-  tierRow: {
+  tabsContainer: {
+    paddingHorizontal: 20,
+    gap: 8,
+  },
+  tab: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 20,
+    backgroundColor: Colors.light.backgroundSecondary,
+  },
+  tabText: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 13,
+    color: Colors.light.textSecondary,
+  },
+  tabTextActive: {
+    color: "#fff",
+  },
+  palInfo: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 10,
+    gap: 8,
+    marginBottom: 16,
   },
-  tierDot: {
+  palDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
   },
-  tierText: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 14,
+  palInfoText: {
+    fontFamily: "Inter_500Medium",
+    fontSize: 13,
     color: Colors.light.textSecondary,
-  },
-  sectionTitle: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 17,
-    color: Colors.light.text,
-    marginBottom: 16,
   },
   toolsGrid: {
     flexDirection: "row",

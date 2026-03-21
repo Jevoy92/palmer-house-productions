@@ -71,7 +71,9 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
 
-  const greeting = user ? `Hey, ${user.fullName.split(" ")[0]}` : "Palmer House";
+  const hour = new Date().getHours();
+  const timeGreeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  const greeting = user ? `${timeGreeting}, ${user.fullName.split(" ")[0]}` : timeGreeting;
 
   return (
     <ScrollView

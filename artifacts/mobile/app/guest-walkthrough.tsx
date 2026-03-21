@@ -5,6 +5,7 @@ import React, { useRef, useState } from "react";
 import {
   Dimensions,
   FlatList,
+  Image,
   Pressable,
   StyleSheet,
   Text,
@@ -13,9 +14,25 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
+import { PAL_PROFILES } from "@/constants/images";
 
 const WALKTHROUGH_COMPLETE_KEY = "@palmer_walkthrough_complete";
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
+
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  return "Good evening";
+}
+
+function getSeasonalHint(): string {
+  const month = new Date().getMonth();
+  if (month >= 0 && month <= 2) return "Q1 is the perfect time to get ahead on content before your competitors wake up.";
+  if (month >= 3 && month <= 5) return "Spring is when businesses ramp up marketing — now's the time to build your content engine.";
+  if (month >= 6 && month <= 8) return "Summer is prime time for behind-the-scenes content while energy is high.";
+  return "End-of-year is perfect for planning next year's content strategy and getting a head start.";
+}
 
 interface WalkthroughStep {
   id: string;
@@ -26,6 +43,7 @@ interface WalkthroughStep {
   title: string;
   body: string;
   tip: string;
+  palId?: "reel" | "spotlight" | "system" | "evergreen";
 }
 
 const STEPS: WalkthroughStep[] = [
@@ -34,50 +52,64 @@ const STEPS: WalkthroughStep[] = [
     icon: "film",
     iconBg: Colors.light.primaryLight,
     iconColor: Colors.light.primary,
-    greeting: "Hey there! 👋",
-    title: "Welcome to Palmer House",
-    body: "I'm your guide to getting the most out of this app. Palmer House Productions helps businesses create video content systems that actually drive results — not just pretty footage.",
-    tip: "Think of this app as your video strategy partner, available anytime you need it.",
+    greeting: `${getGreeting()}! 👋`,
+    title: "What are we working on?",
+    body: "This app helps you figure out exactly what kind of video content your business needs — and builds the plan for you. No guesswork, no fluff.",
+    tip: getSeasonalHint(),
   },
   {
-    id: "explore",
-    icon: "compass",
+    id: "visibility",
+    icon: "smartphone",
     iconBg: Colors.pal.reelLight,
     iconColor: Colors.pal.reel,
-    greeting: "Let's explore! 🎬",
-    title: "Browse Video Services",
-    body: "We've organized our services into four categories called Pals — Reel, Spotlight, System, and Evergreen. Each one solves a different business problem with video.",
-    tip: "Start by browsing the Pals tab to find which video type matches your biggest challenge right now.",
+    greeting: "Need more visibility? 📱",
+    title: "People don't know you exist yet",
+    body: "If your business isn't showing up on social, you're invisible. Reel Pal builds a visibility system with short-form content — services reels, proof videos, day-in-the-life content. Think of it as your About You video, your Services video, the basics.",
+    tip: "Most businesses only have 5 videos planned. What if you had 50? That's what a system looks like.",
+    palId: "reel",
   },
   {
-    id: "build",
-    icon: "package",
-    iconBg: Colors.pal.systemLight,
-    iconColor: Colors.pal.system,
-    greeting: "Make it yours! 📦",
-    title: "Build Custom Packages",
-    body: "Found something you like? Use the Build tab to customize your video package — pick your sessions, add extras, and see pricing instantly. No surprises, no back-and-forth.",
-    tip: "You can mix and match services from different Pals to create the perfect package for your goals.",
-  },
-  {
-    id: "ai-tools",
-    icon: "edit-3",
-    iconBg: Colors.pal.evergreenLight,
-    iconColor: Colors.pal.evergreen,
-    greeting: "Your AI toolkit! ✨",
-    title: "AI-Powered Content Tools",
-    body: "Access free AI tools to plan your content strategy — from script writing and hook generation to content audits and posting schedules. It's like having a creative director on call.",
-    tip: "Try the Script Writer tool first — it'll give you a feel for how AI can supercharge your content.",
-  },
-  {
-    id: "tracking",
-    icon: "clipboard",
+    id: "trust",
+    icon: "film",
     iconBg: Colors.pal.spotlightLight,
     iconColor: Colors.pal.spotlight,
-    greeting: "Stay on track! 📋",
-    title: "Track Your Projects",
-    body: "Once you're a member, you can track your active projects, review deliverables, and stay in the loop on production timelines — all from the app. No more email chains or missed updates.",
-    tip: "Create an account when you're ready to unlock project tracking and keep everything organized in one place.",
+    greeting: "Need to build trust? 🎬",
+    title: "People know you, but don't trust you yet",
+    body: "Spotlight Pal creates premium trust assets — founder stories, testimonials, brand films. The kind of content that makes 'trust me' unnecessary because your clients sell for you.",
+    tip: "One strong testimonial video can outperform months of social posting. Start with your best client story.",
+    palId: "spotlight",
+  },
+  {
+    id: "systems",
+    icon: "settings",
+    iconBg: Colors.pal.systemLight,
+    iconColor: Colors.pal.system,
+    greeting: "Hired someone recently? ⚙️",
+    title: "Stop repeating yourself",
+    body: "System Pal builds internal video systems — onboarding, SOPs, training. Hired someone and need to get them up to speed fast? Stop explaining the same thing for the 47th time.",
+    tip: "The average company spends 30+ hours per new hire on repeated training. One video library eliminates that forever.",
+    palId: "system",
+  },
+  {
+    id: "authority",
+    icon: "play-circle",
+    iconBg: Colors.pal.evergreenLight,
+    iconColor: Colors.pal.evergreen,
+    greeting: "Ready to be the authority? 🎙️",
+    title: "Content that compounds over time",
+    body: "Evergreen Pal builds long-form authority content — podcasts, webinars, deep dives. Not content that expires in 24 hours, but videos that work harder the longer they exist.",
+    tip: "A single 10-minute FAQ video can answer your top 5 questions forever — and it works 24/7.",
+    palId: "evergreen",
+  },
+  {
+    id: "tools",
+    icon: "edit-3",
+    iconBg: Colors.light.primaryLight,
+    iconColor: Colors.light.primary,
+    greeting: "One more thing... ✨",
+    title: "AI tools to get you started",
+    body: "Use the Script Writer to draft your first video script, then use the Teleprompter to film it yourself — your words scroll right on screen while you record. Plus content planners, hook generators, and more.",
+    tip: "Try the Script Writer first. Draft a script, then hit record with the teleprompter. It's that quick.",
   },
   {
     id: "ready",
@@ -85,9 +117,9 @@ const STEPS: WalkthroughStep[] = [
     iconBg: Colors.light.primaryLight,
     iconColor: Colors.light.primary,
     greeting: "You're all set! 🚀",
-    title: "Ready to Explore",
-    body: "That's the quick tour! Browse everything at your own pace. When you're ready to get started for real, create an account to save your packages and track projects.",
-    tip: "Everything you see as a guest is fully available — no hidden paywalls or locked features.",
+    title: "Ready to explore",
+    body: "Browse everything at your own pace. When you find a Pal that matches your biggest challenge right now, you can build a custom package and see pricing instantly. No surprises, no back-and-forth.",
+    tip: "Everything you see as a guest is fully available. Create an account when you're ready to save your progress and track projects.",
   },
 ];
 
@@ -125,12 +157,25 @@ export default function GuestWalkthroughScreen() {
     }
   };
 
+  const currentStep = STEPS[currentIndex];
+
   const renderStep = ({ item }: { item: WalkthroughStep }) => (
     <View style={[styles.stepContainer, { width: SCREEN_WIDTH }]}>
       <View style={styles.stepContent}>
-        <View style={[styles.iconWrap, { backgroundColor: item.iconBg }]}>
-          <Feather name={item.icon} size={32} color={item.iconColor} />
-        </View>
+        {item.palId ? (
+          <View style={styles.palAvatars}>
+            <View style={[styles.avatarWrap, { borderColor: item.iconBg }]}>
+              <Image source={PAL_PROFILES[item.palId].male} style={styles.avatarImg} />
+            </View>
+            <View style={[styles.avatarWrap, styles.avatarOverlap, { borderColor: item.iconBg }]}>
+              <Image source={PAL_PROFILES[item.palId].female} style={styles.avatarImg} />
+            </View>
+          </View>
+        ) : (
+          <View style={[styles.iconWrap, { backgroundColor: item.iconBg }]}>
+            <Feather name={item.icon} size={32} color={item.iconColor} />
+          </View>
+        )}
 
         <View style={styles.chatBubble}>
           <Text style={styles.greeting}>{item.greeting}</Text>
@@ -167,7 +212,9 @@ export default function GuestWalkthroughScreen() {
             key={index}
             style={[
               styles.progressSegment,
-              index <= currentIndex && styles.progressSegmentActive,
+              index <= currentIndex && {
+                backgroundColor: currentStep.iconColor,
+              },
             ]}
           />
         ))}
@@ -189,11 +236,11 @@ export default function GuestWalkthroughScreen() {
 
       <View style={styles.footer}>
         <Pressable
-          style={[styles.nextBtn, isLastStep && styles.nextBtnFinal]}
+          style={[styles.nextBtn, { backgroundColor: currentStep.iconColor }]}
           onPress={goNext}
         >
           <Text style={styles.nextBtnText}>
-            {isLastStep ? "Get Started" : "Next"}
+            {isLastStep ? "Let's Go" : "Next"}
           </Text>
           {!isLastStep && <Feather name="arrow-right" size={18} color="#fff" />}
         </Pressable>
@@ -242,9 +289,6 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     backgroundColor: Colors.light.backgroundTertiary,
   },
-  progressSegmentActive: {
-    backgroundColor: Colors.light.primary,
-  },
   flatList: {
     flex: 1,
   },
@@ -263,6 +307,26 @@ const styles = StyleSheet.create({
     borderRadius: 22,
     alignItems: "center",
     justifyContent: "center",
+  },
+  palAvatars: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  avatarWrap: {
+    width: 72,
+    height: 72,
+    borderRadius: 36,
+    borderWidth: 4,
+    overflow: "hidden",
+  },
+  avatarOverlap: {
+    marginLeft: -16,
+  },
+  avatarImg: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 36,
   },
   chatBubble: {
     backgroundColor: Colors.light.backgroundSecondary,
@@ -311,16 +375,12 @@ const styles = StyleSheet.create({
     paddingTop: 16,
   },
   nextBtn: {
-    backgroundColor: Colors.light.primary,
     paddingVertical: 16,
     borderRadius: 14,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 8,
-  },
-  nextBtnFinal: {
-    backgroundColor: Colors.light.primary,
   },
   nextBtnText: {
     fontFamily: "Inter_600SemiBold",

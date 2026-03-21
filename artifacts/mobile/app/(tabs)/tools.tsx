@@ -2,6 +2,7 @@ import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
 import {
+  Alert,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -34,9 +35,15 @@ function ToolCard({ icon, title, description, color, bg, credits, locked, onPres
         <View style={[styles.toolIcon, { backgroundColor: bg }]}>
           <Feather name={icon as any} size={20} color={color} />
         </View>
-        <View style={styles.creditBadge}>
-          <Feather name="zap" size={11} color={Colors.light.primary} />
-          <Text style={styles.creditText}>{credits}</Text>
+        <View style={[styles.creditBadge, credits === 0 && styles.creditBadgeFree]}>
+          {credits === 0 ? (
+            <Text style={[styles.creditText, styles.creditTextFree]}>FREE</Text>
+          ) : (
+            <>
+              <Feather name="zap" size={11} color={Colors.light.primary} />
+              <Text style={styles.creditText}>{credits}</Text>
+            </>
+          )}
         </View>
       </View>
       <Text style={styles.toolTitle}>{title}</Text>
@@ -106,6 +113,24 @@ const TOOLS = [
     credits: 3,
     route: "/tools/content-audit",
   },
+  {
+    icon: "video",
+    title: "Teleprompter",
+    description: "Record yourself with your script scrolling on screen",
+    color: "#059669",
+    bg: "#ECFDF5",
+    credits: 0,
+    route: "/tools/teleprompter",
+  },
+  {
+    icon: "check-square",
+    title: "Visibility Checklist",
+    description: "Your personalized checklist of must-have videos",
+    color: Colors.pal.reel,
+    bg: Colors.pal.reelLight,
+    credits: 1,
+    route: "/tools/visibility-checklist",
+  },
 ];
 
 export default function ToolsScreen() {
@@ -140,12 +165,20 @@ export default function ToolsScreen() {
             <Text style={styles.creditsCount}>{credits} credits</Text>
           </View>
         </View>
-        {isLimited && (
+        {isLimited ? (
           <Pressable
             style={styles.upgradeBtn}
             onPress={() => router.push("/auth/register")}
           >
             <Text style={styles.upgradeBtnText}>Sign Up for More</Text>
+          </Pressable>
+        ) : (
+          <Pressable
+            style={styles.buyCreditsBtn}
+            onPress={() => Alert.alert("Buy Credits", "Credit purchasing will be available soon via the App Store. Stay tuned!")}
+          >
+            <Feather name="plus" size={14} color={Colors.light.primary} />
+            <Text style={styles.buyCreditsText}>Buy Credits</Text>
           </Pressable>
         )}
       </View>
@@ -244,6 +277,22 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "#fff",
   },
+  buyCreditsBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    backgroundColor: "#fff",
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: Colors.light.primary + "30",
+  },
+  buyCreditsText: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 12,
+    color: Colors.light.primary,
+  },
   tierInfo: {
     backgroundColor: Colors.light.backgroundSecondary,
     borderRadius: 14,
@@ -312,6 +361,12 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_600SemiBold",
     fontSize: 11,
     color: Colors.light.primary,
+  },
+  creditBadgeFree: {
+    backgroundColor: "#ECFDF5",
+  },
+  creditTextFree: {
+    color: "#059669",
   },
   toolTitle: {
     fontFamily: "Inter_600SemiBold",

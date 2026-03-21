@@ -13,6 +13,8 @@ import Colors from "@/constants/colors";
 import { PALS, PAL_ORDER, PalId } from "@/constants/data";
 import { useAuth } from "@/contexts/AuthContext";
 import { useActivePal } from "@/contexts/ActivePalContext";
+import { useUsage } from "@/contexts/UsageContext";
+import { getTierForCreditsUsed } from "@/constants/gamification";
 
 type FeatherIcon = ComponentProps<typeof Feather>["name"];
 
@@ -90,6 +92,8 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { user, isGuest } = useAuth();
   const { activePal, setActivePal, accentColor } = useActivePal();
+  const { stats } = useUsage();
+  const tier = getTierForCreditsUsed(stats.totalCreditsUsed);
 
   const hour = new Date().getHours();
   const timeGreeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
@@ -158,9 +162,12 @@ export default function HomeScreen() {
         <Text style={styles.creditsText}>
           <Text style={[styles.creditsCount, { color: accentColor }]}>{credits}</Text> credits
         </Text>
+        <View style={[styles.tierBadge, { borderColor: tier.color + "40" }]}>
+          <Feather name={tier.icon as any} size={10} color={tier.color} />
+          <Text style={[styles.tierBadgeText, { color: tier.color }]}>{tier.label.split(" ")[1]}</Text>
+        </View>
         <Pressable onPress={() => router.push("/(tabs)/tools")} style={styles.creditsLink}>
-          <Text style={[styles.creditsLinkText, { color: accentColor }]}>Use tools</Text>
-          <Feather name="arrow-right" size={12} color={accentColor} />
+          <Feather name="arrow-right" size={14} color={accentColor} />
         </Pressable>
       </View>
 
@@ -340,14 +347,21 @@ const styles = StyleSheet.create({
     fontFamily: "Inter_600SemiBold",
     fontSize: 14,
   },
-  creditsLink: {
+  tierBadge: {
     flexDirection: "row",
     alignItems: "center",
     gap: 3,
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+    borderWidth: 1,
   },
-  creditsLinkText: {
+  tierBadgeText: {
     fontFamily: "Inter_500Medium",
-    fontSize: 13,
+    fontSize: 10,
+  },
+  creditsLink: {
+    padding: 4,
   },
   welcomeSection: {
     paddingHorizontal: 20,

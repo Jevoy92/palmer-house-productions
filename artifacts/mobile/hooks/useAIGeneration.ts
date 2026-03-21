@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { generateWithTool, chatWithPal } from "@/services/ai";
 import { useAuth } from "@/contexts/AuthContext";
+import { useUsage } from "@/contexts/UsageContext";
 
 interface UseAIGenerationReturn {
   output: string;
@@ -22,6 +23,7 @@ export function useAIGeneration(): UseAIGenerationReturn {
   const [creditsRemaining, setCreditsRemaining] = useState<number | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
   const { user, updateCredits } = useAuth();
+  const { recordUsage } = useUsage();
 
   const generate = useCallback(
     async (toolId: string, palId: string | null, inputs: Record<string, string>) => {
@@ -52,6 +54,9 @@ export function useAIGeneration(): UseAIGenerationReturn {
                 setCreditsRemaining(data.creditsRemaining);
                 updateCredits(data.creditsRemaining);
               }
+              if (data.creditsCost > 0) {
+                recordUsage(toolId, data.creditsCost);
+              }
             },
             onError: (err) => {
               setError(err);
@@ -67,7 +72,7 @@ export function useAIGeneration(): UseAIGenerationReturn {
         }
       }
     },
-    [user, updateCredits]
+    [user, updateCredits, recordUsage]
   );
 
   const chat = useCallback(

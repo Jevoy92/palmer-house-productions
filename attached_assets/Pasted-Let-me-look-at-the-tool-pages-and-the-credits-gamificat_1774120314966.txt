@@ -1,0 +1,79 @@
+Let me look at the tool pages and the credits/gamification logic.
+
+Now I have a complete picture. Here's how everything works:
+
+---
+
+## How the AI Tools & Credits/Points System Works
+
+### The 6 AI Tools
+
+Each tool lives at `/tools/` inside the dashboard. They all follow the same pattern:
+
+1. **User fills out a form** (topic, industry, audience, etc.)
+2. **Frontend calls** `supabase.functions.invoke('generate-content', { body: { toolType, inputs } })`
+3. **Edge function** validates JWT, checks credits, calls the Lovable AI Gateway with a tool-specific system prompt, consumes credits on success, returns the AI output
+
+| Tool | What It Does | DB Key |
+|------|-------------|--------|
+| **Series Builder** | Turns one topic into a multi-episode video plan with hooks, CTAs, and scheduling | `series_builder` |
+| **Persona Generator** | Creates audience persona + brand voice guide from business details | `persona_generator` |
+| **Production Assistant** | Generates shot lists, equipment recs, lighting/audio plans | `production_assistant` |
+| **Content Maximizer** | Repurposing plan across Instagram, TikTok, YouTube, LinkedIn, etc. | `content_maximizer` |
+| **Engagement Responder** | Drafts on-brand comment/DM responses (3 tones per input) | `engagement_responder` |
+| **Content System Builder** | Full content system: pillars, calendar, workflow, KPIs, 90-day roadmap | `content_system_builder` |
+
+### Credits System
+
+**How credits work:**
+- Each user gets a `user_credits` row with `balance` and `monthly_allowance`
+- New users start with **10 credits** (Free tier) via the `handle_new_user` trigger
+- Credits auto-refill monthly via `refill_monthly_credits()` DB function
+- Each tool use costs credits (stored in `tool_costs` table, fallback = 5)
+
+**Flow per generation:**
+1. Edge function calls `check_credits(user_id, required_amount)` -- returns boolean
+2. If insufficient, returns **402** with "Insufficient credits"
+3. If OK, runs AI generation
+4. On success, calls `consume_credits(user_id, amount, tool_name, metadata)` which:
+   - Deducts from `user_credits.balance` (row-locked to prevent races)
+   - Inserts a `credit_transactions` record (negative amount, type = 'usage')
+
+**Credit tiers by subscription:**
+- **Free**: 10 credits/month (Series Builder only)
+- **Core** ($49/mo): 200 credits/month (all tools)
+- **Guided** ($149/mo): 500 credits/month (all tools + advanced)
+
+**The CreditsBalance widget** (top nav) shows remaining credits with a popover showing usage percentage, days until next refill, and a "Top Up" button (coming soon).
+
+### Achievement/Points System (Gamification)
+
+Points are tracked implicitly through **total credits consumed** (not a separate points currency). The `DashboardStats` sidebar calculates `totalCreditsUsed` from `credit_transactions` where `transaction_type = 'usage'`.
+
+**Achievement Tiers** (from `src/lib/gamification.ts`):
+
+| Tier | Credits Used | Icon |
+|------|-------------|------|
+| Content Explorer | 0-10 | Sparkles |
+| Content Creator | 11-50 | Zap |
+| Content Master | 51-100 | Trophy |
+| Content Pro | 101-200 | Gem |
+| Content Legend | 201+ | Crown |
+
+**Other gamification signals:**
+- **Activity Streak**: Consecutive days with tool usage (calculated client-side from `credit_transactions` dates)
+- **Tools Mastered**: Count of tools used 5+ times
+- **Video Checklist Achievements**: DB trigger `check_and_unlock_achievements` fires on checklist updates and unlocks badges at 25%, 50%, 75%, 100% system completion + per-Pal completion badges (stored in `user_achievements` table)
+
+### The Dashboard Stats Sidebar
+
+Shows all of this together:
+- User avatar with tier badge overlay
+- Greeting + streak count
+- 7-day activity chart
+- Credits Used / Tools Mastered / Achievement Tier
+- Top 3 most-used tools
+
+Test an AI tool end-to-end
+Fix tool name mismatches in stats
+Add tier progress bar

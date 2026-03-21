@@ -106,6 +106,8 @@ Palmer House Productions — AI-powered content assistant mobile app for busines
   - `services/ai.ts` — AI service layer (SSE streaming for generate + chat)
   - `hooks/useAIGeneration.ts` — React hook for AI generation state management
   - `components/AIToolScreen.tsx` — Reusable AI tool screen with input form, streaming output, copy/share/regenerate
+  - `constants/gamification.ts` — Achievement tier definitions (Explorer→Creator→Master→Pro→Legend), tier progress calculation
+  - `contexts/UsageContext.tsx` — Tracks total credits used, generations, tools used per user (AsyncStorage-persisted)
   - `lib/api.ts` — API URL helper
 
 ### `lib/db` (`@workspace/db`)

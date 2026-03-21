@@ -18,6 +18,7 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { CartProvider } from "@/contexts/CartContext";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ActivePalProvider } from "@/contexts/ActivePalContext";
+import { UsageProvider } from "@/contexts/UsageContext";
 import Colors from "@/constants/colors";
 
 setBaseUrl(`https://${process.env.EXPO_PUBLIC_DOMAIN}`);
@@ -141,6 +142,7 @@ export default function RootLayout() {
         <QueryClientProvider client={queryClient}>
           <AuthProvider>
             <ActivePalProvider>
+              <UsageProvider>
               <CartProvider>
                 <GestureHandlerRootView>
                   <KeyboardProvider>
@@ -148,6 +150,7 @@ export default function RootLayout() {
                   </KeyboardProvider>
                 </GestureHandlerRootView>
               </CartProvider>
+              </UsageProvider>
             </ActivePalProvider>
           </AuthProvider>
         </QueryClientProvider>

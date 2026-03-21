@@ -21,12 +21,37 @@ import { PAL_PROFILES } from "@/constants/images";
 import { useActivePal } from "@/contexts/ActivePalContext";
 
 const { width } = Dimensions.get("window");
+const CARD_WIDTH = (width - 50) / 2;
 
 const PAL_META: Record<PalId, { color: string; bg: string; icon: string }> = {
   reel: { color: Colors.pal.reel, bg: Colors.pal.reelLight, icon: "smartphone" },
   spotlight: { color: Colors.pal.spotlight, bg: Colors.pal.spotlightLight, icon: "film" },
   system: { color: Colors.pal.system, bg: Colors.pal.systemLight, icon: "settings" },
   evergreen: { color: Colors.pal.evergreen, bg: Colors.pal.evergreenLight, icon: "play-circle" },
+};
+
+const MISSION_ICONS: Record<string, string> = {
+  "reel-services": "briefcase",
+  "reel-objection": "shield",
+  "reel-proof": "award",
+  "reel-day-in-life": "sun",
+  "reel-pov": "zap",
+  "reel-momentum": "calendar",
+  "spotlight-brand-presence": "star",
+  "spotlight-proof-builder": "thumbs-up",
+  "spotlight-offer-clarity": "target",
+  "spotlight-authority": "mic",
+  "spotlight-culture": "users",
+  "system-onboarding": "user-plus",
+  "system-training": "book-open",
+  "system-sop": "clipboard",
+  "system-sales-enablement": "trending-up",
+  "system-internal-comms": "message-circle",
+  "evergreen-hero": "play-circle",
+  "evergreen-series": "layers",
+  "evergreen-podcast-launch": "headphones",
+  "evergreen-course": "monitor",
+  "evergreen-webinar": "video",
 };
 
 function FilterChip({
@@ -69,31 +94,25 @@ function MissionCard({
 }) {
   const router = useRouter();
   const meta = PAL_META[palId];
+  const iconName = MISSION_ICONS[mission.id] || "video";
 
   return (
     <Pressable
       style={styles.missionCard}
       onPress={() => router.push(`/mission/${palId}/${mission.id}`)}
     >
-      <View style={styles.missionTop}>
-        <View style={[styles.missionDot, { backgroundColor: meta.color }]} />
-        <Text style={styles.missionPalLabel}>{PALS[palId].name}</Text>
+      <View style={[styles.missionIcon, { backgroundColor: meta.bg }]}>
+        <Feather name={iconName as any} size={18} color={meta.color} />
       </View>
-      <Text style={styles.missionName}>{mission.name}</Text>
-      <Text style={styles.missionProblem} numberOfLines={2}>
-        {mission.problemStatement}
-      </Text>
-      <View style={styles.missionFooter}>
-        <Text style={[styles.missionCta, { color: meta.color }]}>View Details</Text>
-        <Feather name="arrow-right" size={14} color={meta.color} />
-      </View>
+      <Text style={styles.missionName} numberOfLines={2}>{mission.name}</Text>
+      <Feather name="arrow-right" size={14} color={meta.color} style={styles.missionArrow} />
     </Pressable>
   );
 }
 
 export default function PalsScreen() {
   const router = useRouter();
-  const { activePal, setActivePal, accentColor } = useActivePal();
+  const { activePal, setActivePal } = useActivePal();
   const activeFilter: PalId | "all" = activePal ?? "all";
   const filteredPals = activeFilter === "all" ? PAL_ORDER : [activeFilter];
 
@@ -105,12 +124,12 @@ export default function PalsScreen() {
     >
       <View style={styles.intro}>
         <Text style={styles.introTitle}>
-          {activePal ? PALS[activePal].name : "Find your fit"}
+          {activePal ? PALS[activePal].name : "Explore"}
         </Text>
         <Text style={styles.introSubtitle}>
           {activePal
-            ? PALS[activePal].description
-            : "Each Pal category targets a specific business challenge. Browse missions to build your package."}
+            ? PALS[activePal].tagline
+            : "Browse video packs by category."}
         </Text>
       </View>
 
@@ -159,7 +178,7 @@ export default function PalsScreen() {
               </View>
               <View style={styles.palHeaderText}>
                 <Text style={styles.palName}>{pal.name}</Text>
-                <Text style={styles.palTagline}>{pal.displayName} · {pal.tagline}</Text>
+                <Text style={styles.palTagline}>{pal.tagline}</Text>
               </View>
               <View style={styles.palArrow}>
                 <Feather name="chevron-right" size={18} color={Colors.light.textTertiary} />
@@ -190,17 +209,17 @@ const styles = StyleSheet.create({
     fontSize: 26,
     color: Colors.light.text,
     letterSpacing: -0.5,
-    marginBottom: 6,
+    marginBottom: 2,
   },
   introSubtitle: {
     fontFamily: "Inter_400Regular",
-    fontSize: 15,
+    fontSize: 14,
     color: Colors.light.textSecondary,
-    lineHeight: 21,
+    lineHeight: 20,
   },
   chips: {
     paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingVertical: 14,
     gap: 8,
     flexDirection: "row",
   },
@@ -217,12 +236,12 @@ const styles = StyleSheet.create({
   },
   palSection: {
     paddingHorizontal: 20,
-    marginBottom: 28,
+    marginBottom: 24,
   },
   palHeader: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 14,
+    marginBottom: 12,
     gap: 12,
   },
   palAvatars: {
@@ -230,9 +249,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   palAvatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
     borderWidth: 3,
   },
   palAvatarLeft: {
@@ -245,19 +264,19 @@ const styles = StyleSheet.create({
   palHeaderText: { flex: 1 },
   palName: {
     fontFamily: "Inter_600SemiBold",
-    fontSize: 17,
+    fontSize: 16,
     color: Colors.light.text,
   },
   palTagline: {
     fontFamily: "Inter_400Regular",
-    fontSize: 13,
+    fontSize: 12,
     color: Colors.light.textSecondary,
     marginTop: 1,
   },
   palArrow: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     backgroundColor: Colors.light.backgroundSecondary,
     alignItems: "center",
     justifyContent: "center",
@@ -268,49 +287,30 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   missionCard: {
-    width: (width - 50) / 2,
+    width: CARD_WIDTH,
     backgroundColor: Colors.light.backgroundSecondary,
-    borderRadius: 16,
-    padding: 16,
-  },
-  missionTop: {
+    borderRadius: 14,
+    paddingHorizontal: 14,
+    paddingVertical: 14,
     flexDirection: "row",
     alignItems: "center",
-    gap: 6,
-    marginBottom: 10,
+    gap: 10,
   },
-  missionDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-  },
-  missionPalLabel: {
-    fontFamily: "Inter_500Medium",
-    fontSize: 11,
-    color: Colors.light.textSecondary,
-    letterSpacing: 0.3,
+  missionIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
   missionName: {
+    flex: 1,
     fontFamily: "Inter_600SemiBold",
-    fontSize: 15,
-    color: Colors.light.text,
-    marginBottom: 4,
-    lineHeight: 20,
-  },
-  missionProblem: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 12,
-    color: Colors.light.textSecondary,
-    lineHeight: 17,
-    marginBottom: 12,
-  },
-  missionFooter: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-  },
-  missionCta: {
-    fontFamily: "Inter_500Medium",
     fontSize: 13,
+    color: Colors.light.text,
+    lineHeight: 17,
+  },
+  missionArrow: {
+    marginLeft: 2,
   },
 });

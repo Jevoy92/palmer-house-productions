@@ -2,7 +2,6 @@ import { Feather } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
-  Animated,
   Dimensions,
   FlatList,
   Image,
@@ -73,6 +72,17 @@ const SLIDES: OnboardingSlide[] = [
     color: Colors.pal.system,
     bg: Colors.pal.systemLight,
     images: PAL_IMAGES.system,
+  },
+  {
+    id: "evergreen",
+    title: "Cyrus & Clara",
+    subtitle: "EVERGREEN PAL · AUTHORITY CONTENT",
+    description:
+      "Long-form authority content that compounds over time. Podcasts, webinars, and thought leadership videos.",
+    icon: "play-circle",
+    color: Colors.pal.evergreen,
+    bg: Colors.pal.evergreenLight,
+    images: PAL_IMAGES.evergreen,
   },
   {
     id: "tools",

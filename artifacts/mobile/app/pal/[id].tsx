@@ -12,7 +12,7 @@ import {
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
 import { PALS, PalId, getMissionsForPal } from "@/constants/data";
-import { PAL_IMAGES } from "@/constants/palImages";
+import { PAL_PROFILES } from "@/constants/images";
 
 const PAL_META: Record<PalId, { color: string; bg: string; icon: string }> = {
   reel: { color: Colors.pal.reel, bg: Colors.pal.reelLight, icon: "smartphone" },
@@ -46,20 +46,12 @@ export default function PalDetailScreen() {
       showsVerticalScrollIndicator={false}
     >
       <View style={[styles.header, { paddingTop: insets.top + 56 }]}>
-        <View style={styles.charactersRow}>
-          <View style={[styles.characterWrap, { backgroundColor: meta.bg }]}>
-            <Image
-              source={PAL_IMAGES[palId].maleTransparent}
-              style={styles.characterImage}
-              resizeMode="cover"
-            />
+        <View style={styles.avatarRow}>
+          <View style={[styles.avatarWrap, { borderColor: meta.bg }]}>
+            <Image source={PAL_PROFILES[palId].male} style={styles.avatar} />
           </View>
-          <View style={[styles.characterWrap, { backgroundColor: meta.bg }]}>
-            <Image
-              source={PAL_IMAGES[palId].femaleTransparent}
-              style={styles.characterImage}
-              resizeMode="cover"
-            />
+          <View style={[styles.avatarWrap, styles.avatarOverlap, { borderColor: meta.bg }]}>
+            <Image source={PAL_PROFILES[palId].female} style={styles.avatar} />
           </View>
         </View>
         <Text style={styles.palName}>{pal.name}</Text>
@@ -116,22 +108,26 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
     alignItems: "center",
   },
-  charactersRow: {
+  avatarRow: {
     flexDirection: "row",
-    gap: 16,
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 20,
   },
-  characterWrap: {
-    width: 100,
-    height: 100,
-    borderRadius: 24,
-    alignItems: "center",
-    justifyContent: "flex-end",
+  avatarWrap: {
+    width: 80,
+    height: 80,
+    borderRadius: 40,
+    borderWidth: 4,
     overflow: "hidden",
   },
-  characterImage: {
-    width: 100,
-    height: 100,
+  avatarOverlap: {
+    marginLeft: -16,
+  },
+  avatar: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 40,
   },
   palName: {
     fontFamily: "Inter_700Bold",

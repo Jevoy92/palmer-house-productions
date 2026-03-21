@@ -17,7 +17,7 @@ import {
   PalId,
   getMissionsForPal,
 } from "@/constants/data";
-import { PAL_IMAGES } from "@/constants/palImages";
+import { PAL_PROFILES } from "@/constants/images";
 
 const { width } = Dimensions.get("window");
 
@@ -142,11 +142,14 @@ export default function PalsScreen() {
               style={styles.palHeader}
               onPress={() => router.push(`/pal/${palId}`)}
             >
-              <View style={[styles.palIcon, { backgroundColor: meta.bg }]}>
+              <View style={styles.palAvatars}>
                 <Image
-                  source={PAL_IMAGES[palId].female}
-                  style={styles.palIconImage}
-                  resizeMode="cover"
+                  source={PAL_PROFILES[palId].male}
+                  style={[styles.palAvatar, styles.palAvatarLeft, { borderColor: meta.bg }]}
+                />
+                <Image
+                  source={PAL_PROFILES[palId].female}
+                  style={[styles.palAvatar, styles.palAvatarRight, { borderColor: meta.bg }]}
                 />
               </View>
               <View style={styles.palHeaderText}>
@@ -217,18 +220,22 @@ const styles = StyleSheet.create({
     marginBottom: 14,
     gap: 12,
   },
-  palIcon: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
+  palAvatars: {
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
   },
-  palIconImage: {
-    width: 44,
-    height: 44,
-    borderRadius: 14,
+  palAvatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    borderWidth: 3,
+  },
+  palAvatarLeft: {
+    zIndex: 2,
+  },
+  palAvatarRight: {
+    marginLeft: -12,
+    zIndex: 1,
   },
   palHeaderText: { flex: 1 },
   palName: {

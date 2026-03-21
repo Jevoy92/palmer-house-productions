@@ -86,8 +86,9 @@ Palmer House Productions — AI-powered content assistant mobile app for busines
 - **State**: React Context for cart (CartContext) and auth (AuthContext), AsyncStorage for session persistence
 - **Pricing Constants**: Session=$450, Additional Video=$150, Evergreen 5/10/15min = $1050/$1650/$2250
 - **Contact**: info@palmerhouseproductions.com, (253) 338-0673, Bellevue WA & Portland OR
-- **Character Images**: 8 AI-generated character avatars in `assets/images/pals/` (ryder, raquel, kareem, kiana, silas, samira, cyrus, clara). Mapped via `constants/images.ts`.
-- **Onboarding Walkthrough**: `onboarding.tsx` — swipeable 5-slide tour introducing Pals and AI tools, accessible from Welcome screen "Take a Tour" link
+- **Character Images**: 8 AI-generated character avatars in `assets/images/pals/` (ryder, raquel, kareem, kiana, silas, samira, cyrus, clara). Face-cropped 400x400 profile versions in `assets/images/pals/profiles/`. All mapped via `constants/images.ts` (`PAL_IMAGES` for full-body, `PAL_PROFILES` for headshots — use `PAL_PROFILES` for circle avatars).
+- **Onboarding Walkthrough**: `onboarding.tsx` — swipeable 6-slide tour introducing all 4 Pals and AI tools, accessible from Welcome screen "Take a Tour" link
+- **Guest Walkthrough**: `guest-walkthrough.tsx` — 6-step conversational AI-style walkthrough for first-time guests (shown once, tracked via AsyncStorage). Accessible via "Browse as Guest" on welcome screen.
 - **Key files**:
   - `constants/data.ts` — All Pals, missions, pricing constants
   - `constants/colors.ts` — Brand color palette with shadows

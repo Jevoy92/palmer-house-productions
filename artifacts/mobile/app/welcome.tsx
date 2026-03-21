@@ -28,18 +28,20 @@ export default function WelcomeScreen() {
 
         <View style={styles.avatarStrip}>
           {(["reel", "spotlight", "system", "evergreen"] as const).map((palId, i) => (
-            <Image
-              key={palId}
-              source={PAL_IMAGES[palId].male}
-              style={[styles.stripAvatar, i > 0 && { marginLeft: -10 }]}
-            />
-          ))}
-          {(["reel", "spotlight", "system", "evergreen"] as const).map((palId, i) => (
-            <Image
-              key={`f-${palId}`}
-              source={PAL_IMAGES[palId].female}
-              style={[styles.stripAvatar, { marginLeft: -10 }]}
-            />
+            <View key={palId} style={styles.palPairWrap}>
+              <View style={[styles.stripAvatarWrap, { zIndex: 2 }]}>
+                <Image
+                  source={PAL_IMAGES[palId].male}
+                  style={styles.stripAvatarImg}
+                />
+              </View>
+              <View style={[styles.stripAvatarWrap, { marginLeft: -12, zIndex: 1 }]}>
+                <Image
+                  source={PAL_IMAGES[palId].female}
+                  style={styles.stripAvatarImg}
+                />
+              </View>
+            </View>
           ))}
         </View>
       </View>
@@ -197,13 +199,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 24,
+    gap: 12,
   },
-  stripAvatar: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    borderWidth: 2,
+  palPairWrap: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  stripAvatarWrap: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    borderWidth: 2.5,
     borderColor: "#fff",
+    overflow: "hidden",
+    backgroundColor: Colors.light.backgroundSecondary,
+  },
+  stripAvatarImg: {
+    width: 48,
+    height: 96,
+    position: "absolute",
+    top: 0,
+    left: 0,
   },
   guestRow: {
     flexDirection: "row",

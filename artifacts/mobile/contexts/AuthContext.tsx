@@ -15,6 +15,7 @@ export interface User {
 
 interface AuthContextType {
   user: User | null;
+  sessionToken: string | null;
   isGuest: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -28,9 +29,11 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const USER_STORAGE_KEY = "@palmer_user";
+const TOKEN_STORAGE_KEY = "@palmer_token";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [sessionToken, setSessionToken] = useState<string | null>(null);
   const [isGuest, setIsGuest] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -41,15 +44,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loadStoredUser = async () => {
     try {
       const stored = await AsyncStorage.getItem(USER_STORAGE_KEY);
+      const token = await AsyncStorage.getItem(TOKEN_STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
         if (parsed.isGuest) {
           setIsGuest(true);
         } else {
           setUser(parsed);
+          if (token) setSessionToken(token);
         }
       }
     } catch {
+      // ignore storage errors
     } finally {
       setIsLoading(false);
     }
@@ -63,15 +69,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     if (!response.ok) {
-      const data = await response.json().catch(() => ({}));
+      const data = await response.json().catch(() => ({})) as { error?: string };
       throw new Error(data.error || "Login failed");
     }
 
-    const userData = await response.json();
+    const responseData = await response.json() as User & { token: string };
+    const { token, ...userData } = responseData;
     setUser(userData);
+    setSessionToken(token);
     setIsGuest(false);
-    const toStore = { ...userData, _credentials: { email, password } };
-    await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(toStore));
+    await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
+    await AsyncStorage.setItem(TOKEN_STORAGE_KEY, token);
   }, []);
 
   const register = useCallback(async (data: { email: string; password: string; fullName: string; companyName?: string }) => {
@@ -82,21 +90,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     if (!response.ok) {
-      const resData = await response.json().catch(() => ({}));
+      const resData = await response.json().catch(() => ({})) as { error?: string };
       throw new Error(resData.error || "Registration failed");
     }
 
-    const userData = await response.json();
+    const responseData = await response.json() as User & { token: string };
+    const { token, ...userData } = responseData;
     setUser(userData);
+    setSessionToken(token);
     setIsGuest(false);
-    const toStore = { ...userData, _credentials: { email: data.email, password: data.password } };
-    await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(toStore));
+    await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
+    await AsyncStorage.setItem(TOKEN_STORAGE_KEY, token);
   }, []);
 
   const logout = useCallback(async () => {
     setUser(null);
+    setSessionToken(null);
     setIsGuest(false);
-    await AsyncStorage.removeItem(USER_STORAGE_KEY);
+    await AsyncStorage.multiRemove([USER_STORAGE_KEY, TOKEN_STORAGE_KEY]);
   }, []);
 
   const browseAsGuest = useCallback(() => {
@@ -118,33 +129,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [user]);
 
   const refreshUser = useCallback(async () => {
-    if (!user) return;
+    if (!user || !sessionToken) return;
     try {
-      const stored = await AsyncStorage.getItem(USER_STORAGE_KEY);
-      if (!stored) return;
-      const parsed = JSON.parse(stored);
-      if (parsed._credentials) {
-        const response = await fetch(getApiUrl("/auth/refresh"), {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: parsed._credentials.email,
-            password: parsed._credentials.password,
-          }),
-        });
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-          const toStore = { ...userData, _credentials: parsed._credentials };
-          await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(toStore));
-        }
+      const response = await fetch(getApiUrl("/auth/refresh"), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${sessionToken}`,
+        },
+      });
+      if (response.ok) {
+        const responseData = await response.json() as User & { token: string };
+        const { token, ...userData } = responseData;
+        setUser(userData);
+        setSessionToken(token);
+        await AsyncStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
+        await AsyncStorage.setItem(TOKEN_STORAGE_KEY, token);
       }
-    } catch {}
-  }, [user]);
+    } catch {
+      // ignore refresh errors
+    }
+  }, [user, sessionToken]);
 
   return (
     <AuthContext.Provider
-      value={{ user, isGuest, isLoading, login, register, logout, browseAsGuest, refreshUser, updateCredits }}
+      value={{ user, sessionToken, isGuest, isLoading, login, register, logout, browseAsGuest, refreshUser, updateCredits }}
     >
       {children}
     </AuthContext.Provider>

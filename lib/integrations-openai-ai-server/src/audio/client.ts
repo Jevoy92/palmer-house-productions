@@ -127,9 +127,10 @@ export async function voiceChat(
       ],
     }],
   });
-  const message = response.choices[0]?.message as any;
-  const transcript = message?.audio?.transcript || message?.content || "";
-  const audioData = message?.audio?.data ?? "";
+  const message = response.choices[0]?.message;
+  const audioField = message && "audio" in message ? (message as Record<string, unknown>).audio as { transcript?: string; data?: string } | undefined : undefined;
+  const transcript = audioField?.transcript || message?.content || "";
+  const audioData = audioField?.data ?? "";
   return {
     transcript,
     audioResponse: Buffer.from(audioData, "base64"),
@@ -158,13 +159,14 @@ export async function voiceChatStream(
 
   return (async function* () {
     for await (const chunk of stream) {
-      const delta = chunk.choices?.[0]?.delta as any;
+      const delta = chunk.choices?.[0]?.delta;
       if (!delta) continue;
-      if (delta?.audio?.transcript) {
-        yield { type: "transcript", data: delta.audio.transcript };
+      const audioField = "audio" in delta ? (delta as Record<string, unknown>).audio as { transcript?: string; data?: string } | undefined : undefined;
+      if (audioField?.transcript) {
+        yield { type: "transcript" as const, data: audioField.transcript };
       }
-      if (delta?.audio?.data) {
-        yield { type: "audio", data: delta.audio.data };
+      if (audioField?.data) {
+        yield { type: "audio" as const, data: audioField.data };
       }
     }
   })();
@@ -185,7 +187,9 @@ export async function textToSpeech(
       { role: "user", content: `Repeat the following text verbatim: ${text}` },
     ],
   });
-  const audioData = (response.choices[0]?.message as any)?.audio?.data ?? "";
+  const ttsMessage = response.choices[0]?.message;
+  const ttsAudioField = ttsMessage && "audio" in ttsMessage ? (ttsMessage as Record<string, unknown>).audio as { data?: string } | undefined : undefined;
+  const audioData = ttsAudioField?.data ?? "";
   return Buffer.from(audioData, "base64");
 }
 
@@ -207,10 +211,11 @@ export async function textToSpeechStream(
 
   return (async function* () {
     for await (const chunk of stream) {
-      const delta = chunk.choices?.[0]?.delta as any;
+      const delta = chunk.choices?.[0]?.delta;
       if (!delta) continue;
-      if (delta?.audio?.data) {
-        yield delta.audio.data;
+      const streamAudioField = "audio" in delta ? (delta as Record<string, unknown>).audio as { data?: string } | undefined : undefined;
+      if (streamAudioField?.data) {
+        yield streamAudioField.data;
       }
     }
   })();

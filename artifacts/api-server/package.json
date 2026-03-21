@@ -17,6 +17,7 @@
     "cors": "^2",
     "drizzle-orm": "catalog:",
     "express": "^5",
+    "@workspace/integrations-openai-ai-server": "workspace:*",
     "pino": "^9",
     "pino-http": "^10"
   },

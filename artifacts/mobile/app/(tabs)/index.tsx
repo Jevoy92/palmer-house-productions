@@ -329,7 +329,7 @@ export default function HomeScreen() {
             icon="video"
             label="Teleprompter"
             accentColor={accentColor}
-            onPress={() => router.push("/tools/teleprompter" as Href)}
+            onPress={() => router.push("/tools/teleprompter-live" as Href)}
           />
         </View>
       </View>

@@ -231,7 +231,7 @@ export default function AIToolScreen({ tool }: AIToolScreenProps) {
         onPress={handleGenerate}
         disabled={!hasRequiredFields || (!canGenerate && !isFree)}
       >
-        <Feather name="sparkles" size={18} color="#fff" />
+        <Feather name="zap" size={18} color="#fff" />
         <Text style={styles.generateBtnText}>Generate</Text>
       </Pressable>
 

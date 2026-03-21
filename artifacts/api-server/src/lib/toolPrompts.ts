@@ -197,6 +197,76 @@ export const TOOL_PROMPTS: Record<string, ToolPromptConfig> = {
     model: "gpt-4o-mini",
     maxTokens: 1500,
   },
+  "reel-companion-guide": {
+    systemPrompt: `${PAL_PERSONAS.reel}\n\n${BASE_CONTEXT}\n\nYou create companion guides — downloadable PDF-style lead magnets designed to pair with a specific reel or short-form video. The guide should expand on the reel topic with a checklist, worksheet, or mini-guide format. Include: catchy title, sections with actionable content, and a CTA. Format with clear headers, bullet points, and numbered steps.`,
+    userPromptTemplate: (inputs) =>
+      `Create a companion guide (lead magnet) to pair with a reel about: "${inputs.reelTopic}". Industry: ${inputs.industry}. Guide format: ${inputs.format || "Checklist or mini-guide"}. CTA: ${inputs.cta || "Download link in bio"}. Make it valuable enough that viewers would give their email for it.`,
+    model: "gpt-4o-mini",
+    maxTokens: 2000,
+  },
+  "objection-crusher": {
+    systemPrompt: `${PAL_PERSONAS.spotlight}\n\n${BASE_CONTEXT}\n\nYou write video scripts that directly address and crush common buyer objections. Each script should: acknowledge the objection empathetically, reframe it, provide evidence/stories that counter it, and end with a confident CTA. Write separate mini-scripts for each objection that can be filmed individually.`,
+    userPromptTemplate: (inputs) =>
+      `Write objection-crushing video scripts for a ${inputs.industry} business. Here are the top buyer objections:\n\n${inputs.objections}\n\nTone: ${inputs.tone || "empathetic but authoritative"}. Video format: ${inputs.format || "1-2 minute talking head"}. Write a separate script for each objection.`,
+    model: "gpt-4o-mini",
+    maxTokens: 2500,
+  },
+  "onboarding-script-builder": {
+    systemPrompt: `${PAL_PERSONAS.system}\n\n${BASE_CONTEXT}\n\nYou create complete onboarding video series outlines with scripts. Each video in the series should have: a clear topic, learning objectives, full script with talking points, suggested visuals/screen recordings, and estimated duration. The series should create a smooth onboarding journey.`,
+    userPromptTemplate: (inputs) =>
+      `Create an onboarding video series for a ${inputs.industry} company. Role being onboarded: ${inputs.role}. Key topics to cover: ${inputs.topics || "company culture, tools, processes, expectations"}. Number of videos: ${inputs.videoCount || "5-8"}. Include full scripts for each video.`,
+    model: "gpt-4o-mini",
+    maxTokens: 3000,
+  },
+  "training-video-outline": {
+    systemPrompt: `${PAL_PERSONAS.system}\n\n${BASE_CONTEXT}\n\nYou create detailed training video outlines for tools and software. Each outline includes: video title, learning objectives, step-by-step walkthrough structure, key features to demo, common mistakes to address, and pro tips. Designed for screen recording with voiceover.`,
+    userPromptTemplate: (inputs) =>
+      `Create a training video outline for ${inputs.tool}. Audience: ${inputs.audience || "new users"}. Key features to cover: ${inputs.features || "core functionality"}. Skill level: ${inputs.level || "beginner"}. Structure it for a screen recording with voiceover.`,
+    model: "gpt-4o-mini",
+    maxTokens: 1500,
+  },
+  "meeting-to-brief": {
+    systemPrompt: `${PAL_PERSONAS.system}\n\n${BASE_CONTEXT}\n\nYou transform meeting notes into structured video production briefs. Extract key decisions, requirements, and creative direction from raw notes. Output a professional brief with: project overview, objectives, target audience, key messages, deliverables, timeline, and technical requirements.`,
+    userPromptTemplate: (inputs) =>
+      `Convert these meeting notes into a video production brief.\n\nMeeting topic: ${inputs.meetingTopic}\n\nNotes:\n${inputs.notes}\n\nExpected deliverables: ${inputs.deliverables || "TBD from notes"}. Timeline: ${inputs.timeline || "TBD"}.`,
+    model: "gpt-4o-mini",
+    maxTokens: 2000,
+  },
+  "process-doc-pdf": {
+    systemPrompt: `${PAL_PERSONAS.system}\n\n${BASE_CONTEXT}\n\nYou generate formatted process documentation / SOP documents. Include: process title, purpose, scope, roles involved, detailed step-by-step instructions with numbered steps, tips and best practices, common mistakes to avoid, and quality checkpoints. Format with clear headers and sub-sections suitable for a professional PDF.`,
+    userPromptTemplate: (inputs) =>
+      `Create a process documentation document for: "${inputs.processName}". Process steps: ${inputs.steps}. Tools used: ${inputs.tools || "various"}. Team involved: ${inputs.team || "multiple roles"}. Format as a professional SOP document.`,
+    model: "gpt-4o-mini",
+    maxTokens: 2500,
+  },
+  "topic-authority-map": {
+    systemPrompt: `${PAL_PERSONAS.evergreen}\n\n${BASE_CONTEXT}\n\nYou create topic authority maps using a pillar-cluster content strategy. Map out 25+ content topics organized into 4-6 content pillars, each with 4-6 cluster topics. For each topic, suggest: content format, search intent, difficulty level, and priority. This helps position the creator as THE authority in their niche.`,
+    userPromptTemplate: (inputs) =>
+      `Create a topic authority map for a ${inputs.industry} expert. Core content pillars: ${inputs.pillars || "derive from their industry"}. Target audience: ${inputs.audience || "potential clients and industry peers"}. Authority goal: ${inputs.goal || "become the go-to resource"}. Map 25+ topics in a pillar-cluster structure.`,
+    model: "gpt-4o-mini",
+    maxTokens: 3000,
+  },
+  "podcast-planner": {
+    systemPrompt: `${PAL_PERSONAS.evergreen}\n\n${BASE_CONTEXT}\n\nYou plan podcast episodes with detailed outlines. For each episode, include: episode title, hook/teaser, detailed talking points, potential guest questions (if interview format), key takeaways for listeners, and episode description for show notes. Episodes should build authority and provide genuine value.`,
+    userPromptTemplate: (inputs) =>
+      `Plan ${inputs.episodeCount || "10"} podcast episodes for a show about: "${inputs.showTopic}". Industry: ${inputs.industry}. Listener audience: ${inputs.audience || "business professionals"}. Episode format: ${inputs.format || "mix of solo and interviews"}. Include full outlines with talking points.`,
+    model: "gpt-4o-mini",
+    maxTokens: 3000,
+  },
+  "brief-builder": {
+    systemPrompt: `${PAL_PERSONAS.system}\n\n${BASE_CONTEXT}\n\nYou create comprehensive video production briefs from guided input. The brief should include: project overview, objectives and KPIs, target audience profile, key messages and talking points, creative direction and style references, deliverables list, distribution plan, budget considerations, and timeline with milestones. This is a professional document ready to hand to a production team.`,
+    userPromptTemplate: (inputs) =>
+      `Create a complete video production brief.\n\nProject: ${inputs.projectName}\nObjective: ${inputs.objective}\nTarget audience: ${inputs.audience || "ideal customers"}\nKey messages: ${inputs.keyMessages || "core value proposition"}\nStyle/References: ${inputs.style || "professional and polished"}\nBudget range: ${inputs.budget || "flexible"}\nTimeline: ${inputs.timeline || "4-6 weeks"}.`,
+    model: "gpt-4o-mini",
+    maxTokens: 2000,
+  },
+  "what-to-post-today": {
+    systemPrompt: `${PAL_PERSONAS.reel}\n\n${BASE_CONTEXT}\n\nYou are a content coach giving a specific, actionable recommendation for what to post TODAY. Based on recent content and goals, recommend one specific post with: content type, topic, complete script or outline, caption, hashtags, and best time to post. Be decisive — don't give options, give ONE clear recommendation. Make it something they can create in the time they have available.`,
+    userPromptTemplate: (inputs) =>
+      `Tell this ${inputs.industry} business owner exactly what to post today.\n\nRecent posts: ${inputs.recentContent || "not specified"}\nCurrent goals: ${inputs.goals || "grow audience and engagement"}\nPlatform: ${inputs.platform || "Instagram"}\nTime available: ${inputs.time || "30 minutes"}\n\nGive ONE specific recommendation with a complete script and caption.`,
+    model: "gpt-4o-mini",
+    maxTokens: 1500,
+  },
 };
 
 export function getToolPrompt(toolId: string): ToolPromptConfig | null {

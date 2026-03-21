@@ -17,6 +17,10 @@ const CREDIT_COSTS: Record<string, number> = {
   "content-calendar": 2,
   "course-outline-builder": 2,
   "workshop-planner": 2,
+  "onboarding-script-builder": 2,
+  "process-doc-pdf": 2,
+  "topic-authority-map": 2,
+  "podcast-planner": 2,
 };
 
 function getCreditCost(toolId: string): number {

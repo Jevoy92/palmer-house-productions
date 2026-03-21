@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Colors from "@/constants/colors";
-import { TOOLS, getToolsForPal, ToolDefinition } from "@/constants/tools";
+import { TOOLS, getToolsForPal, ToolDefinition, PAL_TOOL_CATEGORIES } from "@/constants/tools";
 import { PalId, PALS } from "@/constants/data";
 import { useAuth } from "@/contexts/AuthContext";
 import { useActivePal } from "@/contexts/ActivePalContext";
@@ -74,6 +74,22 @@ const PAL_TABS: { id: "all" | PalId; label: string }[] = [
   { id: "system", label: "System" },
 ];
 
+function PalSectionHeader({ palId }: { palId: PalId }) {
+  const cat = PAL_TOOL_CATEGORIES.find((c) => c.palId === palId);
+  const color = PAL_COLORS[palId];
+  if (!cat) return null;
+
+  return (
+    <View style={styles.sectionHeader}>
+      <View style={[styles.sectionDot, { backgroundColor: color.main }]} />
+      <View style={styles.sectionHeaderText}>
+        <Text style={[styles.sectionTitle, { color: color.main }]}>{cat.label}</Text>
+        <Text style={styles.sectionSubtitle}>{cat.description}</Text>
+      </View>
+    </View>
+  );
+}
+
 export default function ToolsScreen() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -84,7 +100,10 @@ export default function ToolsScreen() {
   const isLimited = isGuest;
 
   const activeTab: "all" | PalId = activePal ?? "all";
-  const filteredTools = activeTab === "all" ? TOOLS : getToolsForPal(activeTab);
+
+  const orderedPals: PalId[] = activeTab !== "all"
+    ? [activeTab, ...PAL_TOOL_CATEGORIES.filter((c) => c.palId !== activeTab).map((c) => c.palId)]
+    : PAL_TOOL_CATEGORIES.map((c) => c.palId);
 
   return (
     <ScrollView
@@ -159,25 +178,46 @@ export default function ToolsScreen() {
         })}
       </ScrollView>
 
-      {activeTab !== "all" && (
-        <View style={styles.palInfo}>
-          <View style={[styles.palDot, { backgroundColor: PAL_COLORS[activeTab].main }]} />
-          <Text style={styles.palInfoText}>
-            {PALS[activeTab].name} — {PALS[activeTab].tagline}
-          </Text>
-        </View>
+      {activeTab !== "all" ? (
+        <>
+          <View style={styles.palInfo}>
+            <View style={[styles.palDot, { backgroundColor: PAL_COLORS[activeTab].main }]} />
+            <Text style={styles.palInfoText}>
+              {PALS[activeTab].name} — {PALS[activeTab].tagline}
+            </Text>
+          </View>
+          <View style={styles.toolsGrid}>
+            {getToolsForPal(activeTab).map((tool) => (
+              <ToolCard
+                key={tool.id}
+                tool={tool}
+                locked={isLimited && !tool.freeForAll}
+                onPress={() => router.push(`/tools/${tool.id}` as any)}
+              />
+            ))}
+          </View>
+        </>
+      ) : (
+        orderedPals.map((palId) => {
+          const palTools = getToolsForPal(palId);
+          if (palTools.length === 0) return null;
+          return (
+            <View key={palId} style={styles.categorySection}>
+              <PalSectionHeader palId={palId} />
+              <View style={styles.toolsGrid}>
+                {palTools.map((tool) => (
+                  <ToolCard
+                    key={tool.id}
+                    tool={tool}
+                    locked={isLimited && !tool.freeForAll}
+                    onPress={() => router.push(`/tools/${tool.id}` as any)}
+                  />
+                ))}
+              </View>
+            </View>
+          );
+        })
       )}
-
-      <View style={styles.toolsGrid}>
-        {filteredTools.map((tool, index) => (
-          <ToolCard
-            key={tool.id}
-            tool={tool}
-            locked={isLimited && !tool.freeForAll && index > 1}
-            onPress={() => router.push(`/tools/${tool.id}` as any)}
-          />
-        ))}
-      </View>
     </ScrollView>
   );
 }
@@ -294,10 +334,40 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: Colors.light.textSecondary,
   },
+  categorySection: {
+    marginBottom: 8,
+  },
+  sectionHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginBottom: 14,
+    marginTop: 8,
+  },
+  sectionDot: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+  },
+  sectionHeaderText: {
+    flex: 1,
+  },
+  sectionTitle: {
+    fontFamily: "Inter_700Bold",
+    fontSize: 16,
+    letterSpacing: -0.2,
+  },
+  sectionSubtitle: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 12,
+    color: Colors.light.textSecondary,
+    marginTop: 1,
+  },
   toolsGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
     gap: 10,
+    marginBottom: 16,
   },
   toolCard: {
     width: "48.5%",

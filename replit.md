@@ -62,9 +62,9 @@ Express 5 API server. Routes live in `src/routes/` and use `@workspace/api-zod` 
 - Route: `src/routes/projectRequests.ts` — `POST /api/project-requests` accepts project request submissions
 - Route: `src/routes/auth.ts` — `POST /api/auth/register`, `POST /api/auth/login`, `POST /api/auth/refresh` for user authentication
 - Route: `src/routes/ai.ts` — `POST /api/ai/generate` (SSE streaming tool generation), `POST /api/ai/chat` (SSE streaming Pal chat), `GET /api/ai/history?userId=N` (tool result history)
-- AI tool prompts: `src/lib/toolPrompts.ts` — 26 tool prompt configs with Pal personas, system prompts, user prompt templates, model/maxTokens
+- AI tool prompts: `src/lib/toolPrompts.ts` — 36 tool prompt configs with Pal personas, system prompts, user prompt templates, model/maxTokens
 - Free tools (0 credits): teleprompter, about-page-script, faq-video-series, content-audit
-- 2-credit tools: content-calendar, course-outline-builder, workshop-planner
+- 2-credit tools: content-calendar, course-outline-builder, workshop-planner, onboarding-script-builder, process-doc-pdf, topic-authority-map, podcast-planner
 - All other tools: 1 credit
 - Credit deduction is atomic: `WHERE credits >= cost` guard on UPDATE
 - Depends on: `@workspace/db`, `@workspace/api-zod`, `@workspace/integrations-openai-ai-server`
@@ -82,7 +82,8 @@ Palmer House Productions — AI-powered content assistant mobile app for busines
 - **Tabs (5)**: Home, Explore (Pals), Tools (AI), Package (Cart), More (About)
 - **Auth Screens**: `welcome.tsx`, `auth/login.tsx`, `auth/register.tsx`
 - **Detail Screens**: `pal/[id]` (Pal overview), `mission/[palId]/[missionId]` (mission configurator with pricing)
-- **AI Tools**: 26 fully functional AI-powered tools via dynamic route `tools/[toolId].tsx` + shared `AIToolScreen` component. Tools organized by Pal category with SSE streaming output, copy/share/regenerate actions. 4 free tools (teleprompter, about-page-script, faq-video-series, content-audit). Tool definitions in `constants/tools.ts`.
+- **AI Tools**: 36 fully functional AI-powered tools via dynamic route `tools/[toolId].tsx` + shared `AIToolScreen` component. Tools organized by Pal category with color-coded section headers, SSE streaming output, copy/share/regenerate actions. 4 free tools (teleprompter, about-page-script, faq-video-series, content-audit). Tool definitions in `constants/tools.ts`.
+- **Teleprompter**: `tools/teleprompter-live.tsx` — Real auto-scrolling teleprompter with paste/type script, adjustable speed (4 levels), font size control, mirror mode, play/pause/reset. Separate from the AI teleprompter script generator tool.
 - **Client Portal**: `portal/index.tsx` — project tracking, draft review, delivered assets (placeholder structure, ready for HoneyBook integration)
 - **Profile**: `profile.tsx` — account info, credits, sign out
 - **Checkout flow**: Build tab → Checkout modal → Confirmation screen
@@ -99,7 +100,7 @@ Palmer House Productions — AI-powered content assistant mobile app for busines
   - `constants/data.ts` — All Pals, missions, pricing constants
   - `constants/colors.ts` — Brand color palette with shadows
   - `constants/images.ts` — Character avatar image mapping (PAL_IMAGES, PAL_PROFILES, PAL_STANDING, PAL_HEADSHOTS, BRAND_LOGO)
-  - `constants/tools.ts` — 26 AI tool definitions with fields, credit costs, Pal assignments
+  - `constants/tools.ts` — 36 AI tool definitions with fields, credit costs, Pal assignments + PAL_TOOL_CATEGORIES
   - `contexts/CartContext.tsx` — Cart state management
   - `contexts/AuthContext.tsx` — Auth state management (guest/registered/member) with updateCredits
   - `services/ai.ts` — AI service layer (SSE streaming for generate + chat)

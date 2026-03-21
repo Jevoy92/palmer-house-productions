@@ -1,0 +1,61 @@
+
+Library
+Search
+Apps
+
+
+
+
+
+#11 - UI Design Refresh
+What & Why
+Adopt cleaner design patterns inspired by the starter.dev GitHub UI repo — replacing heavy filled cards with border-separated rows, using underline tab indicators instead of filled pills, tightening typography, and adding more whitespace. The goal is a polished, less text-heavy interface while preserving the Palmer House brand colors and identity.
+
+Done looks like
+Cards use subtle borders (1px bottom divider) instead of solid gray background fills throughout the app
+Filter tabs use bottom-border underline indicators instead of filled pill backgrounds
+Text is trimmed down — descriptions are shorter or removed from list views, with detail kept on detail screens
+More whitespace and breathing room between elements
+Consistent spacing and typography hierarchy (lighter font weights for secondary text)
+All 5 tab screens updated: Home, Explore, Tools, Package, More
+Detail screens (Pal detail, Mission detail) and AIToolScreen also refreshed
+Welcome screen and auth screens refreshed to match
+Tab bar itself updated to match cleaner aesthetic
+Out of scope
+Adding new features or screens
+Changing the Pal color system or brand identity
+Restructuring navigation or data models
+Backend changes
+Tasks
+Update color constants — Add border/divider colors to the palette, adjust background tones for the cleaner card style (white cards with subtle borders instead of gray fills).
+
+Refresh Home tab — Simplify the suggestion cards to use border-separated list rows with icons. Trim subtitle text. Make the credits bar and quick actions lighter.
+
+Refresh Explore tab — Use clean list-style mission rows with subtle border dividers instead of grid cards. Tighten the Pal header section. Keep the filter chips but switch to underline-style active state.
+
+Refresh Tools tab — Convert tool cards to border-separated compact rows (icon + name + credit badge + arrow). Use underline-style tab filters. Reduce the credits banner prominence.
+
+Refresh Package tab — Lighten the cart items with cleaner border dividers. Simplify the footer checkout area.
+
+Refresh More/About tab — Clean up menu item rows with consistent border separators and lighter styling.
+
+Refresh detail screens — Update Pal detail, Mission detail, and AIToolScreen to use the new card/border style and tighter typography.
+
+Refresh welcome and auth screens — Update the welcome, login, and register screens to match the cleaner aesthetic.
+
+Update tab bar layout — Refine the bottom tab bar styling to match the overall lighter design.
+
+Relevant files
+artifacts/mobile/constants/colors.ts
+artifacts/mobile/app/(tabs)/index.tsx
+artifacts/mobile/app/(tabs)/pals.tsx
+artifacts/mobile/app/(tabs)/tools.tsx
+artifacts/mobile/app/(tabs)/build.tsx
+artifacts/mobile/app/(tabs)/about.tsx
+artifacts/mobile/app/(tabs)/_layout.tsx
+artifacts/mobile/app/pal/[id].tsx
+artifacts/mobile/app/mission/[palId]/[missionId].tsx
+artifacts/mobile/components/AIToolScreen.tsx
+artifacts/mobile/app/welcome.tsx
+artifacts/mobile/app/auth/login.tsx
+artifacts/mobile/app/auth/register.tsx

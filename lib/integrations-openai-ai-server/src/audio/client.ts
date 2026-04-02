@@ -188,7 +188,7 @@ export async function textToSpeech(
     ],
   });
   const ttsMessage = response.choices[0]?.message;
-  const ttsAudioField = ttsMessage && "audio" in ttsMessage ? (ttsMessage as Record<string, unknown>).audio as { data?: string } | undefined : undefined;
+  const ttsAudioField = ttsMessage && "audio" in ttsMessage ? (ttsMessage as unknown as Record<string, unknown>).audio as { data?: string } | undefined : undefined;
   const audioData = ttsAudioField?.data ?? "";
   return Buffer.from(audioData, "base64");
 }

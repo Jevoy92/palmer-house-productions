@@ -1,0 +1,39 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(0 0% 4%);
+  --color-foreground: hsl(0 0% 95%);
+  --color-card: hsl(0 0% 7%);
+  --color-card-foreground: hsl(0 0% 95%);
+  --color-muted: hsl(0 0% 12%);
+  --color-muted-foreground: hsl(0 0% 60%);
+  --color-border: hsl(0 0% 15%);
+  --color-accent: hsl(43 55% 54%);
+  --color-accent-foreground: hsl(0 0% 4%);
+  --color-brand: hsl(270 44% 44%);
+  --color-brand-foreground: hsl(0 0% 100%);
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-accent-foreground);
+}

@@ -75,7 +75,7 @@ export default function ContentEngineTool() {
       </div>
 
       {error && (
-        <div className="bg-red-900/30 border border-red-700 rounded-xl p-4 mb-6 text-red-300 text-sm">
+        <div className="bg-red-900/30 border border-red-800/50 rounded-xl p-4 mb-6 text-foreground text-sm">
           {error}
         </div>
       )}

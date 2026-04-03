@@ -42,7 +42,7 @@ export default function ContentEngineTool() {
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-foreground mb-1">
-              What happened? <span className="text-red-400">*</span>
+              What happened? <span className="text-accent">*</span>
             </label>
             <input
               type="text"

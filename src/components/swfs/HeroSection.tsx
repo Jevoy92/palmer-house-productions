@@ -33,7 +33,7 @@ export default function HeroSection() {
           {stats.map((s) => (
             <div key={s.label} className="bg-card border border-border rounded-xl p-6 text-left">
               <s.icon className="w-8 h-8 text-accent mb-3" />
-              <h3 className="text-lg font-semibold mb-1">{s.label}</h3>
+              <h2 className="text-lg font-semibold mb-1">{s.label}</h2>
               <p className="text-sm text-muted-foreground">{s.desc}</p>
             </div>
           ))}

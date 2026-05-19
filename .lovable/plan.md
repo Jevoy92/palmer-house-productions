@@ -1,47 +1,77 @@
-# Rebuild the Brand Guide from YOUR file
+## Reconstruct Palmer House Site From Live Bundle
 
-You're right — I threw away your beautiful layout and gave you a stripped-down doc. That was the wrong call. Your `PHP_Brand_Hub.html` is gorgeous: the editorial typography, the section rhythm, the swatch cards, the do/don't grids, the hero treatment. We keep all of that.
+History didn't have the pre-SWFS snapshot, so we rebuild from the live `palmerhouseproductions.com` deploy. That bundle is intact and downloadable — I verified the route table (147 routes incl. all blog posts, industries, locations, pals, dashboard, evergreen-pal, memberships, etc.) plus chunked JS/CSS and the HoneyBook integration.
 
-## What I'll do
+This is a real rebuild, not a sync. Source `.tsx` was never committed; we have minified JS + the rendered DOM as the blueprint. Reconstructed files will match behavior and design, not be byte-identical to whatever the original source was.
 
-Take your `PHP_Brand_Hub.html` as the base file and **edit in place** — keep the structure, layout, animations, component patterns, hero, and visual language. Only swap the specific tokens/copy that conflict with our current brand canon.
+### Ground rules during rebuild
 
-## What gets swapped (the only changes)
+1. **Do not publish** until the new build matches the live site. The live deploy is currently our only copy of the real product — overwriting it loses everything.
+2. SWFS stays — it moves from `/` to `/sudden-wealth-film-system`.
+3. Work proceeds route-by-route so each step is verifiable in preview before moving on.
 
-**Color tokens** — replace whatever "Stage/Curtain/Sage-Reel" naming exists with our real Pal lanes:
-- Reel · `#E8720C` (orange) + `#FFF4EB` soft
-- Spotlight · `#6B3FA0` (purple) + `#F3EEFB` soft
-- System · `#0A9B8F` (teal) + `#EDFAF8` soft
-- Evergreen · `#5B8A2D` (sage) + `#F0F7E8` soft
-- Neutrals: Paper `#FFFFFF`, Mist `#F6F8FA`, Ink `#1F2328`
+### Phase 1 — Archive the live deployment (foundation)
 
-**Dark hero/sections** — if any section uses pure black page background with radial gradients, swap to light base (white/cream) with a single solid accent. Keep the layout, drop the gradient. (This is the only non-negotiable — our brand memory forbids dark base + gradients.)
+- Download `index.html`, `sitemap.xml`, `robots.txt`, `og-image.jpg`, favicons.
+- Download every `assets/*.js` and `assets/*.css` chunk referenced from index.html and from the lazy-loaded route map.
+- Download all `assets/*` images, fonts, videos referenced inside the chunks.
+- Save full route table (147 paths) and chunk→route mapping into `/tmp/live_bundle/manifest.json`.
+- Save rendered HTML of every route by crawling the live site (gives us copy, headings, alt text, JSON-LD, meta tags exactly as deployed).
 
-**Character cast** — make sure the 8 Pals are named correctly: Ryder & Raquel (Reel), Kareem & Kiana (Spotlight), Silas & Samira (System), Cyrus & Clara (Evergreen). Multiply-blend-on-white treatment noted.
+### Phase 2 — Restore app shell
 
-**Voice/copy** — keep the editorial tone. Add the TV compliance line ("major streaming platform in 2025", no celebrity names). Confirm Jevoy Palmer as solo founder (remove any "team/we" references implying staff).
+- Replace `src/App.tsx` with React Router `<BrowserRouter>` + the 147-route table.
+- Restore `src/main.tsx` with HelmetProvider, QueryClientProvider, Toaster, etc. (read from minified bundle).
+- Restore `index.html` head: title, meta, canonical, og-image, HoneyBook PID script, fonts.
+- Create stub pages for every route so routing compiles. SWFS demoted to `/sudden-wealth-film-system`.
 
-**Tagline** — confirm "We Don't Make Videos. We Translate Businesses." is the headline.
+### Phase 3 — Rebuild shared infrastructure
 
-**Pill components** — if any tag/badge uses `rounded-full` pill shape, swap to uppercase + center-dot style (`TAG · LABEL`). Keep the placement, swap the shape.
+Order matters — these are used by every page:
+1. `tailwind.config.ts` + `index.css` design tokens (Pal colors, button variants per memory).
+2. `components/Navigation.tsx` (xl breakpoint per memory).
+3. `components/Footer.tsx` (vertical hover strips per memory).
+4. `components/WaitlistDialog.tsx` + `HoneyBookContact.tsx`.
+5. Layout wrappers, Preloader, shared UI primitives.
 
-## What stays (the 90%)
+Each component is reconstructed by reading its minified chunk + the rendered DOM from the archived HTML, then rewritten in clean TSX using existing design-system tokens.
 
-- Full page structure and section order
-- Typography pairing and scale
-- Swatch-card pattern for color
-- Do/Don't grid
-- Hero composition
-- All micro-interactions and animations
-- Spacing rhythm, editorial feel
-- Any logo/wordmark usage section
-- Voice & components sections
+### Phase 4 — Rebuild pages in priority order
 
-## Deliverable
+Tier 1 (homepage + commercial core):
+- `/` (Index — hero carousel, 8 platforms)
+- `/pals`, `/memberships`, `/app-pricing`
+- `/contact`, `/discovery-call`, `/auth`
 
-- `/mnt/documents/palmer-house-brand-guide.html` — your file, edited, single download
-- Markdown version dropped (you said HTML is the one that mattered; if you want MD too, say the word)
+Tier 2 (Pal lanes + character sub-routes):
+- `/evergreen-pal`, `/evergreen-pal/:character`
+- System / Spotlight / Reel Pal pages + characters
 
-## What I need from you
+Tier 3 (industries + locations — SEO):
+- 6 industry pages, 4 location pages
 
-Confirm I can pull the source from your earlier upload `PHP_Brand_Hub.html`. If you can re-attach it (or point me to where it lives in the project), I'll edit it directly instead of rebuilding from scratch. I don't currently see it on disk — only the doc I generated.
+Tier 4 (content):
+- `/blog` index + 15 blog post pages
+- `/faq`, `/about`, `/about-us`, `/company/team`, `/company/values`, `/privacy`
+
+Tier 5 (tools + dashboard):
+- `/glimpse`, `/arsenal`, `/pathways`, `/compass`, `/content-strategy`, `/production-guide`
+- `/dashboard/*` (auth-gated client area)
+
+### Phase 5 — Verify & cut over
+
+- Diff each rebuilt page against archived live HTML (visual + DOM).
+- Run the SEO/security scanners.
+- Only after the user reviews preview side-by-side with production, publish.
+
+### Technical notes
+
+- Bundle URL: `https://palmerhouseproductions.com/assets/index-BYzSLobo.js` (660KB) holds the route table + most page code; `router-BrxUvig6.js` has lazy chunk map.
+- 147 unique route paths confirmed via regex against `index.js`.
+- Existing `src/components/swfs/` and `src/pages/SuddenWealthFilmSystem.tsx` are preserved untouched; only mounted at a new path.
+- Memory rules apply throughout: no gradients, no rounded-full pills, Pal-color button variants only, team voice, light theme.
+- This will take many iterations — expect dozens of follow-up turns. I'll commit progress per tier so we can roll back per-page if anything regresses.
+
+### What I need from you to start
+
+Confirm: **"Go — start Phase 1"** and I'll begin archiving the live bundle + crawling all 147 routes into `/tmp/live_bundle/`. After Phase 1 I'll show you the manifest before touching `src/`.

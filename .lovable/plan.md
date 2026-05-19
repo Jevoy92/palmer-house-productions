@@ -1,75 +1,48 @@
+# Palmer House Brand & Design Guide — Downloadable Artifact
 
+## Goal
+Produce a single, high-level brand + design guide you can use while building social/brand assets for Palmer House and the Pals. Deliver as **both HTML and Markdown** in `/mnt/documents/` so you can download either, then we delete when done. Nothing touches the project source.
 
-# Build the Sudden Wealth Film System as a Standalone Page
+## Source of truth
+I'll pull from what's already canon in memory + codebase, not invent new system:
 
-## Current situation
-The website source code (Navigation, App.tsx, all pages) was removed from the project during a restructuring to the monorepo/mobile architecture. The published site still works from a previous deployment. We will build the SWFS page as a standalone React app within this project so it can be deployed independently and linked from the main site nav later.
+- **Pal color system** (Reel/Orange, Spotlight/Purple, System/Teal, Evergreen/Sage) — from `artifacts/mobile/constants/colors.ts` and the Pal color memory
+- **8-character canon** (Ryder/Raquel, Kareem/Kiana, Silas/Samira, Cyrus/Clara) — from data.ts + character-asset-standardization memory
+- **Brand laws** from memory: no gradients, no pills, no dark backgrounds as base, button system, mix-blend-mode: multiply for characters on pure white, "We Don't Make Videos. We Translate Businesses." tagline, Palmer House as translation company (7 house rules)
+- **Typography**: Inter (body) + Playfair Display (serif) from current `src/index.css`, plus the display/heading pairing the main site uses
+- **Production pricing language** + tier structure (only at a naming/positioning level, not a price sheet)
+- **Industry → Pal lane mapping**
+- **Contact**: (425) 533-9060, palmerhouseproductions.com
+- **TV compliance line**: "major streaming platform in 2025" — no celebrity names
 
-## What we will build
+## What I'll borrow from your uploaded `PHP_Brand_Hub.html`
+- Overall section structure (Hero → Identity → Color → Type → Voice → Components → Pals → Usage → Do/Don't)
+- Card-based "swatch + token + usage" pattern for colors
+- Clean editorial layout vibe
 
-A complete, single-page React application at the project root (`src/`) that renders the full Sudden Wealth Film System landing page. This restores a working `dev` script and gives the preview something to render.
+## What I'll cut from the upload (doesn't match current brand)
+- Dark `--stage-black` page background and radial gradients (violates no-gradients + no-dark-base rules)
+- Any "Curtain / Stage / Sage-Reel" naming that conflicts with our actual Pal color names
+- Decorative serif display flourishes that don't appear on the live site
+- Anything implying a team beyond Jevoy Palmer
+- Anything not aligned with the 4-Pal taxonomy
 
-### Page sections (matching your content brief exactly)
+## Guide contents (high level)
+1. **Brand essence** — mission, tagline, the translation-company metaphor, 7 house rules, tone of voice
+2. **Logo & wordmark usage** — clear space, min size, do/don't (kept short, no fabricated lockups)
+3. **Color system** — primary neutrals + the 4 Pal lanes with hex, when to use each, `-soft` variant rule, no-gradient rule
+4. **Typography** — Inter + Playfair Display pairing, sizes/weights, the "no pills, uppercase + center dot" tag style
+5. **Character cast** — the 8 Pals, who they are, which lane, visual treatment rule (multiply blend on pure white)
+6. **Voice & copy** — sentence patterns, banned phrases, TV compliance line
+7. **Social/asset checklist** — quick reference for building a post: pick lane → pick character → apply color → apply type → check do/don't
+8. **Do / Don't grid** — gradients, pills, dark base, raw Tailwind colors, celebrity names, generic stock characters
 
-1. **Fixed header** — Palmer House Productions logo + tagline
-2. **Hero** — Headline, subheadline, long description, two CTAs (Book a Private Call, View the System), three stat cards (Core Asset, Monetization, Control)
-3. **Who This Is For** — Eyebrow + headline + 6 audience cards (lottery winners, athletes, exited founders, inheritance, lawsuit, newly public HNWI)
-4. **Why It Matters** — Narrative control messaging
-5. **What You Get** — 6 deliverable cards (Hero Film, Announcement Cuts, Short-Form Assets, Story Capture, Distribution Prep, Media Vault)
-6. **Platform Ecosystem** — Three channel groups (Streaming, Social, Creator Economy) with platform logos/names
-7. **Managing Your New Public Life** — 6 ongoing service items (Content Production, Account Management, Sponsorship, Revenue Activation, Narrative Strategy, Distribution Coordination)
-8. **Investment Tiers** — Three pricing cards: Foundation ($45K), Wealth Identity System ($85K, "Most Selected" badge), Legacy Engine ($175K/yr, "Full Partnership" badge) with feature lists and CTAs
-9. **Payment terms** — 50% upfront / 5% discount for full payment
-10. **Founder Quote** — Jevoy Palmer testimonial block
-11. **Testimonials** — 3 client reviews
-12. **Closing CTA** — Final consultation button
-13. **Footer** — Distribution disclaimer, copyright, locations
+## Deliverables
+- `/mnt/documents/palmer-house-brand-guide.html` — styled, print-friendly, light theme, matches site rules (no gradients, no pills, semantic-feeling)
+- `/mnt/documents/palmer-house-brand-guide.md` — same content, plain Markdown for easy copy/paste into Notion/Docs
+- Both surfaced via `<presentation-artifact>` tags so you can download in one click
 
-### Design approach
-- Dark, cinematic palette: deep charcoal backgrounds (#0A0A0A, #111), gold/amber accents (#C9A84C) for CTAs and highlights, white text
-- Palmer House brand purple (#6B3FA0) as secondary accent
-- Clean typography with Inter font family
-- Responsive: mobile-first, looks premium on all viewports
-- No external dependencies beyond what's already in the workspace catalog (React, Tailwind, Framer Motion, Lucide icons)
-
-## Technical approach
-
-### Files to create
-
-| File | Purpose |
-|------|---------|
-| `src/main.tsx` | React entry point |
-| `src/App.tsx` | Single route rendering the SWFS page |
-| `src/index.css` | Tailwind imports + custom styles |
-| `src/pages/SuddenWealthFilmSystem.tsx` | Full landing page component |
-| `src/components/swfs/HeroSection.tsx` | Hero with stats |
-| `src/components/swfs/AudienceSection.tsx` | Who This Is For |
-| `src/components/swfs/DeliverablesSection.tsx` | What You Get |
-| `src/components/swfs/PlatformSection.tsx` | Platform Ecosystem |
-| `src/components/swfs/ServicesSection.tsx` | Managing Your Public Life |
-| `src/components/swfs/PricingSection.tsx` | 3 investment tiers |
-| `src/components/swfs/TestimonialsSection.tsx` | Reviews + founder quote |
-| `src/components/swfs/Footer.tsx` | Footer with disclaimer |
-| `src/components/swfs/SWFSHeader.tsx` | Fixed top navigation bar |
-| `vite.config.ts` | Vite config for the standalone page |
-| `index.html` | HTML entry point |
-| `tailwind.config.ts` | Tailwind config |
-
-### Fix the build errors
-
-We also need to fix the pre-existing TypeScript errors in `lib/integrations-openai-ai-server/` (3 files with type casting issues) and add a `dev` script to the root `package.json` so the preview works.
-
-### Nav placement recommendation (for future integration)
-
-When the main site code is restored, the SWFS page should go under **Services** as a premium sub-item:
-
-```text
-Services ▾
-  ├── Video Production
-  ├── Content Systems
-  ├── ...existing items...
-  └── Sudden Wealth Film System  ← NEW (with a "Premium" badge)
-```
-
-It could also work as a top-level nav item between "Services" and "Industries" if you want maximum visibility for this high-ticket offering.
-
+## Out of scope
+- No edits to project source, SWFS page, or site code
+- No new logos/illustrations generated — guide references existing canon only
+- Not a full 50-page brand bible; this is a working reference you can scan in 5 minutes

@@ -1,48 +1,47 @@
-# Palmer House Brand & Design Guide — Downloadable Artifact
+# Rebuild the Brand Guide from YOUR file
 
-## Goal
-Produce a single, high-level brand + design guide you can use while building social/brand assets for Palmer House and the Pals. Deliver as **both HTML and Markdown** in `/mnt/documents/` so you can download either, then we delete when done. Nothing touches the project source.
+You're right — I threw away your beautiful layout and gave you a stripped-down doc. That was the wrong call. Your `PHP_Brand_Hub.html` is gorgeous: the editorial typography, the section rhythm, the swatch cards, the do/don't grids, the hero treatment. We keep all of that.
 
-## Source of truth
-I'll pull from what's already canon in memory + codebase, not invent new system:
+## What I'll do
 
-- **Pal color system** (Reel/Orange, Spotlight/Purple, System/Teal, Evergreen/Sage) — from `artifacts/mobile/constants/colors.ts` and the Pal color memory
-- **8-character canon** (Ryder/Raquel, Kareem/Kiana, Silas/Samira, Cyrus/Clara) — from data.ts + character-asset-standardization memory
-- **Brand laws** from memory: no gradients, no pills, no dark backgrounds as base, button system, mix-blend-mode: multiply for characters on pure white, "We Don't Make Videos. We Translate Businesses." tagline, Palmer House as translation company (7 house rules)
-- **Typography**: Inter (body) + Playfair Display (serif) from current `src/index.css`, plus the display/heading pairing the main site uses
-- **Production pricing language** + tier structure (only at a naming/positioning level, not a price sheet)
-- **Industry → Pal lane mapping**
-- **Contact**: (425) 533-9060, palmerhouseproductions.com
-- **TV compliance line**: "major streaming platform in 2025" — no celebrity names
+Take your `PHP_Brand_Hub.html` as the base file and **edit in place** — keep the structure, layout, animations, component patterns, hero, and visual language. Only swap the specific tokens/copy that conflict with our current brand canon.
 
-## What I'll borrow from your uploaded `PHP_Brand_Hub.html`
-- Overall section structure (Hero → Identity → Color → Type → Voice → Components → Pals → Usage → Do/Don't)
-- Card-based "swatch + token + usage" pattern for colors
-- Clean editorial layout vibe
+## What gets swapped (the only changes)
 
-## What I'll cut from the upload (doesn't match current brand)
-- Dark `--stage-black` page background and radial gradients (violates no-gradients + no-dark-base rules)
-- Any "Curtain / Stage / Sage-Reel" naming that conflicts with our actual Pal color names
-- Decorative serif display flourishes that don't appear on the live site
-- Anything implying a team beyond Jevoy Palmer
-- Anything not aligned with the 4-Pal taxonomy
+**Color tokens** — replace whatever "Stage/Curtain/Sage-Reel" naming exists with our real Pal lanes:
+- Reel · `#E8720C` (orange) + `#FFF4EB` soft
+- Spotlight · `#6B3FA0` (purple) + `#F3EEFB` soft
+- System · `#0A9B8F` (teal) + `#EDFAF8` soft
+- Evergreen · `#5B8A2D` (sage) + `#F0F7E8` soft
+- Neutrals: Paper `#FFFFFF`, Mist `#F6F8FA`, Ink `#1F2328`
 
-## Guide contents (high level)
-1. **Brand essence** — mission, tagline, the translation-company metaphor, 7 house rules, tone of voice
-2. **Logo & wordmark usage** — clear space, min size, do/don't (kept short, no fabricated lockups)
-3. **Color system** — primary neutrals + the 4 Pal lanes with hex, when to use each, `-soft` variant rule, no-gradient rule
-4. **Typography** — Inter + Playfair Display pairing, sizes/weights, the "no pills, uppercase + center dot" tag style
-5. **Character cast** — the 8 Pals, who they are, which lane, visual treatment rule (multiply blend on pure white)
-6. **Voice & copy** — sentence patterns, banned phrases, TV compliance line
-7. **Social/asset checklist** — quick reference for building a post: pick lane → pick character → apply color → apply type → check do/don't
-8. **Do / Don't grid** — gradients, pills, dark base, raw Tailwind colors, celebrity names, generic stock characters
+**Dark hero/sections** — if any section uses pure black page background with radial gradients, swap to light base (white/cream) with a single solid accent. Keep the layout, drop the gradient. (This is the only non-negotiable — our brand memory forbids dark base + gradients.)
 
-## Deliverables
-- `/mnt/documents/palmer-house-brand-guide.html` — styled, print-friendly, light theme, matches site rules (no gradients, no pills, semantic-feeling)
-- `/mnt/documents/palmer-house-brand-guide.md` — same content, plain Markdown for easy copy/paste into Notion/Docs
-- Both surfaced via `<presentation-artifact>` tags so you can download in one click
+**Character cast** — make sure the 8 Pals are named correctly: Ryder & Raquel (Reel), Kareem & Kiana (Spotlight), Silas & Samira (System), Cyrus & Clara (Evergreen). Multiply-blend-on-white treatment noted.
 
-## Out of scope
-- No edits to project source, SWFS page, or site code
-- No new logos/illustrations generated — guide references existing canon only
-- Not a full 50-page brand bible; this is a working reference you can scan in 5 minutes
+**Voice/copy** — keep the editorial tone. Add the TV compliance line ("major streaming platform in 2025", no celebrity names). Confirm Jevoy Palmer as solo founder (remove any "team/we" references implying staff).
+
+**Tagline** — confirm "We Don't Make Videos. We Translate Businesses." is the headline.
+
+**Pill components** — if any tag/badge uses `rounded-full` pill shape, swap to uppercase + center-dot style (`TAG · LABEL`). Keep the placement, swap the shape.
+
+## What stays (the 90%)
+
+- Full page structure and section order
+- Typography pairing and scale
+- Swatch-card pattern for color
+- Do/Don't grid
+- Hero composition
+- All micro-interactions and animations
+- Spacing rhythm, editorial feel
+- Any logo/wordmark usage section
+- Voice & components sections
+
+## Deliverable
+
+- `/mnt/documents/palmer-house-brand-guide.html` — your file, edited, single download
+- Markdown version dropped (you said HTML is the one that mattered; if you want MD too, say the word)
+
+## What I need from you
+
+Confirm I can pull the source from your earlier upload `PHP_Brand_Hub.html`. If you can re-attach it (or point me to where it lives in the project), I'll edit it directly instead of rebuilding from scratch. I don't currently see it on disk — only the doc I generated.

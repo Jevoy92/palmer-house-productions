@@ -1,77 +1,88 @@
-## Reconstruct Palmer House Site From Live Bundle
+# Palmer House Hybrid Recovery Plan
 
-History didn't have the pre-SWFS snapshot, so we rebuild from the live `palmerhouseproductions.com` deploy. That bundle is intact and downloadable — I verified the route table (147 routes incl. all blog posts, industries, locations, pals, dashboard, evergreen-pal, memberships, etc.) plus chunked JS/CSS and the HoneyBook integration.
+Source of truth:
+1. **Base layer** — orphaned commit `55e64cb` (Nov 14, 2025) for real TSX source of ~90% of the site.
+2. **Patch layer** — live deployment bundle (already archived in `/tmp/live_bundle/`) for everything added/changed after Nov 14.
 
-This is a real rebuild, not a sync. Source `.tsx` was never committed; we have minified JS + the rendered DOM as the blueprint. Reconstructed files will match behavior and design, not be byte-identical to whatever the original source was.
+SWFS (`src/pages/SuddenWealthFilmSystem.tsx` + `src/components/swfs/*`) is preserved untouched and moves from `/` to `/sudden-wealth-film-system`.
 
-### Ground rules during rebuild
+**Nothing publishes until the user signs off on a side-by-side preview.** The live cache is currently the only intact copy of production — a premature deploy overwrites it.
 
-1. **Do not publish** until the new build matches the live site. The live deploy is currently our only copy of the real product — overwriting it loses everything.
-2. SWFS stays — it moves from `/` to `/sudden-wealth-film-system`.
-3. Work proceeds route-by-route so each step is verifiable in preview before moving on.
+---
 
-### Phase 1 — Archive the live deployment (foundation)
+## Phase 0 — Protect what's live (do this first, before any code lands)
 
-- Download `index.html`, `sitemap.xml`, `robots.txt`, `og-image.jpg`, favicons.
-- Download every `assets/*.js` and `assets/*.css` chunk referenced from index.html and from the lazy-loaded route map.
-- Download all `assets/*` images, fonts, videos referenced inside the chunks.
-- Save full route table (147 paths) and chunk→route mapping into `/tmp/live_bundle/manifest.json`.
-- Save rendered HTML of every route by crawling the live site (gives us copy, headings, alt text, JSON-LD, meta tags exactly as deployed).
+Before pulling anything in, lock down deploys so we can't accidentally overwrite production while rebuilding:
 
-### Phase 2 — Restore app shell
+1. Tag the orphan: create branch `website-restore` from `55e64cb` on GitHub and push it (user action — I can't run git).
+2. User pauses auto-deploy from `main` in Lovable until cutover.
+3. I confirm `/tmp/live_bundle/` is still intact (routes.txt, 142 chunks, route_map.json, rendered HTML for all 86 routes).
 
-- Replace `src/App.tsx` with React Router `<BrowserRouter>` + the 147-route table.
-- Restore `src/main.tsx` with HelmetProvider, QueryClientProvider, Toaster, etc. (read from minified bundle).
-- Restore `index.html` head: title, meta, canonical, og-image, HoneyBook PID script, fonts.
-- Create stub pages for every route so routing compiles. SWFS demoted to `/sudden-wealth-film-system`.
+Deliverable: a recovery branch exists on GitHub, deploys paused, archive verified.
 
-### Phase 3 — Rebuild shared infrastructure
+## Phase 1 — Import the Nov 14 base into this project
 
-Order matters — these are used by every page:
-1. `tailwind.config.ts` + `index.css` design tokens (Pal colors, button variants per memory).
-2. `components/Navigation.tsx` (xl breakpoint per memory).
-3. `components/Footer.tsx` (vertical hover strips per memory).
-4. `components/WaitlistDialog.tsx` + `HoneyBookContact.tsx`.
-5. Layout wrappers, Preloader, shared UI primitives.
+I read every file from commit `55e64cb` via the GitHub API (raw.githubusercontent.com per file using the commit SHA) and write them into this project's `src/`, **except** anything that would clobber SWFS:
 
-Each component is reconstructed by reading its minified chunk + the rendered DOM from the archived HTML, then rewritten in clean TSX using existing design-system tokens.
+- Keep as-is: `src/pages/SuddenWealthFilmSystem.tsx`, `src/components/swfs/*`, `src/integrations/supabase/*`, `supabase/config.toml`.
+- Overwrite: `src/App.tsx`, `src/main.tsx`, `src/index.css`, `tailwind.config.ts`, `index.html`, all other `src/pages/*`, `src/components/*`, `src/hooks/*`, `src/lib/*`, `public/*`.
+- Merge: `package.json` dependencies (union — never downgrade what SWFS needs).
 
-### Phase 4 — Rebuild pages in priority order
+Then in `App.tsx`:
+- Mount the Nov 14 router at `/` (Home, Pals, Contact, etc.).
+- Add one route: `/sudden-wealth-film-system` → existing `SuddenWealthFilmSystem` component.
 
-Tier 1 (homepage + commercial core):
-- `/` (Index — hero carousel, 8 platforms)
-- `/pals`, `/memberships`, `/app-pricing`
-- `/contact`, `/discovery-call`, `/auth`
+Verification: preview loads `/`, `/pals`, `/contact`, `/blog`, `/sudden-wealth-film-system` without runtime errors. SWFS pixel-identical to today.
 
-Tier 2 (Pal lanes + character sub-routes):
-- `/evergreen-pal`, `/evergreen-pal/:character`
-- System / Spotlight / Reel Pal pages + characters
+## Phase 2 — Diff against live bundle, identify post-Nov-14 deltas
 
-Tier 3 (industries + locations — SEO):
-- 6 industry pages, 4 location pages
+Cross-reference the imported Nov 14 routes against `/tmp/live_bundle/routes.txt` (86 routes from production). Categorize each route:
 
-Tier 4 (content):
-- `/blog` index + 15 blog post pages
-- `/faq`, `/about`, `/about-us`, `/company/team`, `/company/values`, `/privacy`
+- **Match** — exists in Nov 14 source, no work needed.
+- **New** — exists only in live bundle (Webinar funnel, Video System Assessment, anything else added after Nov 14).
+- **Changed** — exists in both, but live chunk has different content (HoneyBook PID update, copy revisions, etc.).
 
-Tier 5 (tools + dashboard):
-- `/glimpse`, `/arsenal`, `/pathways`, `/compass`, `/content-strategy`, `/production-guide`
-- `/dashboard/*` (auth-gated client area)
+For each "changed" route, I diff the Nov 14 rendered output against the archived live HTML to flag actual content drift vs. cosmetic differences.
 
-### Phase 5 — Verify & cut over
+Deliverable: `/tmp/live_bundle/delta.json` listing exactly which routes need patching.
 
-- Diff each rebuilt page against archived live HTML (visual + DOM).
-- Run the SEO/security scanners.
-- Only after the user reviews preview side-by-side with production, publish.
+## Phase 3 — Patch post-Nov-14 features from the live bundle
 
-### Technical notes
+For each route in the delta, I reconstruct the component by reading:
+- The minified chunk (`/tmp/live_bundle/assets/<Route>-<hash>.js`) for structure, props, state, handlers.
+- The archived rendered HTML for copy, headings, alt text, JSON-LD.
+- Existing design tokens + memory rules (no gradients, no pills, Pal-color variants, team voice).
 
-- Bundle URL: `https://palmerhouseproductions.com/assets/index-BYzSLobo.js` (660KB) holds the route table + most page code; `router-BrxUvig6.js` has lazy chunk map.
-- 147 unique route paths confirmed via regex against `index.js`.
-- Existing `src/components/swfs/` and `src/pages/SuddenWealthFilmSystem.tsx` are preserved untouched; only mounted at a new path.
-- Memory rules apply throughout: no gradients, no rounded-full pills, Pal-color button variants only, team voice, light theme.
-- This will take many iterations — expect dozens of follow-up turns. I'll commit progress per tier so we can roll back per-page if anything regresses.
+Priority order (smallest blast radius first):
 
-### What I need from you to start
+1. `index.html` head: title, meta, canonical, og-image, HoneyBook PID script, fonts (read straight from live `index.html`).
+2. **Webinar funnel** (`/webinar*`) — per memory `[Webinar Funnel]`.
+3. **Video System Assessment** (`/video-system*`) — per memory `[Video System Quiz]`.
+4. Any copy/contact updates surfaced in Phase 2 diff.
+5. HoneyBook integration parity (PID, intercepts).
 
-Confirm: **"Go — start Phase 1"** and I'll begin archiving the live bundle + crawling all 147 routes into `/tmp/live_bundle/`. After Phase 1 I'll show you the manifest before touching `src/`.
+Each patched route is reviewed in preview before moving to the next.
+
+## Phase 4 — Verify & cut over
+
+1. Run through Phase 1 verification list again on every route.
+2. Run SEO + security scanners.
+3. User reviews preview side-by-side with production.
+4. Only then: unpause deploys, publish, monitor.
+
+---
+
+## Technical notes
+
+- Reading from commit `55e64cb`: I fetch a tree listing via `https://api.github.com/repos/<owner>/<repo>/git/trees/55e64cb?recursive=1`, then pull each blob via `https://raw.githubusercontent.com/<owner>/<repo>/55e64cb/<path>`. To do this I need the GitHub repo path — see question below.
+- The orphan is reachable for ~90 days from the reflog event, but creating `website-restore` makes it permanent. Do that first.
+- `src/integrations/supabase/types.ts` and `client.ts` are auto-managed — I will not overwrite them; the Nov 14 versions are dropped.
+- `package.json` merge strategy: take Nov 14 deps, then add any deps SWFS uses that aren't already there. No version downgrades.
+- No design system rewrites in this pass — the Nov 14 tokens are authoritative; SWFS already uses semantic tokens so it survives the theme swap.
+
+## What I need from you to start Phase 0
+
+1. The **GitHub repo path** for this project (e.g. `your-org/palmer-house`) so I can pull files from commit `55e64cb`.
+2. Confirm you've **created `website-restore` branch from `55e64cb`** and **paused auto-deploy** from `main`.
+
+Once those two are done, say **"go Phase 1"** and I'll import the Nov 14 source.

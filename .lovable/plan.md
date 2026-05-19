@@ -1,75 +1,77 @@
+## Reconstruct Palmer House Site From Live Bundle
 
+History didn't have the pre-SWFS snapshot, so we rebuild from the live `palmerhouseproductions.com` deploy. That bundle is intact and downloadable — I verified the route table (147 routes incl. all blog posts, industries, locations, pals, dashboard, evergreen-pal, memberships, etc.) plus chunked JS/CSS and the HoneyBook integration.
 
-# Build the Sudden Wealth Film System as a Standalone Page
+This is a real rebuild, not a sync. Source `.tsx` was never committed; we have minified JS + the rendered DOM as the blueprint. Reconstructed files will match behavior and design, not be byte-identical to whatever the original source was.
 
-## Current situation
-The website source code (Navigation, App.tsx, all pages) was removed from the project during a restructuring to the monorepo/mobile architecture. The published site still works from a previous deployment. We will build the SWFS page as a standalone React app within this project so it can be deployed independently and linked from the main site nav later.
+### Ground rules during rebuild
 
-## What we will build
+1. **Do not publish** until the new build matches the live site. The live deploy is currently our only copy of the real product — overwriting it loses everything.
+2. SWFS stays — it moves from `/` to `/sudden-wealth-film-system`.
+3. Work proceeds route-by-route so each step is verifiable in preview before moving on.
 
-A complete, single-page React application at the project root (`src/`) that renders the full Sudden Wealth Film System landing page. This restores a working `dev` script and gives the preview something to render.
+### Phase 1 — Archive the live deployment (foundation)
 
-### Page sections (matching your content brief exactly)
+- Download `index.html`, `sitemap.xml`, `robots.txt`, `og-image.jpg`, favicons.
+- Download every `assets/*.js` and `assets/*.css` chunk referenced from index.html and from the lazy-loaded route map.
+- Download all `assets/*` images, fonts, videos referenced inside the chunks.
+- Save full route table (147 paths) and chunk→route mapping into `/tmp/live_bundle/manifest.json`.
+- Save rendered HTML of every route by crawling the live site (gives us copy, headings, alt text, JSON-LD, meta tags exactly as deployed).
 
-1. **Fixed header** — Palmer House Productions logo + tagline
-2. **Hero** — Headline, subheadline, long description, two CTAs (Book a Private Call, View the System), three stat cards (Core Asset, Monetization, Control)
-3. **Who This Is For** — Eyebrow + headline + 6 audience cards (lottery winners, athletes, exited founders, inheritance, lawsuit, newly public HNWI)
-4. **Why It Matters** — Narrative control messaging
-5. **What You Get** — 6 deliverable cards (Hero Film, Announcement Cuts, Short-Form Assets, Story Capture, Distribution Prep, Media Vault)
-6. **Platform Ecosystem** — Three channel groups (Streaming, Social, Creator Economy) with platform logos/names
-7. **Managing Your New Public Life** — 6 ongoing service items (Content Production, Account Management, Sponsorship, Revenue Activation, Narrative Strategy, Distribution Coordination)
-8. **Investment Tiers** — Three pricing cards: Foundation ($45K), Wealth Identity System ($85K, "Most Selected" badge), Legacy Engine ($175K/yr, "Full Partnership" badge) with feature lists and CTAs
-9. **Payment terms** — 50% upfront / 5% discount for full payment
-10. **Founder Quote** — Jevoy Palmer testimonial block
-11. **Testimonials** — 3 client reviews
-12. **Closing CTA** — Final consultation button
-13. **Footer** — Distribution disclaimer, copyright, locations
+### Phase 2 — Restore app shell
 
-### Design approach
-- Dark, cinematic palette: deep charcoal backgrounds (#0A0A0A, #111), gold/amber accents (#C9A84C) for CTAs and highlights, white text
-- Palmer House brand purple (#6B3FA0) as secondary accent
-- Clean typography with Inter font family
-- Responsive: mobile-first, looks premium on all viewports
-- No external dependencies beyond what's already in the workspace catalog (React, Tailwind, Framer Motion, Lucide icons)
+- Replace `src/App.tsx` with React Router `<BrowserRouter>` + the 147-route table.
+- Restore `src/main.tsx` with HelmetProvider, QueryClientProvider, Toaster, etc. (read from minified bundle).
+- Restore `index.html` head: title, meta, canonical, og-image, HoneyBook PID script, fonts.
+- Create stub pages for every route so routing compiles. SWFS demoted to `/sudden-wealth-film-system`.
 
-## Technical approach
+### Phase 3 — Rebuild shared infrastructure
 
-### Files to create
+Order matters — these are used by every page:
+1. `tailwind.config.ts` + `index.css` design tokens (Pal colors, button variants per memory).
+2. `components/Navigation.tsx` (xl breakpoint per memory).
+3. `components/Footer.tsx` (vertical hover strips per memory).
+4. `components/WaitlistDialog.tsx` + `HoneyBookContact.tsx`.
+5. Layout wrappers, Preloader, shared UI primitives.
 
-| File | Purpose |
-|------|---------|
-| `src/main.tsx` | React entry point |
-| `src/App.tsx` | Single route rendering the SWFS page |
-| `src/index.css` | Tailwind imports + custom styles |
-| `src/pages/SuddenWealthFilmSystem.tsx` | Full landing page component |
-| `src/components/swfs/HeroSection.tsx` | Hero with stats |
-| `src/components/swfs/AudienceSection.tsx` | Who This Is For |
-| `src/components/swfs/DeliverablesSection.tsx` | What You Get |
-| `src/components/swfs/PlatformSection.tsx` | Platform Ecosystem |
-| `src/components/swfs/ServicesSection.tsx` | Managing Your Public Life |
-| `src/components/swfs/PricingSection.tsx` | 3 investment tiers |
-| `src/components/swfs/TestimonialsSection.tsx` | Reviews + founder quote |
-| `src/components/swfs/Footer.tsx` | Footer with disclaimer |
-| `src/components/swfs/SWFSHeader.tsx` | Fixed top navigation bar |
-| `vite.config.ts` | Vite config for the standalone page |
-| `index.html` | HTML entry point |
-| `tailwind.config.ts` | Tailwind config |
+Each component is reconstructed by reading its minified chunk + the rendered DOM from the archived HTML, then rewritten in clean TSX using existing design-system tokens.
 
-### Fix the build errors
+### Phase 4 — Rebuild pages in priority order
 
-We also need to fix the pre-existing TypeScript errors in `lib/integrations-openai-ai-server/` (3 files with type casting issues) and add a `dev` script to the root `package.json` so the preview works.
+Tier 1 (homepage + commercial core):
+- `/` (Index — hero carousel, 8 platforms)
+- `/pals`, `/memberships`, `/app-pricing`
+- `/contact`, `/discovery-call`, `/auth`
 
-### Nav placement recommendation (for future integration)
+Tier 2 (Pal lanes + character sub-routes):
+- `/evergreen-pal`, `/evergreen-pal/:character`
+- System / Spotlight / Reel Pal pages + characters
 
-When the main site code is restored, the SWFS page should go under **Services** as a premium sub-item:
+Tier 3 (industries + locations — SEO):
+- 6 industry pages, 4 location pages
 
-```text
-Services ▾
-  ├── Video Production
-  ├── Content Systems
-  ├── ...existing items...
-  └── Sudden Wealth Film System  ← NEW (with a "Premium" badge)
-```
+Tier 4 (content):
+- `/blog` index + 15 blog post pages
+- `/faq`, `/about`, `/about-us`, `/company/team`, `/company/values`, `/privacy`
 
-It could also work as a top-level nav item between "Services" and "Industries" if you want maximum visibility for this high-ticket offering.
+Tier 5 (tools + dashboard):
+- `/glimpse`, `/arsenal`, `/pathways`, `/compass`, `/content-strategy`, `/production-guide`
+- `/dashboard/*` (auth-gated client area)
 
+### Phase 5 — Verify & cut over
+
+- Diff each rebuilt page against archived live HTML (visual + DOM).
+- Run the SEO/security scanners.
+- Only after the user reviews preview side-by-side with production, publish.
+
+### Technical notes
+
+- Bundle URL: `https://palmerhouseproductions.com/assets/index-BYzSLobo.js` (660KB) holds the route table + most page code; `router-BrxUvig6.js` has lazy chunk map.
+- 147 unique route paths confirmed via regex against `index.js`.
+- Existing `src/components/swfs/` and `src/pages/SuddenWealthFilmSystem.tsx` are preserved untouched; only mounted at a new path.
+- Memory rules apply throughout: no gradients, no rounded-full pills, Pal-color button variants only, team voice, light theme.
+- This will take many iterations — expect dozens of follow-up turns. I'll commit progress per tier so we can roll back per-page if anything regresses.
+
+### What I need from you to start
+
+Confirm: **"Go — start Phase 1"** and I'll begin archiving the live bundle + crawling all 147 routes into `/tmp/live_bundle/`. After Phase 1 I'll show you the manifest before touching `src/`.

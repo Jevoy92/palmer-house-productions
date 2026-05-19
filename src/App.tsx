@@ -69,6 +69,7 @@ import AppPricing from "./pages/AppPricing";
 import Memberships from "./pages/Memberships";
 import ProductionPricing from "./pages/ProductionPricing";
 import Settings from "./pages/Settings";
+import SuddenWealthFilmSystem from "./pages/SuddenWealthFilmSystem";
 
 const queryClient = new QueryClient();
 
@@ -95,8 +96,9 @@ function ConditionalNavigation() {
   const isToolRoute = location.pathname.startsWith('/tools/');
   const isSettingsRoute = location.pathname === '/settings';
   const isAppPricingRoute = location.pathname === '/app-pricing';
+  const isSWFSRoute = location.pathname === '/sudden-wealth-film-system';
   
-  if (isDashboardRoute || isAuthRoute || isToolRoute || isSettingsRoute || isAppPricingRoute) {
+  if (isDashboardRoute || isAuthRoute || isToolRoute || isSettingsRoute || isAppPricingRoute || isSWFSRoute) {
     return null;
   }
   
@@ -113,7 +115,8 @@ function ConditionalFooter() {
     '/tools/',
     '/settings',
     '/auth',
-    '/app-pricing'
+    '/app-pricing',
+    '/sudden-wealth-film-system'
   ];
   
   const shouldHideFooter = noFooterRoutes.some(route => 
@@ -146,6 +149,7 @@ const App = () => (
            <div className="pt-20">
             <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/sudden-wealth-film-system" element={<SuddenWealthFilmSystem />} />
           {/* Dashboard and tool routes don't get the footer here - they render it inside their SidebarProvider */}
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/dashboard/pals/:palId" element={<ProtectedRoute><PalHub /></ProtectedRoute>} />

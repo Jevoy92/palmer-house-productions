@@ -70,6 +70,8 @@ import Memberships from "./pages/Memberships";
 import ProductionPricing from "./pages/ProductionPricing";
 import Settings from "./pages/Settings";
 import SuddenWealthFilmSystem from "./pages/SuddenWealthFilmSystem";
+import Webinar from "./pages/Webinar";
+import VideoSystemAssessment from "./pages/VideoSystemAssessment";
 
 const queryClient = new QueryClient();
 
@@ -199,6 +201,8 @@ const App = () => (
             <Route path="/blog/content-creation-tools-2025" element={<ContentCreationTools2025 />} />
              <Route path="/blog/video-content-roi-comparison" element={<VideoContentROIComparison />} />
               <Route path="/blog/mobile-video-production" element={<MobileVideoProduction />} />
+             <Route path="/webinar" element={<Webinar />} />
+             <Route path="/video-system-assessment" element={<VideoSystemAssessment />} />
              <Route path="/style-guide" element={<StyleGuide />} />
            
             {/* Legacy route redirects */}

@@ -24,8 +24,8 @@ export function Hero() {
           className="inline-block rounded-full p-[1.5px]"
           style={{ backgroundImage: "var(--gradient-brand)" }}
         >
-          <span className="text-gradient-brand block rounded-full bg-background px-4 py-1.5 text-sm font-medium">
-            AI for Marketing
+          <span className="block rounded-full bg-background px-4 py-1.5">
+            <span className="text-gradient-brand text-sm font-medium">AI for Marketing</span>
           </span>
         </span>
 

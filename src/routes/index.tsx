@@ -15,17 +15,17 @@ import { FinalCta } from "@/components/site/FinalCta";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Holo — AI Marketing Tool for Ads, Emails & Social Posts" },
+      { title: "Palmer House Productions — Video Systems That Solve Business Problems" },
       {
         name: "description",
         content:
-          "Holo turns your website into ads, emails, and social posts. Launch 10x more content, 75% faster, with AI that learns your brand DNA.",
+          "Palmer House Productions builds video systems for Pacific Northwest businesses — one shoot day delivers a content library for social, web, and training.",
       },
-      { property: "og:title", content: "Holo — Launch 10x more content, 75% faster" },
+      { property: "og:title", content: "Palmer House Productions — Build Your Video Library, One Shoot At A Time" },
       {
         property: "og:description",
         content:
-          "AI for marketing: hundreds of on-brand ads, emails, and social posts generated while you sleep.",
+          "Strategic video content production serving Seattle, Bellevue, Tacoma, and Portland. We don't just make videos; we solve business problems with them.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

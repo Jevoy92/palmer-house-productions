@@ -1,24 +1,54 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Nav } from "@/components/site/Nav";
+import { Hero } from "@/components/site/Hero";
+import { CreativesShowcase } from "@/components/site/CreativesShowcase";
+import { Steps } from "@/components/site/Steps";
+import { BrandDna } from "@/components/site/BrandDna";
+import { ContentCalendar } from "@/components/site/ContentCalendar";
+import { Stats } from "@/components/site/Stats";
+import { Comparison } from "@/components/site/Comparison";
+import { Testimonials } from "@/components/site/Testimonials";
+import { Team } from "@/components/site/Team";
+import { Faq } from "@/components/site/Faq";
+import { FinalCta } from "@/components/site/FinalCta";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Holo — AI Marketing Tool for Ads, Emails & Social Posts" },
+      {
+        name: "description",
+        content:
+          "Holo turns your website into ads, emails, and social posts. Launch 10x more content, 75% faster, with AI that learns your brand DNA.",
+      },
+      { property: "og:title", content: "Holo — Launch 10x more content, 75% faster" },
+      {
+        property: "og:description",
+        content:
+          "AI for marketing: hundreds of on-brand ads, emails, and social posts generated while you sleep.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="min-h-screen bg-background">
+      <Nav />
+      <Hero />
+      <CreativesShowcase />
+      <Steps />
+      <BrandDna />
+      <ContentCalendar />
+      <Stats />
+      <Comparison />
+      <Testimonials />
+      <Team />
+      <Faq />
+      <FinalCta />
+    </main>
   );
 }

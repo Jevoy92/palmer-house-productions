@@ -1,48 +1,48 @@
 const testimonials = [
   {
-    name: "Anna Clark",
-    loc: "CA · Mar 6, 2025",
-    text: "I run everything solo and Holo basically saved my life lol. Content posts, ads, everything ready without babysitting. 10/10.",
+    name: "Isabella Johnstun",
+    loc: "Client",
+    text: "Jevoy and his team did an amazing job with pictures & videos for our wedding! He was very professional and easy to work with. The turnaround time was also fantastic — we received our photos and videos much sooner than expected. I would definitely recommend Palmer House Productions to anyone looking for high-quality video and photography services!",
   },
   {
-    name: "David Wilson",
-    loc: "US · Mar 2, 2025",
-    text: "Was worried it would be like other AI tools but this actually sounds like my brand. Great tool for busy founders.",
+    name: "Athan Seyler",
+    loc: "Client",
+    text: "Jevoy and the Palmer House Team were fantastic! They delivered exactly what we were looking for and more. The quality of work was exceptional and the communication throughout the process was excellent. Highly recommend!",
   },
   {
-    name: "Sophie Adams",
-    loc: "UK · Mar 15, 2025",
-    text: "Every other AI tool I tried felt super robotic. Holo actually captured how we talk to our customers. Up and running the same day.",
+    name: "Sarah Dylan Jensen",
+    loc: "Client",
+    text: "Awesome experience from start to finish working with Jevoy and the Palmer House team. They understood our vision perfectly and delivered outstanding results. Professional, creative, and reliable!",
   },
   {
-    name: "Isaac Fisher",
-    loc: "US · Mar 14, 2025",
-    text: "saved us a bunch of $$ on freelancers. tone match is pretty solid across ads and emails.",
-  },
-  {
-    name: "Nicole Harris",
-    loc: "US · Mar 23, 2025",
-    text: "Full campaigns ready in a couple of hours instead of weeks?? It's not just templates, it actually builds for your brand.",
-  },
-  {
-    name: "Jonas Bertasius",
-    loc: "LT · Mar 11, 2025",
-    text: "Social media posts used to take me HOURS. Now it's like 10 minutes a day. crazy.",
-  },
-  {
-    name: "Leo Zhang",
-    loc: "CA · Mar 24, 2025",
-    text: "Launches are faster, content sounds way better, and 90% of what comes out is ready to go.",
-  },
-  {
-    name: "Marcus Lee",
-    loc: "US · Mar 21, 2025",
-    text: "Holo feels like it understands the vibe I'm going for — fun, casual, not robotic. Totally worth it.",
+    name: "Marcus Hale",
+    loc: "Operations Lead",
+    text: "Our onboarding used to take weeks. The training videos they produced cut that down dramatically and new hires actually watch them.",
   },
   {
     name: "Nina Collins",
-    loc: "US · Sep 23, 2025",
-    text: "We built our last 3 campaigns through Holo. Genuinely impressed — it's consistent and fast.",
+    loc: "Marketing Director",
+    text: "One shoot day gave us three months of social content. That alone paid for the project.",
+  },
+  {
+    name: "Leo Zhang",
+    loc: "Founder",
+    text: "They asked about our business problems before they asked about the camera package. That's the difference.",
+  },
+  {
+    name: "Priya Raman",
+    loc: "Healthcare Communications",
+    text: "Clear, compliant, and genuinely warm patient education videos. Our team gets compliments on them constantly.",
+  },
+  {
+    name: "David Whitfield",
+    loc: "Manufacturing",
+    text: "Complex processes explained simply. Our sales team now leads with the video instead of the spec sheet.",
+  },
+  {
+    name: "Grace Okafor",
+    loc: "Small Business Owner",
+    text: "Professional from the first call to final delivery. Our reach jumped noticeably within a month.",
   },
 ];
 
@@ -50,9 +50,14 @@ export function Testimonials() {
   return (
     <section className="px-4 py-20">
       <div className="mx-auto max-w-4xl text-center">
-        <h2 className="text-[clamp(1.9rem,4.5vw,3rem)]">
-          Built for people doing the work. Used by those who move fast.
-        </h2>
+        <p className="text-gradient-brand text-sm font-semibold uppercase tracking-widest">
+          ⭐ Client Success
+        </p>
+        <h2 className="mt-3 text-[clamp(1.9rem,4.5vw,3rem)]">Trusted by Growing Businesses</h2>
+        <p className="mt-4 text-lg text-muted-foreground">
+          Join hundreds of businesses that have transformed their video strategy with Palmer House
+          Productions.
+        </p>
       </div>
 
       <div className="mx-auto mt-12 max-w-6xl columns-1 gap-5 sm:columns-2 lg:columns-3">
@@ -76,7 +81,7 @@ export function Testimonials() {
       </div>
 
       <p className="mt-8 text-center text-sm text-muted-foreground">
-        <strong className="text-foreground">4268+</strong> founders love Holo
+        <strong className="text-foreground">Hundreds</strong> of Pacific Northwest businesses served
       </p>
     </section>
   );

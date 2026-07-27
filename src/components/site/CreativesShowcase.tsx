@@ -12,7 +12,7 @@ export function CreativesShowcase() {
       <div className="mx-auto max-w-4xl px-4 text-center">
         <h2 className="text-[clamp(2rem,5vw,3.4rem)] leading-[1.02]">
           You've probably seen our work.
-          <span className="block text-muted-foreground">You just didn't know it was AI.</span>
+          <span className="block text-muted-foreground">You just didn't know it was us.</span>
         </h2>
       </div>
 
@@ -22,7 +22,7 @@ export function CreativesShowcase() {
             <img
               key={i}
               src={src}
-              alt={`AI-generated marketing creative ${i + 1}`}
+              alt={`Palmer House Productions video project ${i + 1}`}
               width={720}
               height={900}
               loading="lazy"
@@ -34,12 +34,15 @@ export function CreativesShowcase() {
 
       <div className="mx-auto mt-16 max-w-3xl px-4 text-center text-xl leading-relaxed sm:text-2xl">
         <p>
-          At <span className="text-gradient-brand font-display font-bold">Holo</span> we're
-          revolutionizing how founders create content. Using the latest AI models we capture your
-          brand's essence to deliver agency-like content across all platforms.
+          We don't just make videos; we solve{" "}
+          <span className="text-gradient-brand font-display font-bold">business problems</span> with
+          them. Maybe your onboarding takes too long. Your message isn't landing. Your brand isn't
+          getting seen where it counts.
         </p>
         <p className="mt-4 text-muted-foreground">
-          So you can do the work of a full team without hiring one.
+          Whatever the challenge, we start by understanding what's getting in the way — and then
+          design a video system built to fix it. Because video isn't the goal. It's the tool that
+          gets you there.
         </p>
       </div>
     </section>

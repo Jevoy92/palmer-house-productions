@@ -1,35 +1,35 @@
 const faqs = [
   {
-    q: "What is Holo?",
-    a: "Holo is your all-in-one AI marketing tool. It creates ads, social posts, and emails that sound and look like they came from your team. No templates. No generic fluff. Just brand-perfect campaigns, ready to launch.",
+    q: "What is Palmer House Productions?",
+    a: "We're a Pacific Northwest video production company that builds video systems, not just videos. We start with the business problem — slow onboarding, a message that isn't landing, low visibility — and design content that fixes it.",
   },
   {
-    q: "How is this AI tool for advertising different from others?",
-    a: "Brand DNA is built in, it's trained on 10M+ creative assets and 19,000+ top-performing ads, and it's global-ready with 95+ languages supported.",
+    q: "How is your process different from hiring a videographer?",
+    a: "A videographer shows up and shoots. We start with strategy, then capture multiple formats in one production day, then help you launch and optimize. You end up with a library, not a single file.",
   },
   {
-    q: "Do I need marketing or technical knowledge to use Holo?",
-    a: "No. Holo was built for founders, creators, and marketers who want speed and results — not a learning curve.",
+    q: "What do I actually receive from one shoot day?",
+    a: "From a single raw master we deliver a YouTube longform cut, roughly three Reels or TikToks, a LinkedIn teaser, and email newsletter assets — plus anything else your plan calls for.",
   },
   {
-    q: "What kind of content can Holo generate?",
-    a: "Ad creatives (static and video), social media posts, email sequences, and promotional campaigns — always aligned with your voice.",
+    q: "What types of video do you produce?",
+    a: "Product demos, team stories, training videos, testimonials, brand stories, social content, event coverage, explainers, how-to guides, culture pieces, and behind-the-scenes.",
   },
   {
-    q: "Can I manage multiple brands in one account?",
-    a: "Yes. Run up to 5 brands under a single Holo account, each with its own Brand DNA, workspace, and templates.",
+    q: "Which areas do you serve?",
+    a: "We're based in the Pacific Northwest and work across Washington and Oregon — Seattle, Bellevue, Tacoma, Portland, and the greater Puget Sound region. Travel is available on request.",
   },
   {
-    q: "Is Holo better than ChatGPT?",
-    a: "General AI tools are powerful, but Holo is built for one thing: marketing. No prompt engineering, no guesswork — campaigns created, branded, and ready to launch in minutes.",
+    q: "Who do you typically work with?",
+    a: "Small businesses, startups, healthcare systems, manufacturers, and government agencies — plus select events and weddings.",
   },
   {
-    q: "Do you have a free trial?",
-    a: "No. Holo doesn't offer a free trial, but you're fully covered with our 14-day money-back guarantee.",
+    q: "How long does a project take?",
+    a: "Most projects run a few weeks from discovery call to final delivery, depending on scope. Clients regularly tell us the turnaround was faster than expected.",
   },
   {
-    q: "Does it work if I don't have a website?",
-    a: "Yes. You can use any valid URL during onboarding and update your brand information later in the process.",
+    q: "How do we get started?",
+    a: "Book a discovery call. We'll talk through your goals, what's getting in the way, and whether a video system is the right fix — no pressure either way.",
   },
 ];
 

@@ -1,8 +1,11 @@
 const team = [
-  { name: "Aleksandras Urbanavičius", role: "Co-Founder" },
-  { name: "Deividas Kovger", role: "Co-Founder" },
-  { name: "Karolis Vaiginis", role: "Lead Designer" },
-  { name: "Arnas Puidokas", role: "CTO" },
+  { name: "Silas", role: "System Pal" },
+  { name: "Samira", role: "System Pal" },
+  { name: "Kareem", role: "Spotlight Pal" },
+  { name: "Kiana", role: "Spotlight Pal" },
+  { name: "Clara", role: "Evergreen Pal" },
+  { name: "Raquel", role: "Reel Pal" },
+  { name: "Ryder", role: "Reel Pal" },
 ];
 
 export function Team() {
@@ -11,17 +14,16 @@ export function Team() {
       <div className="mx-auto max-w-6xl">
         <div className="surface-card p-8 sm:p-12">
           <h2 className="max-w-3xl text-[clamp(1.9rem,4.5vw,3rem)]">
-            Great powers come with great <span className="text-gradient-brand">privacy</span>.
+            The <span className="text-gradient-brand">Creators</span>.
           </h2>
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-            Your brand is your greatest asset. We protect it with full encryption, zero sharing, and
-            absolute control in your hands. Stay in control — from your first post to your
-            hundredth campaign, and everything after.
+            Meet our diverse team of digital experts. Each Pal owns a piece of your video system —
+            from the systems that train your team to the reels that get you seen.
           </p>
         </div>
 
         <div className="mt-12 grid gap-10 lg:grid-cols-2">
-          <div className="grid grid-cols-2 gap-5 sm:grid-cols-4 lg:grid-cols-2">
+          <div className="grid grid-cols-2 gap-5 sm:grid-cols-4 lg:grid-cols-3">
             {team.map((m) => (
               <div key={m.name} className="surface-card p-5 text-center">
                 <span className="bg-gradient-brand mx-auto grid size-16 place-items-center rounded-full font-display text-xl font-bold text-primary-foreground">
@@ -34,17 +36,18 @@ export function Team() {
           </div>
 
           <div>
-            <h3 className="text-2xl">Hi! We're the team behind Holo.</h3>
+            <h3 className="text-2xl">Hi! We're the team behind Palmer House Productions.</h3>
             <div className="mt-4 space-y-3 leading-relaxed text-muted-foreground">
               <p>
-                Some of us started building online stores in high school. Others were launching
-                software before we turned 21.
+                From training to visibility to customer education, our process turns complex pain
+                points into clear, measurable solutions.
               </p>
               <p>
-                Over the past few years, we helped grow brands like Sintra, Pulsetto, Burga, and
-                Moerie — doing growth, writing copy, setting up systems from the inside.
+                Every project is tailored to your team, your goals, and your bottom line — so you
+                get more than beautiful footage. You get content that performs, scales, and delivers
+                real ROI.
               </p>
-              <p>Now, we're building the tool we always wished we had.</p>
+              <p>Because video isn't the goal. It's the tool that gets you there.</p>
             </div>
           </div>
         </div>

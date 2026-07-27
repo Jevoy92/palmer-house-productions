@@ -68,7 +68,7 @@ export function Hero() {
           alt="Holo AI mascot wearing a holographic visor"
           width={1200}
           height={1200}
-          className="animate-float mx-auto w-full max-w-md mix-blend-multiply"
+          className="animate-float mx-auto w-full max-w-md mix-blend-darken"
         />
       </div>
 

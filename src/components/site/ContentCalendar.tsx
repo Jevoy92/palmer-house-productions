@@ -52,7 +52,7 @@ export function ContentCalendar() {
             width={1200}
             height={1200}
             loading="lazy"
-            className="mx-auto w-56 mix-blend-multiply"
+            className="mx-auto w-56 mix-blend-darken"
           />
           <div>
             <h3 className="text-2xl">Like Tinder, but for content.</h3>

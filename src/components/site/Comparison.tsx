@@ -1,10 +1,10 @@
-const cols = ["Holo", "ChatGPT", "Canva", "Midjourney"];
+const cols = ["Palmer House", "Freelancer", "In-house DIY", "Stock footage"];
 const rows: Array<{ label: string; values: boolean[] }> = [
-  { label: "High-performing design", values: [true, false, true, true] },
-  { label: "Personalised for your brand", values: [true, false, false, false] },
-  { label: "Works while you sleep", values: [true, false, false, false] },
-  { label: "Easy-to-use, fun platform", values: [true, true, false, false] },
-  { label: "Multi-language support", values: [true, true, false, false] },
+  { label: "Cinematic production quality", values: [true, true, false, true] },
+  { label: "Strategy before the camera rolls", values: [true, false, false, false] },
+  { label: "Multi-format library from one shoot", values: [true, false, false, false] },
+  { label: "Reliable turnaround and communication", values: [true, false, true, false] },
+  { label: "Built around your business goals", values: [true, false, true, false] },
 ];
 
 function Mark({ ok }: { ok: boolean }) {
@@ -23,8 +23,10 @@ export function Comparison() {
   return (
     <section id="pricing" className="px-4 py-20">
       <div className="mx-auto max-w-4xl text-center">
-        <h2 className="text-[clamp(1.9rem,4.5vw,3rem)]">1 tool to do it all</h2>
-        <p className="mt-3 text-lg text-muted-foreground">Save $400/month. Just get Holo.</p>
+        <h2 className="text-[clamp(1.9rem,4.5vw,3rem)]">1 team to do it all</h2>
+        <p className="mt-3 text-lg text-muted-foreground">
+          One partner for strategy, production, and delivery.
+        </p>
       </div>
 
       <div className="surface-card mx-auto mt-10 max-w-4xl overflow-x-auto p-4 sm:p-8">

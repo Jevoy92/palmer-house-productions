@@ -1,16 +1,24 @@
 const steps = [
   {
     n: "01",
-    title: "Input your URL",
-    body: "Drop your website link and Holo's AI will learn your brand in minutes.",
+    title: "Share Your Vision",
+    body: "Tell us your goals and we'll craft the perfect video strategy for your business.",
   },
   {
     n: "02",
-    title: "Swipe ideas",
-    body: "Our AI content creator delivers fresh ideas every single day.",
+    title: "Custom Strategy",
+    body: "Our team designs a tailored video content plan that aligns with your brand.",
   },
-  { n: "03", title: "Edit & customize", body: "Change anything, no design skills needed." },
-  { n: "04", title: "Download & publish", body: "Launch 10x more content, 75% faster." },
+  {
+    n: "03",
+    title: "Professional Production",
+    body: "We handle everything from filming to editing with cinematic quality.",
+  },
+  {
+    n: "04",
+    title: "Launch & Optimize",
+    body: "Publish your content and watch your engagement soar. We're with you every step.",
+  },
 ];
 
 export function Steps() {
@@ -18,7 +26,7 @@ export function Steps() {
     <section className="px-4 py-20">
       <div className="mx-auto max-w-6xl">
         <h2 className="max-w-2xl text-[clamp(1.9rem,4.5vw,3rem)]">
-          How Our AI Marketing Tool Works
+          How Palmer House Productions Works
         </h2>
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

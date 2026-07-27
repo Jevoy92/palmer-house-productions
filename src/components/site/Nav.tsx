@@ -1,4 +1,4 @@
-const links = ["Use cases", "Affiliate", "Blog", "About us", "Login"];
+const links = ["Services", "Industries", "Meet the Pals", "Resources", "Locations"];
 
 export function Nav() {
   return (
@@ -6,13 +6,10 @@ export function Nav() {
       <nav className="mx-auto flex max-w-5xl items-center justify-center gap-3">
         <a
           href="#top"
-          aria-label="Holo home"
+          aria-label="Palmer House Productions home"
           className="hidden size-12 shrink-0 items-center justify-center rounded-full border border-border bg-card shadow-soft sm:flex"
         >
-          <span className="flex items-center gap-1">
-            <span className="size-1.5 rounded-full bg-foreground" />
-            <span className="mt-2 size-1.5 rounded-full bg-foreground" />
-          </span>
+          <span className="font-display text-sm font-bold">PH</span>
         </a>
 
         <div className="hidden items-center gap-1 rounded-full border border-border bg-card/80 px-2 py-2 shadow-soft backdrop-blur md:flex">
@@ -33,7 +30,7 @@ export function Nav() {
           style={{ backgroundImage: "var(--gradient-brand)" }}
         >
           <span className="block rounded-full bg-card px-5 py-2.5 text-sm font-semibold">
-            Buy now
+            Contact
           </span>
         </a>
       </nav>

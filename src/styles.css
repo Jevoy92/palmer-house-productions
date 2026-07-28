@@ -153,13 +153,12 @@
 }
 
 @utility text-gradient-brand {
-  background-image: var(--gradient-brand);
-  background-clip: text;
-  color: transparent;
+  color: var(--spotlight);
 }
 
 @utility bg-gradient-brand {
-  background-image: var(--gradient-brand);
+  background-color: var(--spotlight);
+  color: var(--paper);
 }
 
 @utility shadow-soft {

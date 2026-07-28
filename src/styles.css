@@ -35,8 +35,22 @@
   --color-brand-purple: var(--brand-purple);
   --color-brand-orange: var(--brand-orange);
   --color-brand-blue: var(--brand-blue);
+  --color-reel: var(--reel);
+  --color-reel-soft: var(--reel-soft);
+  --color-spotlight: var(--spotlight);
+  --color-spotlight-soft: var(--spotlight-soft);
+  --color-evergreen: var(--evergreen);
+  --color-evergreen-soft: var(--evergreen-soft);
+  --color-system: var(--system);
+  --color-system-soft: var(--system-soft);
+  --color-cream: var(--cream);
+  --color-mist: var(--mist);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
   --font-display: var(--font-display);
   --font-sans: var(--font-body);
+  --font-serif: var(--font-serif-brand);
+  --font-mono: var(--font-mono-brand);
 }
 
 :root {

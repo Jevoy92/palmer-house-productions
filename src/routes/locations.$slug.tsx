@@ -46,7 +46,7 @@ export const Route = createFileRoute("/locations/$slug")({
     <PageShell>
       <Section title="Location not found" subtitle="We don't have a page for that location yet.">
         <div className="text-center">
-          <Link to="/locations/seattle-wa" className="font-semibold text-gradient-brand">
+          <Link to="/locations/$slug" params={{ slug: "seattle-wa" }} className="font-semibold text-gradient-brand">
             View Seattle, WA →
           </Link>
         </div>

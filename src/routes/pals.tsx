@@ -198,7 +198,7 @@ function PalsPage() {
                     <Link
                       to={lane.path}
                       className="rounded-full px-5 py-2.5 text-sm font-semibold text-white shadow-glow"
-                      style={{ backgroundImage: "var(--gradient-brand)" }}
+                      style={{ backgroundColor: "var(--spotlight)" }}
                     >
                       {lane.cta}
                     </Link>

@@ -210,7 +210,7 @@ function AssessmentPage() {
             <p className="font-display text-6xl font-extrabold text-gradient-brand">{score}</p>
             <p className="mt-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">Readiness Score / 100</p>
             <div className="mx-auto mt-4 h-2 max-w-sm overflow-hidden rounded-full bg-secondary">
-              <div className="h-full rounded-full" style={{ width: `${score}%`, backgroundImage: "var(--gradient-brand)" }} />
+              <div className="h-full rounded-full" style={{ width: `${score}%`, backgroundColor: "var(--spotlight)" }} />
             </div>
             <h3 className="mt-6 font-display text-2xl font-bold">{tier.label}</h3>
             <p className="mt-2 text-sm text-muted-foreground">{tier.body}</p>
@@ -222,7 +222,7 @@ function AssessmentPage() {
               <Link
                 to={rec.path}
                 className="mt-5 inline-block rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow"
-                style={{ backgroundImage: "var(--gradient-brand)" }}
+                style={{ backgroundColor: "var(--spotlight)" }}
               >
                 Explore {rec.pal}
               </Link>
@@ -253,7 +253,7 @@ function AssessmentPage() {
             <span>{percent}% complete</span>
           </div>
           <div className="mb-8 h-2 overflow-hidden rounded-full bg-secondary">
-            <div className="h-full rounded-full transition-all" style={{ width: `${percent}%`, backgroundImage: "var(--gradient-brand)" }} />
+            <div className="h-full rounded-full transition-all" style={{ width: `${percent}%`, backgroundColor: "var(--spotlight)" }} />
           </div>
 
           <div className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">
@@ -275,7 +275,7 @@ function AssessmentPage() {
                               ? "border-transparent text-white shadow-glow"
                               : "border-border bg-background text-foreground hover:border-primary/50"
                           }`}
-                          style={active ? { backgroundImage: "var(--gradient-brand)" } : undefined}
+                          style={active ? { backgroundColor: "var(--spotlight)" } : undefined}
                         >
                           {opt}
                         </button>
@@ -300,7 +300,7 @@ function AssessmentPage() {
                 onClick={handleContinue}
                 disabled={!currentStepComplete()}
                 className="rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow disabled:opacity-40"
-                style={{ backgroundImage: "var(--gradient-brand)" }}
+                style={{ backgroundColor: "var(--spotlight)" }}
               >
                 {step === totalSteps - 1 ? "See My Results" : "Continue"}
               </button>

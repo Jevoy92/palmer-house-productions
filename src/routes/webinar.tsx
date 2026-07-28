@@ -136,7 +136,7 @@ function WebinarPage() {
               <button
                 type="submit"
                 className="mt-6 w-full rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow"
-                style={{ backgroundImage: "var(--gradient-brand)" }}
+                style={{ backgroundColor: "var(--spotlight)" }}
               >
                 Reserve My Free Spot
               </button>

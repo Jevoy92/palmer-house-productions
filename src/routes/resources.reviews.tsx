@@ -111,7 +111,7 @@ function ReviewsPage() {
               <div className="mt-5 flex items-center gap-3">
                 <span
                   className="flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold text-white"
-                  style={{ backgroundImage: "var(--gradient-brand)" }}
+                  style={{ backgroundColor: "var(--spotlight)" }}
                 >
                   {r.initials}
                 </span>

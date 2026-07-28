@@ -60,7 +60,7 @@ export function PageHero({
             <Link
               to="/contact"
               className="rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow"
-              style={{ backgroundImage: "var(--gradient-brand)" }}
+              style={{ backgroundColor: "var(--spotlight)" }}
             >
               Book a Discovery Call
             </Link>
@@ -167,7 +167,7 @@ export function CtaBand({
     <section className="px-4 py-16">
       <div
         className="mx-auto max-w-5xl rounded-3xl px-6 py-14 text-center text-white shadow-glow"
-        style={{ backgroundImage: "var(--gradient-brand)" }}
+        style={{ backgroundColor: "var(--spotlight)" }}
       >
         <h2 className="font-display text-3xl font-extrabold sm:text-4xl">{title}</h2>
         {subtitle && <p className="mx-auto mt-3 max-w-xl text-white/90">{subtitle}</p>}

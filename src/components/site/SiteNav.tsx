@@ -11,7 +11,7 @@ export function SiteNav() {
         <Link to="/" className="flex shrink-0 items-center gap-2">
           <span
             className="flex size-9 items-center justify-center rounded-full text-xs font-bold text-white"
-            style={{ backgroundImage: "var(--gradient-brand)" }}
+            style={{ backgroundColor: "var(--spotlight)" }}
           >
             PH
           </span>
@@ -49,7 +49,7 @@ export function SiteNav() {
           <Link
             to="/contact"
             className="ml-2 rounded-full p-[1.5px] shadow-soft"
-            style={{ backgroundImage: "var(--gradient-brand)" }}
+            style={{ backgroundColor: "var(--spotlight)" }}
           >
             <span className="block rounded-full bg-card px-5 py-2 text-sm font-semibold">Contact</span>
           </Link>
@@ -90,7 +90,7 @@ export function SiteNav() {
             to="/contact"
             onClick={() => setOpen(false)}
             className="block rounded-full px-5 py-3 text-center text-sm font-semibold text-white"
-            style={{ backgroundImage: "var(--gradient-brand)" }}
+            style={{ backgroundColor: "var(--spotlight)" }}
           >
             Contact
           </Link>

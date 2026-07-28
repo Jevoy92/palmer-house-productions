@@ -5,7 +5,7 @@ export function FinalCta() {
     <footer className="px-4 pb-16 pt-10">
       <div
         className="mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] px-6 py-20 text-center"
-        style={{ backgroundImage: "var(--gradient-brand)" }}
+        style={{ backgroundColor: "var(--spotlight)" }}
       >
         <img
           src={mascot}

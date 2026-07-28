@@ -22,7 +22,7 @@ export function Hero() {
       <div className="mx-auto max-w-4xl text-center">
         <span
           className="inline-block rounded-full p-[1.5px]"
-          style={{ backgroundImage: "var(--gradient-brand)" }}
+          style={{ backgroundColor: "var(--spotlight)" }}
         >
           <span className="block rounded-full bg-background px-4 py-1.5">
             <span className="text-gradient-brand text-sm font-medium">

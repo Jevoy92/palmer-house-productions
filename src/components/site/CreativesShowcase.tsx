@@ -3,6 +3,7 @@ import c2 from "@/assets/creative-2.jpg";
 import c3 from "@/assets/creative-3.jpg";
 import c4 from "@/assets/creative-4.jpg";
 import { Marquee } from "./Marquee";
+import { ScrollHighlightText } from "./ScrollHighlightText";
 
 const creatives = [c1, c2, c3, c4];
 

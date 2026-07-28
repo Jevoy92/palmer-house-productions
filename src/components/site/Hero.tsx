@@ -70,13 +70,13 @@ export function Hero() {
         </div>
       </div>
 
-      <div className="mx-auto mt-14 max-w-xl">
+      <div className="mx-auto mt-14 max-w-5xl">
         <img
-          src={mascot}
-          alt="Palmer House Productions creative character"
-          width={1200}
-          height={1200}
-          className="animate-float mx-auto w-full max-w-md mix-blend-darken"
+          src={palsWorld.url}
+          alt="The Palmer House Pals studio world — reel, spotlight, system, and evergreen production sets"
+          width={1920}
+          height={1080}
+          className="animate-float mx-auto w-full"
         />
       </div>
 

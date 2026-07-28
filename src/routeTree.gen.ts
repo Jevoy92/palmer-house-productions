@@ -9,12 +9,66 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WebinarRouteImport } from './routes/webinar'
+import { Route as StartupsRouteImport } from './routes/startups'
+import { Route as ReelPalRouteImport } from './routes/reel-pal'
+import { Route as ProductionPricingRouteImport } from './routes/production-pricing'
+import { Route as ProductionGuideRouteImport } from './routes/production-guide'
 import { Route as PalsRouteImport } from './routes/pals'
+import { Route as ContentStrategyRouteImport } from './routes/content-strategy'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AboutUsRouteImport } from './routes/about-us'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as ServicesVideoProductionRouteImport } from './routes/services.video-production'
+import { Route as ServicesPostProductionRouteImport } from './routes/services.post-production'
+import { Route as ServicesDiyDownloadsRouteImport } from './routes/services.diy-downloads'
+import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
+import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
 
+const WebinarRoute = WebinarRouteImport.update({
+  id: '/webinar',
+  path: '/webinar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StartupsRoute = StartupsRouteImport.update({
+  id: '/startups',
+  path: '/startups',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReelPalRoute = ReelPalRouteImport.update({
+  id: '/reel-pal',
+  path: '/reel-pal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductionPricingRoute = ProductionPricingRouteImport.update({
+  id: '/production-pricing',
+  path: '/production-pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductionGuideRoute = ProductionGuideRouteImport.update({
+  id: '/production-guide',
+  path: '/production-guide',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PalsRoute = PalsRouteImport.update({
   id: '/pals',
   path: '/pals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContentStrategyRoute = ContentStrategyRouteImport.update({
+  id: '/content-strategy',
+  path: '/content-strategy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutUsRoute = AboutUsRouteImport.update({
+  id: '/about-us',
+  path: '/about-us',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -22,40 +76,231 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesVideoProductionRoute = ServicesVideoProductionRouteImport.update({
+  id: '/services/video-production',
+  path: '/services/video-production',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesPostProductionRoute = ServicesPostProductionRouteImport.update({
+  id: '/services/post-production',
+  path: '/services/post-production',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesDiyDownloadsRoute = ServicesDiyDownloadsRouteImport.update({
+  id: '/services/diy-downloads',
+  path: '/services/diy-downloads',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LocationsSlugRoute = LocationsSlugRouteImport.update({
+  id: '/locations/$slug',
+  path: '/locations/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IndustriesSlugRoute = IndustriesSlugRouteImport.update({
+  id: '/industries/$slug',
+  path: '/industries/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about-us': typeof AboutUsRoute
+  '/contact': typeof ContactRoute
+  '/content-strategy': typeof ContentStrategyRoute
   '/pals': typeof PalsRoute
+  '/production-guide': typeof ProductionGuideRoute
+  '/production-pricing': typeof ProductionPricingRoute
+  '/reel-pal': typeof ReelPalRoute
+  '/startups': typeof StartupsRoute
+  '/webinar': typeof WebinarRoute
+  '/industries/$slug': typeof IndustriesSlugRoute
+  '/locations/$slug': typeof LocationsSlugRoute
+  '/services/diy-downloads': typeof ServicesDiyDownloadsRoute
+  '/services/post-production': typeof ServicesPostProductionRoute
+  '/services/video-production': typeof ServicesVideoProductionRoute
+  '/blog/': typeof BlogIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about-us': typeof AboutUsRoute
+  '/contact': typeof ContactRoute
+  '/content-strategy': typeof ContentStrategyRoute
   '/pals': typeof PalsRoute
+  '/production-guide': typeof ProductionGuideRoute
+  '/production-pricing': typeof ProductionPricingRoute
+  '/reel-pal': typeof ReelPalRoute
+  '/startups': typeof StartupsRoute
+  '/webinar': typeof WebinarRoute
+  '/industries/$slug': typeof IndustriesSlugRoute
+  '/locations/$slug': typeof LocationsSlugRoute
+  '/services/diy-downloads': typeof ServicesDiyDownloadsRoute
+  '/services/post-production': typeof ServicesPostProductionRoute
+  '/services/video-production': typeof ServicesVideoProductionRoute
+  '/blog': typeof BlogIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about-us': typeof AboutUsRoute
+  '/contact': typeof ContactRoute
+  '/content-strategy': typeof ContentStrategyRoute
   '/pals': typeof PalsRoute
+  '/production-guide': typeof ProductionGuideRoute
+  '/production-pricing': typeof ProductionPricingRoute
+  '/reel-pal': typeof ReelPalRoute
+  '/startups': typeof StartupsRoute
+  '/webinar': typeof WebinarRoute
+  '/industries/$slug': typeof IndustriesSlugRoute
+  '/locations/$slug': typeof LocationsSlugRoute
+  '/services/diy-downloads': typeof ServicesDiyDownloadsRoute
+  '/services/post-production': typeof ServicesPostProductionRoute
+  '/services/video-production': typeof ServicesVideoProductionRoute
+  '/blog/': typeof BlogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/pals'
+  fullPaths:
+    | '/'
+    | '/about-us'
+    | '/contact'
+    | '/content-strategy'
+    | '/pals'
+    | '/production-guide'
+    | '/production-pricing'
+    | '/reel-pal'
+    | '/startups'
+    | '/webinar'
+    | '/industries/$slug'
+    | '/locations/$slug'
+    | '/services/diy-downloads'
+    | '/services/post-production'
+    | '/services/video-production'
+    | '/blog/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/pals'
-  id: '__root__' | '/' | '/pals'
+  to:
+    | '/'
+    | '/about-us'
+    | '/contact'
+    | '/content-strategy'
+    | '/pals'
+    | '/production-guide'
+    | '/production-pricing'
+    | '/reel-pal'
+    | '/startups'
+    | '/webinar'
+    | '/industries/$slug'
+    | '/locations/$slug'
+    | '/services/diy-downloads'
+    | '/services/post-production'
+    | '/services/video-production'
+    | '/blog'
+  id:
+    | '__root__'
+    | '/'
+    | '/about-us'
+    | '/contact'
+    | '/content-strategy'
+    | '/pals'
+    | '/production-guide'
+    | '/production-pricing'
+    | '/reel-pal'
+    | '/startups'
+    | '/webinar'
+    | '/industries/$slug'
+    | '/locations/$slug'
+    | '/services/diy-downloads'
+    | '/services/post-production'
+    | '/services/video-production'
+    | '/blog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutUsRoute: typeof AboutUsRoute
+  ContactRoute: typeof ContactRoute
+  ContentStrategyRoute: typeof ContentStrategyRoute
   PalsRoute: typeof PalsRoute
+  ProductionGuideRoute: typeof ProductionGuideRoute
+  ProductionPricingRoute: typeof ProductionPricingRoute
+  ReelPalRoute: typeof ReelPalRoute
+  StartupsRoute: typeof StartupsRoute
+  WebinarRoute: typeof WebinarRoute
+  IndustriesSlugRoute: typeof IndustriesSlugRoute
+  LocationsSlugRoute: typeof LocationsSlugRoute
+  ServicesDiyDownloadsRoute: typeof ServicesDiyDownloadsRoute
+  ServicesPostProductionRoute: typeof ServicesPostProductionRoute
+  ServicesVideoProductionRoute: typeof ServicesVideoProductionRoute
+  BlogIndexRoute: typeof BlogIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/webinar': {
+      id: '/webinar'
+      path: '/webinar'
+      fullPath: '/webinar'
+      preLoaderRoute: typeof WebinarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/startups': {
+      id: '/startups'
+      path: '/startups'
+      fullPath: '/startups'
+      preLoaderRoute: typeof StartupsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reel-pal': {
+      id: '/reel-pal'
+      path: '/reel-pal'
+      fullPath: '/reel-pal'
+      preLoaderRoute: typeof ReelPalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/production-pricing': {
+      id: '/production-pricing'
+      path: '/production-pricing'
+      fullPath: '/production-pricing'
+      preLoaderRoute: typeof ProductionPricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/production-guide': {
+      id: '/production-guide'
+      path: '/production-guide'
+      fullPath: '/production-guide'
+      preLoaderRoute: typeof ProductionGuideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pals': {
       id: '/pals'
       path: '/pals'
       fullPath: '/pals'
       preLoaderRoute: typeof PalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/content-strategy': {
+      id: '/content-strategy'
+      path: '/content-strategy'
+      fullPath: '/content-strategy'
+      preLoaderRoute: typeof ContentStrategyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about-us': {
+      id: '/about-us'
+      path: '/about-us'
+      fullPath: '/about-us'
+      preLoaderRoute: typeof AboutUsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -65,12 +310,68 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/video-production': {
+      id: '/services/video-production'
+      path: '/services/video-production'
+      fullPath: '/services/video-production'
+      preLoaderRoute: typeof ServicesVideoProductionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/post-production': {
+      id: '/services/post-production'
+      path: '/services/post-production'
+      fullPath: '/services/post-production'
+      preLoaderRoute: typeof ServicesPostProductionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/diy-downloads': {
+      id: '/services/diy-downloads'
+      path: '/services/diy-downloads'
+      fullPath: '/services/diy-downloads'
+      preLoaderRoute: typeof ServicesDiyDownloadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/locations/$slug': {
+      id: '/locations/$slug'
+      path: '/locations/$slug'
+      fullPath: '/locations/$slug'
+      preLoaderRoute: typeof LocationsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/industries/$slug': {
+      id: '/industries/$slug'
+      path: '/industries/$slug'
+      fullPath: '/industries/$slug'
+      preLoaderRoute: typeof IndustriesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutUsRoute: AboutUsRoute,
+  ContactRoute: ContactRoute,
+  ContentStrategyRoute: ContentStrategyRoute,
   PalsRoute: PalsRoute,
+  ProductionGuideRoute: ProductionGuideRoute,
+  ProductionPricingRoute: ProductionPricingRoute,
+  ReelPalRoute: ReelPalRoute,
+  StartupsRoute: StartupsRoute,
+  WebinarRoute: WebinarRoute,
+  IndustriesSlugRoute: IndustriesSlugRoute,
+  LocationsSlugRoute: LocationsSlugRoute,
+  ServicesDiyDownloadsRoute: ServicesDiyDownloadsRoute,
+  ServicesPostProductionRoute: ServicesPostProductionRoute,
+  ServicesVideoProductionRoute: ServicesVideoProductionRoute,
+  BlogIndexRoute: BlogIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

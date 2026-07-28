@@ -16,7 +16,7 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative flex min-h-[100svh] flex-col overflow-hidden px-4 pb-4 pt-[calc(var(--nav-h,4.5rem)+1rem)] lg:h-[100svh]"
+      className="relative flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden px-4 pb-4 pt-6 lg:h-[calc(100svh-4rem)]"
     >
       <div className="mx-auto w-full max-w-4xl shrink-0 text-center">
         <span

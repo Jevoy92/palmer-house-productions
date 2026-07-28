@@ -1,11 +1,21 @@
+import silas from "@/assets/Silas_standing_full.webp.asset.json";
+import samira from "@/assets/Samira_standing_full.webp.asset.json";
+import kareem from "@/assets/Kareem_standing_full.webp.asset.json";
+import kiana from "@/assets/Kiana_standing_full.webp.asset.json";
+import clara from "@/assets/Clara_standing_full.png.asset.json";
+import cyrus from "@/assets/Cyrus_standing_full.png.asset.json";
+import raquel from "@/assets/Raquel_standing_full.png.asset.json";
+import ryder from "@/assets/Ryder_standing_full.webp.asset.json";
+
 const team = [
-  { name: "Silas", role: "System Pal" },
-  { name: "Samira", role: "System Pal" },
-  { name: "Kareem", role: "Spotlight Pal" },
-  { name: "Kiana", role: "Spotlight Pal" },
-  { name: "Clara", role: "Evergreen Pal" },
-  { name: "Raquel", role: "Reel Pal" },
-  { name: "Ryder", role: "Reel Pal" },
+  { name: "Silas", role: "System Pal", img: silas.url },
+  { name: "Samira", role: "System Pal", img: samira.url },
+  { name: "Kareem", role: "Spotlight Pal", img: kareem.url },
+  { name: "Kiana", role: "Spotlight Pal", img: kiana.url },
+  { name: "Clara", role: "Evergreen Pal", img: clara.url },
+  { name: "Cyrus", role: "Evergreen Pal", img: cyrus.url },
+  { name: "Raquel", role: "Reel Pal", img: raquel.url },
+  { name: "Ryder", role: "Reel Pal", img: ryder.url },
 ];
 
 export function Team() {
@@ -17,18 +27,23 @@ export function Team() {
             The <span className="text-gradient-brand">Creators</span>.
           </h2>
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-            Meet our diverse team of digital experts. Each Pal owns a piece of your video system —
-            from the systems that train your team to the reels that get you seen.
+            Meet the Palmer House Pals. Each Pal owns a piece of your video system — from the
+            systems that train your team to the reels that get you seen.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-10 lg:grid-cols-2">
-          <div className="grid grid-cols-2 gap-5 sm:grid-cols-4 lg:grid-cols-3">
+        <div className="mt-12 grid gap-10 lg:grid-cols-[1.4fr_1fr]">
+          <div className="grid grid-cols-2 gap-5 sm:grid-cols-4">
             {team.map((m) => (
-              <div key={m.name} className="surface-card p-5 text-center">
-                <span className="bg-gradient-brand mx-auto grid size-16 place-items-center rounded-full font-display text-xl font-bold text-primary-foreground">
-                  {m.name.charAt(0)}
-                </span>
+              <div key={m.name} className="surface-card p-4 text-center">
+                <div className="grid h-40 place-items-end overflow-hidden rounded-2xl bg-secondary/40">
+                  <img
+                    src={m.img}
+                    alt={`${m.name}, ${m.role} at Palmer House Productions`}
+                    loading="lazy"
+                    className="h-full w-full object-contain object-bottom"
+                  />
+                </div>
                 <p className="mt-4 text-sm font-semibold">{m.name}</p>
                 <p className="text-xs text-muted-foreground">{m.role}</p>
               </div>

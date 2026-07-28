@@ -1,6 +1,6 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { PageShell, CtaBand, Eyebrow } from "@/components/site/PageShell";
-import { blogPosts, getPostBySlug } from "@/data/blog";
+import { blogPosts, getPostBySlug, type BlogSection } from "@/data/blog";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: ({ params }) => {
@@ -64,20 +64,20 @@ function BlogPostPage() {
           </div>
 
           <div className="prose-content mt-10 space-y-10">
-            {post.sections.map((section, i) => (
+            {post.sections.map((section: BlogSection, i: number) => (
               <div key={i}>
                 {section.heading && (
                   <h2 className="font-display text-2xl font-bold tracking-tight">{section.heading}</h2>
                 )}
                 <div className="mt-3 space-y-4">
-                  {section.paragraphs.map((p, j) => (
+                  {section.paragraphs.map((p: string, j: number) => (
                     <p key={j} className="text-base leading-relaxed text-muted-foreground">
                       {p}
                     </p>
                   ))}
                   {section.bullets && section.bullets.length > 0 && (
                     <ul className="list-disc space-y-2 pl-5">
-                      {section.bullets.map((b, k) => (
+                      {section.bullets.map((b: string, k: number) => (
                         <li key={k} className="text-base leading-relaxed text-muted-foreground">
                           {b}
                         </li>

@@ -10,11 +10,14 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WebinarRouteImport } from './routes/webinar'
+import { Route as SystemPalRouteImport } from './routes/system-pal'
 import { Route as StartupsRouteImport } from './routes/startups'
+import { Route as SpotlightPalRouteImport } from './routes/spotlight-pal'
 import { Route as ReelPalRouteImport } from './routes/reel-pal'
 import { Route as ProductionPricingRouteImport } from './routes/production-pricing'
 import { Route as ProductionGuideRouteImport } from './routes/production-guide'
 import { Route as PalsRouteImport } from './routes/pals'
+import { Route as EvergreenPalRouteImport } from './routes/evergreen-pal'
 import { Route as ContentStrategyRouteImport } from './routes/content-strategy'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutUsRouteImport } from './routes/about-us'
@@ -32,9 +35,19 @@ const WebinarRoute = WebinarRouteImport.update({
   path: '/webinar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SystemPalRoute = SystemPalRouteImport.update({
+  id: '/system-pal',
+  path: '/system-pal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StartupsRoute = StartupsRouteImport.update({
   id: '/startups',
   path: '/startups',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SpotlightPalRoute = SpotlightPalRouteImport.update({
+  id: '/spotlight-pal',
+  path: '/spotlight-pal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReelPalRoute = ReelPalRouteImport.update({
@@ -55,6 +68,11 @@ const ProductionGuideRoute = ProductionGuideRouteImport.update({
 const PalsRoute = PalsRouteImport.update({
   id: '/pals',
   path: '/pals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EvergreenPalRoute = EvergreenPalRouteImport.update({
+  id: '/evergreen-pal',
+  path: '/evergreen-pal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContentStrategyRoute = ContentStrategyRouteImport.update({
@@ -118,11 +136,14 @@ export interface FileRoutesByFullPath {
   '/about-us': typeof AboutUsRoute
   '/contact': typeof ContactRoute
   '/content-strategy': typeof ContentStrategyRoute
+  '/evergreen-pal': typeof EvergreenPalRoute
   '/pals': typeof PalsRoute
   '/production-guide': typeof ProductionGuideRoute
   '/production-pricing': typeof ProductionPricingRoute
   '/reel-pal': typeof ReelPalRoute
+  '/spotlight-pal': typeof SpotlightPalRoute
   '/startups': typeof StartupsRoute
+  '/system-pal': typeof SystemPalRoute
   '/webinar': typeof WebinarRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
@@ -137,11 +158,14 @@ export interface FileRoutesByTo {
   '/about-us': typeof AboutUsRoute
   '/contact': typeof ContactRoute
   '/content-strategy': typeof ContentStrategyRoute
+  '/evergreen-pal': typeof EvergreenPalRoute
   '/pals': typeof PalsRoute
   '/production-guide': typeof ProductionGuideRoute
   '/production-pricing': typeof ProductionPricingRoute
   '/reel-pal': typeof ReelPalRoute
+  '/spotlight-pal': typeof SpotlightPalRoute
   '/startups': typeof StartupsRoute
+  '/system-pal': typeof SystemPalRoute
   '/webinar': typeof WebinarRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
@@ -157,11 +181,14 @@ export interface FileRoutesById {
   '/about-us': typeof AboutUsRoute
   '/contact': typeof ContactRoute
   '/content-strategy': typeof ContentStrategyRoute
+  '/evergreen-pal': typeof EvergreenPalRoute
   '/pals': typeof PalsRoute
   '/production-guide': typeof ProductionGuideRoute
   '/production-pricing': typeof ProductionPricingRoute
   '/reel-pal': typeof ReelPalRoute
+  '/spotlight-pal': typeof SpotlightPalRoute
   '/startups': typeof StartupsRoute
+  '/system-pal': typeof SystemPalRoute
   '/webinar': typeof WebinarRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
@@ -178,11 +205,14 @@ export interface FileRouteTypes {
     | '/about-us'
     | '/contact'
     | '/content-strategy'
+    | '/evergreen-pal'
     | '/pals'
     | '/production-guide'
     | '/production-pricing'
     | '/reel-pal'
+    | '/spotlight-pal'
     | '/startups'
+    | '/system-pal'
     | '/webinar'
     | '/blog/$slug'
     | '/industries/$slug'
@@ -197,11 +227,14 @@ export interface FileRouteTypes {
     | '/about-us'
     | '/contact'
     | '/content-strategy'
+    | '/evergreen-pal'
     | '/pals'
     | '/production-guide'
     | '/production-pricing'
     | '/reel-pal'
+    | '/spotlight-pal'
     | '/startups'
+    | '/system-pal'
     | '/webinar'
     | '/blog/$slug'
     | '/industries/$slug'
@@ -216,11 +249,14 @@ export interface FileRouteTypes {
     | '/about-us'
     | '/contact'
     | '/content-strategy'
+    | '/evergreen-pal'
     | '/pals'
     | '/production-guide'
     | '/production-pricing'
     | '/reel-pal'
+    | '/spotlight-pal'
     | '/startups'
+    | '/system-pal'
     | '/webinar'
     | '/blog/$slug'
     | '/industries/$slug'
@@ -236,11 +272,14 @@ export interface RootRouteChildren {
   AboutUsRoute: typeof AboutUsRoute
   ContactRoute: typeof ContactRoute
   ContentStrategyRoute: typeof ContentStrategyRoute
+  EvergreenPalRoute: typeof EvergreenPalRoute
   PalsRoute: typeof PalsRoute
   ProductionGuideRoute: typeof ProductionGuideRoute
   ProductionPricingRoute: typeof ProductionPricingRoute
   ReelPalRoute: typeof ReelPalRoute
+  SpotlightPalRoute: typeof SpotlightPalRoute
   StartupsRoute: typeof StartupsRoute
+  SystemPalRoute: typeof SystemPalRoute
   WebinarRoute: typeof WebinarRoute
   BlogSlugRoute: typeof BlogSlugRoute
   IndustriesSlugRoute: typeof IndustriesSlugRoute
@@ -260,11 +299,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WebinarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/system-pal': {
+      id: '/system-pal'
+      path: '/system-pal'
+      fullPath: '/system-pal'
+      preLoaderRoute: typeof SystemPalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/startups': {
       id: '/startups'
       path: '/startups'
       fullPath: '/startups'
       preLoaderRoute: typeof StartupsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/spotlight-pal': {
+      id: '/spotlight-pal'
+      path: '/spotlight-pal'
+      fullPath: '/spotlight-pal'
+      preLoaderRoute: typeof SpotlightPalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reel-pal': {
@@ -293,6 +346,13 @@ declare module '@tanstack/react-router' {
       path: '/pals'
       fullPath: '/pals'
       preLoaderRoute: typeof PalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/evergreen-pal': {
+      id: '/evergreen-pal'
+      path: '/evergreen-pal'
+      fullPath: '/evergreen-pal'
+      preLoaderRoute: typeof EvergreenPalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/content-strategy': {
@@ -380,11 +440,14 @@ const rootRouteChildren: RootRouteChildren = {
   AboutUsRoute: AboutUsRoute,
   ContactRoute: ContactRoute,
   ContentStrategyRoute: ContentStrategyRoute,
+  EvergreenPalRoute: EvergreenPalRoute,
   PalsRoute: PalsRoute,
   ProductionGuideRoute: ProductionGuideRoute,
   ProductionPricingRoute: ProductionPricingRoute,
   ReelPalRoute: ReelPalRoute,
+  SpotlightPalRoute: SpotlightPalRoute,
   StartupsRoute: StartupsRoute,
+  SystemPalRoute: SystemPalRoute,
   WebinarRoute: WebinarRoute,
   BlogSlugRoute: BlogSlugRoute,
   IndustriesSlugRoute: IndustriesSlugRoute,

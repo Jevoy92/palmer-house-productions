@@ -33,18 +33,13 @@ export function CreativesShowcase() {
       </div>
 
       <div className="mx-auto mt-16 max-w-3xl px-4 text-center text-xl leading-relaxed sm:text-2xl">
-        <p>
-          We don't just make videos; we solve{" "}
-          <span className="text-gradient-brand font-display font-bold">business problems</span> with
-          them. Maybe your onboarding takes too long. Your message isn't landing. Your brand isn't
-          getting seen where it counts.
-        </p>
-        <p className="mt-4 text-muted-foreground">
-          Whatever the challenge, we start by understanding what's getting in the way — and then
-          design a video system built to fix it. Because video isn't the goal. It's the tool that
-          gets you there.
-        </p>
+        <ScrollHighlightText text="We don't just make videos; we solve business problems with them. Maybe your onboarding takes too long. Your message isn't landing. Your brand isn't getting seen where it counts." />
+        <ScrollHighlightText
+          className="mt-4"
+          text="Whatever the challenge, we start by understanding what's getting in the way — and then design a video system built to fix it. Because video isn't the goal. It's the tool that gets you there."
+        />
       </div>
     </section>
   );
 }
+

@@ -38,7 +38,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <main className="min-h-screen bg-background">
-      <Nav />
+      <SiteNav />
       <Hero />
       <CreativesShowcase />
       <Steps />
@@ -50,6 +50,7 @@ function Index() {
       <Team />
       <Faq />
       <FinalCta />
+      <SiteFooter />
     </main>
   );
 }

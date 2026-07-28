@@ -1,4 +1,4 @@
-import mascot from "@/assets/mascot.jpg";
+import palsWorld from "@/assets/pals-world.png.asset.json";
 
 function GradientButton({ label = "Book a Discovery Call" }: { label?: string }) {
   return (

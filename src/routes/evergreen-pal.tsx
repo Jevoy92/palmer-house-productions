@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell, PageHero, Section, Card, CardGrid, FaqList, CtaBand, Eyebrow } from "@/components/site/PageShell";
+import scene from "@/assets/evergreen-pal-studio.webp.asset.json";
 import { MissionComparison } from "@/components/site/MissionComparison";
 import cyrus from "@/assets/Cyrus_standing_full.png.asset.json";
 import clara from "@/assets/Clara_standing_full.png.asset.json";
@@ -41,6 +42,15 @@ function EvergreenPalPage() {
         highlight="Evergreen Content"
         subtitle="Cyrus turns scattered expertise into structured video series. Long-form content packages that compound in value over time."
       />
+
+      <Section>
+        <img
+          src={scene.url}
+          alt="Evergreen Pal library studio where Cyrus and Clara record long-form content"
+          loading="lazy"
+          className="mx-auto w-full max-w-4xl"
+        />
+      </Section>
 
       <Section muted>
         <div className="grid items-center gap-8 sm:grid-cols-2">

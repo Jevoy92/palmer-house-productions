@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell, PageHero, Section, Card, CardGrid, FaqList, CtaBand, Eyebrow } from "@/components/site/PageShell";
+import scene from "@/assets/reel-pal-studio.webp.asset.json";
 import { MissionComparison } from "@/components/site/MissionComparison";
 import ryder from "@/assets/Ryder_standing_full.webp.asset.json";
 import raquel from "@/assets/Raquel_standing_full.png.asset.json";
@@ -42,6 +43,15 @@ function ReelPalPage() {
         highlight="Relentless Momentum"
         subtitle="Ryder engineers the first 3 seconds. Punchy, platform-native video packages built for brands that need to be seen."
       />
+
+      <Section>
+        <img
+          src={scene.url}
+          alt="Reel Pal studio set where Ryder and Raquel film short-form video"
+          loading="lazy"
+          className="mx-auto w-full max-w-4xl"
+        />
+      </Section>
 
       <Section muted>
         <div className="grid items-center gap-8 sm:grid-cols-2">

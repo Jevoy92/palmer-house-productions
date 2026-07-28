@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell, PageHero, Section, Card, CardGrid, FaqList, CtaBand, Eyebrow } from "@/components/site/PageShell";
+import scene from "@/assets/system-pal-lab.webp.asset.json";
 import { MissionComparison } from "@/components/site/MissionComparison";
 import silas from "@/assets/Silas_standing_full.webp.asset.json";
 import samira from "@/assets/Samira_standing_full.webp.asset.json";
@@ -42,6 +43,15 @@ function SystemPalPage() {
         highlight="Video Systems"
         subtitle="Silas builds the machine. Internal video packages that turn tribal knowledge into searchable, reusable training libraries."
       />
+
+      <Section>
+        <img
+          src={scene.url}
+          alt="System Pal lab where Silas and Samira build automated video systems"
+          loading="lazy"
+          className="mx-auto w-full max-w-4xl"
+        />
+      </Section>
 
       <Section muted>
         <div className="grid items-center gap-8 sm:grid-cols-2">

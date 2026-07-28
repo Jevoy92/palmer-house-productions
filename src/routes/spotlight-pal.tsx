@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell, PageHero, Section, Card, CardGrid, FaqList, CtaBand, Eyebrow } from "@/components/site/PageShell";
+import scene from "@/assets/spotlight-pal-stage.webp.asset.json";
 import { MissionComparison } from "@/components/site/MissionComparison";
 import kareem from "@/assets/Kareem_standing_full.webp.asset.json";
 import kiana from "@/assets/Kiana_standing_full.webp.asset.json";
@@ -41,6 +42,15 @@ function SpotlightPalPage() {
         highlight="Cinematic Precision"
         subtitle="Kareem obsesses over every frame. Premium video packages built for brands that demand polished, high-production storytelling."
       />
+
+      <Section>
+        <img
+          src={scene.url}
+          alt="Spotlight Pal stage set with Kareem and Kiana filming a live audience session"
+          loading="lazy"
+          className="mx-auto w-full max-w-4xl"
+        />
+      </Section>
 
       <Section muted>
         <div className="grid items-center gap-8 sm:grid-cols-2">

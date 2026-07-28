@@ -1,6 +1,6 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
 import { PageShell, PageHero, Section, Card, CardGrid, FaqList, CtaBand, Eyebrow } from "@/components/site/PageShell";
-import { locations, locationList } from "@/data/locations";
+import { locations, locationList, type Location } from "@/data/locations";
 
 export const Route = createFileRoute("/locations/$slug")({
   loader: ({ params }) => {
@@ -56,7 +56,7 @@ export const Route = createFileRoute("/locations/$slug")({
 });
 
 function LocationPage() {
-  const location = Route.useLoaderData();
+  const location = Route.useLoaderData() as Location;
   const otherLocations = locationList.filter((l) => l.slug !== location.slug);
 
   return (

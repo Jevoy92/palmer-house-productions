@@ -27,7 +27,7 @@ export function Nav() {
         <a
           href="#pricing"
           className="relative rounded-full p-[1.5px] shadow-soft"
-          style={{ backgroundImage: "var(--gradient-brand)" }}
+          style={{ backgroundColor: "var(--spotlight)" }}
         >
           <span className="block rounded-full bg-card px-5 py-2.5 text-sm font-semibold">
             Contact

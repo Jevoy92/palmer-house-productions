@@ -114,7 +114,7 @@ function EvergreenPalPage() {
             <Link
               to="/contact"
               className="rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow"
-              style={{ backgroundImage: "var(--gradient-brand)" }}
+              style={{ backgroundColor: "var(--spotlight)" }}
             >
               Customize This Package
             </Link>

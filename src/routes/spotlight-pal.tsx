@@ -106,7 +106,7 @@ function SpotlightPalPage() {
               <p className="text-gradient-brand font-display text-2xl font-extrabold">$600</p>
               <p className="mt-1 text-xs text-muted-foreground">1 min each • $150 each. Same session, already set up</p>
             </div>
-            <div className="rounded-xl p-4 text-white" style={{ backgroundImage: "var(--gradient-brand)" }}>
+            <div className="rounded-xl p-4 text-white" style={{ backgroundColor: "var(--spotlight)" }}>
               <p className="text-xs font-bold uppercase text-white/80">Package Total</p>
               <p className="font-display text-2xl font-extrabold">$1,050</p>
               <p className="mt-1 text-xs text-white/80">Only 4 spots left this month</p>
@@ -116,7 +116,7 @@ function SpotlightPalPage() {
             <Link
               to="/contact"
               className="rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow"
-              style={{ backgroundImage: "var(--gradient-brand)" }}
+              style={{ backgroundColor: "var(--spotlight)" }}
             >
               Customize This Package
             </Link>

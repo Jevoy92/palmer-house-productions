@@ -45,7 +45,7 @@ function DiyDownloadsPage() {
               <Link
                 to="/contact"
                 className="mt-5 rounded-full px-5 py-2.5 text-center text-sm font-semibold text-white shadow-glow"
-                style={{ backgroundImage: "var(--gradient-brand)" }}
+                style={{ backgroundColor: "var(--spotlight)" }}
               >
                 Buy Now
               </Link>
@@ -60,7 +60,7 @@ function DiyDownloadsPage() {
           <Link
             to="/contact"
             className="rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow"
-            style={{ backgroundImage: "var(--gradient-brand)" }}
+            style={{ backgroundColor: "var(--spotlight)" }}
           >
             Book Strategy Call
           </Link>

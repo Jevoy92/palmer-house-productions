@@ -122,7 +122,7 @@ function AboutUsPage() {
           </p>
         </div>
         <div className="mt-8 text-center">
-          <Link to="/pals" className="rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow" style={{ backgroundImage: "var(--gradient-brand)" }}>
+          <Link to="/pals" className="rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow" style={{ backgroundColor: "var(--spotlight)" }}>
             Meet the Pals
           </Link>
         </div>

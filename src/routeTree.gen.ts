@@ -25,6 +25,7 @@ import { Route as ServicesPostProductionRouteImport } from './routes/services.po
 import { Route as ServicesDiyDownloadsRouteImport } from './routes/services.diy-downloads'
 import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
 const WebinarRoute = WebinarRouteImport.update({
   id: '/webinar',
@@ -106,6 +107,11 @@ const IndustriesSlugRoute = IndustriesSlugRouteImport.update({
   path: '/industries/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -118,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/reel-pal': typeof ReelPalRoute
   '/startups': typeof StartupsRoute
   '/webinar': typeof WebinarRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/services/diy-downloads': typeof ServicesDiyDownloadsRoute
@@ -136,6 +143,7 @@ export interface FileRoutesByTo {
   '/reel-pal': typeof ReelPalRoute
   '/startups': typeof StartupsRoute
   '/webinar': typeof WebinarRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/services/diy-downloads': typeof ServicesDiyDownloadsRoute
@@ -155,6 +163,7 @@ export interface FileRoutesById {
   '/reel-pal': typeof ReelPalRoute
   '/startups': typeof StartupsRoute
   '/webinar': typeof WebinarRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/services/diy-downloads': typeof ServicesDiyDownloadsRoute
@@ -175,6 +184,7 @@ export interface FileRouteTypes {
     | '/reel-pal'
     | '/startups'
     | '/webinar'
+    | '/blog/$slug'
     | '/industries/$slug'
     | '/locations/$slug'
     | '/services/diy-downloads'
@@ -193,6 +203,7 @@ export interface FileRouteTypes {
     | '/reel-pal'
     | '/startups'
     | '/webinar'
+    | '/blog/$slug'
     | '/industries/$slug'
     | '/locations/$slug'
     | '/services/diy-downloads'
@@ -211,6 +222,7 @@ export interface FileRouteTypes {
     | '/reel-pal'
     | '/startups'
     | '/webinar'
+    | '/blog/$slug'
     | '/industries/$slug'
     | '/locations/$slug'
     | '/services/diy-downloads'
@@ -230,6 +242,7 @@ export interface RootRouteChildren {
   ReelPalRoute: typeof ReelPalRoute
   StartupsRoute: typeof StartupsRoute
   WebinarRoute: typeof WebinarRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   IndustriesSlugRoute: typeof IndustriesSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
   ServicesDiyDownloadsRoute: typeof ServicesDiyDownloadsRoute
@@ -352,6 +365,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndustriesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -366,6 +386,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReelPalRoute: ReelPalRoute,
   StartupsRoute: StartupsRoute,
   WebinarRoute: WebinarRoute,
+  BlogSlugRoute: BlogSlugRoute,
   IndustriesSlugRoute: IndustriesSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,
   ServicesDiyDownloadsRoute: ServicesDiyDownloadsRoute,

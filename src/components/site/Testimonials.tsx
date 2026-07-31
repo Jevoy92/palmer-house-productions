@@ -1,48 +1,18 @@
 const testimonials = [
   {
     name: "Isabella Johnstun",
-    loc: "Client",
-    text: "Jevoy and his team did an amazing job with pictures & videos for our wedding! He was very professional and easy to work with. The turnaround time was also fantastic — we received our photos and videos much sooner than expected. I would definitely recommend Palmer House Productions to anyone looking for high-quality video and photography services!",
+    loc: "Dick's Restaurant Supply",
+    text: "Jevoy and his team did an amazing job with pictures & videos of our team and stores. Our management was blown away by the quality, professionalism, and speed at which their media was produced. They took the time to understand our goals and delivered exceptional results.",
   },
   {
     name: "Athan Seyler",
-    loc: "Client",
-    text: "Jevoy and the Palmer House Team were fantastic! They delivered exactly what we were looking for and more. The quality of work was exceptional and the communication throughout the process was excellent. Highly recommend!",
+    loc: "Local Guide",
+    text: "Jevoy and the Palmer House Team were fantastic! Getting in front of the camera for photos is one stressor, but jumping in front of the camera to make a video is even more stressful. Jevoy has a gift of helping his clients become grounded and comfortable.",
   },
   {
     name: "Sarah Dylan Jensen",
-    loc: "Client",
-    text: "Awesome experience from start to finish working with Jevoy and the Palmer House team. They understood our vision perfectly and delivered outstanding results. Professional, creative, and reliable!",
-  },
-  {
-    name: "Marcus Hale",
-    loc: "Operations Lead",
-    text: "Our onboarding used to take weeks. The training videos they produced cut that down dramatically and new hires actually watch them.",
-  },
-  {
-    name: "Nina Collins",
-    loc: "Marketing Director",
-    text: "One shoot day gave us three months of social content. That alone paid for the project.",
-  },
-  {
-    name: "Leo Zhang",
-    loc: "Founder",
-    text: "They asked about our business problems before they asked about the camera package. That's the difference.",
-  },
-  {
-    name: "Priya Raman",
-    loc: "Healthcare Communications",
-    text: "Clear, compliant, and genuinely warm patient education videos. Our team gets compliments on them constantly.",
-  },
-  {
-    name: "David Whitfield",
-    loc: "Manufacturing",
-    text: "Complex processes explained simply. Our sales team now leads with the video instead of the spec sheet.",
-  },
-  {
-    name: "Grace Okafor",
-    loc: "Small Business Owner",
-    text: "Professional from the first call to final delivery. Our reach jumped noticeably within a month.",
+    loc: "Local Guide",
+    text: "Awesome experience from start to finish working with Jevoy. He was in constant communication, detail-oriented and provided exactly what we were looking for in our organization's marketing videos and photos.",
   },
 ];
 
@@ -55,8 +25,7 @@ export function Testimonials() {
         </p>
         <h2 className="mt-3 text-[clamp(1.9rem,4.5vw,3rem)]">Trusted by Growing Businesses</h2>
         <p className="mt-4 text-lg text-muted-foreground">
-          Join hundreds of businesses that have transformed their video strategy with Palmer House
-          Productions.
+          Real words from people who trusted Palmer House with the work.
         </p>
       </div>
 
@@ -80,9 +49,12 @@ export function Testimonials() {
         ))}
       </div>
 
-      <p className="mt-8 text-center text-sm text-muted-foreground">
-        <strong className="text-foreground">Hundreds</strong> of Pacific Northwest businesses served
-      </p>
+      <a
+        href="/resources/reviews"
+        className="mx-auto mt-8 block w-fit rounded-full border border-border px-5 py-3 text-sm font-semibold transition-colors hover:bg-muted"
+      >
+        Read more client reviews →
+      </a>
     </section>
   );
 }

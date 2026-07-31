@@ -131,6 +131,11 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+    overflow-x: clip;
+  }
+
   * {
     border-color: var(--color-border);
   }
@@ -140,6 +145,17 @@
     color: var(--color-foreground);
     font-family: var(--font-body);
     -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background: var(--spotlight);
+    color: white;
+  }
+
+  :focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--system) 55%, white);
+    outline-offset: 3px;
   }
 
   h1,
@@ -201,4 +217,77 @@
 
 @utility animate-float {
   animation: float-y 6s ease-in-out infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Pricing intentionally reads like the rest of the site: open, direct, and
+   guided by the Pals—not like a separate software dashboard. */
+.pricing-page {
+  background: var(--paper);
+}
+
+.pricing-hero {
+  margin-inline: auto;
+  max-width: 84rem;
+  padding: clamp(5rem, 10vw, 9rem) 1.25rem clamp(3rem, 6vw, 5rem);
+  text-align: center;
+}
+
+.pricing-title {
+  margin-inline: auto;
+  max-width: 13ch;
+  font-size: clamp(3rem, 8vw, 7.25rem);
+  font-weight: 800;
+  letter-spacing: -0.065em;
+  line-height: 0.92;
+}
+
+.pricing-lede {
+  margin: 1.5rem auto 0;
+  max-width: 46rem;
+  color: var(--muted-foreground);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 1.6;
+}
+
+.pricing-proof {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.55rem 1.5rem;
+  margin-top: 1.5rem;
+  font-family: var(--font-mono-brand);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.pricing-proof span:not(:last-child)::after {
+  content: "·";
+  margin-left: 1.5rem;
+  color: var(--system);
+}
+
+.pricing-builder button,
+.pricing-builder a {
+  touch-action: manipulation;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

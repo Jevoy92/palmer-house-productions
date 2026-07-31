@@ -9,105 +9,37 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WebinarRouteImport } from './routes/webinar'
-import { Route as VideoSystemAssessmentRouteImport } from './routes/video-system-assessment'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as SystemPalRouteImport } from './routes/system-pal'
-import { Route as StartupsRouteImport } from './routes/startups'
-import { Route as SpotlightPalRouteImport } from './routes/spotlight-pal'
-import { Route as ReelPalRouteImport } from './routes/reel-pal'
-import { Route as ProductionPricingRouteImport } from './routes/production-pricing'
-import { Route as ProductionGuideRouteImport } from './routes/production-guide'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as PalsRouteImport } from './routes/pals'
-import { Route as FaqRouteImport } from './routes/faq'
-import { Route as EvergreenPalRouteImport } from './routes/evergreen-pal'
-import { Route as ContentStrategyRouteImport } from './routes/content-strategy'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as AboutUsRouteImport } from './routes/about-us'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutUsRouteImport } from './routes/about-us'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ContentStrategyRouteImport } from './routes/content-strategy'
+import { Route as EvergreenPalRouteImport } from './routes/evergreen-pal'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as PalsRouteImport } from './routes/pals'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProcessRouteImport } from './routes/process'
+import { Route as ProductionGuideRouteImport } from './routes/production-guide'
+import { Route as ProductionPricingRouteImport } from './routes/production-pricing'
+import { Route as ReelPalRouteImport } from './routes/reel-pal'
+import { Route as SpotlightPalRouteImport } from './routes/spotlight-pal'
+import { Route as StartupsRouteImport } from './routes/startups'
+import { Route as SystemPalRouteImport } from './routes/system-pal'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as VideoSystemAssessmentRouteImport } from './routes/video-system-assessment'
+import { Route as WebinarRouteImport } from './routes/webinar'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
-import { Route as ServicesVideoProductionRouteImport } from './routes/services.video-production'
-import { Route as ServicesPostProductionRouteImport } from './routes/services.post-production'
-import { Route as ServicesDiyDownloadsRouteImport } from './routes/services.diy-downloads'
-import { Route as ResourcesReviewsRouteImport } from './routes/resources.reviews'
-import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
-import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
+import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
+import { Route as ResourcesReviewsRouteImport } from './routes/resources.reviews'
+import { Route as ServicesDiyDownloadsRouteImport } from './routes/services.diy-downloads'
+import { Route as ServicesPostProductionRouteImport } from './routes/services.post-production'
+import { Route as ServicesVideoProductionRouteImport } from './routes/services.video-production'
 
-const WebinarRoute = WebinarRouteImport.update({
-  id: '/webinar',
-  path: '/webinar',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const VideoSystemAssessmentRoute = VideoSystemAssessmentRouteImport.update({
-  id: '/video-system-assessment',
-  path: '/video-system-assessment',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SystemPalRoute = SystemPalRouteImport.update({
-  id: '/system-pal',
-  path: '/system-pal',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StartupsRoute = StartupsRouteImport.update({
-  id: '/startups',
-  path: '/startups',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SpotlightPalRoute = SpotlightPalRouteImport.update({
-  id: '/spotlight-pal',
-  path: '/spotlight-pal',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReelPalRoute = ReelPalRouteImport.update({
-  id: '/reel-pal',
-  path: '/reel-pal',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProductionPricingRoute = ProductionPricingRouteImport.update({
-  id: '/production-pricing',
-  path: '/production-pricing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProductionGuideRoute = ProductionGuideRouteImport.update({
-  id: '/production-guide',
-  path: '/production-guide',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PalsRoute = PalsRouteImport.update({
-  id: '/pals',
-  path: '/pals',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FaqRoute = FaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EvergreenPalRoute = EvergreenPalRouteImport.update({
-  id: '/evergreen-pal',
-  path: '/evergreen-pal',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContentStrategyRoute = ContentStrategyRouteImport.update({
-  id: '/content-strategy',
-  path: '/content-strategy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutUsRoute = AboutUsRouteImport.update({
@@ -115,9 +47,89 @@ const AboutUsRoute = AboutUsRouteImport.update({
   path: '/about-us',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContentStrategyRoute = ContentStrategyRouteImport.update({
+  id: '/content-strategy',
+  path: '/content-strategy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EvergreenPalRoute = EvergreenPalRouteImport.update({
+  id: '/evergreen-pal',
+  path: '/evergreen-pal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PalsRoute = PalsRouteImport.update({
+  id: '/pals',
+  path: '/pals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProcessRoute = ProcessRouteImport.update({
+  id: '/process',
+  path: '/process',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductionGuideRoute = ProductionGuideRouteImport.update({
+  id: '/production-guide',
+  path: '/production-guide',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductionPricingRoute = ProductionPricingRouteImport.update({
+  id: '/production-pricing',
+  path: '/production-pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReelPalRoute = ReelPalRouteImport.update({
+  id: '/reel-pal',
+  path: '/reel-pal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SpotlightPalRoute = SpotlightPalRouteImport.update({
+  id: '/spotlight-pal',
+  path: '/spotlight-pal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StartupsRoute = StartupsRouteImport.update({
+  id: '/startups',
+  path: '/startups',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SystemPalRoute = SystemPalRouteImport.update({
+  id: '/system-pal',
+  path: '/system-pal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VideoSystemAssessmentRoute = VideoSystemAssessmentRouteImport.update({
+  id: '/video-system-assessment',
+  path: '/video-system-assessment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebinarRoute = WebinarRouteImport.update({
+  id: '/webinar',
+  path: '/webinar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
@@ -125,29 +137,9 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
   path: '/blog/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ServicesVideoProductionRoute = ServicesVideoProductionRouteImport.update({
-  id: '/services/video-production',
-  path: '/services/video-production',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesPostProductionRoute = ServicesPostProductionRouteImport.update({
-  id: '/services/post-production',
-  path: '/services/post-production',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesDiyDownloadsRoute = ServicesDiyDownloadsRouteImport.update({
-  id: '/services/diy-downloads',
-  path: '/services/diy-downloads',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResourcesReviewsRoute = ResourcesReviewsRouteImport.update({
-  id: '/resources/reviews',
-  path: '/resources/reviews',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LocationsSlugRoute = LocationsSlugRouteImport.update({
-  id: '/locations/$slug',
-  path: '/locations/$slug',
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndustriesSlugRoute = IndustriesSlugRouteImport.update({
@@ -155,9 +147,29 @@ const IndustriesSlugRoute = IndustriesSlugRouteImport.update({
   path: '/industries/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/blog/$slug',
-  path: '/blog/$slug',
+const LocationsSlugRoute = LocationsSlugRouteImport.update({
+  id: '/locations/$slug',
+  path: '/locations/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesReviewsRoute = ResourcesReviewsRouteImport.update({
+  id: '/resources/reviews',
+  path: '/resources/reviews',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesDiyDownloadsRoute = ServicesDiyDownloadsRouteImport.update({
+  id: '/services/diy-downloads',
+  path: '/services/diy-downloads',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesPostProductionRoute = ServicesPostProductionRouteImport.update({
+  id: '/services/post-production',
+  path: '/services/post-production',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesVideoProductionRoute = ServicesVideoProductionRouteImport.update({
+  id: '/services/video-production',
+  path: '/services/video-production',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -169,7 +181,9 @@ export interface FileRoutesByFullPath {
   '/evergreen-pal': typeof EvergreenPalRoute
   '/faq': typeof FaqRoute
   '/pals': typeof PalsRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/process': typeof ProcessRoute
   '/production-guide': typeof ProductionGuideRoute
   '/production-pricing': typeof ProductionPricingRoute
   '/reel-pal': typeof ReelPalRoute
@@ -196,7 +210,9 @@ export interface FileRoutesByTo {
   '/evergreen-pal': typeof EvergreenPalRoute
   '/faq': typeof FaqRoute
   '/pals': typeof PalsRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/process': typeof ProcessRoute
   '/production-guide': typeof ProductionGuideRoute
   '/production-pricing': typeof ProductionPricingRoute
   '/reel-pal': typeof ReelPalRoute
@@ -224,7 +240,9 @@ export interface FileRoutesById {
   '/evergreen-pal': typeof EvergreenPalRoute
   '/faq': typeof FaqRoute
   '/pals': typeof PalsRoute
+  '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/process': typeof ProcessRoute
   '/production-guide': typeof ProductionGuideRoute
   '/production-pricing': typeof ProductionPricingRoute
   '/reel-pal': typeof ReelPalRoute
@@ -253,7 +271,9 @@ export interface FileRouteTypes {
     | '/evergreen-pal'
     | '/faq'
     | '/pals'
+    | '/pricing'
     | '/privacy'
+    | '/process'
     | '/production-guide'
     | '/production-pricing'
     | '/reel-pal'
@@ -280,7 +300,9 @@ export interface FileRouteTypes {
     | '/evergreen-pal'
     | '/faq'
     | '/pals'
+    | '/pricing'
     | '/privacy'
+    | '/process'
     | '/production-guide'
     | '/production-pricing'
     | '/reel-pal'
@@ -307,7 +329,9 @@ export interface FileRouteTypes {
     | '/evergreen-pal'
     | '/faq'
     | '/pals'
+    | '/pricing'
     | '/privacy'
+    | '/process'
     | '/production-guide'
     | '/production-pricing'
     | '/reel-pal'
@@ -335,7 +359,9 @@ export interface RootRouteChildren {
   EvergreenPalRoute: typeof EvergreenPalRoute
   FaqRoute: typeof FaqRoute
   PalsRoute: typeof PalsRoute
+  PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
+  ProcessRoute: typeof ProcessRoute
   ProductionGuideRoute: typeof ProductionGuideRoute
   ProductionPricingRoute: typeof ProductionPricingRoute
   ReelPalRoute: typeof ReelPalRoute
@@ -357,109 +383,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/webinar': {
-      id: '/webinar'
-      path: '/webinar'
-      fullPath: '/webinar'
-      preLoaderRoute: typeof WebinarRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/video-system-assessment': {
-      id: '/video-system-assessment'
-      path: '/video-system-assessment'
-      fullPath: '/video-system-assessment'
-      preLoaderRoute: typeof VideoSystemAssessmentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/system-pal': {
-      id: '/system-pal'
-      path: '/system-pal'
-      fullPath: '/system-pal'
-      preLoaderRoute: typeof SystemPalRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/startups': {
-      id: '/startups'
-      path: '/startups'
-      fullPath: '/startups'
-      preLoaderRoute: typeof StartupsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/spotlight-pal': {
-      id: '/spotlight-pal'
-      path: '/spotlight-pal'
-      fullPath: '/spotlight-pal'
-      preLoaderRoute: typeof SpotlightPalRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reel-pal': {
-      id: '/reel-pal'
-      path: '/reel-pal'
-      fullPath: '/reel-pal'
-      preLoaderRoute: typeof ReelPalRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/production-pricing': {
-      id: '/production-pricing'
-      path: '/production-pricing'
-      fullPath: '/production-pricing'
-      preLoaderRoute: typeof ProductionPricingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/production-guide': {
-      id: '/production-guide'
-      path: '/production-guide'
-      fullPath: '/production-guide'
-      preLoaderRoute: typeof ProductionGuideRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pals': {
-      id: '/pals'
-      path: '/pals'
-      fullPath: '/pals'
-      preLoaderRoute: typeof PalsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/faq': {
-      id: '/faq'
-      path: '/faq'
-      fullPath: '/faq'
-      preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/evergreen-pal': {
-      id: '/evergreen-pal'
-      path: '/evergreen-pal'
-      fullPath: '/evergreen-pal'
-      preLoaderRoute: typeof EvergreenPalRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/content-strategy': {
-      id: '/content-strategy'
-      path: '/content-strategy'
-      fullPath: '/content-strategy'
-      preLoaderRoute: typeof ContentStrategyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about-us': {
@@ -469,11 +397,123 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutUsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/content-strategy': {
+      id: '/content-strategy'
+      path: '/content-strategy'
+      fullPath: '/content-strategy'
+      preLoaderRoute: typeof ContentStrategyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/evergreen-pal': {
+      id: '/evergreen-pal'
+      path: '/evergreen-pal'
+      fullPath: '/evergreen-pal'
+      preLoaderRoute: typeof EvergreenPalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pals': {
+      id: '/pals'
+      path: '/pals'
+      fullPath: '/pals'
+      preLoaderRoute: typeof PalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/process': {
+      id: '/process'
+      path: '/process'
+      fullPath: '/process'
+      preLoaderRoute: typeof ProcessRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/production-guide': {
+      id: '/production-guide'
+      path: '/production-guide'
+      fullPath: '/production-guide'
+      preLoaderRoute: typeof ProductionGuideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/production-pricing': {
+      id: '/production-pricing'
+      path: '/production-pricing'
+      fullPath: '/production-pricing'
+      preLoaderRoute: typeof ProductionPricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reel-pal': {
+      id: '/reel-pal'
+      path: '/reel-pal'
+      fullPath: '/reel-pal'
+      preLoaderRoute: typeof ReelPalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/spotlight-pal': {
+      id: '/spotlight-pal'
+      path: '/spotlight-pal'
+      fullPath: '/spotlight-pal'
+      preLoaderRoute: typeof SpotlightPalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/startups': {
+      id: '/startups'
+      path: '/startups'
+      fullPath: '/startups'
+      preLoaderRoute: typeof StartupsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/system-pal': {
+      id: '/system-pal'
+      path: '/system-pal'
+      fullPath: '/system-pal'
+      preLoaderRoute: typeof SystemPalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/video-system-assessment': {
+      id: '/video-system-assessment'
+      path: '/video-system-assessment'
+      fullPath: '/video-system-assessment'
+      preLoaderRoute: typeof VideoSystemAssessmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/webinar': {
+      id: '/webinar'
+      path: '/webinar'
+      fullPath: '/webinar'
+      preLoaderRoute: typeof WebinarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
@@ -483,39 +523,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/services/video-production': {
-      id: '/services/video-production'
-      path: '/services/video-production'
-      fullPath: '/services/video-production'
-      preLoaderRoute: typeof ServicesVideoProductionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/post-production': {
-      id: '/services/post-production'
-      path: '/services/post-production'
-      fullPath: '/services/post-production'
-      preLoaderRoute: typeof ServicesPostProductionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services/diy-downloads': {
-      id: '/services/diy-downloads'
-      path: '/services/diy-downloads'
-      fullPath: '/services/diy-downloads'
-      preLoaderRoute: typeof ServicesDiyDownloadsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/resources/reviews': {
-      id: '/resources/reviews'
-      path: '/resources/reviews'
-      fullPath: '/resources/reviews'
-      preLoaderRoute: typeof ResourcesReviewsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/locations/$slug': {
-      id: '/locations/$slug'
-      path: '/locations/$slug'
-      fullPath: '/locations/$slug'
-      preLoaderRoute: typeof LocationsSlugRouteImport
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/industries/$slug': {
@@ -525,11 +537,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndustriesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog/$slug': {
-      id: '/blog/$slug'
-      path: '/blog/$slug'
-      fullPath: '/blog/$slug'
-      preLoaderRoute: typeof BlogSlugRouteImport
+    '/locations/$slug': {
+      id: '/locations/$slug'
+      path: '/locations/$slug'
+      fullPath: '/locations/$slug'
+      preLoaderRoute: typeof LocationsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources/reviews': {
+      id: '/resources/reviews'
+      path: '/resources/reviews'
+      fullPath: '/resources/reviews'
+      preLoaderRoute: typeof ResourcesReviewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/diy-downloads': {
+      id: '/services/diy-downloads'
+      path: '/services/diy-downloads'
+      fullPath: '/services/diy-downloads'
+      preLoaderRoute: typeof ServicesDiyDownloadsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/post-production': {
+      id: '/services/post-production'
+      path: '/services/post-production'
+      fullPath: '/services/post-production'
+      preLoaderRoute: typeof ServicesPostProductionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services/video-production': {
+      id: '/services/video-production'
+      path: '/services/video-production'
+      fullPath: '/services/video-production'
+      preLoaderRoute: typeof ServicesVideoProductionRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -543,7 +583,9 @@ const rootRouteChildren: RootRouteChildren = {
   EvergreenPalRoute: EvergreenPalRoute,
   FaqRoute: FaqRoute,
   PalsRoute: PalsRoute,
+  PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
+  ProcessRoute: ProcessRoute,
   ProductionGuideRoute: ProductionGuideRoute,
   ProductionPricingRoute: ProductionPricingRoute,
   ReelPalRoute: ReelPalRoute,
@@ -565,3 +607,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

@@ -1,9 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { PageShell, PageHero, Section, Card, CardGrid, FaqList, CtaBand, Eyebrow } from "@/components/site/PageShell";
-import scene from "@/assets/system-pal-lab.webp.asset.json";
+import {
+  PageShell,
+  PageHero,
+  Section,
+  Card,
+  CardGrid,
+  FaqList,
+  CtaBand,
+  Eyebrow,
+} from "@/components/site/PageShell";
+import scene from "@/assets/dioramas/system-brain-web.jpg";
 import { MissionComparison } from "@/components/site/MissionComparison";
-import silas from "@/assets/Silas_standing_full.webp.asset.json";
-import samira from "@/assets/Samira_standing_full.webp.asset.json";
+import silas from "@/assets/pals-optimized/silas.webp";
+import samira from "@/assets/pals-optimized/samira.webp";
 
 const PACKAGES = [
   { title: "Onboarding Kit", pain: "New hires take forever to get up to speed." },
@@ -30,8 +39,14 @@ const STEPS = [
 ];
 
 const FAQS = [
-  { q: "Can we film on-site?", a: "Yes! We come to your location for authentic workplace training content." },
-  { q: "How do teams access the videos?", a: "We deliver organized for your LMS, Notion, or any internal platform." },
+  {
+    q: "Can we film on-site?",
+    a: "Yes! We come to your location for authentic workplace training content.",
+  },
+  {
+    q: "How do teams access the videos?",
+    a: "We deliver organized for your LMS, Notion, or any internal platform.",
+  },
 ];
 
 function SystemPalPage() {
@@ -46,7 +61,7 @@ function SystemPalPage() {
 
       <Section>
         <img
-          src={scene.url}
+          src={scene}
           alt="System Pal lab where Silas and Samira build automated video systems"
           loading="lazy"
           className="mx-auto w-full max-w-4xl"
@@ -57,12 +72,20 @@ function SystemPalPage() {
         <div className="grid items-center gap-8 sm:grid-cols-2">
           <div className="flex justify-center gap-6">
             <div className="text-center">
-              <img src={silas.url} alt="Silas, the System Pal automation character" className="mx-auto h-56 w-auto object-contain" />
+              <img
+                src={silas}
+                alt="Silas, the System Pal automation character"
+                className="mx-auto h-56 w-auto object-contain"
+              />
               <p className="mt-2 font-display font-bold">Silas</p>
               <p className="text-xs text-muted-foreground">Automation</p>
             </div>
             <div className="text-center">
-              <img src={samira.url} alt="Samira, the System Pal architecture character" className="mx-auto h-56 w-auto object-contain" />
+              <img
+                src={samira}
+                alt="Samira, the System Pal architecture character"
+                className="mx-auto h-56 w-auto object-contain"
+              />
               <p className="mt-2 font-display font-bold">Samira</p>
               <p className="text-xs text-muted-foreground">Architecture</p>
             </div>
@@ -70,10 +93,12 @@ function SystemPalPage() {
           <div>
             <Eyebrow>System Pal</Eyebrow>
             <p className="mt-4 italic text-muted-foreground">
-              "Chaos punishes everyone — especially the most responsible person in the room." — Silas
+              "Chaos punishes everyone — especially the most responsible person in the room." —
+              Silas
             </p>
             <p className="mt-4 italic text-muted-foreground">
-              "Samira became competent because she had to. She's the one who makes systems feel human — accountable without shame." — Samira
+              "Samira became competent because she had to. She's the one who makes systems feel
+              human — accountable without shame." — Samira
             </p>
           </div>
         </div>
@@ -91,24 +116,40 @@ function SystemPalPage() {
         <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-8 shadow-soft">
           <p className="text-sm font-semibold text-muted-foreground">Onboarding Kit — 1 of 6</p>
           <h3 className="mt-1 font-display text-xl font-bold">
-            Training videos so new hires get up to speed without repeating yourself for the 47th time.
+            Training videos so new hires get up to speed without repeating yourself for the 47th
+            time.
           </h3>
-          <p className="mt-2 text-sm text-muted-foreground">2-hour filming session, onboarding walkthrough videos.</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            2-hour filming session, onboarding walkthrough videos.
+          </p>
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
             <div className="rounded-xl bg-secondary/50 p-4">
-              <p className="text-xs font-bold uppercase text-muted-foreground">Production Session</p>
+              <p className="text-xs font-bold uppercase text-muted-foreground">
+                Production Session
+              </p>
               <p className="text-gradient-brand font-display text-2xl font-extrabold">$450</p>
-              <p className="mt-1 text-xs text-muted-foreground">Covers setup, lighting, audio, and direction</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Covers setup, lighting, audio, and direction
+              </p>
             </div>
             <div className="rounded-xl bg-secondary/50 p-4">
-              <p className="text-xs font-bold uppercase text-muted-foreground">Additional Videos (6)</p>
+              <p className="text-xs font-bold uppercase text-muted-foreground">
+                Additional Videos (6)
+              </p>
               <p className="text-gradient-brand font-display text-2xl font-extrabold">$900</p>
-              <p className="mt-1 text-xs text-muted-foreground">1 min each • $150 each. Same session, already set up</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                1 min each • $150 each. Same session, already set up
+              </p>
             </div>
-            <div className="rounded-xl p-4 text-white" style={{ backgroundColor: "var(--spotlight)" }}>
+            <div
+              className="rounded-xl p-4 text-white"
+              style={{ backgroundColor: "var(--spotlight)" }}
+            >
               <p className="text-xs font-bold uppercase text-white/80">Package Total</p>
               <p className="font-display text-2xl font-extrabold">$1,350</p>
-              <p className="mt-1 text-xs text-white/80">Only 5 spots left this month</p>
+              <p className="mt-1 text-xs text-white/80">
+                Final scope confirmed on the strategy call
+              </p>
             </div>
           </div>
           <div className="mt-6 text-center">
@@ -144,7 +185,8 @@ function SystemPalPage() {
       <Section muted>
         <blockquote className="mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8 text-center shadow-soft">
           <p className="text-lg italic text-muted-foreground">
-            "We cut our onboarding time in half. New hires watch the video library and hit the ground running instead of shadowing for weeks."
+            "We cut our onboarding time in half. New hires watch the video library and hit the
+            ground running instead of shadowing for weeks."
           </p>
           <footer className="mt-4 font-display font-bold">Jessica T. — Operations Director</footer>
         </blockquote>
@@ -154,7 +196,11 @@ function SystemPalPage() {
         <FaqList items={FAQS} />
       </Section>
 
-      <CtaBand title="Ready to Systemize Your Operations?" subtitle="Stop explaining things twice. Build a video system that trains, onboards, and scales without you in the room." primaryLabel="Book System Pal Now" />
+      <CtaBand
+        title="Ready to Systemize Your Operations?"
+        subtitle="Stop explaining things twice. Build a video system that trains, onboards, and scales without you in the room."
+        primaryLabel="Book System Pal Now"
+      />
     </PageShell>
   );
 }
@@ -165,10 +211,14 @@ export const Route = createFileRoute("/system-pal")({
       { title: "System Pal | Internal Video Systems | Palmer House Productions" },
       {
         name: "description",
-        content: "Silas and Samira turn tribal knowledge into searchable, reusable video training libraries that eliminate chaos.",
+        content:
+          "Silas and Samira turn tribal knowledge into searchable, reusable video training libraries that eliminate chaos.",
       },
       { property: "og:title", content: "System Pal | Palmer House Productions" },
-      { property: "og:description", content: "Internal video systems that trade heroic effort for operational clarity." },
+      {
+        property: "og:description",
+        content: "Internal video systems that trade heroic effort for operational clarity.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

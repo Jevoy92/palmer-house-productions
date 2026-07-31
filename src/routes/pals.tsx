@@ -1,13 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell, PageHero, Section, CtaBand, Eyebrow } from "@/components/site/PageShell";
-import ryder from "@/assets/Ryder_standing_full.webp.asset.json";
-import raquel from "@/assets/Raquel_standing_full.png.asset.json";
-import silas from "@/assets/Silas_standing_full.webp.asset.json";
-import samira from "@/assets/Samira_standing_full.webp.asset.json";
-import cyrus from "@/assets/Cyrus_standing_full.png.asset.json";
-import clara from "@/assets/Clara_standing_full.png.asset.json";
-import kareem from "@/assets/Kareem_standing_full.webp.asset.json";
-import kiana from "@/assets/Kiana_standing_full.webp.asset.json";
+import ryder from "@/assets/pals-optimized/ryder.webp";
+import raquel from "@/assets/pals-optimized/raquel.webp";
+import silas from "@/assets/pals-optimized/silas.webp";
+import samira from "@/assets/pals-optimized/samira.webp";
+import cyrus from "@/assets/pals-optimized/cyrus.webp";
+import clara from "@/assets/pals-optimized/clara.webp";
+import kareem from "@/assets/pals-optimized/kareem.webp";
+import kiana from "@/assets/pals-optimized/kiana.webp";
 
 const LANES = [
   {
@@ -25,7 +25,8 @@ const LANES = [
         who: "Raquel",
       },
     ],
-    problem: "You post but nothing moves. You don't know what to film next. You have long videos but no clips.",
+    problem:
+      "You post but nothing moves. You don't know what to film next. You have long videos but no clips.",
     solution:
       "Short-form content engineered for the platforms your people actually use. Hooks that stop scrolls. Clips that sound like you.",
     offerings: [
@@ -46,7 +47,10 @@ const LANES = [
     tag: "SYSTEM — INTERNAL CLARITY. REPEATABILITY. OPERATIONAL SANITY.",
     title: "Make It Run Without Heroic Effort",
     quotes: [
-      { text: "Chaos punishes everyone — especially the most responsible person in the room.", who: "Silas" },
+      {
+        text: "Chaos punishes everyone — especially the most responsible person in the room.",
+        who: "Silas",
+      },
       {
         text: "Samira became competent because she had to. She's the one who makes systems feel human — accountable without shame.",
         who: "Samira",
@@ -58,7 +62,10 @@ const LANES = [
       "Video systems that document once, scale forever, and don't require heroic effort to maintain.",
     offerings: [
       { title: "Training Videos", quote: "If we can't repeat it, we can't scale it. — Silas" },
-      { title: "Onboarding Flows", quote: "Tell me what you need. Tell me what you can actually do. — Samira" },
+      {
+        title: "Onboarding Flows",
+        quote: "Tell me what you need. Tell me what you can actually do. — Samira",
+      },
       { title: "FAQ Buildouts", quote: "We're not rushing — we're aligning. — Samira" },
     ],
     signature: "The System Blueprint — one framework that makes video chaos disappear.",
@@ -85,11 +92,18 @@ const LANES = [
     ],
     problem:
       "Your expertise isn't organized on video. Sales calls keep repeating the same education. Your message changes every video.",
-    solution: "Structured video series that make endless content feel obvious. Scripts with clarity — no fluff, no tangents.",
+    solution:
+      "Structured video series that make endless content feel obvious. Scripts with clarity — no fluff, no tangents.",
     offerings: [
       { title: "The Topic Ladder", quote: "Let's define the real problem first. — Cyrus" },
-      { title: "YouTube & Podcast Systems", quote: "Finished and useful beats perfect and hidden. — Cyrus" },
-      { title: "The Clean Cut Outline", quote: "We can keep the emotion. We're removing the fog. — Clara" },
+      {
+        title: "YouTube & Podcast Systems",
+        quote: "Finished and useful beats perfect and hidden. — Cyrus",
+      },
+      {
+        title: "The Clean Cut Outline",
+        quote: "We can keep the emotion. We're removing the fog. — Clara",
+      },
     ],
     signature: "The Topic Ladder — structured series that never runs out of ideas.",
     cta: "Build Authority",
@@ -113,12 +127,16 @@ const LANES = [
         who: "Kiana",
       },
     ],
-    problem: "You have results but no video proof. You look stiff on camera. You don't sound premium.",
+    problem:
+      "You have results but no video proof. You look stiff on camera. You don't sound premium.",
     solution:
       "Trust-building video assets that convert. Testimonials that feel authentic, not cringe. Direction that unlocks natural presence.",
     offerings: [
       { title: "The Mirror Line", quote: "We're not doing extra. We're doing exact. — Kareem" },
-      { title: "On-Camera Confidence", quote: "Stop performing. Start talking to one person. — Kiana" },
+      {
+        title: "On-Camera Confidence",
+        quote: "Stop performing. Start talking to one person. — Kiana",
+      },
       { title: "The One-Take Setup", quote: "We fix the environment, not the person. — Kiana" },
     ],
     signature: "The Mirror Line — precision direction that builds instant credibility.",
@@ -147,14 +165,27 @@ function PalsPage() {
       >
         <div className="space-y-10">
           {LANES.map((lane) => (
-            <div key={lane.key} className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-10">
+            <div
+              key={lane.key}
+              className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-10"
+            >
               <Eyebrow>{lane.tag}</Eyebrow>
-              <h3 className="mt-4 font-display text-2xl font-extrabold sm:text-3xl">{lane.title}</h3>
+              <h3 className="mt-4 font-display text-2xl font-extrabold sm:text-3xl">
+                {lane.title}
+              </h3>
 
               <div className="mt-6 grid gap-8 lg:grid-cols-[auto,1fr]">
                 <div className="flex justify-center gap-4 lg:justify-start">
-                  <img src={lane.a.url} alt={lane.aAlt} className="h-40 w-auto object-contain sm:h-52" />
-                  <img src={lane.b.url} alt={lane.bAlt} className="h-40 w-auto object-contain sm:h-52" />
+                  <img
+                    src={lane.a}
+                    alt={lane.aAlt}
+                    className="h-40 w-auto object-contain sm:h-52"
+                  />
+                  <img
+                    src={lane.b}
+                    alt={lane.bAlt}
+                    className="h-40 w-auto object-contain sm:h-52"
+                  />
                 </div>
 
                 <div>
@@ -165,25 +196,34 @@ function PalsPage() {
                         className="rounded-xl border border-border bg-secondary/40 p-4 text-sm italic text-muted-foreground"
                       >
                         "{q.text}"
-                        <footer className="mt-2 not-italic font-semibold text-foreground">— {q.who}</footer>
+                        <footer className="mt-2 not-italic font-semibold text-foreground">
+                          — {q.who}
+                        </footer>
                       </blockquote>
                     ))}
                   </div>
 
                   <div className="mt-5 grid gap-4 sm:grid-cols-2">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">The Problem</p>
+                      <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                        The Problem
+                      </p>
                       <p className="mt-1 text-sm text-muted-foreground">{lane.problem}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">The Solution</p>
+                      <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                        The Solution
+                      </p>
                       <p className="mt-1 text-sm text-muted-foreground">{lane.solution}</p>
                     </div>
                   </div>
 
                   <div className="mt-6 grid gap-3 sm:grid-cols-3">
                     {lane.offerings.map((o) => (
-                      <div key={o.title} className="rounded-xl border border-border bg-background p-4">
+                      <div
+                        key={o.title}
+                        className="rounded-xl border border-border bg-background p-4"
+                      >
                         <p className="font-display text-sm font-bold">{o.title}</p>
                         <p className="mt-1 text-xs italic text-muted-foreground">"{o.quote}"</p>
                       </div>
@@ -192,7 +232,9 @@ function PalsPage() {
 
                   <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-xl bg-secondary/50 p-4">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">Signature Move</p>
+                      <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                        Signature Move
+                      </p>
                       <p className="mt-1 text-sm font-semibold">{lane.signature}</p>
                     </div>
                     <Link
@@ -230,7 +272,8 @@ export const Route = createFileRoute("/pals")({
       { property: "og:title", content: "Meet the Pals | Palmer House Productions" },
       {
         property: "og:description",
-        content: "Four mission lanes, eight characters, one system for turning confusion into clarity on camera.",
+        content:
+          "Four mission lanes, eight characters, one system for turning confusion into clarity on camera.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

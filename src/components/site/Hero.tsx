@@ -1,102 +1,187 @@
-import palsWorld from "@/assets/pals-world.png.asset.json";
+import { Link } from "@tanstack/react-router";
+import { ArrowRight, Play } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
+import reelScene from "@/assets/dioramas/reel-factory-web.jpg";
+import spotlightScene from "@/assets/dioramas/spotlight-stage-web.jpg";
+import evergreenScene from "@/assets/dioramas/evergreen-garden-web.jpg";
+import systemScene from "@/assets/dioramas/system-brain-web.jpg";
+import ryder from "@/assets/pals-optimized/ryder.webp";
+import raquel from "@/assets/pals-optimized/raquel.webp";
+import kareem from "@/assets/pals-optimized/kareem.webp";
+import kiana from "@/assets/pals-optimized/kiana.webp";
+import cyrus from "@/assets/pals-optimized/cyrus.webp";
+import clara from "@/assets/pals-optimized/clara.webp";
+import silas from "@/assets/pals-optimized/silas.webp";
+import samira from "@/assets/pals-optimized/samira.webp";
 
-function GradientButton({ label = "Book a Discovery Call" }: { label?: string }) {
-  return (
-    <a
-      href="#pricing"
-      className="bg-gradient-brand inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-base font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-[1.03]"
-    >
-      {label}
-      <span aria-hidden>→</span>
-    </a>
-  );
-}
+const intro = {
+  hidden: { opacity: 0, transform: "translateY(26px)" },
+  show: { opacity: 1, transform: "translateY(0px)" },
+};
+
+const palLanes = [
+  {
+    name: "Reel Pal",
+    promise: "Get seen",
+    color: "#E8720C",
+    scene: reelScene,
+    pals: [ryder, raquel],
+  },
+  {
+    name: "Spotlight Pal",
+    promise: "Build trust",
+    color: "#3D1A66",
+    scene: spotlightScene,
+    pals: [kareem, kiana],
+  },
+  {
+    name: "Evergreen Pal",
+    promise: "Teach once",
+    color: "#5B8A2D",
+    scene: evergreenScene,
+    pals: [cyrus, clara],
+  },
+  {
+    name: "System Pal",
+    promise: "Scale the know-how",
+    color: "#0A9B8F",
+    scene: systemScene,
+    pals: [silas, samira],
+  },
+] as const;
 
 export function Hero() {
+  const reduce = useReducedMotion();
+
   return (
     <section
       id="top"
-      className="relative flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden px-4 pb-4 pt-6 lg:h-[calc(100svh-4rem)]"
+      className="relative overflow-hidden px-4 pb-20 pt-20 sm:pb-24 sm:pt-28 lg:min-h-svh"
     >
-      <div className="mx-auto w-full max-w-4xl shrink-0 text-center">
-        <span
-          className="inline-block rounded-full p-[1.5px]"
-          style={{ backgroundColor: "var(--spotlight)" }}
-        >
-          <span className="block rounded-full bg-background px-4 py-1">
-            <span className="text-gradient-brand text-xs font-medium sm:text-sm">
-              Strategic Video Content Production
-            </span>
+      <motion.div
+        initial={reduce ? false : "hidden"}
+        animate="show"
+        transition={{ staggerChildren: 0.09 }}
+        className="mx-auto flex max-w-6xl flex-col items-center text-center"
+      >
+        <motion.div variants={intro} transition={{ duration: 0.6, ease: "easeOut" }}>
+          <span className="inline-flex rounded-full border border-spotlight/30 bg-white px-4 py-2 font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-spotlight shadow-soft">
+            Strategic video content production
           </span>
-        </span>
+        </motion.div>
 
-        <h1 className="mt-4 text-[clamp(2rem,5.2vw,3.75rem)] font-extrabold leading-[1.02]">
+        <motion.h1
+          variants={intro}
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="mt-7 max-w-5xl text-[clamp(3.2rem,8.5vw,8.3rem)] font-extrabold leading-[0.88] tracking-[-0.07em]"
+        >
           Build your video library, one shoot at a time.
-        </h1>
+        </motion.h1>
 
-        <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base lg:text-lg">
-          We don't just make videos; we solve business problems with them. One production day
-          delivers weeks of content across social, web, training, and more.
-        </p>
+        <motion.p
+          variants={intro}
+          transition={{ duration: 0.65, ease: "easeOut" }}
+          className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl"
+        >
+          We don&apos;t just make videos; we solve business problems with them. One production day
+          delivers weeks of useful content across social, web, sales, and training.
+        </motion.p>
 
-        <div className="mt-5 flex flex-wrap justify-center gap-3">
-          <GradientButton />
-          <a
-            href="#features"
-            className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold shadow-soft transition-transform hover:scale-[1.03] sm:text-base"
+        <motion.div
+          variants={intro}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="mt-9 flex flex-wrap justify-center gap-3"
+        >
+          <Link
+            to="/contact"
+            className="inline-flex min-h-12 items-center gap-2 rounded-full bg-spotlight px-7 py-3 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.03]"
           >
-            Explore the Pals
-          </a>
-        </div>
+            Book a Discovery Call <ArrowRight className="size-4" />
+          </Link>
+          <Link
+            to="/pals"
+            className="inline-flex min-h-12 items-center gap-2 rounded-full border border-border bg-white px-7 py-3 text-sm font-semibold shadow-soft transition-colors hover:bg-secondary"
+          >
+            <Play className="size-3.5 fill-current" /> Explore the Pals
+          </Link>
+        </motion.div>
 
-        <div className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-left">
+        <motion.div
+          variants={intro}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-left"
+        >
           <div className="flex items-center gap-3">
-            <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-accent font-display text-xs font-bold">
-              PN
+            <span className="grid size-9 shrink-0 place-items-center rounded-2xl bg-evergreen-soft font-mono text-[10px] font-bold text-evergreen">
+              PNW
             </span>
-            <span className="min-w-0 text-sm">
-              <span className="block font-medium">Proudly based in the PNW</span>
-              <span className="block text-muted-foreground">✦ Seattle · Portland ✦</span>
+            <span className="text-sm">
+              <strong className="block font-semibold">
+                Proudly based in the Pacific Northwest
+              </strong>
+              <span className="text-muted-foreground">Seattle · Bellevue · Tacoma · Portland</span>
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="grid size-8 shrink-0 place-items-center rounded-xl bg-secondary text-sm">
+            <span className="grid size-9 shrink-0 place-items-center rounded-2xl bg-reel-soft text-lg">
               🎬
             </span>
-            <span className="min-w-0 text-sm">
-              <span className="block font-medium">One shoot, every format</span>
-              <span className="block text-muted-foreground">✦ Maximum output ✦</span>
+            <span className="text-sm">
+              <strong className="block font-semibold">Maximum output, minimal effort</strong>
+              <span className="text-muted-foreground">One shoot · Every useful format</span>
             </span>
           </div>
-        </div>
-      </div>
+        </motion.div>
 
-      <div className="mx-auto mt-4 flex min-h-0 w-full max-w-5xl flex-1 items-center justify-center">
-        <img
-          src={palsWorld.url}
-          alt="The Palmer House Pals studio world — reel, spotlight, system, and evergreen production sets"
-          width={1920}
-          height={1080}
-          className="animate-float mx-auto h-full max-h-[46vh] w-full object-contain lg:max-h-full"
-        />
-      </div>
-
-      <div className="mx-auto mt-3 flex w-full max-w-md shrink-0 items-center justify-center gap-3 pb-2">
-        <div className="flex -space-x-2">
-          {["S", "K", "C", "R"].map((i) => (
-            <span
-              key={i}
-              className="grid size-7 place-items-center rounded-full border-2 border-background bg-secondary text-xs font-semibold"
+        <motion.div
+          variants={intro}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="mt-12 grid w-full max-w-6xl grid-cols-2 gap-2 rounded-[2rem] border border-border bg-mist p-2 shadow-soft lg:grid-cols-4"
+        >
+          {palLanes.map((lane, index) => (
+            <motion.figure
+              key={lane.name}
+              className="relative min-h-56 overflow-hidden rounded-[1.5rem] border bg-white sm:min-h-72"
+              style={{ borderColor: lane.color }}
+              animate={
+                reduce
+                  ? undefined
+                  : { transform: ["translateY(0px)", "translateY(-7px)", "translateY(0px)"] }
+              }
+              transition={{ duration: 5.5 + index * 0.65, repeat: Infinity, ease: "easeInOut" }}
             >
-              {i}
-            </span>
+              <img
+                src={lane.scene}
+                alt=""
+                className="absolute inset-0 size-full object-cover opacity-55"
+              />
+              <div className="absolute inset-x-3 top-3 z-10 rounded-2xl bg-white/90 px-3 py-2 text-left backdrop-blur-sm">
+                <figcaption
+                  className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em]"
+                  style={{ color: lane.color }}
+                >
+                  {lane.name}
+                </figcaption>
+                <p className="mt-0.5 text-xs font-bold sm:text-sm">{lane.promise}</p>
+              </div>
+              <div className="absolute inset-x-0 bottom-0 flex h-[76%] items-end justify-center">
+                {lane.pals.map((pal) => (
+                  <img
+                    key={pal}
+                    src={pal}
+                    alt=""
+                    className="-mx-2 h-[78%] w-auto object-contain object-bottom drop-shadow-md"
+                  />
+                ))}
+              </div>
+            </motion.figure>
           ))}
-        </div>
-        <p className="text-xs text-muted-foreground sm:text-sm">
-          <strong className="text-foreground">5.0</strong>/5 from{" "}
-          <strong className="text-foreground">hundreds</strong> of local businesses ★
-        </p>
-      </div>
+        </motion.div>
+
+        <motion.p variants={intro} className="mt-2 text-sm text-muted-foreground">
+          Eight Pals. Four lanes. One connected system built around the problem you need to solve.
+        </motion.p>
+      </motion.div>
     </section>
   );
 }

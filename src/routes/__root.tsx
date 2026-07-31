@@ -78,17 +78,33 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Palmer House Productions — Video Systems That Solve Business Problems" },
-      { name: "description", content: "Palmer House Productions builds video systems for Pacific Northwest businesses — one shoot day delivers a content library for social, web, and training." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Palmer House Productions — Video Systems That Solve Business Problems" },
-      { property: "og:description", content: "Palmer House Productions builds video systems for Pacific Northwest businesses — one shoot day delivers a content library for social, web, and training." },
+      {
+        name: "description",
+        content:
+          "Palmer House Productions builds video systems for Pacific Northwest businesses — one shoot day delivers a content library for social, web, and training.",
+      },
+      { name: "author", content: "Palmer House Productions" },
+      {
+        property: "og:title",
+        content: "Palmer House Productions — Video Systems That Solve Business Problems",
+      },
+      {
+        property: "og:description",
+        content:
+          "Palmer House Productions builds video systems for Pacific Northwest businesses — one shoot day delivers a content library for social, web, and training.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Palmer House Productions — Video Systems That Solve Business Problems" },
-      { name: "twitter:description", content: "Palmer House Productions builds video systems for Pacific Northwest businesses — one shoot day delivers a content library for social, web, and training." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/eaa89c62-2c3f-46de-b6b5-c688eef690b1/id-preview-3351fdb0--ee000c67-e90f-4e04-bfa9-59a9963b0a58.lovable.app-1785201998752.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/eaa89c62-2c3f-46de-b6b5-c688eef690b1/id-preview-3351fdb0--ee000c67-e90f-4e04-bfa9-59a9963b0a58.lovable.app-1785201998752.png" },
+      { name: "twitter:site", content: "@palmerhouseviz" },
+      {
+        name: "twitter:title",
+        content: "Palmer House Productions — Video Systems That Solve Business Problems",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "Palmer House Productions builds video systems for Pacific Northwest businesses — one shoot day delivers a content library for social, web, and training.",
+      },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

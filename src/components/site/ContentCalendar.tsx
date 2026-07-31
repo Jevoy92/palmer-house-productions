@@ -1,4 +1,5 @@
-import mascot from "@/assets/mascot.jpg";
+import { motion, useReducedMotion } from "motion/react";
+import transformationEngine from "@/assets/transformation-engine.webp";
 import { Marquee } from "./Marquee";
 
 const ideas = [
@@ -37,6 +38,8 @@ function Pill({ label }: { label: string }) {
 }
 
 export function ContentCalendar() {
+  const reduce = useReducedMotion();
+
   return (
     <section className="py-20">
       <div className="mx-auto max-w-6xl px-4">
@@ -53,13 +56,15 @@ export function ContentCalendar() {
         </p>
 
         <div className="surface-card mt-10 grid items-center gap-8 p-8 sm:p-12 md:grid-cols-2">
-          <img
-            src={mascot}
-            alt="Palmer House Productions crew member reviewing footage"
-            width={1200}
-            height={1200}
+          <motion.img
+            src={transformationEngine}
+            alt="The Palmer House transformation engine turning one shoot into many useful content formats"
+            width={800}
+            height={800}
             loading="lazy"
-            className="mx-auto w-56 mix-blend-darken"
+            className="mx-auto w-64 mix-blend-darken"
+            animate={reduce ? undefined : { rotate: [-2, 2, -2], y: [0, -7, 0] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           />
           <div>
             <h3 className="text-2xl">Maximum output, minimal effort.</h3>

@@ -2,10 +2,10 @@ import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
 import { Lightbulb, Map, Clapperboard, Rocket } from "lucide-react";
 
-import clara from "@/assets/Clara_standing_full.png.asset.json";
-import samira from "@/assets/Samira_standing_full.webp.asset.json";
-import kiana from "@/assets/Kiana_standing_full.webp.asset.json";
-import ryder from "@/assets/Ryder_standing_full.webp.asset.json";
+import clara from "@/assets/pals-optimized/clara.webp";
+import samira from "@/assets/pals-optimized/samira.webp";
+import kiana from "@/assets/pals-optimized/kiana.webp";
+import ryder from "@/assets/pals-optimized/ryder.webp";
 
 const steps = [
   {
@@ -13,7 +13,7 @@ const steps = [
     title: "Share Your Vision",
     body: "Tell us your goals and we'll craft the perfect video strategy for your business.",
     icon: Lightbulb,
-    pal: clara.url,
+    pal: clara,
     palName: "Clara",
     lane: "evergreen",
   },
@@ -22,7 +22,7 @@ const steps = [
     title: "Custom Strategy",
     body: "Our team designs a tailored video content plan that aligns with your brand.",
     icon: Map,
-    pal: samira.url,
+    pal: samira,
     palName: "Samira",
     lane: "system",
   },
@@ -31,7 +31,7 @@ const steps = [
     title: "Professional Production",
     body: "We handle everything from filming to editing with cinematic quality.",
     icon: Clapperboard,
-    pal: kiana.url,
+    pal: kiana,
     palName: "Kiana",
     lane: "spotlight",
   },
@@ -40,7 +40,7 @@ const steps = [
     title: "Launch & Optimize",
     body: "Publish your content and watch your engagement soar. We're with you every step.",
     icon: Rocket,
-    pal: ryder.url,
+    pal: ryder,
     palName: "Ryder",
     lane: "reel",
   },
@@ -165,7 +165,9 @@ export function Steps() {
 
                   <div className="mt-5 flex items-center gap-2">
                     <Icon className={`h-4 w-4 ${lane.text}`} aria-hidden="true" />
-                    <span className={`font-mono text-[0.7rem] tracking-widest uppercase ${lane.text}`}>
+                    <span
+                      className={`font-mono text-[0.7rem] tracking-widest uppercase ${lane.text}`}
+                    >
                       Step {s.n}
                     </span>
                   </div>

@@ -1,9 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { PageShell, PageHero, Section, Card, CardGrid, FaqList, CtaBand, Eyebrow } from "@/components/site/PageShell";
-import scene from "@/assets/reel-pal-studio.webp.asset.json";
+import {
+  PageShell,
+  PageHero,
+  Section,
+  Card,
+  CardGrid,
+  FaqList,
+  CtaBand,
+  Eyebrow,
+} from "@/components/site/PageShell";
+import scene from "@/assets/dioramas/reel-factory-web.jpg";
 import { MissionComparison } from "@/components/site/MissionComparison";
-import ryder from "@/assets/Ryder_standing_full.webp.asset.json";
-import raquel from "@/assets/Raquel_standing_full.png.asset.json";
+import ryder from "@/assets/pals-optimized/ryder.webp";
+import raquel from "@/assets/pals-optimized/raquel.webp";
 
 const PACKAGES = [
   { title: "Services Pack", pain: "People don't know what we actually do." },
@@ -30,8 +39,14 @@ const STEPS = [
 ];
 
 const FAQS = [
-  { q: "How many videos per session?", a: "Typically 6–14 short-form videos in a single 2-hour session." },
-  { q: "What platforms do you optimize for?", a: "Instagram Reels, TikTok, YouTube Shorts, and LinkedIn." },
+  {
+    q: "How many videos per session?",
+    a: "Typically 6–14 short-form videos in a single 2-hour session.",
+  },
+  {
+    q: "What platforms do you optimize for?",
+    a: "Instagram Reels, TikTok, YouTube Shorts, and LinkedIn.",
+  },
 ];
 
 function ReelPalPage() {
@@ -46,7 +61,7 @@ function ReelPalPage() {
 
       <Section>
         <img
-          src={scene.url}
+          src={scene}
           alt="Reel Pal studio set where Ryder and Raquel film short-form video"
           loading="lazy"
           className="mx-auto w-full max-w-4xl"
@@ -57,12 +72,20 @@ function ReelPalPage() {
         <div className="grid items-center gap-8 sm:grid-cols-2">
           <div className="flex justify-center gap-6">
             <div className="text-center">
-              <img src={ryder.url} alt="Ryder, the Reel Pal momentum character" className="mx-auto h-56 w-auto object-contain" />
+              <img
+                src={ryder}
+                alt="Ryder, the Reel Pal momentum character"
+                className="mx-auto h-56 w-auto object-contain"
+              />
               <p className="mt-2 font-display font-bold">Ryder</p>
               <p className="text-xs text-muted-foreground">Momentum</p>
             </div>
             <div className="text-center">
-              <img src={raquel.url} alt="Raquel, the Reel Pal engagement character" className="mx-auto h-56 w-auto object-contain" />
+              <img
+                src={raquel}
+                alt="Raquel, the Reel Pal engagement character"
+                className="mx-auto h-56 w-auto object-contain"
+              />
               <p className="mt-2 font-display font-bold">Raquel</p>
               <p className="text-xs text-muted-foreground">Engagement</p>
             </div>
@@ -70,10 +93,13 @@ function ReelPalPage() {
           <div>
             <Eyebrow>Reel Pal</Eyebrow>
             <p className="mt-4 italic text-muted-foreground">
-              "If you don't catch attention fast, you don't get a second chance. I learned that early. Now I make brands feel alive in 10 seconds." — Ryder
+              "If you don't catch attention fast, you don't get a second chance. I learned that
+              early. Now I make brands feel alive in 10 seconds." — Ryder
             </p>
             <p className="mt-4 italic text-muted-foreground">
-              "Ryder lights the match. I make sure the fire doesn't burn the house down. People don't listen when they feel judged — I make them feel safe enough to show up." — Raquel
+              "Ryder lights the match. I make sure the fire doesn't burn the house down. People
+              don't listen when they feel judged — I make them feel safe enough to show up." —
+              Raquel
             </p>
           </div>
         </div>
@@ -91,26 +117,40 @@ function ReelPalPage() {
         <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-8 shadow-soft">
           <p className="text-sm font-semibold text-muted-foreground">Services Pack — 1 of 6</p>
           <h3 className="mt-1 font-display text-xl font-bold">
-            Punchy reels that explain exactly what you do—so prospects stop asking "wait, what do you actually do?"
+            Punchy reels that explain exactly what you do—so prospects stop asking "wait, what do
+            you actually do?"
           </h3>
           <p className="mt-2 text-sm text-muted-foreground">
             2-hour filming session with direction, edited short-form videos ready to post.
           </p>
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
             <div className="rounded-xl bg-secondary/50 p-4">
-              <p className="text-xs font-bold uppercase text-muted-foreground">Production Session</p>
+              <p className="text-xs font-bold uppercase text-muted-foreground">
+                Production Session
+              </p>
               <p className="text-gradient-brand font-display text-2xl font-extrabold">$450</p>
-              <p className="mt-1 text-xs text-muted-foreground">Covers setup, lighting, audio, and direction</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Covers setup, lighting, audio, and direction
+              </p>
             </div>
             <div className="rounded-xl bg-secondary/50 p-4">
-              <p className="text-xs font-bold uppercase text-muted-foreground">Additional Videos (6)</p>
+              <p className="text-xs font-bold uppercase text-muted-foreground">
+                Additional Videos (6)
+              </p>
               <p className="text-gradient-brand font-display text-2xl font-extrabold">$900</p>
-              <p className="mt-1 text-xs text-muted-foreground">1 min each • $150 each. Same session, already set up</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                1 min each • $150 each. Same session, already set up
+              </p>
             </div>
-            <div className="rounded-xl p-4 text-white" style={{ backgroundColor: "var(--spotlight)" }}>
+            <div
+              className="rounded-xl p-4 text-white"
+              style={{ backgroundColor: "var(--spotlight)" }}
+            >
               <p className="text-xs font-bold uppercase text-white/80">Package Total</p>
               <p className="font-display text-2xl font-extrabold">$1,350</p>
-              <p className="mt-1 text-xs text-white/80">Only 4 spots left this month</p>
+              <p className="mt-1 text-xs text-white/80">
+                Final scope confirmed on the strategy call
+              </p>
             </div>
           </div>
           <div className="mt-6 text-center">
@@ -146,9 +186,11 @@ function ReelPalPage() {
       <Section muted>
         <blockquote className="mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8 text-center shadow-soft">
           <p className="text-lg italic text-muted-foreground">
-            "Palmer House helped us create a month's worth of social content in a single afternoon. The quality and turnaround blew us away."
+            "Jevoy and the Palmer House Team were fantastic! Getting in front of the camera for
+            photos is one stressor, but jumping in front of the camera to make a video is even more
+            stressful. Jevoy has a gift of helping his clients become grounded and comfortable."
           </p>
-          <footer className="mt-4 font-display font-bold">Martin K. — Google Review</footer>
+          <footer className="mt-4 font-display font-bold">Athan Seyler — Google Review</footer>
         </blockquote>
       </Section>
 
@@ -156,7 +198,11 @@ function ReelPalPage() {
         <FaqList items={FAQS} />
       </Section>
 
-      <CtaBand title="Ready to Own the Feed?" subtitle="Stop scrolling past your own potential. Book your session and start creating content that stops thumbs." primaryLabel="Book Reel Pal Now" />
+      <CtaBand
+        title="Ready to Own the Feed?"
+        subtitle="Stop scrolling past your own potential. Book your session and start creating content that stops thumbs."
+        primaryLabel="Book Reel Pal Now"
+      />
     </PageShell>
   );
 }
@@ -171,7 +217,10 @@ export const Route = createFileRoute("/reel-pal")({
           "Ryder and Raquel engineer punchy, platform-native short-form videos built for brands that need to stop the scroll.",
       },
       { property: "og:title", content: "Reel Pal | Palmer House Productions" },
-      { property: "og:description", content: "Short-form video packages engineered for momentum and visibility." },
+      {
+        property: "og:description",
+        content: "Short-form video packages engineered for momentum and visibility.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

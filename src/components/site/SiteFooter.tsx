@@ -4,19 +4,45 @@ import { footerColumns, locations, socials, contactInfo } from "@/data/nav";
 export function SiteFooter() {
   return (
     <footer className="mt-24 border-t border-border bg-card">
+      <div className="grid border-b border-border sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          { label: "Find your Pal", to: "/find-your-pal", color: "var(--spotlight-soft)" },
+          { label: "Build a package", to: "/shop", color: "var(--reel-soft)" },
+          { label: "Watch the proof", to: "/work", color: "var(--evergreen-soft)" },
+          { label: "Try the tools", to: "/games", color: "var(--system-soft)" },
+        ].map((item) => (
+          <Link
+            key={item.to}
+            to={item.to}
+            className="group flex min-h-28 items-end justify-between border-b border-border p-5 text-lg font-bold sm:border-r lg:border-b-0"
+            style={{ background: item.color }}
+          >
+            {item.label}
+            <span className="transition-transform group-hover:translate-x-1">→</span>
+          </Link>
+        ))}
+      </div>
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-2 lg:grid-cols-6">
         <div className="lg:col-span-2">
           <p className="font-display text-lg font-bold">Palmer House Productions</p>
           <p className="mt-3 max-w-sm text-sm text-muted-foreground">
-            Crafting authentic stories since day one. We help businesses connect with their audience
-            through powerful video content.
+            We turn invisible expertise into visible proof, repeated explanations into reusable
+            assets, and scattered ideas into a video system.
           </p>
-          <p className="mt-4 text-sm font-medium">Serving Seattle, Bellevue, Tacoma, Portland &amp; beyond</p>
+          <p className="mt-4 text-sm font-medium">
+            Serving Seattle, Bellevue, Tacoma, Portland &amp; beyond
+          </p>
           <div className="mt-3 space-y-1 text-sm">
-            <a className="block text-muted-foreground hover:text-foreground" href={`mailto:${contactInfo.email}`}>
+            <a
+              className="block text-muted-foreground hover:text-foreground"
+              href={`mailto:${contactInfo.email}`}
+            >
               {contactInfo.email}
             </a>
-            <a className="block text-muted-foreground hover:text-foreground" href={contactInfo.phoneHref}>
+            <a
+              className="block text-muted-foreground hover:text-foreground"
+              href={contactInfo.phoneHref}
+            >
               {contactInfo.phone}
             </a>
           </div>
@@ -75,9 +101,15 @@ export function SiteFooter() {
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-5 text-xs text-muted-foreground">
           <p>© {new Date().getFullYear()} Palmer House Productions. All rights reserved.</p>
           <div className="flex gap-4">
-            <Link to="/privacy" className="hover:text-foreground">Privacy Policy</Link>
-            <Link to="/terms" className="hover:text-foreground">Terms of Service</Link>
-            <a href="/sitemap.xml" className="hover:text-foreground">Sitemap</a>
+            <Link to="/privacy" className="hover:text-foreground">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="hover:text-foreground">
+              Terms of Service
+            </Link>
+            <a href="/sitemap.xml" className="hover:text-foreground">
+              Sitemap
+            </a>
           </div>
         </div>
       </div>

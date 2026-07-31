@@ -68,6 +68,7 @@ function ContactPage() {
   }));
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [draftOpened, setDraftOpened] = useState(false);
+  const [submitState, setSubmitState] = useState<"idle" | "sending" | "sent" | "email">("idle");
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -84,7 +85,7 @@ function ContactPage() {
     return Object.keys(next).length === 0;
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     if (!validate()) return;
     const subject = `Project inquiry from ${form.name}${form.company ? ` — ${form.company}` : ""}`;
@@ -96,7 +97,25 @@ function ContactPage() {
       "",
       form.message,
     ].join("\n");
+    const endpoint = (import.meta.env.VITE_CONTACT_FORM_ENDPOINT as string | undefined) ?? "";
+    if (endpoint) {
+      setSubmitState("sending");
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ ...form, source: "palmerhouseproductions.com" }),
+        });
+        if (!response.ok) throw new Error("Contact endpoint rejected the request.");
+        setSubmitState("sent");
+        setForm(EMPTY);
+        return;
+      } catch {
+        setSubmitState("email");
+      }
+    }
     setDraftOpened(true);
+    setSubmitState("email");
     window.location.assign(
       `mailto:info@palmerhouseproductions.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`,
     );
@@ -200,15 +219,26 @@ function ContactPage() {
             </div>
             <button
               type="submit"
+              disabled={submitState === "sending"}
               className="mt-6 w-full rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow sm:w-auto"
               style={{ backgroundColor: "var(--spotlight)" }}
             >
-              Open Email Draft
+              {submitState === "sending"
+                ? "Sending…"
+                : import.meta.env.VITE_CONTACT_FORM_ENDPOINT
+                  ? "Send Project Inquiry"
+                  : "Open Email Draft"}
             </button>
             <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-              This opens a prefilled message in your email app. Nothing is sent until you review and
-              send it.
+              {import.meta.env.VITE_CONTACT_FORM_ENDPOINT
+                ? "Your message is sent to the configured Palmer House intake system."
+                : "This opens a prefilled message in your email app. Nothing is sent until you review and send it."}
             </p>
+            {submitState === "sent" && (
+              <p className="mt-3 text-sm font-medium text-evergreen" role="status">
+                Your inquiry was accepted by the configured Palmer House intake endpoint.
+              </p>
+            )}
             {draftOpened && (
               <p className="mt-3 text-sm font-medium text-evergreen" role="status">
                 Your email draft should be open. If it did not launch, email us directly at
@@ -227,6 +257,16 @@ function ContactPage() {
                 Talk directly with our team about your goals, timeline, and budget. We'll map out
                 the right content path for you.
               </p>
+              {import.meta.env.VITE_CLICKUP_INTAKE_URL && (
+                <a
+                  href={import.meta.env.VITE_CLICKUP_INTAKE_URL as string}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-5 inline-flex min-h-11 items-center rounded-full border border-border px-4 text-sm font-semibold"
+                >
+                  Open client intake
+                </a>
+              )}
             </div>
             <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
               <h3 className="font-display text-lg font-bold">Contact Info</h3>

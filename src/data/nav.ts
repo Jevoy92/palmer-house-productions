@@ -8,6 +8,7 @@ export const navGroups: NavGroup[] = [
       { label: "Video Production", to: "/services/video-production" },
       { label: "Post-Production", to: "/services/post-production" },
       { label: "Consulting & Strategy", to: "/content-strategy" },
+      { label: "Shop Packages", to: "/shop" },
     ],
   },
   {
@@ -26,6 +27,7 @@ export const navGroups: NavGroup[] = [
     label: "Meet the Pals",
     links: [
       { label: "Palmer House Pals", to: "/pals" },
+      { label: "Find Your Pal", to: "/find-your-pal" },
       { label: "Reel Pal", to: "/reel-pal" },
       { label: "System Pal", to: "/system-pal" },
       { label: "Evergreen Pal", to: "/evergreen-pal" },
@@ -37,6 +39,7 @@ export const navGroups: NavGroup[] = [
     links: [
       { label: "Blog / Insights", to: "/blog" },
       { label: "Downloads & Templates", to: "/services/diy-downloads" },
+      { label: "Games & Guided Tools", to: "/games" },
       { label: "Production Guide", to: "/production-guide" },
       { label: "Video System Assessment", to: "/video-system-assessment" },
       { label: "Free Webinar", to: "/webinar" },
@@ -56,6 +59,9 @@ export const navGroups: NavGroup[] = [
     links: [
       { label: "About Us", to: "/about-us" },
       { label: "Pricing", to: "/production-pricing" },
+      { label: "Selected Work", to: "/work" },
+      { label: "Membership", to: "/membership" },
+      { label: "Our View on AI", to: "/ai-pov" },
       { label: "FAQ", to: "/faq" },
       { label: "Client Reviews", to: "/resources/reviews" },
       { label: "Get Started", to: "/contact" },

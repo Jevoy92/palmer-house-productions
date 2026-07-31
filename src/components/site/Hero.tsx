@@ -141,7 +141,7 @@ export function Hero() {
           {palLanes.map((lane, index) => (
             <motion.figure
               key={lane.name}
-              className="relative min-h-56 overflow-hidden rounded-[1.5rem] border bg-white sm:min-h-72"
+              className="group relative min-h-56 overflow-hidden rounded-[1.5rem] border bg-white sm:min-h-72"
               style={{ borderColor: lane.color }}
               animate={
                 reduce
@@ -153,7 +153,7 @@ export function Hero() {
               <img
                 src={lane.scene}
                 alt=""
-                className="absolute inset-0 size-full object-cover opacity-55"
+                className="absolute inset-0 size-full object-cover opacity-55 transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-x-3 top-3 z-10 rounded-2xl bg-white/90 px-3 py-2 text-left backdrop-blur-sm">
                 <figcaption
@@ -170,7 +170,7 @@ export function Hero() {
                     key={pal}
                     src={pal}
                     alt=""
-                    className="-mx-2 h-[78%] w-auto object-contain object-bottom drop-shadow-md"
+                    className="-mx-2 h-[78%] w-auto object-contain object-bottom drop-shadow-md transition-transform duration-500 group-hover:-translate-y-2 group-hover:scale-105"
                   />
                 ))}
               </div>

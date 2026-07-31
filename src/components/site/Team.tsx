@@ -51,11 +51,12 @@ export function Team() {
           </div>
 
           <div>
-            <h3 className="text-2xl">Hi! We're the team behind Palmer House Productions.</h3>
+            <h3 className="text-2xl">A founder-led company. Never a one-person production.</h3>
             <div className="mt-4 space-y-3 leading-relaxed text-muted-foreground">
               <p>
-                From training to visibility to customer education, our process turns complex pain
-                points into clear, measurable solutions.
+                Jevoy leads strategy and story. Each project is staffed around the work—with
+                production, camera, sound, editing, and specialist support brought together as the
+                scope requires.
               </p>
               <p>
                 Every project is tailored to your team, your goals, and your bottom line — so you

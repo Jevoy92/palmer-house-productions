@@ -18,13 +18,16 @@ import type { ReceiptLine } from "@/components/pricing/Receipt";
 
 export type CountsMap = Record<string, number>;
 
-type CartState = {
+export type PurchaseCadence = "one-time" | "monthly";
+
+export type CartState = {
   selected: SelectedMap;
   counts: CountsMap;
+  cadence: PurchaseCadence;
 };
 
 const STORAGE_KEY = "ph.quote.cart.v1";
-const EMPTY: CartState = { selected: {}, counts: {} };
+const EMPTY: CartState = { selected: {}, counts: {}, cadence: "one-time" };
 
 function read(): CartState {
   if (typeof window === "undefined") return EMPTY;
@@ -35,6 +38,7 @@ function read(): CartState {
     return {
       selected: parsed?.selected ?? {},
       counts: parsed?.counts ?? {},
+      cadence: parsed?.cadence === "monthly" ? "monthly" : "one-time",
     };
   } catch {
     return EMPTY;
@@ -54,10 +58,11 @@ let state: CartState = EMPTY;
 let hydrated = false;
 const listeners = new Set<() => void>();
 
-function ensureHydrated() {
-  if (hydrated || typeof window === "undefined") return;
+function ensureHydrated(): boolean {
+  if (hydrated || typeof window === "undefined") return false;
   state = read();
   hydrated = true;
+  return true;
 }
 
 function emit() {
@@ -78,8 +83,12 @@ export const cartStore = {
   },
   getServerSnapshot: (): CartState => EMPTY,
   subscribe: (l: () => void) => {
-    ensureHydrated();
+    const didHydrate = ensureHydrated();
     listeners.add(l);
+    // During SSR hydration React initially consumes getServerSnapshot(). If
+    // localStorage changed the state before subscribe, notify this subscriber
+    // once so the persisted cart becomes visible without waiting for an action.
+    if (didHydrate) queueMicrotask(l);
     // Cross-tab sync
     const onStorage = (e: StorageEvent) => {
       if (e.key === STORAGE_KEY) {
@@ -99,6 +108,15 @@ export const cartStore = {
   },
   setSelected: (selected: SelectedMap) => set((s) => ({ ...s, selected })),
   setCounts: (counts: CountsMap) => set((s) => ({ ...s, counts })),
+  setCadence: (cadence: PurchaseCadence) => set((s) => ({ ...s, cadence })),
+  add: (itemId: string, qty = 1) =>
+    set((s) => ({
+      ...s,
+      selected: {
+        ...s.selected,
+        [itemId]: (s.selected[itemId] ?? 0) + Math.max(1, qty),
+      },
+    })),
   changeQty: (itemId: string, nextQty: number) =>
     set((s) => {
       const next = { ...s.selected };
@@ -116,7 +134,7 @@ export const cartStore = {
     }),
   setCount: (itemId: string, n: number) =>
     set((s) => ({ ...s, counts: { ...s.counts, [itemId]: n } })),
-  reset: () => set(() => ({ selected: {}, counts: {} })),
+  reset: () => set(() => ({ selected: {}, counts: {}, cadence: "one-time" })),
 };
 
 /** Hook: returns the live cart state. */

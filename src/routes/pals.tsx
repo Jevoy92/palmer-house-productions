@@ -158,6 +158,25 @@ function PalsPage() {
         subtitle="Four mission lanes, eight characters, one system. We translate confusion into video assets you can actually use."
       />
 
+      <section className="px-4 pb-8">
+        <div className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-5 rounded-[2rem] bg-ink p-6 text-center text-white sm:flex-row sm:text-left">
+          <div>
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/50">
+              Problem-first doorway
+            </p>
+            <p className="mt-2 text-xl font-bold">
+              Tell the Pals what keeps happening. They will point you toward a lane.
+            </p>
+          </div>
+          <Link
+            to="/find-your-pal"
+            className="shrink-0 rounded-full bg-white px-6 py-3 text-sm font-semibold text-ink"
+          >
+            Find your Pal
+          </Link>
+        </div>
+      </section>
+
       <Section
         eyebrow="Choose Your Lane"
         title="Meet the Team That Turns Confusion Into Clarity"
@@ -240,7 +259,7 @@ function PalsPage() {
                     <Link
                       to={lane.path}
                       className="rounded-full px-5 py-2.5 text-sm font-semibold text-white shadow-glow"
-                      style={{ backgroundColor: "var(--spotlight)" }}
+                      style={{ backgroundColor: `var(--${lane.key})` }}
                     >
                       {lane.cta}
                     </Link>

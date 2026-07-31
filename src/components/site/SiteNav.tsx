@@ -1,17 +1,20 @@
 import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown, Menu, ShoppingBag, X } from "lucide-react";
 import { useState } from "react";
+import { cartItemCount, useCart } from "@/lib/cart-store";
 
 const services = [
   { label: "Video Production", to: "/services/video-production" },
   { label: "Post-Production", to: "/services/post-production" },
   { label: "Content Strategy", to: "/content-strategy" },
   { label: "Production Pricing", to: "/production-pricing" },
+  { label: "Shop Packages", to: "/shop" },
 ];
 
 const pals = [
   { label: "Meet All the Pals", to: "/pals" },
+  { label: "Find Your Pal", to: "/find-your-pal" },
   { label: "Spotlight Pal", to: "/spotlight-pal" },
   { label: "Reel Pal", to: "/reel-pal" },
   { label: "Evergreen Pal", to: "/evergreen-pal" },
@@ -25,6 +28,10 @@ const more = [
   { label: "Client Reviews", to: "/resources/reviews" },
   { label: "Locations", to: "/locations/seattle-wa" },
   { label: "FAQ", to: "/faq" },
+  { label: "Selected Work", to: "/work" },
+  { label: "Games & Tools", to: "/games" },
+  { label: "Membership", to: "/membership" },
+  { label: "Our View on AI", to: "/ai-pov" },
 ];
 
 type NavItem = { label: string; to: string };
@@ -73,6 +80,8 @@ function Dropdown({ label, items }: { label: string; items: NavItem[] }) {
 export function SiteNav() {
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
+  const cart = useCart();
+  const cartCount = cartItemCount(cart);
 
   return (
     <>
@@ -108,13 +117,25 @@ export function SiteNav() {
             >
               Process
             </Link>
-            <a
-              href="/#work"
+            <Link
+              to="/work"
               className="flex min-h-11 items-center rounded-full px-3.5 text-sm font-medium transition-colors hover:bg-secondary"
             >
               Work
-            </a>
+            </Link>
             <Dropdown label="More" items={more} />
+            <Link
+              to="/checkout"
+              aria-label={`Review cart with ${cartCount} item${cartCount === 1 ? "" : "s"}`}
+              className="relative ml-1 grid size-11 place-items-center rounded-full border border-border bg-white"
+            >
+              <ShoppingBag className="size-4" />
+              {cartCount > 0 && (
+                <span className="absolute -right-1 -top-1 grid min-h-5 min-w-5 place-items-center rounded-full bg-reel px-1 font-mono text-[9px] font-bold text-white">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
             <Link
               to="/contact"
               className="ml-1 flex min-h-11 items-center rounded-full bg-ink px-5 text-sm font-semibold text-white transition-transform hover:scale-[1.03]"
@@ -124,10 +145,16 @@ export function SiteNav() {
           </div>
 
           <Link
-            to="/contact"
-            className="ml-auto hidden min-h-11 items-center rounded-full bg-ink px-5 text-sm font-semibold text-white sm:flex lg:hidden"
+            to="/checkout"
+            aria-label={`Review cart with ${cartCount} item${cartCount === 1 ? "" : "s"}`}
+            className="relative ml-auto hidden size-11 place-items-center rounded-full border border-border bg-white sm:grid lg:hidden"
           >
-            Contact
+            <ShoppingBag className="size-4" />
+            {cartCount > 0 && (
+              <span className="absolute -right-1 -top-1 grid min-h-5 min-w-5 place-items-center rounded-full bg-reel px-1 font-mono text-[9px] font-bold text-white">
+                {cartCount}
+              </span>
+            )}
           </Link>
           <button
             type="button"
@@ -176,11 +203,11 @@ export function SiteNav() {
               className="mt-8 grid gap-3 sm:grid-cols-2"
             >
               <Link
-                to="/production-pricing"
+                to="/shop"
                 onClick={() => setOpen(false)}
                 className="flex min-h-12 items-center justify-center rounded-full border border-border px-5 text-sm font-semibold"
               >
-                Build a Quote
+                Shop Packages
               </Link>
               <Link
                 to="/contact"

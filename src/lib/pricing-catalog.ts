@@ -320,6 +320,13 @@ export type AddOn = ServiceItem & {
 export const ADD_ONS: AddOn[] = [
   // Universal
   {
+    id: "extra-edited-video",
+    name: "Additional Edited Video",
+    description: "One more fully edited video from the same production session",
+    price: ADDITIONAL_VIDEO_PRICE,
+    category: "universal",
+  },
+  {
     id: "caption-pack",
     name: "Caption Pack",
     description: "Professional captions for all videos",

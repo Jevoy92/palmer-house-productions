@@ -27,8 +27,10 @@ export type QuoteSummary = {
   total: number;
 };
 
-// ⚠️ Paste your HoneyBook lead form URL here.
-export const HONEYBOOK_LEAD_FORM_URL = "";
+// Configure in Lovable/Vercel as VITE_HONEYBOOK_LEAD_FORM_URL. Keeping the
+// value outside source control prevents accidental production/vendor drift.
+export const HONEYBOOK_LEAD_FORM_URL =
+  (import.meta.env.VITE_HONEYBOOK_LEAD_FORM_URL as string | undefined) ?? "";
 
 // "new-tab" → opens HB form in a new tab with prefilled query params
 // "modal"   → opens HB form inside an iframe modal (set up <HoneyBookModal/>)

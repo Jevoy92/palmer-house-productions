@@ -11,10 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutUsRouteImport } from './routes/about-us'
+import { Route as AiPovRouteImport } from './routes/ai-pov'
+import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as CheckoutSuccessRouteImport } from './routes/checkout-success'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ContentStrategyRouteImport } from './routes/content-strategy'
 import { Route as EvergreenPalRouteImport } from './routes/evergreen-pal'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as FindYourPalRouteImport } from './routes/find-your-pal'
+import { Route as GamesRouteImport } from './routes/games'
+import { Route as IntegrationsRouteImport } from './routes/integrations'
+import { Route as MembershipRouteImport } from './routes/membership'
 import { Route as PalsRouteImport } from './routes/pals'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
@@ -22,12 +29,15 @@ import { Route as ProcessRouteImport } from './routes/process'
 import { Route as ProductionGuideRouteImport } from './routes/production-guide'
 import { Route as ProductionPricingRouteImport } from './routes/production-pricing'
 import { Route as ReelPalRouteImport } from './routes/reel-pal'
+import { Route as ShopRouteImport } from './routes/shop'
 import { Route as SpotlightPalRouteImport } from './routes/spotlight-pal'
 import { Route as StartupsRouteImport } from './routes/startups'
+import { Route as StudioPreviewRouteImport } from './routes/studio-preview'
 import { Route as SystemPalRouteImport } from './routes/system-pal'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as VideoSystemAssessmentRouteImport } from './routes/video-system-assessment'
 import { Route as WebinarRouteImport } from './routes/webinar'
+import { Route as WorkRouteImport } from './routes/work'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
@@ -45,6 +55,21 @@ const IndexRoute = IndexRouteImport.update({
 const AboutUsRoute = AboutUsRouteImport.update({
   id: '/about-us',
   path: '/about-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiPovRoute = AiPovRouteImport.update({
+  id: '/ai-pov',
+  path: '/ai-pov',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutSuccessRoute = CheckoutSuccessRouteImport.update({
+  id: '/checkout-success',
+  path: '/checkout-success',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -65,6 +90,26 @@ const EvergreenPalRoute = EvergreenPalRouteImport.update({
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FindYourPalRoute = FindYourPalRouteImport.update({
+  id: '/find-your-pal',
+  path: '/find-your-pal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GamesRoute = GamesRouteImport.update({
+  id: '/games',
+  path: '/games',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntegrationsRoute = IntegrationsRouteImport.update({
+  id: '/integrations',
+  path: '/integrations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MembershipRoute = MembershipRouteImport.update({
+  id: '/membership',
+  path: '/membership',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PalsRoute = PalsRouteImport.update({
@@ -102,6 +147,11 @@ const ReelPalRoute = ReelPalRouteImport.update({
   path: '/reel-pal',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShopRoute = ShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SpotlightPalRoute = SpotlightPalRouteImport.update({
   id: '/spotlight-pal',
   path: '/spotlight-pal',
@@ -110,6 +160,11 @@ const SpotlightPalRoute = SpotlightPalRouteImport.update({
 const StartupsRoute = StartupsRouteImport.update({
   id: '/startups',
   path: '/startups',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudioPreviewRoute = StudioPreviewRouteImport.update({
+  id: '/studio-preview',
+  path: '/studio-preview',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SystemPalRoute = SystemPalRouteImport.update({
@@ -130,6 +185,11 @@ const VideoSystemAssessmentRoute = VideoSystemAssessmentRouteImport.update({
 const WebinarRoute = WebinarRouteImport.update({
   id: '/webinar',
   path: '/webinar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkRoute = WorkRouteImport.update({
+  id: '/work',
+  path: '/work',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
@@ -176,10 +236,17 @@ const ServicesVideoProductionRoute = ServicesVideoProductionRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about-us': typeof AboutUsRoute
+  '/ai-pov': typeof AiPovRoute
+  '/checkout': typeof CheckoutRoute
+  '/checkout-success': typeof CheckoutSuccessRoute
   '/contact': typeof ContactRoute
   '/content-strategy': typeof ContentStrategyRoute
   '/evergreen-pal': typeof EvergreenPalRoute
   '/faq': typeof FaqRoute
+  '/find-your-pal': typeof FindYourPalRoute
+  '/games': typeof GamesRoute
+  '/integrations': typeof IntegrationsRoute
+  '/membership': typeof MembershipRoute
   '/pals': typeof PalsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -187,12 +254,15 @@ export interface FileRoutesByFullPath {
   '/production-guide': typeof ProductionGuideRoute
   '/production-pricing': typeof ProductionPricingRoute
   '/reel-pal': typeof ReelPalRoute
+  '/shop': typeof ShopRoute
   '/spotlight-pal': typeof SpotlightPalRoute
   '/startups': typeof StartupsRoute
+  '/studio-preview': typeof StudioPreviewRoute
   '/system-pal': typeof SystemPalRoute
   '/terms': typeof TermsRoute
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
   '/webinar': typeof WebinarRoute
+  '/work': typeof WorkRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
@@ -205,10 +275,17 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about-us': typeof AboutUsRoute
+  '/ai-pov': typeof AiPovRoute
+  '/checkout': typeof CheckoutRoute
+  '/checkout-success': typeof CheckoutSuccessRoute
   '/contact': typeof ContactRoute
   '/content-strategy': typeof ContentStrategyRoute
   '/evergreen-pal': typeof EvergreenPalRoute
   '/faq': typeof FaqRoute
+  '/find-your-pal': typeof FindYourPalRoute
+  '/games': typeof GamesRoute
+  '/integrations': typeof IntegrationsRoute
+  '/membership': typeof MembershipRoute
   '/pals': typeof PalsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -216,12 +293,15 @@ export interface FileRoutesByTo {
   '/production-guide': typeof ProductionGuideRoute
   '/production-pricing': typeof ProductionPricingRoute
   '/reel-pal': typeof ReelPalRoute
+  '/shop': typeof ShopRoute
   '/spotlight-pal': typeof SpotlightPalRoute
   '/startups': typeof StartupsRoute
+  '/studio-preview': typeof StudioPreviewRoute
   '/system-pal': typeof SystemPalRoute
   '/terms': typeof TermsRoute
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
   '/webinar': typeof WebinarRoute
+  '/work': typeof WorkRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
@@ -235,10 +315,17 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about-us': typeof AboutUsRoute
+  '/ai-pov': typeof AiPovRoute
+  '/checkout': typeof CheckoutRoute
+  '/checkout-success': typeof CheckoutSuccessRoute
   '/contact': typeof ContactRoute
   '/content-strategy': typeof ContentStrategyRoute
   '/evergreen-pal': typeof EvergreenPalRoute
   '/faq': typeof FaqRoute
+  '/find-your-pal': typeof FindYourPalRoute
+  '/games': typeof GamesRoute
+  '/integrations': typeof IntegrationsRoute
+  '/membership': typeof MembershipRoute
   '/pals': typeof PalsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -246,12 +333,15 @@ export interface FileRoutesById {
   '/production-guide': typeof ProductionGuideRoute
   '/production-pricing': typeof ProductionPricingRoute
   '/reel-pal': typeof ReelPalRoute
+  '/shop': typeof ShopRoute
   '/spotlight-pal': typeof SpotlightPalRoute
   '/startups': typeof StartupsRoute
+  '/studio-preview': typeof StudioPreviewRoute
   '/system-pal': typeof SystemPalRoute
   '/terms': typeof TermsRoute
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
   '/webinar': typeof WebinarRoute
+  '/work': typeof WorkRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
@@ -266,10 +356,17 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about-us'
+    | '/ai-pov'
+    | '/checkout'
+    | '/checkout-success'
     | '/contact'
     | '/content-strategy'
     | '/evergreen-pal'
     | '/faq'
+    | '/find-your-pal'
+    | '/games'
+    | '/integrations'
+    | '/membership'
     | '/pals'
     | '/pricing'
     | '/privacy'
@@ -277,12 +374,15 @@ export interface FileRouteTypes {
     | '/production-guide'
     | '/production-pricing'
     | '/reel-pal'
+    | '/shop'
     | '/spotlight-pal'
     | '/startups'
+    | '/studio-preview'
     | '/system-pal'
     | '/terms'
     | '/video-system-assessment'
     | '/webinar'
+    | '/work'
     | '/blog/$slug'
     | '/industries/$slug'
     | '/locations/$slug'
@@ -295,10 +395,17 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about-us'
+    | '/ai-pov'
+    | '/checkout'
+    | '/checkout-success'
     | '/contact'
     | '/content-strategy'
     | '/evergreen-pal'
     | '/faq'
+    | '/find-your-pal'
+    | '/games'
+    | '/integrations'
+    | '/membership'
     | '/pals'
     | '/pricing'
     | '/privacy'
@@ -306,12 +413,15 @@ export interface FileRouteTypes {
     | '/production-guide'
     | '/production-pricing'
     | '/reel-pal'
+    | '/shop'
     | '/spotlight-pal'
     | '/startups'
+    | '/studio-preview'
     | '/system-pal'
     | '/terms'
     | '/video-system-assessment'
     | '/webinar'
+    | '/work'
     | '/blog/$slug'
     | '/industries/$slug'
     | '/locations/$slug'
@@ -324,10 +434,17 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about-us'
+    | '/ai-pov'
+    | '/checkout'
+    | '/checkout-success'
     | '/contact'
     | '/content-strategy'
     | '/evergreen-pal'
     | '/faq'
+    | '/find-your-pal'
+    | '/games'
+    | '/integrations'
+    | '/membership'
     | '/pals'
     | '/pricing'
     | '/privacy'
@@ -335,12 +452,15 @@ export interface FileRouteTypes {
     | '/production-guide'
     | '/production-pricing'
     | '/reel-pal'
+    | '/shop'
     | '/spotlight-pal'
     | '/startups'
+    | '/studio-preview'
     | '/system-pal'
     | '/terms'
     | '/video-system-assessment'
     | '/webinar'
+    | '/work'
     | '/blog/$slug'
     | '/industries/$slug'
     | '/locations/$slug'
@@ -354,10 +474,17 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutUsRoute: typeof AboutUsRoute
+  AiPovRoute: typeof AiPovRoute
+  CheckoutRoute: typeof CheckoutRoute
+  CheckoutSuccessRoute: typeof CheckoutSuccessRoute
   ContactRoute: typeof ContactRoute
   ContentStrategyRoute: typeof ContentStrategyRoute
   EvergreenPalRoute: typeof EvergreenPalRoute
   FaqRoute: typeof FaqRoute
+  FindYourPalRoute: typeof FindYourPalRoute
+  GamesRoute: typeof GamesRoute
+  IntegrationsRoute: typeof IntegrationsRoute
+  MembershipRoute: typeof MembershipRoute
   PalsRoute: typeof PalsRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -365,12 +492,15 @@ export interface RootRouteChildren {
   ProductionGuideRoute: typeof ProductionGuideRoute
   ProductionPricingRoute: typeof ProductionPricingRoute
   ReelPalRoute: typeof ReelPalRoute
+  ShopRoute: typeof ShopRoute
   SpotlightPalRoute: typeof SpotlightPalRoute
   StartupsRoute: typeof StartupsRoute
+  StudioPreviewRoute: typeof StudioPreviewRoute
   SystemPalRoute: typeof SystemPalRoute
   TermsRoute: typeof TermsRoute
   VideoSystemAssessmentRoute: typeof VideoSystemAssessmentRoute
   WebinarRoute: typeof WebinarRoute
+  WorkRoute: typeof WorkRoute
   BlogSlugRoute: typeof BlogSlugRoute
   IndustriesSlugRoute: typeof IndustriesSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
@@ -395,6 +525,27 @@ declare module '@tanstack/react-router' {
       path: '/about-us'
       fullPath: '/about-us'
       preLoaderRoute: typeof AboutUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai-pov': {
+      id: '/ai-pov'
+      path: '/ai-pov'
+      fullPath: '/ai-pov'
+      preLoaderRoute: typeof AiPovRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout-success': {
+      id: '/checkout-success'
+      path: '/checkout-success'
+      fullPath: '/checkout-success'
+      preLoaderRoute: typeof CheckoutSuccessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -423,6 +574,34 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/find-your-pal': {
+      id: '/find-your-pal'
+      path: '/find-your-pal'
+      fullPath: '/find-your-pal'
+      preLoaderRoute: typeof FindYourPalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/games': {
+      id: '/games'
+      path: '/games'
+      fullPath: '/games'
+      preLoaderRoute: typeof GamesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/integrations': {
+      id: '/integrations'
+      path: '/integrations'
+      fullPath: '/integrations'
+      preLoaderRoute: typeof IntegrationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/membership': {
+      id: '/membership'
+      path: '/membership'
+      fullPath: '/membership'
+      preLoaderRoute: typeof MembershipRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pals': {
@@ -474,6 +653,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReelPalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shop': {
+      id: '/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/spotlight-pal': {
       id: '/spotlight-pal'
       path: '/spotlight-pal'
@@ -486,6 +672,13 @@ declare module '@tanstack/react-router' {
       path: '/startups'
       fullPath: '/startups'
       preLoaderRoute: typeof StartupsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/studio-preview': {
+      id: '/studio-preview'
+      path: '/studio-preview'
+      fullPath: '/studio-preview'
+      preLoaderRoute: typeof StudioPreviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/system-pal': {
@@ -514,6 +707,13 @@ declare module '@tanstack/react-router' {
       path: '/webinar'
       fullPath: '/webinar'
       preLoaderRoute: typeof WebinarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work': {
+      id: '/work'
+      path: '/work'
+      fullPath: '/work'
+      preLoaderRoute: typeof WorkRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
@@ -578,10 +778,17 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutUsRoute: AboutUsRoute,
+  AiPovRoute: AiPovRoute,
+  CheckoutRoute: CheckoutRoute,
+  CheckoutSuccessRoute: CheckoutSuccessRoute,
   ContactRoute: ContactRoute,
   ContentStrategyRoute: ContentStrategyRoute,
   EvergreenPalRoute: EvergreenPalRoute,
   FaqRoute: FaqRoute,
+  FindYourPalRoute: FindYourPalRoute,
+  GamesRoute: GamesRoute,
+  IntegrationsRoute: IntegrationsRoute,
+  MembershipRoute: MembershipRoute,
   PalsRoute: PalsRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
@@ -589,12 +796,15 @@ const rootRouteChildren: RootRouteChildren = {
   ProductionGuideRoute: ProductionGuideRoute,
   ProductionPricingRoute: ProductionPricingRoute,
   ReelPalRoute: ReelPalRoute,
+  ShopRoute: ShopRoute,
   SpotlightPalRoute: SpotlightPalRoute,
   StartupsRoute: StartupsRoute,
+  StudioPreviewRoute: StudioPreviewRoute,
   SystemPalRoute: SystemPalRoute,
   TermsRoute: TermsRoute,
   VideoSystemAssessmentRoute: VideoSystemAssessmentRoute,
   WebinarRoute: WebinarRoute,
+  WorkRoute: WorkRoute,
   BlogSlugRoute: BlogSlugRoute,
   IndustriesSlugRoute: IndustriesSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,

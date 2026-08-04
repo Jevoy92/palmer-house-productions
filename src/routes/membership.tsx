@@ -456,7 +456,7 @@ function MembershipPage() {
               },
               {
                 q: "Can my team use it?",
-                a: "Yes. Business and Partner are designed for shared workspaces. Database roles and private storage are already enforced; transactional invitations activate when email delivery is connected.",
+                a: "Yes. Guided and Partner are designed for shared workspaces. Database roles and private storage are already enforced; transactional invitations activate when email delivery is connected.",
               },
               {
                 q: "Can Palmer House use the exact brief?",

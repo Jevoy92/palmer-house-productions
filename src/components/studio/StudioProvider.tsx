@@ -65,10 +65,10 @@ const demoBrand: Brand = {
 };
 const demoSubscription: Subscription = {
   workspace_id: demoWorkspace.id,
-  plan: "owner",
+  plan: "partner",
   billing_interval: "month",
   status: "active",
-  campaign_allowance: 5,
+  campaign_allowance: 12,
   trial_ends_at: new Date(Date.now() + 6 * 86_400_000).toISOString(),
   current_period_start: new Date().toISOString(),
   current_period_end: new Date(Date.now() + 30 * 86_400_000).toISOString(),

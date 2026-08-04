@@ -667,7 +667,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
       <header className="sticky top-0 z-30 flex min-h-16 items-center border-b border-border bg-white px-4 lg:ml-[15.5rem] lg:px-7">
         <button
           onClick={() => setMobileOpen(true)}
-          className="grid size-11 place-items-center rounded-xl border border-border lg:hidden"
+          className="grid size-11 shrink-0 place-items-center rounded-xl border border-border lg:hidden"
           aria-label="Open navigation"
         >
           <Menu className="size-5" />
@@ -684,21 +684,21 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
         <button
           aria-label="Ask a Pal"
           onClick={() => setChatOpen(true)}
-          className="ml-3 inline-flex min-h-11 items-center gap-2 rounded-full border border-system bg-system-soft px-3 text-xs font-bold text-system"
+          className="ml-3 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-full border border-system bg-system-soft px-3 text-xs font-bold text-system"
         >
           <MessageSquareText className="size-4" />
           <span className="hidden md:inline">Ask a Pal</span>
         </button>
         <button
           aria-label="Notifications"
-          className="ml-2 grid size-11 place-items-center rounded-full border border-border"
+          className="ml-2 grid size-11 shrink-0 place-items-center rounded-full border border-border"
         >
           <Bell className="size-4" />
         </button>
         <button
           aria-label="Create something new"
           onClick={() => setCreateOpen(true)}
-          className="ml-2 inline-flex min-h-11 items-center gap-2 rounded-xl bg-system px-4 text-sm font-bold text-white"
+          className="ml-2 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-system px-4 text-sm font-bold text-white"
         >
           <Plus className="size-4" />
           <span className="hidden sm:inline">Create</span>
@@ -1326,7 +1326,10 @@ function Dashboard() {
             <p className="studio-eyebrow text-reel">Continue working</p>
             <h2 className="mt-2 text-2xl font-black">Campaigns in motion</h2>
           </div>
-          <Link to="/studio/campaigns" className="text-xs font-bold">
+          <Link
+            to="/studio/campaigns"
+            className="inline-flex min-h-11 items-center text-xs font-bold"
+          >
             View all campaigns →
           </Link>
         </div>
@@ -1429,7 +1432,10 @@ function Dashboard() {
                 <p className="font-extrabold">Content map</p>
                 <p className="mt-1 text-xs text-muted-foreground">Where the work is right now</p>
               </div>
-              <Link to="/studio/campaigns" className="text-xs font-bold">
+              <Link
+                to="/studio/campaigns"
+                className="inline-flex min-h-11 items-center text-xs font-bold"
+              >
                 View campaigns
               </Link>
             </div>
@@ -1444,7 +1450,10 @@ function Dashboard() {
             <article className="studio-card">
               <div className="flex items-center justify-between">
                 <p className="font-extrabold">Upcoming</p>
-                <Link to="/studio/calendar" className="text-[11px] font-bold">
+                <Link
+                  to="/studio/calendar"
+                  className="inline-flex min-h-11 items-center text-[11px] font-bold"
+                >
                   Calendar →
                 </Link>
               </div>
@@ -1474,7 +1483,10 @@ function Dashboard() {
             <article className="studio-card">
               <div className="flex items-center justify-between">
                 <p className="font-extrabold">Recent library</p>
-                <Link to="/studio/library" className="text-[11px] font-bold">
+                <Link
+                  to="/studio/library"
+                  className="inline-flex min-h-11 items-center text-[11px] font-bold"
+                >
                   Library →
                 </Link>
               </div>
@@ -1745,7 +1757,7 @@ function IdeasBoard() {
               <button
                 key={value}
                 onClick={() => setSourceType(value)}
-                className={`min-h-10 rounded-lg text-xs font-bold capitalize ${sourceType === value ? "bg-system-soft text-system" : "text-muted-foreground"}`}
+                className={`min-h-11 rounded-lg text-xs font-bold capitalize ${sourceType === value ? "bg-system-soft text-system" : "text-muted-foreground"}`}
               >
                 {value}
               </button>
@@ -1903,7 +1915,7 @@ function IdeasBoard() {
                 <button
                   key={item}
                   onClick={() => setFilter(item)}
-                  className={`min-h-10 rounded-full px-4 text-xs font-bold capitalize ${filter === item ? "bg-system text-white" : "border border-border bg-white"}`}
+                  className={`min-h-11 rounded-full px-4 text-xs font-bold capitalize ${filter === item ? "bg-system text-white" : "border border-border bg-white"}`}
                 >
                   {item}
                 </button>
@@ -1930,7 +1942,7 @@ function IdeasBoard() {
                     </span>
                     <button
                       aria-label="More idea options"
-                      className="grid size-9 place-items-center rounded-full border border-border"
+                      className="grid size-11 place-items-center rounded-full border border-border"
                     >
                       <MoreHorizontal className="size-4" />
                     </button>
@@ -2993,7 +3005,7 @@ function Library() {
                     })
                   }
                   aria-label={`${favorites.has(asset.id) ? "Remove" : "Add"} ${asset.title} ${favorites.has(asset.id) ? "from" : "to"} favorites`}
-                  className={`absolute right-3 top-3 grid size-9 place-items-center rounded-full bg-white ${favorites.has(asset.id) ? "text-reel" : "text-muted-foreground"}`}
+                  className={`absolute right-3 top-3 grid size-11 place-items-center rounded-full bg-white ${favorites.has(asset.id) ? "text-reel" : "text-muted-foreground"}`}
                 >
                   <Heart className={`size-4 ${favorites.has(asset.id) ? "fill-current" : ""}`} />
                 </button>
@@ -3024,7 +3036,7 @@ function Library() {
                         .then(() => toast.success("Copied."))
                     }
                     aria-label={`Copy ${asset.title}`}
-                    className="grid size-10 place-items-center rounded-xl bg-secondary"
+                    className="grid size-11 place-items-center rounded-xl bg-secondary"
                   >
                     <Clipboard className="size-4" />
                   </button>
@@ -3188,7 +3200,7 @@ function CalendarView() {
             <button
               aria-label="Previous calendar period"
               onClick={() => moveFocus(-1)}
-              className="grid size-11 place-items-center rounded-xl border border-border bg-white"
+              className="grid size-11 shrink-0 place-items-center rounded-xl border border-border bg-white"
             >
               <ChevronLeft className="size-4" />
             </button>
@@ -3201,7 +3213,7 @@ function CalendarView() {
             <button
               aria-label="Next calendar period"
               onClick={() => moveFocus(1)}
-              className="grid size-11 place-items-center rounded-xl border border-border bg-white"
+              className="grid size-11 shrink-0 place-items-center rounded-xl border border-border bg-white"
             >
               <ChevronRight className="size-4" />
             </button>
@@ -3212,7 +3224,7 @@ function CalendarView() {
               <button
                 key={option}
                 onClick={() => setMode(option)}
-                className={`min-h-10 rounded-lg px-4 text-xs font-bold capitalize ${mode === option ? "bg-ink text-white" : "text-muted-foreground"}`}
+                className={`min-h-11 rounded-lg px-4 text-xs font-bold capitalize ${mode === option ? "bg-ink text-white" : "text-muted-foreground"}`}
               >
                 {option}
               </button>
@@ -3869,6 +3881,13 @@ function BillingView() {
   const used = campaigns.filter(
     (item) => new Date(item.created_at) >= new Date(subscription?.current_period_start || 0),
   ).length;
+  const activePlanKey: StudioPlanKey =
+    subscription?.plan === "business" ||
+    subscription?.plan === "partner" ||
+    subscription?.plan === "creator"
+      ? subscription.plan
+      : "creator";
+  const activePlan = studioPlans[activePlanKey];
   async function checkout(plan: StudioPlanKey) {
     if (demo) {
       toast.info("Billing is disabled in demo mode.");
@@ -3921,8 +3940,8 @@ function BillingView() {
             <p className="font-mono text-[9px] uppercase tracking-[.17em] text-system">
               Current period
             </p>
-            <h2 className="mt-3 text-3xl font-extrabold capitalize">
-              {subscription?.plan || "Trial"} workspace
+            <h2 className="mt-3 text-3xl font-extrabold">
+              {subscription?.status === "active" ? activePlan.name : "Trial"} workspace
             </h2>
             <p className="mt-3 text-sm text-muted-foreground">
               Renews {new Date(subscription?.current_period_end || Date.now()).toLocaleDateString()}
@@ -3965,7 +3984,7 @@ function BillingView() {
               role="radio"
               aria-checked={interval === value}
               onClick={() => setInterval(value)}
-              className={`min-h-10 rounded-lg px-4 text-xs font-black transition ${interval === value ? "bg-white shadow-sm" : "text-muted-foreground"}`}
+              className={`min-h-11 rounded-lg px-4 text-xs font-black transition ${interval === value ? "bg-white shadow-sm" : "text-muted-foreground"}`}
             >
               {value === "month" ? "Monthly" : "Annual · save 17%"}
             </button>
@@ -3976,7 +3995,7 @@ function BillingView() {
         {Object.entries(studioPlans).map(([key, plan]) => (
           <article
             key={key}
-            className={`studio-card flex flex-col ${subscription?.plan === key ? "ring-2 ring-ink" : ""}`}
+            className={`studio-card flex flex-col ${activePlanKey === key ? "ring-2 ring-ink" : ""}`}
           >
             <p className="font-mono text-[9px] uppercase tracking-[.17em] text-muted-foreground">
               {plan.name}
@@ -4003,13 +4022,13 @@ function BillingView() {
               ))}
             </ul>
             <button
-              disabled={Boolean(loadingPlan) || subscription?.plan === key}
+              disabled={Boolean(loadingPlan) || activePlanKey === key}
               onClick={() => void checkout(key as StudioPlanKey)}
               className="primary-action mt-8 w-full disabled:bg-secondary disabled:text-muted-foreground"
             >
               {loadingPlan === key ? (
                 <LoaderCircle className="size-4 animate-spin" />
-              ) : subscription?.plan === key ? (
+              ) : activePlanKey === key ? (
                 "Current plan"
               ) : (
                 `Choose ${plan.name}`

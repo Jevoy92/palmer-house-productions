@@ -99,7 +99,7 @@ export function VideoRoadmap() {
               <button
                 key={value}
                 onClick={() => setLane(value)}
-                className={`min-h-10 rounded-full px-4 text-xs font-bold capitalize ${lane === value ? "bg-ink text-white" : "border border-border bg-white"}`}
+                className={`min-h-11 rounded-full px-4 text-xs font-bold capitalize ${lane === value ? "bg-ink text-white" : "border border-border bg-white"}`}
               >
                 {value}
               </button>
@@ -110,7 +110,7 @@ export function VideoRoadmap() {
               <button
                 key={value}
                 onClick={() => setShow(value)}
-                className={`min-h-9 rounded-lg px-4 text-xs font-bold capitalize ${show === value ? "bg-system-soft text-system" : "text-muted-foreground"}`}
+                className={`min-h-11 rounded-lg px-4 text-xs font-bold capitalize ${show === value ? "bg-system-soft text-system" : "text-muted-foreground"}`}
               >
                 {value === "priority" ? "For you first" : "Master list"}
               </button>

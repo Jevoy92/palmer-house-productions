@@ -32,15 +32,15 @@ export function SiteFooter() {
           <p className="mt-4 text-sm font-medium">
             Serving Seattle, Bellevue, Tacoma, Portland &amp; beyond
           </p>
-          <div className="mt-3 space-y-1 text-sm">
+          <div className="mt-3 text-sm">
             <a
-              className="block text-muted-foreground hover:text-foreground"
+              className="flex min-h-11 items-center text-muted-foreground hover:text-foreground"
               href={`mailto:${contactInfo.email}`}
             >
               {contactInfo.email}
             </a>
             <a
-              className="block text-muted-foreground hover:text-foreground"
+              className="flex min-h-11 items-center text-muted-foreground hover:text-foreground"
               href={contactInfo.phoneHref}
             >
               {contactInfo.phone}
@@ -53,7 +53,7 @@ export function SiteFooter() {
                 href={s.href}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-border px-3 text-xs text-muted-foreground transition-colors hover:text-foreground"
               >
                 {s.label}
               </a>
@@ -67,7 +67,10 @@ export function SiteFooter() {
             <ul className="space-y-2">
               {col.links.map((l) => (
                 <li key={l.to}>
-                  <Link to={l.to} className="text-sm text-muted-foreground hover:text-foreground">
+                  <Link
+                    to={l.to}
+                    className="inline-flex min-h-11 min-w-11 items-center text-sm text-muted-foreground hover:text-foreground"
+                  >
                     {l.label}
                   </Link>
                 </li>
@@ -81,7 +84,10 @@ export function SiteFooter() {
           <ul className="space-y-2">
             {locations.map((l) => (
               <li key={l.to}>
-                <Link to={l.to} className="text-sm text-muted-foreground hover:text-foreground">
+                <Link
+                  to={l.to}
+                  className="inline-flex min-h-11 min-w-11 items-center text-sm text-muted-foreground hover:text-foreground"
+                >
                   {l.label}
                 </Link>
               </li>
@@ -89,7 +95,7 @@ export function SiteFooter() {
           </ul>
           <Link
             to="/contact"
-            className="mt-5 inline-block rounded-full px-4 py-2 text-xs font-semibold text-white"
+            className="mt-5 inline-flex min-h-11 items-center rounded-full px-4 text-xs font-semibold text-white"
             style={{ backgroundColor: "var(--spotlight)" }}
           >
             Get Started
@@ -101,13 +107,22 @@ export function SiteFooter() {
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-5 text-xs text-muted-foreground">
           <p>© {new Date().getFullYear()} Palmer House Productions. All rights reserved.</p>
           <div className="flex gap-4">
-            <Link to="/privacy" className="hover:text-foreground">
+            <Link
+              to="/privacy"
+              className="inline-flex min-h-11 min-w-11 items-center hover:text-foreground"
+            >
               Privacy Policy
             </Link>
-            <Link to="/terms" className="hover:text-foreground">
+            <Link
+              to="/terms"
+              className="inline-flex min-h-11 min-w-11 items-center hover:text-foreground"
+            >
               Terms of Service
             </Link>
-            <a href="/sitemap.xml" className="hover:text-foreground">
+            <a
+              href="/sitemap.xml"
+              className="inline-flex min-h-11 min-w-11 items-center hover:text-foreground"
+            >
               Sitemap
             </a>
           </div>

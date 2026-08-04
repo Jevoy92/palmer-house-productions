@@ -97,7 +97,7 @@ export function SiteNav() {
         >
           <Link
             to="/"
-            className="flex min-w-0 items-center gap-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight/40"
+            className="flex min-h-11 min-w-0 items-center gap-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight/40"
           >
             <BrandFace />
             <span className="pr-2 text-xs font-bold leading-tight sm:text-sm">

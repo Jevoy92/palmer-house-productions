@@ -2,14 +2,17 @@ import { Link } from "@tanstack/react-router";
 import { motion, useReducedMotion } from "motion/react";
 import {
   ArrowRight,
+  Award,
   CalendarCheck,
   Camera,
   Check,
   CircleHelp,
   Clock3,
   FileQuestion,
+  Flame,
   Heart,
   Lightbulb,
+  Link2,
   MessageSquareText,
   Mic2,
   Send,
@@ -21,7 +24,7 @@ import {
 import { useMemo, useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import samiraHeadshot from "@/assets/pal-headshots/samira.png";
-import { studioPlans, type StudioPlanKey } from "@/lib/studio-model";
+import { studioConsultingOffer, studioPlans, type StudioPlanKey } from "@/lib/studio-model";
 import { useStudio } from "./StudioProvider";
 
 const bookingUrl = import.meta.env.VITE_STRATEGY_BOOKING_URL || "/contact";
@@ -78,6 +81,15 @@ export function MemberSuccess() {
   const reduce = useReducedMotion();
   const [helpType, setHelpType] = useState<HelpType>("member_question");
   const [helpNote, setHelpNote] = useState("");
+  const [helpCampaign, setHelpCampaign] = useState("");
+  const [helpReference, setHelpReference] = useState("");
+  const [callPlannerOpen, setCallPlannerOpen] = useState(false);
+  const [callFocus, setCallFocus] = useState("Campaign clarity");
+  const [preferredDate, setPreferredDate] = useState("");
+  const [preferredTime, setPreferredTime] = useState("");
+  const [callNote, setCallNote] = useState("");
+  const [podcastOpen, setPodcastOpen] = useState(false);
+  const [podcastTopic, setPodcastTopic] = useState("");
   const [feedbackOpen, setFeedbackOpen] = useState(false);
   const [feedback, setFeedback] = useState("");
   const [busy, setBusy] = useState(false);
@@ -117,6 +129,7 @@ export function MemberSuccess() {
         icon: Target,
         color: "var(--spotlight)",
         soft: "var(--spotlight-soft)",
+        points: 150,
       },
       {
         title: "Capture a real customer problem",
@@ -126,6 +139,7 @@ export function MemberSuccess() {
         icon: Lightbulb,
         color: "var(--reel)",
         soft: "var(--reel-soft)",
+        points: 75,
       },
       {
         title: "Choose the next useful video",
@@ -135,6 +149,7 @@ export function MemberSuccess() {
         icon: Video,
         color: "var(--evergreen)",
         soft: "var(--evergreen-soft)",
+        points: 100,
       },
       {
         title: "Build a connected campaign",
@@ -144,6 +159,7 @@ export function MemberSuccess() {
         icon: Sparkles,
         color: "var(--system)",
         soft: "var(--system-soft)",
+        points: 200,
       },
       {
         title: "Give the work a date",
@@ -153,6 +169,7 @@ export function MemberSuccess() {
         icon: CalendarCheck,
         color: "var(--spotlight)",
         soft: "var(--spotlight-soft)",
+        points: 100,
       },
       {
         title: "Get a second set of eyes",
@@ -164,6 +181,7 @@ export function MemberSuccess() {
         icon: MessageSquareText,
         color: "var(--reel)",
         soft: "var(--reel-soft)",
+        points: 125,
       },
     ],
     [
@@ -178,44 +196,108 @@ export function MemberSuccess() {
   );
   const completed = missions.filter((mission) => mission.done).length;
   const progress = Math.round((completed / missions.length) * 100);
+  const earnedPoints = missions.reduce(
+    (total, mission) => total + (mission.done ? mission.points : 0),
+    0,
+  );
+  const totalPoints = missions.reduce((total, mission) => total + mission.points, 0);
+  const nextMission = missions.find((mission) => !mission.done);
+  const achievements = [
+    {
+      label: "Clear foundation",
+      detail: "Brand DNA is ready to guide the work.",
+      done: (brand?.completion || 0) >= 80,
+      color: "var(--spotlight)",
+      soft: "var(--spotlight-soft)",
+    },
+    {
+      label: "Useful signal",
+      detail: "A real problem became a planned video.",
+      done:
+        ideas.some((idea) => Boolean(idea.business_problem)) &&
+        videoProgress.some((item) => item.status !== "not_started"),
+      color: "var(--evergreen)",
+      soft: "var(--evergreen-soft)",
+    },
+    {
+      label: "Working system",
+      detail: "A campaign is built and given a date.",
+      done: campaigns.length > 0 && assets.length > 0 && calendar.length > 0,
+      color: "var(--system)",
+      soft: "var(--system-soft)",
+    },
+  ];
 
   async function submitHelp(event: FormEvent) {
     event.preventDefault();
     if (helpNote.trim().length < 8) return;
     setBusy(true);
     try {
-      await requestService(helpType, helpNote.trim());
+      const campaign = campaigns.find((item) => item.id === helpCampaign);
+      const structuredNote = [
+        `Outcome needed: ${helpNote.trim()}`,
+        campaign ? `Campaign: ${campaign.title}` : "",
+        helpReference.trim() ? `Reference: ${helpReference.trim()}` : "",
+      ]
+        .filter(Boolean)
+        .join("\n");
+      await requestService(helpType, structuredNote, campaign?.id);
       setHelpNote("");
+      setHelpCampaign("");
+      setHelpReference("");
     } finally {
       setBusy(false);
     }
   }
 
-  async function scheduleSession() {
+  async function scheduleSession(event: FormEvent) {
+    event.preventDefault();
     if (sessionsRemaining < 1 && plan.strategySessions > 0) {
       toast.info("Your included sessions are already requested for this period.");
+      return;
+    }
+    const form = new FormData(event.currentTarget as HTMLFormElement);
+    const selectedFocus = String(form.get("callFocus") || callFocus);
+    const selectedDate = String(form.get("preferredDate") || preferredDate);
+    const selectedTime = String(form.get("preferredTime") || preferredTime);
+    const selectedContext = String(form.get("callContext") || callNote).trim();
+    if (!selectedDate || !selectedTime) {
+      toast.info("Choose a preferred date and time first.");
       return;
     }
     setBusy(true);
     try {
       await requestService(
         "strategy_call",
-        `${plan.name} plan strategy session. Please use this call for the member's most pressing campaign, production, or bigger-picture question.`,
+        [
+          `${plan.name} plan strategy session`,
+          `Focus: ${selectedFocus}`,
+          `Preferred time: ${new Date(`${selectedDate}T${selectedTime}`).toLocaleString()}`,
+          selectedContext ? `Context: ${selectedContext}` : "",
+        ]
+          .filter(Boolean)
+          .join("\n"),
       );
-      if (!demo) window.location.assign(bookingUrl);
+      setCallPlannerOpen(false);
+      setPreferredDate("");
+      setPreferredTime("");
+      setCallNote("");
+      if (!demo && bookingUrl !== "/contact") window.location.assign(bookingUrl);
     } finally {
       setBusy(false);
     }
   }
 
   async function requestPodcast() {
-    if (!podcastEligible) return;
+    if (!podcastEligible || podcastTopic.trim().length < 8) return;
     setBusy(true);
     try {
       await requestService(
         "podcast_guest",
-        "I would like to be considered for my included MINDYOURBIZNIZ guest appearance. Please follow up with topic and scheduling questions.",
+        `Proposed MINDYOURBIZNIZ topic: ${podcastTopic.trim()}\nPlease follow up with editorial-fit and scheduling questions.`,
       );
+      setPodcastTopic("");
+      setPodcastOpen(false);
     } finally {
       setBusy(false);
     }
@@ -249,7 +331,7 @@ export function MemberSuccess() {
           </p>
         </div>
         <div className="relative overflow-hidden rounded-[1.75rem] bg-system-soft p-6">
-          <div className="relative z-10 max-w-[13rem]">
+          <div className="relative z-10 max-w-[11rem] sm:max-w-[13rem]">
             <p className="studio-eyebrow text-system">Samira’s nudge</p>
             <p className="mt-3 text-sm font-bold leading-relaxed">
               The best next move is the one that removes a real bottleneck—not the one with the
@@ -259,7 +341,7 @@ export function MemberSuccess() {
           <img
             src={samiraHeadshot}
             alt="Samira, your systems guide"
-            className="absolute -bottom-7 -right-3 h-40 w-40 object-contain object-bottom"
+            className="absolute -bottom-5 -right-2 h-32 w-32 object-contain object-bottom sm:-bottom-7 sm:-right-3 sm:h-40 sm:w-40"
           />
         </div>
       </header>
@@ -274,9 +356,9 @@ export function MemberSuccess() {
               </h2>
             </div>
             <div className="text-right">
-              <p className="text-3xl font-black text-spotlight">{completed * 100}</p>
+              <p className="text-3xl font-black text-spotlight">{earnedPoints}</p>
               <p className="text-[10px] font-bold uppercase tracking-[.12em] text-muted-foreground">
-                Momentum points
+                of {totalPoints} useful-work points
               </p>
             </div>
           </div>
@@ -291,6 +373,49 @@ export function MemberSuccess() {
               className="block h-full rounded-full bg-spotlight"
             />
           </div>
+          <div className="mt-5 grid gap-2 sm:grid-cols-3" aria-label="Member achievements">
+            {achievements.map((achievement) => (
+              <div
+                key={achievement.label}
+                className="flex min-h-24 items-start gap-3 rounded-[1rem] border border-border p-3"
+                style={{ background: achievement.done ? achievement.soft : "white" }}
+              >
+                <span
+                  className="grid size-8 shrink-0 place-items-center rounded-lg"
+                  style={{
+                    color: achievement.done ? achievement.color : "var(--muted)",
+                    background: achievement.done ? "white" : "var(--mist)",
+                  }}
+                >
+                  {achievement.done ? <Award className="size-4" /> : <Flame className="size-4" />}
+                </span>
+                <span>
+                  <span className="block text-xs font-black">{achievement.label}</span>
+                  <span className="mt-1 block text-[10px] leading-relaxed text-muted-foreground">
+                    {achievement.done ? achievement.detail : "Complete the connected missions."}
+                  </span>
+                </span>
+              </div>
+            ))}
+          </div>
+          {nextMission ? (
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-[1rem] bg-spotlight-soft p-4">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[.12em] text-spotlight">
+                  Best next move · +{nextMission.points} points
+                </p>
+                <p className="mt-1 text-sm font-black">{nextMission.title}</p>
+              </div>
+              <Link to={nextMission.to} className="secondary-action bg-white">
+                Start this mission <ArrowRight className="size-4" />
+              </Link>
+            </div>
+          ) : (
+            <div className="mt-5 rounded-[1rem] bg-evergreen-soft p-4 text-sm font-black text-evergreen">
+              You completed the full useful-work loop. Keep the rhythm by building the next real
+              campaign—not by collecting empty points.
+            </div>
+          )}
           <div className="mt-7 grid gap-3 sm:grid-cols-2">
             {missions.map((mission, index) => (
               <motion.div
@@ -330,7 +455,8 @@ export function MemberSuccess() {
             to="/games"
             className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-bold underline underline-offset-4"
           >
-            Open the camera check and mission spinner <ArrowRight className="size-4" />
+            Open the Skill Lab: camera check, mission spinner, and Pal finder{" "}
+            <ArrowRight className="size-4" />
           </Link>
         </article>
 
@@ -361,14 +487,82 @@ export function MemberSuccess() {
               </div>
               <button
                 disabled={busy || sessionsRemaining < 1}
-                onClick={() => void scheduleSession()}
+                onClick={() => setCallPlannerOpen((value) => !value)}
                 className="primary-action mt-5 w-full disabled:opacity-45"
               >
                 <CalendarCheck className="size-4" />{" "}
                 {sessionsRemaining > 0
-                  ? "Request & schedule a call"
+                  ? callPlannerOpen
+                    ? "Close call planner"
+                    : "Choose a focus & time"
                   : "All included calls requested"}
               </button>
+              {callPlannerOpen ? (
+                <form onSubmit={scheduleSession} className="mt-4 rounded-[1.25rem] bg-white p-4">
+                  <label className="block text-xs font-black">
+                    What should this hour unlock?
+                    <select
+                      name="callFocus"
+                      value={callFocus}
+                      onChange={(event) => setCallFocus(event.target.value)}
+                      className="mt-2 min-h-12 w-full rounded-xl border border-border bg-white px-3 text-sm"
+                    >
+                      <option>Campaign clarity</option>
+                      <option>Bigger-picture business direction</option>
+                      <option>Filming-space setup</option>
+                      <option>Script or project review</option>
+                      <option>Content-system planning</option>
+                    </select>
+                  </label>
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                    <label className="block text-xs font-black">
+                      Preferred date
+                      <input
+                        name="preferredDate"
+                        type="date"
+                        required
+                        value={preferredDate}
+                        onChange={(event) => setPreferredDate(event.target.value)}
+                        className="mt-2 min-h-12 w-full rounded-xl border border-border bg-white px-3 text-sm"
+                      />
+                    </label>
+                    <label className="block text-xs font-black">
+                      Preferred time
+                      <input
+                        name="preferredTime"
+                        type="time"
+                        required
+                        value={preferredTime}
+                        onChange={(event) => setPreferredTime(event.target.value)}
+                        className="mt-2 min-h-12 w-full rounded-xl border border-border bg-white px-3 text-sm"
+                      />
+                    </label>
+                  </div>
+                  <label className="mt-4 block text-xs font-black">
+                    Context for Jevoy{" "}
+                    <span className="font-medium text-muted-foreground">(optional)</span>
+                    <textarea
+                      name="callContext"
+                      value={callNote}
+                      onChange={(event) => setCallNote(event.target.value)}
+                      rows={3}
+                      placeholder="What decision or roadblock should we prepare for?"
+                      className="mt-2 w-full rounded-xl border border-border bg-white p-3 text-sm"
+                    />
+                  </label>
+                  <button
+                    disabled={busy}
+                    className="primary-action mt-4 w-full disabled:opacity-40"
+                  >
+                    Reserve this session <ArrowRight className="size-4" />
+                  </button>
+                  <p className="mt-3 text-[10px] leading-relaxed text-muted-foreground">
+                    {bookingUrl === "/contact"
+                      ? "Palmer House will confirm the requested time. Connect the live scheduling URL to turn this into instant calendar booking."
+                      : "After this request is saved, the live calendar opens so you can confirm the exact slot."}
+                  </p>
+                </form>
+              ) : null}
               <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
                 Use it for a pressing campaign, a filming-space setup, a bigger-picture decision, or
                 whatever is blocking useful work.
@@ -388,13 +582,15 @@ export function MemberSuccess() {
           <div className="mt-5 border-t border-border pt-5">
             <p className="text-sm font-black">Need one focused session instead?</p>
             <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-              Book a 75-minute Clarity Intensive. It includes 30 days of Studio access.
+              Book a {studioConsultingOffer.duration}-minute {studioConsultingOffer.name}. It
+              includes {studioConsultingOffer.includedDays} days of{" "}
+              {studioConsultingOffer.includedPlan} access.
             </p>
             <a
               href={bookingUrl}
               className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-bold underline underline-offset-4"
             >
-              Book the $450 intensive <ArrowRight className="size-4" />
+              Book the ${studioConsultingOffer.price} intensive <ArrowRight className="size-4" />
             </a>
           </div>
         </article>
@@ -427,6 +623,23 @@ export function MemberSuccess() {
                 </button>
               ))}
             </div>
+            {helpType !== "member_question" && campaigns.length ? (
+              <label className="mt-4 block">
+                <span className="mb-2 block text-xs font-black">Attach a Studio campaign</span>
+                <select
+                  value={helpCampaign}
+                  onChange={(event) => setHelpCampaign(event.target.value)}
+                  className="min-h-12 w-full rounded-[1rem] border border-border bg-white px-4 text-sm outline-none transition focus:border-system"
+                >
+                  <option value="">No campaign selected yet</option>
+                  {campaigns.map((campaign) => (
+                    <option key={campaign.id} value={campaign.id}>
+                      {campaign.title}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
             <label className="mt-4 block">
               <span className="mb-2 block text-xs font-black">What should we know?</span>
               <textarea
@@ -435,6 +648,19 @@ export function MemberSuccess() {
                 rows={5}
                 placeholder="Share the decision, link, campaign name, or place where you feel stuck…"
                 className="w-full rounded-[1.2rem] border border-border bg-white p-4 outline-none transition focus:border-system"
+              />
+            </label>
+            <label className="mt-4 block">
+              <span className="mb-2 flex items-center gap-2 text-xs font-black">
+                <Link2 className="size-3.5" /> Reference link{" "}
+                <span className="font-medium text-muted-foreground">(optional)</span>
+              </span>
+              <input
+                type="url"
+                value={helpReference}
+                onChange={(event) => setHelpReference(event.target.value)}
+                placeholder="https://…"
+                className="min-h-12 w-full rounded-[1rem] border border-border bg-white px-4 text-sm outline-none transition focus:border-system"
               />
             </label>
             <button
@@ -489,14 +715,38 @@ export function MemberSuccess() {
             </p>
             <button
               disabled={busy || !podcastEligible}
-              onClick={() => void requestPodcast()}
+              onClick={() => setPodcastOpen((value) => !value)}
               className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 text-sm font-black text-white disabled:opacity-45"
             >
               <Mic2 className="size-4" />{" "}
               {podcastEligible
-                ? "Request my guest spot"
+                ? podcastOpen
+                  ? "Close topic request"
+                  : "Request my guest spot"
                 : `Eligible again ${nextPodcastDate?.toLocaleDateString()}`}
             </button>
+            {podcastOpen ? (
+              <div className="mt-4 rounded-xl bg-white p-4">
+                <label className="text-xs font-black">
+                  What useful story should we explore?
+                  <textarea
+                    value={podcastTopic}
+                    onChange={(event) => setPodcastTopic(event.target.value)}
+                    rows={4}
+                    placeholder="The decision, lesson, or business story you can help another owner understand…"
+                    className="mt-2 w-full rounded-xl border border-border p-3 text-sm"
+                  />
+                </label>
+                <button
+                  type="button"
+                  disabled={busy || podcastTopic.trim().length < 8}
+                  onClick={() => void requestPodcast()}
+                  className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-4 text-xs font-black text-white disabled:opacity-40"
+                >
+                  Send topic for editorial review <Send className="size-3.5" />
+                </button>
+              </div>
+            ) : null}
           </article>
 
           <article className="studio-card">
@@ -505,24 +755,31 @@ export function MemberSuccess() {
                 <Star key={index} className="size-4 fill-current" />
               ))}
             </div>
-            <h2 className="mt-4 text-2xl font-black">Loving the Studio?</h2>
+            <h2 className="mt-4 text-2xl font-black">
+              {completed >= 4
+                ? "Has the Studio earned a review?"
+                : "Help us make this more useful."}
+            </h2>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              A public review helps the right business owner find us. If something is off, tell us
-              privately so we can fix it.
+              {completed >= 4
+                ? "Share an honest public review, or tell us privately what would make the experience better. Both paths stay available to every member."
+                : "You should feel useful value before we ask for a public review. For now, tell us privately what would improve the next step."}
             </p>
             <div className="mt-5 grid gap-2 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
-              <a
-                href={publicReviewUrl}
-                target={publicReviewUrl.startsWith("http") ? "_blank" : undefined}
-                rel="noreferrer"
-                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-reel px-4 text-sm font-black text-white"
-              >
-                <Heart className="size-4" /> Leave a review
-              </a>
+              {completed >= 4 ? (
+                <a
+                  href={publicReviewUrl}
+                  target={publicReviewUrl.startsWith("http") ? "_blank" : undefined}
+                  rel="noreferrer"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-reel px-4 text-sm font-black text-white"
+                >
+                  <Heart className="size-4" /> Leave an honest review
+                </a>
+              ) : null}
               <button
                 type="button"
                 onClick={() => setFeedbackOpen((value) => !value)}
-                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-border px-4 text-sm font-black"
+                className={`inline-flex min-h-11 items-center justify-center rounded-xl border border-border px-4 text-sm font-black ${completed < 4 ? "w-full" : ""}`}
               >
                 Help us improve
               </button>

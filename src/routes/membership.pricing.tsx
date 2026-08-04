@@ -19,7 +19,7 @@ const rows = [
   ["Scripts, platform posts + production plans", true, true, true],
   ["Content calendar + private library", true, true, true],
   ["Palmer House help desk", true, true, true],
-  ["Private Palmer House strategy time", false, "1 hour / month", "4 hours / month"],
+  ["Private Palmer House strategy time", false, "1 hour / month", "1 hour / week"],
   ["Project review priority", false, "Guided", "Priority"],
   ["Preferred production pricing", false, true, true],
   ["MINDYOURBIZNIZ guest request", "Every 6 months", "Every 6 months", "Every 6 months"],
@@ -28,7 +28,7 @@ const rows = [
 const faqs = [
   {
     q: "Is Palmer House time really included?",
-    a: "Yes. Guided includes one private 60-minute session each billing month. Partner includes four. Use the member-success page to request and schedule the time without starting a new intake.",
+    a: "Yes. Guided includes one private 60-minute session each billing month. Partner keeps one 60-minute working session available each week. Use Member Success to choose the focus and request a time without starting a new intake.",
   },
   {
     q: "What happens to unused sessions?",
@@ -139,7 +139,9 @@ function PricingPage() {
                 <div className="mt-4 rounded-2xl p-4" style={{ background: colors[0] }}>
                   <p className="text-sm font-black" style={{ color: colors[1] }}>
                     {plan.strategySessions
-                      ? `${plan.strategySessions} private ${plan.strategySessions === 1 ? "hour" : "hours"} with Palmer House / month`
+                      ? plan.name === "Partner"
+                        ? "1 private hour with Palmer House / week"
+                        : `${plan.strategySessions} private ${plan.strategySessions === 1 ? "hour" : "hours"} with Palmer House / month`
                       : "Self-guided, with the help desk when needed"}
                   </p>
                 </div>
@@ -151,7 +153,7 @@ function PricingPage() {
                     </li>
                   ))}
                 </ul>
-                <Link to="/studio" className="primary-action mt-8 w-full">
+                <Link to="/studio/billing" className="primary-action mt-8 w-full">
                   Choose {plan.name} <ArrowRight className="size-4" />
                 </Link>
               </article>

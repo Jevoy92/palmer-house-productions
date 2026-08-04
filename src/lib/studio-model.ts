@@ -65,16 +65,16 @@ export const studioPlans = {
   },
   partner: {
     name: "Partner",
-    price: 999,
-    annualPrice: 9990,
+    price: 1199,
+    annualPrice: 11990,
     campaigns: 12,
     strategySessions: 4,
     strategyMinutes: 240,
-    audience: "Work through campaigns, bigger decisions, and production questions every week.",
+    audience: "Keep a standing weekly room for campaigns, decisions, and production questions.",
     features: [
       "12 complete campaigns",
       "Everything in Guided",
-      "4 private strategy hours / month",
+      "1 private strategy session / week",
       "Priority project feedback",
       "Preferred production pricing",
     ],
@@ -83,7 +83,7 @@ export const studioPlans = {
 
 export const studioConsultingOffer = {
   name: "Clarity Intensive",
-  price: 450,
+  price: 500,
   duration: 75,
   includedPlan: "Studio",
   includedDays: 30,

@@ -51,10 +51,12 @@ import { Route as ServicesDiyDownloadsRouteImport } from './routes/services.diy-
 import { Route as ServicesPostProductionRouteImport } from './routes/services.post-production'
 import { Route as ServicesVideoProductionRouteImport } from './routes/services.video-production'
 import { Route as StudioIndexRouteImport } from './routes/studio.index'
+import { Route as StudioApprovalsRouteImport } from './routes/studio.approvals'
 import { Route as StudioBillingRouteImport } from './routes/studio.billing'
 import { Route as StudioBrandRouteImport } from './routes/studio.brand'
 import { Route as StudioCalendarRouteImport } from './routes/studio.calendar'
 import { Route as StudioDashboardRouteImport } from './routes/studio.dashboard'
+import { Route as StudioIdeasRouteImport } from './routes/studio.ideas'
 import { Route as StudioLibraryRouteImport } from './routes/studio.library'
 import { Route as StudioOnboardingRouteImport } from './routes/studio.onboarding'
 import { Route as StudioSettingsRouteImport } from './routes/studio.settings'
@@ -271,6 +273,11 @@ const StudioIndexRoute = StudioIndexRouteImport.update({
   path: '/',
   getParentRoute: () => StudioRoute,
 } as any)
+const StudioApprovalsRoute = StudioApprovalsRouteImport.update({
+  id: '/approvals',
+  path: '/approvals',
+  getParentRoute: () => StudioRoute,
+} as any)
 const StudioBillingRoute = StudioBillingRouteImport.update({
   id: '/billing',
   path: '/billing',
@@ -289,6 +296,11 @@ const StudioCalendarRoute = StudioCalendarRouteImport.update({
 const StudioDashboardRoute = StudioDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => StudioRoute,
+} as any)
+const StudioIdeasRoute = StudioIdeasRouteImport.update({
+  id: '/ideas',
+  path: '/ideas',
   getParentRoute: () => StudioRoute,
 } as any)
 const StudioLibraryRoute = StudioLibraryRouteImport.update({
@@ -359,10 +371,12 @@ export interface FileRoutesByFullPath {
   '/services/diy-downloads': typeof ServicesDiyDownloadsRoute
   '/services/post-production': typeof ServicesPostProductionRoute
   '/services/video-production': typeof ServicesVideoProductionRoute
+  '/studio/approvals': typeof StudioApprovalsRoute
   '/studio/billing': typeof StudioBillingRoute
   '/studio/brand': typeof StudioBrandRoute
   '/studio/calendar': typeof StudioCalendarRoute
   '/studio/dashboard': typeof StudioDashboardRoute
+  '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
   '/studio/onboarding': typeof StudioOnboardingRoute
   '/studio/settings': typeof StudioSettingsRoute
@@ -411,10 +425,12 @@ export interface FileRoutesByTo {
   '/services/diy-downloads': typeof ServicesDiyDownloadsRoute
   '/services/post-production': typeof ServicesPostProductionRoute
   '/services/video-production': typeof ServicesVideoProductionRoute
+  '/studio/approvals': typeof StudioApprovalsRoute
   '/studio/billing': typeof StudioBillingRoute
   '/studio/brand': typeof StudioBrandRoute
   '/studio/calendar': typeof StudioCalendarRoute
   '/studio/dashboard': typeof StudioDashboardRoute
+  '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
   '/studio/onboarding': typeof StudioOnboardingRoute
   '/studio/settings': typeof StudioSettingsRoute
@@ -465,10 +481,12 @@ export interface FileRoutesById {
   '/services/diy-downloads': typeof ServicesDiyDownloadsRoute
   '/services/post-production': typeof ServicesPostProductionRoute
   '/services/video-production': typeof ServicesVideoProductionRoute
+  '/studio/approvals': typeof StudioApprovalsRoute
   '/studio/billing': typeof StudioBillingRoute
   '/studio/brand': typeof StudioBrandRoute
   '/studio/calendar': typeof StudioCalendarRoute
   '/studio/dashboard': typeof StudioDashboardRoute
+  '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
   '/studio/onboarding': typeof StudioOnboardingRoute
   '/studio/settings': typeof StudioSettingsRoute
@@ -520,10 +538,12 @@ export interface FileRouteTypes {
     | '/services/diy-downloads'
     | '/services/post-production'
     | '/services/video-production'
+    | '/studio/approvals'
     | '/studio/billing'
     | '/studio/brand'
     | '/studio/calendar'
     | '/studio/dashboard'
+    | '/studio/ideas'
     | '/studio/library'
     | '/studio/onboarding'
     | '/studio/settings'
@@ -572,10 +592,12 @@ export interface FileRouteTypes {
     | '/services/diy-downloads'
     | '/services/post-production'
     | '/services/video-production'
+    | '/studio/approvals'
     | '/studio/billing'
     | '/studio/brand'
     | '/studio/calendar'
     | '/studio/dashboard'
+    | '/studio/ideas'
     | '/studio/library'
     | '/studio/onboarding'
     | '/studio/settings'
@@ -625,10 +647,12 @@ export interface FileRouteTypes {
     | '/services/diy-downloads'
     | '/services/post-production'
     | '/services/video-production'
+    | '/studio/approvals'
     | '/studio/billing'
     | '/studio/brand'
     | '/studio/calendar'
     | '/studio/dashboard'
+    | '/studio/ideas'
     | '/studio/library'
     | '/studio/onboarding'
     | '/studio/settings'
@@ -976,6 +1000,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioIndexRouteImport
       parentRoute: typeof StudioRoute
     }
+    '/studio/approvals': {
+      id: '/studio/approvals'
+      path: '/approvals'
+      fullPath: '/studio/approvals'
+      preLoaderRoute: typeof StudioApprovalsRouteImport
+      parentRoute: typeof StudioRoute
+    }
     '/studio/billing': {
       id: '/studio/billing'
       path: '/billing'
@@ -1002,6 +1033,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/studio/dashboard'
       preLoaderRoute: typeof StudioDashboardRouteImport
+      parentRoute: typeof StudioRoute
+    }
+    '/studio/ideas': {
+      id: '/studio/ideas'
+      path: '/ideas'
+      fullPath: '/studio/ideas'
+      preLoaderRoute: typeof StudioIdeasRouteImport
       parentRoute: typeof StudioRoute
     }
     '/studio/library': {
@@ -1057,10 +1095,12 @@ const MembershipRouteWithChildren = MembershipRoute._addFileChildren(
 )
 
 interface StudioRouteChildren {
+  StudioApprovalsRoute: typeof StudioApprovalsRoute
   StudioBillingRoute: typeof StudioBillingRoute
   StudioBrandRoute: typeof StudioBrandRoute
   StudioCalendarRoute: typeof StudioCalendarRoute
   StudioDashboardRoute: typeof StudioDashboardRoute
+  StudioIdeasRoute: typeof StudioIdeasRoute
   StudioLibraryRoute: typeof StudioLibraryRoute
   StudioOnboardingRoute: typeof StudioOnboardingRoute
   StudioSettingsRoute: typeof StudioSettingsRoute
@@ -1070,10 +1110,12 @@ interface StudioRouteChildren {
 }
 
 const StudioRouteChildren: StudioRouteChildren = {
+  StudioApprovalsRoute: StudioApprovalsRoute,
   StudioBillingRoute: StudioBillingRoute,
   StudioBrandRoute: StudioBrandRoute,
   StudioCalendarRoute: StudioCalendarRoute,
   StudioDashboardRoute: StudioDashboardRoute,
+  StudioIdeasRoute: StudioIdeasRoute,
   StudioLibraryRoute: StudioLibraryRoute,
   StudioOnboardingRoute: StudioOnboardingRoute,
   StudioSettingsRoute: StudioSettingsRoute,

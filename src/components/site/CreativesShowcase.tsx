@@ -31,7 +31,7 @@ export function CreativesShowcase() {
         </p>
       </div>
 
-      <div className="mt-14 [mask-image:linear-gradient(to_right,transparent,black_7%,black_93%,transparent)]">
+      <div className="mt-14 overflow-hidden">
         <Marquee duration="52s">
           {work.concat(work).map((item, index) => (
             <figure
@@ -48,7 +48,7 @@ export function CreativesShowcase() {
                 preload="metadata"
                 className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.035]"
               />
-              <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-5 pb-5 pt-16 text-sm font-medium text-white">
+              <figcaption className="absolute inset-x-0 bottom-0 bg-black/75 px-5 py-4 text-sm font-medium text-white">
                 {item.label}
               </figcaption>
             </figure>

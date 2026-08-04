@@ -3,9 +3,10 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   Archive,
   ArrowRight,
-  BookOpen,
+  Bell,
   CalendarDays,
   Check,
+  CheckSquare2,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
@@ -13,23 +14,27 @@ import {
   Clipboard,
   CreditCard,
   Download,
+  Eye,
   ExternalLink,
   FileStack,
   FolderOpen,
   Gauge,
+  Heart,
   Home,
   ImageUp,
   LayoutGrid,
+  Lightbulb,
+  ListTodo,
   LoaderCircle,
   LogOut,
   Menu,
-  Rows3,
-  PanelLeftClose,
   Play,
   Plus,
   Search,
   Settings,
+  ShieldCheck,
   Sparkles,
+  Target,
   Users,
   Video,
   WandSparkles,
@@ -37,7 +42,6 @@ import {
 } from "lucide-react";
 import { useMemo, useState, type DragEvent, type FormEvent, type ReactNode } from "react";
 import { toast } from "sonner";
-import guidedLanes from "@/assets/studio-visuals/guided-lanes.png";
 import { createStudioBillingPortal, createStudioSubscriptionCheckout } from "@/lib/studio-server";
 import {
   anchorFormats,
@@ -49,6 +53,7 @@ import {
 import type { Tables } from "@/lib/supabase/database.types";
 import { useStudio } from "./StudioProvider";
 import { ContentEngine } from "./ContentEngine";
+import { ContentOrbit, LanePulse, StudioMark } from "./StudioVisuals";
 
 type Campaign = Tables<"campaigns">;
 type Asset = Tables<"campaign_assets">;
@@ -75,15 +80,34 @@ const lanes = {
   },
 };
 
-const nav = [
-  { view: "engine", label: "Content Engine", to: "/studio", icon: Sparkles },
-  { view: "home", label: "Overview", to: "/studio/dashboard", icon: Home },
-  { view: "campaigns", label: "Campaigns", to: "/studio/campaigns", icon: WandSparkles },
-  { view: "brand", label: "Brand Studio", to: "/studio/brand", icon: Gauge },
-  { view: "library", label: "Library", to: "/studio/library", icon: FolderOpen },
-  { view: "calendar", label: "Calendar", to: "/studio/calendar", icon: CalendarDays },
-  { view: "settings", label: "Settings", to: "/studio/settings", icon: Settings },
+const navSections = [
+  {
+    label: "Make",
+    items: [
+      { view: "home", label: "Dashboard", to: "/studio/dashboard", icon: Home },
+      { view: "engine", label: "Create", to: "/studio", icon: Plus },
+      { view: "campaigns", label: "Campaigns", to: "/studio/campaigns", icon: WandSparkles },
+      { view: "ideas", label: "Content ideas", to: "/studio/ideas", icon: Lightbulb },
+    ],
+  },
+  {
+    label: "Organize",
+    items: [
+      { view: "library", label: "Library", to: "/studio/library", icon: FolderOpen },
+      { view: "brand", label: "Brand DNA", to: "/studio/brand", icon: Gauge },
+      { view: "approvals", label: "Approvals", to: "/studio/approvals", icon: CheckSquare2 },
+    ],
+  },
+  {
+    label: "Plan",
+    items: [
+      { view: "calendar", label: "Calendar", to: "/studio/calendar", icon: CalendarDays },
+      { view: "settings", label: "Settings", to: "/studio/settings", icon: Settings },
+    ],
+  },
 ] as const;
+
+const nav = navSections.flatMap((section) => section.items);
 
 export function StudioPage({ view, campaignId }: { view: StudioView; campaignId?: string }) {
   return (
@@ -147,142 +171,151 @@ function AuthExperience() {
     }
   }
   return (
-    <main className="min-h-screen bg-white px-4 py-5 sm:px-6">
-      <div className="mx-auto grid min-h-[calc(100vh-2.5rem)] max-w-[96rem] overflow-hidden rounded-[2rem] bg-white shadow-[0_24px_90px_-50px_rgba(0,0,0,.45)] lg:grid-cols-[1.08fr_.92fr]">
-        <section className="relative hidden overflow-hidden bg-ink p-12 text-white lg:flex lg:flex-col lg:justify-between">
-          <Link to="/" className="relative z-10 flex items-center gap-3 font-bold">
-            <span className="grid size-10 place-items-center rounded-full bg-white text-ink">
-              PH
-            </span>{" "}
-            Palmer House Studio
-          </Link>
-          <div className="relative z-10 max-w-2xl">
-            <p className="font-mono text-[10px] uppercase tracking-[.2em] text-white/50">
-              From one useful idea
-            </p>
-            <h1 className="mt-5 text-6xl font-extrabold leading-[.92] tracking-[-.065em] xl:text-7xl">
-              A campaign your whole business can use.
-            </h1>
-            <div className="mt-10 grid grid-cols-4 gap-2" aria-label="The Four Pals campaign lanes">
-              {Object.values(lanes).map((lane, index) => (
-                <motion.div
-                  key={lane.label}
-                  initial={{ scaleY: 0 }}
-                  animate={{ scaleY: 1 }}
-                  transition={{ delay: 0.15 + index * 0.08, duration: 0.55 }}
-                  className="origin-bottom rounded-2xl p-4"
-                  style={{ background: lane.color }}
-                >
-                  <p className="text-sm font-bold">{lane.label}</p>
-                  <p className="mt-1 text-[10px] text-white/60">{lane.role}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-          <p className="relative z-10 max-w-xl text-sm leading-relaxed text-white/55">
-            Strategy, scripts, production planning, publishing, and real Palmer House production
-            support—in one connected workspace.
+    <main className="min-h-screen bg-white px-4 py-5 sm:px-7 lg:px-10 lg:py-7">
+      <header className="mx-auto flex max-w-[96rem] items-center justify-between">
+        <Link to="/" aria-label="Palmer House home">
+          <StudioMark />
+        </Link>
+        <Link
+          to="/"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-bold hover:bg-spotlight-soft"
+        >
+          <ChevronLeft className="size-4" /> Back to the website
+        </Link>
+      </header>
+
+      <div className="mx-auto grid max-w-[90rem] items-center gap-12 py-12 lg:min-h-[calc(100vh-10rem)] lg:grid-cols-[.78fr_1.22fr] lg:py-8">
+        <section className="mx-auto w-full max-w-[31rem] lg:mx-0">
+          <p className="studio-eyebrow text-spotlight">Your content operating system</p>
+          <h1 className="mt-5 text-[clamp(2.75rem,5vw,4.4rem)] font-black leading-[.94] tracking-[-.065em]">
+            {mode === "signin"
+              ? "Welcome back. Let’s keep building."
+              : "One useful idea can become a system."}
+          </h1>
+          <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground">
+            {mode === "signin"
+              ? "Sign in to keep your brand memory, campaigns, calendar, and team moving together."
+              : "Create the private workspace where your ideas become campaigns your whole business can use."}
           </p>
-          <img
-            src={guidedLanes}
-            alt="A business owner choosing among four guided Palmer House solution paths"
-            className="absolute bottom-0 right-0 w-[58%] translate-x-[8%] translate-y-[8%] rounded-tl-[2rem]"
-          />
-        </section>
-        <section className="flex items-center justify-center p-6 sm:p-10 lg:p-16">
-          <div className="w-full max-w-md">
-            <Link
-              to="/"
-              className="mb-12 inline-flex items-center gap-2 text-sm font-semibold lg:hidden"
+
+          <form onSubmit={submit} className="mt-9 space-y-5">
+            {mode === "signup" ? (
+              <Field name="name" label="Your name" placeholder="Jevoy Palmer" required />
+            ) : null}
+            <Field
+              name="email"
+              label="Email address"
+              type="email"
+              placeholder="you@company.com"
+              autoComplete="email"
+              required
+            />
+            <Field
+              name="password"
+              label="Password"
+              type="password"
+              placeholder="At least 8 characters"
+              autoComplete={mode === "signin" ? "current-password" : "new-password"}
+              minLength={8}
+              required
+            />
+            <button
+              disabled={busy}
+              className="flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 font-bold text-white transition hover:bg-ink disabled:opacity-50"
             >
-              ← Palmer House
-            </Link>
-            <p className="font-mono text-[10px] uppercase tracking-[.2em] text-system">
-              Your content operating system
+              {busy ? <LoaderCircle className="size-4 animate-spin" /> : null}
+              {mode === "signin" ? "Sign in" : "Create my Studio"}
+              <ArrowRight className="size-4" />
+            </button>
+          </form>
+
+          {notice ? (
+            <p
+              role="status"
+              className="mt-4 rounded-xl border border-system bg-system-soft p-4 text-sm text-system"
+            >
+              {notice}
             </p>
-            <h2 className="mt-4 text-4xl font-extrabold tracking-[-.05em]">
-              {mode === "signin" ? "Welcome back." : "Build your first campaign."}
-            </h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              {mode === "signin"
-                ? "Sign in to pick up where your team left off."
-                : "Start with a seven-day guided sprint. No pretend dashboard, no empty blank page."}
-            </p>
-            <form onSubmit={submit} className="mt-8 space-y-4">
-              {mode === "signup" && (
-                <Field name="name" label="Your name" placeholder="Jevoy Palmer" required />
-              )}
-              <Field
-                name="email"
-                label="Email"
-                type="email"
-                placeholder="you@company.com"
-                required
-              />
-              <Field
-                name="password"
-                label="Password"
-                type="password"
-                placeholder="At least 8 characters"
-                minLength={8}
-                required
-              />
-              <button
-                disabled={busy}
-                className="flex min-h-13 w-full items-center justify-center gap-2 rounded-2xl bg-ink px-5 font-semibold text-white disabled:opacity-50"
-              >
-                {busy && <LoaderCircle className="size-4 animate-spin" />}
-                {mode === "signin" ? "Sign in" : "Start the free sprint"}
-                <ArrowRight className="size-4" />
-              </button>
-            </form>
-            {notice && (
-              <p role="status" className="mt-4 rounded-2xl bg-system-soft p-4 text-sm text-system">
-                {notice}
-              </p>
-            )}
+          ) : null}
+
+          <div className="mt-5 flex flex-wrap items-center justify-between gap-3 text-sm">
             <button
               onClick={() => {
                 setMode(mode === "signin" ? "signup" : "signin");
                 setNotice("");
               }}
-              className="mt-5 text-sm font-semibold underline underline-offset-4"
+              className="font-bold text-spotlight underline decoration-spotlight/30 underline-offset-4"
             >
               {mode === "signin"
                 ? "New here? Create an account"
                 : "Already have an account? Sign in"}
             </button>
-            <div className="my-7 flex items-center gap-3 text-[10px] uppercase tracking-[.16em] text-muted-foreground">
-              <span className="h-px flex-1 bg-border" />
-              or
-              <span className="h-px flex-1 bg-border" />
-            </div>
-            <form onSubmit={magic} className="flex gap-2">
+            <button
+              onClick={enterDemo}
+              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 font-bold hover:border-spotlight"
+            >
+              Explore the working demo <Play className="size-3.5" />
+            </button>
+          </div>
+
+          <details className="mt-6 rounded-xl border border-border p-4">
+            <summary className="cursor-pointer text-sm font-bold">
+              Prefer a password-free sign in?
+            </summary>
+            <form onSubmit={magic} className="mt-4 flex flex-col gap-2 sm:flex-row">
               <input
                 name="email"
                 type="email"
                 required
                 aria-label="Email for magic link"
-                placeholder="Email for a magic link"
-                className="min-h-12 min-w-0 flex-1 rounded-2xl border border-border px-4 text-sm"
+                placeholder="Email for a secure sign-in link"
+                className="min-h-12 min-w-0 flex-1 rounded-xl border border-border px-4 text-sm"
               />
-              <button className="rounded-2xl border border-border px-4 text-sm font-semibold">
-                Send link
+              <button className="min-h-12 rounded-xl border border-ink px-4 text-sm font-bold">
+                Email me a link
               </button>
             </form>
-            <button
-              onClick={enterDemo}
-              className="mt-3 flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl bg-secondary px-5 text-sm font-semibold"
-            >
-              Explore the complete demo <Play className="size-4" />
-            </button>
-            <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
-              The demo stores nothing and charges nothing. Live accounts keep every workspace
-              private with row-level access controls.
-            </p>
+          </details>
+
+          <div className="mt-7 flex items-start gap-3 border-t border-dashed border-border pt-6">
+            <ShieldCheck className="mt-0.5 size-5 text-evergreen" />
+            <div>
+              <p className="text-sm font-bold">Private by default.</p>
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+                Live workspaces use authenticated, row-level access. The demo stores nothing and
+                charges nothing.
+              </p>
+            </div>
           </div>
         </section>
+
+        <section className="relative hidden min-h-[40rem] items-center justify-center lg:flex">
+          <ContentOrbit />
+        </section>
       </div>
+
+      <section className="mx-auto grid max-w-[90rem] gap-5 rounded-[1.25rem] border border-border p-5 md:grid-cols-[1.4fr_repeat(4,1fr)] md:items-center">
+        <p className="text-xl font-extrabold leading-tight">
+          Your brand, campaigns, calendar, and content—in one place.
+        </p>
+        {[
+          [Lightbulb, "Ideas", "Capture what matters"],
+          [Play, "Content", "Create once, reshape well"],
+          [CalendarDays, "Campaigns", "Keep the work moving"],
+          [Users, "Pals", "Get useful guidance"],
+        ].map(([Icon, label, note]) => (
+          <div
+            key={String(label)}
+            className="flex items-center gap-3 md:border-l md:border-border md:pl-5"
+          >
+            <Icon className="size-5 text-system" />
+            <div>
+              <p className="text-xs font-extrabold uppercase tracking-[.06em]">{String(label)}</p>
+              <p className="mt-1 text-[11px] text-muted-foreground">{String(note)}</p>
+            </div>
+          </div>
+        ))}
+      </section>
     </main>
   );
 }
@@ -290,116 +323,262 @@ function AuthExperience() {
 function Onboarding() {
   const { createWorkspace, busy, user, signOut } = useStudio();
   const [name, setName] = useState((user?.user_metadata?.full_name as string) || "");
+  const [step, setStep] = useState(0);
+  const [problem, setProblem] = useState("I need a consistent content rhythm");
+  const problemOptions = [
+    { value: "I need a consistent content rhythm", lane: "Reel", color: "var(--reel)" },
+    {
+      value: "People do not understand why we are different",
+      lane: "Spotlight",
+      color: "var(--spotlight)",
+    },
+    { value: "I keep explaining the same things", lane: "Evergreen", color: "var(--evergreen)" },
+    { value: "Knowledge is trapped in our team", lane: "System", color: "var(--system)" },
+  ];
+  const match = problemOptions.find((item) => item.value === problem) || problemOptions[0];
   return (
-    <main className="grid min-h-screen place-items-center bg-white px-4">
-      <div className="w-full max-w-xl rounded-[2rem] bg-white p-7 shadow-soft sm:p-10">
-        <span className="grid size-12 place-items-center rounded-2xl bg-system text-white">
-          <Sparkles />
-        </span>
-        <p className="mt-8 font-mono text-[10px] uppercase tracking-[.18em] text-system">
-          Step 1 of 3
-        </p>
-        <h1 className="mt-3 text-4xl font-extrabold">Name your workspace.</h1>
-        <p className="mt-3 text-muted-foreground">
-          This is the private home for your brand, campaigns, calendar, team, and billing.
-        </p>
-        <form
-          onSubmit={async (event) => {
-            event.preventDefault();
-            try {
-              await createWorkspace(name || "My Studio");
-            } catch (error) {
-              toast.error(error instanceof Error ? error.message : "Could not create workspace.");
-            }
-          }}
-          className="mt-8"
+    <main className="min-h-screen bg-white p-4 sm:p-8">
+      <header className="mx-auto flex max-w-6xl items-center justify-between">
+        <StudioMark />
+        <button
+          onClick={() => void signOut()}
+          className="min-h-11 rounded-full px-4 text-sm font-bold hover:bg-spotlight-soft"
         >
-          <Field
-            label="Workspace name"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            required
-          />
-          <button
-            disabled={busy}
-            className="mt-5 flex min-h-13 w-full items-center justify-center gap-2 rounded-2xl bg-ink font-semibold text-white"
-          >
-            {busy && <LoaderCircle className="size-4 animate-spin" />}Create my Studio{" "}
-            <ArrowRight className="size-4" />
-          </button>
-        </form>
-        <button onClick={() => void signOut()} className="mt-5 text-sm text-muted-foreground">
           Sign out
         </button>
+      </header>
+      <div className="mx-auto grid min-h-[calc(100vh-8rem)] max-w-6xl items-center gap-10 py-10 lg:grid-cols-[.9fr_1.1fr]">
+        <section>
+          <div className="flex items-center gap-2" aria-label={`Step ${step + 1} of 3`}>
+            {[0, 1, 2].map((item) => (
+              <span
+                key={item}
+                className="h-1.5 flex-1 rounded-full"
+                style={{ background: item <= step ? match.color : "var(--border)" }}
+              />
+            ))}
+          </div>
+          <p className="studio-eyebrow mt-8 text-system">Step {step + 1} of 3</p>
+          <h1 className="mt-4 text-5xl font-black leading-[.95] tracking-[-.06em]">
+            {step === 0
+              ? "Give the work a home."
+              : step === 1
+                ? "What needs to change first?"
+                : `Start with ${match.lane}.`}
+          </h1>
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
+            {step === 0
+              ? "Your workspace keeps the brand memory, ideas, campaigns, calendar, and team in one private place."
+              : step === 1
+                ? "Choose the business problem—not a content format. We will organize the tools around the outcome."
+                : `Your ${match.lane} Pal will guide the first campaign. You can use every lane whenever the work calls for it.`}
+          </p>
+
+          <div className="mt-8">
+            {step === 0 ? (
+              <Field
+                label="Workspace name"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                placeholder="Your company or team"
+                required
+              />
+            ) : null}
+            {step === 1 ? (
+              <ChoiceGrid
+                options={problemOptions.map((item) => ({ value: item.value, label: item.value }))}
+                value={problem}
+                onChange={setProblem}
+              />
+            ) : null}
+            {step === 2 ? (
+              <div className="rounded-[1.25rem] border border-border p-6">
+                <div className="flex items-center gap-4">
+                  <span
+                    className="grid size-12 place-items-center rounded-full text-white"
+                    style={{ background: match.color }}
+                  >
+                    <Target className="size-5" />
+                  </span>
+                  <div>
+                    <p className="font-extrabold">Your first workspace path</p>
+                    <p className="mt-1 text-sm text-muted-foreground">{problem}</p>
+                  </div>
+                </div>
+                <ul className="mt-6 grid gap-3 text-sm sm:grid-cols-2">
+                  {[
+                    "Brand memory setup",
+                    "Three useful directions",
+                    "Platform-ready drafts",
+                    "Editable content calendar",
+                  ].map((item) => (
+                    <li key={item} className="flex items-center gap-2">
+                      <Check className="size-4 text-evergreen" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+          </div>
+
+          <div className="mt-7 flex gap-3">
+            {step > 0 ? (
+              <button
+                onClick={() => setStep((current) => current - 1)}
+                className="min-h-12 rounded-xl border border-border px-5 font-bold"
+              >
+                Back
+              </button>
+            ) : null}
+            <button
+              disabled={busy || (step === 0 && !name.trim())}
+              onClick={async () => {
+                if (step < 2) {
+                  setStep((current) => current + 1);
+                  return;
+                }
+                try {
+                  window.sessionStorage.setItem("ph.studio.first-problem", problem);
+                  await createWorkspace(name || "My Studio");
+                } catch (error) {
+                  toast.error(
+                    error instanceof Error ? error.message : "Could not create workspace.",
+                  );
+                }
+              }}
+              className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-ink px-5 font-bold text-white disabled:opacity-40"
+            >
+              {busy ? <LoaderCircle className="size-4 animate-spin" /> : null}
+              {step === 2 ? "Open my Studio" : "Continue"}
+              <ArrowRight className="size-4" />
+            </button>
+          </div>
+        </section>
+        <section className="hidden lg:block">
+          <ContentOrbit compact />
+        </section>
       </div>
     </main>
   );
 }
 
 function StudioShell({ view, children }: { view: StudioView; children: ReactNode }) {
-  const { workspace, subscription, demo, signOut, leaveDemo } = useStudio();
+  const { workspace, subscription, profile, user, demo, signOut, leaveDemo } = useStudio();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const reduce = useReducedMotion();
+  const memberName =
+    profile?.full_name || (user?.user_metadata?.full_name as string) || "Studio member";
   return (
     <div className="min-h-screen bg-white text-ink">
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-black/5 bg-white p-4 lg:flex">
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[15.5rem] flex-col border-r border-border bg-white px-4 py-5 lg:flex">
         <StudioBrand />
-        <nav className="mt-10 space-y-1" aria-label="Studio navigation">
-          {nav.map((item) => (
-            <StudioNavLink
-              key={item.view}
-              item={item}
-              active={view === item.view || (view === "campaign" && item.view === "campaigns")}
-            />
+        <button
+          onClick={() => setCreateOpen(true)}
+          className="mt-8 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-spotlight text-sm font-bold text-white transition hover:bg-ink"
+        >
+          <Plus className="size-4" /> Create
+        </button>
+        <nav className="mt-7 space-y-6" aria-label="Studio navigation">
+          {navSections.map((section) => (
+            <div key={section.label}>
+              <p className="px-3 font-mono text-[8px] font-semibold uppercase tracking-[.18em] text-muted-foreground">
+                {section.label}
+              </p>
+              <div className="mt-2 space-y-1">
+                {section.items.map((item) => (
+                  <StudioNavLink
+                    key={item.view}
+                    item={item}
+                    active={
+                      view === item.view || (view === "campaign" && item.view === "campaigns")
+                    }
+                  />
+                ))}
+              </div>
+            </div>
           ))}
         </nav>
-        <div className="mt-auto space-y-3">
-          <div className="rounded-2xl bg-secondary p-4">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
-                {demo ? "Guided demo" : `${subscription?.plan || "trial"} plan`}
-              </span>
-              <span className="size-2 rounded-full bg-evergreen" />
-            </div>
-            <p className="mt-2 truncate text-sm font-semibold">{workspace?.name}</p>
-            <Link
-              to="/studio/billing"
-              className="mt-4 flex items-center justify-between text-xs font-semibold"
-            >
-              Usage & billing <ChevronRight className="size-3" />
-            </Link>
-          </div>
+        <div className="relative mt-auto">
+          <AnimatePresence>
+            {accountOpen ? (
+              <motion.div
+                initial={reduce ? { opacity: 0 } : { opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 8 }}
+                className="absolute bottom-[4.5rem] left-0 right-0 rounded-[1.15rem] border border-border bg-white p-2 shadow-[0_28px_80px_-40px_rgba(31,35,40,.75)]"
+              >
+                <Link
+                  to="/studio/settings"
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-spotlight-soft"
+                >
+                  <CircleUserRound className="size-4" /> Profile & settings
+                </Link>
+                <Link
+                  to="/studio/billing"
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-spotlight-soft"
+                >
+                  <CreditCard className="size-4" /> Usage & billing
+                </Link>
+                <button
+                  onClick={() => (demo ? leaveDemo() : void signOut())}
+                  className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-bold text-muted-foreground hover:bg-spotlight-soft"
+                >
+                  <LogOut className="size-4" /> {demo ? "Exit demo" : "Sign out"}
+                </button>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
           <button
-            onClick={() => (demo ? leaveDemo() : void signOut())}
-            className="flex min-h-11 w-full items-center gap-3 rounded-2xl px-4 text-sm text-muted-foreground hover:bg-secondary"
+            onClick={() => setAccountOpen((current) => !current)}
+            className="flex min-h-14 w-full items-center gap-3 rounded-xl border border-border p-2 text-left hover:border-spotlight"
           >
-            <LogOut className="size-4" />
-            {demo ? "Exit demo" : "Sign out"}
+            <span className="grid size-9 shrink-0 place-items-center rounded-full bg-spotlight text-xs font-black text-white">
+              {memberName.slice(0, 1).toUpperCase()}
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block truncate text-xs font-extrabold">{memberName}</span>
+              <span className="mt-0.5 block truncate text-[10px] text-muted-foreground">
+                {demo ? "Guided demo" : `${subscription?.plan || "trial"} · ${workspace?.name}`}
+              </span>
+            </span>
+            <ChevronRight className={`size-3.5 transition ${accountOpen ? "rotate-90" : ""}`} />
           </button>
         </div>
       </aside>
-      <header className="sticky top-0 z-30 flex min-h-16 items-center border-b border-black/5 bg-white/90 px-4 backdrop-blur lg:ml-64 lg:px-8">
+      <header className="sticky top-0 z-30 flex min-h-16 items-center border-b border-border bg-white px-4 lg:ml-[15.5rem] lg:px-7">
         <button
           onClick={() => setMobileOpen(true)}
-          className="grid size-11 place-items-center rounded-xl bg-secondary lg:hidden"
+          className="grid size-11 place-items-center rounded-xl border border-border lg:hidden"
           aria-label="Open navigation"
         >
           <Menu className="size-5" />
         </button>
         <div className="ml-3 min-w-0 lg:ml-0">
           <p className="truncate text-sm font-bold">{workspace?.name}</p>
-          <p className="font-mono text-[8px] uppercase tracking-[.16em] text-muted-foreground">
+          <p className="hidden font-mono text-[8px] uppercase tracking-[.16em] text-muted-foreground sm:block">
             {demo ? "Demo workspace · no data saved" : "Private workspace"}
           </p>
         </div>
-        <Link
-          to="/studio"
-          aria-label="New campaign"
-          className="ml-auto inline-flex min-h-11 items-center gap-2 rounded-xl bg-ink px-4 text-sm font-semibold text-white"
+        <div className="ml-auto hidden sm:block">
+          <LanePulse />
+        </div>
+        <button
+          aria-label="Notifications"
+          className="ml-3 grid size-11 place-items-center rounded-full border border-border"
+        >
+          <Bell className="size-4" />
+        </button>
+        <button
+          aria-label="Create something new"
+          onClick={() => setCreateOpen(true)}
+          className="ml-2 inline-flex min-h-11 items-center gap-2 rounded-xl bg-system px-4 text-sm font-bold text-white"
         >
           <Plus className="size-4" />
-          <span className="hidden sm:inline">New campaign</span>
-        </Link>
+          <span className="hidden sm:inline">Create</span>
+        </button>
       </header>
       <AnimatePresence>
         {mobileOpen && (
@@ -419,10 +598,19 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
                 <X />
               </button>
             </div>
-            <nav className="mt-10 space-y-2">
-              {nav.map((item) => (
-                <div key={item.view} onClick={() => setMobileOpen(false)}>
-                  <StudioNavLink item={item} active={view === item.view} />
+            <nav className="mt-9 space-y-7">
+              {navSections.map((section) => (
+                <div key={section.label}>
+                  <p className="px-3 font-mono text-[9px] uppercase tracking-[.18em] text-muted-foreground">
+                    {section.label}
+                  </p>
+                  <div className="mt-2 space-y-1">
+                    {section.items.map((item) => (
+                      <div key={item.view} onClick={() => setMobileOpen(false)}>
+                        <StudioNavLink item={item} active={view === item.view} />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </nav>
@@ -434,26 +622,21 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
         initial={reduce ? false : { opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.35, ease: "easeOut" }}
-        className="min-h-[calc(100vh-4rem)] px-4 py-6 sm:px-6 lg:ml-64 lg:px-8 lg:py-8"
+        className="min-h-[calc(100vh-4rem)] px-4 py-6 sm:px-6 lg:ml-[15.5rem] lg:px-7 lg:py-7"
       >
         {children}
       </motion.main>
+      <AnimatePresence>
+        {createOpen ? <CreateOverlay onClose={() => setCreateOpen(false)} /> : null}
+      </AnimatePresence>
     </div>
   );
 }
 
 function StudioBrand() {
   return (
-    <Link to="/" className="flex items-center gap-3 rounded-xl">
-      <span className="grid size-10 place-items-center rounded-xl bg-ink font-mono text-xs font-bold text-white">
-        PH
-      </span>
-      <span className="text-sm font-bold leading-tight">
-        Palmer House
-        <span className="block font-mono text-[8px] uppercase tracking-[.19em] text-muted-foreground">
-          Studio
-        </span>
-      </span>
+    <Link to="/studio/dashboard" className="flex items-center gap-3 rounded-xl">
+      <StudioMark />
     </Link>
   );
 }
@@ -461,7 +644,7 @@ function StudioNavLink({ item, active }: { item: (typeof nav)[number]; active: b
   return (
     <Link
       to={item.to}
-      className={`flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-semibold transition ${active ? "bg-ink text-white" : "text-muted-foreground hover:bg-secondary hover:text-ink"}`}
+      className={`flex min-h-10 items-center gap-3 rounded-xl px-3 text-[13px] font-bold transition ${active ? "bg-spotlight-soft text-spotlight" : "text-muted-foreground hover:bg-spotlight-soft hover:text-ink"}`}
     >
       <item.icon className="size-4" />
       {item.label}
@@ -469,10 +652,125 @@ function StudioNavLink({ item, active }: { item: (typeof nav)[number]; active: b
   );
 }
 
+function CreateOverlay({ onClose }: { onClose: () => void }) {
+  const reduce = useReducedMotion();
+  const options = [
+    {
+      to: "/studio",
+      icon: Sparkles,
+      lane: "Spotlight",
+      title: "Start with an idea",
+      body: "Find the angle, then build the campaign.",
+      color: "var(--spotlight)",
+      soft: "var(--spotlight-soft)",
+    },
+    {
+      to: "/studio/campaigns",
+      icon: Video,
+      lane: "Reel",
+      title: "Plan from a video",
+      body: "Turn one shoot into a useful content system.",
+      color: "var(--reel)",
+      soft: "var(--reel-soft)",
+    },
+    {
+      to: "/studio/ideas",
+      icon: Lightbulb,
+      lane: "Evergreen",
+      title: "Save a content idea",
+      body: "Capture the repeated question before it disappears.",
+      color: "var(--evergreen)",
+      soft: "var(--evergreen-soft)",
+    },
+    {
+      to: "/studio/calendar",
+      icon: CalendarDays,
+      lane: "System",
+      title: "Plan the rhythm",
+      body: "See what is ready, next, and waiting.",
+      color: "var(--system)",
+      soft: "var(--system-soft)",
+    },
+  ] as const;
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[80] grid place-items-center bg-ink/35 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Create something new"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <motion.section
+        initial={reduce ? false : { opacity: 0, y: 24, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 16, scale: 0.98 }}
+        className="w-full max-w-4xl overflow-hidden rounded-[1.5rem] bg-white shadow-[0_40px_120px_-50px_rgba(0,0,0,.8)]"
+      >
+        <header className="flex items-start justify-between border-b border-border p-5 sm:p-7">
+          <div>
+            <p className="studio-eyebrow text-system">Create new</p>
+            <h2 className="mt-3 text-3xl font-black">What should we make useful?</h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Choose the starting point. Nothing publishes automatically.
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            aria-label="Close create menu"
+            className="grid size-11 place-items-center rounded-full border border-border"
+          >
+            <X className="size-4" />
+          </button>
+        </header>
+        <div className="grid gap-3 p-5 sm:grid-cols-2 sm:p-7">
+          {options.map((item, index) => (
+            <motion.div
+              key={item.title}
+              initial={reduce ? false : { opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.06 * index }}
+            >
+              <Link
+                to={item.to}
+                onClick={onClose}
+                className="group flex min-h-36 items-start gap-4 rounded-[1.15rem] border border-border p-5 transition hover:-translate-y-0.5 hover:border-ink"
+              >
+                <span
+                  className="grid size-11 shrink-0 place-items-center rounded-xl"
+                  style={{ color: item.color, background: item.soft }}
+                >
+                  <item.icon className="size-5" />
+                </span>
+                <span className="min-w-0">
+                  <span className="studio-eyebrow" style={{ color: item.color }}>
+                    {item.lane}
+                  </span>
+                  <span className="mt-2 block text-lg font-extrabold">{item.title}</span>
+                  <span className="mt-2 block text-sm leading-relaxed text-muted-foreground">
+                    {item.body}
+                  </span>
+                </span>
+                <ArrowRight className="ml-auto mt-1 size-4 shrink-0 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </motion.section>
+    </motion.div>
+  );
+}
+
 function renderView(view: StudioView, campaignId?: string) {
   if (view === "engine") return <ContentEngine />;
   if (view === "home") return <Dashboard />;
   if (view === "brand") return <BrandStudio />;
+  if (view === "ideas") return <IdeasBoard />;
+  if (view === "approvals") return <Approvals />;
   if (view === "campaigns") return <Campaigns />;
   if (view === "campaign") return <CampaignDetail campaignId={campaignId} />;
   if (view === "library") return <Library />;
@@ -483,131 +781,578 @@ function renderView(view: StudioView, campaignId?: string) {
 }
 
 function Dashboard() {
-  const { campaigns, assets, calendar, brand, subscription, demo } = useStudio();
+  const { campaigns, assets, calendar, brand, profile, user } = useStudio();
   const upcoming = calendar.filter((item) => new Date(item.publish_at) >= new Date()).slice(0, 4);
+  const firstName = (
+    profile?.full_name ||
+    (user?.user_metadata?.full_name as string) ||
+    "there"
+  ).split(" ")[0];
+  const ready = assets.filter((asset) => asset.status === "approved").length;
+  const review = assets.filter((asset) => asset.status === "review").length;
+  const scheduled = calendar.filter((item) => item.status !== "published").length;
+  const createOptions = [
+    {
+      to: "/studio",
+      icon: Lightbulb,
+      title: "Start with an idea",
+      body: "Find the useful angle",
+      color: "var(--spotlight)",
+      soft: "var(--spotlight-soft)",
+    },
+    {
+      to: "/studio/campaigns",
+      icon: Play,
+      title: "Turn a video into posts",
+      body: "Plan the campaign system",
+      color: "var(--reel)",
+      soft: "var(--reel-soft)",
+    },
+    {
+      to: "/studio/calendar",
+      icon: CalendarDays,
+      title: "Plan a campaign",
+      body: "Map content and timing",
+      color: "var(--evergreen)",
+      soft: "var(--evergreen-soft)",
+    },
+    {
+      to: "/studio/ideas",
+      icon: Users,
+      title: "Ask a Pal",
+      body: "Get one useful nudge",
+      color: "var(--system)",
+      soft: "var(--system-soft)",
+    },
+  ] as const;
+  return (
+    <div className="mx-auto max-w-[92rem]">
+      <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <p className="text-base font-medium text-muted-foreground">
+            Good to see you, {firstName}.
+          </p>
+          <h1 className="mt-2 text-[clamp(2.25rem,4.2vw,4.5rem)] font-black leading-[.95] tracking-[-.065em]">
+            What are we turning into content today?
+          </h1>
+        </div>
+        <Link to="/studio/settings" className="secondary-action shrink-0">
+          <Users className="size-4" /> Invite a teammate
+        </Link>
+      </header>
+
+      <section className="mt-7 grid overflow-hidden rounded-[1.25rem] border border-border bg-white sm:grid-cols-2 xl:grid-cols-4">
+        {createOptions.map((item, index) => (
+          <Link
+            key={item.title}
+            to={item.to}
+            className="group relative flex min-h-36 items-start gap-4 border-b border-border p-5 last:border-b-0 sm:[&:nth-child(odd)]:border-r xl:border-b-0 xl:border-r xl:last:border-r-0"
+          >
+            <span
+              className="grid size-10 shrink-0 place-items-center rounded-xl"
+              style={{ color: item.color, background: item.soft }}
+            >
+              <item.icon className="size-5" />
+            </span>
+            <span className="min-w-0">
+              <span className="block text-sm font-extrabold">{item.title}</span>
+              <span className="mt-2 block text-xs leading-relaxed text-muted-foreground">
+                {item.body}
+              </span>
+            </span>
+            <ArrowRight className="ml-auto size-4 shrink-0 transition-transform group-hover:translate-x-1" />
+            <span className="absolute inset-x-0 bottom-0 h-1" style={{ background: item.color }} />
+            <span className="sr-only">Option {index + 1}</span>
+          </Link>
+        ))}
+      </section>
+
+      <section className="mt-5 grid gap-4 rounded-[1.25rem] border border-border p-5 sm:grid-cols-2 xl:grid-cols-[1.25fr_repeat(4,1fr)_auto] xl:items-center">
+        <div>
+          <p className="text-lg font-black">Studio Pulse</p>
+          <p className="mt-1 text-xs text-muted-foreground">Your useful work, at a glance</p>
+        </div>
+        {[
+          [
+            FileStack,
+            `${ready} pieces`,
+            "ready to use",
+            "var(--evergreen)",
+            "var(--evergreen-soft)",
+          ],
+          [Eye, String(review), "awaiting review", "var(--spotlight)", "var(--spotlight-soft)"],
+          [CalendarDays, String(scheduled), "on the calendar", "var(--reel)", "var(--reel-soft)"],
+          [
+            CheckCircle2,
+            String(campaigns.length),
+            "campaign systems",
+            "var(--system)",
+            "var(--system-soft)",
+          ],
+        ].map(([Icon, value, note, color, soft]) => (
+          <div
+            key={String(note)}
+            className="flex items-center gap-3 xl:border-l xl:border-border xl:pl-5"
+          >
+            <span
+              className="grid size-9 shrink-0 place-items-center rounded-full"
+              style={{ color: String(color), background: String(soft) }}
+            >
+              <Icon className="size-4" />
+            </span>
+            <div>
+              <p className="text-xl font-black">{String(value)}</p>
+              <p className="text-[10px] text-muted-foreground">{String(note)}</p>
+            </div>
+          </div>
+        ))}
+        <Link to="/studio/approvals" className="secondary-action">
+          View work
+        </Link>
+      </section>
+
+      <section className="mt-8">
+        <div className="flex items-end justify-between">
+          <div>
+            <p className="studio-eyebrow text-reel">Continue working</p>
+            <h2 className="mt-2 text-2xl font-black">Campaigns in motion</h2>
+          </div>
+          <Link to="/studio/campaigns" className="text-xs font-bold">
+            View all campaigns →
+          </Link>
+        </div>
+        <div className="mt-4 grid gap-4 lg:grid-cols-3">
+          {campaigns.slice(0, 3).map((campaign, index) => {
+            const lane = lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
+            const campaignAssets = assets.filter((asset) => asset.campaign_id === campaign.id);
+            const completed = campaignAssets.filter((asset) => asset.status === "approved").length;
+            return (
+              <Link
+                key={campaign.id}
+                to="/studio/campaigns/$campaignId"
+                params={{ campaignId: campaign.id }}
+                className="group rounded-[1.25rem] border border-border p-4 transition hover:-translate-y-0.5 hover:border-ink"
+              >
+                <div className="flex items-start gap-3">
+                  <span
+                    className="grid size-14 shrink-0 place-items-center rounded-xl text-white"
+                    style={{ background: lane.color }}
+                  >
+                    <LayoutGrid className="size-5" />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="line-clamp-2 font-extrabold">{campaign.title}</p>
+                    <p className="mt-1 font-mono text-[8px] uppercase tracking-[.12em] text-muted-foreground">
+                      {lane.label} · {campaign.status}
+                    </p>
+                  </div>
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                </div>
+                <div className="mt-5 flex items-center gap-3">
+                  <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-spotlight-soft">
+                    <span
+                      className="block h-full rounded-full"
+                      style={{
+                        width: `${Math.max(16, Math.min(100, campaignAssets.length ? (completed / campaignAssets.length) * 100 : (index + 1) * 22))}%`,
+                        background: lane.color,
+                      }}
+                    />
+                  </span>
+                  <span className="text-[10px] font-bold text-muted-foreground">
+                    {completed}/{campaignAssets.length}
+                  </span>
+                </div>
+              </Link>
+            );
+          })}
+          {!campaigns.length ? (
+            <div className="studio-card lg:col-span-3">
+              <EmptyState
+                icon={WandSparkles}
+                title="Your first campaign starts with one useful idea."
+                body="The engine will build the strategy, drafts, production notes, and calendar together."
+                action={
+                  <Link to="/studio" className="primary-action">
+                    Start with an idea
+                  </Link>
+                }
+              />
+            </div>
+          ) : null}
+        </div>
+      </section>
+
+      <section className="mt-8">
+        <p className="studio-eyebrow text-system">Your content system</p>
+        <h2 className="mt-2 text-2xl font-black">The parts that keep the work connected</h2>
+        <div className="mt-4 grid gap-4 xl:grid-cols-[.7fr_1.35fr_1fr]">
+          <article className="studio-card flex flex-col">
+            <p className="font-extrabold">Brand DNA</p>
+            <p className="mt-1 text-sm text-system">{brand?.completion || 0}% complete</p>
+            <div className="mt-5 h-1.5 overflow-hidden rounded-full bg-system-soft">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${brand?.completion || 0}%` }}
+                className="h-full bg-system"
+              />
+            </div>
+            <div className="mt-6 space-y-3">
+              {["Business context", "Audience & offers", "Voice & language", "Proof library"].map(
+                (item, index) => (
+                  <div key={item} className="flex items-center gap-2 text-sm">
+                    <span
+                      className={`grid size-5 place-items-center rounded-full ${index < 3 ? "bg-evergreen text-white" : "border border-border"}`}
+                    >
+                      {index < 3 ? <Check className="size-3" /> : null}
+                    </span>
+                    {item}
+                  </div>
+                ),
+              )}
+            </div>
+            <Link to="/studio/brand" className="secondary-action mt-auto w-full">
+              Continue setup
+            </Link>
+          </article>
+          <article className="studio-card overflow-hidden p-4">
+            <div className="flex items-center justify-between px-2 pt-2">
+              <div>
+                <p className="font-extrabold">Content map</p>
+                <p className="mt-1 text-xs text-muted-foreground">One idea, four useful moves</p>
+              </div>
+              <Link to="/studio/brand" className="text-xs font-bold">
+                View strategy
+              </Link>
+            </div>
+            <ContentOrbit compact />
+          </article>
+          <div className="grid gap-4">
+            <article className="studio-card">
+              <div className="flex items-center justify-between">
+                <p className="font-extrabold">Upcoming</p>
+                <Link to="/studio/calendar" className="text-[11px] font-bold">
+                  Calendar →
+                </Link>
+              </div>
+              <div className="mt-4 divide-y divide-border">
+                {upcoming.slice(0, 3).map((item) => (
+                  <div key={item.id} className="flex items-center gap-3 py-3">
+                    <time className="grid size-10 place-items-center rounded-lg border border-border font-mono text-[9px]">
+                      {new Date(item.publish_at).toLocaleDateString(undefined, {
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </time>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-xs font-extrabold">{item.title}</p>
+                      <p className="mt-1 text-[10px] text-muted-foreground">{item.channel}</p>
+                    </div>
+                    <span className="rounded-full bg-system-soft px-2 py-1 text-[8px] font-bold text-system">
+                      {item.status}
+                    </span>
+                  </div>
+                ))}
+                {!upcoming.length ? (
+                  <p className="py-6 text-sm text-muted-foreground">Nothing scheduled yet.</p>
+                ) : null}
+              </div>
+            </article>
+            <article className="studio-card">
+              <div className="flex items-center justify-between">
+                <p className="font-extrabold">Recent library</p>
+                <Link to="/studio/library" className="text-[11px] font-bold">
+                  Library →
+                </Link>
+              </div>
+              <div className="mt-4 grid grid-cols-3 gap-2">
+                {assets.slice(0, 3).map((asset, index) => (
+                  <div
+                    key={asset.id}
+                    className="rounded-xl border border-border p-3"
+                    style={{
+                      background: [
+                        "var(--reel-soft)",
+                        "var(--spotlight-soft)",
+                        "var(--evergreen-soft)",
+                      ][index % 3],
+                    }}
+                  >
+                    <FileStack className="size-4" />
+                    <p className="mt-5 line-clamp-2 text-[10px] font-bold">{asset.title}</p>
+                  </div>
+                ))}
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+type StudioIdea = { id: string; text: string; lane: keyof typeof lanes; source: string };
+
+const starterIdeas: StudioIdea[] = [
+  {
+    id: "starter-faq",
+    text: "Answer the question customers ask right before they buy.",
+    lane: "evergreen",
+    source: "Repeated question",
+  },
+  {
+    id: "starter-proof",
+    text: "Show the moment a client finally understood the value.",
+    lane: "spotlight",
+    source: "Proof moment",
+  },
+  {
+    id: "starter-process",
+    text: "Turn one invisible team process into a useful walkthrough.",
+    lane: "system",
+    source: "Tribal knowledge",
+  },
+  {
+    id: "starter-conversation",
+    text: "Ask the audience what keeps delaying the decision.",
+    lane: "reel",
+    source: "Conversation starter",
+  },
+];
+
+function IdeasBoard() {
+  const [ideas, setIdeas] = useState<StudioIdea[]>(starterIdeas);
+  const [draft, setDraft] = useState("");
+  const [lane, setLane] = useState<keyof typeof lanes>("evergreen");
+  const [filter, setFilter] = useState<"all" | keyof typeof lanes>("all");
+  const visible = filter === "all" ? ideas : ideas.filter((item) => item.lane === filter);
+  function addIdea() {
+    if (draft.trim().length < 8) {
+      toast.error("Give the idea a little more context.");
+      return;
+    }
+    setIdeas((current) => [
+      { id: crypto.randomUUID(), text: draft.trim(), lane, source: "Your idea" },
+      ...current,
+    ]);
+    setDraft("");
+    toast.success("Idea saved to this working session.");
+  }
   return (
     <div className="mx-auto max-w-[88rem]">
       <PageIntro
-        eyebrow="Studio home"
-        title="What are we making useful?"
-        body="Start with the business idea. The Studio will connect the strategy, scripts, shot plan, and publishing rhythm."
+        eyebrow="Content ideas"
+        title="Catch the useful thought before it disappears."
+        body="Save customer questions, proof moments, team knowledge, and conversation starters. When one is ready, move it into the Content Engine."
         action={
-          <Link to="/studio/campaigns" className="primary-action">
-            Build a campaign <ArrowRight className="size-4" />
+          <Link to="/studio" className="primary-action">
+            <Sparkles className="size-4" /> Open the engine
           </Link>
         }
       />
-      <section className="mt-8 grid gap-4 md:grid-cols-3">
-        <Metric
-          label="Campaigns this period"
-          value={`${campaigns.length} / ${subscription?.campaign_allowance || 1}`}
-          detail={demo ? "Demo allowance" : subscription?.status || "trialing"}
-          color="var(--spotlight)"
-        />
-        <Metric
-          label="Ready-to-use assets"
-          value={String(assets.length)}
-          detail="Scripts, captions, plans"
-          color="var(--reel)"
-        />
-        <Metric
-          label="Brand memory"
-          value={`${brand?.completion || 0}%`}
-          detail="More context, less rewriting"
-          color="var(--system)"
-        />
-      </section>
-      <section className="mt-6 grid gap-6 xl:grid-cols-[1.35fr_.65fr]">
-        <div className="studio-card overflow-hidden p-0">
-          <div className="border-b border-border p-6 sm:p-7">
-            <p className="font-mono text-[9px] uppercase tracking-[.17em] text-muted-foreground">
-              The campaign path
-            </p>
-            <h2 className="mt-2 text-2xl font-extrabold">
-              One idea travels through five connected rooms.
-            </h2>
-          </div>
-          <div className="grid sm:grid-cols-5">
-            {[
-              { icon: Search, label: "Clarify", color: "var(--spotlight)" },
-              { icon: BookOpen, label: "Script", color: "var(--reel)" },
-              { icon: Video, label: "Plan", color: "var(--evergreen)" },
-              { icon: CalendarDays, label: "Schedule", color: "var(--system)" },
-              { icon: CheckCircle2, label: "Ship", color: "var(--ink)" },
-            ].map((item, index) => (
-              <div
-                key={item.label}
-                className="relative border-b border-border p-5 last:border-b-0 sm:border-b-0 sm:border-r sm:last:border-r-0"
+      <section className="mt-8 grid gap-6 xl:grid-cols-[.72fr_1.28fr]">
+        <div className="studio-card h-fit xl:sticky xl:top-24">
+          <p className="studio-eyebrow text-system">Quick capture</p>
+          <h2 className="mt-3 text-2xl font-black">What did you notice?</h2>
+          <textarea
+            value={draft}
+            onChange={(event) => setDraft(event.target.value)}
+            rows={6}
+            placeholder="A customer asked why…"
+            className="mt-5 w-full resize-none rounded-xl border border-border p-4 text-base outline-none focus:border-system"
+          />
+          <p className="mt-5 text-sm font-extrabold">Which job does it do?</p>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            {(
+              Object.entries(lanes) as Array<
+                [keyof typeof lanes, (typeof lanes)[keyof typeof lanes]]
               >
-                <span
-                  className="grid size-10 place-items-center rounded-xl text-white"
-                  style={{ background: item.color }}
-                >
-                  <item.icon className="size-4" />
+            ).map(([key, item]) => (
+              <button
+                key={key}
+                onClick={() => setLane(key)}
+                className={`min-h-12 rounded-xl border px-3 text-left text-xs font-bold ${lane === key ? "border-ink" : "border-border"}`}
+                style={{
+                  background: lane === key ? item.soft : "white",
+                  color: lane === key ? item.color : "var(--ink)",
+                }}
+              >
+                {item.label}
+                <span className="mt-1 block text-[9px] font-medium text-muted-foreground">
+                  {item.role}
                 </span>
-                <p className="mt-8 text-sm font-bold">{item.label}</p>
-                <p className="mt-1 font-mono text-[9px] text-muted-foreground">0{index + 1}</p>
-              </div>
+              </button>
             ))}
           </div>
+          <button onClick={addIdea} className="primary-action mt-5 w-full">
+            <Plus className="size-4" /> Save idea
+          </button>
+          <div className="mt-6 rounded-xl bg-system-soft p-4">
+            <p className="text-xs font-extrabold text-system">Samira’s nudge</p>
+            <p className="mt-2 text-sm leading-relaxed">
+              If your team has said it twice, save the exact wording. That is usually the useful
+              part.
+            </p>
+          </div>
         </div>
-        <div className="studio-card bg-ink p-6 text-white sm:p-7">
-          <p className="font-mono text-[9px] uppercase tracking-[.17em] text-white/45">
-            Palmer House assist
-          </p>
-          <h2 className="mt-4 text-2xl font-extrabold">Need humans in the loop?</h2>
-          <p className="mt-3 text-sm leading-relaxed text-white/60">
-            Send the campaign to the team for strategy, filming, or editing without rebuilding the
-            brief.
-          </p>
-          <Link
-            to="/studio/campaigns"
-            className="mt-8 inline-flex items-center gap-2 text-sm font-semibold"
-          >
-            Open campaigns <ArrowRight className="size-4" />
-          </Link>
-        </div>
-      </section>
-      <section className="mt-6 grid gap-6 xl:grid-cols-2">
-        <CampaignList campaigns={campaigns.slice(0, 4)} />
-        <div className="studio-card">
-          <div className="flex items-center justify-between">
+        <div>
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="font-mono text-[9px] uppercase tracking-[.17em] text-muted-foreground">
-                Next up
-              </p>
-              <h2 className="mt-2 text-xl font-bold">Publishing rhythm</h2>
+              <p className="studio-eyebrow text-reel">Idea bank</p>
+              <h2 className="mt-2 text-2xl font-black">Ready when you are</h2>
             </div>
-            <Link to="/studio/calendar" className="text-xs font-semibold">
-              Full calendar
-            </Link>
+            <div className="flex flex-wrap gap-2">
+              {(["all", "spotlight", "reel", "evergreen", "system"] as const).map((item) => (
+                <button
+                  key={item}
+                  onClick={() => setFilter(item)}
+                  className={`min-h-10 rounded-full px-4 text-xs font-bold capitalize ${filter === item ? "bg-ink text-white" : "border border-border"}`}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="mt-6 space-y-3">
-            {upcoming.length ? (
-              upcoming.map((item) => (
-                <div key={item.id} className="flex items-center gap-4 rounded-2xl bg-secondary p-4">
-                  <time className="grid size-12 shrink-0 place-items-center rounded-xl bg-white text-center font-mono text-[9px] leading-tight">
-                    {new Date(item.publish_at).toLocaleDateString(undefined, {
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </time>
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-semibold">{item.title}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{item.channel}</p>
+          <div className="studio-content-list mt-5 grid gap-4 sm:grid-cols-2">
+            {visible.map((idea) => {
+              const meta = lanes[idea.lane];
+              return (
+                <motion.article
+                  layout
+                  key={idea.id}
+                  className="studio-card flex min-h-56 flex-col"
+                  style={{ borderTopColor: meta.color, borderTopWidth: 4 }}
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="studio-eyebrow" style={{ color: meta.color }}>
+                      {meta.label}
+                    </span>
+                    <button
+                      aria-label="More idea options"
+                      className="grid size-9 place-items-center rounded-full border border-border"
+                    >
+                      •••
+                    </button>
                   </div>
-                </div>
-              ))
-            ) : (
-              <EmptyState
-                icon={CalendarDays}
-                title="Your schedule starts with a campaign."
-                body="When a campaign is ready, its publishing plan appears here automatically."
-              />
-            )}
+                  <p className="mt-6 text-xl font-extrabold leading-snug">{idea.text}</p>
+                  <p className="mt-3 text-xs text-muted-foreground">{idea.source}</p>
+                  <div className="mt-auto flex gap-2 pt-6">
+                    <Link to="/studio" className="primary-action flex-1">
+                      Build this <ArrowRight className="size-4" />
+                    </Link>
+                    <button
+                      onClick={() =>
+                        setIdeas((current) =>
+                          current.filter((candidate) => candidate.id !== idea.id),
+                        )
+                      }
+                      className="grid size-12 place-items-center rounded-xl border border-border"
+                      aria-label={`Archive ${idea.text}`}
+                    >
+                      <Archive className="size-4" />
+                    </button>
+                  </div>
+                </motion.article>
+              );
+            })}
           </div>
         </div>
       </section>
+    </div>
+  );
+}
+
+function Approvals() {
+  const { assets, updateAsset } = useStudio();
+  const [filter, setFilter] = useState<"review" | "approved" | "draft" | "all">("review");
+  const items = filter === "all" ? assets : assets.filter((asset) => asset.status === filter);
+  async function setStatus(asset: Asset, status: string) {
+    try {
+      await updateAsset(asset.id, { status });
+      toast.success(
+        status === "approved" ? "Approved and ready to use." : "Moved back to draft for revisions.",
+      );
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not update this asset.");
+    }
+  }
+  return (
+    <div className="mx-auto max-w-[88rem]">
+      <PageIntro
+        eyebrow="Approvals"
+        title="One clear place to make the final call."
+        body="Review the words, approve what is ready, and send revisions back without losing the campaign context."
+      />
+      <div className="mt-7 flex flex-wrap gap-2">
+        {(["review", "draft", "approved", "all"] as const).map((item) => (
+          <button
+            key={item}
+            onClick={() => setFilter(item)}
+            className={`min-h-11 rounded-full px-5 text-sm font-bold capitalize ${filter === item ? "bg-ink text-white" : "border border-border"}`}
+          >
+            {item}
+            <span className="ml-2 opacity-60">
+              {item === "all"
+                ? assets.length
+                : assets.filter((asset) => asset.status === item).length}
+            </span>
+          </button>
+        ))}
+      </div>
+      <div className="studio-content-list mt-6 grid gap-4 xl:grid-cols-2">
+        {items.map((asset) => (
+          <article key={asset.id} className="studio-card flex flex-col sm:min-h-80">
+            <div className="flex items-center justify-between gap-3">
+              <span className="rounded-full bg-spotlight-soft px-3 py-1 font-mono text-[8px] uppercase tracking-[.13em] text-spotlight">
+                {asset.kind.replaceAll("_", " ")}
+              </span>
+              <span
+                className={`rounded-full px-3 py-1 text-[9px] font-bold ${asset.status === "approved" ? "bg-evergreen-soft text-evergreen" : asset.status === "review" ? "bg-reel-soft text-reel" : "border border-border"}`}
+              >
+                {asset.status}
+              </span>
+            </div>
+            <h2 className="mt-5 text-xl font-black">{asset.title}</h2>
+            <p className="mt-3 line-clamp-5 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
+              {asset.content}
+            </p>
+            <div className="mt-auto flex flex-col gap-2 pt-6 sm:flex-row">
+              <button
+                onClick={() => void setStatus(asset, "approved")}
+                disabled={asset.status === "approved"}
+                className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-evergreen px-4 text-sm font-bold text-white disabled:opacity-40"
+              >
+                <Check className="size-4" /> Approve
+              </button>
+              <button
+                onClick={() => void setStatus(asset, "draft")}
+                className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl border border-border px-4 text-sm font-bold"
+              >
+                <ListTodo className="size-4" /> Needs changes
+              </button>
+              <button
+                onClick={() =>
+                  void navigator.clipboard
+                    .writeText(asset.content)
+                    .then(() => toast.success("Copied."))
+                }
+                className="grid size-12 place-items-center rounded-xl border border-border"
+                aria-label={`Copy ${asset.title}`}
+              >
+                <Clipboard className="size-4" />
+              </button>
+            </div>
+          </article>
+        ))}
+        {!items.length ? (
+          <div className="studio-card xl:col-span-2">
+            <EmptyState
+              icon={CheckCircle2}
+              title="Nothing is waiting here."
+              body="Choose another status or build a campaign to create reviewable work."
+            />
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }
@@ -1346,9 +2091,13 @@ function Library() {
   const { assets, campaigns } = useStudio();
   const [query, setQuery] = useState("");
   const [kind, setKind] = useState("all");
+  const [collection, setCollection] = useState<"all" | "favorites" | "approved">("all");
+  const [favorites, setFavorites] = useState<Set<string>>(() => new Set());
   const filtered = assets.filter(
     (item) =>
       (kind === "all" || item.kind === kind) &&
+      (collection === "all" ||
+        (collection === "approved" ? item.status === "approved" : favorites.has(item.id))) &&
       `${item.title} ${item.content}`.toLowerCase().includes(query.toLowerCase()),
   );
   return (
@@ -1358,8 +2107,36 @@ function Library() {
         title="Everything the system has made."
         body="Search, edit, approve, copy, and reuse every campaign asset without digging through old chats."
       />
-      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-        <label className="flex min-h-12 flex-1 items-center gap-3 rounded-2xl bg-white px-4">
+      <div className="mt-8 flex gap-3 overflow-x-auto pb-2">
+        {[
+          ["all", "All assets", assets.length, FileStack],
+          ["favorites", "Favorites", favorites.size, Heart],
+          [
+            "approved",
+            "Approved",
+            assets.filter((item) => item.status === "approved").length,
+            CheckCircle2,
+          ],
+        ].map(([value, label, count, Icon]) => (
+          <button
+            key={String(value)}
+            onClick={() => setCollection(value as typeof collection)}
+            className={`flex min-w-44 items-center gap-3 rounded-[1.1rem] border p-3 text-left ${collection === value ? "border-evergreen bg-evergreen-soft" : "border-border"}`}
+          >
+            <span className="grid size-10 place-items-center rounded-xl bg-white">
+              <Icon className="size-4" />
+            </span>
+            <span>
+              <span className="block text-sm font-extrabold">{String(label)}</span>
+              <span className="mt-1 block text-xs text-muted-foreground">
+                {String(count)} assets
+              </span>
+            </span>
+          </button>
+        ))}
+      </div>
+      <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+        <label className="flex min-h-12 flex-1 items-center gap-3 rounded-xl border border-border bg-white px-4">
           <Search className="size-4 text-muted-foreground" />
           <input
             value={query}
@@ -1371,7 +2148,7 @@ function Library() {
         <select
           value={kind}
           onChange={(e) => setKind(e.target.value)}
-          className="min-h-12 rounded-2xl bg-white px-4 text-sm font-semibold"
+          className="min-h-12 rounded-xl border border-border bg-white px-4 text-sm font-semibold"
         >
           <option value="all">All formats</option>
           {Array.from(new Set(assets.map((item) => item.kind))).map((item) => (
@@ -1381,34 +2158,63 @@ function Library() {
           ))}
         </select>
       </div>
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="studio-content-list mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {filtered.map((asset) => (
-          <article key={asset.id} className="studio-card flex min-h-64 flex-col">
-            <div className="flex items-center justify-between">
-              <span className="rounded-full bg-secondary px-3 py-1 font-mono text-[8px] uppercase tracking-[.13em]">
+          <article
+            key={asset.id}
+            className="studio-card group flex min-h-72 flex-col overflow-hidden p-0"
+          >
+            <div className="relative grid min-h-28 place-items-center border-b border-border bg-spotlight-soft p-5">
+              <FileStack className="size-8 text-spotlight" />
+              <span className="absolute bottom-3 left-3 rounded-full bg-white px-2.5 py-1 font-mono text-[8px] uppercase tracking-[.13em]">
                 {asset.kind.replaceAll("_", " ")}
               </span>
-              <span className="size-2 rounded-full bg-evergreen" />
-            </div>
-            <h2 className="mt-6 text-xl font-bold">{asset.title}</h2>
-            <p className="mt-3 line-clamp-4 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
-              {asset.content}
-            </p>
-            <div className="mt-auto flex items-center justify-between pt-6">
-              <p className="max-w-[14rem] truncate text-xs text-muted-foreground">
-                {campaigns.find((item) => item.id === asset.campaign_id)?.title}
-              </p>
               <button
                 onClick={() =>
-                  void navigator.clipboard
-                    .writeText(asset.content)
-                    .then(() => toast.success("Copied."))
+                  setFavorites((current) => {
+                    const next = new Set(current);
+                    if (next.has(asset.id)) next.delete(asset.id);
+                    else next.add(asset.id);
+                    return next;
+                  })
                 }
-                aria-label={`Copy ${asset.title}`}
-                className="grid size-10 place-items-center rounded-xl bg-secondary"
+                aria-label={`${favorites.has(asset.id) ? "Remove" : "Add"} ${asset.title} ${favorites.has(asset.id) ? "from" : "to"} favorites`}
+                className={`absolute right-3 top-3 grid size-9 place-items-center rounded-full bg-white ${favorites.has(asset.id) ? "text-reel" : "text-muted-foreground"}`}
               >
-                <Clipboard className="size-4" />
+                <Heart className={`size-4 ${favorites.has(asset.id) ? "fill-current" : ""}`} />
               </button>
+            </div>
+            <div className="flex flex-1 flex-col p-5">
+              <div className="flex items-center justify-between">
+                <span
+                  className={`rounded-full px-3 py-1 text-[9px] font-bold ${asset.status === "approved" ? "bg-evergreen-soft text-evergreen" : asset.status === "review" ? "bg-reel-soft text-reel" : "border border-border"}`}
+                >
+                  {asset.status}
+                </span>
+                <span className="text-[10px] text-muted-foreground">
+                  {new Date(asset.updated_at).toLocaleDateString()}
+                </span>
+              </div>
+              <h2 className="mt-6 text-xl font-bold">{asset.title}</h2>
+              <p className="mt-3 line-clamp-4 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
+                {asset.content}
+              </p>
+              <div className="mt-auto flex items-center justify-between pt-6">
+                <p className="max-w-[14rem] truncate text-xs text-muted-foreground">
+                  {campaigns.find((item) => item.id === asset.campaign_id)?.title}
+                </p>
+                <button
+                  onClick={() =>
+                    void navigator.clipboard
+                      .writeText(asset.content)
+                      .then(() => toast.success("Copied."))
+                  }
+                  aria-label={`Copy ${asset.title}`}
+                  className="grid size-10 place-items-center rounded-xl bg-secondary"
+                >
+                  <Clipboard className="size-4" />
+                </button>
+              </div>
             </div>
           </article>
         ))}
@@ -1707,7 +2513,11 @@ function channelColor(channel: string) {
 }
 
 function SettingsView() {
-  const { profile, user, saveProfile, workspace, demo } = useStudio();
+  const { profile, user, saveProfile, workspace, demo, subscription, campaigns, assets } =
+    useStudio();
+  const [tab, setTab] = useState<
+    "workspace" | "brands" | "team" | "integrations" | "usage" | "account"
+  >("workspace");
   const [draft, setDraft] = useState({
     full_name: profile?.full_name || (user?.user_metadata?.full_name as string) || "Demo Member",
     job_title: profile?.job_title || "",
@@ -1722,70 +2532,223 @@ function SettingsView() {
       toast.error(error instanceof Error ? error.message : "Could not save profile.");
     }
   }
+  const tabs = [
+    ["workspace", Settings, "Workspace"],
+    ["brands", Gauge, "Brand DNA"],
+    ["team", Users, "Team"],
+    ["integrations", ExternalLink, "Integrations"],
+    ["usage", CreditCard, "Usage & plan"],
+    ["account", CircleUserRound, "Account"],
+  ] as const;
   return (
-    <div className="mx-auto max-w-5xl">
+    <div className="mx-auto max-w-[76rem]">
       <PageIntro
         eyebrow="Workspace settings"
-        title="Your profile and team home."
-        body="Keep your identity, contact details, timezone, and workspace controls current."
-        action={
-          <button onClick={() => void save()} className="primary-action">
-            <Check className="size-4" />
-            Save settings
-          </button>
-        }
+        title="The controls behind the work."
+        body="Manage the workspace, brand context, people, plan, and your own account without pretending future integrations are already connected."
       />
-      <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_20rem]">
-        <div className="studio-card grid gap-5 sm:grid-cols-2">
-          <Field
-            label="Full name"
-            value={draft.full_name}
-            onChange={(e) => setDraft({ ...draft, full_name: e.target.value })}
-          />
-          <Field
-            label="Job title"
-            value={draft.job_title}
-            onChange={(e) => setDraft({ ...draft, job_title: e.target.value })}
-          />
-          <Field
-            label="Phone"
-            type="tel"
-            value={draft.phone}
-            onChange={(e) => setDraft({ ...draft, phone: e.target.value })}
-          />
-          <Field
-            label="Timezone"
-            value={draft.timezone}
-            onChange={(e) => setDraft({ ...draft, timezone: e.target.value })}
-          />
-          <div className="sm:col-span-2 rounded-2xl bg-secondary p-5">
-            <p className="text-sm font-semibold">Account email</p>
-            <p className="mt-2 text-sm text-muted-foreground">
-              {user?.email || "Demo mode—no email connected"}
-            </p>
-          </div>
-        </div>
-        <aside className="space-y-5">
-          <div className="studio-card">
-            <CircleUserRound className="size-7 text-system" />
-            <p className="mt-5 font-bold">{draft.full_name}</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {draft.job_title || "Workspace member"}
-            </p>
-          </div>
-          <div className="studio-card">
-            <Users className="size-6 text-spotlight" />
-            <p className="mt-5 font-bold">{workspace?.name}</p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              {demo ? "Demo owner" : "Owner workspace"}
-            </p>
-            <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
-              Team invitations are protected in the database and will activate when transactional
-              email is connected.
-            </p>
-          </div>
+      <div className="mt-8 grid overflow-hidden rounded-[1.5rem] border border-border bg-white lg:grid-cols-[14rem_1fr]">
+        <aside className="border-b border-border p-3 lg:min-h-[38rem] lg:border-b-0 lg:border-r">
+          {tabs.map(([value, Icon, label]) => (
+            <button
+              key={value}
+              onClick={() => setTab(value)}
+              className={`flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-bold ${tab === value ? "bg-spotlight-soft text-spotlight" : "text-muted-foreground hover:bg-spotlight-soft"}`}
+            >
+              <Icon className="size-4" />
+              {label}
+            </button>
+          ))}
         </aside>
+        <section className="p-5 sm:p-8">
+          {tab === "workspace" ? (
+            <div>
+              <SettingHeading
+                title="Workspace"
+                body="The private home for your brand, campaigns, calendar, and team."
+              />
+              <div className="mt-7 grid gap-5 sm:grid-cols-2">
+                <Field label="Workspace name" value={workspace?.name || ""} readOnly />
+                <Field label="Workspace role" value={demo ? "Demo owner" : "Owner"} readOnly />
+                <div className="rounded-xl border border-border p-5 sm:col-span-2">
+                  <p className="studio-eyebrow text-system">Workspace health</p>
+                  <div className="mt-5 grid gap-4 sm:grid-cols-3">
+                    <SettingStat value={String(campaigns.length)} label="campaigns" />
+                    <SettingStat value={String(assets.length)} label="assets" />
+                    <SettingStat value={subscription?.status || "trial"} label="plan status" />
+                  </div>
+                </div>
+              </div>
+              <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
+                Workspace renaming and ownership transfer stay locked until team email and audit
+                logging are connected.
+              </p>
+            </div>
+          ) : null}
+          {tab === "brands" ? (
+            <div>
+              <SettingHeading
+                title="Brand DNA"
+                body="The source of truth the Content Engine reads before it writes."
+              />
+              <div className="mt-7 rounded-[1.25rem] border border-border p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xl font-black">{workspace?.name}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Voice, audience, offers, proof, and language rules
+                    </p>
+                  </div>
+                  <Gauge className="size-8 text-spotlight" />
+                </div>
+                <Link to="/studio/brand" className="primary-action mt-7">
+                  Open Brand DNA <ArrowRight className="size-4" />
+                </Link>
+              </div>
+            </div>
+          ) : null}
+          {tab === "team" ? (
+            <div>
+              <SettingHeading
+                title="Team"
+                body="Make the company visible inside the workspace without sending unfinished invitations."
+              />
+              <div className="mt-7 rounded-[1.25rem] border border-border p-5">
+                <div className="flex items-center gap-4">
+                  <span className="grid size-12 place-items-center rounded-full bg-spotlight text-sm font-black text-white">
+                    {draft.full_name.slice(0, 1)}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-extrabold">{draft.full_name}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      {user?.email || "Demo member"} · Owner
+                    </p>
+                  </div>
+                  <span className="rounded-full bg-evergreen-soft px-3 py-1 text-[9px] font-bold text-evergreen">
+                    Active
+                  </span>
+                </div>
+              </div>
+              <div className="mt-5 rounded-xl bg-system-soft p-5">
+                <p className="text-sm font-extrabold text-system">
+                  Invites are intentionally paused.
+                </p>
+                <p className="mt-2 text-sm leading-relaxed">
+                  The team model is ready, but no invitation is sent until transactional email is
+                  connected and tested.
+                </p>
+              </div>
+            </div>
+          ) : null}
+          {tab === "integrations" ? (
+            <div>
+              <SettingHeading
+                title="Integrations"
+                body="A truthful roadmap of what can connect later. Nothing here claims to be live."
+              />
+              <div className="mt-7 grid gap-4 sm:grid-cols-2">
+                {[
+                  ["Stripe", "Billing and membership", "Ready when configured"],
+                  ["HoneyBook", "Production proposals", "Planned"],
+                  ["ClickUp", "Project intake", "Planned"],
+                  ["Social publishing", "Direct posting", "Later phase"],
+                ].map(([name, detail, status]) => (
+                  <article key={name} className="rounded-[1.15rem] border border-border p-5">
+                    <div className="flex items-start justify-between">
+                      <span className="grid size-10 place-items-center rounded-xl bg-system-soft">
+                        <ExternalLink className="size-4 text-system" />
+                      </span>
+                      <span className="rounded-full border border-border px-2.5 py-1 text-[8px] font-bold uppercase tracking-[.08em]">
+                        {status}
+                      </span>
+                    </div>
+                    <p className="mt-5 font-extrabold">{name}</p>
+                    <p className="mt-1 text-sm text-muted-foreground">{detail}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          ) : null}
+          {tab === "usage" ? (
+            <div>
+              <SettingHeading
+                title="Usage & plan"
+                body="See the current allowance without turning the dashboard into a slot machine."
+              />
+              <div className="mt-7 rounded-[1.25rem] bg-ink p-6 text-white">
+                <p className="studio-eyebrow text-white/50">Current plan</p>
+                <p className="mt-3 text-3xl font-black capitalize">
+                  {subscription?.plan || "Trial"}
+                </p>
+                <p className="mt-2 text-sm text-white/60">
+                  {campaigns.length} campaigns in this workspace
+                </p>
+                <Link
+                  to="/studio/billing"
+                  className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-xl bg-white px-5 text-sm font-bold text-ink"
+                >
+                  Open billing <ArrowRight className="size-4" />
+                </Link>
+              </div>
+            </div>
+          ) : null}
+          {tab === "account" ? (
+            <div>
+              <SettingHeading title="Account" body="Your identity and local working preferences." />
+              <div className="mt-7 grid gap-5 sm:grid-cols-2">
+                <Field
+                  label="Full name"
+                  value={draft.full_name}
+                  onChange={(e) => setDraft({ ...draft, full_name: e.target.value })}
+                />
+                <Field
+                  label="Job title"
+                  value={draft.job_title}
+                  onChange={(e) => setDraft({ ...draft, job_title: e.target.value })}
+                />
+                <Field
+                  label="Phone"
+                  type="tel"
+                  value={draft.phone}
+                  onChange={(e) => setDraft({ ...draft, phone: e.target.value })}
+                />
+                <Field
+                  label="Timezone"
+                  value={draft.timezone}
+                  onChange={(e) => setDraft({ ...draft, timezone: e.target.value })}
+                />
+                <div className="rounded-xl bg-spotlight-soft p-5 sm:col-span-2">
+                  <p className="text-sm font-extrabold">Account email</p>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    {user?.email || "Demo mode—no email connected"}
+                  </p>
+                </div>
+                <button onClick={() => void save()} className="primary-action sm:col-span-2">
+                  <Check className="size-4" /> Save account
+                </button>
+              </div>
+            </div>
+          ) : null}
+        </section>
       </div>
+    </div>
+  );
+}
+
+function SettingHeading({ title, body }: { title: string; body: string }) {
+  return (
+    <div>
+      <p className="studio-eyebrow text-system">Settings</p>
+      <h2 className="mt-3 text-3xl font-black">{title}</h2>
+      <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">{body}</p>
+    </div>
+  );
+}
+function SettingStat({ value, label }: { value: string; label: string }) {
+  return (
+    <div>
+      <p className="text-2xl font-black capitalize">{value}</p>
+      <p className="mt-1 text-[10px] uppercase tracking-[.1em] text-muted-foreground">{label}</p>
     </div>
   );
 }

@@ -168,6 +168,82 @@ function outputToDemoAssets(output: CampaignOutput, campaignId: string): Asset[]
   ];
 }
 
+function buildDemoWorkspaceSeed() {
+  const now = new Date();
+  const definitions = [
+    {
+      id: "demo-campaign-proof",
+      topic:
+        "Customers understand our service after the call, but the website does not make the difference visible.",
+      goal: "Promote an offer",
+      lane: "spotlight",
+      daysAgo: 2,
+    },
+    {
+      id: "demo-campaign-faq",
+      topic:
+        "Turn the five questions every new client asks into an evergreen video and social series.",
+      goal: "Document FAQs",
+      lane: "evergreen",
+      daysAgo: 8,
+    },
+  ];
+  const outputs: Record<string, CampaignOutput> = {};
+  const campaigns: Campaign[] = [];
+  const assets: Asset[] = [];
+  const calendar: CalendarItem[] = [];
+  definitions.forEach((definition, campaignIndex) => {
+    const output = buildDemoCampaign(definition.topic, demoBrand.business_name || "Your business");
+    output.primaryLane = definition.lane as CampaignOutput["primaryLane"];
+    outputs[definition.id] = output;
+    const created = new Date(now.getTime() - definition.daysAgo * 86_400_000).toISOString();
+    campaigns.push({
+      id: definition.id,
+      workspace_id: demoWorkspace.id,
+      created_by: "demo",
+      title: output.title,
+      status: campaignIndex === 0 ? "ready" : "review",
+      goal: definition.goal,
+      topic: definition.topic,
+      offer: "Book a strategy call",
+      audience: demoBrand.primary_audience,
+      anchor_format: "authority_video",
+      depth: "strategic",
+      primary_lane: output.primaryLane,
+      strategy: output.strategy,
+      production_plan: output.productionPlan,
+      scheduled_at: null,
+      created_at: created,
+      updated_at: created,
+    });
+    assets.push(
+      ...outputToDemoAssets(output, definition.id).map((asset, index) => ({
+        ...asset,
+        status: index < 3 ? "approved" : index < 7 ? "review" : "draft",
+      })),
+    );
+    calendar.push(
+      ...output.schedule.slice(0, 4).map((item, index) => ({
+        id: `${definition.id}-seed-calendar-${index}`,
+        workspace_id: demoWorkspace.id,
+        campaign_id: definition.id,
+        asset_id: null,
+        title: item.title,
+        channel: item.channel,
+        publish_at: new Date(
+          now.getTime() + (index + campaignIndex * 2 + 1) * 86_400_000,
+        ).toISOString(),
+        assignee_id: null,
+        status: index === 0 ? "scripted" : "planned",
+        notes: "Demo schedule item",
+        created_at: created,
+        updated_at: created,
+      })),
+    );
+  });
+  return { campaigns, assets, calendar, outputs };
+}
+
 function buildDemoDirections(idea: string): ContentDirection[] {
   const subject = idea.trim() || "the idea";
   return [
@@ -287,14 +363,16 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       if (!data.session && window.sessionStorage.getItem("ph.studio.demo") === "active") {
+        const seed = buildDemoWorkspaceSeed();
         setDemo(true);
         setWorkspace(demoWorkspace);
         setBrand(demoBrand);
         setSubscription(demoSubscription);
         setSettings(null);
-        setCampaigns([]);
-        setAssets([]);
-        setCalendar([]);
+        setCampaigns(seed.campaigns);
+        setAssets(seed.assets);
+        setCalendar(seed.calendar);
+        setCampaignOutputs(seed.outputs);
         setProfile(null);
         setLoading(false);
       } else {
@@ -346,15 +424,17 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut();
   }
   function enterDemo() {
+    const seed = buildDemoWorkspaceSeed();
     window.sessionStorage.setItem("ph.studio.demo", "active");
     setDemo(true);
     setWorkspace(demoWorkspace);
     setBrand(demoBrand);
     setSubscription(demoSubscription);
     setSettings(null);
-    setCampaigns([]);
-    setAssets([]);
-    setCalendar([]);
+    setCampaigns(seed.campaigns);
+    setAssets(seed.assets);
+    setCalendar(seed.calendar);
+    setCampaignOutputs(seed.outputs);
     setProfile(null);
   }
   function leaveDemo() {

@@ -43,6 +43,14 @@ strategy and Brand DNA directly, offers five controlled visual systems, renders 
 1080x1350 set in the correct lane color, and downloads either one SVG or the full printable set.
 There is deliberately no unrelated prompt playground.
 
+Campaign results now use a seven-stage horizontal handoff instead of a dense asset list:
+Strategy → Anchor → Short-form → Social + written → Film plan → Visuals → Publish. Each stage shows
+one useful result at a time, keeps the active lane color, and ends with the same approve, review,
+copy, download, and next-stage actions. Strategy now exposes the audience decision, transformation,
+message spine, and channel jobs; production is an ordered shoot plan; publishing is a dated release
+sequence. The stage rail scrolls independently on phones, while the document itself remains free of
+horizontal overflow.
+
 Member Success now distinguishes remote and on-site filming-space consulting, and introduces the
 high-touch `$25,000` 90-Day Video Leverage Partnership with weekly strategy, a complete brand and
 campaign roadmap, review, and a choice of Zoom or an on-site environment session. The public

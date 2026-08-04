@@ -72,6 +72,7 @@ import {
   studioPlans,
   studioPrimaryGoals,
   studioVisualStyles,
+  type CampaignOutput,
   type StudioPlanKey,
   type StudioView,
 } from "@/lib/studio-model";
@@ -90,6 +91,7 @@ import { ContentOrbit, LanePulse, StudioMark } from "./StudioVisuals";
 import { StudioAssistant } from "./StudioAssistant";
 import { VideoRoadmap } from "./VideoRoadmap";
 import { MemberSuccess } from "./MemberSuccess";
+import { CarouselGraphicBuilder } from "./CarouselGraphicBuilder";
 
 type Campaign = Tables<"campaigns">;
 type Asset = Tables<"campaign_assets">;
@@ -2356,12 +2358,31 @@ function Campaigns() {
   );
 }
 
+type CampaignStage =
+  "strategy" | "anchor" | "shorts" | "social" | "production" | "visuals" | "publish";
+
+const campaignStages: Array<{
+  id: CampaignStage;
+  label: string;
+  detail: string;
+  icon: typeof Target;
+}> = [
+  { id: "strategy", label: "Strategy", detail: "Start here", icon: Target },
+  { id: "anchor", label: "Anchor", detail: "Main story", icon: Film },
+  { id: "shorts", label: "Short-form", detail: "Cutdowns", icon: Captions },
+  { id: "social", label: "Social + written", detail: "Platform copy", icon: MessageSquareText },
+  { id: "production", label: "Film plan", detail: "Capture it", icon: Video },
+  { id: "visuals", label: "Visuals", detail: "Campaign art", icon: Images },
+  { id: "publish", label: "Publish", detail: "Finish here", icon: CalendarDays },
+];
+
 function CampaignDetail({ campaignId }: { campaignId?: string }) {
-  const { campaigns, assets, campaignOutputs, requestService } = useStudio();
+  const { campaigns, assets, campaignOutputs, requestService, brand } = useStudio();
   const campaign = campaigns.find((item) => item.id === campaignId);
   const items = assets.filter((item) => item.campaign_id === campaignId);
   const output = campaignId ? campaignOutputs[campaignId] : undefined;
-  const [tab, setTab] = useState("strategy");
+  const [stage, setStage] = useState<CampaignStage>("strategy");
+  const reduce = useReducedMotion();
   if (!campaign)
     return (
       <div className="mx-auto max-w-4xl studio-card">
@@ -2378,120 +2399,234 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
       </div>
     );
   const lane = lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
-  const tabs = ["strategy", "scripts", "production", "publish"];
+  const stageIndex = campaignStages.findIndex((item) => item.id === stage);
+  const currentStage = campaignStages[stageIndex];
+  const CurrentIcon = currentStage.icon;
+  const approved = items.filter((item) => item.status === "approved").length;
+  const copyAll = () =>
+    void navigator.clipboard
+      .writeText(items.map((item) => `${item.title}\n${item.content}`).join("\n\n---\n\n"))
+      .then(() => toast.success("Complete campaign copied."));
   return (
-    <div className="mx-auto max-w-[88rem]">
-      <div
-        className="overflow-hidden rounded-[2rem] p-6 text-white sm:p-8"
+    <div className="mx-auto max-w-[88rem] pb-24">
+      <header
+        className="relative overflow-hidden rounded-[2rem] px-6 py-7 text-white sm:px-9 sm:py-8"
         style={{ background: lane.color }}
       >
-        <div className="flex flex-wrap items-start justify-between gap-6">
-          <div>
-            <p className="font-mono text-[9px] uppercase tracking-[.18em] text-white/55">
-              {lane.label} campaign · {campaign.status}
+        <div className="max-w-6xl">
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="font-mono text-[9px] uppercase tracking-[.2em] text-white/65">
+              {lane.label} campaign
             </p>
-            <h1 className="mt-4 max-w-4xl text-4xl font-extrabold leading-[.96] tracking-[-.055em] sm:text-6xl">
-              {campaign.title}
-            </h1>
-            <p className="mt-5 max-w-2xl text-sm text-white/70">{campaign.goal}</p>
+            <span className="rounded-full border border-white/25 px-3 py-1 font-mono text-[8px] uppercase tracking-[.15em] text-white/75">
+              {campaign.status}
+            </span>
+            <span className="font-mono text-[8px] uppercase tracking-[.15em] text-white/55">
+              {approved}/{items.length} assets approved
+            </span>
           </div>
-          <button
-            onClick={() =>
-              void requestService(
-                "strategy_review",
-                `Please review the ${campaign.title} campaign.`,
-                campaign.id,
-              )
-            }
-            className="rounded-2xl bg-white px-5 py-3 text-sm font-semibold text-ink"
+          <h1 className="mt-4 max-w-6xl text-[clamp(2.15rem,3.4vw,3.7rem)] font-extrabold leading-[.98] tracking-[-.05em]">
+            {campaign.title}
+          </h1>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/72">{campaign.goal}</p>
+        </div>
+      </header>
+
+      <nav
+        aria-label="Campaign result stages"
+        className="mt-5 overflow-x-auto rounded-[1.25rem] border border-border bg-white [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        <div className="grid min-w-[62rem] grid-cols-7">
+          {campaignStages.map((item, index) => {
+            const Icon = item.icon;
+            const active = item.id === stage;
+            return (
+              <button
+                key={item.id}
+                onClick={() => setStage(item.id)}
+                aria-current={active ? "step" : undefined}
+                className={`relative min-h-[5rem] border-r border-border px-3 text-left last:border-r-0 ${active ? "bg-white" : "bg-mist hover:bg-white"}`}
+              >
+                <span className="flex items-center gap-2 text-sm font-black">
+                  <Icon className="size-4" style={{ color: active ? lane.color : undefined }} />
+                  {item.label}
+                </span>
+                <span className="mt-1 block font-mono text-[8px] uppercase tracking-[.14em] text-muted-foreground">
+                  {String(index + 1).padStart(2, "0")} · {item.detail}
+                </span>
+                {active && (
+                  <motion.span
+                    layoutId="campaign-stage-line"
+                    className="absolute inset-x-0 bottom-0 h-1"
+                    style={{ background: lane.color }}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      </nav>
+
+      <div className="mt-5 flex flex-col gap-4 border-b border-border pb-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <span
+            className="grid size-11 shrink-0 place-items-center rounded-xl"
+            style={{ background: lane.soft, color: lane.color }}
           >
-            Ask Palmer House to review
-          </button>
+            <CurrentIcon className="size-5" />
+          </span>
+          <div>
+            <p className="font-mono text-[9px] uppercase tracking-[.18em] text-muted-foreground">
+              Campaign result · {String(stageIndex + 1).padStart(2, "0")}
+            </p>
+            <p className="mt-1 text-sm font-bold">{currentStage.detail}</p>
+          </div>
         </div>
+        <button
+          onClick={() =>
+            void requestService(
+              "strategy_review",
+              `Please review the ${campaign.title} campaign, especially the ${currentStage.label} stage.`,
+              campaign.id,
+            )
+          }
+          className="secondary-action"
+        >
+          <Eye className="size-4" /> Ask Palmer House to review
+        </button>
       </div>
-      <div className="mt-5 overflow-x-auto">
-        <div className="flex min-w-max gap-2">
-          {tabs.map((item) => (
-            <button
-              key={item}
-              onClick={() => setTab(item)}
-              className={`rounded-xl px-5 py-3 text-sm font-semibold capitalize ${tab === item ? "bg-ink text-white" : "bg-white"}`}
-            >
-              {item}
-            </button>
-          ))}
-        </div>
-      </div>
-      <div className="mt-5 grid gap-5 xl:grid-cols-[1fr_19rem]">
-        <div className="space-y-5">
-          {tab === "strategy" && <StrategyPanel campaign={campaign} output={output} />}
-          {tab === "scripts" && (
-            <AssetPanel
-              items={items.filter((item) =>
-                [
-                  "anchor_script",
-                  "short_script",
-                  "caption",
-                  "newsletter",
-                  "faq",
-                  "carousel",
-                ].includes(item.kind),
-              )}
+
+      <AnimatePresence mode="wait">
+        <motion.main
+          key={stage}
+          initial={reduce ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={reduce ? undefined : { opacity: 0, y: -8 }}
+          transition={{ duration: 0.22 }}
+          className="mt-6"
+        >
+          {stage === "strategy" && (
+            <StrategyPanel campaign={campaign} output={output} lane={lane} />
+          )}
+          {stage === "anchor" && (
+            <AnchorResult campaign={campaign} output={output} items={items} lane={lane} />
+          )}
+          {stage === "shorts" && <ShortFormResult output={output} items={items} lane={lane} />}
+          {stage === "social" && (
+            <SocialWrittenResult campaign={campaign} output={output} items={items} lane={lane} />
+          )}
+          {stage === "production" && (
+            <ProductionPanel campaign={campaign} output={output} lane={lane} />
+          )}
+          {stage === "visuals" && (
+            <VisualResult
+              output={output}
+              business={brand?.business_name || "Your brand"}
+              defaultStyle={brand?.visual_style || undefined}
             />
           )}
-          {tab === "production" && <ProductionPanel campaign={campaign} output={output} />}
-          {tab === "publish" && <PublishPanel campaign={campaign} />}
-        </div>
-        <aside className="studio-card h-fit">
-          <p className="font-mono text-[9px] uppercase tracking-[.17em] text-muted-foreground">
-            Campaign handoff
+          {stage === "publish" && <PublishPanel campaign={campaign} output={output} lane={lane} />}
+        </motion.main>
+      </AnimatePresence>
+
+      <footer className="sticky bottom-4 z-20 mt-7 rounded-[1.25rem] border border-border bg-white/95 p-3 shadow-soft backdrop-blur sm:flex sm:items-center sm:justify-between">
+        <div className="hidden sm:block">
+          <p className="text-sm font-black">Campaign handoff</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Everything stays connected to this result.
           </p>
-          <div className="mt-5 space-y-3">
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => downloadCampaign(campaign, items)}
+            className="secondary-action min-w-0 flex-1 px-3"
+          >
+            <Download className="size-4" /> Download
+          </button>
+          <button onClick={copyAll} className="secondary-action min-w-0 flex-1 px-3">
+            <Clipboard className="size-4" /> Copy all
+          </button>
+          {stageIndex < campaignStages.length - 1 ? (
             <button
-              onClick={() => downloadCampaign(campaign, items)}
-              className="secondary-action w-full"
+              onClick={() => setStage(campaignStages[stageIndex + 1].id)}
+              className="primary-action min-w-0 flex-1 px-3"
+              style={{ background: lane.color }}
             >
-              <Download className="size-4" />
-              Download campaign
+              Next: {campaignStages[stageIndex + 1].label} <ArrowRight className="size-4" />
             </button>
+          ) : (
             <button
-              onClick={() =>
-                void navigator.clipboard
-                  .writeText(
-                    items.map((item) => `${item.title}\n${item.content}`).join("\n\n---\n\n"),
-                  )
-                  .then(() => toast.success("Campaign copied."))
-              }
-              className="secondary-action w-full"
+              onClick={() => window.print()}
+              className="primary-action min-w-0 flex-1 bg-ink px-3"
             >
-              <Clipboard className="size-4" />
-              Copy all assets
+              <FileStack className="size-4" /> Print / PDF
             </button>
-            <button onClick={() => window.print()} className="secondary-action w-full">
-              <FileStack className="size-4" />
-              Print / PDF
-            </button>
-          </div>
-          <div className="mt-6 rounded-2xl bg-system-soft p-4">
-            <p className="text-sm font-semibold">Ready to produce?</p>
-            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-              The brief is already here. Ask Palmer House to film or edit it.
-            </p>
-            <button
-              onClick={() =>
-                void requestService(
-                  "full_production",
-                  `Production request for ${campaign.title}`,
-                  campaign.id,
-                )
-              }
-              className="mt-4 text-xs font-bold underline underline-offset-4"
-            >
-              Request production
-            </button>
-          </div>
-        </aside>
+          )}
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+function CampaignScreenHeader({
+  eyebrow,
+  title,
+  body,
+  action,
+  lane,
+}: {
+  eyebrow: string;
+  title: string;
+  body: string;
+  action?: ReactNode;
+  lane: (typeof lanes)[keyof typeof lanes];
+}) {
+  return (
+    <header className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <p className="font-mono text-[9px] uppercase tracking-[.2em]" style={{ color: lane.color }}>
+          {eyebrow}
+        </p>
+        <h2 className="mt-3 max-w-4xl text-3xl font-black leading-[1.03] tracking-[-.04em] sm:text-4xl">
+          {title}
+        </h2>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">{body}</p>
       </div>
+      {action}
+    </header>
+  );
+}
+
+function ArtifactActions({ asset, content }: { asset?: Asset; content: string }) {
+  const { updateAsset } = useStudio();
+  return (
+    <div className="flex flex-col gap-2 border-t border-border pt-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex gap-2">
+        {asset && (
+          <>
+            <button
+              onClick={() => void updateAsset(asset.id, { status: "approved" })}
+              className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-evergreen px-4 text-sm font-bold text-white"
+            >
+              <Check className="size-4" /> Approve
+            </button>
+            <button
+              onClick={() => void updateAsset(asset.id, { status: "review" })}
+              className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-border bg-white px-4 text-sm font-bold"
+            >
+              <Eye className="size-4" /> Review
+            </button>
+          </>
+        )}
+      </div>
+      <button
+        onClick={() =>
+          void navigator.clipboard.writeText(content).then(() => toast.success("Draft copied."))
+        }
+        className="secondary-action"
+      >
+        <Clipboard className="size-4" /> Copy
+      </button>
     </div>
   );
 }
@@ -2499,275 +2634,622 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
 function StrategyPanel({
   campaign,
   output,
+  lane,
 }: {
   campaign: Campaign;
-  output?: ReturnType<typeof useStudio>["campaignOutputs"][string];
+  output?: CampaignOutput;
+  lane: (typeof lanes)[keyof typeof lanes];
 }) {
-  const strategy = (output?.strategy || campaign.strategy) as {
-    bigIdea?: string;
-    audienceInsight?: string;
-    promise?: string;
-    messagePillars?: string[];
-    channelPlan?: Array<{ channel: string; role: string }>;
-  };
+  const strategy = (output?.strategy || campaign.strategy) as CampaignOutput["strategy"];
+  const pillars = strategy.messagePillars || [
+    "Name the real friction",
+    "Make the expertise visible",
+    "Give one confident next step",
+  ];
   return (
-    <>
-      <div className="studio-card">
-        <p className="font-mono text-[9px] uppercase tracking-[.17em] text-muted-foreground">
-          The organizing idea
-        </p>
-        <h2 className="mt-4 text-3xl font-extrabold">{strategy.bigIdea || campaign.topic}</h2>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2">
-          <Insight label="Audience truth" text={strategy.audienceInsight || campaign.audience} />
-          <Insight label="Campaign promise" text={strategy.promise || campaign.offer} />
+    <div className="space-y-6">
+      <CampaignScreenHeader
+        eyebrow="The campaign brief"
+        title="The decision behind every piece."
+        body="Use this page to keep the campaign focused. If an asset does not support this brief, it does not belong in the campaign."
+        lane={lane}
+      />
+      <section className="overflow-hidden rounded-[1.75rem] border border-border bg-white">
+        <div className="grid lg:grid-cols-[1.35fr_.65fr]">
+          <div className="p-6 sm:p-8 lg:p-10">
+            <p className="font-mono text-[9px] uppercase tracking-[.18em] text-muted-foreground">
+              Organizing idea
+            </p>
+            <h3 className="mt-4 text-3xl font-black leading-[1.06] tracking-[-.04em] sm:text-5xl">
+              {strategy.bigIdea || campaign.topic}
+            </h3>
+          </div>
+          <div className="border-t border-border p-6 lg:border-l lg:border-t-0 lg:p-8">
+            <p className="font-mono text-[9px] uppercase tracking-[.18em] text-muted-foreground">
+              The transformation
+            </p>
+            <p className="mt-5 text-base leading-relaxed text-muted-foreground line-through decoration-1">
+              {campaign.topic}
+            </p>
+            <ArrowRight className="my-4 size-5" style={{ color: lane.color }} />
+            <p className="text-lg font-black leading-snug" style={{ color: lane.color }}>
+              {strategy.promise || campaign.offer}
+            </p>
+          </div>
         </div>
-      </div>
-      <div className="studio-card">
-        <h2 className="text-xl font-bold">Message pillars</h2>
-        <div className="mt-5 grid gap-3 sm:grid-cols-3">
-          {(
-            strategy.messagePillars || [
-              "Name the friction",
-              "Show useful proof",
-              "Give one next step",
-            ]
-          ).map((pillar, index) => (
+        <div className="grid border-t border-border md:grid-cols-3">
+          {[
+            ["Audience truth", strategy.audienceInsight || campaign.audience],
+            ["Action to move", campaign.goal],
+            ["Offer / next step", campaign.offer || "Choose one clear next action."],
+          ].map(([label, text], index) => (
             <div
-              key={pillar}
-              className="rounded-2xl p-5"
-              style={{
-                background: ["var(--spotlight-soft)", "var(--reel-soft)", "var(--evergreen-soft)"][
-                  index % 3
-                ],
-              }}
+              key={label}
+              className="border-b border-border p-6 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0"
             >
-              <span className="font-mono text-[9px] text-muted-foreground">0{index + 1}</span>
-              <p className="mt-8 font-semibold">{pillar}</p>
+              <span className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+                0{index + 1} · {label}
+              </span>
+              <p className="mt-4 text-sm font-semibold leading-relaxed">{text}</p>
             </div>
           ))}
         </div>
+      </section>
+
+      <section className="rounded-[1.75rem] border border-border bg-white p-6 sm:p-8">
+        <h3 className="text-xl font-black">Message spine</h3>
+        <p className="mt-2 text-sm text-muted-foreground">
+          These are the three ideas the audience should remember after everything else fades.
+        </p>
+        <div className="mt-6 grid gap-3 md:grid-cols-3">
+          {pillars.map((pillar, index) => (
+            <div
+              key={pillar}
+              className="min-h-40 rounded-[1.25rem] p-5"
+              style={{ background: lane.soft }}
+            >
+              <span className="font-mono text-[9px]" style={{ color: lane.color }}>
+                0{index + 1}
+              </span>
+              <p className="mt-12 text-lg font-black leading-snug">{pillar}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="rounded-[1.75rem] border border-border bg-white p-6 sm:p-8">
+        <h3 className="text-xl font-black">Where each channel does its job</h3>
+        <div className="mt-5 divide-y divide-border">
+          {(strategy.channelPlan || []).map((item, index) => (
+            <div
+              key={`${item.channel}-${index}`}
+              className="grid gap-2 py-5 sm:grid-cols-[3rem_14rem_1fr] sm:items-center"
+            >
+              <span className="font-mono text-[9px] text-muted-foreground">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <p className="font-black">{item.channel}</p>
+              <p className="text-sm leading-relaxed text-muted-foreground">{item.role}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function AnchorResult({
+  campaign,
+  output,
+  items,
+  lane,
+}: {
+  campaign: Campaign;
+  output?: CampaignOutput;
+  items: Asset[];
+  lane: (typeof lanes)[keyof typeof lanes];
+}) {
+  const asset = items.find((item) => item.kind === "anchor_script");
+  const hook = output?.anchor.hook || asset?.content.split("\n\n")[0] || campaign.topic;
+  const body = output?.anchor.script || asset?.content || "The main script will appear here.";
+  const cta = output?.anchor.callToAction || campaign.offer || "Give the audience one next step.";
+  const complete = `${hook}\n\n${body}\n\nCTA: ${cta}`;
+  const words = complete.trim().split(/\s+/).length;
+  return (
+    <div className="space-y-6">
+      <CampaignScreenHeader
+        eyebrow="Anchor video"
+        title={output?.anchor.title || asset?.title || campaign.topic}
+        body="The main explanation everything else in the campaign comes from. Read it in three beats, then approve or send it for review."
+        lane={lane}
+        action={
+          <div className="flex gap-2">
+            <span className="rounded-full bg-mist px-4 py-2 text-xs font-bold">{words} words</span>
+            <span
+              className="rounded-full px-4 py-2 text-xs font-bold"
+              style={{ background: lane.soft, color: lane.color }}
+            >
+              ~{Math.max(1, Math.ceil(words / 140))} min
+            </span>
+          </div>
+        }
+      />
+      <article className="overflow-hidden rounded-[1.75rem] border border-border bg-white">
+        {[
+          ["01", "Open", "Earn the next ten seconds.", hook],
+          ["02", "Explain", "Organize the decision clearly.", body],
+          ["03", "Invite", "Give one calm next step.", cta],
+        ].map(([number, label, note, text]) => (
+          <section
+            key={label}
+            className="grid gap-5 border-b border-border p-6 last:border-b-0 sm:p-8 lg:grid-cols-[10rem_1fr]"
+          >
+            <div>
+              <p
+                className="font-mono text-[9px] uppercase tracking-[.18em]"
+                style={{ color: lane.color }}
+              >
+                {number} · {label}
+              </p>
+              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{note}</p>
+            </div>
+            <p
+              className={`whitespace-pre-wrap leading-[1.75] ${label === "Open" ? "text-2xl font-black tracking-[-.025em]" : "text-base"}`}
+            >
+              {text}
+            </p>
+          </section>
+        ))}
+      </article>
+      <ArtifactActions asset={asset} content={complete} />
+    </div>
+  );
+}
+
+function ShortFormResult({
+  output,
+  items,
+  lane,
+}: {
+  output?: CampaignOutput;
+  items: Asset[];
+  lane: (typeof lanes)[keyof typeof lanes];
+}) {
+  const assets = items.filter((item) => item.kind === "short_script");
+  const shorts =
+    output?.shorts ||
+    assets.map((asset) => ({
+      title: asset.title,
+      hook: asset.content.split("\n\n")[0] || asset.title,
+      script: asset.content,
+      callToAction: "Give the viewer one clear next step.",
+    }));
+  const [selected, setSelected] = useState(0);
+  const current = shorts[selected];
+  if (!current)
+    return (
+      <EmptyState
+        icon={Captions}
+        title="No short-form drafts yet."
+        body="Build the campaign to create the cutdowns."
+      />
+    );
+  const content = `${current.hook}\n\n${current.script}\n\nCTA: ${current.callToAction}`;
+  return (
+    <div className="space-y-6">
+      <CampaignScreenHeader
+        eyebrow="Short-form cutdowns"
+        title="One idea. Several clean entry points."
+        body="Choose a cutdown across the top. Each one has a distinct hook, useful middle, and next step—without making you scan every draft at once."
+        lane={lane}
+      />
+      <div className="flex gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {shorts.map((item, index) => (
+          <button
+            key={`${item.title}-${index}`}
+            onClick={() => setSelected(index)}
+            className={`min-h-24 min-w-[15rem] rounded-[1.15rem] border p-4 text-left ${selected === index ? "shadow-soft" : "bg-white"}`}
+            style={
+              selected === index ? { borderColor: lane.color, background: lane.soft } : undefined
+            }
+          >
+            <span className="font-mono text-[8px] uppercase tracking-[.15em] text-muted-foreground">
+              Cutdown {String(index + 1).padStart(2, "0")}
+            </span>
+            <span className="mt-2 block text-sm font-black leading-snug">{item.title}</span>
+          </button>
+        ))}
       </div>
-    </>
+      <article className="rounded-[1.75rem] border border-border bg-white p-6 sm:p-9">
+        <div className="flex items-start justify-between gap-4 border-b border-border pb-6">
+          <div>
+            <p
+              className="font-mono text-[9px] uppercase tracking-[.18em]"
+              style={{ color: lane.color }}
+            >
+              Reels · TikTok · Shorts
+            </p>
+            <h3 className="mt-3 text-3xl font-black tracking-[-.035em]">{current.title}</h3>
+          </div>
+          <span className="rounded-full bg-mist px-3 py-2 font-mono text-[9px] uppercase tracking-[.12em]">
+            30–45 sec
+          </span>
+        </div>
+        <div className="mt-7 grid gap-6 lg:grid-cols-3">
+          {[
+            ["Stop", current.hook],
+            ["Hold", current.script],
+            ["Move", current.callToAction],
+          ].map(([label, text], index) => (
+            <div key={label} className="border-l-4 pl-5" style={{ borderColor: lane.color }}>
+              <p className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+                0{index + 1} · {label}
+              </p>
+              <p className="mt-4 whitespace-pre-wrap text-sm leading-[1.7]">{text}</p>
+            </div>
+          ))}
+        </div>
+      </article>
+      <ArtifactActions asset={assets[selected]} content={content} />
+    </div>
+  );
+}
+
+type SocialEntry = {
+  id: string;
+  type: string;
+  channel: string;
+  title: string;
+  body: string;
+  callToAction?: string;
+  nativeFeature?: string;
+  asset?: Asset;
+};
+
+function SocialWrittenResult({
+  campaign,
+  output,
+  items,
+  lane,
+}: {
+  campaign: Campaign;
+  output?: CampaignOutput;
+  items: Asset[];
+  lane: (typeof lanes)[keyof typeof lanes];
+}) {
+  const platformAssets = items.filter((item) => item.kind === "platform_post");
+  const entries: SocialEntry[] = output
+    ? [
+        ...output.platformPosts.map((post, index) => ({
+          id: post.id,
+          type: post.format,
+          channel: post.platform,
+          title: post.title,
+          body: `${post.hook}\n\n${post.body}${post.hashtags.length ? `\n\n${post.hashtags.join(" ")}` : ""}`,
+          callToAction: post.callToAction,
+          nativeFeature: post.nativeFeature,
+          asset: platformAssets[index],
+        })),
+        {
+          id: "newsletter",
+          type: "email",
+          channel: "email",
+          title: output.newsletter.subject,
+          body: output.newsletter.body,
+          asset: items.find((item) => item.kind === "newsletter"),
+        },
+        ...output.faq.map((faq, index) => ({
+          id: `faq-${index}`,
+          type: "FAQ",
+          channel: "website",
+          title: faq.question,
+          body: faq.answer,
+          asset: items.filter((item) => item.kind === "faq")[index],
+        })),
+      ]
+    : items
+        .filter((item) => ["platform_post", "caption", "newsletter", "faq"].includes(item.kind))
+        .map((item) => ({
+          id: item.id,
+          type: assetKindMeta(item.kind).label,
+          channel: item.kind === "newsletter" ? "email" : "social",
+          title: item.title,
+          body: item.content,
+          asset: item,
+        }));
+  const [selected, setSelected] = useState(0);
+  const current = entries[selected];
+  if (!current)
+    return (
+      <EmptyState
+        icon={MessageSquareText}
+        title="No platform drafts yet."
+        body="Build the campaign to create them."
+      />
+    );
+  const copy = `${current.title}\n\n${current.body}${current.callToAction ? `\n\n${current.callToAction}` : ""}`;
+  return (
+    <div className="space-y-6">
+      <CampaignScreenHeader
+        eyebrow="Social + written"
+        title="Every channel gets its own version."
+        body="Platform-native posts, email, and FAQs stay connected to the same strategy without being flattened into one long list."
+        lane={lane}
+      />
+      <div className="flex gap-2 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {entries.map((entry, index) => (
+          <button
+            key={entry.id}
+            onClick={() => setSelected(index)}
+            className={`min-h-14 shrink-0 rounded-full border px-4 text-sm font-bold capitalize ${selected === index ? "shadow-soft" : "bg-white"}`}
+            style={
+              selected === index
+                ? { borderColor: lane.color, background: lane.soft, color: lane.color }
+                : undefined
+            }
+          >
+            {entry.channel} · {entry.type}
+          </button>
+        ))}
+      </div>
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
+        <article className="rounded-[1.75rem] border border-border bg-white p-6 sm:p-8">
+          <div className="flex items-center gap-3 border-b border-border pb-5">
+            <span
+              className="grid size-11 place-items-center rounded-full text-sm font-black text-white"
+              style={{ background: lane.color }}
+            >
+              {(campaign.title || "C").charAt(0)}
+            </span>
+            <div>
+              <p className="font-black">{campaign.title.split(":")[0]}</p>
+              <p className="text-xs capitalize text-muted-foreground">{current.channel} preview</p>
+            </div>
+          </div>
+          <h3 className="mt-6 text-2xl font-black tracking-[-.025em]">{current.title}</h3>
+          <p className="mt-5 whitespace-pre-wrap text-[15px] leading-[1.75]">{current.body}</p>
+          {current.callToAction && (
+            <p
+              className="mt-5 border-l-4 pl-4 text-sm font-black"
+              style={{ borderColor: lane.color }}
+            >
+              {current.callToAction}
+            </p>
+          )}
+          <div className="mt-7 flex justify-between border-t border-border pt-4 text-xs text-muted-foreground">
+            <span>Like</span>
+            <span>Comment</span>
+            <span>Share</span>
+          </div>
+        </article>
+        <aside className="h-fit rounded-[1.5rem] p-5" style={{ background: lane.soft }}>
+          <p
+            className="font-mono text-[9px] uppercase tracking-[.18em]"
+            style={{ color: lane.color }}
+          >
+            Why this version exists
+          </p>
+          <p className="mt-4 text-sm leading-relaxed">
+            {current.nativeFeature ||
+              "This version is shaped for the channel and the audience action it needs to earn."}
+          </p>
+          <div className="mt-6 border-t border-current/10 pt-5">
+            <p className="text-xs font-black capitalize">{current.type}</p>
+            <p className="mt-1 text-xs text-muted-foreground capitalize">{current.channel}</p>
+          </div>
+        </aside>
+      </div>
+      <ArtifactActions asset={current.asset} content={copy} />
+    </div>
   );
 }
 
 function ProductionPanel({
   campaign,
   output,
+  lane,
 }: {
   campaign: Campaign;
-  output?: ReturnType<typeof useStudio>["campaignOutputs"][string];
+  output?: CampaignOutput;
+  lane: (typeof lanes)[keyof typeof lanes];
 }) {
-  const plan = (output?.productionPlan || campaign.production_plan) as {
-    objective?: string;
-    estimatedMinutes?: number;
-    location?: string;
-    wardrobe?: string[];
-    props?: string[];
-    deliveryNotes?: string[];
-    shots?: Array<{ shot: string; framing: string; purpose: string }>;
-    broll?: string[];
-    checklist?: string[];
-  };
+  const plan = (output?.productionPlan ||
+    campaign.production_plan) as CampaignOutput["productionPlan"];
   return (
-    <>
-      <div className="studio-card">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p className="font-mono text-[9px] uppercase tracking-[.17em] text-muted-foreground">
-              Filmable plan
-            </p>
-            <h2 className="mt-3 text-3xl font-extrabold">
-              {plan.objective || "Turn the campaign into usable footage."}
-            </h2>
-          </div>
-          <span className="rounded-xl bg-evergreen-soft px-4 py-3 text-sm font-semibold text-evergreen">
+    <div className="space-y-6">
+      <CampaignScreenHeader
+        eyebrow="Film plan"
+        title={plan.objective || "Turn the campaign into usable footage."}
+        body="Follow the shot order from top to bottom. It is arranged to protect the main story first, then collect the proof and cutaways the rest of the campaign needs."
+        lane={lane}
+        action={
+          <span
+            className="rounded-full px-4 py-3 text-sm font-black"
+            style={{ background: lane.soft, color: lane.color }}
+          >
             ~{plan.estimatedMinutes || 75} minutes
           </span>
+        }
+      />
+      <section className="grid overflow-hidden rounded-[1.75rem] border border-border bg-white md:grid-cols-3">
+        <Insight label="Location" text={plan.location || "Choose a quiet, relevant location."} />
+        <Insight label="Wardrobe" text={(plan.wardrobe || []).join(" · ")} />
+        <Insight label="Props" text={(plan.props || []).join(" · ")} />
+      </section>
+      <section className="overflow-hidden rounded-[1.75rem] border border-border bg-white">
+        <div className="border-b border-border p-6 sm:p-8">
+          <h3 className="text-xl font-black">Shot order</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Start at 01. End when the proof is safely captured.
+          </p>
         </div>
-        <div className="mt-7 grid gap-4 sm:grid-cols-3">
-          <Insight label="Location" text={plan.location || "Choose a quiet, relevant location."} />
-          <Insight label="Wardrobe" text={(plan.wardrobe || []).join(" · ")} />
-          <Insight label="Props" text={(plan.props || []).join(" · ")} />
-        </div>
-      </div>
-      <div className="studio-card overflow-hidden">
-        <h2 className="text-xl font-bold">Shot list</h2>
-        <div className="mt-5 divide-y divide-border">
+        <div className="divide-y divide-border">
           {(plan.shots || []).map((shot, index) => (
             <div
               key={`${shot.shot}-${index}`}
-              className="grid gap-2 py-4 sm:grid-cols-[3rem_1fr_10rem_1fr]"
+              className="grid gap-3 p-5 sm:p-6 md:grid-cols-[3rem_1.1fr_.65fr_1.4fr] md:items-center"
             >
-              <span className="font-mono text-[9px] text-muted-foreground">
+              <span
+                className="grid size-9 place-items-center rounded-full font-mono text-[10px] font-bold"
+                style={{ background: lane.soft, color: lane.color }}
+              >
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <p className="font-semibold">{shot.shot}</p>
-              <p className="text-sm text-muted-foreground">{shot.framing}</p>
-              <p className="text-sm text-muted-foreground">{shot.purpose}</p>
+              <p className="font-black">{shot.shot}</p>
+              <p className="text-xs font-bold text-muted-foreground">{shot.framing}</p>
+              <p className="text-sm leading-relaxed text-muted-foreground">{shot.purpose}</p>
             </div>
           ))}
         </div>
-      </div>
-    </>
-  );
-}
-
-function PublishPanel({ campaign }: { campaign: Campaign }) {
-  const { calendar } = useStudio();
-  const items = calendar.filter((item) => item.campaign_id === campaign.id);
-  return (
-    <div className="studio-card">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="font-mono text-[9px] uppercase tracking-[.17em] text-muted-foreground">
-            Publishing plan
-          </p>
-          <h2 className="mt-2 text-2xl font-bold">The campaign has a rhythm.</h2>
-        </div>
-        <Link to="/studio/calendar" className="text-xs font-semibold">
-          Open calendar
-        </Link>
-      </div>
-      <div className="mt-7 space-y-3">
-        {items.map((item) => (
-          <div
-            key={item.id}
-            className="grid gap-3 rounded-2xl border border-border bg-white p-4 sm:grid-cols-[8rem_1fr_10rem]"
-          >
-            <time className="font-mono text-xs">
-              {new Date(item.publish_at).toLocaleDateString()}
-            </time>
-            <p className="font-semibold">{item.title}</p>
-            <p className="text-sm text-muted-foreground">{item.channel}</p>
+      </section>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <section className="rounded-[1.5rem] border border-border bg-white p-6">
+          <h3 className="text-lg font-black">B-roll to leave with</h3>
+          <div className="mt-4 space-y-3">
+            {(plan.broll || []).map((item, index) => (
+              <p key={item} className="flex gap-3 text-sm">
+                <span className="font-mono text-[9px] text-muted-foreground">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                {item}
+              </p>
+            ))}
           </div>
-        ))}
+        </section>
+        <section className="rounded-[1.5rem] border border-border bg-white p-6">
+          <h3 className="text-lg font-black">Before you press record</h3>
+          <div className="mt-4 space-y-3">
+            {(plan.checklist || []).map((item) => (
+              <p key={item} className="flex gap-3 text-sm">
+                <CheckCircle2 className="mt-0.5 size-4 shrink-0" style={{ color: lane.color }} />
+                {item}
+              </p>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );
 }
 
-function AssetPanel({ items }: { items: Asset[] }) {
-  const { updateAsset } = useStudio();
-  const [selectedId, setSelectedId] = useState(items[0]?.id || "");
-  const selected = items.find((asset) => asset.id === selectedId) || items[0];
-  if (!selected) {
+function VisualResult({
+  output,
+  business,
+  defaultStyle,
+}: {
+  output?: CampaignOutput;
+  business: string;
+  defaultStyle?: string;
+}) {
+  if (!output)
     return (
-      <div className="studio-card">
+      <div className="rounded-[1.75rem] border border-border bg-white">
         <EmptyState
-          icon={FileText}
-          title="No drafts yet."
-          body="Build the campaign to create its working assets."
+          icon={Images}
+          title="No visual set yet."
+          body="Rebuild this campaign to generate its connected carousel direction."
         />
       </div>
     );
-  }
-  const selectedMeta = assetKindMeta(selected.kind);
   return (
-    <div className="overflow-hidden rounded-[1.5rem] border border-border bg-white lg:grid lg:min-h-[38rem] lg:grid-cols-[18rem_1fr]">
-      <aside className="border-b border-border p-3 lg:border-b-0 lg:border-r">
-        <div className="mb-3 px-2 py-2">
-          <p className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
-            Campaign assets
-          </p>
-          <p className="mt-2 text-sm font-extrabold">Choose one thing to work on</p>
-        </div>
-        <div className="flex gap-2 overflow-x-auto pb-2 lg:block lg:space-y-1 lg:overflow-visible lg:pb-0">
-          {items.map((asset) => {
-            const meta = assetKindMeta(asset.kind);
-            return (
-              <button
-                key={asset.id}
-                onClick={() => setSelectedId(asset.id)}
-                className={`flex min-h-14 min-w-[15rem] items-center gap-3 rounded-xl px-3 text-left transition lg:min-w-0 lg:w-full ${selected.id === asset.id ? "border border-border bg-white shadow-soft" : "hover:bg-secondary"}`}
-              >
-                <span
-                  className="grid size-9 shrink-0 place-items-center rounded-xl"
-                  style={{ background: `${meta.color}14`, color: meta.color }}
-                >
-                  <meta.icon className="size-4" />
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate font-semibold">{asset.title}</span>
-                  <span className="font-mono text-[8px] uppercase tracking-[.14em] text-muted-foreground">
-                    {meta.label} · {asset.status}
-                  </span>
-                </span>
-                <ChevronRight className="size-3.5 shrink-0" />
-              </button>
-            );
-          })}
-        </div>
-      </aside>
-      <AnimatePresence mode="wait">
-        <motion.section
-          key={selected.id}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -6 }}
-          transition={{ duration: 0.22 }}
-          className="flex min-w-0 flex-col p-5 sm:p-7"
-        >
-          <header className="flex flex-col gap-4 border-b border-border pb-5 sm:flex-row sm:items-start sm:justify-between">
-            <div className="flex items-start gap-4">
-              <span
-                className="grid size-11 shrink-0 place-items-center rounded-xl"
-                style={{ background: `${selectedMeta.color}14`, color: selectedMeta.color }}
-              >
-                <selectedMeta.icon className="size-5" />
-              </span>
-              <div>
-                <p className="text-xs font-extrabold" style={{ color: selectedMeta.color }}>
-                  {selectedMeta.label}
-                </p>
-                <h2 className="mt-1 text-2xl font-black">{selected.title}</h2>
-              </div>
-            </div>
-            <span className="w-fit rounded-full bg-evergreen-soft px-3 py-1 text-[9px] font-bold text-evergreen">
-              {selected.status}
-            </span>
-          </header>
-          <div className="mt-6 flex-1">
-            <label className="text-sm font-extrabold" htmlFor={`asset-${selected.id}`}>
-              Working draft
-            </label>
-            <textarea
-              id={`asset-${selected.id}`}
-              defaultValue={selected.content}
-              onBlur={(event) => void updateAsset(selected.id, { content: event.target.value })}
-              rows={Math.min(20, Math.max(11, selected.content.split("\n").length + 3))}
-              className="mt-3 w-full resize-y rounded-[1.15rem] border border-border bg-white p-5 text-sm leading-[1.75] outline-none focus:border-system"
-            />
-          </div>
-          <footer className="mt-5 flex flex-col gap-2 border-t border-border pt-5 sm:flex-row sm:justify-between">
-            <div className="flex gap-2">
-              <button
-                onClick={() => void updateAsset(selected.id, { status: "approved" })}
-                className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-evergreen px-4 text-sm font-bold text-white"
-              >
-                <Check className="size-4" /> Approve
-              </button>
-              <button
-                onClick={() => void updateAsset(selected.id, { status: "review" })}
-                className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-spotlight-soft px-4 text-sm font-bold text-spotlight"
-              >
-                <Eye className="size-4" /> Send to review
-              </button>
-            </div>
-            <button
-              onClick={() =>
-                void navigator.clipboard
-                  .writeText(selected.content)
-                  .then(() => toast.success("Copied."))
-              }
-              className="secondary-action"
+    <div className="rounded-[1.75rem] border border-border bg-white p-6 sm:p-8 [&>section]:mt-0 [&>section]:border-t-0 [&>section]:pt-0">
+      <CarouselGraphicBuilder output={output} business={business} defaultStyle={defaultStyle} />
+    </div>
+  );
+}
+
+function PublishPanel({
+  campaign,
+  output,
+  lane,
+}: {
+  campaign: Campaign;
+  output?: CampaignOutput;
+  lane: (typeof lanes)[keyof typeof lanes];
+}) {
+  const { calendar } = useStudio();
+  const saved = calendar.filter((item) => item.campaign_id === campaign.id);
+  const baseDate = new Date(campaign.created_at);
+  const scheduled = saved.length
+    ? saved.map((item) => ({
+        id: item.id,
+        title: item.title,
+        channel: item.channel,
+        date: new Date(item.publish_at),
+        status: item.status,
+      }))
+    : (output?.schedule || []).map((item, index) => ({
+        id: `planned-${index}`,
+        title: item.title,
+        channel: item.channel,
+        date: new Date(baseDate.getTime() + item.dayOffset * 86_400_000),
+        status: "planned",
+      }));
+  return (
+    <div className="space-y-6">
+      <CampaignScreenHeader
+        eyebrow="Publishing rhythm"
+        title="Release the campaign as a sequence."
+        body="The anchor establishes the idea. Every follow-up keeps the same promise alive in a format suited to the channel."
+        lane={lane}
+        action={
+          <Link to="/studio/calendar" className="primary-action" style={{ background: lane.color }}>
+            <CalendarDays className="size-4" /> Open calendar
+          </Link>
+        }
+      />
+      <section className="overflow-hidden rounded-[1.75rem] border border-border bg-white">
+        <div className="grid min-w-0 md:grid-cols-2 xl:grid-cols-5">
+          {scheduled.map((item, index) => (
+            <article
+              key={item.id}
+              className="relative min-h-56 border-b border-border p-5 last:border-b-0 md:border-r xl:border-b-0 xl:last:border-r-0"
             >
-              <Clipboard className="size-4" />
-              Copy
-            </button>
-          </footer>
-        </motion.section>
-      </AnimatePresence>
+              <div className="flex items-center justify-between gap-3">
+                <span
+                  className="font-mono text-[9px] uppercase tracking-[.15em]"
+                  style={{ color: lane.color }}
+                >
+                  {index === 0 ? "Start here" : `Beat ${String(index + 1).padStart(2, "0")}`}
+                </span>
+                <span className="rounded-full bg-mist px-2 py-1 font-mono text-[8px] uppercase">
+                  {item.status}
+                </span>
+              </div>
+              <time className="mt-7 block text-xs font-bold text-muted-foreground">
+                {item.date.toLocaleDateString(undefined, { month: "short", day: "numeric" })}
+              </time>
+              <h3 className="mt-3 text-lg font-black leading-snug">{item.title}</h3>
+              <p className="mt-4 text-xs text-muted-foreground">{item.channel}</p>
+              {index < scheduled.length - 1 && (
+                <ArrowRight
+                  className="absolute -right-3 top-1/2 z-10 hidden size-6 rounded-full bg-white p-1 shadow-soft xl:block"
+                  style={{ color: lane.color }}
+                />
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+      <div
+        className="flex flex-col gap-4 rounded-[1.5rem] p-6 sm:flex-row sm:items-center sm:justify-between"
+        style={{ background: lane.soft }}
+      >
+        <div>
+          <p
+            className="font-mono text-[9px] uppercase tracking-[.17em]"
+            style={{ color: lane.color }}
+          >
+            Campaign ready
+          </p>
+          <p className="mt-2 text-lg font-black">
+            The thinking is organized. Give the work dates and owners.
+          </p>
+        </div>
+        <Link to="/studio/calendar" className="secondary-action border-0 bg-white">
+          Review every date <ArrowRight className="size-4" />
+        </Link>
+      </div>
     </div>
   );
 }

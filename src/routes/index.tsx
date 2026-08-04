@@ -22,7 +22,10 @@ export const Route = createFileRoute("/")({
         content:
           "Palmer House Productions builds video systems for Pacific Northwest businesses — one shoot day delivers a content library for social, web, and training.",
       },
-      { property: "og:title", content: "Palmer House Productions — Video Systems That Solve Business Problems" },
+      {
+        property: "og:title",
+        content: "Palmer House Productions — Video Systems That Solve Business Problems",
+      },
       {
         property: "og:description",
         content:

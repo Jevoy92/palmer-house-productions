@@ -32,20 +32,33 @@ import { Route as ReelPalRouteImport } from './routes/reel-pal'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as SpotlightPalRouteImport } from './routes/spotlight-pal'
 import { Route as StartupsRouteImport } from './routes/startups'
+import { Route as StudioRouteImport } from './routes/studio'
 import { Route as StudioPreviewRouteImport } from './routes/studio-preview'
 import { Route as SystemPalRouteImport } from './routes/system-pal'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as VideoSystemAssessmentRouteImport } from './routes/video-system-assessment'
 import { Route as WebinarRouteImport } from './routes/webinar'
 import { Route as WorkRouteImport } from './routes/work'
+import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe-webhook'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
 import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
+import { Route as MembershipPricingRouteImport } from './routes/membership.pricing'
+import { Route as MembershipSprintRouteImport } from './routes/membership.sprint'
 import { Route as ResourcesReviewsRouteImport } from './routes/resources.reviews'
 import { Route as ServicesDiyDownloadsRouteImport } from './routes/services.diy-downloads'
 import { Route as ServicesPostProductionRouteImport } from './routes/services.post-production'
 import { Route as ServicesVideoProductionRouteImport } from './routes/services.video-production'
+import { Route as StudioIndexRouteImport } from './routes/studio.index'
+import { Route as StudioBillingRouteImport } from './routes/studio.billing'
+import { Route as StudioBrandRouteImport } from './routes/studio.brand'
+import { Route as StudioCalendarRouteImport } from './routes/studio.calendar'
+import { Route as StudioLibraryRouteImport } from './routes/studio.library'
+import { Route as StudioOnboardingRouteImport } from './routes/studio.onboarding'
+import { Route as StudioSettingsRouteImport } from './routes/studio.settings'
+import { Route as StudioCampaignsIndexRouteImport } from './routes/studio.campaigns.index'
+import { Route as StudioCampaignsCampaignIdRouteImport } from './routes/studio.campaigns.$campaignId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -162,6 +175,11 @@ const StartupsRoute = StartupsRouteImport.update({
   path: '/startups',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudioRoute = StudioRouteImport.update({
+  id: '/studio',
+  path: '/studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StudioPreviewRoute = StudioPreviewRouteImport.update({
   id: '/studio-preview',
   path: '/studio-preview',
@@ -192,6 +210,11 @@ const WorkRoute = WorkRouteImport.update({
   path: '/work',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
+  id: '/api/stripe-webhook',
+  path: '/api/stripe-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
@@ -211,6 +234,16 @@ const LocationsSlugRoute = LocationsSlugRouteImport.update({
   id: '/locations/$slug',
   path: '/locations/$slug',
   getParentRoute: () => rootRouteImport,
+} as any)
+const MembershipPricingRoute = MembershipPricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => MembershipRoute,
+} as any)
+const MembershipSprintRoute = MembershipSprintRouteImport.update({
+  id: '/sprint',
+  path: '/sprint',
+  getParentRoute: () => MembershipRoute,
 } as any)
 const ResourcesReviewsRoute = ResourcesReviewsRouteImport.update({
   id: '/resources/reviews',
@@ -232,6 +265,52 @@ const ServicesVideoProductionRoute = ServicesVideoProductionRouteImport.update({
   path: '/services/video-production',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StudioIndexRoute = StudioIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => StudioRoute,
+} as any)
+const StudioBillingRoute = StudioBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => StudioRoute,
+} as any)
+const StudioBrandRoute = StudioBrandRouteImport.update({
+  id: '/brand',
+  path: '/brand',
+  getParentRoute: () => StudioRoute,
+} as any)
+const StudioCalendarRoute = StudioCalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
+  getParentRoute: () => StudioRoute,
+} as any)
+const StudioLibraryRoute = StudioLibraryRouteImport.update({
+  id: '/library',
+  path: '/library',
+  getParentRoute: () => StudioRoute,
+} as any)
+const StudioOnboardingRoute = StudioOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => StudioRoute,
+} as any)
+const StudioSettingsRoute = StudioSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => StudioRoute,
+} as any)
+const StudioCampaignsIndexRoute = StudioCampaignsIndexRouteImport.update({
+  id: '/campaigns/',
+  path: '/campaigns/',
+  getParentRoute: () => StudioRoute,
+} as any)
+const StudioCampaignsCampaignIdRoute =
+  StudioCampaignsCampaignIdRouteImport.update({
+    id: '/campaigns/$campaignId',
+    path: '/campaigns/$campaignId',
+    getParentRoute: () => StudioRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -246,7 +325,7 @@ export interface FileRoutesByFullPath {
   '/find-your-pal': typeof FindYourPalRoute
   '/games': typeof GamesRoute
   '/integrations': typeof IntegrationsRoute
-  '/membership': typeof MembershipRoute
+  '/membership': typeof MembershipRouteWithChildren
   '/pals': typeof PalsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -257,20 +336,33 @@ export interface FileRoutesByFullPath {
   '/shop': typeof ShopRoute
   '/spotlight-pal': typeof SpotlightPalRoute
   '/startups': typeof StartupsRoute
+  '/studio': typeof StudioRouteWithChildren
   '/studio-preview': typeof StudioPreviewRoute
   '/system-pal': typeof SystemPalRoute
   '/terms': typeof TermsRoute
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
   '/webinar': typeof WebinarRoute
   '/work': typeof WorkRoute
+  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
+  '/membership/pricing': typeof MembershipPricingRoute
+  '/membership/sprint': typeof MembershipSprintRoute
   '/resources/reviews': typeof ResourcesReviewsRoute
   '/services/diy-downloads': typeof ServicesDiyDownloadsRoute
   '/services/post-production': typeof ServicesPostProductionRoute
   '/services/video-production': typeof ServicesVideoProductionRoute
+  '/studio/billing': typeof StudioBillingRoute
+  '/studio/brand': typeof StudioBrandRoute
+  '/studio/calendar': typeof StudioCalendarRoute
+  '/studio/library': typeof StudioLibraryRoute
+  '/studio/onboarding': typeof StudioOnboardingRoute
+  '/studio/settings': typeof StudioSettingsRoute
   '/blog/': typeof BlogIndexRoute
+  '/studio/': typeof StudioIndexRoute
+  '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
+  '/studio/campaigns/': typeof StudioCampaignsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -285,7 +377,7 @@ export interface FileRoutesByTo {
   '/find-your-pal': typeof FindYourPalRoute
   '/games': typeof GamesRoute
   '/integrations': typeof IntegrationsRoute
-  '/membership': typeof MembershipRoute
+  '/membership': typeof MembershipRouteWithChildren
   '/pals': typeof PalsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -302,14 +394,26 @@ export interface FileRoutesByTo {
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
   '/webinar': typeof WebinarRoute
   '/work': typeof WorkRoute
+  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
+  '/membership/pricing': typeof MembershipPricingRoute
+  '/membership/sprint': typeof MembershipSprintRoute
   '/resources/reviews': typeof ResourcesReviewsRoute
   '/services/diy-downloads': typeof ServicesDiyDownloadsRoute
   '/services/post-production': typeof ServicesPostProductionRoute
   '/services/video-production': typeof ServicesVideoProductionRoute
+  '/studio/billing': typeof StudioBillingRoute
+  '/studio/brand': typeof StudioBrandRoute
+  '/studio/calendar': typeof StudioCalendarRoute
+  '/studio/library': typeof StudioLibraryRoute
+  '/studio/onboarding': typeof StudioOnboardingRoute
+  '/studio/settings': typeof StudioSettingsRoute
   '/blog': typeof BlogIndexRoute
+  '/studio': typeof StudioIndexRoute
+  '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
+  '/studio/campaigns': typeof StudioCampaignsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -325,7 +429,7 @@ export interface FileRoutesById {
   '/find-your-pal': typeof FindYourPalRoute
   '/games': typeof GamesRoute
   '/integrations': typeof IntegrationsRoute
-  '/membership': typeof MembershipRoute
+  '/membership': typeof MembershipRouteWithChildren
   '/pals': typeof PalsRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
@@ -336,20 +440,33 @@ export interface FileRoutesById {
   '/shop': typeof ShopRoute
   '/spotlight-pal': typeof SpotlightPalRoute
   '/startups': typeof StartupsRoute
+  '/studio': typeof StudioRouteWithChildren
   '/studio-preview': typeof StudioPreviewRoute
   '/system-pal': typeof SystemPalRoute
   '/terms': typeof TermsRoute
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
   '/webinar': typeof WebinarRoute
   '/work': typeof WorkRoute
+  '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
+  '/membership/pricing': typeof MembershipPricingRoute
+  '/membership/sprint': typeof MembershipSprintRoute
   '/resources/reviews': typeof ResourcesReviewsRoute
   '/services/diy-downloads': typeof ServicesDiyDownloadsRoute
   '/services/post-production': typeof ServicesPostProductionRoute
   '/services/video-production': typeof ServicesVideoProductionRoute
+  '/studio/billing': typeof StudioBillingRoute
+  '/studio/brand': typeof StudioBrandRoute
+  '/studio/calendar': typeof StudioCalendarRoute
+  '/studio/library': typeof StudioLibraryRoute
+  '/studio/onboarding': typeof StudioOnboardingRoute
+  '/studio/settings': typeof StudioSettingsRoute
   '/blog/': typeof BlogIndexRoute
+  '/studio/': typeof StudioIndexRoute
+  '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
+  '/studio/campaigns/': typeof StudioCampaignsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -377,20 +494,33 @@ export interface FileRouteTypes {
     | '/shop'
     | '/spotlight-pal'
     | '/startups'
+    | '/studio'
     | '/studio-preview'
     | '/system-pal'
     | '/terms'
     | '/video-system-assessment'
     | '/webinar'
     | '/work'
+    | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/industries/$slug'
     | '/locations/$slug'
+    | '/membership/pricing'
+    | '/membership/sprint'
     | '/resources/reviews'
     | '/services/diy-downloads'
     | '/services/post-production'
     | '/services/video-production'
+    | '/studio/billing'
+    | '/studio/brand'
+    | '/studio/calendar'
+    | '/studio/library'
+    | '/studio/onboarding'
+    | '/studio/settings'
     | '/blog/'
+    | '/studio/'
+    | '/studio/campaigns/$campaignId'
+    | '/studio/campaigns/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -422,14 +552,26 @@ export interface FileRouteTypes {
     | '/video-system-assessment'
     | '/webinar'
     | '/work'
+    | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/industries/$slug'
     | '/locations/$slug'
+    | '/membership/pricing'
+    | '/membership/sprint'
     | '/resources/reviews'
     | '/services/diy-downloads'
     | '/services/post-production'
     | '/services/video-production'
+    | '/studio/billing'
+    | '/studio/brand'
+    | '/studio/calendar'
+    | '/studio/library'
+    | '/studio/onboarding'
+    | '/studio/settings'
     | '/blog'
+    | '/studio'
+    | '/studio/campaigns/$campaignId'
+    | '/studio/campaigns'
   id:
     | '__root__'
     | '/'
@@ -455,20 +597,33 @@ export interface FileRouteTypes {
     | '/shop'
     | '/spotlight-pal'
     | '/startups'
+    | '/studio'
     | '/studio-preview'
     | '/system-pal'
     | '/terms'
     | '/video-system-assessment'
     | '/webinar'
     | '/work'
+    | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/industries/$slug'
     | '/locations/$slug'
+    | '/membership/pricing'
+    | '/membership/sprint'
     | '/resources/reviews'
     | '/services/diy-downloads'
     | '/services/post-production'
     | '/services/video-production'
+    | '/studio/billing'
+    | '/studio/brand'
+    | '/studio/calendar'
+    | '/studio/library'
+    | '/studio/onboarding'
+    | '/studio/settings'
     | '/blog/'
+    | '/studio/'
+    | '/studio/campaigns/$campaignId'
+    | '/studio/campaigns/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -484,7 +639,7 @@ export interface RootRouteChildren {
   FindYourPalRoute: typeof FindYourPalRoute
   GamesRoute: typeof GamesRoute
   IntegrationsRoute: typeof IntegrationsRoute
-  MembershipRoute: typeof MembershipRoute
+  MembershipRoute: typeof MembershipRouteWithChildren
   PalsRoute: typeof PalsRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -495,12 +650,14 @@ export interface RootRouteChildren {
   ShopRoute: typeof ShopRoute
   SpotlightPalRoute: typeof SpotlightPalRoute
   StartupsRoute: typeof StartupsRoute
+  StudioRoute: typeof StudioRouteWithChildren
   StudioPreviewRoute: typeof StudioPreviewRoute
   SystemPalRoute: typeof SystemPalRoute
   TermsRoute: typeof TermsRoute
   VideoSystemAssessmentRoute: typeof VideoSystemAssessmentRoute
   WebinarRoute: typeof WebinarRoute
   WorkRoute: typeof WorkRoute
+  ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   BlogSlugRoute: typeof BlogSlugRoute
   IndustriesSlugRoute: typeof IndustriesSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
@@ -674,6 +831,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StartupsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/studio': {
+      id: '/studio'
+      path: '/studio'
+      fullPath: '/studio'
+      preLoaderRoute: typeof StudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/studio-preview': {
       id: '/studio-preview'
       path: '/studio-preview'
@@ -716,6 +880,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/stripe-webhook': {
+      id: '/api/stripe-webhook'
+      path: '/api/stripe-webhook'
+      fullPath: '/api/stripe-webhook'
+      preLoaderRoute: typeof ApiStripeWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/': {
       id: '/blog/'
       path: '/blog'
@@ -743,6 +914,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/locations/$slug'
       preLoaderRoute: typeof LocationsSlugRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/membership/pricing': {
+      id: '/membership/pricing'
+      path: '/pricing'
+      fullPath: '/membership/pricing'
+      preLoaderRoute: typeof MembershipPricingRouteImport
+      parentRoute: typeof MembershipRoute
+    }
+    '/membership/sprint': {
+      id: '/membership/sprint'
+      path: '/sprint'
+      fullPath: '/membership/sprint'
+      preLoaderRoute: typeof MembershipSprintRouteImport
+      parentRoute: typeof MembershipRoute
     }
     '/resources/reviews': {
       id: '/resources/reviews'
@@ -772,8 +957,112 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesVideoProductionRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/studio/': {
+      id: '/studio/'
+      path: '/'
+      fullPath: '/studio/'
+      preLoaderRoute: typeof StudioIndexRouteImport
+      parentRoute: typeof StudioRoute
+    }
+    '/studio/billing': {
+      id: '/studio/billing'
+      path: '/billing'
+      fullPath: '/studio/billing'
+      preLoaderRoute: typeof StudioBillingRouteImport
+      parentRoute: typeof StudioRoute
+    }
+    '/studio/brand': {
+      id: '/studio/brand'
+      path: '/brand'
+      fullPath: '/studio/brand'
+      preLoaderRoute: typeof StudioBrandRouteImport
+      parentRoute: typeof StudioRoute
+    }
+    '/studio/calendar': {
+      id: '/studio/calendar'
+      path: '/calendar'
+      fullPath: '/studio/calendar'
+      preLoaderRoute: typeof StudioCalendarRouteImport
+      parentRoute: typeof StudioRoute
+    }
+    '/studio/library': {
+      id: '/studio/library'
+      path: '/library'
+      fullPath: '/studio/library'
+      preLoaderRoute: typeof StudioLibraryRouteImport
+      parentRoute: typeof StudioRoute
+    }
+    '/studio/onboarding': {
+      id: '/studio/onboarding'
+      path: '/onboarding'
+      fullPath: '/studio/onboarding'
+      preLoaderRoute: typeof StudioOnboardingRouteImport
+      parentRoute: typeof StudioRoute
+    }
+    '/studio/settings': {
+      id: '/studio/settings'
+      path: '/settings'
+      fullPath: '/studio/settings'
+      preLoaderRoute: typeof StudioSettingsRouteImport
+      parentRoute: typeof StudioRoute
+    }
+    '/studio/campaigns/': {
+      id: '/studio/campaigns/'
+      path: '/campaigns'
+      fullPath: '/studio/campaigns/'
+      preLoaderRoute: typeof StudioCampaignsIndexRouteImport
+      parentRoute: typeof StudioRoute
+    }
+    '/studio/campaigns/$campaignId': {
+      id: '/studio/campaigns/$campaignId'
+      path: '/campaigns/$campaignId'
+      fullPath: '/studio/campaigns/$campaignId'
+      preLoaderRoute: typeof StudioCampaignsCampaignIdRouteImport
+      parentRoute: typeof StudioRoute
+    }
   }
 }
+
+interface MembershipRouteChildren {
+  MembershipPricingRoute: typeof MembershipPricingRoute
+  MembershipSprintRoute: typeof MembershipSprintRoute
+}
+
+const MembershipRouteChildren: MembershipRouteChildren = {
+  MembershipPricingRoute: MembershipPricingRoute,
+  MembershipSprintRoute: MembershipSprintRoute,
+}
+
+const MembershipRouteWithChildren = MembershipRoute._addFileChildren(
+  MembershipRouteChildren,
+)
+
+interface StudioRouteChildren {
+  StudioBillingRoute: typeof StudioBillingRoute
+  StudioBrandRoute: typeof StudioBrandRoute
+  StudioCalendarRoute: typeof StudioCalendarRoute
+  StudioLibraryRoute: typeof StudioLibraryRoute
+  StudioOnboardingRoute: typeof StudioOnboardingRoute
+  StudioSettingsRoute: typeof StudioSettingsRoute
+  StudioIndexRoute: typeof StudioIndexRoute
+  StudioCampaignsCampaignIdRoute: typeof StudioCampaignsCampaignIdRoute
+  StudioCampaignsIndexRoute: typeof StudioCampaignsIndexRoute
+}
+
+const StudioRouteChildren: StudioRouteChildren = {
+  StudioBillingRoute: StudioBillingRoute,
+  StudioBrandRoute: StudioBrandRoute,
+  StudioCalendarRoute: StudioCalendarRoute,
+  StudioLibraryRoute: StudioLibraryRoute,
+  StudioOnboardingRoute: StudioOnboardingRoute,
+  StudioSettingsRoute: StudioSettingsRoute,
+  StudioIndexRoute: StudioIndexRoute,
+  StudioCampaignsCampaignIdRoute: StudioCampaignsCampaignIdRoute,
+  StudioCampaignsIndexRoute: StudioCampaignsIndexRoute,
+}
+
+const StudioRouteWithChildren =
+  StudioRoute._addFileChildren(StudioRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -788,7 +1077,7 @@ const rootRouteChildren: RootRouteChildren = {
   FindYourPalRoute: FindYourPalRoute,
   GamesRoute: GamesRoute,
   IntegrationsRoute: IntegrationsRoute,
-  MembershipRoute: MembershipRoute,
+  MembershipRoute: MembershipRouteWithChildren,
   PalsRoute: PalsRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
@@ -799,12 +1088,14 @@ const rootRouteChildren: RootRouteChildren = {
   ShopRoute: ShopRoute,
   SpotlightPalRoute: SpotlightPalRoute,
   StartupsRoute: StartupsRoute,
+  StudioRoute: StudioRouteWithChildren,
   StudioPreviewRoute: StudioPreviewRoute,
   SystemPalRoute: SystemPalRoute,
   TermsRoute: TermsRoute,
   VideoSystemAssessmentRoute: VideoSystemAssessmentRoute,
   WebinarRoute: WebinarRoute,
   WorkRoute: WorkRoute,
+  ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   BlogSlugRoute: BlogSlugRoute,
   IndustriesSlugRoute: IndustriesSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,

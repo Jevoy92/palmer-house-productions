@@ -7,12 +7,14 @@ export const Route = createFileRoute("/terms")({
       { title: "Terms of Service | Palmer House Productions" },
       {
         name: "description",
-        content: "The terms and conditions governing your use of Palmer House Productions' services.",
+        content:
+          "The terms and conditions governing your use of Palmer House Productions' services.",
       },
       { property: "og:title", content: "Terms of Service | Palmer House Productions" },
       {
         property: "og:description",
-        content: "Please read these terms carefully before using Palmer House Productions services.",
+        content:
+          "Please read these terms carefully before using Palmer House Productions services.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

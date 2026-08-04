@@ -22,17 +22,13 @@ export function Stats() {
         </p>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-x-12 gap-y-4 text-lg font-medium text-muted-foreground">
-          {[
-            "Seattle, WA",
-            "Bellevue, WA",
-            "Tacoma, WA",
-            "Portland, OR",
-            "Puget Sound Region",
-          ].map((b) => (
-            <span key={b} className="font-display font-semibold">
-              {b}
-            </span>
-          ))}
+          {["Seattle, WA", "Bellevue, WA", "Tacoma, WA", "Portland, OR", "Puget Sound Region"].map(
+            (b) => (
+              <span key={b} className="font-display font-semibold">
+                {b}
+              </span>
+            ),
+          )}
         </div>
 
         <div className="surface-card mt-14 p-8 sm:p-12">

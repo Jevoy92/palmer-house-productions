@@ -36,5 +36,13 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
+  {
+    files: ["src/components/ui/**/*.{ts,tsx}"],
+    rules: {
+      // shadcn components intentionally export their reusable variants next to
+      // the component. Those exports are stable and safe for refresh.
+      "react-refresh/only-export-components": "off",
+    },
+  },
   eslintPluginPrettier,
 );

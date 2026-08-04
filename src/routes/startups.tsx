@@ -27,17 +27,45 @@ export const Route = createFileRoute("/startups")({
 });
 
 const outcomes = [
-  { stat: "2x More Likely", label: "Increase Funding", body: "Startups with pitch videos raise significantly more capital." },
-  { stat: "5x Conversion", label: "Accelerate Growth", body: "Video content converts visitors to customers faster." },
-  { stat: "60% Time Saved", label: "Scale Faster", body: "Video training systems enable rapid team scaling." },
-  { stat: "10x Reach", label: "Boost Engagement", body: "Social video content increases brand awareness." },
+  {
+    stat: "2x More Likely",
+    label: "Increase Funding",
+    body: "Startups with pitch videos raise significantly more capital.",
+  },
+  {
+    stat: "5x Conversion",
+    label: "Accelerate Growth",
+    body: "Video content converts visitors to customers faster.",
+  },
+  {
+    stat: "60% Time Saved",
+    label: "Scale Faster",
+    body: "Video training systems enable rapid team scaling.",
+  },
+  {
+    stat: "10x Reach",
+    label: "Boost Engagement",
+    body: "Social video content increases brand awareness.",
+  },
 ];
 
 const specialties = [
-  { title: "Investor Pitch Videos", body: "Compelling narratives that capture attention and communicate traction." },
-  { title: "Product Demonstrations", body: "Clear showcases of features, benefits, and competitive advantages." },
-  { title: "Growth Marketing", body: "Viral-ready social content that drives customer acquisition." },
-  { title: "Brand Storytelling", body: "Authentic stories that build emotional connections with customers." },
+  {
+    title: "Investor Pitch Videos",
+    body: "Compelling narratives that capture attention and communicate traction.",
+  },
+  {
+    title: "Product Demonstrations",
+    body: "Clear showcases of features, benefits, and competitive advantages.",
+  },
+  {
+    title: "Growth Marketing",
+    body: "Viral-ready social content that drives customer acquisition.",
+  },
+  {
+    title: "Brand Storytelling",
+    body: "Authentic stories that build emotional connections with customers.",
+  },
 ];
 
 const services = [
@@ -73,8 +101,13 @@ function StartupsPage() {
       <Section title="Outcomes That Matter">
         <CardGrid cols={4}>
           {outcomes.map((o) => (
-            <div key={o.label} className="rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
-              <div className="text-gradient-brand font-display text-2xl font-extrabold">{o.stat}</div>
+            <div
+              key={o.label}
+              className="rounded-2xl border border-border bg-card p-6 text-center shadow-soft"
+            >
+              <div className="text-gradient-brand font-display text-2xl font-extrabold">
+                {o.stat}
+              </div>
               <h3 className="mt-2 font-display text-sm font-bold">{o.label}</h3>
               <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{o.body}</p>
             </div>
@@ -88,10 +121,26 @@ function StartupsPage() {
         subtitle="From discovery to delivery, a proven system for startup video"
       >
         <CardGrid cols={4}>
-          <Card index={1} title="Discovery" body="Understanding your startup's vision, target market, and growth goals through detailed consultation." />
-          <Card index={2} title="Planning" body="Developing compelling scripts and storyboards that communicate your unique value proposition." />
-          <Card index={3} title="Production" body="Professional filming that captures your team's passion and showcases your product's potential." />
-          <Card index={4} title="Delivery" body="Optimized videos ready for pitches, social media, websites, and investor presentations." />
+          <Card
+            index={1}
+            title="Discovery"
+            body="Understanding your startup's vision, target market, and growth goals through detailed consultation."
+          />
+          <Card
+            index={2}
+            title="Planning"
+            body="Developing compelling scripts and storyboards that communicate your unique value proposition."
+          />
+          <Card
+            index={3}
+            title="Production"
+            body="Professional filming that captures your team's passion and showcases your product's potential."
+          />
+          <Card
+            index={4}
+            title="Delivery"
+            body="Optimized videos ready for pitches, social media, websites, and investor presentations."
+          />
         </CardGrid>
       </Section>
 
@@ -114,7 +163,9 @@ function StartupsPage() {
         <CardGrid cols={3}>
           {services.map((s) => (
             <div key={s.title} className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">{s.eyebrow}</span>
+              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                {s.eyebrow}
+              </span>
               <h3 className="mt-2 font-display text-lg font-bold">{s.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
               <ul className="mt-4 space-y-1 text-sm text-muted-foreground">
@@ -132,11 +183,13 @@ function StartupsPage() {
         subtitle="Every startup stage needs different video solutions. Our specialized Pals deliver exactly what you need—from pitch videos to product demos to growth content."
       >
         <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-8 shadow-soft">
-          <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">Spotlight Pal</span>
+          <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+            Spotlight Pal
+          </span>
           <h3 className="mt-2 font-display text-xl font-bold">Investor & Brand Stories</h3>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            Cinematic pitch videos, founder stories, and brand films that capture investor attention and build emotional
-            connections with your audience.
+            Cinematic pitch videos, founder stories, and brand films that capture investor attention
+            and build emotional connections with your audience.
           </p>
           <p className="mt-4 text-sm font-semibold">Essential Solutions:</p>
           <ul className="mt-2 space-y-1 text-sm text-muted-foreground">

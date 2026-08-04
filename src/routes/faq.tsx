@@ -13,7 +13,8 @@ export const Route = createFileRoute("/faq")({
       { property: "og:title", content: "Frequently Asked Questions | Palmer House Productions" },
       {
         property: "og:description",
-        content: "Every question answered — content systems, pricing, ownership, ROI, and next steps.",
+        content:
+          "Every question answered — content systems, pricing, ownership, ROI, and next steps.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

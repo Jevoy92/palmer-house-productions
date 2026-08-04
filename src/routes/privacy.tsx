@@ -13,7 +13,8 @@ export const Route = createFileRoute("/privacy")({
       { property: "og:title", content: "Privacy Policy | Palmer House Productions" },
       {
         property: "og:description",
-        content: "How Palmer House Productions collects, uses, and safeguards your personal information.",
+        content:
+          "How Palmer House Productions collects, uses, and safeguards your personal information.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -53,7 +54,7 @@ const sections = [
   },
   {
     title: "Changes to This Policy",
-    body: "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the \"Last Updated\" date. Your continued use of our services after any changes constitutes your acceptance of the new Privacy Policy.",
+    body: 'We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date. Your continued use of our services after any changes constitutes your acceptance of the new Privacy Policy.',
   },
   {
     title: "Contact Us",
@@ -74,9 +75,9 @@ function PrivacyPage() {
       <Section>
         <div className="mx-auto max-w-3xl">
           <p className="text-sm text-muted-foreground">
-            Last Updated: January 2024 | This policy explains how Palmer House Productions collects, uses, and
-            safeguards your personal information when you use our video production services, visit our website, or
-            interact with our team.
+            Last Updated: January 2024 | This policy explains how Palmer House Productions collects,
+            uses, and safeguards your personal information when you use our video production
+            services, visit our website, or interact with our team.
           </p>
           <div className="mt-10 space-y-8">
             {sections.map((s) => (

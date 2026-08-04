@@ -51,10 +51,26 @@ export const industries: Record<string, Industry> = {
       "Medical Education — training materials for medical schools and continuing education programs",
     ],
     outcomes: [
-      { stat: "Up to 45%", label: "Reduce Medical Errors", body: "Video training improves retention and reduces clinical errors." },
-      { stat: "60% Faster", label: "Faster Onboarding", body: "Get new clinical staff up to speed in half the time." },
-      { stat: "30% Improvement", label: "Better Patient Outcomes", body: "Educated patients have better treatment adherence." },
-      { stat: "100% Compliant", label: "Maintain Accreditation", body: "Meet Joint Commission and CMS documentation requirements." },
+      {
+        stat: "Up to 45%",
+        label: "Reduce Medical Errors",
+        body: "Video training improves retention and reduces clinical errors.",
+      },
+      {
+        stat: "60% Faster",
+        label: "Faster Onboarding",
+        body: "Get new clinical staff up to speed in half the time.",
+      },
+      {
+        stat: "30% Improvement",
+        label: "Better Patient Outcomes",
+        body: "Educated patients have better treatment adherence.",
+      },
+      {
+        stat: "100% Compliant",
+        label: "Maintain Accreditation",
+        body: "Meet Joint Commission and CMS documentation requirements.",
+      },
     ],
     faqs: [
       {
@@ -109,10 +125,26 @@ export const industries: Record<string, Industry> = {
       "Chemical Processing — hazardous materials handling and process safety management",
     ],
     outcomes: [
-      { stat: "Up to 70%", label: "Reduce Accidents", body: "Video safety training dramatically reduces workplace incidents." },
-      { stat: "3x Faster", label: "Faster Training", body: "Get workers productive faster with video training." },
-      { stat: "45% Fewer Defects", label: "Improve Quality", body: "Standardized training reduces production errors." },
-      { stat: "35% Increase", label: "Better Retention", body: "Strong culture videos improve employee retention." },
+      {
+        stat: "Up to 70%",
+        label: "Reduce Accidents",
+        body: "Video safety training dramatically reduces workplace incidents.",
+      },
+      {
+        stat: "3x Faster",
+        label: "Faster Training",
+        body: "Get workers productive faster with video training.",
+      },
+      {
+        stat: "45% Fewer Defects",
+        label: "Improve Quality",
+        body: "Standardized training reduces production errors.",
+      },
+      {
+        stat: "35% Increase",
+        label: "Better Retention",
+        body: "Strong culture videos improve employee retention.",
+      },
     ],
     faqs: [
       {
@@ -169,10 +201,26 @@ export const industries: Record<string, Industry> = {
       "Cybersecurity (Pacific Northwest) — security awareness training, compliance documentation, and incident response guides",
     ],
     outcomes: [
-      { stat: "3x Faster", label: "Faster Adoption", body: "Users adopt products quicker with video training." },
-      { stat: "40% Reduction", label: "Reduce Support Tickets", body: "Self-service video resources decrease support load." },
-      { stat: "85% Satisfaction", label: "Better User Experience", body: "Video documentation improves user satisfaction." },
-      { stat: "2x Higher", label: "Boost Conversions", body: "Product demos double trial-to-paid conversion." },
+      {
+        stat: "3x Faster",
+        label: "Faster Adoption",
+        body: "Users adopt products quicker with video training.",
+      },
+      {
+        stat: "40% Reduction",
+        label: "Reduce Support Tickets",
+        body: "Self-service video resources decrease support load.",
+      },
+      {
+        stat: "85% Satisfaction",
+        label: "Better User Experience",
+        body: "Video documentation improves user satisfaction.",
+      },
+      {
+        stat: "2x Higher",
+        label: "Boost Conversions",
+        body: "Product demos double trial-to-paid conversion.",
+      },
     ],
     faqs: [
       {
@@ -227,10 +275,26 @@ export const industries: Record<string, Industry> = {
       "Architecture & Engineering — project showcases and technical expertise demonstrations",
     ],
     outcomes: [
-      { stat: "5x More Inquiries", label: "Generate More Leads", body: "Video content drives significantly more qualified leads." },
-      { stat: "3x Trust Factor", label: "Build Authority", body: "Video establishes expertise faster than written content." },
-      { stat: "40% Higher Close Rate", label: "Win More Business", body: "Prospects who watch videos are more likely to engage." },
-      { stat: "24/7 Availability", label: "Scale Your Expertise", body: "Multiply your reach without multiplying your time." },
+      {
+        stat: "5x More Inquiries",
+        label: "Generate More Leads",
+        body: "Video content drives significantly more qualified leads.",
+      },
+      {
+        stat: "3x Trust Factor",
+        label: "Build Authority",
+        body: "Video establishes expertise faster than written content.",
+      },
+      {
+        stat: "40% Higher Close Rate",
+        label: "Win More Business",
+        body: "Prospects who watch videos are more likely to engage.",
+      },
+      {
+        stat: "24/7 Availability",
+        label: "Scale Your Expertise",
+        body: "Multiply your reach without multiplying your time.",
+      },
     ],
     faqs: [
       {
@@ -285,10 +349,26 @@ export const industries: Record<string, Industry> = {
       "Museums & Libraries — exhibit tours, educational programming, and virtual events",
     ],
     outcomes: [
-      { stat: "45% Increase", label: "Boost Enrollment", body: "Video tours and testimonials drive enrollment growth." },
-      { stat: "10x Reach", label: "Scale Learning", body: "Deliver quality education to unlimited students." },
-      { stat: "60% Better", label: "Improve Retention", body: "Video learning increases information retention." },
-      { stat: "3x More Donors", label: "Increase Giving", body: "Compelling stories inspire more generous giving." },
+      {
+        stat: "45% Increase",
+        label: "Boost Enrollment",
+        body: "Video tours and testimonials drive enrollment growth.",
+      },
+      {
+        stat: "10x Reach",
+        label: "Scale Learning",
+        body: "Deliver quality education to unlimited students.",
+      },
+      {
+        stat: "60% Better",
+        label: "Improve Retention",
+        body: "Video learning increases information retention.",
+      },
+      {
+        stat: "3x More Donors",
+        label: "Increase Giving",
+        body: "Compelling stories inspire more generous giving.",
+      },
     ],
     faqs: [
       {
@@ -343,10 +423,26 @@ export const industries: Record<string, Industry> = {
       "Public Services — educational content for citizen information and engagement",
     ],
     outcomes: [
-      { stat: "60% Better Preparedness", label: "Improve Public Safety", body: "Video training improves emergency response readiness." },
-      { stat: "10x Efficiency", label: "Scale Training", body: "Train employees across locations consistently." },
-      { stat: "45% Satisfaction Increase", label: "Better Citizen Service", body: "Informed citizens are more satisfied with services." },
-      { stat: "3x More Applicants", label: "Attract Talent", body: "Compelling recruitment videos attract quality candidates." },
+      {
+        stat: "60% Better Preparedness",
+        label: "Improve Public Safety",
+        body: "Video training improves emergency response readiness.",
+      },
+      {
+        stat: "10x Efficiency",
+        label: "Scale Training",
+        body: "Train employees across locations consistently.",
+      },
+      {
+        stat: "45% Satisfaction Increase",
+        label: "Better Citizen Service",
+        body: "Informed citizens are more satisfied with services.",
+      },
+      {
+        stat: "3x More Applicants",
+        label: "Attract Talent",
+        body: "Compelling recruitment videos attract quality candidates.",
+      },
     ],
     faqs: [
       {

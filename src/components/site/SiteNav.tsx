@@ -125,6 +125,12 @@ export function SiteNav() {
             </Link>
             <Dropdown label="More" items={more} />
             <Link
+              to="/studio"
+              className="ml-1 flex min-h-11 items-center rounded-full bg-system-soft px-4 text-sm font-semibold text-system transition-transform hover:scale-[1.03]"
+            >
+              Studio
+            </Link>
+            <Link
               to="/checkout"
               aria-label={`Review cart with ${cartCount} item${cartCount === 1 ? "" : "s"}`}
               className="relative ml-1 grid size-11 place-items-center rounded-full border border-border bg-white"
@@ -202,6 +208,13 @@ export function SiteNav() {
               transition={{ delay: 0.14 }}
               className="mt-8 grid gap-3 sm:grid-cols-2"
             >
+              <Link
+                to="/studio"
+                onClick={() => setOpen(false)}
+                className="flex min-h-12 items-center justify-center rounded-full bg-system-soft px-5 text-sm font-semibold text-system sm:col-span-2"
+              >
+                Open Palmer House Studio
+              </Link>
               <Link
                 to="/shop"
                 onClick={() => setOpen(false)}

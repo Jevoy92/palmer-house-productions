@@ -32,15 +32,26 @@ function DiyDownloadsPage() {
         subtitle="Instant access to professional video resources that help you create compelling content on your own timeline."
       />
 
-      <Section eyebrow="Who It's For" title="Built for Doers" subtitle="If you'd rather film it yourself than book a crew, these resources give you the scripts, strategy, and structure a Pal would normally build for you.">
+      <Section
+        eyebrow="Who It's For"
+        title="Built for Doers"
+        subtitle="If you'd rather film it yourself than book a crew, these resources give you the scripts, strategy, and structure a Pal would normally build for you."
+      >
         <CardGrid cols={3}>
           {downloads.map((d) => (
-            <div key={d.title} className="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft">
+            <div
+              key={d.title}
+              className="flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft"
+            >
               <div className="flex items-start justify-between gap-2">
                 <h3 className="font-display text-lg font-bold">{d.title}</h3>
-                <span className="text-gradient-brand font-display text-xl font-extrabold">{d.price}</span>
+                <span className="text-gradient-brand font-display text-xl font-extrabold">
+                  {d.price}
+                </span>
               </div>
-              <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{d.format}</p>
+              <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {d.format}
+              </p>
               <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{d.body}</p>
               <Link
                 to="/contact"
@@ -54,9 +65,19 @@ function DiyDownloadsPage() {
         </CardGrid>
       </Section>
 
-      <Section muted eyebrow="Not Sure This Is Enough?" title="Ready to Take the Next Step?" subtitle="Need more personalized guidance? Explore our coaching and production services.">
+      <Section
+        muted
+        eyebrow="Not Sure This Is Enough?"
+        title="Ready to Take the Next Step?"
+        subtitle="Need more personalized guidance? Explore our coaching and production services."
+      >
         <div className="flex flex-wrap justify-center gap-3">
-          <Link to="/content-strategy" className="rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold shadow-soft">Explore DIY Coaching</Link>
+          <Link
+            to="/content-strategy"
+            className="rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold shadow-soft"
+          >
+            Explore DIY Coaching
+          </Link>
           <Link
             to="/contact"
             className="rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow"
@@ -79,9 +100,17 @@ export const Route = createFileRoute("/services/diy-downloads")({
   head: () => ({
     meta: [
       { title: "DIY Downloads | Palmer House Productions" },
-      { name: "description", content: "Instant-access video scripts, strategy guides, and templates for founders and creators who want to create compelling content on their own." },
+      {
+        name: "description",
+        content:
+          "Instant-access video scripts, strategy guides, and templates for founders and creators who want to create compelling content on their own.",
+      },
       { property: "og:title", content: "DIY Downloads | Palmer House Productions" },
-      { property: "og:description", content: "Professional video resources you can put to work today — scripts, blueprints, and templates." },
+      {
+        property: "og:description",
+        content:
+          "Professional video resources you can put to work today — scripts, blueprints, and templates.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

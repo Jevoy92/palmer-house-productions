@@ -41,10 +41,22 @@ const pals = [
 ];
 
 const steps = [
-  { title: "Match Your Pal", body: "Take our quick assessment to discover which Pal's approach matches your video needs and goals." },
-  { title: "Plan Your Mission", body: "Work with your Pal to define deliverables, timeline, and creative direction for your project." },
-  { title: "Production Day", body: "Our crew captures everything in a streamlined session—professional equipment, expert direction, efficient workflow." },
-  { title: "Polished Delivery", body: "Receive your finished videos with editing, graphics, and optimization for your target platforms." },
+  {
+    title: "Match Your Pal",
+    body: "Take our quick assessment to discover which Pal's approach matches your video needs and goals.",
+  },
+  {
+    title: "Plan Your Mission",
+    body: "Work with your Pal to define deliverables, timeline, and creative direction for your project.",
+  },
+  {
+    title: "Production Day",
+    body: "Our crew captures everything in a streamlined session—professional equipment, expert direction, efficient workflow.",
+  },
+  {
+    title: "Polished Delivery",
+    body: "Receive your finished videos with editing, graphics, and optimization for your target platforms.",
+  },
 ];
 
 function VideoProductionPage() {
@@ -57,27 +69,48 @@ function VideoProductionPage() {
         subtitle="Every video has a purpose. Our Pal system matches you to the right approach — whether you need reels, cinematic branding, or brand films."
       />
 
-      <Section eyebrow="The Four Pals" title="Four Approaches. One Perfect Match." subtitle="Each Pal specializes in a different type of video content. Find the one that fits your goals.">
+      <Section
+        eyebrow="The Four Pals"
+        title="Four Approaches. One Perfect Match."
+        subtitle="Each Pal specializes in a different type of video content. Find the one that fits your goals."
+      >
         <CardGrid cols={4}>
           {pals.map((p) => (
             <div key={p.name} className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-              <span className="text-gradient-brand font-display text-xs font-extrabold uppercase tracking-widest">{p.tag}</span>
+              <span className="text-gradient-brand font-display text-xs font-extrabold uppercase tracking-widest">
+                {p.tag}
+              </span>
               <h3 className="mt-2 font-display text-lg font-bold">{p.name}</h3>
               <p className="text-xs font-semibold text-muted-foreground">{p.duo}</p>
               <p className="mt-3 text-sm italic text-muted-foreground">"{p.quote}"</p>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
               <div className="mt-4 flex flex-wrap gap-1.5">
                 {p.tags.map((t) => (
-                  <span key={t} className="rounded-full border border-border px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">{t}</span>
+                  <span
+                    key={t}
+                    className="rounded-full border border-border px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground"
+                  >
+                    {t}
+                  </span>
                 ))}
               </div>
-              <Link to={p.to} className="mt-4 inline-block text-sm font-semibold text-gradient-brand">Learn more →</Link>
+              <Link
+                to={p.to}
+                className="mt-4 inline-block text-sm font-semibold text-gradient-brand"
+              >
+                Learn more →
+              </Link>
             </div>
           ))}
         </CardGrid>
       </Section>
 
-      <Section muted eyebrow="Process" title="How It Works" subtitle="A streamlined workflow that delivers professional video content on time and on budget.">
+      <Section
+        muted
+        eyebrow="Process"
+        title="How It Works"
+        subtitle="A streamlined workflow that delivers professional video content on time and on budget."
+      >
         <CardGrid cols={4}>
           {steps.map((s, i) => (
             <Card key={s.title} index={i + 1} title={s.title} body={s.body} />
@@ -98,9 +131,17 @@ export const Route = createFileRoute("/services/video-production")({
   head: () => ({
     meta: [
       { title: "Video Production Services | Palmer House Productions" },
-      { name: "description", content: "Pal-guided video production for reels, brand films, evergreen education, and internal training — matched to your goals." },
+      {
+        name: "description",
+        content:
+          "Pal-guided video production for reels, brand films, evergreen education, and internal training — matched to your goals.",
+      },
       { property: "og:title", content: "Video Production Services | Palmer House Productions" },
-      { property: "og:description", content: "Every video has a purpose. Our Pal system matches you to the right production approach." },
+      {
+        property: "og:description",
+        content:
+          "Every video has a purpose. Our Pal system matches you to the right production approach.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

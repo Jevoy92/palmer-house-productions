@@ -53,7 +53,9 @@ export function PageHero({
           )}
         </h1>
         {subtitle && (
-          <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">{subtitle}</p>
+          <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
+            {subtitle}
+          </p>
         )}
         {ctas && (
           <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -97,7 +99,9 @@ export function Section({
           <div className="mx-auto mb-10 max-w-2xl text-center">
             {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
             {title && (
-              <h2 className="mt-4 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{title}</h2>
+              <h2 className="mt-4 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
+                {title}
+              </h2>
             )}
             {subtitle && <p className="mt-3 text-muted-foreground">{subtitle}</p>}
           </div>
@@ -142,10 +146,15 @@ export function FaqList({ items }: { items: { q: string; a: string }[] }) {
   return (
     <div className="mx-auto max-w-3xl space-y-3">
       {items.map((it) => (
-        <details key={it.q} className="group rounded-2xl border border-border bg-card p-5 shadow-soft">
+        <details
+          key={it.q}
+          className="group rounded-2xl border border-border bg-card p-5 shadow-soft"
+        >
           <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-base font-bold">
             {it.q}
-            <span className="text-muted-foreground transition-transform group-open:rotate-45">+</span>
+            <span className="text-muted-foreground transition-transform group-open:rotate-45">
+              +
+            </span>
           </summary>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{it.a}</p>
         </details>
@@ -172,7 +181,10 @@ export function CtaBand({
         <h2 className="font-display text-3xl font-extrabold sm:text-4xl">{title}</h2>
         {subtitle && <p className="mx-auto mt-3 max-w-xl text-white/90">{subtitle}</p>}
         <div className="mt-7 flex flex-wrap justify-center gap-3">
-          <Link to="/contact" className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-foreground">
+          <Link
+            to="/contact"
+            className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-foreground"
+          >
             {primaryLabel}
           </Link>
           <Link

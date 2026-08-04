@@ -85,7 +85,9 @@ export function MissionComparison() {
         </div>
         <div className="rounded-2xl border border-border bg-card p-5 text-center shadow-soft">
           <p className="font-display text-lg font-bold">Evergreen Videos</p>
-          <p className="text-gradient-brand mt-1 font-display text-2xl font-extrabold">$1,050 / $1,650 / $2,250</p>
+          <p className="text-gradient-brand mt-1 font-display text-2xl font-extrabold">
+            $1,050 / $1,650 / $2,250
+          </p>
         </div>
       </div>
       <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-soft">
@@ -98,7 +100,9 @@ export function MissionComparison() {
               {LANES.map((lane) => (
                 <th key={lane.name} className="p-4 font-display text-sm font-bold">
                   {lane.name}
-                  <span className="block text-xs font-normal text-muted-foreground">({lane.tag})</span>
+                  <span className="block text-xs font-normal text-muted-foreground">
+                    ({lane.tag})
+                  </span>
                 </th>
               ))}
             </tr>
@@ -118,8 +122,9 @@ export function MissionComparison() {
         </table>
       </div>
       <p className="mx-auto mt-8 max-w-2xl text-center text-sm text-muted-foreground">
-        Choose Reel if your problem is visibility. Choose Spotlight if your problem is perception. Choose System if
-        your problem is internal chaos. Choose Evergreen if your problem is long-term authority.
+        Choose Reel if your problem is visibility. Choose Spotlight if your problem is perception.
+        Choose System if your problem is internal chaos. Choose Evergreen if your problem is
+        long-term authority.
       </p>
     </Section>
   );

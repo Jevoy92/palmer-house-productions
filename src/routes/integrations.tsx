@@ -8,7 +8,19 @@ function IntegrationsPage() {
       name: "Stripe Checkout",
       ready: false,
       detail:
-        "Server Checkout Session flow is built. Connect STRIPE_SECRET_KEY to collect production deposits.",
+        "Production deposits, Studio subscriptions, billing portal, and signed webhook handling are built. Connect the three server secrets listed in .env.example.",
+    },
+    {
+      name: "Supabase Studio backend",
+      ready: true,
+      detail:
+        "Authentication, private workspaces, profiles, roles, subscriptions, brand memory, campaigns, assets, calendars, usage metering, service requests, and private storage are deployed.",
+    },
+    {
+      name: "OpenAI campaign engine",
+      ready: false,
+      detail:
+        "The encrypted key is saved and the structured campaign runtime is built. The selected OpenAI organization needs API credits before live generation can succeed.",
     },
     {
       name: "HoneyBook",

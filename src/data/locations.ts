@@ -32,21 +32,51 @@ export const locations: Record<string, Location> = {
       "We're not a massive agency. We're a nimble, Seattle-based video production team that understands the hustle of small business. No bloated crews, no surprise invoices — just great content that moves the needle.",
     heroEyebrow: "Seattle, WA",
     services: [
-      { title: "Social media reels", body: "Short-form content for Instagram, TikTok, LinkedIn, and YouTube Shorts." },
-      { title: "Brand storytelling", body: "Company culture videos that show who you are and why customers should choose you." },
-      { title: "Training & onboarding", body: "Video systems that scale with your team and cut down repeat questions." },
-      { title: "Customer testimonials", body: "Case studies and proof-driven video that builds trust and closes deals." },
+      {
+        title: "Social media reels",
+        body: "Short-form content for Instagram, TikTok, LinkedIn, and YouTube Shorts.",
+      },
+      {
+        title: "Brand storytelling",
+        body: "Company culture videos that show who you are and why customers should choose you.",
+      },
+      {
+        title: "Training & onboarding",
+        body: "Video systems that scale with your team and cut down repeat questions.",
+      },
+      {
+        title: "Customer testimonials",
+        body: "Case studies and proof-driven video that builds trust and closes deals.",
+      },
     ],
     whyLocal: [
-      { title: "Built for Small Business", body: "Packages and workflows designed for lean teams and real budgets." },
+      {
+        title: "Built for Small Business",
+        body: "Packages and workflows designed for lean teams and real budgets.",
+      },
       { title: "Seattle Local", body: "On-location shoots across the Puget Sound region." },
-      { title: "Fast Turnaround", body: "From strategy call to finished content in weeks, not months." },
+      {
+        title: "Fast Turnaround",
+        body: "From strategy call to finished content in weeks, not months.",
+      },
       { title: "5-Star Rated", body: "47+ five-star reviews from real Seattle-area businesses." },
     ],
     serviceAreasTitle: "Areas We Serve in the Seattle Metro",
     serviceAreas: [
-      "Seattle", "Bellevue", "Redmond", "Kirkland", "Bothell", "Renton", "Kent",
-      "Tacoma", "Everett", "Issaquah", "Mercer Island", "Woodinville", "Sammamish", "Federal Way",
+      "Seattle",
+      "Bellevue",
+      "Redmond",
+      "Kirkland",
+      "Bothell",
+      "Renton",
+      "Kent",
+      "Tacoma",
+      "Everett",
+      "Issaquah",
+      "Mercer Island",
+      "Woodinville",
+      "Sammamish",
+      "Federal Way",
     ],
     stats: [
       { label: "Five-star reviews", value: "47+" },
@@ -82,7 +112,8 @@ export const locations: Record<string, Location> = {
       },
     ],
     ctaTitle: "Ready to Grow Your Seattle Business with Video?",
-    ctaSubtitle: "Book a free strategy call and we'll map out a content plan that fits your budget, your goals, and your timeline.",
+    ctaSubtitle:
+      "Book a free strategy call and we'll map out a content plan that fits your budget, your goals, and your timeline.",
   },
   "bellevue-wa": {
     slug: "bellevue-wa",
@@ -95,21 +126,52 @@ export const locations: Record<string, Location> = {
       "From startup launches to enterprise communications, we create video systems that scale with your tech company. Product demos, team training, and brand storytelling that resonates with your audience.",
     heroEyebrow: "Bellevue, WA",
     services: [
-      { title: "SaaS product demonstrations", body: "Clear, engaging walkthroughs that showcase your software's key features and benefits." },
-      { title: "Technical training libraries", body: "Complex technical concepts made accessible through structured video content." },
-      { title: "Startup pitch & brand videos", body: "Founder stories and company origin videos that build trust with customers and investors." },
-      { title: "Enterprise communications", body: "Culture, values, and knowledge-base content that reduces support tickets." },
+      {
+        title: "SaaS product demonstrations",
+        body: "Clear, engaging walkthroughs that showcase your software's key features and benefits.",
+      },
+      {
+        title: "Technical training libraries",
+        body: "Complex technical concepts made accessible through structured video content.",
+      },
+      {
+        title: "Startup pitch & brand videos",
+        body: "Founder stories and company origin videos that build trust with customers and investors.",
+      },
+      {
+        title: "Enterprise communications",
+        body: "Culture, values, and knowledge-base content that reduces support tickets.",
+      },
     ],
     whyLocal: [
-      { title: "Product Demos", body: "Showcase your software and tech solutions with engaging demonstrations." },
-      { title: "Team Training", body: "Scale your team's knowledge with comprehensive training libraries." },
-      { title: "Brand Stories", body: "Tell your company's story and connect with your target market." },
+      {
+        title: "Product Demos",
+        body: "Showcase your software and tech solutions with engaging demonstrations.",
+      },
+      {
+        title: "Team Training",
+        body: "Scale your team's knowledge with comprehensive training libraries.",
+      },
+      {
+        title: "Brand Stories",
+        body: "Tell your company's story and connect with your target market.",
+      },
       { title: "Launch Content", body: "Launch your products and features with maximum impact." },
     ],
     serviceAreasTitle: "Areas We Serve on the Eastside",
     serviceAreas: [
-      "Bellevue", "Redmond", "Kirkland", "Issaquah", "Sammamish", "Mercer Island",
-      "Woodinville", "Bothell", "Renton", "Newcastle", "Factoria", "Eastgate",
+      "Bellevue",
+      "Redmond",
+      "Kirkland",
+      "Issaquah",
+      "Sammamish",
+      "Mercer Island",
+      "Woodinville",
+      "Bothell",
+      "Renton",
+      "Newcastle",
+      "Factoria",
+      "Eastgate",
     ],
     stats: [
       { label: "Focus", value: "SaaS & Startups" },
@@ -144,7 +206,8 @@ export const locations: Record<string, Location> = {
       },
     ],
     ctaTitle: "Ready to Grow Your Bellevue Business with Video?",
-    ctaSubtitle: "Book a free strategy call and we'll map out a content plan that fits your budget, your goals, and your timeline.",
+    ctaSubtitle:
+      "Book a free strategy call and we'll map out a content plan that fits your budget, your goals, and your timeline.",
   },
   "tacoma-wa": {
     slug: "tacoma-wa",
@@ -157,21 +220,52 @@ export const locations: Record<string, Location> = {
       "We're a Pacific Northwest video production team that understands the hustle of small business. No bloated crews, no surprise invoices — just great content that moves the needle for Pierce County companies.",
     heroEyebrow: "Tacoma, WA",
     services: [
-      { title: "Social media reels", body: "Short-form content for Instagram, TikTok, LinkedIn, and YouTube Shorts." },
-      { title: "Brand storytelling & testimonials", body: "Proof-driven content that builds trust for Pierce County companies." },
-      { title: "Training & onboarding videos", body: "Video libraries that onboard new hires and document your process." },
-      { title: "Corporate communications", body: "Consistent, professional communications content for your whole organization." },
+      {
+        title: "Social media reels",
+        body: "Short-form content for Instagram, TikTok, LinkedIn, and YouTube Shorts.",
+      },
+      {
+        title: "Brand storytelling & testimonials",
+        body: "Proof-driven content that builds trust for Pierce County companies.",
+      },
+      {
+        title: "Training & onboarding videos",
+        body: "Video libraries that onboard new hires and document your process.",
+      },
+      {
+        title: "Corporate communications",
+        body: "Consistent, professional communications content for your whole organization.",
+      },
     ],
     whyLocal: [
-      { title: "Built for Small Business", body: "Packages designed for lean Tacoma teams and real budgets." },
+      {
+        title: "Built for Small Business",
+        body: "Packages designed for lean Tacoma teams and real budgets.",
+      },
       { title: "South Sound Local", body: "On-location shoots across Tacoma and Pierce County." },
-      { title: "Fast Turnaround", body: "From strategy call to finished content in weeks, not months." },
-      { title: "5-Star Rated", body: "47+ five-star reviews from real Pacific Northwest businesses." },
+      {
+        title: "Fast Turnaround",
+        body: "From strategy call to finished content in weeks, not months.",
+      },
+      {
+        title: "5-Star Rated",
+        body: "47+ five-star reviews from real Pacific Northwest businesses.",
+      },
     ],
     serviceAreasTitle: "Areas We Serve in the South Sound",
     serviceAreas: [
-      "Tacoma", "Lakewood", "Puyallup", "University Place", "Federal Way", "Gig Harbor",
-      "Bonney Lake", "Sumner", "Fife", "Auburn", "Kent", "Olympia",
+      "Tacoma",
+      "Lakewood",
+      "Puyallup",
+      "University Place",
+      "Federal Way",
+      "Gig Harbor",
+      "Bonney Lake",
+      "Sumner",
+      "Fife",
+      "Auburn",
+      "Kent",
+      "Olympia",
     ],
     stats: [
       { label: "Five-star reviews", value: "47+" },
@@ -206,7 +300,8 @@ export const locations: Record<string, Location> = {
       },
     ],
     ctaTitle: "Ready to Start Your Tacoma Video Project?",
-    ctaSubtitle: "Book a free strategy call and let's build a content plan that fits your business.",
+    ctaSubtitle:
+      "Book a free strategy call and let's build a content plan that fits your business.",
   },
   "portland-or": {
     slug: "portland-or",
@@ -219,21 +314,49 @@ export const locations: Record<string, Location> = {
       "From artisanal brands to global corporations, we craft video content that captures Portland's innovative spirit. Creative storytelling, remote collaboration, and content systems that scale with your business.",
     heroEyebrow: "Portland, OR",
     services: [
-      { title: "Brand storytelling & narratives", body: "Authentic Portland narratives that build genuine connections with your audience." },
-      { title: "Creative campaigns & social content", body: "Instagram reels and TikTok campaigns that capture Portland's creative energy." },
-      { title: "Training libraries & onboarding", body: "Comprehensive video systems that scale with your team's growth." },
-      { title: "Customer testimonials & case studies", body: "Proof-driven video content that builds trust and closes business." },
+      {
+        title: "Brand storytelling & narratives",
+        body: "Authentic Portland narratives that build genuine connections with your audience.",
+      },
+      {
+        title: "Creative campaigns & social content",
+        body: "Instagram reels and TikTok campaigns that capture Portland's creative energy.",
+      },
+      {
+        title: "Training libraries & onboarding",
+        body: "Comprehensive video systems that scale with your team's growth.",
+      },
+      {
+        title: "Customer testimonials & case studies",
+        body: "Proof-driven video content that builds trust and closes business.",
+      },
     ],
     whyLocal: [
-      { title: "Local Brands", body: "Artisanal businesses and local brands that define Portland's character." },
-      { title: "Innovation", body: "Creative solutions for forward-thinking companies and organizations." },
+      {
+        title: "Local Brands",
+        body: "Artisanal businesses and local brands that define Portland's character.",
+      },
+      {
+        title: "Innovation",
+        body: "Creative solutions for forward-thinking companies and organizations.",
+      },
       { title: "Global Reach", body: "Remote-first approach serving clients worldwide." },
       { title: "Corporate", body: "Professional corporate communications and training content." },
     ],
     serviceAreasTitle: "Areas We Serve in Oregon",
     serviceAreas: [
-      "Portland", "Beaverton", "Lake Oswego", "Tigard", "Gresham", "Hillsboro",
-      "Salem", "Bend", "Eugene", "Oregon City", "Tualatin", "Clackamas",
+      "Portland",
+      "Beaverton",
+      "Lake Oswego",
+      "Tigard",
+      "Gresham",
+      "Hillsboro",
+      "Salem",
+      "Bend",
+      "Eugene",
+      "Oregon City",
+      "Tualatin",
+      "Clackamas",
     ],
     stats: [
       { label: "Approach", value: "Remote-first" },
@@ -267,7 +390,8 @@ export const locations: Record<string, Location> = {
       },
     ],
     ctaTitle: "Ready to Start Your Portland Video Project?",
-    ctaSubtitle: "Book a free strategy call and let's build a content plan that fits your business.",
+    ctaSubtitle:
+      "Book a free strategy call and let's build a content plan that fits your business.",
   },
 };
 

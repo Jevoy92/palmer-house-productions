@@ -1,5 +1,14 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
-import { PageShell, PageHero, Section, Card, CardGrid, FaqList, CtaBand, Eyebrow } from "@/components/site/PageShell";
+import {
+  PageShell,
+  PageHero,
+  Section,
+  Card,
+  CardGrid,
+  FaqList,
+  CtaBand,
+  Eyebrow,
+} from "@/components/site/PageShell";
 import { locations, locationList, type Location } from "@/data/locations";
 
 export const Route = createFileRoute("/locations/$slug")({
@@ -46,7 +55,11 @@ export const Route = createFileRoute("/locations/$slug")({
     <PageShell>
       <Section title="Location not found" subtitle="We don't have a page for that location yet.">
         <div className="text-center">
-          <Link to="/locations/$slug" params={{ slug: "seattle-wa" }} className="font-semibold text-gradient-brand">
+          <Link
+            to="/locations/$slug"
+            params={{ slug: "seattle-wa" }}
+            className="font-semibold text-gradient-brand"
+          >
             View Seattle, WA →
           </Link>
         </div>
@@ -61,7 +74,11 @@ function LocationPage() {
 
   return (
     <PageShell>
-      <PageHero eyebrow={location.heroEyebrow} title={location.title} subtitle={location.subtitle} />
+      <PageHero
+        eyebrow={location.heroEyebrow}
+        title={location.title}
+        subtitle={location.subtitle}
+      />
 
       <Section title="Services" subtitle={location.intro}>
         <CardGrid cols={4}>
@@ -84,7 +101,9 @@ function LocationPage() {
         <div className="mx-auto mt-10 grid max-w-3xl grid-cols-3 gap-4 text-center">
           {location.stats.map((stat) => (
             <div key={stat.label}>
-              <div className="font-display text-2xl font-extrabold text-gradient-brand sm:text-3xl">{stat.value}</div>
+              <div className="font-display text-2xl font-extrabold text-gradient-brand sm:text-3xl">
+                {stat.value}
+              </div>
               <div className="mt-1 text-xs text-muted-foreground">{stat.label}</div>
             </div>
           ))}
@@ -108,7 +127,9 @@ function LocationPage() {
         <CardGrid cols={2}>
           {location.testimonials.map((t) => (
             <div key={t.name} className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-              <p className="text-sm leading-relaxed text-muted-foreground">&ldquo;{t.quote}&rdquo;</p>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                &ldquo;{t.quote}&rdquo;
+              </p>
               <p className="mt-4 font-display text-sm font-bold">
                 {t.name}
                 {t.role && <span className="font-normal text-muted-foreground"> — {t.role}</span>}

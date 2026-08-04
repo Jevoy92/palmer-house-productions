@@ -28,17 +28,20 @@ export const Route = createFileRoute("/blog/$slug")({
 function BlogPostPage() {
   const post = Route.useLoaderData();
 
-  const related = blogPosts.filter((p) => p.slug !== post.slug && p.category === post.category).slice(0, 3);
+  const related = blogPosts
+    .filter((p) => p.slug !== post.slug && p.category === post.category)
+    .slice(0, 3);
   const relatedPosts =
-    related.length > 0
-      ? related
-      : blogPosts.filter((p) => p.slug !== post.slug).slice(0, 3);
+    related.length > 0 ? related : blogPosts.filter((p) => p.slug !== post.slug).slice(0, 3);
 
   return (
     <PageShell>
       <article className="px-4 pb-16 pt-16 sm:pt-20">
         <div className="mx-auto max-w-3xl">
-          <Link to="/blog" className="text-sm font-semibold text-muted-foreground hover:text-foreground">
+          <Link
+            to="/blog"
+            className="text-sm font-semibold text-muted-foreground hover:text-foreground"
+          >
             ← Back to Blog
           </Link>
 
@@ -67,7 +70,9 @@ function BlogPostPage() {
             {post.sections.map((section: BlogSection, i: number) => (
               <div key={i}>
                 {section.heading && (
-                  <h2 className="font-display text-2xl font-bold tracking-tight">{section.heading}</h2>
+                  <h2 className="font-display text-2xl font-bold tracking-tight">
+                    {section.heading}
+                  </h2>
                 )}
                 <div className="mt-3 space-y-4">
                   {section.paragraphs.map((p: string, j: number) => (
@@ -93,7 +98,9 @@ function BlogPostPage() {
 
       <section className="px-4 py-16">
         <div className="mx-auto max-w-6xl">
-          <h2 className="mb-8 text-center font-display text-3xl font-extrabold tracking-tight">Related Posts</h2>
+          <h2 className="mb-8 text-center font-display text-3xl font-extrabold tracking-tight">
+            Related Posts
+          </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {relatedPosts.map((rp) => (
               <Link
@@ -108,7 +115,9 @@ function BlogPostPage() {
                 <h3 className="mt-3 font-display text-lg font-bold leading-snug group-hover:text-gradient-brand">
                   {rp.title}
                 </h3>
-                <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{rp.excerpt}</p>
+                <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
+                  {rp.excerpt}
+                </p>
                 <span className="mt-4 text-xs text-muted-foreground">{rp.readTime}</span>
               </Link>
             ))}

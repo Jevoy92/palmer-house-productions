@@ -28,13 +28,19 @@ type FormState = {
 const EMPTY: FormState = { name: "", email: "", company: "", projectType: "", message: "" };
 
 export const Route = createFileRoute("/contact")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    quote: typeof search.quote === "string" ? search.quote : "",
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): {
+    quote?: string;
+    total?: string;
+    services?: string;
+  } => ({
+    quote: typeof search.quote === "string" ? search.quote : undefined,
     total:
       typeof search.total === "string" || typeof search.total === "number"
         ? String(search.total)
-        : "",
-    services: typeof search.services === "string" ? search.services : "",
+        : undefined,
+    services: typeof search.services === "string" ? search.services : undefined,
   }),
   head: () => ({
     meta: [

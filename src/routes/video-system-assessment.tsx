@@ -10,7 +10,13 @@ type Answers = {
   bottleneck: string;
 };
 
-const EMPTY: Answers = { businessType: "", teamSize: "", videoHabits: "", goal: "", bottleneck: "" };
+const EMPTY: Answers = {
+  businessType: "",
+  teamSize: "",
+  videoHabits: "",
+  goal: "",
+  bottleneck: "",
+};
 
 const STEPS = [
   {
@@ -145,18 +151,36 @@ function scoreFor(answers: Answers) {
 }
 
 function tierFor(score: number) {
-  if (score >= 80) return { label: "System-Ready", body: "You're primed to build a full video ecosystem right now." };
-  if (score >= 55) return { label: "Building Momentum", body: "You have real traction — a focused system will multiply it." };
-  return { label: "Early Stage", body: "You're at the perfect point to build the right foundation before scaling." };
+  if (score >= 80)
+    return {
+      label: "System-Ready",
+      body: "You're primed to build a full video ecosystem right now.",
+    };
+  if (score >= 55)
+    return {
+      label: "Building Momentum",
+      body: "You have real traction — a focused system will multiply it.",
+    };
+  return {
+    label: "Early Stage",
+    body: "You're at the perfect point to build the right foundation before scaling.",
+  };
 }
 
 export const Route = createFileRoute("/video-system-assessment")({
   head: () => ({
     meta: [
       { title: "Free Video System Assessment | Palmer House Productions" },
-      { name: "description", content: "Answer a few quick questions and get a personalized readiness score, strategic breakdown, and tailored video system recommendation in under 2 minutes." },
+      {
+        name: "description",
+        content:
+          "Answer a few quick questions and get a personalized readiness score, strategic breakdown, and tailored video system recommendation in under 2 minutes.",
+      },
       { property: "og:title", content: "How Ready Is Your Business for a Video System?" },
-      { property: "og:description", content: "Take the free 4-step Palmer House video system assessment." },
+      {
+        property: "og:description",
+        content: "Take the free 4-step Palmer House video system assessment.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -205,12 +229,21 @@ function AssessmentPage() {
     const rec = recommendationFor(answers);
     return (
       <PageShell>
-        <Section eyebrow="Your Results" title="How Ready Is Your Business for a Video System?" subtitle="Here's your personalized readiness score and recommendation.">
+        <Section
+          eyebrow="Your Results"
+          title="How Ready Is Your Business for a Video System?"
+          subtitle="Here's your personalized readiness score and recommendation."
+        >
           <div className="mx-auto max-w-2xl rounded-3xl border border-border bg-card p-8 text-center shadow-soft sm:p-10">
             <p className="font-display text-6xl font-extrabold text-gradient-brand">{score}</p>
-            <p className="mt-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">Readiness Score / 100</p>
+            <p className="mt-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              Readiness Score / 100
+            </p>
             <div className="mx-auto mt-4 h-2 max-w-sm overflow-hidden rounded-full bg-secondary">
-              <div className="h-full rounded-full" style={{ width: `${score}%`, backgroundColor: "var(--spotlight)" }} />
+              <div
+                className="h-full rounded-full"
+                style={{ width: `${score}%`, backgroundColor: "var(--spotlight)" }}
+              />
             </div>
             <h3 className="mt-6 font-display text-2xl font-bold">{tier.label}</h3>
             <p className="mt-2 text-sm text-muted-foreground">{tier.body}</p>
@@ -229,10 +262,16 @@ function AssessmentPage() {
             </div>
 
             <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <Link to="/contact" className="rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold shadow-soft">
+              <Link
+                to="/contact"
+                className="rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold shadow-soft"
+              >
                 Book a Discovery Call
               </Link>
-              <button onClick={restart} className="rounded-full border border-border px-6 py-3 text-sm font-semibold text-muted-foreground">
+              <button
+                onClick={restart}
+                className="rounded-full border border-border px-6 py-3 text-sm font-semibold text-muted-foreground"
+              >
                 Retake Assessment
               </button>
             </div>
@@ -246,14 +285,23 @@ function AssessmentPage() {
 
   return (
     <PageShell>
-      <Section eyebrow="Free Assessment" title="How Ready Is Your Business for a Video System?" subtitle="Answer a few quick questions and get a personalized readiness score, a strategic breakdown, and tailored recommendations — all in under 2 minutes.">
+      <Section
+        eyebrow="Free Assessment"
+        title="How Ready Is Your Business for a Video System?"
+        subtitle="Answer a few quick questions and get a personalized readiness score, a strategic breakdown, and tailored recommendations — all in under 2 minutes."
+      >
         <div className="mx-auto max-w-2xl">
           <div className="mb-2 flex items-center justify-between text-xs font-semibold text-muted-foreground">
-            <span>Step {step + 1} of {totalSteps}</span>
+            <span>
+              Step {step + 1} of {totalSteps}
+            </span>
             <span>{percent}% complete</span>
           </div>
           <div className="mb-8 h-2 overflow-hidden rounded-full bg-secondary">
-            <div className="h-full rounded-full transition-all" style={{ width: `${percent}%`, backgroundColor: "var(--spotlight)" }} />
+            <div
+              className="h-full rounded-full transition-all"
+              style={{ width: `${percent}%`, backgroundColor: "var(--spotlight)" }}
+            />
           </div>
 
           <div className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">

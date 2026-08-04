@@ -15,7 +15,8 @@ export const Route = createFileRoute("/blog/")({
       { property: "og:title", content: "Blog | Palmer House Productions" },
       {
         property: "og:description",
-        content: "Strategy, systems, and production know-how for founders who want video content that compounds.",
+        content:
+          "Strategy, systems, and production know-how for founders who want video content that compounds.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -68,13 +69,17 @@ function BlogIndexPage() {
               className="group flex flex-col rounded-2xl border border-border bg-card p-6 shadow-soft transition-shadow hover:shadow-glow"
             >
               <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-wide text-muted-foreground">
-                <span className="rounded-full border border-border px-2.5 py-1">{post.category}</span>
+                <span className="rounded-full border border-border px-2.5 py-1">
+                  {post.category}
+                </span>
                 <span>{post.palLane} Pal</span>
               </div>
               <h3 className="mt-4 font-display text-lg font-bold leading-snug group-hover:text-gradient-brand">
                 {post.title}
               </h3>
-              <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">{post.excerpt}</p>
+              <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
+                {post.excerpt}
+              </p>
               <div className="mt-5 flex items-center justify-between text-xs text-muted-foreground">
                 <span>{post.date}</span>
                 <span>{post.readTime}</span>

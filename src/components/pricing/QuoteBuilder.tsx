@@ -33,7 +33,7 @@ export type CountsMap = Record<string, number>;
 const TAX_RATE = 0.089; // WA default
 
 export function QuoteBuilder() {
-  const { selected, counts } = useCart();
+  const { selected, counts, cadence } = useCart();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [reference, setReference] = useState<string>(() => generateQuoteReference());
   /** Carousel index — which Pal is currently being chosen on desktop. */
@@ -59,7 +59,10 @@ export function QuoteBuilder() {
     return map;
   }, [selected]);
 
-  const lines = useMemo(() => buildReceiptLines({ selected, counts }), [selected, counts]);
+  const lines = useMemo(
+    () => buildReceiptLines({ selected, counts, cadence }),
+    [selected, counts, cadence],
+  );
 
   const handleChange = (itemId: string, nextQty: number) => cartStore.changeQty(itemId, nextQty);
 

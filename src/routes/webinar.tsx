@@ -3,10 +3,26 @@ import { useState, type FormEvent } from "react";
 import { PageShell, PageHero, Section, Card, CardGrid, FaqList } from "@/components/site/PageShell";
 
 const AGENDA = [
-  { index: "01", title: "The System Mindset", body: "Why one-off videos fail and how to think about content as an asset library, not a to-do list." },
-  { index: "02", title: "The Four Pillars", body: "Spotlight, Reel, Evergreen, and System — how to map your business needs to the right kind of video." },
-  { index: "03", title: "Building the Machine", body: "A repeatable production and distribution workflow you can run without heroic effort." },
-  { index: "04", title: "Live Q&A", body: "Bring your specific bottlenecks — we'll troubleshoot them live with the Palmer House team." },
+  {
+    index: "01",
+    title: "The System Mindset",
+    body: "Why one-off videos fail and how to think about content as an asset library, not a to-do list.",
+  },
+  {
+    index: "02",
+    title: "The Four Pillars",
+    body: "Spotlight, Reel, Evergreen, and System — how to map your business needs to the right kind of video.",
+  },
+  {
+    index: "03",
+    title: "Building the Machine",
+    body: "A repeatable production and distribution workflow you can run without heroic effort.",
+  },
+  {
+    index: "04",
+    title: "Live Q&A",
+    body: "Bring your specific bottlenecks — we'll troubleshoot them live with the Palmer House team.",
+  },
 ];
 
 const WHO = [
@@ -17,18 +33,35 @@ const WHO = [
 ];
 
 const FAQS = [
-  { q: "Is this actually free?", a: "Yes — no catch. We host these sessions because we love helping businesses think clearly about video." },
-  { q: "Will there be a recording?", a: "Yes, all registrants receive the replay and the slide deck by email." },
-  { q: "Do I need any video experience?", a: "None at all. This session is designed for business owners and marketers, not editors." },
+  {
+    q: "Is this actually free?",
+    a: "Yes — no catch. We host these sessions because we love helping businesses think clearly about video.",
+  },
+  {
+    q: "Will there be a recording?",
+    a: "Yes, all registrants receive the replay and the slide deck by email.",
+  },
+  {
+    q: "Do I need any video experience?",
+    a: "None at all. This session is designed for business owners and marketers, not editors.",
+  },
 ];
 
 export const Route = createFileRoute("/webinar")({
   head: () => ({
     meta: [
       { title: "Free Webinar: Build a Video System That Scales | Palmer House Productions" },
-      { name: "description", content: "Join Palmer House Productions for a free live webinar on building a video system that turns messy content into a scalable, measurable machine." },
+      {
+        name: "description",
+        content:
+          "Join Palmer House Productions for a free live webinar on building a video system that turns messy content into a scalable, measurable machine.",
+      },
       { property: "og:title", content: "Free Webinar: Build a Video System That Scales" },
-      { property: "og:description", content: "A live session on the four pillars of video strategy and how to build a system, not just content." },
+      {
+        property: "og:description",
+        content:
+          "A live session on the four pillars of video strategy and how to build a system, not just content.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -85,7 +118,10 @@ function WebinarPage() {
             </ul>
             <h2 className="mt-8 font-display text-2xl font-bold">Your Hosts</h2>
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-              This session is co-hosted by members of the Palmer House Pals — the strategic guides behind our four video pillars. Expect practical, no-fluff frameworks from the same team that designs Reel, System, Evergreen, and Spotlight campaigns for real clients every week.
+              This session is co-hosted by members of the Palmer House Pals — the strategic guides
+              behind our four video pillars. Expect practical, no-fluff frameworks from the same
+              team that designs Reel, System, Evergreen, and Spotlight campaigns for real clients
+              every week.
             </p>
           </div>
 
@@ -93,15 +129,22 @@ function WebinarPage() {
             <div className="rounded-2xl border border-border bg-card p-8 text-center shadow-soft">
               <h3 className="font-display text-xl font-bold">You're Registered!</h3>
               <p className="mt-3 text-sm text-muted-foreground">
-                Thanks, {name.split(" ")[0]}. Check {email} for your confirmation and calendar invite.
+                Thanks, {name.split(" ")[0]}. Check {email} for your confirmation and calendar
+                invite.
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} noValidate className="rounded-2xl border border-border bg-card p-6 shadow-soft sm:p-8">
+            <form
+              onSubmit={handleSubmit}
+              noValidate
+              className="rounded-2xl border border-border bg-card p-6 shadow-soft sm:p-8"
+            >
               <h3 className="font-display text-lg font-bold">Save Your Seat</h3>
               <div className="mt-5 space-y-4">
                 <div>
-                  <label className="text-sm font-semibold" htmlFor="wname">Name</label>
+                  <label className="text-sm font-semibold" htmlFor="wname">
+                    Name
+                  </label>
                   <input
                     id="wname"
                     value={name}
@@ -111,7 +154,9 @@ function WebinarPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-semibold" htmlFor="wemail">Email</label>
+                  <label className="text-sm font-semibold" htmlFor="wemail">
+                    Email
+                  </label>
                   <input
                     id="wemail"
                     type="email"
@@ -122,7 +167,9 @@ function WebinarPage() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm font-semibold" htmlFor="wcompany">Company</label>
+                  <label className="text-sm font-semibold" htmlFor="wcompany">
+                    Company
+                  </label>
                   <input
                     id="wcompany"
                     value={company}

@@ -1,5 +1,13 @@
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
-import { PageShell, PageHero, Section, Card, CardGrid, FaqList, CtaBand } from "@/components/site/PageShell";
+import {
+  PageShell,
+  PageHero,
+  Section,
+  Card,
+  CardGrid,
+  FaqList,
+  CtaBand,
+} from "@/components/site/PageShell";
 import { industries, industryList } from "@/data/industries";
 
 export const Route = createFileRoute("/industries/$slug")({
@@ -33,7 +41,10 @@ function IndustryPage() {
     <PageShell>
       <PageHero eyebrow={industry.eyebrow} title={industry.title} subtitle={industry.subtitle} />
 
-      <Section title="Understanding the Challenges" subtitle="What we solve for organizations like yours">
+      <Section
+        title="Understanding the Challenges"
+        subtitle="What we solve for organizations like yours"
+      >
         <CardGrid cols={2}>
           {industry.painPoints.map((p, i) => (
             <Card key={p} index={i + 1} title={p} />
@@ -56,7 +67,11 @@ function IndustryPage() {
         </CardGrid>
       </Section>
 
-      <Section muted title="Who We Serve" subtitle={`${industry.name} specialties across the Pacific Northwest`}>
+      <Section
+        muted
+        title="Who We Serve"
+        subtitle={`${industry.name} specialties across the Pacific Northwest`}
+      >
         <CardGrid cols={2}>
           {industry.useCases.map((u) => (
             <Card key={u} title={u} />
@@ -67,8 +82,13 @@ function IndustryPage() {
       <Section title="Outcomes That Matter" subtitle="Real results our video systems deliver">
         <CardGrid cols={4}>
           {industry.outcomes.map((o) => (
-            <div key={o.label} className="rounded-2xl border border-border bg-card p-6 text-center shadow-soft">
-              <div className="text-gradient-brand font-display text-2xl font-extrabold">{o.stat}</div>
+            <div
+              key={o.label}
+              className="rounded-2xl border border-border bg-card p-6 text-center shadow-soft"
+            >
+              <div className="text-gradient-brand font-display text-2xl font-extrabold">
+                {o.stat}
+              </div>
               <h3 className="mt-2 font-display text-sm font-bold">{o.label}</h3>
               <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{o.body}</p>
             </div>

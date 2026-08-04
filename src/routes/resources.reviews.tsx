@@ -105,9 +105,16 @@ function ReviewsPage() {
       <Section>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {reviews.map((r) => (
-            <div key={r.name + r.time} className="flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-soft">
-              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{r.time}</p>
-              <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">&ldquo;{r.quote}&rdquo;</p>
+            <div
+              key={r.name + r.time}
+              className="flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-soft"
+            >
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                {r.time}
+              </p>
+              <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
+                &ldquo;{r.quote}&rdquo;
+              </p>
               <div className="mt-5 flex items-center gap-3">
                 <span
                   className="flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold text-white"

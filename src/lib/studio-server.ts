@@ -8,6 +8,8 @@ import {
   SUPABASE_URL,
 } from "./supabase/client";
 import {
+  AssistantRequestSchema,
+  AssistantResponseSchema,
   CampaignBriefSchema,
   CampaignOutputSchema,
   ContentDirectionRequestSchema,
@@ -205,6 +207,47 @@ export const generateContentDirections = createServerFn({ method: "POST" })
     return { ok: true as const, ...ContentDirectionsSchema.parse(response.output_parsed) };
   });
 
+export const askStudioPal = createServerFn({ method: "POST" })
+  .validator(AssistantRequestSchema)
+  .handler(async ({ data }) => {
+    const { client } = await authorizedClient(data.accessToken, data.workspaceId);
+    const [brandResult, campaignsResult, calendarResult, settingsResult] = await Promise.all([
+      client.from("brand_profiles").select("*").eq("workspace_id", data.workspaceId).single(),
+      client
+        .from("campaigns")
+        .select("title, goal, topic, primary_lane, status, updated_at")
+        .eq("workspace_id", data.workspaceId)
+        .order("updated_at", { ascending: false })
+        .limit(8),
+      client
+        .from("calendar_items")
+        .select("title, channel, publish_at, status")
+        .eq("workspace_id", data.workspaceId)
+        .order("publish_at")
+        .limit(12),
+      client
+        .from("workspace_settings")
+        .select("ai_memory")
+        .eq("workspace_id", data.workspaceId)
+        .single(),
+    ]);
+    if (brandResult.error || !brandResult.data)
+      throw new Error("Finish Brand DNA before asking for personalized guidance.");
+    const key = process.env.OPENAI_API_KEY;
+    if (!key) throw new Error("OPENAI_API_KEY is not configured.");
+    const { default: OpenAI } = await import("openai");
+    const openai = new OpenAI({ apiKey: key });
+    const brand = brandResult.data;
+    const response = await openai.responses.parse({
+      model: process.env.OPENAI_STUDIO_MODEL || "gpt-5-mini",
+      instructions:
+        "You are a Palmer House strategic guide inside a private business workspace. Treat Brand DNA as the source of truth. Use recent campaigns, calendar work, approved proof, and conversation context to give a dynamic next-best recommendation. Lead with the business problem, not a video format. Never invent proof. Ask for clarification only when it prevents a materially wrong recommendation. Map the response to one Palmer House lane: Spotlight for proof and trust, Reel for visibility and momentum, Evergreen for durable education, System for repeatability and internal clarity. The selected Pal changes tone and lens, not the facts. Recommend at most three concrete next steps. Only propose a Brand DNA memory update when the user clearly supplied durable business information; the user must approve it before saving.",
+      input: `Selected Pal: ${data.pal}\n\nBrand DNA:\nBusiness: ${brand.business_name}\nDescription: ${brand.description}\nIndustry: ${brand.industry}\nAudience: ${brand.primary_audience}\nOffers: ${JSON.stringify(brand.offers)}\nVoice: ${brand.voice_traits.join(", ")}\nPreferred language: ${brand.preferred_language}\nAvoid: ${brand.avoid_language.join(" | ")}\nVerified proof only: ${brand.proof_points.join(" | ") || "None supplied"}\nPreferred CTAs: ${brand.calls_to_action.join(" | ")}\nPlatforms: ${brand.platforms.join(" | ")}\n\nApproved AI memory: ${JSON.stringify(settingsResult.data?.ai_memory || {})}\nRecent campaigns: ${JSON.stringify(campaignsResult.data || [])}\nUpcoming work: ${JSON.stringify(calendarResult.data || [])}\nRecent conversation: ${JSON.stringify(data.recentMessages)}\n\nUser: ${data.question}`,
+      text: { format: zodTextFormat(AssistantResponseSchema, "palmer_house_assistant") },
+    });
+    return { ok: true as const, response: AssistantResponseSchema.parse(response.output_parsed) };
+  });
+
 const AnalyzeWebsiteSchema = AuthorizedSchema.extend({ website: z.string().url().max(500) });
 function isUnsafeHost(hostname: string) {
   const host = hostname.toLowerCase();
@@ -268,6 +311,7 @@ export const analyzeStudioWebsite = createServerFn({ method: "POST" })
 
 const SubscriptionSchema = AuthorizedSchema.extend({
   plan: z.enum(["creator", "business", "partner"]),
+  interval: z.enum(["month", "year"]),
 });
 export const createStudioSubscriptionCheckout = createServerFn({ method: "POST" })
   .validator(SubscriptionSchema)
@@ -282,6 +326,7 @@ export const createStudioSubscriptionCheckout = createServerFn({ method: "POST" 
     const requestOrigin = getRequestUrl().origin;
     const siteOrigin = process.env.PUBLIC_SITE_URL || requestOrigin;
     const plan = studioPlans[data.plan];
+    const amount = data.interval === "year" ? plan.annualPrice : plan.price;
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       customer_email: user.email,
@@ -291,11 +336,11 @@ export const createStudioSubscriptionCheckout = createServerFn({ method: "POST" 
           quantity: 1,
           price_data: {
             currency: "usd",
-            recurring: { interval: "month" },
-            unit_amount: plan.price * 100,
+            recurring: { interval: data.interval },
+            unit_amount: amount * 100,
             product_data: {
               name: `Palmer House Studio — ${plan.name}`,
-              description: `${plan.campaigns} complete campaign systems each month.`,
+              description: `${plan.campaigns} complete campaign systems each month${plan.strategySessions ? ` plus ${plan.strategySessions} private Palmer House strategy ${plan.strategySessions === 1 ? "session" : "sessions"}` : ""}.`,
             },
           },
         },
@@ -303,8 +348,14 @@ export const createStudioSubscriptionCheckout = createServerFn({ method: "POST" 
       allow_promotion_codes: true,
       success_url: `${siteOrigin}/studio/billing?checkout=success`,
       cancel_url: `${siteOrigin}/studio/billing?checkout=canceled`,
-      subscription_data: { metadata: { workspace_id: data.workspaceId, plan: data.plan } },
-      metadata: { workspace_id: data.workspaceId, plan: data.plan },
+      subscription_data: {
+        metadata: { workspace_id: data.workspaceId, plan: data.plan, interval: data.interval },
+      },
+      metadata: {
+        workspace_id: data.workspaceId,
+        plan: data.plan,
+        interval: data.interval,
+      },
     });
     if (!session.url) throw new Error("Stripe did not return a checkout URL.");
     return { ok: true as const, url: session.url };

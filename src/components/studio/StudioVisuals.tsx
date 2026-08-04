@@ -91,15 +91,17 @@ export function ContentOrbit({ compact = false }: { compact?: boolean }) {
 
       <motion.div
         className="absolute left-1/2 top-1/2 z-20 grid size-24 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-border bg-white shadow-soft"
-        animate={reduce ? undefined : { rotate: [0, 3, 0, -3, 0] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        initial={reduce ? false : { opacity: 0, scale: 0.88 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.45, ease: "easeOut" }}
       >
         <span className="text-2xl font-black tracking-[-.12em]">PH</span>
         <motion.span
           aria-hidden="true"
           className="absolute -right-2 top-2 grid size-8 place-items-center rounded-full bg-ink text-white"
-          animate={reduce ? undefined : { y: [0, -6, 0] }}
-          transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+          initial={reduce ? false : { opacity: 0, y: 6, scale: 0.8 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.35, delay: 0.35 }}
         >
           <Sparkles className="size-3.5" />
         </motion.span>
@@ -111,13 +113,11 @@ export function ContentOrbit({ compact = false }: { compact?: boolean }) {
           className={`absolute z-10 w-[43%] max-w-[17rem] rounded-[1.25rem] border bg-white p-4 shadow-[0_20px_55px_-45px_rgba(31,35,40,.65)] ${node.position}`}
           style={{ borderColor: node.color }}
           initial={reduce ? false : { opacity: 0, scale: 0.92, y: 12 }}
-          animate={
-            reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: [0, index % 2 ? 6 : -6, 0] }
-          }
+          animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{
             opacity: { duration: 0.35, delay: index * 0.08 },
             scale: { duration: 0.35, delay: index * 0.08 },
-            y: { duration: 5 + index * 0.4, repeat: Infinity, ease: "easeInOut" },
+            y: { duration: 0.35, delay: index * 0.08 },
           }}
         >
           <div className="flex items-start gap-3">
@@ -141,8 +141,9 @@ export function ContentOrbit({ compact = false }: { compact?: boolean }) {
             <motion.span
               className="block h-full rounded-full"
               style={{ background: node.color }}
-              animate={reduce ? { width: "68%" } : { width: ["28%", "82%", "48%"] }}
-              transition={{ duration: 4.4 + index * 0.3, repeat: Infinity, ease: "easeInOut" }}
+              initial={reduce ? false : { width: "0%" }}
+              animate={{ width: `${54 + index * 8}%` }}
+              transition={{ duration: 0.55, delay: 0.2 + index * 0.08, ease: "easeOut" }}
             />
           </span>
         </motion.div>
@@ -150,16 +151,18 @@ export function ContentOrbit({ compact = false }: { compact?: boolean }) {
 
       <motion.div
         className="absolute left-[36%] top-[34%] z-30 flex items-center gap-2 rounded-full border border-border bg-white py-1.5 pl-1.5 pr-3 shadow-soft"
-        animate={reduce ? undefined : { x: [0, -7, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        initial={reduce ? false : { opacity: 0, x: 8 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.35, delay: 0.45 }}
       >
         <img src={ryder} alt="" className="size-7 rounded-full object-cover" />
         <span className="text-[10px] font-bold">Ryder · Reach</span>
       </motion.div>
       <motion.div
         className="absolute bottom-[29%] right-[34%] z-30 flex items-center gap-2 rounded-full border border-border bg-white py-1.5 pl-1.5 pr-3 shadow-soft"
-        animate={reduce ? undefined : { x: [0, 7, 0] }}
-        transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut" }}
+        initial={reduce ? false : { opacity: 0, x: -8 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.35, delay: 0.52 }}
       >
         <img src={kiana} alt="" className="size-7 rounded-full object-cover" />
         <span className="text-[10px] font-bold">Kiana · Proof</span>
@@ -178,8 +181,9 @@ export function LanePulse() {
           key={color}
           className="block h-1.5 w-8 rounded-full"
           style={{ background: color }}
-          animate={reduce ? undefined : { scaleX: [0.45, 1, 0.45], opacity: [0.45, 1, 0.45] }}
-          transition={{ duration: 2.2, repeat: Infinity, delay: index * 0.16 }}
+          initial={reduce ? false : { scaleX: 0, opacity: 0 }}
+          animate={{ scaleX: 1, opacity: 1 }}
+          transition={{ duration: 0.3, delay: index * 0.08 }}
         />
       ))}
     </div>

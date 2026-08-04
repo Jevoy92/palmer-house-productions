@@ -32,42 +32,72 @@ export const anchorFormats = [
 
 export const studioPlans = {
   creator: {
-    name: "Creator",
+    name: "Studio",
     price: 99,
+    annualPrice: 990,
     campaigns: 2,
-    audience: "Solo owners building a consistent content rhythm.",
-    features: ["2 complete campaigns", "Brand Studio", "Production plans", "Content calendar"],
+    strategySessions: 0,
+    strategyMinutes: 0,
+    audience: "Build a clear, repeatable content system with the full toolkit.",
+    features: [
+      "2 complete campaigns",
+      "Brand DNA + Pal guidance",
+      "Personalized video roadmap",
+      "Content calendar",
+      "Member help desk",
+    ],
   },
   business: {
-    name: "Business",
-    price: 249,
+    name: "Guided",
+    price: 499,
+    annualPrice: 4990,
     campaigns: 5,
-    audience: "Small teams managing several offers or platforms.",
+    strategySessions: 1,
+    strategyMinutes: 60,
+    audience: "Get the tools plus a monthly hour with Palmer House to find the next clear move.",
     features: [
       "5 complete campaigns",
-      "Team workspace",
-      "Website content audit",
-      "Advanced planning",
+      "Everything in Studio",
+      "1 private strategy hour / month",
+      "Project and campaign review queue",
+      "Preferred production pricing",
     ],
   },
   partner: {
     name: "Partner",
-    price: 499,
+    price: 999,
+    annualPrice: 9990,
     campaigns: 12,
-    audience: "Businesses pairing software with Palmer House guidance.",
+    strategySessions: 4,
+    strategyMinutes: 240,
+    audience: "Work through campaigns, bigger decisions, and production questions every week.",
     features: [
       "12 complete campaigns",
-      "Monthly strategy session",
-      "Priority support",
+      "Everything in Guided",
+      "4 private strategy hours / month",
+      "Priority project feedback",
       "Preferred production pricing",
     ],
   },
+} as const;
+
+export const studioConsultingOffer = {
+  name: "Clarity Intensive",
+  price: 450,
+  duration: 75,
+  includedPlan: "Studio",
+  includedDays: 30,
+  description:
+    "A focused working session for a campaign, filming space, offer, or content system—with 30 days of Studio access included.",
 } as const;
 
 export type StudioPlanKey = keyof typeof studioPlans;
 export type StudioView =
   | "engine"
   | "home"
+  | "assistant"
+  | "roadmap"
+  | "success"
   | "onboarding"
   | "brand"
   | "ideas"
@@ -78,6 +108,65 @@ export type StudioView =
   | "calendar"
   | "settings"
   | "billing";
+
+export const palNames = [
+  "kareem",
+  "kiana",
+  "ryder",
+  "raquel",
+  "cyrus",
+  "clara",
+  "silas",
+  "samira",
+] as const;
+
+export type PalName = (typeof palNames)[number];
+export type StudioLane = "spotlight" | "reel" | "evergreen" | "system";
+
+export const AssistantRequestSchema = z.object({
+  workspaceId: z.string().uuid(),
+  accessToken: z.string().min(20),
+  question: z.string().min(3).max(3000),
+  pal: z.enum(palNames),
+  recentMessages: z
+    .array(z.object({ role: z.enum(["user", "assistant"]), body: z.string().max(6000) }))
+    .max(12),
+});
+
+export const AssistantResponseSchema = z.object({
+  reply: z.string(),
+  lane: z.enum(["spotlight", "reel", "evergreen", "system"]),
+  problem: z.string(),
+  recommendations: z
+    .array(
+      z.object({
+        title: z.string(),
+        reason: z.string(),
+        nextStep: z.string(),
+        videoKey: z.string().optional(),
+      }),
+    )
+    .min(1)
+    .max(3),
+  memorySuggestions: z
+    .array(
+      z.object({
+        field: z.enum([
+          "description",
+          "primary_audience",
+          "preferred_language",
+          "offers",
+          "proof_points",
+          "calls_to_action",
+        ]),
+        value: z.string(),
+        reason: z.string(),
+      }),
+    )
+    .max(3),
+});
+
+export type AssistantResponse = z.infer<typeof AssistantResponseSchema>;
 
 export const contentPlatforms = [
   "youtube",

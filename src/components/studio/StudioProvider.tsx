@@ -2,8 +2,18 @@ import type { Session, User } from "@supabase/supabase-js";
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { buildDemoCampaign } from "@/lib/studio-demo";
-import { generateContentDirections, generateStudioCampaign } from "@/lib/studio-server";
-import type { CampaignOutput, ContentDirection } from "@/lib/studio-model";
+import {
+  askStudioPal,
+  generateContentDirections,
+  generateStudioCampaign,
+} from "@/lib/studio-server";
+import type {
+  AssistantResponse,
+  CampaignOutput,
+  ContentDirection,
+  PalName,
+  StudioLane,
+} from "@/lib/studio-model";
 import { supabase } from "@/lib/supabase/client";
 import type { Tables } from "@/lib/supabase/database.types";
 
@@ -15,6 +25,10 @@ type Campaign = Tables<"campaigns">;
 type Asset = Tables<"campaign_assets">;
 type CalendarItem = Tables<"calendar_items">;
 type Settings = Tables<"workspace_settings">;
+type Idea = Tables<"content_ideas">;
+type AssistantMessage = Tables<"assistant_messages">;
+type VideoProgress = Tables<"workspace_video_items">;
+type ServiceRequest = Tables<"service_requests">;
 
 const demoWorkspace: Workspace = {
   id: "00000000-0000-4000-8000-000000000001",
@@ -44,7 +58,7 @@ const demoBrand: Brand = {
   proof_points: ["One production day can create weeks of connected content"],
   content_examples: [],
   colors: { spotlight: "#3D1A66", reel: "#E8720C", evergreen: "#5B8A2D", system: "#0A9B8F" },
-  fonts: { primary: "Inter", detail: "JetBrains Mono" },
+  fonts: { primary: "Satoshi", detail: "Satoshi Mono" },
   completion: 86,
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
@@ -52,6 +66,7 @@ const demoBrand: Brand = {
 const demoSubscription: Subscription = {
   workspace_id: demoWorkspace.id,
   plan: "owner",
+  billing_interval: "month",
   status: "active",
   campaign_allowance: 5,
   trial_ends_at: new Date(Date.now() + 6 * 86_400_000).toISOString(),
@@ -60,6 +75,19 @@ const demoSubscription: Subscription = {
   stripe_customer_id: null,
   stripe_subscription_id: null,
   cancel_at_period_end: false,
+  updated_at: new Date().toISOString(),
+};
+
+const demoSettings: Settings = {
+  workspace_id: demoWorkspace.id,
+  default_depth: "strategic",
+  email_campaign_ready: true,
+  email_usage_alerts: true,
+  email_palmer_support: true,
+  week_starts_on: 1,
+  preferred_pal: "kiana",
+  ai_memory: {},
+  last_briefing_at: null,
   updated_at: new Date().toISOString(),
 };
 
@@ -89,6 +117,10 @@ type StudioContextValue = {
   campaigns: Campaign[];
   assets: Asset[];
   calendar: CalendarItem[];
+  ideas: Idea[];
+  assistantMessages: AssistantMessage[];
+  videoProgress: VideoProgress[];
+  serviceRequests: ServiceRequest[];
   campaignOutputs: Record<string, CampaignOutput>;
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (fullName: string, email: string, password: string) => Promise<string>;
@@ -99,6 +131,19 @@ type StudioContextValue = {
   createWorkspace: (name: string) => Promise<void>;
   saveProfile: (values: Partial<Profile>) => Promise<void>;
   saveBrand: (values: Partial<Brand>) => Promise<void>;
+  saveSettings: (values: Partial<Settings>) => Promise<void>;
+  createIdea: (values: {
+    body: string;
+    sourceType: "text" | "link" | "image" | "chat" | "recommended";
+    sourceUrl?: string;
+    sourceMediaPath?: string;
+    lane: StudioLane;
+    businessProblem: string;
+  }) => Promise<string>;
+  updateIdea: (id: string, values: Partial<Idea>) => Promise<void>;
+  uploadIdeaSource: (file: File) => Promise<string>;
+  askPal: (question: string, pal: PalName) => Promise<AssistantResponse>;
+  updateVideoProgress: (itemKey: string, status: string, campaignId?: string) => Promise<void>;
   createCampaign: (values: {
     title: string;
     goal: string;
@@ -299,6 +344,10 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [assets, setAssets] = useState<Asset[]>([]);
   const [calendar, setCalendar] = useState<CalendarItem[]>([]);
+  const [ideas, setIdeas] = useState<Idea[]>([]);
+  const [assistantMessages, setAssistantMessages] = useState<AssistantMessage[]>([]);
+  const [videoProgress, setVideoProgress] = useState<VideoProgress[]>([]);
+  const [serviceRequests, setServiceRequests] = useState<ServiceRequest[]>([]);
   const [campaignOutputs, setCampaignOutputs] = useState<Record<string, CampaignOutput>>({});
 
   const loadWorkspace = useCallback(async (activeSession: Session | null) => {
@@ -311,6 +360,10 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       setCampaigns([]);
       setAssets([]);
       setCalendar([]);
+      setIdeas([]);
+      setAssistantMessages([]);
+      setVideoProgress([]);
+      setServiceRequests([]);
       setLoading(false);
       return;
     }
@@ -341,6 +394,10 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       campaignsResult,
       assetsResult,
       calendarResult,
+      ideasResult,
+      assistantResult,
+      videoProgressResult,
+      serviceRequestsResult,
     ] = await Promise.all([
       supabase.from("workspaces").select("*").eq("id", workspaceId).single(),
       supabase.from("workspace_subscriptions").select("*").eq("workspace_id", workspaceId).single(),
@@ -361,6 +418,23 @@ export function StudioProvider({ children }: { children: ReactNode }) {
         .select("*")
         .eq("workspace_id", workspaceId)
         .order("publish_at"),
+      supabase
+        .from("content_ideas")
+        .select("*")
+        .eq("workspace_id", workspaceId)
+        .order("created_at", { ascending: false }),
+      supabase
+        .from("assistant_messages")
+        .select("*")
+        .eq("workspace_id", workspaceId)
+        .order("created_at", { ascending: true })
+        .limit(80),
+      supabase.from("workspace_video_items").select("*").eq("workspace_id", workspaceId),
+      supabase
+        .from("service_requests")
+        .select("*")
+        .eq("workspace_id", workspaceId)
+        .order("created_at", { ascending: false }),
     ]);
     if (workspaceResult.data) setWorkspace(workspaceResult.data);
     if (subscriptionResult.data) setSubscription(subscriptionResult.data);
@@ -369,6 +443,10 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     setCampaigns(campaignsResult.data || []);
     setAssets(assetsResult.data || []);
     setCalendar(calendarResult.data || []);
+    setIdeas(ideasResult.data || []);
+    setAssistantMessages(assistantResult.data || []);
+    setVideoProgress(videoProgressResult.data || []);
+    setServiceRequests(serviceRequestsResult.data || []);
     setLoading(false);
   }, []);
 
@@ -384,7 +462,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
         setWorkspace(demoWorkspace);
         setBrand(demoBrand);
         setSubscription(demoSubscription);
-        setSettings(null);
+        setSettings(demoSettings);
         setCampaigns(seed.campaigns);
         setAssets(seed.assets);
         setCalendar(seed.calendar);
@@ -449,7 +527,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     setWorkspace(demoWorkspace);
     setBrand(demoBrand);
     setSubscription(demoSubscription);
-    setSettings(null);
+    setSettings(demoSettings);
     setCampaigns(seed.campaigns);
     setAssets(seed.assets);
     setCalendar(seed.calendar);
@@ -509,6 +587,204 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       .single();
     if (result.error) throw result.error;
     setBrand(result.data);
+  }
+  async function saveSettings(values: Partial<Settings>) {
+    if (!workspace) throw new Error("Create a workspace first.");
+    if (demo) {
+      setSettings((current) => ({ ...(current || demoSettings), ...values }));
+      return;
+    }
+    const result = await supabase
+      .from("workspace_settings")
+      .update(values)
+      .eq("workspace_id", workspace.id)
+      .select()
+      .single();
+    if (result.error) throw result.error;
+    setSettings(result.data);
+  }
+  async function createIdea(values: {
+    body: string;
+    sourceType: "text" | "link" | "image" | "chat" | "recommended";
+    sourceUrl?: string;
+    sourceMediaPath?: string;
+    lane: StudioLane;
+    businessProblem: string;
+  }) {
+    if (!workspace) throw new Error("Create a workspace first.");
+    if (demo) {
+      const id = crypto.randomUUID();
+      const now = new Date().toISOString();
+      const idea: Idea = {
+        id,
+        workspace_id: workspace.id,
+        created_by: "owner-preview",
+        body: values.body,
+        source_type: values.sourceType,
+        source_url: values.sourceUrl || null,
+        source_media_path: values.sourceMediaPath || null,
+        source_metadata: {},
+        primary_lane: values.lane,
+        business_problem: values.businessProblem,
+        status: "saved",
+        created_at: now,
+        updated_at: now,
+      };
+      setIdeas((current) => [idea, ...current]);
+      return id;
+    }
+    if (!session) throw new Error("Sign in first.");
+    const result = await supabase
+      .from("content_ideas")
+      .insert({
+        workspace_id: workspace.id,
+        created_by: session.user.id,
+        body: values.body,
+        source_type: values.sourceType,
+        source_url: values.sourceUrl || null,
+        source_media_path: values.sourceMediaPath || null,
+        primary_lane: values.lane,
+        business_problem: values.businessProblem,
+      })
+      .select()
+      .single();
+    if (result.error) throw result.error;
+    setIdeas((current) => [result.data, ...current]);
+    return result.data.id;
+  }
+  async function updateIdea(id: string, values: Partial<Idea>) {
+    if (demo) {
+      setIdeas((current) =>
+        current.map((item) => (item.id === id ? { ...item, ...values } : item)),
+      );
+      return;
+    }
+    const result = await supabase
+      .from("content_ideas")
+      .update(values)
+      .eq("id", id)
+      .select()
+      .single();
+    if (result.error) throw result.error;
+    setIdeas((current) => current.map((item) => (item.id === id ? result.data : item)));
+  }
+  async function uploadIdeaSource(file: File) {
+    if (!workspace) throw new Error("Create a workspace first.");
+    if (demo) return `owner-preview/${crypto.randomUUID()}-${file.name}`;
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+    const path = `${workspace.id}/idea-sources/${crypto.randomUUID()}-${safeName}`;
+    const result = await supabase.storage
+      .from("campaign-assets")
+      .upload(path, file, { upsert: false });
+    if (result.error) throw result.error;
+    return result.data.path;
+  }
+  async function askPal(question: string, pal: PalName) {
+    if (!workspace || !brand) throw new Error("Finish Brand DNA before asking for guidance.");
+    const now = new Date().toISOString();
+    const userMessage: AssistantMessage = {
+      id: crypto.randomUUID(),
+      workspace_id: workspace.id,
+      user_id: session?.user.id || null,
+      role: "user",
+      pal,
+      body: question,
+      metadata: {},
+      created_at: now,
+    };
+    setAssistantMessages((current) => [...current, userMessage]);
+    setBusy(true);
+    try {
+      let response: AssistantResponse;
+      if (demo) {
+        await new Promise((resolve) => window.setTimeout(resolve, 550));
+        const directions = buildDemoDirections(question);
+        const best = directions[0];
+        response = {
+          reply: best
+            ? `${best.title}. ${best.angle}`
+            : "Name the exact decision you need the audience to make. That gives the content a real job.",
+          lane: (best?.lane || "evergreen") as StudioLane,
+          problem:
+            "The useful business idea is present, but it has not been turned into a repeatable asset yet.",
+          recommendations: directions.slice(0, 2).map((direction) => ({
+            title: direction.title,
+            reason: direction.whyItWorks,
+            nextStep: direction.angle,
+          })),
+          memorySuggestions: [],
+        };
+      } else {
+        if (!session) throw new Error("Sign in first.");
+        const recentMessages = assistantMessages.slice(-11).map((message) => ({
+          role: message.role as "user" | "assistant",
+          body: message.body,
+        }));
+        const generated = await askStudioPal({
+          data: {
+            workspaceId: workspace.id,
+            accessToken: session.access_token,
+            question,
+            pal,
+            recentMessages,
+          },
+        });
+        response = generated.response;
+        const savedUser = await supabase.from("assistant_messages").insert({
+          workspace_id: workspace.id,
+          user_id: session.user.id,
+          role: "user",
+          pal,
+          body: question,
+        });
+        if (savedUser.error) throw savedUser.error;
+      }
+      const assistantMessage: AssistantMessage = {
+        id: crypto.randomUUID(),
+        workspace_id: workspace.id,
+        user_id: null,
+        role: "assistant",
+        pal,
+        body: response.reply,
+        metadata: response,
+        created_at: new Date().toISOString(),
+      };
+      if (!demo) {
+        const saved = await supabase.from("assistant_messages").insert({
+          workspace_id: workspace.id,
+          role: "assistant",
+          pal,
+          body: response.reply,
+          metadata: response,
+        });
+        if (saved.error) throw saved.error;
+      }
+      setAssistantMessages((current) => [...current, assistantMessage]);
+      return response;
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function updateVideoProgress(itemKey: string, status: string, campaignId?: string) {
+    if (!workspace) throw new Error("Create a workspace first.");
+    const next: VideoProgress = {
+      workspace_id: workspace.id,
+      item_key: itemKey,
+      status,
+      campaign_id: campaignId || null,
+      notes: "",
+      updated_at: new Date().toISOString(),
+    };
+    if (demo) {
+      setVideoProgress((current) => [next, ...current.filter((item) => item.item_key !== itemKey)]);
+      return;
+    }
+    const result = await supabase.from("workspace_video_items").upsert(next).select().single();
+    if (result.error) throw result.error;
+    setVideoProgress((current) => [
+      result.data,
+      ...current.filter((item) => item.item_key !== itemKey),
+    ]);
   }
   async function createCampaign(values: {
     title: string;
@@ -724,6 +1000,21 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   }
   async function requestService(requestType: string, notes: string, campaignId?: string) {
     if (demo) {
+      const now = new Date().toISOString();
+      setServiceRequests((current) => [
+        {
+          id: crypto.randomUUID(),
+          workspace_id: workspace?.id || demoWorkspace.id,
+          user_id: "owner-preview",
+          campaign_id: campaignId || null,
+          request_type: requestType,
+          status: "requested",
+          notes,
+          created_at: now,
+          updated_at: now,
+        },
+        ...current,
+      ]);
       toast.success("Preview request captured. Customer workspaces send this to Palmer House.");
       return;
     }
@@ -736,6 +1027,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       notes,
     });
     if (result.error) throw result.error;
+    await refresh();
     toast.success("Request sent to Palmer House.");
   }
   async function uploadBrandAsset(file: File) {
@@ -766,6 +1058,10 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     campaigns,
     assets,
     calendar,
+    ideas,
+    assistantMessages,
+    videoProgress,
+    serviceRequests,
     campaignOutputs,
     signIn,
     signUp,
@@ -776,6 +1072,12 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     createWorkspace,
     saveProfile,
     saveBrand,
+    saveSettings,
+    createIdea,
+    updateIdea,
+    uploadIdeaSource,
+    askPal,
+    updateVideoProgress,
     createCampaign,
     suggestDirections,
     updateAsset,

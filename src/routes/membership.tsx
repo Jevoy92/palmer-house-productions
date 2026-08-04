@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import {
   ArrowRight,
@@ -334,15 +334,15 @@ function MembershipPage() {
               Choose the amount of momentum.
             </h2>
             <p className="mx-auto mt-6 max-w-xl text-muted-foreground">
-              Every plan includes the same connected Studio. The difference is campaign volume, team
-              support, and Palmer House access.
+              Every plan includes the same connected Studio. The difference is campaign volume and
+              how much private Palmer House guidance you want beside it.
             </p>
           </div>
           <div className="mt-14 grid gap-4 lg:grid-cols-3">
             {Object.entries(studioPlans).map(([key, plan], index) => (
               <article
                 key={key}
-                className={`flex flex-col rounded-[2rem] border p-7 ${index === 1 ? "border-ink bg-ink text-white" : "border-border bg-white"}`}
+                className={`flex flex-col rounded-[2rem] border p-7 ${index === 1 ? "border-spotlight bg-spotlight-soft" : "border-border bg-white"}`}
               >
                 <div className="flex items-center justify-between">
                   <p className="font-mono text-[9px] uppercase tracking-[.17em] opacity-55">
@@ -350,33 +350,31 @@ function MembershipPage() {
                   </p>
                   {index === 1 && (
                     <span className="rounded-full bg-system px-3 py-1 font-mono text-[8px] uppercase tracking-[.13em]">
-                      Most useful
+                      Best balance
                     </span>
                   )}
                 </div>
                 <p className="mt-8 text-5xl font-extrabold">
                   ${plan.price}
-                  <span className="text-sm font-medium opacity-55">/mo</span>
+                  <span className="text-sm font-medium text-muted-foreground">/mo</span>
                 </p>
                 <p className="mt-4 min-h-12 text-sm leading-relaxed opacity-65">{plan.audience}</p>
                 <p
-                  className={`mt-7 rounded-2xl p-4 text-sm font-bold ${index === 1 ? "bg-white/10" : "bg-secondary"}`}
+                  className={`mt-7 rounded-2xl p-4 text-sm font-bold ${index === 1 ? "bg-white text-spotlight" : "bg-cream"}`}
                 >
                   {plan.campaigns} complete campaigns each month
                 </p>
                 <ul className="mt-7 space-y-4 text-sm">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex gap-3">
-                      <Check
-                        className={`mt-0.5 size-4 shrink-0 ${index === 1 ? "text-system" : "text-evergreen"}`}
-                      />
+                      <Check className="mt-0.5 size-4 shrink-0 text-evergreen" />
                       {feature}
                     </li>
                   ))}
                 </ul>
                 <Link
                   to="/studio"
-                  className={`mt-9 flex min-h-13 items-center justify-center rounded-2xl font-semibold ${index === 1 ? "bg-white text-ink" : "bg-ink text-white"}`}
+                  className={`mt-9 flex min-h-13 items-center justify-center rounded-2xl font-semibold ${index === 1 ? "bg-spotlight text-white" : "bg-ink text-white"}`}
                 >
                   Start with a free sprint
                 </Link>
@@ -480,6 +478,15 @@ function MembershipPage() {
   );
 }
 
+function MembershipRoute() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  return pathname === "/membership" || pathname === "/membership/" ? (
+    <MembershipPage />
+  ) : (
+    <Outlet />
+  );
+}
+
 export const Route = createFileRoute("/membership")({
   head: () => ({
     meta: [
@@ -491,5 +498,5 @@ export const Route = createFileRoute("/membership")({
       },
     ],
   }),
-  component: MembershipPage,
+  component: MembershipRoute,
 });

@@ -52,6 +52,7 @@ import { Route as ServicesPostProductionRouteImport } from './routes/services.po
 import { Route as ServicesVideoProductionRouteImport } from './routes/services.video-production'
 import { Route as StudioIndexRouteImport } from './routes/studio.index'
 import { Route as StudioApprovalsRouteImport } from './routes/studio.approvals'
+import { Route as StudioAssistantRouteImport } from './routes/studio.assistant'
 import { Route as StudioBillingRouteImport } from './routes/studio.billing'
 import { Route as StudioBrandRouteImport } from './routes/studio.brand'
 import { Route as StudioCalendarRouteImport } from './routes/studio.calendar'
@@ -59,7 +60,9 @@ import { Route as StudioDashboardRouteImport } from './routes/studio.dashboard'
 import { Route as StudioIdeasRouteImport } from './routes/studio.ideas'
 import { Route as StudioLibraryRouteImport } from './routes/studio.library'
 import { Route as StudioOnboardingRouteImport } from './routes/studio.onboarding'
+import { Route as StudioRoadmapRouteImport } from './routes/studio.roadmap'
 import { Route as StudioSettingsRouteImport } from './routes/studio.settings'
+import { Route as StudioSuccessRouteImport } from './routes/studio.success'
 import { Route as StudioCampaignsIndexRouteImport } from './routes/studio.campaigns.index'
 import { Route as StudioCampaignsCampaignIdRouteImport } from './routes/studio.campaigns.$campaignId'
 
@@ -278,6 +281,11 @@ const StudioApprovalsRoute = StudioApprovalsRouteImport.update({
   path: '/approvals',
   getParentRoute: () => StudioRoute,
 } as any)
+const StudioAssistantRoute = StudioAssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
+  getParentRoute: () => StudioRoute,
+} as any)
 const StudioBillingRoute = StudioBillingRouteImport.update({
   id: '/billing',
   path: '/billing',
@@ -313,9 +321,19 @@ const StudioOnboardingRoute = StudioOnboardingRouteImport.update({
   path: '/onboarding',
   getParentRoute: () => StudioRoute,
 } as any)
+const StudioRoadmapRoute = StudioRoadmapRouteImport.update({
+  id: '/roadmap',
+  path: '/roadmap',
+  getParentRoute: () => StudioRoute,
+} as any)
 const StudioSettingsRoute = StudioSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => StudioRoute,
+} as any)
+const StudioSuccessRoute = StudioSuccessRouteImport.update({
+  id: '/success',
+  path: '/success',
   getParentRoute: () => StudioRoute,
 } as any)
 const StudioCampaignsIndexRoute = StudioCampaignsIndexRouteImport.update({
@@ -372,6 +390,7 @@ export interface FileRoutesByFullPath {
   '/services/post-production': typeof ServicesPostProductionRoute
   '/services/video-production': typeof ServicesVideoProductionRoute
   '/studio/approvals': typeof StudioApprovalsRoute
+  '/studio/assistant': typeof StudioAssistantRoute
   '/studio/billing': typeof StudioBillingRoute
   '/studio/brand': typeof StudioBrandRoute
   '/studio/calendar': typeof StudioCalendarRoute
@@ -379,7 +398,9 @@ export interface FileRoutesByFullPath {
   '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
   '/studio/onboarding': typeof StudioOnboardingRoute
+  '/studio/roadmap': typeof StudioRoadmapRoute
   '/studio/settings': typeof StudioSettingsRoute
+  '/studio/success': typeof StudioSuccessRoute
   '/blog/': typeof BlogIndexRoute
   '/studio/': typeof StudioIndexRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
@@ -426,6 +447,7 @@ export interface FileRoutesByTo {
   '/services/post-production': typeof ServicesPostProductionRoute
   '/services/video-production': typeof ServicesVideoProductionRoute
   '/studio/approvals': typeof StudioApprovalsRoute
+  '/studio/assistant': typeof StudioAssistantRoute
   '/studio/billing': typeof StudioBillingRoute
   '/studio/brand': typeof StudioBrandRoute
   '/studio/calendar': typeof StudioCalendarRoute
@@ -433,7 +455,9 @@ export interface FileRoutesByTo {
   '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
   '/studio/onboarding': typeof StudioOnboardingRoute
+  '/studio/roadmap': typeof StudioRoadmapRoute
   '/studio/settings': typeof StudioSettingsRoute
+  '/studio/success': typeof StudioSuccessRoute
   '/blog': typeof BlogIndexRoute
   '/studio': typeof StudioIndexRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
@@ -482,6 +506,7 @@ export interface FileRoutesById {
   '/services/post-production': typeof ServicesPostProductionRoute
   '/services/video-production': typeof ServicesVideoProductionRoute
   '/studio/approvals': typeof StudioApprovalsRoute
+  '/studio/assistant': typeof StudioAssistantRoute
   '/studio/billing': typeof StudioBillingRoute
   '/studio/brand': typeof StudioBrandRoute
   '/studio/calendar': typeof StudioCalendarRoute
@@ -489,7 +514,9 @@ export interface FileRoutesById {
   '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
   '/studio/onboarding': typeof StudioOnboardingRoute
+  '/studio/roadmap': typeof StudioRoadmapRoute
   '/studio/settings': typeof StudioSettingsRoute
+  '/studio/success': typeof StudioSuccessRoute
   '/blog/': typeof BlogIndexRoute
   '/studio/': typeof StudioIndexRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
@@ -539,6 +566,7 @@ export interface FileRouteTypes {
     | '/services/post-production'
     | '/services/video-production'
     | '/studio/approvals'
+    | '/studio/assistant'
     | '/studio/billing'
     | '/studio/brand'
     | '/studio/calendar'
@@ -546,7 +574,9 @@ export interface FileRouteTypes {
     | '/studio/ideas'
     | '/studio/library'
     | '/studio/onboarding'
+    | '/studio/roadmap'
     | '/studio/settings'
+    | '/studio/success'
     | '/blog/'
     | '/studio/'
     | '/studio/campaigns/$campaignId'
@@ -593,6 +623,7 @@ export interface FileRouteTypes {
     | '/services/post-production'
     | '/services/video-production'
     | '/studio/approvals'
+    | '/studio/assistant'
     | '/studio/billing'
     | '/studio/brand'
     | '/studio/calendar'
@@ -600,7 +631,9 @@ export interface FileRouteTypes {
     | '/studio/ideas'
     | '/studio/library'
     | '/studio/onboarding'
+    | '/studio/roadmap'
     | '/studio/settings'
+    | '/studio/success'
     | '/blog'
     | '/studio'
     | '/studio/campaigns/$campaignId'
@@ -648,6 +681,7 @@ export interface FileRouteTypes {
     | '/services/post-production'
     | '/services/video-production'
     | '/studio/approvals'
+    | '/studio/assistant'
     | '/studio/billing'
     | '/studio/brand'
     | '/studio/calendar'
@@ -655,7 +689,9 @@ export interface FileRouteTypes {
     | '/studio/ideas'
     | '/studio/library'
     | '/studio/onboarding'
+    | '/studio/roadmap'
     | '/studio/settings'
+    | '/studio/success'
     | '/blog/'
     | '/studio/'
     | '/studio/campaigns/$campaignId'
@@ -1007,6 +1043,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioApprovalsRouteImport
       parentRoute: typeof StudioRoute
     }
+    '/studio/assistant': {
+      id: '/studio/assistant'
+      path: '/assistant'
+      fullPath: '/studio/assistant'
+      preLoaderRoute: typeof StudioAssistantRouteImport
+      parentRoute: typeof StudioRoute
+    }
     '/studio/billing': {
       id: '/studio/billing'
       path: '/billing'
@@ -1056,11 +1099,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioOnboardingRouteImport
       parentRoute: typeof StudioRoute
     }
+    '/studio/roadmap': {
+      id: '/studio/roadmap'
+      path: '/roadmap'
+      fullPath: '/studio/roadmap'
+      preLoaderRoute: typeof StudioRoadmapRouteImport
+      parentRoute: typeof StudioRoute
+    }
     '/studio/settings': {
       id: '/studio/settings'
       path: '/settings'
       fullPath: '/studio/settings'
       preLoaderRoute: typeof StudioSettingsRouteImport
+      parentRoute: typeof StudioRoute
+    }
+    '/studio/success': {
+      id: '/studio/success'
+      path: '/success'
+      fullPath: '/studio/success'
+      preLoaderRoute: typeof StudioSuccessRouteImport
       parentRoute: typeof StudioRoute
     }
     '/studio/campaigns/': {
@@ -1096,6 +1153,7 @@ const MembershipRouteWithChildren = MembershipRoute._addFileChildren(
 
 interface StudioRouteChildren {
   StudioApprovalsRoute: typeof StudioApprovalsRoute
+  StudioAssistantRoute: typeof StudioAssistantRoute
   StudioBillingRoute: typeof StudioBillingRoute
   StudioBrandRoute: typeof StudioBrandRoute
   StudioCalendarRoute: typeof StudioCalendarRoute
@@ -1103,7 +1161,9 @@ interface StudioRouteChildren {
   StudioIdeasRoute: typeof StudioIdeasRoute
   StudioLibraryRoute: typeof StudioLibraryRoute
   StudioOnboardingRoute: typeof StudioOnboardingRoute
+  StudioRoadmapRoute: typeof StudioRoadmapRoute
   StudioSettingsRoute: typeof StudioSettingsRoute
+  StudioSuccessRoute: typeof StudioSuccessRoute
   StudioIndexRoute: typeof StudioIndexRoute
   StudioCampaignsCampaignIdRoute: typeof StudioCampaignsCampaignIdRoute
   StudioCampaignsIndexRoute: typeof StudioCampaignsIndexRoute
@@ -1111,6 +1171,7 @@ interface StudioRouteChildren {
 
 const StudioRouteChildren: StudioRouteChildren = {
   StudioApprovalsRoute: StudioApprovalsRoute,
+  StudioAssistantRoute: StudioAssistantRoute,
   StudioBillingRoute: StudioBillingRoute,
   StudioBrandRoute: StudioBrandRoute,
   StudioCalendarRoute: StudioCalendarRoute,
@@ -1118,7 +1179,9 @@ const StudioRouteChildren: StudioRouteChildren = {
   StudioIdeasRoute: StudioIdeasRoute,
   StudioLibraryRoute: StudioLibraryRoute,
   StudioOnboardingRoute: StudioOnboardingRoute,
+  StudioRoadmapRoute: StudioRoadmapRoute,
   StudioSettingsRoute: StudioSettingsRoute,
+  StudioSuccessRoute: StudioSuccessRoute,
   StudioIndexRoute: StudioIndexRoute,
   StudioCampaignsCampaignIdRoute: StudioCampaignsCampaignIdRoute,
   StudioCampaignsIndexRoute: StudioCampaignsIndexRoute,

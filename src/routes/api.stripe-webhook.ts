@@ -30,6 +30,7 @@ async function handleStripeWebhook({ request }: { request: Request }) {
     if (session.mode === "subscription" && session.subscription && session.customer) {
       const workspaceId = session.metadata?.workspace_id || session.client_reference_id;
       const plan = session.metadata?.plan as StudioPlanKey | undefined;
+      const billingInterval = session.metadata?.interval === "year" ? "year" : "month";
       if (workspaceId && plan && studioPlans[plan]) {
         await admin
           .from("workspace_subscriptions")
@@ -37,6 +38,7 @@ async function handleStripeWebhook({ request }: { request: Request }) {
             plan,
             status: "active",
             campaign_allowance: studioPlans[plan].campaigns,
+            billing_interval: billingInterval,
             stripe_customer_id: String(session.customer),
             stripe_subscription_id: String(session.subscription),
           })
@@ -52,6 +54,7 @@ async function handleStripeWebhook({ request }: { request: Request }) {
     const subscription = event.data.object;
     const workspaceId = subscription.metadata.workspace_id;
     const plan = subscription.metadata.plan as StudioPlanKey | undefined;
+    const billingInterval = subscription.metadata.interval === "year" ? "year" : "month";
     if (workspaceId) {
       const status =
         event.type === "customer.subscription.deleted"
@@ -69,6 +72,7 @@ async function handleStripeWebhook({ request }: { request: Request }) {
           status,
           plan: plan && studioPlans[plan] ? plan : undefined,
           campaign_allowance: plan && studioPlans[plan] ? studioPlans[plan].campaigns : undefined,
+          billing_interval: billingInterval,
           stripe_customer_id: String(subscription.customer),
           stripe_subscription_id: subscription.id,
           cancel_at_period_end: subscription.cancel_at_period_end,

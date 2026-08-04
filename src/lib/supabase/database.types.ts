@@ -280,6 +280,103 @@ export type Database = {
           },
         ];
       };
+      assistant_messages: {
+        Row: {
+          body: string;
+          created_at: string;
+          id: string;
+          metadata: Json;
+          pal: string;
+          role: string;
+          user_id: string | null;
+          workspace_id: string;
+        };
+        Insert: {
+          body: string;
+          created_at?: string;
+          id?: string;
+          metadata?: Json;
+          pal: string;
+          role: string;
+          user_id?: string | null;
+          workspace_id: string;
+        };
+        Update: {
+          body?: string;
+          created_at?: string;
+          id?: string;
+          metadata?: Json;
+          pal?: string;
+          role?: string;
+          user_id?: string | null;
+          workspace_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "assistant_messages_workspace_id_fkey";
+            columns: ["workspace_id"];
+            isOneToOne: false;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      content_ideas: {
+        Row: {
+          body: string;
+          business_problem: string;
+          created_at: string;
+          created_by: string;
+          id: string;
+          primary_lane: string;
+          source_media_path: string | null;
+          source_metadata: Json;
+          source_type: string;
+          source_url: string | null;
+          status: string;
+          updated_at: string;
+          workspace_id: string;
+        };
+        Insert: {
+          body: string;
+          business_problem?: string;
+          created_at?: string;
+          created_by: string;
+          id?: string;
+          primary_lane?: string;
+          source_media_path?: string | null;
+          source_metadata?: Json;
+          source_type?: string;
+          source_url?: string | null;
+          status?: string;
+          updated_at?: string;
+          workspace_id: string;
+        };
+        Update: {
+          body?: string;
+          business_problem?: string;
+          created_at?: string;
+          created_by?: string;
+          id?: string;
+          primary_lane?: string;
+          source_media_path?: string | null;
+          source_metadata?: Json;
+          source_type?: string;
+          source_url?: string | null;
+          status?: string;
+          updated_at?: string;
+          workspace_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "content_ideas_workspace_id_fkey";
+            columns: ["workspace_id"];
+            isOneToOne: false;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       profiles: {
         Row: {
           avatar_url: string | null;
@@ -502,28 +599,37 @@ export type Database = {
       };
       workspace_settings: {
         Row: {
+          ai_memory: Json;
           default_depth: string;
           email_campaign_ready: boolean;
           email_palmer_support: boolean;
           email_usage_alerts: boolean;
+          last_briefing_at: string | null;
+          preferred_pal: string;
           updated_at: string;
           week_starts_on: number;
           workspace_id: string;
         };
         Insert: {
+          ai_memory?: Json;
           default_depth?: string;
           email_campaign_ready?: boolean;
           email_palmer_support?: boolean;
           email_usage_alerts?: boolean;
+          last_briefing_at?: string | null;
+          preferred_pal?: string;
           updated_at?: string;
           week_starts_on?: number;
           workspace_id: string;
         };
         Update: {
+          ai_memory?: Json;
           default_depth?: string;
           email_campaign_ready?: boolean;
           email_palmer_support?: boolean;
           email_usage_alerts?: boolean;
+          last_briefing_at?: string | null;
+          preferred_pal?: string;
           updated_at?: string;
           week_starts_on?: number;
           workspace_id?: string;
@@ -538,8 +644,51 @@ export type Database = {
           },
         ];
       };
+      workspace_video_items: {
+        Row: {
+          campaign_id: string | null;
+          item_key: string;
+          notes: string;
+          status: string;
+          updated_at: string;
+          workspace_id: string;
+        };
+        Insert: {
+          campaign_id?: string | null;
+          item_key: string;
+          notes?: string;
+          status?: string;
+          updated_at?: string;
+          workspace_id: string;
+        };
+        Update: {
+          campaign_id?: string | null;
+          item_key?: string;
+          notes?: string;
+          status?: string;
+          updated_at?: string;
+          workspace_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "workspace_video_items_campaign_id_fkey";
+            columns: ["campaign_id"];
+            isOneToOne: false;
+            referencedRelation: "campaigns";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "workspace_video_items_workspace_id_fkey";
+            columns: ["workspace_id"];
+            isOneToOne: false;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       workspace_subscriptions: {
         Row: {
+          billing_interval: string;
           campaign_allowance: number;
           cancel_at_period_end: boolean;
           current_period_end: string;
@@ -553,6 +702,7 @@ export type Database = {
           workspace_id: string;
         };
         Insert: {
+          billing_interval?: string;
           campaign_allowance?: number;
           cancel_at_period_end?: boolean;
           current_period_end?: string;
@@ -566,6 +716,7 @@ export type Database = {
           workspace_id: string;
         };
         Update: {
+          billing_interval?: string;
           campaign_allowance?: number;
           cancel_at_period_end?: boolean;
           current_period_end?: string;

@@ -388,12 +388,9 @@ export function ContentEngine() {
                 src={engineFlow}
                 alt="One business idea moving through a production engine into platform-ready content"
                 className="w-full object-contain"
-                animate={
-                  reduce
-                    ? undefined
-                    : { transform: ["translateY(0px)", "translateY(-8px)", "translateY(0px)"] }
-                }
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                initial={reduce ? false : { opacity: 0, y: 12, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.55, ease: "easeOut" }}
               />
             </div>
           </motion.section>

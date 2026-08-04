@@ -25,6 +25,7 @@ import {
   FolderOpen,
   Gauge,
   Heart,
+  HandHeart,
   Home,
   ImageUp,
   Images,
@@ -53,7 +54,15 @@ import {
   WandSparkles,
   X,
 } from "lucide-react";
-import { useMemo, useState, type DragEvent, type FormEvent, type ReactNode } from "react";
+import {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type DragEvent,
+  type FormEvent,
+  type ReactNode,
+} from "react";
 import { toast } from "sonner";
 import { createStudioBillingPortal, createStudioSubscriptionCheckout } from "@/lib/studio-server";
 import {
@@ -75,6 +84,9 @@ import kianaHeadshot from "@/assets/pal-headshots/kiana.png";
 import { useStudio } from "./StudioProvider";
 import { ContentEngine } from "./ContentEngine";
 import { ContentOrbit, LanePulse, StudioMark } from "./StudioVisuals";
+import { StudioAssistant } from "./StudioAssistant";
+import { VideoRoadmap } from "./VideoRoadmap";
+import { MemberSuccess } from "./MemberSuccess";
 
 type Campaign = Tables<"campaigns">;
 type Asset = Tables<"campaign_assets">;
@@ -162,18 +174,9 @@ function PalTip({
             aria-hidden="true"
             className="absolute -right-2 -top-2 grid size-8 place-items-center rounded-full bg-white shadow-soft"
             style={{ color }}
-            animate={
-              reduce
-                ? undefined
-                : {
-                    transform: [
-                      "translateY(0px) rotate(-5deg)",
-                      "translateY(-5px) rotate(6deg)",
-                      "translateY(0px) rotate(-5deg)",
-                    ],
-                  }
-            }
-            transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+            initial={reduce ? false : { opacity: 0, scale: 0.7, rotate: -8 }}
+            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ duration: 0.35, delay: 0.2, ease: "easeOut" }}
           >
             <Lightbulb className="size-4 fill-current" />
           </motion.span>
@@ -195,6 +198,7 @@ const navSections = [
     items: [
       { view: "home", label: "Dashboard", to: "/studio/dashboard", icon: Home },
       { view: "engine", label: "Create", to: "/studio", icon: Plus },
+      { view: "assistant", label: "Ask a Pal", to: "/studio/assistant", icon: MessageSquareText },
       { view: "campaigns", label: "Campaigns", to: "/studio/campaigns", icon: WandSparkles },
       { view: "ideas", label: "Content ideas", to: "/studio/ideas", icon: Lightbulb },
     ],
@@ -202,6 +206,7 @@ const navSections = [
   {
     label: "Organize",
     items: [
+      { view: "roadmap", label: "Video roadmap", to: "/studio/roadmap", icon: Film },
       { view: "library", label: "Library", to: "/studio/library", icon: FolderOpen },
       { view: "brand", label: "Brand DNA", to: "/studio/brand", icon: Gauge },
       { view: "approvals", label: "Approvals", to: "/studio/approvals", icon: CheckSquare2 },
@@ -211,6 +216,7 @@ const navSections = [
     label: "Plan",
     items: [
       { view: "calendar", label: "Calendar", to: "/studio/calendar", icon: CalendarDays },
+      { view: "success", label: "Member success", to: "/studio/success", icon: HandHeart },
       { view: "settings", label: "Settings", to: "/studio/settings", icon: Settings },
     ],
   },
@@ -974,6 +980,15 @@ function PalChat({ open, onClose }: { open: boolean; onClose: () => void }) {
                 <X className="size-4" />
               </button>
             </header>
+            <div className="border-b border-border px-5 py-3">
+              <Link
+                to="/studio/assistant"
+                onClick={onClose}
+                className="flex min-h-10 items-center justify-between rounded-xl bg-system-soft px-4 text-xs font-bold text-system"
+              >
+                Open the full Assistant workspace <ArrowRight className="size-4" />
+              </Link>
+            </div>
             <div className="flex-1 space-y-4 overflow-y-auto p-5" aria-live="polite">
               {messages.map((message) => (
                 <motion.div
@@ -1022,6 +1037,9 @@ function PalChat({ open, onClose }: { open: boolean; onClose: () => void }) {
 function renderView(view: StudioView, campaignId?: string) {
   if (view === "engine") return <ContentEngine />;
   if (view === "home") return <Dashboard />;
+  if (view === "assistant") return <StudioAssistant />;
+  if (view === "roadmap") return <VideoRoadmap />;
+  if (view === "success") return <MemberSuccess />;
   if (view === "brand") return <BrandStudio />;
   if (view === "ideas") return <IdeasBoard />;
   if (view === "approvals") return <Approvals />;
@@ -1029,13 +1047,21 @@ function renderView(view: StudioView, campaignId?: string) {
   if (view === "campaign") return <CampaignDetail campaignId={campaignId} />;
   if (view === "library") return <Library />;
   if (view === "calendar") return <CalendarView />;
-  if (view === "settings") return <SettingsView />;
+  if (view === "settings")
+    return (
+      <>
+        <div aria-hidden="true">
+          <Dashboard />
+        </div>
+        <SettingsView />
+      </>
+    );
   if (view === "billing") return <BillingView />;
   return <Dashboard />;
 }
 
 function Dashboard() {
-  const { campaigns, assets, calendar, brand, profile, user } = useStudio();
+  const { campaigns, assets, calendar, brand, profile, user, ideas, videoProgress } = useStudio();
   const upcoming = calendar.filter((item) => new Date(item.publish_at) >= new Date()).slice(0, 4);
   const firstName = (
     profile?.full_name ||
@@ -1045,6 +1071,46 @@ function Dashboard() {
   const ready = assets.filter((asset) => asset.status === "approved").length;
   const review = assets.filter((asset) => asset.status === "review").length;
   const scheduled = calendar.filter((item) => item.status !== "published").length;
+  const briefing =
+    (brand?.completion || 0) < 80
+      ? {
+          title: "One stronger Brand DNA pass will make every draft more specific.",
+          body: "Add the proof, phrases, or offer details customers actually respond to before building the next campaign.",
+          to: "/studio/brand" as const,
+          action: "Strengthen Brand DNA",
+          color: "var(--spotlight)",
+          soft: "var(--spotlight-soft)",
+        }
+      : ideas.length && !videoProgress.length
+        ? {
+            title: `You have ${ideas.length} useful ${ideas.length === 1 ? "idea" : "ideas"}. Choose which video earns the next slot.`,
+            body: "The roadmap ranks the video by the business problem it can remove, using your Brand DNA as context.",
+            to: "/studio/roadmap" as const,
+            action: "See the recommendation",
+            color: "var(--evergreen)",
+            soft: "var(--evergreen-soft)",
+          }
+        : review > 0
+          ? {
+              title: `${review} ${review === 1 ? "piece is" : "pieces are"} waiting for a decision—not another draft.`,
+              body: "Approve what is ready, leave one useful note, and keep the campaign moving toward the calendar.",
+              to: "/studio/approvals" as const,
+              action: "Review the work",
+              color: "var(--reel)",
+              soft: "var(--reel-soft)",
+            }
+          : {
+              title: upcoming[0]
+                ? `Next on the calendar: ${upcoming[0].title}.`
+                : "Your next useful move is ready when you are.",
+              body: upcoming[0]
+                ? `It is planned for ${new Date(upcoming[0].publish_at).toLocaleDateString()}. Check the asset and notes before the date arrives.`
+                : "Ask a Pal for a recommendation grounded in your current campaigns, ideas, and Brand DNA.",
+              to: upcoming[0] ? ("/studio/calendar" as const) : ("/studio/assistant" as const),
+              action: upcoming[0] ? "Open the calendar" : "Ask a Pal",
+              color: "var(--system)",
+              soft: "var(--system-soft)",
+            };
   const createOptions = [
     {
       to: "/studio",
@@ -1071,10 +1137,10 @@ function Dashboard() {
       soft: "var(--evergreen-soft)",
     },
     {
-      to: "/studio/ideas",
+      to: "/studio/assistant",
       icon: Users,
       title: "Ask a Pal",
-      body: "Get one useful nudge",
+      body: "Get a context-aware next move",
       color: "var(--system)",
       soft: "var(--system-soft)",
     },
@@ -1090,12 +1156,38 @@ function Dashboard() {
             What are we turning into content today?
           </h1>
         </div>
-        <Link to="/studio/settings" className="secondary-action shrink-0">
-          <Users className="size-4" /> Invite a teammate
+        <Link to="/studio/success" className="secondary-action shrink-0">
+          <HandHeart className="size-4" /> Benefits & Palmer House help
         </Link>
       </header>
 
-      <section className="mt-7 grid overflow-hidden rounded-[1.25rem] border border-border bg-white sm:grid-cols-2 xl:grid-cols-4">
+      <section
+        className="relative mt-7 overflow-hidden rounded-[1.25rem] border border-border p-5 sm:p-6"
+        style={{ background: briefing.soft }}
+      >
+        <div className="relative z-10 max-w-3xl pr-24 sm:pr-40">
+          <p className="studio-eyebrow" style={{ color: briefing.color }}>
+            Kiana’s workspace briefing
+          </p>
+          <h2 className="mt-3 text-2xl font-black leading-tight sm:text-3xl">{briefing.title}</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            {briefing.body}
+          </p>
+          <Link
+            to={briefing.to}
+            className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-black underline underline-offset-4"
+          >
+            {briefing.action} <ArrowRight className="size-4" />
+          </Link>
+        </div>
+        <img
+          src={kianaHeadshot}
+          alt="Kiana, your proof guide"
+          className="absolute -bottom-8 -right-3 h-40 w-40 object-contain object-bottom sm:h-48 sm:w-48"
+        />
+      </section>
+
+      <section className="mt-5 grid overflow-hidden rounded-[1.25rem] border border-border bg-white sm:grid-cols-2 xl:grid-cols-4">
         {createOptions.map((item, index) => (
           <Link
             key={item.title}
@@ -1518,59 +1610,123 @@ function CampaignFlowMap({
   );
 }
 
-type StudioIdea = { id: string; text: string; lane: keyof typeof lanes; source: string };
+type StarterIdea = {
+  id: string;
+  text: string;
+  lane: keyof typeof lanes;
+  source: string;
+  problem: string;
+};
 
-const starterIdeas: StudioIdea[] = [
+const starterIdeas: StarterIdea[] = [
   {
     id: "starter-faq",
     text: "Answer the question customers ask right before they buy.",
     lane: "evergreen",
     source: "Repeated question",
+    problem: "Sales conversations repeat the same education before a customer can decide.",
   },
   {
     id: "starter-proof",
     text: "Show the moment a client finally understood the value.",
     lane: "spotlight",
     source: "Proof moment",
+    problem: "The business has results, but the proof is hard for a new customer to see.",
   },
   {
     id: "starter-process",
     text: "Turn one invisible team process into a useful walkthrough.",
     lane: "system",
     source: "Tribal knowledge",
+    problem: "A useful process lives in one person’s head instead of a reusable system.",
   },
   {
     id: "starter-conversation",
     text: "Ask the audience what keeps delaying the decision.",
     lane: "reel",
     source: "Conversation starter",
+    problem: "The business is posting without learning what the audience needs next.",
   },
 ];
 
 function IdeasBoard() {
-  const [ideas, setIdeas] = useState<StudioIdea[]>(starterIdeas);
+  const { ideas, createIdea, updateIdea, uploadIdeaSource, suggestDirections, brand, busy } =
+    useStudio();
   const [draft, setDraft] = useState("");
+  const [sourceType, setSourceType] = useState<"text" | "link" | "image">("text");
+  const [sourceUrl, setSourceUrl] = useState("");
+  const [sourceFile, setSourceFile] = useState<File | null>(null);
+  const [sourcePreview, setSourcePreview] = useState("");
+  const [previewById, setPreviewById] = useState<Record<string, string>>({});
+  const [problem, setProblem] = useState("");
   const [lane, setLane] = useState<keyof typeof lanes>("evergreen");
   const [filter, setFilter] = useState<"all" | keyof typeof lanes>("all");
-  const visible = filter === "all" ? ideas : ideas.filter((item) => item.lane === filter);
-  function addIdea() {
-    if (draft.trim().length < 8) {
-      toast.error("Give the idea a little more context.");
+  const [directions, setDirections] = useState<Awaited<ReturnType<typeof suggestDirections>>>([]);
+  const savedIdeas = ideas.filter((item) => item.status !== "archived");
+  const combined = savedIdeas.length
+    ? savedIdeas.map((item) => ({
+        id: item.id,
+        text: item.body,
+        lane: item.primary_lane as keyof typeof lanes,
+        source: item.source_type,
+        problem: item.business_problem,
+        sourceUrl: item.source_url,
+        saved: true,
+      }))
+    : starterIdeas.map((item) => ({ ...item, sourceUrl: null, saved: false }));
+  const visible = filter === "all" ? combined : combined.filter((item) => item.lane === filter);
+
+  async function addIdea(findAngles = false) {
+    const fallback =
+      sourceType === "image" && sourceFile
+        ? `Use ${sourceFile.name} as the visual source for a campaign.`
+        : sourceType === "link" && sourceUrl
+          ? `Turn the useful material at ${sourceUrl} into a campaign.`
+          : "";
+    const body = draft.trim() || fallback;
+    if (body.length < 8) {
+      toast.error("Add a thought, link, or image with enough context to guide the campaign.");
       return;
     }
-    setIdeas((current) => [
-      { id: crypto.randomUUID(), text: draft.trim(), lane, source: "Your idea" },
-      ...current,
-    ]);
-    setDraft("");
-    toast.success("Idea saved to this working session.");
+    try {
+      const mediaPath = sourceFile ? await uploadIdeaSource(sourceFile) : undefined;
+      const id = await createIdea({
+        body,
+        sourceType,
+        sourceUrl: sourceType === "link" ? sourceUrl : undefined,
+        sourceMediaPath: mediaPath,
+        lane,
+        businessProblem: problem.trim() || `${lanes[lane].role}: ${body}`,
+      });
+      if (sourcePreview) setPreviewById((current) => ({ ...current, [id]: sourcePreview }));
+      if (findAngles) {
+        const next = await suggestDirections({
+          idea: body,
+          goal: "Turn source material into a useful campaign",
+          audience: brand?.primary_audience || "The business’s primary audience",
+        });
+        setDirections(next);
+      }
+      setDraft("");
+      setSourceUrl("");
+      setSourceFile(null);
+      setSourcePreview("");
+      setProblem("");
+      toast.success(
+        findAngles
+          ? "Saved and shaped into three campaign directions."
+          : "Saved to this workspace.",
+      );
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not save this source.");
+    }
   }
   return (
     <div className="mx-auto max-w-[88rem]">
       <PageIntro
         eyebrow="Content ideas"
         title="Catch the useful thought before it disappears."
-        body="Save customer questions, proof moments, team knowledge, and conversation starters. When one is ready, move it into the Content Engine."
+        body="Start with a thought, a link, or an image. The Studio keeps the source, names the business problem, and helps turn it into a connected campaign."
         action={
           <Link
             to="/studio"
@@ -1583,14 +1739,84 @@ function IdeasBoard() {
       <section className="mt-8 grid gap-6 xl:grid-cols-[.72fr_1.28fr]">
         <div className="studio-card h-fit xl:sticky xl:top-24">
           <p className="studio-eyebrow text-system">Quick capture</p>
-          <h2 className="mt-3 text-2xl font-black">What did you notice?</h2>
+          <h2 className="mt-3 text-2xl font-black">What are we starting with?</h2>
+          <div className="mt-5 grid grid-cols-3 rounded-xl border border-border bg-white p-1">
+            {(["text", "link", "image"] as const).map((value) => (
+              <button
+                key={value}
+                onClick={() => setSourceType(value)}
+                className={`min-h-10 rounded-lg text-xs font-bold capitalize ${sourceType === value ? "bg-system-soft text-system" : "text-muted-foreground"}`}
+              >
+                {value}
+              </button>
+            ))}
+          </div>
+          {sourceType === "link" ? (
+            <label className="mt-4 block text-sm font-bold">
+              Link to use as the source
+              <input
+                type="url"
+                value={sourceUrl}
+                onChange={(event) => setSourceUrl(event.target.value)}
+                placeholder="https://…"
+                className="mt-2 min-h-12 w-full rounded-xl border border-border px-4 text-sm outline-none focus:border-system"
+              />
+            </label>
+          ) : null}
+          {sourceType === "image" ? (
+            <label className="mt-4 flex min-h-36 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed border-system bg-system-soft p-4 text-center">
+              {sourcePreview ? (
+                <img
+                  src={sourcePreview}
+                  alt="Selected campaign source"
+                  className="max-h-44 w-full rounded-lg object-cover"
+                />
+              ) : (
+                <>
+                  <ImageUp className="size-6 text-system" />
+                  <span className="mt-3 text-sm font-black text-system">
+                    Choose a before-and-after, product, or reference image
+                  </span>
+                  <span className="mt-1 text-[10px] text-muted-foreground">
+                    PNG, JPG, or WebP · private workspace upload
+                  </span>
+                </>
+              )}
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                className="sr-only"
+                onChange={(event) => {
+                  const file = event.target.files?.[0] || null;
+                  setSourceFile(file);
+                  if (sourcePreview) URL.revokeObjectURL(sourcePreview);
+                  setSourcePreview(file ? URL.createObjectURL(file) : "");
+                }}
+              />
+            </label>
+          ) : null}
           <textarea
             value={draft}
             onChange={(event) => setDraft(event.target.value)}
             rows={6}
-            placeholder="A customer asked why…"
+            placeholder={
+              sourceType === "image"
+                ? "What should the audience notice about this image?"
+                : sourceType === "link"
+                  ? "What is useful about this link?"
+                  : "A customer asked why…"
+            }
             className="mt-5 w-full resize-none rounded-xl border border-border p-4 text-base outline-none focus:border-system"
           />
+          <label className="mt-4 block text-sm font-extrabold">
+            What business problem could this solve?
+            <input
+              value={problem}
+              onChange={(event) => setProblem(event.target.value)}
+              placeholder="Customers cannot see the difference…"
+              className="mt-2 min-h-12 w-full rounded-xl border border-border px-4 text-sm font-medium outline-none focus:border-system"
+            />
+          </label>
           <p className="mt-5 text-sm font-extrabold">Which job does it do?</p>
           <div className="mt-3 grid grid-cols-2 gap-2">
             {(
@@ -1614,12 +1840,27 @@ function IdeasBoard() {
               </button>
             ))}
           </div>
-          <button
-            onClick={addIdea}
-            className="mt-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-system px-5 text-sm font-bold text-white"
-          >
-            <Plus className="size-4" /> Save idea
-          </button>
+          <div className="mt-5 grid gap-2 sm:grid-cols-2">
+            <button
+              onClick={() => void addIdea(false)}
+              disabled={busy}
+              className="flex min-h-12 items-center justify-center gap-2 rounded-xl border border-system px-4 text-sm font-bold text-system disabled:opacity-45"
+            >
+              <Plus className="size-4" /> Save source
+            </button>
+            <button
+              onClick={() => void addIdea(true)}
+              disabled={busy}
+              className="flex min-h-12 items-center justify-center gap-2 rounded-xl bg-system px-4 text-sm font-bold text-white disabled:opacity-45"
+            >
+              {busy ? (
+                <LoaderCircle className="size-4 animate-spin" />
+              ) : (
+                <Sparkles className="size-4" />
+              )}{" "}
+              Suggest campaign
+            </button>
+          </div>
           <div className="mt-6">
             <PalTip name="Samira" headshot={samiraHeadshot} color="var(--system)">
               If your team has said it twice, save the exact wording. That is usually the useful
@@ -1628,6 +1869,30 @@ function IdeasBoard() {
           </div>
         </div>
         <div>
+          {directions.length ? (
+            <section className="mb-6 rounded-[1.25rem] border border-system bg-system-soft p-5">
+              <p className="studio-eyebrow text-system">Campaign directions</p>
+              <div className="mt-4 grid gap-3 lg:grid-cols-3">
+                {directions.map((direction) => (
+                  <article key={direction.id} className="rounded-xl bg-white p-4">
+                    <p className="text-[9px] font-black uppercase tracking-[.12em] text-system">
+                      {direction.lane}
+                    </p>
+                    <p className="mt-2 text-sm font-black">{direction.title}</p>
+                    <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                      {direction.angle}
+                    </p>
+                    <Link
+                      to="/studio/campaigns"
+                      className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-system"
+                    >
+                      Build campaign <ArrowRight className="size-3.5" />
+                    </Link>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ) : null}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="studio-eyebrow text-reel">Idea bank</p>
@@ -1671,7 +1936,30 @@ function IdeasBoard() {
                     </button>
                   </div>
                   <p className="mt-6 text-xl font-extrabold leading-snug">{idea.text}</p>
-                  <p className="mt-3 text-xs text-muted-foreground">{idea.source}</p>
+                  {previewById[idea.id] ? (
+                    <img
+                      src={previewById[idea.id]}
+                      alt="Idea source"
+                      className="mt-4 h-32 w-full rounded-xl object-cover"
+                    />
+                  ) : null}
+                  <p className="mt-3 text-xs text-muted-foreground">Source: {idea.source}</p>
+                  {idea.sourceUrl ? (
+                    <a
+                      href={idea.sourceUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-system"
+                    >
+                      Open source <ExternalLink className="size-3" />
+                    </a>
+                  ) : null}
+                  <div className="mt-4 rounded-xl bg-mist p-3">
+                    <p className="text-[9px] font-black uppercase tracking-[.12em] text-muted-foreground">
+                      Problem it solves
+                    </p>
+                    <p className="mt-2 text-xs font-bold leading-relaxed">{idea.problem}</p>
+                  </div>
                   <div className="mt-auto flex gap-2 pt-6">
                     <Link
                       to="/studio"
@@ -1682,9 +1970,9 @@ function IdeasBoard() {
                     </Link>
                     <button
                       onClick={() =>
-                        setIdeas((current) =>
-                          current.filter((candidate) => candidate.id !== idea.id),
-                        )
+                        idea.saved
+                          ? void updateIdea(idea.id, { status: "archived" })
+                          : toast.success("Starter hidden once you save your first workspace idea.")
                       }
                       className="grid size-12 place-items-center rounded-xl border border-border"
                       aria-label={`Archive ${idea.text}`}
@@ -3244,6 +3532,8 @@ function channelColor(channel: string) {
 function SettingsView() {
   const { profile, user, saveProfile, workspace, demo, subscription, campaigns, assets } =
     useStudio();
+  const navigate = useNavigate();
+  const modalRef = useRef<HTMLDivElement>(null);
   const [tab, setTab] = useState<"workspace" | "brands" | "team" | "usage" | "account">(
     "workspace",
   );
@@ -3268,199 +3558,256 @@ function SettingsView() {
     ["usage", CreditCard, "Usage & plan"],
     ["account", CircleUserRound, "Account"],
   ] as const;
+  useEffect(() => {
+    const previous = document.activeElement as HTMLElement | null;
+    const modal = modalRef.current;
+    const focusable = modal?.querySelectorAll<HTMLElement>(
+      "button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled])",
+    );
+    focusable?.[0]?.focus();
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") void navigate({ to: "/studio/dashboard" });
+      if (event.key !== "Tab" || !focusable?.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", handleKey);
+    const priorOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = priorOverflow;
+      previous?.focus();
+    };
+  }, [navigate]);
   return (
-    <div className="mx-auto max-w-[76rem]">
-      <PageIntro
-        eyebrow="Workspace settings"
-        title="The controls behind the work."
-        body="Manage the workspace, brand context, people, plan, and your own account in one focused place."
-      />
-      <div className="mt-8 grid overflow-hidden rounded-[1.5rem] border border-border bg-white lg:grid-cols-[14rem_1fr]">
-        <aside className="border-b border-border p-3 lg:min-h-[38rem] lg:border-b-0 lg:border-r">
-          {tabs.map(([value, Icon, label]) => (
-            <button
-              key={value}
-              onClick={() => setTab(value)}
-              className={`flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-bold ${tab === value ? "bg-spotlight-soft text-spotlight" : "text-muted-foreground hover:bg-spotlight-soft"}`}
-            >
-              <Icon className="size-4" />
-              {label}
-            </button>
-          ))}
-        </aside>
-        <section className="p-5 sm:p-8">
-          {tab === "workspace" ? (
-            <div>
-              <SettingHeading
-                title="Workspace"
-                body="The private home for your brand, campaigns, calendar, and team."
-              />
-              <div className="mt-7 grid gap-5 sm:grid-cols-2">
-                <Field label="Workspace name" value={workspace?.name || ""} readOnly />
-                <Field label="Workspace role" value={demo ? "Preview owner" : "Owner"} readOnly />
-                <div className="rounded-[1.15rem] border border-border p-5 sm:col-span-2">
-                  <p className="studio-eyebrow text-system">Workspace health</p>
-                  <div className="mt-5 grid gap-4 sm:grid-cols-3">
-                    <div className="rounded-xl bg-spotlight-soft p-4">
-                      <SettingStat value={String(campaigns.length)} label="campaigns" />
+    <div
+      className="fixed inset-0 z-[90] grid place-items-center bg-ink/25 p-3 backdrop-blur-[3px] sm:p-6"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Workspace settings"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) void navigate({ to: "/studio/dashboard" });
+      }}
+    >
+      <motion.div
+        ref={modalRef}
+        initial={{ opacity: 0, y: 18, scale: 0.985 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        className="flex max-h-[min(46rem,calc(100vh-2rem))] w-full max-w-[52rem] flex-col overflow-hidden rounded-[1.5rem] border border-border bg-white shadow-[0_40px_120px_-45px_rgba(31,35,40,.8)]"
+      >
+        <header className="flex items-start gap-4 border-b border-border px-5 py-4 sm:px-6">
+          <div className="min-w-0 flex-1">
+            <p className="studio-eyebrow text-system">Workspace settings</p>
+            <h1 className="mt-2 text-2xl font-black tracking-[-.04em]">
+              The controls behind the work.
+            </h1>
+          </div>
+          <button
+            onClick={() => void navigate({ to: "/studio/dashboard" })}
+            aria-label="Close settings"
+            className="grid size-11 place-items-center rounded-full border border-border"
+          >
+            <X className="size-4" />
+          </button>
+        </header>
+        <div className="grid min-h-0 flex-1 overflow-hidden lg:grid-cols-[11.5rem_1fr]">
+          <aside className="flex gap-1 overflow-x-auto border-b border-border p-3 lg:block lg:overflow-visible lg:border-b-0 lg:border-r">
+            {tabs.map(([value, Icon, label]) => (
+              <button
+                key={value}
+                onClick={() => setTab(value)}
+                className={`flex min-h-11 shrink-0 items-center gap-3 rounded-xl px-3 text-left text-sm font-bold lg:w-full ${tab === value ? "bg-spotlight-soft text-spotlight" : "text-muted-foreground hover:bg-mist"}`}
+              >
+                <Icon className="size-4" />
+                {label}
+              </button>
+            ))}
+          </aside>
+          <section className="min-h-0 overflow-y-auto p-5 sm:p-7">
+            {tab === "workspace" ? (
+              <div>
+                <SettingHeading
+                  title="Workspace"
+                  body="The private home for your brand, campaigns, calendar, and team."
+                />
+                <div className="mt-7 grid gap-5 sm:grid-cols-2">
+                  <Field label="Workspace name" value={workspace?.name || ""} readOnly />
+                  <Field label="Workspace role" value={demo ? "Preview owner" : "Owner"} readOnly />
+                  <div className="rounded-[1.15rem] border border-border p-5 sm:col-span-2">
+                    <p className="studio-eyebrow text-system">Workspace health</p>
+                    <div className="mt-5 grid gap-4 sm:grid-cols-3">
+                      <div className="rounded-xl bg-spotlight-soft p-4">
+                        <SettingStat value={String(campaigns.length)} label="campaigns" />
+                      </div>
+                      <div className="rounded-xl bg-reel-soft p-4">
+                        <SettingStat value={String(assets.length)} label="assets created" />
+                      </div>
+                      <div className="rounded-xl bg-evergreen-soft p-4">
+                        <SettingStat
+                          value={`${Math.round(assets.length * 0.45)}h`}
+                          label="estimated time saved"
+                        />
+                      </div>
                     </div>
-                    <div className="rounded-xl bg-reel-soft p-4">
-                      <SettingStat value={String(assets.length)} label="assets created" />
-                    </div>
-                    <div className="rounded-xl bg-evergreen-soft p-4">
-                      <SettingStat
-                        value={`${Math.round(assets.length * 0.45)}h`}
-                        label="estimated time saved"
-                      />
-                    </div>
+                    <WorkspaceActivity
+                      dates={[
+                        ...campaigns.map((item) => item.created_at),
+                        ...assets.map((item) => item.created_at),
+                      ]}
+                    />
                   </div>
-                  <WorkspaceActivity
-                    dates={[
-                      ...campaigns.map((item) => item.created_at),
-                      ...assets.map((item) => item.created_at),
-                    ]}
-                  />
+                </div>
+                <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
+                  Each customer workspace begins empty, follows onboarding, and only contains that
+                  account’s brand memory, campaigns, assets, and calendar.
+                </p>
+              </div>
+            ) : null}
+            {tab === "brands" ? (
+              <div>
+                <SettingHeading
+                  title="Brand DNA"
+                  body="The source of truth the Content Engine reads before it writes."
+                />
+                <div className="mt-7 rounded-[1.25rem] border border-border p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-xl font-black">{workspace?.name}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        Voice, audience, offers, proof, and language rules
+                      </p>
+                    </div>
+                    <Gauge className="size-8 text-spotlight" />
+                  </div>
+                  <Link to="/studio/brand" className="primary-action mt-7">
+                    Open Brand DNA <ArrowRight className="size-4" />
+                  </Link>
                 </div>
               </div>
-              <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
-                Each customer workspace begins empty, follows onboarding, and only contains that
-                account’s brand memory, campaigns, assets, and calendar.
-              </p>
-            </div>
-          ) : null}
-          {tab === "brands" ? (
-            <div>
-              <SettingHeading
-                title="Brand DNA"
-                body="The source of truth the Content Engine reads before it writes."
-              />
-              <div className="mt-7 rounded-[1.25rem] border border-border p-6">
-                <div className="flex items-center justify-between">
+            ) : null}
+            {tab === "team" ? (
+              <div>
+                <SettingHeading
+                  title="Team"
+                  body="Make the company visible inside the workspace without sending unfinished invitations."
+                />
+                <div className="mt-7 rounded-[1.25rem] border border-border p-5">
+                  <div className="flex items-center gap-4">
+                    <span className="grid size-12 place-items-center rounded-full bg-spotlight text-sm font-black text-white">
+                      {draft.full_name.slice(0, 1)}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-extrabold">{draft.full_name}</p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        {user?.email || "Owner preview"} · Owner
+                      </p>
+                    </div>
+                    <span className="rounded-full bg-evergreen-soft px-3 py-1 text-[9px] font-bold text-evergreen">
+                      Active
+                    </span>
+                  </div>
+                </div>
+                <div className="mt-5 flex items-start gap-4 rounded-xl bg-system-soft p-5">
+                  <UserPlus className="mt-0.5 size-5 text-system" />
                   <div>
-                    <p className="text-xl font-black">{workspace?.name}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      Voice, audience, offers, proof, and language rules
+                    <p className="text-sm font-extrabold text-system">
+                      Team access is ready for the next connection.
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed">
+                      Member roles and workspace permissions are designed. Email invitations stay
+                      hidden until delivery is connected and tested.
                     </p>
                   </div>
-                  <Gauge className="size-8 text-spotlight" />
-                </div>
-                <Link to="/studio/brand" className="primary-action mt-7">
-                  Open Brand DNA <ArrowRight className="size-4" />
-                </Link>
-              </div>
-            </div>
-          ) : null}
-          {tab === "team" ? (
-            <div>
-              <SettingHeading
-                title="Team"
-                body="Make the company visible inside the workspace without sending unfinished invitations."
-              />
-              <div className="mt-7 rounded-[1.25rem] border border-border p-5">
-                <div className="flex items-center gap-4">
-                  <span className="grid size-12 place-items-center rounded-full bg-spotlight text-sm font-black text-white">
-                    {draft.full_name.slice(0, 1)}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="font-extrabold">{draft.full_name}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {user?.email || "Owner preview"} · Owner
-                    </p>
-                  </div>
-                  <span className="rounded-full bg-evergreen-soft px-3 py-1 text-[9px] font-bold text-evergreen">
-                    Active
-                  </span>
                 </div>
               </div>
-              <div className="mt-5 flex items-start gap-4 rounded-xl bg-system-soft p-5">
-                <UserPlus className="mt-0.5 size-5 text-system" />
-                <div>
-                  <p className="text-sm font-extrabold text-system">
-                    Team access is ready for the next connection.
+            ) : null}
+            {tab === "usage" ? (
+              <div>
+                <SettingHeading
+                  title="Usage & plan"
+                  body="See the current allowance without turning the dashboard into a slot machine."
+                />
+                <div className="mt-7 rounded-[1.25rem] border border-system bg-white p-6">
+                  <p className="studio-eyebrow text-system">Current plan</p>
+                  <p className="mt-3 text-3xl font-black capitalize text-ink">
+                    {subscription?.plan || "Trial"}
                   </p>
-                  <p className="mt-2 text-sm leading-relaxed">
-                    Member roles and workspace permissions are designed. Email invitations stay
-                    hidden until delivery is connected and tested.
-                  </p>
-                </div>
-              </div>
-            </div>
-          ) : null}
-          {tab === "usage" ? (
-            <div>
-              <SettingHeading
-                title="Usage & plan"
-                body="See the current allowance without turning the dashboard into a slot machine."
-              />
-              <div className="mt-7 rounded-[1.25rem] border border-system bg-white p-6">
-                <p className="studio-eyebrow text-system">Current plan</p>
-                <p className="mt-3 text-3xl font-black capitalize text-ink">
-                  {subscription?.plan || "Trial"}
-                </p>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  {campaigns.length} campaigns in this workspace
-                </p>
-                <div className="mt-6 h-2 overflow-hidden rounded-full bg-system-soft">
-                  <span
-                    className="block h-full bg-system"
-                    style={{
-                      width: `${Math.min(100, (campaigns.length / Math.max(1, subscription?.campaign_allowance || 5)) * 100)}%`,
-                    }}
-                  />
-                </div>
-                <p className="mt-2 text-xs text-muted-foreground">
-                  {campaigns.length} of {subscription?.campaign_allowance || 5} campaign builds used
-                  this period
-                </p>
-                <Link
-                  to="/studio/billing"
-                  className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-xl bg-system px-5 text-sm font-bold text-white"
-                >
-                  Open billing <ArrowRight className="size-4" />
-                </Link>
-              </div>
-            </div>
-          ) : null}
-          {tab === "account" ? (
-            <div>
-              <SettingHeading title="Account" body="Your identity and local working preferences." />
-              <div className="mt-7 grid gap-5 sm:grid-cols-2">
-                <Field
-                  label="Full name"
-                  value={draft.full_name}
-                  onChange={(e) => setDraft({ ...draft, full_name: e.target.value })}
-                />
-                <Field
-                  label="Job title"
-                  value={draft.job_title}
-                  onChange={(e) => setDraft({ ...draft, job_title: e.target.value })}
-                />
-                <Field
-                  label="Phone"
-                  type="tel"
-                  value={draft.phone}
-                  onChange={(e) => setDraft({ ...draft, phone: e.target.value })}
-                />
-                <Field
-                  label="Timezone"
-                  value={draft.timezone}
-                  onChange={(e) => setDraft({ ...draft, timezone: e.target.value })}
-                />
-                <div className="rounded-xl bg-spotlight-soft p-5 sm:col-span-2">
-                  <p className="text-sm font-extrabold">Account email</p>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    {user?.email ||
-                      "Owner preview—sign in with a member account to persist account changes"}
+                    {campaigns.length} campaigns in this workspace
                   </p>
+                  <div className="mt-6 h-2 overflow-hidden rounded-full bg-system-soft">
+                    <span
+                      className="block h-full bg-system"
+                      style={{
+                        width: `${Math.min(100, (campaigns.length / Math.max(1, subscription?.campaign_allowance || 5)) * 100)}%`,
+                      }}
+                    />
+                  </div>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    {campaigns.length} of {subscription?.campaign_allowance || 5} campaign builds
+                    used this period
+                  </p>
+                  <Link
+                    to="/studio/billing"
+                    className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-xl bg-system px-5 text-sm font-bold text-white"
+                  >
+                    Open billing <ArrowRight className="size-4" />
+                  </Link>
                 </div>
-                <button onClick={() => void save()} className="primary-action sm:col-span-2">
-                  <Check className="size-4" /> Save account
-                </button>
               </div>
-            </div>
-          ) : null}
-        </section>
-      </div>
+            ) : null}
+            {tab === "account" ? (
+              <div>
+                <SettingHeading
+                  title="Account"
+                  body="Your identity and local working preferences."
+                />
+                <div className="mt-7 grid gap-5 sm:grid-cols-2">
+                  <Field
+                    label="Full name"
+                    value={draft.full_name}
+                    onChange={(e) => setDraft({ ...draft, full_name: e.target.value })}
+                  />
+                  <Field
+                    label="Job title"
+                    value={draft.job_title}
+                    onChange={(e) => setDraft({ ...draft, job_title: e.target.value })}
+                  />
+                  <Field
+                    label="Phone"
+                    type="tel"
+                    value={draft.phone}
+                    onChange={(e) => setDraft({ ...draft, phone: e.target.value })}
+                  />
+                  <Field
+                    label="Timezone"
+                    value={draft.timezone}
+                    onChange={(e) => setDraft({ ...draft, timezone: e.target.value })}
+                  />
+                  <div className="rounded-xl bg-spotlight-soft p-5 sm:col-span-2">
+                    <p className="text-sm font-extrabold">Account email</p>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {user?.email ||
+                        "Owner preview—sign in with a member account to persist account changes"}
+                    </p>
+                  </div>
+                  <button onClick={() => void save()} className="primary-action sm:col-span-2">
+                    <Check className="size-4" /> Save account
+                  </button>
+                </div>
+              </div>
+            ) : null}
+          </section>
+        </div>
+      </motion.div>
     </div>
   );
 }
@@ -3516,6 +3863,9 @@ function WorkspaceActivity({ dates }: { dates: string[] }) {
 function BillingView() {
   const { session, workspace, subscription, demo, campaigns } = useStudio();
   const [loadingPlan, setLoadingPlan] = useState<string>("");
+  const [interval, setInterval] = useState<"month" | "year">(
+    subscription?.billing_interval === "year" ? "year" : "month",
+  );
   const used = campaigns.filter(
     (item) => new Date(item.created_at) >= new Date(subscription?.current_period_start || 0),
   ).length;
@@ -3528,7 +3878,7 @@ function BillingView() {
     setLoadingPlan(plan);
     try {
       const result = await createStudioSubscriptionCheckout({
-        data: { accessToken: session.access_token, workspaceId: workspace.id, plan },
+        data: { accessToken: session.access_token, workspaceId: workspace.id, plan, interval },
       });
       if (result.ok) window.location.assign(result.url);
       else
@@ -3565,16 +3915,16 @@ function BillingView() {
           </button>
         }
       />
-      <section className="mt-8 studio-card bg-ink text-white">
+      <section className="mt-8 studio-card bg-system-soft">
         <div className="grid gap-7 md:grid-cols-[1fr_auto]">
           <div>
-            <p className="font-mono text-[9px] uppercase tracking-[.17em] text-white/45">
+            <p className="font-mono text-[9px] uppercase tracking-[.17em] text-system">
               Current period
             </p>
             <h2 className="mt-3 text-3xl font-extrabold capitalize">
               {subscription?.plan || "Trial"} workspace
             </h2>
-            <p className="mt-3 text-sm text-white/60">
+            <p className="mt-3 text-sm text-muted-foreground">
               Renews {new Date(subscription?.current_period_end || Date.now()).toLocaleDateString()}
             </p>
           </div>
@@ -3585,7 +3935,7 @@ function BillingView() {
                 {used} / {subscription?.campaign_allowance || 1}
               </strong>
             </div>
-            <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/15">
+            <div className="mt-3 h-2 overflow-hidden rounded-full bg-white">
               <motion.div
                 animate={{
                   width: `${Math.min(100, (used / (subscription?.campaign_allowance || 1)) * 100)}%`,
@@ -3596,6 +3946,32 @@ function BillingView() {
           </div>
         </div>
       </section>
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-[1.25rem] border border-border bg-white p-3 pl-5">
+        <div>
+          <p className="text-sm font-black">Choose how you pay</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Annual membership includes two months free.
+          </p>
+        </div>
+        <div
+          className="flex rounded-xl bg-cream p-1"
+          role="radiogroup"
+          aria-label="Billing frequency"
+        >
+          {(["month", "year"] as const).map((value) => (
+            <button
+              key={value}
+              type="button"
+              role="radio"
+              aria-checked={interval === value}
+              onClick={() => setInterval(value)}
+              className={`min-h-10 rounded-lg px-4 text-xs font-black transition ${interval === value ? "bg-white shadow-sm" : "text-muted-foreground"}`}
+            >
+              {value === "month" ? "Monthly" : "Annual · save 17%"}
+            </button>
+          ))}
+        </div>
+      </div>
       <section className="mt-6 grid gap-4 lg:grid-cols-3">
         {Object.entries(studioPlans).map(([key, plan]) => (
           <article
@@ -3606,11 +3982,16 @@ function BillingView() {
               {plan.name}
             </p>
             <p className="mt-5 text-4xl font-extrabold">
-              ${plan.price}
+              ${interval === "year" ? Math.round(plan.annualPrice / 12) : plan.price}
               <span className="text-sm font-medium text-muted-foreground"> / month</span>
             </p>
+            {interval === "year" ? (
+              <p className="mt-1 text-xs font-bold text-evergreen">
+                ${plan.annualPrice.toLocaleString()} billed annually
+              </p>
+            ) : null}
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{plan.audience}</p>
-            <p className="mt-7 rounded-xl bg-secondary p-3 text-sm font-semibold">
+            <p className="mt-7 rounded-xl bg-cream p-3 text-sm font-semibold">
               {plan.campaigns} complete campaigns / month
             </p>
             <ul className="mt-6 space-y-3">
@@ -3638,8 +4019,8 @@ function BillingView() {
         ))}
       </section>
       <p className="mt-6 text-xs leading-relaxed text-muted-foreground">
-        Membership includes software access. Palmer House filming, editing, and production services
-        are requested and scoped separately so you never pay for work you do not need.
+        Guided and Partner include the Palmer House time shown above. Filming, editing, travel, and
+        custom production remain separately scoped so you never pay for work you do not need.
       </p>
     </div>
   );

@@ -2,9 +2,12 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   Archive,
+  Activity,
   ArrowRight,
   Bell,
+  Building2,
   CalendarDays,
+  Captions,
   Check,
   CheckSquare2,
   CheckCircle2,
@@ -16,25 +19,35 @@ import {
   Download,
   Eye,
   ExternalLink,
+  FileText,
   FileStack,
+  Film,
   FolderOpen,
   Gauge,
   Heart,
   Home,
   ImageUp,
+  Images,
   LayoutGrid,
+  LayoutTemplate,
   Lightbulb,
   ListTodo,
   LoaderCircle,
+  Mail,
+  MessageSquareText,
   LogOut,
   Menu,
+  MoreHorizontal,
+  PenLine,
   Play,
   Plus,
   Search,
+  Send,
   Settings,
   ShieldCheck,
   Sparkles,
   Target,
+  UserPlus,
   Users,
   Video,
   WandSparkles,
@@ -51,12 +64,21 @@ import {
   type StudioView,
 } from "@/lib/studio-model";
 import type { Tables } from "@/lib/supabase/database.types";
+import creativeOne from "@/assets/creative-1.jpg";
+import creativeTwo from "@/assets/creative-2.jpg";
+import creativeThree from "@/assets/creative-3.jpg";
+import creativeFour from "@/assets/creative-4.jpg";
+import productionWorkspace from "@/assets/studio-visuals/production-workspace.png";
+import contentEngineFlow from "@/assets/studio-visuals/content-engine-flow.png";
+import samiraHeadshot from "@/assets/pal-headshots/samira.png";
+import kianaHeadshot from "@/assets/pal-headshots/kiana.png";
 import { useStudio } from "./StudioProvider";
 import { ContentEngine } from "./ContentEngine";
 import { ContentOrbit, LanePulse, StudioMark } from "./StudioVisuals";
 
 type Campaign = Tables<"campaigns">;
 type Asset = Tables<"campaign_assets">;
+type CalendarItem = Tables<"calendar_items">;
 
 const lanes = {
   spotlight: {
@@ -79,6 +101,93 @@ const lanes = {
     role: "Create clarity",
   },
 };
+
+const libraryMedia = [
+  creativeOne,
+  creativeTwo,
+  productionWorkspace,
+  creativeThree,
+  contentEngineFlow,
+  creativeFour,
+];
+
+const assetKinds = {
+  anchor_script: { icon: Film, label: "Anchor video", color: "var(--spotlight)" },
+  short_script: { icon: Captions, label: "Short video", color: "var(--reel)" },
+  caption: { icon: MessageSquareText, label: "Social caption", color: "var(--reel)" },
+  newsletter: { icon: Mail, label: "Newsletter", color: "var(--evergreen)" },
+  carousel: { icon: Images, label: "Carousel", color: "var(--system)" },
+  platform_post: { icon: Send, label: "Platform post", color: "var(--reel)" },
+  faq: { icon: FileText, label: "FAQ answer", color: "var(--evergreen)" },
+} as const;
+
+function assetKindMeta(kind: string) {
+  return (
+    assetKinds[kind as keyof typeof assetKinds] || {
+      icon: LayoutTemplate,
+      label: kind.replaceAll("_", " "),
+      color: "var(--system)",
+    }
+  );
+}
+
+function assetMedia(asset: Asset, index = 0) {
+  const kindIndex = Object.keys(assetKinds).indexOf(asset.kind);
+  const mediaIndex = (kindIndex >= 0 ? kindIndex + index : index) % libraryMedia.length;
+  return libraryMedia[mediaIndex];
+}
+
+function PalTip({
+  name,
+  headshot,
+  color,
+  children,
+}: {
+  name: string;
+  headshot: string;
+  color: string;
+  children: ReactNode;
+}) {
+  const reduce = useReducedMotion();
+  return (
+    <aside className="relative overflow-hidden rounded-[1.25rem] border border-border bg-white p-4">
+      <div className="flex items-start gap-4">
+        <div className="relative shrink-0 pt-3">
+          <img
+            src={headshot}
+            alt={`${name}, your Palmer House guide`}
+            className="size-16 rounded-[1rem] border border-border bg-white object-cover object-top"
+          />
+          <motion.span
+            aria-hidden="true"
+            className="absolute -right-2 -top-2 grid size-8 place-items-center rounded-full bg-white shadow-soft"
+            style={{ color }}
+            animate={
+              reduce
+                ? undefined
+                : {
+                    transform: [
+                      "translateY(0px) rotate(-5deg)",
+                      "translateY(-5px) rotate(6deg)",
+                      "translateY(0px) rotate(-5deg)",
+                    ],
+                  }
+            }
+            transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <Lightbulb className="size-4 fill-current" />
+          </motion.span>
+        </div>
+        <div className="min-w-0">
+          <p className="text-xs font-black" style={{ color }}>
+            {name}’s nudge
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-ink">{children}</p>
+        </div>
+      </div>
+    </aside>
+  );
+}
 
 const navSections = [
   {
@@ -254,7 +363,7 @@ function AuthExperience() {
               onClick={enterDemo}
               className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 font-bold hover:border-spotlight"
             >
-              Explore the working demo <Play className="size-3.5" />
+              Open the owner preview <Play className="size-3.5" />
             </button>
           </div>
 
@@ -282,8 +391,8 @@ function AuthExperience() {
             <div>
               <p className="text-sm font-bold">Private by default.</p>
               <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                Live workspaces use authenticated, row-level access. The demo stores nothing and
-                charges nothing.
+                Every member gets a private, onboarding-built workspace. The owner preview is a
+                populated design workspace used only to develop and review the product.
               </p>
             </div>
           </div>
@@ -467,6 +576,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
   const { workspace, subscription, profile, user, demo, signOut, leaveDemo } = useStudio();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const reduce = useReducedMotion();
   const memberName =
@@ -526,7 +636,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
                   onClick={() => (demo ? leaveDemo() : void signOut())}
                   className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-bold text-muted-foreground hover:bg-spotlight-soft"
                 >
-                  <LogOut className="size-4" /> {demo ? "Exit demo" : "Sign out"}
+                  <LogOut className="size-4" /> {demo ? "Close owner preview" : "Sign out"}
                 </button>
               </motion.div>
             ) : null}
@@ -541,7 +651,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
             <span className="min-w-0 flex-1">
               <span className="block truncate text-xs font-extrabold">{memberName}</span>
               <span className="mt-0.5 block truncate text-[10px] text-muted-foreground">
-                {demo ? "Guided demo" : `${subscription?.plan || "trial"} · ${workspace?.name}`}
+                {demo ? "Owner preview" : `${subscription?.plan || "member"} · ${workspace?.name}`}
               </span>
             </span>
             <ChevronRight className={`size-3.5 transition ${accountOpen ? "rotate-90" : ""}`} />
@@ -559,15 +669,23 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
         <div className="ml-3 min-w-0 lg:ml-0">
           <p className="truncate text-sm font-bold">{workspace?.name}</p>
           <p className="hidden font-mono text-[8px] uppercase tracking-[.16em] text-muted-foreground sm:block">
-            {demo ? "Demo workspace · no data saved" : "Private workspace"}
+            {demo ? "Owner preview · populated workspace" : "Private member workspace"}
           </p>
         </div>
         <div className="ml-auto hidden sm:block">
           <LanePulse />
         </div>
         <button
+          aria-label="Ask a Pal"
+          onClick={() => setChatOpen(true)}
+          className="ml-3 inline-flex min-h-11 items-center gap-2 rounded-full border border-system bg-system-soft px-3 text-xs font-bold text-system"
+        >
+          <MessageSquareText className="size-4" />
+          <span className="hidden md:inline">Ask a Pal</span>
+        </button>
+        <button
           aria-label="Notifications"
-          className="ml-3 grid size-11 place-items-center rounded-full border border-border"
+          className="ml-2 grid size-11 place-items-center rounded-full border border-border"
         >
           <Bell className="size-4" />
         </button>
@@ -629,6 +747,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
       <AnimatePresence>
         {createOpen ? <CreateOverlay onClose={() => setCreateOpen(false)} /> : null}
       </AnimatePresence>
+      <PalChat open={chatOpen} onClose={() => setChatOpen(false)} />
     </div>
   );
 }
@@ -765,6 +884,141 @@ function CreateOverlay({ onClose }: { onClose: () => void }) {
   );
 }
 
+function PalChat({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const { suggestDirections, brand, busy } = useStudio();
+  const reduce = useReducedMotion();
+  const [draft, setDraft] = useState("");
+  const [messages, setMessages] = useState<
+    Array<{ id: string; from: "you" | "pal"; body: string }>
+  >([
+    {
+      id: "welcome",
+      from: "pal",
+      body: "Tell me what feels unclear, repetitive, invisible, or stuck. I’ll help you find the most useful content move.",
+    },
+  ]);
+  async function ask(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const question = draft.trim();
+    if (question.length < 8) return;
+    setMessages((current) => [
+      ...current,
+      { id: crypto.randomUUID(), from: "you", body: question },
+    ]);
+    setDraft("");
+    try {
+      const directions = await suggestDirections({
+        idea: question,
+        goal: studioGoals[0],
+        audience: brand?.primary_audience || "Your primary audience",
+      });
+      const best = directions[0];
+      setMessages((current) => [
+        ...current,
+        {
+          id: crypto.randomUUID(),
+          from: "pal",
+          body: best
+            ? `${best.title}: ${best.angle}\n\nWhy it works: ${best.whyItWorks}`
+            : "Start by naming the exact decision you need the audience to make. That gives the content a real job.",
+        },
+      ]);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "The Pal could not respond yet.");
+    }
+  }
+  return (
+    <AnimatePresence>
+      {open ? (
+        <motion.div
+          initial={reduce ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[95] flex justify-end bg-ink/30"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) onClose();
+          }}
+        >
+          <motion.aside
+            initial={reduce ? false : { transform: "translateX(100%)" }}
+            animate={{ transform: "translateX(0%)" }}
+            exit={reduce ? { opacity: 0 } : { transform: "translateX(100%)" }}
+            transition={
+              reduce ? { duration: 0.01 } : { type: "spring", bounce: 0.12, visualDuration: 0.4 }
+            }
+            className="flex h-full w-full flex-col bg-white shadow-2xl sm:max-w-[32rem]"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Ask a Palmer House Pal"
+          >
+            <header className="flex items-center gap-4 border-b border-border p-5">
+              <div className="relative">
+                <img
+                  src={kianaHeadshot}
+                  alt="Kiana"
+                  className="size-12 rounded-xl border border-border object-cover object-top"
+                />
+                <span className="absolute -right-1 -top-1 size-3 rounded-full border-2 border-white bg-evergreen" />
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="font-black">Ask a Pal</p>
+                <p className="mt-0.5 text-xs text-muted-foreground">
+                  Kiana is focusing the lens with you
+                </p>
+              </div>
+              <button
+                onClick={onClose}
+                aria-label="Close Pal chat"
+                className="grid size-11 place-items-center rounded-full border border-border"
+              >
+                <X className="size-4" />
+              </button>
+            </header>
+            <div className="flex-1 space-y-4 overflow-y-auto p-5" aria-live="polite">
+              {messages.map((message) => (
+                <motion.div
+                  key={message.id}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`max-w-[88%] whitespace-pre-line rounded-[1.25rem] p-4 text-sm leading-relaxed ${message.from === "you" ? "ml-auto bg-spotlight text-white" : "bg-system-soft text-ink"}`}
+                >
+                  {message.body}
+                </motion.div>
+              ))}
+              {busy ? (
+                <div className="flex items-center gap-2 text-xs font-bold text-system">
+                  <LoaderCircle className="size-4 animate-spin" /> Finding the useful angle…
+                </div>
+              ) : null}
+            </div>
+            <form onSubmit={ask} className="border-t border-border p-4">
+              <div className="flex items-end gap-2 rounded-[1.15rem] border border-border bg-white p-2 shadow-soft">
+                <textarea
+                  value={draft}
+                  onChange={(event) => setDraft(event.target.value)}
+                  rows={2}
+                  placeholder="What feels stuck?"
+                  className="min-h-12 flex-1 resize-none border-0 bg-transparent p-2 text-sm outline-none"
+                />
+                <button
+                  disabled={busy || draft.trim().length < 8}
+                  aria-label="Send question"
+                  className="grid size-11 shrink-0 place-items-center rounded-xl bg-system text-white disabled:opacity-35"
+                >
+                  <Send className="size-4" />
+                </button>
+              </div>
+              <p className="mt-2 text-center text-[10px] text-muted-foreground">
+                Guidance only. Nothing publishes automatically.
+              </p>
+            </form>
+          </motion.aside>
+        </motion.div>
+      ) : null}
+    </AnimatePresence>
+  );
+}
+
 function renderView(view: StudioView, campaignId?: string) {
   if (view === "engine") return <ContentEngine />;
   if (view === "home") return <Dashboard />;
@@ -861,11 +1115,74 @@ function Dashboard() {
               </span>
             </span>
             <ArrowRight className="ml-auto size-4 shrink-0 transition-transform group-hover:translate-x-1" />
-            <span className="absolute inset-x-0 bottom-0 h-1" style={{ background: item.color }} />
             <span className="sr-only">Option {index + 1}</span>
           </Link>
         ))}
       </section>
+
+      {!campaigns.length ? (
+        <section className="mt-5 rounded-[1.25rem] border border-system bg-white p-5 sm:p-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xl font-black">
+                Your Studio is ready. Let’s teach it your business.
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Three short steps turn an empty workspace into your own content system.
+              </p>
+            </div>
+            <span className="rounded-full bg-system-soft px-3 py-1 text-xs font-bold text-system">
+              1 of 3 ready
+            </span>
+          </div>
+          <div className="mt-5 grid gap-3 md:grid-cols-3">
+            {[
+              {
+                to: "/studio/brand" as const,
+                icon: Gauge,
+                title: "Build Brand DNA",
+                note: "Audience, offer, voice, and proof",
+                color: "var(--spotlight)",
+                soft: "var(--spotlight-soft)",
+              },
+              {
+                to: "/studio/ideas" as const,
+                icon: Lightbulb,
+                title: "Save the first idea",
+                note: "Capture a real customer question",
+                color: "var(--reel)",
+                soft: "var(--reel-soft)",
+              },
+              {
+                to: "/studio" as const,
+                icon: Sparkles,
+                title: "Build the first campaign",
+                note: "Turn the idea into usable work",
+                color: "var(--evergreen)",
+                soft: "var(--evergreen-soft)",
+              },
+            ].map((step) => (
+              <Link
+                key={step.title}
+                to={step.to}
+                className="group flex min-h-24 items-center gap-4 rounded-xl border border-border bg-white p-4 hover:border-ink"
+              >
+                <span
+                  className="grid size-10 shrink-0 place-items-center rounded-xl"
+                  style={{ background: step.soft, color: step.color }}
+                >
+                  <step.icon className="size-4" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-extrabold">{step.title}</span>
+                  <span className="mt-1 block text-xs text-muted-foreground">{step.note}</span>
+                </span>
+                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <section className="mt-5 grid gap-4 rounded-[1.25rem] border border-border p-5 sm:grid-cols-2 xl:grid-cols-[1.25fr_repeat(4,1fr)_auto] xl:items-center">
         <div>
@@ -1018,13 +1335,18 @@ function Dashboard() {
             <div className="flex items-center justify-between px-2 pt-2">
               <div>
                 <p className="font-extrabold">Content map</p>
-                <p className="mt-1 text-xs text-muted-foreground">One idea, four useful moves</p>
+                <p className="mt-1 text-xs text-muted-foreground">Where the work is right now</p>
               </div>
-              <Link to="/studio/brand" className="text-xs font-bold">
-                View strategy
+              <Link to="/studio/campaigns" className="text-xs font-bold">
+                View campaigns
               </Link>
             </div>
-            <ContentOrbit compact />
+            <CampaignFlowMap
+              campaigns={campaigns.length}
+              assets={assets.length}
+              review={review}
+              scheduled={scheduled}
+            />
           </article>
           <div className="grid gap-4">
             <article className="studio-card">
@@ -1066,26 +1388,132 @@ function Dashboard() {
               </div>
               <div className="mt-4 grid grid-cols-3 gap-2">
                 {assets.slice(0, 3).map((asset, index) => (
-                  <div
+                  <Link
                     key={asset.id}
-                    className="rounded-xl border border-border p-3"
-                    style={{
-                      background: [
-                        "var(--reel-soft)",
-                        "var(--spotlight-soft)",
-                        "var(--evergreen-soft)",
-                      ][index % 3],
-                    }}
+                    to="/studio/library"
+                    className="group overflow-hidden rounded-xl border border-border bg-white"
                   >
-                    <FileStack className="size-4" />
-                    <p className="mt-5 line-clamp-2 text-[10px] font-bold">{asset.title}</p>
-                  </div>
+                    <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
+                      <img
+                        src={assetMedia(asset, index)}
+                        alt=""
+                        className="size-full object-cover transition duration-500 group-hover:scale-105"
+                      />
+                      {(() => {
+                        const meta = assetKindMeta(asset.kind);
+                        return (
+                          <span
+                            className="absolute bottom-2 left-2 grid size-7 place-items-center rounded-lg bg-white shadow-soft"
+                            style={{ color: meta.color }}
+                          >
+                            <meta.icon className="size-3.5" />
+                          </span>
+                        );
+                      })()}
+                    </div>
+                    <p className="line-clamp-2 p-2 text-[10px] font-bold leading-snug">
+                      {asset.title}
+                    </p>
+                  </Link>
                 ))}
               </div>
             </article>
           </div>
         </div>
       </section>
+    </div>
+  );
+}
+
+function CampaignFlowMap({
+  campaigns,
+  assets,
+  review,
+  scheduled,
+}: {
+  campaigns: number;
+  assets: number;
+  review: number;
+  scheduled: number;
+}) {
+  const reduce = useReducedMotion();
+  const steps = [
+    {
+      label: "Campaign briefs",
+      note: "The outcome and audience",
+      value: campaigns,
+      icon: Target,
+      color: "var(--spotlight)",
+      soft: "var(--spotlight-soft)",
+      to: "/studio/campaigns" as const,
+    },
+    {
+      label: "Assets built",
+      note: "Scripts, posts, and plans",
+      value: assets,
+      icon: LayoutGrid,
+      color: "var(--reel)",
+      soft: "var(--reel-soft)",
+      to: "/studio/library" as const,
+    },
+    {
+      label: "Needs a decision",
+      note: "Waiting for your review",
+      value: review,
+      icon: Eye,
+      color: "var(--evergreen)",
+      soft: "var(--evergreen-soft)",
+      to: "/studio/approvals" as const,
+    },
+    {
+      label: "On the calendar",
+      note: "Ready with a date",
+      value: scheduled,
+      icon: CalendarDays,
+      color: "var(--system)",
+      soft: "var(--system-soft)",
+      to: "/studio/calendar" as const,
+    },
+  ];
+  return (
+    <div className="mt-5 px-2 pb-2">
+      <div className="grid gap-2 sm:grid-cols-2">
+        {steps.map((step, index) => (
+          <motion.div
+            key={step.label}
+            initial={reduce ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.06, duration: 0.3 }}
+          >
+            <Link
+              to={step.to}
+              className="group flex min-h-28 items-start gap-3 rounded-[1rem] border border-border bg-white p-4 hover:border-ink"
+            >
+              <span
+                className="grid size-10 shrink-0 place-items-center rounded-xl"
+                style={{ background: step.soft, color: step.color }}
+              >
+                <step.icon className="size-4" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-2xl font-black">{step.value}</span>
+                <span className="mt-1 block text-xs font-extrabold">{step.label}</span>
+                <span className="mt-1 block text-[10px] leading-relaxed text-muted-foreground">
+                  {step.note}
+                </span>
+              </span>
+              <ArrowRight className="size-3.5 shrink-0 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </motion.div>
+        ))}
+      </div>
+      <div className="mt-3 flex items-center gap-3 rounded-xl bg-system-soft px-4 py-3 text-xs text-system">
+        <Activity className="size-4 shrink-0" />
+        <p>
+          <strong>{assets ? Math.round((scheduled / assets) * 100) : 0}%</strong> of created assets
+          currently have a publishing date.
+        </p>
+      </div>
     </div>
   );
 }
@@ -1144,7 +1572,10 @@ function IdeasBoard() {
         title="Catch the useful thought before it disappears."
         body="Save customer questions, proof moments, team knowledge, and conversation starters. When one is ready, move it into the Content Engine."
         action={
-          <Link to="/studio" className="primary-action">
+          <Link
+            to="/studio"
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-system px-5 text-sm font-bold text-white"
+          >
             <Sparkles className="size-4" /> Open the engine
           </Link>
         }
@@ -1183,15 +1614,17 @@ function IdeasBoard() {
               </button>
             ))}
           </div>
-          <button onClick={addIdea} className="primary-action mt-5 w-full">
+          <button
+            onClick={addIdea}
+            className="mt-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-system px-5 text-sm font-bold text-white"
+          >
             <Plus className="size-4" /> Save idea
           </button>
-          <div className="mt-6 rounded-xl bg-system-soft p-4">
-            <p className="text-xs font-extrabold text-system">Samira’s nudge</p>
-            <p className="mt-2 text-sm leading-relaxed">
+          <div className="mt-6">
+            <PalTip name="Samira" headshot={samiraHeadshot} color="var(--system)">
               If your team has said it twice, save the exact wording. That is usually the useful
               part.
-            </p>
+            </PalTip>
           </div>
         </div>
         <div>
@@ -1205,7 +1638,7 @@ function IdeasBoard() {
                 <button
                   key={item}
                   onClick={() => setFilter(item)}
-                  className={`min-h-10 rounded-full px-4 text-xs font-bold capitalize ${filter === item ? "bg-ink text-white" : "border border-border"}`}
+                  className={`min-h-10 rounded-full px-4 text-xs font-bold capitalize ${filter === item ? "bg-system text-white" : "border border-border bg-white"}`}
                 >
                   {item}
                 </button>
@@ -1216,27 +1649,35 @@ function IdeasBoard() {
             {visible.map((idea) => {
               const meta = lanes[idea.lane];
               return (
-                <motion.article
-                  layout
-                  key={idea.id}
-                  className="studio-card flex min-h-56 flex-col"
-                  style={{ borderTopColor: meta.color, borderTopWidth: 4 }}
-                >
+                <motion.article layout key={idea.id} className="studio-card flex min-h-56 flex-col">
                   <div className="flex items-center justify-between">
-                    <span className="studio-eyebrow" style={{ color: meta.color }}>
-                      {meta.label}
+                    <span
+                      className="flex items-center gap-2 text-xs font-extrabold"
+                      style={{ color: meta.color }}
+                    >
+                      <span
+                        className="grid size-8 place-items-center rounded-lg"
+                        style={{ background: meta.soft }}
+                      >
+                        <Lightbulb className="size-3.5" />
+                      </span>
+                      {meta.label} idea
                     </span>
                     <button
                       aria-label="More idea options"
                       className="grid size-9 place-items-center rounded-full border border-border"
                     >
-                      •••
+                      <MoreHorizontal className="size-4" />
                     </button>
                   </div>
                   <p className="mt-6 text-xl font-extrabold leading-snug">{idea.text}</p>
                   <p className="mt-3 text-xs text-muted-foreground">{idea.source}</p>
                   <div className="mt-auto flex gap-2 pt-6">
-                    <Link to="/studio" className="primary-action flex-1">
+                    <Link
+                      to="/studio"
+                      className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold"
+                      style={{ background: meta.soft, color: meta.color }}
+                    >
                       Build this <ArrowRight className="size-4" />
                     </Link>
                     <button
@@ -1703,7 +2144,7 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
               Print / PDF
             </button>
           </div>
-          <div className="mt-6 rounded-2xl bg-secondary p-4">
+          <div className="mt-6 rounded-2xl bg-system-soft p-4">
             <p className="text-sm font-semibold">Ready to produce?</p>
             <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
               The brief is already here. Ask Palmer House to film or edit it.
@@ -1763,7 +2204,15 @@ function StrategyPanel({
               "Give one next step",
             ]
           ).map((pillar, index) => (
-            <div key={pillar} className="rounded-2xl bg-secondary p-5">
+            <div
+              key={pillar}
+              className="rounded-2xl p-5"
+              style={{
+                background: ["var(--spotlight-soft)", "var(--reel-soft)", "var(--evergreen-soft)"][
+                  index % 3
+                ],
+              }}
+            >
               <span className="font-mono text-[9px] text-muted-foreground">0{index + 1}</span>
               <p className="mt-8 font-semibold">{pillar}</p>
             </div>
@@ -1856,7 +2305,7 @@ function PublishPanel({ campaign }: { campaign: Campaign }) {
         {items.map((item) => (
           <div
             key={item.id}
-            className="grid gap-3 rounded-2xl bg-secondary p-4 sm:grid-cols-[8rem_1fr_10rem]"
+            className="grid gap-3 rounded-2xl border border-border bg-white p-4 sm:grid-cols-[8rem_1fr_10rem]"
           >
             <time className="font-mono text-xs">
               {new Date(item.publish_at).toLocaleDateString()}
@@ -1872,60 +2321,125 @@ function PublishPanel({ campaign }: { campaign: Campaign }) {
 
 function AssetPanel({ items }: { items: Asset[] }) {
   const { updateAsset } = useStudio();
-  const [open, setOpen] = useState(items[0]?.id || "");
+  const [selectedId, setSelectedId] = useState(items[0]?.id || "");
+  const selected = items.find((asset) => asset.id === selectedId) || items[0];
+  if (!selected) {
+    return (
+      <div className="studio-card">
+        <EmptyState
+          icon={FileText}
+          title="No drafts yet."
+          body="Build the campaign to create its working assets."
+        />
+      </div>
+    );
+  }
+  const selectedMeta = assetKindMeta(selected.kind);
   return (
-    <div className="space-y-3">
-      {items.map((asset) => (
-        <div key={asset.id} className="studio-card p-0 overflow-hidden">
-          <button
-            onClick={() => setOpen(open === asset.id ? "" : asset.id)}
-            className="flex min-h-16 w-full items-center gap-4 px-5 text-left"
-          >
-            <span className="grid size-9 place-items-center rounded-xl bg-reel-soft text-reel">
-              <FileStack className="size-4" />
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block truncate font-semibold">{asset.title}</span>
-              <span className="font-mono text-[8px] uppercase tracking-[.14em] text-muted-foreground">
-                {asset.kind.replaceAll("_", " ")}
-              </span>
-            </span>
-            <ChevronRight className={`size-4 transition ${open === asset.id ? "rotate-90" : ""}`} />
-          </button>
-          <AnimatePresence>
-            {open === asset.id && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="overflow-hidden"
-              >
-                <div className="border-t border-border p-5">
-                  <textarea
-                    defaultValue={asset.content}
-                    onBlur={(event) => void updateAsset(asset.id, { content: event.target.value })}
-                    rows={Math.min(18, Math.max(6, asset.content.split("\n").length + 3))}
-                    className="w-full resize-y rounded-2xl bg-secondary p-4 text-sm leading-relaxed"
-                  />
-                  <div className="mt-3 flex justify-end">
-                    <button
-                      onClick={() =>
-                        void navigator.clipboard
-                          .writeText(asset.content)
-                          .then(() => toast.success("Copied."))
-                      }
-                      className="secondary-action"
-                    >
-                      <Clipboard className="size-4" />
-                      Copy
-                    </button>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+    <div className="overflow-hidden rounded-[1.5rem] border border-border bg-white lg:grid lg:min-h-[38rem] lg:grid-cols-[18rem_1fr]">
+      <aside className="border-b border-border p-3 lg:border-b-0 lg:border-r">
+        <div className="mb-3 px-2 py-2">
+          <p className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+            Campaign assets
+          </p>
+          <p className="mt-2 text-sm font-extrabold">Choose one thing to work on</p>
         </div>
-      ))}
+        <div className="flex gap-2 overflow-x-auto pb-2 lg:block lg:space-y-1 lg:overflow-visible lg:pb-0">
+          {items.map((asset) => {
+            const meta = assetKindMeta(asset.kind);
+            return (
+              <button
+                key={asset.id}
+                onClick={() => setSelectedId(asset.id)}
+                className={`flex min-h-14 min-w-[15rem] items-center gap-3 rounded-xl px-3 text-left transition lg:min-w-0 lg:w-full ${selected.id === asset.id ? "border border-border bg-white shadow-soft" : "hover:bg-secondary"}`}
+              >
+                <span
+                  className="grid size-9 shrink-0 place-items-center rounded-xl"
+                  style={{ background: `${meta.color}14`, color: meta.color }}
+                >
+                  <meta.icon className="size-4" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate font-semibold">{asset.title}</span>
+                  <span className="font-mono text-[8px] uppercase tracking-[.14em] text-muted-foreground">
+                    {meta.label} · {asset.status}
+                  </span>
+                </span>
+                <ChevronRight className="size-3.5 shrink-0" />
+              </button>
+            );
+          })}
+        </div>
+      </aside>
+      <AnimatePresence mode="wait">
+        <motion.section
+          key={selected.id}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.22 }}
+          className="flex min-w-0 flex-col p-5 sm:p-7"
+        >
+          <header className="flex flex-col gap-4 border-b border-border pb-5 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex items-start gap-4">
+              <span
+                className="grid size-11 shrink-0 place-items-center rounded-xl"
+                style={{ background: `${selectedMeta.color}14`, color: selectedMeta.color }}
+              >
+                <selectedMeta.icon className="size-5" />
+              </span>
+              <div>
+                <p className="text-xs font-extrabold" style={{ color: selectedMeta.color }}>
+                  {selectedMeta.label}
+                </p>
+                <h2 className="mt-1 text-2xl font-black">{selected.title}</h2>
+              </div>
+            </div>
+            <span className="w-fit rounded-full bg-evergreen-soft px-3 py-1 text-[9px] font-bold text-evergreen">
+              {selected.status}
+            </span>
+          </header>
+          <div className="mt-6 flex-1">
+            <label className="text-sm font-extrabold" htmlFor={`asset-${selected.id}`}>
+              Working draft
+            </label>
+            <textarea
+              id={`asset-${selected.id}`}
+              defaultValue={selected.content}
+              onBlur={(event) => void updateAsset(selected.id, { content: event.target.value })}
+              rows={Math.min(20, Math.max(11, selected.content.split("\n").length + 3))}
+              className="mt-3 w-full resize-y rounded-[1.15rem] border border-border bg-white p-5 text-sm leading-[1.75] outline-none focus:border-system"
+            />
+          </div>
+          <footer className="mt-5 flex flex-col gap-2 border-t border-border pt-5 sm:flex-row sm:justify-between">
+            <div className="flex gap-2">
+              <button
+                onClick={() => void updateAsset(selected.id, { status: "approved" })}
+                className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-evergreen px-4 text-sm font-bold text-white"
+              >
+                <Check className="size-4" /> Approve
+              </button>
+              <button
+                onClick={() => void updateAsset(selected.id, { status: "review" })}
+                className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-spotlight-soft px-4 text-sm font-bold text-spotlight"
+              >
+                <Eye className="size-4" /> Send to review
+              </button>
+            </div>
+            <button
+              onClick={() =>
+                void navigator.clipboard
+                  .writeText(selected.content)
+                  .then(() => toast.success("Copied."))
+              }
+              className="secondary-action"
+            >
+              <Clipboard className="size-4" />
+              Copy
+            </button>
+          </footer>
+        </motion.section>
+      </AnimatePresence>
     </div>
   );
 }
@@ -2073,8 +2587,8 @@ function BrandStudio() {
               Private PDFs, logos, images, or notes · 10 MB max
             </p>
           </label>
-          <div className="rounded-[1.5rem] bg-ink p-6 text-white">
-            <p className="font-mono text-[9px] uppercase tracking-[.17em] text-white/45">
+          <div className="rounded-[1.5rem] bg-spotlight p-6 text-white">
+            <p className="font-mono text-[9px] uppercase tracking-[.17em] text-white/60">
               The rule
             </p>
             <p className="mt-4 text-lg font-semibold">
@@ -2159,65 +2673,78 @@ function Library() {
         </select>
       </div>
       <div className="studio-content-list mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {filtered.map((asset) => (
-          <article
-            key={asset.id}
-            className="studio-card group flex min-h-72 flex-col overflow-hidden p-0"
-          >
-            <div className="relative grid min-h-28 place-items-center border-b border-border bg-spotlight-soft p-5">
-              <FileStack className="size-8 text-spotlight" />
-              <span className="absolute bottom-3 left-3 rounded-full bg-white px-2.5 py-1 font-mono text-[8px] uppercase tracking-[.13em]">
-                {asset.kind.replaceAll("_", " ")}
-              </span>
-              <button
-                onClick={() =>
-                  setFavorites((current) => {
-                    const next = new Set(current);
-                    if (next.has(asset.id)) next.delete(asset.id);
-                    else next.add(asset.id);
-                    return next;
-                  })
-                }
-                aria-label={`${favorites.has(asset.id) ? "Remove" : "Add"} ${asset.title} ${favorites.has(asset.id) ? "from" : "to"} favorites`}
-                className={`absolute right-3 top-3 grid size-9 place-items-center rounded-full bg-white ${favorites.has(asset.id) ? "text-reel" : "text-muted-foreground"}`}
-              >
-                <Heart className={`size-4 ${favorites.has(asset.id) ? "fill-current" : ""}`} />
-              </button>
-            </div>
-            <div className="flex flex-1 flex-col p-5">
-              <div className="flex items-center justify-between">
+        {filtered.map((asset, index) => {
+          const meta = assetKindMeta(asset.kind);
+          return (
+            <article
+              key={asset.id}
+              className="studio-card group flex min-h-80 flex-col overflow-hidden p-0"
+            >
+              <div className="relative aspect-[16/9] overflow-hidden border-b border-border bg-secondary">
+                <img
+                  src={assetMedia(asset, index)}
+                  alt=""
+                  className="size-full object-cover transition duration-500 group-hover:scale-[1.025]"
+                />
                 <span
-                  className={`rounded-full px-3 py-1 text-[9px] font-bold ${asset.status === "approved" ? "bg-evergreen-soft text-evergreen" : asset.status === "review" ? "bg-reel-soft text-reel" : "border border-border"}`}
+                  className="absolute left-3 top-3 grid size-10 place-items-center rounded-xl bg-white shadow-soft"
+                  style={{ color: meta.color }}
                 >
-                  {asset.status}
+                  <meta.icon className="size-4" />
                 </span>
-                <span className="text-[10px] text-muted-foreground">
-                  {new Date(asset.updated_at).toLocaleDateString()}
+                <span className="absolute bottom-3 left-3 rounded-full bg-white px-2.5 py-1 font-mono text-[8px] uppercase tracking-[.13em]">
+                  {meta.label}
                 </span>
-              </div>
-              <h2 className="mt-6 text-xl font-bold">{asset.title}</h2>
-              <p className="mt-3 line-clamp-4 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
-                {asset.content}
-              </p>
-              <div className="mt-auto flex items-center justify-between pt-6">
-                <p className="max-w-[14rem] truncate text-xs text-muted-foreground">
-                  {campaigns.find((item) => item.id === asset.campaign_id)?.title}
-                </p>
                 <button
                   onClick={() =>
-                    void navigator.clipboard
-                      .writeText(asset.content)
-                      .then(() => toast.success("Copied."))
+                    setFavorites((current) => {
+                      const next = new Set(current);
+                      if (next.has(asset.id)) next.delete(asset.id);
+                      else next.add(asset.id);
+                      return next;
+                    })
                   }
-                  aria-label={`Copy ${asset.title}`}
-                  className="grid size-10 place-items-center rounded-xl bg-secondary"
+                  aria-label={`${favorites.has(asset.id) ? "Remove" : "Add"} ${asset.title} ${favorites.has(asset.id) ? "from" : "to"} favorites`}
+                  className={`absolute right-3 top-3 grid size-9 place-items-center rounded-full bg-white ${favorites.has(asset.id) ? "text-reel" : "text-muted-foreground"}`}
                 >
-                  <Clipboard className="size-4" />
+                  <Heart className={`size-4 ${favorites.has(asset.id) ? "fill-current" : ""}`} />
                 </button>
               </div>
-            </div>
-          </article>
-        ))}
+              <div className="flex flex-1 flex-col p-5">
+                <div className="flex items-center justify-between">
+                  <span
+                    className={`rounded-full px-3 py-1 text-[9px] font-bold ${asset.status === "approved" ? "bg-evergreen-soft text-evergreen" : asset.status === "review" ? "bg-reel-soft text-reel" : "border border-border"}`}
+                  >
+                    {asset.status}
+                  </span>
+                  <span className="text-[10px] text-muted-foreground">
+                    {new Date(asset.updated_at).toLocaleDateString()}
+                  </span>
+                </div>
+                <h2 className="mt-6 text-xl font-bold">{asset.title}</h2>
+                <p className="mt-3 line-clamp-4 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
+                  {asset.content}
+                </p>
+                <div className="mt-auto flex items-center justify-between pt-6">
+                  <p className="max-w-[14rem] truncate text-xs text-muted-foreground">
+                    {campaigns.find((item) => item.id === asset.campaign_id)?.title}
+                  </p>
+                  <button
+                    onClick={() =>
+                      void navigator.clipboard
+                        .writeText(asset.content)
+                        .then(() => toast.success("Copied."))
+                    }
+                    aria-label={`Copy ${asset.title}`}
+                    className="grid size-10 place-items-center rounded-xl bg-secondary"
+                  >
+                    <Clipboard className="size-4" />
+                  </button>
+                </div>
+              </div>
+            </article>
+          );
+        })}
         {!filtered.length && (
           <div className="sm:col-span-2 xl:col-span-3 studio-card">
             <EmptyState
@@ -2233,8 +2760,11 @@ function Library() {
 }
 
 function CalendarView() {
-  const { calendar, updateCalendarItem } = useStudio();
+  const { calendar, updateCalendarItem, createCalendarItem, campaigns, assets } = useStudio();
   const [mode, setMode] = useState<"month" | "week" | "list">("month");
+  const [selected, setSelected] = useState<CalendarItem | null>(null);
+  const [planning, setPlanning] = useState(false);
+  const reduce = useReducedMotion();
   const [focusDate, setFocusDate] = useState(() => {
     const first = calendar[0]?.publish_at;
     return first ? new Date(first) : new Date();
@@ -2285,10 +2815,57 @@ function CalendarView() {
     toast.success(`Moved “${item.title}” to ${next.toLocaleDateString()}.`);
   }
 
+  async function generateMonthPlan() {
+    setPlanning(true);
+    try {
+      const monthStart = new Date(focusDate.getFullYear(), focusDate.getMonth(), 1, 10);
+      const channels = ["LinkedIn", "Instagram", "YouTube", "Email"];
+      const sourceAssets = assets.length ? assets : ([] as Asset[]);
+      const sourceCampaign = campaigns[0];
+      const ideas = [
+        "Name the customer problem clearly",
+        "Show one proof moment",
+        "Answer the question before the sales call",
+        "Turn a team process into a useful walkthrough",
+        "Share the strongest campaign takeaway",
+        "Invite the audience into the next decision",
+        "Reuse the anchor video as a focused post",
+        "Close the month with one clear next step",
+      ];
+      await Promise.all(
+        ideas.map((fallback, index) => {
+          const publishAt = new Date(monthStart);
+          publishAt.setDate(2 + index * 3);
+          const asset = sourceAssets[index % Math.max(1, sourceAssets.length)];
+          return createCalendarItem({
+            campaignId: asset?.campaign_id || sourceCampaign?.id,
+            assetId: asset?.id,
+            title: asset?.title || fallback,
+            channel: channels[index % channels.length],
+            publishAt: publishAt.toISOString(),
+            notes:
+              "Month plan draft. Open this item to adjust the channel, date, status, or notes.",
+          });
+        }),
+      );
+      toast.success("A four-week draft plan is now on the calendar.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not build the month plan.");
+    } finally {
+      setPlanning(false);
+    }
+  }
+
   const heading =
     mode === "week"
       ? `${calendarDays[0]?.toLocaleDateString(undefined, { month: "short", day: "numeric" })} – ${calendarDays[6]?.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}`
       : focusDate.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+  const selectedAsset = selected?.asset_id
+    ? assets.find((asset) => asset.id === selected.asset_id)
+    : undefined;
+  const selectedCampaign = selected?.campaign_id
+    ? campaigns.find((campaign) => campaign.id === selected.campaign_id)
+    : undefined;
 
   return (
     <div className="mx-auto max-w-[88rem]">
@@ -2297,10 +2874,24 @@ function CalendarView() {
         title="A visible publishing rhythm."
         body="The schedule is created with the campaign, then stays editable as your team scripts, films, approves, and publishes."
         action={
-          <button onClick={() => downloadCalendar(calendar)} className="secondary-action">
-            <Download className="size-4" />
-            Export .ics
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => void generateMonthPlan()}
+              disabled={planning}
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-system px-5 text-sm font-bold text-white disabled:opacity-50"
+            >
+              {planning ? (
+                <LoaderCircle className="size-4 animate-spin" />
+              ) : (
+                <Sparkles className="size-4" />
+              )}
+              Generate month plan
+            </button>
+            <button onClick={() => downloadCalendar(calendar)} className="secondary-action">
+              <Download className="size-4" />
+              Export .ics
+            </button>
+          </div>
         }
       />
       <section className="mt-8 overflow-hidden rounded-[1.75rem] border border-border bg-white shadow-[0_18px_60px_rgba(26,26,24,.05)]">
@@ -2376,13 +2967,14 @@ function CalendarView() {
                       </span>
                       <div className="mt-2 space-y-1.5">
                         {items.slice(0, 3).map((item) => (
-                          <article
+                          <button
                             key={item.id}
                             draggable
+                            onClick={() => setSelected(item)}
                             onDragStart={(event) =>
                               event.dataTransfer.setData("text/calendar-item", item.id)
                             }
-                            className="cursor-grab rounded-lg border border-border bg-white px-2 py-2 shadow-sm active:cursor-grabbing"
+                            className="w-full cursor-grab rounded-lg border border-border bg-white px-2 py-2 text-left shadow-sm transition hover:border-ink active:cursor-grabbing"
                           >
                             <div className="flex items-center gap-1.5">
                               <span
@@ -2394,7 +2986,7 @@ function CalendarView() {
                             <p className="mt-1 truncate pl-3 text-[9px] text-muted-foreground">
                               {item.channel}
                             </p>
-                          </article>
+                          </button>
                         ))}
                         {items.length > 3 && (
                           <p className="px-2 text-[9px] font-bold text-muted-foreground">
@@ -2466,12 +3058,149 @@ function CalendarView() {
                     <option>approved</option>
                     <option>published</option>
                   </select>
+                  <button
+                    onClick={() => setSelected(item)}
+                    className="secondary-action sm:col-span-4 sm:justify-self-end"
+                  >
+                    Open post <ArrowRight className="size-4" />
+                  </button>
                 </div>
               )),
             ])}
           </div>
         )}
       </section>
+
+      <AnimatePresence>
+        {selected ? (
+          <motion.div
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[90] flex justify-end bg-ink/30"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Calendar item: ${selected.title}`}
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget) setSelected(null);
+            }}
+          >
+            <motion.aside
+              initial={reduce ? false : { transform: "translateX(100%)" }}
+              animate={{ transform: "translateX(0%)" }}
+              exit={reduce ? { opacity: 0 } : { transform: "translateX(100%)" }}
+              transition={
+                reduce ? { duration: 0.01 } : { type: "spring", bounce: 0.12, visualDuration: 0.4 }
+              }
+              className="h-full w-full overflow-y-auto bg-white p-5 shadow-2xl sm:max-w-[31rem] sm:p-7"
+            >
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <p className="studio-eyebrow text-system">Scheduled content</p>
+                  <h2 className="mt-3 text-3xl font-black leading-tight">{selected.title}</h2>
+                </div>
+                <button
+                  onClick={() => setSelected(null)}
+                  aria-label="Close calendar item"
+                  className="grid size-11 shrink-0 place-items-center rounded-full border border-border"
+                >
+                  <X className="size-4" />
+                </button>
+              </div>
+
+              <div className="relative mt-6 aspect-[16/9] overflow-hidden rounded-[1.25rem] border border-border bg-secondary">
+                <img
+                  src={selectedAsset ? assetMedia(selectedAsset) : creativeFour}
+                  alt=""
+                  className="size-full object-cover"
+                />
+                <span
+                  className="absolute bottom-3 left-3 rounded-full bg-white px-3 py-1 text-[9px] font-bold"
+                  style={{ color: channelColor(selected.channel) }}
+                >
+                  {selected.channel}
+                </span>
+              </div>
+
+              <div className="mt-6 grid gap-5 sm:grid-cols-2">
+                <label className="text-sm font-extrabold">
+                  Publish date
+                  <input
+                    type="date"
+                    value={selected.publish_at.slice(0, 10)}
+                    onChange={(event) => {
+                      const publish_at = new Date(`${event.target.value}T17:00:00`).toISOString();
+                      setSelected({ ...selected, publish_at });
+                      void updateCalendarItem(selected.id, { publish_at });
+                    }}
+                    className="mt-2 min-h-12 w-full rounded-xl border border-border bg-white px-4 text-sm"
+                  />
+                </label>
+                <label className="text-sm font-extrabold">
+                  Status
+                  <select
+                    value={selected.status}
+                    onChange={(event) => {
+                      const status = event.target.value;
+                      setSelected({ ...selected, status });
+                      void updateCalendarItem(selected.id, { status });
+                    }}
+                    className="mt-2 min-h-12 w-full rounded-xl border border-border bg-white px-4 text-sm"
+                  >
+                    {["planned", "scripted", "filmed", "editing", "approved", "published"].map(
+                      (status) => (
+                        <option key={status}>{status}</option>
+                      ),
+                    )}
+                  </select>
+                </label>
+                <label className="text-sm font-extrabold sm:col-span-2">
+                  Channel
+                  <select
+                    value={selected.channel}
+                    onChange={(event) => {
+                      const channel = event.target.value;
+                      setSelected({ ...selected, channel });
+                      void updateCalendarItem(selected.id, { channel });
+                    }}
+                    className="mt-2 min-h-12 w-full rounded-xl border border-border bg-white px-4 text-sm"
+                  >
+                    {["Instagram", "LinkedIn", "YouTube", "TikTok", "Email", "Website"].map(
+                      (channel) => (
+                        <option key={channel}>{channel}</option>
+                      ),
+                    )}
+                  </select>
+                </label>
+                <label className="text-sm font-extrabold sm:col-span-2">
+                  Working notes
+                  <textarea
+                    defaultValue={selected.notes}
+                    rows={5}
+                    onBlur={(event) =>
+                      void updateCalendarItem(selected.id, { notes: event.target.value })
+                    }
+                    className="mt-2 w-full resize-y rounded-xl border border-border bg-white p-4 text-sm leading-relaxed"
+                  />
+                </label>
+              </div>
+              {selectedCampaign ? (
+                <Link
+                  to="/studio/campaigns/$campaignId"
+                  params={{ campaignId: selectedCampaign.id }}
+                  className="mt-6 flex items-center justify-between rounded-[1.15rem] bg-spotlight-soft p-5 text-spotlight"
+                >
+                  <span>
+                    <span className="block text-xs font-bold">Part of campaign</span>
+                    <span className="mt-1 block font-black text-ink">{selectedCampaign.title}</span>
+                  </span>
+                  <ArrowRight className="size-4" />
+                </Link>
+              ) : null}
+            </motion.aside>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
 
       <div className="mt-8 space-y-8">
         {!grouped.length && (
@@ -2515,11 +3244,11 @@ function channelColor(channel: string) {
 function SettingsView() {
   const { profile, user, saveProfile, workspace, demo, subscription, campaigns, assets } =
     useStudio();
-  const [tab, setTab] = useState<
-    "workspace" | "brands" | "team" | "integrations" | "usage" | "account"
-  >("workspace");
+  const [tab, setTab] = useState<"workspace" | "brands" | "team" | "usage" | "account">(
+    "workspace",
+  );
   const [draft, setDraft] = useState({
-    full_name: profile?.full_name || (user?.user_metadata?.full_name as string) || "Demo Member",
+    full_name: profile?.full_name || (user?.user_metadata?.full_name as string) || "Studio Member",
     job_title: profile?.job_title || "",
     phone: profile?.phone || "",
     timezone: profile?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
@@ -2536,7 +3265,6 @@ function SettingsView() {
     ["workspace", Settings, "Workspace"],
     ["brands", Gauge, "Brand DNA"],
     ["team", Users, "Team"],
-    ["integrations", ExternalLink, "Integrations"],
     ["usage", CreditCard, "Usage & plan"],
     ["account", CircleUserRound, "Account"],
   ] as const;
@@ -2545,7 +3273,7 @@ function SettingsView() {
       <PageIntro
         eyebrow="Workspace settings"
         title="The controls behind the work."
-        body="Manage the workspace, brand context, people, plan, and your own account without pretending future integrations are already connected."
+        body="Manage the workspace, brand context, people, plan, and your own account in one focused place."
       />
       <div className="mt-8 grid overflow-hidden rounded-[1.5rem] border border-border bg-white lg:grid-cols-[14rem_1fr]">
         <aside className="border-b border-border p-3 lg:min-h-[38rem] lg:border-b-0 lg:border-r">
@@ -2569,19 +3297,34 @@ function SettingsView() {
               />
               <div className="mt-7 grid gap-5 sm:grid-cols-2">
                 <Field label="Workspace name" value={workspace?.name || ""} readOnly />
-                <Field label="Workspace role" value={demo ? "Demo owner" : "Owner"} readOnly />
-                <div className="rounded-xl border border-border p-5 sm:col-span-2">
+                <Field label="Workspace role" value={demo ? "Preview owner" : "Owner"} readOnly />
+                <div className="rounded-[1.15rem] border border-border p-5 sm:col-span-2">
                   <p className="studio-eyebrow text-system">Workspace health</p>
                   <div className="mt-5 grid gap-4 sm:grid-cols-3">
-                    <SettingStat value={String(campaigns.length)} label="campaigns" />
-                    <SettingStat value={String(assets.length)} label="assets" />
-                    <SettingStat value={subscription?.status || "trial"} label="plan status" />
+                    <div className="rounded-xl bg-spotlight-soft p-4">
+                      <SettingStat value={String(campaigns.length)} label="campaigns" />
+                    </div>
+                    <div className="rounded-xl bg-reel-soft p-4">
+                      <SettingStat value={String(assets.length)} label="assets created" />
+                    </div>
+                    <div className="rounded-xl bg-evergreen-soft p-4">
+                      <SettingStat
+                        value={`${Math.round(assets.length * 0.45)}h`}
+                        label="estimated time saved"
+                      />
+                    </div>
                   </div>
+                  <WorkspaceActivity
+                    dates={[
+                      ...campaigns.map((item) => item.created_at),
+                      ...assets.map((item) => item.created_at),
+                    ]}
+                  />
                 </div>
               </div>
               <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
-                Workspace renaming and ownership transfer stay locked until team email and audit
-                logging are connected.
+                Each customer workspace begins empty, follows onboarding, and only contains that
+                account’s brand memory, campaigns, assets, and calendar.
               </p>
             </div>
           ) : null}
@@ -2621,7 +3364,7 @@ function SettingsView() {
                   <div className="min-w-0 flex-1">
                     <p className="font-extrabold">{draft.full_name}</p>
                     <p className="mt-1 text-xs text-muted-foreground">
-                      {user?.email || "Demo member"} · Owner
+                      {user?.email || "Owner preview"} · Owner
                     </p>
                   </div>
                   <span className="rounded-full bg-evergreen-soft px-3 py-1 text-[9px] font-bold text-evergreen">
@@ -2629,43 +3372,17 @@ function SettingsView() {
                   </span>
                 </div>
               </div>
-              <div className="mt-5 rounded-xl bg-system-soft p-5">
-                <p className="text-sm font-extrabold text-system">
-                  Invites are intentionally paused.
-                </p>
-                <p className="mt-2 text-sm leading-relaxed">
-                  The team model is ready, but no invitation is sent until transactional email is
-                  connected and tested.
-                </p>
-              </div>
-            </div>
-          ) : null}
-          {tab === "integrations" ? (
-            <div>
-              <SettingHeading
-                title="Integrations"
-                body="A truthful roadmap of what can connect later. Nothing here claims to be live."
-              />
-              <div className="mt-7 grid gap-4 sm:grid-cols-2">
-                {[
-                  ["Stripe", "Billing and membership", "Ready when configured"],
-                  ["HoneyBook", "Production proposals", "Planned"],
-                  ["ClickUp", "Project intake", "Planned"],
-                  ["Social publishing", "Direct posting", "Later phase"],
-                ].map(([name, detail, status]) => (
-                  <article key={name} className="rounded-[1.15rem] border border-border p-5">
-                    <div className="flex items-start justify-between">
-                      <span className="grid size-10 place-items-center rounded-xl bg-system-soft">
-                        <ExternalLink className="size-4 text-system" />
-                      </span>
-                      <span className="rounded-full border border-border px-2.5 py-1 text-[8px] font-bold uppercase tracking-[.08em]">
-                        {status}
-                      </span>
-                    </div>
-                    <p className="mt-5 font-extrabold">{name}</p>
-                    <p className="mt-1 text-sm text-muted-foreground">{detail}</p>
-                  </article>
-                ))}
+              <div className="mt-5 flex items-start gap-4 rounded-xl bg-system-soft p-5">
+                <UserPlus className="mt-0.5 size-5 text-system" />
+                <div>
+                  <p className="text-sm font-extrabold text-system">
+                    Team access is ready for the next connection.
+                  </p>
+                  <p className="mt-2 text-sm leading-relaxed">
+                    Member roles and workspace permissions are designed. Email invitations stay
+                    hidden until delivery is connected and tested.
+                  </p>
+                </div>
               </div>
             </div>
           ) : null}
@@ -2675,17 +3392,29 @@ function SettingsView() {
                 title="Usage & plan"
                 body="See the current allowance without turning the dashboard into a slot machine."
               />
-              <div className="mt-7 rounded-[1.25rem] bg-ink p-6 text-white">
-                <p className="studio-eyebrow text-white/50">Current plan</p>
-                <p className="mt-3 text-3xl font-black capitalize">
+              <div className="mt-7 rounded-[1.25rem] border border-system bg-white p-6">
+                <p className="studio-eyebrow text-system">Current plan</p>
+                <p className="mt-3 text-3xl font-black capitalize text-ink">
                   {subscription?.plan || "Trial"}
                 </p>
-                <p className="mt-2 text-sm text-white/60">
+                <p className="mt-2 text-sm text-muted-foreground">
                   {campaigns.length} campaigns in this workspace
+                </p>
+                <div className="mt-6 h-2 overflow-hidden rounded-full bg-system-soft">
+                  <span
+                    className="block h-full bg-system"
+                    style={{
+                      width: `${Math.min(100, (campaigns.length / Math.max(1, subscription?.campaign_allowance || 5)) * 100)}%`,
+                    }}
+                  />
+                </div>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  {campaigns.length} of {subscription?.campaign_allowance || 5} campaign builds used
+                  this period
                 </p>
                 <Link
                   to="/studio/billing"
-                  className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-xl bg-white px-5 text-sm font-bold text-ink"
+                  className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-xl bg-system px-5 text-sm font-bold text-white"
                 >
                   Open billing <ArrowRight className="size-4" />
                 </Link>
@@ -2720,7 +3449,8 @@ function SettingsView() {
                 <div className="rounded-xl bg-spotlight-soft p-5 sm:col-span-2">
                   <p className="text-sm font-extrabold">Account email</p>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    {user?.email || "Demo mode—no email connected"}
+                    {user?.email ||
+                      "Owner preview—sign in with a member account to persist account changes"}
                   </p>
                 </div>
                 <button onClick={() => void save()} className="primary-action sm:col-span-2">
@@ -2749,6 +3479,36 @@ function SettingStat({ value, label }: { value: string; label: string }) {
     <div>
       <p className="text-2xl font-black capitalize">{value}</p>
       <p className="mt-1 text-[10px] uppercase tracking-[.1em] text-muted-foreground">{label}</p>
+    </div>
+  );
+}
+
+function WorkspaceActivity({ dates }: { dates: string[] }) {
+  const activeDays = new Set(dates.map((date) => calendarDateKey(new Date(date))));
+  const today = new Date();
+  const days = Array.from({ length: 84 }, (_, index) => {
+    const date = new Date(today);
+    date.setDate(today.getDate() - (83 - index));
+    return { key: calendarDateKey(date), active: activeDays.has(calendarDateKey(date)) };
+  });
+  return (
+    <div className="mt-6 border-t border-border pt-5">
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs font-extrabold">12-week workspace activity</p>
+        <p className="text-[10px] text-muted-foreground">Every created campaign or asset</p>
+      </div>
+      <div
+        className="mt-3 grid grid-flow-col grid-rows-7 gap-1 overflow-hidden"
+        aria-label={`${activeDays.size} active workspace days`}
+      >
+        {days.map((day) => (
+          <span
+            key={day.key}
+            title={day.key}
+            className={`aspect-square min-w-2 rounded-[3px] ${day.active ? "bg-evergreen" : "bg-evergreen-soft"}`}
+          />
+        ))}
+      </div>
     </div>
   );
 }

@@ -18,40 +18,41 @@ type Settings = Tables<"workspace_settings">;
 
 const demoWorkspace: Workspace = {
   id: "00000000-0000-4000-8000-000000000001",
-  name: "Palmer House Demo",
-  slug: "palmer-house-demo",
-  created_by: "demo",
+  name: "Palmer House Productions",
+  slug: "palmer-house-owner-preview",
+  created_by: "owner-preview",
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
 };
 const demoBrand: Brand = {
   id: "00000000-0000-4000-8000-000000000002",
   workspace_id: demoWorkspace.id,
-  business_name: "Palmer House Demo",
-  website: "",
-  industry: "Professional services",
+  business_name: "Palmer House Productions",
+  website: "https://www.palmerhouseproductions.com",
+  industry: "Strategic video production",
   description:
-    "A growing business that wants one clear content system instead of a weekly scramble.",
-  primary_audience: "Busy business owners who value expertise but need the message organized.",
-  offers: ["Core service", "Strategy session"],
+    "A video strategy and production company that turns invisible expertise, repeated explanations, and scattered ideas into clear business systems.",
+  primary_audience:
+    "Business owners and teams who need video to create clarity, proof, reach, or repeatability.",
+  offers: ["Strategy call", "Campaign production", "Content systems"],
   voice_traits: ["Direct", "Warm", "Specific"],
   preferred_language: "Use plain language and concrete examples.",
   avoid_language: ["game-changing", "revolutionary"],
   locations: ["Pacific Northwest"],
   platforms: ["LinkedIn", "Instagram", "YouTube", "Email"],
   calls_to_action: ["Book a conversation", "See how the system works"],
-  proof_points: ["Add verified customer outcomes here"],
+  proof_points: ["One production day can create weeks of connected content"],
   content_examples: [],
   colors: { spotlight: "#3D1A66", reel: "#E8720C", evergreen: "#5B8A2D", system: "#0A9B8F" },
   fonts: { primary: "Inter", detail: "JetBrains Mono" },
-  completion: 78,
+  completion: 86,
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
 };
 const demoSubscription: Subscription = {
   workspace_id: demoWorkspace.id,
-  plan: "business",
-  status: "trialing",
+  plan: "owner",
+  status: "active",
   campaign_allowance: 5,
   trial_ends_at: new Date(Date.now() + 6 * 86_400_000).toISOString(),
   current_period_start: new Date().toISOString(),
@@ -59,6 +60,18 @@ const demoSubscription: Subscription = {
   stripe_customer_id: null,
   stripe_subscription_id: null,
   cancel_at_period_end: false,
+  updated_at: new Date().toISOString(),
+};
+
+const previewProfile: Profile = {
+  id: "owner-preview",
+  avatar_url: null,
+  full_name: "Jevoy Palmer",
+  job_title: "Founder & Creative Director",
+  onboarding_completed: true,
+  phone: "",
+  timezone: "America/Los_Angeles",
+  created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
 };
 
@@ -235,7 +248,7 @@ function buildDemoWorkspaceSeed() {
         ).toISOString(),
         assignee_id: null,
         status: index === 0 ? "scripted" : "planned",
-        notes: "Demo schedule item",
+        notes: "Publishing draft for the owner preview workspace.",
         created_at: created,
         updated_at: created,
       })),
@@ -362,7 +375,10 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
-      if (!data.session && window.sessionStorage.getItem("ph.studio.demo") === "active") {
+      const previewActive =
+        window.sessionStorage.getItem("ph.studio.preview") === "active" ||
+        window.sessionStorage.getItem("ph.studio.demo") === "active";
+      if (!data.session && previewActive) {
         const seed = buildDemoWorkspaceSeed();
         setDemo(true);
         setWorkspace(demoWorkspace);
@@ -373,7 +389,9 @@ export function StudioProvider({ children }: { children: ReactNode }) {
         setAssets(seed.assets);
         setCalendar(seed.calendar);
         setCampaignOutputs(seed.outputs);
-        setProfile(null);
+        window.sessionStorage.setItem("ph.studio.preview", "active");
+        window.sessionStorage.removeItem("ph.studio.demo");
+        setProfile(previewProfile);
         setLoading(false);
       } else {
         void loadWorkspace(data.session);
@@ -420,12 +438,13 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   }
   async function signOut() {
     window.sessionStorage.removeItem("ph.studio.demo");
+    window.sessionStorage.removeItem("ph.studio.preview");
     setDemo(false);
     await supabase.auth.signOut();
   }
   function enterDemo() {
     const seed = buildDemoWorkspaceSeed();
-    window.sessionStorage.setItem("ph.studio.demo", "active");
+    window.sessionStorage.setItem("ph.studio.preview", "active");
     setDemo(true);
     setWorkspace(demoWorkspace);
     setBrand(demoBrand);
@@ -435,10 +454,11 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     setAssets(seed.assets);
     setCalendar(seed.calendar);
     setCampaignOutputs(seed.outputs);
-    setProfile(null);
+    setProfile(previewProfile);
   }
   function leaveDemo() {
     window.sessionStorage.removeItem("ph.studio.demo");
+    window.sessionStorage.removeItem("ph.studio.preview");
     setDemo(false);
     void loadWorkspace(session);
   }
@@ -461,7 +481,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   async function saveProfile(values: Partial<Profile>) {
     if (demo) {
       setProfile((current) => ({ ...(current || ({ id: "demo" } as Profile)), ...values }));
-      toast.success("Profile saved in this demo session.");
+      toast.success("Profile updated in the owner preview.");
       return;
     }
     if (!session) throw new Error("Sign in first.");
@@ -478,7 +498,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     if (!workspace) throw new Error("Create a workspace first.");
     if (demo) {
       setBrand((current) => (current ? { ...current, ...values } : current));
-      toast.success("Brand memory saved in this demo session.");
+      toast.success("Brand memory updated in the owner preview.");
       return;
     }
     const result = await supabase
@@ -704,7 +724,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   }
   async function requestService(requestType: string, notes: string, campaignId?: string) {
     if (demo) {
-      toast.success("Demo request received. Live accounts send this to the Palmer House team.");
+      toast.success("Preview request captured. Customer workspaces send this to Palmer House.");
       return;
     }
     if (!session || !workspace) throw new Error("Sign in first.");
@@ -721,7 +741,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   async function uploadBrandAsset(file: File) {
     if (!workspace) throw new Error("Create a workspace first.");
     if (demo) {
-      toast.success(`${file.name} added to the demo brand kit.`);
+      toast.success(`${file.name} added to the owner preview brand kit.`);
       return;
     }
     const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");

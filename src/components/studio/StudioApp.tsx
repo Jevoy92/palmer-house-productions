@@ -7,6 +7,7 @@ import {
   CalendarDays,
   Check,
   CheckCircle2,
+  ChevronLeft,
   ChevronRight,
   CircleUserRound,
   Clipboard,
@@ -22,6 +23,7 @@ import {
   LoaderCircle,
   LogOut,
   Menu,
+  Rows3,
   PanelLeftClose,
   Play,
   Plus,
@@ -33,8 +35,9 @@ import {
   WandSparkles,
   X,
 } from "lucide-react";
-import { useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { useMemo, useState, type DragEvent, type FormEvent, type ReactNode } from "react";
 import { toast } from "sonner";
+import guidedLanes from "@/assets/studio-visuals/guided-lanes.png";
 import { createStudioBillingPortal, createStudioSubscriptionCheckout } from "@/lib/studio-server";
 import {
   anchorFormats,
@@ -45,6 +48,7 @@ import {
 } from "@/lib/studio-model";
 import type { Tables } from "@/lib/supabase/database.types";
 import { useStudio } from "./StudioProvider";
+import { ContentEngine } from "./ContentEngine";
 
 type Campaign = Tables<"campaigns">;
 type Asset = Tables<"campaign_assets">;
@@ -72,7 +76,8 @@ const lanes = {
 };
 
 const nav = [
-  { view: "home", label: "Home", to: "/studio", icon: Home },
+  { view: "engine", label: "Content Engine", to: "/studio", icon: Sparkles },
+  { view: "home", label: "Overview", to: "/studio/dashboard", icon: Home },
   { view: "campaigns", label: "Campaigns", to: "/studio/campaigns", icon: WandSparkles },
   { view: "brand", label: "Brand Studio", to: "/studio/brand", icon: Gauge },
   { view: "library", label: "Library", to: "/studio/library", icon: FolderOpen },
@@ -98,7 +103,7 @@ function StudioGate({ view, campaignId }: { view: StudioView; campaignId?: strin
 
 function StudioLoading() {
   return (
-    <main className="grid min-h-screen place-items-center bg-[#f5f5f2]">
+    <main className="grid min-h-screen place-items-center bg-white">
       <div className="text-center">
         <div className="mx-auto grid size-14 place-items-center rounded-2xl bg-ink text-white">
           <LoaderCircle className="size-5 animate-spin" />
@@ -142,17 +147,9 @@ function AuthExperience() {
     }
   }
   return (
-    <main className="min-h-screen bg-[#f5f5f2] px-4 py-5 sm:px-6">
+    <main className="min-h-screen bg-white px-4 py-5 sm:px-6">
       <div className="mx-auto grid min-h-[calc(100vh-2.5rem)] max-w-[96rem] overflow-hidden rounded-[2rem] bg-white shadow-[0_24px_90px_-50px_rgba(0,0,0,.45)] lg:grid-cols-[1.08fr_.92fr]">
         <section className="relative hidden overflow-hidden bg-ink p-12 text-white lg:flex lg:flex-col lg:justify-between">
-          <div
-            className="absolute inset-0 opacity-[.16]"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(255,255,255,.16) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.16) 1px, transparent 1px)",
-              backgroundSize: "54px 54px",
-            }}
-          />
           <Link to="/" className="relative z-10 flex items-center gap-3 font-bold">
             <span className="grid size-10 place-items-center rounded-full bg-white text-ink">
               PH
@@ -186,6 +183,11 @@ function AuthExperience() {
             Strategy, scripts, production planning, publishing, and real Palmer House production
             support—in one connected workspace.
           </p>
+          <img
+            src={guidedLanes}
+            alt="A business owner choosing among four guided Palmer House solution paths"
+            className="absolute bottom-0 right-0 w-[58%] translate-x-[8%] translate-y-[8%] rounded-tl-[2rem]"
+          />
         </section>
         <section className="flex items-center justify-center p-6 sm:p-10 lg:p-16">
           <div className="w-full max-w-md">
@@ -289,7 +291,7 @@ function Onboarding() {
   const { createWorkspace, busy, user, signOut } = useStudio();
   const [name, setName] = useState((user?.user_metadata?.full_name as string) || "");
   return (
-    <main className="grid min-h-screen place-items-center bg-[#f5f5f2] px-4">
+    <main className="grid min-h-screen place-items-center bg-white px-4">
       <div className="w-full max-w-xl rounded-[2rem] bg-white p-7 shadow-soft sm:p-10">
         <span className="grid size-12 place-items-center rounded-2xl bg-system text-white">
           <Sparkles />
@@ -339,7 +341,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
   const [mobileOpen, setMobileOpen] = useState(false);
   const reduce = useReducedMotion();
   return (
-    <div className="min-h-screen bg-[#f5f5f2] text-ink">
+    <div className="min-h-screen bg-white text-ink">
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-black/5 bg-white p-4 lg:flex">
         <StudioBrand />
         <nav className="mt-10 space-y-1" aria-label="Studio navigation">
@@ -391,7 +393,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
           </p>
         </div>
         <Link
-          to="/studio/campaigns"
+          to="/studio"
           aria-label="New campaign"
           className="ml-auto inline-flex min-h-11 items-center gap-2 rounded-xl bg-ink px-4 text-sm font-semibold text-white"
         >
@@ -468,6 +470,7 @@ function StudioNavLink({ item, active }: { item: (typeof nav)[number]; active: b
 }
 
 function renderView(view: StudioView, campaignId?: string) {
+  if (view === "engine") return <ContentEngine />;
   if (view === "home") return <Dashboard />;
   if (view === "brand") return <BrandStudio />;
   if (view === "campaigns") return <Campaigns />;
@@ -1425,6 +1428,11 @@ function Library() {
 
 function CalendarView() {
   const { calendar, updateCalendarItem } = useStudio();
+  const [mode, setMode] = useState<"month" | "week" | "list">("month");
+  const [focusDate, setFocusDate] = useState(() => {
+    const first = calendar[0]?.publish_at;
+    return first ? new Date(first) : new Date();
+  });
   const grouped = useMemo(
     () =>
       Object.entries(
@@ -1439,6 +1447,43 @@ function CalendarView() {
       ),
     [calendar],
   );
+  const calendarDays = useMemo(() => {
+    const start =
+      mode === "week"
+        ? startOfCalendarWeek(focusDate)
+        : startOfCalendarWeek(new Date(focusDate.getFullYear(), focusDate.getMonth(), 1));
+    const count = mode === "week" ? 7 : 42;
+    return Array.from({ length: count }, (_, index) => {
+      const date = new Date(start);
+      date.setDate(start.getDate() + index);
+      return date;
+    });
+  }, [focusDate, mode]);
+
+  function moveFocus(direction: number) {
+    const next = new Date(focusDate);
+    if (mode === "week") next.setDate(next.getDate() + direction * 7);
+    else next.setMonth(next.getMonth() + direction);
+    setFocusDate(next);
+  }
+
+  function moveItem(event: DragEvent<HTMLElement>, date: Date) {
+    event.preventDefault();
+    const id = event.dataTransfer.getData("text/calendar-item");
+    const item = calendar.find((candidate) => candidate.id === id);
+    if (!item) return;
+    const previous = new Date(item.publish_at);
+    const next = new Date(date);
+    next.setHours(previous.getHours() || 10, previous.getMinutes(), 0, 0);
+    void updateCalendarItem(id, { publish_at: next.toISOString() });
+    toast.success(`Moved “${item.title}” to ${next.toLocaleDateString()}.`);
+  }
+
+  const heading =
+    mode === "week"
+      ? `${calendarDays[0]?.toLocaleDateString(undefined, { month: "short", day: "numeric" })} – ${calendarDays[6]?.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}`
+      : focusDate.toLocaleDateString(undefined, { month: "long", year: "numeric" });
+
   return (
     <div className="mx-auto max-w-[88rem]">
       <PageIntro
@@ -1452,41 +1497,161 @@ function CalendarView() {
           </button>
         }
       />
-      <div className="mt-8 space-y-8">
-        {grouped.map(([month, items]) => (
-          <section key={month}>
-            <h2 className="text-xl font-bold">{month}</h2>
-            <div className="mt-4 overflow-hidden rounded-[1.5rem] bg-white">
-              {items.map((item) => (
+      <section className="mt-8 overflow-hidden rounded-[1.75rem] border border-border bg-white shadow-[0_18px_60px_rgba(26,26,24,.05)]">
+        <div className="flex flex-col gap-4 border-b border-border p-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-2">
+            <button
+              aria-label="Previous calendar period"
+              onClick={() => moveFocus(-1)}
+              className="grid size-11 place-items-center rounded-xl border border-border bg-white"
+            >
+              <ChevronLeft className="size-4" />
+            </button>
+            <button
+              onClick={() => setFocusDate(new Date())}
+              className="min-h-11 rounded-xl border border-border bg-white px-4 text-sm font-bold"
+            >
+              Today
+            </button>
+            <button
+              aria-label="Next calendar period"
+              onClick={() => moveFocus(1)}
+              className="grid size-11 place-items-center rounded-xl border border-border bg-white"
+            >
+              <ChevronRight className="size-4" />
+            </button>
+            <h2 className="ml-2 text-lg font-extrabold sm:text-xl">{heading}</h2>
+          </div>
+          <div className="grid grid-cols-3 rounded-xl border border-border bg-white p-1">
+            {(["month", "week", "list"] as const).map((option) => (
+              <button
+                key={option}
+                onClick={() => setMode(option)}
+                className={`min-h-10 rounded-lg px-4 text-xs font-bold capitalize ${mode === option ? "bg-ink text-white" : "text-muted-foreground"}`}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {mode !== "list" && (
+          <div className="overflow-x-auto">
+            <div className="min-w-[56rem]">
+              <div className="grid grid-cols-7 border-b border-border bg-white">
+                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
+                  <div
+                    key={day}
+                    className="px-3 py-3 font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground"
+                  >
+                    {day}
+                  </div>
+                ))}
+              </div>
+              <div className="grid grid-cols-7">
+                {calendarDays.map((date) => {
+                  const key = calendarDateKey(date);
+                  const items = calendar.filter(
+                    (item) => calendarDateKey(new Date(item.publish_at)) === key,
+                  );
+                  const outsideMonth = mode === "month" && date.getMonth() !== focusDate.getMonth();
+                  const today = calendarDateKey(new Date()) === key;
+                  return (
+                    <div
+                      key={key}
+                      onDragOver={(event) => event.preventDefault()}
+                      onDrop={(event) => moveItem(event, date)}
+                      className={`min-h-36 border-b border-r border-border p-2 last:border-r-0 ${outsideMonth ? "bg-white text-muted-foreground/45" : "bg-white"}`}
+                    >
+                      <span
+                        className={`grid size-7 place-items-center rounded-full text-xs font-bold ${today ? "bg-ink text-white" : ""}`}
+                      >
+                        {date.getDate()}
+                      </span>
+                      <div className="mt-2 space-y-1.5">
+                        {items.slice(0, 3).map((item) => (
+                          <article
+                            key={item.id}
+                            draggable
+                            onDragStart={(event) =>
+                              event.dataTransfer.setData("text/calendar-item", item.id)
+                            }
+                            className="cursor-grab rounded-lg border border-border bg-white px-2 py-2 shadow-sm active:cursor-grabbing"
+                          >
+                            <div className="flex items-center gap-1.5">
+                              <span
+                                className="size-1.5 shrink-0 rounded-full"
+                                style={{ background: channelColor(item.channel) }}
+                              />
+                              <p className="truncate text-[10px] font-extrabold">{item.title}</p>
+                            </div>
+                            <p className="mt-1 truncate pl-3 text-[9px] text-muted-foreground">
+                              {item.channel}
+                            </p>
+                          </article>
+                        ))}
+                        {items.length > 3 && (
+                          <p className="px-2 text-[9px] font-bold text-muted-foreground">
+                            +{items.length - 3} more
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {mode === "list" && (
+          <div className="divide-y divide-border">
+            {grouped.flatMap(([month, items]) => [
+              <div
+                key={`${month}-heading`}
+                className="bg-white px-5 py-3 font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground"
+              >
+                {month}
+              </div>,
+              ...items.map((item) => (
                 <div
                   key={item.id}
-                  className="grid items-center gap-3 border-b border-border p-4 last:border-0 sm:grid-cols-[5rem_1fr_10rem_9rem]"
+                  className="grid items-center gap-3 p-4 sm:grid-cols-[5rem_1fr_10rem_9rem]"
                 >
-                  <time className="grid h-14 place-items-center rounded-xl bg-secondary font-mono text-xs">
+                  <time className="grid h-14 place-items-center rounded-xl border border-border bg-white font-mono text-xs">
                     {new Date(item.publish_at).toLocaleDateString(undefined, {
                       month: "short",
                       day: "numeric",
                     })}
                   </time>
                   <div>
-                    <p className="font-semibold">{item.title}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{item.channel}</p>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className="size-2 rounded-full"
+                        style={{ background: channelColor(item.channel) }}
+                      />
+                      <p className="font-semibold">{item.title}</p>
+                    </div>
+                    <p className="mt-1 pl-4 text-xs text-muted-foreground">{item.channel}</p>
                   </div>
                   <input
                     type="date"
                     aria-label={`Publish date for ${item.title}`}
-                    defaultValue={item.publish_at.slice(0, 10)}
-                    onChange={(e) =>
+                    value={item.publish_at.slice(0, 10)}
+                    onChange={(event) =>
                       void updateCalendarItem(item.id, {
-                        publish_at: new Date(`${e.target.value}T17:00:00`).toISOString(),
+                        publish_at: new Date(`${event.target.value}T17:00:00`).toISOString(),
                       })
                     }
-                    className="min-h-11 rounded-xl bg-secondary px-3 text-sm"
+                    className="min-h-11 rounded-xl border border-border bg-white px-3 text-sm"
                   />
                   <select
+                    aria-label={`Status for ${item.title}`}
                     value={item.status}
-                    onChange={(e) => void updateCalendarItem(item.id, { status: e.target.value })}
-                    className="min-h-11 rounded-xl bg-secondary px-3 text-sm font-semibold"
+                    onChange={(event) =>
+                      void updateCalendarItem(item.id, { status: event.target.value })
+                    }
+                    className="min-h-11 rounded-xl border border-border bg-white px-3 text-sm font-semibold"
                   >
                     <option>planned</option>
                     <option>scripted</option>
@@ -1496,10 +1661,13 @@ function CalendarView() {
                     <option>published</option>
                   </select>
                 </div>
-              ))}
-            </div>
-          </section>
-        ))}
+              )),
+            ])}
+          </div>
+        )}
+      </section>
+
+      <div className="mt-8 space-y-8">
         {!grouped.length && (
           <div className="studio-card">
             <EmptyState
@@ -1507,7 +1675,7 @@ function CalendarView() {
               title="Nothing scheduled yet."
               body="Every completed campaign adds a practical publishing sequence here."
               action={
-                <Link to="/studio/campaigns" className="primary-action">
+                <Link to="/studio" className="primary-action">
                   Build a campaign
                 </Link>
               }
@@ -1517,6 +1685,25 @@ function CalendarView() {
       </div>
     </div>
   );
+}
+
+function startOfCalendarWeek(date: Date) {
+  const start = new Date(date);
+  start.setHours(0, 0, 0, 0);
+  start.setDate(start.getDate() - start.getDay());
+  return start;
+}
+
+function calendarDateKey(date: Date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function channelColor(channel: string) {
+  const value = channel.toLowerCase();
+  if (value.includes("instagram") || value.includes("tiktok")) return "var(--reel)";
+  if (value.includes("youtube") || value.includes("website")) return "var(--spotlight)";
+  if (value.includes("linkedin") || value.includes("email")) return "var(--evergreen)";
+  return "var(--system)";
 }
 
 function SettingsView() {

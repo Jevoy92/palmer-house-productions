@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { StudioPage } from "@/components/studio/StudioApp";
 
-export const Route = createFileRoute("/studio/")({
+export const Route = createFileRoute("/studio/dashboard")({
   head: () => ({
     meta: [
-      { title: "Content Engine — Palmer House Studio" },
+      { title: "Studio Overview — Palmer House" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
-  component: () => <StudioPage view="engine" />,
+  component: () => <StudioPage view="home" />,
 });

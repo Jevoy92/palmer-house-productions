@@ -2,8 +2,8 @@ import type { Session, User } from "@supabase/supabase-js";
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { buildDemoCampaign } from "@/lib/studio-demo";
-import { generateStudioCampaign } from "@/lib/studio-server";
-import type { CampaignOutput } from "@/lib/studio-model";
+import { generateContentDirections, generateStudioCampaign } from "@/lib/studio-server";
+import type { CampaignOutput, ContentDirection } from "@/lib/studio-model";
 import { supabase } from "@/lib/supabase/client";
 import type { Tables } from "@/lib/supabase/database.types";
 
@@ -95,8 +95,21 @@ type StudioContextValue = {
     anchorFormat: string;
     depth: "quick" | "strategic" | "deep";
   }) => Promise<string>;
+  suggestDirections: (values: {
+    idea: string;
+    goal: string;
+    audience: string;
+  }) => Promise<ContentDirection[]>;
   updateAsset: (id: string, values: Partial<Asset>) => Promise<void>;
   updateCalendarItem: (id: string, values: Partial<CalendarItem>) => Promise<void>;
+  createCalendarItem: (values: {
+    campaignId?: string;
+    assetId?: string;
+    title: string;
+    channel: string;
+    publishAt: string;
+    notes?: string;
+  }) => Promise<string>;
   requestService: (requestType: string, notes: string, campaignId?: string) => Promise<void>;
   uploadBrandAsset: (file: File) => Promise<void>;
   refresh: () => Promise<void>;
@@ -147,7 +160,40 @@ function outputToDemoAssets(output: CampaignOutput, campaignId: string): Asset[]
     ),
     base("newsletter", output.newsletter.subject, output.newsletter.body, 20),
     base("carousel", output.carousel.title, output.carousel.slides.join("\n\n"), 21),
+    ...output.platformPosts.map((item, index) => ({
+      ...base("platform_post", item.title, item.body, index + 40),
+      metadata: item,
+    })),
     ...output.faq.map((item, index) => base("faq", item.question, item.answer, index + 30)),
+  ];
+}
+
+function buildDemoDirections(idea: string): ContentDirection[] {
+  const subject = idea.trim() || "the idea";
+  return [
+    {
+      id: "proof",
+      title: "Make the value visible",
+      angle: `Make “${subject}” visible through the before-and-after decision your customer is trying to make.`,
+      whyItWorks: "Specific proof reduces uncertainty and gives the campaign a trustworthy spine.",
+      lane: "spotlight",
+    },
+    {
+      id: "teach",
+      title: "Teach the decision once",
+      angle: `Build “${subject}” into a clear explanation your audience can save, share, and return to.`,
+      whyItWorks:
+        "A durable answer becomes the anchor for video, search, social, and sales follow-up.",
+      lane: "evergreen",
+    },
+    {
+      id: "momentum",
+      title: "Invite the audience in",
+      angle: `Frame “${subject}” as a platform-native question, poll, and short-form conversation.`,
+      whyItWorks:
+        "Participation reveals what people need next while giving the current idea more reach.",
+      lane: "reel",
+    },
   ];
 }
 
@@ -468,6 +514,37 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       setBusy(false);
     }
   }
+  async function suggestDirections(values: { idea: string; goal: string; audience: string }) {
+    if (!workspace || !brand) throw new Error("Finish your workspace and brand profile first.");
+    setBusy(true);
+    try {
+      if (demo) {
+        await new Promise((resolve) => window.setTimeout(resolve, 550));
+        return buildDemoDirections(values.idea);
+      }
+      if (!session) throw new Error("Sign in first.");
+      const result = await generateContentDirections({
+        data: {
+          workspaceId: workspace.id,
+          accessToken: session.access_token,
+          idea: values.idea,
+          goal: values.goal,
+          audience: values.audience,
+          brand: {
+            businessName: brand.business_name,
+            description: brand.description,
+            voice: brand.voice_traits,
+            proof: brand.proof_points,
+            callsToAction: brand.calls_to_action,
+            avoidLanguage: brand.avoid_language,
+          },
+        },
+      });
+      return result.directions;
+    } finally {
+      setBusy(false);
+    }
+  }
   async function updateAsset(id: string, values: Partial<Asset>) {
     if (demo) {
       setAssets((items) => items.map((item) => (item.id === id ? { ...item, ...values } : item)));
@@ -495,6 +572,55 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       .single();
     if (result.error) throw result.error;
     setCalendar((items) => items.map((item) => (item.id === id ? result.data : item)));
+  }
+  async function createCalendarItem(values: {
+    campaignId?: string;
+    assetId?: string;
+    title: string;
+    channel: string;
+    publishAt: string;
+    notes?: string;
+  }) {
+    if (!workspace) throw new Error("Create a workspace first.");
+    if (demo) {
+      const id = crypto.randomUUID();
+      const item: CalendarItem = {
+        id,
+        workspace_id: workspace.id,
+        campaign_id: values.campaignId || null,
+        asset_id: values.assetId || null,
+        title: values.title,
+        channel: values.channel,
+        publish_at: values.publishAt,
+        assignee_id: null,
+        status: "planned",
+        notes: values.notes || "",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      setCalendar((items) =>
+        [...items, item].sort((a, b) => a.publish_at.localeCompare(b.publish_at)),
+      );
+      return id;
+    }
+    const result = await supabase
+      .from("calendar_items")
+      .insert({
+        workspace_id: workspace.id,
+        campaign_id: values.campaignId || null,
+        asset_id: values.assetId || null,
+        title: values.title,
+        channel: values.channel,
+        publish_at: values.publishAt,
+        notes: values.notes || "",
+      })
+      .select()
+      .single();
+    if (result.error) throw result.error;
+    setCalendar((items) =>
+      [...items, result.data].sort((a, b) => a.publish_at.localeCompare(b.publish_at)),
+    );
+    return result.data.id;
   }
   async function requestService(requestType: string, notes: string, campaignId?: string) {
     if (demo) {
@@ -551,8 +677,10 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     saveProfile,
     saveBrand,
     createCampaign,
+    suggestDirections,
     updateAsset,
     updateCalendarItem,
+    createCalendarItem,
     requestService,
     uploadBrandAsset,
     refresh,

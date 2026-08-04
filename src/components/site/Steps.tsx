@@ -2,10 +2,10 @@ import { useRef } from "react";
 import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
 import { Lightbulb, Map, Clapperboard, Rocket } from "lucide-react";
 
-import clara from "@/assets/pals-optimized/clara.webp";
-import samira from "@/assets/pals-optimized/samira.webp";
-import kiana from "@/assets/pals-optimized/kiana.webp";
-import ryder from "@/assets/pals-optimized/ryder.webp";
+import clara from "@/assets/pal-headshots/clara.png";
+import samira from "@/assets/pal-headshots/samira.png";
+import kiana from "@/assets/pal-headshots/kiana.png";
+import ryder from "@/assets/pal-headshots/ryder.png";
 
 const steps = [
   {
@@ -108,8 +108,8 @@ export function Steps() {
             How Palmer House Productions Works
           </h2>
           <p className="mt-4 max-w-xl text-muted-foreground">
-            Four steps, four Pals. Every project moves down the same track — from first idea to
-            published, optimized video.
+            Four decisions move every project from a business problem to a published, reusable video
+            system. A Pal guides each handoff so the work stays clear.
           </p>
         </motion.div>
 
@@ -140,15 +140,14 @@ export function Steps() {
                   transition={{ type: "spring", stiffness: 300, damping: 24 }}
                   className={`group surface-card relative overflow-hidden border p-6 transition-colors ${lane.ring}`}
                 >
-                  {/* pal illustration */}
                   <div
-                    className={`relative flex h-40 items-end justify-center rounded-xl ${lane.bg}`}
+                    className={`relative flex h-28 items-center justify-center rounded-xl ${lane.bg}`}
                   >
                     <motion.img
                       src={s.pal}
-                      alt={`${s.palName}, the Palmer House Pal for ${s.title}`}
+                      alt={`${s.palName}, guide for ${s.title}`}
                       loading="lazy"
-                      className="h-36 w-auto object-contain drop-shadow-sm"
+                      className="size-24 rounded-full object-cover drop-shadow-sm"
                       animate={reduce ? undefined : { y: [0, -6, 0] }}
                       transition={{
                         duration: 4 + Number(s.n) * 0.4,

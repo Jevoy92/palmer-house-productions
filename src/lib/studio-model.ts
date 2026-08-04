@@ -66,6 +66,7 @@ export const studioPlans = {
 
 export type StudioPlanKey = keyof typeof studioPlans;
 export type StudioView =
+  | "engine"
   | "home"
   | "onboarding"
   | "brand"
@@ -75,6 +76,82 @@ export type StudioView =
   | "calendar"
   | "settings"
   | "billing";
+
+export const contentPlatforms = [
+  "youtube",
+  "instagram",
+  "tiktok",
+  "linkedin",
+  "facebook",
+  "threads",
+] as const;
+
+export const contentFormats = [
+  "video",
+  "short",
+  "reel",
+  "story",
+  "carousel",
+  "image",
+  "document",
+  "poll",
+  "quiz",
+  "thread",
+] as const;
+
+export const ContentDirectionRequestSchema = z.object({
+  workspaceId: z.string().uuid(),
+  accessToken: z.string().min(20),
+  idea: z.string().min(8).max(1200),
+  goal: z.string().min(3).max(180),
+  audience: z.string().min(3).max(800),
+  brand: z.object({
+    businessName: z.string().max(180),
+    description: z.string().max(1600),
+    voice: z.array(z.string()).max(12),
+    proof: z.array(z.string()).max(20),
+    callsToAction: z.array(z.string()).max(20),
+    avoidLanguage: z.array(z.string()).max(20),
+  }),
+});
+
+export const ContentDirectionSchema = z.object({
+  id: z.string(),
+  title: z.string(),
+  angle: z.string(),
+  whyItWorks: z.string(),
+  lane: z.enum(["spotlight", "reel", "evergreen", "system"]),
+});
+
+export const ContentDirectionsSchema = z.object({
+  directions: z.array(ContentDirectionSchema).length(3),
+});
+
+export const PlatformPostSchema = z.object({
+  id: z.string(),
+  platform: z.enum(contentPlatforms),
+  format: z.enum(contentFormats),
+  title: z.string(),
+  hook: z.string(),
+  body: z.string(),
+  callToAction: z.string(),
+  hashtags: z.array(z.string()).max(12),
+  nativeFeature: z.string(),
+  publishNotes: z.string(),
+  slides: z.array(z.string()).max(10).default([]),
+  poll: z
+    .object({ question: z.string(), options: z.array(z.string()).min(2).max(4) })
+    .nullable()
+    .default(null),
+  quiz: z
+    .object({
+      question: z.string(),
+      options: z.array(z.string()).min(2).max(4),
+      correctIndex: z.number().int().min(0).max(3),
+    })
+    .nullable()
+    .default(null),
+});
 
 export const CampaignBriefSchema = z.object({
   workspaceId: z.string().uuid(),
@@ -136,6 +213,7 @@ export const CampaignOutputSchema = z.object({
     .max(6),
   newsletter: z.object({ subject: z.string(), body: z.string() }),
   carousel: z.object({ title: z.string(), slides: z.array(z.string()).min(5).max(9) }),
+  platformPosts: z.array(PlatformPostSchema).min(8).max(14),
   productionPlan: z.object({
     objective: z.string(),
     estimatedMinutes: z.number().int().min(15).max(480),
@@ -164,3 +242,7 @@ export const CampaignOutputSchema = z.object({
 
 export type CampaignOutput = z.infer<typeof CampaignOutputSchema>;
 export type CampaignBrief = z.infer<typeof CampaignBriefSchema>;
+export type ContentDirection = z.infer<typeof ContentDirectionSchema>;
+export type PlatformPost = z.infer<typeof PlatformPostSchema>;
+export type ContentPlatform = (typeof contentPlatforms)[number];
+export type ContentFormat = (typeof contentFormats)[number];

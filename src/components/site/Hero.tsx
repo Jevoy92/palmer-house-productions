@@ -1,18 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Play } from "lucide-react";
 import { motion, useReducedMotion } from "motion/react";
-import reelScene from "@/assets/dioramas/reel-factory-web.jpg";
-import spotlightScene from "@/assets/dioramas/spotlight-stage-web.jpg";
-import evergreenScene from "@/assets/dioramas/evergreen-garden-web.jpg";
-import systemScene from "@/assets/dioramas/system-brain-web.jpg";
-import ryder from "@/assets/pals-optimized/ryder.webp";
-import raquel from "@/assets/pals-optimized/raquel.webp";
-import kareem from "@/assets/pals-optimized/kareem.webp";
-import kiana from "@/assets/pals-optimized/kiana.webp";
-import cyrus from "@/assets/pals-optimized/cyrus.webp";
-import clara from "@/assets/pals-optimized/clara.webp";
-import silas from "@/assets/pals-optimized/silas.webp";
-import samira from "@/assets/pals-optimized/samira.webp";
+import clara from "@/assets/pal-headshots/clara.png";
+import kiana from "@/assets/pal-headshots/kiana.png";
+import ryder from "@/assets/pal-headshots/ryder.png";
+import samira from "@/assets/pal-headshots/samira.png";
+import guidedLanes from "@/assets/studio-visuals/guided-lanes.png";
 
 const intro = {
   hidden: { opacity: 0, transform: "translateY(26px)" },
@@ -24,29 +17,25 @@ const palLanes = [
     name: "Reel Pal",
     promise: "Get seen",
     color: "#E8720C",
-    scene: reelScene,
-    pals: [ryder, raquel],
+    guide: ryder,
   },
   {
     name: "Spotlight Pal",
     promise: "Build trust",
     color: "#3D1A66",
-    scene: spotlightScene,
-    pals: [kareem, kiana],
+    guide: kiana,
   },
   {
     name: "Evergreen Pal",
     promise: "Teach once",
     color: "#5B8A2D",
-    scene: evergreenScene,
-    pals: [cyrus, clara],
+    guide: clara,
   },
   {
     name: "System Pal",
     promise: "Scale the know-how",
     color: "#0A9B8F",
-    scene: systemScene,
-    pals: [silas, samira],
+    guide: samira,
   },
 ] as const;
 
@@ -133,54 +122,44 @@ export function Hero() {
           </div>
         </motion.div>
 
-        <motion.div
+        <motion.figure
           variants={intro}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="mt-12 grid w-full max-w-6xl grid-cols-2 gap-2 rounded-[2rem] border border-border bg-mist p-2 shadow-soft lg:grid-cols-4"
+          className="relative mt-12 w-full max-w-6xl overflow-hidden rounded-[2.25rem] border border-border bg-white shadow-soft"
         >
-          {palLanes.map((lane, index) => (
-            <motion.figure
+          <motion.img
+            src={guidedLanes}
+            alt="A business owner choosing among four Palmer House video solution paths"
+            className="w-full object-cover"
+            animate={reduce ? undefined : { transform: ["scale(1)", "scale(1.018)", "scale(1)"] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.figure>
+
+        <motion.div
+          variants={intro}
+          className="mt-4 grid w-full max-w-6xl gap-2 sm:grid-cols-2 lg:grid-cols-4"
+        >
+          {palLanes.map((lane) => (
+            <Link
               key={lane.name}
-              className="group relative min-h-56 overflow-hidden rounded-[1.5rem] border bg-white sm:min-h-72"
-              style={{ borderColor: lane.color }}
-              animate={
-                reduce
-                  ? undefined
-                  : { transform: ["translateY(0px)", "translateY(-7px)", "translateY(0px)"] }
-              }
-              transition={{ duration: 5.5 + index * 0.65, repeat: Infinity, ease: "easeInOut" }}
+              to="/find-your-pal"
+              className="group flex min-h-20 items-center gap-3 rounded-2xl border border-border bg-white px-4 text-left transition hover:-translate-y-1 hover:shadow-soft"
             >
-              <img
-                src={lane.scene}
-                alt=""
-                className="absolute inset-0 size-full object-cover opacity-55 transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-x-3 top-3 z-10 rounded-2xl bg-white/90 px-3 py-2 text-left backdrop-blur-sm">
-                <figcaption
-                  className="font-mono text-[9px] font-semibold uppercase tracking-[0.18em]"
+              <img src={lane.guide} alt="" className="size-12 rounded-xl object-cover" />
+              <span>
+                <span
+                  className="block font-mono text-[8px] font-semibold uppercase tracking-[.15em]"
                   style={{ color: lane.color }}
                 >
                   {lane.name}
-                </figcaption>
-                <p className="mt-0.5 text-xs font-bold sm:text-sm">{lane.promise}</p>
-              </div>
-              <div className="absolute inset-x-0 bottom-0 flex h-[76%] items-end justify-center">
-                {lane.pals.map((pal) => (
-                  <img
-                    key={pal}
-                    src={pal}
-                    alt=""
-                    className="-mx-2 h-[78%] w-auto object-contain object-bottom drop-shadow-md transition-transform duration-500 group-hover:-translate-y-2 group-hover:scale-105"
-                  />
-                ))}
-              </div>
-            </motion.figure>
+                </span>
+                <span className="mt-1 block text-sm font-bold">{lane.promise}</span>
+              </span>
+              <ArrowRight className="ml-auto size-4 transition-transform group-hover:translate-x-1" />
+            </Link>
           ))}
         </motion.div>
-
-        <motion.p variants={intro} className="mt-2 text-sm text-muted-foreground">
-          Eight Pals. Four lanes. One connected system built around the problem you need to solve.
-        </motion.p>
       </motion.div>
     </section>
   );

@@ -1,12 +1,12 @@
 const dna = [
   {
     title: "Visibility & Momentum Engine",
-    body: "Ryder hooks the scroll; Raquel keeps them watching. Together they craft content engineered for TikTok, Reels, and Shorts.",
+    body: "Short-form cuts are shaped for the pace, framing, captions, and participation tools each platform rewards.",
     tag: "TikTok · Reels · Shorts",
   },
   {
     title: "Content Cadence System",
-    body: "No more 'what do I post?' panic. Raquel and Ryder set up realistic schedules you can actually maintain.",
+    body: "No more 'what do I post?' panic. Leave the shoot with a realistic sequence your team can maintain.",
     tag: "7 Day content runway",
   },
   {
@@ -50,13 +50,15 @@ export function BrandDna() {
 
         <div className="mt-16">
           <p className="text-gradient-brand text-sm font-semibold uppercase tracking-widest">
-            Powered by Palmer House Productions
+            Guided by Reel Pal
           </p>
-          <h2 className="mt-3 text-[clamp(1.9rem,4.5vw,3rem)]">Reel Pal</h2>
+          <h2 className="mt-3 max-w-3xl text-[clamp(1.9rem,4.5vw,3rem)]">
+            Turn one shoot into platform-native momentum.
+          </h2>
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-            Meet Raquel & Ryder — your visibility experts. Your audience scrolls fast. They help
-            your brand ride that momentum with short-form content engineered for the platforms your
-            people actually use.
+            Raquel and Ryder guide the visibility lane, but your business remains the subject. Each
+            idea is reshaped for the way people actually watch, save, answer, and share on each
+            platform.
           </p>
 
           <div className="mt-10 grid gap-5 md:grid-cols-2">

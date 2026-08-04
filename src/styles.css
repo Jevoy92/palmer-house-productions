@@ -58,8 +58,8 @@
 
   /* Neutrals — brand hub canon */
   --paper: #ffffff;
-  --cream: #f4f1ea;
-  --mist: #f6f8fa;
+  --cream: #ffffff;
+  --mist: #ffffff;
   --ink: #1f2328;
   --ink-soft: #3a3f47;
 
@@ -81,11 +81,11 @@
   --popover-foreground: var(--ink);
   --primary: var(--spotlight);
   --primary-foreground: #ffffff;
-  --secondary: var(--mist);
+  --secondary: #ffffff;
   --secondary-foreground: var(--ink);
-  --muted: var(--mist);
+  --muted: #ffffff;
   --muted-foreground: #6b7280;
-  --accent: var(--cream);
+  --accent: var(--spotlight-soft);
   --accent-foreground: var(--ink);
   --destructive: #b23a2b;
   --destructive-foreground: #ffffff;
@@ -101,7 +101,7 @@
 
   --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-serif-brand: "Playfair Display", Georgia, serif;
+  --font-serif-brand: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-mono-brand: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Flat brand fills — no gradients anywhere in the system */

@@ -3,6 +3,15 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowRight, Check, Moon, Search, ShoppingBag, Sun } from "lucide-react";
 import { useState } from "react";
 import { PageShell } from "@/components/site/PageShell";
+import clara from "@/assets/pal-headshots/clara.png";
+import cyrus from "@/assets/pal-headshots/cyrus.png";
+import kareem from "@/assets/pal-headshots/kareem.png";
+import kiana from "@/assets/pal-headshots/kiana.png";
+import raquel from "@/assets/pal-headshots/raquel.png";
+import ryder from "@/assets/pal-headshots/ryder.png";
+import samira from "@/assets/pal-headshots/samira.png";
+import silas from "@/assets/pal-headshots/silas.png";
+import guidedLanes from "@/assets/studio-visuals/guided-lanes.png";
 import { cartStore, useCart } from "@/lib/cart-store";
 import { PAL_LANES, recommendLane, type PalLane } from "@/lib/dream-suite";
 import { PAL_GROUPS } from "@/lib/pricing-catalog";
@@ -15,6 +24,17 @@ const QUICK_PROBLEMS = [
   "Our team needs better training",
   "I freeze when the camera starts",
 ];
+
+const headshots: Record<string, string> = {
+  clara,
+  cyrus,
+  kareem,
+  kiana,
+  raquel,
+  ryder,
+  samira,
+  silas,
+};
 
 function FindYourPalPage() {
   const cart = useCart();
@@ -95,48 +115,23 @@ function FindYourPalPage() {
             </div>
 
             <div
-              className="relative min-h-[30rem] rounded-[2.5rem] border border-white/10"
-              style={{ background: night ? "#141519" : "var(--cream)" }}
+              className={`relative overflow-hidden rounded-[2.5rem] border ${night ? "border-white/15 bg-ink" : "border-border bg-white"}`}
             >
-              <div className="absolute inset-x-8 top-8 grid grid-cols-4 gap-3" aria-hidden="true">
-                {PAL_LANES.map((lane) => (
-                  <span
-                    key={lane.key}
-                    className="h-2 rounded-full"
-                    style={{ background: lane.color }}
-                  />
-                ))}
-              </div>
-              <div className="absolute inset-x-0 bottom-0 flex items-end justify-center px-2 sm:px-8">
-                {PAL_LANES.map((lane, laneIndex) =>
-                  lane.people.slice(0, 1).map((person) => (
-                    <motion.img
-                      key={person.name}
-                      src={person.image}
-                      alt={`${person.name} from ${lane.label}`}
-                      animate={
-                        reduced
-                          ? undefined
-                          : {
-                              transform:
-                                result?.key === lane.key
-                                  ? "translateY(-18px) scale(1.08)"
-                                  : "translateY(0px) scale(1)",
-                            }
-                      }
-                      transition={{ type: "spring", bounce: 0.18, visualDuration: 0.45 }}
-                      className={`w-1/4 max-w-44 object-contain object-bottom transition-opacity ${result && result.key !== lane.key ? "opacity-35" : "opacity-100"}`}
-                      style={{ zIndex: result?.key === lane.key ? 5 : laneIndex }}
-                    />
-                  )),
-                )}
-              </div>
+              <motion.img
+                src={guidedLanes}
+                alt="A business owner choosing among four guided Palmer House solution paths"
+                className={`size-full min-h-[30rem] object-cover transition-opacity ${night ? "opacity-75" : "opacity-100"}`}
+                animate={
+                  reduced ? undefined : { transform: ["scale(1)", "scale(1.018)", "scale(1)"] }
+                }
+                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+              />
               <p
-                className={`absolute left-7 top-16 max-w-[16rem] font-mono text-[10px] uppercase tracking-[0.18em] ${night ? "text-white/50" : "text-muted-foreground"}`}
+                className={`absolute inset-x-6 bottom-5 rounded-2xl p-4 text-center font-mono text-[9px] uppercase tracking-[0.16em] ${night ? "bg-ink/85 text-white/70" : "bg-white/90 text-muted-foreground"}`}
               >
                 {night
-                  ? "They do not sleep. The system keeps working."
-                  : "Four lanes. One problem-first doorway."}
+                  ? "The guides rest. The system keeps working."
+                  : "Your problem chooses the path. A Pal helps you walk it."}
               </p>
             </div>
           </div>
@@ -159,9 +154,9 @@ function FindYourPalPage() {
                 {result.people.map((person) => (
                   <div key={person.name} className="text-center">
                     <img
-                      src={person.image}
+                      src={headshots[person.name.toLowerCase()] || person.image}
                       alt={person.name}
-                      className="mx-auto h-56 w-auto object-contain sm:h-72"
+                      className="mx-auto size-40 rounded-[2rem] object-cover sm:size-48"
                     />
                     <p className="font-semibold">{person.name}</p>
                     <p className="text-xs text-muted-foreground">{person.role}</p>

@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check } from "lucide-react";
 import { AwakeningSequence } from "@/components/process/AwakeningSequence";
 import { PageShell } from "@/components/site/PageShell";
+import productionCycle from "@/assets/studio-visuals/production-cycle.png";
 
 const steps = [
   {
@@ -68,13 +69,22 @@ function ProcessPage() {
 
       <section id="how-it-works" className="scroll-mt-24 px-4 py-24 sm:py-32">
         <div className="mx-auto max-w-6xl">
-          <div className="max-w-3xl">
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-              How Palmer House works
-            </p>
-            <h2 className="mt-4 text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold leading-[0.96] tracking-[-0.055em]">
-              Listen first. Build the system. Then turn on the cameras.
-            </h2>
+          <div className="grid gap-10 lg:grid-cols-[1fr_.8fr] lg:items-end">
+            <div className="max-w-3xl">
+              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+                How Palmer House works
+              </p>
+              <h2 className="mt-4 text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold leading-[0.96] tracking-[-0.055em]">
+                Listen first. Build the system. Then turn on the cameras.
+              </h2>
+            </div>
+            <figure className="overflow-hidden rounded-[2rem] border border-border bg-white">
+              <img
+                src={productionCycle}
+                alt="A visual production cycle from script through filming, storage, publishing, and calendar planning"
+                className="aspect-[16/10] w-full object-cover"
+              />
+            </figure>
           </div>
 
           <ol className="mt-16 border-t border-border">
@@ -94,7 +104,7 @@ function ProcessPage() {
         </div>
       </section>
 
-      <section className="bg-[#fbfbfb] px-4 py-24 sm:py-32">
+      <section className="bg-white px-4 py-24 sm:py-32">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div>
             <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">

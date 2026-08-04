@@ -131,7 +131,7 @@ export function AwakeningSequence() {
       </div>
 
       <div
-        className="relative hidden bg-[#fbfbfb] md:block"
+        className="relative hidden bg-white md:block"
         style={{ height: reduce ? "auto" : "380vh" }}
       >
         <div className="sticky top-0 h-svh min-h-[700px] overflow-hidden">
@@ -220,7 +220,7 @@ export function AwakeningSequence() {
 
 function MobileSequence() {
   return (
-    <div className="bg-[#fbfbfb] px-4 py-20">
+    <div className="bg-white px-4 py-20">
       <div className="mx-auto max-w-lg">
         <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.24em] text-muted-foreground">
           The Palmer House system
@@ -245,7 +245,7 @@ function MobileSequence() {
               style={{ borderColor: lane.color }}
             >
               <span
-                className="absolute -left-[38px] top-6 grid size-7 place-items-center rounded-full border-4 border-[#fbfbfb] text-[10px] font-bold text-white"
+                className="absolute -left-[38px] top-6 grid size-7 place-items-center rounded-full border-4 border-white text-[10px] font-bold text-white"
                 style={{ backgroundColor: lane.color }}
               >
                 {index + 1}

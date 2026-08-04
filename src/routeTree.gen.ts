@@ -54,6 +54,7 @@ import { Route as StudioIndexRouteImport } from './routes/studio.index'
 import { Route as StudioBillingRouteImport } from './routes/studio.billing'
 import { Route as StudioBrandRouteImport } from './routes/studio.brand'
 import { Route as StudioCalendarRouteImport } from './routes/studio.calendar'
+import { Route as StudioDashboardRouteImport } from './routes/studio.dashboard'
 import { Route as StudioLibraryRouteImport } from './routes/studio.library'
 import { Route as StudioOnboardingRouteImport } from './routes/studio.onboarding'
 import { Route as StudioSettingsRouteImport } from './routes/studio.settings'
@@ -285,6 +286,11 @@ const StudioCalendarRoute = StudioCalendarRouteImport.update({
   path: '/calendar',
   getParentRoute: () => StudioRoute,
 } as any)
+const StudioDashboardRoute = StudioDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => StudioRoute,
+} as any)
 const StudioLibraryRoute = StudioLibraryRouteImport.update({
   id: '/library',
   path: '/library',
@@ -356,6 +362,7 @@ export interface FileRoutesByFullPath {
   '/studio/billing': typeof StudioBillingRoute
   '/studio/brand': typeof StudioBrandRoute
   '/studio/calendar': typeof StudioCalendarRoute
+  '/studio/dashboard': typeof StudioDashboardRoute
   '/studio/library': typeof StudioLibraryRoute
   '/studio/onboarding': typeof StudioOnboardingRoute
   '/studio/settings': typeof StudioSettingsRoute
@@ -407,6 +414,7 @@ export interface FileRoutesByTo {
   '/studio/billing': typeof StudioBillingRoute
   '/studio/brand': typeof StudioBrandRoute
   '/studio/calendar': typeof StudioCalendarRoute
+  '/studio/dashboard': typeof StudioDashboardRoute
   '/studio/library': typeof StudioLibraryRoute
   '/studio/onboarding': typeof StudioOnboardingRoute
   '/studio/settings': typeof StudioSettingsRoute
@@ -460,6 +468,7 @@ export interface FileRoutesById {
   '/studio/billing': typeof StudioBillingRoute
   '/studio/brand': typeof StudioBrandRoute
   '/studio/calendar': typeof StudioCalendarRoute
+  '/studio/dashboard': typeof StudioDashboardRoute
   '/studio/library': typeof StudioLibraryRoute
   '/studio/onboarding': typeof StudioOnboardingRoute
   '/studio/settings': typeof StudioSettingsRoute
@@ -514,6 +523,7 @@ export interface FileRouteTypes {
     | '/studio/billing'
     | '/studio/brand'
     | '/studio/calendar'
+    | '/studio/dashboard'
     | '/studio/library'
     | '/studio/onboarding'
     | '/studio/settings'
@@ -565,6 +575,7 @@ export interface FileRouteTypes {
     | '/studio/billing'
     | '/studio/brand'
     | '/studio/calendar'
+    | '/studio/dashboard'
     | '/studio/library'
     | '/studio/onboarding'
     | '/studio/settings'
@@ -617,6 +628,7 @@ export interface FileRouteTypes {
     | '/studio/billing'
     | '/studio/brand'
     | '/studio/calendar'
+    | '/studio/dashboard'
     | '/studio/library'
     | '/studio/onboarding'
     | '/studio/settings'
@@ -985,6 +997,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioCalendarRouteImport
       parentRoute: typeof StudioRoute
     }
+    '/studio/dashboard': {
+      id: '/studio/dashboard'
+      path: '/dashboard'
+      fullPath: '/studio/dashboard'
+      preLoaderRoute: typeof StudioDashboardRouteImport
+      parentRoute: typeof StudioRoute
+    }
     '/studio/library': {
       id: '/studio/library'
       path: '/library'
@@ -1041,6 +1060,7 @@ interface StudioRouteChildren {
   StudioBillingRoute: typeof StudioBillingRoute
   StudioBrandRoute: typeof StudioBrandRoute
   StudioCalendarRoute: typeof StudioCalendarRoute
+  StudioDashboardRoute: typeof StudioDashboardRoute
   StudioLibraryRoute: typeof StudioLibraryRoute
   StudioOnboardingRoute: typeof StudioOnboardingRoute
   StudioSettingsRoute: typeof StudioSettingsRoute
@@ -1053,6 +1073,7 @@ const StudioRouteChildren: StudioRouteChildren = {
   StudioBillingRoute: StudioBillingRoute,
   StudioBrandRoute: StudioBrandRoute,
   StudioCalendarRoute: StudioCalendarRoute,
+  StudioDashboardRoute: StudioDashboardRoute,
   StudioLibraryRoute: StudioLibraryRoute,
   StudioOnboardingRoute: StudioOnboardingRoute,
   StudioSettingsRoute: StudioSettingsRoute,

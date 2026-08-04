@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useRef } from "react";
 import { PageShell } from "@/components/site/PageShell";
+import productionWorkspace from "@/assets/studio-visuals/production-workspace.png";
 import { studioPlans } from "@/lib/studio-model";
 
 const chapters = [
@@ -79,7 +80,7 @@ function MembershipPage() {
             </h1>
             <p className="mx-auto mt-7 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-xl">
               Strategy, scripts, production planning, publishing, and real production
-              support—connected by the Four Pals.
+              support—connected by one four-lane system.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Link to="/studio" className="primary-action min-h-13 rounded-full px-7">
@@ -98,7 +99,7 @@ function MembershipPage() {
           </motion.div>
           <motion.div
             style={{ y: productY }}
-            className="relative mx-auto mt-14 max-w-6xl rounded-[2rem] border border-black/5 bg-[#f5f5f2] p-3 shadow-[0_50px_120px_-60px_rgba(31,35,40,.55)] sm:p-5"
+            className="relative mx-auto mt-14 max-w-6xl rounded-[2rem] border border-black/5 bg-white p-3 shadow-[0_50px_120px_-60px_rgba(31,35,40,.55)] sm:p-5"
           >
             <div className="overflow-hidden rounded-[1.35rem] bg-white">
               <div className="flex min-h-14 items-center gap-3 border-b border-border px-4">
@@ -136,7 +137,7 @@ function MembershipPage() {
                       "Make the expertise visible",
                       "Give one confident next step",
                     ].map((item, index) => (
-                      <div key={item} className="rounded-2xl bg-secondary p-5">
+                      <div key={item} className="rounded-2xl border border-border bg-white p-5">
                         <span className="font-mono text-[8px] text-muted-foreground">
                           0{index + 1}
                         </span>
@@ -181,7 +182,7 @@ function MembershipPage() {
             From “what should we post?” to “here is the system.”
           </h2>
           <div className="mt-16 grid gap-px overflow-hidden rounded-[2rem] bg-white/10 md:grid-cols-2">
-            <div className="bg-[#25292f] p-7 sm:p-10">
+            <div className="bg-ink p-7 sm:p-10">
               <p className="font-mono text-[9px] uppercase tracking-[.17em] text-white/35">
                 Before
               </p>
@@ -254,7 +255,7 @@ function MembershipPage() {
         </div>
       </section>
 
-      <section className="bg-[#f5f5f2] px-4 py-24 sm:py-32">
+      <section className="bg-white px-4 py-24 sm:py-32">
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
             <div>
@@ -271,6 +272,19 @@ function MembershipPage() {
               responsible for shipping it.
             </p>
           </div>
+          <motion.figure
+            initial={reduce ? false : { opacity: 0, y: 28, scale: 0.985 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.65 }}
+            className="mt-12 overflow-hidden rounded-[2rem] border border-border bg-white"
+          >
+            <img
+              src={productionWorkspace}
+              alt="A visual production workspace connecting scripts, editing, analytics, and publishing"
+              className="aspect-[16/7] w-full object-cover"
+            />
+          </motion.figure>
           <div className="mt-14 grid gap-4 md:grid-cols-3">
             {[
               {
@@ -292,7 +306,7 @@ function MembershipPage() {
               <motion.article
                 key={item.title}
                 whileHover={reduce ? undefined : { y: -6 }}
-                className="min-h-80 rounded-[2rem] bg-white p-7"
+                className="min-h-80 rounded-[2rem] border border-border bg-white p-7 shadow-[0_16px_50px_rgba(26,26,24,.04)]"
               >
                 <span
                   className="grid size-12 place-items-center rounded-2xl text-white"

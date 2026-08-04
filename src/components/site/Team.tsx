@@ -1,11 +1,11 @@
-import silas from "@/assets/pals-optimized/silas.webp";
-import samira from "@/assets/pals-optimized/samira.webp";
-import kareem from "@/assets/pals-optimized/kareem.webp";
-import kiana from "@/assets/pals-optimized/kiana.webp";
-import clara from "@/assets/pals-optimized/clara.webp";
-import cyrus from "@/assets/pals-optimized/cyrus.webp";
-import raquel from "@/assets/pals-optimized/raquel.webp";
-import ryder from "@/assets/pals-optimized/ryder.webp";
+import silas from "@/assets/pal-headshots/silas.png";
+import samira from "@/assets/pal-headshots/samira.png";
+import kareem from "@/assets/pal-headshots/kareem.png";
+import kiana from "@/assets/pal-headshots/kiana.png";
+import clara from "@/assets/pal-headshots/clara.png";
+import cyrus from "@/assets/pal-headshots/cyrus.png";
+import raquel from "@/assets/pal-headshots/raquel.png";
+import ryder from "@/assets/pal-headshots/ryder.png";
 
 const team = [
   { name: "Silas", role: "System Pal", img: silas },
@@ -24,11 +24,11 @@ export function Team() {
       <div className="mx-auto max-w-6xl">
         <div className="surface-card p-8 sm:p-12">
           <h2 className="max-w-3xl text-[clamp(1.9rem,4.5vw,3rem)]">
-            The <span className="text-gradient-brand">Creators</span>.
+            A clear system, with a real team behind it.
           </h2>
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-            Meet the Palmer House Pals. Each Pal owns a piece of your video system — from the
-            systems that train your team to the reels that get you seen.
+            The Pals are recognizable guides for visibility, trust, education, and operations. They
+            help you choose the right path; Palmer House people plan and produce the work.
           </p>
         </div>
 
@@ -36,12 +36,12 @@ export function Team() {
           <div className="grid grid-cols-2 gap-5 sm:grid-cols-4">
             {team.map((m) => (
               <div key={m.name} className="surface-card p-4 text-center">
-                <div className="grid h-40 place-items-end overflow-hidden rounded-2xl bg-secondary/40">
+                <div className="grid aspect-square place-items-center overflow-hidden rounded-2xl border border-border bg-white">
                   <img
                     src={m.img}
                     alt={`${m.name}, ${m.role} at Palmer House Productions`}
                     loading="lazy"
-                    className="h-full w-full object-contain object-bottom"
+                    className="h-full w-full object-cover"
                   />
                 </div>
                 <p className="mt-4 text-sm font-semibold">{m.name}</p>

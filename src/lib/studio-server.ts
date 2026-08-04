@@ -7,7 +7,13 @@ import {
   SUPABASE_PUBLISHABLE_KEY,
   SUPABASE_URL,
 } from "./supabase/client";
-import { CampaignBriefSchema, CampaignOutputSchema, studioPlans } from "./studio-model";
+import {
+  CampaignBriefSchema,
+  CampaignOutputSchema,
+  ContentDirectionRequestSchema,
+  ContentDirectionsSchema,
+  studioPlans,
+} from "./studio-model";
 import type { Json } from "./supabase/database.types";
 
 const AuthorizedSchema = z.object({
@@ -39,6 +45,7 @@ function assetsFromOutput(output: z.infer<typeof CampaignOutputSchema>) {
       | "newsletter"
       | "faq"
       | "carousel"
+      | "platform_post"
       | "production_note";
     title: string;
     content: string;
@@ -84,6 +91,15 @@ function assetsFromOutput(output: z.infer<typeof CampaignOutputSchema>) {
     metadata: { slides: output.carousel.slides },
     sort_order: 50,
   });
+  output.platformPosts.forEach((item, index) =>
+    rows.push({
+      kind: "platform_post",
+      title: item.title,
+      content: item.body,
+      metadata: item as Json,
+      sort_order: 70 + index,
+    }),
+  );
   rows.push({
     kind: "production_note",
     title: "Production plan",
@@ -115,7 +131,7 @@ export const generateStudioCampaign = createServerFn({ method: "POST" })
       const response = await openai.responses.parse({
         model: process.env.OPENAI_STUDIO_MODEL || "gpt-5-mini",
         instructions:
-          "You are the Palmer House Campaign Architect. Build useful, specific campaigns from one business idea. Write with calm confidence, concrete language, and no hype. The production plan must be genuinely filmable by a small business team. Never invent proof or results. Use the Four Pals as an internal lane system: spotlight for trust and authority, reel for short-form attention, evergreen for durable education, system for internal clarity. Return only the requested structured result.",
+          "You are the Palmer House Campaign Architect. Build useful, specific campaigns from one business idea. Write with calm confidence, concrete language, and no hype. The production plan must be genuinely filmable by a small business team. Never invent proof or results. Use the Four Pals as an internal lane system: spotlight for trust and authority, reel for short-form attention, evergreen for durable education, system for internal clarity. For platformPosts, create genuinely platform-native work for YouTube, Instagram, TikTok, LinkedIn, Facebook, and Threads—not one caption copied six ways. Use the platform's real interaction patterns where they fit: community polls and Shorts on YouTube; Reels, Stories, carousels, polls, and quizzes on Instagram; Q&A, reply, duet, stitch, and search-friendly spoken hooks on TikTok; document posts, newsletters, polls, and conversation prompts on LinkedIn; Stories, Groups, Events, Live, and polls on Facebook; threads, quotes, and questions on Threads. Include at least one poll and one carousel or document. Every native feature must support the business goal, not act as decoration. Return only the requested structured result.",
         input: `Business: ${data.brand.businessName}\nDescription: ${data.brand.description}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied—do not invent any"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\n\nGoal: ${data.goal}\nTopic: ${data.topic}\nOffer: ${data.offer}\nAudience: ${data.audience}\nAnchor format: ${data.anchorFormat}\nPlanning depth: ${data.depth}`,
         text: { format: zodTextFormat(CampaignOutputSchema, "palmer_house_campaign") },
       });
@@ -169,6 +185,24 @@ export const generateStudioCampaign = createServerFn({ method: "POST" })
       await client.from("campaigns").update({ status: "draft" }).eq("id", data.campaignId);
       throw error;
     }
+  });
+
+export const generateContentDirections = createServerFn({ method: "POST" })
+  .validator(ContentDirectionRequestSchema)
+  .handler(async ({ data }) => {
+    await authorizedClient(data.accessToken, data.workspaceId);
+    const key = process.env.OPENAI_API_KEY;
+    if (!key) throw new Error("OPENAI_API_KEY is not configured.");
+    const { default: OpenAI } = await import("openai");
+    const openai = new OpenAI({ apiKey: key });
+    const response = await openai.responses.parse({
+      model: process.env.OPENAI_STUDIO_MODEL || "gpt-5-mini",
+      instructions:
+        "You are a Palmer House strategist. Return exactly three materially different content directions for the supplied idea. Lead with the business problem and audience decision, never with a generic video format. Each direction must map to one Palmer House lane: spotlight for proof/trust, reel for attention/momentum, evergreen for durable education, or system for repeatability/internal clarity. Be concise, specific, and do not invent proof.",
+      input: `Business: ${data.brand.businessName}\nDescription: ${data.brand.description}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\n\nGoal: ${data.goal}\nAudience: ${data.audience}\nIdea: ${data.idea}`,
+      text: { format: zodTextFormat(ContentDirectionsSchema, "palmer_house_directions") },
+    });
+    return { ok: true as const, ...ContentDirectionsSchema.parse(response.output_parsed) };
   });
 
 const AnalyzeWebsiteSchema = AuthorizedSchema.extend({ website: z.string().url().max(500) });

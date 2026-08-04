@@ -168,6 +168,53 @@ export const AssistantResponseSchema = z.object({
 
 export type AssistantResponse = z.infer<typeof AssistantResponseSchema>;
 
+export const ContentSourceAnalysisRequestSchema = z
+  .object({
+    workspaceId: z.string().uuid(),
+    accessToken: z.string().min(20),
+    sourceType: z.enum(["link", "image"]),
+    sourceUrl: z.string().url().max(2048).optional(),
+    sourceDataUrl: z
+      .string()
+      .max(8_000_000)
+      .regex(/^data:image\/(jpeg|png|webp);base64,/, "Use a JPEG, PNG, or WebP image.")
+      .optional(),
+    context: z.string().max(2000).default(""),
+    brand: z.object({
+      businessName: z.string().max(180),
+      description: z.string().max(1600),
+      audience: z.string().max(800),
+      offers: z.array(z.string()).max(20),
+      proof: z.array(z.string()).max(20),
+    }),
+  })
+  .superRefine((value, context) => {
+    if (value.sourceType === "link" && !value.sourceUrl) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["sourceUrl"],
+        message: "Add a link.",
+      });
+    }
+    if (value.sourceType === "image" && !value.sourceDataUrl) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["sourceDataUrl"],
+        message: "Add an image.",
+      });
+    }
+  });
+
+export const ContentSourceAnalysisSchema = z.object({
+  suggestedIdea: z.string(),
+  businessProblem: z.string(),
+  audienceDecision: z.string(),
+  observedEvidence: z.array(z.string()).min(1).max(4),
+  lane: z.enum(["spotlight", "reel", "evergreen", "system"]),
+});
+
+export type ContentSourceAnalysis = z.infer<typeof ContentSourceAnalysisSchema>;
+
 export const contentPlatforms = [
   "youtube",
   "instagram",

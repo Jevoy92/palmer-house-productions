@@ -16,6 +16,7 @@ import {
   Instagram,
   Linkedin,
   LoaderCircle,
+  Link2,
   MessageCircle,
   Music2,
   Play,
@@ -25,25 +26,31 @@ import {
   Share2,
   Sparkles,
   ThumbsUp,
+  Type,
+  Upload,
   WandSparkles,
   Youtube,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import clara from "@/assets/pal-headshots/clara.png";
 import kiana from "@/assets/pal-headshots/kiana.png";
 import ryder from "@/assets/pal-headshots/ryder.png";
 import samira from "@/assets/pal-headshots/samira.png";
 import engineFlow from "@/assets/studio-visuals/content-engine-flow.png";
-import systemMap from "@/assets/studio-visuals/content-system-map.png";
 import {
   contentPlatforms,
   studioGoals,
   type ContentDirection,
   type ContentPlatform,
+  type ContentSourceAnalysis,
   type PlatformPost,
 } from "@/lib/studio-model";
 import { useStudio } from "./StudioProvider";
+
+const CampaignMotionPreview = lazy(() =>
+  import("./CampaignMotionPreview").then((module) => ({ default: module.CampaignMotionPreview })),
+);
 
 const platformMeta: Record<
   ContentPlatform,
@@ -118,21 +125,39 @@ function tomorrowAtTen() {
   return local.toISOString().slice(0, 16);
 }
 
+function fileToDataUrl(file: File) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result));
+    reader.onerror = () => reject(new Error("That image could not be read."));
+    reader.readAsDataURL(file);
+  });
+}
+
 export function ContentEngine() {
   const {
     brand,
     campaigns,
     assets,
     campaignOutputs,
+    analyzeSource,
     busy,
+    createIdea,
     suggestDirections,
     createCampaign,
     updateAsset,
     createCalendarItem,
+    uploadIdeaSource,
   } = useStudio();
   const reduce = useReducedMotion();
   const [stage, setStage] = useState<"idea" | "directions" | "results">("idea");
   const [idea, setIdea] = useState("");
+  const [sourceMode, setSourceMode] = useState<"text" | "link" | "image">("text");
+  const [sourceUrl, setSourceUrl] = useState("");
+  const [sourceContext, setSourceContext] = useState("");
+  const [sourceImage, setSourceImage] = useState<File | null>(null);
+  const [sourceImagePreview, setSourceImagePreview] = useState("");
+  const [sourceAnalysis, setSourceAnalysis] = useState<ContentSourceAnalysis | null>(null);
   const [goal, setGoal] = useState<(typeof studioGoals)[number]>(studioGoals[0]);
   const [audience, setAudience] = useState(brand?.primary_audience || "Busy business owners");
   const [offer, setOffer] = useState(
@@ -173,6 +198,13 @@ export function ContentEngine() {
     if (first) setSelectedPostId(first.id);
   }, [platform, platformPosts]);
 
+  useEffect(
+    () => () => {
+      if (sourceImagePreview.startsWith("blob:")) URL.revokeObjectURL(sourceImagePreview);
+    },
+    [sourceImagePreview],
+  );
+
   async function findDirections() {
     if (idea.trim().length < 8) {
       toast.error("Give the engine one real business idea to work with.");
@@ -185,6 +217,53 @@ export function ContentEngine() {
       setStage("directions");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "The directions could not be created.");
+    }
+  }
+
+  async function analyzeExternalSource() {
+    if (sourceMode === "link") {
+      try {
+        new URL(sourceUrl);
+      } catch {
+        toast.error("Add a complete public link, including https://.");
+        return;
+      }
+    }
+    if (sourceMode === "image" && !sourceImage) {
+      toast.error("Choose a JPEG, PNG, or WebP image first.");
+      return;
+    }
+    try {
+      let sourceDataUrl: string | undefined;
+      let sourceMediaPath: string | undefined;
+      if (sourceImage) {
+        if (!/^image\/(jpeg|png|webp)$/.test(sourceImage.type))
+          throw new Error("Use a JPEG, PNG, or WebP image.");
+        if (sourceImage.size > 5_000_000) throw new Error("Keep the image under 5 MB.");
+        sourceDataUrl = await fileToDataUrl(sourceImage);
+      }
+      const analysis = await analyzeSource({
+        sourceType: sourceMode as "link" | "image",
+        sourceUrl: sourceMode === "link" ? sourceUrl : undefined,
+        sourceDataUrl,
+        context: sourceContext,
+      });
+      if (sourceImage) sourceMediaPath = await uploadIdeaSource(sourceImage);
+      setSourceAnalysis(analysis);
+      setIdea(
+        `${analysis.suggestedIdea}\n\nBusiness problem: ${analysis.businessProblem}\nAudience decision: ${analysis.audienceDecision}`,
+      );
+      await createIdea({
+        body: analysis.suggestedIdea,
+        sourceType: sourceMode,
+        sourceUrl: sourceMode === "link" ? sourceUrl : undefined,
+        sourceMediaPath,
+        lane: analysis.lane,
+        businessProblem: analysis.businessProblem,
+      });
+      toast.success("Source read. The useful campaign angle is ready to shape.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "That source could not be analyzed.");
     }
   }
 
@@ -333,45 +412,165 @@ export function ContentEngine() {
                 What do you need to say?
               </h2>
               <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
-                Give the idea a business job. The Engine will find three useful angles before it
-                writes anything.
+                Start with a thought, a useful link, or a real image. The Engine will identify the
+                business job before it writes anything.
               </p>
-              <div className="mt-8 rounded-[1.75rem] border border-border bg-white p-3 shadow-soft">
-                <label htmlFor="engine-idea" className="sr-only">
-                  Business idea
-                </label>
-                <textarea
-                  id="engine-idea"
-                  value={idea}
-                  onChange={(event) => setIdea(event.target.value)}
-                  rows={5}
-                  placeholder="Example: Customers keep asking whether they need the premium service or the standard one…"
-                  className="w-full resize-none rounded-[1.2rem] border-0 bg-white p-4 text-base leading-relaxed outline-none sm:text-lg"
-                />
-                <button
-                  onClick={() => void findDirections()}
-                  disabled={busy}
-                  className="primary-action w-full rounded-2xl bg-spotlight sm:w-auto"
-                >
-                  {busy ? (
-                    <LoaderCircle className="size-4 animate-spin" />
-                  ) : (
-                    <WandSparkles className="size-4" />
-                  )}
-                  Find three angles <ArrowRight className="size-4" />
-                </button>
-              </div>
-              <div className="mt-6 grid gap-2 sm:grid-cols-2">
-                {ideaStarters.map((starter) => (
+              <div className="mt-8 flex gap-2 overflow-x-auto pb-1" aria-label="Idea source">
+                {(
+                  [
+                    ["text", Type, "Write it"],
+                    ["link", Link2, "Link"],
+                    ["image", ImageIcon, "Image"],
+                  ] as const
+                ).map(([value, Icon, label]) => (
                   <button
-                    key={starter}
-                    onClick={() => setIdea(starter)}
-                    className="min-h-14 rounded-2xl border border-border bg-white px-4 text-left text-sm font-semibold transition hover:border-system"
+                    key={value}
+                    type="button"
+                    aria-pressed={sourceMode === value}
+                    onClick={() => {
+                      setSourceMode(value);
+                      setSourceAnalysis(null);
+                    }}
+                    className={`inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border px-4 text-sm font-bold transition ${sourceMode === value ? "border-system bg-system-soft text-system" : "border-border bg-white text-ink hover:border-system"}`}
                   >
-                    {starter}
+                    <Icon className="size-4" /> {label}
                   </button>
                 ))}
               </div>
+              <div className="mt-3 rounded-[1.75rem] border border-border bg-white p-3 shadow-soft">
+                {sourceMode === "text" ? (
+                  <>
+                    <label htmlFor="engine-idea" className="sr-only">
+                      Business idea
+                    </label>
+                    <textarea
+                      id="engine-idea"
+                      value={idea}
+                      onChange={(event) => setIdea(event.target.value)}
+                      rows={5}
+                      placeholder="Example: Customers keep asking whether they need the premium service or the standard one…"
+                      className="w-full resize-none rounded-[1.2rem] border-0 bg-white p-4 text-base leading-relaxed outline-none sm:text-lg"
+                    />
+                    <button
+                      onClick={() => void findDirections()}
+                      disabled={busy}
+                      className="primary-action w-full rounded-2xl bg-spotlight sm:w-auto"
+                    >
+                      {busy ? (
+                        <LoaderCircle className="size-4 animate-spin" />
+                      ) : (
+                        <WandSparkles className="size-4" />
+                      )}
+                      Find three angles <ArrowRight className="size-4" />
+                    </button>
+                  </>
+                ) : (
+                  <div className="p-2">
+                    {sourceMode === "link" ? (
+                      <label className="block">
+                        <span className="text-sm font-bold">Public link</span>
+                        <input
+                          type="url"
+                          value={sourceUrl}
+                          onChange={(event) => setSourceUrl(event.target.value)}
+                          placeholder="https://example.com/article-or-post"
+                          className="mt-2 min-h-12 w-full rounded-xl border border-border bg-white px-4 text-sm outline-none focus:border-system"
+                        />
+                      </label>
+                    ) : (
+                      <label className="block cursor-pointer rounded-[1.25rem] border border-dashed border-system bg-system-soft/45 p-4 transition hover:bg-system-soft">
+                        <span className="flex min-h-12 items-center gap-3">
+                          <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-white text-system">
+                            <Upload className="size-5" />
+                          </span>
+                          <span>
+                            <span className="block text-sm font-black">
+                              {sourceImage ? sourceImage.name : "Choose a campaign image"}
+                            </span>
+                            <span className="mt-1 block text-xs text-muted-foreground">
+                              JPEG, PNG, or WebP · up to 5 MB
+                            </span>
+                          </span>
+                        </span>
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/png,image/webp"
+                          className="sr-only"
+                          onChange={(event) => {
+                            const file = event.target.files?.[0] || null;
+                            setSourceImage(file);
+                            setSourceAnalysis(null);
+                            setSourceImagePreview(file ? URL.createObjectURL(file) : "");
+                          }}
+                        />
+                      </label>
+                    )}
+                    <label className="mt-4 block">
+                      <span className="text-sm font-bold">What should we notice?</span>
+                      <textarea
+                        value={sourceContext}
+                        onChange={(event) => setSourceContext(event.target.value)}
+                        rows={3}
+                        placeholder={
+                          sourceMode === "image"
+                            ? "Example: Before and after a backyard cleanup for a repeat customer."
+                            : "Optional: What made you save this?"
+                        }
+                        className="mt-2 w-full resize-none rounded-xl border border-border bg-white p-4 text-sm leading-relaxed outline-none focus:border-system"
+                      />
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => void analyzeExternalSource()}
+                      disabled={busy || (sourceMode === "link" ? !sourceUrl.trim() : !sourceImage)}
+                      className="primary-action mt-3 w-full rounded-2xl bg-system sm:w-auto"
+                    >
+                      {busy ? (
+                        <LoaderCircle className="size-4 animate-spin" />
+                      ) : (
+                        <Sparkles className="size-4" />
+                      )}
+                      Read this source
+                    </button>
+                  </div>
+                )}
+              </div>
+              {sourceAnalysis ? (
+                <motion.div
+                  initial={reduce ? false : { opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-4 rounded-[1.5rem] border border-system bg-system-soft p-5"
+                >
+                  <p className="studio-eyebrow text-system">Useful angle found</p>
+                  <p className="mt-3 text-lg font-black leading-snug">
+                    {sourceAnalysis.suggestedIdea}
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-ink-soft">
+                    {sourceAnalysis.businessProblem}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => void findDirections()}
+                    disabled={busy}
+                    className="primary-action mt-5 w-full rounded-2xl bg-spotlight sm:w-auto"
+                  >
+                    Find three directions <ArrowRight className="size-4" />
+                  </button>
+                </motion.div>
+              ) : null}
+              {sourceMode === "text" ? (
+                <div className="mt-6 grid gap-2 sm:grid-cols-2">
+                  {ideaStarters.map((starter) => (
+                    <button
+                      key={starter}
+                      onClick={() => setIdea(starter)}
+                      className="min-h-14 rounded-2xl border border-border bg-white px-4 text-left text-sm font-semibold transition hover:border-system"
+                    >
+                      {starter}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
               <div className="mt-7 grid gap-3 sm:grid-cols-3">
                 <SelectField
                   label="Business goal"
@@ -383,16 +582,11 @@ export function ContentEngine() {
                 <TextField label="Offer or next step" value={offer} onChange={setOffer} />
               </div>
             </div>
-            <div className="relative flex min-h-96 items-center justify-center overflow-hidden rounded-[2rem] bg-white">
-              <motion.img
-                src={engineFlow}
-                alt="One business idea moving through a production engine into platform-ready content"
-                className="w-full object-contain"
-                initial={reduce ? false : { opacity: 0, y: 12, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.55, ease: "easeOut" }}
-              />
-            </div>
+            <SourceWorkbench
+              mode={sourceMode}
+              analysis={sourceAnalysis}
+              imagePreview={sourceImagePreview}
+            />
           </motion.section>
         )}
 
@@ -767,16 +961,137 @@ export function ContentEngine() {
                   ))}
                 </div>
               </div>
-              <img
-                src={systemMap}
-                alt="A content system connecting scripts, video, calendar, visuals, and production"
-                className="w-full rounded-[2rem] object-contain"
-              />
+              <Suspense fallback={<div className="aspect-square rounded-[2rem] bg-system-soft" />}>
+                <CampaignMotionPreview
+                  business={brand?.business_name || "Your business"}
+                  hook={output.anchor.hook}
+                  problem={output.strategy.audienceInsight}
+                  promise={output.strategy.promise}
+                  callToAction={output.anchor.callToAction}
+                  lane={output.primaryLane}
+                />
+              </Suspense>
             </section>
           </motion.section>
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+function SourceWorkbench({
+  mode,
+  analysis,
+  imagePreview,
+}: {
+  mode: "text" | "link" | "image";
+  analysis: ContentSourceAnalysis | null;
+  imagePreview: string;
+}) {
+  const reduce = useReducedMotion();
+  const lane = laneMeta[analysis?.lane || "system"];
+  const modeLabel =
+    mode === "text" ? "A thought" : mode === "link" ? "A useful link" : "A real image";
+  const ModeIcon = mode === "text" ? Type : mode === "link" ? Link2 : ImageIcon;
+  return (
+    <aside
+      className="relative min-h-[28rem] overflow-hidden rounded-[2rem] border border-border p-6 sm:p-8"
+      style={{ background: lane.soft }}
+      aria-label="Source becoming a campaign-ready brief"
+    >
+      <div className="relative z-10 flex h-full flex-col">
+        <p className="studio-eyebrow" style={{ color: lane.color }}>
+          Source → useful brief
+        </p>
+        <h3 className="mt-4 max-w-[12ch] text-3xl font-black tracking-[-.045em] sm:text-4xl">
+          Don’t start from a blank page.
+        </h3>
+        <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-soft">
+          Give the Studio something real. It will separate visible evidence from assumptions before
+          it recommends a campaign.
+        </p>
+
+        <div className="mt-8 grid flex-1 items-center gap-4 sm:grid-cols-[1fr_3rem_1.15fr]">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={`${mode}-${imagePreview ? "ready" : "empty"}`}
+              initial={reduce ? false : { opacity: 0, y: 14, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={reduce ? undefined : { opacity: 0, y: -8 }}
+              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              className="overflow-hidden rounded-[1.4rem] border border-white/80 bg-white p-4 shadow-soft"
+            >
+              {mode === "image" && imagePreview ? (
+                <img
+                  src={imagePreview}
+                  alt="Selected campaign source"
+                  className="aspect-[4/3] w-full rounded-xl bg-mist object-cover"
+                />
+              ) : (
+                <span
+                  className="grid aspect-[4/3] w-full place-items-center rounded-xl"
+                  style={{ background: lane.soft, color: lane.color }}
+                >
+                  <ModeIcon className="size-10" strokeWidth={1.5} />
+                </span>
+              )}
+              <p className="mt-4 text-sm font-black">{modeLabel}</p>
+              <p className="mt-1 text-xs text-muted-foreground">The evidence you already have</p>
+            </motion.div>
+          </AnimatePresence>
+
+          <div className="flex items-center justify-center" aria-hidden="true">
+            <motion.span
+              initial={reduce ? false : { scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ duration: 0.4, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+              className="hidden h-px w-full origin-left sm:block"
+              style={{ background: lane.color }}
+            />
+            <ArrowRight className="size-5 rotate-90 sm:rotate-0" style={{ color: lane.color }} />
+          </div>
+
+          <motion.div
+            key={analysis?.suggestedIdea || "brief-empty"}
+            initial={reduce ? false : { opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            className="rounded-[1.4rem] border bg-white p-5 shadow-soft"
+            style={{ borderColor: analysis ? lane.color : "var(--line)" }}
+          >
+            <span
+              className="font-mono text-[9px] uppercase tracking-[.18em]"
+              style={{ color: lane.color }}
+            >
+              {analysis ? `${analysis.lane} brief` : "Campaign brief"}
+            </span>
+            <p className="mt-4 text-lg font-black leading-snug">
+              {analysis?.suggestedIdea ||
+                "The problem, audience decision, and safest useful angle."}
+            </p>
+            <div className="mt-5 space-y-2">
+              {(
+                analysis?.observedEvidence || [
+                  "Visible evidence",
+                  "Business problem",
+                  "Next decision",
+                ]
+              )
+                .slice(0, 3)
+                .map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-start gap-2 text-xs leading-relaxed text-ink-soft"
+                  >
+                    <Check className="mt-0.5 size-3.5 shrink-0" style={{ color: lane.color }} />
+                    <span>{item}</span>
+                  </div>
+                ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </aside>
   );
 }
 

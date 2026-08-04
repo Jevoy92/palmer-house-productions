@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Satoshi";
+        src: url("assets/Satoshi-Variable.woff2") format("woff2");
+        font-style: normal;
+        font-weight: 300 900;
+        font-display: block;
+      }
+
+      :root {
+        --ink: #1f2328;
+        --muted: #6b7280;
+        --paper: #ffffff;
+        --border: #e5e7eb;
+        --evergreen: #5b8a2d;
+        --evergreen-soft: #eef4e4;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--paper);
+      }
+
+      body {
+        color: var(--ink);
+        font-family: "Satoshi", "Inter", sans-serif;
+      }
+
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--paper);
+      }
+
+      .lane-bar {
+        position: absolute;
+        inset: 0 0 auto;
+        height: 18px;
+        background: var(--evergreen);
+      }
+
+      .header {
+        position: absolute;
+        top: 80px;
+        left: 112px;
+        right: 112px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .eyebrow {
+        color: var(--evergreen);
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+      }
+
+      .brand {
+        font-size: 24px;
+        font-weight: 800;
+      }
+
+      .problem {
+        position: absolute;
+        top: 240px;
+        left: 112px;
+        width: 1380px;
+        color: var(--muted);
+        font-size: 48px;
+        font-weight: 550;
+        line-height: 1.22;
+      }
+
+      .problem-copy {
+        display: inline;
+      }
+
+      .problem-strike {
+        position: absolute;
+        left: 0;
+        top: 54%;
+        width: 100%;
+        height: 6px;
+        border-radius: 999px;
+        background: var(--evergreen);
+        transform-origin: left center;
+      }
+
+      .promise {
+        position: absolute;
+        top: 395px;
+        left: 112px;
+        width: 1510px;
+        color: var(--evergreen);
+        font-size: 112px;
+        font-weight: 900;
+        letter-spacing: -0.06em;
+        line-height: 0.94;
+      }
+
+      .steps {
+        position: absolute;
+        left: 112px;
+        right: 112px;
+        bottom: 190px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+      }
+
+      .step {
+        min-height: 124px;
+        border: 2px solid var(--border);
+        border-radius: 26px;
+        background: var(--paper);
+        padding: 24px;
+      }
+
+      .step-number {
+        color: var(--ink);
+        font-size: 18px;
+        font-weight: 850;
+        letter-spacing: 0.13em;
+      }
+
+      .step-label {
+        margin-top: 14px;
+        font-size: 25px;
+        font-weight: 850;
+      }
+
+      .footer {
+        position: absolute;
+        left: 112px;
+        right: 112px;
+        bottom: 66px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 2px solid var(--border);
+        padding-top: 28px;
+      }
+
+      .opening-line {
+        max-width: 1120px;
+        font-size: 28px;
+        font-weight: 750;
+      }
+
+      .cta {
+        max-width: 460px;
+        border-radius: 999px;
+        background: var(--evergreen);
+        color: var(--paper);
+        padding: 20px 30px;
+        font-size: 22px;
+        font-weight: 850;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="8"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div class="lane-bar" aria-hidden="true"></div>
+
+      <header id="direction-header" class="clip header" data-start="0" data-duration="8" data-track-index="1">
+        <p class="mono eyebrow">— EVERGREEN DIRECTION —</p>
+        <p class="brand">Palmer House Productions</p>
+      </header>
+
+      <section id="audience-problem" class="clip problem" data-start="0.35" data-duration="7.15" data-track-index="2">
+        <span class="problem-copy">Your audience is not waiting for more information. They are waiting for someone to organize the decision.</span>
+        <span class="problem-strike" aria-hidden="true"></span>
+      </section>
+
+      <h1 id="campaign-promise" class="clip promise" data-start="1.5" data-duration="5.85" data-track-index="3">
+        One clear explanation becomes a reusable campaign.
+      </h1>
+
+      <section id="campaign-steps" class="clip steps" data-start="3.15" data-duration="4.15" data-track-index="4">
+        <article class="step">
+          <p class="mono step-number">01 · NOTICE</p>
+          <p class="step-label">Find the real question</p>
+        </article>
+        <article class="step">
+          <p class="mono step-number">02 · SHAPE</p>
+          <p class="step-label">Choose one useful angle</p>
+        </article>
+        <article class="step">
+          <p class="mono step-number">03 · FILM</p>
+          <p class="step-label">Capture the proof</p>
+        </article>
+        <article class="step">
+          <p class="mono step-number">04 · REUSE</p>
+          <p class="step-label">Build the content system</p>
+        </article>
+      </section>
+
+      <footer id="opening-line-and-cta" class="clip footer" data-start="5.15" data-duration="2.85" data-track-index="5">
+        <p class="opening-line">Most businesses do not have a content problem. They have an explanation problem.</p>
+        <p class="cta">Turn the repeated question into your first campaign</p>
+      </footer>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const timeline = gsap.timeline({ paused: true });
+
+      timeline.from(
+        ".problem",
+        { opacity: 0, y: 34, duration: 0.65, ease: "power3.out" },
+        0.35,
+      );
+      timeline.fromTo(
+        ".problem-strike",
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.65, ease: "power3.out" },
+        1.05,
+      );
+      timeline.from(
+        ".promise",
+        { opacity: 0, x: -42, duration: 0.78, ease: "power3.out" },
+        1.5,
+      );
+      timeline.from(
+        ".step",
+        { opacity: 0, y: 30, duration: 0.54, stagger: 0.11, ease: "power3.out" },
+        3.15,
+      );
+      timeline.from(
+        ".footer",
+        { opacity: 0, y: 24, duration: 0.58, ease: "power3.out" },
+        5.15,
+      );
+      timeline.from(
+        ".cta",
+        { opacity: 0, scale: 0.94, duration: 0.42, ease: "back.out(1.35)" },
+        5.55,
+      );
+
+      window.__timelines.main = timeline;
+    </script>
+  </body>
+</html>

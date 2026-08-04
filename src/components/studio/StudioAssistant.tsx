@@ -244,7 +244,7 @@ export function StudioAssistant() {
               <img
                 src={pal.image}
                 alt={`${pal.name}, your selected Palmer House guide`}
-                className="size-14 rounded-[1rem] border border-border bg-white object-cover object-top"
+                className="size-14 shrink-0 rounded-[1rem] border border-border bg-white object-cover object-top"
               />
               <span
                 className="absolute -right-1 -top-1 grid size-6 place-items-center rounded-full bg-white shadow-soft"
@@ -301,9 +301,10 @@ export function StudioAssistant() {
                     animate={{ opacity: 1, y: 0 }}
                     className={
                       message.role === "user"
-                        ? "ml-auto max-w-[86%] rounded-[1.25rem] bg-spotlight p-4 text-sm leading-relaxed text-white"
+                        ? "ml-auto max-w-[86%] rounded-[1.25rem] p-4 text-sm leading-relaxed text-white"
                         : "max-w-[92%]"
                     }
+                    style={message.role === "user" ? { background: pal.color } : undefined}
                   >
                     {message.role === "assistant" ? (
                       <div className="flex items-start gap-3">
@@ -376,15 +377,15 @@ export function StudioAssistant() {
                 <div className="mt-4 grid grid-cols-2 gap-2">
                   <button
                     onClick={() => void saveRecommendation(item)}
-                    className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg bg-system-soft px-2 text-[10px] font-bold text-system"
+                    className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-lg bg-system-soft px-2 text-[10px] font-bold text-system"
                   >
-                    <Plus className="size-3.5" /> Ideas
+                    <Plus className="size-3.5" /> Save idea
                   </button>
                   <button
                     onClick={() => void scheduleRecommendation(item)}
-                    className="inline-flex min-h-10 items-center justify-center gap-1.5 rounded-lg bg-evergreen-soft px-2 text-[10px] font-bold text-evergreen"
+                    className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-lg bg-evergreen-soft px-2 text-[10px] font-bold text-evergreen"
                   >
-                    <CalendarPlus className="size-3.5" /> Calendar
+                    <CalendarPlus className="size-3.5" /> Plan next week
                   </button>
                 </div>
               </article>

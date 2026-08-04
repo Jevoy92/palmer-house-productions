@@ -12,6 +12,8 @@ import {
   AssistantResponseSchema,
   CampaignBriefSchema,
   CampaignOutputSchema,
+  ContentSourceAnalysisRequestSchema,
+  ContentSourceAnalysisSchema,
   ContentDirectionRequestSchema,
   ContentDirectionsSchema,
   studioPlans,
@@ -264,6 +266,33 @@ function isUnsafeHost(hostname: string) {
   );
 }
 
+async function fetchPublicPage(initialUrl: URL) {
+  let currentUrl = initialUrl;
+  for (let redirectCount = 0; redirectCount <= 4; redirectCount += 1) {
+    if (
+      !/^https?:$/.test(currentUrl.protocol) ||
+      currentUrl.username ||
+      currentUrl.password ||
+      isUnsafeHost(currentUrl.hostname)
+    ) {
+      throw new Error("Use a public http or https link.");
+    }
+    const response = await fetch(currentUrl, {
+      signal: AbortSignal.timeout(8_000),
+      redirect: "manual",
+      headers: { "User-Agent": "PalmerHouseStudio/1.0" },
+    });
+    if ([301, 302, 303, 307, 308].includes(response.status)) {
+      const location = response.headers.get("location");
+      if (!location) throw new Error("That link redirected without a usable destination.");
+      currentUrl = new URL(location, currentUrl);
+      continue;
+    }
+    return response;
+  }
+  throw new Error("That link redirected too many times.");
+}
+
 const WebsiteProfileSchema = z.object({
   description: z.string(),
   primaryAudience: z.string(),
@@ -278,13 +307,7 @@ export const analyzeStudioWebsite = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await authorizedClient(data.accessToken, data.workspaceId);
     const url = new URL(data.website);
-    if (!/^https?:$/.test(url.protocol) || isUnsafeHost(url.hostname))
-      throw new Error("Use a public http or https website.");
-    const response = await fetch(url, {
-      signal: AbortSignal.timeout(8_000),
-      redirect: "follow",
-      headers: { "User-Agent": "PalmerHouseStudio/1.0" },
-    });
+    const response = await fetchPublicPage(url);
     if (!response.ok) throw new Error("That website could not be read.");
     const length = Number(response.headers.get("content-length") || "0");
     if (length > 1_500_000) throw new Error("That page is too large to analyze.");
@@ -307,6 +330,65 @@ export const analyzeStudioWebsite = createServerFn({ method: "POST" })
       text: { format: zodTextFormat(WebsiteProfileSchema, "website_brand_profile") },
     });
     return { ok: true as const, profile: WebsiteProfileSchema.parse(analyzed.output_parsed) };
+  });
+
+export const analyzeStudioContentSource = createServerFn({ method: "POST" })
+  .validator(ContentSourceAnalysisRequestSchema)
+  .handler(async ({ data }) => {
+    await authorizedClient(data.accessToken, data.workspaceId);
+    const key = process.env.OPENAI_API_KEY;
+    if (!key) throw new Error("OPENAI_API_KEY is not configured.");
+
+    const brandContext = `Business: ${data.brand.businessName}\nDescription: ${data.brand.description}\nAudience: ${data.brand.audience}\nOffers: ${data.brand.offers.join(" | ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied"}\nUser context: ${data.context || "None supplied"}`;
+    let sourceText = "";
+    if (data.sourceType === "link") {
+      const url = new URL(data.sourceUrl!);
+      const response = await fetchPublicPage(url);
+      if (!response.ok) throw new Error("That link could not be read.");
+      const length = Number(response.headers.get("content-length") || "0");
+      if (length > 1_500_000) throw new Error("That page is too large to analyze.");
+      sourceText = (await response.text())
+        .slice(0, 1_500_000)
+        .replace(/<script[\s\S]*?<\/script>/gi, " ")
+        .replace(/<style[\s\S]*?<\/style>/gi, " ")
+        .replace(/<[^>]+>/g, " ")
+        .replace(/\s+/g, " ")
+        .slice(0, 45_000);
+    }
+
+    const { default: OpenAI } = await import("openai");
+    const openai = new OpenAI({ apiKey: key });
+    const instructions =
+      "You are Palmer House Productions' content intake strategist. Turn supplied source material into one useful, campaign-ready business idea. Lead with the real business problem and the audience decision that needs to change. Map it to exactly one Palmer House lane: Spotlight for trust/proof, Reel for attention/momentum, Evergreen for durable education, or System for repeatability/internal clarity. For images, describe only visible evidence and clearly separate user-supplied context. Never infer identities, results, customer satisfaction, before/after improvement, or business claims that are not visually supported. For links, use only the supplied page text. Return concise, concrete language a small business owner can understand.";
+    const input =
+      data.sourceType === "image"
+        ? [
+            {
+              role: "user" as const,
+              content: [
+                {
+                  type: "input_text" as const,
+                  text: `${brandContext}\n\nRead this image as possible campaign evidence. Identify what is visibly useful, what business problem it could help explain, and the safest campaign angle.`,
+                },
+                {
+                  type: "input_image" as const,
+                  image_url: data.sourceDataUrl!,
+                  detail: "low" as const,
+                },
+              ],
+            },
+          ]
+        : `${brandContext}\n\nSource URL: ${data.sourceUrl}\nSource page text:\n${sourceText}`;
+    const analyzed = await openai.responses.parse({
+      model: process.env.OPENAI_STUDIO_MODEL || "gpt-5-mini",
+      instructions,
+      input,
+      text: { format: zodTextFormat(ContentSourceAnalysisSchema, "content_source_analysis") },
+    });
+    return {
+      ok: true as const,
+      analysis: ContentSourceAnalysisSchema.parse(analyzed.output_parsed),
+    };
   });
 
 const SubscriptionSchema = AuthorizedSchema.extend({

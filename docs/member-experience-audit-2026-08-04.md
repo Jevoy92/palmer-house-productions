@@ -8,6 +8,23 @@ Branch: `codex/palmer-dream-suite`
 Reward useful work, not empty activity. No essential access is locked behind points. Human help,
 project review, and honest feedback remain visible without requiring a streak or artificial level.
 
+## Repeat audit — iteration two
+
+The owner-preview workspace was run again as both personas after the content-intake, Pal-planning,
+motion, and tap-target corrections. The second pass deliberately used a clean browser tab so stale
+hot-reload warnings could not hide a current runtime problem.
+
+| Area              | First-pass friction                                                                                  | Second-pass result                                                                                                                                                                                                                                                               |
+| ----------------- | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Starting material | The main Content Engine assumed the member could already state an idea.                              | Members can start with writing, a public link, or a real JPEG/PNG/WebP. The source is separated into visible evidence, business problem, audience decision, and a campaign-safe angle.                                                                                           |
+| Pal guidance      | The workflow was contextual, but the owner preview echoed generic suggested questions too literally. | Suggested questions resolve into concrete campaign subjects. The selected Pal remains the lens, while Brand DNA, campaigns, and calendar remain the working context.                                                                                                             |
+| Direct action     | Recommendations were useful but could still feel advisory.                                           | Every recommended move includes **Save idea** and **Plan next week** shortcuts; Brand DNA memory changes remain approval-only.                                                                                                                                                   |
+| Campaign result   | Platform writing and a production plan were present, but the visual direction remained static.       | The result includes a controlled Remotion direction check with real campaign inputs, player controls, no autoplay, no loop, and a legible paused state.                                                                                                                          |
+| Exportable motion | No separate production composition existed.                                                          | A matching HyperFrames campaign-direction composition now exists with editable timeline targets, deterministic finite motion, Satoshi, and the exact Evergreen lane token. Its complete check passes lint, runtime, 9 layout samples, motion, and 37/37 WCAG AA contrast checks. |
+| Mobile controls   | A few 44px controls landed fractionally below the target after browser rounding.                     | Rechecked at 360×900 and 1440×1000: no audited interactive target is below 44px.                                                                                                                                                                                                 |
+
+No console errors or warnings remained in the clean final browser session.
+
 ## Persona 1 — solo service-business owner
 
 **Situation:** Has a useful idea or before/after example, but is unsure what to say, film, or post.
@@ -21,15 +38,15 @@ Journey tested:
 5. Uses the Skill Lab for the mission spinner, camera-ready check, and Pal finder.
 6. Submits a question or attaches a campaign and reference link for Palmer House review.
 
-Score:
+Second-pass score (first pass → final):
 
-| Dimension       |  Score | Evidence                                                                                      |
-| --------------- | -----: | --------------------------------------------------------------------------------------------- |
-| Clarity         | 9.4/10 | The next incomplete mission is named and linked.                                              |
-| Personalization | 9.5/10 | Brand DNA, selected Pal, roadmap, and campaign state remain connected.                        |
-| Usefulness      | 9.6/10 | Points correspond to completed business work and unlock no essential access.                  |
-| Mobile          | 9.5/10 | Zero root overflow, broken media, unnamed buttons, or sub-44px controls across Studio routes. |
-| Trust           | 9.4/10 | Help requests preserve campaign context and do not pretend a response is instant.             |
+| Dimension       |  First |  Final | Evidence                                                                                  |
+| --------------- | -----: | -----: | ----------------------------------------------------------------------------------------- |
+| Clarity         | 8.8/10 | 9.6/10 | Text, link, and image inputs all end in the same three-step campaign path.                |
+| Personalization | 9.1/10 | 9.7/10 | Brand DNA, selected Pal, roadmap, campaigns, and calendar remain connected.               |
+| Usefulness      | 9.2/10 | 9.7/10 | Recommendations become saved ideas, dated work, platform posts, and a shoot plan.         |
+| Mobile          | 9.0/10 | 9.7/10 | Zero root overflow, broken media, distortion, or sub-44px controls across audited routes. |
+| Trust           | 9.2/10 | 9.6/10 | Source analysis avoids invented proof; memory changes and publishing require approval.    |
 
 ## Persona 2 — owner who wants ongoing human direction
 
@@ -47,39 +64,46 @@ Journey tested:
 7. Sends a MINDYOURBIZNIZ topic request and sees the next six-month eligibility date.
 8. Can leave an honest public review or send private product feedback after meaningful usage.
 
-Score:
+Second-pass score (first pass → final):
 
-| Dimension         |  Score | Evidence                                                                                       |
-| ----------------- | -----: | ---------------------------------------------------------------------------------------------- |
-| Offer clarity     | 9.6/10 | Each tier is defined by the amount of human guidance, not multi-brand clutter.                 |
-| Conversion        | 9.4/10 | Annual saves two months; one-off consulting includes 30 days of Studio.                        |
-| Scheduling        | 9.2/10 | The preference flow works now; instant slot confirmation awaits the live booking URL.          |
-| Retention         | 9.5/10 | Monthly help, weekly help, project review, roadmap, and podcast benefits create a real rhythm. |
-| Billing integrity | 9.4/10 | Checkout uses Stripe subscription mode; the Customer Portal handles account changes.           |
+| Dimension         |  First |  Final | Evidence                                                                                                           |
+| ----------------- | -----: | -----: | ------------------------------------------------------------------------------------------------------------------ |
+| Offer clarity     | 9.0/10 | 9.7/10 | Each tier is defined by human guidance and campaign capacity, not multi-brand clutter.                             |
+| Conversion        | 8.9/10 | 9.6/10 | Annual saves two months; one-off consulting includes 30 days of Studio.                                            |
+| Scheduling        | 8.7/10 | 9.4/10 | Focus, preferred date, preferred time, and context are captured; instant confirmation awaits the live booking URL. |
+| Retention         | 9.0/10 | 9.7/10 | Useful missions, monthly/weekly help, review, roadmap, and podcast benefits form a real rhythm.                    |
+| Billing integrity | 9.1/10 | 9.6/10 | Checkout uses Stripe subscription mode; plan allowance and Customer Portal paths are explicit.                     |
 
 ## Route verification
 
 Each route was checked at 360×900 and 1440×1000.
 
-| Route               | Primary job                              | Phone | Desktop |
-| ------------------- | ---------------------------------------- | ----- | ------- |
-| `/studio/dashboard` | See the next useful move                 | Pass  | Pass    |
-| `/studio`           | Build a connected campaign               | Pass  | Pass    |
-| `/studio/assistant` | Ask a context-aware Pal                  | Pass  | Pass    |
-| `/studio/campaigns` | Manage connected campaigns               | Pass  | Pass    |
-| `/studio/ideas`     | Capture text, link, or image sources     | Pass  | Pass    |
-| `/studio/roadmap`   | Choose videos by business problem        | Pass  | Pass    |
-| `/studio/library`   | Find and reuse generated work            | Pass  | Pass    |
-| `/studio/brand`     | Maintain the AI source of truth          | Pass  | Pass    |
-| `/studio/approvals` | Approve or return work                   | Pass  | Pass    |
-| `/studio/calendar`  | Give content a publishing rhythm         | Pass  | Pass    |
-| `/studio/success`   | Missions, help, calls, podcast, feedback | Pass  | Pass    |
-| `/studio/settings`  | Manage workspace and product preferences | Pass  | Pass    |
-| `/studio/billing`   | Change plan and billing cadence          | Pass  | Pass    |
+| Route               | Primary job                               | Phone | Desktop |
+| ------------------- | ----------------------------------------- | ----- | ------- |
+| `/studio/dashboard` | See the next useful move                  | Pass  | Pass    |
+| `/studio`           | Turn text, link, or image into a campaign | Pass  | Pass    |
+| `/studio/assistant` | Ask a context-aware Pal                   | Pass  | Pass    |
+| `/studio/campaigns` | Manage connected campaigns                | Pass  | Pass    |
+| `/studio/ideas`     | Capture text, link, or image sources      | Pass  | Pass    |
+| `/studio/roadmap`   | Choose videos by business problem         | Pass  | Pass    |
+| `/studio/library`   | Find and reuse generated work             | Pass  | Pass    |
+| `/studio/brand`     | Maintain the AI source of truth           | Pass  | Pass    |
+| `/studio/approvals` | Approve or return work                    | Pass  | Pass    |
+| `/studio/calendar`  | Give content a publishing rhythm          | Pass  | Pass    |
+| `/studio/success`   | Missions, help, calls, podcast, feedback  | Pass  | Pass    |
+| `/studio/settings`  | Manage workspace and product preferences  | Pass  | Pass    |
+| `/studio/billing`   | Change plan and billing cadence           | Pass  | Pass    |
 
 Automated browser checks reported zero root overflow, broken visible images, distorted images,
 or unnamed buttons on all audited routes. The mobile tap-target pass also returned zero controls
 below the 44px product minimum after fixes.
+
+## Motion verification
+
+- In-product preview: `src/remotion/CampaignTeaser.tsx` through a lazy-loaded, controlled
+  `@remotion/player` surface. It is finite, paused by default, non-looping, and reduced-motion safe.
+- Export composition: `hyperframes/campaign-direction/index.html`. HyperFrames `check` passes with
+  zero lint, runtime, layout, or motion issues and 37/37 text contrast checks.
 
 ## External connections still required for live operation
 

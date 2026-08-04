@@ -587,6 +587,9 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
   const reduce = useReducedMotion();
   const memberName =
     profile?.full_name || (user?.user_metadata?.full_name as string) || "Studio member";
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [view]);
   return (
     <div className="min-h-screen bg-white text-ink">
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-[15.5rem] flex-col border-r border-border bg-white px-4 py-5 lg:flex">
@@ -760,7 +763,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
 
 function StudioBrand() {
   return (
-    <Link to="/studio/dashboard" className="flex items-center gap-3 rounded-xl">
+    <Link to="/studio/dashboard" className="flex min-h-12 items-center gap-3 rounded-xl">
       <StudioMark />
     </Link>
   );
@@ -769,7 +772,7 @@ function StudioNavLink({ item, active }: { item: (typeof nav)[number]; active: b
   return (
     <Link
       to={item.to}
-      className={`flex min-h-10 items-center gap-3 rounded-xl px-3 text-[13px] font-bold transition ${active ? "bg-spotlight-soft text-spotlight" : "text-muted-foreground hover:bg-spotlight-soft hover:text-ink"}`}
+      className={`flex min-h-11 items-center gap-3 rounded-xl px-3 text-[13px] font-bold transition ${active ? "bg-spotlight-soft text-spotlight" : "text-muted-foreground hover:bg-spotlight-soft hover:text-ink"}`}
     >
       <item.icon className="size-4" />
       {item.label}
@@ -1942,7 +1945,7 @@ function IdeasBoard() {
                     </span>
                     <button
                       aria-label="More idea options"
-                      className="grid size-11 place-items-center rounded-full border border-border"
+                      className="grid size-12 place-items-center rounded-full border border-border"
                     >
                       <MoreHorizontal className="size-4" />
                     </button>
@@ -2956,7 +2959,7 @@ function Library() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search scripts, captions, FAQs…"
-            className="min-w-0 flex-1 bg-transparent text-sm outline-none"
+            className="min-h-11 min-w-0 flex-1 bg-transparent text-sm outline-none"
           />
         </label>
         <select
@@ -3005,7 +3008,7 @@ function Library() {
                     })
                   }
                   aria-label={`${favorites.has(asset.id) ? "Remove" : "Add"} ${asset.title} ${favorites.has(asset.id) ? "from" : "to"} favorites`}
-                  className={`absolute right-3 top-3 grid size-11 place-items-center rounded-full bg-white ${favorites.has(asset.id) ? "text-reel" : "text-muted-foreground"}`}
+                  className={`absolute right-3 top-3 grid size-12 place-items-center rounded-full bg-white ${favorites.has(asset.id) ? "text-reel" : "text-muted-foreground"}`}
                 >
                   <Heart className={`size-4 ${favorites.has(asset.id) ? "fill-current" : ""}`} />
                 </button>
@@ -3036,7 +3039,7 @@ function Library() {
                         .then(() => toast.success("Copied."))
                     }
                     aria-label={`Copy ${asset.title}`}
-                    className="grid size-11 place-items-center rounded-xl bg-secondary"
+                    className="grid size-12 place-items-center rounded-xl bg-secondary"
                   >
                     <Clipboard className="size-4" />
                   </button>

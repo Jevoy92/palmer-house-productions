@@ -3,6 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 import { toast } from "sonner";
 import { buildDemoCampaign } from "@/lib/studio-demo";
 import {
+  analyzeStudioContentSource,
   askStudioPal,
   generateContentDirections,
   generateStudioCampaign,
@@ -11,6 +12,7 @@ import type {
   AssistantResponse,
   CampaignOutput,
   ContentDirection,
+  ContentSourceAnalysis,
   PalName,
   StudioLane,
 } from "@/lib/studio-model";
@@ -158,6 +160,12 @@ type StudioContextValue = {
     goal: string;
     audience: string;
   }) => Promise<ContentDirection[]>;
+  analyzeSource: (values: {
+    sourceType: "link" | "image";
+    sourceUrl?: string;
+    sourceDataUrl?: string;
+    context: string;
+  }) => Promise<ContentSourceAnalysis>;
   updateAsset: (id: string, values: Partial<Asset>) => Promise<void>;
   updateCalendarItem: (id: string, values: Partial<CalendarItem>) => Promise<void>;
   createCalendarItem: (values: {
@@ -303,19 +311,20 @@ function buildDemoWorkspaceSeed() {
 }
 
 function buildDemoDirections(idea: string): ContentDirection[] {
-  const subject = idea.trim() || "the idea";
+  const firstLine = idea.trim().split("\n")[0] || "the idea";
+  const subject = firstLine.length > 180 ? `${firstLine.slice(0, 177).trim()}…` : firstLine;
   return [
     {
       id: "proof",
       title: "Make the value visible",
-      angle: `Make “${subject}” visible through the before-and-after decision your customer is trying to make.`,
+      angle: `Anchor this direction in the before-and-after decision your customer is trying to make: ${subject}.`,
       whyItWorks: "Specific proof reduces uncertainty and gives the campaign a trustworthy spine.",
       lane: "spotlight",
     },
     {
       id: "teach",
       title: "Teach the decision once",
-      angle: `Build “${subject}” into a clear explanation your audience can save, share, and return to.`,
+      angle: `Turn the idea into a clear explanation your audience can save, share, and return to: ${subject}.`,
       whyItWorks:
         "A durable answer becomes the anchor for video, search, social, and sales follow-up.",
       lane: "evergreen",
@@ -323,12 +332,29 @@ function buildDemoDirections(idea: string): ContentDirection[] {
     {
       id: "momentum",
       title: "Invite the audience in",
-      angle: `Frame “${subject}” as a platform-native question, poll, and short-form conversation.`,
+      angle: `Use the idea as a platform-native question, poll, and short-form conversation: ${subject}.`,
       whyItWorks:
         "Participation reveals what people need next while giving the current idea more reach.",
       lane: "reel",
     },
   ];
+}
+
+function demoQuestionToCampaignSubject(question: string, businessName: string) {
+  const normalized = question.trim().toLowerCase();
+  if (normalized.includes("what video") && normalized.includes("next")) {
+    return `Show how one ${businessName} shoot turns a repeated customer question into a month of clear, reusable content`;
+  }
+  if (normalized.includes("customer question") && normalized.includes("campaign")) {
+    return "Turn the five questions customers ask before booking into one anchor video and five short answers";
+  }
+  if (normalized.includes("gap") && normalized.includes("sales")) {
+    return "Explain the difference between buying one finished video and building a connected video content system";
+  }
+  if (normalized.includes("realistic content rhythm") || normalized.includes("this month")) {
+    return "Build a four-week rhythm around one anchor explanation, two proof moments, and weekly short-form questions";
+  }
+  return question;
 }
 
 export function StudioProvider({ children }: { children: ReactNode }) {
@@ -698,7 +724,9 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       let response: AssistantResponse;
       if (demo) {
         await new Promise((resolve) => window.setTimeout(resolve, 550));
-        const directions = buildDemoDirections(question);
+        const directions = buildDemoDirections(
+          demoQuestionToCampaignSubject(question, brand.business_name),
+        );
         const best = directions[0];
         response = {
           reply: best
@@ -921,6 +949,65 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       setBusy(false);
     }
   }
+  async function analyzeSource(values: {
+    sourceType: "link" | "image";
+    sourceUrl?: string;
+    sourceDataUrl?: string;
+    context: string;
+  }) {
+    if (!workspace || !brand) throw new Error("Finish your workspace and Brand DNA first.");
+    setBusy(true);
+    try {
+      if (demo) {
+        await new Promise((resolve) => window.setTimeout(resolve, 650));
+        const context = values.context.trim();
+        const sourceLabel =
+          values.sourceType === "link"
+            ? `the useful idea behind ${new URL(values.sourceUrl || "https://example.com").hostname}`
+            : "the visible moment in this image";
+        const normalizedContext = context
+          ? `${context.slice(0, 1).toLowerCase()}${context.slice(1).replace(/[.]$/, "")}`
+          : "";
+        return {
+          suggestedIdea: normalizedContext
+            ? `Use this source to show how ${normalizedContext}.`
+            : `Use ${sourceLabel} to explain what changed and why it matters.`,
+          businessProblem:
+            "The source has useful evidence, but the customer still needs help understanding the decision it supports.",
+          audienceDecision:
+            "Help the audience see whether this approach fits the problem they are trying to solve.",
+          observedEvidence: [
+            values.sourceType === "link"
+              ? "A specific source is available to turn into an owned explanation."
+              : "A real visual moment is available to anchor the story.",
+            context || "Add one sentence of context before making a result claim.",
+          ],
+          lane: "spotlight",
+        } satisfies ContentSourceAnalysis;
+      }
+      if (!session) throw new Error("Sign in first.");
+      const result = await analyzeStudioContentSource({
+        data: {
+          workspaceId: workspace.id,
+          accessToken: session.access_token,
+          sourceType: values.sourceType,
+          sourceUrl: values.sourceUrl,
+          sourceDataUrl: values.sourceDataUrl,
+          context: values.context,
+          brand: {
+            businessName: brand.business_name,
+            description: brand.description,
+            audience: brand.primary_audience,
+            offers: brand.offers.filter((item): item is string => typeof item === "string"),
+            proof: brand.proof_points,
+          },
+        },
+      });
+      return result.analysis;
+    } finally {
+      setBusy(false);
+    }
+  }
   async function updateAsset(id: string, values: Partial<Asset>) {
     if (demo) {
       setAssets((items) => items.map((item) => (item.id === id ? { ...item, ...values } : item)));
@@ -1080,6 +1167,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     updateVideoProgress,
     createCampaign,
     suggestDirections,
+    analyzeSource,
     updateAsset,
     updateCalendarItem,
     createCalendarItem,

@@ -24,7 +24,12 @@ import {
 import { useMemo, useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import samiraHeadshot from "@/assets/pal-headshots/samira.png";
-import { studioConsultingOffer, studioPlans, type StudioPlanKey } from "@/lib/studio-model";
+import {
+  studioAdvisoryOffer,
+  studioConsultingOffer,
+  studioPlans,
+  type StudioPlanKey,
+} from "@/lib/studio-model";
 import { useStudio } from "./StudioProvider";
 
 const bookingUrl = import.meta.env.VITE_STRATEGY_BOOKING_URL || "/contact";
@@ -88,6 +93,7 @@ export function MemberSuccess() {
   const [preferredDate, setPreferredDate] = useState("");
   const [preferredTime, setPreferredTime] = useState("");
   const [callNote, setCallNote] = useState("");
+  const [callDelivery, setCallDelivery] = useState("Zoom");
   const [podcastOpen, setPodcastOpen] = useState(false);
   const [podcastTopic, setPodcastTopic] = useState("");
   const [feedbackOpen, setFeedbackOpen] = useState(false);
@@ -122,7 +128,7 @@ export function MemberSuccess() {
   const missions = useMemo(
     () => [
       {
-        title: "Teach the Studio your business",
+        title: "Teach the Studio your world",
         detail: "Reach 80% Brand DNA so every suggestion has useful context.",
         done: (brand?.completion || 0) >= 80,
         to: "/studio/brand",
@@ -272,6 +278,7 @@ export function MemberSuccess() {
         [
           `${plan.name} plan strategy session`,
           `Focus: ${selectedFocus}`,
+          `Delivery: ${callDelivery}`,
           `Preferred time: ${new Date(`${selectedDate}T${selectedTime}`).toLocaleString()}`,
           selectedContext ? `Context: ${selectedContext}` : "",
         ]
@@ -508,12 +515,31 @@ export function MemberSuccess() {
                       className="mt-2 min-h-12 w-full rounded-xl border border-border bg-white px-3 text-sm"
                     >
                       <option>Campaign clarity</option>
-                      <option>Bigger-picture business direction</option>
+                      <option>Bigger-picture brand direction</option>
                       <option>Filming-space setup</option>
                       <option>Script or project review</option>
                       <option>Content-system planning</option>
                     </select>
                   </label>
+                  {callFocus === "Filming-space setup" ? (
+                    <label className="mt-4 block text-xs font-black">
+                      How should we review the space?
+                      <select
+                        value={callDelivery}
+                        onChange={(event) => setCallDelivery(event.target.value)}
+                        className="mt-2 min-h-12 w-full rounded-xl border border-border bg-white px-3 text-sm"
+                      >
+                        <option>Zoom</option>
+                        <option>On-site visit request</option>
+                      </select>
+                      {callDelivery === "On-site visit request" ? (
+                        <span className="mt-2 block font-medium leading-relaxed text-muted-foreground">
+                          Palmer House will confirm availability, travel, and any additional on-site
+                          fee before anything is booked.
+                        </span>
+                      ) : null}
+                    </label>
+                  ) : null}
                   <div className="mt-4 grid gap-3 sm:grid-cols-2">
                     <label className="block text-xs font-black">
                       Preferred date
@@ -592,6 +618,32 @@ export function MemberSuccess() {
             >
               Book the ${studioConsultingOffer.price} intensive <ArrowRight className="size-4" />
             </a>
+          </div>
+          <div className="mt-5 rounded-[1.25rem] bg-spotlight p-5 text-white">
+            <p className="font-mono text-[9px] uppercase tracking-[.15em] text-white/65">
+              Close partnership
+            </p>
+            <h3 className="mt-3 text-2xl font-black">{studioAdvisoryOffer.name}</h3>
+            <p className="mt-3 text-sm leading-relaxed text-white/80">
+              {studioAdvisoryOffer.description}
+            </p>
+            <p className="mt-4 text-2xl font-black">
+              ${studioAdvisoryOffer.price.toLocaleString()}{" "}
+              <span className="text-xs font-bold text-white/65">· application only</span>
+            </p>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() =>
+                void requestService(
+                  "advisory_application",
+                  `Interested in the ${studioAdvisoryOffer.name}. Please follow up with fit and scope questions.`,
+                )
+              }
+              className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl bg-white px-4 text-sm font-black text-spotlight disabled:opacity-50"
+            >
+              Start the conversation <ArrowRight className="size-4" />
+            </button>
           </div>
         </article>
       </section>
@@ -733,7 +785,7 @@ export function MemberSuccess() {
                     value={podcastTopic}
                     onChange={(event) => setPodcastTopic(event.target.value)}
                     rows={4}
-                    placeholder="The decision, lesson, or business story you can help another owner understand…"
+                    placeholder="The decision, lesson, or story you can help another person understand…"
                     className="mt-2 w-full rounded-xl border border-border p-3 text-sm"
                   />
                 </label>

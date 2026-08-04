@@ -1,5 +1,32 @@
 import { z } from "zod";
 
+export const studioAudienceTypes = [
+  "Business",
+  "Creator",
+  "Author",
+  "Musician / Band",
+  "Influencer",
+  "Podcaster",
+  "Streamer",
+  "Gamer",
+  "Nonprofit",
+  "Agency",
+  "Coach / Speaker",
+  "Other",
+] as const;
+
+export const studioPrimaryGoals = [
+  "Grow an audience",
+  "Sell products",
+  "Sell services",
+  "Build authority",
+  "Educate",
+  "Entertain",
+  "Build community",
+  "Recruit",
+  "Improve internal communication",
+] as const;
+
 export const studioGoals = [
   "Create consistent social content",
   "Build authority with long-form content",
@@ -8,6 +35,34 @@ export const studioGoals = [
   "Document FAQs",
   "Plan a launch",
   "Organize an internal content team",
+] as const;
+
+export const studioVisualStyles = [
+  {
+    id: "palmer-clay",
+    name: "Palmer Clay 3D",
+    detail: "Soft dimensional objects, paper-white space, and one confident lane color.",
+  },
+  {
+    id: "premium-editorial",
+    name: "Premium Editorial",
+    detail: "Big type, intentional crops, and magazine-like pacing.",
+  },
+  {
+    id: "minimal-swiss",
+    name: "Minimal Swiss",
+    detail: "Precise hierarchy, crisp alignment, and restrained graphic marks.",
+  },
+  {
+    id: "bold-type",
+    name: "Bold Type",
+    detail: "Typography leads; graphic punctuation keeps each slide moving.",
+  },
+  {
+    id: "soft-illustration",
+    name: "Soft Illustration",
+    detail: "Friendly simplified scenes that make abstract ideas easier to understand.",
+  },
 ] as const;
 
 export const anchorFormats = [
@@ -89,6 +144,21 @@ export const studioConsultingOffer = {
   includedDays: 30,
   description:
     "A focused working session for a campaign, filming space, offer, or content system—with 30 days of Studio access included.",
+} as const;
+
+export const studioAdvisoryOffer = {
+  name: "90-Day Video Leverage Partnership",
+  price: 25000,
+  duration: "90 days",
+  description:
+    "A close working partnership to turn positioning, brand memory, campaigns, and filming decisions into one operating system.",
+  features: [
+    "Weekly private strategy room",
+    "Complete Brand Guide and 90-day video roadmap",
+    "Campaign and script review throughout the engagement",
+    "Filming-environment audit by Zoom or on-site request",
+    "Partner Studio access for the full engagement",
+  ],
 } as const;
 
 export type StudioPlanKey = keyof typeof studioPlans;
@@ -245,6 +315,8 @@ export const ContentDirectionRequestSchema = z.object({
   audience: z.string().min(3).max(800),
   brand: z.object({
     businessName: z.string().max(180),
+    creatorType: z.string().max(80).default("Business"),
+    primaryGoal: z.string().max(180).default("Sell services"),
     description: z.string().max(1600),
     voice: z.array(z.string()).max(12),
     proof: z.array(z.string()).max(20),
@@ -303,6 +375,8 @@ export const CampaignBriefSchema = z.object({
   depth: z.enum(["quick", "strategic", "deep"]),
   brand: z.object({
     businessName: z.string().max(180),
+    creatorType: z.string().max(80).default("Business"),
+    primaryGoal: z.string().max(180).default("Sell services"),
     description: z.string().max(1600),
     voice: z.array(z.string()).max(12),
     proof: z.array(z.string()).max(20),

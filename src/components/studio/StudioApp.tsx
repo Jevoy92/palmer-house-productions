@@ -67,8 +67,11 @@ import { toast } from "sonner";
 import { createStudioBillingPortal, createStudioSubscriptionCheckout } from "@/lib/studio-server";
 import {
   anchorFormats,
+  studioAudienceTypes,
   studioGoals,
   studioPlans,
+  studioPrimaryGoals,
+  studioVisualStyles,
   type StudioPlanKey,
   type StudioView,
 } from "@/lib/studio-model";
@@ -310,7 +313,7 @@ function AuthExperience() {
           <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground">
             {mode === "signin"
               ? "Sign in to keep your brand memory, campaigns, calendar, and team moving together."
-              : "Create the private workspace where your ideas become campaigns your whole business can use."}
+              : "Create the private workspace where your ideas become campaigns your audience can use."}
           </p>
 
           <form onSubmit={submit} className="mt-9 space-y-5">
@@ -439,6 +442,9 @@ function Onboarding() {
   const { createWorkspace, busy, user, signOut } = useStudio();
   const [name, setName] = useState((user?.user_metadata?.full_name as string) || "");
   const [step, setStep] = useState(0);
+  const [creatorType, setCreatorType] = useState<(typeof studioAudienceTypes)[number]>("Business");
+  const [primaryGoal, setPrimaryGoal] =
+    useState<(typeof studioPrimaryGoals)[number]>("Sell services");
   const [problem, setProblem] = useState("I need a consistent content rhythm");
   const problemOptions = [
     { value: "I need a consistent content rhythm", lane: "Reel", color: "var(--reel)" },
@@ -464,8 +470,8 @@ function Onboarding() {
       </header>
       <div className="mx-auto grid min-h-[calc(100vh-8rem)] max-w-6xl items-center gap-10 py-10 lg:grid-cols-[.9fr_1.1fr]">
         <section>
-          <div className="flex items-center gap-2" aria-label={`Step ${step + 1} of 3`}>
-            {[0, 1, 2].map((item) => (
+          <div className="flex items-center gap-2" aria-label={`Step ${step + 1} of 4`}>
+            {[0, 1, 2, 3].map((item) => (
               <span
                 key={item}
                 className="h-1.5 flex-1 rounded-full"
@@ -473,20 +479,24 @@ function Onboarding() {
               />
             ))}
           </div>
-          <p className="studio-eyebrow mt-8 text-system">Step {step + 1} of 3</p>
+          <p className="studio-eyebrow mt-8 text-system">Step {step + 1} of 4</p>
           <h1 className="mt-4 text-5xl font-black leading-[.95] tracking-[-.06em]">
             {step === 0
               ? "Give the work a home."
               : step === 1
-                ? "What needs to change first?"
-                : `Start with ${match.lane}.`}
+                ? "What best describes you?"
+                : step === 2
+                  ? "What should video help you do?"
+                  : `Start with ${match.lane}.`}
           </h1>
           <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
             {step === 0
               ? "Your workspace keeps the brand memory, ideas, campaigns, calendar, and team in one private place."
               : step === 1
-                ? "Choose the business problem—not a content format. We will organize the tools around the outcome."
-                : `Your ${match.lane} Pal will guide the first campaign. You can use every lane whenever the work calls for it.`}
+                ? "A company, author, musician, streamer, nonprofit, or solo creator can use the same system. Your examples and strategy will adapt."
+                : step === 2
+                  ? "This goal becomes part of Brand DNA and shapes every recommendation after today."
+                  : `Your ${match.lane} Pal will guide the first campaign. You can use every lane whenever the work calls for it.`}
           </p>
 
           <div className="mt-8">
@@ -501,39 +511,56 @@ function Onboarding() {
             ) : null}
             {step === 1 ? (
               <ChoiceGrid
-                options={problemOptions.map((item) => ({ value: item.value, label: item.value }))}
-                value={problem}
-                onChange={setProblem}
+                options={studioAudienceTypes.map((item) => ({ value: item, label: item }))}
+                value={creatorType}
+                onChange={(value) => setCreatorType(value as typeof creatorType)}
               />
             ) : null}
             {step === 2 ? (
-              <div className="rounded-[1.25rem] border border-border p-6">
-                <div className="flex items-center gap-4">
-                  <span
-                    className="grid size-12 place-items-center rounded-full text-white"
-                    style={{ background: match.color }}
-                  >
-                    <Target className="size-5" />
-                  </span>
-                  <div>
-                    <p className="font-extrabold">Your first workspace path</p>
-                    <p className="mt-1 text-sm text-muted-foreground">{problem}</p>
+              <ChoiceGrid
+                options={studioPrimaryGoals.map((item) => ({ value: item, label: item }))}
+                value={primaryGoal}
+                onChange={(value) => setPrimaryGoal(value as typeof primaryGoal)}
+              />
+            ) : null}
+            {step === 3 ? (
+              <>
+                <p className="mb-3 text-sm font-bold">What needs to change first?</p>
+                <ChoiceGrid
+                  options={problemOptions.map((item) => ({ value: item.value, label: item.value }))}
+                  value={problem}
+                  onChange={setProblem}
+                />
+                <div className="mt-5 rounded-[1.25rem] border border-border p-6">
+                  <div className="flex items-center gap-4">
+                    <span
+                      className="grid size-12 place-items-center rounded-full text-white"
+                      style={{ background: match.color }}
+                    >
+                      <Target className="size-5" />
+                    </span>
+                    <div>
+                      <p className="font-extrabold">Your first workspace path</p>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {creatorType} · {primaryGoal}
+                      </p>
+                    </div>
                   </div>
+                  <ul className="mt-6 grid gap-3 text-sm sm:grid-cols-2">
+                    {[
+                      "Brand memory setup",
+                      "Three useful directions",
+                      "Platform-ready drafts",
+                      "Editable content calendar",
+                    ].map((item) => (
+                      <li key={item} className="flex items-center gap-2">
+                        <Check className="size-4 text-evergreen" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="mt-6 grid gap-3 text-sm sm:grid-cols-2">
-                  {[
-                    "Brand memory setup",
-                    "Three useful directions",
-                    "Platform-ready drafts",
-                    "Editable content calendar",
-                  ].map((item) => (
-                    <li key={item} className="flex items-center gap-2">
-                      <Check className="size-4 text-evergreen" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              </>
             ) : null}
           </div>
 
@@ -549,13 +576,13 @@ function Onboarding() {
             <button
               disabled={busy || (step === 0 && !name.trim())}
               onClick={async () => {
-                if (step < 2) {
+                if (step < 3) {
                   setStep((current) => current + 1);
                   return;
                 }
                 try {
                   window.sessionStorage.setItem("ph.studio.first-problem", problem);
-                  await createWorkspace(name || "My Studio");
+                  await createWorkspace(name || "My Studio", { creatorType, primaryGoal });
                 } catch (error) {
                   toast.error(
                     error instanceof Error ? error.message : "Could not create workspace.",
@@ -565,7 +592,7 @@ function Onboarding() {
               className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-ink px-5 font-bold text-white disabled:opacity-40"
             >
               {busy ? <LoaderCircle className="size-4 animate-spin" /> : null}
-              {step === 2 ? "Open my Studio" : "Continue"}
+              {step === 3 ? "Open my Studio" : "Continue"}
               <ArrowRight className="size-4" />
             </button>
           </div>
@@ -1219,9 +1246,7 @@ function Dashboard() {
         <section className="mt-5 rounded-[1.25rem] border border-system bg-white p-5 sm:p-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-xl font-black">
-                Your Studio is ready. Let’s teach it your business.
-              </p>
+              <p className="text-xl font-black">Your Studio is ready. Let’s teach it your world.</p>
               <p className="mt-1 text-sm text-muted-foreground">
                 Three short steps turn an empty workspace into your own content system.
               </p>
@@ -1741,7 +1766,7 @@ function IdeasBoard() {
       <PageIntro
         eyebrow="Content ideas"
         title="Catch the useful thought before it disappears."
-        body="Start with a thought, a link, or an image. The Studio keeps the source, names the business problem, and helps turn it into a connected campaign."
+        body="Start with a thought, a link, or an image. The Studio keeps the source, names the real problem or opportunity, and helps turn it into a connected campaign."
         action={
           <Link
             to="/studio"
@@ -1824,7 +1849,7 @@ function IdeasBoard() {
             className="mt-5 w-full resize-none rounded-xl border border-border p-4 text-base outline-none focus:border-system"
           />
           <label className="mt-4 block text-sm font-extrabold">
-            What business problem could this solve?
+            What problem or opportunity could this address?
             <input
               value={problem}
               onChange={(event) => setProblem(event.target.value)}
@@ -2748,33 +2773,115 @@ function AssetPanel({ items }: { items: Asset[] }) {
 }
 
 function BrandStudio() {
-  const { brand, saveBrand, uploadBrandAsset } = useStudio();
+  const { brand, brandReferences, saveBrand, uploadBrandAsset, addBrandReference } = useStudio();
+  const details =
+    brand?.brand_details &&
+    typeof brand.brand_details === "object" &&
+    !Array.isArray(brand.brand_details)
+      ? (brand.brand_details as Record<string, string>)
+      : {};
   const [draft, setDraft] = useState({
     business_name: brand?.business_name || "",
     website: brand?.website || "",
+    creator_type: brand?.creator_type || "Business",
+    primary_goal: brand?.primary_goal || "Sell services",
     industry: brand?.industry || "",
     description: brand?.description || "",
     primary_audience: brand?.primary_audience || "",
+    offers: Array.isArray(brand?.offers)
+      ? brand.offers.filter((item) => typeof item === "string").join("\n")
+      : "",
     voice_traits: (brand?.voice_traits || []).join(", "),
     proof_points: (brand?.proof_points || []).join("\n"),
     calls_to_action: (brand?.calls_to_action || []).join("\n"),
     avoid_language: (brand?.avoid_language || []).join(", "),
     platforms: (brand?.platforms || []).join(", "),
+    social_profiles: Array.isArray(brand?.social_links)
+      ? brand.social_links
+          .map((item) =>
+            typeof item === "object" && item && "url" in item ? String(item.url) : "",
+          )
+          .filter(Boolean)
+          .join("\n")
+      : "",
+    mission: details.mission || "",
+    values: details.values || "",
+    taglines: details.taglines || "",
+    customers: details.customers || "",
+    competitors: details.competitors || "",
+    typography: details.typography || "",
+    photography: details.photography || "",
+    imageStyle: details.imageStyle || "",
+    videoExamples: details.videoExamples || "",
+    contentExamples: details.contentExamples || "",
+    motion: details.motion || "",
+    editing: details.editing || "",
+    aiRules: details.aiRules || "",
+    visual_style: brand?.visual_style || "Palmer Clay 3D",
   });
+  const [referenceKind, setReferenceKind] = useState("social");
+  const [referenceUrl, setReferenceUrl] = useState("");
+  const guideChecks = [
+    ["Identity", Boolean(draft.business_name && draft.creator_type)],
+    [
+      "Logo / assets",
+      brandReferences.some((item) => ["logo", "guide", "file"].includes(item.kind)),
+    ],
+    ["Colors", Boolean(brand && Object.keys((brand.colors as object) || {}).length)],
+    ["Voice", Boolean(draft.voice_traits)],
+    [
+      "Typography",
+      Boolean(draft.typography || (brand && Object.keys((brand.fonts as object) || {}).length)),
+    ],
+    ["Photography", Boolean(draft.photography)],
+    ["Products / offers", Boolean(draft.offers)],
+    ["Customers", Boolean(draft.customers || draft.primary_audience)],
+    ["Examples", Boolean(draft.contentExamples || draft.videoExamples)],
+    ["Competitors", Boolean(draft.competitors)],
+    ["Mission", Boolean(draft.mission)],
+    ["Values", Boolean(draft.values)],
+    ["Taglines", Boolean(draft.taglines)],
+    ["Brand personality", Boolean(draft.description && draft.voice_traits)],
+    ["Image style", Boolean(draft.imageStyle && draft.visual_style)],
+    ["Channels", Boolean(draft.platforms || draft.social_profiles)],
+  ] as const;
+  const completion = Math.round(
+    (guideChecks.filter(([, complete]) => complete).length / guideChecks.length) * 100,
+  );
   async function save() {
     try {
       await saveBrand({
         business_name: draft.business_name,
         website: draft.website,
+        creator_type: draft.creator_type,
+        primary_goal: draft.primary_goal,
         industry: draft.industry,
         description: draft.description,
         primary_audience: draft.primary_audience,
+        offers: lineList(draft.offers),
         voice_traits: splitList(draft.voice_traits),
         proof_points: lineList(draft.proof_points),
         calls_to_action: lineList(draft.calls_to_action),
         avoid_language: splitList(draft.avoid_language),
         platforms: splitList(draft.platforms),
-        completion: calculateCompletion(draft),
+        social_links: lineList(draft.social_profiles).map((url) => ({ url })),
+        brand_details: {
+          mission: draft.mission,
+          values: draft.values,
+          taglines: draft.taglines,
+          customers: draft.customers,
+          competitors: draft.competitors,
+          typography: draft.typography,
+          photography: draft.photography,
+          imageStyle: draft.imageStyle,
+          videoExamples: draft.videoExamples,
+          contentExamples: draft.contentExamples,
+          motion: draft.motion,
+          editing: draft.editing,
+          aiRules: draft.aiRules,
+        },
+        visual_style: draft.visual_style,
+        completion,
       });
       toast.success("Brand memory updated.");
     } catch (error) {
@@ -2785,94 +2892,316 @@ function BrandStudio() {
     <div className="mx-auto max-w-[88rem]">
       <PageIntro
         eyebrow="Brand Studio"
-        title="Give every campaign the same memory."
-        body="This is the source of truth the campaign engine uses. Add only language and proof your team can stand behind."
+        title="Build the source every tool can trust."
+        body="Start with anything you have. Every useful answer, reference, and approved asset makes future scripts, graphics, and recommendations more specific."
         action={
-          <button onClick={() => void save()} className="primary-action">
-            <Check className="size-4" />
-            Save brand memory
-          </button>
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => downloadBrandGuide(draft, completion)}
+              className="secondary-action"
+            >
+              <Download className="size-4" /> Download guide
+            </button>
+            <button onClick={() => void save()} className="primary-action">
+              <Check className="size-4" /> Save Brand DNA
+            </button>
+          </div>
         }
       />
       <div className="mt-8 grid gap-6 xl:grid-cols-[1fr_22rem]">
-        <div className="studio-card grid gap-5 sm:grid-cols-2">
-          <Field
-            label="Business name"
-            value={draft.business_name}
-            onChange={(e) => setDraft({ ...draft, business_name: e.target.value })}
-          />
-          <Field
-            label="Website"
-            type="url"
-            value={draft.website}
-            onChange={(e) => setDraft({ ...draft, website: e.target.value })}
-          />
-          <Field
-            label="Industry"
-            value={draft.industry}
-            onChange={(e) => setDraft({ ...draft, industry: e.target.value })}
-          />
-          <Field
-            label="Primary audience"
-            value={draft.primary_audience}
-            onChange={(e) => setDraft({ ...draft, primary_audience: e.target.value })}
-          />
-          <div className="sm:col-span-2">
+        <div className="space-y-5">
+          <section className="studio-card grid gap-5 sm:grid-cols-2">
+            <div className="sm:col-span-2">
+              <p className="studio-eyebrow text-system">01 · Identity</p>
+              <h2 className="mt-2 text-2xl font-black">Who is using video as leverage?</h2>
+            </div>
+            <Field
+              label="Brand, project, or workspace name"
+              value={draft.business_name}
+              onChange={(e) => setDraft({ ...draft, business_name: e.target.value })}
+            />
+            <label className="block text-sm font-semibold">
+              What best describes you?
+              <select
+                value={draft.creator_type}
+                onChange={(event) => setDraft({ ...draft, creator_type: event.target.value })}
+                className="mt-2 min-h-12 w-full rounded-2xl border border-border bg-white px-4 text-sm"
+              >
+                {studioAudienceTypes.map((item) => (
+                  <option key={item}>{item}</option>
+                ))}
+              </select>
+            </label>
+            <label className="block text-sm font-semibold">
+              Primary goal
+              <select
+                value={draft.primary_goal}
+                onChange={(event) => setDraft({ ...draft, primary_goal: event.target.value })}
+                className="mt-2 min-h-12 w-full rounded-2xl border border-border bg-white px-4 text-sm"
+              >
+                {studioPrimaryGoals.map((item) => (
+                  <option key={item}>{item}</option>
+                ))}
+              </select>
+            </label>
+            <Field
+              label="Website"
+              type="url"
+              value={draft.website}
+              onChange={(e) => setDraft({ ...draft, website: e.target.value })}
+            />
+            <Field
+              label="Category, field, or genre"
+              value={draft.industry}
+              onChange={(e) => setDraft({ ...draft, industry: e.target.value })}
+            />
+            <Field
+              label="Primary audience"
+              value={draft.primary_audience}
+              onChange={(e) => setDraft({ ...draft, primary_audience: e.target.value })}
+            />
+            <div className="sm:col-span-2">
+              <Field
+                as="textarea"
+                rows={5}
+                label="What you make, offer, or want to be known for"
+                value={draft.description}
+                onChange={(e) => setDraft({ ...draft, description: e.target.value })}
+              />
+            </div>
+            <Field
+              label="Voice traits, separated by commas"
+              value={draft.voice_traits}
+              onChange={(e) => setDraft({ ...draft, voice_traits: e.target.value })}
+            />
+            <Field
+              as="textarea"
+              rows={4}
+              label="Products, services, programs, or releases — one per line"
+              value={draft.offers}
+              onChange={(e) => setDraft({ ...draft, offers: e.target.value })}
+            />
+            <Field
+              label="Platforms, separated by commas"
+              value={draft.platforms}
+              onChange={(e) => setDraft({ ...draft, platforms: e.target.value })}
+            />
+            <Field
+              as="textarea"
+              rows={3}
+              label="Social profiles and channels — one URL per line"
+              value={draft.social_profiles}
+              onChange={(e) => setDraft({ ...draft, social_profiles: e.target.value })}
+            />
             <Field
               as="textarea"
               rows={5}
-              label="What the business does"
-              value={draft.description}
-              onChange={(e) => setDraft({ ...draft, description: e.target.value })}
+              label="Verified proof, one per line"
+              value={draft.proof_points}
+              onChange={(e) => setDraft({ ...draft, proof_points: e.target.value })}
             />
-          </div>
-          <Field
-            label="Voice traits, separated by commas"
-            value={draft.voice_traits}
-            onChange={(e) => setDraft({ ...draft, voice_traits: e.target.value })}
-          />
-          <Field
-            label="Platforms, separated by commas"
-            value={draft.platforms}
-            onChange={(e) => setDraft({ ...draft, platforms: e.target.value })}
-          />
-          <Field
-            as="textarea"
-            rows={5}
-            label="Verified proof, one per line"
-            value={draft.proof_points}
-            onChange={(e) => setDraft({ ...draft, proof_points: e.target.value })}
-          />
-          <Field
-            as="textarea"
-            rows={5}
-            label="Calls to action, one per line"
-            value={draft.calls_to_action}
-            onChange={(e) => setDraft({ ...draft, calls_to_action: e.target.value })}
-          />
-          <div className="sm:col-span-2">
             <Field
-              label="Language to avoid"
-              value={draft.avoid_language}
-              onChange={(e) => setDraft({ ...draft, avoid_language: e.target.value })}
+              as="textarea"
+              rows={5}
+              label="Calls to action, one per line"
+              value={draft.calls_to_action}
+              onChange={(e) => setDraft({ ...draft, calls_to_action: e.target.value })}
             />
-          </div>
+            <div className="sm:col-span-2">
+              <Field
+                label="Language to avoid"
+                value={draft.avoid_language}
+                onChange={(e) => setDraft({ ...draft, avoid_language: e.target.value })}
+              />
+            </div>
+          </section>
+
+          <details open className="studio-card group">
+            <summary className="cursor-pointer list-none">
+              <p className="studio-eyebrow text-system">02 · Strategy & personality</p>
+              <h2 className="mt-2 text-2xl font-black">The details that stop generic output.</h2>
+            </summary>
+            <div className="mt-6 grid gap-5 sm:grid-cols-2">
+              <Field
+                as="textarea"
+                rows={4}
+                label="Mission"
+                value={draft.mission}
+                onChange={(e) => setDraft({ ...draft, mission: e.target.value })}
+              />
+              <Field
+                as="textarea"
+                rows={4}
+                label="Values"
+                value={draft.values}
+                onChange={(e) => setDraft({ ...draft, values: e.target.value })}
+              />
+              <Field
+                as="textarea"
+                rows={4}
+                label="Customers / community"
+                value={draft.customers}
+                onChange={(e) => setDraft({ ...draft, customers: e.target.value })}
+              />
+              <Field
+                as="textarea"
+                rows={4}
+                label="Competitors / alternatives"
+                value={draft.competitors}
+                onChange={(e) => setDraft({ ...draft, competitors: e.target.value })}
+              />
+              <Field
+                as="textarea"
+                rows={3}
+                label="Taglines and message lines"
+                value={draft.taglines}
+                onChange={(e) => setDraft({ ...draft, taglines: e.target.value })}
+              />
+              <Field
+                as="textarea"
+                rows={3}
+                label="Existing content examples"
+                value={draft.contentExamples}
+                onChange={(e) => setDraft({ ...draft, contentExamples: e.target.value })}
+              />
+            </div>
+          </details>
+
+          <details className="studio-card group">
+            <summary className="cursor-pointer list-none">
+              <p className="studio-eyebrow text-system">03 · Visual & motion system</p>
+              <h2 className="mt-2 text-2xl font-black">How the brand should look and move.</h2>
+            </summary>
+            <div className="mt-6 grid gap-5 sm:grid-cols-2">
+              <Field
+                as="textarea"
+                rows={3}
+                label="Typography"
+                value={draft.typography}
+                onChange={(e) => setDraft({ ...draft, typography: e.target.value })}
+              />
+              <Field
+                as="textarea"
+                rows={3}
+                label="Photography direction"
+                value={draft.photography}
+                onChange={(e) => setDraft({ ...draft, photography: e.target.value })}
+              />
+              <Field
+                as="textarea"
+                rows={3}
+                label="Image and illustration style"
+                value={draft.imageStyle}
+                onChange={(e) => setDraft({ ...draft, imageStyle: e.target.value })}
+              />
+              <Field
+                as="textarea"
+                rows={3}
+                label="Video examples and references"
+                value={draft.videoExamples}
+                onChange={(e) => setDraft({ ...draft, videoExamples: e.target.value })}
+              />
+              <Field
+                as="textarea"
+                rows={3}
+                label="Motion rules"
+                value={draft.motion}
+                onChange={(e) => setDraft({ ...draft, motion: e.target.value })}
+              />
+              <Field
+                as="textarea"
+                rows={3}
+                label="Editing rules"
+                value={draft.editing}
+                onChange={(e) => setDraft({ ...draft, editing: e.target.value })}
+              />
+              <div className="sm:col-span-2">
+                <p className="text-sm font-semibold">Default graphic direction</p>
+                <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                  {studioVisualStyles.map((style) => (
+                    <button
+                      key={style.name}
+                      type="button"
+                      onClick={() => setDraft({ ...draft, visual_style: style.name })}
+                      className={`min-h-28 rounded-[1rem] border p-4 text-left ${draft.visual_style === style.name ? "border-system bg-system-soft" : "border-border bg-white"}`}
+                    >
+                      <span className="block text-sm font-black">{style.name}</span>
+                      <span className="mt-2 block text-xs leading-relaxed text-muted-foreground">
+                        {style.detail}
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="sm:col-span-2">
+                <Field
+                  as="textarea"
+                  rows={4}
+                  label="AI prompting rules / do and don’t"
+                  value={draft.aiRules}
+                  onChange={(e) => setDraft({ ...draft, aiRules: e.target.value })}
+                />
+              </div>
+            </div>
+          </details>
         </div>
         <aside className="space-y-5">
           <div className="studio-card">
             <div className="flex items-center justify-between">
-              <p className="font-semibold">Memory strength</p>
-              <span className="font-mono text-xs">{calculateCompletion(draft)}%</span>
+              <p className="font-semibold">Brand Profile</p>
+              <span className="font-mono text-xs">{completion}%</span>
             </div>
             <div className="mt-4 h-2 overflow-hidden rounded-full bg-secondary">
-              <motion.div
-                animate={{ width: `${calculateCompletion(draft)}%` }}
-                className="h-full bg-system"
-              />
+              <motion.div animate={{ width: `${completion}%` }} className="h-full bg-system" />
             </div>
             <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-              Strong profiles reduce generic rewrites while keeping the final call with your team.
+              More context makes every campaign, visual, and Pal recommendation smarter.
             </p>
+            <div className="mt-5 grid grid-cols-2 gap-x-3 gap-y-2">
+              {guideChecks.map(([label, complete]) => (
+                <div key={label} className="flex items-center gap-2 text-[10px] font-bold">
+                  <span
+                    className={`grid size-4 place-items-center rounded-full ${complete ? "bg-evergreen text-white" : "border border-border text-muted-foreground"}`}
+                  >
+                    {complete ? <Check className="size-2.5" /> : null}
+                  </span>
+                  {label}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="studio-card">
+            <p className="font-semibold">Add a live reference</p>
+            <select
+              value={referenceKind}
+              onChange={(event) => setReferenceKind(event.target.value)}
+              className="mt-4 min-h-11 w-full rounded-xl border border-border bg-white px-3 text-sm"
+            >
+              <option value="website">Website</option>
+              <option value="social">Social profile</option>
+              <option value="youtube">YouTube channel</option>
+            </select>
+            <input
+              type="url"
+              value={referenceUrl}
+              onChange={(event) => setReferenceUrl(event.target.value)}
+              placeholder="https://…"
+              className="mt-2 min-h-11 w-full rounded-xl border border-border px-3 text-sm"
+            />
+            <button
+              type="button"
+              onClick={() => {
+                if (!referenceUrl.trim()) return;
+                void addBrandReference(
+                  referenceKind,
+                  referenceUrl.replace(/^https?:\/\//, "").split("/")[0],
+                  referenceUrl,
+                ).then(() => setReferenceUrl(""));
+              }}
+              className="secondary-action mt-3 w-full"
+            >
+              <Plus className="size-4" /> Add reference
+            </button>
           </div>
           <label className="studio-card grid cursor-pointer place-items-center border-dashed text-center">
             <input
@@ -2881,7 +3210,8 @@ function BrandStudio() {
               accept="image/*,.pdf,.txt"
               onChange={(event) => {
                 const file = event.target.files?.[0];
-                if (file) void uploadBrandAsset(file);
+                if (file)
+                  void uploadBrandAsset(file, file.type.startsWith("image/") ? "logo" : "guide");
               }}
             />
             <ImageUp className="size-7 text-system" />
@@ -2890,6 +3220,24 @@ function BrandStudio() {
               Private PDFs, logos, images, or notes · 10 MB max
             </p>
           </label>
+          {brandReferences.length ? (
+            <div className="studio-card">
+              <p className="font-semibold">Brand sources</p>
+              <div className="mt-3 space-y-2">
+                {brandReferences.slice(0, 6).map((item) => (
+                  <div key={item.id} className="flex items-center gap-3 rounded-xl bg-cream p-3">
+                    <FileStack className="size-4 text-system" />
+                    <div className="min-w-0">
+                      <p className="truncate text-xs font-black">{item.label}</p>
+                      <p className="mt-1 text-[9px] uppercase tracking-[.1em] text-muted-foreground">
+                        {item.kind}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
           <div className="rounded-[1.5rem] bg-spotlight p-6 text-white">
             <p className="font-mono text-[9px] uppercase tracking-[.17em] text-white/60">
               The rule
@@ -4257,6 +4605,91 @@ function calculateCompletion(draft: Record<string, string>) {
   return Math.round(
     (Object.values(draft).filter((value) => value.trim()).length / Object.values(draft).length) *
       100,
+  );
+}
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+function downloadBrandGuide(draft: Record<string, string>, completion: number) {
+  const value = (key: string, fallback = "Add this section in Brand Studio.") =>
+    escapeHtml(draft[key]?.trim() || fallback).replaceAll("\n", "<br />");
+  const sections = [
+    [
+      "01",
+      "Identity",
+      `${value("business_name")}<br><small>${value("creator_type")} · ${value("industry", "Category not set")}</small>`,
+    ],
+    [
+      "02",
+      "Mission & values",
+      `<strong>Mission</strong><br>${value("mission")}<br><br><strong>Values</strong><br>${value("values")}`,
+    ],
+    [
+      "03",
+      "Audience",
+      `${value("primary_audience")}<br><br><strong>Primary goal</strong><br>${value("primary_goal")}`,
+    ],
+    ["04", "Offers", value("offers")],
+    [
+      "05",
+      "Voice",
+      `<strong>Traits</strong><br>${value("voice_traits")}<br><br><strong>Language to avoid</strong><br>${value("avoid_language")}`,
+    ],
+    [
+      "06",
+      "Messaging",
+      `<strong>Description</strong><br>${value("description")}<br><br><strong>Taglines</strong><br>${value("taglines")}<br><br><strong>Calls to action</strong><br>${value("calls_to_action")}`,
+    ],
+    [
+      "07",
+      "Proof",
+      value("proof_points", "No verified proof has been added. Do not invent claims."),
+    ],
+    ["08", "Typography", value("typography")],
+    ["09", "Photography", value("photography")],
+    [
+      "10",
+      "Graphics & image style",
+      `<strong>${value("visual_style")}</strong><br><br>${value("imageStyle")}`,
+    ],
+    [
+      "11",
+      "Motion & editing",
+      `<strong>Motion</strong><br>${value("motion")}<br><br><strong>Editing</strong><br>${value("editing")}`,
+    ],
+    [
+      "12",
+      "Social & channels",
+      `<strong>Platforms</strong><br>${value("platforms")}<br><br>${value("social_profiles")}`,
+    ],
+    ["13", "Video examples", value("videoExamples")],
+    ["14", "Content examples", value("contentExamples")],
+    [
+      "15",
+      "Competitive context",
+      `<strong>Customers / community</strong><br>${value("customers")}<br><br><strong>Alternatives</strong><br>${value("competitors")}`,
+    ],
+    [
+      "16",
+      "AI prompting rules",
+      value(
+        "aiRules",
+        "Use only approved Brand DNA. Never invent proof. Match the stated audience, goal, voice, and visual system.",
+      ),
+    ],
+  ];
+  const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${value("business_name")} Brand Guide</title><style>
+  :root{--ink:#202126;--paper:#F4F1EA;--purple:#3D1A66;--orange:#E8720C;--green:#5B8A2D;--teal:#0A9B8F;--line:#dedbd4}*{box-sizing:border-box}body{margin:0;color:var(--ink);font-family:Inter,Arial,sans-serif;background:white}header{min-height:72vh;padding:8vw;display:flex;flex-direction:column;justify-content:space-between;background:var(--paper);border-bottom:12px solid var(--purple)}.eyebrow{font:700 11px ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--purple)}h1{font-size:clamp(54px,9vw,120px);line-height:.86;letter-spacing:-.07em;margin:32px 0;max-width:9ch}.meta{display:flex;gap:24px;flex-wrap:wrap;font-weight:700}.wrap{max-width:1100px;margin:auto;padding:80px 28px}.intro{font-size:26px;line-height:1.35;max-width:750px;margin-bottom:70px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{min-height:280px;border:1px solid var(--line);border-radius:24px;padding:28px;break-inside:avoid}.num{font:700 10px ui-monospace,monospace;letter-spacing:.15em;color:var(--teal)}h2{font-size:28px;letter-spacing:-.04em;margin:22px 0 34px}.body{font-size:14px;line-height:1.7}.lanes{display:grid;grid-template-columns:repeat(4,1fr);margin-top:70px}.lane{height:96px;padding:16px;color:white;font-weight:800}.lane:nth-child(1){background:var(--purple)}.lane:nth-child(2){background:var(--orange)}.lane:nth-child(3){background:var(--green)}.lane:nth-child(4){background:var(--teal)}footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--line);font:700 10px ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase}@media(max-width:700px){header{min-height:60vh}.grid{grid-template-columns:1fr}.lanes{grid-template-columns:1fr 1fr}.card{min-height:auto}}@media print{header{min-height:92vh}.wrap{padding:48px 20px}.card{page-break-inside:avoid}}
+  </style></head><body><header><div><p class="eyebrow">Palmer House Studio · Living Brand Guide</p><h1>${value("business_name")}</h1></div><div class="meta"><span>${value("creator_type")}</span><span>${value("primary_goal")}</span><span>${completion}% profile strength</span></div></header><main class="wrap"><p class="eyebrow">Source of truth</p><p class="intro">This living guide keeps strategy, writing, graphics, video, and AI assistance aligned. Update Brand DNA as the work and audience evolve.</p><div class="grid">${sections.map(([number, title, body]) => `<section class="card"><p class="num">${number}</p><h2>${title}</h2><div class="body">${body}</div></section>`).join("")}</div><div class="lanes"><div class="lane">Spotlight<br><small>Build trust</small></div><div class="lane">Reel<br><small>Earn attention</small></div><div class="lane">Evergreen<br><small>Teach clearly</small></div><div class="lane">System<br><small>Create clarity</small></div></div><footer>Generated from approved Brand DNA · ${new Date().toLocaleDateString()}</footer></main></body></html>`;
+  downloadText(
+    `${(draft.business_name || "brand").replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-brand-guide.html`,
+    html,
+    "text/html",
   );
 }
 function downloadCampaign(campaign: Campaign, assets: Asset[]) {

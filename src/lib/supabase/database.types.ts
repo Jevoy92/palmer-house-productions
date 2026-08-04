@@ -12,11 +12,13 @@ export type Database = {
         Row: {
           avoid_language: string[];
           business_name: string;
+          brand_details: Json;
           calls_to_action: string[];
           colors: Json;
           completion: number;
           content_examples: string[];
           created_at: string;
+          creator_type: string;
           description: string;
           fonts: Json;
           id: string;
@@ -24,22 +26,27 @@ export type Database = {
           locations: string[];
           offers: Json;
           platforms: string[];
+          primary_goal: string;
           preferred_language: string;
           primary_audience: string;
           proof_points: string[];
+          social_links: Json;
           updated_at: string;
           voice_traits: string[];
+          visual_style: string;
           website: string;
           workspace_id: string;
         };
         Insert: {
           avoid_language?: string[];
           business_name?: string;
+          brand_details?: Json;
           calls_to_action?: string[];
           colors?: Json;
           completion?: number;
           content_examples?: string[];
           created_at?: string;
+          creator_type?: string;
           description?: string;
           fonts?: Json;
           id?: string;
@@ -47,22 +54,27 @@ export type Database = {
           locations?: string[];
           offers?: Json;
           platforms?: string[];
+          primary_goal?: string;
           preferred_language?: string;
           primary_audience?: string;
           proof_points?: string[];
+          social_links?: Json;
           updated_at?: string;
           voice_traits?: string[];
+          visual_style?: string;
           website?: string;
           workspace_id: string;
         };
         Update: {
           avoid_language?: string[];
           business_name?: string;
+          brand_details?: Json;
           calls_to_action?: string[];
           colors?: Json;
           completion?: number;
           content_examples?: string[];
           created_at?: string;
+          creator_type?: string;
           description?: string;
           fonts?: Json;
           id?: string;
@@ -70,11 +82,14 @@ export type Database = {
           locations?: string[];
           offers?: Json;
           platforms?: string[];
+          primary_goal?: string;
           preferred_language?: string;
           primary_audience?: string;
           proof_points?: string[];
+          social_links?: Json;
           updated_at?: string;
           voice_traits?: string[];
+          visual_style?: string;
           website?: string;
           workspace_id?: string;
         };
@@ -83,6 +98,47 @@ export type Database = {
             foreignKeyName: "brand_profiles_workspace_id_fkey";
             columns: ["workspace_id"];
             isOneToOne: true;
+            referencedRelation: "workspaces";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      brand_references: {
+        Row: {
+          created_at: string;
+          id: string;
+          kind: string;
+          label: string;
+          metadata: Json;
+          source_url: string | null;
+          storage_path: string | null;
+          workspace_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          kind?: string;
+          label: string;
+          metadata?: Json;
+          source_url?: string | null;
+          storage_path?: string | null;
+          workspace_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          kind?: string;
+          label?: string;
+          metadata?: Json;
+          source_url?: string | null;
+          storage_path?: string | null;
+          workspace_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "brand_references_workspace_id_fkey";
+            columns: ["workspace_id"];
+            isOneToOne: false;
             referencedRelation: "workspaces";
             referencedColumns: ["id"];
           },

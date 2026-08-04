@@ -25,6 +25,34 @@ hot-reload warnings could not hide a current runtime problem.
 
 No console errors or warnings remained in the clean final browser session.
 
+## Audience, Brand Guide, and campaign-graphics expansion
+
+The Studio no longer assumes every member is a conventional small business. Onboarding now records
+both the kind of work the member does and the result they want, with paths for businesses, authors,
+musicians, creators, podcasters, streamers, nonprofits, agencies, coaches, speakers, and a custom
+answer. Those answers now travel with Brand DNA into campaign generation and Pal guidance.
+
+Brand DNA is now a progressive Brand Guide workspace rather than a short profile form. It accepts
+identity, audience, offer, voice, visual, photo, motion, editing, platform, proof, AI-rule, website,
+social, guide, logo, moodboard, product, photo, and font inputs. A 16-part completion meter makes
+missing context visible, and the member can export the current source of truth as a dense,
+print-ready guide. References persist in `brand_references` behind workspace-member RLS.
+
+Campaign results now include a purpose-bound carousel graphic builder. It receives the campaign
+strategy and Brand DNA directly, offers five controlled visual systems, renders a seven-slide
+1080x1350 set in the correct lane color, and downloads either one SVG or the full printable set.
+There is deliberately no unrelated prompt playground.
+
+Member Success now distinguishes remote and on-site filming-space consulting, and introduces the
+high-touch `$25,000` 90-Day Video Leverage Partnership with weekly strategy, a complete brand and
+campaign roadmap, review, and a choice of Zoom or an on-site environment session. The public
+membership page carries the same offer without displacing the recurring plans.
+
+The production Supabase project received migration `studio_brand_guide_profiles`. Column, table,
+migration-history, and RLS-policy checks passed after deployment. Supabase's advisor reported no
+new migration-specific security problem; two pre-existing warnings concern intentionally callable
+campaign-usage RPCs, and unused-index notices are expected on this newly seeded workspace.
+
 ## Persona 1 — solo service-business owner
 
 **Situation:** Has a useful idea or before/after example, but is unsure what to say, film, or post.

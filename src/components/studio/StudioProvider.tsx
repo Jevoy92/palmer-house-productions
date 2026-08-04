@@ -23,6 +23,7 @@ type Profile = Tables<"profiles">;
 type Workspace = Tables<"workspaces">;
 type Subscription = Tables<"workspace_subscriptions">;
 type Brand = Tables<"brand_profiles">;
+type BrandReference = Tables<"brand_references">;
 type Campaign = Tables<"campaigns">;
 type Asset = Tables<"campaign_assets">;
 type CalendarItem = Tables<"calendar_items">;
@@ -46,6 +47,8 @@ const demoBrand: Brand = {
   business_name: "Palmer House Productions",
   website: "https://www.palmerhouseproductions.com",
   industry: "Strategic video production",
+  creator_type: "Business",
+  primary_goal: "Sell services",
   description:
     "A video strategy and production company that turns invisible expertise, repeated explanations, and scattered ideas into clear business systems.",
   primary_audience:
@@ -61,6 +64,21 @@ const demoBrand: Brand = {
   content_examples: [],
   colors: { spotlight: "#3D1A66", reel: "#E8720C", evergreen: "#5B8A2D", system: "#0A9B8F" },
   fonts: { primary: "Satoshi", detail: "Satoshi Mono" },
+  social_links: [
+    { label: "Instagram", url: "https://instagram.com/palmerhouseproductions" },
+    { label: "YouTube", url: "https://youtube.com/@palmerhouseproductions" },
+  ],
+  brand_details: {
+    mission: "Make useful video feel clear, connected, and possible.",
+    values: "Clarity, usefulness, humanity, and repeatability.",
+    taglines: "Build your video library, one shoot at a time.",
+    photography: "Warm real environments, capable people, and visible production craft.",
+    imageStyle: "Paper-white dimensional scenes using one Palmer House lane per asset.",
+    competitors: "Traditional production companies and generic AI content tools.",
+    customers: "People and teams who use video as leverage.",
+    videoExamples: "Brand films, proof stories, explainers, short-form series, and training.",
+  },
+  visual_style: "Palmer Clay 3D",
   completion: 86,
   created_at: new Date().toISOString(),
   updated_at: new Date().toISOString(),
@@ -79,6 +97,29 @@ const demoSubscription: Subscription = {
   cancel_at_period_end: false,
   updated_at: new Date().toISOString(),
 };
+
+const demoBrandReferences: BrandReference[] = [
+  {
+    id: "demo-brand-reference-1",
+    workspace_id: demoWorkspace.id,
+    kind: "website",
+    label: "Palmer House website",
+    source_url: demoBrand.website,
+    storage_path: null,
+    metadata: { status: "analyzed" },
+    created_at: new Date().toISOString(),
+  },
+  {
+    id: "demo-brand-reference-2",
+    workspace_id: demoWorkspace.id,
+    kind: "guide",
+    label: "Palmer House Brand Guide v2",
+    source_url: null,
+    storage_path: "owner-preview/palmer-house-brand-guide-v2.pdf",
+    metadata: { status: "ready" },
+    created_at: new Date().toISOString(),
+  },
+];
 
 const demoSettings: Settings = {
   workspace_id: demoWorkspace.id,
@@ -115,6 +156,7 @@ type StudioContextValue = {
   workspace: Workspace | null;
   subscription: Subscription | null;
   brand: Brand | null;
+  brandReferences: BrandReference[];
   settings: Settings | null;
   campaigns: Campaign[];
   assets: Asset[];
@@ -130,7 +172,10 @@ type StudioContextValue = {
   signOut: () => Promise<void>;
   enterDemo: () => void;
   leaveDemo: () => void;
-  createWorkspace: (name: string) => Promise<void>;
+  createWorkspace: (
+    name: string,
+    profile?: { creatorType: string; primaryGoal: string },
+  ) => Promise<void>;
   saveProfile: (values: Partial<Profile>) => Promise<void>;
   saveBrand: (values: Partial<Brand>) => Promise<void>;
   saveSettings: (values: Partial<Settings>) => Promise<void>;
@@ -177,7 +222,8 @@ type StudioContextValue = {
     notes?: string;
   }) => Promise<string>;
   requestService: (requestType: string, notes: string, campaignId?: string) => Promise<void>;
-  uploadBrandAsset: (file: File) => Promise<void>;
+  uploadBrandAsset: (file: File, kind?: string) => Promise<void>;
+  addBrandReference: (kind: string, label: string, sourceUrl: string) => Promise<void>;
   refresh: () => Promise<void>;
 };
 
@@ -366,6 +412,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   const [workspace, setWorkspace] = useState<Workspace | null>(null);
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const [brand, setBrand] = useState<Brand | null>(null);
+  const [brandReferences, setBrandReferences] = useState<BrandReference[]>([]);
   const [settings, setSettings] = useState<Settings | null>(null);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [assets, setAssets] = useState<Asset[]>([]);
@@ -382,6 +429,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       setWorkspace(null);
       setSubscription(null);
       setBrand(null);
+      setBrandReferences([]);
       setSettings(null);
       setCampaigns([]);
       setAssets([]);
@@ -416,6 +464,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       workspaceResult,
       subscriptionResult,
       brandResult,
+      brandReferencesResult,
       settingsResult,
       campaignsResult,
       assetsResult,
@@ -428,6 +477,11 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       supabase.from("workspaces").select("*").eq("id", workspaceId).single(),
       supabase.from("workspace_subscriptions").select("*").eq("workspace_id", workspaceId).single(),
       supabase.from("brand_profiles").select("*").eq("workspace_id", workspaceId).single(),
+      supabase
+        .from("brand_references")
+        .select("*")
+        .eq("workspace_id", workspaceId)
+        .order("created_at", { ascending: false }),
       supabase.from("workspace_settings").select("*").eq("workspace_id", workspaceId).single(),
       supabase
         .from("campaigns")
@@ -465,6 +519,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     if (workspaceResult.data) setWorkspace(workspaceResult.data);
     if (subscriptionResult.data) setSubscription(subscriptionResult.data);
     if (brandResult.data) setBrand(brandResult.data);
+    setBrandReferences(brandReferencesResult.data || []);
     if (settingsResult.data) setSettings(settingsResult.data);
     setCampaigns(campaignsResult.data || []);
     setAssets(assetsResult.data || []);
@@ -487,6 +542,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
         setDemo(true);
         setWorkspace(demoWorkspace);
         setBrand(demoBrand);
+        setBrandReferences(demoBrandReferences);
         setSubscription(demoSubscription);
         setSettings(demoSettings);
         setCampaigns(seed.campaigns);
@@ -552,6 +608,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     setDemo(true);
     setWorkspace(demoWorkspace);
     setBrand(demoBrand);
+    setBrandReferences(demoBrandReferences);
     setSubscription(demoSubscription);
     setSettings(demoSettings);
     setCampaigns(seed.campaigns);
@@ -566,7 +623,10 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     setDemo(false);
     void loadWorkspace(session);
   }
-  async function createWorkspace(name: string) {
+  async function createWorkspace(
+    name: string,
+    brandProfile?: { creatorType: string; primaryGoal: string },
+  ) {
     if (!session) throw new Error("Sign in first.");
     setBusy(true);
     const result = await supabase
@@ -576,6 +636,17 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       .single();
     setBusy(false);
     if (result.error) throw result.error;
+    if (brandProfile) {
+      const brandUpdate = await supabase
+        .from("brand_profiles")
+        .update({
+          business_name: name,
+          creator_type: brandProfile.creatorType,
+          primary_goal: brandProfile.primaryGoal,
+        })
+        .eq("workspace_id", result.data.id);
+      if (brandUpdate.error) throw brandUpdate.error;
+    }
     await supabase
       .from("profiles")
       .update({ onboarding_completed: true })
@@ -902,6 +973,8 @@ export function StudioProvider({ children }: { children: ReactNode }) {
           depth: values.depth,
           brand: {
             businessName: brand.business_name,
+            creatorType: brand.creator_type,
+            primaryGoal: brand.primary_goal,
             description: brand.description,
             voice: brand.voice_traits,
             proof: brand.proof_points,
@@ -936,6 +1009,8 @@ export function StudioProvider({ children }: { children: ReactNode }) {
           audience: values.audience,
           brand: {
             businessName: brand.business_name,
+            creatorType: brand.creator_type,
+            primaryGoal: brand.primary_goal,
             description: brand.description,
             voice: brand.voice_traits,
             proof: brand.proof_points,
@@ -1117,9 +1192,22 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     await refresh();
     toast.success("Request sent to Palmer House.");
   }
-  async function uploadBrandAsset(file: File) {
+  async function uploadBrandAsset(file: File, kind = "file") {
     if (!workspace) throw new Error("Create a workspace first.");
     if (demo) {
+      setBrandReferences((current) => [
+        {
+          id: crypto.randomUUID(),
+          workspace_id: workspace.id,
+          kind,
+          label: file.name,
+          source_url: null,
+          storage_path: `owner-preview/${file.name}`,
+          metadata: { size: file.size, type: file.type },
+          created_at: new Date().toISOString(),
+        },
+        ...current,
+      ]);
       toast.success(`${file.name} added to the owner preview brand kit.`);
       return;
     }
@@ -1128,7 +1216,46 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       .from("brand-assets")
       .upload(`${workspace.id}/${crypto.randomUUID()}-${safeName}`, file, { upsert: false });
     if (result.error) throw result.error;
+    const reference = await supabase
+      .from("brand_references")
+      .insert({
+        workspace_id: workspace.id,
+        kind,
+        label: file.name,
+        storage_path: result.data.path,
+        metadata: { size: file.size, type: file.type },
+      })
+      .select()
+      .single();
+    if (reference.error) throw reference.error;
+    setBrandReferences((current) => [reference.data, ...current]);
     toast.success("Brand file uploaded securely.");
+  }
+  async function addBrandReference(kind: string, label: string, sourceUrl: string) {
+    if (!workspace) throw new Error("Create a workspace first.");
+    const next: BrandReference = {
+      id: crypto.randomUUID(),
+      workspace_id: workspace.id,
+      kind,
+      label,
+      source_url: sourceUrl,
+      storage_path: null,
+      metadata: { status: "ready" },
+      created_at: new Date().toISOString(),
+    };
+    if (demo) {
+      setBrandReferences((current) => [next, ...current]);
+      toast.success("Reference added to the owner preview.");
+      return;
+    }
+    const result = await supabase
+      .from("brand_references")
+      .insert({ workspace_id: workspace.id, kind, label, source_url: sourceUrl })
+      .select()
+      .single();
+    if (result.error) throw result.error;
+    setBrandReferences((current) => [result.data, ...current]);
+    toast.success("Reference added to Brand DNA.");
   }
 
   const value: StudioContextValue = {
@@ -1141,6 +1268,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     workspace,
     subscription,
     brand,
+    brandReferences,
     settings,
     campaigns,
     assets,
@@ -1173,6 +1301,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     createCalendarItem,
     requestService,
     uploadBrandAsset,
+    addBrandReference,
     refresh,
   };
   return <StudioContext.Provider value={value}>{children}</StudioContext.Provider>;

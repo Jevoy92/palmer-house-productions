@@ -24,7 +24,7 @@ const chapters = [
   {
     number: "01",
     title: "Give the idea a job.",
-    body: "Start with the business outcome, the real audience, and the question worth organizing. No empty prompt box.",
+    body: "Start with the outcome, the real audience, and the question worth organizing. No empty prompt box.",
     icon: Gauge,
     color: "var(--spotlight)",
   },
@@ -204,7 +204,7 @@ function MembershipPage() {
               <p className="font-mono text-[9px] uppercase tracking-[.17em] text-system">After</p>
               <ul className="mt-8 space-y-5">
                 {[
-                  "One business idea becomes a campaign",
+                  "One useful idea becomes a campaign",
                   "Every asset remembers the brand",
                   "The production plan is built with the script",
                   "The publishing rhythm arrives ready to edit",
@@ -494,7 +494,7 @@ export const Route = createFileRoute("/membership")({
       {
         name: "description",
         content:
-          "Build strategy, scripts, a production plan, and a publishing rhythm from one useful business idea—then produce it yourself or with Palmer House.",
+          "Build strategy, scripts, a production plan, and a publishing rhythm from one useful idea—then produce it yourself or with Palmer House.",
       },
     ],
   }),

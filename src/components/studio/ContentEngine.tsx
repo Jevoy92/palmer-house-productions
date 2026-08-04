@@ -47,6 +47,7 @@ import {
   type PlatformPost,
 } from "@/lib/studio-model";
 import { useStudio } from "./StudioProvider";
+import { CarouselGraphicBuilder } from "./CarouselGraphicBuilder";
 
 const CampaignMotionPreview = lazy(() =>
   import("./CampaignMotionPreview").then((module) => ({ default: module.CampaignMotionPreview })),
@@ -159,7 +160,9 @@ export function ContentEngine() {
   const [sourceImagePreview, setSourceImagePreview] = useState("");
   const [sourceAnalysis, setSourceAnalysis] = useState<ContentSourceAnalysis | null>(null);
   const [goal, setGoal] = useState<(typeof studioGoals)[number]>(studioGoals[0]);
-  const [audience, setAudience] = useState(brand?.primary_audience || "Busy business owners");
+  const [audience, setAudience] = useState(
+    brand?.primary_audience || "The people you want to reach",
+  );
   const [offer, setOffer] = useState(
     Array.isArray(brand?.offers) && typeof brand.offers[0] === "string" ? brand.offers[0] : "",
   );
@@ -207,7 +210,7 @@ export function ContentEngine() {
 
   async function findDirections() {
     if (idea.trim().length < 8) {
-      toast.error("Give the engine one real business idea to work with.");
+      toast.error("Give the engine one real idea to work with.");
       return;
     }
     try {
@@ -413,7 +416,7 @@ export function ContentEngine() {
               </h2>
               <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
                 Start with a thought, a useful link, or a real image. The Engine will identify the
-                business job before it writes anything.
+                real job before it writes anything.
               </p>
               <div className="mt-8 flex gap-2 overflow-x-auto pb-1" aria-label="Idea source">
                 {(
@@ -441,7 +444,7 @@ export function ContentEngine() {
                 {sourceMode === "text" ? (
                   <>
                     <label htmlFor="engine-idea" className="sr-only">
-                      Business idea
+                      Campaign idea
                     </label>
                     <textarea
                       id="engine-idea"
@@ -573,7 +576,7 @@ export function ContentEngine() {
               ) : null}
               <div className="mt-7 grid gap-3 sm:grid-cols-3">
                 <SelectField
-                  label="Business goal"
+                  label="Content goal"
                   value={goal}
                   onChange={setGoal}
                   options={[...studioGoals]}
@@ -604,8 +607,8 @@ export function ContentEngine() {
                   Find the angle.
                 </h2>
                 <p className="mt-4 max-w-2xl text-muted-foreground">
-                  Same business idea. Three different jobs. Choose the direction that best fits the
-                  audience decision you need to change.
+                  Same idea. Three different jobs. Choose the direction that best fits the audience
+                  decision you need to change.
                 </p>
               </div>
               <button onClick={() => setStage("idea")} className="secondary-action">
@@ -661,7 +664,7 @@ export function ContentEngine() {
                   <p className="font-bold">{coach.name} will guide this direction.</p>
                   <p className="mt-1 text-sm text-muted-foreground">
                     The guide keeps the lens on the problem and helps tailor the production plan.
-                    Your business remains the subject.
+                    Your work remains the subject.
                   </p>
                 </div>
                 <button
@@ -904,7 +907,7 @@ export function ContentEngine() {
                   </div>
                   <PlatformPreview
                     post={selectedPost}
-                    business={brand?.business_name || "Your business"}
+                    business={brand?.business_name || "Your brand"}
                   />
                   <div className="mt-4 rounded-2xl border border-border bg-white p-4">
                     <p className="font-mono text-[8px] uppercase tracking-[.15em] text-system">
@@ -936,6 +939,12 @@ export function ContentEngine() {
               </aside>
             </div>
 
+            <CarouselGraphicBuilder
+              output={output}
+              business={brand?.business_name || "Your brand"}
+              defaultStyle={brand?.visual_style}
+            />
+
             <section className="mt-8 grid gap-5 border-t border-border pt-8 lg:grid-cols-[1fr_.85fr]">
               <div>
                 <p className="font-mono text-[8px] uppercase tracking-[.15em] text-evergreen">
@@ -963,7 +972,7 @@ export function ContentEngine() {
               </div>
               <Suspense fallback={<div className="aspect-square rounded-[2rem] bg-system-soft" />}>
                 <CampaignMotionPreview
-                  business={brand?.business_name || "Your business"}
+                  business={brand?.business_name || "Your brand"}
                   hook={output.anchor.hook}
                   problem={output.strategy.audienceInsight}
                   promise={output.strategy.promise}
@@ -1378,7 +1387,7 @@ function LinkedInPreview({ post, business }: { post: PlatformPost; business: str
           <div>
             <p className="text-xs font-bold">{business}</p>
             <p className="text-[10px] text-muted-foreground">
-              Video systems for growing businesses · 1h
+              Video systems for people building something · 1h
             </p>
           </div>
           <span className="ml-auto">•••</span>

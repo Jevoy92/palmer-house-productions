@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { PageShell } from "@/components/site/PageShell";
-import { studioConsultingOffer, studioPlans } from "@/lib/studio-model";
+import { studioAdvisoryOffer, studioConsultingOffer, studioPlans } from "@/lib/studio-model";
 
 const rows = [
   ["Complete campaigns / month", "2", "5", "12"],
@@ -212,6 +212,39 @@ function PricingPage() {
           <Link to="/contact" className="primary-action whitespace-nowrap">
             Book the intensive <ArrowRight className="size-4" />
           </Link>
+        </section>
+
+        <section className="mx-auto mt-5 grid max-w-6xl gap-8 rounded-[2rem] bg-spotlight p-7 text-white sm:p-9 lg:grid-cols-[1fr_.8fr] lg:items-center">
+          <div>
+            <p className="font-mono text-[9px] uppercase tracking-[.17em] text-white/60">
+              High-touch advisory
+            </p>
+            <h2 className="mt-3 max-w-[13ch] text-4xl font-black leading-[.95] tracking-[-.05em]">
+              {studioAdvisoryOffer.name}
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/75">
+              {studioAdvisoryOffer.description}
+            </p>
+            <p className="mt-5 text-3xl font-black">
+              ${studioAdvisoryOffer.price.toLocaleString()}{" "}
+              <span className="text-xs text-white/60">· application only</span>
+            </p>
+          </div>
+          <div>
+            <ul className="space-y-3 text-sm">
+              {studioAdvisoryOffer.features.map((feature) => (
+                <li key={feature} className="flex gap-3">
+                  <Check className="mt-0.5 size-4 shrink-0 text-white" /> {feature}
+                </li>
+              ))}
+            </ul>
+            <Link
+              to="/contact"
+              className="mt-6 inline-flex min-h-12 items-center gap-2 rounded-xl bg-white px-5 text-sm font-black text-spotlight"
+            >
+              Explore the partnership <ArrowRight className="size-4" />
+            </Link>
+          </div>
         </section>
 
         <section className="mx-auto mt-20 max-w-3xl">

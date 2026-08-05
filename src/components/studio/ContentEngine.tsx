@@ -1321,9 +1321,16 @@ function InstagramPreview({ post, business }: { post: PlatformPost; business: st
         <span className="ml-auto text-lg">•••</span>
       </div>
       <div
-        className={`${post.format === "story" ? "aspect-[9/12]" : "aspect-square"} relative overflow-hidden bg-white`}
+        className={`${post.format === "story" ? "aspect-[9/12]" : "aspect-square"} relative grid overflow-hidden bg-mist p-8 text-center`}
       >
-        <img src={systemMap} alt="" className="size-full object-cover" />
+        <div className="m-auto max-w-[18rem]">
+          <p className="font-mono text-[8px] uppercase tracking-[.16em] text-muted-foreground">
+            {post.format}
+          </p>
+          <p className="mt-4 text-3xl font-black leading-[.98] tracking-[-.05em]">
+            {post.hook || post.title}
+          </p>
+        </div>
         {post.format === "reel" && (
           <Play className="absolute inset-0 m-auto size-12 rounded-full bg-white/85 p-3" />
         )}
@@ -1443,7 +1450,11 @@ function FacebookPreview({ post, business }: { post: PlatformPost; business: str
         <Poll post={post} />
       </div>
       {post.format !== "poll" && (
-        <img src={systemMap} alt="" className="aspect-[4/3] w-full object-cover" />
+        <div className="grid aspect-[4/3] place-items-center bg-mist p-8 text-center">
+          <p className="max-w-md text-3xl font-black leading-[.98] tracking-[-.05em]">
+            {post.hook || post.title}
+          </p>
+        </div>
       )}
       <div className="flex justify-around border-t border-border p-3 text-[10px] text-muted-foreground">
         <span>

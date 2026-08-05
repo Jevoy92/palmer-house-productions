@@ -403,6 +403,19 @@ export const CampaignOutputSchema = z.object({
     hook: z.string(),
     script: z.string(),
     callToAction: z.string(),
+    scenes: z
+      .array(
+        z.object({
+          beat: z.string(),
+          visual: z.string(),
+          spoken: z.string(),
+          onScreenText: z.string(),
+          broll: z.array(z.string()).max(5).default([]),
+        }),
+      )
+      .min(3)
+      .max(8)
+      .default([]),
   }),
   shorts: z
     .array(

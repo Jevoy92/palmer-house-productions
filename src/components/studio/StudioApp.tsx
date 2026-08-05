@@ -87,7 +87,7 @@ import samiraHeadshot from "@/assets/pal-headshots/samira.png";
 import kianaHeadshot from "@/assets/pal-headshots/kiana.png";
 import { useStudio } from "./StudioProvider";
 import { ContentEngine } from "./ContentEngine";
-import { ContentOrbit, LanePulse, StudioMark } from "./StudioVisuals";
+import { ContentOrbit, StudioMark } from "./StudioVisuals";
 import { StudioAssistant } from "./StudioAssistant";
 import { VideoRoadmap } from "./VideoRoadmap";
 import { MemberSuccess } from "./MemberSuccess";
@@ -625,7 +625,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
         <StudioBrand />
         <button
           onClick={() => setCreateOpen(true)}
-          className="mt-8 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-spotlight text-sm font-bold text-white transition hover:bg-ink"
+          className="mt-8 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-ink text-sm font-bold text-white transition hover:bg-evergreen"
         >
           <Plus className="size-4" /> Create
         </button>
@@ -710,13 +710,16 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
             {demo ? "Owner preview · populated workspace" : "Private member workspace"}
           </p>
         </div>
-        <div className="ml-auto hidden sm:block">
-          <LanePulse />
+        <div className="ml-auto hidden items-center gap-2 rounded-full bg-mist px-3 py-2 sm:flex">
+          <span className="size-2 rounded-full bg-evergreen" />
+          <span className="font-mono text-[8px] uppercase tracking-[.14em] text-muted-foreground">
+            Brand context active
+          </span>
         </div>
         <button
           aria-label="Ask a Pal"
           onClick={() => setChatOpen(true)}
-          className="ml-3 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-full border border-system bg-system-soft px-3 text-xs font-bold text-system"
+          className="ml-3 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-full border border-border bg-white px-3 text-xs font-bold text-ink"
         >
           <MessageSquareText className="size-4" />
           <span className="hidden md:inline">Ask a Pal</span>
@@ -730,7 +733,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
         <button
           aria-label="Create something new"
           onClick={() => setCreateOpen(true)}
-          className="ml-2 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-system px-4 text-sm font-bold text-white"
+          className="ml-2 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-ink px-4 text-sm font-bold text-white"
         >
           <Plus className="size-4" />
           <span className="hidden sm:inline">Create</span>
@@ -1149,32 +1152,32 @@ function Dashboard() {
       icon: Lightbulb,
       title: "Start with an idea",
       body: "Find the useful angle",
-      color: "var(--spotlight)",
-      soft: "var(--spotlight-soft)",
+      color: "var(--evergreen)",
+      soft: "var(--evergreen-soft)",
     },
     {
       to: "/studio/campaigns",
       icon: Play,
       title: "Turn a video into posts",
       body: "Plan the campaign system",
-      color: "var(--reel)",
-      soft: "var(--reel-soft)",
+      color: "var(--ink)",
+      soft: "var(--mist)",
     },
     {
       to: "/studio/calendar",
       icon: CalendarDays,
       title: "Plan a campaign",
       body: "Map content and timing",
-      color: "var(--evergreen)",
-      soft: "var(--evergreen-soft)",
+      color: "var(--ink)",
+      soft: "var(--mist)",
     },
     {
       to: "/studio/assistant",
       icon: Users,
       title: "Ask a Pal",
       body: "Get a context-aware next move",
-      color: "var(--system)",
-      soft: "var(--system-soft)",
+      color: "var(--ink)",
+      soft: "var(--mist)",
     },
   ] as const;
   return (
@@ -1319,15 +1322,9 @@ function Dashboard() {
             "var(--evergreen)",
             "var(--evergreen-soft)",
           ],
-          [Eye, String(review), "awaiting review", "var(--spotlight)", "var(--spotlight-soft)"],
-          [CalendarDays, String(scheduled), "on the calendar", "var(--reel)", "var(--reel-soft)"],
-          [
-            CheckCircle2,
-            String(campaigns.length),
-            "campaign systems",
-            "var(--system)",
-            "var(--system-soft)",
-          ],
+          [Eye, String(review), "awaiting review", "var(--ink)", "var(--mist)"],
+          [CalendarDays, String(scheduled), "on the calendar", "var(--ink)", "var(--mist)"],
+          [CheckCircle2, String(campaigns.length), "campaign systems", "var(--ink)", "var(--mist)"],
         ].map(([Icon, value, note, color, soft]) => (
           <div
             key={String(note)}
@@ -1353,7 +1350,7 @@ function Dashboard() {
       <section className="mt-8">
         <div className="flex items-end justify-between">
           <div>
-            <p className="studio-eyebrow text-reel">Continue working</p>
+            <p className="studio-eyebrow text-evergreen">Continue working</p>
             <h2 className="mt-2 text-2xl font-black">Campaigns in motion</h2>
           </div>
           <Link
@@ -1577,8 +1574,8 @@ function CampaignFlowMap({
       note: "The outcome and audience",
       value: campaigns,
       icon: Target,
-      color: "var(--spotlight)",
-      soft: "var(--spotlight-soft)",
+      color: "var(--ink)",
+      soft: "var(--mist)",
       to: "/studio/campaigns" as const,
     },
     {
@@ -1586,8 +1583,8 @@ function CampaignFlowMap({
       note: "Scripts, posts, and plans",
       value: assets,
       icon: LayoutGrid,
-      color: "var(--reel)",
-      soft: "var(--reel-soft)",
+      color: "var(--ink)",
+      soft: "var(--mist)",
       to: "/studio/library" as const,
     },
     {
@@ -1595,8 +1592,8 @@ function CampaignFlowMap({
       note: "Waiting for your review",
       value: review,
       icon: Eye,
-      color: "var(--evergreen)",
-      soft: "var(--evergreen-soft)",
+      color: "var(--ink)",
+      soft: "var(--mist)",
       to: "/studio/approvals" as const,
     },
     {
@@ -1604,8 +1601,8 @@ function CampaignFlowMap({
       note: "Ready with a date",
       value: scheduled,
       icon: CalendarDays,
-      color: "var(--system)",
-      soft: "var(--system-soft)",
+      color: "var(--evergreen)",
+      soft: "var(--evergreen-soft)",
       to: "/studio/calendar" as const,
     },
   ];
@@ -1641,7 +1638,7 @@ function CampaignFlowMap({
           </motion.div>
         ))}
       </div>
-      <div className="mt-3 flex items-center gap-3 rounded-xl bg-system-soft px-4 py-3 text-xs text-system">
+      <div className="mt-3 flex items-center gap-3 rounded-xl bg-mist px-4 py-3 text-xs text-ink">
         <Activity className="size-4 shrink-0" />
         <p>
           <strong>{assets ? Math.round((scheduled / assets) * 100) : 0}%</strong> of created assets
@@ -2755,12 +2752,46 @@ function AnchorResult({
   const cta = output?.anchor.callToAction || campaign.offer || "Give the audience one next step.";
   const complete = `${hook}\n\n${body}\n\nCTA: ${cta}`;
   const words = complete.trim().split(/\s+/).length;
+  const suppliedScenes = output?.anchor.scenes || [];
+  const bodyParagraphs = body
+    .split(/\n\s*\n/)
+    .map((paragraph) => paragraph.trim())
+    .filter(Boolean);
+  const scenes = suppliedScenes.length
+    ? suppliedScenes
+    : [
+        {
+          beat: "Earn the next ten seconds",
+          visual: "Medium close-up. Look into the lens and leave a clean pause after the hook.",
+          spoken: hook,
+          onScreenText: hook.length > 72 ? `${hook.slice(0, 69).trim()}…` : hook,
+          broll: [] as string[],
+        },
+        ...bodyParagraphs.map((spoken, index) => ({
+          beat: index === 0 ? "Name the real problem" : `Build the explanation · ${index + 1}`,
+          visual:
+            index % 2 === 0
+              ? "Stay on camera, then cut to one visible example of the point."
+              : "Use voiceover over the real work, process, or proof being described.",
+          spoken,
+          onScreenText: "",
+          broll: [] as string[],
+        })),
+        {
+          beat: "Give one calm next step",
+          visual:
+            "Return to a clean medium close-up and hold for two seconds after the final line.",
+          spoken: cta,
+          onScreenText: cta.length > 72 ? `${cta.slice(0, 69).trim()}…` : cta,
+          broll: [] as string[],
+        },
+      ];
   return (
     <div className="space-y-6">
       <CampaignScreenHeader
         eyebrow="Anchor video"
         title={output?.anchor.title || asset?.title || campaign.topic}
-        body="The main explanation everything else in the campaign comes from. Read it in three beats, then approve or send it for review."
+        body="A word-for-word script and a shot-by-shot reading plan. Work down the page in order; every beat tells you what viewers see and exactly what to say."
         lane={lane}
         action={
           <div className="flex gap-2">
@@ -2774,33 +2805,65 @@ function AnchorResult({
           </div>
         }
       />
-      <article className="overflow-hidden rounded-[1.75rem] border border-border bg-white">
-        {[
-          ["01", "Open", "Earn the next ten seconds.", hook],
-          ["02", "Explain", "Organize the decision clearly.", body],
-          ["03", "Invite", "Give one calm next step.", cta],
-        ].map(([number, label, note, text]) => (
-          <section
-            key={label}
-            className="grid gap-5 border-b border-border p-6 last:border-b-0 sm:p-8 lg:grid-cols-[10rem_1fr]"
+      <div className="grid gap-4">
+        {scenes.map((scene, index) => (
+          <article
+            key={`${scene.beat}-${index}`}
+            className="overflow-hidden rounded-[1.5rem] border border-border bg-white"
           >
-            <div>
-              <p
-                className="font-mono text-[9px] uppercase tracking-[.18em]"
-                style={{ color: lane.color }}
-              >
-                {number} · {label}
-              </p>
-              <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{note}</p>
+            <div className="grid lg:grid-cols-[15rem_minmax(0,1fr)]">
+              <aside className="border-b border-border bg-mist/55 p-5 lg:border-b-0 lg:border-r lg:p-6">
+                <p
+                  className="font-mono text-[9px] uppercase tracking-[.18em]"
+                  style={{ color: lane.color }}
+                >
+                  Beat {String(index + 1).padStart(2, "0")}
+                </p>
+                <h3 className="mt-3 text-lg font-black leading-tight">{scene.beat}</h3>
+                <p className="mt-4 text-xs font-bold uppercase tracking-[.08em] text-muted-foreground">
+                  What viewers see
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{scene.visual}</p>
+                {scene.onScreenText ? (
+                  <div className="mt-5 rounded-xl border border-border bg-white p-3">
+                    <p className="font-mono text-[8px] uppercase tracking-[.14em] text-muted-foreground">
+                      On-screen text
+                    </p>
+                    <p className="mt-2 text-xs font-black">{scene.onScreenText}</p>
+                  </div>
+                ) : null}
+              </aside>
+              <section className="p-6 sm:p-8">
+                <p className="font-mono text-[9px] uppercase tracking-[.18em] text-muted-foreground">
+                  Say this
+                </p>
+                <p
+                  className={`mt-4 whitespace-pre-wrap leading-[1.8] ${index === 0 ? "text-xl font-black tracking-[-.02em] sm:text-2xl" : "text-[17px]"}`}
+                >
+                  {scene.spoken}
+                </p>
+                {scene.broll.length ? (
+                  <div className="mt-6 border-t border-border pt-5">
+                    <p className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+                      Cover with
+                    </p>
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {scene.broll.map((item) => (
+                        <span
+                          key={item}
+                          className="rounded-full border border-border px-3 py-2 text-xs"
+                        >
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+              </section>
             </div>
-            <p
-              className={`whitespace-pre-wrap leading-[1.75] ${label === "Open" ? "text-2xl font-black tracking-[-.025em]" : "text-base"}`}
-            >
-              {text}
-            </p>
-          </section>
+          </article>
         ))}
-      </article>
+      </div>
       <ArtifactActions asset={asset} content={complete} />
     </div>
   );
@@ -2900,11 +2963,143 @@ type SocialEntry = {
   type: string;
   channel: string;
   title: string;
+  hook: string;
   body: string;
   callToAction?: string;
   nativeFeature?: string;
+  publishNotes?: string;
+  hashtags: string[];
+  slides: string[];
+  poll: { question: string; options: string[] } | null;
+  quiz: { question: string; options: string[]; correctIndex: number } | null;
   asset?: Asset;
 };
+
+function safeText(value: unknown, fallback = "") {
+  return typeof value === "string" ? value : fallback;
+}
+
+function safeTextList(value: unknown) {
+  return Array.isArray(value)
+    ? value.filter((item): item is string => typeof item === "string")
+    : [];
+}
+
+function PlatformDraftPreview({ entry, business }: { entry: SocialEntry; business: string }) {
+  const initial = business.trim().charAt(0).toUpperCase() || "N";
+  const caption = [entry.hook, entry.body, entry.hashtags.join(" ")].filter(Boolean).join("\n\n");
+
+  if (entry.channel === "youtube") {
+    return (
+      <article className="overflow-hidden rounded-[1.5rem] border border-border bg-white">
+        <div className="grid min-h-64 place-items-center bg-ink p-8 text-center text-white">
+          <div className="max-w-xl">
+            <span className="inline-flex rounded-full border border-white/25 px-3 py-1 font-mono text-[9px] uppercase tracking-[.16em]">
+              YouTube {entry.type}
+            </span>
+            <h3 className="mt-5 text-3xl font-black leading-tight tracking-[-.04em]">
+              {entry.title}
+            </h3>
+            <span className="mt-6 inline-grid size-14 place-items-center rounded-full bg-white text-ink">
+              <Play className="ml-1 size-5" fill="currentColor" />
+            </span>
+          </div>
+        </div>
+        <div className="p-6 sm:p-7">
+          <div className="flex gap-3">
+            <span className="grid size-10 shrink-0 place-items-center rounded-full bg-ink text-sm font-black text-white">
+              {initial}
+            </span>
+            <div>
+              <p className="font-black">{entry.title}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{business} · video draft</p>
+            </div>
+          </div>
+          <p className="mt-5 whitespace-pre-wrap text-sm leading-[1.75] text-muted-foreground">
+            {entry.hook}\n\n{entry.body}
+          </p>
+        </div>
+      </article>
+    );
+  }
+
+  if (entry.channel === "instagram") {
+    const slides = entry.slides.length ? entry.slides : [entry.hook || entry.title];
+    return (
+      <article className="rounded-[1.5rem] border border-border bg-white p-4 sm:p-6">
+        <div className="mx-auto max-w-[31rem] overflow-hidden rounded-[1.35rem] border border-border bg-white shadow-soft">
+          <div className="flex items-center gap-3 border-b border-border px-4 py-3">
+            <span className="grid size-9 place-items-center rounded-full bg-ink text-xs font-black text-white">
+              {initial}
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-black">{business}</p>
+              <p className="text-[10px] text-muted-foreground">Portland metro · preview</p>
+            </div>
+            <MoreHorizontal className="size-4" />
+          </div>
+          <div className="relative grid aspect-square place-items-center bg-mist p-8 text-center">
+            <div className="absolute left-4 top-4 rounded-full bg-white/95 px-3 py-1 font-mono text-[8px] uppercase tracking-[.14em]">
+              {entry.type}
+            </div>
+            <div className="max-w-sm">
+              <p className="text-[clamp(1.8rem,5vw,3.4rem)] font-black leading-[.96] tracking-[-.055em]">
+                {slides[0]}
+              </p>
+              {entry.type === "reel" ? (
+                <span className="mx-auto mt-7 grid size-14 place-items-center rounded-full bg-white shadow-soft">
+                  <Play className="ml-1 size-5" fill="currentColor" />
+                </span>
+              ) : null}
+            </div>
+            {slides.length > 1 ? (
+              <span className="absolute right-4 top-4 rounded-full bg-ink px-3 py-1 font-mono text-[8px] text-white">
+                1 / {slides.length}
+              </span>
+            ) : null}
+          </div>
+          <div className="flex items-center gap-5 border-t border-border px-4 py-3">
+            <Heart className="size-5" />
+            <MessageSquareText className="size-5" />
+            <Send className="size-5" />
+          </div>
+          <p className="whitespace-pre-wrap px-4 pb-5 text-sm leading-[1.65]">{caption}</p>
+        </div>
+      </article>
+    );
+  }
+
+  return (
+    <article className="rounded-[1.5rem] border border-border bg-white p-6 sm:p-8">
+      <div className="flex items-center gap-3 border-b border-border pb-5">
+        <span className="grid size-11 place-items-center rounded-full bg-ink text-sm font-black text-white">
+          {initial}
+        </span>
+        <div>
+          <p className="font-black">{business}</p>
+          <p className="text-xs capitalize text-muted-foreground">{entry.channel} preview</p>
+        </div>
+      </div>
+      <h3 className="mt-6 text-2xl font-black tracking-[-.025em]">{entry.title}</h3>
+      <p className="mt-5 whitespace-pre-wrap text-[15px] leading-[1.75]">{caption}</p>
+      {entry.callToAction ? (
+        <p className="mt-5 border-l-2 border-ink pl-4 text-sm font-black">{entry.callToAction}</p>
+      ) : null}
+      {entry.poll ? (
+        <div className="mt-6 rounded-xl border border-border p-4">
+          <p className="font-black">{entry.poll.question}</p>
+          <div className="mt-3 grid gap-2">
+            {entry.poll.options.map((option) => (
+              <span key={option} className="rounded-lg bg-mist px-4 py-3 text-sm font-semibold">
+                {option}
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : null}
+    </article>
+  );
+}
 
 function SocialWrittenResult({
   campaign,
@@ -2917,48 +3112,94 @@ function SocialWrittenResult({
   items: Asset[];
   lane: (typeof lanes)[keyof typeof lanes];
 }) {
-  const platformAssets = items.filter((item) => item.kind === "platform_post");
-  const entries: SocialEntry[] = output
-    ? [
-        ...output.platformPosts.map((post, index) => ({
-          id: post.id,
-          type: post.format,
-          channel: post.platform,
-          title: post.title,
-          body: `${post.hook}\n\n${post.body}${post.hashtags.length ? `\n\n${post.hashtags.join(" ")}` : ""}`,
-          callToAction: post.callToAction,
-          nativeFeature: post.nativeFeature,
-          asset: platformAssets[index],
-        })),
-        {
-          id: "newsletter",
-          type: "email",
-          channel: "email",
-          title: output.newsletter.subject,
-          body: output.newsletter.body,
-          asset: items.find((item) => item.kind === "newsletter"),
-        },
-        ...output.faq.map((faq, index) => ({
-          id: `faq-${index}`,
-          type: "FAQ",
-          channel: "website",
-          title: faq.question,
-          body: faq.answer,
-          asset: items.filter((item) => item.kind === "faq")[index],
-        })),
-      ]
-    : items
-        .filter((item) => ["platform_post", "caption", "newsletter", "faq"].includes(item.kind))
-        .map((item) => ({
-          id: item.id,
-          type: assetKindMeta(item.kind).label,
-          channel: item.kind === "newsletter" ? "email" : "social",
-          title: item.title,
-          body: item.content,
-          asset: item,
-        }));
-  const [selected, setSelected] = useState(0);
-  const current = entries[selected];
+  const entries = useMemo<SocialEntry[]>(() => {
+    const platformAssets = items.filter((item) => item.kind === "platform_post");
+    return output
+      ? [
+          ...output.platformPosts.map((post, index) => ({
+            id: safeText(post?.id, `platform-${index}`),
+            type: safeText(post?.format, "post"),
+            channel: safeText(post?.platform, "social"),
+            title: safeText(post?.title, `Platform draft ${index + 1}`),
+            hook: safeText(post?.hook),
+            body: safeText(post?.body, "This draft is still being shaped."),
+            callToAction: safeText(post?.callToAction),
+            nativeFeature: safeText(post?.nativeFeature),
+            publishNotes: safeText(post?.publishNotes),
+            hashtags: safeTextList(post?.hashtags),
+            slides: safeTextList(post?.slides),
+            poll:
+              post?.poll &&
+              typeof post.poll.question === "string" &&
+              Array.isArray(post.poll.options)
+                ? { question: post.poll.question, options: safeTextList(post.poll.options) }
+                : null,
+            quiz:
+              post?.quiz &&
+              typeof post.quiz.question === "string" &&
+              Array.isArray(post.quiz.options)
+                ? {
+                    question: post.quiz.question,
+                    options: safeTextList(post.quiz.options),
+                    correctIndex:
+                      typeof post.quiz.correctIndex === "number" ? post.quiz.correctIndex : 0,
+                  }
+                : null,
+            asset: platformAssets[index],
+          })),
+          {
+            id: "newsletter",
+            type: "email",
+            channel: "email",
+            title: safeText(output.newsletter?.subject, "Newsletter"),
+            hook: "",
+            body: safeText(output.newsletter?.body, "This email draft is still being shaped."),
+            hashtags: [],
+            slides: [],
+            poll: null,
+            quiz: null,
+            asset: items.find((item) => item.kind === "newsletter"),
+          },
+          ...output.faq.map((faq, index) => ({
+            id: `faq-${index}`,
+            type: "FAQ",
+            channel: "website",
+            title: safeText(faq?.question, `Question ${index + 1}`),
+            hook: "",
+            body: safeText(faq?.answer, "This answer is still being shaped."),
+            hashtags: [],
+            slides: [],
+            poll: null,
+            quiz: null,
+            asset: items.filter((item) => item.kind === "faq")[index],
+          })),
+        ]
+      : items
+          .filter((item) => ["platform_post", "caption", "newsletter", "faq"].includes(item.kind))
+          .map((item) => ({
+            id: item.id,
+            type: assetKindMeta(item.kind).label,
+            channel: item.kind === "newsletter" ? "email" : "social",
+            title: item.title,
+            hook: "",
+            body: item.content,
+            hashtags: [],
+            slides: [],
+            poll: null,
+            quiz: null,
+            asset: item,
+          }));
+  }, [items, output]);
+  const entrySignature = entries.map((entry) => entry.id).join("|");
+  const [selectedId, setSelectedId] = useState("");
+  useEffect(() => {
+    if (!entries.length) {
+      setSelectedId("");
+      return;
+    }
+    if (!entries.some((entry) => entry.id === selectedId)) setSelectedId(entries[0].id);
+  }, [entrySignature, entries, selectedId]);
+  const current = entries.find((entry) => entry.id === selectedId) || entries[0];
   if (!current)
     return (
       <EmptyState
@@ -2967,7 +3208,7 @@ function SocialWrittenResult({
         body="Build the campaign to create them."
       />
     );
-  const copy = `${current.title}\n\n${current.body}${current.callToAction ? `\n\n${current.callToAction}` : ""}`;
+  const copy = `${current.title}\n\n${current.hook ? `${current.hook}\n\n` : ""}${current.body}${current.callToAction ? `\n\n${current.callToAction}` : ""}${current.hashtags.length ? `\n\n${current.hashtags.join(" ")}` : ""}`;
   return (
     <div className="space-y-6">
       <CampaignScreenHeader
@@ -2977,15 +3218,13 @@ function SocialWrittenResult({
         lane={lane}
       />
       <div className="flex gap-2 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {entries.map((entry, index) => (
+        {entries.map((entry) => (
           <button
             key={entry.id}
-            onClick={() => setSelected(index)}
-            className={`min-h-14 shrink-0 rounded-full border px-4 text-sm font-bold capitalize ${selected === index ? "shadow-soft" : "bg-white"}`}
+            onClick={() => setSelectedId(entry.id)}
+            className={`min-h-14 shrink-0 rounded-full border px-4 text-sm font-bold capitalize ${current.id === entry.id ? "border-ink bg-ink text-white" : "border-border bg-white"}`}
             style={
-              selected === index
-                ? { borderColor: lane.color, background: lane.soft, color: lane.color }
-                : undefined
+              current.id === entry.id ? { boxShadow: `inset 0 -3px 0 ${lane.color}` } : undefined
             }
           >
             {entry.channel} · {entry.type}
@@ -2993,36 +3232,11 @@ function SocialWrittenResult({
         ))}
       </div>
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]">
-        <article className="rounded-[1.75rem] border border-border bg-white p-6 sm:p-8">
-          <div className="flex items-center gap-3 border-b border-border pb-5">
-            <span
-              className="grid size-11 place-items-center rounded-full text-sm font-black text-white"
-              style={{ background: lane.color }}
-            >
-              {(campaign.title || "C").charAt(0)}
-            </span>
-            <div>
-              <p className="font-black">{campaign.title.split(":")[0]}</p>
-              <p className="text-xs capitalize text-muted-foreground">{current.channel} preview</p>
-            </div>
-          </div>
-          <h3 className="mt-6 text-2xl font-black tracking-[-.025em]">{current.title}</h3>
-          <p className="mt-5 whitespace-pre-wrap text-[15px] leading-[1.75]">{current.body}</p>
-          {current.callToAction && (
-            <p
-              className="mt-5 border-l-4 pl-4 text-sm font-black"
-              style={{ borderColor: lane.color }}
-            >
-              {current.callToAction}
-            </p>
-          )}
-          <div className="mt-7 flex justify-between border-t border-border pt-4 text-xs text-muted-foreground">
-            <span>Like</span>
-            <span>Comment</span>
-            <span>Share</span>
-          </div>
-        </article>
-        <aside className="h-fit rounded-[1.5rem] p-5" style={{ background: lane.soft }}>
+        <PlatformDraftPreview
+          entry={current}
+          business={campaign.title.split(":")[0] || "Your business"}
+        />
+        <aside className="h-fit rounded-[1.5rem] border border-border bg-white p-5">
           <p
             className="font-mono text-[9px] uppercase tracking-[.18em]"
             style={{ color: lane.color }}
@@ -3033,6 +3247,14 @@ function SocialWrittenResult({
             {current.nativeFeature ||
               "This version is shaped for the channel and the audience action it needs to earn."}
           </p>
+          {current.publishNotes ? (
+            <div className="mt-6 rounded-xl bg-mist p-4">
+              <p className="font-mono text-[8px] uppercase tracking-[.15em] text-muted-foreground">
+                Publish it well
+              </p>
+              <p className="mt-2 text-xs leading-relaxed">{current.publishNotes}</p>
+            </div>
+          ) : null}
           <div className="mt-6 border-t border-current/10 pt-5">
             <p className="text-xs font-black capitalize">{current.type}</p>
             <p className="mt-1 text-xs text-muted-foreground capitalize">{current.channel}</p>
@@ -5098,76 +5320,73 @@ function escapeHtml(value: string) {
     .replaceAll("'", "&#039;");
 }
 function downloadBrandGuide(draft: Record<string, string>, completion: number) {
-  const value = (key: string, fallback = "Add this section in Brand Studio.") =>
-    escapeHtml(draft[key]?.trim() || fallback).replaceAll("\n", "<br />");
-  const sections = [
-    [
-      "01",
-      "Identity",
-      `${value("business_name")}<br><small>${value("creator_type")} · ${value("industry", "Category not set")}</small>`,
-    ],
-    [
-      "02",
-      "Mission & values",
-      `<strong>Mission</strong><br>${value("mission")}<br><br><strong>Values</strong><br>${value("values")}`,
-    ],
-    [
-      "03",
-      "Audience",
-      `${value("primary_audience")}<br><br><strong>Primary goal</strong><br>${value("primary_goal")}`,
-    ],
-    ["04", "Offers", value("offers")],
-    [
-      "05",
-      "Voice",
-      `<strong>Traits</strong><br>${value("voice_traits")}<br><br><strong>Language to avoid</strong><br>${value("avoid_language")}`,
-    ],
-    [
-      "06",
-      "Messaging",
-      `<strong>Description</strong><br>${value("description")}<br><br><strong>Taglines</strong><br>${value("taglines")}<br><br><strong>Calls to action</strong><br>${value("calls_to_action")}`,
-    ],
-    [
-      "07",
-      "Proof",
-      value("proof_points", "No verified proof has been added. Do not invent claims."),
-    ],
-    ["08", "Typography", value("typography")],
-    ["09", "Photography", value("photography")],
-    [
-      "10",
-      "Graphics & image style",
-      `<strong>${value("visual_style")}</strong><br><br>${value("imageStyle")}`,
-    ],
-    [
-      "11",
-      "Motion & editing",
-      `<strong>Motion</strong><br>${value("motion")}<br><br><strong>Editing</strong><br>${value("editing")}`,
-    ],
-    [
-      "12",
-      "Social & channels",
-      `<strong>Platforms</strong><br>${value("platforms")}<br><br>${value("social_profiles")}`,
-    ],
-    ["13", "Video examples", value("videoExamples")],
-    ["14", "Content examples", value("contentExamples")],
-    [
-      "15",
-      "Competitive context",
-      `<strong>Customers / community</strong><br>${value("customers")}<br><br><strong>Alternatives</strong><br>${value("competitors")}`,
-    ],
-    [
-      "16",
-      "AI prompting rules",
-      value(
-        "aiRules",
-        "Use only approved Brand DNA. Never invent proof. Match the stated audience, goal, voice, and visual system.",
-      ),
-    ],
-  ];
-  const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${value("business_name")} Brand Guide</title><style>
-  :root{--ink:#202126;--paper:#F4F1EA;--purple:#3D1A66;--orange:#E8720C;--green:#5B8A2D;--teal:#0A9B8F;--line:#dedbd4}*{box-sizing:border-box}body{margin:0;color:var(--ink);font-family:Inter,Arial,sans-serif;background:white}header{min-height:72vh;padding:8vw;display:flex;flex-direction:column;justify-content:space-between;background:var(--paper);border-bottom:12px solid var(--purple)}.eyebrow{font:700 11px ui-monospace,monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--purple)}h1{font-size:clamp(54px,9vw,120px);line-height:.86;letter-spacing:-.07em;margin:32px 0;max-width:9ch}.meta{display:flex;gap:24px;flex-wrap:wrap;font-weight:700}.wrap{max-width:1100px;margin:auto;padding:80px 28px}.intro{font-size:26px;line-height:1.35;max-width:750px;margin-bottom:70px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{min-height:280px;border:1px solid var(--line);border-radius:24px;padding:28px;break-inside:avoid}.num{font:700 10px ui-monospace,monospace;letter-spacing:.15em;color:var(--teal)}h2{font-size:28px;letter-spacing:-.04em;margin:22px 0 34px}.body{font-size:14px;line-height:1.7}.lanes{display:grid;grid-template-columns:repeat(4,1fr);margin-top:70px}.lane{height:96px;padding:16px;color:white;font-weight:800}.lane:nth-child(1){background:var(--purple)}.lane:nth-child(2){background:var(--orange)}.lane:nth-child(3){background:var(--green)}.lane:nth-child(4){background:var(--teal)}footer{margin-top:70px;padding-top:24px;border-top:1px solid var(--line);font:700 10px ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase}@media(max-width:700px){header{min-height:60vh}.grid{grid-template-columns:1fr}.lanes{grid-template-columns:1fr 1fr}.card{min-height:auto}}@media print{header{min-height:92vh}.wrap{padding:48px 20px}.card{page-break-inside:avoid}}
-  </style></head><body><header><div><p class="eyebrow">Palmer House Studio · Living Brand Guide</p><h1>${value("business_name")}</h1></div><div class="meta"><span>${value("creator_type")}</span><span>${value("primary_goal")}</span><span>${completion}% profile strength</span></div></header><main class="wrap"><p class="eyebrow">Source of truth</p><p class="intro">This living guide keeps strategy, writing, graphics, video, and AI assistance aligned. Update Brand DNA as the work and audience evolve.</p><div class="grid">${sections.map(([number, title, body]) => `<section class="card"><p class="num">${number}</p><h2>${title}</h2><div class="body">${body}</div></section>`).join("")}</div><div class="lanes"><div class="lane">Spotlight<br><small>Build trust</small></div><div class="lane">Reel<br><small>Earn attention</small></div><div class="lane">Evergreen<br><small>Teach clearly</small></div><div class="lane">System<br><small>Create clarity</small></div></div><footer>Generated from approved Brand DNA · ${new Date().toLocaleDateString()}</footer></main></body></html>`;
+  const raw = (key: string, fallback = "") => draft[key]?.trim() || fallback;
+  const text = (key: string, fallback = "Not defined yet.") =>
+    escapeHtml(raw(key, fallback)).replaceAll("\n", "<br />");
+  const tokens = (key: string) =>
+    raw(key)
+      .split(/\n|,/)
+      .map((item) => item.trim())
+      .filter(Boolean);
+  const chipList = (key: string, empty = "Open Brand DNA to define this.") => {
+    const values = tokens(key);
+    return values.length
+      ? values.map((item) => `<span class="chip">${escapeHtml(item)}</span>`).join("")
+      : `<span class="empty">${empty}</span>`;
+  };
+  const numberedList = (key: string, empty = "Open Brand DNA to define this.") => {
+    const values = tokens(key);
+    return values.length
+      ? values
+          .map(
+            (item, index) =>
+              `<li><span>${String(index + 1).padStart(2, "0")}</span><strong>${escapeHtml(item)}</strong></li>`,
+          )
+          .join("")
+      : `<li class="is-empty"><span>—</span><strong>${empty}</strong></li>`;
+  };
+  const linkList = tokens("social_profiles");
+  const externalLink = (item: string) => {
+    try {
+      const url = new URL(item);
+      if (!["http:", "https:"].includes(url.protocol)) throw new Error("Unsupported protocol");
+      return `<a href="${escapeHtml(url.href)}" target="_blank" rel="noreferrer">${escapeHtml(item)}</a>`;
+    } catch {
+      return `<span class="empty">${escapeHtml(item)}</span>`;
+    }
+  };
+  const missing = [
+    ["typography", "Typography"],
+    ["motion", "Motion"],
+    ["editing", "Editing"],
+    ["contentExamples", "Content examples"],
+    ["proof_points", "Verified proof"],
+  ].filter(([key]) => !raw(key));
+  const business = escapeHtml(raw("business_name", "Your Brand"));
+  const generated = new Date().toLocaleDateString(undefined, {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+  const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${business} Brand Guide</title><style>
+  :root{--paper:#fff;--cream:#F4F1EA;--mist:#F6F8FA;--line:#E5E7EB;--muted:#6B7280;--ink:#1F2328;--spot:#3D1A66;--spot-soft:#EEE9F4;--reel:#E8720C;--reel-soft:#FDF1E6;--ever:#5B8A2D;--ever-soft:#EEF4E4;--system:#0A9B8F;--system-soft:#E4F4F2;--sans:"Satoshi","Inter","Helvetica Neue",Arial,sans-serif;--mono:"JetBrains Mono",ui-monospace,monospace;--serif:"Playfair Display",Georgia,serif}*{box-sizing:border-box}html{background:#dfe2e5}body{margin:0;color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}.page{position:relative;width:min(8.5in,100%);min-height:11in;margin:28px auto;background:var(--paper);padding:.65in .72in .7in;overflow:visible;box-shadow:0 18px 60px rgba(31,35,40,.14);break-after:page;page-break-after:always;counter-increment:guide}.page::after{content:counter(guide,decimal-leading-zero);position:absolute;right:.72in;bottom:.34in;font:600 9px var(--mono);letter-spacing:.2em;color:var(--muted)}body{counter-reset:guide}.cover{display:flex;min-height:11in;flex-direction:column;justify-content:space-between;overflow:hidden;background:var(--spot);color:var(--paper)}.cover::after{color:rgba(255,255,255,.5)}.cover-mark{display:flex;align-items:center;justify-content:space-between;gap:24px}.cover-label,.kicker{font:600 9px var(--mono);letter-spacing:.21em;text-transform:uppercase}.cover-label{color:rgba(255,255,255,.68)}.status{border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:8px 12px;color:rgba(255,255,255,.82)}.cover h1{max-width:7ch;margin:0;font-size:76px;line-height:.91;letter-spacing:-.065em}.cover h1 span{display:block;color:#F2DDFE;font-family:var(--serif);font-size:.72em;font-style:italic;font-weight:600;letter-spacing:-.035em}.cover-intro{max-width:5.7in;margin-top:28px;font-size:19px;line-height:1.45;color:rgba(255,255,255,.78)}.cover-foot{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid rgba(255,255,255,.2);border-radius:18px;overflow:hidden}.cover-foot div{min-height:84px;padding:16px;border-right:1px solid rgba(255,255,255,.2)}.cover-foot div:last-child{border:0}.cover-foot b{display:block;font-size:14px}.cover-foot small{display:block;margin-top:8px;color:rgba(255,255,255,.56);font:500 8px var(--mono);letter-spacing:.12em;text-transform:uppercase}.page-head{display:grid;grid-template-columns:1.15in 1fr;gap:24px;padding-bottom:28px;border-bottom:1px solid var(--line)}.page-num{font:600 10px var(--mono);letter-spacing:.2em;color:var(--spot);text-transform:uppercase}.page-head h2{max-width:5.5in;margin:0;font-size:39px;line-height:1.02;letter-spacing:-.045em}.page-head h2 em{font-family:var(--serif);font-weight:600}.lede{max-width:5.5in;margin:16px 0 0;color:var(--muted);font-size:15px}.section{margin-top:34px}.kicker{color:var(--system)}.display{margin:14px 0 0;font-size:32px;line-height:1.08;letter-spacing:-.04em}.quote{margin:0;padding:28px;border-left:6px solid var(--spot);background:var(--spot-soft);font-size:25px;font-weight:750;line-height:1.22;letter-spacing:-.025em}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.panel{border:1px solid var(--line);border-radius:18px;padding:22px;break-inside:avoid}.panel.soft{background:var(--mist);border-color:transparent}.panel h3{margin:10px 0 0;font-size:20px;line-height:1.12;letter-spacing:-.025em}.panel p{margin:10px 0 0;color:var(--muted)}.data-label{font:600 9px var(--mono);letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}.big-data{margin-top:12px;font-size:20px;font-weight:750;line-height:1.25}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.chip{display:inline-flex;min-height:30px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:6px 11px;background:var(--paper);font-size:11px;font-weight:650}.empty{display:block;border:1px dashed var(--line);border-radius:12px;padding:12px;color:var(--muted);font-style:italic}.xform{display:grid;grid-template-columns:1fr 46px 1fr;align-items:center;margin-top:28px;border:1px solid var(--line);border-radius:20px;overflow:hidden}.xform div{min-height:108px;padding:22px}.xform .old{background:var(--mist);color:var(--muted);text-decoration:line-through}.xform .arrow{display:grid;min-height:108px;place-items:center;padding:0;background:var(--spot);color:white;font-size:24px}.xform .new{color:var(--spot);font-weight:750}.list{list-style:none;margin:12px 0 0;padding:0}.list li{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}.list li:last-child{border:0}.list li span{font:600 9px var(--mono);color:var(--system)}.list li strong{font-size:13px}.list .is-empty strong{color:var(--muted);font-style:italic}.proof{margin-top:16px;padding:22px;border-radius:18px;background:var(--ever-soft);border-left:5px solid var(--ever)}.proof strong{display:block;font-size:16px}.proof p{margin:8px 0 0;color:#486d24}.message{margin-top:24px;border-top:1px solid var(--line);padding-top:24px}.message .tagline{font-family:var(--serif);font-size:28px;font-style:italic;line-height:1.18}.cta{display:inline-flex;margin-top:18px;border-radius:999px;padding:10px 16px;background:var(--spot);color:white;font-weight:700}.voice-do,.voice-dont{min-height:170px}.voice-do{background:var(--system-soft);border-color:transparent}.voice-dont{background:var(--reel-soft);border-color:transparent}.voice-do .data-label{color:var(--system)}.voice-dont .data-label{color:var(--reel)}.swatches{display:grid;grid-template-columns:repeat(4,1fr);margin-top:22px;border-radius:18px;overflow:hidden}.swatch{height:108px;padding:17px;color:white}.swatch:nth-child(1){background:var(--spot)}.swatch:nth-child(2){background:var(--reel)}.swatch:nth-child(3){background:var(--ever)}.swatch:nth-child(4){background:var(--system)}.swatch b{display:block;font-size:14px}.swatch small{font:500 8px var(--mono);letter-spacing:.12em}.type-row{display:grid;grid-template-columns:1.2in 1fr;gap:18px;padding:18px 0;border-bottom:1px solid var(--line)}.type-row:last-child{border:0}.type-name{font:600 9px var(--mono);letter-spacing:.15em;color:var(--muted);text-transform:uppercase}.type-demo{font-size:24px;font-weight:780;letter-spacing:-.03em}.type-demo.serif{font-family:var(--serif);font-style:italic;font-weight:600}.type-demo.mono{font:600 11px var(--mono);letter-spacing:.18em;text-transform:uppercase}.visual-stage{display:grid;grid-template-columns:1fr 1fr;gap:16px}.art{position:relative;min-height:240px;border-radius:20px;background:var(--cream);overflow:hidden}.art .frame{position:absolute;left:34px;top:34px;width:155px;height:116px;border:3px solid var(--spot);border-radius:18px}.art .play{position:absolute;left:90px;top:70px;width:0;height:0;border-top:23px solid transparent;border-bottom:23px solid transparent;border-left:36px solid var(--reel)}.art .caption{position:absolute;right:30px;top:54px;width:90px;height:20px;border-radius:8px;background:var(--system)}.art .caption.two{top:84px;width:125px;background:var(--ever)}.art .timeline{position:absolute;left:34px;right:34px;bottom:40px;height:10px;border-radius:999px;background:var(--line)}.art .timeline::after{content:"";display:block;width:62%;height:100%;border-radius:inherit;background:var(--spot)}.timeline-flow{display:grid;grid-template-columns:repeat(4,1fr);margin-top:18px;border:1px solid var(--line);border-radius:18px;overflow:hidden}.timeline-flow div{position:relative;min-height:88px;padding:16px;border-right:1px solid var(--line)}.timeline-flow div:last-child{border:0}.timeline-flow b{display:block;font-size:12px}.timeline-flow small{display:block;margin-top:8px;color:var(--muted)}.timeline-flow div:not(:last-child)::after{content:"→";position:absolute;right:-9px;top:34px;z-index:2;width:18px;height:18px;border-radius:50%;background:white;text-align:center;color:var(--spot)}.channel{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}.channel:last-child{border:0}.channel .dot{width:28px;height:28px;border-radius:50%;background:var(--spot-soft);border:1px solid #dcd1e9}.channel strong{font-size:13px}.channel small{color:var(--muted)}.channel em{font:500 8px var(--mono);letter-spacing:.12em;color:var(--spot);text-transform:uppercase}.guardrail{padding:28px;border-radius:22px;background:var(--ink);color:white}.guardrail p{margin:16px 0 0;font-size:21px;line-height:1.35}.guardrail .kicker{color:#85d8d0}.meter{height:12px;margin-top:16px;border-radius:999px;background:var(--line);overflow:hidden}.meter span{display:block;height:100%;width:${completion}%;background:var(--system)}.missing{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px}.missing span{padding:10px;border-radius:10px;background:var(--reel-soft);color:#9a4e0e;font-size:11px;font-weight:650}.ready{padding:18px;border-radius:14px;background:var(--system-soft);color:#087a71;font-weight:700}.source-links a{display:block;padding:10px 0;border-bottom:1px solid var(--line);color:var(--spot);text-decoration:none;overflow-wrap:anywhere}.source-links a:last-child{border:0}.doc-foot{position:absolute;left:.72in;bottom:.34in;font:500 8px var(--mono);letter-spacing:.14em;color:var(--muted);text-transform:uppercase}@media(max-width:760px){html{background:white}.page{width:100%;min-height:auto;margin:0;padding:40px 24px 72px;box-shadow:none}.cover{min-height:100vh}.cover h1{font-size:52px}.cover-foot,.grid-3,.grid-2,.visual-stage{grid-template-columns:1fr}.cover-foot div{border-right:0;border-bottom:1px solid rgba(255,255,255,.2)}.page-head{grid-template-columns:1fr}.xform{grid-template-columns:1fr}.xform .arrow{min-height:44px}.swatches{grid-template-columns:1fr 1fr}.timeline-flow{grid-template-columns:1fr 1fr}.missing{grid-template-columns:1fr}}@page{size:Letter;margin:0}@media print{html{background:white}.page{width:8.5in;height:auto;min-height:11in;margin:0;box-shadow:none}.cover{height:11in}.page:last-child{break-after:auto;page-break-after:auto}}
+  </style></head><body>
+  <section class="page cover"><div class="cover-mark"><span class="cover-label">Palmer House Studio · Living Brand Guide</span><span class="status">${completion}% complete</span></div><div><p class="cover-label">Source of truth · ${generated}</p><h1>${business}<span>Brand Guide</span></h1><p class="cover-intro">The shared reference for how this brand should sound, look, move, and turn useful ideas into recognizable work.</p></div><div class="cover-foot"><div><b>Foundation</b><small>Who + why</small></div><div><b>Voice</b><small>How it sounds</small></div><div><b>Visual system</b><small>How it looks</small></div><div><b>Content system</b><small>How it moves</small></div></div><span class="doc-foot" style="color:rgba(255,255,255,.5)">${business} · Approved Brand DNA</span></section>
+
+  <section class="page"><header class="page-head"><span class="page-num">01 · Foundation</span><div><h2>What this brand is here to <em>make clear.</em></h2><p class="lede">Identity, mission, and the outcome every message should support.</p></div></header><div class="section"><p class="kicker">Mission</p><p class="quote">${text("mission")}</p></div><div class="grid-3 section"><div class="panel"><span class="data-label">Brand / project</span><p class="big-data">${business}</p></div><div class="panel"><span class="data-label">Category</span><p class="big-data">${text("creator_type")}<br><small>${text("industry", "Category not set")}</small></p></div><div class="panel"><span class="data-label">Primary goal</span><p class="big-data">${text("primary_goal")}</p></div></div><div class="xform"><div class="old">Scattered brand decisions</div><div class="arrow">→</div><div class="new">${text("primary_goal", "One clear direction")}</div></div><div class="section"><span class="data-label">Values to protect</span><div class="chips">${chipList("values")}</div></div><span class="doc-foot">${business} · Living Brand Guide</span></section>
+
+  <section class="page"><header class="page-head"><span class="page-num">02 · Audience + offer</span><div><h2>Who needs to understand <em>what.</em></h2><p class="lede">The audience, the offer, and the proof that earns the next step.</p></div></header><div class="section grid-2"><div><p class="kicker">Primary audience</p><p class="display">${text("primary_audience")}</p></div><div class="panel soft"><span class="data-label">Customer / community context</span><p>${text("customers")}</p></div></div><div class="section grid-2"><div class="panel"><span class="data-label">Offers</span><ol class="list">${numberedList("offers")}</ol></div><div class="panel"><span class="data-label">Alternatives they compare</span><p>${text("competitors")}</p></div></div><div class="proof"><span class="data-label">Verified proof only</span><strong>${text("proof_points", "No verified proof has been added yet.")}</strong><p>Keep unsupported claims out of scripts, captions, graphics, and AI suggestions.</p></div><span class="doc-foot">${business} · Audience + offer</span></section>
+
+  <section class="page"><header class="page-head"><span class="page-num">03 · Voice + message</span><div><h2>Direct enough to act on. Human enough to <em>believe.</em></h2><p class="lede">The repeatable language system for campaigns, conversations, and AI-assisted drafts.</p></div></header><div class="section grid-2"><div class="panel voice-do"><span class="data-label">Sound like this</span><div class="chips">${chipList("voice_traits")}</div></div><div class="panel voice-dont"><span class="data-label">Do not sound like this</span><div class="chips">${chipList("avoid_language")}</div></div></div><div class="message"><span class="data-label">Core description</span><p class="display">${text("description")}</p></div><div class="section grid-2"><div class="panel"><span class="data-label">Tagline / memorable line</span><p class="tagline">${text("taglines")}</p></div><div class="panel"><span class="data-label">Preferred calls to action</span><ol class="list">${numberedList("calls_to_action")}</ol></div></div><span class="doc-foot">${business} · Voice + message</span></section>
+
+  <section class="page"><header class="page-head"><span class="page-num">04 · Visual system</span><div><h2>A recognizable system, not a folder of <em>random styles.</em></h2><p class="lede">Typography, image direction, and the Palmer House lane framework used to organize content by business problem.</p></div></header><div class="swatches"><div class="swatch"><b>Spotlight</b><small>#3D1A66 · Trust</small></div><div class="swatch"><b>Reel</b><small>#E8720C · Reach</small></div><div class="swatch"><b>Evergreen</b><small>#5B8A2D · Teach</small></div><div class="swatch"><b>System</b><small>#0A9B8F · Clarity</small></div></div><div class="section grid-2"><div class="panel"><span class="data-label">Typography direction</span><div class="type-row"><span class="type-name">Display</span><span class="type-demo">Clear beats clever.</span></div><div class="type-row"><span class="type-name">Editorial</span><span class="type-demo serif">Make it human.</span></div><div class="type-row"><span class="type-name">Labels</span><span class="type-demo mono">One useful next step</span></div><p>${text("typography")}</p></div><div class="art" aria-label="Abstract visual-system example"><span class="frame"></span><span class="play"></span><span class="caption"></span><span class="caption two"></span><span class="timeline"></span></div></div><div class="section grid-2"><div class="panel soft"><span class="data-label">Photography</span><p>${text("photography")}</p></div><div class="panel soft"><span class="data-label">Graphics + image style</span><h3>${text("visual_style")}</h3><p>${text("imageStyle")}</p></div></div><span class="doc-foot">${business} · Visual system</span></section>
+
+  <section class="page"><header class="page-head"><span class="page-num">05 · Motion + editing</span><div><h2>Movement should explain the <em>information.</em></h2><p class="lede">A practical direction for pacing, transitions, footage, and repeatable production choices.</p></div></header><div class="section visual-stage"><div class="panel"><span class="data-label">Motion language</span><p class="big-data">${text("motion")}</p></div><div class="panel"><span class="data-label">Editing language</span><p class="big-data">${text("editing")}</p></div></div><div class="timeline-flow"><div><b>Start</b><small>Name the problem.</small></div><div><b>Reveal</b><small>Show the mechanism.</small></div><div><b>Prove</b><small>Make the claim visible.</small></div><div><b>Move</b><small>Give one next step.</small></div></div><div class="section grid-2"><div class="panel"><span class="data-label">Video references</span><p>${text("videoExamples")}</p></div><div class="panel"><span class="data-label">Content references</span><p>${text("contentExamples")}</p></div></div><div class="section panel soft"><span class="data-label">Operating principle</span><h3>Every effect should help the viewer understand what changed, what matters, or what to do next.</h3></div><span class="doc-foot">${business} · Motion + editing</span></section>
+
+  <section class="page"><header class="page-head"><span class="page-num">06 · Content system</span><div><h2>One useful idea, shaped for the <em>right places.</em></h2><p class="lede">Channels should receive native versions of the same strategy—not identical copy pasted everywhere.</p></div></header><div class="section grid-2"><div class="panel"><span class="data-label">Active platforms</span><div class="chips">${chipList("platforms")}</div><div class="section source-links">${linkList.length ? linkList.map(externalLink).join("") : `<span class="empty">No profile links added.</span>`}</div></div><div class="panel soft"><span class="data-label">Campaign source material</span><h3>Start with something real.</h3><p>A customer question, useful link, photo, working process, proof moment, or recorded explanation can become the source for a connected campaign.</p></div></div><div class="timeline-flow"><div><b>Capture</b><small>Save the useful thought.</small></div><div><b>Shape</b><small>Choose the audience job.</small></div><div><b>Produce</b><small>Make the anchor and cutdowns.</small></div><div><b>Reuse</b><small>Schedule the connected system.</small></div></div><div class="section grid-2"><div class="panel"><span class="data-label">Preferred video formats</span><p>${text("videoExamples")}</p></div><div class="panel"><span class="data-label">Preferred content formats</span><p>${text("contentExamples")}</p></div></div><span class="doc-foot">${business} · Content system</span></section>
+
+  <section class="page"><header class="page-head"><span class="page-num">07 · AI operating rules</span><div><h2>Helpful memory with visible <em>guardrails.</em></h2><p class="lede">Brand DNA remains the source of truth. AI can organize and suggest; people approve what becomes real.</p></div></header><div class="section guardrail"><span class="kicker">Approved instruction</span><p>${text("aiRules", "Use only approved Brand DNA. Never invent proof. Match the stated audience, goal, voice, and visual system.")}</p></div><div class="section grid-2"><div class="panel voice-do"><span class="data-label">AI may</span><ol class="list"><li><span>01</span><strong>Use approved Brand DNA as context</strong></li><li><span>02</span><strong>Adapt one strategy for each platform</strong></li><li><span>03</span><strong>Suggest updates for human approval</strong></li></ol></div><div class="panel voice-dont"><span class="data-label">AI may not</span><ol class="list"><li><span>01</span><strong>Invent proof, credentials, or customer claims</strong></li><li><span>02</span><strong>Overwrite Brand DNA silently</strong></li><li><span>03</span><strong>Publish or send without approval</strong></li></ol></div></div><div class="section panel"><span class="data-label">Guide readiness · ${completion}%</span><div class="meter"><span></span></div><div class="section">${missing.length ? `<span class="data-label">Worth defining next</span><div class="missing">${missing.map(([, label]) => `<span>${label}</span>`).join("")}</div>` : `<div class="ready">The core guide fields are complete. Keep this document current as the brand evolves.</div>`}</div></div><span class="doc-foot">Generated ${generated} · Update inside Palmer House Studio</span></section>
+  </body></html>`;
   downloadText(
     `${(draft.business_name || "brand").replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-brand-guide.html`,
     html,

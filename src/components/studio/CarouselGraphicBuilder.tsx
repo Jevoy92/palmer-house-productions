@@ -58,10 +58,10 @@ function slideSvg({
   const text = lines
     .map(
       (line, lineIndex) =>
-        `<text x="92" y="${565 + lineIndex * 96}" fill="#202126" font-family="Arial, Helvetica, sans-serif" font-size="74" font-weight="800" letter-spacing="-2">${escapeXml(line)}</text>`,
+        `<text x="92" y="${565 + lineIndex * 96}" fill="#202126" font-family="Satoshi, sans-serif" font-size="74" font-weight="800" letter-spacing="-2">${escapeXml(line)}</text>`,
     )
     .join("");
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350"><defs><filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="24" stdDeviation="20" flood-color="#202126" flood-opacity=".14"/></filter></defs><rect width="1080" height="1350" fill="#F4F1EA"/><rect x="0" y="0" width="18" height="1350" fill="${meta.color}"/>${visualMark(style, meta.color)}<text x="92" y="110" fill="${meta.color}" font-family="ui-monospace, monospace" font-size="20" font-weight="700" letter-spacing="4">${escapeXml(meta.name.toUpperCase())} · ${escapeXml(meta.job.toUpperCase())}</text><text x="92" y="182" fill="#202126" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700">${escapeXml(business)}</text>${text}<line x1="92" y1="1215" x2="988" y2="1215" stroke="#D9D5CD" stroke-width="2"/><text x="92" y="1270" fill="#202126" font-family="ui-monospace, monospace" font-size="22" font-weight="700" letter-spacing="3">PALMER HOUSE STUDIO</text><text x="988" y="1270" text-anchor="end" fill="${meta.color}" font-family="ui-monospace, monospace" font-size="22" font-weight="700">${String(index + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}</text></svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350"><defs><filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="24" stdDeviation="20" flood-color="#202126" flood-opacity=".14"/></filter></defs><rect width="1080" height="1350" fill="#F4F1EA"/><rect x="0" y="0" width="18" height="1350" fill="${meta.color}"/>${visualMark(style, meta.color)}<text x="92" y="110" fill="${meta.color}" font-family="JetBrains Mono, monospace" font-size="20" font-weight="700" letter-spacing="4">${escapeXml(meta.name.toUpperCase())} · ${escapeXml(meta.job.toUpperCase())}</text><text x="92" y="182" fill="#202126" font-family="Satoshi, sans-serif" font-size="27" font-weight="700">${escapeXml(business)}</text>${text}<line x1="92" y1="1215" x2="988" y2="1215" stroke="#D9D5CD" stroke-width="2"/><text x="92" y="1270" fill="#202126" font-family="JetBrains Mono, monospace" font-size="22" font-weight="700" letter-spacing="3">PALMER HOUSE STUDIO</text><text x="988" y="1270" text-anchor="end" fill="${meta.color}" font-family="JetBrains Mono, monospace" font-size="22" font-weight="700">${String(index + 1).padStart(2, "0")} / ${String(total).padStart(2, "0")}</text></svg>`;
 }
 
 function download(name: string, content: string, type: string) {
@@ -104,7 +104,7 @@ export function CarouselGraphicBuilder({
           `<figure>${svg}<figcaption>Palmer House Studio campaign graphic</figcaption></figure>`,
       )
       .join("");
-    const html = `<!doctype html><html><head><meta charset="utf-8"><title>${escapeXml(output.carousel.title)}</title><style>body{margin:0;background:#F4F1EA;font-family:Arial,sans-serif}figure{width:1080px;margin:0 auto;page-break-after:always}figure svg{display:block;width:1080px;height:1350px}figcaption{display:none}@media print{figure{margin:0}}</style></head><body>${pages}</body></html>`;
+    const html = `<!doctype html><html><head><meta charset="utf-8"><title>${escapeXml(output.carousel.title)}</title><style>body{margin:0;background:#F4F1EA;font-family:Satoshi,sans-serif}figure{width:1080px;margin:0 auto;page-break-after:always}figure svg{display:block;width:1080px;height:1350px}figcaption{display:none}@media print{figure{margin:0}}</style></head><body>${pages}</body></html>`;
     download(
       `${output.title.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}-carousel.html`,
       html,

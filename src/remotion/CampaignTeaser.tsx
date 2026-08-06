@@ -45,7 +45,7 @@ export function CampaignTeaser({
         boxSizing: "border-box",
         backgroundColor: "#FFFFFF",
         color: "#1F2328",
-        fontFamily: '"Satoshi", "Inter", Arial, sans-serif',
+        fontFamily: '"Satoshi", sans-serif',
         padding: 78,
       }}
     >

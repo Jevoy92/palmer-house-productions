@@ -80,7 +80,7 @@ const demoBrand: Brand = {
   ],
   content_examples: [],
   colors: { spotlight: "#3D1A66", reel: "#E8720C", evergreen: "#5B8A2D", system: "#0A9B8F" },
-  fonts: { primary: "Satoshi", detail: "Satoshi Mono" },
+  fonts: { primary: "Satoshi", detail: "JetBrains Mono" },
   social_links: [{ label: "Website", url: "https://gonatureworks.com" }],
   brand_details: {
     mission: "Make nature work for the way each client lives outside.",
@@ -97,6 +97,8 @@ const demoBrand: Brand = {
       "Homeowners who want a cohesive landscape rather than a disconnected list of features.",
     videoExamples:
       "Site consultations, drainage explainers, before-and-after stories, seasonal guidance, and process films.",
+    typography:
+      "Satoshi for display, body, and interface copy. JetBrains Mono only for short labels, metadata, and timecodes.",
   },
   visual_style: "Natural editorial photography",
   completion: 94,

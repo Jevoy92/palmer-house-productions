@@ -1874,8 +1874,8 @@ function IdeasBoard() {
   const [sourcePreview, setSourcePreview] = useState("");
   const [previewById, setPreviewById] = useState<Record<string, string>>({});
   const [problem, setProblem] = useState("");
-  const [lane, setLane] = useState<keyof typeof lanes>("evergreen");
   const [filter, setFilter] = useState<"all" | keyof typeof lanes>("all");
+
   const [directions, setDirections] = useState<Awaited<ReturnType<typeof suggestDirections>>>([]);
   const savedIdeas = ideas.filter((item) => item.status !== "archived");
   const combined = savedIdeas.length

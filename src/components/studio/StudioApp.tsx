@@ -219,7 +219,7 @@ const navSections = [
   },
 ] as const;
 
-const nav = navSections.flatMap((section) => section.items);
+const nav = navSections.flatMap((section) => [...section.items]);
 
 export function StudioPage({ view, campaignId }: { view: StudioView; campaignId?: string }) {
   return (
@@ -1530,7 +1530,7 @@ function Dashboard() {
                   >
                     <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
                       <img
-                        src={assetMedia(asset, index)}
+                        src={assetMediaUrl(asset)}
                         alt=""
                         className="size-full object-cover transition duration-500 group-hover:scale-105"
                       />
@@ -4249,7 +4249,9 @@ function Library() {
                 assets.filter((item) => item.status === "approved").length,
                 CheckCircle2,
               ],
-            ].map(([value, label, count, Icon]) => (
+            ].map((entry) => {
+              const [value, label, count, Icon] = entry as [string, string, number, LucideIcon];
+              return (
               <button
                 key={String(value)}
                 onClick={() => setCollection(value as typeof collection)}
@@ -4745,7 +4747,7 @@ function CalendarView() {
 
               <div className="relative mt-6 aspect-[16/9] overflow-hidden rounded-[1.25rem] border border-border bg-secondary">
                 <img
-                  src={selectedAsset ? assetMedia(selectedAsset) : creativeFour}
+                  src={selectedAsset ? assetMediaUrl(selectedAsset) : ""}
                   alt=""
                   className="size-full object-cover"
                 />

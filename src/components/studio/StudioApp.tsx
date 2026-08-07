@@ -84,6 +84,7 @@ import satoshiFontUrl from "@/assets/fonts/Satoshi-Variable.woff2?url";
 import { useStudio } from "./StudioProvider";
 import { ContentEngine } from "./ContentEngine";
 import { ContentOrbit, StudioMark } from "./StudioVisuals";
+import { PalAuthShowcase } from "./PalAuthShowcase";
 import { StudioAssistant } from "./StudioAssistant";
 import { VideoRoadmap } from "./VideoRoadmap";
 import { MemberSuccess } from "./MemberSuccess";
@@ -297,8 +298,13 @@ function AuthExperience() {
         </Link>
       </header>
 
-      <div className="mx-auto grid max-w-[90rem] items-center gap-12 py-12 lg:min-h-[calc(100vh-10rem)] lg:grid-cols-[.78fr_1.22fr] lg:py-8">
+      <div className="mx-auto grid max-w-[90rem] items-center gap-12 py-12 lg:min-h-[calc(100vh-10rem)] lg:grid-cols-[1.15fr_.85fr] lg:py-8">
+        <section className="hidden min-h-[42rem] lg:block">
+          <PalAuthShowcase />
+        </section>
+
         <section className="mx-auto w-full max-w-[31rem] lg:mx-0">
+
           <p className="studio-eyebrow text-spotlight">Your content operating system</p>
           <h1 className="mt-5 text-[clamp(2.75rem,5vw,4.4rem)] font-black leading-[.94] tracking-[-.065em]">
             {mode === "signin"
@@ -394,10 +400,6 @@ function AuthExperience() {
               </p>
             </div>
           </div>
-        </section>
-
-        <section className="relative hidden min-h-[40rem] items-center justify-center lg:flex">
-          <ContentOrbit />
         </section>
       </div>
 

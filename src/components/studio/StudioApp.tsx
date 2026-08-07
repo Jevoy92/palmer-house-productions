@@ -1375,6 +1375,28 @@ function Dashboard() {
         ) : null}
       </section>
 
+      <section className="mt-5 flex flex-col gap-4 rounded-[1.25rem] border border-border bg-white p-5 sm:flex-row sm:items-center">
+        <div className="min-w-0 flex-1">
+          <p className="studio-eyebrow" style={{ color: guide.color }}>
+            Studio level · {progression.tier.label}
+          </p>
+          <p className="mt-2 text-sm font-bold">{progression.tier.blurb}</p>
+          <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full rounded-full transition-[width] duration-500"
+              style={{ width: `${progression.percent}%`, background: guide.color }}
+            />
+          </div>
+        </div>
+        <p className="shrink-0 text-xs font-medium text-muted-foreground sm:max-w-[14rem]">
+          {progression.next
+            ? `${progression.toNext} more moves to reach ${progression.next.label}. Campaigns, finished videos, and approvals all count.`
+            : "You have reached the top tier. Keep the system running."}
+        </p>
+      </section>
+
+
+
 
       <section className="mt-5 grid overflow-hidden rounded-[1.25rem] border border-border bg-white sm:grid-cols-2 xl:grid-cols-4">
         {createOptions.map((item, index) => (

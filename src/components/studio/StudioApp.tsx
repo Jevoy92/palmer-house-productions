@@ -5788,6 +5788,115 @@ function BillingView() {
   );
 }
 
+const laneIcons = { spotlight: Target, reel: Captions, evergreen: Film, system: LayoutGrid };
+
+/** Compact, visual campaign card with a lane-coded cover and a delete control. */
+function CampaignCard({ campaign }: { campaign: Campaign }) {
+  const { assets, deleteCampaign } = useStudio();
+  const [confirming, setConfirming] = useState(false);
+  const [removing, setRemoving] = useState(false);
+  const lane = lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
+  const Icon = laneIcons[campaign.primary_lane as keyof typeof laneIcons] || Target;
+  const count = assets.filter((item) => item.campaign_id === campaign.id).length;
+  const created = new Date(campaign.created_at).toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+  });
+  return (
+    <article className="group relative overflow-hidden rounded-[1.5rem] border border-border bg-white shadow-soft transition hover:border-line-strong">
+      <Link
+        to="/studio/campaigns/$campaignId"
+        params={{ campaignId: campaign.id }}
+        className="block"
+      >
+        <div
+          className="relative h-24 overflow-hidden px-5 pt-4"
+          style={{ background: lane.color }}
+          aria-hidden
+        >
+          <span
+            className="absolute -bottom-6 -right-4 opacity-20"
+            style={{ color: "var(--paper, #fff)" }}
+          >
+            <Icon className="size-28" strokeWidth={1} />
+          </span>
+          <span className="absolute inset-x-0 bottom-0 h-px bg-white/25" />
+          <p className="font-mono text-[9px] uppercase tracking-[.2em] text-white/70">
+            {lane.label} · {campaign.status}
+          </p>
+          <p className="mt-1.5 line-clamp-2 pr-16 text-[15px] font-black leading-tight text-white">
+            {clampWords(campaign.title, 10)}
+          </p>
+        </div>
+        <div className="p-4">
+          <p className="line-clamp-2 text-[13px] leading-snug text-muted-foreground">
+            {campaign.topic || campaign.goal}
+          </p>
+          <div className="mt-3 flex items-center justify-between font-mono text-[9px] uppercase tracking-[.12em] text-muted-foreground">
+            <span>
+              {count} asset{count === 1 ? "" : "s"} · {created}
+            </span>
+            <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
+          </div>
+        </div>
+      </Link>
+      {confirming ? (
+        <div className="absolute inset-0 grid place-items-center bg-white/95 p-5 text-center">
+          <div>
+            <p className="text-sm font-black">Delete this campaign?</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Its scripts, posts, and calendar dates are removed too.
+            </p>
+            <div className="mt-4 flex justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => setConfirming(false)}
+                className="min-h-10 rounded-xl border border-border px-4 text-xs font-bold"
+              >
+                Keep it
+              </button>
+              <button
+                type="button"
+                disabled={removing}
+                onClick={() => {
+                  setRemoving(true);
+                  void deleteCampaign(campaign.id)
+                    .catch((error: unknown) =>
+                      toast.error(
+                        error instanceof Error ? error.message : "Could not delete campaign.",
+                      ),
+                    )
+                    .finally(() => {
+                      setRemoving(false);
+                      setConfirming(false);
+                    });
+                }}
+                className="inline-flex min-h-10 items-center gap-1.5 rounded-xl bg-ink px-4 text-xs font-bold text-white disabled:opacity-50"
+              >
+                {removing ? (
+                  <LoaderCircle className="size-3.5 animate-spin" />
+                ) : (
+                  <Trash2 className="size-3.5" />
+                )}
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <button
+          type="button"
+          aria-label={`Delete ${campaign.title}`}
+          onClick={() => setConfirming(true)}
+          className="absolute right-3 top-3 grid size-8 place-items-center rounded-xl bg-white/15 text-white opacity-0 transition hover:bg-white/30 focus-visible:opacity-100 group-hover:opacity-100"
+        >
+          <Trash2 className="size-4" />
+        </button>
+      )}
+    </article>
+  );
+}
+
 function CampaignList({
   campaigns,
   expanded = false,
@@ -5796,21 +5905,27 @@ function CampaignList({
   expanded?: boolean;
 }) {
   if (!campaigns.length) return null;
+  if (expanded)
+    return (
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        {campaigns.map((campaign) => (
+          <CampaignCard key={campaign.id} campaign={campaign} />
+        ))}
+      </div>
+    );
   return (
-    <div className={expanded ? "grid gap-4 md:grid-cols-2 xl:grid-cols-3" : "studio-card"}>
-      {!expanded && (
-        <div className="mb-5 flex items-center justify-between">
-          <div>
-            <p className="font-mono text-[9px] uppercase tracking-[.17em] text-muted-foreground">
-              Recent work
-            </p>
-            <h2 className="mt-2 text-xl font-bold">Campaigns</h2>
-          </div>
-          <Link to="/studio/campaigns" className="text-xs font-semibold">
-            View all
-          </Link>
+    <div className="studio-card">
+      <div className="mb-5 flex items-center justify-between">
+        <div>
+          <p className="font-mono text-[9px] uppercase tracking-[.17em] text-muted-foreground">
+            Recent work
+          </p>
+          <h2 className="mt-2 text-xl font-bold">Campaigns</h2>
         </div>
-      )}
+        <Link to="/studio/campaigns" className="text-xs font-semibold">
+          View all
+        </Link>
+      </div>
       {campaigns.map((campaign) => {
         const lane = lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
         return (
@@ -5818,7 +5933,7 @@ function CampaignList({
             key={campaign.id}
             to="/studio/campaigns/$campaignId"
             params={{ campaignId: campaign.id }}
-            className={`${expanded ? "studio-card" : "flex items-center gap-4 border-t border-border py-4 first:border-t-0"} group`}
+            className="group flex items-center gap-4 border-t border-border py-4 first:border-t-0"
           >
             <span
               className="grid size-11 shrink-0 place-items-center rounded-xl text-white"
@@ -5833,11 +5948,6 @@ function CampaignList({
               </span>
             </span>
             <ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1" />
-            {expanded && (
-              <p className="col-span-full mt-8 line-clamp-3 text-sm text-muted-foreground">
-                {campaign.topic}
-              </p>
-            )}
           </Link>
         );
       })}

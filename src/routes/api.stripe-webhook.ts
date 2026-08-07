@@ -8,7 +8,8 @@ import { studioPlans, type StudioPlanKey } from "@/lib/studio-model";
 async function handleStripeWebhook({ request }: { request: Request }) {
   const stripeSecret = process.env.STRIPE_SECRET_KEY;
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  const supabaseSecret = process.env.SUPABASE_SECRET_KEY;
+  const supabaseSecret =
+    process.env['SUPABASE_SERVICE_ROLE_KEY'] || process.env['SUPABASE_SECRET_KEY'];
   if (!stripeSecret || !webhookSecret || !supabaseSecret) {
     return Response.json({ error: "Billing webhook is not configured." }, { status: 503 });
   }

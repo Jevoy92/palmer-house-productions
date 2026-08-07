@@ -24,6 +24,7 @@ import {
   Save,
   Send,
   Share2,
+  ShieldCheck,
   Sparkles,
   ThumbsUp,
   Type,

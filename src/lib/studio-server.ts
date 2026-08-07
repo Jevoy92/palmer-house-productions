@@ -359,12 +359,12 @@ export const analyzeStudioContentSource = createServerFn({ method: "POST" })
             },
           ]
         : `${brandContext}\n\nSource URL: ${data.sourceUrl}\nSource page text:\n${sourceText}`;
-    const analyzed = await openai.responses.parse({
-      model: process.env.OPENAI_STUDIO_MODEL || "gpt-5-mini",
+    const analyzed = await parseStructured(
+      ContentSourceAnalysisSchema,
+      "content_source_analysis",
       instructions,
       input,
-      text: { format: zodTextFormat(ContentSourceAnalysisSchema, "content_source_analysis") },
-    });
+    );
     return {
       ok: true as const,
       analysis: ContentSourceAnalysisSchema.parse(analyzed),

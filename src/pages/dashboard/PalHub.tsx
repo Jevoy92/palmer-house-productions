@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -165,7 +164,7 @@ const PAL_CONFIG: any = {
 export default function PalHub() {
   const { palId } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const user: { id: string; email?: string; user_metadata?: any } | null = null;
   const [config] = useState(PAL_CONFIG[palId || 'reel'] || PAL_CONFIG.reel);
   const [checklistProgress, setChecklistProgress] = useState<Record<string, boolean>>({});
   const [userIndustry, setUserIndustry] = useState<string>('');

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Video, User, Sparkles, Maximize } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
 
@@ -18,7 +17,7 @@ const TOOL_CONFIG = [
 ];
 
 export function ToolProgressCards() {
-  const { user } = useAuth();
+  const user: { id: string; email?: string; user_metadata?: any } | null = null;
   const [toolUsage, setToolUsage] = useState<Record<string, ToolUsage>>({});
   const [loading, setLoading] = useState(true);
 

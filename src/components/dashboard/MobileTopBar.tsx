@@ -1,7 +1,6 @@
 import { Bell, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useAuth } from '@/contexts/AuthContext';
 import femaleReelPal from '@/assets/pals/female-reel-pal-circular-headshot.jpg';
 import maleEvergreenPal from '@/assets/pals/male-evergreen-pal-circular-headshot.jpg';
 import femaleSpotlightPal from '@/assets/pals/female-spotlight-pal-circular-3.jpg';
@@ -20,7 +19,7 @@ interface MobileTopBarProps {
 }
 
 export function MobileTopBar({ favoritePal = 'reel', onAvatarClick }: MobileTopBarProps) {
-  const { user } = useAuth();
+  const user: { id: string; email?: string; user_metadata?: any } | null = null;
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || '';
   const initials = userName.slice(0, 2).toUpperCase();
 

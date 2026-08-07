@@ -7,13 +7,12 @@ import { ToolProgressCards } from '@/components/dashboard/ToolProgressCards';
 import { ContinueCreating } from '@/components/dashboard/ContinueCreating';
 import { PalAvatarSelector } from '@/components/dashboard/PalAvatarSelector';
 import { SystemCompletionCard } from '@/components/dashboard/SystemCompletionCard';
-import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card } from '@/components/ui/card';
 import { Target } from 'lucide-react';
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const user: { id: string; email?: string; user_metadata?: any } | null = null;
   const [favoritePal, setFavoritePal] = useState<string>('reel');
   const [showPalSelector, setShowPalSelector] = useState(false);
   const [userIndustry, setUserIndustry] = useState<string>('');

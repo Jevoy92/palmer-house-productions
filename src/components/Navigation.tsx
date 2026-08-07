@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { LOGO, COMPANY } from "@/lib/branding";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { usePageTransition } from '@/components/PageTransition';
-import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 
 export const Navigation = () => {
@@ -25,7 +24,7 @@ export const Navigation = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const navigate = useNavigate();
   const { transitionTo } = usePageTransition();
-  const { user } = useAuth();
+  const user: { id: string; email?: string; user_metadata?: any } | null = null;
 
   // Helper function to handle page transitions
   const handlePageTransition = (path: string) => {

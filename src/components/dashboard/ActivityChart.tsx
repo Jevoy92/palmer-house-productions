@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -9,7 +8,7 @@ interface ActivityData {
 }
 
 export function ActivityChart() {
-  const { user } = useAuth();
+  const user: { id: string; email?: string; user_metadata?: any } | null = null;
   const [data, setData] = useState<ActivityData[]>([]);
   const [loading, setLoading] = useState(true);
 

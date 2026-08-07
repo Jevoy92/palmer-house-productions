@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Video, User, Sparkles, Maximize, MessageCircle } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { ToolCard } from './ToolCard';
 
@@ -44,7 +43,7 @@ const TOOLS = [
 ];
 
 export function ContinueCreating() {
-  const { user } = useAuth();
+  const user: { id: string; email?: string; user_metadata?: any } | null = null;
   const navigate = useNavigate();
   const [toolUsage, setToolUsage] = useState<Record<string, { lastUsed: string; count: number }>>({});
   const [loading, setLoading] = useState(true);

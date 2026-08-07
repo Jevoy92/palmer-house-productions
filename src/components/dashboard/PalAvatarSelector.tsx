@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Check } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -49,7 +48,7 @@ interface PalAvatarSelectorProps {
 }
 
 export function PalAvatarSelector({ open, onOpenChange, currentPal, onPalChange }: PalAvatarSelectorProps) {
-  const { user } = useAuth();
+  const user: { id: string; email?: string; user_metadata?: any } | null = null;
   const [selectedPal, setSelectedPal] = useState(currentPal);
   const [saving, setSaving] = useState(false);
 

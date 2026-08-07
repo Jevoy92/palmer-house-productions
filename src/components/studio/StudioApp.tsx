@@ -83,7 +83,7 @@ import kianaHeadshot from "@/assets/pal-headshots/kiana.png";
 import satoshiFontUrl from "@/assets/fonts/Satoshi-Variable.woff2?url";
 import { useStudio } from "./StudioProvider";
 import { ContentEngine } from "./ContentEngine";
-import { ContentOrbit, StudioMark } from "./StudioVisuals";
+import { StudioMark } from "./StudioVisuals";
 import { PalAuthShowcase } from "./PalAuthShowcase";
 import { StudioStartHere } from "./StudioStartHere";
 import { StudioAssistant } from "./StudioAssistant";

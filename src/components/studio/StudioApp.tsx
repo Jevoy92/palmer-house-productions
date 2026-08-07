@@ -1875,6 +1875,8 @@ function IdeasBoard() {
   const [previewById, setPreviewById] = useState<Record<string, string>>({});
   const [problem, setProblem] = useState("");
   const [filter, setFilter] = useState<"all" | keyof typeof lanes>("all");
+  const detectedLane = classifyLane(`${draft} ${problem}`) as keyof typeof lanes;
+
 
   const [directions, setDirections] = useState<Awaited<ReturnType<typeof suggestDirections>>>([]);
   const savedIdeas = ideas.filter((item) => item.status !== "archived");

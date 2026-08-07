@@ -278,6 +278,7 @@ export function ContentEngine() {
 
   async function buildCampaign() {
     if (!selectedDirection) return;
+    setRunning("campaign");
     try {
       const id = await createCampaign({
         title: selectedDirection.title,
@@ -293,8 +294,11 @@ export function ContentEngine() {
       toast.success("Your platform-native campaign is ready.");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "The campaign could not be created.");
+    } finally {
+      setRunning(null);
     }
   }
+
 
   function updatePost(values: Partial<PlatformPost>) {
     if (!selectedPost) return;

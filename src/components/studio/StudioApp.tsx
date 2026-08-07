@@ -1912,8 +1912,9 @@ function IdeasBoard() {
         sourceType,
         sourceUrl: sourceType === "link" ? sourceUrl : undefined,
         sourceMediaPath: mediaPath,
-        lane,
-        businessProblem: problem.trim() || `${lanes[lane].role}: ${body}`,
+        lane: detectedLane,
+        businessProblem: problem.trim() || `${lanes[detectedLane].role}: ${body}`,
+
       });
       if (sourcePreview) setPreviewById((current) => ({ ...current, [id]: sourcePreview }));
       if (findAngles) {

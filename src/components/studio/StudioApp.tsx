@@ -506,7 +506,7 @@ function Onboarding() {
   const [customInterest, setCustomInterest] = useState("");
   const [personalStory, setPersonalStory] = useState("");
   const [setupStep, setSetupStep] = useState(-1);
-  const interestOptions = brandSuggestions.personal_interests;
+  const interestOptions: string[] = [...brandSuggestions.personal_interests];
   const problemOptions = [
     { value: "I need a consistent content rhythm", lane: "Reel", color: "var(--reel)" },
     {

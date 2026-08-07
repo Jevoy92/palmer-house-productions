@@ -229,7 +229,7 @@ export const AssistantResponseSchema = z.object({
         title: z.string(),
         reason: z.string(),
         nextStep: z.string(),
-        videoKey: z.string().optional(),
+        videoKey: z.string().nullable(),
       }),
     )
     .min(1)

@@ -659,6 +659,12 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
                 >
                   <CreditCard className="size-4" /> Usage & billing
                 </Link>
+                <Link
+                  to="/"
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-system-soft"
+                >
+                  <ExternalLink className="size-4" /> Visit Palmer House website
+                </Link>
                 <button
                   onClick={() => void signOut()}
                   className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-bold text-muted-foreground hover:bg-spotlight-soft"
@@ -761,6 +767,15 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
                   </div>
                 </div>
               ))}
+              <div className="border-t border-border pt-5">
+                <Link
+                  to="/"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex min-h-12 items-center gap-3 rounded-xl bg-system-soft px-4 text-sm font-bold text-system"
+                >
+                  <ExternalLink className="size-4" /> Visit Palmer House website
+                </Link>
+              </div>
             </nav>
           </motion.div>
         )}

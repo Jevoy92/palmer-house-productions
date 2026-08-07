@@ -9,7 +9,7 @@ export function SiteFooter() {
           { label: "Find your Pal", to: "/find-your-pal", color: "var(--spotlight-soft)" },
           { label: "Build a package", to: "/shop", color: "var(--reel-soft)" },
           { label: "Watch the proof", to: "/work", color: "var(--evergreen-soft)" },
-          { label: "Try the tools", to: "/games", color: "var(--system-soft)" },
+          { label: "Open the Studio", to: "/studio", color: "var(--system-soft)" },
         ].map((item) => (
           <Link
             key={item.to}

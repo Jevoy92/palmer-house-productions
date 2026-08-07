@@ -60,10 +60,10 @@ function AiPovPage() {
           </h2>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              to="/studio-preview"
+              to="/studio"
               className="inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-6 font-semibold text-ink"
             >
-              Try the transparent tools <ArrowRight className="size-4" />
+              Open Palmer House Studio <ArrowRight className="size-4" />
             </Link>
             <Link
               to="/contact"

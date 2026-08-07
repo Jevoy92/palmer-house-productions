@@ -32,18 +32,13 @@ export function StudioMarkdown({ children, accent }: { children: string; accent?
           strong: ({ children: content }) => (
             <strong className="font-black text-ink">{content}</strong>
           ),
-          ul: ({ children: content }) => <ul className="my-3 space-y-2">{content}</ul>,
+          ul: ({ children: content }) => (
+            <ul className="my-3 list-disc space-y-2 pl-5 marker:text-muted-foreground">{content}</ul>
+          ),
           ol: ({ children: content }) => (
             <ol className="my-3 list-decimal space-y-2 pl-5 marker:font-black">{content}</ol>
           ),
-          li: ({ children: content, ...props }) =>
-            "ordered" in props && props.ordered ? (
-              <li className="pl-1">{content}</li>
-            ) : (
-              <li className="relative pl-5 before:absolute before:left-0 before:top-[.65em] before:size-1.5 before:rounded-full before:bg-current before:opacity-40">
-                {content}
-              </li>
-            ),
+          li: ({ children: content }) => <li className="pl-1">{content}</li>,
           a: ({ children: content, href }) => (
             <a
               href={href}

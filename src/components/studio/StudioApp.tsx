@@ -1227,6 +1227,14 @@ function renderView(view: StudioView, campaignId?: string) {
 
 function Dashboard() {
   const { campaigns, assets, calendar, brand, profile, user, ideas, videoProgress } = useStudio();
+  const { guide, hasChosen, tip } = useGuide();
+  const progression = calculateTier({
+    campaigns: campaigns.length,
+    approvedAssets: assets.filter((asset) => asset.status === "approved").length,
+    completedVideos: videoProgress.filter((item) => item.status === "published").length,
+    brandCompletion: brand?.completion || 0,
+  });
+
   const upcoming = calendar.filter((item) => new Date(item.publish_at) >= new Date()).slice(0, 4);
   const firstName = (
     profile?.full_name ||

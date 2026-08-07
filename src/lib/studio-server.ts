@@ -13,6 +13,7 @@ import {
   CampaignOutputSchema,
   ContentSourceAnalysisRequestSchema,
   ContentSourceAnalysisSchema,
+  LongFormOutputSchema,
   ContentDirectionRequestSchema,
   ContentDirectionsSchema,
   studioPlanPrices,

@@ -194,8 +194,17 @@ export const generateContentDirections = createServerFn({ method: "POST" })
     const response = await parseStructured(
       ContentDirectionsSchema,
       "palmer_house_directions",
-      "You are a Palmer House strategist. Return exactly three materially different content directions for the supplied idea. Lead with the business problem and audience decision, never with a generic video format. Each direction must map to one Palmer House lane: spotlight for proof/trust, reel for attention/momentum, evergreen for durable education, or system for repeatability/internal clarity. Be concise, specific, and do not invent proof.",
-      `Brand / project: ${data.brand.businessName}\nCreator type: ${data.brand.creatorType}\nPrimary goal: ${data.brand.primaryGoal}\nDescription: ${data.brand.description}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\n\nCampaign goal: ${data.goal}\nAudience: ${data.audience}\nIdea: ${data.idea}`,
+      [
+        "You are a Palmer House strategist writing for one specific business. Return exactly three materially different content directions for the supplied idea.",
+        "Ground every direction in this business: use its category, its actual services, its real customers, and the words a customer in that category would use. Never write advice that could be pasted onto any other company.",
+        "Each direction must map to one Palmer House lane: spotlight for proof/trust, reel for attention/momentum, evergreen for durable education, system for repeatability/internal clarity. Use three different lanes when the idea allows.",
+        "title: 4-8 words, plain English, names the actual piece of content. No jargon, no colons stacked with buzzwords.",
+        "angle: 2-3 short sentences, maximum 45 words total. Say what gets filmed or shown, and what the viewer decides afterward. Write it as prose. Never use labels like 'Business problem:' or 'Audience decision:'. Never restate the brief back to the user.",
+        "whyItWorks: one sentence, maximum 25 words, naming the specific objection or hesitation this removes for this business's customers.",
+        "Be concrete: name the job, the season, the location type, the product, or the customer situation. Do not invent proof, statistics, testimonials, or results that were not supplied.",
+      ].join(" "),
+      `Business: ${data.brand.businessName}\nCategory / industry: ${data.brand.industry || "Not supplied"}\nWhat they do: ${data.brand.description || "Not supplied"}\nWhat they sell: ${data.brand.offers.join(" | ") || "Not supplied"}\nWho they serve: ${data.brand.primaryAudience || data.audience}\nCreator type: ${data.brand.creatorType}\nPrimary goal: ${data.brand.primaryGoal}\nActive platforms: ${data.brand.platforms.join(" | ") || "Not supplied"}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied — do not invent any"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\n\nCampaign goal: ${data.goal}\nAudience for this campaign: ${data.audience}\nIdea in the owner's words: ${data.idea}`,
+
     );
     return { ok: true as const, ...ContentDirectionsSchema.parse(response) };
   });

@@ -1,0 +1,1 @@
+UPDATE public.campaigns SET status = 'draft' WHERE status = 'generating';

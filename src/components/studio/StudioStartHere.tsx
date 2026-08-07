@@ -48,11 +48,11 @@ export function StudioStartHere() {
       {
         key: "moodboard",
         title: "Moodboard",
-        detail: "Define your style",
+        detail: "Add references that show your style",
         to: "/studio/brand",
         color: "var(--system)",
         soft: "var(--system-soft)",
-        done: Boolean(brand?.visual_style) || brandReferences.length > 0,
+        done: brandReferences.length > 0,
       },
       {
         key: "campaign",

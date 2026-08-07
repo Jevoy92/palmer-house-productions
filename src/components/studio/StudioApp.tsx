@@ -89,7 +89,7 @@ import { StudioStartHere } from "./StudioStartHere";
 import { StudioAssistant } from "./StudioAssistant";
 import { VideoRoadmap } from "./VideoRoadmap";
 import { MemberSuccess } from "./MemberSuccess";
-import { CarouselGraphicBuilder } from "./CarouselGraphicBuilder";
+import { platformInfo } from "./PlatformIcons";
 
 type Campaign = Tables<"campaigns">;
 type Asset = Tables<"campaign_assets">;
@@ -1248,35 +1248,35 @@ function Dashboard() {
   const createOptions = [
     {
       to: "/studio",
+      icon: WandSparkles,
+      title: "Build a campaign",
+      body: "One idea becomes a full content system",
+      color: "var(--spotlight)",
+      soft: "var(--spotlight-soft)",
+    },
+    {
+      to: "/studio/ideas",
       icon: Lightbulb,
-      title: "Start with an idea",
-      body: "Find the useful angle",
+      title: "Capture an idea",
+      body: "Save angles and questions for later",
       color: "var(--evergreen)",
       soft: "var(--evergreen-soft)",
     },
     {
-      to: "/studio/campaigns",
-      icon: Play,
-      title: "Turn a video into posts",
-      body: "Plan the campaign system",
-      color: "var(--ink)",
-      soft: "var(--mist)",
-    },
-    {
-      to: "/studio/calendar",
-      icon: CalendarDays,
-      title: "Plan a campaign",
-      body: "Map content and timing",
-      color: "var(--ink)",
-      soft: "var(--mist)",
+      to: "/studio/roadmap",
+      icon: Film,
+      title: "Video roadmap",
+      body: "See which videos to make next",
+      color: "var(--reel)",
+      soft: "var(--reel-soft)",
     },
     {
       to: "/studio/assistant",
-      icon: Users,
+      icon: MessageSquareText,
       title: "Ask a Pal",
-      body: "Get a context-aware next move",
-      color: "var(--ink)",
-      soft: "var(--mist)",
+      body: "Get a next move based on your work",
+      color: "var(--system)",
+      soft: "var(--system-soft)",
     },
   ] as const;
   return (

@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "motion/react";
 import { CalendarDays, Lightbulb, MessageCircle, Play, Sparkles } from "lucide-react";
+import phMark from "@/assets/php-mark.png.asset.json";
 import kiana from "@/assets/pal-headshots/kiana.png";
 import ryder from "@/assets/pal-headshots/ryder.png";
 
@@ -41,9 +42,13 @@ const orbitNodes = [
 export function StudioMark({ compact = false }: { compact?: boolean }) {
   return (
     <span className="flex items-center gap-3">
-      <span className="relative grid size-10 place-items-center rounded-full border border-ink text-[11px] font-black tracking-[-.08em]">
-        PH
-        <span className="absolute -right-1 -top-1 size-2.5 rounded-full bg-reel" />
+      <span className="relative grid size-10 place-items-center">
+        <img
+          src={phMark.url}
+          alt="Palmer House Productions"
+          className="size-9 object-contain"
+          loading="eager"
+        />
       </span>
       {compact ? null : (
         <span className="text-[13px] font-extrabold leading-[1.05] tracking-[-.02em]">

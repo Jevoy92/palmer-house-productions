@@ -17,8 +17,8 @@ interface CreditData {
 
 export function CreditsBalance() {
   const user: { id: string; email?: string; user_metadata?: any } | null = null;
-  const [credits, setCredits] = useState<CreditData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [credits, setCredits] = useState<CreditData | null>({ balance: 0, monthly_allowance: 0, last_refill_date: new Date().toISOString() });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!user) return;

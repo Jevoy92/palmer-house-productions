@@ -46,7 +46,7 @@ export function ContinueCreating() {
   const user: { id: string; email?: string; user_metadata?: any } | null = null;
   const navigate = useNavigate();
   const [toolUsage, setToolUsage] = useState<Record<string, { lastUsed: string; count: number }>>({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!user) return;

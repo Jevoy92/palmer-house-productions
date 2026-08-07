@@ -16,8 +16,8 @@ interface UserStats {
 
 export function MemberProfile() {
   const user: { id: string; email?: string; user_metadata?: any } | null = null;
-  const [stats, setStats] = useState<UserStats | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState<UserStats | null>({ totalCreditsUsed: 0, toolsUsedCount: 0, favoriteToolName: 'None yet', favoriteToolCount: 0, memberSince: new Date().toISOString() });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!user) return;

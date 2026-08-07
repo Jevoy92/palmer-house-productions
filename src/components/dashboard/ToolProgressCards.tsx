@@ -19,7 +19,7 @@ const TOOL_CONFIG = [
 export function ToolProgressCards() {
   const user: { id: string; email?: string; user_metadata?: any } | null = null;
   const [toolUsage, setToolUsage] = useState<Record<string, ToolUsage>>({});
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!user) return;

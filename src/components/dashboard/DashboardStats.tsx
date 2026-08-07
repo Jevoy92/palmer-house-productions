@@ -32,8 +32,8 @@ interface DashboardStatsProps {
 
 export function DashboardStats({ favoritePal = 'reel', onChangePal }: DashboardStatsProps) {
   const user: { id: string; email?: string; user_metadata?: any } | null = null;
-  const [stats, setStats] = useState<StatsData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState<StatsData | null>({ totalCreditsUsed: 0, toolsMastered: 0, currentStreak: 0, topTools: [] });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!user) return;

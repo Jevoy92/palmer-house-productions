@@ -400,10 +400,6 @@ function AuthExperience() {
             </div>
           </div>
         </section>
-
-        <section className="relative hidden min-h-[40rem] items-center justify-center lg:flex">
-          <ContentOrbit />
-        </section>
       </div>
 
       <section className="mx-auto grid max-w-[90rem] gap-5 rounded-[1.25rem] border border-border p-5 md:grid-cols-[1.4fr_repeat(4,1fr)] md:items-center">

@@ -648,8 +648,43 @@ function Onboarding() {
                     ))}
                   </ul>
                 </div>
+                <div className="mt-5 rounded-[1.25rem] border border-border p-6">
+                  <p className="font-extrabold">Pick a guide (optional)</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Your guide sets the tone of the tips you get as you work. You can change this
+                    any time in settings.
+                  </p>
+                  <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                    <button
+                      onClick={() => setGuidePick("none")}
+                      className={`min-h-16 rounded-xl border p-3 text-left ${guidePick === "none" ? "border-ink" : "border-border"}`}
+                    >
+                      <span className="text-sm font-black">No guide</span>
+                      <span className="mt-1 block text-[10px] font-medium text-muted-foreground">
+                        Just the guidance
+                      </span>
+                    </button>
+                    {palList.map((pal) => (
+                      <button
+                        key={pal.key}
+                        onClick={() => setGuidePick(pal.key)}
+                        className={`flex min-h-16 items-center gap-3 rounded-xl border p-3 text-left ${guidePick === pal.key ? "border-ink" : "border-border"}`}
+                        style={{ background: guidePick === pal.key ? pal.soft : "white" }}
+                      >
+                        <PalAvatar pal={pal} size="sm" />
+                        <span className="min-w-0">
+                          <span className="block text-sm font-black">{pal.name}</span>
+                          <span className="block truncate text-[10px] font-medium text-muted-foreground">
+                            {pal.role}
+                          </span>
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </>
             ) : null}
+
           </div>
 
           {(() => {

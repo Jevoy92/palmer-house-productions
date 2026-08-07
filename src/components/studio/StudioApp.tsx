@@ -3892,8 +3892,207 @@ function PublishPanel({
   );
 }
 
+type IntakeStepState = "waiting" | "running" | "done";
+const intakeStepLabels = [
+  "Reading your website",
+  "Understanding what you do",
+  "Reading your visual system",
+  "Filling your brand guide",
+];
+
+/** Live preview of the guide as it is being built. */
+function BrandGuidePreview({
+  draft,
+  completion,
+}: {
+  draft: Record<string, string>;
+  completion: number;
+}) {
+  const value = (key: string) => draft[key]?.trim() || "";
+  const list = (key: string) =>
+    value(key)
+      .split(/\n|,/)
+      .map((item) => item.trim())
+      .filter(Boolean);
+  const swatches = (
+    [
+      ["Primary", "primaryColor"],
+      ["Secondary", "secondaryColor"],
+      ["Accent", "accentColor"],
+    ] as const
+  ).filter(([, key]) => value(key));
+  const Empty = ({ children }: { children: string }) => (
+    <p className="rounded-xl border border-dashed border-border px-3 py-2 text-xs text-muted-foreground">
+      {children}
+    </p>
+  );
+  return (
+    <div className="space-y-5">
+      <div
+        className="rounded-2xl p-6 text-white"
+        style={{ background: value("primaryColor") || "var(--ink)" }}
+      >
+        <p className="font-mono text-[9px] uppercase tracking-[.2em] text-white/65">Brand guide</p>
+        <p
+          className="mt-3 text-2xl font-black leading-tight"
+          style={{ fontFamily: value("primaryFont") || undefined }}
+        >
+          {value("business_name") || "Your business name"}
+        </p>
+        <p className="mt-2 text-xs text-white/70">
+          {value("industry") || "Category not set"} · {completion}% complete
+        </p>
+      </div>
+
+      <section>
+        <p className="studio-eyebrow text-system">Colors</p>
+        {swatches.length ? (
+          <div className="mt-2 flex gap-2">
+            {swatches.map(([label, key]) => (
+              <div key={key} className="flex-1">
+                <div
+                  className="h-14 rounded-xl border border-border"
+                  style={{ background: value(key) }}
+                />
+                <p className="mt-1 font-mono text-[9px] uppercase text-muted-foreground">
+                  {label} {value(key)}
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-2">
+            <Empty>Add hex colors in the Visual system step.</Empty>
+          </div>
+        )}
+      </section>
+
+      <section>
+        <p className="studio-eyebrow text-system">Typography</p>
+        <div className="mt-2">
+          {value("primaryFont") ? (
+            <p className="text-2xl font-black" style={{ fontFamily: value("primaryFont") }}>
+              {value("primaryFont")}
+            </p>
+          ) : (
+            <Empty>No typeface set yet.</Empty>
+          )}
+          {value("typography") ? (
+            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+              {value("typography")}
+            </p>
+          ) : null}
+        </div>
+      </section>
+
+      <section>
+        <p className="studio-eyebrow text-system">What we do</p>
+        <div className="mt-2">
+          {value("description") ? (
+            <p className="text-sm leading-relaxed">{value("description")}</p>
+          ) : (
+            <Empty>Describe the business in the first step.</Empty>
+          )}
+        </div>
+      </section>
+
+      {(["Offers", "offers"] as const) && list("offers").length ? (
+        <section>
+          <p className="studio-eyebrow text-system">Offers</p>
+          <ul className="mt-2 space-y-1">
+            {list("offers").map((item) => (
+              <li key={item} className="rounded-xl bg-mist px-3 py-2 text-xs font-semibold">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
+
+      <section>
+        <p className="studio-eyebrow text-system">Voice</p>
+        {list("voice_traits").length ? (
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {list("voice_traits").map((item) => (
+              <span
+                key={item}
+                className="rounded-xl border border-border px-2.5 py-1 text-[11px] font-bold"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-2">
+            <Empty>No voice traits chosen yet.</Empty>
+          </div>
+        )}
+      </section>
+
+      <section>
+        <p className="studio-eyebrow text-system">Audience</p>
+        <div className="mt-2">
+          {value("primary_audience") ? (
+            <p className="text-sm leading-relaxed">{value("primary_audience")}</p>
+          ) : (
+            <Empty>No audience defined yet.</Empty>
+          )}
+        </div>
+      </section>
+
+      <section>
+        <p className="studio-eyebrow text-system">Verified proof</p>
+        {list("proof_points").length ? (
+          <ul className="mt-2 space-y-1">
+            {list("proof_points").map((item) => (
+              <li key={item} className="flex gap-2 text-xs leading-relaxed">
+                <Check className="mt-0.5 size-3.5 shrink-0 text-evergreen" />
+                {item}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="mt-2">
+            <Empty>Nothing verified yet — the Studio will not invent any.</Empty>
+          </div>
+        )}
+      </section>
+
+      <section>
+        <p className="studio-eyebrow text-system">Visual direction</p>
+        <div className="mt-2 space-y-2">
+          {(
+            [
+              ["Photography", "photography"],
+              ["Image style", "imageStyle"],
+              ["Motion", "motion"],
+            ] as const
+          ).map(([label, key]) =>
+            value(key) ? (
+              <p key={key} className="text-xs leading-relaxed">
+                <span className="font-black">{label}: </span>
+                {value(key)}
+              </p>
+            ) : null,
+          )}
+          {!value("photography") && !value("imageStyle") && !value("motion") ? (
+            <Empty>Set a look and feel in the Visual system step.</Empty>
+          ) : null}
+        </div>
+      </section>
+    </div>
+  );
+}
+
 function BrandStudio() {
-  const { brand, brandReferences, saveBrand, uploadBrandAsset, addBrandReference } = useStudio();
+  const {
+    brand,
+    brandReferences,
+    saveBrand,
+    uploadBrandAsset,
+    addBrandReference,
+    analyzeWebsite,
+  } = useStudio();
   const details =
     brand?.brand_details &&
     typeof brand.brand_details === "object" &&
@@ -3951,10 +4150,77 @@ function BrandStudio() {
     primaryFont: typeof savedFonts.primary === "string" ? savedFonts.primary : "",
     visual_style: brand?.visual_style || "",
   });
+  type DraftKey = keyof typeof draft;
+  const set = (key: DraftKey, value: string) =>
+    setDraft((current) => ({ ...current, [key]: value }));
   const [referenceKind, setReferenceKind] = useState("social");
   const [referenceUrl, setReferenceUrl] = useState("");
   const [activeStep, setActiveStep] = useState(0);
+  const [showPreview, setShowPreview] = useState(false);
+  const [fromWebsite, setFromWebsite] = useState<Set<string>>(() => new Set());
+  const [intakeUrl, setIntakeUrl] = useState(brand?.website || "");
+  const [intakeStep, setIntakeStep] = useState(-1);
+  const [intakeResult, setIntakeResult] = useState<{ filled: number; error?: string } | null>(null);
   const reduceMotion = useReducedMotion();
+  const sourceMark = (key: DraftKey) =>
+    fromWebsite.has(key) ? "From your website" : undefined;
+
+  async function pullFromWebsite() {
+    const target = intakeUrl.trim();
+    if (!target) return;
+    const normalized = /^https?:\/\//i.test(target) ? target : `https://${target}`;
+    setIntakeResult(null);
+    setIntakeStep(0);
+    const ticker = setInterval(() => setIntakeStep((step) => (step < 2 ? step + 1 : step)), 2200);
+    try {
+      const profile = await analyzeWebsite(normalized);
+      clearInterval(ticker);
+      setIntakeStep(3);
+      const filled = new Set<string>();
+      const apply = (key: DraftKey, value: string) => {
+        if (!value?.trim()) return;
+        filled.add(key);
+        setDraft((current) => ({ ...current, [key]: value.trim() }));
+      };
+      apply("website", normalized);
+      apply("business_name", profile.businessName);
+      apply("industry", profile.industry);
+      apply("description", profile.description);
+      apply("primary_audience", profile.primaryAudience);
+      apply("customers", profile.customers);
+      apply("competitors", profile.competitors);
+      apply("mission", profile.mission);
+      apply("values", profile.values);
+      apply("taglines", profile.taglines);
+      apply("offers", profile.offers.join("\n"));
+      apply("voice_traits", profile.voiceTraits.join(", "));
+      apply("avoid_language", profile.avoidLanguage.join(", "));
+      apply("proof_points", profile.proofPoints.join("\n"));
+      apply("calls_to_action", profile.callsToAction.join("\n"));
+      apply("platforms", profile.platforms.join(", "));
+      apply("social_profiles", profile.socialLinks.join("\n"));
+      apply("primaryColor", profile.visual.primaryColor);
+      apply("secondaryColor", profile.visual.secondaryColor);
+      apply("accentColor", profile.visual.accentColor);
+      apply("primaryFont", profile.visual.primaryFont);
+      apply("typography", profile.visual.typography);
+      apply("photography", profile.visual.photography);
+      apply("imageStyle", profile.visual.imageStyle);
+      apply("visual_style", profile.visual.visualStyle);
+      setFromWebsite(filled);
+      setIntakeResult({ filled: filled.size });
+      void addBrandReference("website", new URL(normalized).hostname, normalized).catch(() => {});
+      toast.success(`Filled ${filled.size} fields from your website. Review and edit anything.`);
+    } catch (error) {
+      clearInterval(ticker);
+      setIntakeStep(-1);
+      const message =
+        error instanceof Error ? error.message : "We could not read that website.";
+      setIntakeResult({ filled: 0, error: message });
+      toast.error(message);
+    }
+  }
+
   const brandSteps = [
     {
       title: "Business",
@@ -4055,19 +4321,23 @@ function BrandStudio() {
     }
   }
   const stepMeta = brandSteps[activeStep];
+  const running = intakeStep >= 0 && intakeStep < 3;
   return (
     <div className="mx-auto max-w-[88rem]">
       <PageIntro
         eyebrow="Brand DNA"
         title="Teach the Studio how your business earns trust."
-        body="Work through four short sections. This becomes the source every script, campaign, recommendation, and downloadable guide can use."
+        body="Nothing here has to be written from scratch. Paste your website, pick from the suggestions, and edit what does not sound like you."
         action={
           <div className="flex flex-wrap gap-2">
+            <button onClick={() => setShowPreview(true)} className="secondary-action">
+              <Eye className="size-4" /> Preview guide
+            </button>
             <button
               onClick={() => void downloadBrandGuide(draft, completion)}
               className="secondary-action"
             >
-              <Download className="size-4" /> Download brand guide
+              <Download className="size-4" /> Download
             </button>
             <button onClick={() => void save()} className="primary-action">
               <Check className="size-4" /> Save Brand DNA
@@ -4076,9 +4346,100 @@ function BrandStudio() {
         }
       />
 
+      <section className="mt-8 rounded-[1.5rem] border border-system bg-system-soft p-5 sm:p-6">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div className="min-w-64 flex-1">
+            <p className="studio-eyebrow text-system">Fastest start</p>
+            <h2 className="mt-2 text-xl font-black tracking-[-.03em]">
+              Build most of this from your website.
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              We read the page once and fill every section we can — including colors and type.
+              Nothing is invented, and you can edit all of it.
+            </p>
+          </div>
+          <div className="flex w-full max-w-md gap-2">
+            <input
+              type="url"
+              value={intakeUrl}
+              onChange={(event) => setIntakeUrl(event.target.value)}
+              placeholder="yourbusiness.com"
+              className="min-h-12 flex-1 rounded-2xl border border-border bg-white px-4 text-sm outline-none focus:border-system"
+            />
+            <button
+              type="button"
+              disabled={running || !intakeUrl.trim()}
+              onClick={() => void pullFromWebsite()}
+              className="primary-action shrink-0 disabled:opacity-50"
+            >
+              {running ? (
+                <>
+                  <LoaderCircle className="size-4 animate-spin" /> Reading…
+                </>
+              ) : (
+                <>
+                  <Sparkles className="size-4" /> Pull my brand
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+
+        {intakeStep >= 0 || intakeResult ? (
+          <div className="mt-5 rounded-2xl border border-border bg-white p-4">
+            <ol className="grid gap-2 sm:grid-cols-4">
+              {intakeStepLabels.map((label, index) => {
+                const state: IntakeStepState =
+                  intakeStep > index || (intakeStep === 3 && index === 3)
+                    ? "done"
+                    : intakeStep === index
+                      ? "running"
+                      : "waiting";
+                return (
+                  <li key={label} className="flex items-center gap-2 text-[12px] font-semibold">
+                    <span
+                      className={`grid size-5 shrink-0 place-items-center rounded-full ${
+                        state === "done"
+                          ? "bg-evergreen text-white"
+                          : state === "running"
+                            ? "bg-system text-white"
+                            : "border border-border text-muted-foreground"
+                      }`}
+                    >
+                      {state === "done" ? (
+                        <Check className="size-3" />
+                      ) : state === "running" ? (
+                        <LoaderCircle className="size-3 animate-spin" />
+                      ) : null}
+                    </span>
+                    <span className={state === "waiting" ? "text-muted-foreground" : ""}>
+                      {label}
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+            {intakeResult ? (
+              <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
+                <p className="text-sm font-semibold">
+                  {intakeResult.error
+                    ? intakeResult.error
+                    : `Done — ${intakeResult.filled} fields filled from your website. Review each one below.`}
+                </p>
+                {!intakeResult.error ? (
+                  <button onClick={() => setShowPreview(true)} className="secondary-action">
+                    <Eye className="size-4" /> See the guide so far
+                  </button>
+                ) : null}
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+      </section>
+
       <nav
         aria-label="Brand DNA sections"
-        className="mt-8 grid gap-2 sm:grid-cols-2 xl:grid-cols-4"
+        className="mt-6 grid gap-2 sm:grid-cols-2 xl:grid-cols-4"
       >
         {brandSteps.map((step, index) => (
           <button
@@ -4086,29 +4447,29 @@ function BrandStudio() {
             type="button"
             onClick={() => setActiveStep(index)}
             aria-current={activeStep === index ? "step" : undefined}
-            className={`flex min-h-24 items-center gap-4 rounded-2xl border p-4 text-left transition ${
+            className={`flex items-center gap-3 rounded-2xl border p-3 text-left transition ${
               activeStep === index
                 ? "border-system bg-system-soft"
                 : "border-border bg-white hover:border-line-strong"
             }`}
           >
             <span
-              className={`grid size-11 shrink-0 place-items-center rounded-xl ${activeStep === index ? "bg-system text-white" : "bg-mist text-ink"}`}
+              className={`grid size-10 shrink-0 place-items-center rounded-xl ${activeStep === index ? "bg-system text-white" : "bg-mist text-ink"}`}
             >
-              <step.icon className="size-5" strokeWidth={1.6} />
+              <step.icon className="size-4" strokeWidth={1.6} />
             </span>
             <span className="min-w-0">
-              <span className="flex items-center gap-2 text-sm font-black">
+              <span className="flex items-center gap-2 text-[13px] font-black">
                 {index + 1}. {step.title}
                 {step.complete ? <CheckCircle2 className="size-4 text-evergreen" /> : null}
               </span>
-              <span className="mt-1 block text-xs text-muted-foreground">{step.detail}</span>
+              <span className="block text-[11px] text-muted-foreground">{step.detail}</span>
             </span>
           </button>
         ))}
       </nav>
 
-      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
+      <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1fr)_21rem]">
         <motion.section
           key={activeStep}
           initial={reduceMotion ? false : { opacity: 0, y: 10 }}
@@ -4116,93 +4477,86 @@ function BrandStudio() {
           transition={{ duration: 0.22 }}
           className="studio-card"
         >
-          <header className="border-b border-border pb-6">
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[.18em] text-system">
-              Step {activeStep + 1} of {brandSteps.length}
-            </p>
-            <div className="mt-3 flex items-start gap-4">
-              <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-system-soft text-system">
-                <stepMeta.icon className="size-5" strokeWidth={1.6} />
-              </span>
-              <div>
-                <h2 className="text-2xl font-black tracking-[-.035em] sm:text-3xl">
-                  {stepMeta.title}
-                </h2>
-                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                  {activeStep === 0
-                    ? "Give the Studio enough context to explain your business accurately and recommend useful work."
-                    : activeStep === 1
-                      ? "Name the people, buying friction, and real proof that should shape every campaign."
-                      : activeStep === 2
-                        ? "Define the language that sounds like you—and the language the Studio should never use."
-                        : "Set a practical direction for typography, photography, graphics, motion, and editing."}
-                </p>
-              </div>
+          <header className="flex items-start gap-3 border-b border-border pb-4">
+            <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-system-soft text-system">
+              <stepMeta.icon className="size-4" strokeWidth={1.6} />
+            </span>
+            <div>
+              <p className="font-mono text-[9px] font-semibold uppercase tracking-[.18em] text-system">
+                Step {activeStep + 1} of {brandSteps.length}
+              </p>
+              <h2 className="mt-1 text-xl font-black tracking-[-.035em]">{stepMeta.title}</h2>
+              <p className="mt-1 max-w-2xl text-[13px] leading-relaxed text-muted-foreground">
+                {activeStep === 0
+                  ? "Enough context for the Studio to describe your business accurately."
+                  : activeStep === 1
+                    ? "Who you are talking to, and the proof you can actually back up."
+                    : activeStep === 2
+                      ? "What sounds like you — and what should never appear."
+                      : "How the work looks: color, type, photography, motion."}
+              </p>
             </div>
           </header>
 
-          <div className="mt-7 grid gap-5 sm:grid-cols-2">
+          <div className="mt-5 grid gap-4 sm:grid-cols-2">
             {activeStep === 0 ? (
               <>
-                <Field
+                <GuidedText
                   label="Business or project name"
+                  multiline={false}
                   value={draft.business_name}
-                  onChange={(e) => setDraft({ ...draft, business_name: e.target.value })}
+                  filledFrom={sourceMark("business_name")}
+                  onChange={(value) => set("business_name", value)}
                 />
-                <Field
+                <GuidedText
                   label="Website"
+                  multiline={false}
                   type="url"
+                  optional
                   value={draft.website}
-                  onChange={(e) => setDraft({ ...draft, website: e.target.value })}
+                  filledFrom={sourceMark("website")}
+                  onChange={(value) => set("website", value)}
                 />
-                <label className="block text-sm font-semibold">
-                  What best describes you?
-                  <select
-                    value={draft.creator_type}
-                    onChange={(e) => setDraft({ ...draft, creator_type: e.target.value })}
-                    className="mt-2 min-h-12 w-full rounded-2xl border border-border bg-white px-4 text-sm"
-                  >
-                    {studioAudienceTypes.map((item) => (
-                      <option key={item}>{item}</option>
-                    ))}
-                  </select>
-                </label>
-                <label className="block text-sm font-semibold">
-                  What should content help you do?
-                  <select
-                    value={draft.primary_goal}
-                    onChange={(e) => setDraft({ ...draft, primary_goal: e.target.value })}
-                    className="mt-2 min-h-12 w-full rounded-2xl border border-border bg-white px-4 text-sm"
-                  >
-                    {studioPrimaryGoals.map((item) => (
-                      <option key={item}>{item}</option>
-                    ))}
-                  </select>
-                </label>
-                <Field
-                  label="Category, field, or genre"
-                  value={draft.industry}
-                  onChange={(e) => setDraft({ ...draft, industry: e.target.value })}
+                <GuidedSelect
+                  label="What best describes you?"
+                  value={draft.creator_type}
+                  options={studioAudienceTypes}
+                  onChange={(value) => set("creator_type", value)}
+                />
+                <GuidedSelect
+                  label="What should content help you do?"
+                  value={draft.primary_goal}
+                  options={studioPrimaryGoals}
+                  onChange={(value) => set("primary_goal", value)}
                 />
                 <div className="sm:col-span-2">
-                  <Field
-                    as="textarea"
-                    rows={5}
-                    label="What do you make, offer, or want to be known for?"
-                    value={draft.description}
-                    onChange={(e) => setDraft({ ...draft, description: e.target.value })}
+                  <GuidedSelect
+                    label="Category, field, or genre"
+                    value={draft.industry}
+                    options={brandSuggestions.industry}
+                    filledFrom={sourceMark("industry")}
+                    onChange={(value) => set("industry", value)}
                   />
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    Write it as you would explain it to a good customer—not as a slogan.
-                  </p>
                 </div>
                 <div className="sm:col-span-2">
-                  <Field
-                    as="textarea"
-                    rows={5}
-                    label="Products, services, programs, or releases — one per line"
+                  <GuidedText
+                    label="What do you make, offer, or want to be known for?"
+                    rows={4}
+                    value={draft.description}
+                    suggestions={brandSuggestions.description}
+                    filledFrom={sourceMark("description")}
+                    hint="Write it the way you would explain it to a good customer — not as a slogan."
+                    onChange={(value) => set("description", value)}
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <GuidedList
+                    label="Products, services, programs, or releases"
                     value={draft.offers}
-                    onChange={(e) => setDraft({ ...draft, offers: e.target.value })}
+                    suggestions={brandSuggestions.offers}
+                    filledFrom={sourceMark("offers")}
+                    placeholder="Name one offer…"
+                    onChange={(value) => set("offers", value)}
                   />
                 </div>
               </>
@@ -4211,45 +4565,53 @@ function BrandStudio() {
             {activeStep === 1 ? (
               <>
                 <div className="sm:col-span-2">
-                  <Field
+                  <GuidedText
                     label="Primary audience"
+                    rows={2}
                     value={draft.primary_audience}
-                    onChange={(e) => setDraft({ ...draft, primary_audience: e.target.value })}
+                    suggestions={brandSuggestions.primary_audience}
+                    filledFrom={sourceMark("primary_audience")}
+                    onChange={(value) => set("primary_audience", value)}
                   />
                 </div>
-                <Field
-                  as="textarea"
-                  rows={5}
+                <GuidedText
                   label="Customers and community"
+                  rows={3}
                   value={draft.customers}
-                  onChange={(e) => setDraft({ ...draft, customers: e.target.value })}
+                  suggestions={brandSuggestions.customers}
+                  filledFrom={sourceMark("customers")}
+                  onChange={(value) => set("customers", value)}
                 />
-                <Field
-                  as="textarea"
-                  rows={5}
+                <GuidedText
                   label="Alternatives they compare"
+                  rows={3}
                   value={draft.competitors}
-                  onChange={(e) => setDraft({ ...draft, competitors: e.target.value })}
+                  suggestions={brandSuggestions.competitors}
+                  filledFrom={sourceMark("competitors")}
+                  onChange={(value) => set("competitors", value)}
                 />
-                <Field
-                  as="textarea"
-                  rows={6}
-                  label="Verified proof — one fact per line"
+                <GuidedList
+                  label="Verified proof"
                   value={draft.proof_points}
-                  onChange={(e) => setDraft({ ...draft, proof_points: e.target.value })}
+                  suggestions={brandSuggestions.proof_points}
+                  filledFrom={sourceMark("proof_points")}
+                  hint="One fact per line. Only what you can back up."
+                  placeholder="e.g. 12 years in business"
+                  onChange={(value) => set("proof_points", value)}
                 />
-                <Field
-                  as="textarea"
-                  rows={6}
-                  label="Calls to action — one per line"
+                <GuidedList
+                  label="Calls to action"
                   value={draft.calls_to_action}
-                  onChange={(e) => setDraft({ ...draft, calls_to_action: e.target.value })}
+                  suggestions={brandSuggestions.calls_to_action}
+                  filledFrom={sourceMark("calls_to_action")}
+                  placeholder="e.g. Book a walkthrough"
+                  onChange={(value) => set("calls_to_action", value)}
                 />
-                <div className="sm:col-span-2 rounded-2xl bg-evergreen-soft p-5">
+                <div className="rounded-2xl bg-evergreen-soft p-4 sm:col-span-2">
                   <p className="text-sm font-black text-evergreen">Proof rule</p>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">
-                    Only include outcomes, credentials, testimonials, or numbers you can verify.
-                    Empty is safer than invented.
+                  <p className="mt-1 text-[13px] leading-relaxed text-ink-soft">
+                    Only outcomes, credentials, testimonials, or numbers you can verify. Empty is
+                    safer than invented.
                   </p>
                 </div>
               </>
@@ -4257,49 +4619,65 @@ function BrandStudio() {
 
             {activeStep === 2 ? (
               <>
-                <Field
-                  as="textarea"
-                  rows={5}
+                <GuidedText
                   label="Mission"
+                  rows={3}
                   value={draft.mission}
-                  onChange={(e) => setDraft({ ...draft, mission: e.target.value })}
+                  suggestions={brandSuggestions.mission}
+                  filledFrom={sourceMark("mission")}
+                  onChange={(value) => set("mission", value)}
                 />
-                <Field
-                  as="textarea"
-                  rows={5}
+                <GuidedText
                   label="Values"
+                  rows={3}
                   value={draft.values}
-                  onChange={(e) => setDraft({ ...draft, values: e.target.value })}
-                />
-                <Field
-                  label="Voice traits — separated by commas"
-                  value={draft.voice_traits}
-                  onChange={(e) => setDraft({ ...draft, voice_traits: e.target.value })}
-                />
-                <Field
-                  label="Language to avoid — separated by commas"
-                  value={draft.avoid_language}
-                  onChange={(e) => setDraft({ ...draft, avoid_language: e.target.value })}
-                />
-                <Field
-                  as="textarea"
-                  rows={4}
-                  label="Taglines and memorable lines"
-                  value={draft.taglines}
-                  onChange={(e) => setDraft({ ...draft, taglines: e.target.value })}
-                />
-                <Field
-                  label="Active platforms — separated by commas"
-                  value={draft.platforms}
-                  onChange={(e) => setDraft({ ...draft, platforms: e.target.value })}
+                  suggestions={brandSuggestions.values}
+                  filledFrom={sourceMark("values")}
+                  onChange={(value) => set("values", value)}
                 />
                 <div className="sm:col-span-2">
-                  <Field
-                    as="textarea"
-                    rows={4}
-                    label="Social profiles and channels — one URL per line"
+                  <GuidedTags
+                    label="Voice traits"
+                    value={draft.voice_traits}
+                    suggestions={brandSuggestions.voice_traits}
+                    filledFrom={sourceMark("voice_traits")}
+                    hint="Tap the ones that fit. Three to five is plenty."
+                    onChange={(value) => set("voice_traits", value)}
+                  />
+                </div>
+                <div className="sm:col-span-2">
+                  <GuidedTags
+                    label="Language to avoid"
+                    value={draft.avoid_language}
+                    suggestions={brandSuggestions.avoid_language}
+                    filledFrom={sourceMark("avoid_language")}
+                    onChange={(value) => set("avoid_language", value)}
+                  />
+                </div>
+                <GuidedText
+                  label="Taglines and memorable lines"
+                  rows={3}
+                  optional
+                  value={draft.taglines}
+                  suggestions={brandSuggestions.taglines}
+                  filledFrom={sourceMark("taglines")}
+                  onChange={(value) => set("taglines", value)}
+                />
+                <GuidedTags
+                  label="Active platforms"
+                  value={draft.platforms}
+                  suggestions={brandSuggestions.platforms}
+                  filledFrom={sourceMark("platforms")}
+                  onChange={(value) => set("platforms", value)}
+                />
+                <div className="sm:col-span-2">
+                  <GuidedList
+                    label="Social profiles and channels"
+                    optional
                     value={draft.social_profiles}
-                    onChange={(e) => setDraft({ ...draft, social_profiles: e.target.value })}
+                    filledFrom={sourceMark("social_profiles")}
+                    placeholder="https://…"
+                    onChange={(value) => set("social_profiles", value)}
                   />
                 </div>
               </>
@@ -4308,10 +4686,16 @@ function BrandStudio() {
             {activeStep === 3 ? (
               <>
                 <div className="sm:col-span-2">
-                  <p className="text-sm font-semibold">Brand colors</p>
+                  <p className="text-sm font-semibold">
+                    Brand colors
+                    {fromWebsite.has("primaryColor") ? (
+                      <span className="ml-2 inline-flex items-center gap-1 align-middle font-mono text-[9px] uppercase tracking-[.12em] text-evergreen">
+                        <Check className="size-3" /> From your website
+                      </span>
+                    ) : null}
+                  </p>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    Use the exact hex values from your existing brand guide. Leave any unknown color
-                    blank.
+                    Leave any unknown color blank — a partial palette is fine.
                   </p>
                   <div className="mt-3 grid gap-3 sm:grid-cols-3">
                     {(
@@ -4334,7 +4718,7 @@ function BrandStudio() {
                         </span>
                         <input
                           value={draft[key]}
-                          onChange={(event) => setDraft({ ...draft, [key]: event.target.value })}
+                          onChange={(event) => set(key, event.target.value)}
                           placeholder="#000000"
                           pattern="^#[0-9A-Fa-f]{6}$"
                           className="mt-3 min-h-11 w-full rounded-xl border border-border px-3 font-mono text-xs uppercase"
@@ -4343,59 +4727,68 @@ function BrandStudio() {
                     ))}
                   </div>
                 </div>
-                <Field
+                <GuidedText
                   label="Primary typeface"
+                  multiline={false}
                   value={draft.primaryFont}
-                  onChange={(e) => setDraft({ ...draft, primaryFont: e.target.value })}
+                  filledFrom={sourceMark("primaryFont")}
+                  onChange={(value) => set("primaryFont", value)}
                 />
-                <Field
-                  as="textarea"
-                  rows={4}
+                <GuidedText
                   label="Typography direction"
+                  rows={3}
                   value={draft.typography}
-                  onChange={(e) => setDraft({ ...draft, typography: e.target.value })}
+                  suggestions={brandSuggestions.typography}
+                  filledFrom={sourceMark("typography")}
+                  onChange={(value) => set("typography", value)}
                 />
-                <Field
-                  as="textarea"
-                  rows={4}
+                <GuidedText
                   label="Photography direction"
+                  rows={3}
                   value={draft.photography}
-                  onChange={(e) => setDraft({ ...draft, photography: e.target.value })}
+                  suggestions={brandSuggestions.photography}
+                  filledFrom={sourceMark("photography")}
+                  onChange={(value) => set("photography", value)}
                 />
-                <Field
-                  as="textarea"
-                  rows={4}
+                <GuidedText
                   label="Image and illustration style"
+                  rows={3}
                   value={draft.imageStyle}
-                  onChange={(e) => setDraft({ ...draft, imageStyle: e.target.value })}
+                  suggestions={brandSuggestions.imageStyle}
+                  filledFrom={sourceMark("imageStyle")}
+                  onChange={(value) => set("imageStyle", value)}
                 />
-                <Field
-                  as="textarea"
-                  rows={4}
-                  label="Video references"
-                  value={draft.videoExamples}
-                  onChange={(e) => setDraft({ ...draft, videoExamples: e.target.value })}
-                />
-                <Field
-                  as="textarea"
-                  rows={4}
-                  label="Existing content examples"
-                  value={draft.contentExamples}
-                  onChange={(e) => setDraft({ ...draft, contentExamples: e.target.value })}
-                />
-                <Field
-                  as="textarea"
-                  rows={4}
+                <GuidedText
                   label="Motion rules"
+                  rows={3}
+                  optional
                   value={draft.motion}
-                  onChange={(e) => setDraft({ ...draft, motion: e.target.value })}
+                  suggestions={brandSuggestions.motion}
+                  onChange={(value) => set("motion", value)}
                 />
-                <Field
-                  as="textarea"
-                  rows={4}
+                <GuidedText
                   label="Editing rules"
+                  rows={3}
+                  optional
                   value={draft.editing}
-                  onChange={(e) => setDraft({ ...draft, editing: e.target.value })}
+                  suggestions={brandSuggestions.editing}
+                  onChange={(value) => set("editing", value)}
+                />
+                <GuidedList
+                  label="Video references"
+                  optional
+                  value={draft.videoExamples}
+                  suggestions={brandSuggestions.videoExamples}
+                  placeholder="Link or description…"
+                  onChange={(value) => set("videoExamples", value)}
+                />
+                <GuidedList
+                  label="Existing content examples"
+                  optional
+                  value={draft.contentExamples}
+                  suggestions={brandSuggestions.contentExamples}
+                  placeholder="Link or description…"
+                  onChange={(value) => set("contentExamples", value)}
                 />
                 <div className="sm:col-span-2">
                   <p className="text-sm font-semibold">Default graphic direction</p>
@@ -4404,11 +4797,11 @@ function BrandStudio() {
                       <button
                         key={style.name}
                         type="button"
-                        onClick={() => setDraft({ ...draft, visual_style: style.name })}
-                        className={`min-h-28 rounded-2xl border p-4 text-left ${draft.visual_style === style.name ? "border-system bg-system-soft" : "border-border bg-white"}`}
+                        onClick={() => set("visual_style", style.name)}
+                        className={`rounded-2xl border p-3 text-left ${draft.visual_style === style.name ? "border-system bg-system-soft" : "border-border bg-white"}`}
                       >
-                        <span className="block text-sm font-black">{style.name}</span>
-                        <span className="mt-2 block text-xs leading-relaxed text-muted-foreground">
+                        <span className="block text-[13px] font-black">{style.name}</span>
+                        <span className="mt-1 block text-[11px] leading-relaxed text-muted-foreground">
                           {style.detail}
                         </span>
                       </button>
@@ -4416,19 +4809,20 @@ function BrandStudio() {
                   </div>
                 </div>
                 <div className="sm:col-span-2">
-                  <Field
-                    as="textarea"
-                    rows={5}
-                    label="AI prompting rules — what it should and should not do"
+                  <GuidedList
+                    label="AI rules — what it should never do"
+                    optional
                     value={draft.aiRules}
-                    onChange={(e) => setDraft({ ...draft, aiRules: e.target.value })}
+                    suggestions={brandSuggestions.aiRules}
+                    placeholder="Add a rule…"
+                    onChange={(value) => set("aiRules", value)}
                   />
                 </div>
               </>
             ) : null}
           </div>
 
-          <footer className="mt-8 flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <footer className="mt-6 flex flex-col-reverse gap-3 border-t border-border pt-5 sm:flex-row sm:items-center sm:justify-between">
             <button
               type="button"
               disabled={activeStep === 0}
@@ -4457,19 +4851,23 @@ function BrandStudio() {
           </footer>
         </motion.section>
 
-        <aside className="space-y-5">
+        <aside className="space-y-4">
           <div className="studio-card">
             <div className="flex items-center justify-between">
               <p className="font-semibold">Brand Profile</p>
               <span className="font-mono text-xs">{completion}%</span>
             </div>
-            <div className="mt-4 h-2 overflow-hidden rounded-full bg-secondary">
+            <div className="mt-3 h-2 overflow-hidden rounded-full bg-secondary">
               <motion.div animate={{ width: `${completion}%` }} className="h-full bg-system" />
             </div>
-            <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-              More context makes every campaign, visual, and Pal recommendation smarter.
-            </p>
-            <div className="mt-5 grid grid-cols-2 gap-x-3 gap-y-2">
+            <button
+              type="button"
+              onClick={() => setShowPreview(true)}
+              className="secondary-action mt-4 w-full"
+            >
+              <Eye className="size-4" /> Preview the guide
+            </button>
+            <div className="mt-4 grid grid-cols-2 gap-x-3 gap-y-2">
               {guideChecks.map(([label, complete]) => (
                 <div key={label} className="flex items-center gap-2 text-[10px] font-bold">
                   <span
@@ -4487,7 +4885,7 @@ function BrandStudio() {
             <select
               value={referenceKind}
               onChange={(event) => setReferenceKind(event.target.value)}
-              className="mt-4 min-h-11 w-full rounded-xl border border-border bg-white px-3 text-sm"
+              className="mt-3 min-h-11 w-full rounded-xl border border-border bg-white px-3 text-sm"
             >
               <option value="website">Website</option>
               <option value="social">Social profile</option>
@@ -4515,7 +4913,7 @@ function BrandStudio() {
               <Plus className="size-4" /> Add reference
             </button>
           </div>
-          <label className="studio-card grid cursor-pointer place-items-center border-dashed text-center">
+          <label className="studio-card grid cursor-pointer place-items-center border-dashed py-6 text-center">
             <input
               type="file"
               className="sr-only"
@@ -4526,10 +4924,10 @@ function BrandStudio() {
                   void uploadBrandAsset(file, file.type.startsWith("image/") ? "logo" : "guide");
               }}
             />
-            <ImageUp className="size-7 text-system" />
-            <p className="mt-4 font-semibold">Upload a brand file</p>
-            <p className="mt-2 text-xs text-muted-foreground">
-              Private PDFs, logos, images, or notes · 10 MB max
+            <ImageUp className="size-6 text-system" />
+            <p className="mt-3 font-semibold">Upload a brand file</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              PDFs, logos, images, or notes · 10 MB max
             </p>
           </label>
           {brandReferences.length ? (
@@ -4550,16 +4948,54 @@ function BrandStudio() {
               </div>
             </div>
           ) : null}
-          <div className="rounded-[1.5rem] bg-ink p-6 text-white">
+          <div className="rounded-[1.5rem] bg-ink p-5 text-white">
             <p className="font-mono text-[9px] uppercase tracking-[.17em] text-system-soft">
               The rule
             </p>
-            <p className="mt-4 text-lg font-semibold leading-snug">
+            <p className="mt-3 text-base font-semibold leading-snug">
               The Studio never invents proof. If it is not here, it stays out.
             </p>
           </div>
         </aside>
       </div>
+
+      {showPreview ? (
+        <div className="fixed inset-0 z-50 flex justify-end bg-ink/40" role="dialog" aria-modal>
+          <button
+            type="button"
+            aria-label="Close preview"
+            className="flex-1"
+            onClick={() => setShowPreview(false)}
+          />
+          <motion.div
+            initial={reduceMotion ? false : { x: 40, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            className="h-full w-full max-w-md overflow-y-auto bg-white p-6"
+          >
+            <div className="mb-5 flex items-center justify-between">
+              <div>
+                <p className="studio-eyebrow text-system">Live preview</p>
+                <p className="mt-1 text-lg font-black">Your brand guide so far</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowPreview(false)}
+                className="grid size-9 place-items-center rounded-xl border border-border"
+                aria-label="Close"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+            <BrandGuidePreview draft={draft} completion={completion} />
+            <button
+              onClick={() => void downloadBrandGuide(draft, completion)}
+              className="primary-action mt-6 w-full"
+            >
+              <Download className="size-4" /> Download the full guide
+            </button>
+          </motion.div>
+        </div>
+      ) : null}
     </div>
   );
 }

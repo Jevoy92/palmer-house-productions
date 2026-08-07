@@ -128,10 +128,7 @@ export const generateStudioCampaign = createServerFn({ method: "POST" })
       throw new Error(reservation.error?.message || "Campaign allowance reached.");
 
     try {
-      const key = process.env.OPENAI_API_KEY;
-      if (!key) throw new Error("OPENAI_API_KEY is not configured.");
-      const { default: OpenAI } = await import("openai");
-      const openai = new OpenAI({ apiKey: key });
+    const { parseStructured } = await import("./ai.server");
       const response = await openai.responses.parse({
         model: process.env.OPENAI_STUDIO_MODEL || "gpt-5-mini",
         instructions:
@@ -195,10 +192,7 @@ export const generateContentDirections = createServerFn({ method: "POST" })
   .validator(ContentDirectionRequestSchema)
   .handler(async ({ data }) => {
     await authorizedClient(data.accessToken, data.workspaceId);
-    const key = process.env.OPENAI_API_KEY;
-    if (!key) throw new Error("OPENAI_API_KEY is not configured.");
-    const { default: OpenAI } = await import("openai");
-    const openai = new OpenAI({ apiKey: key });
+    const { parseStructured } = await import("./ai.server");
     const response = await openai.responses.parse({
       model: process.env.OPENAI_STUDIO_MODEL || "gpt-5-mini",
       instructions:
@@ -235,10 +229,7 @@ export const askStudioPal = createServerFn({ method: "POST" })
     ]);
     if (brandResult.error || !brandResult.data)
       throw new Error("Finish Brand DNA before asking for personalized guidance.");
-    const key = process.env.OPENAI_API_KEY;
-    if (!key) throw new Error("OPENAI_API_KEY is not configured.");
-    const { default: OpenAI } = await import("openai");
-    const openai = new OpenAI({ apiKey: key });
+    const { parseStructured } = await import("./ai.server");
     const brand = brandResult.data;
     const response = await openai.responses.parse({
       model: process.env.OPENAI_STUDIO_MODEL || "gpt-5-mini",
@@ -318,10 +309,7 @@ export const analyzeStudioWebsite = createServerFn({ method: "POST" })
       .replace(/<[^>]+>/g, " ")
       .replace(/\s+/g, " ")
       .slice(0, 45_000);
-    const key = process.env.OPENAI_API_KEY;
-    if (!key) throw new Error("OPENAI_API_KEY is not configured.");
-    const { default: OpenAI } = await import("openai");
-    const openai = new OpenAI({ apiKey: key });
+    const { parseStructured } = await import("./ai.server");
     const analyzed = await openai.responses.parse({
       model: process.env.OPENAI_STUDIO_MODEL || "gpt-5-mini",
       instructions:
@@ -336,8 +324,6 @@ export const analyzeStudioContentSource = createServerFn({ method: "POST" })
   .validator(ContentSourceAnalysisRequestSchema)
   .handler(async ({ data }) => {
     await authorizedClient(data.accessToken, data.workspaceId);
-    const key = process.env.OPENAI_API_KEY;
-    if (!key) throw new Error("OPENAI_API_KEY is not configured.");
 
     const brandContext = `Business: ${data.brand.businessName}\nDescription: ${data.brand.description}\nAudience: ${data.brand.audience}\nOffers: ${data.brand.offers.join(" | ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied"}\nUser context: ${data.context || "None supplied"}`;
     let sourceText = "";
@@ -356,8 +342,7 @@ export const analyzeStudioContentSource = createServerFn({ method: "POST" })
         .slice(0, 45_000);
     }
 
-    const { default: OpenAI } = await import("openai");
-    const openai = new OpenAI({ apiKey: key });
+    const { parseStructured } = await import("./ai.server");
     const instructions =
       "You are Palmer House Productions' content intake strategist. Turn supplied source material into one useful, campaign-ready idea for someone who uses video as leverage. Lead with the real problem or opportunity and the audience decision that needs to change. Map it to exactly one Palmer House lane: Spotlight for trust/proof, Reel for attention/momentum, Evergreen for durable education, or System for repeatability/internal clarity. For images, describe only visible evidence and clearly separate user-supplied context. Never infer identities, results, audience response, before/after improvement, or claims that are not visibly supported. For links, use only the supplied page text. Return concise, concrete language a creator or team can understand.";
     const input =

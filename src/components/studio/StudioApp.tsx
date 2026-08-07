@@ -91,6 +91,8 @@ import { StudioAssistant } from "./StudioAssistant";
 import { VideoRoadmap } from "./VideoRoadmap";
 import { MemberSuccess } from "./MemberSuccess";
 import { platformInfo } from "./PlatformIcons";
+import { GuidedText, GuidedList, GuidedTags, GuidedSelect } from "./GuidedField";
+import { brandSuggestions } from "@/lib/brand-suggestions";
 
 type Campaign = Tables<"campaigns">;
 type Asset = Tables<"campaign_assets">;
@@ -3996,7 +3998,7 @@ function BrandGuidePreview({
         </div>
       </section>
 
-      {(["Offers", "offers"] as const) && list("offers").length ? (
+      {list("offers").length ? (
         <section>
           <p className="studio-eyebrow text-system">Offers</p>
           <ul className="mt-2 space-y-1">

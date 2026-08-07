@@ -1,7 +1,5 @@
-import { Home, Search, Video, User, Sparkles, Maximize, MessageCircle, Settings, LogOut, BookOpen } from 'lucide-react';
+import { Home, Search, Video, User, Sparkles, Maximize, MessageCircle, Settings, BookOpen } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
-import { useNavigate } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import femaleReelPal from '@/assets/pals/female-reel-pal-circular-headshot.jpg';
 import maleEvergreenPal from '@/assets/pals/male-evergreen-pal-circular-headshot.jpg';
@@ -44,7 +42,7 @@ export function SimplifiedSidebar() {
               const Icon = item.icon;
               return (
                 <NavLink
-                  key={item.url}
+                  key={item.title}
                   to={item.url}
                   end
                   className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-foreground hover:bg-muted transition-colors"
@@ -70,7 +68,7 @@ export function SimplifiedSidebar() {
               const Icon = item.icon;
               return (
                 <NavLink
-                  key={item.url}
+                  key={item.title}
                   to={item.url}
                   className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-foreground hover:bg-muted transition-colors"
                   activeClassName="bg-muted text-pal-purple font-medium"
@@ -93,7 +91,7 @@ export function SimplifiedSidebar() {
           <nav className="space-y-1">
             {palItems.map((item) => (
               <NavLink
-                key={item.url}
+                key={item.title}
                 to={item.url}
                 className="flex items-center gap-3 px-3 py-2 text-sm rounded-lg text-foreground hover:bg-muted transition-colors"
                 activeClassName="bg-muted text-pal-purple font-medium"

@@ -1332,25 +1332,41 @@ function Dashboard() {
       >
         <div className="relative z-10 max-w-3xl pr-24 sm:pr-40">
           <p className="studio-eyebrow" style={{ color: briefing.color }}>
-            Kiana’s workspace briefing
+            {guide.key ? `${guide.name}’s workspace briefing` : "Your workspace briefing"}
           </p>
           <h2 className="mt-3 text-2xl font-black leading-tight sm:text-3xl">{briefing.title}</h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
             {briefing.body}
           </p>
-          <Link
-            to={briefing.to}
-            className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-black underline underline-offset-4"
-          >
-            {briefing.action} <ArrowRight className="size-4" />
-          </Link>
+          <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <Link
+              to={briefing.to}
+              className="inline-flex min-h-11 items-center gap-2 text-sm font-black underline underline-offset-4"
+            >
+              {briefing.action} <ArrowRight className="size-4" />
+            </Link>
+            {!hasChosen ? (
+              <Link
+                to="/studio/settings"
+                className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-muted-foreground underline underline-offset-4"
+              >
+                Pick your guide
+              </Link>
+            ) : null}
+          </div>
+          <p className="mt-4 max-w-xl text-xs font-medium italic text-muted-foreground">
+            “{tip("home")}”
+          </p>
         </div>
-        <img
-          src={kianaHeadshot}
-          alt="Kiana, your proof guide"
-          className="absolute -bottom-8 -right-3 h-40 w-40 object-contain object-bottom sm:h-48 sm:w-48"
-        />
+        {guide.avatar ? (
+          <img
+            src={guide.avatar}
+            alt=""
+            className="pointer-events-none absolute -bottom-6 -right-2 h-40 w-40 object-contain object-bottom sm:h-48 sm:w-48"
+          />
+        ) : null}
       </section>
+
 
       <section className="mt-5 grid overflow-hidden rounded-[1.25rem] border border-border bg-white sm:grid-cols-2 xl:grid-cols-4">
         {createOptions.map((item, index) => (

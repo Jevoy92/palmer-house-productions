@@ -1118,19 +1118,18 @@ function PalChat({ open, onClose }: { open: boolean; onClose: () => void }) {
           >
             <header className="flex items-center gap-4 border-b border-border p-5">
               <div className="relative">
-                <img
-                  src={kianaHeadshot}
-                  alt="Kiana"
-                  className="size-12 rounded-xl border border-border object-cover object-top"
-                />
+                <PalAvatar pal={guide} size="md" className="rounded-xl" />
                 <span className="absolute -right-1 -top-1 size-3 rounded-full border-2 border-white bg-evergreen" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="font-black">Ask a Pal</p>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  Kiana is focusing the lens with you
+                  {guide.key
+                    ? `${guide.name} is working this through with you`
+                    : "Straight answers grounded in your workspace"}
                 </p>
               </div>
+
               <button
                 onClick={onClose}
                 aria-label="Close Pal chat"

@@ -188,9 +188,25 @@ export const generateStudioCampaign = createServerFn({ method: "POST" })
         ),
       ]);
 
+      // Safety net: if the model returned a condensed 'script' but full scene
+      // speech, rebuild the script from the scenes so the long-form tab always
+      // shows the complete read.
+      const wordCount = (value: string) => value.trim().split(/\s+/).filter(Boolean).length;
+      const sceneRead = longForm.anchor.scenes
+        .map((scene) => scene.spoken.trim())
+        .filter(Boolean)
+        .join("\n\n");
+      const anchor = {
+        ...longForm.anchor,
+        script:
+          wordCount(sceneRead) > wordCount(longForm.anchor.script)
+            ? sceneRead
+            : longForm.anchor.script,
+      };
+
       const output = CampaignOutputSchema.parse({
         ...(response as Record<string, unknown>),
-        anchor: longForm.anchor,
+        anchor,
         article: longForm.article,
       });
 

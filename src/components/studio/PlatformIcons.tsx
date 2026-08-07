@@ -1,4 +1,4 @@
-import type { SVGProps } from "react";
+import type { ReactElement, SVGProps } from "react";
 
 type IconProps = SVGProps<SVGSVGElement>;
 
@@ -97,7 +97,7 @@ export type PlatformKey =
 
 export const platformMeta: Record<
   PlatformKey,
-  { label: string; icon: (props: IconProps) => JSX.Element; brand: string; tint: string }
+  { label: string; icon: (props: IconProps) => ReactElement; brand: string; tint: string }
 > = {
   youtube: { label: "YouTube", icon: YouTubeIcon, brand: "#FF0033", tint: "#FFECEF" },
   instagram: { label: "Instagram", icon: InstagramIcon, brand: "#D62976", tint: "#FDECF4" },

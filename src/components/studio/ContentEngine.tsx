@@ -215,6 +215,7 @@ export function ContentEngine() {
       toast.error("Give the engine one real idea to work with.");
       return;
     }
+    setRunning("directions");
     try {
       const result = await suggestDirections({ idea, goal, audience });
       setDirections(result);
@@ -222,8 +223,11 @@ export function ContentEngine() {
       setStage("directions");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "The directions could not be created.");
+    } finally {
+      setRunning(null);
     }
   }
+
 
   async function analyzeExternalSource() {
     if (sourceMode === "link") {

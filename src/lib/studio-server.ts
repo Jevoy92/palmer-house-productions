@@ -13,6 +13,7 @@ import {
   CampaignOutputSchema,
   ContentSourceAnalysisRequestSchema,
   ContentSourceAnalysisSchema,
+  LongFormOutputSchema,
   ContentDirectionRequestSchema,
   ContentDirectionsSchema,
   studioPlanPrices,
@@ -49,6 +50,7 @@ function assetsFromOutput(output: z.infer<typeof CampaignOutputSchema>) {
       | "faq"
       | "carousel"
       | "platform_post"
+      | "article"
       | "production_note";
     title: string;
     content: string;
@@ -110,7 +112,25 @@ function assetsFromOutput(output: z.infer<typeof CampaignOutputSchema>) {
     metadata: output.productionPlan as Json,
     sort_order: 60,
   });
+  if (output.article) {
+    const article = output.article;
+    rows.push({
+      kind: "article",
+      title: article.title,
+      content: [
+        article.dek,
+        ...article.sections.map((section) => `## ${section.heading}\n\n${section.body}`),
+        article.keyTakeaways.length ? `## Key takeaways\n\n- ${article.keyTakeaways.join("\n- ")}` : "",
+        article.closing,
+      ]
+        .filter(Boolean)
+        .join("\n\n"),
+      metadata: article as Json,
+      sort_order: 45,
+    });
+  }
   return rows;
+
 }
 
 export const generateStudioCampaign = createServerFn({ method: "POST" })
@@ -128,25 +148,68 @@ export const generateStudioCampaign = createServerFn({ method: "POST" })
 
     try {
     const { parseStructured } = await import("./ai.server");
-      const response = await parseStructured(
-      CampaignOutputSchema,
-      "palmer_house_campaign",
-      [
-        "You are the Palmer House Campaign Architect building one campaign for one specific business. Everything you write must be usable by that business tomorrow with the people, tools, and location they already have.",
+      const brief = `Business: ${data.brand.businessName}\nCategory / industry: ${data.brand.industry || "Not supplied"}\nWhat they do: ${data.brand.description || "Not supplied"}\nWhat they sell: ${data.brand.offers.join(" | ") || "Not supplied"}\nWho they serve: ${data.brand.primaryAudience || data.audience}\nCreator type: ${data.brand.creatorType}\nPrimary goal: ${data.brand.primaryGoal}\nActive platforms: ${data.brand.platforms.join(" | ") || "Not supplied"}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied — do not invent any"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\n\nCampaign goal: ${data.goal}\nTopic and chosen direction: ${data.topic}\nOffer or next step: ${data.offer}\nAudience for this campaign: ${data.audience}\nAnchor format: ${data.anchorFormat}\nPlanning depth: ${data.depth}`;
+
+      const groundingRules = [
         "Ground every line in the supplied category, services, and customers. Use the vocabulary of that trade or field. If a sentence could be pasted onto a different company without changing a word, rewrite it.",
         "Write with calm confidence and concrete language. No hype, no filler, no marketing abstractions like 'leverage', 'authority positioning', or 'value proposition'. Never restate the brief back to the reader.",
-        "Never invent proof, results, statistics, awards, or testimonials. If proof was not supplied, build around what can be filmed truthfully.",
-        "The anchor must be a complete word-for-word script someone can read on camera, not an outline. Break it into 3-8 filmable scenes; every scene needs a beat, a visible action or framing direction, the exact spoken words, concise on-screen text, and achievable b-roll from this business's real work.",
-        "The production plan must be genuinely filmable by the person or team described, using ordinary gear.",
-        "Use the Four Pals as an internal lane system: spotlight for trust and authority, reel for short-form attention, evergreen for durable education, system for internal clarity.",
-        "For platformPosts, write genuinely platform-native work for YouTube, Instagram, TikTok, LinkedIn, Facebook, and Threads — not one caption copied six ways. Each post needs its own hook written in that platform's rhythm. Use native interaction patterns only when they support the stated goal. Include at least one poll and one carousel or document.",
-        "Required counts, follow them exactly: 8 to 12 platformPosts covering all six platforms; 3 to 5 shorts; 3 to 5 captions; 3 to 6 faq entries; 5 to 8 carousel slides; 3 to 5 messagePillars; 2 to 6 channelPlan entries; 4 to 8 anchor scenes; 4 to 10 production shots; 3 to 8 production b-roll items; 4 to 10 checklist items; 2 to 6 delivery notes; 1 to 4 wardrobe notes; 4 to 10 schedule entries.",
-        "Return only the requested structured result.",
-      ].join(" "),
-      `Business: ${data.brand.businessName}\nCategory / industry: ${data.brand.industry || "Not supplied"}\nWhat they do: ${data.brand.description || "Not supplied"}\nWhat they sell: ${data.brand.offers.join(" | ") || "Not supplied"}\nWho they serve: ${data.brand.primaryAudience || data.audience}\nCreator type: ${data.brand.creatorType}\nPrimary goal: ${data.brand.primaryGoal}\nActive platforms: ${data.brand.platforms.join(" | ") || "Not supplied"}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied — do not invent any"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\n\nCampaign goal: ${data.goal}\nTopic and chosen direction: ${data.topic}\nOffer or next step: ${data.offer}\nAudience for this campaign: ${data.audience}\nAnchor format: ${data.anchorFormat}\nPlanning depth: ${data.depth}`,
+        "Never invent proof, results, statistics, awards, or testimonials. If proof was not supplied, build around what can be filmed or written truthfully.",
+      ];
 
-    );
-      const output = CampaignOutputSchema.parse(response);
+      const [response, longForm] = await Promise.all([
+        parseStructured(
+          CampaignOutputSchema.omit({ anchor: true, article: true }),
+          "palmer_house_campaign",
+          [
+            "You are the Palmer House Campaign Architect building one campaign for one specific business. Everything you write must be usable by that business tomorrow with the people, tools, and location they already have.",
+            ...groundingRules,
+            "Every short-form script must be a complete word-for-word script the person can read on camera — 120 to 220 spoken words each, with a first line that earns the next three seconds. Never write an outline, a summary, or bullet directions in place of the spoken words.",
+            "The production plan must be genuinely filmable by the person or team described, using ordinary gear.",
+            "Use the Four Pals as an internal lane system: spotlight for trust and authority, reel for short-form attention, evergreen for durable education, system for internal clarity.",
+            "For platformPosts, write genuinely platform-native work for YouTube, Instagram, TikTok, LinkedIn, Facebook, and Threads — not one caption copied six ways. Each post needs its own hook written in that platform's rhythm, and a body of real substance (at least 60 words), never a placeholder line. Use native interaction patterns only when they support the stated goal. Include at least one poll and one carousel or document.",
+            "Required counts, follow them exactly: 8 to 12 platformPosts covering all six platforms; 3 to 5 shorts; 3 to 5 captions; 3 to 6 faq entries; 5 to 8 carousel slides; 3 to 5 messagePillars; 2 to 6 channelPlan entries; 4 to 10 production shots; 3 to 8 production b-roll items; 4 to 10 checklist items; 2 to 6 delivery notes; 1 to 4 wardrobe notes; 4 to 10 schedule entries.",
+            "A separate writer is handling the long-form video script and the blog article, so do not summarize or reference them — just make everything you write stand on its own.",
+            "Return only the requested structured result.",
+          ].join(" "),
+          brief,
+        ),
+        parseStructured(
+          LongFormOutputSchema,
+          "palmer_house_longform",
+          [
+            "You are the Palmer House long-form writer. You produce two finished pieces from one idea: the main YouTube video script and the blog article version of the same story.",
+            ...groundingRules,
+            "VIDEO SCRIPT: build 6 to 9 scenes. Every scene's 'spoken' field must hold 150 to 250 words of actual verbatim on-camera speech for that scene — a scene with fewer than 150 spoken words is a failure. The 'script' field is the concatenation of every scene's spoken text as continuous readable prose, so the finished script lands between 1100 and 1800 words, roughly a 9 to 13 minute video. Never summarize, and never put outlines, bullets, stage directions, or placeholders like '[explain here]' inside 'spoken'. Each scene also needs a beat, a visible action or framing direction, concise on-screen text, and achievable b-roll from this business's real work.",
+            "ARTICLE: this is not a transcript — rewrite the same idea for a reader who is scanning and searching. Give it a headline, a one-sentence dek, 5 to 7 sections that each carry a real heading and 200 to 300 words of substantive body prose (a section body under 150 words is a failure), 3 to 5 key takeaways, and a closing paragraph that leads to the offer. Total article length should land between 1100 and 1600 words. Never return an empty section body, a single line, or a bulleted stub.",
+            "The blog article is not a transcript. Rewrite the same idea for a reader who is scanning and searching: a headline, a one-sentence dek, 4 to 7 sections that each have a real heading and 120 to 250 words of substantive body prose, 3 to 5 key takeaways, and a closing paragraph that leads to the offer. Total article length should land between 900 and 1400 words. Every section body must be full paragraphs — never an empty string, a single line, or a bulleted stub.",
+            "Return only the requested structured result.",
+          ].join(" "),
+          brief,
+        ),
+      ]);
+
+      // Safety net: if the model returned a condensed 'script' but full scene
+      // speech, rebuild the script from the scenes so the long-form tab always
+      // shows the complete read.
+      const wordCount = (value: string) => value.trim().split(/\s+/).filter(Boolean).length;
+      const sceneRead = longForm.anchor.scenes
+        .map((scene) => scene.spoken.trim())
+        .filter(Boolean)
+        .join("\n\n");
+      const anchor = {
+        ...longForm.anchor,
+        script:
+          wordCount(sceneRead) > wordCount(longForm.anchor.script)
+            ? sceneRead
+            : longForm.anchor.script,
+      };
+
+      const output = CampaignOutputSchema.parse({
+        ...(response as Record<string, unknown>),
+        anchor,
+        article: longForm.article,
+      });
+
 
       const campaignUpdate = await client
         .from("campaigns")

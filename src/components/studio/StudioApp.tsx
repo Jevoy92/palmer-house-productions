@@ -3438,18 +3438,28 @@ function BlogWrittenResult({
   const [tab, setTab] = useState<"article" | "email" | "faq">("article");
   const strategy = (output?.strategy || campaign.strategy) as CampaignOutput["strategy"];
   const anchorScript = output?.anchor.script || "";
-  const paragraphs = anchorScript
-    .split(/\n\s*\n/)
-    .map((item) => item.trim())
-    .filter(Boolean);
   const faq = output?.faq || [];
   const newsletter = output?.newsletter;
-  const articleTitle = clampWords(output?.anchor.title || campaign.title, 12);
+  const articleAsset = items.find((item) => item.kind === "article");
+  const storedArticle = (articleAsset?.metadata || null) as CampaignOutput["article"] | null;
+  const article = output?.article || storedArticle || undefined;
+  const fallbackSections = anchorScript
+    .split(/\n\s*\n/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .map((body, index) => ({ heading: index === 0 ? "The short version" : "", body }));
+  const sections = article?.sections?.length ? article.sections : fallbackSections;
+  const takeaways = article?.keyTakeaways?.length
+    ? article.keyTakeaways
+    : strategy?.messagePillars || [];
+  const closing = article?.closing || output?.anchor.callToAction || campaign.offer || "";
+  const articleTitle = clampWords(article?.title || output?.anchor.title || campaign.title, 14);
+  const articleDek = article?.dek || strategy?.promise || "";
   const articleBody = [
-    strategy?.audienceInsight,
-    ...paragraphs,
-    ...(strategy?.messagePillars || []),
-    output?.anchor.callToAction || campaign.offer,
+    articleDek,
+    ...sections.map((section) => (section.heading ? `${section.heading}\n\n${section.body}` : section.body)),
+    takeaways.length ? `Key takeaways\n\n- ${takeaways.join("\n- ")}` : "",
+    closing,
   ]
     .filter(Boolean)
     .join("\n\n");
@@ -3499,24 +3509,37 @@ function BlogWrittenResult({
           <h3 className="mt-3 max-w-3xl text-[clamp(1.7rem,3vw,2.6rem)] font-black leading-[1.06] tracking-[-.045em]">
             {articleTitle}
           </h3>
-          {strategy?.promise ? (
+          {articleDek ? (
             <p className="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-              {strategy.promise}
+              {articleDek}
             </p>
           ) : null}
-          <div className="mt-8 max-w-2xl space-y-5 border-t border-border pt-8">
-            {(paragraphs.length ? paragraphs : ["The article draft will appear here."]).map(
-              (paragraph, index) => (
-                <p key={index} className="text-[17px] leading-[1.85]">
-                  {paragraph}
-                </p>
-              ),
+          <div className="mt-8 max-w-2xl space-y-6 border-t border-border pt-8">
+            {sections.length ? (
+              sections.map((section, index) => (
+                <section key={`${section.heading}-${index}`} className="space-y-3">
+                  {section.heading ? (
+                    <h4 className="text-xl font-black tracking-[-.02em]">{section.heading}</h4>
+                  ) : null}
+                  {section.body
+                    .split(/\n\s*\n/)
+                    .map((paragraph) => paragraph.trim())
+                    .filter(Boolean)
+                    .map((paragraph, paragraphIndex) => (
+                      <p key={paragraphIndex} className="text-[17px] leading-[1.85]">
+                        {paragraph}
+                      </p>
+                    ))}
+                </section>
+              ))
+            ) : (
+              <p className="text-[17px] leading-[1.85]">The article draft will appear here.</p>
             )}
-            {(strategy?.messagePillars || []).length ? (
+            {takeaways.length ? (
               <div className="pt-3">
-                <h4 className="text-xl font-black tracking-[-.02em]">What to remember</h4>
+                <h4 className="text-xl font-black tracking-[-.02em]">Key takeaways</h4>
                 <ul className="mt-4 space-y-3">
-                  {strategy.messagePillars.map((pillar) => (
+                  {takeaways.map((pillar) => (
                     <li key={pillar} className="flex gap-3 text-[17px] leading-[1.7]">
                       <CheckCircle2
                         className="mt-1 size-4 shrink-0"
@@ -3532,7 +3555,7 @@ function BlogWrittenResult({
               className="rounded-2xl p-5 text-[17px] font-black leading-snug"
               style={{ background: lane.soft }}
             >
-              {output?.anchor.callToAction || campaign.offer || "Give readers one next step."}
+              {closing || "Give readers one next step."}
             </p>
           </div>
         </article>

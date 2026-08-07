@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ChevronDown, Menu, ShoppingBag, X } from "lucide-react";
 import { useState } from "react";
+import phMark from "@/assets/php-mark.png.asset.json";
 import { cartItemCount, useCart } from "@/lib/cart-store";
 
 const services = [

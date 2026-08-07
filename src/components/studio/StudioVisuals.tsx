@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "motion/react";
 import { CalendarDays, Lightbulb, MessageCircle, Play, Sparkles } from "lucide-react";
+import phMark from "@/assets/php-mark.png.asset.json";
 import kiana from "@/assets/pal-headshots/kiana.png";
 import ryder from "@/assets/pal-headshots/ryder.png";
 

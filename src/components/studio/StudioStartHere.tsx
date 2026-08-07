@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight, Check, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { celebrateOnce } from "./Celebrate";
 import { useStudio } from "./StudioProvider";
 
 type StepKey = "service" | "context" | "moodboard" | "campaign" | "calendar";

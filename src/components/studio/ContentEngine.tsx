@@ -46,6 +46,7 @@ import {
   type ContentSourceAnalysis,
   type PlatformPost,
 } from "@/lib/studio-model";
+import { celebrate } from "./Celebrate";
 import { useStudio } from "./StudioProvider";
 import { CarouselGraphicBuilder } from "./CarouselGraphicBuilder";
 
@@ -292,6 +293,11 @@ export function ContentEngine() {
       setCampaignId(id);
       setStage("results");
       toast.success("Your platform-native campaign is ready.");
+      celebrate({
+        title: "Campaign built.",
+        detail: `${selectedDirection.title} is ready across every platform.`,
+        colors: ["#3d1a66", "#e8720c", "#5b8a2d", "#0a9b8f"],
+      });
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "The campaign could not be created.");
     } finally {
@@ -337,6 +343,7 @@ export function ContentEngine() {
         notes: `${selectedPost.nativeFeature}\n${selectedPost.publishNotes}`,
       });
       toast.success("Post added to the content calendar.");
+      celebrate({ title: "On the calendar.", detail: "The work now has a date.", colors: ["#5b8a2d", "#0a9b8f"] });
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "The post could not be scheduled.");
     }

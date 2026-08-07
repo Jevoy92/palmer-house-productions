@@ -727,6 +727,14 @@ function Onboarding() {
                           website: website.trim(),
                           description: description.trim(),
                         });
+                        if (guidePick !== "none") {
+                          try {
+                            await saveSettings({ preferred_pal: guidePick });
+                          } catch {
+                            // guide preference is not worth blocking workspace creation
+                          }
+                        }
+
                       } catch (error) {
                         toast.error(
                           error instanceof Error ? error.message : "Could not create workspace.",

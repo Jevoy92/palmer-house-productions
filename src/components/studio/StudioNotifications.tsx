@@ -81,7 +81,7 @@ export function StudioNotifications() {
         body: openIdea.body.slice(0, 140),
         color: "var(--evergreen)",
         soft: "var(--evergreen-soft)",
-        to: "/studio/engine",
+        to: "/studio",
       });
 
     if (brand && (brand.personal_interests || []).length === 0)
@@ -117,7 +117,7 @@ export function StudioNotifications() {
         soft: pal.soft,
         avatar: pal.avatar,
         palKey: pal.key,
-        to: "/studio/engine",
+        to: "/studio",
       });
     }
     return items;

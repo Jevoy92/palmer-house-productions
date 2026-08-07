@@ -1566,7 +1566,7 @@ function Dashboard() {
             ))}
           </div>
           <Link
-            to="/studio/engine"
+            to="/studio"
             onClick={endFirstRun}
             className="mt-5 inline-flex min-h-12 items-center gap-2 rounded-xl bg-ink px-5 text-sm font-black text-white transition hover:bg-evergreen"
           >

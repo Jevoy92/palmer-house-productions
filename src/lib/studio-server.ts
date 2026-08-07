@@ -50,6 +50,7 @@ function assetsFromOutput(output: z.infer<typeof CampaignOutputSchema>) {
       | "faq"
       | "carousel"
       | "platform_post"
+      | "article"
       | "production_note";
     title: string;
     content: string;

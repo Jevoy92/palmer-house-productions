@@ -2032,29 +2032,19 @@ function IdeasBoard() {
               className="mt-2 min-h-12 w-full rounded-xl border border-border px-4 text-sm font-medium outline-none focus:border-system"
             />
           </label>
-          <p className="mt-5 text-sm font-extrabold">Which job does it do?</p>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            {(
-              Object.entries(lanes) as Array<
-                [keyof typeof lanes, (typeof lanes)[keyof typeof lanes]]
-              >
-            ).map(([key, item]) => (
-              <button
-                key={key}
-                onClick={() => setLane(key)}
-                className={`min-h-12 rounded-xl border px-3 text-left text-xs font-bold ${lane === key ? "border-ink" : "border-border"}`}
-                style={{
-                  background: lane === key ? item.soft : "white",
-                  color: lane === key ? item.color : "var(--ink)",
-                }}
-              >
-                {item.label}
-                <span className="mt-1 block text-[9px] font-medium text-muted-foreground">
-                  {item.role}
-                </span>
-              </button>
-            ))}
+          <div
+            className="mt-5 rounded-xl border border-border p-4"
+            style={{ background: lanes[detectedLane].soft }}
+          >
+            <p className="studio-eyebrow" style={{ color: lanes[detectedLane].color }}>
+              Category · {lanes[detectedLane].label}
+            </p>
+            <p className="mt-2 text-xs font-medium text-muted-foreground">
+              We sort this for you from what you wrote — {lanes[detectedLane].role.toLowerCase()}.
+              You can change it later on the idea itself.
+            </p>
           </div>
+
           <div className="mt-5 grid gap-2 sm:grid-cols-2">
             <button
               onClick={() => void addIdea(false)}

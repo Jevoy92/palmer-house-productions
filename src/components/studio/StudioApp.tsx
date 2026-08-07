@@ -502,6 +502,11 @@ function Onboarding() {
   const [website, setWebsite] = useState("");
   const [description, setDescription] = useState("");
   const [problem, setProblem] = useState("I need a consistent content rhythm");
+  const [interests, setInterests] = useState<string[]>([]);
+  const [customInterest, setCustomInterest] = useState("");
+  const [personalStory, setPersonalStory] = useState("");
+  const [setupStep, setSetupStep] = useState(-1);
+  const interestOptions = brandSuggestions.personal_interests;
   const problemOptions = [
     { value: "I need a consistent content rhythm", lane: "Reel", color: "var(--reel)" },
     {
@@ -526,8 +531,8 @@ function Onboarding() {
       </header>
       <div className="mx-auto grid min-h-[calc(100vh-8rem)] max-w-6xl items-center gap-10 py-10 lg:grid-cols-[.9fr_1.1fr]">
         <section>
-          <div className="flex items-center gap-2" aria-label={`Step ${step + 1} of 5`}>
-            {[0, 1, 2, 3, 4].map((item) => (
+          <div className="flex items-center gap-2" aria-label={`Step ${step + 1} of 6`}>
+            {[0, 1, 2, 3, 4, 5].map((item) => (
               <span
                 key={item}
                 className="h-1.5 flex-1 rounded-full"
@@ -535,7 +540,7 @@ function Onboarding() {
               />
             ))}
           </div>
-          <p className="studio-eyebrow mt-8 text-system">Step {step + 1} of 5</p>
+          <p className="studio-eyebrow mt-8 text-system">Step {step + 1} of 6</p>
           <h1 className="mt-4 text-5xl font-black leading-[.95] tracking-[-.06em]">
             {step === 0
               ? "Give the work a home."
@@ -545,7 +550,9 @@ function Onboarding() {
                   ? "What should video help you do?"
                   : step === 3
                     ? "What do you actually do?"
-                    : `Start with ${match.lane}.`}
+                    : step === 4
+                      ? "What do you love outside of work?"
+                      : `Start with ${match.lane}.`}
           </h1>
           <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
             {step === 0
@@ -556,7 +563,9 @@ function Onboarding() {
                   ? "This goal becomes part of Brand DNA and shapes every recommendation after today."
                   : step === 3
                     ? "This is the context every campaign is written from. A website is optional — a couple of sentences is enough to start."
-                    : `Your ${match.lane} Pal will guide the first campaign. You can use every lane whenever the work calls for it.`}
+                    : step === 4
+                      ? "Optional, and the single fastest way to stop sounding like every other company in your field. Anything you pick here shows up in the personal angle the studio writes for you."
+                      : `Your ${match.lane} Pal will guide the first campaign. You can use every lane whenever the work calls for it.`}
           </p>
 
           <div className="mt-8">
@@ -611,6 +620,74 @@ function Onboarding() {
               </div>
             ) : null}
             {step === 4 ? (
+              <div className="grid gap-5">
+                <div>
+                  <p className="mb-3 text-sm font-bold">Pick anything that is genuinely you</p>
+                  <div className="flex flex-wrap gap-2">
+                    {[...interestOptions, ...interests.filter((item) => !interestOptions.includes(item))].map(
+                      (option) => {
+                        const active = interests.includes(option);
+                        return (
+                          <button
+                            key={option}
+                            type="button"
+                            onClick={() =>
+                              setInterests((current) =>
+                                current.includes(option)
+                                  ? current.filter((item) => item !== option)
+                                  : [...current, option],
+                              )
+                            }
+                            className="min-h-11 rounded-xl border px-4 text-sm font-bold transition"
+                            style={{
+                              borderColor: active ? match.color : "var(--border)",
+                              background: active ? match.color : "white",
+                              color: active ? "white" : "var(--ink)",
+                            }}
+                          >
+                            {option}
+                          </button>
+                        );
+                      },
+                    )}
+                  </div>
+                  <div className="mt-3 flex gap-2">
+                    <input
+                      value={customInterest}
+                      onChange={(event) => setCustomInterest(event.target.value)}
+                      onKeyDown={(event) => {
+                        if (event.key !== "Enter" || !customInterest.trim()) return;
+                        event.preventDefault();
+                        setInterests((current) => [...current, customInterest.trim()]);
+                        setCustomInterest("");
+                      }}
+                      placeholder="Something we did not list"
+                      className="min-h-12 flex-1 rounded-xl border border-border px-4 text-sm"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (!customInterest.trim()) return;
+                        setInterests((current) => [...current, customInterest.trim()]);
+                        setCustomInterest("");
+                      }}
+                      className="min-h-12 rounded-xl border border-border px-4 text-sm font-bold"
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+                <Field
+                  as="textarea"
+                  rows={3}
+                  label="Anything personal the studio should remember (optional)"
+                  value={personalStory}
+                  onChange={(event) => setPersonalStory(event.target.value)}
+                  placeholder="I coach my daughter's team on weekends, and I got into this after a contractor took advantage of my parents."
+                />
+              </div>
+            ) : null}
+            {step === 5 ? (
               <>
                 <p className="mb-3 text-sm font-bold">What needs to change first?</p>
                 <ChoiceGrid

@@ -505,6 +505,26 @@ export const CampaignOutputSchema = z.object({
     .max(20),
 });
 
+// The long-form script and the written article are generated in their own call
+// so they get room to be genuinely long instead of competing for tokens with
+// the rest of the campaign.
+export const LongFormOutputSchema = z.object({
+  anchor: CampaignOutputSchema.shape.anchor,
+  article: z.object({
+    title: z.string(),
+    dek: z.string(),
+    sections: z
+      .array(z.object({ heading: z.string(), body: z.string() }))
+      .max(12)
+      .default([]),
+    keyTakeaways: z.array(z.string()).max(8).default([]),
+    closing: z.string().default(""),
+  }),
+});
+
+export type LongFormOutput = z.infer<typeof LongFormOutputSchema>;
+export type CampaignArticle = NonNullable<z.infer<typeof CampaignOutputSchema>["article"]>;
+
 export type CampaignOutput = z.infer<typeof CampaignOutputSchema>;
 export type CampaignBrief = z.infer<typeof CampaignBriefSchema>;
 export type ContentDirection = z.infer<typeof ContentDirectionSchema>;

@@ -641,7 +641,7 @@ function Onboarding() {
           </div>
         </section>
         <section className="hidden lg:block">
-          <ContentOrbit compact />
+          <PalAuthShowcase />
         </section>
       </div>
     </main>

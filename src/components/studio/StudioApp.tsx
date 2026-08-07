@@ -613,6 +613,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
   }, [view]);
   return (
     <div className="min-h-screen bg-white text-ink">
+      <StudioStartHere />
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-[15.5rem] flex-col border-r border-border bg-white px-4 py-5 lg:flex">
         <StudioBrand />
         <button

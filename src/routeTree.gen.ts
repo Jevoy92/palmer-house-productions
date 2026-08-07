@@ -26,6 +26,7 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PalsRouteImport } from './routes/pals'
 import { Route as MembershipRouteImport } from './routes/membership'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as IntegrationsRouteImport } from './routes/integrations'
 import { Route as GamesRouteImport } from './routes/games'
 import { Route as FindYourPalRouteImport } from './routes/find-your-pal'
@@ -62,8 +63,11 @@ import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe-webhook'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as StudioCampaignsIndexRouteImport } from './routes/studio.campaigns.index'
 import { Route as StudioCampaignsCampaignIdRouteImport } from './routes/studio.campaigns.$campaignId'
+import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 
 const WorkRoute = WorkRouteImport.update({
   id: '/work',
@@ -148,6 +152,11 @@ const PalsRoute = PalsRouteImport.update({
 const MembershipRoute = MembershipRouteImport.update({
   id: '/membership',
   path: '/membership',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IntegrationsRoute = IntegrationsRouteImport.update({
@@ -330,6 +339,18 @@ const ApiStripeWebhookRoute = ApiStripeWebhookRouteImport.update({
   path: '/api/stripe-webhook',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char91DotmcpChar93ListToolsRoute =
+  Char91DotmcpChar93ListToolsRouteImport.update({
+    id: '/.mcp/list-tools',
+    path: '/.mcp/list-tools',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const StudioCampaignsIndexRoute = StudioCampaignsIndexRouteImport.update({
   id: '/campaigns/',
   path: '/campaigns/',
@@ -340,6 +361,12 @@ const StudioCampaignsCampaignIdRoute =
     id: '/campaigns/$campaignId',
     path: '/campaigns/$campaignId',
     getParentRoute: () => StudioRoute,
+  } as any)
+const Char91DotmcpChar93InvokeToolToolRoute =
+  Char91DotmcpChar93InvokeToolToolRouteImport.update({
+    id: '/.mcp/invoke-tool/$tool',
+    path: '/.mcp/invoke-tool/$tool',
+    getParentRoute: () => rootRouteImport,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -355,6 +382,7 @@ export interface FileRoutesByFullPath {
   '/find-your-pal': typeof FindYourPalRoute
   '/games': typeof GamesRoute
   '/integrations': typeof IntegrationsRoute
+  '/mcp': typeof McpRoute
   '/membership': typeof MembershipRouteWithChildren
   '/pals': typeof PalsRoute
   '/pricing': typeof PricingRoute
@@ -372,6 +400,8 @@ export interface FileRoutesByFullPath {
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
   '/webinar': typeof WebinarRoute
   '/work': typeof WorkRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
@@ -396,6 +426,7 @@ export interface FileRoutesByFullPath {
   '/studio/success': typeof StudioSuccessRoute
   '/blog/': typeof BlogIndexRoute
   '/studio/': typeof StudioIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
   '/studio/campaigns/': typeof StudioCampaignsIndexRoute
 }
@@ -412,6 +443,7 @@ export interface FileRoutesByTo {
   '/find-your-pal': typeof FindYourPalRoute
   '/games': typeof GamesRoute
   '/integrations': typeof IntegrationsRoute
+  '/mcp': typeof McpRoute
   '/membership': typeof MembershipRouteWithChildren
   '/pals': typeof PalsRoute
   '/pricing': typeof PricingRoute
@@ -428,6 +460,8 @@ export interface FileRoutesByTo {
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
   '/webinar': typeof WebinarRoute
   '/work': typeof WorkRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
@@ -452,6 +486,7 @@ export interface FileRoutesByTo {
   '/studio/success': typeof StudioSuccessRoute
   '/blog': typeof BlogIndexRoute
   '/studio': typeof StudioIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
   '/studio/campaigns': typeof StudioCampaignsIndexRoute
 }
@@ -469,6 +504,7 @@ export interface FileRoutesById {
   '/find-your-pal': typeof FindYourPalRoute
   '/games': typeof GamesRoute
   '/integrations': typeof IntegrationsRoute
+  '/mcp': typeof McpRoute
   '/membership': typeof MembershipRouteWithChildren
   '/pals': typeof PalsRoute
   '/pricing': typeof PricingRoute
@@ -486,6 +522,8 @@ export interface FileRoutesById {
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
   '/webinar': typeof WebinarRoute
   '/work': typeof WorkRoute
+  '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/industries/$slug': typeof IndustriesSlugRoute
@@ -510,6 +548,7 @@ export interface FileRoutesById {
   '/studio/success': typeof StudioSuccessRoute
   '/blog/': typeof BlogIndexRoute
   '/studio/': typeof StudioIndexRoute
+  '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
   '/studio/campaigns/': typeof StudioCampaignsIndexRoute
 }
@@ -528,6 +567,7 @@ export interface FileRouteTypes {
     | '/find-your-pal'
     | '/games'
     | '/integrations'
+    | '/mcp'
     | '/membership'
     | '/pals'
     | '/pricing'
@@ -545,6 +585,8 @@ export interface FileRouteTypes {
     | '/video-system-assessment'
     | '/webinar'
     | '/work'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/industries/$slug'
@@ -569,6 +611,7 @@ export interface FileRouteTypes {
     | '/studio/success'
     | '/blog/'
     | '/studio/'
+    | '/.mcp/invoke-tool/$tool'
     | '/studio/campaigns/$campaignId'
     | '/studio/campaigns/'
   fileRoutesByTo: FileRoutesByTo
@@ -585,6 +628,7 @@ export interface FileRouteTypes {
     | '/find-your-pal'
     | '/games'
     | '/integrations'
+    | '/mcp'
     | '/membership'
     | '/pals'
     | '/pricing'
@@ -601,6 +645,8 @@ export interface FileRouteTypes {
     | '/video-system-assessment'
     | '/webinar'
     | '/work'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/industries/$slug'
@@ -625,6 +671,7 @@ export interface FileRouteTypes {
     | '/studio/success'
     | '/blog'
     | '/studio'
+    | '/.mcp/invoke-tool/$tool'
     | '/studio/campaigns/$campaignId'
     | '/studio/campaigns'
   id:
@@ -641,6 +688,7 @@ export interface FileRouteTypes {
     | '/find-your-pal'
     | '/games'
     | '/integrations'
+    | '/mcp'
     | '/membership'
     | '/pals'
     | '/pricing'
@@ -658,6 +706,8 @@ export interface FileRouteTypes {
     | '/video-system-assessment'
     | '/webinar'
     | '/work'
+    | '/.mcp/list-tools'
+    | '/.well-known/oauth-protected-resource'
     | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/industries/$slug'
@@ -682,6 +732,7 @@ export interface FileRouteTypes {
     | '/studio/success'
     | '/blog/'
     | '/studio/'
+    | '/.mcp/invoke-tool/$tool'
     | '/studio/campaigns/$campaignId'
     | '/studio/campaigns/'
   fileRoutesById: FileRoutesById
@@ -699,6 +750,7 @@ export interface RootRouteChildren {
   FindYourPalRoute: typeof FindYourPalRoute
   GamesRoute: typeof GamesRoute
   IntegrationsRoute: typeof IntegrationsRoute
+  McpRoute: typeof McpRoute
   MembershipRoute: typeof MembershipRouteWithChildren
   PalsRoute: typeof PalsRoute
   PricingRoute: typeof PricingRoute
@@ -716,6 +768,8 @@ export interface RootRouteChildren {
   VideoSystemAssessmentRoute: typeof VideoSystemAssessmentRoute
   WebinarRoute: typeof WebinarRoute
   WorkRoute: typeof WorkRoute
+  Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   BlogSlugRoute: typeof BlogSlugRoute
   IndustriesSlugRoute: typeof IndustriesSlugRoute
@@ -725,6 +779,7 @@ export interface RootRouteChildren {
   ServicesPostProductionRoute: typeof ServicesPostProductionRoute
   ServicesVideoProductionRoute: typeof ServicesVideoProductionRoute
   BlogIndexRoute: typeof BlogIndexRoute
+  Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -846,6 +901,13 @@ declare module '@tanstack/react-router' {
       path: '/membership'
       fullPath: '/membership'
       preLoaderRoute: typeof MembershipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/integrations': {
@@ -1100,6 +1162,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiStripeWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.mcp/list-tools': {
+      id: '/.mcp/list-tools'
+      path: '/.mcp/list-tools'
+      fullPath: '/.mcp/list-tools'
+      preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/studio/campaigns/': {
       id: '/studio/campaigns/'
       path: '/campaigns'
@@ -1113,6 +1189,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/studio/campaigns/$campaignId'
       preLoaderRoute: typeof StudioCampaignsCampaignIdRouteImport
       parentRoute: typeof StudioRoute
+    }
+    '/.mcp/invoke-tool/$tool': {
+      id: '/.mcp/invoke-tool/$tool'
+      path: '/.mcp/invoke-tool/$tool'
+      fullPath: '/.mcp/invoke-tool/$tool'
+      preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -1183,6 +1266,7 @@ const rootRouteChildren: RootRouteChildren = {
   FindYourPalRoute: FindYourPalRoute,
   GamesRoute: GamesRoute,
   IntegrationsRoute: IntegrationsRoute,
+  McpRoute: McpRoute,
   MembershipRoute: MembershipRouteWithChildren,
   PalsRoute: PalsRoute,
   PricingRoute: PricingRoute,
@@ -1200,6 +1284,9 @@ const rootRouteChildren: RootRouteChildren = {
   VideoSystemAssessmentRoute: VideoSystemAssessmentRoute,
   WebinarRoute: WebinarRoute,
   WorkRoute: WorkRoute,
+  Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   BlogSlugRoute: BlogSlugRoute,
   IndustriesSlugRoute: IndustriesSlugRoute,
@@ -1209,6 +1296,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesPostProductionRoute: ServicesPostProductionRoute,
   ServicesVideoProductionRoute: ServicesVideoProductionRoute,
   BlogIndexRoute: BlogIndexRoute,
+  Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -123,6 +123,9 @@ export function StudioAssistant() {
   const pal = palDirectory[selected] || palDirectory.kiana;
   const [draft, setDraft] = useState("");
   const [savedMemory, setSavedMemory] = useState<string[]>([]);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const endRef = useRef<HTMLDivElement | null>(null);
+  const composerRef = useRef<HTMLTextAreaElement | null>(null);
   const recent = assistantMessages.slice(-14);
   const latestResponse = useMemo(() => {
     for (let index = assistantMessages.length - 1; index >= 0; index -= 1) {
@@ -131,18 +134,65 @@ export function StudioAssistant() {
     }
     return null;
   }, [assistantMessages]);
+  const lastQuestion = useMemo(() => {
+    for (let index = assistantMessages.length - 1; index >= 0; index -= 1) {
+      if (assistantMessages[index].role === "user") return assistantMessages[index].body;
+    }
+    return "";
+  }, [assistantMessages]);
 
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const question = draft.trim();
-    if (question.length < 3) return;
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "end" });
+  }, [assistantMessages.length, busy, reduce]);
+
+  useEffect(() => {
+    if (!busy) composerRef.current?.focus();
+  }, [busy]);
+
+  async function send(question: string) {
+    const value = question.trim();
+    if (value.length < 3 || busy) return;
     setDraft("");
     try {
-      await askPal(question, selected);
+      await askPal(value, selected);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Your Pal could not respond yet.");
     }
   }
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    await send(draft);
+  }
+
+  async function retry() {
+    if (lastQuestion) await send(lastQuestion);
+  }
+
+  async function copyMessage(id: string, body: string) {
+    try {
+      await navigator.clipboard.writeText(body);
+      setCopiedId(id);
+      window.setTimeout(() => setCopiedId((current) => (current === id ? null : current)), 1800);
+    } catch {
+      toast.error("Your browser blocked the clipboard.");
+    }
+  }
+
+  async function saveAnswerAsIdea(body: string, meta: AssistantResponse | null) {
+    try {
+      await createIdea({
+        body,
+        sourceType: "chat",
+        lane: meta?.lane || pal.lane,
+        businessProblem: meta?.problem || "",
+      });
+      toast.success("Saved to Content ideas.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not save this answer.");
+    }
+  }
+
 
   async function choosePal(name: PalName) {
     try {

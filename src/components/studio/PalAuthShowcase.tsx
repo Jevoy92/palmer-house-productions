@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import silas from "@/assets/Silas_standing_full.webp.asset.json";
-import samira from "@/assets/Samira_standing_full.webp.asset.json";
-import kareem from "@/assets/Kareem_standing_full.webp.asset.json";
-import kiana from "@/assets/Kiana_standing_full.webp.asset.json";
-import clara from "@/assets/Clara_standing_full.png.asset.json";
-import cyrus from "@/assets/Cyrus_standing_full.png.asset.json";
-import raquel from "@/assets/Raquel_standing_full.png.asset.json";
-import ryder from "@/assets/Ryder_standing_full.webp.asset.json";
+import silas from "@/assets/pals-optimized/silas.webp";
+import samira from "@/assets/pals-optimized/samira.webp";
+import kareem from "@/assets/pals-optimized/kareem.webp";
+import kiana from "@/assets/pals-optimized/kiana.webp";
+import clara from "@/assets/pals-optimized/clara.webp";
+import cyrus from "@/assets/pals-optimized/cyrus.webp";
+import raquel from "@/assets/pals-optimized/raquel.webp";
+import ryder from "@/assets/pals-optimized/ryder.webp";
 
 type Slide = {
   name: string;

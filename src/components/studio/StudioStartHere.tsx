@@ -93,6 +93,15 @@ export function StudioStartHere() {
     setIndex(next === -1 ? steps.length - 1 : next);
   }, [open, steps]);
 
+  useEffect(() => {
+    if (!workspace || !allDone) return;
+    celebrateOnce(`setup.${workspace.id}`, {
+      title: "Your workspace is fully set up.",
+      detail: "Brand DNA, moodboard, first campaign, and calendar are all in place.",
+    });
+  }, [workspace, allDone]);
+
+
   const dismiss = (permanent: boolean) => {
     if (permanent && workspace && typeof window !== "undefined") {
       window.localStorage.setItem(dismissKey(workspace.id), "done");

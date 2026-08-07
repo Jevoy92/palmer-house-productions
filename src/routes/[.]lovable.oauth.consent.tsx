@@ -53,7 +53,6 @@ export const Route = createFileRoute("/.lovable/oauth/consent")({
 function Consent() {
   const loaded = Route.useLoaderData();
   const { authorization_id } = Route.useSearch();
-  const router = Route.useRouteContext ? undefined : undefined;
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [email, setEmail] = useState("");
@@ -93,7 +92,6 @@ function Consent() {
     window.location.href = target;
   }
 
-  void router;
 
   if (loaded.needsSignIn) {
     return (

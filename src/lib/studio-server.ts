@@ -112,7 +112,25 @@ function assetsFromOutput(output: z.infer<typeof CampaignOutputSchema>) {
     metadata: output.productionPlan as Json,
     sort_order: 60,
   });
+  if (output.article) {
+    const article = output.article;
+    rows.push({
+      kind: "article",
+      title: article.title,
+      content: [
+        article.dek,
+        ...article.sections.map((section) => `## ${section.heading}\n\n${section.body}`),
+        article.keyTakeaways.length ? `## Key takeaways\n\n- ${article.keyTakeaways.join("\n- ")}` : "",
+        article.closing,
+      ]
+        .filter(Boolean)
+        .join("\n\n"),
+      metadata: article as Json,
+      sort_order: 45,
+    });
+  }
   return rows;
+
 }
 
 export const generateStudioCampaign = createServerFn({ method: "POST" })

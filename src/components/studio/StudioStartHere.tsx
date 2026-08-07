@@ -48,11 +48,11 @@ export function StudioStartHere() {
       {
         key: "moodboard",
         title: "Moodboard",
-        detail: "Define your style",
+        detail: "Add references that show your style",
         to: "/studio/brand",
         color: "var(--system)",
         soft: "var(--system-soft)",
-        done: Boolean(brand?.visual_style) || brandReferences.length > 0,
+        done: brandReferences.length > 0,
       },
       {
         key: "campaign",
@@ -78,21 +78,23 @@ export function StudioStartHere() {
   const completed = steps.filter((step) => step.done).length;
   const allDone = completed === steps.length;
 
+  const [hidden, setHidden] = useState(false);
+
   useEffect(() => {
-    if (!workspace) return;
-    if (typeof window === "undefined") return;
-    if (window.localStorage.getItem(dismissKey(workspace.id)) === "done") return;
-    setOpen(true);
+    if (!workspace || typeof window === "undefined") return;
+    setHidden(window.localStorage.getItem(dismissKey(workspace.id)) === "done");
   }, [workspace]);
 
   useEffect(() => {
+    if (!open) return;
     const next = steps.findIndex((step) => !step.done);
     setIndex(next === -1 ? steps.length - 1 : next);
-  }, [steps]);
+  }, [open, steps]);
 
   const dismiss = (permanent: boolean) => {
     if (permanent && workspace && typeof window !== "undefined") {
       window.localStorage.setItem(dismissKey(workspace.id), "done");
+      setHidden(true);
     }
     setOpen(false);
   };
@@ -150,7 +152,7 @@ export function StudioStartHere() {
               <p className="mt-2 text-sm text-muted-foreground">
                 {allDone
                   ? "Everything on the setup list is done. Keep creating whenever you're ready."
-                  : "A few quick steps before starting to create."}
+                  : "Optional setup you can finish whenever you want. Nothing here blocks the content engine."}
               </p>
 
               <div className="mt-6 space-y-2">
@@ -191,13 +193,13 @@ export function StudioStartHere() {
                   onClick={() => dismiss(true)}
                   className="min-h-11 rounded-full px-4 text-sm font-bold text-muted-foreground hover:bg-spotlight-soft"
                 >
-                  Don't show again
+                  Hide this checklist
                 </button>
                 <button
                   onClick={() => dismiss(false)}
                   className="flex min-h-11 items-center gap-2 rounded-full bg-ink px-5 text-sm font-bold text-white"
                 >
-                  Skip <ArrowRight className="size-4" />
+                  Close <ArrowRight className="size-4" />
                 </button>
               </div>
             </motion.div>
@@ -205,7 +207,7 @@ export function StudioStartHere() {
         ) : null}
       </AnimatePresence>
 
-      {!open && !allDone ? (
+      {!open && !allDone && !hidden ? (
         <button
           onClick={() => setOpen(true)}
           className="fixed bottom-24 right-4 z-40 flex min-h-12 items-center gap-2 rounded-full border border-border bg-white px-4 text-sm font-bold shadow-[0_20px_60px_-30px_rgba(31,35,40,.8)] lg:bottom-6"

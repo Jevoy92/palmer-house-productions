@@ -4,7 +4,6 @@ import {
   Archive,
   Activity,
   ArrowRight,
-  Bell,
   Building2,
   CalendarDays,
   Captions,
@@ -80,6 +79,7 @@ import {
 } from "@/lib/studio-model";
 import type { Tables } from "@/lib/supabase/database.types";
 import samiraHeadshot from "@/assets/pal-headshots/samira.png";
+import { StudioNotifications } from "./StudioNotifications";
 import { PalAvatar } from "./PalAvatar";
 import { classifyLane } from "@/lib/studio-intelligence";
 import { useGuide } from "./useGuide";

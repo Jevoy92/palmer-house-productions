@@ -8,7 +8,8 @@ import { studioPlans, type StudioPlanKey } from "@/lib/studio-model";
 async function handleStripeWebhook({ request }: { request: Request }) {
   const stripeSecret = process.env.STRIPE_SECRET_KEY;
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  const supabaseSecret = process.env.SUPABASE_SECRET_KEY;
+  const supabaseSecret =
+    process.env['SUPABASE_SERVICE_ROLE_KEY'] || process.env['SUPABASE_SECRET_KEY'];
   if (!stripeSecret || !webhookSecret || !supabaseSecret) {
     return Response.json({ error: "Billing webhook is not configured." }, { status: 503 });
   }
@@ -21,7 +22,7 @@ async function handleStripeWebhook({ request }: { request: Request }) {
   } catch {
     return Response.json({ error: "Invalid Stripe signature." }, { status: 400 });
   }
-  const admin = createClient<Database>(SUPABASE_URL, supabaseSecret, {
+  const admin = createClient<Database>(process.env["SUPABASE_URL"] || SUPABASE_URL, supabaseSecret, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 

@@ -1,6 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestUrl } from "@tanstack/react-start/server";
-import { zodTextFormat } from "openai/helpers/zod";
 import { z } from "zod";
 import {
   createUserScopedSupabase,
@@ -128,18 +127,14 @@ export const generateStudioCampaign = createServerFn({ method: "POST" })
       throw new Error(reservation.error?.message || "Campaign allowance reached.");
 
     try {
-      const key = process.env.OPENAI_API_KEY;
-      if (!key) throw new Error("OPENAI_API_KEY is not configured.");
-      const { default: OpenAI } = await import("openai");
-      const openai = new OpenAI({ apiKey: key });
-      const response = await openai.responses.parse({
-        model: process.env.OPENAI_STUDIO_MODEL || "gpt-5-mini",
-        instructions:
-          "You are the Palmer House Campaign Architect. Help people who use video as leverage: companies, authors, musicians, creators, podcasters, streamers, nonprofits, personal brands, and teams. Build useful, specific campaigns from one real idea. Adapt examples and strategy to the creator type and goal. Write with calm confidence, concrete language, and no hype. Never invent proof or results. The anchor must be a complete word-for-word script someone can actually read on camera, not an outline. Break it into 3–8 filmable scenes; every scene needs a beat, a visible action or framing direction, the exact spoken words, concise on-screen text, and achievable b-roll. The production plan must be genuinely filmable by the person or team described. Use the Four Pals as an internal lane system: spotlight for trust and authority, reel for short-form attention, evergreen for durable education, system for internal clarity. For platformPosts, create genuinely platform-native work for YouTube, Instagram, TikTok, LinkedIn, Facebook, and Threads—not one caption copied six ways. Use native interaction patterns only when they support the stated goal. Include at least one poll and one carousel or document. Return only the requested structured result.",
-        input: `Brand / project: ${data.brand.businessName}\nCreator type: ${data.brand.creatorType}\nPrimary goal: ${data.brand.primaryGoal}\nDescription: ${data.brand.description}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied—do not invent any"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\n\nCampaign goal: ${data.goal}\nTopic: ${data.topic}\nOffer: ${data.offer}\nAudience: ${data.audience}\nAnchor format: ${data.anchorFormat}\nPlanning depth: ${data.depth}`,
-        text: { format: zodTextFormat(CampaignOutputSchema, "palmer_house_campaign") },
-      });
-      const output = CampaignOutputSchema.parse(response.output_parsed);
+    const { parseStructured } = await import("./ai.server");
+      const response = await parseStructured(
+      CampaignOutputSchema,
+      "palmer_house_campaign",
+      "You are the Palmer House Campaign Architect. Help people who use video as leverage: companies, authors, musicians, creators, podcasters, streamers, nonprofits, personal brands, and teams. Build useful, specific campaigns from one real idea. Adapt examples and strategy to the creator type and goal. Write with calm confidence, concrete language, and no hype. Never invent proof or results. The anchor must be a complete word-for-word script someone can actually read on camera, not an outline. Break it into 3–8 filmable scenes; every scene needs a beat, a visible action or framing direction, the exact spoken words, concise on-screen text, and achievable b-roll. The production plan must be genuinely filmable by the person or team described. Use the Four Pals as an internal lane system: spotlight for trust and authority, reel for short-form attention, evergreen for durable education, system for internal clarity. For platformPosts, create genuinely platform-native work for YouTube, Instagram, TikTok, LinkedIn, Facebook, and Threads—not one caption copied six ways. Use native interaction patterns only when they support the stated goal. Include at least one poll and one carousel or document. Return only the requested structured result.",
+      `Brand / project: ${data.brand.businessName}\nCreator type: ${data.brand.creatorType}\nPrimary goal: ${data.brand.primaryGoal}\nDescription: ${data.brand.description}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied—do not invent any"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\n\nCampaign goal: ${data.goal}\nTopic: ${data.topic}\nOffer: ${data.offer}\nAudience: ${data.audience}\nAnchor format: ${data.anchorFormat}\nPlanning depth: ${data.depth}`,
+    );
+      const output = CampaignOutputSchema.parse(response);
 
       const campaignUpdate = await client
         .from("campaigns")
@@ -195,18 +190,14 @@ export const generateContentDirections = createServerFn({ method: "POST" })
   .validator(ContentDirectionRequestSchema)
   .handler(async ({ data }) => {
     await authorizedClient(data.accessToken, data.workspaceId);
-    const key = process.env.OPENAI_API_KEY;
-    if (!key) throw new Error("OPENAI_API_KEY is not configured.");
-    const { default: OpenAI } = await import("openai");
-    const openai = new OpenAI({ apiKey: key });
-    const response = await openai.responses.parse({
-      model: process.env.OPENAI_STUDIO_MODEL || "gpt-5-mini",
-      instructions:
-        "You are a Palmer House strategist. Return exactly three materially different content directions for the supplied idea. Lead with the business problem and audience decision, never with a generic video format. Each direction must map to one Palmer House lane: spotlight for proof/trust, reel for attention/momentum, evergreen for durable education, or system for repeatability/internal clarity. Be concise, specific, and do not invent proof.",
-      input: `Brand / project: ${data.brand.businessName}\nCreator type: ${data.brand.creatorType}\nPrimary goal: ${data.brand.primaryGoal}\nDescription: ${data.brand.description}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\n\nCampaign goal: ${data.goal}\nAudience: ${data.audience}\nIdea: ${data.idea}`,
-      text: { format: zodTextFormat(ContentDirectionsSchema, "palmer_house_directions") },
-    });
-    return { ok: true as const, ...ContentDirectionsSchema.parse(response.output_parsed) };
+    const { parseStructured } = await import("./ai.server");
+    const response = await parseStructured(
+      ContentDirectionsSchema,
+      "palmer_house_directions",
+      "You are a Palmer House strategist. Return exactly three materially different content directions for the supplied idea. Lead with the business problem and audience decision, never with a generic video format. Each direction must map to one Palmer House lane: spotlight for proof/trust, reel for attention/momentum, evergreen for durable education, or system for repeatability/internal clarity. Be concise, specific, and do not invent proof.",
+      `Brand / project: ${data.brand.businessName}\nCreator type: ${data.brand.creatorType}\nPrimary goal: ${data.brand.primaryGoal}\nDescription: ${data.brand.description}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\n\nCampaign goal: ${data.goal}\nAudience: ${data.audience}\nIdea: ${data.idea}`,
+    );
+    return { ok: true as const, ...ContentDirectionsSchema.parse(response) };
   });
 
 export const askStudioPal = createServerFn({ method: "POST" })
@@ -235,19 +226,15 @@ export const askStudioPal = createServerFn({ method: "POST" })
     ]);
     if (brandResult.error || !brandResult.data)
       throw new Error("Finish Brand DNA before asking for personalized guidance.");
-    const key = process.env.OPENAI_API_KEY;
-    if (!key) throw new Error("OPENAI_API_KEY is not configured.");
-    const { default: OpenAI } = await import("openai");
-    const openai = new OpenAI({ apiKey: key });
+    const { parseStructured } = await import("./ai.server");
     const brand = brandResult.data;
-    const response = await openai.responses.parse({
-      model: process.env.OPENAI_STUDIO_MODEL || "gpt-5-mini",
-      instructions:
-        "You are a Palmer House strategic guide inside a private creative workspace for someone who uses video as leverage. Treat Brand DNA as the source of truth. Adapt recommendations to the person's creator type, audience, and primary goal. Use recent campaigns, calendar work, approved proof, and conversation context to give a dynamic next-best recommendation. Lead with the real problem or opportunity, not a video format. Never invent proof. Ask for clarification only when it prevents a materially wrong recommendation. Map the response to one Palmer House lane: Spotlight for proof and trust, Reel for visibility and momentum, Evergreen for durable education, System for repeatability and internal clarity. The selected Pal changes tone and lens, not the facts. Recommend at most three concrete next steps. Only propose a Brand DNA memory update when the user clearly supplied durable information; the user must approve it before saving.",
-      input: `Selected Pal: ${data.pal}\n\nBrand DNA:\nBrand / project: ${brand.business_name}\nCreator type: ${brand.creator_type}\nPrimary goal: ${brand.primary_goal}\nDescription: ${brand.description}\nCategory / genre: ${brand.industry}\nAudience: ${brand.primary_audience}\nOffers: ${JSON.stringify(brand.offers)}\nVoice: ${brand.voice_traits.join(", ")}\nPreferred language: ${brand.preferred_language}\nAvoid: ${brand.avoid_language.join(" | ")}\nVerified proof only: ${brand.proof_points.join(" | ") || "None supplied"}\nPreferred CTAs: ${brand.calls_to_action.join(" | ")}\nPlatforms: ${brand.platforms.join(" | ")}\nBrand Guide details: ${JSON.stringify(brand.brand_details || {})}\n\nApproved AI memory: ${JSON.stringify(settingsResult.data?.ai_memory || {})}\nRecent campaigns: ${JSON.stringify(campaignsResult.data || [])}\nUpcoming work: ${JSON.stringify(calendarResult.data || [])}\nRecent conversation: ${JSON.stringify(data.recentMessages)}\n\nUser: ${data.question}`,
-      text: { format: zodTextFormat(AssistantResponseSchema, "palmer_house_assistant") },
-    });
-    return { ok: true as const, response: AssistantResponseSchema.parse(response.output_parsed) };
+    const response = await parseStructured(
+      AssistantResponseSchema,
+      "palmer_house_assistant",
+      "You are a Palmer House strategic guide inside a private creative workspace for someone who uses video as leverage. Treat Brand DNA as the source of truth. Adapt recommendations to the person's creator type, audience, and primary goal. Use recent campaigns, calendar work, approved proof, and conversation context to give a dynamic next-best recommendation. Lead with the real problem or opportunity, not a video format. Never invent proof. Ask for clarification only when it prevents a materially wrong recommendation. Map the response to one Palmer House lane: Spotlight for proof and trust, Reel for visibility and momentum, Evergreen for durable education, System for repeatability and internal clarity. The selected Pal changes tone and lens, not the facts. Recommend at most three concrete next steps. Only propose a Brand DNA memory update when the user clearly supplied durable information; the user must approve it before saving.",
+      `Selected Pal: ${data.pal}\n\nBrand DNA:\nBrand / project: ${brand.business_name}\nCreator type: ${brand.creator_type}\nPrimary goal: ${brand.primary_goal}\nDescription: ${brand.description}\nCategory / genre: ${brand.industry}\nAudience: ${brand.primary_audience}\nOffers: ${JSON.stringify(brand.offers)}\nVoice: ${brand.voice_traits.join(", ")}\nPreferred language: ${brand.preferred_language}\nAvoid: ${brand.avoid_language.join(" | ")}\nVerified proof only: ${brand.proof_points.join(" | ") || "None supplied"}\nPreferred CTAs: ${brand.calls_to_action.join(" | ")}\nPlatforms: ${brand.platforms.join(" | ")}\nBrand Guide details: ${JSON.stringify(brand.brand_details || {})}\n\nApproved AI memory: ${JSON.stringify(settingsResult.data?.ai_memory || {})}\nRecent campaigns: ${JSON.stringify(campaignsResult.data || [])}\nUpcoming work: ${JSON.stringify(calendarResult.data || [])}\nRecent conversation: ${JSON.stringify(data.recentMessages)}\n\nUser: ${data.question}`,
+    );
+    return { ok: true as const, response: AssistantResponseSchema.parse(response) };
   });
 
 const AnalyzeWebsiteSchema = AuthorizedSchema.extend({ website: z.string().url().max(500) });
@@ -318,26 +305,20 @@ export const analyzeStudioWebsite = createServerFn({ method: "POST" })
       .replace(/<[^>]+>/g, " ")
       .replace(/\s+/g, " ")
       .slice(0, 45_000);
-    const key = process.env.OPENAI_API_KEY;
-    if (!key) throw new Error("OPENAI_API_KEY is not configured.");
-    const { default: OpenAI } = await import("openai");
-    const openai = new OpenAI({ apiKey: key });
-    const analyzed = await openai.responses.parse({
-      model: process.env.OPENAI_STUDIO_MODEL || "gpt-5-mini",
-      instructions:
-        "Extract only what the supplied website clearly supports. Never invent proof, claims, customers, or offers. Write concise proposed brand-profile fields.",
-      input: text,
-      text: { format: zodTextFormat(WebsiteProfileSchema, "website_brand_profile") },
-    });
-    return { ok: true as const, profile: WebsiteProfileSchema.parse(analyzed.output_parsed) };
+    const { parseStructured } = await import("./ai.server");
+    const analyzed = await parseStructured(
+      WebsiteProfileSchema,
+      "website_brand_profile",
+      "Extract only what the supplied website clearly supports. Never invent proof, claims, customers, or offers. Write concise proposed brand-profile fields.",
+      text,
+    );
+    return { ok: true as const, profile: WebsiteProfileSchema.parse(analyzed) };
   });
 
 export const analyzeStudioContentSource = createServerFn({ method: "POST" })
   .validator(ContentSourceAnalysisRequestSchema)
   .handler(async ({ data }) => {
     await authorizedClient(data.accessToken, data.workspaceId);
-    const key = process.env.OPENAI_API_KEY;
-    if (!key) throw new Error("OPENAI_API_KEY is not configured.");
 
     const brandContext = `Business: ${data.brand.businessName}\nDescription: ${data.brand.description}\nAudience: ${data.brand.audience}\nOffers: ${data.brand.offers.join(" | ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied"}\nUser context: ${data.context || "None supplied"}`;
     let sourceText = "";
@@ -356,8 +337,7 @@ export const analyzeStudioContentSource = createServerFn({ method: "POST" })
         .slice(0, 45_000);
     }
 
-    const { default: OpenAI } = await import("openai");
-    const openai = new OpenAI({ apiKey: key });
+    const { parseStructured } = await import("./ai.server");
     const instructions =
       "You are Palmer House Productions' content intake strategist. Turn supplied source material into one useful, campaign-ready idea for someone who uses video as leverage. Lead with the real problem or opportunity and the audience decision that needs to change. Map it to exactly one Palmer House lane: Spotlight for trust/proof, Reel for attention/momentum, Evergreen for durable education, or System for repeatability/internal clarity. For images, describe only visible evidence and clearly separate user-supplied context. Never infer identities, results, audience response, before/after improvement, or claims that are not visibly supported. For links, use only the supplied page text. Return concise, concrete language a creator or team can understand.";
     const input =
@@ -379,15 +359,15 @@ export const analyzeStudioContentSource = createServerFn({ method: "POST" })
             },
           ]
         : `${brandContext}\n\nSource URL: ${data.sourceUrl}\nSource page text:\n${sourceText}`;
-    const analyzed = await openai.responses.parse({
-      model: process.env.OPENAI_STUDIO_MODEL || "gpt-5-mini",
+    const analyzed = await parseStructured(
+      ContentSourceAnalysisSchema,
+      "content_source_analysis",
       instructions,
       input,
-      text: { format: zodTextFormat(ContentSourceAnalysisSchema, "content_source_analysis") },
-    });
+    );
     return {
       ok: true as const,
-      analysis: ContentSourceAnalysisSchema.parse(analyzed.output_parsed),
+      analysis: ContentSourceAnalysisSchema.parse(analyzed),
     };
   });
 

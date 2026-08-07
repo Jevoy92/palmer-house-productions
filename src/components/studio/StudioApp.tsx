@@ -853,6 +853,51 @@ function Onboarding() {
           <PalAuthShowcase />
         </section>
       </div>
+      {setupStep >= 0 ? (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-white/95 p-6 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-[1.5rem] border border-border bg-white p-8 shadow-[0_50px_100px_-60px_rgba(31,35,40,.8)]">
+            <p className="studio-eyebrow text-system">Setting up your studio</p>
+            <h2 className="mt-3 text-2xl font-black leading-tight tracking-[-.03em]">
+              Give us a moment, {name || "friend"}.
+            </h2>
+            <ul className="mt-6 space-y-3">
+              {[
+                "Creating your private workspace",
+                "Writing your brand memory",
+                "Teaching your guide who you are",
+                "Ready",
+              ].map((label, index) => (
+                <li key={label} className="flex items-center gap-3 text-sm font-bold">
+                  <span
+                    className="grid size-7 shrink-0 place-items-center rounded-full border"
+                    style={{
+                      borderColor: index <= setupStep ? match.color : "var(--border)",
+                      background: index < setupStep ? match.color : "white",
+                      color: index < setupStep ? "white" : "var(--muted-foreground)",
+                    }}
+                  >
+                    {index < setupStep ? (
+                      <Check className="size-3.5" />
+                    ) : index === setupStep ? (
+                      <LoaderCircle className="size-3.5 animate-spin" />
+                    ) : null}
+                  </span>
+                  <span className={index <= setupStep ? "" : "text-muted-foreground"}>{label}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 h-1.5 overflow-hidden rounded-full bg-border">
+              <div
+                className="h-full rounded-full transition-all duration-700"
+                style={{
+                  width: `${((setupStep + 1) / 4) * 100}%`,
+                  background: match.color,
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }

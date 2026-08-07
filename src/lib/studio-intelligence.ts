@@ -301,3 +301,36 @@ export function diagnoseVideoLibrary(brand: BrandSignals, campaignLanes: string[
     })
     .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
 }
+
+/**
+ * Assigns a content lane from the text of an idea so nobody has to pick one up front.
+ * The lane is a category label, not a person the user has to know about.
+ */
+export function classifyLane(text: string): StudioLane {
+  const value = text.toLowerCase();
+  const score: Record<StudioLane, number> = { spotlight: 0, reel: 0, evergreen: 0, system: 0 };
+  const rules: Array<[StudioLane, RegExp]> = [
+    [
+      "spotlight",
+      /story|founder|about us|why us|testimonial|proof|review|brand|trust|first impression|homepage|offer/,
+    ],
+    [
+      "reel",
+      /short|reel|tiktok|shorts|hook|trend|quick|behind the scenes|day in the life|fast|viral|social/,
+    ],
+    [
+      "evergreen",
+      /how to|explain|guide|pricing|process|faq|question|educat|tutorial|compare|myth|breakdown|deep/,
+    ],
+    [
+      "system",
+      /onboard|welcome|internal|team|training|sop|support|workflow|operation|partner|referral|recap|handbook/,
+    ],
+  ];
+  for (const [lane, pattern] of rules) {
+    const matches = value.match(new RegExp(pattern, "g"));
+    if (matches) score[lane] += matches.length;
+  }
+  const ordered = (Object.keys(score) as StudioLane[]).sort((a, b) => score[b] - score[a]);
+  return score[ordered[0]] > 0 ? ordered[0] : "evergreen";
+}

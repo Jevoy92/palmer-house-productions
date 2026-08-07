@@ -490,7 +490,9 @@ function AuthExperience() {
 }
 
 function Onboarding() {
-  const { createWorkspace, busy, user, signOut } = useStudio();
+  const { createWorkspace, busy, user, signOut, saveSettings } = useStudio();
+  const [guidePick, setGuidePick] = useState<string>("none");
+
   const [name, setName] = useState((user?.user_metadata?.full_name as string) || "");
   const [step, setStep] = useState(0);
   const [creatorType, setCreatorType] = useState<(typeof studioAudienceTypes)[number]>("Business");

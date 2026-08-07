@@ -1,3 +1,5 @@
+import phMark from "@/assets/php-mark.png.asset.json";
+
 const links = ["Services", "Industries", "Meet the Pals", "Resources", "Locations"];
 
 export function Nav() {

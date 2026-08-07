@@ -16,6 +16,7 @@ import {
   ContentDirectionRequestSchema,
   ContentDirectionsSchema,
   studioPlans,
+  studioPlanPrices,
 } from "./studio-model";
 import type { Json } from "./supabase/database.types";
 

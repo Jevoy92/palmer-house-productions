@@ -6118,6 +6118,42 @@ function SettingsView() {
                     <Check className="size-4" /> Save account
                   </button>
                   <div className="border-t border-border pt-5 sm:col-span-2">
+                    <p className="text-sm font-extrabold">Your guide</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Your guide sets the tone of the tips, briefings, and accents across the
+                      Studio. Pick whoever matches how you like to work — or keep it neutral.
+                    </p>
+                    <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                      <button
+                        onClick={() => void setGuide("none")}
+                        className={`min-h-16 rounded-xl border p-3 text-left ${guide.key ? "border-border" : "border-ink"}`}
+                      >
+                        <span className="text-sm font-black">No guide</span>
+                        <span className="mt-1 block text-[10px] font-medium text-muted-foreground">
+                          Straight guidance, no character
+                        </span>
+                      </button>
+                      {palList.map((pal) => (
+                        <button
+                          key={pal.key}
+                          onClick={() => void setGuide(pal.key)}
+                          className={`flex min-h-16 items-center gap-3 rounded-xl border p-3 text-left ${guide.key === pal.key ? "border-ink" : "border-border"}`}
+                          style={{
+                            background: guide.key === pal.key ? pal.soft : "white",
+                          }}
+                        >
+                          <PalAvatar pal={pal} size="sm" />
+                          <span className="min-w-0">
+                            <span className="block text-sm font-black">{pal.name}</span>
+                            <span className="block truncate text-[10px] font-medium text-muted-foreground">
+                              {pal.role}
+                            </span>
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="border-t border-border pt-5 sm:col-span-2">
                     <p className="text-sm font-extrabold">Session</p>
                     <p className="mt-1 text-xs text-muted-foreground">
                       Signing out clears this Studio session on this device.
@@ -6129,6 +6165,7 @@ function SettingsView() {
                       <LogOut className="size-4" /> Sign out
                     </button>
                   </div>
+
                 </div>
 
               </div>

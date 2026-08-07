@@ -8,7 +8,9 @@ import {
   generateContentDirections,
   generateStudioCampaign,
 } from "@/lib/studio-server";
+import { classifyLane } from "@/lib/studio-intelligence";
 import type { WebsiteBrandProfile } from "@/lib/studio-server";
+
 import type {
   AssistantResponse,
   CampaignOutput,

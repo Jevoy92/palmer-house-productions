@@ -13,25 +13,23 @@ export function useGuide(): {
   setGuide: (pal: PalName | "none") => Promise<void>;
   tip: (surface: string) => string;
 } {
-  const { settings, profile, saveSettings, saveProfile } = useStudio();
-  const stored = settings?.preferred_pal || profile?.favorite_pal || null;
+  const { settings, saveSettings } = useStudio();
+  const stored = settings?.preferred_pal || null;
   const guide = resolveGuide(stored);
   const hasChosen = Boolean(stored);
 
   const setGuide = useCallback(
     async (pal: PalName | "none") => {
       await saveSettings({ preferred_pal: pal });
-      try {
-        await saveProfile({ favorite_pal: pal === "none" ? null : pal });
-      } catch {
-        // profile sync is a convenience; workspace setting is the source of truth
-      }
     },
-    [saveSettings, saveProfile],
+    [saveSettings],
   );
 
   const tip = useCallback(
-    (surface: string) => guide.tips[surface] || guide.tips.home,
+    (surface: string) => {
+      const tips = guide.tips as Record<string, string>;
+      return tips[surface] || tips.home;
+    },
     [guide],
   );
 

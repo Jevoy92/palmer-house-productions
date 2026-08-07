@@ -26,7 +26,7 @@ const slides: Slide[] = [
     lane: "System Pal",
     color: "var(--system)",
     soft: "var(--system-soft)",
-    image: silas.url,
+    image: silas,
     headline: "Turns tribal knowledge into a repeatable system.",
     helps: "Process capture · SOP video · Onboarding",
     metrics: [
@@ -41,7 +41,7 @@ const slides: Slide[] = [
     lane: "System Pal",
     color: "var(--system)",
     soft: "var(--system-soft)",
-    image: samira.url,
+    image: samira,
     headline: "Builds the operating rhythm behind the content.",
     helps: "Calendars · Approvals · Team handoffs",
     metrics: [
@@ -56,7 +56,7 @@ const slides: Slide[] = [
     lane: "Spotlight Pal",
     color: "var(--spotlight)",
     soft: "var(--spotlight-soft)",
-    image: kareem.url,
+    image: kareem,
     headline: "Makes the reason you are different impossible to miss.",
     helps: "Brand story · Founder film · Positioning",
     metrics: [
@@ -71,7 +71,7 @@ const slides: Slide[] = [
     lane: "Spotlight Pal",
     color: "var(--spotlight)",
     soft: "var(--spotlight-soft)",
-    image: kiana.url,
+    image: kiana,
     headline: "Turns proof into stories buyers believe.",
     helps: "Testimonials · Case studies · Social proof",
     metrics: [
@@ -86,7 +86,7 @@ const slides: Slide[] = [
     lane: "Evergreen Pal",
     color: "var(--evergreen)",
     soft: "var(--evergreen-soft)",
-    image: clara.url,
+    image: clara,
     headline: "Teaches the thing you explain on every single call.",
     helps: "Explainers · FAQ library · Education",
     metrics: [
@@ -101,7 +101,7 @@ const slides: Slide[] = [
     lane: "Evergreen Pal",
     color: "var(--evergreen)",
     soft: "var(--evergreen-soft)",
-    image: cyrus.url,
+    image: cyrus,
     headline: "Builds the library that keeps earning after launch.",
     helps: "Search demand · Long-form · Resource hubs",
     metrics: [
@@ -116,7 +116,7 @@ const slides: Slide[] = [
     lane: "Reel Pal",
     color: "var(--reel)",
     soft: "var(--reel-soft)",
-    image: raquel.url,
+    image: raquel,
     headline: "Keeps you visible without living on your phone.",
     helps: "Short form · Hooks · Weekly rhythm",
     metrics: [
@@ -131,7 +131,7 @@ const slides: Slide[] = [
     lane: "Reel Pal",
     color: "var(--reel)",
     soft: "var(--reel-soft)",
-    image: ryder.url,
+    image: ryder,
     headline: "Finds the moment inside the footage you already have.",
     helps: "Repurposing · Clips · Platform cuts",
     metrics: [

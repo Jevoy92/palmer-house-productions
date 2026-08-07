@@ -25,6 +25,8 @@ export type Database = {
           industry: string;
           locations: string[];
           offers: Json;
+          personal_interests: string[];
+          personal_story: string;
           platforms: string[];
           primary_goal: string;
           preferred_language: string;
@@ -53,6 +55,8 @@ export type Database = {
           industry?: string;
           locations?: string[];
           offers?: Json;
+          personal_interests?: string[];
+          personal_story?: string;
           platforms?: string[];
           primary_goal?: string;
           preferred_language?: string;
@@ -81,6 +85,8 @@ export type Database = {
           industry?: string;
           locations?: string[];
           offers?: Json;
+          personal_interests?: string[];
+          personal_story?: string;
           platforms?: string[];
           primary_goal?: string;
           preferred_language?: string;

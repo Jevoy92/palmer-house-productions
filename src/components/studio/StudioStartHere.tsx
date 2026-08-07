@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ArrowLeft, ArrowRight, Check, Sparkles } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { celebrateOnce } from "./Celebrate";
 import { useStudio } from "./StudioProvider";
 
 type StepKey = "service" | "context" | "moodboard" | "campaign" | "calendar";
@@ -77,6 +78,8 @@ export function StudioStartHere() {
 
   const completed = steps.filter((step) => step.done).length;
   const allDone = completed === steps.length;
+  const nextStep = steps.find((step) => !step.done) || steps[steps.length - 1];
+
 
   const [hidden, setHidden] = useState(false);
 
@@ -90,6 +93,15 @@ export function StudioStartHere() {
     const next = steps.findIndex((step) => !step.done);
     setIndex(next === -1 ? steps.length - 1 : next);
   }, [open, steps]);
+
+  useEffect(() => {
+    if (!workspace || !allDone) return;
+    celebrateOnce(`setup.${workspace.id}`, {
+      title: "Your workspace is fully set up.",
+      detail: "Brand DNA, moodboard, first campaign, and calendar are all in place.",
+    });
+  }, [workspace, allDone]);
+
 
   const dismiss = (permanent: boolean) => {
     if (permanent && workspace && typeof window !== "undefined") {
@@ -207,15 +219,53 @@ export function StudioStartHere() {
         ) : null}
       </AnimatePresence>
 
-      {!open && !allDone && !hidden ? (
-        <button
+      {!open && !hidden ? (
+        <motion.button
           onClick={() => setOpen(true)}
-          className="fixed bottom-24 right-4 z-40 flex min-h-12 items-center gap-2 rounded-full border border-border bg-white px-4 text-sm font-bold shadow-[0_20px_60px_-30px_rgba(31,35,40,.8)] lg:bottom-6"
+          initial={reduce ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          whileHover={reduce ? undefined : { scale: 1.03 }}
+          whileTap={reduce ? undefined : { scale: 0.97 }}
+          className="fixed bottom-24 right-4 z-40 flex min-h-12 items-center gap-2.5 rounded-full border bg-white px-4 text-sm font-bold shadow-[0_20px_60px_-30px_rgba(31,35,40,.8)] lg:bottom-6"
+          style={{ borderColor: allDone ? "var(--evergreen)" : nextStep.color }}
         >
-          <Sparkles className="size-4 text-spotlight" />
-          Start here · {completed}/{steps.length}
-        </button>
+          <span className="relative grid size-6 place-items-center">
+            {!allDone && !reduce ? (
+              <motion.span
+                className="absolute inset-0 rounded-full"
+                style={{ background: nextStep.color }}
+                animate={{ opacity: [0.35, 0, 0.35], scale: [1, 1.75, 1] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+              />
+            ) : null}
+            <span
+              className="relative grid size-6 place-items-center rounded-full"
+              style={{
+                background: allDone ? "var(--evergreen-soft)" : nextStep.soft,
+                color: allDone ? "var(--evergreen)" : nextStep.color,
+              }}
+            >
+              {allDone ? <Check className="size-3.5" /> : <Sparkles className="size-3.5" />}
+            </span>
+          </span>
+          <span className="text-left leading-tight">
+            <span className="block">{allDone ? "Setup complete" : nextStep.title}</span>
+            <span className="block font-mono text-[9px] uppercase tracking-[.14em] text-muted-foreground">
+              {completed}/{steps.length} done
+            </span>
+          </span>
+          <span className="flex gap-1">
+            {steps.map((step) => (
+              <span
+                key={step.key}
+                className="size-1.5 rounded-full transition-colors"
+                style={{ background: step.done ? step.color : "var(--border)" }}
+              />
+            ))}
+          </span>
+        </motion.button>
       ) : null}
+
     </>
   );
 }

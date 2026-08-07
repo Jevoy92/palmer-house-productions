@@ -86,6 +86,7 @@ import { useStudio } from "./StudioProvider";
 import { ContentEngine } from "./ContentEngine";
 import { StudioMark } from "./StudioVisuals";
 import { PalAuthShowcase } from "./PalAuthShowcase";
+import { CelebrationLayer, celebrate, celebrateOnce } from "./Celebrate";
 import { StudioStartHere } from "./StudioStartHere";
 import { StudioAssistant } from "./StudioAssistant";
 import { VideoRoadmap } from "./VideoRoadmap";
@@ -727,6 +728,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
   }, [view]);
   return (
     <div className="min-h-screen bg-white text-ink">
+      <CelebrationLayer />
       <StudioStartHere />
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-[15.5rem] flex-col border-r border-border bg-white px-4 py-5 lg:flex">
         <StudioBrand />
@@ -2273,6 +2275,7 @@ function Campaigns() {
     try {
       const id = await createCampaign(brief);
       toast.success("Your campaign system is ready.");
+      celebrate({ title: "Campaign system built.", detail: brief.topic.slice(0, 90) });
       void navigate({ to: "/studio/campaigns/$campaignId", params: { campaignId: id } });
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Campaign generation failed.");
@@ -4361,6 +4364,19 @@ function BrandStudio() {
         completion,
       });
       toast.success("Brand memory updated.");
+      if (completion >= 100) {
+        celebrateOnce(`brand.${brand?.workspace_id ?? "current"}`, {
+          title: "Brand DNA complete.",
+          detail: "Every Pal and every tool now writes in your voice.",
+          colors: ["#3d1a66", "#5b8a2d"],
+        });
+      } else {
+        celebrate({
+          title: `Brand DNA ${completion}% complete.`,
+          detail: "Saved. Your tools just got sharper.",
+          colors: ["#3d1a66"],
+        });
+      }
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not save brand.");
     }
@@ -5380,6 +5396,11 @@ function CalendarView() {
         }),
       );
       toast.success("A four-week draft plan is now on the calendar.");
+      celebrate({
+        title: "Four weeks planned.",
+        detail: "Your calendar is filled out and ready to shoot.",
+        colors: ["#5b8a2d", "#0a9b8f"],
+      });
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not build the month plan.");
     } finally {

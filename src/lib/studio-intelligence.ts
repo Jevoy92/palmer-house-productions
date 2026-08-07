@@ -178,7 +178,96 @@ export const universalVideoLibrary: VideoLibraryItem[] = [
     prompt: "Turn the most repeated support requests into short, task-specific walkthroughs.",
     prioritySignals: ["operations", "education"],
   },
+  {
+    key: "offer-explainer",
+    title: "Signature offer explainer",
+    lane: "spotlight",
+    category: "Trust foundation",
+    problem: "People like the brand but cannot tell what buying actually looks like.",
+    outcome: "A clear picture of the offer, the steps, and what is included.",
+    prompt:
+      "Walk through your main offer: who it is for, what happens in each stage, and what the buyer ends up with.",
+    prioritySignals: ["sales", "trust"],
+  },
+  {
+    key: "objection-answer",
+    title: "The honest objection answer",
+    lane: "spotlight",
+    category: "Trust foundation",
+    problem: "The same hesitation stalls deals and nobody addresses it directly.",
+    outcome: "A straight answer that removes the biggest reason people stall.",
+    prompt:
+      "Name the objection you hear most, agree with the fair part of it, then show how you actually handle it.",
+    prioritySignals: ["sales", "trust"],
+  },
+  {
+    key: "hook-first-tip",
+    title: "Hook-first tip",
+    lane: "reel",
+    category: "Attention",
+    problem: "Posts open too slowly and lose people in the first two seconds.",
+    outcome: "One sharp, useful tip that earns the rest of the watch.",
+    prompt:
+      "Lead with the sharpest sentence you know about your work, then deliver one specific tip in under 30 seconds.",
+    prioritySignals: ["visibility", "education"],
+  },
+  {
+    key: "day-in-the-life",
+    title: "Day in the life",
+    lane: "reel",
+    category: "Attention",
+    problem: "Customers cannot picture what the work actually involves.",
+    outcome: "Familiarity that makes the first conversation easier.",
+    prompt:
+      "Follow one real working day in short beats: the first task, the hard part, and how it ends.",
+    prioritySignals: ["visibility", "trust"],
+  },
+  {
+    key: "customer-question",
+    title: "Answer a real customer question",
+    lane: "reel",
+    category: "Attention",
+    problem: "Good questions get answered privately and never reach a wider audience.",
+    outcome: "Useful short content that already has proven demand.",
+    prompt:
+      "Read one real question you were asked this month, then answer it plainly in under 60 seconds.",
+    prioritySignals: ["education", "visibility"],
+  },
+  {
+    key: "results-breakdown",
+    title: "Results breakdown",
+    lane: "evergreen",
+    category: "Authority",
+    problem: "Claims about outcomes are stated but never shown.",
+    outcome: "Evidence a careful buyer can check before they commit.",
+    prompt:
+      "Take one project from starting condition to finished result and explain what changed and why.",
+    prioritySignals: ["trust", "sales"],
+  },
+  {
+    key: "partner-referral",
+    title: "Partner and referral brief",
+    lane: "system",
+    category: "Customer operations",
+    problem: "Partners describe your work inaccurately because nobody gave them the words.",
+    outcome: "Referrals that arrive already qualified.",
+    prompt:
+      "Explain who you are the right fit for, who you are not, and how a partner should introduce you.",
+    prioritySignals: ["operations", "sales"],
+  },
+  {
+    key: "annual-recap",
+    title: "Season or annual recap",
+    lane: "system",
+    category: "Customer operations",
+    problem: "Progress happens but nobody sees the shape of it.",
+    outcome: "A record that builds trust and gives the team something to point at.",
+    prompt:
+      "Summarize the period: what changed, what you learned, and what is next for customers.",
+    prioritySignals: ["trust", "operations"],
+  },
 ];
+
 
 type BrandSignals = {
   description?: string | null;

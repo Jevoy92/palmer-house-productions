@@ -411,6 +411,9 @@ export const CampaignBriefSchema = z.object({
 
 });
 
+// NOTE: the model provider ignores JSON-Schema minItems, so array minimums are
+// intentionally loose here — counts are requested in the prompt instead. Hard
+// minimums caused otherwise-valid campaigns to fail parsing after generation.
 export const CampaignOutputSchema = z.object({
   title: z.string(),
   primaryLane: z.enum(["spotlight", "reel", "evergreen", "system"]),
@@ -418,11 +421,11 @@ export const CampaignOutputSchema = z.object({
     bigIdea: z.string(),
     audienceInsight: z.string(),
     promise: z.string(),
-    messagePillars: z.array(z.string()).min(3).max(5),
+    messagePillars: z.array(z.string()).min(1).max(6),
     channelPlan: z
       .array(z.object({ channel: z.string(), role: z.string() }))
-      .min(2)
-      .max(6),
+      .min(1)
+      .max(8),
   }),
   anchor: z.object({
     title: z.string(),
@@ -436,11 +439,10 @@ export const CampaignOutputSchema = z.object({
           visual: z.string(),
           spoken: z.string(),
           onScreenText: z.string(),
-          broll: z.array(z.string()).max(5).default([]),
+          broll: z.array(z.string()).max(8).default([]),
         }),
       )
-      .min(3)
-      .max(8)
+      .max(12)
       .default([]),
   }),
   shorts: z
@@ -452,43 +454,43 @@ export const CampaignOutputSchema = z.object({
         callToAction: z.string(),
       }),
     )
-    .min(3)
-    .max(5),
+    .min(1)
+    .max(8),
   captions: z
     .array(z.object({ platform: z.string(), copy: z.string() }))
-    .min(2)
-    .max(5),
+    .min(1)
+    .max(8),
   faq: z
     .array(z.object({ question: z.string(), answer: z.string() }))
-    .min(3)
-    .max(6),
+    .min(1)
+    .max(10),
   newsletter: z.object({ subject: z.string(), body: z.string() }),
-  carousel: z.object({ title: z.string(), slides: z.array(z.string()).min(5).max(9) }),
-  platformPosts: z.array(PlatformPostSchema).min(8).max(14),
+  carousel: z.object({ title: z.string(), slides: z.array(z.string()).min(1).max(12) }),
+  platformPosts: z.array(PlatformPostSchema).min(1).max(20),
   productionPlan: z.object({
     objective: z.string(),
-    estimatedMinutes: z.number().int().min(15).max(480),
+    estimatedMinutes: z.number().int().min(5).max(960),
     location: z.string(),
-    wardrobe: z.array(z.string()).min(1).max(6),
-    props: z.array(z.string()).max(8),
-    deliveryNotes: z.array(z.string()).min(2).max(8),
+    wardrobe: z.array(z.string()).max(8),
+    props: z.array(z.string()).max(12),
+    deliveryNotes: z.array(z.string()).max(10),
     shots: z
       .array(z.object({ shot: z.string(), framing: z.string(), purpose: z.string() }))
-      .min(4)
-      .max(12),
-    broll: z.array(z.string()).min(3).max(12),
-    checklist: z.array(z.string()).min(4).max(14),
+      .min(1)
+      .max(16),
+    broll: z.array(z.string()).min(1).max(16),
+    checklist: z.array(z.string()).min(1).max(20),
   }),
   schedule: z
     .array(
       z.object({
         title: z.string(),
         channel: z.string(),
-        dayOffset: z.number().int().min(0).max(90),
+        dayOffset: z.number().int().min(0).max(365),
       }),
     )
-    .min(4)
-    .max(14),
+    .min(1)
+    .max(20),
 });
 
 export type CampaignOutput = z.infer<typeof CampaignOutputSchema>;

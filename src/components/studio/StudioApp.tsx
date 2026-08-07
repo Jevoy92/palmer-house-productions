@@ -4,7 +4,6 @@ import {
   Archive,
   Activity,
   ArrowRight,
-  Bell,
   Building2,
   CalendarDays,
   Captions,
@@ -80,6 +79,7 @@ import {
 } from "@/lib/studio-model";
 import type { Tables } from "@/lib/supabase/database.types";
 import samiraHeadshot from "@/assets/pal-headshots/samira.png";
+import { StudioNotifications } from "./StudioNotifications";
 import { PalAvatar } from "./PalAvatar";
 import { classifyLane } from "@/lib/studio-intelligence";
 import { useGuide } from "./useGuide";
@@ -502,6 +502,11 @@ function Onboarding() {
   const [website, setWebsite] = useState("");
   const [description, setDescription] = useState("");
   const [problem, setProblem] = useState("I need a consistent content rhythm");
+  const [interests, setInterests] = useState<string[]>([]);
+  const [customInterest, setCustomInterest] = useState("");
+  const [personalStory, setPersonalStory] = useState("");
+  const [setupStep, setSetupStep] = useState(-1);
+  const interestOptions: string[] = [...brandSuggestions.personal_interests];
   const problemOptions = [
     { value: "I need a consistent content rhythm", lane: "Reel", color: "var(--reel)" },
     {
@@ -526,8 +531,8 @@ function Onboarding() {
       </header>
       <div className="mx-auto grid min-h-[calc(100vh-8rem)] max-w-6xl items-center gap-10 py-10 lg:grid-cols-[.9fr_1.1fr]">
         <section>
-          <div className="flex items-center gap-2" aria-label={`Step ${step + 1} of 5`}>
-            {[0, 1, 2, 3, 4].map((item) => (
+          <div className="flex items-center gap-2" aria-label={`Step ${step + 1} of 6`}>
+            {[0, 1, 2, 3, 4, 5].map((item) => (
               <span
                 key={item}
                 className="h-1.5 flex-1 rounded-full"
@@ -535,7 +540,7 @@ function Onboarding() {
               />
             ))}
           </div>
-          <p className="studio-eyebrow mt-8 text-system">Step {step + 1} of 5</p>
+          <p className="studio-eyebrow mt-8 text-system">Step {step + 1} of 6</p>
           <h1 className="mt-4 text-5xl font-black leading-[.95] tracking-[-.06em]">
             {step === 0
               ? "Give the work a home."
@@ -545,7 +550,9 @@ function Onboarding() {
                   ? "What should video help you do?"
                   : step === 3
                     ? "What do you actually do?"
-                    : `Start with ${match.lane}.`}
+                    : step === 4
+                      ? "What do you love outside of work?"
+                      : `Start with ${match.lane}.`}
           </h1>
           <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
             {step === 0
@@ -556,7 +563,9 @@ function Onboarding() {
                   ? "This goal becomes part of Brand DNA and shapes every recommendation after today."
                   : step === 3
                     ? "This is the context every campaign is written from. A website is optional — a couple of sentences is enough to start."
-                    : `Your ${match.lane} Pal will guide the first campaign. You can use every lane whenever the work calls for it.`}
+                    : step === 4
+                      ? "Optional, and the single fastest way to stop sounding like every other company in your field. Anything you pick here shows up in the personal angle the studio writes for you."
+                      : `Your ${match.lane} Pal will guide the first campaign. You can use every lane whenever the work calls for it.`}
           </p>
 
           <div className="mt-8">
@@ -611,6 +620,74 @@ function Onboarding() {
               </div>
             ) : null}
             {step === 4 ? (
+              <div className="grid gap-5">
+                <div>
+                  <p className="mb-3 text-sm font-bold">Pick anything that is genuinely you</p>
+                  <div className="flex flex-wrap gap-2">
+                    {[...interestOptions, ...interests.filter((item) => !interestOptions.includes(item))].map(
+                      (option) => {
+                        const active = interests.includes(option);
+                        return (
+                          <button
+                            key={option}
+                            type="button"
+                            onClick={() =>
+                              setInterests((current) =>
+                                current.includes(option)
+                                  ? current.filter((item) => item !== option)
+                                  : [...current, option],
+                              )
+                            }
+                            className="min-h-11 rounded-xl border px-4 text-sm font-bold transition"
+                            style={{
+                              borderColor: active ? match.color : "var(--border)",
+                              background: active ? match.color : "white",
+                              color: active ? "white" : "var(--ink)",
+                            }}
+                          >
+                            {option}
+                          </button>
+                        );
+                      },
+                    )}
+                  </div>
+                  <div className="mt-3 flex gap-2">
+                    <input
+                      value={customInterest}
+                      onChange={(event) => setCustomInterest(event.target.value)}
+                      onKeyDown={(event) => {
+                        if (event.key !== "Enter" || !customInterest.trim()) return;
+                        event.preventDefault();
+                        setInterests((current) => [...current, customInterest.trim()]);
+                        setCustomInterest("");
+                      }}
+                      placeholder="Something we did not list"
+                      className="min-h-12 flex-1 rounded-xl border border-border px-4 text-sm"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (!customInterest.trim()) return;
+                        setInterests((current) => [...current, customInterest.trim()]);
+                        setCustomInterest("");
+                      }}
+                      className="min-h-12 rounded-xl border border-border px-4 text-sm font-bold"
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+                <Field
+                  as="textarea"
+                  rows={3}
+                  label="Anything personal the studio should remember (optional)"
+                  value={personalStory}
+                  onChange={(event) => setPersonalStory(event.target.value)}
+                  placeholder="I coach my daughter's team on weekends, and I got into this after a contractor took advantage of my parents."
+                />
+              </div>
+            ) : null}
+            {step === 5 ? (
               <>
                 <p className="mb-3 text-sm font-bold">What needs to change first?</p>
                 <ChoiceGrid
@@ -714,10 +791,15 @@ function Onboarding() {
                   <button
                     disabled={busy || blocked}
                     onClick={async () => {
-                      if (step < 4) {
+                      if (step < 5) {
                         setStep((current) => current + 1);
                         return;
                       }
+                      setSetupStep(0);
+                      const ticker = setInterval(
+                        () => setSetupStep((current) => (current < 2 ? current + 1 : current)),
+                        1400,
+                      );
                       try {
                         await createWorkspace(name || "My Studio", {
                           creatorType,
@@ -726,6 +808,8 @@ function Onboarding() {
                           industry: industry.trim(),
                           website: website.trim(),
                           description: description.trim(),
+                          personalInterests: interests,
+                          personalStory: personalStory.trim(),
                         });
                         if (guidePick !== "none") {
                           try {
@@ -734,8 +818,16 @@ function Onboarding() {
                             // guide preference is not worth blocking workspace creation
                           }
                         }
-
+                        clearInterval(ticker);
+                        setSetupStep(3);
+                        try {
+                          window.localStorage.setItem("phs-studio-first-run", "1");
+                        } catch {
+                          // the tour is a nicety, not a requirement
+                        }
                       } catch (error) {
+                        clearInterval(ticker);
+                        setSetupStep(-1);
                         toast.error(
                           error instanceof Error ? error.message : "Could not create workspace.",
                         );
@@ -748,7 +840,7 @@ function Onboarding() {
                     }`}
                   >
                     {busy ? <LoaderCircle className="size-4 animate-spin" /> : null}
-                    {step === 4 ? "Open my Studio" : "Continue"}
+                    {step === 5 ? "Open my Studio" : "Continue"}
                     <ArrowRight className="size-5" />
                   </button>
                 </div>
@@ -761,6 +853,51 @@ function Onboarding() {
           <PalAuthShowcase />
         </section>
       </div>
+      {setupStep >= 0 ? (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-white/95 p-6 backdrop-blur-sm">
+          <div className="w-full max-w-md rounded-[1.5rem] border border-border bg-white p-8 shadow-[0_50px_100px_-60px_rgba(31,35,40,.8)]">
+            <p className="studio-eyebrow text-system">Setting up your studio</p>
+            <h2 className="mt-3 text-2xl font-black leading-tight tracking-[-.03em]">
+              Give us a moment, {name || "friend"}.
+            </h2>
+            <ul className="mt-6 space-y-3">
+              {[
+                "Creating your private workspace",
+                "Writing your brand memory",
+                "Teaching your guide who you are",
+                "Ready",
+              ].map((label, index) => (
+                <li key={label} className="flex items-center gap-3 text-sm font-bold">
+                  <span
+                    className="grid size-7 shrink-0 place-items-center rounded-full border"
+                    style={{
+                      borderColor: index <= setupStep ? match.color : "var(--border)",
+                      background: index < setupStep ? match.color : "white",
+                      color: index < setupStep ? "white" : "var(--muted-foreground)",
+                    }}
+                  >
+                    {index < setupStep ? (
+                      <Check className="size-3.5" />
+                    ) : index === setupStep ? (
+                      <LoaderCircle className="size-3.5 animate-spin" />
+                    ) : null}
+                  </span>
+                  <span className={index <= setupStep ? "" : "text-muted-foreground"}>{label}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6 h-1.5 overflow-hidden rounded-full bg-border">
+              <div
+                className="h-full rounded-full transition-all duration-700"
+                style={{
+                  width: `${((setupStep + 1) / 4) * 100}%`,
+                  background: match.color,
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }
@@ -890,12 +1027,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
           <MessageSquareText className="size-4" />
           <span className="hidden md:inline">Ask a Pal</span>
         </button>
-        <button
-          aria-label="Notifications"
-          className="ml-2 grid size-11 shrink-0 place-items-center rounded-full border border-border"
-        >
-          <Bell className="size-4" />
-        </button>
+        <StudioNotifications />
         <button
           aria-label="Create something new"
           onClick={() => setCreateOpen(true)}
@@ -1281,6 +1413,23 @@ function Dashboard() {
     brandCompletion: brand?.completion || 0,
   });
 
+  const [firstRun, setFirstRun] = useState(false);
+  useEffect(() => {
+    try {
+      setFirstRun(window.localStorage.getItem("phs-studio-first-run") === "1");
+    } catch {
+      setFirstRun(false);
+    }
+  }, []);
+  function endFirstRun() {
+    setFirstRun(false);
+    try {
+      window.localStorage.removeItem("phs-studio-first-run");
+    } catch {
+      // dismissing is best effort
+    }
+  }
+
   const upcoming = calendar.filter((item) => new Date(item.publish_at) >= new Date()).slice(0, 4);
   const firstName = (
     profile?.full_name ||
@@ -1379,6 +1528,52 @@ function Dashboard() {
           <HandHeart className="size-4" /> Benefits & Palmer House help
         </Link>
       </header>
+
+      {firstRun ? (
+        <section className="mt-7 overflow-hidden rounded-[1.25rem] border border-ink bg-white p-5 sm:p-6">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="min-w-0">
+              <p className="studio-eyebrow text-evergreen">Your studio is ready</p>
+              <h2 className="mt-3 text-2xl font-black leading-tight tracking-[-.03em]">
+                Here is the whole thing in one move.
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                Write one real thing you know — a customer question, a job you finished, an opinion
+                you hold. The Content Engine turns it into three angles, then a full set of
+                platform-ready drafts you can edit, approve, and schedule.
+              </p>
+            </div>
+            <button
+              onClick={endFirstRun}
+              className="shrink-0 text-xs font-bold text-muted-foreground underline underline-offset-4"
+            >
+              Skip the tour
+            </button>
+          </div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            {[
+              ["One idea in", "A sentence is enough. No blank page."],
+              ["Three angles out", "Business, personal, and playful — pick one."],
+              ["A full campaign", "Scripts, posts, and an article, ready to edit."],
+            ].map(([title, body], index) => (
+              <div key={title} className="rounded-[1.15rem] border border-border p-4">
+                <span className="grid size-7 place-items-center rounded-full bg-ink text-[11px] font-black text-white">
+                  {index + 1}
+                </span>
+                <p className="mt-3 text-sm font-black">{title}</p>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{body}</p>
+              </div>
+            ))}
+          </div>
+          <Link
+            to="/studio"
+            onClick={endFirstRun}
+            className="mt-5 inline-flex min-h-12 items-center gap-2 rounded-xl bg-ink px-5 text-sm font-black text-white transition hover:bg-evergreen"
+          >
+            Build my first campaign <ArrowRight className="size-4" />
+          </Link>
+        </section>
+      ) : null}
 
       <section
         className="relative mt-7 overflow-hidden rounded-[1.25rem] border border-border p-5 sm:p-6"
@@ -4261,6 +4456,8 @@ function BrandStudio() {
     proof_points: (brand?.proof_points || []).join("\n"),
     calls_to_action: (brand?.calls_to_action || []).join("\n"),
     avoid_language: (brand?.avoid_language || []).join(", "),
+    personal_interests: (brand?.personal_interests || []).join(", "),
+    personal_story: brand?.personal_story || "",
     platforms: (brand?.platforms || []).join(", "),
     social_profiles: Array.isArray(brand?.social_links)
       ? brand.social_links
@@ -4428,6 +4625,8 @@ function BrandStudio() {
         proof_points: lineList(draft.proof_points),
         calls_to_action: lineList(draft.calls_to_action),
         avoid_language: splitList(draft.avoid_language),
+        personal_interests: splitList(draft.personal_interests),
+        personal_story: draft.personal_story,
         platforms: splitList(draft.platforms),
         social_links: lineList(draft.social_profiles).map((url) => ({ url })),
         brand_details: {
@@ -4805,6 +5004,33 @@ function BrandStudio() {
                     filledFrom={sourceMark("avoid_language")}
                     onChange={(value) => set("avoid_language", value)}
                   />
+                </div>
+                <div className="sm:col-span-2 rounded-[1.25rem] border border-border bg-mist/50 p-4 sm:p-5">
+                  <p className="text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">
+                    Outside of work
+                  </p>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
+                    The best founder content borrows from real life. Tell the studio what you love
+                    doing when you are off the clock and it will braid that into one of every three
+                    angles it writes for you.
+                  </p>
+                  <div className="mt-4 grid gap-4">
+                    <GuidedTags
+                      label="Interests and hobbies"
+                      value={draft.personal_interests}
+                      suggestions={brandSuggestions.personal_interests}
+                      hint="Fishing, restoring cars, coaching, cooking — anything that is genuinely you."
+                      onChange={(value) => set("personal_interests", value)}
+                    />
+                    <GuidedText
+                      label="A personal note the studio should remember"
+                      rows={3}
+                      optional
+                      value={draft.personal_story}
+                      suggestions={brandSuggestions.personal_story}
+                      onChange={(value) => set("personal_story", value)}
+                    />
+                  </div>
                 </div>
                 <GuidedText
                   label="Taglines and memorable lines"

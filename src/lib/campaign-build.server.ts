@@ -25,11 +25,16 @@ export type CampaignBuildBrief = {
     proof: string[];
     callsToAction: string[];
     avoidLanguage: string[];
+    personalInterests?: string[];
+    personalStory?: string;
   };
+  /** Digest of everything the workspace has already told us or made. */
+  knowledge?: string;
 };
 
 export function campaignBriefText(data: CampaignBuildBrief) {
-  return `Business: ${data.brand.businessName}\nCategory / industry: ${data.brand.industry || "Not supplied"}\nWhat they do: ${data.brand.description || "Not supplied"}\nWhat they sell: ${data.brand.offers.join(" | ") || "Not supplied"}\nWho they serve: ${data.brand.primaryAudience || data.audience}\nCreator type: ${data.brand.creatorType}\nPrimary goal: ${data.brand.primaryGoal}\nActive platforms: ${data.brand.platforms.join(" | ") || "Not supplied"}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied — do not invent any"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\n\nCampaign goal: ${data.goal}\nTopic and chosen direction: ${data.topic}\nOffer or next step: ${data.offer}\nAudience for this campaign: ${data.audience}\nAnchor format: ${data.anchorFormat}\nPlanning depth: ${data.depth}`;
+  const personal = (data.brand.personalInterests || []).join(" | ");
+  return `${data.knowledge ? `${data.knowledge}\n\n` : ""}Business: ${data.brand.businessName}\nCategory / industry: ${data.brand.industry || "Not supplied"}\nWhat they do: ${data.brand.description || "Not supplied"}\nWhat they sell: ${data.brand.offers.join(" | ") || "Not supplied"}\nWho they serve: ${data.brand.primaryAudience || data.audience}\nCreator type: ${data.brand.creatorType}\nPrimary goal: ${data.brand.primaryGoal}\nActive platforms: ${data.brand.platforms.join(" | ") || "Not supplied"}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied — do not invent any"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\nFounder interests outside work: ${personal || "Not supplied"}\nFounder personal note: ${data.brand.personalStory || "Not supplied"}\n\nCampaign goal: ${data.goal}\nTopic and chosen direction: ${data.topic}\nOffer or next step: ${data.offer}\nAudience for this campaign: ${data.audience}\nAnchor format: ${data.anchorFormat}\nPlanning depth: ${data.depth}`;
 }
 
 const groundingRules = [

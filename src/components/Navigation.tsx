@@ -24,7 +24,6 @@ export const Navigation = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const navigate = useNavigate();
   const { transitionTo } = usePageTransition();
-  const user: { id: string; email?: string; user_metadata?: any } | null = null;
 
   // Helper function to handle page transitions
   const handlePageTransition = (path: string) => {
@@ -399,13 +398,13 @@ export const Navigation = () => {
               
               {/* Auth Button */}
               <Button
-                onClick={() => handlePageTransition(user ? '/dashboard' : '/auth')}
+                onClick={() => handlePageTransition('/dashboard')}
                 variant="outline"
                 size="sm"
                 className="gap-2"
               >
                 <User className="w-4 h-4" />
-                {user ? 'Dashboard' : 'Login'}
+                Dashboard
               </Button>
           </div>
           
@@ -596,11 +595,11 @@ export const Navigation = () => {
               </button>
               
               <button 
-                onClick={() => handlePageTransition(user ? '/dashboard' : '/auth')}
+                onClick={() => handlePageTransition('/dashboard')}
                 className="block w-full px-4 py-4 transition-colors font-medium rounded-lg text-center min-h-[48px] flex items-center justify-center gap-2 border-2 border-border hover:bg-muted"
               >
                 <User className="w-4 h-4" />
-                {user ? 'My Dashboard' : 'Member Login'}
+                My Dashboard
               </button>
             </div>
           </div>

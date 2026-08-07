@@ -24,7 +24,7 @@ export default function AppPricing() {
 
   const handleSelectPlan = async (tierId: string) => {
     if (!user) {
-      navigate('/auth');
+      navigate('/dashboard');
       return;
     }
 
@@ -57,7 +57,7 @@ export default function AppPricing() {
 
   const handleSelectAddon = async (addonId: string) => {
     if (!user) {
-      navigate('/auth');
+      navigate('/dashboard');
       return;
     }
 

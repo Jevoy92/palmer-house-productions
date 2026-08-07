@@ -4,6 +4,29 @@
  */
 
 export const brandSuggestions = {
+  personal_interests: [
+    "Fishing",
+    "Hiking and trails",
+    "Coaching youth sports",
+    "Cooking and grilling",
+    "Restoring cars",
+    "Woodworking",
+    "Live music",
+    "Golf",
+    "Reading",
+    "Travel",
+    "Running",
+    "Volunteering",
+    "Gardening",
+    "Photography",
+    "Board games with the kids",
+  ],
+  personal_story: [
+    "I started this after watching a family member get talked into something they did not understand.",
+    "I spent years on the other side of this industry before deciding to do it differently.",
+    "Most weekends I am outdoors with my family, and that pace shapes how we work.",
+    "I am the person friends call when they need this explained in plain language.",
+  ],
   industry: [
     "Professional services",
     "Construction & trades",

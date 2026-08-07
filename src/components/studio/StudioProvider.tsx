@@ -611,7 +611,9 @@ export function StudioProvider({ children }: { children: ReactNode }) {
             businessName: brand.business_name,
             description: brand.description,
             audience: brand.primary_audience,
-            offers: brand.offers.filter((item): item is string => typeof item === "string"),
+            offers: (Array.isArray(brand.offers) ? brand.offers : []).filter(
+              (item): item is string => typeof item === "string",
+            ),
             proof: brand.proof_points,
           },
         },

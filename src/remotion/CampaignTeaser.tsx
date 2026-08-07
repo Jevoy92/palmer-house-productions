@@ -204,7 +204,7 @@ export function CampaignTeaser({
               : interpolate(frame, [104, 122], [0.94, 1], {
                   extrapolateLeft: "clamp",
                   extrapolateRight: "clamp",
-                  easing: Easing.spring({ damping: 200, fps }),
+                  easing: Easing.spring({ damping: 200 }),
                   output: "perceptual-scale",
                 }),
           }}

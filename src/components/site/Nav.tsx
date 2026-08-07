@@ -11,7 +11,7 @@ export function Nav() {
           aria-label="Palmer House Productions home"
           className="hidden size-12 shrink-0 items-center justify-center rounded-full border border-border bg-card shadow-soft sm:flex"
         >
-          <span className="font-display text-sm font-bold">PH</span>
+          <img src={phMark.url} alt="Palmer House Productions" className="size-8 object-contain" />
         </a>
 
         <div className="hidden items-center gap-1 rounded-full border border-border bg-card/80 px-2 py-2 shadow-soft backdrop-blur md:flex">

@@ -162,6 +162,22 @@ export const studioAdvisoryOffer = {
 } as const;
 
 export type StudioPlanKey = keyof typeof studioPlans;
+
+/** Live Stripe recurring price IDs for Studio membership access. */
+export const studioPlanPrices = {
+  creator: {
+    month: "price_1U1u0JGcAcCB6YlQd2cJUG37",
+    year: "price_1U1u3OGcAcCB6YlQjFvqLx3F",
+  },
+  business: {
+    month: "price_1U1u0pGcAcCB6YlQTmre9d6I",
+    year: "price_1U1u5UGcAcCB6YlQO2VFHPE2",
+  },
+  partner: {
+    month: "price_1U1u2iGcAcCB6YlQ8BsDctg5",
+    year: "price_1U1u5tGcAcCB6YlQn1JfwLux",
+  },
+} as const satisfies Record<StudioPlanKey, { month: string; year: string }>;
 export type StudioView =
   | "engine"
   | "home"

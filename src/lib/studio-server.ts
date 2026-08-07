@@ -15,7 +15,7 @@ import {
   ContentSourceAnalysisSchema,
   ContentDirectionRequestSchema,
   ContentDirectionsSchema,
-  studioPlans,
+  studioPlanPrices,
 } from "./studio-model";
 import type { Json } from "./supabase/database.types";
 
@@ -387,26 +387,11 @@ export const createStudioSubscriptionCheckout = createServerFn({ method: "POST" 
     const stripe = new Stripe(secret);
     const requestOrigin = getRequestUrl().origin;
     const siteOrigin = process.env.PUBLIC_SITE_URL || requestOrigin;
-    const plan = studioPlans[data.plan];
-    const amount = data.interval === "year" ? plan.annualPrice : plan.price;
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       customer_email: user.email,
       client_reference_id: data.workspaceId,
-      line_items: [
-        {
-          quantity: 1,
-          price_data: {
-            currency: "usd",
-            recurring: { interval: data.interval },
-            unit_amount: amount * 100,
-            product_data: {
-              name: `Palmer House Studio — ${plan.name}`,
-              description: `${plan.campaigns} complete campaign systems each month${plan.strategySessions ? ` plus ${plan.strategySessions} private Palmer House strategy ${plan.strategySessions === 1 ? "session" : "sessions"}` : ""}.`,
-            },
-          },
-        },
-      ],
+      line_items: [{ quantity: 1, price: studioPlanPrices[data.plan][data.interval] }],
       allow_promotion_codes: true,
       success_url: `${siteOrigin}/studio/billing?checkout=success`,
       cancel_url: `${siteOrigin}/studio/billing?checkout=canceled`,

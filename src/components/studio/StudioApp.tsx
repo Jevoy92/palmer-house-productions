@@ -328,6 +328,7 @@ function AuthExperience() {
                 const { lovable } = await import("@/integrations/lovable/index");
                 const result = await lovable.auth.signInWithOAuth("google", {
                   redirect_uri: window.location.origin,
+                  extraParams: { prompt: "select_account" },
                 });
                 if (result.error) {
                   setNotice("Google sign-in did not work. Please try again.");

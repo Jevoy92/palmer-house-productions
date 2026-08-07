@@ -84,6 +84,7 @@ import satoshiFontUrl from "@/assets/fonts/Satoshi-Variable.woff2?url";
 import { useStudio } from "./StudioProvider";
 import { ContentEngine } from "./ContentEngine";
 import { ContentOrbit, StudioMark } from "./StudioVisuals";
+import { PalAuthShowcase } from "./PalAuthShowcase";
 import { StudioAssistant } from "./StudioAssistant";
 import { VideoRoadmap } from "./VideoRoadmap";
 import { MemberSuccess } from "./MemberSuccess";

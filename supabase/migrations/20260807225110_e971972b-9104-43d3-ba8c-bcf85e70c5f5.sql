@@ -1,0 +1,2 @@
+ALTER TABLE public.campaign_assets DROP CONSTRAINT campaign_assets_kind_check;
+ALTER TABLE public.campaign_assets ADD CONSTRAINT campaign_assets_kind_check CHECK (kind = ANY (ARRAY['anchor_script','short_script','caption','linkedin','newsletter','faq','carousel','thumbnail','cta','production_note','platform_post','article']));

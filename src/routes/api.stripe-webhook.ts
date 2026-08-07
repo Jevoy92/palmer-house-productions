@@ -22,7 +22,7 @@ async function handleStripeWebhook({ request }: { request: Request }) {
   } catch {
     return Response.json({ error: "Invalid Stripe signature." }, { status: 400 });
   }
-  const admin = createClient<Database>(SUPABASE_URL, supabaseSecret, {
+  const admin = createClient<Database>(process.env["SUPABASE_URL"] || SUPABASE_URL, supabaseSecret, {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 

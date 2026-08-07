@@ -1,6 +1,5 @@
 import { Home, Search, Video, User, Sparkles, Maximize, MessageCircle, Settings, LogOut, BookOpen } from 'lucide-react';
 import { NavLink } from '@/components/NavLink';
-import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -31,13 +30,6 @@ const palItems = [
 ];
 
 export function SimplifiedSidebar() {
-  const { signOut } = useAuth();
-  const navigate = useNavigate();
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/');
-  };
 
   return (
     <aside className="hidden lg:flex flex-col w-64 border-r border-border bg-background fixed top-16 left-0 bottom-0 overflow-y-auto">
@@ -129,14 +121,6 @@ export function SimplifiedSidebar() {
               <Settings className="w-4 h-4" />
               Settings
             </NavLink>
-            <Button
-              variant="ghost"
-              onClick={handleSignOut}
-              className="w-full justify-start gap-3 px-3 text-sm text-pal-orange hover:text-pal-orange hover:bg-muted"
-            >
-              <LogOut className="w-4 h-4" />
-              Logout
-            </Button>
           </nav>
         </div>
       </div>

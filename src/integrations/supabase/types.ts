@@ -102,6 +102,8 @@ export type Database = {
           industry: string
           locations: string[]
           offers: Json
+          personal_interests: string[]
+          personal_story: string
           platforms: string[]
           preferred_language: string
           primary_audience: string
@@ -130,6 +132,8 @@ export type Database = {
           industry?: string
           locations?: string[]
           offers?: Json
+          personal_interests?: string[]
+          personal_story?: string
           platforms?: string[]
           preferred_language?: string
           primary_audience?: string
@@ -158,6 +162,8 @@ export type Database = {
           industry?: string
           locations?: string[]
           offers?: Json
+          personal_interests?: string[]
+          personal_story?: string
           platforms?: string[]
           preferred_language?: string
           primary_audience?: string

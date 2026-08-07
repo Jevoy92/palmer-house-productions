@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -11,10 +12,10 @@ export function StudioMarkdown({ children, accent }: { children: string; accent?
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{
-          h1: ({ children: content }) => (
+          h1: ({ children: content }: { children?: ReactNode }) => (
             <h3 className="mb-3 mt-6 text-lg font-black tracking-[-.02em]">{content}</h3>
           ),
-          h2: ({ children: content }) => (
+          h2: ({ children: content }: { children?: ReactNode }) => (
             <h3 className="mb-3 mt-6 flex items-center gap-2 text-base font-black tracking-[-.02em]">
               <span
                 className="h-4 w-1 shrink-0 rounded-full"
@@ -23,23 +24,23 @@ export function StudioMarkdown({ children, accent }: { children: string; accent?
               {content}
             </h3>
           ),
-          h3: ({ children: content }) => (
+          h3: ({ children: content }: { children?: ReactNode }) => (
             <h4 className="mb-2 mt-5 text-sm font-black uppercase tracking-[.08em] text-muted-foreground">
               {content}
             </h4>
           ),
-          p: ({ children: content }) => <p className="my-3">{content}</p>,
-          strong: ({ children: content }) => (
+          p: ({ children: content }: { children?: ReactNode }) => <p className="my-3">{content}</p>,
+          strong: ({ children: content }: { children?: ReactNode }) => (
             <strong className="font-black text-ink">{content}</strong>
           ),
-          ul: ({ children: content }) => (
+          ul: ({ children: content }: { children?: ReactNode }) => (
             <ul className="my-3 list-disc space-y-2 pl-5 marker:text-muted-foreground">{content}</ul>
           ),
-          ol: ({ children: content }) => (
+          ol: ({ children: content }: { children?: ReactNode }) => (
             <ol className="my-3 list-decimal space-y-2 pl-5 marker:font-black">{content}</ol>
           ),
-          li: ({ children: content }) => <li className="pl-1">{content}</li>,
-          a: ({ children: content, href }) => (
+          li: ({ children: content }: { children?: ReactNode }) => <li className="pl-1">{content}</li>,
+          a: ({ children: content, href }: { children?: ReactNode; href?: string }) => (
             <a
               href={href}
               target="_blank"
@@ -50,7 +51,7 @@ export function StudioMarkdown({ children, accent }: { children: string; accent?
               {content}
             </a>
           ),
-          blockquote: ({ children: content }) => (
+          blockquote: ({ children: content }: { children?: ReactNode }) => (
             <blockquote
               className="my-4 rounded-r-xl border-l-2 py-1 pl-4 text-muted-foreground"
               style={{ borderColor: accent || "var(--system)" }}
@@ -58,24 +59,24 @@ export function StudioMarkdown({ children, accent }: { children: string; accent?
               {content}
             </blockquote>
           ),
-          code: ({ children: content }) => (
+          code: ({ children: content }: { children?: ReactNode }) => (
             <code className="rounded-md bg-mist px-1.5 py-0.5 font-mono text-[.85em]">
               {content}
             </code>
           ),
           hr: () => <hr className="my-5 border-border" />,
-          table: ({ children: content }) => (
+          table: ({ children: content }: { children?: ReactNode }) => (
             <div className="my-4 overflow-x-auto rounded-xl border border-border">
               <table className="w-full border-collapse text-sm">{content}</table>
             </div>
           ),
-          thead: ({ children: content }) => <thead className="bg-mist">{content}</thead>,
-          th: ({ children: content }) => (
+          thead: ({ children: content }: { children?: ReactNode }) => <thead className="bg-mist">{content}</thead>,
+          th: ({ children: content }: { children?: ReactNode }) => (
             <th className="border-b border-border px-3 py-2 text-left text-[11px] font-black uppercase tracking-[.08em]">
               {content}
             </th>
           ),
-          td: ({ children: content }) => (
+          td: ({ children: content }: { children?: ReactNode }) => (
             <td className="border-b border-border px-3 py-2 align-top">{content}</td>
           ),
         }}

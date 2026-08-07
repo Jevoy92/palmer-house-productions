@@ -57,7 +57,14 @@ type StudioContextValue = {
   signOut: () => Promise<void>;
   createWorkspace: (
     name: string,
-    profile?: { creatorType: string; primaryGoal: string; initialProblem: string },
+    profile?: {
+      creatorType: string;
+      primaryGoal: string;
+      initialProblem: string;
+      industry?: string;
+      website?: string;
+      description?: string;
+    },
   ) => Promise<void>;
   saveProfile: (values: Partial<Profile>) => Promise<void>;
   saveBrand: (values: Partial<Brand>) => Promise<void>;
@@ -296,7 +303,14 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   }
   async function createWorkspace(
     name: string,
-    brandProfile?: { creatorType: string; primaryGoal: string; initialProblem: string },
+    brandProfile?: {
+      creatorType: string;
+      primaryGoal: string;
+      initialProblem: string;
+      industry?: string;
+      website?: string;
+      description?: string;
+    },
   ) {
     if (!session) throw new Error("Sign in first.");
     setBusy(true);
@@ -325,6 +339,9 @@ export function StudioProvider({ children }: { children: ReactNode }) {
             business_name: name,
             creator_type: brandProfile.creatorType,
             primary_goal: brandProfile.primaryGoal,
+            industry: brandProfile.industry || "",
+            website: brandProfile.website || "",
+            description: brandProfile.description || "",
             brand_details: { initial_problem: brandProfile.initialProblem },
           })
           .eq("workspace_id", created.data.id);

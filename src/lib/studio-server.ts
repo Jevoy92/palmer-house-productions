@@ -52,7 +52,9 @@ export const generateStudioCampaign = createServerFn({ method: "POST" })
 
     try {
       const { buildCampaignOutput, persistCampaign } = await import("./campaign-build.server");
-      const output = await buildCampaignOutput(data);
+      const { loadWorkspaceKnowledge } = await import("./studio-knowledge");
+      const knowledge = await loadWorkspaceKnowledge(client, data.workspaceId);
+      const output = await buildCampaignOutput({ ...data, knowledge });
       await persistCampaign(client, data.campaignId, data.workspaceId, output);
       await client.rpc("finish_campaign_usage", {
         target_event_id: reservation.data,
@@ -74,7 +76,9 @@ export const generateStudioCampaign = createServerFn({ method: "POST" })
 export const generateContentDirections = createServerFn({ method: "POST" })
   .validator(ContentDirectionRequestSchema)
   .handler(async ({ data }) => {
-    await authorizedClient(data.accessToken, data.workspaceId);
+    const { client } = await authorizedClient(data.accessToken, data.workspaceId);
+    const { loadWorkspaceKnowledge } = await import("./studio-knowledge");
+    const knowledge = await loadWorkspaceKnowledge(client, data.workspaceId);
     const { parseStructured } = await import("./ai.server");
     const response = await parseStructured(
       ContentDirectionsSchema,
@@ -82,13 +86,15 @@ export const generateContentDirections = createServerFn({ method: "POST" })
       [
         "You are a Palmer House strategist writing for one specific business. Return exactly three materially different content directions for the supplied idea.",
         "Ground every direction in this business: use its category, its actual services, its real customers, and the words a customer in that category would use. Never write advice that could be pasted onto any other company.",
+        "The three directions must be deliberately different in register, and you must return them in this order. Direction 1 has flavor 'business': the straight, professional take a serious buyer would respect. Direction 2 has flavor 'personal': it braids the founder's real life outside work — their listed interests, hobbies, or personal note — into the business point, so the metaphor, setting, or opening story comes from that interest and lands on a real business decision. Direction 3 has flavor 'playful': lower-stakes and more fun — a challenge, a myth-bust, a bad-idea-versus-good-idea, a reaction, a demo that is entertaining to watch — still true and still useful, just not corporate.",
+        "If no founder interests were supplied, make direction 2 personal in a different way: the founder's own opinion, a mistake they made, or a moment from their day. Never fabricate a hobby that was not supplied.",
         "Each direction must map to one Palmer House lane: spotlight for proof/trust, reel for attention/momentum, evergreen for durable education, system for repeatability/internal clarity. Use three different lanes when the idea allows.",
         "title: 4-8 words, plain English, names the actual piece of content. No jargon, no colons stacked with buzzwords.",
         "angle: 2-3 short sentences, maximum 45 words total. Say what gets filmed or shown, and what the viewer decides afterward. Write it as prose. Never use labels like 'Business problem:' or 'Audience decision:'. Never restate the brief back to the user.",
         "whyItWorks: one sentence, maximum 25 words, naming the specific objection or hesitation this removes for this business's customers.",
         "Be concrete: name the job, the season, the location type, the product, or the customer situation. Do not invent proof, statistics, testimonials, or results that were not supplied.",
       ].join(" "),
-      `Business: ${data.brand.businessName}\nCategory / industry: ${data.brand.industry || "Not supplied"}\nWhat they do: ${data.brand.description || "Not supplied"}\nWhat they sell: ${data.brand.offers.join(" | ") || "Not supplied"}\nWho they serve: ${data.brand.primaryAudience || data.audience}\nCreator type: ${data.brand.creatorType}\nPrimary goal: ${data.brand.primaryGoal}\nActive platforms: ${data.brand.platforms.join(" | ") || "Not supplied"}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied — do not invent any"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\n\nCampaign goal: ${data.goal}\nAudience for this campaign: ${data.audience}\nIdea in the owner's words: ${data.idea}`,
+      `${knowledge}\n\nBusiness: ${data.brand.businessName}\nCategory / industry: ${data.brand.industry || "Not supplied"}\nWhat they do: ${data.brand.description || "Not supplied"}\nWhat they sell: ${data.brand.offers.join(" | ") || "Not supplied"}\nWho they serve: ${data.brand.primaryAudience || data.audience}\nCreator type: ${data.brand.creatorType}\nPrimary goal: ${data.brand.primaryGoal}\nActive platforms: ${data.brand.platforms.join(" | ") || "Not supplied"}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied — do not invent any"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\nFounder interests outside work: ${data.brand.personalInterests.join(" | ") || "Not supplied"}\nFounder personal note: ${data.brand.personalStory || "Not supplied"}\n\nCampaign goal: ${data.goal}\nAudience for this campaign: ${data.audience}\nIdea in the owner's words: ${data.idea}`,
 
     );
     return { ok: true as const, ...ContentDirectionsSchema.parse(response) };
@@ -120,19 +126,23 @@ export const askStudioPal = createServerFn({ method: "POST" })
     ]);
     if (brandResult.error || !brandResult.data)
       throw new Error("Finish Brand DNA before asking for personalized guidance.");
+    const { loadWorkspaceKnowledge } = await import("./studio-knowledge");
+    const knowledge = await loadWorkspaceKnowledge(client, data.workspaceId);
     const { parseStructured } = await import("./ai.server");
     const brand = brandResult.data;
     const response = await parseStructured(
       AssistantResponseSchema,
       "palmer_house_assistant",
       [
+        "Never make the member repeat themselves. The workspace knowledge base below lists what they have already built, captured, and scheduled — continue from it, reference it by name when useful, and suggest picking up unfinished work instead of starting over.",
+        "When the founder's personal interests are supplied, use them: the best content braids what they love outside work into the business point. Never invent an interest that was not supplied.",
         "You are a Palmer House strategic guide inside a private creative workspace for someone who uses video as leverage. Treat Brand DNA as the source of truth. Adapt recommendations to the person's creator type, audience, and primary goal. Use recent campaigns, calendar work, approved proof, and conversation context to give a dynamic next-best recommendation. Lead with the real problem or opportunity, not a video format. Never invent proof. Ask for clarification only when it prevents a materially wrong recommendation.",
         "Map the response to one Palmer House lane: Spotlight for proof and trust, Reel for visibility and momentum, Evergreen for durable education, System for repeatability and internal clarity. The selected Pal changes tone and lens, not the facts. Recommend at most three concrete next steps. Only propose a Brand DNA memory update when the user clearly supplied durable information; the user must approve it before saving.",
         "FORMAT THE REPLY AS CLEAN MARKDOWN, and make it a pleasure to read. Open with one or two short sentences of plain answer — no preamble, and never restate the question. Then use '## ' section headings for each move or theme, short paragraphs of two to four sentences, '- ' bullets for lists, numbered lists for anything sequential, and **bold** on the few phrases that carry the decision. Use a markdown table only when comparing three or more things across the same columns.",
         "Never print internal labels like 'Problem / opportunity:', 'Recommendation:', 'Lane:', or 'Reason:' in the reply text — those belong in their own fields. No emoji, no hype, no restating the brief. Write in the vocabulary of this person's actual trade.",
         "'headline' is a six-to-ten word plain-language summary of the answer. 'keyPoints' holds two to four scannable one-line takeaways, each under 90 characters, that stand on their own without the reply. 'followUps' holds two to four natural next questions this person would realistically ask next, written in their voice, each a complete question under 70 characters.",
       ].join(" "),
-      `Selected Pal: ${data.pal}\n\nBrand DNA:\nBrand / project: ${brand.business_name}\nCreator type: ${brand.creator_type}\nPrimary goal: ${brand.primary_goal}\nDescription: ${brand.description}\nCategory / genre: ${brand.industry}\nAudience: ${brand.primary_audience}\nOffers: ${JSON.stringify(brand.offers)}\nVoice: ${brand.voice_traits.join(", ")}\nPreferred language: ${brand.preferred_language}\nAvoid: ${brand.avoid_language.join(" | ")}\nVerified proof only: ${brand.proof_points.join(" | ") || "None supplied"}\nPreferred CTAs: ${brand.calls_to_action.join(" | ")}\nPlatforms: ${brand.platforms.join(" | ")}\nBrand Guide details: ${JSON.stringify(brand.brand_details || {})}\n\nApproved AI memory: ${JSON.stringify(settingsResult.data?.ai_memory || {})}\nRecent campaigns: ${JSON.stringify(campaignsResult.data || [])}\nUpcoming work: ${JSON.stringify(calendarResult.data || [])}\nRecent conversation: ${JSON.stringify(data.recentMessages)}\n\nUser: ${data.question}`,
+      `${knowledge}\n\nSelected Pal: ${data.pal}\n\nBrand DNA:\nBrand / project: ${brand.business_name}\nCreator type: ${brand.creator_type}\nPrimary goal: ${brand.primary_goal}\nDescription: ${brand.description}\nCategory / genre: ${brand.industry}\nAudience: ${brand.primary_audience}\nOffers: ${JSON.stringify(brand.offers)}\nVoice: ${brand.voice_traits.join(", ")}\nPreferred language: ${brand.preferred_language}\nAvoid: ${brand.avoid_language.join(" | ")}\nVerified proof only: ${brand.proof_points.join(" | ") || "None supplied"}\nPreferred CTAs: ${brand.calls_to_action.join(" | ")}\nPlatforms: ${brand.platforms.join(" | ")}\nBrand Guide details: ${JSON.stringify(brand.brand_details || {})}\nFounder interests outside work: ${(brand.personal_interests || []).join(" | ") || "Not supplied"}\nFounder personal note: ${brand.personal_story || "Not supplied"}\n\nApproved AI memory: ${JSON.stringify(settingsResult.data?.ai_memory || {})}\nRecent campaigns: ${JSON.stringify(campaignsResult.data || [])}\nUpcoming work: ${JSON.stringify(calendarResult.data || [])}\nRecent conversation: ${JSON.stringify(data.recentMessages)}\n\nUser: ${data.question}`,
     );
     return { ok: true as const, response: AssistantResponseSchema.parse(response) };
   });

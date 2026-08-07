@@ -442,9 +442,21 @@ export const CampaignOutputSchema = z.object({
           broll: z.array(z.string()).max(8).default([]),
         }),
       )
-      .max(12)
+      .max(16)
       .default([]),
   }),
+  article: z
+    .object({
+      title: z.string(),
+      dek: z.string(),
+      sections: z
+        .array(z.object({ heading: z.string(), body: z.string() }))
+        .max(12)
+        .default([]),
+      keyTakeaways: z.array(z.string()).max(8).default([]),
+      closing: z.string().default(""),
+    })
+    .optional(),
   shorts: z
     .array(
       z.object({

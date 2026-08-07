@@ -221,9 +221,13 @@ export const AssistantRequestSchema = z.object({
 
 export const AssistantResponseSchema = z.object({
   reply: z.string(),
+  headline: z.string().default(""),
   lane: z.enum(["spotlight", "reel", "evergreen", "system"]),
   problem: z.string(),
+  keyPoints: z.array(z.string()).max(5).default([]),
+  followUps: z.array(z.string()).max(4).default([]),
   recommendations: z
+
     .array(
       z.object({
         title: z.string(),

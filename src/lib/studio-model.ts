@@ -399,11 +399,16 @@ export const CampaignBriefSchema = z.object({
     creatorType: z.string().max(80).default("Business"),
     primaryGoal: z.string().max(180).default("Sell services"),
     description: z.string().max(1600),
+    industry: z.string().max(180).default(""),
+    primaryAudience: z.string().max(800).default(""),
+    offers: z.array(z.string()).max(20).default([]),
+    platforms: z.array(z.string()).max(20).default([]),
     voice: z.array(z.string()).max(12),
     proof: z.array(z.string()).max(20),
     callsToAction: z.array(z.string()).max(20),
     avoidLanguage: z.array(z.string()).max(20),
   }),
+
 });
 
 export const CampaignOutputSchema = z.object({

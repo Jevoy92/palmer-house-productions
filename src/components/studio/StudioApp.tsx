@@ -1413,6 +1413,23 @@ function Dashboard() {
     brandCompletion: brand?.completion || 0,
   });
 
+  const [firstRun, setFirstRun] = useState(false);
+  useEffect(() => {
+    try {
+      setFirstRun(window.localStorage.getItem("phs-studio-first-run") === "1");
+    } catch {
+      setFirstRun(false);
+    }
+  }, []);
+  function endFirstRun() {
+    setFirstRun(false);
+    try {
+      window.localStorage.removeItem("phs-studio-first-run");
+    } catch {
+      // dismissing is best effort
+    }
+  }
+
   const upcoming = calendar.filter((item) => new Date(item.publish_at) >= new Date()).slice(0, 4);
   const firstName = (
     profile?.full_name ||
@@ -1511,6 +1528,52 @@ function Dashboard() {
           <HandHeart className="size-4" /> Benefits & Palmer House help
         </Link>
       </header>
+
+      {firstRun ? (
+        <section className="mt-7 overflow-hidden rounded-[1.25rem] border border-ink bg-white p-5 sm:p-6">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="min-w-0">
+              <p className="studio-eyebrow text-evergreen">Your studio is ready</p>
+              <h2 className="mt-3 text-2xl font-black leading-tight tracking-[-.03em]">
+                Here is the whole thing in one move.
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                Write one real thing you know — a customer question, a job you finished, an opinion
+                you hold. The Content Engine turns it into three angles, then a full set of
+                platform-ready drafts you can edit, approve, and schedule.
+              </p>
+            </div>
+            <button
+              onClick={endFirstRun}
+              className="shrink-0 text-xs font-bold text-muted-foreground underline underline-offset-4"
+            >
+              Skip the tour
+            </button>
+          </div>
+          <div className="mt-5 grid gap-3 sm:grid-cols-3">
+            {[
+              ["One idea in", "A sentence is enough. No blank page."],
+              ["Three angles out", "Business, personal, and playful — pick one."],
+              ["A full campaign", "Scripts, posts, and an article, ready to edit."],
+            ].map(([title, body], index) => (
+              <div key={title} className="rounded-[1.15rem] border border-border p-4">
+                <span className="grid size-7 place-items-center rounded-full bg-ink text-[11px] font-black text-white">
+                  {index + 1}
+                </span>
+                <p className="mt-3 text-sm font-black">{title}</p>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{body}</p>
+              </div>
+            ))}
+          </div>
+          <Link
+            to="/studio/engine"
+            onClick={endFirstRun}
+            className="mt-5 inline-flex min-h-12 items-center gap-2 rounded-xl bg-ink px-5 text-sm font-black text-white transition hover:bg-evergreen"
+          >
+            Build my first campaign <ArrowRight className="size-4" />
+          </Link>
+        </section>
+      ) : null}
 
       <section
         className="relative mt-7 overflow-hidden rounded-[1.25rem] border border-border p-5 sm:p-6"

@@ -4267,7 +4267,8 @@ function Library() {
                   </span>
                 </span>
               </button>
-            ))}
+              );
+            })}
           </div>
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
             <label className="flex min-h-12 flex-1 items-center gap-3 rounded-xl border border-border bg-white px-4">

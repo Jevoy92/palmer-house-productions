@@ -485,6 +485,9 @@ function Onboarding() {
   const [creatorType, setCreatorType] = useState<(typeof studioAudienceTypes)[number]>("Business");
   const [primaryGoal, setPrimaryGoal] =
     useState<(typeof studioPrimaryGoals)[number]>("Sell services");
+  const [industry, setIndustry] = useState("");
+  const [website, setWebsite] = useState("");
+  const [description, setDescription] = useState("");
   const [problem, setProblem] = useState("I need a consistent content rhythm");
   const problemOptions = [
     { value: "I need a consistent content rhythm", lane: "Reel", color: "var(--reel)" },
@@ -510,8 +513,8 @@ function Onboarding() {
       </header>
       <div className="mx-auto grid min-h-[calc(100vh-8rem)] max-w-6xl items-center gap-10 py-10 lg:grid-cols-[.9fr_1.1fr]">
         <section>
-          <div className="flex items-center gap-2" aria-label={`Step ${step + 1} of 4`}>
-            {[0, 1, 2, 3].map((item) => (
+          <div className="flex items-center gap-2" aria-label={`Step ${step + 1} of 5`}>
+            {[0, 1, 2, 3, 4].map((item) => (
               <span
                 key={item}
                 className="h-1.5 flex-1 rounded-full"
@@ -519,7 +522,7 @@ function Onboarding() {
               />
             ))}
           </div>
-          <p className="studio-eyebrow mt-8 text-system">Step {step + 1} of 4</p>
+          <p className="studio-eyebrow mt-8 text-system">Step {step + 1} of 5</p>
           <h1 className="mt-4 text-5xl font-black leading-[.95] tracking-[-.06em]">
             {step === 0
               ? "Give the work a home."
@@ -527,7 +530,9 @@ function Onboarding() {
                 ? "What best describes you?"
                 : step === 2
                   ? "What should video help you do?"
-                  : `Start with ${match.lane}.`}
+                  : step === 3
+                    ? "What do you actually do?"
+                    : `Start with ${match.lane}.`}
           </h1>
           <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
             {step === 0
@@ -536,7 +541,9 @@ function Onboarding() {
                 ? "A company, author, musician, streamer, nonprofit, or solo creator can use the same system. Your examples and strategy will adapt."
                 : step === 2
                   ? "This goal becomes part of Brand DNA and shapes every recommendation after today."
-                  : `Your ${match.lane} Pal will guide the first campaign. You can use every lane whenever the work calls for it.`}
+                  : step === 3
+                    ? "This is the context every campaign is written from. A website is optional — a couple of sentences is enough to start."
+                    : `Your ${match.lane} Pal will guide the first campaign. You can use every lane whenever the work calls for it.`}
           </p>
 
           <div className="mt-8">
@@ -564,6 +571,33 @@ function Onboarding() {
               />
             ) : null}
             {step === 3 ? (
+              <div className="grid gap-5">
+                <Field
+                  label="Category, field, or genre"
+                  value={industry}
+                  onChange={(event) => setIndustry(event.target.value)}
+                  placeholder="Roofing, personal finance, indie folk, family law…"
+                  required
+                />
+                <Field
+                  as="textarea"
+                  rows={4}
+                  label="What do you make, offer, or want to be known for?"
+                  value={description}
+                  onChange={(event) => setDescription(event.target.value)}
+                  placeholder="We install metal roofs for homeowners in the Puget Sound area and handle insurance claims for storm damage."
+                  required
+                />
+                <Field
+                  label="Website (optional)"
+                  type="url"
+                  value={website}
+                  onChange={(event) => setWebsite(event.target.value)}
+                  placeholder="https://"
+                />
+              </div>
+            ) : null}
+            {step === 4 ? (
               <>
                 <p className="mb-3 text-sm font-bold">What needs to change first?</p>
                 <ChoiceGrid
@@ -583,6 +617,7 @@ function Onboarding() {
                       <p className="font-extrabold">Your first workspace path</p>
                       <p className="mt-1 text-sm text-muted-foreground">
                         {creatorType} · {primaryGoal}
+                        {industry ? ` · ${industry}` : ""}
                       </p>
                     </div>
                   </div>
@@ -614,9 +649,13 @@ function Onboarding() {
               </button>
             ) : null}
             <button
-              disabled={busy || (step === 0 && !name.trim())}
+              disabled={
+                busy ||
+                (step === 0 && !name.trim()) ||
+                (step === 3 && (!industry.trim() || description.trim().length < 20))
+              }
               onClick={async () => {
-                if (step < 3) {
+                if (step < 4) {
                   setStep((current) => current + 1);
                   return;
                 }
@@ -625,6 +664,9 @@ function Onboarding() {
                     creatorType,
                     primaryGoal,
                     initialProblem: problem,
+                    industry: industry.trim(),
+                    website: website.trim(),
+                    description: description.trim(),
                   });
                 } catch (error) {
                   toast.error(
@@ -635,7 +677,7 @@ function Onboarding() {
               className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-ink px-5 font-bold text-white disabled:opacity-40"
             >
               {busy ? <LoaderCircle className="size-4 animate-spin" /> : null}
-              {step === 3 ? "Open my Studio" : "Continue"}
+              {step === 4 ? "Open my Studio" : "Continue"}
               <ArrowRight className="size-4" />
             </button>
           </div>

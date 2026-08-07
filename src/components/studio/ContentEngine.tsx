@@ -399,6 +399,26 @@ export function ContentEngine() {
         )}
       </AnimatePresence>
 
+      {!brand?.industry?.trim() || !brand?.description?.trim() ? (
+        <div
+          className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-[1.25rem] border p-5"
+          style={{ borderColor: "var(--spotlight)", background: "var(--spotlight-soft)" }}
+        >
+          <div className="min-w-0">
+            <p className="text-sm font-extrabold">
+              The engine is writing without knowing what you do.
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Add your category and a short description of what you offer, so campaigns sound like
+              your business instead of a generic brand. A website is optional.
+            </p>
+          </div>
+          <Link to="/studio/brand" className="secondary-action">
+            <FileStack className="size-4" /> Add your context
+          </Link>
+        </div>
+      ) : null}
+
       <Progress stage={stage} />
 
       <AnimatePresence mode="wait">

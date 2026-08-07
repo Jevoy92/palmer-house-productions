@@ -346,6 +346,8 @@ export const ContentDirectionRequestSchema = z.object({
     proof: z.array(z.string()).max(20),
     callsToAction: z.array(z.string()).max(20),
     avoidLanguage: z.array(z.string()).max(20),
+    personalInterests: z.array(z.string()).max(20).default([]),
+    personalStory: z.string().max(1200).default(""),
   }),
 
 });
@@ -356,6 +358,7 @@ export const ContentDirectionSchema = z.object({
   angle: z.string(),
   whyItWorks: z.string(),
   lane: z.enum(["spotlight", "reel", "evergreen", "system"]),
+  flavor: z.enum(["business", "personal", "playful"]).default("business"),
 });
 
 export const ContentDirectionsSchema = z.object({
@@ -411,6 +414,8 @@ export const CampaignBriefSchema = z.object({
     proof: z.array(z.string()).max(20),
     callsToAction: z.array(z.string()).max(20),
     avoidLanguage: z.array(z.string()).max(20),
+    personalInterests: z.array(z.string()).max(20).default([]),
+    personalStory: z.string().max(1200).default(""),
   }),
 
 });

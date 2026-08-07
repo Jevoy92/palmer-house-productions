@@ -402,11 +402,12 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     sourceType: "text" | "link" | "image" | "chat" | "recommended";
     sourceUrl?: string;
     sourceMediaPath?: string;
-    lane: StudioLane;
+    lane?: StudioLane;
     businessProblem: string;
   }) {
     if (!workspace) throw new Error("Create a workspace first.");
     if (!session) throw new Error("Sign in first.");
+    const lane = values.lane || classifyLane(`${values.body} ${values.businessProblem}`);
     const result = await supabase
       .from("content_ideas")
       .insert({
@@ -416,9 +417,10 @@ export function StudioProvider({ children }: { children: ReactNode }) {
         source_type: values.sourceType,
         source_url: values.sourceUrl || null,
         source_media_path: values.sourceMediaPath || null,
-        primary_lane: values.lane,
+        primary_lane: lane,
         business_problem: values.businessProblem,
       })
+
       .select()
       .single();
     if (result.error) throw result.error;

@@ -80,7 +80,13 @@ import {
 } from "@/lib/studio-model";
 import type { Tables } from "@/lib/supabase/database.types";
 import samiraHeadshot from "@/assets/pal-headshots/samira.png";
-import kianaHeadshot from "@/assets/pal-headshots/kiana.png";
+import { PalAvatar } from "./PalAvatar";
+import { classifyLane } from "@/lib/studio-intelligence";
+import { useGuide } from "./useGuide";
+import { palList } from "@/lib/pal-directory";
+
+import { calculateTier } from "@/lib/studio-tiers";
+
 import satoshiFontUrl from "@/assets/fonts/Satoshi-Variable.woff2?url";
 import { useStudio } from "./StudioProvider";
 import { ContentEngine } from "./ContentEngine";
@@ -484,7 +490,9 @@ function AuthExperience() {
 }
 
 function Onboarding() {
-  const { createWorkspace, busy, user, signOut } = useStudio();
+  const { createWorkspace, busy, user, signOut, saveSettings } = useStudio();
+  const [guidePick, setGuidePick] = useState<string>("none");
+
   const [name, setName] = useState((user?.user_metadata?.full_name as string) || "");
   const [step, setStep] = useState(0);
   const [creatorType, setCreatorType] = useState<(typeof studioAudienceTypes)[number]>("Business");
@@ -640,8 +648,43 @@ function Onboarding() {
                     ))}
                   </ul>
                 </div>
+                <div className="mt-5 rounded-[1.25rem] border border-border p-6">
+                  <p className="font-extrabold">Pick a guide (optional)</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Your guide sets the tone of the tips you get as you work. You can change this
+                    any time in settings.
+                  </p>
+                  <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                    <button
+                      onClick={() => setGuidePick("none")}
+                      className={`min-h-16 rounded-xl border p-3 text-left ${guidePick === "none" ? "border-ink" : "border-border"}`}
+                    >
+                      <span className="text-sm font-black">No guide</span>
+                      <span className="mt-1 block text-[10px] font-medium text-muted-foreground">
+                        Just the guidance
+                      </span>
+                    </button>
+                    {palList.map((pal) => (
+                      <button
+                        key={pal.key}
+                        onClick={() => setGuidePick(pal.key)}
+                        className={`flex min-h-16 items-center gap-3 rounded-xl border p-3 text-left ${guidePick === pal.key ? "border-ink" : "border-border"}`}
+                        style={{ background: guidePick === pal.key ? pal.soft : "white" }}
+                      >
+                        <PalAvatar pal={pal} size="sm" />
+                        <span className="min-w-0">
+                          <span className="block text-sm font-black">{pal.name}</span>
+                          <span className="block truncate text-[10px] font-medium text-muted-foreground">
+                            {pal.role}
+                          </span>
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </>
             ) : null}
+
           </div>
 
           {(() => {
@@ -684,6 +727,14 @@ function Onboarding() {
                           website: website.trim(),
                           description: description.trim(),
                         });
+                        if (guidePick !== "none") {
+                          try {
+                            await saveSettings({ preferred_pal: guidePick });
+                          } catch {
+                            // guide preference is not worth blocking workspace creation
+                          }
+                        }
+
                       } catch (error) {
                         toast.error(
                           error instanceof Error ? error.message : "Could not create workspace.",
@@ -1051,6 +1102,8 @@ function CreateOverlay({ onClose }: { onClose: () => void }) {
 
 function PalChat({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { suggestDirections, brand, busy } = useStudio();
+  const { guide } = useGuide();
+
   const reduce = useReducedMotion();
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<
@@ -1118,19 +1171,18 @@ function PalChat({ open, onClose }: { open: boolean; onClose: () => void }) {
           >
             <header className="flex items-center gap-4 border-b border-border p-5">
               <div className="relative">
-                <img
-                  src={kianaHeadshot}
-                  alt="Kiana"
-                  className="size-12 rounded-xl border border-border object-cover object-top"
-                />
+                <PalAvatar pal={guide} size="md" className="rounded-xl" />
                 <span className="absolute -right-1 -top-1 size-3 rounded-full border-2 border-white bg-evergreen" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="font-black">Ask a Pal</p>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  Kiana is focusing the lens with you
+                  {guide.key
+                    ? `${guide.name} is working this through with you`
+                    : "Straight answers grounded in your workspace"}
                 </p>
               </div>
+
               <button
                 onClick={onClose}
                 aria-label="Close Pal chat"
@@ -1221,6 +1273,14 @@ function renderView(view: StudioView, campaignId?: string) {
 
 function Dashboard() {
   const { campaigns, assets, calendar, brand, profile, user, ideas, videoProgress } = useStudio();
+  const { guide, hasChosen, tip } = useGuide();
+  const progression = calculateTier({
+    campaigns: campaigns.length,
+    approvedAssets: assets.filter((asset) => asset.status === "approved").length,
+    completedVideos: videoProgress.filter((item) => item.status === "published").length,
+    brandCompletion: brand?.completion || 0,
+  });
+
   const upcoming = calendar.filter((item) => new Date(item.publish_at) >= new Date()).slice(0, 4);
   const firstName = (
     profile?.full_name ||
@@ -1326,25 +1386,63 @@ function Dashboard() {
       >
         <div className="relative z-10 max-w-3xl pr-24 sm:pr-40">
           <p className="studio-eyebrow" style={{ color: briefing.color }}>
-            Kiana’s workspace briefing
+            {guide.key ? `${guide.name}’s workspace briefing` : "Your workspace briefing"}
           </p>
           <h2 className="mt-3 text-2xl font-black leading-tight sm:text-3xl">{briefing.title}</h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
             {briefing.body}
           </p>
-          <Link
-            to={briefing.to}
-            className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-black underline underline-offset-4"
-          >
-            {briefing.action} <ArrowRight className="size-4" />
-          </Link>
+          <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <Link
+              to={briefing.to}
+              className="inline-flex min-h-11 items-center gap-2 text-sm font-black underline underline-offset-4"
+            >
+              {briefing.action} <ArrowRight className="size-4" />
+            </Link>
+            {!hasChosen ? (
+              <Link
+                to="/studio/settings"
+                className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-muted-foreground underline underline-offset-4"
+              >
+                Pick your guide
+              </Link>
+            ) : null}
+          </div>
+          <p className="mt-4 max-w-xl text-xs font-medium italic text-muted-foreground">
+            “{tip("home")}”
+          </p>
         </div>
-        <img
-          src={kianaHeadshot}
-          alt="Kiana, your proof guide"
-          className="absolute -bottom-8 -right-3 h-40 w-40 object-contain object-bottom sm:h-48 sm:w-48"
-        />
+        {guide.avatar ? (
+          <img
+            src={guide.avatar}
+            alt=""
+            className="pointer-events-none absolute -bottom-6 -right-2 h-40 w-40 object-contain object-bottom sm:h-48 sm:w-48"
+          />
+        ) : null}
       </section>
+
+      <section className="mt-5 flex flex-col gap-4 rounded-[1.25rem] border border-border bg-white p-5 sm:flex-row sm:items-center">
+        <div className="min-w-0 flex-1">
+          <p className="studio-eyebrow" style={{ color: guide.color }}>
+            Studio level · {progression.tier.label}
+          </p>
+          <p className="mt-2 text-sm font-bold">{progression.tier.blurb}</p>
+          <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full rounded-full transition-[width] duration-500"
+              style={{ width: `${progression.percent}%`, background: guide.color }}
+            />
+          </div>
+        </div>
+        <p className="shrink-0 text-xs font-medium text-muted-foreground sm:max-w-[14rem]">
+          {progression.next
+            ? `${progression.toNext} more moves to reach ${progression.next.label}. Campaigns, finished videos, and approvals all count.`
+            : "You have reached the top tier. Keep the system running."}
+        </p>
+      </section>
+
+
+
 
       <section className="mt-5 grid overflow-hidden rounded-[1.25rem] border border-border bg-white sm:grid-cols-2 xl:grid-cols-4">
         {createOptions.map((item, index) => (
@@ -1822,8 +1920,10 @@ function IdeasBoard() {
   const [sourcePreview, setSourcePreview] = useState("");
   const [previewById, setPreviewById] = useState<Record<string, string>>({});
   const [problem, setProblem] = useState("");
-  const [lane, setLane] = useState<keyof typeof lanes>("evergreen");
   const [filter, setFilter] = useState<"all" | keyof typeof lanes>("all");
+  const detectedLane = classifyLane(`${draft} ${problem}`) as keyof typeof lanes;
+
+
   const [directions, setDirections] = useState<Awaited<ReturnType<typeof suggestDirections>>>([]);
   const savedIdeas = ideas.filter((item) => item.status !== "archived");
   const combined = savedIdeas.length
@@ -1858,8 +1958,9 @@ function IdeasBoard() {
         sourceType,
         sourceUrl: sourceType === "link" ? sourceUrl : undefined,
         sourceMediaPath: mediaPath,
-        lane,
-        businessProblem: problem.trim() || `${lanes[lane].role}: ${body}`,
+        lane: detectedLane,
+        businessProblem: problem.trim() || `${lanes[detectedLane].role}: ${body}`,
+
       });
       if (sourcePreview) setPreviewById((current) => ({ ...current, [id]: sourcePreview }));
       if (findAngles) {
@@ -1980,29 +2081,19 @@ function IdeasBoard() {
               className="mt-2 min-h-12 w-full rounded-xl border border-border px-4 text-sm font-medium outline-none focus:border-system"
             />
           </label>
-          <p className="mt-5 text-sm font-extrabold">Which job does it do?</p>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            {(
-              Object.entries(lanes) as Array<
-                [keyof typeof lanes, (typeof lanes)[keyof typeof lanes]]
-              >
-            ).map(([key, item]) => (
-              <button
-                key={key}
-                onClick={() => setLane(key)}
-                className={`min-h-12 rounded-xl border px-3 text-left text-xs font-bold ${lane === key ? "border-ink" : "border-border"}`}
-                style={{
-                  background: lane === key ? item.soft : "white",
-                  color: lane === key ? item.color : "var(--ink)",
-                }}
-              >
-                {item.label}
-                <span className="mt-1 block text-[9px] font-medium text-muted-foreground">
-                  {item.role}
-                </span>
-              </button>
-            ))}
+          <div
+            className="mt-5 rounded-xl border border-border p-4"
+            style={{ background: lanes[detectedLane].soft }}
+          >
+            <p className="studio-eyebrow" style={{ color: lanes[detectedLane].color }}>
+              Category · {lanes[detectedLane].label}
+            </p>
+            <p className="mt-2 text-xs font-medium text-muted-foreground">
+              We sort this for you from what you wrote — {lanes[detectedLane].role.toLowerCase()}.
+              You can change it later on the idea itself.
+            </p>
           </div>
+
           <div className="mt-5 grid gap-2 sm:grid-cols-2">
             <button
               onClick={() => void addIdea(false)}
@@ -5797,7 +5888,9 @@ function SettingsView() {
   const { profile, user, saveProfile, workspace, subscription, campaigns, assets, signOut } =
     useStudio();
 
+  const { guide, setGuide } = useGuide();
   const navigate = useNavigate();
+
   const modalRef = useRef<HTMLDivElement>(null);
   const [tab, setTab] = useState<"workspace" | "brands" | "team" | "usage" | "account">(
     "workspace",
@@ -6071,6 +6164,42 @@ function SettingsView() {
                     <Check className="size-4" /> Save account
                   </button>
                   <div className="border-t border-border pt-5 sm:col-span-2">
+                    <p className="text-sm font-extrabold">Your guide</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Your guide sets the tone of the tips, briefings, and accents across the
+                      Studio. Pick whoever matches how you like to work — or keep it neutral.
+                    </p>
+                    <div className="mt-4 grid gap-2 sm:grid-cols-3">
+                      <button
+                        onClick={() => void setGuide("none")}
+                        className={`min-h-16 rounded-xl border p-3 text-left ${guide.key ? "border-border" : "border-ink"}`}
+                      >
+                        <span className="text-sm font-black">No guide</span>
+                        <span className="mt-1 block text-[10px] font-medium text-muted-foreground">
+                          Straight guidance, no character
+                        </span>
+                      </button>
+                      {palList.map((pal) => (
+                        <button
+                          key={pal.key}
+                          onClick={() => void setGuide(pal.key)}
+                          className={`flex min-h-16 items-center gap-3 rounded-xl border p-3 text-left ${guide.key === pal.key ? "border-ink" : "border-border"}`}
+                          style={{
+                            background: guide.key === pal.key ? pal.soft : "white",
+                          }}
+                        >
+                          <PalAvatar pal={pal} size="sm" />
+                          <span className="min-w-0">
+                            <span className="block text-sm font-black">{pal.name}</span>
+                            <span className="block truncate text-[10px] font-medium text-muted-foreground">
+                              {pal.role}
+                            </span>
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="border-t border-border pt-5 sm:col-span-2">
                     <p className="text-sm font-extrabold">Session</p>
                     <p className="mt-1 text-xs text-muted-foreground">
                       Signing out clears this Studio session on this device.
@@ -6082,6 +6211,7 @@ function SettingsView() {
                       <LogOut className="size-4" /> Sign out
                     </button>
                   </div>
+
                 </div>
 
               </div>

@@ -1,0 +1,1 @@
+DELETE FROM public.workspaces WHERE slug LIKE 'diag2-%' OR slug LIKE 'diag3-%' OR name IN ('Diag2','Diag3','Diag WS');

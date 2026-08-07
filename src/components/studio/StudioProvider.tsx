@@ -301,18 +301,23 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     if (!session) throw new Error("Sign in first.");
     setBusy(true);
     let workspaceCreated = false;
+    const slug = `${slugify(name)}-${session.user.id.slice(0, 8)}`;
     try {
-      const result = await supabase
-        .from("workspaces")
-        .insert({
-          name,
-          slug: `${slugify(name)}-${session.user.id.slice(0, 8)}`,
-          created_by: session.user.id,
-        })
-        .select()
-        .single();
-      if (result.error) throw result.error;
+      // No `.select()` here: the row is only readable once the membership row
+      // exists, which the after-insert trigger creates at end of statement.
+      const result = await supabase.from("workspaces").insert({
+        name,
+        slug,
+        created_by: session.user.id,
+      });
+      if (result.error) throw new Error(result.error.message);
       workspaceCreated = true;
+      const created = await supabase
+        .from("workspaces")
+        .select("id")
+        .eq("slug", slug)
+        .single();
+      if (created.error) throw new Error(created.error.message);
       if (brandProfile) {
         const brandUpdate = await supabase
           .from("brand_profiles")
@@ -322,8 +327,8 @@ export function StudioProvider({ children }: { children: ReactNode }) {
             primary_goal: brandProfile.primaryGoal,
             brand_details: { initial_problem: brandProfile.initialProblem },
           })
-          .eq("workspace_id", result.data.id);
-        if (brandUpdate.error) throw brandUpdate.error;
+          .eq("workspace_id", created.data.id);
+        if (brandUpdate.error) throw new Error(brandUpdate.error.message);
       }
       const profileUpdate = await supabase
         .from("profiles")

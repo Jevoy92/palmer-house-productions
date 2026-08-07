@@ -175,6 +175,8 @@ export function ContentEngine() {
   const [mobilePane, setMobilePane] = useState<"edit" | "preview">("edit");
   const [historyOpen, setHistoryOpen] = useState(false);
   const [publishAt, setPublishAt] = useState(tomorrowAtTen);
+  const [running, setRunning] = useState<null | "directions" | "campaign" | "source">(null);
+
 
   const output = campaignId ? campaignOutputs[campaignId] : null;
   const platformPosts = useMemo(() => output?.platformPosts || [], [output]);

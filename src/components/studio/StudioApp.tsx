@@ -1051,6 +1051,8 @@ function CreateOverlay({ onClose }: { onClose: () => void }) {
 
 function PalChat({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { suggestDirections, brand, busy } = useStudio();
+  const { guide } = useGuide();
+
   const reduce = useReducedMotion();
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState<

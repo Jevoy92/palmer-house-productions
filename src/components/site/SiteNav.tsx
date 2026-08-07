@@ -100,7 +100,12 @@ export function SiteNav() {
             to="/"
             className="flex min-h-11 min-w-0 items-center gap-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight/40"
           >
-            <BrandFace />
+            <img
+              src={phMark.url}
+              alt="Palmer House Productions"
+              className="size-9 shrink-0 object-contain"
+              loading="eager"
+            />
             <span className="pr-2 text-xs font-bold leading-tight sm:text-sm">
               Palmer House
               <span className="block font-mono text-[8px] font-medium uppercase tracking-[0.2em] text-muted-foreground">

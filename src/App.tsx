@@ -5,8 +5,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
-import { AuthProvider } from "@/contexts/AuthContext";
-import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import { ScrollToTopButton } from "@/components/ScrollToTopButton";
 import { StructuredData } from "@/components/seo/StructuredData";
@@ -56,7 +54,6 @@ import ThankYou from "./pages/ThankYou";
 import { MobileFirstOptimization } from "@/components/MobileFirstOptimization";
 import StyleGuide from "./pages/StyleGuide";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import PalHub from "./pages/dashboard/PalHub";
 import ContentSystemBuilder from "./pages/tools/ContentSystemBuilder";
@@ -91,12 +88,11 @@ function RouteTracker() {
 function ConditionalNavigation() {
   const location = useLocation();
   const isDashboardRoute = location.pathname.startsWith('/dashboard');
-  const isAuthRoute = location.pathname === '/auth';
   const isToolRoute = location.pathname.startsWith('/tools/');
   const isSettingsRoute = location.pathname === '/settings';
   const isAppPricingRoute = location.pathname === '/app-pricing';
   
-  if (isDashboardRoute || isAuthRoute || isToolRoute || isSettingsRoute || isAppPricingRoute) {
+  if (isDashboardRoute || isToolRoute || isSettingsRoute || isAppPricingRoute) {
     return null;
   }
   
@@ -112,7 +108,6 @@ function ConditionalFooter() {
     '/dashboard',
     '/tools/',
     '/settings',
-    '/auth',
     '/app-pricing'
   ];
   
@@ -130,7 +125,6 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <AuthProvider>
           <PageTransition>
           <CriticalStyles />
           <CriticalCSS />
@@ -147,17 +141,15 @@ const App = () => (
             <Routes>
           <Route path="/" element={<Index />} />
           {/* Dashboard and tool routes don't get the footer here - they render it inside their SidebarProvider */}
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/dashboard/pals/:palId" element={<ProtectedRoute><PalHub /></ProtectedRoute>} />
-            <Route path="/dashboard/pals/:palId" element={<ProtectedRoute><PalHub /></ProtectedRoute>} />
-            <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-          <Route path="/tools/content-system-builder" element={<ProtectedRoute><ContentSystemBuilder /></ProtectedRoute>} />
-          <Route path="/tools/series-builder" element={<ProtectedRoute><SeriesBuilder /></ProtectedRoute>} />
-          <Route path="/tools/persona-generator" element={<ProtectedRoute><PersonaGenerator /></ProtectedRoute>} />
-          <Route path="/tools/production-assistant" element={<ProtectedRoute><ProductionAssistant /></ProtectedRoute>} />
-          <Route path="/tools/content-maximizer" element={<ProtectedRoute><ContentMaximizer /></ProtectedRoute>} />
-          <Route path="/tools/engagement-responder" element={<ProtectedRoute><EngagementResponder /></ProtectedRoute>} />
-          <Route path="/auth" element={<Auth />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard/pals/:palId" element={<PalHub />} />
+            <Route path="/settings" element={<Settings />} />
+          <Route path="/tools/content-system-builder" element={<ContentSystemBuilder />} />
+          <Route path="/tools/series-builder" element={<SeriesBuilder />} />
+          <Route path="/tools/persona-generator" element={<PersonaGenerator />} />
+          <Route path="/tools/production-assistant" element={<ProductionAssistant />} />
+          <Route path="/tools/content-maximizer" element={<ContentMaximizer />} />
+          <Route path="/tools/engagement-responder" element={<EngagementResponder />} />
           <Route path="/app-pricing" element={<AppPricing />} />
           <Route path="/pals" element={<Pals />} />
           <Route path="/reel-pal" element={<ReelPal />} />
@@ -215,7 +207,6 @@ const App = () => (
            </div>
            <ConditionalFooter />
             </PageTransition>
-          </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
     </ErrorBoundary>

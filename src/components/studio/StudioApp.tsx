@@ -485,6 +485,9 @@ function Onboarding() {
   const [creatorType, setCreatorType] = useState<(typeof studioAudienceTypes)[number]>("Business");
   const [primaryGoal, setPrimaryGoal] =
     useState<(typeof studioPrimaryGoals)[number]>("Sell services");
+  const [industry, setIndustry] = useState("");
+  const [website, setWebsite] = useState("");
+  const [description, setDescription] = useState("");
   const [problem, setProblem] = useState("I need a consistent content rhythm");
   const problemOptions = [
     { value: "I need a consistent content rhythm", lane: "Reel", color: "var(--reel)" },

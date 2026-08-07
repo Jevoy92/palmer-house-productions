@@ -80,12 +80,11 @@ import {
 } from "@/lib/studio-model";
 import type { Tables } from "@/lib/supabase/database.types";
 import samiraHeadshot from "@/assets/pal-headshots/samira.png";
-import kianaHeadshot from "@/assets/pal-headshots/kiana.png";
 import { PalAvatar } from "./PalAvatar";
 import { classifyLane } from "@/lib/studio-intelligence";
-
 import { useGuide } from "./useGuide";
-import { palList, resolveGuide } from "@/lib/pal-directory";
+import { palList } from "@/lib/pal-directory";
+
 import { calculateTier } from "@/lib/studio-tiers";
 
 import satoshiFontUrl from "@/assets/fonts/Satoshi-Variable.woff2?url";

@@ -54,6 +54,7 @@ import {
   WandSparkles,
   X,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import {
   useEffect,
   useMemo,

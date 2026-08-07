@@ -5,14 +5,16 @@ import {
   Brain,
   CalendarPlus,
   Check,
+  Copy,
   Lightbulb,
   LoaderCircle,
   MessageSquareText,
   Plus,
+  RotateCcw,
   Send,
   Sparkles,
 } from "lucide-react";
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import kareem from "@/assets/pal-headshots/kareem.png";
 import kiana from "@/assets/pal-headshots/kiana.png";
@@ -23,7 +25,9 @@ import clara from "@/assets/pal-headshots/clara.png";
 import silas from "@/assets/pal-headshots/silas.png";
 import samira from "@/assets/pal-headshots/samira.png";
 import type { AssistantResponse, PalName, StudioLane } from "@/lib/studio-model";
+import { StudioMarkdown } from "./StudioMarkdown";
 import { useStudio } from "./StudioProvider";
+
 
 const palDirectory: Record<
   PalName,
@@ -119,6 +123,9 @@ export function StudioAssistant() {
   const pal = palDirectory[selected] || palDirectory.kiana;
   const [draft, setDraft] = useState("");
   const [savedMemory, setSavedMemory] = useState<string[]>([]);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const endRef = useRef<HTMLDivElement | null>(null);
+  const composerRef = useRef<HTMLTextAreaElement | null>(null);
   const recent = assistantMessages.slice(-14);
   const latestResponse = useMemo(() => {
     for (let index = assistantMessages.length - 1; index >= 0; index -= 1) {
@@ -127,18 +134,65 @@ export function StudioAssistant() {
     }
     return null;
   }, [assistantMessages]);
+  const lastQuestion = useMemo(() => {
+    for (let index = assistantMessages.length - 1; index >= 0; index -= 1) {
+      if (assistantMessages[index].role === "user") return assistantMessages[index].body;
+    }
+    return "";
+  }, [assistantMessages]);
 
-  async function submit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const question = draft.trim();
-    if (question.length < 3) return;
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "end" });
+  }, [assistantMessages.length, busy, reduce]);
+
+  useEffect(() => {
+    if (!busy) composerRef.current?.focus();
+  }, [busy]);
+
+  async function send(question: string) {
+    const value = question.trim();
+    if (value.length < 3 || busy) return;
     setDraft("");
     try {
-      await askPal(question, selected);
+      await askPal(value, selected);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Your Pal could not respond yet.");
     }
   }
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    await send(draft);
+  }
+
+  async function retry() {
+    if (lastQuestion) await send(lastQuestion);
+  }
+
+  async function copyMessage(id: string, body: string) {
+    try {
+      await navigator.clipboard.writeText(body);
+      setCopiedId(id);
+      window.setTimeout(() => setCopiedId((current) => (current === id ? null : current)), 1800);
+    } catch {
+      toast.error("Your browser blocked the clipboard.");
+    }
+  }
+
+  async function saveAnswerAsIdea(body: string, meta: AssistantResponse | null) {
+    try {
+      await createIdea({
+        body,
+        sourceType: "chat",
+        lane: meta?.lane || pal.lane,
+        businessProblem: meta?.problem || "",
+      });
+      toast.success("Saved to Content ideas.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not save this answer.");
+    }
+  }
+
 
   async function choosePal(name: PalName) {
     try {
@@ -293,55 +347,155 @@ export function StudioAssistant() {
                 </div>
               </div>
             ) : (
-              <div className="mx-auto max-w-3xl space-y-5">
-                {recent.map((message) => (
-                  <motion.div
-                    key={message.id}
-                    initial={reduce ? false : { opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={
-                      message.role === "user"
-                        ? "ml-auto max-w-[86%] rounded-[1.25rem] p-4 text-sm leading-relaxed text-white"
-                        : "max-w-[92%]"
-                    }
-                    style={message.role === "user" ? { background: pal.color } : undefined}
-                  >
-                    {message.role === "assistant" ? (
-                      <div className="flex items-start gap-3">
+              <div className="mx-auto max-w-3xl space-y-6">
+                {recent.map((message) => {
+                  const meta = assistantMetadata(message.metadata);
+                  const speaker = palDirectory[(message.pal as PalName) || selected] || pal;
+                  if (message.role === "user") {
+                    return (
+                      <motion.div
+                        key={message.id}
+                        initial={reduce ? false : { opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="ml-auto max-w-[80%] rounded-[1.25rem] rounded-br-md px-4 py-3 text-sm font-medium leading-relaxed text-white"
+                        style={{ background: pal.color }}
+                      >
+                        {message.body}
+                      </motion.div>
+                    );
+                  }
+                  return (
+                    <motion.div
+                      key={message.id}
+                      initial={reduce ? false : { opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="space-y-3"
+                    >
+                      <div className="flex items-center gap-2">
                         <img
-                          src={
-                            palDirectory[(message.pal as PalName) || selected]?.image || pal.image
-                          }
+                          src={speaker.image}
                           alt=""
-                          className="size-9 rounded-lg border border-border object-cover object-top"
+                          className="size-7 rounded-lg border border-border bg-white object-cover object-top"
                         />
-                        <div className="rounded-[1.25rem] bg-mist p-4 text-sm leading-relaxed text-ink">
-                          {message.body}
-                        </div>
+                        <span className="text-xs font-black">{speaker.name}</span>
+                        <span
+                          className="font-mono text-[9px] uppercase tracking-[.14em]"
+                          style={{ color: speaker.color }}
+                        >
+                          · {meta?.lane || speaker.lane}
+                        </span>
                       </div>
-                    ) : (
-                      message.body
-                    )}
-                  </motion.div>
-                ))}
+
+                      {meta?.headline ? (
+                        <p className="text-xl font-black leading-snug tracking-[-.03em]">
+                          {meta.headline}
+                        </p>
+                      ) : null}
+
+                      <StudioMarkdown accent={speaker.color}>{message.body}</StudioMarkdown>
+
+                      {meta?.keyPoints?.length ? (
+                        <ul
+                          className="mt-4 space-y-2 rounded-[1rem] p-4"
+                          style={{ background: speaker.soft }}
+                        >
+                          {meta.keyPoints.map((point) => (
+                            <li
+                              key={point}
+                              className="flex gap-2.5 text-[13px] font-bold leading-snug"
+                            >
+                              <Check
+                                className="mt-0.5 size-3.5 shrink-0"
+                                style={{ color: speaker.color }}
+                              />
+                              {point}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+
+                      <div className="flex flex-wrap items-center gap-2 pt-1">
+                        <button
+                          onClick={() => void copyMessage(message.id, message.body)}
+                          className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink"
+                        >
+                          {copiedId === message.id ? (
+                            <Check className="size-3.5" />
+                          ) : (
+                            <Copy className="size-3.5" />
+                          )}
+                          {copiedId === message.id ? "Copied" : "Copy"}
+                        </button>
+                        <button
+                          onClick={() => void saveAnswerAsIdea(message.body, meta)}
+                          className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink"
+                        >
+                          <Plus className="size-3.5" /> Save as idea
+                        </button>
+                        <button
+                          onClick={() => void retry()}
+                          disabled={busy}
+                          className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink disabled:opacity-40"
+                        >
+                          <RotateCcw className="size-3.5" /> Ask again
+                        </button>
+                      </div>
+
+                      {meta?.followUps?.length ? (
+                        <div className="flex flex-wrap gap-2 pt-1">
+                          {meta.followUps.map((question) => (
+                            <button
+                              key={question}
+                              onClick={() => void send(question)}
+                              disabled={busy}
+                              className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-dashed border-border px-3 text-left text-[11px] font-bold text-muted-foreground transition hover:border-ink hover:text-ink disabled:opacity-40"
+                            >
+                              {question}
+                              <ArrowRight className="size-3.5 shrink-0" />
+                            </button>
+                          ))}
+                        </div>
+                      ) : null}
+                    </motion.div>
+                  );
+                })}
                 {busy ? (
-                  <div className="flex items-center gap-2 pl-12 text-xs font-bold text-system">
-                    <LoaderCircle className="size-4 animate-spin" /> Reading the workspace and
-                    finding the next useful move…
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={pal.image}
+                      alt=""
+                      className="size-7 animate-pulse rounded-lg border border-border object-cover object-top"
+                    />
+                    <span className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
+                      <LoaderCircle className="size-3.5 animate-spin" style={{ color: pal.color }} />
+                      {pal.name} is reading the workspace…
+                    </span>
                   </div>
                 ) : null}
+                <div ref={endRef} />
               </div>
+
             )}
           </div>
 
           <form onSubmit={submit} className="border-t border-border bg-white p-4 sm:p-5">
-            <div className="mx-auto flex max-w-3xl items-end gap-2 rounded-[1.15rem] border border-border bg-white p-2 shadow-soft focus-within:border-system">
+            <div
+              className="mx-auto flex max-w-3xl items-end gap-2 rounded-[1.15rem] border border-border bg-white p-2 shadow-soft transition focus-within:border-current"
+              style={{ color: pal.color }}
+            >
               <textarea
+                ref={composerRef}
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    void send(draft);
+                  }
+                }}
                 rows={2}
                 placeholder={`Ask ${pal.name} about a problem, idea, link, campaign, or next move…`}
-                className="min-h-12 flex-1 resize-none border-0 bg-transparent p-2 text-sm outline-none"
+                className="min-h-12 flex-1 resize-none border-0 bg-transparent p-2 text-sm text-ink outline-none"
               />
               <button
                 disabled={busy || draft.trim().length < 3}
@@ -349,13 +503,19 @@ export function StudioAssistant() {
                 className="grid size-11 shrink-0 place-items-center rounded-xl text-white disabled:opacity-35"
                 style={{ background: pal.color }}
               >
-                <Send className="size-4" />
+                {busy ? (
+                  <LoaderCircle className="size-4 animate-spin" />
+                ) : (
+                  <Send className="size-4" />
+                )}
               </button>
             </div>
             <p className="mt-2 text-center text-[10px] text-muted-foreground">
-              Nothing publishes or changes Brand DNA without your approval.
+              Enter to send · Shift + Enter for a new line · Nothing publishes or changes Brand DNA
+              without your approval.
             </p>
           </form>
+
         </section>
 
         <aside className="border-t border-border bg-mist/55 p-4 xl:border-l xl:border-t-0">

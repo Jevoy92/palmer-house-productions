@@ -193,13 +193,13 @@ export function StudioStartHere() {
                   onClick={() => dismiss(true)}
                   className="min-h-11 rounded-full px-4 text-sm font-bold text-muted-foreground hover:bg-spotlight-soft"
                 >
-                  Don't show again
+                  Hide this checklist
                 </button>
                 <button
                   onClick={() => dismiss(false)}
                   className="flex min-h-11 items-center gap-2 rounded-full bg-ink px-5 text-sm font-bold text-white"
                 >
-                  Skip <ArrowRight className="size-4" />
+                  Close <ArrowRight className="size-4" />
                 </button>
               </div>
             </motion.div>
@@ -207,7 +207,7 @@ export function StudioStartHere() {
         ) : null}
       </AnimatePresence>
 
-      {!open && !allDone ? (
+      {!open && !allDone && !hidden ? (
         <button
           onClick={() => setOpen(true)}
           className="fixed bottom-24 right-4 z-40 flex min-h-12 items-center gap-2 rounded-full border border-border bg-white px-4 text-sm font-bold shadow-[0_20px_60px_-30px_rgba(31,35,40,.8)] lg:bottom-6"

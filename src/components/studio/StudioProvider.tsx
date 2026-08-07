@@ -3,10 +3,12 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 import { toast } from "sonner";
 import {
   analyzeStudioContentSource,
+  analyzeStudioWebsite,
   askStudioPal,
   generateContentDirections,
   generateStudioCampaign,
 } from "@/lib/studio-server";
+import type { WebsiteBrandProfile } from "@/lib/studio-server";
 import type {
   AssistantResponse,
   CampaignOutput,
@@ -114,6 +116,8 @@ type StudioContextValue = {
   requestService: (requestType: string, notes: string, campaignId?: string) => Promise<void>;
   uploadBrandAsset: (file: File, kind?: string) => Promise<void>;
   addBrandReference: (kind: string, label: string, sourceUrl: string) => Promise<void>;
+  deleteCampaign: (id: string) => Promise<void>;
+  analyzeWebsite: (website: string) => Promise<WebsiteBrandProfile>;
   refresh: () => Promise<void>;
 };
 
@@ -739,6 +743,27 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     setBrandReferences((current) => [result.data, ...current]);
     toast.success("Reference added to Brand DNA.");
   }
+  async function deleteCampaign(id: string) {
+    const result = await supabase.from("campaigns").delete().eq("id", id);
+    if (result.error) throw result.error;
+    setCampaigns((items) => items.filter((item) => item.id !== id));
+    setAssets((items) => items.filter((item) => item.campaign_id !== id));
+    setCalendar((items) => items.filter((item) => item.campaign_id !== id));
+    setCampaignOutputs((current) => {
+      const next = { ...current };
+      delete next[id];
+      return next;
+    });
+    toast.success("Campaign deleted.");
+  }
+  async function analyzeWebsite(website: string) {
+    if (!workspace) throw new Error("Create a workspace first.");
+    if (!session) throw new Error("Sign in first.");
+    const result = await analyzeStudioWebsite({
+      data: { workspaceId: workspace.id, accessToken: session.access_token, website },
+    });
+    return result.profile;
+  }
 
   const value: StudioContextValue = {
     loading,
@@ -781,6 +806,8 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     requestService,
     uploadBrandAsset,
     addBrandReference,
+    deleteCampaign,
+    analyzeWebsite,
     refresh,
   };
   return <StudioContext.Provider value={value}>{children}</StudioContext.Provider>;

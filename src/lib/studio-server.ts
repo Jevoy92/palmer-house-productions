@@ -281,13 +281,69 @@ async function fetchPublicPage(initialUrl: URL) {
 }
 
 const WebsiteProfileSchema = z.object({
+  businessName: z.string(),
+  industry: z.string(),
   description: z.string(),
   primaryAudience: z.string(),
+  customers: z.string(),
+  competitors: z.string(),
+  mission: z.string(),
+  values: z.string(),
+  taglines: z.string(),
   offers: z.array(z.string()).max(8),
   voiceTraits: z.array(z.string()).max(6),
+  avoidLanguage: z.array(z.string()).max(6),
   proofPoints: z.array(z.string()).max(8),
   callsToAction: z.array(z.string()).max(6),
+  platforms: z.array(z.string()).max(8),
+  socialLinks: z.array(z.string()).max(10),
+  visual: z.object({
+    primaryColor: z.string(),
+    secondaryColor: z.string(),
+    accentColor: z.string(),
+    primaryFont: z.string(),
+    typography: z.string(),
+    photography: z.string(),
+    imageStyle: z.string(),
+    visualStyle: z.string(),
+  }),
 });
+
+export type WebsiteBrandProfile = z.infer<typeof WebsiteProfileSchema>;
+
+/** Cheap structural signals so the model grounds the visual system in real markup. */
+function visualSignals(html: string) {
+  const colors = new Map<string, number>();
+  for (const match of html.matchAll(/#([0-9a-fA-F]{6})\b/g)) {
+    const value = `#${match[1].toLowerCase()}`;
+    if (["#ffffff", "#000000"].includes(value)) continue;
+    colors.set(value, (colors.get(value) || 0) + 1);
+  }
+  const fonts = new Set<string>();
+  for (const match of html.matchAll(/font-family\s*:\s*([^;"'}]+)/gi)) {
+    match[1]
+      .split(",")
+      .map((item) => item.trim().replace(/["']/g, ""))
+      .filter((item) => item && !/^(inherit|initial|sans-serif|serif|monospace|system-ui)$/i.test(item))
+      .slice(0, 2)
+      .forEach((item) => fonts.add(item));
+  }
+  for (const match of html.matchAll(/fonts\.googleapis\.com\/css2?\?family=([^&"'\s]+)/gi)) {
+    fonts.add(decodeURIComponent(match[1].split(":")[0]).replace(/\+/g, " "));
+  }
+  const socials = new Set<string>();
+  for (const match of html.matchAll(
+    /https?:\/\/(?:www\.)?(youtube\.com|instagram\.com|tiktok\.com|linkedin\.com|facebook\.com|threads\.net|x\.com|twitter\.com)\/[^\s"'<>)]+/gi,
+  )) {
+    socials.add(match[0].replace(/[),.]+$/, ""));
+  }
+  const ranked = [...colors.entries()].sort((a, b) => b[1] - a[1]).map(([value]) => value);
+  return {
+    colors: ranked.slice(0, 6),
+    fonts: [...fonts].slice(0, 6),
+    socials: [...socials].slice(0, 10),
+  };
+}
 
 export const analyzeStudioWebsite = createServerFn({ method: "POST" })
   .validator(AnalyzeWebsiteSchema)
@@ -299,6 +355,7 @@ export const analyzeStudioWebsite = createServerFn({ method: "POST" })
     const length = Number(response.headers.get("content-length") || "0");
     if (length > 1_500_000) throw new Error("That page is too large to analyze.");
     const html = (await response.text()).slice(0, 1_500_000);
+    const signals = visualSignals(html);
     const text = html
       .replace(/<script[\s\S]*?<\/script>/gi, " ")
       .replace(/<style[\s\S]*?<\/style>/gi, " ")
@@ -309,10 +366,17 @@ export const analyzeStudioWebsite = createServerFn({ method: "POST" })
     const analyzed = await parseStructured(
       WebsiteProfileSchema,
       "website_brand_profile",
-      "Extract only what the supplied website clearly supports. Never invent proof, claims, customers, or offers. Write concise proposed brand-profile fields.",
-      text,
+      "You are reading one company website to fill in a brand guide. Extract only what the page clearly supports. Never invent proof, statistics, customers, awards, or offers — return an empty string or empty array when the page does not say. For the visual system, use the supplied color and font signals from the markup: pick the most brand-like hex colors (skip pure greys and near-white/near-black chrome) and the real typeface names. Describe typography, photography, and image style in one short practical sentence each, based on what the page actually looks like and says. visualStyle must be one of: Palmer Clay 3D, Premium Editorial, Minimal Swiss, Bold Type, Soft Illustration — choose the closest fit. Voice traits and avoid-language should be single words or short phrases.",
+      `Site URL: ${url.origin}\nColor signals (most frequent first): ${signals.colors.join(", ") || "none found"}\nFont signals: ${signals.fonts.join(", ") || "none found"}\nSocial links found: ${signals.socials.join(", ") || "none found"}\n\nPage text:\n${text}`,
     );
-    return { ok: true as const, profile: WebsiteProfileSchema.parse(analyzed) };
+    const profile = WebsiteProfileSchema.parse(analyzed);
+    return {
+      ok: true as const,
+      profile: {
+        ...profile,
+        socialLinks: profile.socialLinks.length ? profile.socialLinks : signals.socials,
+      },
+    };
   });
 
 export const analyzeStudioContentSource = createServerFn({ method: "POST" })

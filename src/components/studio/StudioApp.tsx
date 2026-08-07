@@ -79,6 +79,7 @@ import {
 import type { Tables } from "@/lib/supabase/database.types";
 import samiraHeadshot from "@/assets/pal-headshots/samira.png";
 import kianaHeadshot from "@/assets/pal-headshots/kiana.png";
+import satoshiFontUrl from "@/assets/fonts/Satoshi-Variable.woff2?url";
 import { useStudio } from "./StudioProvider";
 import { ContentEngine } from "./ContentEngine";
 import { ContentOrbit, StudioMark } from "./StudioVisuals";
@@ -86,7 +87,6 @@ import { StudioAssistant } from "./StudioAssistant";
 import { VideoRoadmap } from "./VideoRoadmap";
 import { MemberSuccess } from "./MemberSuccess";
 import { CarouselGraphicBuilder } from "./CarouselGraphicBuilder";
-import { LibraryAssetThumbnail } from "./LibraryAssetThumbnail";
 
 type Campaign = Tables<"campaigns">;
 type Asset = Tables<"campaign_assets">;
@@ -132,6 +132,18 @@ function assetKindMeta(kind: string) {
       color: "var(--system)",
     }
   );
+}
+
+function assetMediaUrl(asset: Asset) {
+  if (!asset.metadata || typeof asset.metadata !== "object" || Array.isArray(asset.metadata)) {
+    return "";
+  }
+  const metadata = asset.metadata as Record<string, unknown>;
+  for (const key of ["thumbnailUrl", "imageUrl", "mediaUrl", "sourceUrl", "url"]) {
+    const value = metadata[key];
+    if (typeof value === "string" && /^https?:\/\//i.test(value)) return value;
+  }
+  return "";
 }
 
 function PalTip({
@@ -220,7 +232,7 @@ export function StudioPage({ view, campaignId }: { view: StudioView; campaignId?
 function StudioGate({ view, campaignId }: { view: StudioView; campaignId?: string }) {
   const studio = useStudio();
   if (studio.loading) return <StudioLoading />;
-  if (!studio.session && !studio.demo) return <AuthExperience />;
+  if (!studio.session) return <AuthExperience />;
   if (!studio.workspace) return <Onboarding />;
   return <StudioShell view={view}>{renderView(view, campaignId)}</StudioShell>;
 }
@@ -241,7 +253,7 @@ function StudioLoading() {
 }
 
 function AuthExperience() {
-  const { signIn, signUp, sendMagicLink, enterDemo, busy } = useStudio();
+  const { signIn, signUp, sendMagicLink, busy } = useStudio();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [notice, setNotice] = useState("");
   async function submit(event: FormEvent<HTMLFormElement>) {
@@ -338,7 +350,7 @@ function AuthExperience() {
             </p>
           ) : null}
 
-          <div className="mt-5 flex flex-wrap items-center justify-between gap-3 text-sm">
+          <div className="mt-5 text-sm">
             <button
               onClick={() => {
                 setMode(mode === "signin" ? "signup" : "signin");
@@ -349,12 +361,6 @@ function AuthExperience() {
               {mode === "signin"
                 ? "New here? Create an account"
                 : "Already have an account? Sign in"}
-            </button>
-            <button
-              onClick={enterDemo}
-              className="inline-flex min-h-11 items-center gap-2 rounded-full border border-border px-4 font-bold hover:border-spotlight"
-            >
-              Open the owner preview <Play className="size-3.5" />
             </button>
           </div>
 
@@ -382,8 +388,8 @@ function AuthExperience() {
             <div>
               <p className="text-sm font-bold">Private by default.</p>
               <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                Every member gets a private, onboarding-built workspace. The owner preview is a
-                populated design workspace used only to develop and review the product.
+                Every member gets a private workspace built during onboarding. Your Brand DNA,
+                campaigns, library, and calendar stay connected to your account.
               </p>
             </div>
           </div>
@@ -563,8 +569,11 @@ function Onboarding() {
                   return;
                 }
                 try {
-                  window.sessionStorage.setItem("ph.studio.first-problem", problem);
-                  await createWorkspace(name || "My Studio", { creatorType, primaryGoal });
+                  await createWorkspace(name || "My Studio", {
+                    creatorType,
+                    primaryGoal,
+                    initialProblem: problem,
+                  });
                 } catch (error) {
                   toast.error(
                     error instanceof Error ? error.message : "Could not create workspace.",
@@ -588,7 +597,7 @@ function Onboarding() {
 }
 
 function StudioShell({ view, children }: { view: StudioView; children: ReactNode }) {
-  const { workspace, subscription, profile, user, demo, signOut, leaveDemo } = useStudio();
+  const { workspace, subscription, profile, user, signOut } = useStudio();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
@@ -651,10 +660,10 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
                   <CreditCard className="size-4" /> Usage & billing
                 </Link>
                 <button
-                  onClick={() => (demo ? leaveDemo() : void signOut())}
+                  onClick={() => void signOut()}
                   className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-bold text-muted-foreground hover:bg-spotlight-soft"
                 >
-                  <LogOut className="size-4" /> {demo ? "Close owner preview" : "Sign out"}
+                  <LogOut className="size-4" /> Sign out
                 </button>
               </motion.div>
             ) : null}
@@ -669,7 +678,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
             <span className="min-w-0 flex-1">
               <span className="block truncate text-xs font-extrabold">{memberName}</span>
               <span className="mt-0.5 block truncate text-[10px] text-muted-foreground">
-                {demo ? "Owner preview" : `${subscription?.plan || "member"} · ${workspace?.name}`}
+                {subscription?.plan || "member"} · {workspace?.name}
               </span>
             </span>
             <ChevronRight className={`size-3.5 transition ${accountOpen ? "rotate-90" : ""}`} />
@@ -687,7 +696,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
         <div className="ml-3 min-w-0 lg:ml-0">
           <p className="truncate text-sm font-bold">{workspace?.name}</p>
           <p className="hidden font-mono text-[8px] uppercase tracking-[.16em] text-muted-foreground sm:block">
-            {demo ? "Owner preview · populated workspace" : "Private member workspace"}
+            Private member workspace
           </p>
         </div>
         <div className="ml-auto hidden items-center gap-2 rounded-full bg-mist px-3 py-2 sm:flex">
@@ -3464,6 +3473,14 @@ function BrandStudio() {
     !Array.isArray(brand.brand_details)
       ? (brand.brand_details as Record<string, string>)
       : {};
+  const savedColors =
+    brand?.colors && typeof brand.colors === "object" && !Array.isArray(brand.colors)
+      ? (brand.colors as Record<string, unknown>)
+      : {};
+  const savedFonts =
+    brand?.fonts && typeof brand.fonts === "object" && !Array.isArray(brand.fonts)
+      ? (brand.fonts as Record<string, unknown>)
+      : {};
   const [draft, setDraft] = useState({
     business_name: brand?.business_name || "",
     website: brand?.website || "",
@@ -3501,17 +3518,49 @@ function BrandStudio() {
     motion: details.motion || "",
     editing: details.editing || "",
     aiRules: details.aiRules || "",
-    visual_style: brand?.visual_style || "Palmer Clay 3D",
+    primaryColor: typeof savedColors.primary === "string" ? savedColors.primary : "",
+    secondaryColor: typeof savedColors.secondary === "string" ? savedColors.secondary : "",
+    accentColor: typeof savedColors.accent === "string" ? savedColors.accent : "",
+    primaryFont: typeof savedFonts.primary === "string" ? savedFonts.primary : "",
+    visual_style: brand?.visual_style || "",
   });
   const [referenceKind, setReferenceKind] = useState("social");
   const [referenceUrl, setReferenceUrl] = useState("");
+  const [activeStep, setActiveStep] = useState(0);
+  const reduceMotion = useReducedMotion();
+  const brandSteps = [
+    {
+      title: "Business",
+      detail: "What you do and sell",
+      icon: Building2,
+      complete: Boolean(draft.business_name && draft.description && draft.offers),
+    },
+    {
+      title: "Audience",
+      detail: "Who needs to understand",
+      icon: Target,
+      complete: Boolean(draft.primary_audience && draft.proof_points),
+    },
+    {
+      title: "Voice",
+      detail: "How the brand sounds",
+      icon: MessageSquareText,
+      complete: Boolean(draft.mission && draft.voice_traits),
+    },
+    {
+      title: "Visual system",
+      detail: "How the work looks and moves",
+      icon: Images,
+      complete: Boolean(draft.typography && draft.photography && draft.imageStyle),
+    },
+  ];
   const guideChecks = [
     ["Identity", Boolean(draft.business_name && draft.creator_type)],
     [
       "Logo / assets",
       brandReferences.some((item) => ["logo", "guide", "file"].includes(item.kind)),
     ],
-    ["Colors", Boolean(brand && Object.keys((brand.colors as object) || {}).length)],
+    ["Colors", Boolean(draft.primaryColor || draft.secondaryColor || draft.accentColor)],
     ["Voice", Boolean(draft.voice_traits)],
     [
       "Typography",
@@ -3564,6 +3613,12 @@ function BrandStudio() {
           editing: draft.editing,
           aiRules: draft.aiRules,
         },
+        colors: {
+          primary: draft.primaryColor,
+          secondary: draft.secondaryColor,
+          accent: draft.accentColor,
+        },
+        fonts: { primary: draft.primaryFont },
         visual_style: draft.visual_style,
         completion,
       });
@@ -3572,19 +3627,20 @@ function BrandStudio() {
       toast.error(error instanceof Error ? error.message : "Could not save brand.");
     }
   }
+  const stepMeta = brandSteps[activeStep];
   return (
     <div className="mx-auto max-w-[88rem]">
       <PageIntro
-        eyebrow="Brand Studio"
-        title="Build the source every tool can trust."
-        body="Start with anything you have. Every useful answer, reference, and approved asset makes future scripts, graphics, and recommendations more specific."
+        eyebrow="Brand DNA"
+        title="Teach the Studio how your business earns trust."
+        body="Work through four short sections. This becomes the source every script, campaign, recommendation, and downloadable guide can use."
         action={
           <div className="flex flex-wrap gap-2">
             <button
-              onClick={() => downloadBrandGuide(draft, completion)}
+              onClick={() => void downloadBrandGuide(draft, completion)}
               className="secondary-action"
             >
-              <Download className="size-4" /> Download guide
+              <Download className="size-4" /> Download brand guide
             </button>
             <button onClick={() => void save()} className="primary-action">
               <Check className="size-4" /> Save Brand DNA
@@ -3592,243 +3648,388 @@ function BrandStudio() {
           </div>
         }
       />
-      <div className="mt-8 grid gap-6 xl:grid-cols-[1fr_22rem]">
-        <div className="space-y-5">
-          <section className="studio-card grid gap-5 sm:grid-cols-2">
-            <div className="sm:col-span-2">
-              <p className="studio-eyebrow text-system">01 · Identity</p>
-              <h2 className="mt-2 text-2xl font-black">Who is using video as leverage?</h2>
-            </div>
-            <Field
-              label="Brand, project, or workspace name"
-              value={draft.business_name}
-              onChange={(e) => setDraft({ ...draft, business_name: e.target.value })}
-            />
-            <label className="block text-sm font-semibold">
-              What best describes you?
-              <select
-                value={draft.creator_type}
-                onChange={(event) => setDraft({ ...draft, creator_type: event.target.value })}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-border bg-white px-4 text-sm"
-              >
-                {studioAudienceTypes.map((item) => (
-                  <option key={item}>{item}</option>
-                ))}
-              </select>
-            </label>
-            <label className="block text-sm font-semibold">
-              Primary goal
-              <select
-                value={draft.primary_goal}
-                onChange={(event) => setDraft({ ...draft, primary_goal: event.target.value })}
-                className="mt-2 min-h-12 w-full rounded-2xl border border-border bg-white px-4 text-sm"
-              >
-                {studioPrimaryGoals.map((item) => (
-                  <option key={item}>{item}</option>
-                ))}
-              </select>
-            </label>
-            <Field
-              label="Website"
-              type="url"
-              value={draft.website}
-              onChange={(e) => setDraft({ ...draft, website: e.target.value })}
-            />
-            <Field
-              label="Category, field, or genre"
-              value={draft.industry}
-              onChange={(e) => setDraft({ ...draft, industry: e.target.value })}
-            />
-            <Field
-              label="Primary audience"
-              value={draft.primary_audience}
-              onChange={(e) => setDraft({ ...draft, primary_audience: e.target.value })}
-            />
-            <div className="sm:col-span-2">
-              <Field
-                as="textarea"
-                rows={5}
-                label="What you make, offer, or want to be known for"
-                value={draft.description}
-                onChange={(e) => setDraft({ ...draft, description: e.target.value })}
-              />
-            </div>
-            <Field
-              label="Voice traits, separated by commas"
-              value={draft.voice_traits}
-              onChange={(e) => setDraft({ ...draft, voice_traits: e.target.value })}
-            />
-            <Field
-              as="textarea"
-              rows={4}
-              label="Products, services, programs, or releases — one per line"
-              value={draft.offers}
-              onChange={(e) => setDraft({ ...draft, offers: e.target.value })}
-            />
-            <Field
-              label="Platforms, separated by commas"
-              value={draft.platforms}
-              onChange={(e) => setDraft({ ...draft, platforms: e.target.value })}
-            />
-            <Field
-              as="textarea"
-              rows={3}
-              label="Social profiles and channels — one URL per line"
-              value={draft.social_profiles}
-              onChange={(e) => setDraft({ ...draft, social_profiles: e.target.value })}
-            />
-            <Field
-              as="textarea"
-              rows={5}
-              label="Verified proof, one per line"
-              value={draft.proof_points}
-              onChange={(e) => setDraft({ ...draft, proof_points: e.target.value })}
-            />
-            <Field
-              as="textarea"
-              rows={5}
-              label="Calls to action, one per line"
-              value={draft.calls_to_action}
-              onChange={(e) => setDraft({ ...draft, calls_to_action: e.target.value })}
-            />
-            <div className="sm:col-span-2">
-              <Field
-                label="Language to avoid"
-                value={draft.avoid_language}
-                onChange={(e) => setDraft({ ...draft, avoid_language: e.target.value })}
-              />
-            </div>
-          </section>
 
-          <details open className="studio-card group">
-            <summary className="cursor-pointer list-none">
-              <p className="studio-eyebrow text-system">02 · Strategy & personality</p>
-              <h2 className="mt-2 text-2xl font-black">The details that stop generic output.</h2>
-            </summary>
-            <div className="mt-6 grid gap-5 sm:grid-cols-2">
-              <Field
-                as="textarea"
-                rows={4}
-                label="Mission"
-                value={draft.mission}
-                onChange={(e) => setDraft({ ...draft, mission: e.target.value })}
-              />
-              <Field
-                as="textarea"
-                rows={4}
-                label="Values"
-                value={draft.values}
-                onChange={(e) => setDraft({ ...draft, values: e.target.value })}
-              />
-              <Field
-                as="textarea"
-                rows={4}
-                label="Customers / community"
-                value={draft.customers}
-                onChange={(e) => setDraft({ ...draft, customers: e.target.value })}
-              />
-              <Field
-                as="textarea"
-                rows={4}
-                label="Competitors / alternatives"
-                value={draft.competitors}
-                onChange={(e) => setDraft({ ...draft, competitors: e.target.value })}
-              />
-              <Field
-                as="textarea"
-                rows={3}
-                label="Taglines and message lines"
-                value={draft.taglines}
-                onChange={(e) => setDraft({ ...draft, taglines: e.target.value })}
-              />
-              <Field
-                as="textarea"
-                rows={3}
-                label="Existing content examples"
-                value={draft.contentExamples}
-                onChange={(e) => setDraft({ ...draft, contentExamples: e.target.value })}
-              />
-            </div>
-          </details>
+      <nav
+        aria-label="Brand DNA sections"
+        className="mt-8 grid gap-2 sm:grid-cols-2 xl:grid-cols-4"
+      >
+        {brandSteps.map((step, index) => (
+          <button
+            key={step.title}
+            type="button"
+            onClick={() => setActiveStep(index)}
+            aria-current={activeStep === index ? "step" : undefined}
+            className={`flex min-h-24 items-center gap-4 rounded-2xl border p-4 text-left transition ${
+              activeStep === index
+                ? "border-system bg-system-soft"
+                : "border-border bg-white hover:border-line-strong"
+            }`}
+          >
+            <span
+              className={`grid size-11 shrink-0 place-items-center rounded-xl ${activeStep === index ? "bg-system text-white" : "bg-mist text-ink"}`}
+            >
+              <step.icon className="size-5" strokeWidth={1.6} />
+            </span>
+            <span className="min-w-0">
+              <span className="flex items-center gap-2 text-sm font-black">
+                {index + 1}. {step.title}
+                {step.complete ? <CheckCircle2 className="size-4 text-evergreen" /> : null}
+              </span>
+              <span className="mt-1 block text-xs text-muted-foreground">{step.detail}</span>
+            </span>
+          </button>
+        ))}
+      </nav>
 
-          <details className="studio-card group">
-            <summary className="cursor-pointer list-none">
-              <p className="studio-eyebrow text-system">03 · Visual & motion system</p>
-              <h2 className="mt-2 text-2xl font-black">How the brand should look and move.</h2>
-            </summary>
-            <div className="mt-6 grid gap-5 sm:grid-cols-2">
-              <Field
-                as="textarea"
-                rows={3}
-                label="Typography"
-                value={draft.typography}
-                onChange={(e) => setDraft({ ...draft, typography: e.target.value })}
-              />
-              <Field
-                as="textarea"
-                rows={3}
-                label="Photography direction"
-                value={draft.photography}
-                onChange={(e) => setDraft({ ...draft, photography: e.target.value })}
-              />
-              <Field
-                as="textarea"
-                rows={3}
-                label="Image and illustration style"
-                value={draft.imageStyle}
-                onChange={(e) => setDraft({ ...draft, imageStyle: e.target.value })}
-              />
-              <Field
-                as="textarea"
-                rows={3}
-                label="Video examples and references"
-                value={draft.videoExamples}
-                onChange={(e) => setDraft({ ...draft, videoExamples: e.target.value })}
-              />
-              <Field
-                as="textarea"
-                rows={3}
-                label="Motion rules"
-                value={draft.motion}
-                onChange={(e) => setDraft({ ...draft, motion: e.target.value })}
-              />
-              <Field
-                as="textarea"
-                rows={3}
-                label="Editing rules"
-                value={draft.editing}
-                onChange={(e) => setDraft({ ...draft, editing: e.target.value })}
-              />
-              <div className="sm:col-span-2">
-                <p className="text-sm font-semibold">Default graphic direction</p>
-                <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-                  {studioVisualStyles.map((style) => (
-                    <button
-                      key={style.name}
-                      type="button"
-                      onClick={() => setDraft({ ...draft, visual_style: style.name })}
-                      className={`min-h-28 rounded-[1rem] border p-4 text-left ${draft.visual_style === style.name ? "border-system bg-system-soft" : "border-border bg-white"}`}
-                    >
-                      <span className="block text-sm font-black">{style.name}</span>
-                      <span className="mt-2 block text-xs leading-relaxed text-muted-foreground">
-                        {style.detail}
-                      </span>
-                    </button>
-                  ))}
-                </div>
+      <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(0,1fr)_22rem]">
+        <motion.section
+          key={activeStep}
+          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.22 }}
+          className="studio-card"
+        >
+          <header className="border-b border-border pb-6">
+            <p className="font-mono text-[10px] font-semibold uppercase tracking-[.18em] text-system">
+              Step {activeStep + 1} of {brandSteps.length}
+            </p>
+            <div className="mt-3 flex items-start gap-4">
+              <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-system-soft text-system">
+                <stepMeta.icon className="size-5" strokeWidth={1.6} />
+              </span>
+              <div>
+                <h2 className="text-2xl font-black tracking-[-.035em] sm:text-3xl">
+                  {stepMeta.title}
+                </h2>
+                <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                  {activeStep === 0
+                    ? "Give the Studio enough context to explain your business accurately and recommend useful work."
+                    : activeStep === 1
+                      ? "Name the people, buying friction, and real proof that should shape every campaign."
+                      : activeStep === 2
+                        ? "Define the language that sounds like you—and the language the Studio should never use."
+                        : "Set a practical direction for typography, photography, graphics, motion, and editing."}
+                </p>
               </div>
-              <div className="sm:col-span-2">
+            </div>
+          </header>
+
+          <div className="mt-7 grid gap-5 sm:grid-cols-2">
+            {activeStep === 0 ? (
+              <>
+                <Field
+                  label="Business or project name"
+                  value={draft.business_name}
+                  onChange={(e) => setDraft({ ...draft, business_name: e.target.value })}
+                />
+                <Field
+                  label="Website"
+                  type="url"
+                  value={draft.website}
+                  onChange={(e) => setDraft({ ...draft, website: e.target.value })}
+                />
+                <label className="block text-sm font-semibold">
+                  What best describes you?
+                  <select
+                    value={draft.creator_type}
+                    onChange={(e) => setDraft({ ...draft, creator_type: e.target.value })}
+                    className="mt-2 min-h-12 w-full rounded-2xl border border-border bg-white px-4 text-sm"
+                  >
+                    {studioAudienceTypes.map((item) => (
+                      <option key={item}>{item}</option>
+                    ))}
+                  </select>
+                </label>
+                <label className="block text-sm font-semibold">
+                  What should content help you do?
+                  <select
+                    value={draft.primary_goal}
+                    onChange={(e) => setDraft({ ...draft, primary_goal: e.target.value })}
+                    className="mt-2 min-h-12 w-full rounded-2xl border border-border bg-white px-4 text-sm"
+                  >
+                    {studioPrimaryGoals.map((item) => (
+                      <option key={item}>{item}</option>
+                    ))}
+                  </select>
+                </label>
+                <Field
+                  label="Category, field, or genre"
+                  value={draft.industry}
+                  onChange={(e) => setDraft({ ...draft, industry: e.target.value })}
+                />
+                <div className="sm:col-span-2">
+                  <Field
+                    as="textarea"
+                    rows={5}
+                    label="What do you make, offer, or want to be known for?"
+                    value={draft.description}
+                    onChange={(e) => setDraft({ ...draft, description: e.target.value })}
+                  />
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    Write it as you would explain it to a good customer—not as a slogan.
+                  </p>
+                </div>
+                <div className="sm:col-span-2">
+                  <Field
+                    as="textarea"
+                    rows={5}
+                    label="Products, services, programs, or releases — one per line"
+                    value={draft.offers}
+                    onChange={(e) => setDraft({ ...draft, offers: e.target.value })}
+                  />
+                </div>
+              </>
+            ) : null}
+
+            {activeStep === 1 ? (
+              <>
+                <div className="sm:col-span-2">
+                  <Field
+                    label="Primary audience"
+                    value={draft.primary_audience}
+                    onChange={(e) => setDraft({ ...draft, primary_audience: e.target.value })}
+                  />
+                </div>
+                <Field
+                  as="textarea"
+                  rows={5}
+                  label="Customers and community"
+                  value={draft.customers}
+                  onChange={(e) => setDraft({ ...draft, customers: e.target.value })}
+                />
+                <Field
+                  as="textarea"
+                  rows={5}
+                  label="Alternatives they compare"
+                  value={draft.competitors}
+                  onChange={(e) => setDraft({ ...draft, competitors: e.target.value })}
+                />
+                <Field
+                  as="textarea"
+                  rows={6}
+                  label="Verified proof — one fact per line"
+                  value={draft.proof_points}
+                  onChange={(e) => setDraft({ ...draft, proof_points: e.target.value })}
+                />
+                <Field
+                  as="textarea"
+                  rows={6}
+                  label="Calls to action — one per line"
+                  value={draft.calls_to_action}
+                  onChange={(e) => setDraft({ ...draft, calls_to_action: e.target.value })}
+                />
+                <div className="sm:col-span-2 rounded-2xl bg-evergreen-soft p-5">
+                  <p className="text-sm font-black text-evergreen">Proof rule</p>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                    Only include outcomes, credentials, testimonials, or numbers you can verify.
+                    Empty is safer than invented.
+                  </p>
+                </div>
+              </>
+            ) : null}
+
+            {activeStep === 2 ? (
+              <>
+                <Field
+                  as="textarea"
+                  rows={5}
+                  label="Mission"
+                  value={draft.mission}
+                  onChange={(e) => setDraft({ ...draft, mission: e.target.value })}
+                />
+                <Field
+                  as="textarea"
+                  rows={5}
+                  label="Values"
+                  value={draft.values}
+                  onChange={(e) => setDraft({ ...draft, values: e.target.value })}
+                />
+                <Field
+                  label="Voice traits — separated by commas"
+                  value={draft.voice_traits}
+                  onChange={(e) => setDraft({ ...draft, voice_traits: e.target.value })}
+                />
+                <Field
+                  label="Language to avoid — separated by commas"
+                  value={draft.avoid_language}
+                  onChange={(e) => setDraft({ ...draft, avoid_language: e.target.value })}
+                />
                 <Field
                   as="textarea"
                   rows={4}
-                  label="AI prompting rules / do and don’t"
-                  value={draft.aiRules}
-                  onChange={(e) => setDraft({ ...draft, aiRules: e.target.value })}
+                  label="Taglines and memorable lines"
+                  value={draft.taglines}
+                  onChange={(e) => setDraft({ ...draft, taglines: e.target.value })}
                 />
-              </div>
-            </div>
-          </details>
-        </div>
+                <Field
+                  label="Active platforms — separated by commas"
+                  value={draft.platforms}
+                  onChange={(e) => setDraft({ ...draft, platforms: e.target.value })}
+                />
+                <div className="sm:col-span-2">
+                  <Field
+                    as="textarea"
+                    rows={4}
+                    label="Social profiles and channels — one URL per line"
+                    value={draft.social_profiles}
+                    onChange={(e) => setDraft({ ...draft, social_profiles: e.target.value })}
+                  />
+                </div>
+              </>
+            ) : null}
+
+            {activeStep === 3 ? (
+              <>
+                <div className="sm:col-span-2">
+                  <p className="text-sm font-semibold">Brand colors</p>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Use the exact hex values from your existing brand guide. Leave any unknown color
+                    blank.
+                  </p>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-3">
+                    {(
+                      [
+                        ["Primary", "primaryColor"],
+                        ["Secondary", "secondaryColor"],
+                        ["Accent", "accentColor"],
+                      ] as const
+                    ).map(([label, key]) => (
+                      <label
+                        key={key}
+                        className="rounded-2xl border border-border bg-white p-3 text-xs font-bold"
+                      >
+                        <span className="flex items-center gap-2">
+                          <span
+                            className="size-6 rounded-lg border border-border"
+                            style={{ backgroundColor: draft[key] || "var(--mist)" }}
+                          />
+                          {label}
+                        </span>
+                        <input
+                          value={draft[key]}
+                          onChange={(event) => setDraft({ ...draft, [key]: event.target.value })}
+                          placeholder="#000000"
+                          pattern="^#[0-9A-Fa-f]{6}$"
+                          className="mt-3 min-h-11 w-full rounded-xl border border-border px-3 font-mono text-xs uppercase"
+                        />
+                      </label>
+                    ))}
+                  </div>
+                </div>
+                <Field
+                  label="Primary typeface"
+                  value={draft.primaryFont}
+                  onChange={(e) => setDraft({ ...draft, primaryFont: e.target.value })}
+                />
+                <Field
+                  as="textarea"
+                  rows={4}
+                  label="Typography direction"
+                  value={draft.typography}
+                  onChange={(e) => setDraft({ ...draft, typography: e.target.value })}
+                />
+                <Field
+                  as="textarea"
+                  rows={4}
+                  label="Photography direction"
+                  value={draft.photography}
+                  onChange={(e) => setDraft({ ...draft, photography: e.target.value })}
+                />
+                <Field
+                  as="textarea"
+                  rows={4}
+                  label="Image and illustration style"
+                  value={draft.imageStyle}
+                  onChange={(e) => setDraft({ ...draft, imageStyle: e.target.value })}
+                />
+                <Field
+                  as="textarea"
+                  rows={4}
+                  label="Video references"
+                  value={draft.videoExamples}
+                  onChange={(e) => setDraft({ ...draft, videoExamples: e.target.value })}
+                />
+                <Field
+                  as="textarea"
+                  rows={4}
+                  label="Existing content examples"
+                  value={draft.contentExamples}
+                  onChange={(e) => setDraft({ ...draft, contentExamples: e.target.value })}
+                />
+                <Field
+                  as="textarea"
+                  rows={4}
+                  label="Motion rules"
+                  value={draft.motion}
+                  onChange={(e) => setDraft({ ...draft, motion: e.target.value })}
+                />
+                <Field
+                  as="textarea"
+                  rows={4}
+                  label="Editing rules"
+                  value={draft.editing}
+                  onChange={(e) => setDraft({ ...draft, editing: e.target.value })}
+                />
+                <div className="sm:col-span-2">
+                  <p className="text-sm font-semibold">Default graphic direction</p>
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                    {studioVisualStyles.map((style) => (
+                      <button
+                        key={style.name}
+                        type="button"
+                        onClick={() => setDraft({ ...draft, visual_style: style.name })}
+                        className={`min-h-28 rounded-2xl border p-4 text-left ${draft.visual_style === style.name ? "border-system bg-system-soft" : "border-border bg-white"}`}
+                      >
+                        <span className="block text-sm font-black">{style.name}</span>
+                        <span className="mt-2 block text-xs leading-relaxed text-muted-foreground">
+                          {style.detail}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="sm:col-span-2">
+                  <Field
+                    as="textarea"
+                    rows={5}
+                    label="AI prompting rules — what it should and should not do"
+                    value={draft.aiRules}
+                    onChange={(e) => setDraft({ ...draft, aiRules: e.target.value })}
+                  />
+                </div>
+              </>
+            ) : null}
+          </div>
+
+          <footer className="mt-8 flex flex-col-reverse gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <button
+              type="button"
+              disabled={activeStep === 0}
+              onClick={() => setActiveStep((step) => Math.max(0, step - 1))}
+              className="secondary-action disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <ChevronLeft className="size-4" /> Previous
+            </button>
+            {activeStep < brandSteps.length - 1 ? (
+              <button
+                type="button"
+                onClick={() =>
+                  void save().then(() =>
+                    setActiveStep((step) => Math.min(brandSteps.length - 1, step + 1)),
+                  )
+                }
+                className="primary-action"
+              >
+                Save and continue <ArrowRight className="size-4" />
+              </button>
+            ) : (
+              <button type="button" onClick={() => void save()} className="primary-action">
+                <Check className="size-4" /> Save Brand DNA
+              </button>
+            )}
+          </footer>
+        </motion.section>
+
         <aside className="space-y-5">
           <div className="studio-card">
             <div className="flex items-center justify-between">
@@ -3922,11 +4123,11 @@ function BrandStudio() {
               </div>
             </div>
           ) : null}
-          <div className="rounded-[1.5rem] bg-spotlight p-6 text-white">
-            <p className="font-mono text-[9px] uppercase tracking-[.17em] text-white/60">
+          <div className="rounded-[1.5rem] bg-ink p-6 text-white">
+            <p className="font-mono text-[9px] uppercase tracking-[.17em] text-system-soft">
               The rule
             </p>
-            <p className="mt-4 text-lg font-semibold">
+            <p className="mt-4 text-lg font-semibold leading-snug">
               The Studio never invents proof. If it is not here, it stays out.
             </p>
           </div>
@@ -3942,6 +4143,17 @@ function Library() {
   const [kind, setKind] = useState("all");
   const [collection, setCollection] = useState<"all" | "favorites" | "approved">("all");
   const [favorites, setFavorites] = useState<Set<string>>(() => new Set());
+  const uniqueMediaByAsset = useMemo(() => {
+    const seen = new Set<string>();
+    return new Map(
+      assets.map<[string, string]>((asset) => {
+        const url = assetMediaUrl(asset);
+        if (!url || seen.has(url)) return [asset.id, ""];
+        seen.add(url);
+        return [asset.id, url];
+      }),
+    );
+  }, [assets]);
   const filtered = assets.filter(
     (item) =>
       (kind === "all" || item.kind === kind) &&
@@ -3956,136 +4168,213 @@ function Library() {
         title="Everything the system has made."
         body="Search, edit, approve, copy, and reuse every campaign asset without digging through old chats."
       />
-      <div className="mt-8 flex gap-3 overflow-x-auto pb-2">
-        {[
-          ["all", "All assets", assets.length, FileStack],
-          ["favorites", "Favorites", favorites.size, Heart],
-          [
-            "approved",
-            "Approved",
-            assets.filter((item) => item.status === "approved").length,
-            CheckCircle2,
-          ],
-        ].map(([value, label, count, Icon]) => (
-          <button
-            key={String(value)}
-            onClick={() => setCollection(value as typeof collection)}
-            className={`flex min-w-44 items-center gap-3 rounded-[1.1rem] border p-3 text-left ${collection === value ? "border-evergreen bg-evergreen-soft" : "border-border"}`}
-          >
-            <span className="grid size-10 place-items-center rounded-xl bg-white">
-              <Icon className="size-4" />
-            </span>
-            <span>
-              <span className="block text-sm font-extrabold">{String(label)}</span>
-              <span className="mt-1 block text-xs text-muted-foreground">
-                {String(count)} assets
+      {!assets.length ? (
+        <section className="studio-card mt-8 overflow-hidden p-0">
+          <div className="grid min-h-[32rem] lg:grid-cols-[1.05fr_.95fr]">
+            <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-14">
+              <span className="grid size-12 place-items-center rounded-2xl bg-evergreen-soft text-evergreen">
+                <FolderOpen className="size-5" />
               </span>
-            </span>
-          </button>
-        ))}
-      </div>
-      <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-        <label className="flex min-h-12 flex-1 items-center gap-3 rounded-xl border border-border bg-white px-4">
-          <Search className="size-4 text-muted-foreground" />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search scripts, captions, FAQs…"
-            className="min-h-11 min-w-0 flex-1 bg-transparent text-sm outline-none"
-          />
-        </label>
-        <select
-          value={kind}
-          onChange={(e) => setKind(e.target.value)}
-          className="min-h-12 rounded-xl border border-border bg-white px-4 text-sm font-semibold"
-        >
-          <option value="all">All formats</option>
-          {Array.from(new Set(assets.map((item) => item.kind))).map((item) => (
-            <option key={item} value={item}>
-              {item.replaceAll("_", " ")}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="studio-content-list mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {filtered.map((asset) => {
-          const meta = assetKindMeta(asset.kind);
-          return (
-            <article
-              key={asset.id}
-              className="studio-card group flex min-h-80 flex-col overflow-hidden p-0"
-            >
-              <div className="relative aspect-[16/9] overflow-hidden border-b border-border bg-secondary">
-                <LibraryAssetThumbnail asset={asset} />
-                <span
-                  className="absolute left-3 top-3 grid size-10 place-items-center rounded-xl bg-white shadow-soft"
-                  style={{ color: meta.color }}
-                >
-                  <meta.icon className="size-4" />
-                </span>
-                <span className="absolute bottom-3 left-3 rounded-full bg-white px-2.5 py-1 font-mono text-[8px] uppercase tracking-[.13em]">
-                  {meta.label}
-                </span>
-                <button
-                  onClick={() =>
-                    setFavorites((current) => {
-                      const next = new Set(current);
-                      if (next.has(asset.id)) next.delete(asset.id);
-                      else next.add(asset.id);
-                      return next;
-                    })
-                  }
-                  aria-label={`${favorites.has(asset.id) ? "Remove" : "Add"} ${asset.title} ${favorites.has(asset.id) ? "from" : "to"} favorites`}
-                  className={`absolute right-3 top-3 grid size-12 place-items-center rounded-full bg-white ${favorites.has(asset.id) ? "text-reel" : "text-muted-foreground"}`}
-                >
-                  <Heart className={`size-4 ${favorites.has(asset.id) ? "fill-current" : ""}`} />
-                </button>
+              <p className="studio-eyebrow mt-8 text-system">A clean start</p>
+              <h2 className="mt-3 max-w-xl text-3xl font-black tracking-[-.04em] sm:text-5xl">
+                Your library starts with real work.
+              </h2>
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
+                Create a campaign from a question, link, image, or idea. The finished scripts,
+                captions, plans, and approved media will collect here automatically—nothing is
+                prefilled or invented.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link to="/studio" className="primary-action">
+                  <WandSparkles className="size-4" /> Create your first campaign
+                </Link>
+                <Link to="/studio/ideas" className="secondary-action">
+                  <Lightbulb className="size-4" /> Save an idea
+                </Link>
               </div>
-              <div className="flex flex-1 flex-col p-5">
-                <div className="flex items-center justify-between">
-                  <span
-                    className={`rounded-full px-3 py-1 text-[9px] font-bold ${asset.status === "approved" ? "bg-evergreen-soft text-evergreen" : asset.status === "review" ? "bg-reel-soft text-reel" : "border border-border"}`}
+            </div>
+            <div className="relative grid place-items-center border-t border-border bg-cream p-8 lg:border-l lg:border-t-0">
+              <div className="w-full max-w-md space-y-3">
+                {[
+                  [Film, "Anchor video", "The complete explanation"],
+                  [Captions, "Short clips", "Platform-ready cutdowns"],
+                  [MessageSquareText, "Native captions", "Written for each channel"],
+                  [CalendarDays, "Production plan", "What to make and when"],
+                ].map(([Icon, label, detail], index) => (
+                  <div
+                    key={String(label)}
+                    className="flex items-center gap-4 rounded-2xl border border-border bg-white p-4 shadow-soft"
+                    style={{ transform: `translateX(${index % 2 ? 18 : 0}px)` }}
                   >
-                    {asset.status}
-                  </span>
-                  <span className="text-[10px] text-muted-foreground">
-                    {new Date(asset.updated_at).toLocaleDateString()}
-                  </span>
-                </div>
-                <h2 className="mt-6 text-xl font-bold">{asset.title}</h2>
-                <p className="mt-3 line-clamp-4 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
-                  {asset.content}
-                </p>
-                <div className="mt-auto flex items-center justify-between pt-6">
-                  <p className="max-w-[14rem] truncate text-xs text-muted-foreground">
-                    {campaigns.find((item) => item.id === asset.campaign_id)?.title}
-                  </p>
-                  <button
-                    onClick={() =>
-                      void navigator.clipboard
-                        .writeText(asset.content)
-                        .then(() => toast.success("Copied."))
-                    }
-                    aria-label={`Copy ${asset.title}`}
-                    className="grid size-12 place-items-center rounded-xl bg-secondary"
-                  >
-                    <Clipboard className="size-4" />
-                  </button>
-                </div>
+                    <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-system-soft text-system">
+                      <Icon className="size-4" />
+                    </span>
+                    <span>
+                      <strong className="block text-sm">{String(label)}</strong>
+                      <span className="mt-1 block text-xs text-muted-foreground">
+                        {String(detail)}
+                      </span>
+                    </span>
+                    <Check className="ml-auto size-4 text-evergreen" />
+                  </div>
+                ))}
               </div>
-            </article>
-          );
-        })}
-        {!filtered.length && (
-          <div className="sm:col-span-2 xl:col-span-3 studio-card">
-            <EmptyState
-              icon={FolderOpen}
-              title="No assets match yet."
-              body="Generate a campaign or change the search filters."
-            />
+            </div>
           </div>
-        )}
-      </div>
+        </section>
+      ) : (
+        <>
+          <div className="mt-8 flex gap-3 overflow-x-auto pb-2">
+            {[
+              ["all", "All assets", assets.length, FileStack],
+              ["favorites", "Favorites", favorites.size, Heart],
+              [
+                "approved",
+                "Approved",
+                assets.filter((item) => item.status === "approved").length,
+                CheckCircle2,
+              ],
+            ].map(([value, label, count, Icon]) => (
+              <button
+                key={String(value)}
+                onClick={() => setCollection(value as typeof collection)}
+                className={`flex min-w-44 items-center gap-3 rounded-[1.1rem] border p-3 text-left ${collection === value ? "border-evergreen bg-evergreen-soft" : "border-border"}`}
+              >
+                <span className="grid size-10 place-items-center rounded-xl bg-white">
+                  <Icon className="size-4" />
+                </span>
+                <span>
+                  <span className="block text-sm font-extrabold">{String(label)}</span>
+                  <span className="mt-1 block text-xs text-muted-foreground">
+                    {String(count)} assets
+                  </span>
+                </span>
+              </button>
+            ))}
+          </div>
+          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+            <label className="flex min-h-12 flex-1 items-center gap-3 rounded-xl border border-border bg-white px-4">
+              <Search className="size-4 text-muted-foreground" />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search scripts, captions, FAQs…"
+                className="min-h-11 min-w-0 flex-1 bg-transparent text-sm outline-none"
+              />
+            </label>
+            <select
+              value={kind}
+              onChange={(e) => setKind(e.target.value)}
+              className="min-h-12 rounded-xl border border-border bg-white px-4 text-sm font-semibold"
+            >
+              <option value="all">All formats</option>
+              {Array.from(new Set(assets.map((item) => item.kind))).map((item) => (
+                <option key={item} value={item}>
+                  {item.replaceAll("_", " ")}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="studio-content-list mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {filtered.map((asset) => {
+              const meta = assetKindMeta(asset.kind);
+              const mediaUrl = uniqueMediaByAsset.get(asset.id) || "";
+              return (
+                <article
+                  key={asset.id}
+                  className="studio-card group flex min-h-80 flex-col overflow-hidden p-0"
+                >
+                  <div className="relative aspect-[16/9] overflow-hidden border-b border-border bg-secondary">
+                    {mediaUrl ? (
+                      <img
+                        src={mediaUrl}
+                        alt={`Media attached to ${asset.title}`}
+                        className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                      />
+                    ) : (
+                      <div className="flex size-full flex-col justify-end bg-cream p-6">
+                        <meta.icon className="size-9 text-system" strokeWidth={1.5} />
+                        <p className="mt-5 max-w-[22rem] text-xl font-black leading-tight tracking-[-.03em]">
+                          {asset.title}
+                        </p>
+                        <p className="mt-2 text-xs text-muted-foreground">
+                          Written asset · no visual media attached
+                        </p>
+                      </div>
+                    )}
+                    <span
+                      className="absolute left-3 top-3 grid size-10 place-items-center rounded-xl bg-white shadow-soft"
+                      style={{ color: meta.color }}
+                    >
+                      <meta.icon className="size-4" />
+                    </span>
+                    <span className="absolute bottom-3 left-3 rounded-full bg-white px-2.5 py-1 font-mono text-[8px] uppercase tracking-[.13em]">
+                      {meta.label}
+                    </span>
+                    <button
+                      onClick={() =>
+                        setFavorites((current) => {
+                          const next = new Set(current);
+                          if (next.has(asset.id)) next.delete(asset.id);
+                          else next.add(asset.id);
+                          return next;
+                        })
+                      }
+                      aria-label={`${favorites.has(asset.id) ? "Remove" : "Add"} ${asset.title} ${favorites.has(asset.id) ? "from" : "to"} favorites`}
+                      className={`absolute right-3 top-3 grid size-12 place-items-center rounded-full bg-white ${favorites.has(asset.id) ? "text-reel" : "text-muted-foreground"}`}
+                    >
+                      <Heart
+                        className={`size-4 ${favorites.has(asset.id) ? "fill-current" : ""}`}
+                      />
+                    </button>
+                  </div>
+                  <div className="flex flex-1 flex-col p-5">
+                    <div className="flex items-center justify-between">
+                      <span
+                        className={`rounded-full px-3 py-1 text-[9px] font-bold ${asset.status === "approved" ? "bg-evergreen-soft text-evergreen" : asset.status === "review" ? "bg-reel-soft text-reel" : "border border-border"}`}
+                      >
+                        {asset.status}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground">
+                        {new Date(asset.updated_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <h2 className="mt-6 text-xl font-bold">{asset.title}</h2>
+                    <p className="mt-3 line-clamp-4 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
+                      {asset.content}
+                    </p>
+                    <div className="mt-auto flex items-center justify-between pt-6">
+                      <p className="max-w-[14rem] truncate text-xs text-muted-foreground">
+                        {campaigns.find((item) => item.id === asset.campaign_id)?.title}
+                      </p>
+                      <button
+                        onClick={() =>
+                          void navigator.clipboard
+                            .writeText(asset.content)
+                            .then(() => toast.success("Copied."))
+                        }
+                        aria-label={`Copy ${asset.title}`}
+                        className="grid size-12 place-items-center rounded-xl bg-secondary"
+                      >
+                        <Clipboard className="size-4" />
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+            {!filtered.length && (
+              <div className="sm:col-span-2 xl:col-span-3 studio-card">
+                <EmptyState
+                  icon={FolderOpen}
+                  title="No assets match yet."
+                  body="Generate a campaign or change the search filters."
+                />
+              </div>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -4573,8 +4862,7 @@ function channelColor(channel: string) {
 }
 
 function SettingsView() {
-  const { profile, user, saveProfile, workspace, demo, subscription, campaigns, assets } =
-    useStudio();
+  const { profile, user, saveProfile, workspace, subscription, campaigns, assets } = useStudio();
   const navigate = useNavigate();
   const modalRef = useRef<HTMLDivElement>(null);
   const [tab, setTab] = useState<"workspace" | "brands" | "team" | "usage" | "account">(
@@ -4683,7 +4971,7 @@ function SettingsView() {
                 />
                 <div className="mt-7 grid gap-5 sm:grid-cols-2">
                   <Field label="Workspace name" value={workspace?.name || ""} readOnly />
-                  <Field label="Workspace role" value={demo ? "Preview owner" : "Owner"} readOnly />
+                  <Field label="Workspace role" value="Owner" readOnly />
                   <div className="rounded-[1.15rem] border border-border p-5 sm:col-span-2">
                     <p className="studio-eyebrow text-system">Workspace health</p>
                     <div className="mt-5 grid gap-4 sm:grid-cols-3">
@@ -4750,7 +5038,7 @@ function SettingsView() {
                     <div className="min-w-0 flex-1">
                       <p className="font-extrabold">{draft.full_name}</p>
                       <p className="mt-1 text-xs text-muted-foreground">
-                        {user?.email || "Owner preview"} · Owner
+                        {user?.email || "Account email unavailable"} · Owner
                       </p>
                     </div>
                     <span className="rounded-full bg-evergreen-soft px-3 py-1 text-[9px] font-bold text-evergreen">
@@ -4838,8 +5126,7 @@ function SettingsView() {
                   <div className="rounded-xl bg-spotlight-soft p-5 sm:col-span-2">
                     <p className="text-sm font-extrabold">Account email</p>
                     <p className="mt-2 text-sm text-muted-foreground">
-                      {user?.email ||
-                        "Owner preview—sign in with a member account to persist account changes"}
+                      {user?.email || "Account email unavailable"}
                     </p>
                   </div>
                   <button onClick={() => void save()} className="primary-action sm:col-span-2">
@@ -4904,7 +5191,7 @@ function WorkspaceActivity({ dates }: { dates: string[] }) {
 }
 
 function BillingView() {
-  const { session, workspace, subscription, demo, campaigns } = useStudio();
+  const { session, workspace, subscription, campaigns } = useStudio();
   const [loadingPlan, setLoadingPlan] = useState<string>("");
   const [interval, setInterval] = useState<"month" | "year">(
     subscription?.billing_interval === "year" ? "year" : "month",
@@ -4920,10 +5207,6 @@ function BillingView() {
       : "creator";
   const activePlan = studioPlans[activePlanKey];
   async function checkout(plan: StudioPlanKey) {
-    if (demo) {
-      toast.info("Billing is disabled in demo mode.");
-      return;
-    }
     if (!session || !workspace) return;
     setLoadingPlan(plan);
     try {
@@ -4942,7 +5225,7 @@ function BillingView() {
     }
   }
   async function portal() {
-    if (!session || !workspace || demo) {
+    if (!session || !workspace) {
       toast.info("The billing portal opens for a live paid workspace.");
       return;
     }
@@ -5295,7 +5578,7 @@ function escapeHtml(value: string) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
-function downloadBrandGuide(draft: Record<string, string>, completion: number) {
+async function downloadBrandGuide(draft: Record<string, string>, completion: number) {
   const raw = (key: string, fallback = "") => draft[key]?.trim() || fallback;
   const text = (key: string, fallback = "Not defined yet.") =>
     escapeHtml(raw(key, fallback)).replaceAll("\n", "<br />");
@@ -5344,9 +5627,26 @@ function downloadBrandGuide(draft: Record<string, string>, completion: number) {
     day: "numeric",
     year: "numeric",
   });
+  const color = (key: string, fallback: string) =>
+    /^#[0-9a-f]{6}$/i.test(raw(key)) ? raw(key) : fallback;
+  let embeddedSatoshi = satoshiFontUrl;
+  try {
+    const response = await fetch(satoshiFontUrl);
+    if (response.ok) {
+      const blob = await response.blob();
+      embeddedSatoshi = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result));
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(blob);
+      });
+    }
+  } catch {
+    // The exported guide still uses a dependable system fallback if font embedding is unavailable.
+  }
   const html = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${business} Brand Guide</title><style>
-  :root{--paper:#fff;--cream:#F4F1EA;--mist:#F6F8FA;--line:#E5E7EB;--muted:#6B7280;--ink:#1F2328;--spot:#3D1A66;--spot-soft:#EEE9F4;--reel:#E8720C;--reel-soft:#FDF1E6;--ever:#5B8A2D;--ever-soft:#EEF4E4;--system:#0A9B8F;--system-soft:#E4F4F2;--sans:"Satoshi",sans-serif;--mono:"JetBrains Mono",monospace}*{box-sizing:border-box}html{background:#dfe2e5}body{margin:0;color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}.page{position:relative;width:min(8.5in,100%);min-height:11in;margin:28px auto;background:var(--paper);padding:.65in .72in .7in;overflow:visible;box-shadow:0 18px 60px rgba(31,35,40,.14);break-after:page;page-break-after:always;counter-increment:guide}.page::after{content:counter(guide,decimal-leading-zero);position:absolute;right:.72in;bottom:.34in;font:600 9px var(--mono);letter-spacing:.2em;color:var(--muted)}body{counter-reset:guide}.cover{display:flex;min-height:11in;flex-direction:column;justify-content:space-between;overflow:hidden;background:var(--spot);color:var(--paper)}.cover::after{color:rgba(255,255,255,.5)}.cover-mark{display:flex;align-items:center;justify-content:space-between;gap:24px}.cover-label,.kicker{font:600 9px var(--mono);letter-spacing:.21em;text-transform:uppercase}.cover-label{color:rgba(255,255,255,.68)}.status{border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:8px 12px;color:rgba(255,255,255,.82)}.cover h1{max-width:7ch;margin:0;font-size:76px;line-height:.91;letter-spacing:-.065em}.cover h1 span{display:block;color:#F2DDFE;font-size:.72em;font-weight:800;letter-spacing:-.035em}.cover-intro{max-width:5.7in;margin-top:28px;font-size:19px;line-height:1.45;color:rgba(255,255,255,.78)}.cover-foot{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid rgba(255,255,255,.2);border-radius:18px;overflow:hidden}.cover-foot div{min-height:84px;padding:16px;border-right:1px solid rgba(255,255,255,.2)}.cover-foot div:last-child{border:0}.cover-foot b{display:block;font-size:14px}.cover-foot small{display:block;margin-top:8px;color:rgba(255,255,255,.56);font:500 8px var(--mono);letter-spacing:.12em;text-transform:uppercase}.page-head{display:grid;grid-template-columns:1.15in 1fr;gap:24px;padding-bottom:28px;border-bottom:1px solid var(--line)}.page-num{font:600 10px var(--mono);letter-spacing:.2em;color:var(--spot);text-transform:uppercase}.page-head h2{max-width:5.5in;margin:0;font-size:39px;line-height:1.02;letter-spacing:-.045em}.page-head h2 em{font-style:normal;font-weight:800}.lede{max-width:5.5in;margin:16px 0 0;color:var(--muted);font-size:15px}.section{margin-top:34px}.kicker{color:var(--system)}.display{margin:14px 0 0;font-size:32px;line-height:1.08;letter-spacing:-.04em}.quote{margin:0;padding:28px;border-left:6px solid var(--spot);background:var(--spot-soft);font-size:25px;font-weight:750;line-height:1.22;letter-spacing:-.025em}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.panel{border:1px solid var(--line);border-radius:18px;padding:22px;break-inside:avoid}.panel.soft{background:var(--mist);border-color:transparent}.panel h3{margin:10px 0 0;font-size:20px;line-height:1.12;letter-spacing:-.025em}.panel p{margin:10px 0 0;color:var(--muted)}.data-label{font:600 9px var(--mono);letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}.big-data{margin-top:12px;font-size:20px;font-weight:750;line-height:1.25}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.chip{display:inline-flex;min-height:30px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:6px 11px;background:var(--paper);font-size:11px;font-weight:650}.empty{display:block;border:1px dashed var(--line);border-radius:12px;padding:12px;color:var(--muted);font-style:italic}.xform{display:grid;grid-template-columns:1fr 46px 1fr;align-items:center;margin-top:28px;border:1px solid var(--line);border-radius:20px;overflow:hidden}.xform div{min-height:108px;padding:22px}.xform .old{background:var(--mist);color:var(--muted);text-decoration:line-through}.xform .arrow{display:grid;min-height:108px;place-items:center;padding:0;background:var(--spot);color:white;font-size:24px}.xform .new{color:var(--spot);font-weight:750}.list{list-style:none;margin:12px 0 0;padding:0}.list li{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}.list li:last-child{border:0}.list li span{font:600 9px var(--mono);color:var(--system)}.list li strong{font-size:13px}.list .is-empty strong{color:var(--muted);font-style:italic}.proof{margin-top:16px;padding:22px;border-radius:18px;background:var(--ever-soft);border-left:5px solid var(--ever)}.proof strong{display:block;font-size:16px}.proof p{margin:8px 0 0;color:#486d24}.message{margin-top:24px;border-top:1px solid var(--line);padding-top:24px}.message .tagline{font-size:28px;font-weight:750;line-height:1.18}.cta{display:inline-flex;margin-top:18px;border-radius:999px;padding:10px 16px;background:var(--spot);color:white;font-weight:700}.voice-do,.voice-dont{min-height:170px}.voice-do{background:var(--system-soft);border-color:transparent}.voice-dont{background:var(--reel-soft);border-color:transparent}.voice-do .data-label{color:var(--system)}.voice-dont .data-label{color:var(--reel)}.swatches{display:grid;grid-template-columns:repeat(4,1fr);margin-top:22px;border-radius:18px;overflow:hidden}.swatch{height:108px;padding:17px;color:white}.swatch:nth-child(1){background:var(--spot)}.swatch:nth-child(2){background:var(--reel)}.swatch:nth-child(3){background:var(--ever)}.swatch:nth-child(4){background:var(--system)}.swatch b{display:block;font-size:14px}.swatch small{font:500 8px var(--mono);letter-spacing:.12em}.type-row{display:grid;grid-template-columns:1.2in 1fr;gap:18px;padding:18px 0;border-bottom:1px solid var(--line)}.type-row:last-child{border:0}.type-name{font:600 9px var(--mono);letter-spacing:.15em;color:var(--muted);text-transform:uppercase}.type-demo{font-size:24px;font-weight:780;letter-spacing:-.03em}.type-demo.accent{font-weight:850;letter-spacing:-.045em}.type-demo.mono{font:600 11px var(--mono);letter-spacing:.18em;text-transform:uppercase}.visual-stage{display:grid;grid-template-columns:1fr 1fr;gap:16px}.art{position:relative;min-height:240px;border-radius:20px;background:var(--cream);overflow:hidden}.art .frame{position:absolute;left:34px;top:34px;width:155px;height:116px;border:3px solid var(--spot);border-radius:18px}.art .play{position:absolute;left:90px;top:70px;width:0;height:0;border-top:23px solid transparent;border-bottom:23px solid transparent;border-left:36px solid var(--reel)}.art .caption{position:absolute;right:30px;top:54px;width:90px;height:20px;border-radius:8px;background:var(--system)}.art .caption.two{top:84px;width:125px;background:var(--ever)}.art .timeline{position:absolute;left:34px;right:34px;bottom:40px;height:10px;border-radius:999px;background:var(--line)}.art .timeline::after{content:"";display:block;width:62%;height:100%;border-radius:inherit;background:var(--spot)}.timeline-flow{display:grid;grid-template-columns:repeat(4,1fr);margin-top:18px;border:1px solid var(--line);border-radius:18px;overflow:hidden}.timeline-flow div{position:relative;min-height:88px;padding:16px;border-right:1px solid var(--line)}.timeline-flow div:last-child{border:0}.timeline-flow b{display:block;font-size:12px}.timeline-flow small{display:block;margin-top:8px;color:var(--muted)}.timeline-flow div:not(:last-child)::after{content:"→";position:absolute;right:-9px;top:34px;z-index:2;width:18px;height:18px;border-radius:50%;background:white;text-align:center;color:var(--spot)}.channel{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}.channel:last-child{border:0}.channel .dot{width:28px;height:28px;border-radius:50%;background:var(--spot-soft);border:1px solid #dcd1e9}.channel strong{font-size:13px}.channel small{color:var(--muted)}.channel em{font:500 8px var(--mono);letter-spacing:.12em;color:var(--spot);text-transform:uppercase}.guardrail{padding:28px;border-radius:22px;background:var(--ink);color:white}.guardrail p{margin:16px 0 0;font-size:21px;line-height:1.35}.guardrail .kicker{color:#85d8d0}.meter{height:12px;margin-top:16px;border-radius:999px;background:var(--line);overflow:hidden}.meter span{display:block;height:100%;width:${completion}%;background:var(--system)}.missing{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px}.missing span{padding:10px;border-radius:10px;background:var(--reel-soft);color:#9a4e0e;font-size:11px;font-weight:650}.ready{padding:18px;border-radius:14px;background:var(--system-soft);color:#087a71;font-weight:700}.source-links a{display:block;padding:10px 0;border-bottom:1px solid var(--line);color:var(--spot);text-decoration:none;overflow-wrap:anywhere}.source-links a:last-child{border:0}.doc-foot{position:absolute;left:.72in;bottom:.34in;font:500 8px var(--mono);letter-spacing:.14em;color:var(--muted);text-transform:uppercase}@media(max-width:760px){html{background:white}.page{width:100%;min-height:auto;margin:0;padding:40px 24px 72px;box-shadow:none}.cover{min-height:100vh}.cover h1{font-size:52px}.cover-foot,.grid-3,.grid-2,.visual-stage{grid-template-columns:1fr}.cover-foot div{border-right:0;border-bottom:1px solid rgba(255,255,255,.2)}.page-head{grid-template-columns:1fr}.xform{grid-template-columns:1fr}.xform .arrow{min-height:44px}.swatches{grid-template-columns:1fr 1fr}.timeline-flow{grid-template-columns:1fr 1fr}.missing{grid-template-columns:1fr}}@page{size:Letter;margin:0}@media print{html{background:white}.page{width:8.5in;height:auto;min-height:11in;margin:0;box-shadow:none}.cover{height:11in}.page:last-child{break-after:auto;page-break-after:auto}}
-  </style></head><body>
+  @font-face{font-family:"Satoshi";src:url("${embeddedSatoshi}") format("woff2");font-weight:300 900;font-style:normal;font-display:swap}:root{--paper:#fff;--cream:#F4F1EA;--mist:#F6F8FA;--line:#E5E7EB;--muted:#6B7280;--ink:#1F2328;--spot:${color("primaryColor", "#3D1A66")};--spot-soft:#F2EFF5;--reel:${color("secondaryColor", "#0A9B8F")};--reel-soft:#EDF6F5;--ever:${color("accentColor", "#5B8A2D")};--ever-soft:#F0F4EA;--system:${color("secondaryColor", "#0A9B8F")};--system-soft:#E4F4F2;--sans:"Satoshi","Helvetica Neue",Arial,sans-serif;--mono:ui-monospace,"SFMono-Regular",Menlo,monospace}*{box-sizing:border-box}html{background:#dfe2e5}body{margin:0;color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}.page{position:relative;width:min(8.5in,100%);min-height:11in;margin:28px auto;background:var(--paper);padding:.65in .72in .7in;overflow:visible;box-shadow:0 18px 60px rgba(31,35,40,.14);break-after:page;page-break-after:always;counter-increment:guide}.page::after{content:counter(guide,decimal-leading-zero);position:absolute;right:.72in;bottom:.34in;font:600 9px var(--mono);letter-spacing:.2em;color:var(--muted)}body{counter-reset:guide}.cover{display:flex;min-height:11in;flex-direction:column;justify-content:space-between;overflow:hidden;background:var(--spot);color:var(--paper)}.cover::after{color:rgba(255,255,255,.5)}.cover-mark{display:flex;align-items:center;justify-content:space-between;gap:24px}.cover-label,.kicker{font:600 9px var(--mono);letter-spacing:.21em;text-transform:uppercase}.cover-label{color:rgba(255,255,255,.68)}.status{border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:8px 12px;color:rgba(255,255,255,.82)}.cover h1{max-width:7ch;margin:0;font-size:76px;line-height:.91;letter-spacing:-.065em}.cover h1 span{display:block;color:rgba(255,255,255,.72);font-size:.72em;font-weight:800;letter-spacing:-.035em}.cover-intro{max-width:5.7in;margin-top:28px;font-size:19px;line-height:1.45;color:rgba(255,255,255,.78)}.cover-foot{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid rgba(255,255,255,.2);border-radius:18px;overflow:hidden}.cover-foot div{min-height:84px;padding:16px;border-right:1px solid rgba(255,255,255,.2)}.cover-foot div:last-child{border:0}.cover-foot b{display:block;font-size:14px}.cover-foot small{display:block;margin-top:8px;color:rgba(255,255,255,.56);font:500 8px var(--mono);letter-spacing:.12em;text-transform:uppercase}.page-head{display:grid;grid-template-columns:1.15in 1fr;gap:24px;padding-bottom:28px;border-bottom:1px solid var(--line)}.page-num{font:600 10px var(--mono);letter-spacing:.2em;color:var(--spot);text-transform:uppercase}.page-head h2{max-width:5.5in;margin:0;font-size:39px;line-height:1.02;letter-spacing:-.045em}.page-head h2 em{font-style:normal;font-weight:800}.lede{max-width:5.5in;margin:16px 0 0;color:var(--muted);font-size:15px}.section{margin-top:34px}.kicker{color:var(--system)}.display{margin:14px 0 0;font-size:32px;line-height:1.08;letter-spacing:-.04em}.quote{margin:0;padding:28px;border-left:6px solid var(--spot);background:var(--spot-soft);font-size:25px;font-weight:750;line-height:1.22;letter-spacing:-.025em}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.panel{border:1px solid var(--line);border-radius:18px;padding:22px;break-inside:avoid}.panel.soft{background:var(--mist);border-color:transparent}.panel h3{margin:10px 0 0;font-size:20px;line-height:1.12;letter-spacing:-.025em}.panel p{margin:10px 0 0;color:var(--muted)}.data-label{font:600 9px var(--mono);letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}.big-data{margin-top:12px;font-size:20px;font-weight:750;line-height:1.25}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.chip{display:inline-flex;min-height:30px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:6px 11px;background:var(--paper);font-size:11px;font-weight:650}.empty{display:block;border:1px dashed var(--line);border-radius:12px;padding:12px;color:var(--muted);font-style:italic}.xform{display:grid;grid-template-columns:1fr 46px 1fr;align-items:center;margin-top:28px;border:1px solid var(--line);border-radius:20px;overflow:hidden}.xform div{min-height:108px;padding:22px}.xform .old{background:var(--mist);color:var(--muted);text-decoration:line-through}.xform .arrow{display:grid;min-height:108px;place-items:center;padding:0;background:var(--spot);color:white;font-size:24px}.xform .new{color:var(--spot);font-weight:750}.list{list-style:none;margin:12px 0 0;padding:0}.list li{display:grid;grid-template-columns:34px 1fr;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}.list li:last-child{border:0}.list li span{font:600 9px var(--mono);color:var(--system)}.list li strong{font-size:13px}.list .is-empty strong{color:var(--muted);font-style:italic}.proof{margin-top:16px;padding:22px;border-radius:18px;background:var(--ever-soft);border-left:5px solid var(--ever)}.proof strong{display:block;font-size:16px}.proof p{margin:8px 0 0;color:var(--ink)}.message{margin-top:24px;border-top:1px solid var(--line);padding-top:24px}.message .tagline{font-size:28px;font-weight:750;line-height:1.18}.cta{display:inline-flex;margin-top:18px;border-radius:999px;padding:10px 16px;background:var(--spot);color:white;font-weight:700}.voice-do,.voice-dont{min-height:170px}.voice-do{background:var(--system-soft);border-color:transparent}.voice-dont{background:var(--mist);border-color:transparent}.voice-do .data-label{color:var(--system)}.voice-dont .data-label{color:var(--muted)}.swatches{display:grid;grid-template-columns:repeat(3,1fr);margin-top:22px;border-radius:18px;overflow:hidden}.swatch{height:108px;padding:17px;color:white;text-shadow:0 1px 12px rgba(0,0,0,.24)}.swatch:nth-child(1){background:var(--spot)}.swatch:nth-child(2){background:var(--reel)}.swatch:nth-child(3){background:var(--ever)}.swatch b{display:block;font-size:14px}.swatch small{font:500 8px var(--mono);letter-spacing:.12em}.type-row{display:grid;grid-template-columns:1.2in 1fr;gap:18px;padding:18px 0;border-bottom:1px solid var(--line)}.type-row:last-child{border:0}.type-name{font:600 9px var(--mono);letter-spacing:.15em;color:var(--muted);text-transform:uppercase}.type-demo{font-size:24px;font-weight:780;letter-spacing:-.03em}.type-demo.accent{font-weight:850;letter-spacing:-.045em}.type-demo.mono{font:600 11px var(--mono);letter-spacing:.18em;text-transform:uppercase}.visual-stage{display:grid;grid-template-columns:1fr 1fr;gap:16px}.art{position:relative;min-height:240px;border-radius:20px;background:var(--cream);overflow:hidden}.art .frame{position:absolute;left:34px;top:34px;width:155px;height:116px;border:3px solid var(--spot);border-radius:18px}.art .play{position:absolute;left:90px;top:70px;width:0;height:0;border-top:23px solid transparent;border-bottom:23px solid transparent;border-left:36px solid var(--reel)}.art .caption{position:absolute;right:30px;top:54px;width:90px;height:20px;border-radius:8px;background:var(--system)}.art .caption.two{top:84px;width:125px;background:var(--ever)}.art .timeline{position:absolute;left:34px;right:34px;bottom:40px;height:10px;border-radius:999px;background:var(--line)}.art .timeline::after{content:"";display:block;width:62%;height:100%;border-radius:inherit;background:var(--spot)}.timeline-flow{display:grid;grid-template-columns:repeat(4,1fr);margin-top:18px;border:1px solid var(--line);border-radius:18px;overflow:hidden}.timeline-flow div{position:relative;min-height:88px;padding:16px;border-right:1px solid var(--line)}.timeline-flow div:last-child{border:0}.timeline-flow b{display:block;font-size:12px}.timeline-flow small{display:block;margin-top:8px;color:var(--muted)}.timeline-flow div:not(:last-child)::after{content:"→";position:absolute;right:-9px;top:34px;z-index:2;width:18px;height:18px;border-radius:50%;background:white;text-align:center;color:var(--spot)}.channel{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}.channel:last-child{border:0}.channel .dot{width:28px;height:28px;border-radius:50%;background:var(--spot-soft);border:1px solid #dcd1e9}.channel strong{font-size:13px}.channel small{color:var(--muted)}.channel em{font:500 8px var(--mono);letter-spacing:.12em;color:var(--spot);text-transform:uppercase}.guardrail{padding:28px;border-radius:22px;background:var(--ink);color:white}.guardrail p{margin:16px 0 0;font-size:21px;line-height:1.35}.guardrail .kicker{color:#85d8d0}.meter{height:12px;margin-top:16px;border-radius:999px;background:var(--line);overflow:hidden}.meter span{display:block;height:100%;width:${completion}%;background:var(--system)}.missing{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px}.missing span{padding:10px;border-radius:10px;background:var(--mist);color:var(--ink);font-size:11px;font-weight:650}.ready{padding:18px;border-radius:14px;background:var(--system-soft);color:var(--system);font-weight:700}.source-links a{display:block;padding:10px 0;border-bottom:1px solid var(--line);color:var(--spot);text-decoration:none;overflow-wrap:anywhere}.source-links a:last-child{border:0}.doc-foot{position:absolute;left:.72in;bottom:.34in;font:500 8px var(--mono);letter-spacing:.14em;color:var(--muted);text-transform:uppercase}@media(max-width:760px){html{background:white}.page{width:100%;min-height:auto;margin:0;padding:40px 24px 72px;box-shadow:none}.cover{min-height:100vh}.cover h1{font-size:52px}.cover-foot,.grid-3,.grid-2,.visual-stage{grid-template-columns:1fr}.cover-foot div{border-right:0;border-bottom:1px solid rgba(255,255,255,.2)}.page-head{grid-template-columns:1fr}.xform{grid-template-columns:1fr}.xform .arrow{min-height:44px}.swatches{grid-template-columns:1fr}.timeline-flow{grid-template-columns:1fr 1fr}.missing{grid-template-columns:1fr}}@page{size:Letter;margin:0}@media print{html{background:white}.page{width:8.5in;height:auto;min-height:11in;margin:0;box-shadow:none}.cover{height:11in}.page:last-child{break-after:auto;page-break-after:auto}}
+  </style><style>.guide-toolbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:center;gap:18px;padding:12px 20px;background:var(--ink);color:white;box-shadow:0 8px 24px rgba(31,35,40,.16)}.guide-toolbar strong{font-size:13px}.guide-toolbar span{color:rgba(255,255,255,.7);font-size:12px}.guide-toolbar button{min-height:38px;border:0;border-radius:999px;padding:0 16px;background:white;color:var(--ink);font:700 12px var(--sans);cursor:pointer}@media(max-width:760px){.guide-toolbar{align-items:flex-start;flex-direction:column;gap:6px}.guide-toolbar button{width:100%}}@media print{.guide-toolbar{display:none}}</style></head><body><div class="guide-toolbar"><strong>${business} brand guide</strong><span>Use your browser’s print dialog to save a polished PDF.</span><button type="button" onclick="window.print()">Save as PDF / Print</button></div>
   <section class="page cover"><div class="cover-mark"><span class="cover-label">Palmer House Studio · Living Brand Guide</span><span class="status">${completion}% complete</span></div><div><p class="cover-label">Source of truth · ${generated}</p><h1>${business}<span>Brand Guide</span></h1><p class="cover-intro">The shared reference for how this brand should sound, look, move, and turn useful ideas into recognizable work.</p></div><div class="cover-foot"><div><b>Foundation</b><small>Who + why</small></div><div><b>Voice</b><small>How it sounds</small></div><div><b>Visual system</b><small>How it looks</small></div><div><b>Content system</b><small>How it moves</small></div></div><span class="doc-foot" style="color:rgba(255,255,255,.5)">${business} · Approved Brand DNA</span></section>
 
   <section class="page"><header class="page-head"><span class="page-num">01 · Foundation</span><div><h2>What this brand is here to <em>make clear.</em></h2><p class="lede">Identity, mission, and the outcome every message should support.</p></div></header><div class="section"><p class="kicker">Mission</p><p class="quote">${text("mission")}</p></div><div class="grid-3 section"><div class="panel"><span class="data-label">Brand / project</span><p class="big-data">${business}</p></div><div class="panel"><span class="data-label">Category</span><p class="big-data">${text("creator_type")}<br><small>${text("industry", "Category not set")}</small></p></div><div class="panel"><span class="data-label">Primary goal</span><p class="big-data">${text("primary_goal")}</p></div></div><div class="xform"><div class="old">Scattered brand decisions</div><div class="arrow">→</div><div class="new">${text("primary_goal", "One clear direction")}</div></div><div class="section"><span class="data-label">Values to protect</span><div class="chips">${chipList("values")}</div></div><span class="doc-foot">${business} · Living Brand Guide</span></section>
@@ -5355,7 +5655,7 @@ function downloadBrandGuide(draft: Record<string, string>, completion: number) {
 
   <section class="page"><header class="page-head"><span class="page-num">03 · Voice + message</span><div><h2>Direct enough to act on. Human enough to <em>believe.</em></h2><p class="lede">The repeatable language system for campaigns, conversations, and AI-assisted drafts.</p></div></header><div class="section grid-2"><div class="panel voice-do"><span class="data-label">Sound like this</span><div class="chips">${chipList("voice_traits")}</div></div><div class="panel voice-dont"><span class="data-label">Do not sound like this</span><div class="chips">${chipList("avoid_language")}</div></div></div><div class="message"><span class="data-label">Core description</span><p class="display">${text("description")}</p></div><div class="section grid-2"><div class="panel"><span class="data-label">Tagline / memorable line</span><p class="tagline">${text("taglines")}</p></div><div class="panel"><span class="data-label">Preferred calls to action</span><ol class="list">${numberedList("calls_to_action")}</ol></div></div><span class="doc-foot">${business} · Voice + message</span></section>
 
-  <section class="page"><header class="page-head"><span class="page-num">04 · Visual system</span><div><h2>A recognizable system, not a folder of <em>random styles.</em></h2><p class="lede">Typography, image direction, and the Palmer House lane framework used to organize content by business problem.</p></div></header><div class="swatches"><div class="swatch"><b>Spotlight</b><small>#3D1A66 · Trust</small></div><div class="swatch"><b>Reel</b><small>#E8720C · Reach</small></div><div class="swatch"><b>Evergreen</b><small>#5B8A2D · Teach</small></div><div class="swatch"><b>System</b><small>#0A9B8F · Clarity</small></div></div><div class="section grid-2"><div class="panel"><span class="data-label">Typography direction</span><div class="type-row"><span class="type-name">Display</span><span class="type-demo">Clear beats clever.</span></div><div class="type-row"><span class="type-name">Emphasis</span><span class="type-demo accent">Make it human.</span></div><div class="type-row"><span class="type-name">Labels</span><span class="type-demo mono">One useful next step</span></div><p>${text("typography")}</p></div><div class="art" aria-label="Abstract visual-system example"><span class="frame"></span><span class="play"></span><span class="caption"></span><span class="caption two"></span><span class="timeline"></span></div></div><div class="section grid-2"><div class="panel soft"><span class="data-label">Photography</span><p>${text("photography")}</p></div><div class="panel soft"><span class="data-label">Graphics + image style</span><h3>${text("visual_style")}</h3><p>${text("imageStyle")}</p></div></div><span class="doc-foot">${business} · Visual system</span></section>
+  <section class="page"><header class="page-head"><span class="page-num">04 · Visual system</span><div><h2>A recognizable system, not a folder of <em>random styles.</em></h2><p class="lede">The approved colors, typography, image direction, and graphic language for this brand.</p></div></header><div class="swatches"><div class="swatch"><b>Primary</b><small>${escapeHtml(color("primaryColor", "#3D1A66"))}</small></div><div class="swatch"><b>Secondary</b><small>${escapeHtml(color("secondaryColor", "#0A9B8F"))}</small></div><div class="swatch"><b>Accent</b><small>${escapeHtml(color("accentColor", "#5B8A2D"))}</small></div></div><div class="section grid-2"><div class="panel"><span class="data-label">Primary typeface</span><p class="big-data">${text("primaryFont", "Not defined yet.")}</p><div class="type-row"><span class="type-name">Display</span><span class="type-demo">Clear beats clever.</span></div><div class="type-row"><span class="type-name">Emphasis</span><span class="type-demo accent">Make it human.</span></div><p>${text("typography")}</p></div><div class="art" aria-label="Abstract visual-system example"><span class="frame"></span><span class="play"></span><span class="caption"></span><span class="caption two"></span><span class="timeline"></span></div></div><div class="section grid-2"><div class="panel soft"><span class="data-label">Photography</span><p>${text("photography")}</p></div><div class="panel soft"><span class="data-label">Graphics + image style</span><h3>${text("visual_style")}</h3><p>${text("imageStyle")}</p></div></div><span class="doc-foot">${business} · Visual system</span></section>
 
   <section class="page"><header class="page-head"><span class="page-num">05 · Motion + editing</span><div><h2>Movement should explain the <em>information.</em></h2><p class="lede">A practical direction for pacing, transitions, footage, and repeatable production choices.</p></div></header><div class="section visual-stage"><div class="panel"><span class="data-label">Motion language</span><p class="big-data">${text("motion")}</p></div><div class="panel"><span class="data-label">Editing language</span><p class="big-data">${text("editing")}</p></div></div><div class="timeline-flow"><div><b>Start</b><small>Name the problem.</small></div><div><b>Reveal</b><small>Show the mechanism.</small></div><div><b>Prove</b><small>Make the claim visible.</small></div><div><b>Move</b><small>Give one next step.</small></div></div><div class="section grid-2"><div class="panel"><span class="data-label">Video references</span><p>${text("videoExamples")}</p></div><div class="panel"><span class="data-label">Content references</span><p>${text("contentExamples")}</p></div></div><div class="section panel soft"><span class="data-label">Operating principle</span><h3>Every effect should help the viewer understand what changed, what matters, or what to do next.</h3></div><span class="doc-foot">${business} · Motion + editing</span></section>
 
@@ -5368,6 +5668,7 @@ function downloadBrandGuide(draft: Record<string, string>, completion: number) {
     html,
     "text/html",
   );
+  toast.success("Print-ready brand guide downloaded.");
 }
 function downloadCampaign(campaign: Campaign, assets: Asset[]) {
   const text = `# ${campaign.title}\n\nGoal: ${campaign.goal}\nAudience: ${campaign.audience}\n\n${assets.map((asset) => `## ${asset.title}\n\n${asset.content}`).join("\n\n")}`;

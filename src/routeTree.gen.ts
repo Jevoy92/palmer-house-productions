@@ -33,7 +33,6 @@ import { Route as ShopRouteImport } from './routes/shop'
 import { Route as SpotlightPalRouteImport } from './routes/spotlight-pal'
 import { Route as StartupsRouteImport } from './routes/startups'
 import { Route as StudioRouteImport } from './routes/studio'
-import { Route as StudioPreviewRouteImport } from './routes/studio-preview'
 import { Route as SystemPalRouteImport } from './routes/system-pal'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as VideoSystemAssessmentRouteImport } from './routes/video-system-assessment'
@@ -184,11 +183,6 @@ const StartupsRoute = StartupsRouteImport.update({
 const StudioRoute = StudioRouteImport.update({
   id: '/studio',
   path: '/studio',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const StudioPreviewRoute = StudioPreviewRouteImport.update({
-  id: '/studio-preview',
-  path: '/studio-preview',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SystemPalRoute = SystemPalRouteImport.update({
@@ -373,7 +367,6 @@ export interface FileRoutesByFullPath {
   '/spotlight-pal': typeof SpotlightPalRoute
   '/startups': typeof StartupsRoute
   '/studio': typeof StudioRouteWithChildren
-  '/studio-preview': typeof StudioPreviewRoute
   '/system-pal': typeof SystemPalRoute
   '/terms': typeof TermsRoute
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
@@ -430,7 +423,6 @@ export interface FileRoutesByTo {
   '/shop': typeof ShopRoute
   '/spotlight-pal': typeof SpotlightPalRoute
   '/startups': typeof StartupsRoute
-  '/studio-preview': typeof StudioPreviewRoute
   '/system-pal': typeof SystemPalRoute
   '/terms': typeof TermsRoute
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
@@ -489,7 +481,6 @@ export interface FileRoutesById {
   '/spotlight-pal': typeof SpotlightPalRoute
   '/startups': typeof StartupsRoute
   '/studio': typeof StudioRouteWithChildren
-  '/studio-preview': typeof StudioPreviewRoute
   '/system-pal': typeof SystemPalRoute
   '/terms': typeof TermsRoute
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
@@ -549,7 +540,6 @@ export interface FileRouteTypes {
     | '/spotlight-pal'
     | '/startups'
     | '/studio'
-    | '/studio-preview'
     | '/system-pal'
     | '/terms'
     | '/video-system-assessment'
@@ -606,7 +596,6 @@ export interface FileRouteTypes {
     | '/shop'
     | '/spotlight-pal'
     | '/startups'
-    | '/studio-preview'
     | '/system-pal'
     | '/terms'
     | '/video-system-assessment'
@@ -664,7 +653,6 @@ export interface FileRouteTypes {
     | '/spotlight-pal'
     | '/startups'
     | '/studio'
-    | '/studio-preview'
     | '/system-pal'
     | '/terms'
     | '/video-system-assessment'
@@ -723,7 +711,6 @@ export interface RootRouteChildren {
   SpotlightPalRoute: typeof SpotlightPalRoute
   StartupsRoute: typeof StartupsRoute
   StudioRoute: typeof StudioRouteWithChildren
-  StudioPreviewRoute: typeof StudioPreviewRoute
   SystemPalRoute: typeof SystemPalRoute
   TermsRoute: typeof TermsRoute
   VideoSystemAssessmentRoute: typeof VideoSystemAssessmentRoute
@@ -908,13 +895,6 @@ declare module '@tanstack/react-router' {
       path: '/studio'
       fullPath: '/studio'
       preLoaderRoute: typeof StudioRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/studio-preview': {
-      id: '/studio-preview'
-      path: '/studio-preview'
-      fullPath: '/studio-preview'
-      preLoaderRoute: typeof StudioPreviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/system-pal': {
@@ -1215,7 +1195,6 @@ const rootRouteChildren: RootRouteChildren = {
   SpotlightPalRoute: SpotlightPalRoute,
   StartupsRoute: StartupsRoute,
   StudioRoute: StudioRouteWithChildren,
-  StudioPreviewRoute: StudioPreviewRoute,
   SystemPalRoute: SystemPalRoute,
   TermsRoute: TermsRoute,
   VideoSystemAssessmentRoute: VideoSystemAssessmentRoute,

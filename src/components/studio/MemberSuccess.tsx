@@ -81,7 +81,6 @@ export function MemberSuccess() {
     videoProgress,
     serviceRequests,
     requestService,
-    demo,
   } = useStudio();
   const reduce = useReducedMotion();
   const [helpType, setHelpType] = useState<HelpType>("member_question");
@@ -289,7 +288,7 @@ export function MemberSuccess() {
       setPreferredDate("");
       setPreferredTime("");
       setCallNote("");
-      if (!demo && bookingUrl !== "/contact") window.location.assign(bookingUrl);
+      if (bookingUrl !== "/contact") window.location.assign(bookingUrl);
     } finally {
       setBusy(false);
     }

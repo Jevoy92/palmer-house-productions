@@ -77,6 +77,8 @@ export function StudioStartHere() {
 
   const completed = steps.filter((step) => step.done).length;
   const allDone = completed === steps.length;
+  const nextStep = steps.find((step) => !step.done) || steps[steps.length - 1];
+
 
   const [hidden, setHidden] = useState(false);
 

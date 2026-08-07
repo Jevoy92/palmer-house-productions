@@ -5,14 +5,16 @@ import {
   Brain,
   CalendarPlus,
   Check,
+  Copy,
   Lightbulb,
   LoaderCircle,
   MessageSquareText,
   Plus,
+  RotateCcw,
   Send,
   Sparkles,
 } from "lucide-react";
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import kareem from "@/assets/pal-headshots/kareem.png";
 import kiana from "@/assets/pal-headshots/kiana.png";
@@ -23,7 +25,9 @@ import clara from "@/assets/pal-headshots/clara.png";
 import silas from "@/assets/pal-headshots/silas.png";
 import samira from "@/assets/pal-headshots/samira.png";
 import type { AssistantResponse, PalName, StudioLane } from "@/lib/studio-model";
+import { StudioMarkdown } from "./StudioMarkdown";
 import { useStudio } from "./StudioProvider";
+
 
 const palDirectory: Record<
   PalName,

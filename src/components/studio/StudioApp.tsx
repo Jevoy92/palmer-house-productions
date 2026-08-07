@@ -643,48 +643,67 @@ function Onboarding() {
             ) : null}
           </div>
 
-          <div className="mt-7 flex gap-3">
-            {step > 0 ? (
-              <button
-                onClick={() => setStep((current) => current - 1)}
-                className="min-h-12 rounded-xl border border-border px-5 font-bold"
-              >
-                Back
-              </button>
-            ) : null}
-            <button
-              disabled={
-                busy ||
-                (step === 0 && !name.trim()) ||
-                (step === 3 && (!industry.trim() || description.trim().length < 20))
-              }
-              onClick={async () => {
-                if (step < 4) {
-                  setStep((current) => current + 1);
-                  return;
-                }
-                try {
-                  await createWorkspace(name || "My Studio", {
-                    creatorType,
-                    primaryGoal,
-                    initialProblem: problem,
-                    industry: industry.trim(),
-                    website: website.trim(),
-                    description: description.trim(),
-                  });
-                } catch (error) {
-                  toast.error(
-                    error instanceof Error ? error.message : "Could not create workspace.",
-                  );
-                }
-              }}
-              className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-ink px-5 font-bold text-white disabled:opacity-40"
-            >
-              {busy ? <LoaderCircle className="size-4 animate-spin" /> : null}
-              {step === 4 ? "Open my Studio" : "Continue"}
-              <ArrowRight className="size-4" />
-            </button>
-          </div>
+          {(() => {
+            const blocked =
+              (step === 0 && !name.trim()) ||
+              (step === 3 && (!industry.trim() || description.trim().length < 20));
+            const hint =
+              step === 0
+                ? "Add a workspace name to continue."
+                : step === 3
+                  ? "Add your category and at least a sentence about what you offer."
+                  : "";
+            return (
+              <>
+                {blocked ? (
+                  <p className="mt-6 text-sm font-semibold text-muted-foreground">{hint}</p>
+                ) : null}
+                <div className="mt-3 flex gap-3">
+                  {step > 0 ? (
+                    <button
+                      onClick={() => setStep((current) => current - 1)}
+                      className="min-h-14 rounded-xl border border-border px-5 font-bold"
+                    >
+                      Back
+                    </button>
+                  ) : null}
+                  <button
+                    disabled={busy || blocked}
+                    onClick={async () => {
+                      if (step < 4) {
+                        setStep((current) => current + 1);
+                        return;
+                      }
+                      try {
+                        await createWorkspace(name || "My Studio", {
+                          creatorType,
+                          primaryGoal,
+                          initialProblem: problem,
+                          industry: industry.trim(),
+                          website: website.trim(),
+                          description: description.trim(),
+                        });
+                      } catch (error) {
+                        toast.error(
+                          error instanceof Error ? error.message : "Could not create workspace.",
+                        );
+                      }
+                    }}
+                    className={`flex min-h-14 flex-1 items-center justify-center gap-2 rounded-xl px-6 text-base font-black transition-all duration-200 ${
+                      blocked
+                        ? "cursor-not-allowed border border-border bg-white text-muted-foreground"
+                        : "bg-spotlight text-white shadow-[0_18px_40px_-18px_var(--spotlight)] hover:brightness-110"
+                    }`}
+                  >
+                    {busy ? <LoaderCircle className="size-4 animate-spin" /> : null}
+                    {step === 4 ? "Open my Studio" : "Continue"}
+                    <ArrowRight className="size-5" />
+                  </button>
+                </div>
+              </>
+            );
+          })()}
+
         </section>
         <section className="hidden lg:block">
           <PalAuthShowcase />

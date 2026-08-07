@@ -175,6 +175,8 @@ export function ContentEngine() {
   const [mobilePane, setMobilePane] = useState<"edit" | "preview">("edit");
   const [historyOpen, setHistoryOpen] = useState(false);
   const [publishAt, setPublishAt] = useState(tomorrowAtTen);
+  const [running, setRunning] = useState<null | "directions" | "campaign" | "source">(null);
+
 
   const output = campaignId ? campaignOutputs[campaignId] : null;
   const platformPosts = useMemo(() => output?.platformPosts || [], [output]);
@@ -213,6 +215,7 @@ export function ContentEngine() {
       toast.error("Give the engine one real idea to work with.");
       return;
     }
+    setRunning("directions");
     try {
       const result = await suggestDirections({ idea, goal, audience });
       setDirections(result);
@@ -220,8 +223,11 @@ export function ContentEngine() {
       setStage("directions");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "The directions could not be created.");
+    } finally {
+      setRunning(null);
     }
   }
+
 
   async function analyzeExternalSource() {
     if (sourceMode === "link") {
@@ -272,6 +278,7 @@ export function ContentEngine() {
 
   async function buildCampaign() {
     if (!selectedDirection) return;
+    setRunning("campaign");
     try {
       const id = await createCampaign({
         title: selectedDirection.title,
@@ -287,8 +294,11 @@ export function ContentEngine() {
       toast.success("Your platform-native campaign is ready.");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "The campaign could not be created.");
+    } finally {
+      setRunning(null);
     }
   }
+
 
   function updatePost(values: Partial<PlatformPost>) {
     if (!selectedPost) return;
@@ -486,7 +496,18 @@ export function ContentEngine() {
                       )}
                       Find three angles <ArrowRight className="size-4" />
                     </button>
+                    {running === "directions" ? (
+                      <GenerationProgress
+                        steps={[
+                          "Reading your idea and Brand DNA",
+                          "Naming the business problem",
+                          "Testing three different audience decisions",
+                          "Writing the three angles",
+                        ]}
+                      />
+                    ) : null}
                   </>
+
                 ) : (
                   <div className="p-2">
                     {sourceMode === "link" ? (
@@ -674,33 +695,48 @@ export function ContentEngine() {
               })}
             </div>
             {selectedDirection && (
-              <div className="mt-7 flex flex-col gap-4 rounded-[1.75rem] border border-border bg-white p-5 sm:flex-row sm:items-center">
-                <img
-                  src={coach.coach}
-                  alt={`${coach.name}, your campaign guide`}
-                  className="size-16 rounded-2xl object-cover"
-                />
-                <div className="flex-1">
-                  <p className="font-bold">{coach.name} will guide this direction.</p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    The guide keeps the lens on the problem and helps tailor the production plan.
-                    Your work remains the subject.
-                  </p>
+              <>
+                <div className="mt-7 flex flex-col gap-4 rounded-[1.75rem] border border-border bg-white p-5 sm:flex-row sm:items-center">
+                  <img
+                    src={coach.coach}
+                    alt={`${coach.name}, your campaign guide`}
+                    className="size-16 rounded-2xl object-cover"
+                  />
+                  <div className="flex-1">
+                    <p className="font-bold">{coach.name} will guide this direction.</p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      The guide keeps the lens on the problem and helps tailor the production plan.
+                      Your work remains the subject.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => void buildCampaign()}
+                    disabled={busy}
+                    className="primary-action rounded-2xl bg-spotlight"
+                  >
+                    {busy ? (
+                      <LoaderCircle className="size-4 animate-spin" />
+                    ) : (
+                      <Sparkles className="size-4" />
+                    )}
+                    Build the campaign <ArrowRight className="size-4" />
+                  </button>
                 </div>
-                <button
-                  onClick={() => void buildCampaign()}
-                  disabled={busy}
-                  className="primary-action rounded-2xl bg-spotlight"
-                >
-                  {busy ? (
-                    <LoaderCircle className="size-4 animate-spin" />
-                  ) : (
-                    <Sparkles className="size-4" />
-                  )}
-                  Build the campaign <ArrowRight className="size-4" />
-                </button>
-              </div>
+                {running === "campaign" ? (
+                  <GenerationProgress
+                    color={coach.color}
+                    estimate={45000}
+                    steps={[
+                      "Locking the strategy and audience decision",
+                      "Writing the anchor script scene by scene",
+                      "Cutting platform-native posts",
+                      "Building the film plan and calendar",
+                    ]}
+                  />
+                ) : null}
+              </>
             )}
+
           </motion.section>
         )}
 
@@ -1123,6 +1159,68 @@ function SourceWorkbench({
     </aside>
   );
 }
+
+export function GenerationProgress({
+  steps,
+  color = "var(--spotlight)",
+  estimate = 18000,
+}: {
+  steps: string[];
+  color?: string;
+  estimate?: number;
+}) {
+  const [elapsed, setElapsed] = useState(0);
+
+  useEffect(() => {
+    const start = Date.now();
+    const timer = setInterval(() => setElapsed(Date.now() - start), 120);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Asymptotic fill: fast at first, never reaches 100 until the work returns.
+  const percent = Math.min(96, 100 * (1 - Math.exp(-elapsed / (estimate / 2.2))));
+  const activeIndex = Math.min(steps.length - 1, Math.floor((percent / 100) * steps.length));
+
+  return (
+    <div
+      className="mt-4 rounded-[1.25rem] border bg-white p-5"
+      style={{ borderColor: color }}
+      role="status"
+      aria-live="polite"
+    >
+      <div className="flex items-center justify-between gap-4">
+        <p className="text-sm font-extrabold">{steps[activeIndex]}</p>
+        <span className="font-mono text-[10px] uppercase tracking-[.18em] text-muted-foreground">
+          {Math.round(percent)}%
+        </span>
+      </div>
+      <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-border">
+        <div
+          className="h-full rounded-full transition-[width] duration-150 ease-out"
+          style={{ width: `${percent}%`, background: color }}
+        />
+      </div>
+      <div className="mt-4 space-y-1.5">
+        {steps.map((step, index) => (
+          <div
+            key={step}
+            className={`flex items-center gap-2 text-xs ${index <= activeIndex ? "font-bold text-ink" : "text-muted-foreground"}`}
+          >
+            {index < activeIndex ? (
+              <Check className="size-3.5 shrink-0" style={{ color }} />
+            ) : index === activeIndex ? (
+              <LoaderCircle className="size-3.5 shrink-0 animate-spin" style={{ color }} />
+            ) : (
+              <span className="size-3.5 shrink-0 rounded-full border border-border" />
+            )}
+            {step}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 
 function Progress({ stage }: { stage: "idea" | "directions" | "results" }) {
   const steps = [

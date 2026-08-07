@@ -325,11 +325,16 @@ function AuthExperience() {
               try {
                 const { lovable } = await import("@/integrations/lovable/index");
                 const result = await lovable.auth.signInWithOAuth("google", {
-                  redirect_uri: window.location.origin + "/studio",
+                  redirect_uri: window.location.origin,
                 });
                 if (result.error) {
                   setNotice("Google sign-in did not work. Please try again.");
+                  return;
                 }
+                if (result.redirected) return;
+                // Session is set on the generated client; reload so the Studio
+                // provider picks it up from storage.
+                window.location.assign("/studio");
               } catch {
                 setNotice("Google sign-in did not work. Please try again.");
               }

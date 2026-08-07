@@ -5844,7 +5844,9 @@ function SettingsView() {
   const { profile, user, saveProfile, workspace, subscription, campaigns, assets, signOut } =
     useStudio();
 
+  const { guide, setGuide } = useGuide();
   const navigate = useNavigate();
+
   const modalRef = useRef<HTMLDivElement>(null);
   const [tab, setTab] = useState<"workspace" | "brands" | "team" | "usage" | "account">(
     "workspace",

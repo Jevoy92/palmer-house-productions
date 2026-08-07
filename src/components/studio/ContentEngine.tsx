@@ -695,33 +695,48 @@ export function ContentEngine() {
               })}
             </div>
             {selectedDirection && (
-              <div className="mt-7 flex flex-col gap-4 rounded-[1.75rem] border border-border bg-white p-5 sm:flex-row sm:items-center">
-                <img
-                  src={coach.coach}
-                  alt={`${coach.name}, your campaign guide`}
-                  className="size-16 rounded-2xl object-cover"
-                />
-                <div className="flex-1">
-                  <p className="font-bold">{coach.name} will guide this direction.</p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    The guide keeps the lens on the problem and helps tailor the production plan.
-                    Your work remains the subject.
-                  </p>
+              <>
+                <div className="mt-7 flex flex-col gap-4 rounded-[1.75rem] border border-border bg-white p-5 sm:flex-row sm:items-center">
+                  <img
+                    src={coach.coach}
+                    alt={`${coach.name}, your campaign guide`}
+                    className="size-16 rounded-2xl object-cover"
+                  />
+                  <div className="flex-1">
+                    <p className="font-bold">{coach.name} will guide this direction.</p>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      The guide keeps the lens on the problem and helps tailor the production plan.
+                      Your work remains the subject.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => void buildCampaign()}
+                    disabled={busy}
+                    className="primary-action rounded-2xl bg-spotlight"
+                  >
+                    {busy ? (
+                      <LoaderCircle className="size-4 animate-spin" />
+                    ) : (
+                      <Sparkles className="size-4" />
+                    )}
+                    Build the campaign <ArrowRight className="size-4" />
+                  </button>
                 </div>
-                <button
-                  onClick={() => void buildCampaign()}
-                  disabled={busy}
-                  className="primary-action rounded-2xl bg-spotlight"
-                >
-                  {busy ? (
-                    <LoaderCircle className="size-4 animate-spin" />
-                  ) : (
-                    <Sparkles className="size-4" />
-                  )}
-                  Build the campaign <ArrowRight className="size-4" />
-                </button>
-              </div>
+                {running === "campaign" ? (
+                  <GenerationProgress
+                    color={coach.color}
+                    estimate={45000}
+                    steps={[
+                      "Locking the strategy and audience decision",
+                      "Writing the anchor script scene by scene",
+                      "Cutting platform-native posts",
+                      "Building the film plan and calendar",
+                    ]}
+                  />
+                ) : null}
+              </>
             )}
+
           </motion.section>
         )}
 

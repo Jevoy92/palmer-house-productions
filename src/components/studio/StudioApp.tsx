@@ -77,12 +77,6 @@ import {
   type StudioView,
 } from "@/lib/studio-model";
 import type { Tables } from "@/lib/supabase/database.types";
-import creativeOne from "@/assets/creative-1.jpg";
-import creativeTwo from "@/assets/creative-2.jpg";
-import creativeThree from "@/assets/creative-3.jpg";
-import creativeFour from "@/assets/creative-4.jpg";
-import productionWorkspace from "@/assets/studio-visuals/production-workspace.png";
-import contentEngineFlow from "@/assets/studio-visuals/content-engine-flow.png";
 import samiraHeadshot from "@/assets/pal-headshots/samira.png";
 import kianaHeadshot from "@/assets/pal-headshots/kiana.png";
 import { useStudio } from "./StudioProvider";
@@ -92,6 +86,7 @@ import { StudioAssistant } from "./StudioAssistant";
 import { VideoRoadmap } from "./VideoRoadmap";
 import { MemberSuccess } from "./MemberSuccess";
 import { CarouselGraphicBuilder } from "./CarouselGraphicBuilder";
+import { LibraryAssetThumbnail } from "./LibraryAssetThumbnail";
 
 type Campaign = Tables<"campaigns">;
 type Asset = Tables<"campaign_assets">;
@@ -119,15 +114,6 @@ const lanes = {
   },
 };
 
-const libraryMedia = [
-  creativeOne,
-  creativeTwo,
-  productionWorkspace,
-  creativeThree,
-  contentEngineFlow,
-  creativeFour,
-];
-
 const assetKinds = {
   anchor_script: { icon: Film, label: "Anchor video", color: "var(--spotlight)" },
   short_script: { icon: Captions, label: "Short video", color: "var(--reel)" },
@@ -146,12 +132,6 @@ function assetKindMeta(kind: string) {
       color: "var(--system)",
     }
   );
-}
-
-function assetMedia(asset: Asset, index = 0) {
-  const kindIndex = Object.keys(assetKinds).indexOf(asset.kind);
-  const mediaIndex = (kindIndex >= 0 ? kindIndex + index : index) % libraryMedia.length;
-  return libraryMedia[mediaIndex];
 }
 
 function PalTip({
@@ -4028,7 +4008,7 @@ function Library() {
         </select>
       </div>
       <div className="studio-content-list mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {filtered.map((asset, index) => {
+        {filtered.map((asset) => {
           const meta = assetKindMeta(asset.kind);
           return (
             <article
@@ -4036,11 +4016,7 @@ function Library() {
               className="studio-card group flex min-h-80 flex-col overflow-hidden p-0"
             >
               <div className="relative aspect-[16/9] overflow-hidden border-b border-border bg-secondary">
-                <img
-                  src={assetMedia(asset, index)}
-                  alt=""
-                  className="size-full object-cover transition duration-500 group-hover:scale-[1.025]"
-                />
+                <LibraryAssetThumbnail asset={asset} />
                 <span
                   className="absolute left-3 top-3 grid size-10 place-items-center rounded-xl bg-white shadow-soft"
                   style={{ color: meta.color }}

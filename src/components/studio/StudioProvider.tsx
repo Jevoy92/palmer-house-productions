@@ -585,6 +585,8 @@ export function StudioProvider({ children }: { children: ReactNode }) {
             proof: brand.proof_points,
             callsToAction: brand.calls_to_action,
             avoidLanguage: brand.avoid_language,
+            personalInterests: brand.personal_interests || [],
+            personalStory: brand.personal_story || "",
           },
         },
       });
@@ -623,6 +625,8 @@ export function StudioProvider({ children }: { children: ReactNode }) {
             proof: brand.proof_points,
             callsToAction: brand.calls_to_action,
             avoidLanguage: brand.avoid_language,
+            personalInterests: brand.personal_interests || [],
+            personalStory: brand.personal_story || "",
           },
         },
       });

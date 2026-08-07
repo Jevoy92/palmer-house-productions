@@ -4256,6 +4256,8 @@ function BrandStudio() {
     proof_points: (brand?.proof_points || []).join("\n"),
     calls_to_action: (brand?.calls_to_action || []).join("\n"),
     avoid_language: (brand?.avoid_language || []).join(", "),
+    personal_interests: (brand?.personal_interests || []).join(", "),
+    personal_story: brand?.personal_story || "",
     platforms: (brand?.platforms || []).join(", "),
     social_profiles: Array.isArray(brand?.social_links)
       ? brand.social_links
@@ -4423,6 +4425,8 @@ function BrandStudio() {
         proof_points: lineList(draft.proof_points),
         calls_to_action: lineList(draft.calls_to_action),
         avoid_language: splitList(draft.avoid_language),
+        personal_interests: splitList(draft.personal_interests),
+        personal_story: draft.personal_story,
         platforms: splitList(draft.platforms),
         social_links: lineList(draft.social_profiles).map((url) => ({ url })),
         brand_details: {
@@ -4800,6 +4804,33 @@ function BrandStudio() {
                     filledFrom={sourceMark("avoid_language")}
                     onChange={(value) => set("avoid_language", value)}
                   />
+                </div>
+                <div className="sm:col-span-2 rounded-[1.25rem] border border-border bg-mist/50 p-4 sm:p-5">
+                  <p className="text-[11px] font-black uppercase tracking-[0.18em] text-muted-foreground">
+                    Outside of work
+                  </p>
+                  <p className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
+                    The best founder content borrows from real life. Tell the studio what you love
+                    doing when you are off the clock and it will braid that into one of every three
+                    angles it writes for you.
+                  </p>
+                  <div className="mt-4 grid gap-4">
+                    <GuidedTags
+                      label="Interests and hobbies"
+                      value={draft.personal_interests}
+                      suggestions={brandSuggestions.personal_interests}
+                      hint="Fishing, restoring cars, coaching, cooking — anything that is genuinely you."
+                      onChange={(value) => set("personal_interests", value)}
+                    />
+                    <GuidedText
+                      label="A personal note the studio should remember"
+                      rows={3}
+                      optional
+                      value={draft.personal_story}
+                      suggestions={brandSuggestions.personal_story}
+                      onChange={(value) => set("personal_story", value)}
+                    />
+                  </div>
                 </div>
                 <GuidedText
                   label="Taglines and memorable lines"

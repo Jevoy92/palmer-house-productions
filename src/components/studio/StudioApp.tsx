@@ -649,9 +649,13 @@ function Onboarding() {
               </button>
             ) : null}
             <button
-              disabled={busy || (step === 0 && !name.trim())}
+              disabled={
+                busy ||
+                (step === 0 && !name.trim()) ||
+                (step === 3 && (!industry.trim() || description.trim().length < 20))
+              }
               onClick={async () => {
-                if (step < 3) {
+                if (step < 4) {
                   setStep((current) => current + 1);
                   return;
                 }
@@ -660,6 +664,9 @@ function Onboarding() {
                     creatorType,
                     primaryGoal,
                     initialProblem: problem,
+                    industry: industry.trim(),
+                    website: website.trim(),
+                    description: description.trim(),
                   });
                 } catch (error) {
                   toast.error(
@@ -670,7 +677,7 @@ function Onboarding() {
               className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-ink px-5 font-bold text-white disabled:opacity-40"
             >
               {busy ? <LoaderCircle className="size-4 animate-spin" /> : null}
-              {step === 3 ? "Open my Studio" : "Continue"}
+              {step === 4 ? "Open my Studio" : "Continue"}
               <ArrowRight className="size-4" />
             </button>
           </div>

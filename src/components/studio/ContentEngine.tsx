@@ -434,7 +434,36 @@ export function ContentEngine() {
             <FileStack className="size-4" /> Add your context
           </Link>
         </div>
-      ) : null}
+      ) : (
+        <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 rounded-[1.25rem] border border-border bg-mist px-5 py-4">
+          <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[.16em] text-evergreen">
+            <ShieldCheck className="size-3.5" /> Brand DNA connected
+          </span>
+          {[
+            brand?.business_name,
+            brand?.industry,
+            brand?.primary_audience,
+            Array.isArray(brand?.offers) && typeof brand.offers[0] === "string"
+              ? (brand.offers[0] as string)
+              : "",
+          ]
+            .filter((value): value is string => Boolean(value && value.trim()))
+            .slice(0, 4)
+            .map((value) => (
+              <span key={value} className="flex items-center gap-2 text-xs font-bold text-ink">
+                <span className="size-1.5 rounded-full bg-evergreen" />
+                <span className="max-w-[24ch] truncate">{value}</span>
+              </span>
+            ))}
+          <Link
+            to="/studio/brand"
+            className="ml-auto text-xs font-bold text-muted-foreground underline underline-offset-4 hover:text-ink"
+          >
+            Edit
+          </Link>
+        </div>
+      )}
+
 
       <Progress stage={stage} />
 

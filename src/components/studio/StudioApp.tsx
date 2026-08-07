@@ -318,7 +318,50 @@ function AuthExperience() {
               : "Create the private workspace where your ideas become campaigns your audience can use."}
           </p>
 
-          <form onSubmit={submit} className="mt-9 space-y-5">
+          <button
+            type="button"
+            onClick={async () => {
+              setNotice("");
+              try {
+                const { lovable } = await import("@/integrations/lovable/index");
+                const result = await lovable.auth.signInWithOAuth("google", {
+                  redirect_uri: window.location.origin + "/studio",
+                });
+                if (result.error) {
+                  setNotice("Google sign-in did not work. Please try again.");
+                }
+              } catch {
+                setNotice("Google sign-in did not work. Please try again.");
+              }
+            }}
+            className="mt-9 flex min-h-13 w-full items-center justify-center gap-3 rounded-xl border border-ink px-5 font-bold transition hover:bg-spotlight-soft"
+          >
+            <svg viewBox="0 0 24 24" className="size-5" aria-hidden="true">
+              <path
+                fill="#4285F4"
+                d="M23.5 12.27c0-.79-.07-1.54-.2-2.27H12v4.3h6.45a5.52 5.52 0 0 1-2.4 3.62v3h3.88c2.27-2.09 3.57-5.17 3.57-8.65Z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 24c3.24 0 5.96-1.08 7.94-2.92l-3.88-3c-1.08.72-2.45 1.15-4.06 1.15-3.12 0-5.77-2.11-6.71-4.95H1.28v3.09A12 12 0 0 0 12 24Z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.29 14.28a7.2 7.2 0 0 1 0-4.56V6.63H1.28a12 12 0 0 0 0 10.74l4.01-3.09Z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 4.75c1.76 0 3.34.61 4.59 1.8l3.44-3.44C17.95 1.18 15.23 0 12 0A12 12 0 0 0 1.28 6.63l4.01 3.09C6.23 6.86 8.88 4.75 12 4.75Z"
+              />
+            </svg>
+            Continue with Google
+          </button>
+
+          <div className="mt-6 flex items-center gap-3 text-xs font-bold uppercase tracking-[.18em] text-muted-foreground">
+            <span className="h-px flex-1 bg-border" /> or use email <span className="h-px flex-1 bg-border" />
+          </div>
+
+          <form onSubmit={submit} className="mt-6 space-y-5">
             {mode === "signup" ? (
               <Field name="name" label="Your name" placeholder="Jevoy Palmer" required />
             ) : null}

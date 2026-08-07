@@ -496,7 +496,18 @@ export function ContentEngine() {
                       )}
                       Find three angles <ArrowRight className="size-4" />
                     </button>
+                    {running === "directions" ? (
+                      <GenerationProgress
+                        steps={[
+                          "Reading your idea and Brand DNA",
+                          "Naming the business problem",
+                          "Testing three different audience decisions",
+                          "Writing the three angles",
+                        ]}
+                      />
+                    ) : null}
                   </>
+
                 ) : (
                   <div className="p-2">
                     {sourceMode === "link" ? (

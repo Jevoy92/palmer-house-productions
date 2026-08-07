@@ -293,44 +293,134 @@ export function StudioAssistant() {
                 </div>
               </div>
             ) : (
-              <div className="mx-auto max-w-3xl space-y-5">
-                {recent.map((message) => (
-                  <motion.div
-                    key={message.id}
-                    initial={reduce ? false : { opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={
-                      message.role === "user"
-                        ? "ml-auto max-w-[86%] rounded-[1.25rem] p-4 text-sm leading-relaxed text-white"
-                        : "max-w-[92%]"
-                    }
-                    style={message.role === "user" ? { background: pal.color } : undefined}
-                  >
-                    {message.role === "assistant" ? (
-                      <div className="flex items-start gap-3">
+              <div className="mx-auto max-w-3xl space-y-6">
+                {recent.map((message) => {
+                  const meta = assistantMetadata(message.metadata);
+                  const speaker = palDirectory[(message.pal as PalName) || selected] || pal;
+                  if (message.role === "user") {
+                    return (
+                      <motion.div
+                        key={message.id}
+                        initial={reduce ? false : { opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="ml-auto max-w-[80%] rounded-[1.25rem] rounded-br-md px-4 py-3 text-sm font-medium leading-relaxed text-white"
+                        style={{ background: pal.color }}
+                      >
+                        {message.body}
+                      </motion.div>
+                    );
+                  }
+                  return (
+                    <motion.div
+                      key={message.id}
+                      initial={reduce ? false : { opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="space-y-3"
+                    >
+                      <div className="flex items-center gap-2">
                         <img
-                          src={
-                            palDirectory[(message.pal as PalName) || selected]?.image || pal.image
-                          }
+                          src={speaker.image}
                           alt=""
-                          className="size-9 rounded-lg border border-border object-cover object-top"
+                          className="size-7 rounded-lg border border-border bg-white object-cover object-top"
                         />
-                        <div className="rounded-[1.25rem] bg-mist p-4 text-sm leading-relaxed text-ink">
-                          {message.body}
-                        </div>
+                        <span className="text-xs font-black">{speaker.name}</span>
+                        <span
+                          className="font-mono text-[9px] uppercase tracking-[.14em]"
+                          style={{ color: speaker.color }}
+                        >
+                          · {meta?.lane || speaker.lane}
+                        </span>
                       </div>
-                    ) : (
-                      message.body
-                    )}
-                  </motion.div>
-                ))}
+
+                      {meta?.headline ? (
+                        <p className="text-xl font-black leading-snug tracking-[-.03em]">
+                          {meta.headline}
+                        </p>
+                      ) : null}
+
+                      <StudioMarkdown accent={speaker.color}>{message.body}</StudioMarkdown>
+
+                      {meta?.keyPoints?.length ? (
+                        <ul
+                          className="mt-4 space-y-2 rounded-[1rem] p-4"
+                          style={{ background: speaker.soft }}
+                        >
+                          {meta.keyPoints.map((point) => (
+                            <li
+                              key={point}
+                              className="flex gap-2.5 text-[13px] font-bold leading-snug"
+                            >
+                              <Check
+                                className="mt-0.5 size-3.5 shrink-0"
+                                style={{ color: speaker.color }}
+                              />
+                              {point}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+
+                      <div className="flex flex-wrap items-center gap-2 pt-1">
+                        <button
+                          onClick={() => void copyMessage(message.id, message.body)}
+                          className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink"
+                        >
+                          {copiedId === message.id ? (
+                            <Check className="size-3.5" />
+                          ) : (
+                            <Copy className="size-3.5" />
+                          )}
+                          {copiedId === message.id ? "Copied" : "Copy"}
+                        </button>
+                        <button
+                          onClick={() => void saveAnswerAsIdea(message.body, meta)}
+                          className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink"
+                        >
+                          <Plus className="size-3.5" /> Save as idea
+                        </button>
+                        <button
+                          onClick={() => void retry()}
+                          disabled={busy}
+                          className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink disabled:opacity-40"
+                        >
+                          <RotateCcw className="size-3.5" /> Ask again
+                        </button>
+                      </div>
+
+                      {meta?.followUps?.length ? (
+                        <div className="flex flex-wrap gap-2 pt-1">
+                          {meta.followUps.map((question) => (
+                            <button
+                              key={question}
+                              onClick={() => void send(question)}
+                              disabled={busy}
+                              className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-dashed border-border px-3 text-left text-[11px] font-bold text-muted-foreground transition hover:border-ink hover:text-ink disabled:opacity-40"
+                            >
+                              {question}
+                              <ArrowRight className="size-3.5 shrink-0" />
+                            </button>
+                          ))}
+                        </div>
+                      ) : null}
+                    </motion.div>
+                  );
+                })}
                 {busy ? (
-                  <div className="flex items-center gap-2 pl-12 text-xs font-bold text-system">
-                    <LoaderCircle className="size-4 animate-spin" /> Reading the workspace and
-                    finding the next useful move…
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={pal.image}
+                      alt=""
+                      className="size-7 animate-pulse rounded-lg border border-border object-cover object-top"
+                    />
+                    <span className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
+                      <LoaderCircle className="size-3.5 animate-spin" style={{ color: pal.color }} />
+                      {pal.name} is reading the workspace…
+                    </span>
                   </div>
                 ) : null}
+                <div ref={endRef} />
               </div>
+
             )}
           </div>
 

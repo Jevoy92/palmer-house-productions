@@ -10,7 +10,16 @@
  */
 export const SITE_MAINTENANCE = true;
 
-const ALWAYS_ON_PREFIXES = ["/studio", "/api", "/mcp", "/.well-known", "/.lovable", "/.mcp"];
+const ALWAYS_ON_PREFIXES = [
+  "/studio",
+  "/api",
+  "/mcp",
+  "/.well-known",
+  "/.lovable",
+  "/.mcp",
+  "/lovable",
+  "/email/unsubscribe",
+];
 
 export function isAlwaysOnPath(pathname: string) {
   return ALWAYS_ON_PREFIXES.some(

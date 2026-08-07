@@ -78,21 +78,23 @@ export function StudioStartHere() {
   const completed = steps.filter((step) => step.done).length;
   const allDone = completed === steps.length;
 
+  const [hidden, setHidden] = useState(false);
+
   useEffect(() => {
-    if (!workspace) return;
-    if (typeof window === "undefined") return;
-    if (window.localStorage.getItem(dismissKey(workspace.id)) === "done") return;
-    setOpen(true);
+    if (!workspace || typeof window === "undefined") return;
+    setHidden(window.localStorage.getItem(dismissKey(workspace.id)) === "done");
   }, [workspace]);
 
   useEffect(() => {
+    if (!open) return;
     const next = steps.findIndex((step) => !step.done);
     setIndex(next === -1 ? steps.length - 1 : next);
-  }, [steps]);
+  }, [open, steps]);
 
   const dismiss = (permanent: boolean) => {
     if (permanent && workspace && typeof window !== "undefined") {
       window.localStorage.setItem(dismissKey(workspace.id), "done");
+      setHidden(true);
     }
     setOpen(false);
   };

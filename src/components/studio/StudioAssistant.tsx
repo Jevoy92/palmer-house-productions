@@ -479,13 +479,23 @@ export function StudioAssistant() {
           </div>
 
           <form onSubmit={submit} className="border-t border-border bg-white p-4 sm:p-5">
-            <div className="mx-auto flex max-w-3xl items-end gap-2 rounded-[1.15rem] border border-border bg-white p-2 shadow-soft focus-within:border-system">
+            <div
+              className="mx-auto flex max-w-3xl items-end gap-2 rounded-[1.15rem] border border-border bg-white p-2 shadow-soft transition focus-within:border-current"
+              style={{ color: pal.color }}
+            >
               <textarea
+                ref={composerRef}
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" && !event.shiftKey) {
+                    event.preventDefault();
+                    void send(draft);
+                  }
+                }}
                 rows={2}
                 placeholder={`Ask ${pal.name} about a problem, idea, link, campaign, or next move…`}
-                className="min-h-12 flex-1 resize-none border-0 bg-transparent p-2 text-sm outline-none"
+                className="min-h-12 flex-1 resize-none border-0 bg-transparent p-2 text-sm text-ink outline-none"
               />
               <button
                 disabled={busy || draft.trim().length < 3}
@@ -493,13 +503,19 @@ export function StudioAssistant() {
                 className="grid size-11 shrink-0 place-items-center rounded-xl text-white disabled:opacity-35"
                 style={{ background: pal.color }}
               >
-                <Send className="size-4" />
+                {busy ? (
+                  <LoaderCircle className="size-4 animate-spin" />
+                ) : (
+                  <Send className="size-4" />
+                )}
               </button>
             </div>
             <p className="mt-2 text-center text-[10px] text-muted-foreground">
-              Nothing publishes or changes Brand DNA without your approval.
+              Enter to send · Shift + Enter for a new line · Nothing publishes or changes Brand DNA
+              without your approval.
             </p>
           </form>
+
         </section>
 
         <aside className="border-t border-border bg-mist/55 p-4 xl:border-l xl:border-t-0">

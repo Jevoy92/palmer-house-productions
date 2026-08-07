@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,11 +8,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Switch } from '@/components/ui/switch';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { MetaTags } from '@/components/seo/MetaTags';
-import { User, Bell, LogOut } from 'lucide-react';
+import { User, Bell } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function Settings() {
-  const { user, signOut } = useAuth();
+  const user: { id: string } | null = null;
   const navigate = useNavigate();
   const [profile, setProfile] = useState({
     fullName: '',
@@ -73,11 +72,6 @@ export default function Settings() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/auth');
   };
 
   return (
@@ -177,20 +171,6 @@ export default function Settings() {
             </CardContent>
           </Card>
 
-          <Card className="border-destructive">
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <LogOut className="w-5 h-5 text-destructive" />
-                <CardTitle>Danger Zone</CardTitle>
-              </div>
-              <CardDescription>Irreversible actions</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button variant="destructive" onClick={handleSignOut}>
-                Sign Out
-              </Button>
-            </CardContent>
-          </Card>
         </div>
       </DashboardLayout>
     </>

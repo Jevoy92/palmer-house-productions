@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Coins, TrendingUp, Calendar } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import {
@@ -17,9 +16,9 @@ interface CreditData {
 }
 
 export function CreditsBalance() {
-  const { user } = useAuth();
-  const [credits, setCredits] = useState<CreditData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const user: { id: string; email?: string; user_metadata?: any } | null = null;
+  const [credits, setCredits] = useState<CreditData | null>({ balance: 0, monthly_allowance: 0, last_refill_date: new Date().toISOString() });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!user) return;

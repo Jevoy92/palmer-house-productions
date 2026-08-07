@@ -25,7 +25,7 @@ const Memberships = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
             <Button asChild size="lg" className="text-lg px-8 py-6">
-              <Link to="/auth">Start Free</Link>
+              <Link to="/dashboard">Start Free</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="text-lg px-8 py-6">
               <Link to="/dashboard">Explore the App</Link>
@@ -162,7 +162,7 @@ const Memberships = () => {
                 Just a clean workspace that gives you direction.
               </p>
               <Button asChild size="lg" className="mt-4">
-                <Link to="/auth">
+                <Link to="/dashboard">
                   Start Building Your System
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Link>
@@ -202,7 +202,7 @@ const Memberships = () => {
                   <p className="text-sm text-muted-foreground">✓ Preview-only access</p>
                 </div>
                 <Button asChild className="w-full">
-                  <Link to="/auth">Start Free</Link>
+                  <Link to="/dashboard">Start Free</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -400,7 +400,7 @@ const Memberships = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
             <Button asChild size="lg" variant="secondary" className="text-lg px-8 py-6">
-              <Link to="/auth">Create Your Free Account</Link>
+              <Link to="/dashboard">Create Your Free Account</Link>
             </Button>
           </div>
           

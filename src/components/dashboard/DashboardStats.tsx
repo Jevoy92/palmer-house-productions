@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { TrendingUp, Trophy, Flame } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ActivityChart } from './ActivityChart';
@@ -32,9 +31,9 @@ interface DashboardStatsProps {
 }
 
 export function DashboardStats({ favoritePal = 'reel', onChangePal }: DashboardStatsProps) {
-  const { user } = useAuth();
-  const [stats, setStats] = useState<StatsData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const user: { id: string; email?: string; user_metadata?: any } | null = null;
+  const [stats, setStats] = useState<StatsData | null>({ totalCreditsUsed: 0, toolsMastered: 0, currentStreak: 0, topTools: [] });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!user) return;

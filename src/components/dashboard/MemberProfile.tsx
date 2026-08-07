@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Calendar, TrendingUp, Zap, Target } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -16,9 +15,9 @@ interface UserStats {
 }
 
 export function MemberProfile() {
-  const { user } = useAuth();
-  const [stats, setStats] = useState<UserStats | null>(null);
-  const [loading, setLoading] = useState(true);
+  const user: { id: string; email?: string; user_metadata?: any } | null = null;
+  const [stats, setStats] = useState<UserStats | null>({ totalCreditsUsed: 0, toolsUsedCount: 0, favoriteToolName: 'None yet', favoriteToolCount: 0, memberSince: new Date().toISOString() });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (!user) return;

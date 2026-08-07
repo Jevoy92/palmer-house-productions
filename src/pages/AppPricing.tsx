@@ -5,7 +5,6 @@ import { Badge } from '@/components/ui/badge';
 import { SUBSCRIPTION_TIERS, ADDONS } from '@/lib/saas-pricing';
 import { MetaTags } from '@/components/seo/MetaTags';
 import { Canonical } from '@/components/seo/Canonical';
-import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { createCheckoutSession } from '@/lib/stripe';
 import { toast } from 'sonner';
@@ -19,13 +18,13 @@ const iconMap = {
 };
 
 export default function AppPricing() {
-  const { user } = useAuth();
+  const user: { id: string; email?: string; user_metadata?: any } | null = null;
   const navigate = useNavigate();
   const [loading, setLoading] = useState<string | null>(null);
 
   const handleSelectPlan = async (tierId: string) => {
     if (!user) {
-      navigate('/auth');
+      navigate('/dashboard');
       return;
     }
 
@@ -58,7 +57,7 @@ export default function AppPricing() {
 
   const handleSelectAddon = async (addonId: string) => {
     if (!user) {
-      navigate('/auth');
+      navigate('/dashboard');
       return;
     }
 

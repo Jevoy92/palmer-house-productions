@@ -1,8 +1,7 @@
-import { useAuth } from '@/contexts/AuthContext';
 import { CreditsBalance } from './CreditsBalance';
 
 export function DashboardHeader() {
-  const { user } = useAuth();
+  const user: { id: string; email?: string; user_metadata?: any } | null = null;
   
   // Get user's name from metadata or email
   const userName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'there';

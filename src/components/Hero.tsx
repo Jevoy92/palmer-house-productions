@@ -23,7 +23,7 @@ export const Hero = () => {
   };
 
   const handleGetStarted = () => {
-    transitionTo('/auth');
+    transitionTo('/dashboard');
   };
 
   const handleBookStrategyCall = () => {

@@ -3438,18 +3438,28 @@ function BlogWrittenResult({
   const [tab, setTab] = useState<"article" | "email" | "faq">("article");
   const strategy = (output?.strategy || campaign.strategy) as CampaignOutput["strategy"];
   const anchorScript = output?.anchor.script || "";
-  const paragraphs = anchorScript
-    .split(/\n\s*\n/)
-    .map((item) => item.trim())
-    .filter(Boolean);
   const faq = output?.faq || [];
   const newsletter = output?.newsletter;
-  const articleTitle = clampWords(output?.anchor.title || campaign.title, 12);
+  const articleAsset = items.find((item) => item.kind === "article");
+  const storedArticle = (articleAsset?.metadata || null) as CampaignOutput["article"] | null;
+  const article = output?.article || storedArticle || undefined;
+  const fallbackSections = anchorScript
+    .split(/\n\s*\n/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .map((body, index) => ({ heading: index === 0 ? "The short version" : "", body }));
+  const sections = article?.sections?.length ? article.sections : fallbackSections;
+  const takeaways = article?.keyTakeaways?.length
+    ? article.keyTakeaways
+    : strategy?.messagePillars || [];
+  const closing = article?.closing || output?.anchor.callToAction || campaign.offer || "";
+  const articleTitle = clampWords(article?.title || output?.anchor.title || campaign.title, 14);
+  const articleDek = article?.dek || strategy?.promise || "";
   const articleBody = [
-    strategy?.audienceInsight,
-    ...paragraphs,
-    ...(strategy?.messagePillars || []),
-    output?.anchor.callToAction || campaign.offer,
+    articleDek,
+    ...sections.map((section) => (section.heading ? `${section.heading}\n\n${section.body}` : section.body)),
+    takeaways.length ? `Key takeaways\n\n- ${takeaways.join("\n- ")}` : "",
+    closing,
   ]
     .filter(Boolean)
     .join("\n\n");

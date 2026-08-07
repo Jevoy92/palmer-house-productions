@@ -305,7 +305,6 @@ function AuthExperience() {
         </section>
 
         <section className="mx-auto w-full max-w-[31rem] lg:mx-0">
-
           <p className="studio-eyebrow text-spotlight">Your content operating system</p>
           <h1 className="mt-5 text-[clamp(2.75rem,5vw,4.4rem)] font-black leading-[.94] tracking-[-.065em]">
             {mode === "signin"
@@ -363,7 +362,8 @@ function AuthExperience() {
           </button>
 
           <div className="mt-6 flex items-center gap-3 text-xs font-bold uppercase tracking-[.18em] text-muted-foreground">
-            <span className="h-px flex-1 bg-border" /> or use email <span className="h-px flex-1 bg-border" />
+            <span className="h-px flex-1 bg-border" /> or use email{" "}
+            <span className="h-px flex-1 bg-border" />
           </div>
 
           <form onSubmit={submit} className="mt-6 space-y-5">
@@ -2726,11 +2726,13 @@ function StrategyPanel({
   lane: (typeof lanes)[keyof typeof lanes];
 }) {
   const strategy = (output?.strategy || campaign.strategy) as CampaignOutput["strategy"];
-  const pillars = (strategy?.messagePillars || [
-    "Name the real friction",
-    "Make the expertise visible",
-    "Give one confident next step",
-  ]).slice(0, 3);
+  const pillars = (
+    strategy?.messagePillars || [
+      "Name the real friction",
+      "Make the expertise visible",
+      "Give one confident next step",
+    ]
+  ).slice(0, 3);
   return (
     <div className="space-y-5">
       <CampaignScreenHeader
@@ -2890,7 +2892,10 @@ function LongFormResult({
         className="rounded-[1.5rem] border border-border p-6 sm:p-7"
         style={{ background: lane.soft }}
       >
-        <p className="font-mono text-[9px] uppercase tracking-[.18em]" style={{ color: lane.color }}>
+        <p
+          className="font-mono text-[9px] uppercase tracking-[.18em]"
+          style={{ color: lane.color }}
+        >
           The hook
         </p>
         <p className="mt-3 max-w-4xl text-[clamp(1.25rem,2.2vw,1.9rem)] font-black leading-[1.15] tracking-[-.03em]">
@@ -3030,7 +3035,9 @@ function ShortFormResult({
                 </span>
               );
             })}
-            <h3 className="text-xl font-black tracking-[-.03em]">{clampWords(current.title, 10)}</h3>
+            <h3 className="text-xl font-black tracking-[-.03em]">
+              {clampWords(current.title, 10)}
+            </h3>
           </div>
           <span className="rounded-full bg-mist px-3 py-1.5 font-mono text-[9px] uppercase tracking-[.12em]">
             30–45 sec · vertical
@@ -3767,7 +3774,9 @@ function PublishPanel({
           ["Runs across", spanDays ? `${spanDays} days` : "—"],
           [
             "Starts",
-            first ? first.date.toLocaleDateString(undefined, { month: "short", day: "numeric" }) : "—",
+            first
+              ? first.date.toLocaleDateString(undefined, { month: "short", day: "numeric" })
+              : "—",
           ],
         ].map(([label, value]) => (
           <div key={label} className="rounded-[1.25rem] border border-border bg-white p-5">
@@ -3866,7 +3875,10 @@ function PublishPanel({
         style={{ background: lane.soft }}
       >
         <div>
-          <p className="font-mono text-[9px] uppercase tracking-[.17em]" style={{ color: lane.color }}>
+          <p
+            className="font-mono text-[9px] uppercase tracking-[.17em]"
+            style={{ color: lane.color }}
+          >
             Campaign ready
           </p>
           <p className="mt-2 text-lg font-black">Give the work dates and owners.</p>
@@ -4651,21 +4663,21 @@ function Library() {
             ].map((entry) => {
               const [value, label, count, Icon] = entry as [string, string, number, LucideIcon];
               return (
-              <button
-                key={String(value)}
-                onClick={() => setCollection(value as typeof collection)}
-                className={`flex min-w-44 items-center gap-3 rounded-[1.1rem] border p-3 text-left ${collection === value ? "border-evergreen bg-evergreen-soft" : "border-border"}`}
-              >
-                <span className="grid size-10 place-items-center rounded-xl bg-white">
-                  <Icon className="size-4" />
-                </span>
-                <span>
-                  <span className="block text-sm font-extrabold">{String(label)}</span>
-                  <span className="mt-1 block text-xs text-muted-foreground">
-                    {String(count)} assets
+                <button
+                  key={String(value)}
+                  onClick={() => setCollection(value as typeof collection)}
+                  className={`flex min-w-44 items-center gap-3 rounded-[1.1rem] border p-3 text-left ${collection === value ? "border-evergreen bg-evergreen-soft" : "border-border"}`}
+                >
+                  <span className="grid size-10 place-items-center rounded-xl bg-white">
+                    <Icon className="size-4" />
                   </span>
-                </span>
-              </button>
+                  <span>
+                    <span className="block text-sm font-extrabold">{String(label)}</span>
+                    <span className="mt-1 block text-xs text-muted-foreground">
+                      {String(count)} assets
+                    </span>
+                  </span>
+                </button>
               );
             })}
           </div>

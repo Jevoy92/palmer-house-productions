@@ -152,7 +152,7 @@ export function StudioStartHere() {
               <p className="mt-2 text-sm text-muted-foreground">
                 {allDone
                   ? "Everything on the setup list is done. Keep creating whenever you're ready."
-                  : "A few quick steps before starting to create."}
+                  : "Optional setup you can finish whenever you want. Nothing here blocks the content engine."}
               </p>
 
               <div className="mt-6 space-y-2">

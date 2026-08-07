@@ -68,6 +68,8 @@ type StudioContextValue = {
       industry?: string;
       website?: string;
       description?: string;
+      personalInterests?: string[];
+      personalStory?: string;
     },
   ) => Promise<void>;
   saveProfile: (values: Partial<Profile>) => Promise<void>;
@@ -316,6 +318,8 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       industry?: string;
       website?: string;
       description?: string;
+      personalInterests?: string[];
+      personalStory?: string;
     },
   ) {
     if (!session) throw new Error("Sign in first.");
@@ -348,6 +352,8 @@ export function StudioProvider({ children }: { children: ReactNode }) {
             industry: brandProfile.industry || "",
             website: brandProfile.website || "",
             description: brandProfile.description || "",
+            personal_interests: brandProfile.personalInterests || [],
+            personal_story: brandProfile.personalStory || "",
             brand_details: { initial_problem: brandProfile.initialProblem },
           })
           .eq("workspace_id", created.data.id);

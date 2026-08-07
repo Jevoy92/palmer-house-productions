@@ -34,7 +34,7 @@ export const ReelCarousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-  const autoPlayInterval = useRef<NodeJS.Timeout | null>(null);
+  const autoPlayInterval = useRef<ReturnType<typeof setTimeout> | null>(null);
   const goToPrevious = () => {
     setCurrentIndex(prev => prev === 0 ? reelItems.length - 1 : prev - 1);
   };

@@ -30,7 +30,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Log error to error tracking service in production
-    if (process.env.NODE_ENV === 'production') {
+    if (import.meta.env.PROD) {
       // TODO: Send to error tracking service (e.g., Sentry, LogRocket)
       // Example: logErrorToService(error, errorInfo);
     } else {
@@ -88,7 +88,7 @@ export class ErrorBoundary extends Component<Props, State> {
               </p>
 
               {/* Error Details (only in development) */}
-              {process.env.NODE_ENV === 'development' && this.state.error && (
+              {import.meta.env.DEV && this.state.error && (
                 <details className="mb-8 text-left bg-muted rounded-lg p-4">
                   <summary className="cursor-pointer font-semibold text-corporate-dark mb-2">
                     Technical Details (Development Only)

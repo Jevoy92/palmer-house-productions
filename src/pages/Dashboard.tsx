@@ -117,21 +117,17 @@ export default function Dashboard() {
           </Card>
 
           <SystemCompletionCard totalProgress={totalProgress} palProgress={palProgress} />
-          <HeroBanner favoritePal={favoritePal} onChangePal={() => setShowPalSelector(true)} />
+          <HeroBanner />
           <ToolProgressCards />
           <ContinueCreating />
         </div>
 
-        {showPalSelector && (
-          <PalAvatarSelector
-            currentPal={favoritePal}
-            onSelect={(pal) => {
-              setFavoritePal(pal);
-              setShowPalSelector(false);
-            }}
-            onClose={() => setShowPalSelector(false)}
-          />
-        )}
+        <PalAvatarSelector
+          open={showPalSelector}
+          onOpenChange={setShowPalSelector}
+          currentPal={favoritePal}
+          onPalChange={setFavoritePal}
+        />
       </DashboardLayout>
     </>
   );

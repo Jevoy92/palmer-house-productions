@@ -68,6 +68,7 @@ import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]
 import { Route as StudioCampaignsIndexRouteImport } from './routes/studio.campaigns.index'
 import { Route as StudioCampaignsCampaignIdRouteImport } from './routes/studio.campaigns.$campaignId'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
 const WorkRoute = WorkRouteImport.update({
   id: '/work',
@@ -368,6 +369,11 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -426,6 +432,7 @@ export interface FileRoutesByFullPath {
   '/studio/success': typeof StudioSuccessRoute
   '/blog/': typeof BlogIndexRoute
   '/studio/': typeof StudioIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
   '/studio/campaigns/': typeof StudioCampaignsIndexRoute
@@ -486,6 +493,7 @@ export interface FileRoutesByTo {
   '/studio/success': typeof StudioSuccessRoute
   '/blog': typeof BlogIndexRoute
   '/studio': typeof StudioIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
   '/studio/campaigns': typeof StudioCampaignsIndexRoute
@@ -548,6 +556,7 @@ export interface FileRoutesById {
   '/studio/success': typeof StudioSuccessRoute
   '/blog/': typeof BlogIndexRoute
   '/studio/': typeof StudioIndexRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
   '/studio/campaigns/': typeof StudioCampaignsIndexRoute
@@ -611,6 +620,7 @@ export interface FileRouteTypes {
     | '/studio/success'
     | '/blog/'
     | '/studio/'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/studio/campaigns/$campaignId'
     | '/studio/campaigns/'
@@ -671,6 +681,7 @@ export interface FileRouteTypes {
     | '/studio/success'
     | '/blog'
     | '/studio'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/studio/campaigns/$campaignId'
     | '/studio/campaigns'
@@ -732,6 +743,7 @@ export interface FileRouteTypes {
     | '/studio/success'
     | '/blog/'
     | '/studio/'
+    | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/studio/campaigns/$campaignId'
     | '/studio/campaigns/'
@@ -779,6 +791,7 @@ export interface RootRouteChildren {
   ServicesPostProductionRoute: typeof ServicesPostProductionRoute
   ServicesVideoProductionRoute: typeof ServicesVideoProductionRoute
   BlogIndexRoute: typeof BlogIndexRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
 }
 
@@ -1197,6 +1210,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1296,6 +1316,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesPostProductionRoute: ServicesPostProductionRoute,
   ServicesVideoProductionRoute: ServicesVideoProductionRoute,
   BlogIndexRoute: BlogIndexRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
 }
 export const routeTree = rootRouteImport

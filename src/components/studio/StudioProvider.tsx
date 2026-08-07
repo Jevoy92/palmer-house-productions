@@ -3,10 +3,12 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 import { toast } from "sonner";
 import {
   analyzeStudioContentSource,
+  analyzeStudioWebsite,
   askStudioPal,
   generateContentDirections,
   generateStudioCampaign,
 } from "@/lib/studio-server";
+import type { WebsiteBrandProfile } from "@/lib/studio-server";
 import type {
   AssistantResponse,
   CampaignOutput,
@@ -114,6 +116,8 @@ type StudioContextValue = {
   requestService: (requestType: string, notes: string, campaignId?: string) => Promise<void>;
   uploadBrandAsset: (file: File, kind?: string) => Promise<void>;
   addBrandReference: (kind: string, label: string, sourceUrl: string) => Promise<void>;
+  deleteCampaign: (id: string) => Promise<void>;
+  analyzeWebsite: (website: string) => Promise<WebsiteBrandProfile>;
   refresh: () => Promise<void>;
 };
 
@@ -802,6 +806,8 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     requestService,
     uploadBrandAsset,
     addBrandReference,
+    deleteCampaign,
+    analyzeWebsite,
     refresh,
   };
   return <StudioContext.Provider value={value}>{children}</StudioContext.Provider>;

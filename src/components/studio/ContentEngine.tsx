@@ -1124,6 +1124,68 @@ function SourceWorkbench({
   );
 }
 
+export function GenerationProgress({
+  steps,
+  color = "var(--spotlight)",
+  estimate = 18000,
+}: {
+  steps: string[];
+  color?: string;
+  estimate?: number;
+}) {
+  const [elapsed, setElapsed] = useState(0);
+
+  useEffect(() => {
+    const start = Date.now();
+    const timer = setInterval(() => setElapsed(Date.now() - start), 120);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Asymptotic fill: fast at first, never reaches 100 until the work returns.
+  const percent = Math.min(96, 100 * (1 - Math.exp(-elapsed / (estimate / 2.2))));
+  const activeIndex = Math.min(steps.length - 1, Math.floor((percent / 100) * steps.length));
+
+  return (
+    <div
+      className="mt-4 rounded-[1.25rem] border bg-white p-5"
+      style={{ borderColor: color }}
+      role="status"
+      aria-live="polite"
+    >
+      <div className="flex items-center justify-between gap-4">
+        <p className="text-sm font-extrabold">{steps[activeIndex]}</p>
+        <span className="font-mono text-[10px] uppercase tracking-[.18em] text-muted-foreground">
+          {Math.round(percent)}%
+        </span>
+      </div>
+      <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-border">
+        <div
+          className="h-full rounded-full transition-[width] duration-150 ease-out"
+          style={{ width: `${percent}%`, background: color }}
+        />
+      </div>
+      <div className="mt-4 space-y-1.5">
+        {steps.map((step, index) => (
+          <div
+            key={step}
+            className={`flex items-center gap-2 text-xs ${index <= activeIndex ? "font-bold text-ink" : "text-muted-foreground"}`}
+          >
+            {index < activeIndex ? (
+              <Check className="size-3.5 shrink-0" style={{ color }} />
+            ) : index === activeIndex ? (
+              <LoaderCircle className="size-3.5 shrink-0 animate-spin" style={{ color }} />
+            ) : (
+              <span className="size-3.5 shrink-0 rounded-full border border-border" />
+            )}
+            {step}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+
 function Progress({ stage }: { stage: "idea" | "directions" | "results" }) {
   const steps = [
     { key: "idea", label: "What do you need to say?" },

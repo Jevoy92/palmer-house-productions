@@ -791,10 +791,15 @@ function Onboarding() {
                   <button
                     disabled={busy || blocked}
                     onClick={async () => {
-                      if (step < 4) {
+                      if (step < 5) {
                         setStep((current) => current + 1);
                         return;
                       }
+                      setSetupStep(0);
+                      const ticker = setInterval(
+                        () => setSetupStep((current) => (current < 2 ? current + 1 : current)),
+                        1400,
+                      );
                       try {
                         await createWorkspace(name || "My Studio", {
                           creatorType,
@@ -803,6 +808,8 @@ function Onboarding() {
                           industry: industry.trim(),
                           website: website.trim(),
                           description: description.trim(),
+                          personalInterests: interests,
+                          personalStory: personalStory.trim(),
                         });
                         if (guidePick !== "none") {
                           try {
@@ -811,8 +818,16 @@ function Onboarding() {
                             // guide preference is not worth blocking workspace creation
                           }
                         }
-
+                        clearInterval(ticker);
+                        setSetupStep(3);
+                        try {
+                          window.localStorage.setItem("phs-studio-first-run", "1");
+                        } catch {
+                          // the tour is a nicety, not a requirement
+                        }
                       } catch (error) {
+                        clearInterval(ticker);
+                        setSetupStep(-1);
                         toast.error(
                           error instanceof Error ? error.message : "Could not create workspace.",
                         );
@@ -825,7 +840,7 @@ function Onboarding() {
                     }`}
                   >
                     {busy ? <LoaderCircle className="size-4 animate-spin" /> : null}
-                    {step === 4 ? "Open my Studio" : "Continue"}
+                    {step === 5 ? "Open my Studio" : "Continue"}
                     <ArrowRight className="size-5" />
                   </button>
                 </div>

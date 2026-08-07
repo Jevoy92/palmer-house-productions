@@ -890,12 +890,7 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
           <MessageSquareText className="size-4" />
           <span className="hidden md:inline">Ask a Pal</span>
         </button>
-        <button
-          aria-label="Notifications"
-          className="ml-2 grid size-11 shrink-0 place-items-center rounded-full border border-border"
-        >
-          <Bell className="size-4" />
-        </button>
+        <StudioNotifications />
         <button
           aria-label="Create something new"
           onClick={() => setCreateOpen(true)}

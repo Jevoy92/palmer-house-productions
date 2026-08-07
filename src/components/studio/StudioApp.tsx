@@ -4365,7 +4365,7 @@ function BrandStudio() {
       });
       toast.success("Brand memory updated.");
       if (completion >= 100) {
-        celebrateOnce(`brand.${workspace?.id ?? "current"}`, {
+        celebrateOnce(`brand.${brand?.workspace_id ?? "current"}`, {
           title: "Brand DNA complete.",
           detail: "Every Pal and every tool now writes in your voice.",
           colors: ["#3d1a66", "#5b8a2d"],

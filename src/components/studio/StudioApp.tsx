@@ -6060,11 +6060,28 @@ function SettingsView() {
                     <p className="mt-2 text-sm text-muted-foreground">
                       {user?.email || "Account email unavailable"}
                     </p>
+                    <p className="mt-3 text-[10px] uppercase tracking-[.1em] text-muted-foreground">
+                      Signed in with{" "}
+                      {user?.app_metadata?.provider === "google" ? "Google" : "email & password"}
+                    </p>
                   </div>
                   <button onClick={() => void save()} className="primary-action sm:col-span-2">
                     <Check className="size-4" /> Save account
                   </button>
+                  <div className="border-t border-border pt-5 sm:col-span-2">
+                    <p className="text-sm font-extrabold">Session</p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Signing out clears this Studio session on this device.
+                    </p>
+                    <button
+                      onClick={() => void signOut()}
+                      className="mt-4 flex min-h-11 items-center gap-2 rounded-xl border border-border px-4 text-sm font-bold transition hover:border-spotlight hover:bg-spotlight-soft"
+                    >
+                      <LogOut className="size-4" /> Sign out
+                    </button>
+                  </div>
                 </div>
+
               </div>
             ) : null}
           </section>

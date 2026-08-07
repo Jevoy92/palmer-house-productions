@@ -20,6 +20,8 @@ export type PalProfile = {
   intro: string;
   /** Contextual hints keyed by studio surface. */
   tips: Record<string, string>;
+  /** First-run note this Pal leaves in the member's notifications. */
+  welcome: string;
 };
 
 const laneTokens: Record<StudioLane, { color: string; soft: string; label: string }> = {
@@ -46,8 +48,9 @@ function build(
   avatar: string,
   intro: string,
   tips: Record<string, string>,
+  welcome: string,
 ): PalProfile {
-  return { key, name, role, lane, avatar, ...laneTokens[lane], intro, tips };
+  return { key, name, role, lane, avatar, ...laneTokens[lane], intro, tips, welcome };
 }
 
 export const palDirectory: Record<PalName, PalProfile> = {

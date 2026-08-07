@@ -48,6 +48,7 @@ import {
   ShieldCheck,
   Sparkles,
   Target,
+  Trash2,
   UserPlus,
   Users,
   Video,

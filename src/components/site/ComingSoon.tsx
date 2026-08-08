@@ -28,12 +28,14 @@ export function ComingSoon() {
             Palmer House Productions · Building something better
           </p>
           <h1 className="mt-6 max-w-3xl text-5xl font-black leading-[.95] tracking-[-.06em] sm:text-7xl">
-            We're heads-down building new features.
+            Video systems and content software for growing businesses.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            Our website is taking a short break while our team ships the next version of the Palmer
-            House content system. The Studio — where members plan, create, and schedule their video
-            content — is open and running as usual.
+            Palmer House Productions is a Pacific Northwest video production company. We shoot and
+            edit video for businesses, and we operate Palmer House Studio — a web app where members
+            plan campaigns, generate scripts, blogs, and social posts from their brand profile, and
+            schedule it all on a content calendar. Our marketing site is briefly offline while our
+            team ships new features; the Studio is open and running as usual.
           </p>
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">

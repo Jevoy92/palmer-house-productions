@@ -822,6 +822,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     signIn,
     signUp,
     sendMagicLink,
+    resetPassword,
     signOut,
     createWorkspace,
     saveProfile,

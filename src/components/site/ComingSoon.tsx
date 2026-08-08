@@ -28,12 +28,14 @@ export function ComingSoon() {
             Palmer House Productions · Building something better
           </p>
           <h1 className="mt-6 max-w-3xl text-5xl font-black leading-[.95] tracking-[-.06em] sm:text-7xl">
-            We're heads-down building new features.
+            Video systems and content software for growing businesses.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            Our website is taking a short break while our team ships the next version of the Palmer
-            House content system. The Studio — where members plan, create, and schedule their video
-            content — is open and running as usual.
+            Palmer House Productions is a Pacific Northwest video production company. We shoot and
+            edit video for businesses, and we operate Palmer House Studio — a web app where members
+            plan campaigns, generate scripts, blogs, and social posts from their brand profile, and
+            schedule it all on a content calendar. Our marketing site is briefly offline while our
+            team ships new features; the Studio is open and running as usual.
           </p>
 
           <div className="mt-10 flex flex-col gap-3 sm:flex-row">
@@ -80,6 +82,53 @@ export function ComingSoon() {
             </div>
           ))}
         </div>
+
+        <section className="rounded-[1.25rem] border border-border p-6 sm:p-8">
+          <h2 className="text-2xl font-black tracking-[-.04em] sm:text-3xl">
+            What Palmer House Studio does
+          </h2>
+          <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted-foreground">
+            Palmer House Studio is the web application we operate at
+            palmerhouseproductions.com/studio. Business owners create an account, describe their
+            brand, and use our tools to plan a video and content program: generating campaign
+            strategy, video scripts, blog articles, and social posts, then organizing them on a
+            content calendar for approval and scheduling.
+          </p>
+          <ul className="mt-6 grid gap-3 text-sm leading-relaxed text-muted-foreground sm:grid-cols-2">
+            <li className="rounded-[1rem] border border-border p-4">
+              <span className="font-bold text-ink">Brand profile.</span> Members save their
+              industry, audience, voice, and story so everything generated sounds like them.
+            </li>
+            <li className="rounded-[1rem] border border-border p-4">
+              <span className="font-bold text-ink">Content engine.</span> One idea becomes a short
+              video script, a long-form script, a blog article, and platform-ready posts.
+            </li>
+            <li className="rounded-[1rem] border border-border p-4">
+              <span className="font-bold text-ink">Calendar and approvals.</span> Members schedule
+              what they've made and track what's approved and published.
+            </li>
+            <li className="rounded-[1rem] border border-border p-4">
+              <span className="font-bold text-ink">Production services.</span> Alongside the app,
+              our team shoots and edits video for Pacific Northwest businesses.
+            </li>
+          </ul>
+          <h3 className="mt-8 text-lg font-black tracking-[-.03em]">Why we ask to sign in with Google</h3>
+          <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+            Signing in with Google is an optional way to create and access a Palmer House Studio
+            account. We request only your basic profile and email address so we can identify your
+            account and contact you about it. We never access Gmail, Drive, Calendar, contacts, or
+            any other Google data, and we never sell your information.
+          </p>
+          <p className="mt-6 text-sm">
+            <Link to="/privacy" className="font-bold text-ink underline">
+              Privacy Policy
+            </Link>
+            <span className="px-2 text-muted-foreground">·</span>
+            <Link to="/terms" className="font-bold text-ink underline">
+              Terms of Service
+            </Link>
+          </p>
+        </section>
       </section>
 
       <footer className="mx-auto max-w-5xl border-t border-border pt-6 text-xs text-muted-foreground">

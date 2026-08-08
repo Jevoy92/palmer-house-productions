@@ -58,6 +58,7 @@ type StudioContextValue = {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (fullName: string, email: string, password: string) => Promise<string>;
   sendMagicLink: (email: string) => Promise<void>;
+  resetPassword: (email: string) => Promise<void>;
   signOut: () => Promise<void>;
   createWorkspace: (
     name: string,
@@ -302,6 +303,14 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     const result = await supabase.auth.signInWithOtp({
       email,
       options: { emailRedirectTo: `${window.location.origin}/studio` },
+    });
+    setBusy(false);
+    if (result.error) throw result.error;
+  }
+  async function resetPassword(email: string) {
+    setBusy(true);
+    const result = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
     });
     setBusy(false);
     if (result.error) throw result.error;
@@ -813,6 +822,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     signIn,
     signUp,
     sendMagicLink,
+    resetPassword,
     signOut,
     createWorkspace,
     saveProfile,

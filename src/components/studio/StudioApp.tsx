@@ -265,36 +265,169 @@ function StudioLoading() {
   );
 }
 
+function googleMessage(error: unknown) {
+  const raw = error instanceof Error ? error.message : String(error ?? "");
+  const text = raw.toLowerCase();
+  if (text.includes("popup") && (text.includes("block") || text.includes("closed"))) {
+    return "Your browser blocked the Google window. Allow pop-ups for this site, or use the email link option below.";
+  }
+  if (text.includes("closed") || text.includes("cancel") || text.includes("abort")) {
+    return "The Google window closed before sign-in finished. Try again, or use the email link option below.";
+  }
+  if (text.includes("unsupported provider") || text.includes("provider is not enabled")) {
+    return "Google sign-in is not switched on for this site yet. Use the email link option below and we will get it fixed.";
+  }
+  if (text.includes("network") || text.includes("fetch")) {
+    return "We could not reach Google. Check your connection and try again.";
+  }
+  return raw
+    ? `Google sign-in did not finish: ${raw}. You can also use the email link option below.`
+    : "Google sign-in did not finish. You can also use the email link option below.";
+}
+
+async function waitForSession(timeoutMs = 8000) {
+  const { supabase } = await import("@/lib/supabase/client");
+  const started = Date.now();
+  while (Date.now() - started < timeoutMs) {
+    const { data } = await supabase.auth.getSession();
+    if (data.session) return true;
+    await new Promise((resolve) => setTimeout(resolve, 250));
+  }
+  return false;
+}
+
+type AuthNotice = { tone: "info" | "error" | "success"; text: string };
+
 function AuthExperience() {
-  const { signIn, signUp, sendMagicLink, busy } = useStudio();
+  const { signIn, signUp, sendMagicLink, resetPassword, busy } = useStudio();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
-  const [notice, setNotice] = useState("");
-  async function submit(event: FormEvent<HTMLFormElement>) {
+  const [method, setMethod] = useState<"password" | "link">("password");
+  const [notice, setNotice] = useState<AuthNotice | null>(null);
+  const [googleBusy, setGoogleBusy] = useState(false);
+  const [linkBusy, setLinkBusy] = useState(false);
+  const [resetBusy, setResetBusy] = useState(false);
+  const [email, setEmail] = useState("");
+  const [sentTo, setSentTo] = useState("");
+
+  async function continueWithGoogle() {
+    setNotice(null);
+    setGoogleBusy(true);
+    try {
+      const { lovable } = await import("@/integrations/lovable/index");
+      const result = await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin,
+        extraParams: { prompt: "select_account" },
+      });
+      if (result.redirected) return;
+      if (result.error) {
+        setGoogleBusy(false);
+        setNotice({ tone: "error", text: googleMessage(result.error) });
+        return;
+      }
+      const ready = await waitForSession();
+      if (!ready) {
+        setGoogleBusy(false);
+        setNotice({
+          tone: "error",
+          text: "Google signed you in, but your studio did not open. Refresh this page, or use the email link option below.",
+        });
+        return;
+      }
+      if (!window.location.pathname.startsWith("/studio")) {
+        window.location.assign("/studio");
+        return;
+      }
+      setNotice({ tone: "success", text: "Signed in. Opening your studio…" });
+    } catch (error) {
+      setGoogleBusy(false);
+      setNotice({ tone: "error", text: googleMessage(error) });
+    }
+  }
+
+  async function submitPassword(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
+    const address = String(form.get("email") || "").trim();
+    setNotice(null);
     try {
-      if (mode === "signup")
-        setNotice(
-          await signUp(
-            String(form.get("name")),
-            String(form.get("email")),
-            String(form.get("password")),
-          ),
+      if (mode === "signup") {
+        const message = await signUp(
+          String(form.get("name") || "").trim(),
+          address,
+          String(form.get("password") || ""),
         );
-      else await signIn(String(form.get("email")), String(form.get("password")));
+        setNotice({ tone: "success", text: message });
+      } else {
+        await signIn(address, String(form.get("password") || ""));
+      }
     } catch (error) {
-      setNotice(error instanceof Error ? error.message : "That did not work. Please try again.");
+      const raw = error instanceof Error ? error.message : "That did not work. Please try again.";
+      setNotice({
+        tone: "error",
+        text: /invalid login credentials/i.test(raw)
+          ? "That email and password did not match. Try again, use a sign-in link, or reset your password."
+          : raw,
+      });
     }
   }
-  async function magic(event: FormEvent<HTMLFormElement>) {
+
+  async function submitLink(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const address = email.trim();
+    if (!address) return;
+    setNotice(null);
+    setLinkBusy(true);
     try {
-      await sendMagicLink(String(new FormData(event.currentTarget).get("email")));
-      setNotice("Magic link sent. Check your email.");
+      await sendMagicLink(address);
+      setSentTo(address);
+      setNotice({
+        tone: "success",
+        text: `Check your inbox — we sent a secure sign-in link to ${address}. It opens your studio automatically.`,
+      });
     } catch (error) {
-      setNotice(error instanceof Error ? error.message : "That did not work.");
+      setNotice({
+        tone: "error",
+        text: error instanceof Error ? error.message : "We could not send that link. Try again.",
+      });
+    } finally {
+      setLinkBusy(false);
     }
   }
+
+  async function requestReset() {
+    const address = email.trim();
+    if (!address) {
+      setNotice({
+        tone: "info",
+        text: "Enter your email address above first, then tap “Forgot password?” again.",
+      });
+      return;
+    }
+    setNotice(null);
+    setResetBusy(true);
+    try {
+      await resetPassword(address);
+      setNotice({
+        tone: "success",
+        text: `We sent a password reset link to ${address}. Open it to choose a new password.`,
+      });
+    } catch (error) {
+      setNotice({
+        tone: "error",
+        text: error instanceof Error ? error.message : "We could not send that reset email.",
+      });
+    } finally {
+      setResetBusy(false);
+    }
+  }
+
+  const noticeClass =
+    notice?.tone === "error"
+      ? "border-reel bg-reel-soft text-reel"
+      : notice?.tone === "success"
+        ? "border-evergreen bg-evergreen-soft text-evergreen"
+        : "border-system bg-system-soft text-system";
+
   return (
     <main className="min-h-screen bg-white px-4 py-5 sm:px-7 lg:px-10 lg:py-7">
       <header className="mx-auto flex max-w-[96rem] items-center justify-between">
@@ -316,60 +449,46 @@ function AuthExperience() {
 
         <section className="mx-auto w-full max-w-[31rem] lg:mx-0">
           <p className="studio-eyebrow text-spotlight">Your content operating system</p>
-          <h1 className="mt-5 text-[clamp(2.75rem,5vw,4.4rem)] font-black leading-[.94] tracking-[-.065em]">
+          <h1 className="mt-5 text-[clamp(2.5rem,4.6vw,4rem)] font-black leading-[.94] tracking-[-.065em]">
             {mode === "signin"
               ? "Welcome back. Let’s keep building."
               : "One useful idea can become a system."}
           </h1>
           <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground">
             {mode === "signin"
-              ? "Sign in to keep your brand memory, campaigns, calendar, and team moving together."
+              ? "Choose whichever sign-in is easiest for you. They all open the same studio."
               : "Create the private workspace where your ideas become campaigns your audience can use."}
           </p>
 
           <button
             type="button"
-            onClick={async () => {
-              setNotice("");
-              try {
-                const { lovable } = await import("@/integrations/lovable/index");
-                const result = await lovable.auth.signInWithOAuth("google", {
-                  redirect_uri: window.location.origin,
-                  extraParams: { prompt: "select_account" },
-                });
-                if (result.error) {
-                  setNotice("Google sign-in did not work. Please try again.");
-                  return;
-                }
-                if (result.redirected) return;
-                // Session is set on the generated client; reload so the Studio
-                // provider picks it up from storage.
-                window.location.assign("/studio");
-              } catch {
-                setNotice("Google sign-in did not work. Please try again.");
-              }
-            }}
-            className="mt-9 flex min-h-13 w-full items-center justify-center gap-3 rounded-xl border border-ink px-5 font-bold transition hover:bg-spotlight-soft"
+            onClick={() => void continueWithGoogle()}
+            disabled={googleBusy}
+            className="mt-8 flex min-h-13 w-full items-center justify-center gap-3 rounded-xl border border-ink px-5 font-bold transition hover:bg-spotlight-soft disabled:opacity-60"
           >
-            <svg viewBox="0 0 24 24" className="size-5" aria-hidden="true">
-              <path
-                fill="#4285F4"
-                d="M23.5 12.27c0-.79-.07-1.54-.2-2.27H12v4.3h6.45a5.52 5.52 0 0 1-2.4 3.62v3h3.88c2.27-2.09 3.57-5.17 3.57-8.65Z"
-              />
-              <path
-                fill="#34A853"
-                d="M12 24c3.24 0 5.96-1.08 7.94-2.92l-3.88-3c-1.08.72-2.45 1.15-4.06 1.15-3.12 0-5.77-2.11-6.71-4.95H1.28v3.09A12 12 0 0 0 12 24Z"
-              />
-              <path
-                fill="#FBBC05"
-                d="M5.29 14.28a7.2 7.2 0 0 1 0-4.56V6.63H1.28a12 12 0 0 0 0 10.74l4.01-3.09Z"
-              />
-              <path
-                fill="#EA4335"
-                d="M12 4.75c1.76 0 3.34.61 4.59 1.8l3.44-3.44C17.95 1.18 15.23 0 12 0A12 12 0 0 0 1.28 6.63l4.01 3.09C6.23 6.86 8.88 4.75 12 4.75Z"
-              />
-            </svg>
-            Continue with Google
+            {googleBusy ? (
+              <LoaderCircle className="size-5 animate-spin" />
+            ) : (
+              <svg viewBox="0 0 24 24" className="size-5" aria-hidden="true">
+                <path
+                  fill="#4285F4"
+                  d="M23.5 12.27c0-.79-.07-1.54-.2-2.27H12v4.3h6.45a5.52 5.52 0 0 1-2.4 3.62v3h3.88c2.27-2.09 3.57-5.17 3.57-8.65Z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12 24c3.24 0 5.96-1.08 7.94-2.92l-3.88-3c-1.08.72-2.45 1.15-4.06 1.15-3.12 0-5.77-2.11-6.71-4.95H1.28v3.09A12 12 0 0 0 12 24Z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M5.29 14.28a7.2 7.2 0 0 1 0-4.56V6.63H1.28a12 12 0 0 0 0 10.74l4.01-3.09Z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M12 4.75c1.76 0 3.34.61 4.59 1.8l3.44-3.44C17.95 1.18 15.23 0 12 0A12 12 0 0 0 1.28 6.63l4.01 3.09C6.23 6.86 8.88 4.75 12 4.75Z"
+                />
+              </svg>
+            )}
+            {googleBusy ? "Opening Google…" : "Continue with Google"}
           </button>
 
           <div className="mt-6 flex items-center gap-3 text-xs font-bold uppercase tracking-[.18em] text-muted-foreground">
@@ -377,43 +496,113 @@ function AuthExperience() {
             <span className="h-px flex-1 bg-border" />
           </div>
 
-          <form onSubmit={submit} className="mt-6 space-y-5">
-            {mode === "signup" ? (
-              <Field name="name" label="Your name" placeholder="Jevoy Palmer" required />
-            ) : null}
-            <Field
-              name="email"
-              label="Email address"
-              type="email"
-              placeholder="you@company.com"
-              autoComplete="email"
-              required
-            />
-            <Field
-              name="password"
-              label="Password"
-              type="password"
-              placeholder="At least 8 characters"
-              autoComplete={mode === "signin" ? "current-password" : "new-password"}
-              minLength={8}
-              required
-            />
-            <button
-              disabled={busy}
-              className="flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 font-bold text-white transition hover:bg-ink disabled:opacity-50"
-            >
-              {busy ? <LoaderCircle className="size-4 animate-spin" /> : null}
-              {mode === "signin" ? "Sign in" : "Create my Studio"}
-              <ArrowRight className="size-4" />
-            </button>
-          </form>
+          <div
+            className="mt-5 grid grid-cols-2 gap-2 rounded-2xl border border-border p-1"
+            role="tablist"
+            aria-label="Email sign-in method"
+          >
+            {(
+              [
+                ["password", "Email + password"],
+                ["link", "Email me a link"],
+              ] as const
+            ).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                role="tab"
+                aria-selected={method === value}
+                onClick={() => {
+                  setMethod(value);
+                  setNotice(null);
+                }}
+                className={`min-h-11 rounded-xl px-3 text-sm font-bold transition ${
+                  method === value
+                    ? "bg-ink text-white"
+                    : "text-muted-foreground hover:bg-spotlight-soft"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+
+          {method === "password" ? (
+            <form onSubmit={submitPassword} className="mt-6 space-y-5">
+              {mode === "signup" ? (
+                <Field name="name" label="Your name" placeholder="Jevoy Palmer" required />
+              ) : null}
+              <Field
+                name="email"
+                label="Email address"
+                type="email"
+                placeholder="you@company.com"
+                autoComplete="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
+              />
+              <Field
+                name="password"
+                label="Password"
+                type="password"
+                placeholder="At least 8 characters"
+                autoComplete={mode === "signin" ? "current-password" : "new-password"}
+                minLength={8}
+                required
+              />
+              <button
+                disabled={busy}
+                className="flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 font-bold text-white transition hover:bg-ink disabled:opacity-50"
+              >
+                {busy ? <LoaderCircle className="size-4 animate-spin" /> : null}
+                {mode === "signin" ? "Sign in" : "Create my Studio"}
+                <ArrowRight className="size-4" />
+              </button>
+              {mode === "signin" ? (
+                <button
+                  type="button"
+                  onClick={() => void requestReset()}
+                  disabled={resetBusy}
+                  className="text-sm font-bold text-spotlight underline decoration-spotlight/30 underline-offset-4 disabled:opacity-60"
+                >
+                  {resetBusy ? "Sending reset link…" : "Forgot password?"}
+                </button>
+              ) : null}
+            </form>
+          ) : (
+            <form onSubmit={submitLink} className="mt-6 space-y-4">
+              <Field
+                name="email"
+                label="Email address"
+                type="email"
+                placeholder="you@company.com"
+                autoComplete="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                required
+              />
+              <button
+                disabled={linkBusy}
+                className="flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 font-bold text-white transition hover:bg-ink disabled:opacity-50"
+              >
+                {linkBusy ? (
+                  <LoaderCircle className="size-4 animate-spin" />
+                ) : (
+                  <Mail className="size-4" />
+                )}
+                {sentTo && sentTo === email.trim() ? "Send another link" : "Email me a sign-in link"}
+              </button>
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                No password needed. We email you a secure link — tap it on any device and your studio
+                opens.
+              </p>
+            </form>
+          )}
 
           {notice ? (
-            <p
-              role="status"
-              className="mt-4 rounded-xl border border-system bg-system-soft p-4 text-sm text-system"
-            >
-              {notice}
+            <p role="status" className={`mt-4 rounded-xl border p-4 text-sm ${noticeClass}`}>
+              {notice.text}
             </p>
           ) : null}
 
@@ -421,7 +610,8 @@ function AuthExperience() {
             <button
               onClick={() => {
                 setMode(mode === "signin" ? "signup" : "signin");
-                setNotice("");
+                setMethod("password");
+                setNotice(null);
               }}
               className="font-bold text-spotlight underline decoration-spotlight/30 underline-offset-4"
             >
@@ -430,25 +620,6 @@ function AuthExperience() {
                 : "Already have an account? Sign in"}
             </button>
           </div>
-
-          <details className="mt-6 rounded-xl border border-border p-4">
-            <summary className="cursor-pointer text-sm font-bold">
-              Prefer a password-free sign in?
-            </summary>
-            <form onSubmit={magic} className="mt-4 flex flex-col gap-2 sm:flex-row">
-              <input
-                name="email"
-                type="email"
-                required
-                aria-label="Email for magic link"
-                placeholder="Email for a secure sign-in link"
-                className="min-h-12 min-w-0 flex-1 rounded-xl border border-border px-4 text-sm"
-              />
-              <button className="min-h-12 rounded-xl border border-ink px-4 text-sm font-bold">
-                Email me a link
-              </button>
-            </form>
-          </details>
 
           <div className="mt-7 flex items-start gap-3 border-t border-dashed border-border pt-6">
             <ShieldCheck className="mt-0.5 size-5 text-evergreen" />
@@ -462,6 +633,7 @@ function AuthExperience() {
           </div>
         </section>
       </div>
+
 
       <section className="mx-auto grid max-w-[90rem] gap-5 rounded-[1.25rem] border border-border p-5 md:grid-cols-[1.4fr_repeat(4,1fr)] md:items-center">
         <p className="text-xl font-extrabold leading-tight">

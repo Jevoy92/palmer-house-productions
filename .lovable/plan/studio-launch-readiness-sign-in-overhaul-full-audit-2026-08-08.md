@@ -13,6 +13,7 @@ Additionally, the magic link is buried, and there is no visible confirmation of 
 ## What we will build
 
 ### 1. Rebuilt sign-in experience
+
 - Three clear options, all equally visible: **Continue with Google**, **Email me a sign-in link** (magic link promoted out of the hidden disclosure), and **Email + password**.
 - Real error messages for Google, mapped to plain language ("Popup was blocked — allow popups and try again", "That account isn't connected yet", etc.), plus a fallback prompt to use the email link instead.
 - Replace the blind reload with a session-confirmed navigation: wait for the auth session to be present, then route into the Studio. No more "clicked and nothing happened".
@@ -21,12 +22,15 @@ Additionally, the magic link is buried, and there is no visible confirmation of 
 - Loading and disabled states on every button so a click always produces visible feedback.
 
 ### 2. Auth configuration verification
+
 - Confirm the Google provider is enabled and using managed credentials.
 - Confirm email sign-up settings (confirmation currently off) and that the email sender domain is healthy so magic links and resets actually land.
 - Verify sign-in works on the published custom domain, not just preview.
 
 ### 3. Full Studio functional test pass
+
 Drive the running app end-to-end and report pass/fail on each:
+
 - Sign up fresh → onboarding (guide pick, industry, website, hobbies) → workspace created
 - Brand DNA save, suggestions, reroll, brand guide preview
 - Content Engine: generate campaign → all tabs populated (short form, long form 1000+ words, blog body, platform posts)
@@ -39,6 +43,7 @@ Drive the running app end-to-end and report pass/fail on each:
 - Credits deduction and low-balance handling
 
 ### 4. Report
+
 A written summary of what passed, what was fixed, and anything that still needs a decision or action from you.
 
 ## Technical notes
@@ -50,5 +55,5 @@ A written summary of what passed, what was fixed, and anything that still needs 
 
 ## What I may need from you
 
-- Confirmation that email confirmation should stay **off** for launch (fastest sign-up, no inbox dependency).
+- Confirmation that email confirmation should stay **off** for launch (fastest sign-up, no inbox dependency). - Me confirming yes for now. 
 - If Google sign-in should show "Palmer House" instead of Lovable on the consent screen, that requires your own Google Cloud OAuth credentials — I can flag it as a follow-up rather than block launch.

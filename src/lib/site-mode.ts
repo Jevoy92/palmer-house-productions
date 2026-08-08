@@ -12,6 +12,7 @@ export const SITE_MAINTENANCE = true;
 
 const ALWAYS_ON_PREFIXES = [
   "/studio",
+  "/reset-password",
   "/api",
   "/mcp",
   "/.well-known",

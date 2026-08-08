@@ -18,6 +18,7 @@ import { Route as StudioRouteImport } from './routes/studio'
 import { Route as StartupsRouteImport } from './routes/startups'
 import { Route as SpotlightPalRouteImport } from './routes/spotlight-pal'
 import { Route as ShopRouteImport } from './routes/shop'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ReelPalRouteImport } from './routes/reel-pal'
 import { Route as ProductionPricingRouteImport } from './routes/production-pricing'
 import { Route as ProductionGuideRouteImport } from './routes/production-guide'
@@ -114,6 +115,11 @@ const SpotlightPalRoute = SpotlightPalRouteImport.update({
 const ShopRoute = ShopRouteImport.update({
   id: '/shop',
   path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ReelPalRoute = ReelPalRouteImport.update({
@@ -404,6 +410,7 @@ export interface FileRoutesByFullPath {
   '/production-guide': typeof ProductionGuideRoute
   '/production-pricing': typeof ProductionPricingRoute
   '/reel-pal': typeof ReelPalRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
   '/spotlight-pal': typeof SpotlightPalRoute
   '/startups': typeof StartupsRoute
@@ -467,6 +474,7 @@ export interface FileRoutesByTo {
   '/production-guide': typeof ProductionGuideRoute
   '/production-pricing': typeof ProductionPricingRoute
   '/reel-pal': typeof ReelPalRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
   '/spotlight-pal': typeof SpotlightPalRoute
   '/startups': typeof StartupsRoute
@@ -530,6 +538,7 @@ export interface FileRoutesById {
   '/production-guide': typeof ProductionGuideRoute
   '/production-pricing': typeof ProductionPricingRoute
   '/reel-pal': typeof ReelPalRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/shop': typeof ShopRoute
   '/spotlight-pal': typeof SpotlightPalRoute
   '/startups': typeof StartupsRoute
@@ -595,6 +604,7 @@ export interface FileRouteTypes {
     | '/production-guide'
     | '/production-pricing'
     | '/reel-pal'
+    | '/reset-password'
     | '/shop'
     | '/spotlight-pal'
     | '/startups'
@@ -658,6 +668,7 @@ export interface FileRouteTypes {
     | '/production-guide'
     | '/production-pricing'
     | '/reel-pal'
+    | '/reset-password'
     | '/shop'
     | '/spotlight-pal'
     | '/startups'
@@ -720,6 +731,7 @@ export interface FileRouteTypes {
     | '/production-guide'
     | '/production-pricing'
     | '/reel-pal'
+    | '/reset-password'
     | '/shop'
     | '/spotlight-pal'
     | '/startups'
@@ -784,6 +796,7 @@ export interface RootRouteChildren {
   ProductionGuideRoute: typeof ProductionGuideRoute
   ProductionPricingRoute: typeof ProductionPricingRoute
   ReelPalRoute: typeof ReelPalRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ShopRoute: typeof ShopRoute
   SpotlightPalRoute: typeof SpotlightPalRoute
   StartupsRoute: typeof StartupsRoute
@@ -872,6 +885,13 @@ declare module '@tanstack/react-router' {
       path: '/shop'
       fullPath: '/shop'
       preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/reel-pal': {
@@ -1316,6 +1336,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProductionGuideRoute: ProductionGuideRoute,
   ProductionPricingRoute: ProductionPricingRoute,
   ReelPalRoute: ReelPalRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   ShopRoute: ShopRoute,
   SpotlightPalRoute: SpotlightPalRoute,
   StartupsRoute: StartupsRoute,

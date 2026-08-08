@@ -20,6 +20,9 @@ const ALWAYS_ON_PREFIXES = [
   "/.mcp",
   "/lovable",
   "/email/unsubscribe",
+  // Legal pages must stay reachable for Google OAuth consent verification.
+  "/privacy",
+  "/terms",
 ];
 
 export function isAlwaysOnPath(pathname: string) {

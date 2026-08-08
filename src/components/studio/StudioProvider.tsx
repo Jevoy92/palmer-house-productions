@@ -307,6 +307,14 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     setBusy(false);
     if (result.error) throw result.error;
   }
+  async function resetPassword(email: string) {
+    setBusy(true);
+    const result = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setBusy(false);
+    if (result.error) throw result.error;
+  }
   async function signOut() {
     await supabase.auth.signOut();
   }

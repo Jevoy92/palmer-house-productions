@@ -4673,6 +4673,16 @@ function BrandStudio() {
   const sourceMark = (key: DraftKey) =>
     fromWebsite.has(key) ? "From your website" : undefined;
 
+  // A scrape that says "no photography found" is not a filled field.
+  function hasSubstance(value?: string | null) {
+    const text = (value || "").trim();
+    if (text.length < 3) return false;
+    const lowered = text.toLowerCase();
+    return !/^(n\/a|none|unknown|not (defined|specified|supplied|available|stated|found)|no (prominent |obvious |clear |real |visible )?(photography|photos?|images?|imagery|image style|visual|visuals)\b)/.test(
+      lowered,
+    );
+  }
+
   async function pullFromWebsite() {
     const target = intakeUrl.trim();
     if (!target) return;

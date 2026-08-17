@@ -4686,7 +4686,7 @@ function BrandStudio() {
       setIntakeStep(3);
       const filled = new Set<string>();
       const apply = (key: DraftKey, value: string) => {
-        if (!value?.trim()) return;
+        if (!hasSubstance(value)) return;
         filled.add(key);
         setDraft((current) => ({ ...current, [key]: value.trim() }));
       };

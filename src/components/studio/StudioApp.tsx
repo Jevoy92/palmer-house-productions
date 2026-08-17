@@ -98,6 +98,7 @@ import { StudioAssistant } from "./StudioAssistant";
 import { VideoRoadmap } from "./VideoRoadmap";
 import { MemberSuccess } from "./MemberSuccess";
 import { platformInfo } from "./PlatformIcons";
+import { AssetIllustration } from "./AssetIllustration";
 import { GuidedText, GuidedList, GuidedTags, GuidedSelect } from "./GuidedField";
 import { brandSuggestions } from "@/lib/brand-suggestions";
 

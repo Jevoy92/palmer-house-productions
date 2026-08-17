@@ -1949,11 +1949,19 @@ function Dashboard() {
                   className="group overflow-hidden border border-border bg-white"
                 >
                   <span className="relative block aspect-[4/3] overflow-hidden bg-secondary">
-                    <img
-                      src={assetMediaUrl(asset)}
-                      alt=""
-                      className="size-full object-cover transition duration-500 group-hover:scale-105"
-                    />
+                    {assetMediaUrl(asset) ? (
+                      <img
+                        src={assetMediaUrl(asset)}
+                        alt=""
+                        className="size-full object-cover transition duration-500 group-hover:scale-105"
+                      />
+                    ) : (
+                      <AssetIllustration
+                        kind={asset.kind}
+                        title={asset.title}
+                        className="size-full transition duration-500 group-hover:scale-105"
+                      />
+                    )}
                     {(() => {
                       const meta = assetKindMeta(asset.kind);
                       return (

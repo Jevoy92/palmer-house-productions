@@ -8,7 +8,7 @@
  * To bring the full website back: set SITE_MAINTENANCE to false.
  * Nothing else needs to change — all routes are untouched.
  */
-export const SITE_MAINTENANCE = true;
+export const SITE_MAINTENANCE = false;
 
 const ALWAYS_ON_PREFIXES = [
   "/studio",

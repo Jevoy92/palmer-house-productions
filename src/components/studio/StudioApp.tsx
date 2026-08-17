@@ -1611,102 +1611,141 @@ function Dashboard() {
   const ready = assets.filter((asset) => asset.status === "approved").length;
   const review = assets.filter((asset) => asset.status === "review").length;
   const scheduled = calendar.filter((item) => item.status !== "published").length;
-  const briefing =
-    (brand?.completion || 0) < 80
+  const brandCompletion = brand?.completion || 0;
+  const activeCampaigns = campaigns.filter((campaign) => campaign.status !== "archived");
+
+  const today = new Date().toLocaleDateString(undefined, {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+
+  // Progressive disclosure: only genuine, state-derived items reach the attention stack.
+  const attention = [
+    review > 0
       ? {
-          title: "One stronger Brand DNA pass will make every draft more specific.",
-          body: "Add the proof, phrases, or offer details customers actually respond to before building the next campaign.",
-          to: "/studio/brand" as const,
-          action: "Strengthen Brand DNA",
-          color: "var(--spotlight)",
-          soft: "var(--spotlight-soft)",
+          key: "review",
+          title: `${review} ${review === 1 ? "piece is" : "pieces are"} waiting on your decision`,
+          body: "Approve what is ready, leave one note on what is not.",
+          to: "/studio/approvals" as const,
+          action: "Review",
+          color: "var(--reel)",
         }
-      : ideas.length && !videoProgress.length
-        ? {
-            title: `You have ${ideas.length} useful ${ideas.length === 1 ? "idea" : "ideas"}. Choose which video earns the next slot.`,
-            body: "The roadmap ranks the video by the business problem it can remove, using your Brand DNA as context.",
-            to: "/studio/roadmap" as const,
-            action: "See the recommendation",
-            color: "var(--evergreen)",
-            soft: "var(--evergreen-soft)",
-          }
-        : review > 0
-          ? {
-              title: `${review} ${review === 1 ? "piece is" : "pieces are"} waiting for a decision—not another draft.`,
-              body: "Approve what is ready, leave one useful note, and keep the campaign moving toward the calendar.",
-              to: "/studio/approvals" as const,
-              action: "Review the work",
-              color: "var(--reel)",
-              soft: "var(--reel-soft)",
-            }
-          : {
-              title: upcoming[0]
-                ? `Next on the calendar: ${upcoming[0].title}.`
-                : "Your next useful move is ready when you are.",
-              body: upcoming[0]
-                ? `It is planned for ${new Date(upcoming[0].publish_at).toLocaleDateString()}. Check the asset and notes before the date arrives.`
-                : "Ask a Pal for a recommendation grounded in your current campaigns, ideas, and Brand DNA.",
-              to: upcoming[0] ? ("/studio/calendar" as const) : ("/studio/assistant" as const),
-              action: upcoming[0] ? "Open the calendar" : "Ask a Pal",
-              color: "var(--system)",
-              soft: "var(--system-soft)",
-            };
-  const createOptions = [
-    {
-      to: "/studio",
-      icon: WandSparkles,
-      title: "Build a campaign",
-      body: "One idea becomes a full content system",
-      color: "var(--spotlight)",
-      soft: "var(--spotlight-soft)",
-    },
-    {
-      to: "/studio/ideas",
-      icon: Lightbulb,
-      title: "Capture an idea",
-      body: "Save angles and questions for later",
-      color: "var(--evergreen)",
-      soft: "var(--evergreen-soft)",
-    },
-    {
-      to: "/studio/roadmap",
-      icon: Film,
-      title: "Video roadmap",
-      body: "See which videos to make next",
-      color: "var(--reel)",
-      soft: "var(--reel-soft)",
-    },
-    {
-      to: "/studio/assistant",
-      icon: MessageSquareText,
-      title: "Ask a Pal",
-      body: "Get a next move based on your work",
-      color: "var(--system)",
-      soft: "var(--system-soft)",
-    },
-  ] as const;
+      : null,
+    brandCompletion < 60
+      ? {
+          key: "brand",
+          title: "Your Brand DNA is still thin",
+          body: "Every draft gets sharper the moment your offer, proof, and voice are on file.",
+          to: "/studio/brand" as const,
+          action: "Continue",
+          color: "var(--spotlight)",
+        }
+      : null,
+    upcoming[0]
+      ? {
+          key: "calendar",
+          title: `${upcoming[0].title} publishes ${new Date(upcoming[0].publish_at).toLocaleDateString(undefined, { month: "long", day: "numeric" })}`,
+          body: `Planned for ${upcoming[0].channel}. Check the asset before the date arrives.`,
+          to: "/studio/calendar" as const,
+          action: "Open",
+          color: "var(--evergreen)",
+        }
+      : null,
+  ].filter(Boolean) as {
+    key: string;
+    title: string;
+    body: string;
+    to: "/studio/approvals" | "/studio/brand" | "/studio/calendar";
+    action: string;
+    color: string;
+  }[];
+
+  // A trusted strategist noticing openings — never an upsell feed.
+  const opportunities = [
+    !campaigns.length
+      ? {
+          key: "first",
+          title: "One real customer question is enough to start",
+          body: "The engine turns a single sentence into a full set of drafts you can edit and approve.",
+          to: "/studio" as const,
+          action: "Build the first campaign",
+        }
+      : null,
+    campaigns.length && ready >= 3 && !scheduled
+      ? {
+          key: "schedule",
+          title: `${ready} approved pieces are sitting unpublished`,
+          body: "Put dates on them so the work leaves the Studio and starts doing its job.",
+          to: "/studio/calendar" as const,
+          action: "Plan the dates",
+        }
+      : null,
+    ideas.length >= 2
+      ? {
+          key: "ideas",
+          title: `${ideas.length} saved ideas are ready to be ranked`,
+          body: "The roadmap orders them by the business problem each one removes.",
+          to: "/studio/roadmap" as const,
+          action: "See the roadmap",
+        }
+      : null,
+    campaigns.length && videoProgress.length < 4
+      ? {
+          key: "lanes",
+          title: "Your video mix leans on one lane",
+          body: "Momentum, attention, authority, and scale each need a home in the plan.",
+          to: "/studio/roadmap" as const,
+          action: "Balance the plan",
+        }
+      : null,
+  ]
+    .filter(Boolean)
+    .slice(0, 2) as {
+    key: string;
+    title: string;
+    body: string;
+    to: "/studio" | "/studio/calendar" | "/studio/roadmap";
+    action: string;
+  }[];
+
   return (
-    <div className="mx-auto max-w-[92rem]">
-      <header className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div>
-          <p className="text-base font-medium text-muted-foreground">
+    <div className="mx-auto max-w-[86rem]">
+      <header className="flex flex-col gap-6 border-b border-border pb-8 sm:flex-row sm:items-end sm:justify-between">
+        <div className="min-w-0">
+          <p className="studio-eyebrow text-muted-foreground">{today}</p>
+          <h1 className="mt-4 text-[clamp(2rem,3.6vw,3.5rem)] font-black leading-[1.02] tracking-[-.055em]">
             Good to see you, {firstName}.
-          </p>
-          <h1 className="mt-2 text-[clamp(2.25rem,4.2vw,4.5rem)] font-black leading-[.95] tracking-[-.065em]">
-            What are we turning into content today?
           </h1>
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
+            {attention.length
+              ? `${attention.length} ${attention.length === 1 ? "thing needs" : "things need"} you today. Everything else is handled.`
+              : campaigns.length
+                ? "Nothing needs you right now. Your team is working in the background."
+                : "Your studio is set up and quiet. Give it one real idea and it starts working."}
+          </p>
         </div>
-        <Link to="/studio/success" className="secondary-action shrink-0">
-          <HandHeart className="size-4" /> Benefits & Palmer House help
-        </Link>
+        <div className="flex shrink-0 items-center gap-5">
+          <div className="text-right">
+            <p className="studio-eyebrow" style={{ color: guide.color }}>
+              {progression.tier.label}
+            </p>
+            <p className="mt-2 text-xs text-muted-foreground">
+              {progression.next ? `${progression.toNext} moves to ${progression.next.label}` : "Top tier"}
+            </p>
+          </div>
+          {guide.avatar ? (
+            <img src={guide.avatar} alt="" className="h-16 w-16 object-contain object-bottom" />
+          ) : null}
+        </div>
       </header>
 
       {firstRun ? (
-        <section className="mt-7 overflow-hidden rounded-[1.25rem] border border-ink bg-white p-5 sm:p-6">
+        <section className="mt-10 border border-ink bg-white p-6 sm:p-8">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="min-w-0">
               <p className="studio-eyebrow text-evergreen">Your studio is ready</p>
-              <h2 className="mt-3 text-2xl font-black leading-tight tracking-[-.03em]">
+              <h2 className="mt-4 text-2xl font-black leading-tight tracking-[-.03em]">
                 Here is the whole thing in one move.
               </h2>
               <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
@@ -1722,428 +1761,251 @@ function Dashboard() {
               Skip the tour
             </button>
           </div>
-          <div className="mt-5 grid gap-3 sm:grid-cols-3">
-            {[
-              ["One idea in", "A sentence is enough. No blank page."],
-              ["Three angles out", "Business, personal, and playful — pick one."],
-              ["A full campaign", "Scripts, posts, and an article, ready to edit."],
-            ].map(([title, body], index) => (
-              <div key={title} className="rounded-[1.15rem] border border-border p-4">
-                <span className="grid size-7 place-items-center rounded-full bg-ink text-[11px] font-black text-white">
-                  {index + 1}
-                </span>
-                <p className="mt-3 text-sm font-black">{title}</p>
-                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{body}</p>
-              </div>
-            ))}
-          </div>
           <Link
             to="/studio"
             onClick={endFirstRun}
-            className="mt-5 inline-flex min-h-12 items-center gap-2 rounded-xl bg-ink px-5 text-sm font-black text-white transition hover:bg-evergreen"
+            className="mt-6 inline-flex min-h-12 items-center gap-2 bg-ink px-6 text-sm font-black text-white transition hover:bg-evergreen"
           >
             Build my first campaign <ArrowRight className="size-4" />
           </Link>
         </section>
       ) : null}
 
-      <section
-        className="relative mt-7 overflow-hidden rounded-[1.25rem] border border-border p-5 sm:p-6"
-        style={{ background: briefing.soft }}
-      >
-        <div className="relative z-10 max-w-3xl pr-24 sm:pr-40">
-          <p className="studio-eyebrow" style={{ color: briefing.color }}>
-            {guide.key ? `${guide.name}’s workspace briefing` : "Your workspace briefing"}
-          </p>
-          <h2 className="mt-3 text-2xl font-black leading-tight sm:text-3xl">{briefing.title}</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            {briefing.body}
-          </p>
-          <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <Link
-              to={briefing.to}
-              className="inline-flex min-h-11 items-center gap-2 text-sm font-black underline underline-offset-4"
-            >
-              {briefing.action} <ArrowRight className="size-4" />
-            </Link>
-            {!hasChosen ? (
+      {attention.length ? (
+        <section className="mt-12">
+          <p className="studio-eyebrow text-ink">Needs your attention · {attention.length}</p>
+          <div className="mt-5 divide-y divide-border border-y border-border">
+            {attention.map((item) => (
               <Link
-                to="/studio/settings"
-                className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-muted-foreground underline underline-offset-4"
-              >
-                Pick your guide
-              </Link>
-            ) : null}
-          </div>
-          <p className="mt-4 max-w-xl text-xs font-medium italic text-muted-foreground">
-            “{tip("home")}”
-          </p>
-        </div>
-        {guide.avatar ? (
-          <img
-            src={guide.avatar}
-            alt=""
-            className="pointer-events-none absolute -bottom-6 -right-2 h-40 w-40 object-contain object-bottom sm:h-48 sm:w-48"
-          />
-        ) : null}
-      </section>
-
-      <section className="mt-5 flex flex-col gap-4 rounded-[1.25rem] border border-border bg-white p-5 sm:flex-row sm:items-center">
-        <div className="min-w-0 flex-1">
-          <p className="studio-eyebrow" style={{ color: guide.color }}>
-            Studio level · {progression.tier.label}
-          </p>
-          <p className="mt-2 text-sm font-bold">{progression.tier.blurb}</p>
-          <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-muted">
-            <div
-              className="h-full rounded-full transition-[width] duration-500"
-              style={{ width: `${progression.percent}%`, background: guide.color }}
-            />
-          </div>
-        </div>
-        <p className="shrink-0 text-xs font-medium text-muted-foreground sm:max-w-[14rem]">
-          {progression.next
-            ? `${progression.toNext} more moves to reach ${progression.next.label}. Campaigns, finished videos, and approvals all count.`
-            : "You have reached the top tier. Keep the system running."}
-        </p>
-      </section>
-
-
-
-
-      <section className="mt-5 grid overflow-hidden rounded-[1.25rem] border border-border bg-white sm:grid-cols-2 xl:grid-cols-4">
-        {createOptions.map((item, index) => (
-          <Link
-            key={item.title}
-            to={item.to}
-            className="group relative flex min-h-36 items-start gap-4 border-b border-border p-5 last:border-b-0 sm:[&:nth-child(odd)]:border-r xl:border-b-0 xl:border-r xl:last:border-r-0"
-          >
-            <span
-              className="grid size-10 shrink-0 place-items-center rounded-xl"
-              style={{ color: item.color, background: item.soft }}
-            >
-              <item.icon className="size-5" />
-            </span>
-            <span className="min-w-0">
-              <span className="block text-sm font-extrabold">{item.title}</span>
-              <span className="mt-2 block text-xs leading-relaxed text-muted-foreground">
-                {item.body}
-              </span>
-            </span>
-            <ArrowRight className="ml-auto size-4 shrink-0 transition-transform group-hover:translate-x-1" />
-            <span className="sr-only">Option {index + 1}</span>
-          </Link>
-        ))}
-      </section>
-
-      {!campaigns.length ? (
-        <section className="mt-5 rounded-[1.25rem] border border-system bg-white p-5 sm:p-6">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-xl font-black">Your Studio is ready. Let’s teach it your world.</p>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Three short steps turn an empty workspace into your own content system.
-              </p>
-            </div>
-            <span className="rounded-full bg-system-soft px-3 py-1 text-xs font-bold text-system">
-              1 of 3 ready
-            </span>
-          </div>
-          <div className="mt-5 grid gap-3 md:grid-cols-3">
-            {[
-              {
-                to: "/studio/brand" as const,
-                icon: Gauge,
-                title: "Build Brand DNA",
-                note: "Audience, offer, voice, and proof",
-                color: "var(--spotlight)",
-                soft: "var(--spotlight-soft)",
-              },
-              {
-                to: "/studio/ideas" as const,
-                icon: Lightbulb,
-                title: "Save the first idea",
-                note: "Capture a real customer question",
-                color: "var(--reel)",
-                soft: "var(--reel-soft)",
-              },
-              {
-                to: "/studio" as const,
-                icon: Sparkles,
-                title: "Build the first campaign",
-                note: "Turn the idea into usable work",
-                color: "var(--evergreen)",
-                soft: "var(--evergreen-soft)",
-              },
-            ].map((step) => (
-              <Link
-                key={step.title}
-                to={step.to}
-                className="group flex min-h-24 items-center gap-4 rounded-xl border border-border bg-white p-4 hover:border-ink"
+                key={item.key}
+                to={item.to}
+                className="group flex items-center gap-5 py-6 transition-colors hover:bg-secondary/40"
               >
                 <span
-                  className="grid size-10 shrink-0 place-items-center rounded-xl"
-                  style={{ background: step.soft, color: step.color }}
-                >
-                  <step.icon className="size-4" />
-                </span>
+                  className="h-10 w-[3px] shrink-0"
+                  style={{ background: item.color }}
+                  aria-hidden="true"
+                />
                 <span className="min-w-0 flex-1">
-                  <span className="block text-sm font-extrabold">{step.title}</span>
-                  <span className="mt-1 block text-xs text-muted-foreground">{step.note}</span>
+                  <span className="block text-lg font-black leading-snug tracking-[-.02em]">
+                    {item.title}
+                  </span>
+                  <span className="mt-1.5 block text-sm text-muted-foreground">{item.body}</span>
                 </span>
-                <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                <span className="hidden shrink-0 items-center gap-2 text-xs font-black sm:inline-flex">
+                  {item.action}
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                </span>
               </Link>
             ))}
           </div>
         </section>
       ) : null}
 
-      <section className="mt-5 grid gap-4 rounded-[1.25rem] border border-border p-5 sm:grid-cols-2 xl:grid-cols-[1.25fr_repeat(4,1fr)_auto] xl:items-center">
-        <div>
-          <p className="text-lg font-black">Studio Pulse</p>
-          <p className="mt-1 text-xs text-muted-foreground">Your useful work, at a glance</p>
-        </div>
-        {[
-          [
-            FileStack,
-            `${ready} pieces`,
-            "ready to use",
-            "var(--evergreen)",
-            "var(--evergreen-soft)",
-          ],
-          [Eye, String(review), "awaiting review", "var(--ink)", "var(--mist)"],
-          [CalendarDays, String(scheduled), "on the calendar", "var(--ink)", "var(--mist)"],
-          [CheckCircle2, String(campaigns.length), "campaign systems", "var(--ink)", "var(--mist)"],
-        ].map(([Icon, value, note, color, soft]) => (
-          <div
-            key={String(note)}
-            className="flex items-center gap-3 xl:border-l xl:border-border xl:pl-5"
-          >
-            <span
-              className="grid size-9 shrink-0 place-items-center rounded-full"
-              style={{ color: String(color), background: String(soft) }}
-            >
-              <Icon className="size-4" />
-            </span>
+      <section className="mt-12 grid gap-10 lg:grid-cols-[1.5fr_1fr]">
+        <div className="min-w-0">
+          <div className="flex items-end justify-between">
             <div>
-              <p className="text-xl font-black">{String(value)}</p>
-              <p className="text-[10px] text-muted-foreground">{String(note)}</p>
+              <p className="studio-eyebrow text-evergreen">In motion</p>
+              <h2 className="mt-3 text-2xl font-black tracking-[-.03em]">
+                What we are working on
+              </h2>
             </div>
-          </div>
-        ))}
-        <Link to="/studio/approvals" className="secondary-action">
-          View work
-        </Link>
-      </section>
-
-      <section className="mt-8">
-        <div className="flex items-end justify-between">
-          <div>
-            <p className="studio-eyebrow text-evergreen">Continue working</p>
-            <h2 className="mt-2 text-2xl font-black">Campaigns in motion</h2>
-          </div>
-          <Link
-            to="/studio/campaigns"
-            className="inline-flex min-h-11 items-center text-xs font-bold"
-          >
-            View all campaigns →
-          </Link>
-        </div>
-        <div className="mt-4 grid gap-4 lg:grid-cols-3">
-          {campaigns.slice(0, 3).map((campaign, index) => {
-            const lane = lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
-            const campaignAssets = assets.filter((asset) => asset.campaign_id === campaign.id);
-            const completed = campaignAssets.filter((asset) => asset.status === "approved").length;
-            return (
-              <Link
-                key={campaign.id}
-                to="/studio/campaigns/$campaignId"
-                params={{ campaignId: campaign.id }}
-                className="group rounded-[1.25rem] border border-border p-4 transition hover:-translate-y-0.5 hover:border-ink"
-              >
-                <div className="flex items-start gap-3">
-                  <span
-                    className="grid size-14 shrink-0 place-items-center rounded-xl text-white"
-                    style={{ background: lane.color }}
-                  >
-                    <LayoutGrid className="size-5" />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="line-clamp-2 font-extrabold">{campaign.title}</p>
-                    <p className="mt-1 font-mono text-[8px] uppercase tracking-[.12em] text-muted-foreground">
-                      {lane.label} · {campaign.status}
-                    </p>
-                  </div>
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                </div>
-                <div className="mt-5 flex items-center gap-3">
-                  <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-spotlight-soft">
-                    <span
-                      className="block h-full rounded-full"
-                      style={{
-                        width: `${Math.max(16, Math.min(100, campaignAssets.length ? (completed / campaignAssets.length) * 100 : (index + 1) * 22))}%`,
-                        background: lane.color,
-                      }}
-                    />
-                  </span>
-                  <span className="text-[10px] font-bold text-muted-foreground">
-                    {completed}/{campaignAssets.length}
-                  </span>
-                </div>
+            {campaigns.length ? (
+              <Link to="/studio/campaigns" className="text-xs font-bold underline underline-offset-4">
+                All campaigns
               </Link>
-            );
-          })}
-          {!campaigns.length ? (
-            <div className="studio-card lg:col-span-3">
-              <EmptyState
-                icon={WandSparkles}
-                title="Your first campaign starts with one useful idea."
-                body="The engine will build the strategy, drafts, production notes, and calendar together."
-                action={
-                  <Link to="/studio" className="primary-action">
-                    Start with an idea
-                  </Link>
-                }
-              />
+            ) : null}
+          </div>
+          <div className="mt-5 divide-y divide-border border-t border-border">
+            {activeCampaigns.slice(0, 4).map((campaign) => {
+              const lane = lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
+              const campaignAssets = assets.filter((asset) => asset.campaign_id === campaign.id);
+              const completed = campaignAssets.filter(
+                (asset) => asset.status === "approved",
+              ).length;
+              const percent = campaignAssets.length
+                ? Math.round((completed / campaignAssets.length) * 100)
+                : 0;
+              return (
+                <Link
+                  key={campaign.id}
+                  to="/studio/campaigns/$campaignId"
+                  params={{ campaignId: campaign.id }}
+                  className="group flex items-center gap-5 py-5 transition-colors hover:bg-secondary/40"
+                >
+                  <span
+                    className="size-2.5 shrink-0 rounded-full"
+                    style={{ background: lane.color }}
+                    aria-hidden="true"
+                  />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-base font-extrabold tracking-[-.02em]">
+                      {campaign.title}
+                    </span>
+                    <span className="studio-eyebrow mt-2 block text-muted-foreground">
+                      {lane.label} · {completed} of {campaignAssets.length} approved
+                    </span>
+                  </span>
+                  <span className="hidden w-28 shrink-0 sm:block">
+                    <span className="block h-[3px] w-full overflow-hidden bg-muted">
+                      <span
+                        className="block h-full transition-[width] duration-500"
+                        style={{ width: `${Math.max(4, percent)}%`, background: lane.color }}
+                      />
+                    </span>
+                  </span>
+                  <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
+                </Link>
+              );
+            })}
+            {!activeCampaigns.length ? (
+              <div className="py-10">
+                <EmptyState
+                  icon={WandSparkles}
+                  title="Nothing in production yet."
+                  body="Your first campaign starts with one useful idea — the strategy, drafts, and calendar are built together."
+                  action={
+                    <Link to="/studio" className="primary-action">
+                      Start with an idea
+                    </Link>
+                  }
+                />
+              </div>
+            ) : null}
+          </div>
+
+          {opportunities.length ? (
+            <div className="mt-12">
+              <p className="studio-eyebrow text-spotlight">What we would do next</p>
+              <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                {opportunities.map((item) => (
+                  <article
+                    key={item.key}
+                    className="flex flex-col border border-border bg-white p-5"
+                  >
+                    <p className="text-base font-black leading-snug tracking-[-.02em]">
+                      {item.title}
+                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {item.body}
+                    </p>
+                    <Link
+                      to={item.to}
+                      className="mt-5 inline-flex items-center gap-2 text-xs font-black underline underline-offset-4"
+                    >
+                      {item.action} <ArrowRight className="size-3.5" />
+                    </Link>
+                  </article>
+                ))}
+              </div>
             </div>
           ) : null}
         </div>
-      </section>
 
-      <section className="mt-8">
-        <p className="studio-eyebrow text-system">Your content system</p>
-        <h2 className="mt-2 text-2xl font-black">The parts that keep the work connected</h2>
-        <div className="mt-4 grid gap-4 xl:grid-cols-[.7fr_1.35fr_1fr]">
-          <article className="studio-card flex flex-col">
-            <p className="font-extrabold">Brand DNA</p>
-            <p className="mt-1 text-sm text-system">{brand?.completion || 0}% complete</p>
-            <div className="mt-5 h-1.5 overflow-hidden rounded-full bg-system-soft">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${brand?.completion || 0}%` }}
-                className="h-full bg-system"
-              />
+        <aside className="min-w-0 space-y-10">
+          <div>
+            <p className="studio-eyebrow text-muted-foreground">Coming up</p>
+            <div className="mt-5 divide-y divide-border border-t border-border">
+              {upcoming.slice(0, 3).map((item) => (
+                <Link
+                  key={item.id}
+                  to="/studio/calendar"
+                  className="flex items-baseline gap-4 py-4 transition-colors hover:bg-secondary/40"
+                >
+                  <time className="studio-eyebrow w-16 shrink-0 text-muted-foreground">
+                    {new Date(item.publish_at).toLocaleDateString(undefined, {
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </time>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-sm font-extrabold">{item.title}</span>
+                    <span className="mt-1 block text-xs text-muted-foreground">{item.channel}</span>
+                  </span>
+                </Link>
+              ))}
+              {!upcoming.length ? (
+                <p className="py-6 text-sm text-muted-foreground">
+                  Nothing scheduled. Dates get added when work is approved.
+                </p>
+              ) : null}
             </div>
-            <div className="mt-6 space-y-3">
-              {["Business context", "Audience & offers", "Voice & language", "Proof library"].map(
-                (item, index) => (
-                  <div key={item} className="flex items-center gap-2 text-sm">
-                    <span
-                      className={`grid size-5 place-items-center rounded-full ${index < 3 ? "bg-evergreen text-white" : "border border-border"}`}
-                    >
-                      {index < 3 ? <Check className="size-3" /> : null}
-                    </span>
-                    {item}
-                  </div>
-                ),
-              )}
-            </div>
-            <Link to="/studio/brand" className="secondary-action mt-auto w-full">
-              Continue setup
-            </Link>
-          </article>
-          <article className="studio-card overflow-hidden p-4">
-            <div className="flex items-center justify-between px-2 pt-2">
-              <div>
-                <p className="font-extrabold">Content map</p>
-                <p className="mt-1 text-xs text-muted-foreground">Where the work is right now</p>
-              </div>
-              <Link
-                to="/studio/campaigns"
-                className="inline-flex min-h-11 items-center text-xs font-bold"
-              >
-                View campaigns
+          </div>
+
+          <div>
+            <div className="flex items-baseline justify-between">
+              <p className="studio-eyebrow text-muted-foreground">Recently finished</p>
+              <Link to="/studio/library" className="text-xs font-bold underline underline-offset-4">
+                Library
               </Link>
             </div>
-            <CampaignFlowMap
-              campaigns={campaigns.length}
-              assets={assets.length}
-              review={review}
-              scheduled={scheduled}
-            />
-          </article>
-          <div className="grid gap-4">
-            <article className="studio-card">
-              <div className="flex items-center justify-between">
-                <p className="font-extrabold">Upcoming</p>
+            <div className="mt-5 grid grid-cols-3 gap-3">
+              {assets.slice(0, 3).map((asset) => (
                 <Link
-                  to="/studio/calendar"
-                  className="inline-flex min-h-11 items-center text-[11px] font-bold"
-                >
-                  Calendar →
-                </Link>
-              </div>
-              <div className="mt-4 divide-y divide-border">
-                {upcoming.slice(0, 3).map((item) => (
-                  <div key={item.id} className="flex items-center gap-3 py-3">
-                    <time className="grid size-10 place-items-center rounded-lg border border-border font-mono text-[9px]">
-                      {new Date(item.publish_at).toLocaleDateString(undefined, {
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </time>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-xs font-extrabold">{item.title}</p>
-                      <p className="mt-1 text-[10px] text-muted-foreground">{item.channel}</p>
-                    </div>
-                    <span className="rounded-full bg-system-soft px-2 py-1 text-[8px] font-bold text-system">
-                      {item.status}
-                    </span>
-                  </div>
-                ))}
-                {!upcoming.length ? (
-                  <p className="py-6 text-sm text-muted-foreground">Nothing scheduled yet.</p>
-                ) : null}
-              </div>
-            </article>
-            <article className="studio-card">
-              <div className="flex items-center justify-between">
-                <p className="font-extrabold">Recent library</p>
-                <Link
+                  key={asset.id}
                   to="/studio/library"
-                  className="inline-flex min-h-11 items-center text-[11px] font-bold"
+                  className="group overflow-hidden border border-border bg-white"
                 >
-                  Library →
+                  <span className="relative block aspect-[4/3] overflow-hidden bg-secondary">
+                    <img
+                      src={assetMediaUrl(asset)}
+                      alt=""
+                      className="size-full object-cover transition duration-500 group-hover:scale-105"
+                    />
+                    {(() => {
+                      const meta = assetKindMeta(asset.kind);
+                      return (
+                        <span
+                          className="absolute bottom-2 left-2 grid size-7 place-items-center bg-white shadow-soft"
+                          style={{ color: meta.color }}
+                        >
+                          <meta.icon className="size-3.5" />
+                        </span>
+                      );
+                    })()}
+                  </span>
+                  <span className="line-clamp-2 block p-2 text-[10px] font-bold leading-snug">
+                    {asset.title}
+                  </span>
                 </Link>
-              </div>
-              <div className="mt-4 grid grid-cols-3 gap-2">
-                {assets.slice(0, 3).map((asset, index) => (
-                  <Link
-                    key={asset.id}
-                    to="/studio/library"
-                    className="group overflow-hidden rounded-xl border border-border bg-white"
-                  >
-                    <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
-                      <img
-                        src={assetMediaUrl(asset)}
-                        alt=""
-                        className="size-full object-cover transition duration-500 group-hover:scale-105"
-                      />
-                      {(() => {
-                        const meta = assetKindMeta(asset.kind);
-                        return (
-                          <span
-                            className="absolute bottom-2 left-2 grid size-7 place-items-center rounded-lg bg-white shadow-soft"
-                            style={{ color: meta.color }}
-                          >
-                            <meta.icon className="size-3.5" />
-                          </span>
-                        );
-                      })()}
-                    </div>
-                    <p className="line-clamp-2 p-2 text-[10px] font-bold leading-snug">
-                      {asset.title}
-                    </p>
-                  </Link>
-                ))}
-              </div>
-            </article>
+              ))}
+              {!assets.length ? (
+                <p className="col-span-3 py-4 text-sm text-muted-foreground">
+                  Finished work will collect here.
+                </p>
+              ) : null}
+            </div>
           </div>
-        </div>
+
+          <div>
+            <p className="studio-eyebrow text-muted-foreground">Where the work stands</p>
+            <div className="mt-3">
+              <CampaignFlowMap
+                campaigns={campaigns.length}
+                assets={assets.length}
+                review={review}
+                scheduled={scheduled}
+              />
+            </div>
+            <p className="mt-4 text-xs leading-relaxed italic text-muted-foreground">
+              “{tip("home")}”
+              {!hasChosen ? (
+                <>
+                  {" "}
+                  <Link to="/studio/settings" className="font-bold underline underline-offset-4">
+                    Pick your guide
+                  </Link>
+                </>
+              ) : null}
+            </p>
+          </div>
+        </aside>
       </section>
     </div>
   );
 }
+
 
 function CampaignFlowMap({
   campaigns,

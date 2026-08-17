@@ -4786,7 +4786,7 @@ function BrandStudio() {
     ["Values", Boolean(draft.values)],
     ["Taglines", Boolean(draft.taglines)],
     ["Brand personality", Boolean(draft.description && draft.voice_traits)],
-    ["Image style", Boolean(draft.imageStyle && draft.visual_style)],
+    ["Image style", hasSubstance(draft.imageStyle) && Boolean(draft.visual_style)],
     ["Channels", Boolean(draft.platforms || draft.social_profiles)],
   ] as const;
   const completion = Math.round(

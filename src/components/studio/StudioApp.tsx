@@ -4777,7 +4777,7 @@ function BrandStudio() {
       "Typography",
       Boolean(draft.typography || (brand && Object.keys((brand.fonts as object) || {}).length)),
     ],
-    ["Photography", Boolean(draft.photography)],
+    ["Photography", hasSubstance(draft.photography)],
     ["Products / offers", Boolean(draft.offers)],
     ["Customers", Boolean(draft.customers || draft.primary_audience)],
     ["Examples", Boolean(draft.contentExamples || draft.videoExamples)],

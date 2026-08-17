@@ -5580,13 +5580,14 @@ function Library() {
                         className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                       />
                     ) : (
-                      <div className="flex size-full flex-col justify-end bg-cream p-6">
-                        <meta.icon className="size-9 text-system" strokeWidth={1.5} />
-                        <p className="mt-5 max-w-[22rem] text-xl font-black leading-tight tracking-[-.03em]">
+                      <div className="relative size-full">
+                        <AssetIllustration
+                          kind={asset.kind}
+                          title={`${asset.title} ${asset.content?.slice(0, 160) ?? ""}`}
+                          className="size-full transition-transform duration-500 group-hover:scale-[1.03]"
+                        />
+                        <p className="absolute inset-x-6 bottom-5 line-clamp-2 text-lg font-black leading-tight tracking-[-.03em]">
                           {asset.title}
-                        </p>
-                        <p className="mt-2 text-xs text-muted-foreground">
-                          Written asset · no visual media attached
                         </p>
                       </div>
                     )}

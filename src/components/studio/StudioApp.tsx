@@ -4762,7 +4762,7 @@ function BrandStudio() {
       title: "Visual system",
       detail: "How the work looks and moves",
       icon: Images,
-      complete: Boolean(draft.typography && draft.photography && draft.imageStyle),
+      complete: hasSubstance(draft.typography) && hasSubstance(draft.photography) && hasSubstance(draft.imageStyle),
     },
   ];
   const guideChecks = [

@@ -4673,6 +4673,16 @@ function BrandStudio() {
   const sourceMark = (key: DraftKey) =>
     fromWebsite.has(key) ? "From your website" : undefined;
 
+  // A scrape that says "no photography found" is not a filled field.
+  function hasSubstance(value?: string | null) {
+    const text = (value || "").trim();
+    if (text.length < 3) return false;
+    const lowered = text.toLowerCase();
+    return !/^(n\/a|none|unknown|not (defined|specified|supplied|available|stated|found)|no (prominent |obvious |clear |real |visible )?(photography|photos?|images?|imagery|image style|visual|visuals)\b)/.test(
+      lowered,
+    );
+  }
+
   async function pullFromWebsite() {
     const target = intakeUrl.trim();
     if (!target) return;
@@ -4686,7 +4696,7 @@ function BrandStudio() {
       setIntakeStep(3);
       const filled = new Set<string>();
       const apply = (key: DraftKey, value: string) => {
-        if (!value?.trim()) return;
+        if (!hasSubstance(value)) return;
         filled.add(key);
         setDraft((current) => ({ ...current, [key]: value.trim() }));
       };
@@ -4752,7 +4762,7 @@ function BrandStudio() {
       title: "Visual system",
       detail: "How the work looks and moves",
       icon: Images,
-      complete: Boolean(draft.typography && draft.photography && draft.imageStyle),
+      complete: hasSubstance(draft.typography) && hasSubstance(draft.photography) && hasSubstance(draft.imageStyle),
     },
   ];
   const guideChecks = [
@@ -4767,7 +4777,7 @@ function BrandStudio() {
       "Typography",
       Boolean(draft.typography || (brand && Object.keys((brand.fonts as object) || {}).length)),
     ],
-    ["Photography", Boolean(draft.photography)],
+    ["Photography", hasSubstance(draft.photography)],
     ["Products / offers", Boolean(draft.offers)],
     ["Customers", Boolean(draft.customers || draft.primary_audience)],
     ["Examples", Boolean(draft.contentExamples || draft.videoExamples)],
@@ -4776,7 +4786,7 @@ function BrandStudio() {
     ["Values", Boolean(draft.values)],
     ["Taglines", Boolean(draft.taglines)],
     ["Brand personality", Boolean(draft.description && draft.voice_traits)],
-    ["Image style", Boolean(draft.imageStyle && draft.visual_style)],
+    ["Image style", hasSubstance(draft.imageStyle) && Boolean(draft.visual_style)],
     ["Channels", Boolean(draft.platforms || draft.social_profiles)],
   ] as const;
   const completion = Math.round(

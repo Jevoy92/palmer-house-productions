@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { StudioPage } from "@/components/studio/StudioApp";
+import { StudioPage, type WorkTab } from "@/components/studio/StudioApp";
 
 const tabs = [
   "campaigns",
@@ -9,8 +9,6 @@ const tabs = [
   "calendar",
   "roadmap",
 ] as const;
-
-export type WorkTab = (typeof tabs)[number];
 
 export const Route = createFileRoute("/studio/work")({
   validateSearch: (search: Record<string, unknown>): { tab: WorkTab } => {

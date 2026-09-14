@@ -203,58 +203,37 @@ function PalTip({
   );
 }
 
-const navSections = [
+const nav = [
+  { view: "home", label: "Home", to: "/studio/dashboard", icon: Home },
   {
-    label: "Studio",
-    items: [
-      { view: "home", label: "Home", to: "/studio/dashboard", icon: Home },
-      {
-        view: "conversations",
-        label: "Conversations",
-        to: "/studio/conversations",
-        icon: MessageSquareText,
-      },
-    ],
+    view: "conversations",
+    label: "Conversations",
+    to: "/studio/conversations",
+    icon: MessageSquareText,
   },
-  {
-    label: "My work",
-    items: [
-      { view: "engine", label: "Create", to: "/studio/create", icon: Plus },
-      { view: "campaigns", label: "Campaigns", to: "/studio/campaigns", icon: WandSparkles },
-      { view: "ideas", label: "Content ideas", to: "/studio/ideas", icon: Lightbulb },
-      { view: "library", label: "Library", to: "/studio/library", icon: FolderOpen },
-      { view: "approvals", label: "Needs review", to: "/studio/approvals", icon: CheckSquare2 },
-      { view: "calendar", label: "Calendar", to: "/studio/calendar", icon: CalendarDays },
-      { view: "roadmap", label: "Video roadmap", to: "/studio/roadmap", icon: Film },
-    ],
-  },
-  {
-    label: "My brand",
-    items: [{ view: "brand", label: "Brand DNA", to: "/studio/brand", icon: Gauge }],
-  },
-  {
-    label: "Account",
-    items: [
-      { view: "success", label: "Member success", to: "/studio/success", icon: HandHeart },
-      { view: "settings", label: "Settings", to: "/studio/settings", icon: Settings },
-    ],
-  },
+  { view: "work", label: "My work", to: "/studio/work", icon: FolderOpen },
+  { view: "brand", label: "My brand", to: "/studio/brand", icon: Gauge },
 ] as const;
-
-const nav = navSections.flatMap((section) => [...section.items]);
 
 export function StudioPage({
   view,
   campaignId,
   conversationId,
+  workTab,
 }: {
   view: StudioView;
   campaignId?: string;
   conversationId?: string;
+  workTab?: WorkTab;
 }) {
   return (
     <>
-      <StudioGate view={view} campaignId={campaignId} conversationId={conversationId} />
+      <StudioGate
+        view={view}
+        campaignId={campaignId}
+        conversationId={conversationId}
+        workTab={workTab}
+      />
     </>
   );
 }
@@ -263,17 +242,21 @@ function StudioGate({
   view,
   campaignId,
   conversationId,
+  workTab,
 }: {
   view: StudioView;
   campaignId?: string;
   conversationId?: string;
+  workTab?: WorkTab;
 }) {
   const studio = useStudio();
   if (studio.loading) return <StudioLoading />;
   if (!studio.session) return <AuthExperience />;
   if (!studio.workspace) return <Onboarding />;
   return (
-    <StudioShell view={view}>{renderView(view, campaignId, conversationId)}</StudioShell>
+    <StudioShell view={view}>
+      {renderView(view, campaignId, conversationId, workTab)}
+    </StudioShell>
   );
 }
 
@@ -1119,30 +1102,16 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
       <StudioStartHere />
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-[15.5rem] flex-col border-r border-border bg-white px-4 py-5 lg:flex">
         <StudioBrand />
-        <button
-          onClick={() => setCreateOpen(true)}
+        <Link
+          to="/studio/conversations"
+          search={{ prompt: newConversationPrompt }}
           className="mt-8 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-ink text-sm font-bold text-white transition hover:bg-evergreen"
         >
-          <Plus className="size-4" /> Create
-        </button>
-        <nav className="mt-7 space-y-6" aria-label="Studio navigation">
-          {navSections.map((section) => (
-            <div key={section.label}>
-              <p className="px-3 font-mono text-[8px] font-semibold uppercase tracking-[.18em] text-muted-foreground">
-                {section.label}
-              </p>
-              <div className="mt-2 space-y-1">
-                {section.items.map((item) => (
-                  <StudioNavLink
-                    key={item.view}
-                    item={item}
-                    active={
-                      view === item.view || (view === "campaign" && item.view === "campaigns")
-                    }
-                  />
-                ))}
-              </div>
-            </div>
+          <Plus className="size-4" /> New conversation
+        </Link>
+        <nav className="mt-7 space-y-1" aria-label="Studio navigation">
+          {nav.map((item) => (
+            <StudioNavLink key={item.view} item={item} active={isNavActive(view, item.view)} />
           ))}
         </nav>
         <div className="relative mt-auto">
@@ -1218,23 +1187,72 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
             Brand context active
           </span>
         </div>
-        <button
-          aria-label="Ask a Pal"
-          onClick={() => setChatOpen(true)}
-          className="ml-3 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-full border border-border bg-white px-3 text-xs font-bold text-ink"
-        >
-          <MessageSquareText className="size-4" />
-          <span className="hidden md:inline">Ask a Pal</span>
-        </button>
         <StudioNotifications />
-        <button
-          aria-label="Create something new"
-          onClick={() => setCreateOpen(true)}
+        <Link
+          to="/studio/conversations"
+          search={{ prompt: newConversationPrompt }}
+          aria-label="Start a new conversation"
           className="ml-2 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-ink px-4 text-sm font-bold text-white"
         >
           <Plus className="size-4" />
-          <span className="hidden sm:inline">Create</span>
-        </button>
+          <span className="hidden sm:inline">New conversation</span>
+        </Link>
+        <div className="relative ml-2">
+          <button
+            onClick={() => setAccountOpen((current) => !current)}
+            aria-label="Account menu"
+            className="grid size-10 place-items-center rounded-full bg-spotlight text-xs font-black text-white"
+          >
+            {memberName.slice(0, 1).toUpperCase()}
+          </button>
+          <AnimatePresence>
+            {accountOpen ? (
+              <motion.div
+                initial={reduce ? { opacity: 0 } : { opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                className="absolute right-0 top-[calc(100%+0.6rem)] z-50 w-64 rounded-[1.15rem] border border-border bg-white p-2 shadow-[0_28px_80px_-40px_rgba(31,35,40,.75)]"
+              >
+                <p className="px-3 py-2 text-[11px] text-muted-foreground">
+                  {memberName} · {subscription?.plan || "member"}
+                </p>
+                <Link
+                  to="/studio/settings"
+                  onClick={() => setAccountOpen(false)}
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-spotlight-soft"
+                >
+                  <CircleUserRound className="size-4" /> Profile & settings
+                </Link>
+                <Link
+                  to="/studio/billing"
+                  onClick={() => setAccountOpen(false)}
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-spotlight-soft"
+                >
+                  <CreditCard className="size-4" /> Usage & billing
+                </Link>
+                <Link
+                  to="/studio/success"
+                  onClick={() => setAccountOpen(false)}
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-spotlight-soft"
+                >
+                  <HandHeart className="size-4" /> Member success
+                </Link>
+                <Link
+                  to="/"
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-system-soft"
+                >
+                  <ExternalLink className="size-4" /> Visit Palmer House website
+                </Link>
+                <button
+                  onClick={() => void signOut()}
+                  className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-bold text-muted-foreground hover:bg-spotlight-soft"
+                >
+                  <LogOut className="size-4" /> Sign out
+                </button>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+        </div>
       </header>
       <AnimatePresence>
         {mobileOpen && (

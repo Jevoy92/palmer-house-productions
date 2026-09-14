@@ -1,7 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { StudioPage } from "@/components/studio/StudioApp";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/studio/roadmap")({
-  head: () => ({ meta: [{ title: "Video Roadmap — Palmer House Studio" }] }),
-  component: () => <StudioPage view="roadmap" />,
+  beforeLoad: () => {
+    throw redirect({ to: "/studio/work", search: { tab: "roadmap" } });
+  },
 });

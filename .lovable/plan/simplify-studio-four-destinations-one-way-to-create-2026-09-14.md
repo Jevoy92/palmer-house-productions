@@ -20,7 +20,7 @@ Settings, Billing and Member success move into the account menu at the top right
 - You say what you have — a thought, a link, a file, a voice note (the composer already accepts all of these).
 - The Pal replies with three angles as choosable cards inside the conversation.
 - Picking one builds the campaign; the drafts open in a work panel beside the chat, with the same editors, previews and approvals as today.
-- The big "+ Create" button in the sidebar and header becomes "New conversation", optionally pre-filled with "I have something to turn into content."
+- The big "+ Create" button in the sidebar and header becomes "New conversation", always pre-filled with "I have something to turn into content."
 
 Nothing is deleted — the existing builder screens become the work panel, so platform drafts, production plan and scheduling all still work.
 

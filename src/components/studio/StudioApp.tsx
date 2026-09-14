@@ -1940,7 +1940,7 @@ function Dashboard() {
               </Link>
             ) : null}
           </div>
-          <div className="mt-5 divide-y divide-border border-t border-border">
+          <div className="mt-5 grid gap-4 sm:grid-cols-2">
             {activeCampaigns.slice(0, 4).map((campaign) => {
               const lane = lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
               const campaignAssets = assets.filter((asset) => asset.campaign_id === campaign.id);
@@ -1955,35 +1955,52 @@ function Dashboard() {
                   key={campaign.id}
                   to="/studio/campaigns/$campaignId"
                   params={{ campaignId: campaign.id }}
-                  className="group flex items-center gap-5 py-5 transition-colors hover:bg-secondary/40"
+                  className="group studio-card flex flex-col overflow-hidden border border-border bg-white transition hover:-translate-y-0.5 hover:shadow-md"
                 >
-                  <span
-                    className="size-2.5 shrink-0 rounded-full"
-                    style={{ background: lane.color }}
-                    aria-hidden="true"
-                  />
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-base font-extrabold tracking-[-.02em]">
+                  <span className="relative block h-28 w-full overflow-hidden">
+                    <AssetIllustration
+                      kind={campaign.primary_lane || "campaign"}
+                      title={campaign.title}
+                      className="h-full w-full"
+                    />
+                    <span
+                      className="absolute left-0 top-0 h-full w-[3px]"
+                      style={{ background: lane.color }}
+                      aria-hidden="true"
+                    />
+                  </span>
+                  <span className="flex min-w-0 flex-1 flex-col p-4">
+                    <span className="studio-eyebrow flex items-center gap-2 text-muted-foreground">
+                      <span
+                        className="size-2 shrink-0 rounded-full"
+                        style={{ background: lane.color }}
+                        aria-hidden="true"
+                      />
+                      {lane.label}
+                    </span>
+                    <span className="mt-2 line-clamp-2 text-base font-extrabold leading-snug tracking-[-.02em]">
                       {campaign.title}
                     </span>
-                    <span className="studio-eyebrow mt-2 block text-muted-foreground">
-                      {lane.label} · {completed} of {campaignAssets.length} approved
+                    <span className="mt-auto pt-4">
+                      <span className="block h-[3px] w-full overflow-hidden bg-muted">
+                        <span
+                          className="block h-full transition-[width] duration-500"
+                          style={{ width: `${Math.max(4, percent)}%`, background: lane.color }}
+                        />
+                      </span>
+                      <span className="mt-2 flex items-center justify-between text-xs font-bold text-muted-foreground">
+                        <span>
+                          {completed}/{campaignAssets.length} approved
+                        </span>
+                        <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                      </span>
                     </span>
                   </span>
-                  <span className="hidden w-28 shrink-0 sm:block">
-                    <span className="block h-[3px] w-full overflow-hidden bg-muted">
-                      <span
-                        className="block h-full transition-[width] duration-500"
-                        style={{ width: `${Math.max(4, percent)}%`, background: lane.color }}
-                      />
-                    </span>
-                  </span>
-                  <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
                 </Link>
               );
             })}
             {!activeCampaigns.length ? (
-              <div className="py-10">
+              <div className="py-10 sm:col-span-2">
                 <EmptyState
                   icon={WandSparkles}
                   title="Nothing in production yet."
@@ -1997,6 +2014,7 @@ function Dashboard() {
               </div>
             ) : null}
           </div>
+
 
           {opportunities.length ? (
             <div className="mt-12">

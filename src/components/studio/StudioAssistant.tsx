@@ -512,7 +512,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                           <Plus className="size-3.5" /> Save as idea
                         </button>
                         <Link
-                          to="/studio"
+                          to="/studio/create"
                           className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink"
                         >
                           Build this campaign <ArrowRight className="size-3.5" />

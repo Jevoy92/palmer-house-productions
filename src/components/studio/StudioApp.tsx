@@ -219,7 +219,7 @@ const navSections = [
   {
     label: "My work",
     items: [
-      { view: "engine", label: "Create", to: "/studio", icon: Plus },
+      { view: "engine", label: "Create", to: "/studio/create", icon: Plus },
       { view: "campaigns", label: "Campaigns", to: "/studio/campaigns", icon: WandSparkles },
       { view: "ideas", label: "Content ideas", to: "/studio/ideas", icon: Lightbulb },
       { view: "library", label: "Library", to: "/studio/library", icon: FolderOpen },
@@ -1322,7 +1322,7 @@ function CreateOverlay({ onClose }: { onClose: () => void }) {
   const reduce = useReducedMotion();
   const options = [
     {
-      to: "/studio",
+      to: "/studio/create",
       icon: Sparkles,
       lane: "Spotlight",
       title: "Start with an idea",
@@ -1774,7 +1774,7 @@ function Dashboard() {
           key: "first",
           title: "One real customer question is enough to start",
           body: "The engine turns a single sentence into a full set of drafts you can edit and approve.",
-          to: "/studio" as const,
+          to: "/studio/create" as const,
           action: "Build the first campaign",
         }
       : null,
@@ -1811,7 +1811,7 @@ function Dashboard() {
     key: string;
     title: string;
     body: string;
-    to: "/studio" | "/studio/calendar" | "/studio/roadmap";
+    to: "/studio/create" | "/studio/calendar" | "/studio/roadmap";
     action: string;
   }[];
 
@@ -1870,7 +1870,7 @@ function Dashboard() {
             </button>
           </div>
           <Link
-            to="/studio"
+            to="/studio/create"
             onClick={endFirstRun}
             className="mt-6 inline-flex min-h-12 items-center gap-2 bg-ink px-6 text-sm font-black text-white transition hover:bg-evergreen"
           >
@@ -1974,7 +1974,7 @@ function Dashboard() {
                   title="Nothing in production yet."
                   body="Your first campaign starts with one useful idea — the strategy, drafts, and calendar are built together."
                   action={
-                    <Link to="/studio" className="primary-action">
+                    <Link to="/studio/create" className="primary-action">
                       Start with an idea
                     </Link>
                   }
@@ -2338,7 +2338,7 @@ function IdeasBoard() {
         body="Start with a thought, a link, or an image. The Studio keeps the source, names the real problem or opportunity, and helps turn it into a connected campaign."
         action={
           <Link
-            to="/studio"
+            to="/studio/create"
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-system px-5 text-sm font-bold text-white"
           >
             <Sparkles className="size-4" /> Open the engine
@@ -2561,7 +2561,7 @@ function IdeasBoard() {
                   </div>
                   <div className="mt-auto flex gap-2 pt-6">
                     <Link
-                      to="/studio"
+                      to="/studio/create"
                       className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold"
                       style={{ background: meta.soft, color: meta.color }}
                     >
@@ -5586,7 +5586,7 @@ function Library() {
                 prefilled or invented.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link to="/studio" className="primary-action">
+                <Link to="/studio/create" className="primary-action">
                   <WandSparkles className="size-4" /> Create your first campaign
                 </Link>
                 <Link to="/studio/ideas" className="secondary-action">
@@ -6240,7 +6240,7 @@ function CalendarView() {
               title="Nothing scheduled yet."
               body="Every completed campaign adds a practical publishing sequence here."
               action={
-                <Link to="/studio" className="primary-action">
+                <Link to="/studio/create" className="primary-action">
                   Build a campaign
                 </Link>
               }

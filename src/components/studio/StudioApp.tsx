@@ -2084,336 +2084,89 @@ const starterIdeas: StarterIdea[] = [
   },
 ];
 
+/** Saved ideas from conversations. Capture happens in the chat, not here. */
 function IdeasBoard() {
-  const { ideas, createIdea, updateIdea, uploadIdeaSource, suggestDirections, brand, busy } =
-    useStudio();
-  const [draft, setDraft] = useState("");
-  const [sourceType, setSourceType] = useState<"text" | "link" | "image">("text");
-  const [sourceUrl, setSourceUrl] = useState("");
-  const [sourceFile, setSourceFile] = useState<File | null>(null);
-  const [sourcePreview, setSourcePreview] = useState("");
-  const [previewById, setPreviewById] = useState<Record<string, string>>({});
-  const [problem, setProblem] = useState("");
-  const [filter, setFilter] = useState<"all" | keyof typeof lanes>("all");
-  const detectedLane = classifyLane(`${draft} ${problem}`) as keyof typeof lanes;
-
-
-  const [directions, setDirections] = useState<Awaited<ReturnType<typeof suggestDirections>>>([]);
-  const savedIdeas = ideas.filter((item) => item.status !== "archived");
-  const combined = savedIdeas.length
-    ? savedIdeas.map((item) => ({
-        id: item.id,
-        text: item.body,
-        lane: item.primary_lane as keyof typeof lanes,
-        source: item.source_type,
-        problem: item.business_problem,
-        sourceUrl: item.source_url,
-        saved: true,
-      }))
-    : starterIdeas.map((item) => ({ ...item, sourceUrl: null, saved: false }));
-  const visible = filter === "all" ? combined : combined.filter((item) => item.lane === filter);
-
-  async function addIdea(findAngles = false) {
-    const fallback =
-      sourceType === "image" && sourceFile
-        ? `Use ${sourceFile.name} as the visual source for a campaign.`
-        : sourceType === "link" && sourceUrl
-          ? `Turn the useful material at ${sourceUrl} into a campaign.`
-          : "";
-    const body = draft.trim() || fallback;
-    if (body.length < 8) {
-      toast.error("Add a thought, link, or image with enough context to guide the campaign.");
-      return;
-    }
-    try {
-      const mediaPath = sourceFile ? await uploadIdeaSource(sourceFile) : undefined;
-      const id = await createIdea({
-        body,
-        sourceType,
-        sourceUrl: sourceType === "link" ? sourceUrl : undefined,
-        sourceMediaPath: mediaPath,
-        lane: detectedLane,
-        businessProblem: problem.trim() || `${lanes[detectedLane].role}: ${body}`,
-
-      });
-      if (sourcePreview) setPreviewById((current) => ({ ...current, [id]: sourcePreview }));
-      if (findAngles) {
-        const next = await suggestDirections({
-          idea: body,
-          goal: "Turn source material into a useful campaign",
-          audience: brand?.primary_audience || "The business’s primary audience",
-        });
-        setDirections(next);
-      }
-      setDraft("");
-      setSourceUrl("");
-      setSourceFile(null);
-      setSourcePreview("");
-      setProblem("");
-      toast.success(
-        findAngles
-          ? "Saved and shaped into three campaign directions."
-          : "Saved to this workspace.",
-      );
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not save this source.");
-    }
-  }
+  const { ideas, updateIdea } = useStudio();
+  const saved = ideas.filter((item) => item.status !== "archived");
   return (
     <div className="mx-auto max-w-[88rem]">
       <PageIntro
-        eyebrow="Content ideas"
-        title="Catch the useful thought before it disappears."
-        body="Start with a thought, a link, or an image. The Studio keeps the source, names the real problem or opportunity, and helps turn it into a connected campaign."
+        eyebrow="Ideas"
+        title="Saved from your conversations."
         action={
           <Link
-            to="/studio/conversations" search={{ prompt: "I have something to turn into content." }}
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-system px-5 text-sm font-bold text-white"
+            to="/studio/conversations"
+            search={{ prompt: newConversationPrompt }}
+            className="primary-action"
           >
-            <Sparkles className="size-4" /> Open the engine
+            <Plus className="size-4" /> New conversation
           </Link>
         }
       />
-      <section className="mt-8 grid gap-6 xl:grid-cols-[.72fr_1.28fr]">
-        <div className="studio-card h-fit xl:sticky xl:top-24">
-          <p className="studio-eyebrow text-system">Quick capture</p>
-          <h2 className="mt-3 text-2xl font-black">What are we starting with?</h2>
-          <div className="mt-5 grid grid-cols-3 rounded-xl border border-border bg-white p-1">
-            {(["text", "link", "image"] as const).map((value) => (
-              <button
-                key={value}
-                onClick={() => setSourceType(value)}
-                className={`min-h-11 rounded-lg text-xs font-bold capitalize ${sourceType === value ? "bg-system-soft text-system" : "text-muted-foreground"}`}
+      {saved.length ? (
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {saved.map((idea) => {
+            const meta = lanes[(idea.primary_lane as keyof typeof lanes) || "spotlight"] ||
+              lanes.spotlight;
+            return (
+              <motion.article
+                layout
+                key={idea.id}
+                className="flex flex-col overflow-hidden rounded-[1.5rem] border border-border bg-white shadow-soft"
               >
-                {value}
-              </button>
-            ))}
-          </div>
-          {sourceType === "link" ? (
-            <label className="mt-4 block text-sm font-bold">
-              Link to use as the source
-              <input
-                type="url"
-                value={sourceUrl}
-                onChange={(event) => setSourceUrl(event.target.value)}
-                placeholder="https://…"
-                className="mt-2 min-h-12 w-full rounded-xl border border-border px-4 text-sm outline-none focus:border-system"
-              />
-            </label>
-          ) : null}
-          {sourceType === "image" ? (
-            <label className="mt-4 flex min-h-36 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed border-system bg-system-soft p-4 text-center">
-              {sourcePreview ? (
-                <img
-                  src={sourcePreview}
-                  alt="Selected campaign source"
-                  className="max-h-44 w-full rounded-lg object-cover"
-                />
-              ) : (
-                <>
-                  <ImageUp className="size-6 text-system" />
-                  <span className="mt-3 text-sm font-black text-system">
-                    Choose a before-and-after, product, or reference image
-                  </span>
-                  <span className="mt-1 text-[10px] text-muted-foreground">
-                    PNG, JPG, or WebP · private workspace upload
-                  </span>
-                </>
-              )}
-              <input
-                type="file"
-                accept="image/png,image/jpeg,image/webp"
-                className="sr-only"
-                onChange={(event) => {
-                  const file = event.target.files?.[0] || null;
-                  setSourceFile(file);
-                  if (sourcePreview) URL.revokeObjectURL(sourcePreview);
-                  setSourcePreview(file ? URL.createObjectURL(file) : "");
-                }}
-              />
-            </label>
-          ) : null}
-          <textarea
-            value={draft}
-            onChange={(event) => setDraft(event.target.value)}
-            rows={6}
-            placeholder={
-              sourceType === "image"
-                ? "What should the audience notice about this image?"
-                : sourceType === "link"
-                  ? "What is useful about this link?"
-                  : "A customer asked why…"
-            }
-            className="mt-5 w-full resize-none rounded-xl border border-border p-4 text-base outline-none focus:border-system"
-          />
-          <label className="mt-4 block text-sm font-extrabold">
-            What problem or opportunity could this address?
-            <input
-              value={problem}
-              onChange={(event) => setProblem(event.target.value)}
-              placeholder="Customers cannot see the difference…"
-              className="mt-2 min-h-12 w-full rounded-xl border border-border px-4 text-sm font-medium outline-none focus:border-system"
-            />
-          </label>
-          <div
-            className="mt-5 rounded-xl border border-border p-4"
-            style={{ background: lanes[detectedLane].soft }}
-          >
-            <p className="studio-eyebrow" style={{ color: lanes[detectedLane].color }}>
-              Category · {lanes[detectedLane].label}
-            </p>
-            <p className="mt-2 text-xs font-medium text-muted-foreground">
-              We sort this for you from what you wrote — {lanes[detectedLane].role.toLowerCase()}.
-              You can change it later on the idea itself.
-            </p>
-          </div>
-
-          <div className="mt-5 grid gap-2 sm:grid-cols-2">
-            <button
-              onClick={() => void addIdea(false)}
-              disabled={busy}
-              className="flex min-h-12 items-center justify-center gap-2 rounded-xl border border-system px-4 text-sm font-bold text-system disabled:opacity-45"
-            >
-              <Plus className="size-4" /> Save source
-            </button>
-            <button
-              onClick={() => void addIdea(true)}
-              disabled={busy}
-              className="flex min-h-12 items-center justify-center gap-2 rounded-xl bg-system px-4 text-sm font-bold text-white disabled:opacity-45"
-            >
-              {busy ? (
-                <LoaderCircle className="size-4 animate-spin" />
-              ) : (
-                <Sparkles className="size-4" />
-              )}{" "}
-              Suggest campaign
-            </button>
-          </div>
-          <div className="mt-6">
-            <PalTip name="Samira" headshot={samiraHeadshot} color="var(--system)">
-              If your team has said it twice, save the exact wording. That is usually the useful
-              part.
-            </PalTip>
-          </div>
-        </div>
-        <div>
-          {directions.length ? (
-            <section className="mb-6 rounded-[1.25rem] border border-system bg-system-soft p-5">
-              <p className="studio-eyebrow text-system">Campaign directions</p>
-              <div className="mt-4 grid gap-3 lg:grid-cols-3">
-                {directions.map((direction) => (
-                  <article key={direction.id} className="rounded-xl bg-white p-4">
-                    <p className="text-[9px] font-black uppercase tracking-[.12em] text-system">
-                      {direction.lane}
-                    </p>
-                    <p className="mt-2 text-sm font-black">{direction.title}</p>
-                    <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                      {direction.angle}
-                    </p>
-                    <Link
-                      to="/studio/work" search={{ tab: "campaigns" }}
-                      className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-system"
-                    >
-                      Build campaign <ArrowRight className="size-3.5" />
-                    </Link>
-                  </article>
-                ))}
-              </div>
-            </section>
-          ) : null}
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="studio-eyebrow text-reel">Idea bank</p>
-              <h2 className="mt-2 text-2xl font-black">Ready when you are</h2>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {(["all", "spotlight", "reel", "evergreen", "system"] as const).map((item) => (
-                <button
-                  key={item}
-                  onClick={() => setFilter(item)}
-                  className={`min-h-11 rounded-full px-4 text-xs font-bold capitalize ${filter === item ? "bg-system text-white" : "border border-border bg-white"}`}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="studio-content-list mt-5 grid gap-4 sm:grid-cols-2">
-            {visible.map((idea) => {
-              const meta = lanes[idea.lane];
-              return (
-                <motion.article layout key={idea.id} className="studio-card flex min-h-56 flex-col">
-                  <div className="flex items-center justify-between">
-                    <span
-                      className="flex items-center gap-2 text-xs font-extrabold"
-                      style={{ color: meta.color }}
-                    >
-                      <span
-                        className="grid size-8 place-items-center rounded-lg"
-                        style={{ background: meta.soft }}
-                      >
-                        <Lightbulb className="size-3.5" />
-                      </span>
-                      {meta.label} idea
+                <div className="h-24 border-b border-border" aria-hidden>
+                  <AssetIllustration kind="idea" title={idea.body} className="h-full w-full" />
+                </div>
+                <div className="flex flex-1 flex-col p-4">
+                  <div className="flex items-center gap-2">
+                    <span className="size-2 rounded-full" style={{ background: meta.color }} />
+                    <span className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+                      {meta.label}
                     </span>
-                    <button
-                      aria-label="More idea options"
-                      className="grid size-12 place-items-center rounded-full border border-border"
-                    >
-                      <MoreHorizontal className="size-4" />
-                    </button>
                   </div>
-                  <p className="mt-6 text-xl font-extrabold leading-snug">{idea.text}</p>
-                  {previewById[idea.id] ? (
-                    <img
-                      src={previewById[idea.id]}
-                      alt="Idea source"
-                      className="mt-4 h-32 w-full rounded-xl object-cover"
-                    />
-                  ) : null}
-                  <p className="mt-3 text-xs text-muted-foreground">Source: {idea.source}</p>
-                  {idea.sourceUrl ? (
-                    <a
-                      href={idea.sourceUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-system"
-                    >
-                      Open source <ExternalLink className="size-3" />
-                    </a>
-                  ) : null}
-                  <div className="mt-4 rounded-xl bg-mist p-3">
-                    <p className="text-[9px] font-black uppercase tracking-[.12em] text-muted-foreground">
-                      Problem it solves
-                    </p>
-                    <p className="mt-2 text-xs font-bold leading-relaxed">{idea.problem}</p>
-                  </div>
-                  <div className="mt-auto flex gap-2 pt-6">
+                  <p className="mt-2 line-clamp-4 text-[15px] font-bold leading-snug">
+                    {idea.body}
+                  </p>
+                  <div className="mt-auto flex gap-2 pt-4">
                     <Link
-                      to="/studio/conversations" search={{ prompt: "I have something to turn into content." }}
-                      className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold"
+                      to="/studio/conversations"
+                      search={{ prompt: `Build this into a campaign: ${idea.body}` }}
+                      className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold"
                       style={{ background: meta.soft, color: meta.color }}
                     >
                       Build this <ArrowRight className="size-4" />
                     </Link>
                     <button
-                      onClick={() =>
-                        idea.saved
-                          ? void updateIdea(idea.id, { status: "archived" })
-                          : toast.success("Starter hidden once you save your first workspace idea.")
-                      }
-                      className="grid size-12 place-items-center rounded-xl border border-border"
-                      aria-label={`Archive ${idea.text}`}
+                      onClick={() => void updateIdea(idea.id, { status: "archived" })}
+                      className="grid size-11 place-items-center rounded-xl border border-border"
+                      aria-label="Archive this idea"
                     >
                       <Archive className="size-4" />
                     </button>
                   </div>
-                </motion.article>
-              );
-            })}
-          </div>
+                </div>
+              </motion.article>
+            );
+          })}
         </div>
-      </section>
+      ) : (
+        <div className="mt-8 studio-card">
+          <EmptyState
+            icon={Lightbulb}
+            title="No saved ideas yet."
+            body="When your Pal says something worth keeping, hit “Save as idea” in the conversation."
+            action={
+              <Link
+                to="/studio/conversations"
+                search={{ prompt: newConversationPrompt }}
+                className="primary-action"
+              >
+                Start a conversation <ArrowRight className="size-4" />
+              </Link>
+            }
+          />
+        </div>
+      )}
     </div>
   );
 }

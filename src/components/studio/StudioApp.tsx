@@ -6246,7 +6246,7 @@ function CampaignCard({ campaign }: { campaign: Campaign }) {
       >
         <div className="h-28 overflow-hidden border-b border-border" aria-hidden>
           <AssetIllustration
-            kind={campaign.anchor_format || "campaign"}
+            kind="campaign"
             title={`${campaign.title} ${campaign.topic || ""}`}
             className="h-full w-full"
           />

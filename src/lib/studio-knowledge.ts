@@ -64,6 +64,19 @@ export async function loadWorkspaceKnowledge(client: Client, workspaceId: string
     loadWorkspaceVoice(client, workspaceId),
   ]);
 
+  // Voice notes, documents and recordings the member dropped into conversations.
+  // Summaries only — the full text stays in the database so prompts stay bounded.
+  const attachments = await client
+    .from("conversation_attachments")
+    .select("kind, label, summary")
+    .eq("workspace_id", workspaceId)
+    .order("created_at", { ascending: false })
+    .limit(8);
+  const attachmentRows = (attachments.data || []).map(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (row: any) => `${row.kind}: ${row.label} — ${clip(row.summary, 200)}`,
+  );
+
   const campaignRows = (campaigns.data || []).map(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (row: any) =>
@@ -89,6 +102,7 @@ export async function loadWorkspaceKnowledge(client: Client, workspaceId: string
     list("Campaigns already built (never repeat these angles verbatim)", campaignRows),
     list("Ideas captured but not yet produced", ideaRows),
     list("Already scheduled", calendarRows),
+    list("Files and voice notes the member has shared", attachmentRows),
     doneVideos.length ? `Roadmap videos already finished: ${doneVideos.join(", ")}` : "",
     memory && Object.keys(memory).length ? `Approved memory: ${JSON.stringify(memory)}` : "",
   ].filter(Boolean);

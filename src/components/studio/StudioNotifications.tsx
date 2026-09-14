@@ -81,7 +81,7 @@ export function StudioNotifications() {
         body: openIdea.body.slice(0, 140),
         color: "var(--evergreen)",
         soft: "var(--evergreen-soft)",
-        to: "/studio",
+        to: "/studio/create",
       });
 
     if (brand && (brand.personal_interests || []).length === 0)

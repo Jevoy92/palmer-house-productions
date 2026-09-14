@@ -219,7 +219,7 @@ const navSections = [
   {
     label: "My work",
     items: [
-      { view: "engine", label: "Create", to: "/studio", icon: Plus },
+      { view: "engine", label: "Create", to: "/studio/create", icon: Plus },
       { view: "campaigns", label: "Campaigns", to: "/studio/campaigns", icon: WandSparkles },
       { view: "ideas", label: "Content ideas", to: "/studio/ideas", icon: Lightbulb },
       { view: "library", label: "Library", to: "/studio/library", icon: FolderOpen },
@@ -1322,7 +1322,7 @@ function CreateOverlay({ onClose }: { onClose: () => void }) {
   const reduce = useReducedMotion();
   const options = [
     {
-      to: "/studio",
+      to: "/studio/create",
       icon: Sparkles,
       lane: "Spotlight",
       title: "Start with an idea",
@@ -1621,7 +1621,7 @@ function ConversationInvite({
         <img
           src={pal.headshot}
           alt={`${pal.name}, your Palmer House guide`}
-          className="size-20 shrink-0 rounded-[1.25rem] border border-border bg-white object-cover object-top"
+          className="size-28 shrink-0 rounded-[1.25rem] border border-border bg-white object-cover object-top sm:size-36"
         />
         <div className="min-w-0 flex-1">
           <p className="studio-eyebrow" style={{ color: pal.color }}>
@@ -1660,15 +1660,33 @@ function ConversationInvite({
           ) : null}
           <Link
             to="/studio/conversations"
+            search={{ prompt: undefined }}
+
             className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-border px-5 text-sm font-black hover:border-ink"
           >
             {latest ? "Start a new conversation" : `Talk with ${pal.name}`}
           </Link>
         </div>
       </div>
+      {!latest && pal.persona.starters.length ? (
+        <div className="flex flex-wrap gap-2 border-t border-border px-6 py-5 sm:px-8">
+          {pal.persona.starters.slice(0, 3).map((starter) => (
+            <Link
+              key={starter}
+              to="/studio/conversations"
+              search={{ prompt: starter }}
+              className="inline-flex min-h-11 items-center rounded-xl border border-border px-4 text-xs font-bold transition hover:border-ink"
+              style={{ background: pal.soft }}
+            >
+              {starter}
+            </Link>
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }
+
 
 function Dashboard() {
   const {
@@ -1774,7 +1792,7 @@ function Dashboard() {
           key: "first",
           title: "One real customer question is enough to start",
           body: "The engine turns a single sentence into a full set of drafts you can edit and approve.",
-          to: "/studio" as const,
+          to: "/studio/create" as const,
           action: "Build the first campaign",
         }
       : null,
@@ -1811,7 +1829,7 @@ function Dashboard() {
     key: string;
     title: string;
     body: string;
-    to: "/studio" | "/studio/calendar" | "/studio/roadmap";
+    to: "/studio/create" | "/studio/calendar" | "/studio/roadmap";
     action: string;
   }[];
 
@@ -1831,22 +1849,19 @@ function Dashboard() {
                 : "Your studio is set up and quiet. Give it one real idea and it starts working."}
           </p>
         </div>
-        <div className="flex shrink-0 items-center gap-5">
-          <div className="text-right">
-            <p className="studio-eyebrow" style={{ color: guide.color }}>
-              {progression.tier.label}
-            </p>
-            <p className="mt-2 text-xs text-muted-foreground">
-              {progression.next ? `${progression.toNext} moves to ${progression.next.label}` : "Top tier"}
-            </p>
-          </div>
-          {guide.avatar ? (
-            <img src={guide.avatar} alt="" className="h-16 w-16 object-contain object-bottom" />
-          ) : null}
-        </div>
       </header>
 
       <ConversationInvite conversations={conversations} preferredPal={settings?.preferred_pal} />
+
+      <p className="mt-4 text-xs text-muted-foreground">
+        <span className="font-bold" style={{ color: guide.color }}>
+          {progression.tier.label}
+        </span>
+        {progression.next
+          ? ` · ${progression.toNext} moves to ${progression.next.label}`
+          : " · top tier"}
+      </p>
+
 
       {firstRun ? (
         <section className="mt-10 border border-ink bg-white p-6 sm:p-8">
@@ -1870,7 +1885,7 @@ function Dashboard() {
             </button>
           </div>
           <Link
-            to="/studio"
+            to="/studio/create"
             onClick={endFirstRun}
             className="mt-6 inline-flex min-h-12 items-center gap-2 bg-ink px-6 text-sm font-black text-white transition hover:bg-evergreen"
           >
@@ -1974,7 +1989,7 @@ function Dashboard() {
                   title="Nothing in production yet."
                   body="Your first campaign starts with one useful idea — the strategy, drafts, and calendar are built together."
                   action={
-                    <Link to="/studio" className="primary-action">
+                    <Link to="/studio/create" className="primary-action">
                       Start with an idea
                     </Link>
                   }
@@ -2338,7 +2353,7 @@ function IdeasBoard() {
         body="Start with a thought, a link, or an image. The Studio keeps the source, names the real problem or opportunity, and helps turn it into a connected campaign."
         action={
           <Link
-            to="/studio"
+            to="/studio/create"
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-system px-5 text-sm font-bold text-white"
           >
             <Sparkles className="size-4" /> Open the engine
@@ -2561,7 +2576,7 @@ function IdeasBoard() {
                   </div>
                   <div className="mt-auto flex gap-2 pt-6">
                     <Link
-                      to="/studio"
+                      to="/studio/create"
                       className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold"
                       style={{ background: meta.soft, color: meta.color }}
                     >
@@ -5586,7 +5601,7 @@ function Library() {
                 prefilled or invented.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link to="/studio" className="primary-action">
+                <Link to="/studio/create" className="primary-action">
                   <WandSparkles className="size-4" /> Create your first campaign
                 </Link>
                 <Link to="/studio/ideas" className="secondary-action">
@@ -6240,7 +6255,7 @@ function CalendarView() {
               title="Nothing scheduled yet."
               body="Every completed campaign adds a practical publishing sequence here."
               action={
-                <Link to="/studio" className="primary-action">
+                <Link to="/studio/create" className="primary-action">
                   Build a campaign
                 </Link>
               }

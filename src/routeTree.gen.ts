@@ -49,6 +49,7 @@ import { Route as StudioOnboardingRouteImport } from './routes/studio.onboarding
 import { Route as StudioLibraryRouteImport } from './routes/studio.library'
 import { Route as StudioIdeasRouteImport } from './routes/studio.ideas'
 import { Route as StudioDashboardRouteImport } from './routes/studio.dashboard'
+import { Route as StudioCreateRouteImport } from './routes/studio.create'
 import { Route as StudioCalendarRouteImport } from './routes/studio.calendar'
 import { Route as StudioBrandRouteImport } from './routes/studio.brand'
 import { Route as StudioBillingRouteImport } from './routes/studio.billing'
@@ -277,6 +278,11 @@ const StudioDashboardRoute = StudioDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => StudioRoute,
 } as any)
+const StudioCreateRoute = StudioCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => StudioRoute,
+} as any)
 const StudioCalendarRoute = StudioCalendarRouteImport.update({
   id: '/calendar',
   path: '/calendar',
@@ -469,6 +475,7 @@ export interface FileRoutesByFullPath {
   '/studio/billing': typeof StudioBillingRoute
   '/studio/brand': typeof StudioBrandRoute
   '/studio/calendar': typeof StudioCalendarRoute
+  '/studio/create': typeof StudioCreateRoute
   '/studio/dashboard': typeof StudioDashboardRoute
   '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
@@ -537,6 +544,7 @@ export interface FileRoutesByTo {
   '/studio/billing': typeof StudioBillingRoute
   '/studio/brand': typeof StudioBrandRoute
   '/studio/calendar': typeof StudioCalendarRoute
+  '/studio/create': typeof StudioCreateRoute
   '/studio/dashboard': typeof StudioDashboardRoute
   '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
@@ -607,6 +615,7 @@ export interface FileRoutesById {
   '/studio/billing': typeof StudioBillingRoute
   '/studio/brand': typeof StudioBrandRoute
   '/studio/calendar': typeof StudioCalendarRoute
+  '/studio/create': typeof StudioCreateRoute
   '/studio/dashboard': typeof StudioDashboardRoute
   '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
@@ -678,6 +687,7 @@ export interface FileRouteTypes {
     | '/studio/billing'
     | '/studio/brand'
     | '/studio/calendar'
+    | '/studio/create'
     | '/studio/dashboard'
     | '/studio/ideas'
     | '/studio/library'
@@ -746,6 +756,7 @@ export interface FileRouteTypes {
     | '/studio/billing'
     | '/studio/brand'
     | '/studio/calendar'
+    | '/studio/create'
     | '/studio/dashboard'
     | '/studio/ideas'
     | '/studio/library'
@@ -815,6 +826,7 @@ export interface FileRouteTypes {
     | '/studio/billing'
     | '/studio/brand'
     | '/studio/calendar'
+    | '/studio/create'
     | '/studio/dashboard'
     | '/studio/ideas'
     | '/studio/library'
@@ -1169,6 +1181,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioDashboardRouteImport
       parentRoute: typeof StudioRoute
     }
+    '/studio/create': {
+      id: '/studio/create'
+      path: '/create'
+      fullPath: '/studio/create'
+      preLoaderRoute: typeof StudioCreateRouteImport
+      parentRoute: typeof StudioRoute
+    }
     '/studio/calendar': {
       id: '/studio/calendar'
       path: '/calendar'
@@ -1381,6 +1400,7 @@ interface StudioRouteChildren {
   StudioBillingRoute: typeof StudioBillingRoute
   StudioBrandRoute: typeof StudioBrandRoute
   StudioCalendarRoute: typeof StudioCalendarRoute
+  StudioCreateRoute: typeof StudioCreateRoute
   StudioDashboardRoute: typeof StudioDashboardRoute
   StudioIdeasRoute: typeof StudioIdeasRoute
   StudioLibraryRoute: typeof StudioLibraryRoute
@@ -1401,6 +1421,7 @@ const StudioRouteChildren: StudioRouteChildren = {
   StudioBillingRoute: StudioBillingRoute,
   StudioBrandRoute: StudioBrandRoute,
   StudioCalendarRoute: StudioCalendarRoute,
+  StudioCreateRoute: StudioCreateRoute,
   StudioDashboardRoute: StudioDashboardRoute,
   StudioIdeasRoute: StudioIdeasRoute,
   StudioLibraryRoute: StudioLibraryRoute,

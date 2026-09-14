@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useSearch } from "@tanstack/react-router";
 import { motion, useReducedMotion } from "motion/react";
 import {
   ArrowRight,
@@ -73,7 +73,9 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
   const selected = resolvePalName(activeConversation?.pal || settings?.preferred_pal);
   const pal = palDirectory[selected];
 
-  const [draft, setDraft] = useState("");
+  const startingPrompt = useSearch({ strict: false, select: (s) => (s as { prompt?: string }).prompt });
+  const [draft, setDraft] = useState(startingPrompt ?? "");
+
   const [attachments, setAttachments] = useState<ConversationIntake[]>([]);
   const [savedMemory, setSavedMemory] = useState<string[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -512,7 +514,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                           <Plus className="size-3.5" /> Save as idea
                         </button>
                         <Link
-                          to="/studio"
+                          to="/studio/create"
                           className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink"
                         >
                           Build this campaign <ArrowRight className="size-3.5" />

@@ -9,10 +9,9 @@ import {
   CtaBand,
   Eyebrow,
 } from "@/components/site/PageShell";
-import scene from "@/assets/dioramas/reel-factory-web.jpg";
 import { MissionComparison } from "@/components/site/MissionComparison";
-import ryder from "@/assets/pals-optimized/ryder.webp";
-import raquel from "@/assets/pals-optimized/raquel.webp";
+import ryder from "@/assets/pal-headshots/ryder.png";
+import raquel from "@/assets/pal-headshots/raquel.png";
 
 const PACKAGES = [
   { title: "Services Pack", pain: "People don't know what we actually do." },
@@ -51,7 +50,7 @@ const FAQS = [
 
 function ReelPalPage() {
   return (
-    <PageShell>
+    <PageShell lane="reel">
       <PageHero
         eyebrow="Short-Form Video Packages"
         title="Stop the Scroll With"
@@ -59,44 +58,37 @@ function ReelPalPage() {
         subtitle="Ryder engineers the first 3 seconds. Punchy, platform-native video packages built for brands that need to be seen."
       />
 
-      <Section>
-        <img
-          src={scene}
-          alt="Reel Pal studio set where Ryder and Raquel film short-form video"
-          loading="lazy"
-          className="mx-auto w-full max-w-4xl"
-        />
-      </Section>
-
-      <Section muted>
-        <div className="grid items-center gap-8 sm:grid-cols-2">
-          <div className="flex justify-center gap-6">
-            <div className="text-center">
+      <Section muted eyebrow="Your Reel guides" title="Meet Ryder and Raquel">
+        <div className="grid items-center gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
+          <div className="mx-auto grid w-full max-w-md grid-cols-2 gap-4">
+            <div className="overflow-hidden rounded-2xl bg-white p-3 text-center">
               <img
                 src={ryder}
                 alt="Ryder, the Reel Pal momentum character"
-                className="mx-auto h-56 w-auto object-contain"
+                loading="lazy"
+                className="aspect-square w-full rounded-xl object-cover"
               />
-              <p className="mt-2 font-display font-bold">Ryder</p>
-              <p className="text-xs text-muted-foreground">Momentum</p>
+              <p className="mt-3 font-display text-lg font-bold">Ryder</p>
+              <p className="text-sm font-medium text-[var(--lane-ink)]">Momentum</p>
             </div>
-            <div className="text-center">
+            <div className="overflow-hidden rounded-2xl bg-white p-3 text-center">
               <img
                 src={raquel}
                 alt="Raquel, the Reel Pal engagement character"
-                className="mx-auto h-56 w-auto object-contain"
+                loading="lazy"
+                className="aspect-square w-full rounded-xl object-cover"
               />
-              <p className="mt-2 font-display font-bold">Raquel</p>
-              <p className="text-xs text-muted-foreground">Engagement</p>
+              <p className="mt-3 font-display text-lg font-bold">Raquel</p>
+              <p className="text-sm font-medium text-[var(--lane-ink)]">Engagement</p>
             </div>
           </div>
           <div>
             <Eyebrow>Reel Pal</Eyebrow>
-            <p className="mt-4 italic text-muted-foreground">
+            <p className="mt-4 border-l-2 border-[var(--lane)] pl-5 text-base leading-relaxed text-ink-soft">
               "If you don't catch attention fast, you don't get a second chance. I learned that
               early. Now I make brands feel alive in 10 seconds." — Ryder
             </p>
-            <p className="mt-4 italic text-muted-foreground">
+            <p className="mt-4 border-l-2 border-[var(--lane)] pl-5 text-base leading-relaxed text-ink-soft">
               "Ryder lights the match. I make sure the fire doesn't burn the house down. People
               don't listen when they feel judged — I make them feel safe enough to show up." —
               Raquel
@@ -114,7 +106,7 @@ function ReelPalPage() {
       </Section>
 
       <Section eyebrow="Pricing" title="How the Reel Pal Session Works">
-        <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-8 shadow-soft">
+        <div className="mx-auto max-w-4xl rounded-3xl border border-[var(--lane-soft)] border-t-4 border-t-[var(--lane)] bg-white p-6 shadow-soft sm:p-9">
           <p className="text-sm font-semibold text-muted-foreground">Services Pack — 1 of 6</p>
           <h3 className="mt-1 font-display text-xl font-bold">
             Punchy reels that explain exactly what you do—so prospects stop asking "wait, what do
@@ -124,27 +116,31 @@ function ReelPalPage() {
             2-hour filming session with direction, edited short-form videos ready to post.
           </p>
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
-            <div className="rounded-xl bg-secondary/50 p-4">
+            <div className="rounded-2xl bg-[var(--lane-soft)] p-5">
               <p className="text-xs font-bold uppercase text-muted-foreground">
                 Production Session
               </p>
-              <p className="text-gradient-brand font-display text-2xl font-extrabold">$450</p>
+              <p className="font-display text-3xl font-extrabold tabular-nums text-[var(--lane-ink)]">
+                $450
+              </p>
               <p className="mt-1 text-xs text-muted-foreground">
                 Covers setup, lighting, audio, and direction
               </p>
             </div>
-            <div className="rounded-xl bg-secondary/50 p-4">
+            <div className="rounded-2xl bg-[var(--lane-soft)] p-5">
               <p className="text-xs font-bold uppercase text-muted-foreground">
                 Additional Videos (6)
               </p>
-              <p className="text-gradient-brand font-display text-2xl font-extrabold">$900</p>
+              <p className="font-display text-3xl font-extrabold tabular-nums text-[var(--lane-ink)]">
+                $900
+              </p>
               <p className="mt-1 text-xs text-muted-foreground">
                 1 min each • $150 each. Same session, already set up
               </p>
             </div>
             <div
-              className="rounded-xl p-4 text-white"
-              style={{ backgroundColor: "var(--spotlight)" }}
+              className="rounded-2xl p-5 text-white"
+              style={{ backgroundColor: "var(--lane-ink)" }}
             >
               <p className="text-xs font-bold uppercase text-white/80">Package Total</p>
               <p className="font-display text-2xl font-extrabold">$1,350</p>
@@ -156,8 +152,8 @@ function ReelPalPage() {
           <div className="mt-6 text-center">
             <Link
               to="/contact"
-              className="rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow"
-              style={{ backgroundColor: "var(--spotlight)" }}
+              className="inline-flex min-h-12 items-center justify-center rounded-full px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              style={{ backgroundColor: "var(--lane-ink)" }}
             >
               Customize This Package
             </Link>
@@ -184,7 +180,7 @@ function ReelPalPage() {
       </Section>
 
       <Section muted>
-        <blockquote className="mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8 text-center shadow-soft">
+        <blockquote className="mx-auto max-w-3xl border-l-4 border-[var(--lane)] bg-white px-6 py-8 text-left sm:px-9">
           <p className="text-lg italic text-muted-foreground">
             "Jevoy and the Palmer House Team were fantastic! Getting in front of the camera for
             photos is one stressor, but jumping in front of the camera to make a video is even more

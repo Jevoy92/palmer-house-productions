@@ -6,7 +6,6 @@ import naturopath from "@/assets/work/Naturopath.webm";
 import nonprofit from "@/assets/work/NonProfit.webm";
 import politician from "@/assets/work/PoliticianAnnouncement.webm";
 import { Marquee } from "./Marquee";
-import { ScrollHighlightText } from "./ScrollHighlightText";
 
 const work = [
   { src: chiropractor, label: "Healthcare brand film" },
@@ -57,15 +56,16 @@ export function CreativesShowcase() {
       </div>
 
       <div className="mx-auto mt-24 max-w-4xl px-4 text-center text-[clamp(1.6rem,3.5vw,2.65rem)] font-semibold leading-[1.22] tracking-[-0.035em]">
-        <ScrollHighlightText
-          paragraphClassName="mt-7"
-          paragraphs={[
-            "We don't just make videos; we solve business problems with them. Maybe your onboarding takes too long. Your message isn't landing. Your brand isn't getting seen where it counts.",
-            "Whatever the challenge, we start by understanding what's getting in the way — and then design a video system built to fix it.",
-            "From training to visibility to customer education, our process turns complex pain points into clear, measurable solutions.",
-            "Because video isn't the goal. It's the tool that gets you there.",
-          ]}
-        />
+        {[
+          "We don't just make videos; we solve business problems with them. Maybe your onboarding takes too long. Your message isn't landing. Your brand isn't getting seen where it counts.",
+          "Whatever the challenge, we start by understanding what's getting in the way — and then design a video system built to fix it.",
+          "From training to visibility to customer education, our process turns complex pain points into clear, measurable solutions.",
+          "Because video isn't the goal. It's the tool that gets you there.",
+        ].map((paragraph, index) => (
+          <p key={paragraph} className={index > 0 ? "mt-7" : undefined}>
+            {paragraph}
+          </p>
+        ))}
       </div>
     </section>
   );

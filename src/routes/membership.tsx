@@ -17,7 +17,6 @@ import {
 } from "lucide-react";
 import { useRef } from "react";
 import { PageShell } from "@/components/site/PageShell";
-import productionWorkspace from "@/assets/studio-visuals/production-workspace.png";
 import { studioPlans } from "@/lib/studio-model";
 
 const chapters = [
@@ -272,19 +271,48 @@ function MembershipPage() {
               responsible for shipping it.
             </p>
           </div>
-          <motion.figure
-            initial={reduce ? false : { opacity: 0, y: 28, scale: 0.985 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.65 }}
-            className="mt-12 overflow-hidden rounded-[2rem] border border-border bg-white"
-          >
-            <img
-              src={productionWorkspace}
-              alt="A visual production workspace connecting scripts, editing, analytics, and publishing"
-              className="aspect-[16/7] w-full object-cover"
-            />
-          </motion.figure>
+          <div className="mt-12 overflow-hidden rounded-2xl border border-border">
+            <div className="border-b border-border bg-cream px-6 py-5 sm:px-7">
+              <h3 className="text-xl font-bold">What travels with your campaign</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                The practical details stay connected to the idea, whichever way you choose to film.
+              </p>
+            </div>
+            <dl className="grid md:grid-cols-3">
+              {[
+                {
+                  title: "Script & delivery",
+                  detail: "Anchor and short scripts, performance notes, and timing.",
+                  icon: BookOpen,
+                  lane: "spotlight",
+                },
+                {
+                  title: "Shoot preparation",
+                  detail: "Shot list, B-roll, location, wardrobe, props, and a filming checklist.",
+                  icon: Clapperboard,
+                  lane: "evergreen",
+                },
+                {
+                  title: "Publishing plan",
+                  detail: "Written assets, approvals, and an editable publishing schedule.",
+                  icon: CalendarDays,
+                  lane: "system",
+                },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  data-lane={item.lane}
+                  className="marketing-lane border-b border-border bg-[var(--lane-soft)] p-6 last:border-b-0 sm:p-7 md:border-b-0 md:border-r md:last:border-r-0"
+                >
+                  <dt className="flex items-center gap-3 font-bold text-[var(--lane-ink)]">
+                    <item.icon className="size-5 shrink-0" aria-hidden="true" />
+                    {item.title}
+                  </dt>
+                  <dd className="mt-3 text-sm leading-relaxed text-ink-soft">{item.detail}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
           <div className="mt-14 grid gap-4 md:grid-cols-3">
             {[
               {

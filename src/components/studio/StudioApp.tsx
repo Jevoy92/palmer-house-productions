@@ -203,58 +203,37 @@ function PalTip({
   );
 }
 
-const navSections = [
+const nav = [
+  { view: "home", label: "Home", to: "/studio/dashboard", icon: Home },
   {
-    label: "Studio",
-    items: [
-      { view: "home", label: "Home", to: "/studio/dashboard", icon: Home },
-      {
-        view: "conversations",
-        label: "Conversations",
-        to: "/studio/conversations",
-        icon: MessageSquareText,
-      },
-    ],
+    view: "conversations",
+    label: "Conversations",
+    to: "/studio/conversations",
+    icon: MessageSquareText,
   },
-  {
-    label: "My work",
-    items: [
-      { view: "engine", label: "Create", to: "/studio/create", icon: Plus },
-      { view: "campaigns", label: "Campaigns", to: "/studio/campaigns", icon: WandSparkles },
-      { view: "ideas", label: "Content ideas", to: "/studio/ideas", icon: Lightbulb },
-      { view: "library", label: "Library", to: "/studio/library", icon: FolderOpen },
-      { view: "approvals", label: "Needs review", to: "/studio/approvals", icon: CheckSquare2 },
-      { view: "calendar", label: "Calendar", to: "/studio/calendar", icon: CalendarDays },
-      { view: "roadmap", label: "Video roadmap", to: "/studio/roadmap", icon: Film },
-    ],
-  },
-  {
-    label: "My brand",
-    items: [{ view: "brand", label: "Brand DNA", to: "/studio/brand", icon: Gauge }],
-  },
-  {
-    label: "Account",
-    items: [
-      { view: "success", label: "Member success", to: "/studio/success", icon: HandHeart },
-      { view: "settings", label: "Settings", to: "/studio/settings", icon: Settings },
-    ],
-  },
+  { view: "work", label: "My work", to: "/studio/work", icon: FolderOpen },
+  { view: "brand", label: "My brand", to: "/studio/brand", icon: Gauge },
 ] as const;
-
-const nav = navSections.flatMap((section) => [...section.items]);
 
 export function StudioPage({
   view,
   campaignId,
   conversationId,
+  workTab,
 }: {
   view: StudioView;
   campaignId?: string;
   conversationId?: string;
+  workTab?: WorkTab;
 }) {
   return (
     <>
-      <StudioGate view={view} campaignId={campaignId} conversationId={conversationId} />
+      <StudioGate
+        view={view}
+        campaignId={campaignId}
+        conversationId={conversationId}
+        workTab={workTab}
+      />
     </>
   );
 }
@@ -263,17 +242,21 @@ function StudioGate({
   view,
   campaignId,
   conversationId,
+  workTab,
 }: {
   view: StudioView;
   campaignId?: string;
   conversationId?: string;
+  workTab?: WorkTab;
 }) {
   const studio = useStudio();
   if (studio.loading) return <StudioLoading />;
   if (!studio.session) return <AuthExperience />;
   if (!studio.workspace) return <Onboarding />;
   return (
-    <StudioShell view={view}>{renderView(view, campaignId, conversationId)}</StudioShell>
+    <StudioShell view={view}>
+      {renderView(view, campaignId, conversationId, workTab)}
+    </StudioShell>
   );
 }
 
@@ -1104,8 +1087,6 @@ function Onboarding() {
 function StudioShell({ view, children }: { view: StudioView; children: ReactNode }) {
   const { workspace, subscription, profile, user, signOut } = useStudio();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [createOpen, setCreateOpen] = useState(false);
-  const [chatOpen, setChatOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const reduce = useReducedMotion();
   const memberName =
@@ -1119,83 +1100,23 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
       <StudioStartHere />
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-[15.5rem] flex-col border-r border-border bg-white px-4 py-5 lg:flex">
         <StudioBrand />
-        <button
-          onClick={() => setCreateOpen(true)}
+        <Link
+          to="/studio/conversations"
+          search={{ prompt: newConversationPrompt }}
           className="mt-8 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-ink text-sm font-bold text-white transition hover:bg-evergreen"
         >
-          <Plus className="size-4" /> Create
-        </button>
-        <nav className="mt-7 space-y-6" aria-label="Studio navigation">
-          {navSections.map((section) => (
-            <div key={section.label}>
-              <p className="px-3 font-mono text-[8px] font-semibold uppercase tracking-[.18em] text-muted-foreground">
-                {section.label}
-              </p>
-              <div className="mt-2 space-y-1">
-                {section.items.map((item) => (
-                  <StudioNavLink
-                    key={item.view}
-                    item={item}
-                    active={
-                      view === item.view || (view === "campaign" && item.view === "campaigns")
-                    }
-                  />
-                ))}
-              </div>
-            </div>
+          <Plus className="size-4" /> New conversation
+        </Link>
+        <nav className="mt-7 space-y-1" aria-label="Studio navigation">
+          {nav.map((item) => (
+            <StudioNavLink key={item.view} item={item} active={isNavActive(view, item.view)} />
           ))}
         </nav>
-        <div className="relative mt-auto">
-          <AnimatePresence>
-            {accountOpen ? (
-              <motion.div
-                initial={reduce ? { opacity: 0 } : { opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 8 }}
-                className="absolute bottom-[4.5rem] left-0 right-0 rounded-[1.15rem] border border-border bg-white p-2 shadow-[0_28px_80px_-40px_rgba(31,35,40,.75)]"
-              >
-                <Link
-                  to="/studio/settings"
-                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-spotlight-soft"
-                >
-                  <CircleUserRound className="size-4" /> Profile & settings
-                </Link>
-                <Link
-                  to="/studio/billing"
-                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-spotlight-soft"
-                >
-                  <CreditCard className="size-4" /> Usage & billing
-                </Link>
-                <Link
-                  to="/"
-                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-system-soft"
-                >
-                  <ExternalLink className="size-4" /> Visit Palmer House website
-                </Link>
-                <button
-                  onClick={() => void signOut()}
-                  className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-bold text-muted-foreground hover:bg-spotlight-soft"
-                >
-                  <LogOut className="size-4" /> Sign out
-                </button>
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
-          <button
-            onClick={() => setAccountOpen((current) => !current)}
-            className="flex min-h-14 w-full items-center gap-3 rounded-xl border border-border p-2 text-left hover:border-spotlight"
-          >
-            <span className="grid size-9 shrink-0 place-items-center rounded-full bg-spotlight text-xs font-black text-white">
-              {memberName.slice(0, 1).toUpperCase()}
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block truncate text-xs font-extrabold">{memberName}</span>
-              <span className="mt-0.5 block truncate text-[10px] text-muted-foreground">
-                {subscription?.plan || "member"} · {workspace?.name}
-              </span>
-            </span>
-            <ChevronRight className={`size-3.5 transition ${accountOpen ? "rotate-90" : ""}`} />
-          </button>
+        <div className="mt-auto rounded-xl border border-border p-3">
+          <p className="truncate text-xs font-extrabold">{workspace?.name}</p>
+          <p className="mt-0.5 truncate text-[10px] text-muted-foreground">
+            {memberName} · {subscription?.plan || "member"}
+          </p>
         </div>
       </aside>
       <header className="sticky top-0 z-30 flex min-h-16 items-center border-b border-border bg-white px-4 lg:ml-[15.5rem] lg:px-7">
@@ -1218,23 +1139,72 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
             Brand context active
           </span>
         </div>
-        <button
-          aria-label="Ask a Pal"
-          onClick={() => setChatOpen(true)}
-          className="ml-3 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-full border border-border bg-white px-3 text-xs font-bold text-ink"
-        >
-          <MessageSquareText className="size-4" />
-          <span className="hidden md:inline">Ask a Pal</span>
-        </button>
         <StudioNotifications />
-        <button
-          aria-label="Create something new"
-          onClick={() => setCreateOpen(true)}
+        <Link
+          to="/studio/conversations"
+          search={{ prompt: newConversationPrompt }}
+          aria-label="Start a new conversation"
           className="ml-2 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-ink px-4 text-sm font-bold text-white"
         >
           <Plus className="size-4" />
-          <span className="hidden sm:inline">Create</span>
-        </button>
+          <span className="hidden sm:inline">New conversation</span>
+        </Link>
+        <div className="relative ml-2">
+          <button
+            onClick={() => setAccountOpen((current) => !current)}
+            aria-label="Account menu"
+            className="grid size-10 place-items-center rounded-full bg-spotlight text-xs font-black text-white"
+          >
+            {memberName.slice(0, 1).toUpperCase()}
+          </button>
+          <AnimatePresence>
+            {accountOpen ? (
+              <motion.div
+                initial={reduce ? { opacity: 0 } : { opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                className="absolute right-0 top-[calc(100%+0.6rem)] z-50 w-64 rounded-[1.15rem] border border-border bg-white p-2 shadow-[0_28px_80px_-40px_rgba(31,35,40,.75)]"
+              >
+                <p className="px-3 py-2 text-[11px] text-muted-foreground">
+                  {memberName} · {subscription?.plan || "member"}
+                </p>
+                <Link
+                  to="/studio/settings"
+                  onClick={() => setAccountOpen(false)}
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-spotlight-soft"
+                >
+                  <CircleUserRound className="size-4" /> Profile & settings
+                </Link>
+                <Link
+                  to="/studio/billing"
+                  onClick={() => setAccountOpen(false)}
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-spotlight-soft"
+                >
+                  <CreditCard className="size-4" /> Usage & billing
+                </Link>
+                <Link
+                  to="/studio/success"
+                  onClick={() => setAccountOpen(false)}
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-spotlight-soft"
+                >
+                  <HandHeart className="size-4" /> Member success
+                </Link>
+                <Link
+                  to="/"
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-system-soft"
+                >
+                  <ExternalLink className="size-4" /> Visit Palmer House website
+                </Link>
+                <button
+                  onClick={() => void signOut()}
+                  className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-bold text-muted-foreground hover:bg-spotlight-soft"
+                >
+                  <LogOut className="size-4" /> Sign out
+                </button>
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+        </div>
       </header>
       <AnimatePresence>
         {mobileOpen && (
@@ -1254,21 +1224,41 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
                 <X />
               </button>
             </div>
-            <nav className="mt-9 space-y-7">
-              {navSections.map((section) => (
-                <div key={section.label}>
-                  <p className="px-3 font-mono text-[9px] uppercase tracking-[.18em] text-muted-foreground">
-                    {section.label}
-                  </p>
-                  <div className="mt-2 space-y-1">
-                    {section.items.map((item) => (
-                      <div key={item.view} onClick={() => setMobileOpen(false)}>
-                        <StudioNavLink item={item} active={view === item.view} />
-                      </div>
-                    ))}
-                  </div>
+            <nav className="mt-9 space-y-2">
+              {nav.map((item) => (
+                <div key={item.view} onClick={() => setMobileOpen(false)}>
+                  <StudioNavLink item={item} active={isNavActive(view, item.view)} />
                 </div>
               ))}
+              <div className="pt-3">
+                <Link
+                  to="/studio/settings"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-[13px] font-bold text-muted-foreground"
+                >
+                  <Settings className="size-4" /> Profile & settings
+                </Link>
+                <Link
+                  to="/studio/billing"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-[13px] font-bold text-muted-foreground"
+                >
+                  <CreditCard className="size-4" /> Usage & billing
+                </Link>
+                <Link
+                  to="/studio/success"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-[13px] font-bold text-muted-foreground"
+                >
+                  <HandHeart className="size-4" /> Member success
+                </Link>
+                <button
+                  onClick={() => void signOut()}
+                  className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-[13px] font-bold text-muted-foreground"
+                >
+                  <LogOut className="size-4" /> Sign out
+                </button>
+              </div>
               <div className="border-t border-border pt-5">
                 <Link
                   to="/"
@@ -1291,10 +1281,6 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
       >
         {children}
       </motion.main>
-      <AnimatePresence>
-        {createOpen ? <CreateOverlay onClose={() => setCreateOpen(false)} /> : null}
-      </AnimatePresence>
-      <PalChat open={chatOpen} onClose={() => setChatOpen(false)} />
     </div>
   );
 }
@@ -1318,265 +1304,75 @@ function StudioNavLink({ item, active }: { item: (typeof nav)[number]; active: b
   );
 }
 
-function CreateOverlay({ onClose }: { onClose: () => void }) {
-  const reduce = useReducedMotion();
-  const options = [
-    {
-      to: "/studio/create",
-      icon: Sparkles,
-      lane: "Spotlight",
-      title: "Start with an idea",
-      body: "Find the angle, then build the campaign.",
-      color: "var(--spotlight)",
-      soft: "var(--spotlight-soft)",
-    },
-    {
-      to: "/studio/campaigns",
-      icon: Video,
-      lane: "Reel",
-      title: "Plan from a video",
-      body: "Turn one shoot into a useful content system.",
-      color: "var(--reel)",
-      soft: "var(--reel-soft)",
-    },
-    {
-      to: "/studio/ideas",
-      icon: Lightbulb,
-      lane: "Evergreen",
-      title: "Save a content idea",
-      body: "Capture the repeated question before it disappears.",
-      color: "var(--evergreen)",
-      soft: "var(--evergreen-soft)",
-    },
-    {
-      to: "/studio/calendar",
-      icon: CalendarDays,
-      lane: "System",
-      title: "Plan the rhythm",
-      body: "See what is ready, next, and waiting.",
-      color: "var(--system)",
-      soft: "var(--system-soft)",
-    },
-  ] as const;
+
+const newConversationPrompt = "I have something to turn into content.";
+
+const workTabs = [
+  { key: "campaigns", label: "Campaigns" },
+  { key: "ideas", label: "Ideas" },
+  { key: "library", label: "Library" },
+  { key: "approvals", label: "Needs review" },
+  { key: "calendar", label: "Calendar" },
+  { key: "roadmap", label: "Video roadmap" },
+] as const;
+
+export type WorkTab = (typeof workTabs)[number]["key"];
+
+function isNavActive(view: StudioView, item: (typeof nav)[number]["view"]) {
+  if (item === "work")
+    return (
+      view === "work" ||
+      view === "campaign" ||
+      view === "campaigns" ||
+      view === "engine" ||
+      view === "ideas" ||
+      view === "library" ||
+      view === "approvals" ||
+      view === "calendar" ||
+      view === "roadmap"
+    );
+  if (item === "conversations") return view === "conversations" || view === "assistant";
+  return view === item;
+}
+
+function MyWork({ tab }: { tab: WorkTab }) {
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[80] grid place-items-center bg-ink/35 p-4"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Create something new"
-      onMouseDown={(event) => {
-        if (event.target === event.currentTarget) onClose();
-      }}
-    >
-      <motion.section
-        initial={reduce ? false : { opacity: 0, y: 24, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 16, scale: 0.98 }}
-        className="w-full max-w-4xl overflow-hidden rounded-[1.5rem] bg-white shadow-[0_40px_120px_-50px_rgba(0,0,0,.8)]"
-      >
-        <header className="flex items-start justify-between border-b border-border p-5 sm:p-7">
-          <div>
-            <p className="studio-eyebrow text-system">Create new</p>
-            <h2 className="mt-3 text-3xl font-black">What should we make useful?</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Choose the starting point. Nothing publishes automatically.
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            aria-label="Close create menu"
-            className="grid size-11 place-items-center rounded-full border border-border"
+    <div className="mx-auto max-w-[80rem]">
+      <div className="flex flex-wrap items-center gap-2 border-b border-border pb-3">
+        {workTabs.map((item) => (
+          <Link
+            key={item.key}
+            to="/studio/work"
+            search={{ tab: item.key }}
+            className={`inline-flex min-h-10 items-center rounded-xl px-4 text-[13px] font-bold transition ${
+              tab === item.key
+                ? "bg-spotlight-soft text-spotlight"
+                : "text-muted-foreground hover:bg-mist hover:text-ink"
+            }`}
           >
-            <X className="size-4" />
-          </button>
-        </header>
-        <div className="grid gap-3 p-5 sm:grid-cols-2 sm:p-7">
-          {options.map((item, index) => (
-            <motion.div
-              key={item.title}
-              initial={reduce ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.06 * index }}
-            >
-              <Link
-                to={item.to}
-                onClick={onClose}
-                className="group flex min-h-36 items-start gap-4 rounded-[1.15rem] border border-border p-5 transition hover:-translate-y-0.5 hover:border-ink"
-              >
-                <span
-                  className="grid size-11 shrink-0 place-items-center rounded-xl"
-                  style={{ color: item.color, background: item.soft }}
-                >
-                  <item.icon className="size-5" />
-                </span>
-                <span className="min-w-0">
-                  <span className="studio-eyebrow" style={{ color: item.color }}>
-                    {item.lane}
-                  </span>
-                  <span className="mt-2 block text-lg font-extrabold">{item.title}</span>
-                  <span className="mt-2 block text-sm leading-relaxed text-muted-foreground">
-                    {item.body}
-                  </span>
-                </span>
-                <ArrowRight className="ml-auto mt-1 size-4 shrink-0 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
-    </motion.div>
+            {item.label}
+          </Link>
+        ))}
+      </div>
+      <div className="pt-6">
+        {tab === "campaigns" ? <Campaigns /> : null}
+        {tab === "ideas" ? <IdeasBoard /> : null}
+        {tab === "library" ? <Library /> : null}
+        {tab === "approvals" ? <Approvals /> : null}
+        {tab === "calendar" ? <CalendarView /> : null}
+        {tab === "roadmap" ? <VideoRoadmap /> : null}
+      </div>
+    </div>
   );
 }
 
-function PalChat({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { suggestDirections, brand, busy } = useStudio();
-  const { guide } = useGuide();
-
-  const reduce = useReducedMotion();
-  const [draft, setDraft] = useState("");
-  const [messages, setMessages] = useState<
-    Array<{ id: string; from: "you" | "pal"; body: string }>
-  >([
-    {
-      id: "welcome",
-      from: "pal",
-      body: "Tell me what feels unclear, repetitive, invisible, or stuck. I’ll help you find the most useful content move.",
-    },
-  ]);
-  async function ask(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const question = draft.trim();
-    if (question.length < 8) return;
-    setMessages((current) => [
-      ...current,
-      { id: crypto.randomUUID(), from: "you", body: question },
-    ]);
-    setDraft("");
-    try {
-      const directions = await suggestDirections({
-        idea: question,
-        goal: studioGoals[0],
-        audience: brand?.primary_audience || "Your primary audience",
-      });
-      const best = directions[0];
-      setMessages((current) => [
-        ...current,
-        {
-          id: crypto.randomUUID(),
-          from: "pal",
-          body: best
-            ? `${best.title}: ${best.angle}\n\nWhy it works: ${best.whyItWorks}`
-            : "Start by naming the exact decision you need the audience to make. That gives the content a real job.",
-        },
-      ]);
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "The Pal could not respond yet.");
-    }
-  }
-  return (
-    <AnimatePresence>
-      {open ? (
-        <motion.div
-          initial={reduce ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[95] flex justify-end bg-ink/30"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) onClose();
-          }}
-        >
-          <motion.aside
-            initial={reduce ? false : { transform: "translateX(100%)" }}
-            animate={{ transform: "translateX(0%)" }}
-            exit={reduce ? { opacity: 0 } : { transform: "translateX(100%)" }}
-            transition={
-              reduce ? { duration: 0.01 } : { type: "spring", bounce: 0.12, visualDuration: 0.4 }
-            }
-            className="flex h-full w-full flex-col bg-white shadow-2xl sm:max-w-[32rem]"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Ask a Palmer House Pal"
-          >
-            <header className="flex items-center gap-4 border-b border-border p-5">
-              <div className="relative">
-                <PalAvatar pal={guide} size="md" className="rounded-xl" />
-                <span className="absolute -right-1 -top-1 size-3 rounded-full border-2 border-white bg-evergreen" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="font-black">Ask a Pal</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  {guide.key
-                    ? `${guide.name} is working this through with you`
-                    : "Straight answers grounded in your workspace"}
-                </p>
-              </div>
-
-              <button
-                onClick={onClose}
-                aria-label="Close Pal chat"
-                className="grid size-11 place-items-center rounded-full border border-border"
-              >
-                <X className="size-4" />
-              </button>
-            </header>
-            <div className="border-b border-border px-5 py-3">
-              <Link
-                to="/studio/assistant"
-                onClick={onClose}
-                className="flex min-h-10 items-center justify-between rounded-xl bg-system-soft px-4 text-xs font-bold text-system"
-              >
-                Open the full Assistant workspace <ArrowRight className="size-4" />
-              </Link>
-            </div>
-            <div className="flex-1 space-y-4 overflow-y-auto p-5" aria-live="polite">
-              {messages.map((message) => (
-                <motion.div
-                  key={message.id}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`max-w-[88%] whitespace-pre-line rounded-[1.25rem] p-4 text-sm leading-relaxed ${message.from === "you" ? "ml-auto bg-spotlight text-white" : "bg-system-soft text-ink"}`}
-                >
-                  {message.body}
-                </motion.div>
-              ))}
-              {busy ? (
-                <div className="flex items-center gap-2 text-xs font-bold text-system">
-                  <LoaderCircle className="size-4 animate-spin" /> Finding the useful angle…
-                </div>
-              ) : null}
-            </div>
-            <form onSubmit={ask} className="border-t border-border p-4">
-              <div className="flex items-end gap-2 rounded-[1.15rem] border border-border bg-white p-2 shadow-soft">
-                <textarea
-                  value={draft}
-                  onChange={(event) => setDraft(event.target.value)}
-                  rows={2}
-                  placeholder="What feels stuck?"
-                  className="min-h-12 flex-1 resize-none border-0 bg-transparent p-2 text-sm outline-none"
-                />
-                <button
-                  disabled={busy || draft.trim().length < 8}
-                  aria-label="Send question"
-                  className="grid size-11 shrink-0 place-items-center rounded-xl bg-system text-white disabled:opacity-35"
-                >
-                  <Send className="size-4" />
-                </button>
-              </div>
-              <p className="mt-2 text-center text-[10px] text-muted-foreground">
-                Guidance only. Nothing publishes automatically.
-              </p>
-            </form>
-          </motion.aside>
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
-  );
-}
-
-function renderView(view: StudioView, campaignId?: string, conversationId?: string) {
+function renderView(
+  view: StudioView,
+  campaignId?: string,
+  conversationId?: string,
+  workTab?: WorkTab,
+) {
+  if (view === "work") return <MyWork tab={workTab || "campaigns"} />;
   if (view === "engine") return <ContentEngine />;
   if (view === "home") return <Dashboard />;
   if (view === "assistant" || view === "conversations")
@@ -1885,7 +1681,7 @@ function Dashboard() {
             </button>
           </div>
           <Link
-            to="/studio/create"
+            to="/studio/conversations" search={{ prompt: "I have something to turn into content." }}
             onClick={endFirstRun}
             className="mt-6 inline-flex min-h-12 items-center gap-2 bg-ink px-6 text-sm font-black text-white transition hover:bg-evergreen"
           >
@@ -1935,7 +1731,7 @@ function Dashboard() {
               </h2>
             </div>
             {campaigns.length ? (
-              <Link to="/studio/campaigns" className="text-xs font-bold underline underline-offset-4">
+              <Link to="/studio/work" search={{ tab: "campaigns" }} className="text-xs font-bold underline underline-offset-4">
                 All campaigns
               </Link>
             ) : null}
@@ -2006,7 +1802,7 @@ function Dashboard() {
                   title="Nothing in production yet."
                   body="Your first campaign starts with one useful idea — the strategy, drafts, and calendar are built together."
                   action={
-                    <Link to="/studio/create" className="primary-action">
+                    <Link to="/studio/conversations" search={{ prompt: "I have something to turn into content." }} className="primary-action">
                       Start with an idea
                     </Link>
                   }
@@ -2051,7 +1847,7 @@ function Dashboard() {
               {upcoming.slice(0, 3).map((item) => (
                 <Link
                   key={item.id}
-                  to="/studio/calendar"
+                  to="/studio/work" search={{ tab: "calendar" }}
                   className="flex items-baseline gap-4 py-4 transition-colors hover:bg-secondary/40"
                 >
                   <time className="studio-eyebrow w-16 shrink-0 text-muted-foreground">
@@ -2077,7 +1873,7 @@ function Dashboard() {
           <div>
             <div className="flex items-baseline justify-between">
               <p className="studio-eyebrow text-muted-foreground">Recently finished</p>
-              <Link to="/studio/library" className="text-xs font-bold underline underline-offset-4">
+              <Link to="/studio/work" search={{ tab: "library" }} className="text-xs font-bold underline underline-offset-4">
                 Library
               </Link>
             </div>
@@ -2085,7 +1881,7 @@ function Dashboard() {
               {assets.slice(0, 3).map((asset) => (
                 <Link
                   key={asset.id}
-                  to="/studio/library"
+                  to="/studio/work" search={{ tab: "library" }}
                   className="group overflow-hidden border border-border bg-white"
                 >
                   <span className="relative block aspect-[4/3] overflow-hidden bg-secondary">
@@ -2288,336 +2084,89 @@ const starterIdeas: StarterIdea[] = [
   },
 ];
 
+/** Saved ideas from conversations. Capture happens in the chat, not here. */
 function IdeasBoard() {
-  const { ideas, createIdea, updateIdea, uploadIdeaSource, suggestDirections, brand, busy } =
-    useStudio();
-  const [draft, setDraft] = useState("");
-  const [sourceType, setSourceType] = useState<"text" | "link" | "image">("text");
-  const [sourceUrl, setSourceUrl] = useState("");
-  const [sourceFile, setSourceFile] = useState<File | null>(null);
-  const [sourcePreview, setSourcePreview] = useState("");
-  const [previewById, setPreviewById] = useState<Record<string, string>>({});
-  const [problem, setProblem] = useState("");
-  const [filter, setFilter] = useState<"all" | keyof typeof lanes>("all");
-  const detectedLane = classifyLane(`${draft} ${problem}`) as keyof typeof lanes;
-
-
-  const [directions, setDirections] = useState<Awaited<ReturnType<typeof suggestDirections>>>([]);
-  const savedIdeas = ideas.filter((item) => item.status !== "archived");
-  const combined = savedIdeas.length
-    ? savedIdeas.map((item) => ({
-        id: item.id,
-        text: item.body,
-        lane: item.primary_lane as keyof typeof lanes,
-        source: item.source_type,
-        problem: item.business_problem,
-        sourceUrl: item.source_url,
-        saved: true,
-      }))
-    : starterIdeas.map((item) => ({ ...item, sourceUrl: null, saved: false }));
-  const visible = filter === "all" ? combined : combined.filter((item) => item.lane === filter);
-
-  async function addIdea(findAngles = false) {
-    const fallback =
-      sourceType === "image" && sourceFile
-        ? `Use ${sourceFile.name} as the visual source for a campaign.`
-        : sourceType === "link" && sourceUrl
-          ? `Turn the useful material at ${sourceUrl} into a campaign.`
-          : "";
-    const body = draft.trim() || fallback;
-    if (body.length < 8) {
-      toast.error("Add a thought, link, or image with enough context to guide the campaign.");
-      return;
-    }
-    try {
-      const mediaPath = sourceFile ? await uploadIdeaSource(sourceFile) : undefined;
-      const id = await createIdea({
-        body,
-        sourceType,
-        sourceUrl: sourceType === "link" ? sourceUrl : undefined,
-        sourceMediaPath: mediaPath,
-        lane: detectedLane,
-        businessProblem: problem.trim() || `${lanes[detectedLane].role}: ${body}`,
-
-      });
-      if (sourcePreview) setPreviewById((current) => ({ ...current, [id]: sourcePreview }));
-      if (findAngles) {
-        const next = await suggestDirections({
-          idea: body,
-          goal: "Turn source material into a useful campaign",
-          audience: brand?.primary_audience || "The business’s primary audience",
-        });
-        setDirections(next);
-      }
-      setDraft("");
-      setSourceUrl("");
-      setSourceFile(null);
-      setSourcePreview("");
-      setProblem("");
-      toast.success(
-        findAngles
-          ? "Saved and shaped into three campaign directions."
-          : "Saved to this workspace.",
-      );
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not save this source.");
-    }
-  }
+  const { ideas, updateIdea } = useStudio();
+  const saved = ideas.filter((item) => item.status !== "archived");
   return (
     <div className="mx-auto max-w-[88rem]">
       <PageIntro
-        eyebrow="Content ideas"
-        title="Catch the useful thought before it disappears."
-        body="Start with a thought, a link, or an image. The Studio keeps the source, names the real problem or opportunity, and helps turn it into a connected campaign."
+        eyebrow="Ideas"
+        title="Saved from your conversations."
         action={
           <Link
-            to="/studio/create"
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-system px-5 text-sm font-bold text-white"
+            to="/studio/conversations"
+            search={{ prompt: newConversationPrompt }}
+            className="primary-action"
           >
-            <Sparkles className="size-4" /> Open the engine
+            <Plus className="size-4" /> New conversation
           </Link>
         }
       />
-      <section className="mt-8 grid gap-6 xl:grid-cols-[.72fr_1.28fr]">
-        <div className="studio-card h-fit xl:sticky xl:top-24">
-          <p className="studio-eyebrow text-system">Quick capture</p>
-          <h2 className="mt-3 text-2xl font-black">What are we starting with?</h2>
-          <div className="mt-5 grid grid-cols-3 rounded-xl border border-border bg-white p-1">
-            {(["text", "link", "image"] as const).map((value) => (
-              <button
-                key={value}
-                onClick={() => setSourceType(value)}
-                className={`min-h-11 rounded-lg text-xs font-bold capitalize ${sourceType === value ? "bg-system-soft text-system" : "text-muted-foreground"}`}
+      {saved.length ? (
+        <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {saved.map((idea) => {
+            const meta = lanes[(idea.primary_lane as keyof typeof lanes) || "spotlight"] ||
+              lanes.spotlight;
+            return (
+              <motion.article
+                layout
+                key={idea.id}
+                className="flex flex-col overflow-hidden rounded-[1.5rem] border border-border bg-white shadow-soft"
               >
-                {value}
-              </button>
-            ))}
-          </div>
-          {sourceType === "link" ? (
-            <label className="mt-4 block text-sm font-bold">
-              Link to use as the source
-              <input
-                type="url"
-                value={sourceUrl}
-                onChange={(event) => setSourceUrl(event.target.value)}
-                placeholder="https://…"
-                className="mt-2 min-h-12 w-full rounded-xl border border-border px-4 text-sm outline-none focus:border-system"
-              />
-            </label>
-          ) : null}
-          {sourceType === "image" ? (
-            <label className="mt-4 flex min-h-36 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed border-system bg-system-soft p-4 text-center">
-              {sourcePreview ? (
-                <img
-                  src={sourcePreview}
-                  alt="Selected campaign source"
-                  className="max-h-44 w-full rounded-lg object-cover"
-                />
-              ) : (
-                <>
-                  <ImageUp className="size-6 text-system" />
-                  <span className="mt-3 text-sm font-black text-system">
-                    Choose a before-and-after, product, or reference image
-                  </span>
-                  <span className="mt-1 text-[10px] text-muted-foreground">
-                    PNG, JPG, or WebP · private workspace upload
-                  </span>
-                </>
-              )}
-              <input
-                type="file"
-                accept="image/png,image/jpeg,image/webp"
-                className="sr-only"
-                onChange={(event) => {
-                  const file = event.target.files?.[0] || null;
-                  setSourceFile(file);
-                  if (sourcePreview) URL.revokeObjectURL(sourcePreview);
-                  setSourcePreview(file ? URL.createObjectURL(file) : "");
-                }}
-              />
-            </label>
-          ) : null}
-          <textarea
-            value={draft}
-            onChange={(event) => setDraft(event.target.value)}
-            rows={6}
-            placeholder={
-              sourceType === "image"
-                ? "What should the audience notice about this image?"
-                : sourceType === "link"
-                  ? "What is useful about this link?"
-                  : "A customer asked why…"
-            }
-            className="mt-5 w-full resize-none rounded-xl border border-border p-4 text-base outline-none focus:border-system"
-          />
-          <label className="mt-4 block text-sm font-extrabold">
-            What problem or opportunity could this address?
-            <input
-              value={problem}
-              onChange={(event) => setProblem(event.target.value)}
-              placeholder="Customers cannot see the difference…"
-              className="mt-2 min-h-12 w-full rounded-xl border border-border px-4 text-sm font-medium outline-none focus:border-system"
-            />
-          </label>
-          <div
-            className="mt-5 rounded-xl border border-border p-4"
-            style={{ background: lanes[detectedLane].soft }}
-          >
-            <p className="studio-eyebrow" style={{ color: lanes[detectedLane].color }}>
-              Category · {lanes[detectedLane].label}
-            </p>
-            <p className="mt-2 text-xs font-medium text-muted-foreground">
-              We sort this for you from what you wrote — {lanes[detectedLane].role.toLowerCase()}.
-              You can change it later on the idea itself.
-            </p>
-          </div>
-
-          <div className="mt-5 grid gap-2 sm:grid-cols-2">
-            <button
-              onClick={() => void addIdea(false)}
-              disabled={busy}
-              className="flex min-h-12 items-center justify-center gap-2 rounded-xl border border-system px-4 text-sm font-bold text-system disabled:opacity-45"
-            >
-              <Plus className="size-4" /> Save source
-            </button>
-            <button
-              onClick={() => void addIdea(true)}
-              disabled={busy}
-              className="flex min-h-12 items-center justify-center gap-2 rounded-xl bg-system px-4 text-sm font-bold text-white disabled:opacity-45"
-            >
-              {busy ? (
-                <LoaderCircle className="size-4 animate-spin" />
-              ) : (
-                <Sparkles className="size-4" />
-              )}{" "}
-              Suggest campaign
-            </button>
-          </div>
-          <div className="mt-6">
-            <PalTip name="Samira" headshot={samiraHeadshot} color="var(--system)">
-              If your team has said it twice, save the exact wording. That is usually the useful
-              part.
-            </PalTip>
-          </div>
-        </div>
-        <div>
-          {directions.length ? (
-            <section className="mb-6 rounded-[1.25rem] border border-system bg-system-soft p-5">
-              <p className="studio-eyebrow text-system">Campaign directions</p>
-              <div className="mt-4 grid gap-3 lg:grid-cols-3">
-                {directions.map((direction) => (
-                  <article key={direction.id} className="rounded-xl bg-white p-4">
-                    <p className="text-[9px] font-black uppercase tracking-[.12em] text-system">
-                      {direction.lane}
-                    </p>
-                    <p className="mt-2 text-sm font-black">{direction.title}</p>
-                    <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                      {direction.angle}
-                    </p>
-                    <Link
-                      to="/studio/campaigns"
-                      className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-system"
-                    >
-                      Build campaign <ArrowRight className="size-3.5" />
-                    </Link>
-                  </article>
-                ))}
-              </div>
-            </section>
-          ) : null}
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="studio-eyebrow text-reel">Idea bank</p>
-              <h2 className="mt-2 text-2xl font-black">Ready when you are</h2>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {(["all", "spotlight", "reel", "evergreen", "system"] as const).map((item) => (
-                <button
-                  key={item}
-                  onClick={() => setFilter(item)}
-                  className={`min-h-11 rounded-full px-4 text-xs font-bold capitalize ${filter === item ? "bg-system text-white" : "border border-border bg-white"}`}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="studio-content-list mt-5 grid gap-4 sm:grid-cols-2">
-            {visible.map((idea) => {
-              const meta = lanes[idea.lane];
-              return (
-                <motion.article layout key={idea.id} className="studio-card flex min-h-56 flex-col">
-                  <div className="flex items-center justify-between">
-                    <span
-                      className="flex items-center gap-2 text-xs font-extrabold"
-                      style={{ color: meta.color }}
-                    >
-                      <span
-                        className="grid size-8 place-items-center rounded-lg"
-                        style={{ background: meta.soft }}
-                      >
-                        <Lightbulb className="size-3.5" />
-                      </span>
-                      {meta.label} idea
+                <div className="h-24 border-b border-border" aria-hidden>
+                  <AssetIllustration kind="idea" title={idea.body} className="h-full w-full" />
+                </div>
+                <div className="flex flex-1 flex-col p-4">
+                  <div className="flex items-center gap-2">
+                    <span className="size-2 rounded-full" style={{ background: meta.color }} />
+                    <span className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+                      {meta.label}
                     </span>
-                    <button
-                      aria-label="More idea options"
-                      className="grid size-12 place-items-center rounded-full border border-border"
-                    >
-                      <MoreHorizontal className="size-4" />
-                    </button>
                   </div>
-                  <p className="mt-6 text-xl font-extrabold leading-snug">{idea.text}</p>
-                  {previewById[idea.id] ? (
-                    <img
-                      src={previewById[idea.id]}
-                      alt="Idea source"
-                      className="mt-4 h-32 w-full rounded-xl object-cover"
-                    />
-                  ) : null}
-                  <p className="mt-3 text-xs text-muted-foreground">Source: {idea.source}</p>
-                  {idea.sourceUrl ? (
-                    <a
-                      href={idea.sourceUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-system"
-                    >
-                      Open source <ExternalLink className="size-3" />
-                    </a>
-                  ) : null}
-                  <div className="mt-4 rounded-xl bg-mist p-3">
-                    <p className="text-[9px] font-black uppercase tracking-[.12em] text-muted-foreground">
-                      Problem it solves
-                    </p>
-                    <p className="mt-2 text-xs font-bold leading-relaxed">{idea.problem}</p>
-                  </div>
-                  <div className="mt-auto flex gap-2 pt-6">
+                  <p className="mt-2 line-clamp-4 text-[15px] font-bold leading-snug">
+                    {idea.body}
+                  </p>
+                  <div className="mt-auto flex gap-2 pt-4">
                     <Link
-                      to="/studio/create"
-                      className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold"
+                      to="/studio/conversations"
+                      search={{ prompt: `Build this into a campaign: ${idea.body}` }}
+                      className="inline-flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold"
                       style={{ background: meta.soft, color: meta.color }}
                     >
                       Build this <ArrowRight className="size-4" />
                     </Link>
                     <button
-                      onClick={() =>
-                        idea.saved
-                          ? void updateIdea(idea.id, { status: "archived" })
-                          : toast.success("Starter hidden once you save your first workspace idea.")
-                      }
-                      className="grid size-12 place-items-center rounded-xl border border-border"
-                      aria-label={`Archive ${idea.text}`}
+                      onClick={() => void updateIdea(idea.id, { status: "archived" })}
+                      className="grid size-11 place-items-center rounded-xl border border-border"
+                      aria-label="Archive this idea"
                     >
                       <Archive className="size-4" />
                     </button>
                   </div>
-                </motion.article>
-              );
-            })}
-          </div>
+                </div>
+              </motion.article>
+            );
+          })}
         </div>
-      </section>
+      ) : (
+        <div className="mt-8 studio-card">
+          <EmptyState
+            icon={Lightbulb}
+            title="No saved ideas yet."
+            body="When your Pal says something worth keeping, hit “Save as idea” in the conversation."
+            action={
+              <Link
+                to="/studio/conversations"
+                search={{ prompt: newConversationPrompt }}
+                className="primary-action"
+              >
+                Start a conversation <ArrowRight className="size-4" />
+              </Link>
+            }
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -2719,213 +2268,21 @@ function Approvals() {
 }
 
 function Campaigns() {
-  const { campaigns, createCampaign, busy, brand } = useStudio();
-  const navigate = useNavigate();
-  const [builder, setBuilder] = useState(campaigns.length === 0);
-  const [step, setStep] = useState(0);
-  const [brief, setBrief] = useState<{
-    title: string;
-    goal: string;
-    topic: string;
-    offer: string;
-    audience: string;
-    anchorFormat: string;
-    depth: "quick" | "strategic" | "deep";
-  }>({
-    title: "New campaign",
-    goal: studioGoals[0],
-    topic: "",
-    offer: "",
-    audience: brand?.primary_audience || "",
-    anchorFormat: anchorFormats[0].value,
-    depth: "strategic" as "quick" | "strategic" | "deep",
-  });
-  async function generate() {
-    try {
-      const id = await createCampaign(brief);
-      toast.success("Your campaign system is ready.");
-      celebrate({ title: "Campaign system built.", detail: brief.topic.slice(0, 90) });
-      void navigate({ to: "/studio/campaigns/$campaignId", params: { campaignId: id } });
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Campaign generation failed.");
-    }
-  }
-  if (builder)
-    return (
-      <div className="mx-auto max-w-5xl">
-        <button
-          onClick={() => setBuilder(false)}
-          className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground"
-        >
-          ← All campaigns
-        </button>
-        <PageIntro
-          eyebrow={`Campaign architect · ${step + 1} of 4`}
-          title={
-            [
-              "Choose the job.",
-              "Give it one useful idea.",
-              "Choose the anchor.",
-              "Ready for the Pals.",
-            ][step]
-          }
-          body={
-            [
-              "Every campaign begins with a business outcome—not a format.",
-              "Specific context produces useful work. Give the campaign something real to organize.",
-              "The anchor gives every smaller asset a source of truth.",
-              "The Studio will build strategy, scripts, production, and a schedule as one system.",
-            ][step]
-          }
-        />
-        <div className="mt-8 studio-card p-5 sm:p-8">
-          <div className="mb-8 h-1 overflow-hidden rounded-full bg-secondary">
-            <motion.div
-              animate={{ width: `${((step + 1) / 4) * 100}%` }}
-              className="h-full bg-system"
-            />
-          </div>
-          {step === 0 && (
-            <ChoiceGrid
-              options={studioGoals.map((goal) => ({ value: goal, label: goal }))}
-              value={brief.goal}
-              onChange={(goal) => setBrief({ ...brief, goal })}
-            />
-          )}
-          {step === 1 && (
-            <div className="grid gap-5">
-              <Field
-                as="textarea"
-                label="What is the idea, problem, or question?"
-                value={brief.topic}
-                onChange={(event) => setBrief({ ...brief, topic: event.target.value })}
-                placeholder="Customers keep asking whether…"
-                rows={6}
-                required
-              />
-              <div className="grid gap-5 sm:grid-cols-2">
-                <Field
-                  label="What are we inviting them toward?"
-                  value={brief.offer}
-                  onChange={(event) => setBrief({ ...brief, offer: event.target.value })}
-                  placeholder="A discovery call, service, event…"
-                />
-                <Field
-                  label="Who needs this most?"
-                  value={brief.audience}
-                  onChange={(event) => setBrief({ ...brief, audience: event.target.value })}
-                  placeholder="The exact audience…"
-                  required
-                />
-              </div>
-            </div>
-          )}
-          {step === 2 && (
-            <div className="grid gap-4 sm:grid-cols-2">
-              {anchorFormats.map((format) => (
-                <button
-                  key={format.value}
-                  onClick={() => setBrief({ ...brief, anchorFormat: format.value })}
-                  className={`rounded-2xl border p-5 text-left ${brief.anchorFormat === format.value ? "border-ink bg-ink text-white" : "border-border"}`}
-                >
-                  <p className="font-bold">{format.label}</p>
-                  <p
-                    className={`mt-2 text-sm ${brief.anchorFormat === format.value ? "text-white/60" : "text-muted-foreground"}`}
-                  >
-                    {format.detail}
-                  </p>
-                </button>
-              ))}
-            </div>
-          )}
-          {step === 3 && (
-            <div>
-              <div className="grid gap-3 sm:grid-cols-4">
-                {Object.values(lanes).map((lane) => (
-                  <div
-                    key={lane.label}
-                    className="rounded-2xl p-4"
-                    style={{ background: lane.soft }}
-                  >
-                    <span
-                      className="block size-2 rounded-full"
-                      style={{ background: lane.color }}
-                    />
-                    <p className="mt-8 font-bold">{lane.label}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{lane.role}</p>
-                  </div>
-                ))}
-              </div>
-              <label className="mt-6 block text-sm font-semibold">
-                Planning depth
-                <select
-                  value={brief.depth}
-                  onChange={(event) =>
-                    setBrief({ ...brief, depth: event.target.value as typeof brief.depth })
-                  }
-                  className="mt-2 min-h-12 w-full rounded-2xl border border-border bg-white px-4"
-                >
-                  <option value="quick">Quick direction</option>
-                  <option value="strategic">Strategic campaign</option>
-                  <option value="deep">Deep production plan</option>
-                </select>
-              </label>
-            </div>
-          )}
-          <div className="mt-8 flex items-center justify-between gap-3">
-            <button
-              onClick={() => (step > 0 ? setStep(step - 1) : setBuilder(false))}
-              className="min-h-12 rounded-2xl border border-border px-5 font-semibold"
-            >
-              Back
-            </button>
-            {step < 3 ? (
-              <button
-                disabled={step === 1 && (!brief.topic.trim() || !brief.audience.trim())}
-                onClick={() => setStep(step + 1)}
-                className="primary-action disabled:opacity-40"
-              >
-                Continue <ArrowRight className="size-4" />
-              </button>
-            ) : (
-              <button
-                disabled={busy}
-                onClick={() => void generate()}
-                className="primary-action min-w-44"
-              >
-                {busy ? (
-                  <>
-                    <LoaderCircle className="size-4 animate-spin" />
-                    Building campaign…
-                  </>
-                ) : (
-                  <>
-                    Build complete campaign <Sparkles className="size-4" />
-                  </>
-                )}
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-    );
+  const { campaigns } = useStudio();
   return (
     <div className="mx-auto max-w-[88rem]">
       <PageIntro
         eyebrow="Campaigns"
-        title="Every idea, fully connected."
-        body="No scattered prompt history. Each campaign keeps the strategy, scripts, production plan, assets, schedule, and human support together."
+        title="Everything we have built together."
         action={
-          <button
-            onClick={() => {
-              setStep(0);
-              setBuilder(true);
-            }}
+          <Link
+            to="/studio/conversations"
+            search={{ prompt: newConversationPrompt }}
             className="primary-action"
           >
             <Plus className="size-4" />
-            New campaign
-          </button>
+            New conversation
+          </Link>
         }
       />
       <div className="mt-8">
@@ -2934,12 +2291,16 @@ function Campaigns() {
           <div className="studio-card">
             <EmptyState
               icon={WandSparkles}
-              title="Build your first complete campaign."
-              body="It takes about three minutes to give the Studio enough direction."
+              title="Nothing built yet."
+              body="Tell your Pal what you have. They will turn it into a campaign with you."
               action={
-                <button onClick={() => setBuilder(true)} className="primary-action">
-                  Start campaign <ArrowRight className="size-4" />
-                </button>
+                <Link
+                  to="/studio/conversations"
+                  search={{ prompt: newConversationPrompt }}
+                  className="primary-action"
+                >
+                  Start a conversation <ArrowRight className="size-4" />
+                </Link>
               }
             />
           </div>
@@ -2988,7 +2349,7 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
           title="Campaign not found."
           body="It may have been archived or belongs to another workspace."
           action={
-            <Link to="/studio/campaigns" className="primary-action">
+            <Link to="/studio/work" search={{ tab: "campaigns" }} className="primary-action">
               Back to campaigns
             </Link>
           }
@@ -4280,7 +3641,7 @@ function PublishPanel({
         body="Work down the list. Each row is one post with its own date and channel."
         lane={lane}
         action={
-          <Link to="/studio/calendar" className="primary-action" style={{ background: lane.color }}>
+          <Link to="/studio/work" search={{ tab: "calendar" }} className="primary-action" style={{ background: lane.color }}>
             <CalendarDays className="size-4" /> Open calendar
           </Link>
         }
@@ -4401,7 +3762,7 @@ function PublishPanel({
           </p>
           <p className="mt-2 text-lg font-black">Give the work dates and owners.</p>
         </div>
-        <Link to="/studio/calendar" className="secondary-action border-0 bg-white">
+        <Link to="/studio/work" search={{ tab: "calendar" }} className="secondary-action border-0 bg-white">
           Review every date <ArrowRight className="size-4" />
         </Link>
       </div>
@@ -5619,10 +4980,10 @@ function Library() {
                 prefilled or invented.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link to="/studio/create" className="primary-action">
+                <Link to="/studio/conversations" search={{ prompt: "I have something to turn into content." }} className="primary-action">
                   <WandSparkles className="size-4" /> Create your first campaign
                 </Link>
-                <Link to="/studio/ideas" className="secondary-action">
+                <Link to="/studio/work" search={{ tab: "ideas" }} className="secondary-action">
                   <Lightbulb className="size-4" /> Save an idea
                 </Link>
               </div>
@@ -6273,7 +5634,7 @@ function CalendarView() {
               title="Nothing scheduled yet."
               body="Every completed campaign adds a practical publishing sequence here."
               action={
-                <Link to="/studio/create" className="primary-action">
+                <Link to="/studio/conversations" search={{ prompt: "I have something to turn into content." }} className="primary-action">
                   Build a campaign
                 </Link>
               }
@@ -6868,45 +6229,47 @@ function CampaignCard({ campaign }: { campaign: Campaign }) {
   const [confirming, setConfirming] = useState(false);
   const [removing, setRemoving] = useState(false);
   const lane = lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
-  const Icon = laneIcons[campaign.primary_lane as keyof typeof laneIcons] || Target;
-  const count = assets.filter((item) => item.campaign_id === campaign.id).length;
+  const campaignAssets = assets.filter((item) => item.campaign_id === campaign.id);
+  const count = campaignAssets.length;
+  const approved = campaignAssets.filter((item) => item.status === "approved").length;
+  const progress = count ? Math.round((approved / count) * 100) : 0;
   const created = new Date(campaign.created_at).toLocaleDateString(undefined, {
     month: "short",
     day: "numeric",
   });
   return (
-    <article className="group relative overflow-hidden rounded-[1.5rem] border border-border bg-white shadow-soft transition hover:border-line-strong">
+    <article className="group relative overflow-hidden rounded-[1.5rem] border border-border bg-white shadow-soft transition hover:-translate-y-0.5 hover:border-line-strong">
       <Link
         to="/studio/campaigns/$campaignId"
         params={{ campaignId: campaign.id }}
         className="block"
       >
-        <div
-          className="relative h-24 overflow-hidden px-5 pt-4"
-          style={{ background: lane.color }}
-          aria-hidden
-        >
-          <span
-            className="absolute -bottom-6 -right-4 opacity-20"
-            style={{ color: "var(--paper, #fff)" }}
-          >
-            <Icon className="size-28" strokeWidth={1} />
-          </span>
-          <span className="absolute inset-x-0 bottom-0 h-px bg-white/25" />
-          <p className="font-mono text-[9px] uppercase tracking-[.2em] text-white/70">
-            {lane.label} · {campaign.status}
-          </p>
-          <p className="mt-1.5 line-clamp-2 pr-16 text-[15px] font-black leading-tight text-white">
-            {clampWords(campaign.title, 10)}
-          </p>
+        <div className="h-28 overflow-hidden border-b border-border" aria-hidden>
+          <AssetIllustration
+            kind="campaign"
+            title={`${campaign.title} ${campaign.topic || ""}`}
+            className="h-full w-full"
+          />
         </div>
         <div className="p-4">
-          <p className="line-clamp-2 text-[13px] leading-snug text-muted-foreground">
-            {campaign.topic || campaign.goal}
+          <div className="flex items-center gap-2">
+            <span className="size-2 rounded-full" style={{ background: lane.color }} />
+            <span className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+              {lane.label}
+            </span>
+          </div>
+          <p className="mt-2 line-clamp-2 text-[15px] font-black leading-tight">
+            {clampWords(campaign.title, 10)}
           </p>
-          <div className="mt-3 flex items-center justify-between font-mono text-[9px] uppercase tracking-[.12em] text-muted-foreground">
+          <div className="mt-3 h-1 overflow-hidden rounded-full bg-secondary">
+            <span
+              className="block h-full rounded-full"
+              style={{ width: `${progress}%`, background: lane.color }}
+            />
+          </div>
+          <div className="mt-2.5 flex items-center justify-between text-[11px] text-muted-foreground">
             <span>
-              {count} asset{count === 1 ? "" : "s"} · {created}
+              {count ? `${approved} of ${count} approved` : campaign.status} · {created}
             </span>
             <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
           </div>
@@ -6994,7 +6357,7 @@ function CampaignList({
           </p>
           <h2 className="mt-2 text-xl font-bold">Campaigns</h2>
         </div>
-        <Link to="/studio/campaigns" className="text-xs font-semibold">
+        <Link to="/studio/work" search={{ tab: "campaigns" }} className="text-xs font-semibold">
           View all
         </Link>
       </div>
@@ -7057,19 +6420,19 @@ function PageIntro({
 }: {
   eyebrow: string;
   title: string;
-  body: string;
+  body?: string;
   action?: ReactNode;
 }) {
   return (
-    <header className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+    <header className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
       <div>
         <p className="font-mono text-[9px] uppercase tracking-[.19em] text-system">{eyebrow}</p>
-        <h1 className="mt-3 max-w-4xl text-4xl font-extrabold leading-[.96] tracking-[-.055em] sm:text-5xl">
+        <h1 className="mt-3 max-w-3xl text-3xl font-extrabold leading-[1] tracking-[-.05em] sm:text-4xl">
           {title}
         </h1>
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-          {body}
-        </p>
+        {body ? (
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">{body}</p>
+        ) : null}
       </div>
       {action && <div className="shrink-0">{action}</div>}
     </header>

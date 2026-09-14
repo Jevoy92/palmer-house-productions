@@ -20,7 +20,7 @@ import {
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { palDirectory, palList, resolvePalName } from "@/lib/pal-directory";
-import type { AssistantResponse, PalName } from "@/lib/studio-model";
+import { anchorFormats, studioGoals, type AssistantResponse, type PalName } from "@/lib/studio-model";
 import { ComposerIntake, withAttachmentContext } from "./ComposerIntake";
 import { StudioMarkdown } from "./StudioMarkdown";
 import { useStudio, type ConversationIntake } from "./StudioProvider";
@@ -53,6 +53,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
     conversationMessages,
     conversations,
     createCalendarItem,
+    createCampaign,
     createIdea,
     hasOlderMessages,
     loadOlderMessages,
@@ -78,6 +79,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
 
   const [attachments, setAttachments] = useState<ConversationIntake[]>([]);
   const [savedMemory, setSavedMemory] = useState<string[]>([]);
+  const [building, setBuilding] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
@@ -166,6 +168,27 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
       window.setTimeout(() => setCopiedId((current) => (current === id ? null : current)), 1800);
     } catch {
       toast.error("Your browser blocked the clipboard.");
+    }
+  }
+
+  async function buildCampaign(body: string, meta: AssistantResponse | null) {
+    setBuilding(true);
+    try {
+      const id = await createCampaign({
+        title: (meta?.headline || body.split("\n")[0] || "New campaign").slice(0, 90),
+        goal: studioGoals[0],
+        topic: [meta?.headline, meta?.problem, body].filter(Boolean).join("\n\n").slice(0, 4000),
+        offer: brand?.calls_to_action?.[0] || "",
+        audience: brand?.primary_audience || "",
+        anchorFormat: anchorFormats[0].value,
+        depth: "strategic",
+      });
+      toast.success("Your campaign is built.");
+      await navigate({ to: "/studio/campaigns/$campaignId", params: { campaignId: id } });
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not build this campaign.");
+    } finally {
+      setBuilding(false);
     }
   }
 
@@ -513,12 +536,18 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                         >
                           <Plus className="size-3.5" /> Save as idea
                         </button>
-                        <Link
-                          to="/studio/create"
-                          className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink"
+                        <button
+                          onClick={() => void buildCampaign(message.body, meta)}
+                          disabled={busy || building}
+                          className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink disabled:opacity-40"
                         >
-                          Build this campaign <ArrowRight className="size-3.5" />
-                        </Link>
+                          {building ? (
+                            <LoaderCircle className="size-3.5 animate-spin" />
+                          ) : (
+                            <Sparkles className="size-3.5" />
+                          )}
+                          Build this campaign
+                        </button>
                         <button
                           onClick={() => void send(lastQuestion)}
                           disabled={busy || !lastQuestion}

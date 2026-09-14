@@ -1,11 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { StudioPage } from "@/components/studio/StudioApp";
+import { createFileRoute, redirect } from "@tanstack/react-router";
+
 export const Route = createFileRoute("/studio/campaigns/")({
-  head: () => ({
-    meta: [
-      { title: "Campaigns — Palmer House Studio" },
-      { name: "robots", content: "noindex, nofollow" },
-    ],
-  }),
-  component: () => <StudioPage view="campaigns" />,
+  beforeLoad: () => {
+    throw redirect({ to: "/studio/work", search: { tab: "campaigns" } });
+  },
 });

@@ -42,6 +42,7 @@ import { Route as AboutUsRouteImport } from './routes/about-us'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as StudioIndexRouteImport } from './routes/studio.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as StudioWorkRouteImport } from './routes/studio.work'
 import { Route as StudioSuccessRouteImport } from './routes/studio.success'
 import { Route as StudioSettingsRouteImport } from './routes/studio.settings'
 import { Route as StudioRoadmapRouteImport } from './routes/studio.roadmap'
@@ -242,6 +243,11 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const StudioWorkRoute = StudioWorkRouteImport.update({
+  id: '/work',
+  path: '/work',
+  getParentRoute: () => StudioRoute,
 } as any)
 const StudioSuccessRoute = StudioSuccessRouteImport.update({
   id: '/success',
@@ -483,6 +489,7 @@ export interface FileRoutesByFullPath {
   '/studio/roadmap': typeof StudioRoadmapRoute
   '/studio/settings': typeof StudioSettingsRoute
   '/studio/success': typeof StudioSuccessRoute
+  '/studio/work': typeof StudioWorkRoute
   '/blog/': typeof BlogIndexRoute
   '/studio/': typeof StudioIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
@@ -552,6 +559,7 @@ export interface FileRoutesByTo {
   '/studio/roadmap': typeof StudioRoadmapRoute
   '/studio/settings': typeof StudioSettingsRoute
   '/studio/success': typeof StudioSuccessRoute
+  '/studio/work': typeof StudioWorkRoute
   '/blog': typeof BlogIndexRoute
   '/studio': typeof StudioIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
@@ -623,6 +631,7 @@ export interface FileRoutesById {
   '/studio/roadmap': typeof StudioRoadmapRoute
   '/studio/settings': typeof StudioSettingsRoute
   '/studio/success': typeof StudioSuccessRoute
+  '/studio/work': typeof StudioWorkRoute
   '/blog/': typeof BlogIndexRoute
   '/studio/': typeof StudioIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
@@ -695,6 +704,7 @@ export interface FileRouteTypes {
     | '/studio/roadmap'
     | '/studio/settings'
     | '/studio/success'
+    | '/studio/work'
     | '/blog/'
     | '/studio/'
     | '/.lovable/oauth/consent'
@@ -764,6 +774,7 @@ export interface FileRouteTypes {
     | '/studio/roadmap'
     | '/studio/settings'
     | '/studio/success'
+    | '/studio/work'
     | '/blog'
     | '/studio'
     | '/.lovable/oauth/consent'
@@ -834,6 +845,7 @@ export interface FileRouteTypes {
     | '/studio/roadmap'
     | '/studio/settings'
     | '/studio/success'
+    | '/studio/work'
     | '/blog/'
     | '/studio/'
     | '/.lovable/oauth/consent'
@@ -1132,6 +1144,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/studio/work': {
+      id: '/studio/work'
+      path: '/work'
+      fullPath: '/studio/work'
+      preLoaderRoute: typeof StudioWorkRouteImport
+      parentRoute: typeof StudioRoute
+    }
     '/studio/success': {
       id: '/studio/success'
       path: '/success'
@@ -1408,6 +1427,7 @@ interface StudioRouteChildren {
   StudioRoadmapRoute: typeof StudioRoadmapRoute
   StudioSettingsRoute: typeof StudioSettingsRoute
   StudioSuccessRoute: typeof StudioSuccessRoute
+  StudioWorkRoute: typeof StudioWorkRoute
   StudioIndexRoute: typeof StudioIndexRoute
   StudioCampaignsCampaignIdRoute: typeof StudioCampaignsCampaignIdRoute
   StudioConversationsConversationIdRoute: typeof StudioConversationsConversationIdRoute
@@ -1429,6 +1449,7 @@ const StudioRouteChildren: StudioRouteChildren = {
   StudioRoadmapRoute: StudioRoadmapRoute,
   StudioSettingsRoute: StudioSettingsRoute,
   StudioSuccessRoute: StudioSuccessRoute,
+  StudioWorkRoute: StudioWorkRoute,
   StudioIndexRoute: StudioIndexRoute,
   StudioCampaignsCampaignIdRoute: StudioCampaignsCampaignIdRoute,
   StudioConversationsConversationIdRoute:

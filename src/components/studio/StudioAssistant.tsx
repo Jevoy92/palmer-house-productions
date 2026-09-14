@@ -178,7 +178,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
         title: (meta?.headline || body.split("\n")[0] || "New campaign").slice(0, 90),
         goal: studioGoals[0],
         topic: [meta?.headline, meta?.problem, body].filter(Boolean).join("\n\n").slice(0, 4000),
-        offer: brand?.primary_offer || "",
+        offer: brand?.calls_to_action?.[0] || "",
         audience: brand?.primary_audience || "",
         anchorFormat: anchorFormats[0].value,
         depth: "strategic",

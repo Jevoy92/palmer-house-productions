@@ -6476,45 +6476,47 @@ function CampaignCard({ campaign }: { campaign: Campaign }) {
   const [confirming, setConfirming] = useState(false);
   const [removing, setRemoving] = useState(false);
   const lane = lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
-  const Icon = laneIcons[campaign.primary_lane as keyof typeof laneIcons] || Target;
-  const count = assets.filter((item) => item.campaign_id === campaign.id).length;
+  const campaignAssets = assets.filter((item) => item.campaign_id === campaign.id);
+  const count = campaignAssets.length;
+  const approved = campaignAssets.filter((item) => item.status === "approved").length;
+  const progress = count ? Math.round((approved / count) * 100) : 0;
   const created = new Date(campaign.created_at).toLocaleDateString(undefined, {
     month: "short",
     day: "numeric",
   });
   return (
-    <article className="group relative overflow-hidden rounded-[1.5rem] border border-border bg-white shadow-soft transition hover:border-line-strong">
+    <article className="group relative overflow-hidden rounded-[1.5rem] border border-border bg-white shadow-soft transition hover:-translate-y-0.5 hover:border-line-strong">
       <Link
         to="/studio/campaigns/$campaignId"
         params={{ campaignId: campaign.id }}
         className="block"
       >
-        <div
-          className="relative h-24 overflow-hidden px-5 pt-4"
-          style={{ background: lane.color }}
-          aria-hidden
-        >
-          <span
-            className="absolute -bottom-6 -right-4 opacity-20"
-            style={{ color: "var(--paper, #fff)" }}
-          >
-            <Icon className="size-28" strokeWidth={1} />
-          </span>
-          <span className="absolute inset-x-0 bottom-0 h-px bg-white/25" />
-          <p className="font-mono text-[9px] uppercase tracking-[.2em] text-white/70">
-            {lane.label} · {campaign.status}
-          </p>
-          <p className="mt-1.5 line-clamp-2 pr-16 text-[15px] font-black leading-tight text-white">
-            {clampWords(campaign.title, 10)}
-          </p>
+        <div className="h-28 overflow-hidden border-b border-border" aria-hidden>
+          <AssetIllustration
+            kind={campaign.anchor_format || "campaign"}
+            title={`${campaign.title} ${campaign.topic || ""}`}
+            className="h-full w-full"
+          />
         </div>
         <div className="p-4">
-          <p className="line-clamp-2 text-[13px] leading-snug text-muted-foreground">
-            {campaign.topic || campaign.goal}
+          <div className="flex items-center gap-2">
+            <span className="size-2 rounded-full" style={{ background: lane.color }} />
+            <span className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+              {lane.label}
+            </span>
+          </div>
+          <p className="mt-2 line-clamp-2 text-[15px] font-black leading-tight">
+            {clampWords(campaign.title, 10)}
           </p>
-          <div className="mt-3 flex items-center justify-between font-mono text-[9px] uppercase tracking-[.12em] text-muted-foreground">
+          <div className="mt-3 h-1 overflow-hidden rounded-full bg-secondary">
+            <span
+              className="block h-full rounded-full"
+              style={{ width: `${progress}%`, background: lane.color }}
+            />
+          </div>
+          <div className="mt-2.5 flex items-center justify-between text-[11px] text-muted-foreground">
             <span>
-              {count} asset{count === 1 ? "" : "s"} · {created}
+              {count ? `${approved} of ${count} approved` : campaign.status} · {created}
             </span>
             <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
           </div>

@@ -66,7 +66,9 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe-webhook'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
+import { Route as StudioConversationsIndexRouteImport } from './routes/studio.conversations.index'
 import { Route as StudioCampaignsIndexRouteImport } from './routes/studio.campaigns.index'
+import { Route as StudioConversationsConversationIdRouteImport } from './routes/studio.conversations.$conversationId'
 import { Route as StudioCampaignsCampaignIdRouteImport } from './routes/studio.campaigns.$campaignId'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
@@ -361,11 +363,23 @@ const Char91DotmcpChar93ListToolsRoute =
     path: '/.mcp/list-tools',
     getParentRoute: () => rootRouteImport,
   } as any)
+const StudioConversationsIndexRoute =
+  StudioConversationsIndexRouteImport.update({
+    id: '/conversations/',
+    path: '/conversations/',
+    getParentRoute: () => StudioRoute,
+  } as any)
 const StudioCampaignsIndexRoute = StudioCampaignsIndexRouteImport.update({
   id: '/campaigns/',
   path: '/campaigns/',
   getParentRoute: () => StudioRoute,
 } as any)
+const StudioConversationsConversationIdRoute =
+  StudioConversationsConversationIdRouteImport.update({
+    id: '/conversations/$conversationId',
+    path: '/conversations/$conversationId',
+    getParentRoute: () => StudioRoute,
+  } as any)
 const StudioCampaignsCampaignIdRoute =
   StudioCampaignsCampaignIdRouteImport.update({
     id: '/campaigns/$campaignId',
@@ -461,7 +475,9 @@ export interface FileRoutesByFullPath {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
+  '/studio/conversations/$conversationId': typeof StudioConversationsConversationIdRoute
   '/studio/campaigns/': typeof StudioCampaignsIndexRoute
+  '/studio/conversations/': typeof StudioConversationsIndexRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -526,7 +542,9 @@ export interface FileRoutesByTo {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
+  '/studio/conversations/$conversationId': typeof StudioConversationsConversationIdRoute
   '/studio/campaigns': typeof StudioCampaignsIndexRoute
+  '/studio/conversations': typeof StudioConversationsIndexRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -593,7 +611,9 @@ export interface FileRoutesById {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
+  '/studio/conversations/$conversationId': typeof StudioConversationsConversationIdRoute
   '/studio/campaigns/': typeof StudioCampaignsIndexRoute
+  '/studio/conversations/': typeof StudioConversationsIndexRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -661,7 +681,9 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/studio/campaigns/$campaignId'
+    | '/studio/conversations/$conversationId'
     | '/studio/campaigns/'
+    | '/studio/conversations/'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
@@ -726,7 +748,9 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/studio/campaigns/$campaignId'
+    | '/studio/conversations/$conversationId'
     | '/studio/campaigns'
+    | '/studio/conversations'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
@@ -792,7 +816,9 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/studio/campaigns/$campaignId'
+    | '/studio/conversations/$conversationId'
     | '/studio/campaigns/'
+    | '/studio/conversations/'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
@@ -1249,11 +1275,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93ListToolsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/studio/conversations/': {
+      id: '/studio/conversations/'
+      path: '/conversations'
+      fullPath: '/studio/conversations/'
+      preLoaderRoute: typeof StudioConversationsIndexRouteImport
+      parentRoute: typeof StudioRoute
+    }
     '/studio/campaigns/': {
       id: '/studio/campaigns/'
       path: '/campaigns'
       fullPath: '/studio/campaigns/'
       preLoaderRoute: typeof StudioCampaignsIndexRouteImport
+      parentRoute: typeof StudioRoute
+    }
+    '/studio/conversations/$conversationId': {
+      id: '/studio/conversations/$conversationId'
+      path: '/conversations/$conversationId'
+      fullPath: '/studio/conversations/$conversationId'
+      preLoaderRoute: typeof StudioConversationsConversationIdRouteImport
       parentRoute: typeof StudioRoute
     }
     '/studio/campaigns/$campaignId': {
@@ -1330,7 +1370,9 @@ interface StudioRouteChildren {
   StudioSuccessRoute: typeof StudioSuccessRoute
   StudioIndexRoute: typeof StudioIndexRoute
   StudioCampaignsCampaignIdRoute: typeof StudioCampaignsCampaignIdRoute
+  StudioConversationsConversationIdRoute: typeof StudioConversationsConversationIdRoute
   StudioCampaignsIndexRoute: typeof StudioCampaignsIndexRoute
+  StudioConversationsIndexRoute: typeof StudioConversationsIndexRoute
 }
 
 const StudioRouteChildren: StudioRouteChildren = {
@@ -1348,7 +1390,10 @@ const StudioRouteChildren: StudioRouteChildren = {
   StudioSuccessRoute: StudioSuccessRoute,
   StudioIndexRoute: StudioIndexRoute,
   StudioCampaignsCampaignIdRoute: StudioCampaignsCampaignIdRoute,
+  StudioConversationsConversationIdRoute:
+    StudioConversationsConversationIdRoute,
   StudioCampaignsIndexRoute: StudioCampaignsIndexRoute,
+  StudioConversationsIndexRoute: StudioConversationsIndexRoute,
 }
 
 const StudioRouteWithChildren =

@@ -205,28 +205,36 @@ function PalTip({
 
 const navSections = [
   {
-    label: "Make",
+    label: "Studio",
     items: [
-      { view: "home", label: "Dashboard", to: "/studio/dashboard", icon: Home },
+      { view: "home", label: "Home", to: "/studio/dashboard", icon: Home },
+      {
+        view: "conversations",
+        label: "Conversations",
+        to: "/studio/conversations",
+        icon: MessageSquareText,
+      },
+    ],
+  },
+  {
+    label: "My work",
+    items: [
       { view: "engine", label: "Create", to: "/studio", icon: Plus },
-      { view: "assistant", label: "Ask a Pal", to: "/studio/assistant", icon: MessageSquareText },
       { view: "campaigns", label: "Campaigns", to: "/studio/campaigns", icon: WandSparkles },
       { view: "ideas", label: "Content ideas", to: "/studio/ideas", icon: Lightbulb },
-    ],
-  },
-  {
-    label: "Organize",
-    items: [
-      { view: "roadmap", label: "Video roadmap", to: "/studio/roadmap", icon: Film },
       { view: "library", label: "Library", to: "/studio/library", icon: FolderOpen },
-      { view: "brand", label: "Brand DNA", to: "/studio/brand", icon: Gauge },
-      { view: "approvals", label: "Approvals", to: "/studio/approvals", icon: CheckSquare2 },
+      { view: "approvals", label: "Needs review", to: "/studio/approvals", icon: CheckSquare2 },
+      { view: "calendar", label: "Calendar", to: "/studio/calendar", icon: CalendarDays },
+      { view: "roadmap", label: "Video roadmap", to: "/studio/roadmap", icon: Film },
     ],
   },
   {
-    label: "Plan",
+    label: "My brand",
+    items: [{ view: "brand", label: "Brand DNA", to: "/studio/brand", icon: Gauge }],
+  },
+  {
+    label: "Account",
     items: [
-      { view: "calendar", label: "Calendar", to: "/studio/calendar", icon: CalendarDays },
       { view: "success", label: "Member success", to: "/studio/success", icon: HandHeart },
       { view: "settings", label: "Settings", to: "/studio/settings", icon: Settings },
     ],
@@ -235,20 +243,38 @@ const navSections = [
 
 const nav = navSections.flatMap((section) => [...section.items]);
 
-export function StudioPage({ view, campaignId }: { view: StudioView; campaignId?: string }) {
+export function StudioPage({
+  view,
+  campaignId,
+  conversationId,
+}: {
+  view: StudioView;
+  campaignId?: string;
+  conversationId?: string;
+}) {
   return (
     <>
-      <StudioGate view={view} campaignId={campaignId} />
+      <StudioGate view={view} campaignId={campaignId} conversationId={conversationId} />
     </>
   );
 }
 
-function StudioGate({ view, campaignId }: { view: StudioView; campaignId?: string }) {
+function StudioGate({
+  view,
+  campaignId,
+  conversationId,
+}: {
+  view: StudioView;
+  campaignId?: string;
+  conversationId?: string;
+}) {
   const studio = useStudio();
   if (studio.loading) return <StudioLoading />;
   if (!studio.session) return <AuthExperience />;
   if (!studio.workspace) return <Onboarding />;
-  return <StudioShell view={view}>{renderView(view, campaignId)}</StudioShell>;
+  return (
+    <StudioShell view={view}>{renderView(view, campaignId, conversationId)}</StudioShell>
+  );
 }
 
 function StudioLoading() {
@@ -1550,10 +1576,11 @@ function PalChat({ open, onClose }: { open: boolean; onClose: () => void }) {
   );
 }
 
-function renderView(view: StudioView, campaignId?: string) {
+function renderView(view: StudioView, campaignId?: string, conversationId?: string) {
   if (view === "engine") return <ContentEngine />;
   if (view === "home") return <Dashboard />;
-  if (view === "assistant") return <StudioAssistant />;
+  if (view === "assistant" || view === "conversations")
+    return <StudioAssistant conversationId={conversationId} />;
   if (view === "roadmap") return <VideoRoadmap />;
   if (view === "success") return <MemberSuccess />;
   if (view === "brand") return <BrandStudio />;
@@ -1577,7 +1604,18 @@ function renderView(view: StudioView, campaignId?: string) {
 }
 
 function Dashboard() {
-  const { campaigns, assets, calendar, brand, profile, user, ideas, videoProgress } = useStudio();
+  const {
+    campaigns,
+    assets,
+    calendar,
+    brand,
+    profile,
+    user,
+    ideas,
+    videoProgress,
+    conversations,
+    settings,
+  } = useStudio();
   const { guide, hasChosen, tip } = useGuide();
   const progression = calculateTier({
     campaigns: campaigns.length,
@@ -1722,7 +1760,7 @@ function Dashboard() {
             {attention.length
               ? `${attention.length} ${attention.length === 1 ? "thing needs" : "things need"} you today. Everything else is handled.`
               : campaigns.length
-                ? "Nothing needs you right now. Your team is working in the background."
+                ? "Nothing is waiting on you right now. Pick anything up when you are ready."
                 : "Your studio is set up and quiet. Give it one real idea and it starts working."}
           </p>
         </div>
@@ -1740,6 +1778,8 @@ function Dashboard() {
           ) : null}
         </div>
       </header>
+
+      <ConversationInvite conversations={conversations} preferredPal={settings?.preferred_pal} />
 
       {firstRun ? (
         <section className="mt-10 border border-ink bg-white p-6 sm:p-8">

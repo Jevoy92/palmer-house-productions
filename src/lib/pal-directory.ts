@@ -6,7 +6,27 @@ import cyrusAvatar from "@/assets/pal-avatars/cyrus.png";
 import claraAvatar from "@/assets/pal-avatars/clara.png";
 import silasAvatar from "@/assets/pal-avatars/silas.png";
 import samiraAvatar from "@/assets/pal-avatars/samira.png";
+import kareemHeadshot from "@/assets/pal-headshots/kareem.png";
+import kianaHeadshot from "@/assets/pal-headshots/kiana.png";
+import ryderHeadshot from "@/assets/pal-headshots/ryder.png";
+import raquelHeadshot from "@/assets/pal-headshots/raquel.png";
+import cyrusHeadshot from "@/assets/pal-headshots/cyrus.png";
+import claraHeadshot from "@/assets/pal-headshots/clara.png";
+import silasHeadshot from "@/assets/pal-headshots/silas.png";
+import samiraHeadshot from "@/assets/pal-headshots/samira.png";
+import { palPersonas, type PalPersona } from "./pal-personas";
 import type { PalName, StudioLane } from "./studio-model";
+
+const headshots: Record<PalName, string> = {
+  kareem: kareemHeadshot,
+  kiana: kianaHeadshot,
+  ryder: ryderHeadshot,
+  raquel: raquelHeadshot,
+  cyrus: cyrusHeadshot,
+  clara: claraHeadshot,
+  silas: silasHeadshot,
+  samira: samiraHeadshot,
+};
 
 export type PalProfile = {
   key: PalName;
@@ -14,6 +34,10 @@ export type PalProfile = {
   role: string;
   lane: StudioLane;
   avatar: string;
+  /** Photographic headshot used in chat and on the welcome screen. */
+  headshot: string;
+  /** Voice, obsession, and starting prompts — shared with the AI prompt. */
+  persona: PalPersona;
   color: string;
   soft: string;
   /** Short line used when the guide introduces themselves. */
@@ -50,7 +74,19 @@ function build(
   tips: Record<string, string>,
   welcome: string,
 ): PalProfile {
-  return { key, name, role, lane, avatar, ...laneTokens[lane], intro, tips, welcome };
+  return {
+    key,
+    name,
+    role,
+    lane,
+    avatar,
+    headshot: headshots[key],
+    persona: palPersonas[key],
+    ...laneTokens[lane],
+    intro,
+    tips,
+    welcome,
+  };
 }
 
 export const palDirectory: Record<PalName, PalProfile> = {
@@ -190,6 +226,20 @@ export const neutralGuide = {
   role: "Your studio",
   lane: "system" as StudioLane,
   avatar: "",
+  headshot: "",
+  persona: {
+    voice:
+      "Neutral, direct, practical. No character, no flourish. Plain sentences and concrete next steps.",
+    obsession: "Getting the member to the next useful move with as little friction as possible.",
+    firstQuestion: "What are you trying to get done?",
+    avoid: "Never performs a personality or uses a character voice.",
+    phrases: ["One step, not ten.", "Here is the next useful move."],
+    starters: [
+      "What should I make next?",
+      "Help me explain what my business does.",
+      "Turn a customer question into content.",
+    ],
+  } satisfies PalPersona,
   color: "var(--system)",
   soft: "var(--system-soft)",
   intro: "Straight guidance, no character required.",
@@ -209,6 +259,18 @@ export type GuideProfile = PalProfile | typeof neutralGuide;
 export function resolveGuide(value?: string | null): GuideProfile {
   if (!value || value === "none") return neutralGuide;
   return palDirectory[value as PalName] || neutralGuide;
+}
+
+/**
+ * Every request to the model needs a real Pal name. The neutral guide is a UI
+ * identity only, so it resolves to a concrete Pal for the API without the
+ * screen ever showing a different name than the one we send.
+ */
+export const defaultPal: PalName = "kiana";
+
+export function resolvePalName(value?: string | null): PalName {
+  if (value && value !== "none" && value in palDirectory) return value as PalName;
+  return defaultPal;
 }
 
 export const palList = Object.values(palDirectory);

@@ -1,0 +1,83 @@
+{
+  "url": "http://127.0.0.1:4177/?view=engine&state=populated&controls=0",
+  "timestamp": "2026-09-14T18:50:37.211Z",
+  "overallTier": "S",
+  "overallScore": 96,
+  "desktop": {
+    "tier": "S",
+    "sections": {
+      "animations": {
+        "tier": "S",
+        "score": 98,
+        "count": 5
+      },
+      "scrollAnimations": {
+        "tier": "S",
+        "score": 96,
+        "count": 0
+      },
+      "thrashing": {
+        "tier": "S",
+        "score": 93
+      },
+      "gpu": {
+        "tier": "S",
+        "score": 100
+      }
+    }
+  },
+  "mobile": {
+    "tier": "S",
+    "sections": {
+      "animations": {
+        "tier": "S",
+        "score": 98,
+        "count": 5
+      },
+      "scrollAnimations": {
+        "tier": "S",
+        "score": 95,
+        "count": 0
+      },
+      "thrashing": {
+        "tier": "S",
+        "score": 93
+      },
+      "gpu": {
+        "tier": "S",
+        "score": 100
+      }
+    }
+  },
+  "threshold": null,
+  "pass": null,
+  "findingCounts": {
+    "critical": 0,
+    "high": 0,
+    "low": 3
+  },
+  "findings": [
+    {
+      "severity": "low",
+      "title": "Mount thrashing",
+      "recommendation": "Measure all initial values in a single read pass before writing any styles. Use requestAnimationFrame to separate the read and write phases.",
+      "viewport": "desktop",
+      "section": "thrashing"
+    },
+    {
+      "severity": "low",
+      "title": "Off-screen animations",
+      "recommendation": "Only run animations when the element is visible. Use IntersectionObserver or a viewport-aware animation trigger like Motion's `inView()` or `whileInView`.",
+      "viewport": "mobile",
+      "section": "animations"
+    },
+    {
+      "severity": "low",
+      "title": "Mount thrashing",
+      "recommendation": "Measure all initial values in a single read pass before writing any styles. Use requestAnimationFrame to separate the read and write phases.",
+      "viewport": "mobile",
+      "section": "thrashing"
+    }
+  ],
+  "resultsUrl": null
+}

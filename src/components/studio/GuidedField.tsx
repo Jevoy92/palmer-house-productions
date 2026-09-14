@@ -1,5 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { Check, ChevronDown, Plus, Sparkles, X } from "lucide-react";
+import { useStudioMotion } from "./studio-motion";
 
 /** Shared field chrome: label row with an optional "filled from source" marker. */
 function FieldHead({
@@ -62,40 +64,68 @@ export function SuggestionMenu({
 }) {
   const [open, setOpen] = useState(false);
   const ref = useOutsideClose(() => setOpen(false));
+  const trigger = useRef<HTMLButtonElement>(null);
+  const menuId = useId();
+  const { enter, exit, transition } = useStudioMotion();
   if (!options.length) return null;
   return (
     <div ref={ref} className="relative">
       <button
+        ref={trigger}
         type="button"
         onClick={() => setOpen((value) => !value)}
-        className="inline-flex min-h-8 items-center gap-1.5 rounded-xl border border-border bg-white px-2.5 text-[11px] font-bold text-ink transition hover:border-line-strong"
+        aria-expanded={open}
+        aria-controls={menuId}
+        className="inline-flex min-h-8 items-center gap-1.5 rounded-xl border border-border bg-white px-2.5 text-[11px] font-bold text-ink transition-colors duration-150 motion-reduce:transition-none hover:border-line-strong"
       >
         <Sparkles className="size-3 text-system" />
         {label}
-        <ChevronDown className={`size-3 transition ${open ? "rotate-180" : ""}`} />
-      </button>
-      {open ? (
-        <div
-          className={`absolute z-30 mt-2 max-h-72 w-72 overflow-y-auto rounded-2xl border border-border bg-white p-1.5 shadow-soft ${align === "right" ? "right-0" : "left-0"}`}
+        <motion.span
+          className="inline-flex"
+          initial={false}
+          animate={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}
+          transition={transition}
+          aria-hidden="true"
         >
-          {options.map((option) => (
-            <button
-              key={option}
-              type="button"
-              onClick={() => {
-                onPick(option);
+          <ChevronDown className="size-3" />
+        </motion.span>
+      </button>
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            id={menuId}
+            initial={enter}
+            animate={{ opacity: 1, transform: "translateY(0px)" }}
+            exit={exit}
+            transition={transition}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                event.stopPropagation();
                 setOpen(false);
-              }}
-              className="block w-full rounded-xl px-3 py-2 text-left text-[13px] leading-snug transition hover:bg-mist"
-            >
-              {option}
-            </button>
-          ))}
-          <p className="border-t border-border px-3 py-2 text-[11px] text-muted-foreground">
-            Pick one to start, then edit it in your own words.
-          </p>
-        </div>
-      ) : null}
+                trigger.current?.focus();
+              }
+            }}
+            className={`absolute z-30 mt-2 max-h-72 w-72 overflow-y-auto rounded-2xl border border-border bg-white p-1.5 shadow-soft ${align === "right" ? "right-0" : "left-0"}`}
+          >
+            {options.map((option) => (
+              <button
+                key={option}
+                type="button"
+                onClick={() => {
+                  onPick(option);
+                  setOpen(false);
+                }}
+                className="block w-full rounded-xl px-3 py-2 text-left text-[13px] leading-snug transition-colors duration-150 motion-reduce:transition-none hover:bg-mist"
+              >
+                {option}
+              </button>
+            ))}
+            <p className="border-t border-border px-3 py-2 text-[11px] text-muted-foreground">
+              Pick one to start, then edit it in your own words.
+            </p>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </div>
   );
 }
@@ -127,7 +157,7 @@ export function GuidedText({
   type?: string;
 }) {
   const classes =
-    "mt-2 w-full rounded-2xl border border-border bg-white px-4 py-3 text-sm outline-none transition focus:border-system focus:ring-2 focus:ring-system/15";
+    "mt-2 w-full rounded-2xl border border-border bg-white px-4 py-3 text-sm outline-none transition-colors duration-150 motion-reduce:transition-none focus:border-system focus:ring-2 focus:ring-system/15";
   return (
     <div className="block">
       <FieldHead label={label} hint={hint} filledFrom={filledFrom} optional={optional}>
@@ -135,6 +165,7 @@ export function GuidedText({
       </FieldHead>
       {multiline ? (
         <textarea
+          aria-label={label}
           rows={rows}
           value={value}
           placeholder={placeholder}
@@ -143,6 +174,7 @@ export function GuidedText({
         />
       ) : (
         <input
+          aria-label={label}
           type={type || "text"}
           value={value}
           placeholder={placeholder}
@@ -174,7 +206,10 @@ export function GuidedList({
   filledFrom?: string;
   optional?: boolean;
 }) {
-  const items = value.split("\n").map((item) => item.trim()).filter(Boolean);
+  const items = value
+    .split("\n")
+    .map((item) => item.trim())
+    .filter(Boolean);
   const [entry, setEntry] = useState("");
   const add = (next: string) => {
     const clean = next.trim();
@@ -198,6 +233,7 @@ export function GuidedList({
                 {String(index + 1).padStart(2, "0")}
               </span>
               <input
+                aria-label={label + " item " + (index + 1)}
                 value={item}
                 onChange={(event) => {
                   const next = [...items];
@@ -210,7 +246,7 @@ export function GuidedList({
                 type="button"
                 onClick={() => remove(item)}
                 aria-label={`Remove ${item}`}
-                className="mt-0.5 text-muted-foreground transition hover:text-ink"
+                className="mt-0.5 text-muted-foreground transition-colors duration-150 motion-reduce:transition-none hover:text-ink"
               >
                 <X className="size-3.5" />
               </button>
@@ -220,6 +256,7 @@ export function GuidedList({
       ) : null}
       <div className="mt-2 flex gap-2">
         <input
+          aria-label={label}
           value={entry}
           placeholder={placeholder}
           onChange={(event) => setEntry(event.target.value)}
@@ -230,7 +267,7 @@ export function GuidedList({
               setEntry("");
             }
           }}
-          className="min-h-11 flex-1 rounded-xl border border-border bg-white px-3 text-[13px] outline-none transition focus:border-system"
+          className="min-h-11 flex-1 rounded-xl border border-border bg-white px-3 text-[13px] outline-none transition-colors duration-150 motion-reduce:transition-none focus:border-system"
         />
         <button
           type="button"
@@ -238,7 +275,7 @@ export function GuidedList({
             add(entry);
             setEntry("");
           }}
-          className="inline-flex min-h-11 items-center gap-1 rounded-xl border border-border bg-white px-3 text-[12px] font-bold transition hover:border-line-strong"
+          className="inline-flex min-h-11 items-center gap-1 rounded-xl border border-border bg-white px-3 text-[12px] font-bold transition-colors duration-150 motion-reduce:transition-none hover:border-line-strong"
         >
           <Plus className="size-3.5" /> Add
         </button>
@@ -265,7 +302,10 @@ export function GuidedTags({
   filledFrom?: string;
   optional?: boolean;
 }) {
-  const items = value.split(",").map((item) => item.trim()).filter(Boolean);
+  const items = value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
   const [entry, setEntry] = useState("");
   const toggle = (item: string) =>
     onChange(
@@ -285,9 +325,10 @@ export function GuidedTags({
               key={item}
               type="button"
               onClick={() => toggle(item)}
-              className={`inline-flex min-h-9 items-center gap-1.5 rounded-xl border px-3 text-[12px] font-bold transition ${
+              aria-pressed={active}
+              className={`inline-flex min-h-9 items-center gap-1.5 rounded-xl border px-3 text-[12px] font-bold transition-colors duration-150 motion-reduce:transition-none ${
                 active
-                  ? "border-system bg-system text-white"
+                  ? "border-system bg-system-soft text-ink"
                   : "border-border bg-white text-ink hover:border-line-strong"
               }`}
             >
@@ -299,6 +340,7 @@ export function GuidedTags({
       </div>
       <div className="mt-2 flex gap-2">
         <input
+          aria-label={label}
           value={entry}
           placeholder="Add your own…"
           onChange={(event) => setEntry(event.target.value)}
@@ -309,7 +351,7 @@ export function GuidedTags({
               setEntry("");
             }
           }}
-          className="min-h-10 flex-1 rounded-xl border border-border bg-white px-3 text-[12px] outline-none transition focus:border-system"
+          className="min-h-10 flex-1 rounded-xl border border-border bg-white px-3 text-[12px] outline-none transition-colors duration-150 motion-reduce:transition-none focus:border-system"
         />
       </div>
     </div>
@@ -342,6 +384,7 @@ export function GuidedSelect({
       {custom ? (
         <div className="mt-2 flex gap-2">
           <input
+            aria-label={label}
             value={value}
             autoFocus
             placeholder="Type your own"
@@ -361,6 +404,7 @@ export function GuidedSelect({
         </div>
       ) : (
         <select
+          aria-label={label}
           value={options.includes(value) ? value : ""}
           onChange={(event) => {
             if (event.target.value === "__custom__") {

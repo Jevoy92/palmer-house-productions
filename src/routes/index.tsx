@@ -12,6 +12,7 @@ import { Testimonials } from "@/components/site/Testimonials";
 import { Team } from "@/components/site/Team";
 import { Faq } from "@/components/site/Faq";
 import { FinalCta } from "@/components/site/FinalCta";
+import "@/components/site/marketing.css";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -40,7 +41,10 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <main className="min-h-screen bg-background">
+    <main
+      className="marketing-site marketing-lane min-h-screen bg-background"
+      data-lane="spotlight"
+    >
       <SiteNav />
       <Hero />
       <CreativesShowcase />

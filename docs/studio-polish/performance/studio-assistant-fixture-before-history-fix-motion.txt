@@ -1,0 +1,40 @@
+## Motion Performance Audit · http://127.0.0.1:4177/?view=assistant&state=populated&controls=0
+Library: motion · grep: `animate(`, `<motion.`, `useAnimate(`, `useMotionValue(`, `whileInView`, `layout`, `useScroll(`
+Animations: 10 (waapi 8, js 2, scroll 0)
+Overall S (88/100) · desktop S · anim S · thrash A · gpu S · mobile S · anim S · thrash A · gpu S
+
+```
+S █████████████████████████   8 · 80%
+C ██████░░░░░░░░░░░░░░░░░░░   2 · 20%
+```
+
+### Findings
+Format: `tier · selector · viewports` / props (source) / impact / grep / fix
+
+**C · `div.mx-auto.max-w-[92rem] > div.relative.grid.h-[calc(100dvh-8rem)].min-h-[28rem].grid-cols-1.overflow-hidden.rounded-[1.5rem].border.border-border.bg-white.xl:grid-cols-[14rem_minmax(0,1fr)_18rem] > section.flex.min-h-0.min-w-0.flex-col > div.min-h-0.flex-1.overflow-y-auto.overscroll-contain.p-4.sm:p-6 > div.mx-auto.max-w-3xl.space-y-6 > div.space-y-3`** · mobile
+- `transform` (style) · 184k px², 7f
+- grep `space-y-3`, `mx-auto`, `max-w-3xl`
+- fix: C→S (large surfaces only): crossfade two absolutely-positioned `::before`/`::after` layers via `opacity`. Otherwise no upgrade — paint is required.
+
+**C · `div.mx-auto.max-w-[92rem] > div.relative.grid.h-[calc(100dvh-8rem)].min-h-[28rem].grid-cols-1.overflow-hidden.rounded-[1.5rem].border.border-border.bg-white.xl:grid-cols-[14rem_minmax(0,1fr)_18rem] > section.flex.min-h-0.min-w-0.flex-col > div.min-h-0.flex-1.overflow-y-auto.overscroll-contain.p-4.sm:p-6 > div.mx-auto.max-w-3xl.space-y-6 > div.ml-auto.whitespace-pre-wrap.break-words.max-w-[90%].rounded-[1.25rem].rounded-br-md.px-4.py-3.text-sm.font-medium.leading-relaxed.text-white`** · mobile
+- `transform` (style) · 20k px², 7f
+- grep `ml-auto`, `whitespace-pre-wrap`, `break-words`
+- fix: C→S (large surfaces only): crossfade two absolutely-positioned `::before`/`::after` layers via `opacity`. Otherwise no upgrade — paint is required.
+
+> +8 S-tier (omitted).
+
+### Anti-Patterns
+
+**[low] Mount thrashing** · desktop+mobile
+- 2 forced recalculations before the first animation frame, likely from measuring elements while setting up animations.
+- fix: Measure all initial values in a single read pass before writing any styles. Use requestAnimationFrame to separate the read and write phases.
+- selectors: `main#studio-content`, `html`, `div.mx-auto.max-w-[92rem] > div.relative.grid.h-[calc(100dvh-8rem)].min-h-[28rem].grid-cols-1.overflow-hidden.rounded-[1.5rem].border.border-border.bg-white.xl:grid-cols-[14rem_minmax(0,1fr)_18rem] > section.flex.min-h-0.min-w-0.flex-col > div.min-h-0.flex-1.overflow-y-auto.overscroll-contain.p-4.sm:p-6 > div.mx-auto.max-w-3xl.space-y-6 > div.space-y-3`, `main#studio-content > div.mx-auto.max-w-[92rem] > div.relative.grid.h-[calc(100dvh-8rem)].min-h-[28rem].grid-cols-1.overflow-hidden.rounded-[1.5rem].border.border-border.bg-white.xl:grid-cols-[14rem_minmax(0,1fr)_18rem] > section.flex.min-h-0.min-w-0.flex-col > div.min-h-0.flex-1.overflow-y-auto.overscroll-contain.p-4.sm:p-6`
+
+### Top 3
+
+1. `div.mx-auto.max-w-[92rem] > div.relative.grid.h-[calc(100dvh-8rem)].min-h-[28rem].grid-cols-1.overflow-hidden.rounded-[1.5rem].border.border-border.bg-white.xl:grid-cols-[14rem_minmax(0,1fr)_18rem] > section.flex.min-h-0.min-w-0.flex-col > div.min-h-0.flex-1.overflow-y-auto.overscroll-contain.p-4.sm:p-6 > div.mx-auto.max-w-3xl.space-y-6 > div.space-y-3` (C) — C→S (large surfaces only): crossfade two absolutely-positioned `::before`/`::after` layers via `opacity`. Otherwise no upgrade — paint is required.
+2. `div.mx-auto.max-w-[92rem] > div.relative.grid.h-[calc(100dvh-8rem)].min-h-[28rem].grid-cols-1.overflow-hidden.rounded-[1.5rem].border.border-border.bg-white.xl:grid-cols-[14rem_minmax(0,1fr)_18rem] > section.flex.min-h-0.min-w-0.flex-col > div.min-h-0.flex-1.overflow-y-auto.overscroll-contain.p-4.sm:p-6 > div.mx-auto.max-w-3xl.space-y-6 > div.ml-auto.whitespace-pre-wrap.break-words.max-w-[90%].rounded-[1.25rem].rounded-br-md.px-4.py-3.text-sm.font-medium.leading-relaxed.text-white` (C) — C→S (large surfaces only): crossfade two absolutely-positioned `::before`/`::after` layers via `opacity`. Otherwise no upgrade — paint is required.
+3. Mount thrashing — Measure all initial values in a single read pass before writing any styles. Use requestAnimationFrame to separate the read and write phases.
+
+---
+_Runtime only sees what loaded on this URL — continue skill Step 1 for unvisited routes + accessibility._

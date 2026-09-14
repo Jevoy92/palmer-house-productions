@@ -1,6 +1,7 @@
-import { Link, useNavigate, useSearch } from "@tanstack/react-router";
-import { motion, useReducedMotion } from "motion/react";
+import { Link, useLocation, useNavigate, useSearch } from "@tanstack/react-router";
+import { useReducedMotion } from "motion/react";
 import {
+  Archive,
   ArrowRight,
   Brain,
   CalendarPlus,
@@ -17,12 +18,18 @@ import {
   Users,
   X,
 } from "lucide-react";
-import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { palDirectory, palList, resolvePalName } from "@/lib/pal-directory";
-import { anchorFormats, studioGoals, type AssistantResponse, type PalName } from "@/lib/studio-model";
+import {
+  anchorFormats,
+  studioGoals,
+  type AssistantResponse,
+  type PalName,
+} from "@/lib/studio-model";
 import { ComposerIntake, withAttachmentContext } from "./ComposerIntake";
 import { StudioMarkdown } from "./StudioMarkdown";
+import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { useStudio, type ConversationIntake } from "./StudioProvider";
 
 function assistantMetadata(value: unknown): AssistantResponse | null {
@@ -51,7 +58,10 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
     campaigns,
     conversationLoading,
     conversationMessages,
+    conversationDrafts: composers,
+    setConversationDrafts: setComposers,
     conversations,
+    clearConversation,
     createCalendarItem,
     createCampaign,
     createIdea,
@@ -74,16 +84,52 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
   const selected = resolvePalName(activeConversation?.pal || settings?.preferred_pal);
   const pal = palDirectory[selected];
 
-  const startingPrompt = useSearch({ strict: false, select: (s) => (s as { prompt?: string }).prompt });
-  const [draft, setDraft] = useState(startingPrompt ?? "");
-
-  const [attachments, setAttachments] = useState<ConversationIntake[]>([]);
+  const startingPrompt = useSearch({
+    strict: false,
+    select: (s) => (s as { prompt?: string }).prompt,
+  });
+  const navigationKey = useLocation({ select: (location) => location.state.__TSR_key });
+  const draftKey = conversationId || "new";
+  const draft = composers[draftKey]?.text ?? (conversationId ? "" : (startingPrompt ?? ""));
+  const attachments = composers[draftKey]?.files ?? [];
+  function setDraft(value: string | ((current: string) => string)) {
+    setComposers((current) => ({
+      ...current,
+      [draftKey]: {
+        text: typeof value === "function" ? value(current[draftKey]?.text ?? draft) : value,
+        files: current[draftKey]?.files ?? attachments,
+      },
+    }));
+  }
+  function setAttachments(files: ConversationIntake[]) {
+    setComposers((current) => ({
+      ...current,
+      [draftKey]: { text: current[draftKey]?.text ?? draft, files },
+    }));
+  }
   const [savedMemory, setSavedMemory] = useState<string[]>([]);
   const [building, setBuilding] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [intakeBusy, setIntakeBusy] = useState(false);
+  const sendingRef = useRef(false);
+  const [threadError, setThreadError] = useState<string | null>(null);
+  const [campaignSource, setCampaignSource] = useState<{
+    body: string;
+    meta: AssistantResponse | null;
+  } | null>(null);
+  const [campaignGoal, setCampaignGoal] = useState<string>(studioGoals[0]);
+  const [campaignFormat, setCampaignFormat] = useState<string>(anchorFormats[0].value);
+  const [workOpen, setWorkOpen] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [historyOpen, setHistoryOpen] = useState(false);
-  const endRef = useRef<HTMLDivElement | null>(null);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const scrollSnapshot = useRef<{ height: number; top: number } | null>(null);
+  const scrollTail = useRef<string | undefined>(undefined);
+  const nearBottom = useRef(true);
+  const justOpened = useRef(true);
+  const routeRef = useRef(conversationId);
+  routeRef.current = conversationId;
   const composerRef = useRef<HTMLTextAreaElement | null>(null);
 
   const openThreads = useMemo(
@@ -99,51 +145,120 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
     return null;
   }, [conversationMessages]);
 
-  const lastQuestion = useMemo(() => {
-    for (let index = conversationMessages.length - 1; index >= 0; index -= 1) {
-      if (conversationMessages[index].role === "user") return conversationMessages[index].body;
+  // The URL owns identity: index starts a draft; an id resumes that thread.
+  // Do not depend on activeConversation here: clearing an archived thread must
+  // not trigger an automatic reopen of the same URL.
+  useEffect(() => {
+    setThreadError(null);
+    setPickerOpen(false);
+    setHistoryOpen(false);
+    setSavedMemory([]);
+    justOpened.current = true;
+    nearBottom.current = true;
+    scrollSnapshot.current = null;
+    if (!conversationId) {
+      clearConversation();
+      setComposers((current) => ({ ...current, new: { text: startingPrompt ?? "", files: [] } }));
+      return;
     }
-    return "";
-  }, [conversationMessages]);
+    if (activeConversation?.id !== conversationId) {
+      void openConversation(conversationId).catch((error) => {
+        if (routeRef.current !== conversationId) return;
+        setThreadError(
+          error instanceof Error ? error.message : "That conversation could not be opened.",
+        );
+      });
+    }
+    // activeConversation is read only to avoid refetching a just-created thread.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [conversationId, navigationKey, startingPrompt, clearConversation, openConversation]);
 
-  // Resume the thread in the URL after a refresh or a fresh sign-in.
-  useEffect(() => {
-    if (!conversationId) return;
-    if (activeConversation?.id === conversationId) return;
-    void openConversation(conversationId).catch(() => {
-      toast.error("That conversation could not be opened.");
-    });
-  }, [conversationId, activeConversation?.id, openConversation]);
+  const lastMessageId = conversationMessages.at(-1)?.id;
+  useLayoutEffect(() => {
+    const viewport = scrollRef.current;
+    if (!viewport) return;
+    if (scrollSnapshot.current && !conversationLoading) {
+      const previous = scrollSnapshot.current;
+      viewport.scrollTop = previous.top + viewport.scrollHeight - previous.height;
+      scrollSnapshot.current = null;
+    } else if (justOpened.current && !conversationLoading && conversationMessages.length) {
+      viewport.scrollTop = viewport.scrollHeight;
+      justOpened.current = false;
+    } else if (lastMessageId !== scrollTail.current && nearBottom.current) {
+      viewport.scrollTo({ top: viewport.scrollHeight, behavior: reduce ? "auto" : "smooth" });
+    }
+    scrollTail.current = lastMessageId;
+  }, [conversationMessages, conversationLoading, lastMessageId, reduce]);
 
-  useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "end" });
-  }, [conversationMessages.length, busy, reduce]);
-
-  useEffect(() => {
-    if (!busy) composerRef.current?.focus();
-  }, [busy, conversationId]);
+  async function loadEarlier() {
+    const viewport = scrollRef.current;
+    if (!viewport) return;
+    const snapshot = { height: viewport.scrollHeight, top: viewport.scrollTop };
+    try {
+      scrollSnapshot.current = snapshot;
+      await loadOlderMessages();
+    } catch (error) {
+      scrollSnapshot.current = null;
+      toast.error(error instanceof Error ? error.message : "Earlier messages could not be loaded.");
+    }
+  }
 
   async function send(question: string) {
     const value = question.trim();
-    if ((value.length < 3 && !attachments.length) || busy) return;
-    setDraft("");
+    if (
+      (value.length < 3 && !attachments.length) ||
+      busy ||
+      intakeBusy ||
+      sendingRef.current ||
+      conversationLoading ||
+      threadError
+    )
+      return;
+    sendingRef.current = true;
+    setSending(true);
     const sent = attachments;
-    setAttachments([]);
+    let thread = conversationId;
+    setComposers((current) => ({ ...current, [draftKey]: { text: "", files: [] } }));
+    nearBottom.current = true;
     try {
-      const thread = activeConversation?.id || conversationId;
-      const response = await askPal(
-        withAttachmentContext(value || "Read what I just attached and tell me what to do with it.", sent),
+      if (!thread) {
+        thread = await startConversation(selected, value.slice(0, 58) || "New conversation");
+        setComposers((current) => ({ ...current, [thread!]: { text: "", files: [] } }));
+        await navigate({
+          to: "/studio/conversations/$conversationId",
+          params: { conversationId: thread },
+        });
+      }
+      return await askPal(
+        withAttachmentContext(
+          value || "Read what I just attached and tell me what to do with it.",
+          sent,
+        ),
         selected,
         thread,
       );
-      if (!thread) {
-        // askPal created the thread; move the URL onto it so refresh resumes.
-        const created = activeConversation?.id;
-        if (created) void navigate({ to: "/studio/conversations/$conversationId", params: { conversationId: created } });
-      }
-      return response;
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Your Pal could not respond yet.");
+      const restoreKey = thread || draftKey;
+      setComposers((current) => ({
+        ...current,
+        [restoreKey]: {
+          text: [value, current[restoreKey]?.text].filter(Boolean).join("\n\n"),
+          files: [
+            ...sent,
+            ...(current[restoreKey]?.files ?? []).filter(
+              (file) => !sent.some((item) => item.attachment.id === file.attachment.id),
+            ),
+          ],
+        },
+      }));
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Your Pal could not respond yet. Your draft is ready to retry.",
+      );
+    } finally {
+      sendingRef.current = false;
+      setSending(false);
     }
   }
 
@@ -153,11 +268,22 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
   }
 
   async function newConversation() {
+    setHistoryOpen(false);
+    clearConversation();
+    setComposers((current) => ({ ...current, new: { text: "", files: [] } }));
+    await navigate({ to: "/studio/conversations", search: { prompt: undefined } });
+  }
+
+  async function archiveCurrent() {
+    if (!activeConversation) return;
+    const id = activeConversation.id;
     try {
-      const id = await startConversation(selected);
-      await navigate({ to: "/studio/conversations/$conversationId", params: { conversationId: id } });
+      await archiveConversation(id);
+      if (routeRef.current === id)
+        await navigate({ to: "/studio/conversations", search: { prompt: undefined } });
+      toast.success("Conversation archived.");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not start a conversation.");
+      toast.error(error instanceof Error ? error.message : "Could not archive this conversation.");
     }
   }
 
@@ -176,13 +302,14 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
     try {
       const id = await createCampaign({
         title: (meta?.headline || body.split("\n")[0] || "New campaign").slice(0, 90),
-        goal: studioGoals[0],
+        goal: campaignGoal,
         topic: [meta?.headline, meta?.problem, body].filter(Boolean).join("\n\n").slice(0, 4000),
         offer: brand?.calls_to_action?.[0] || "",
         audience: brand?.primary_audience || "",
-        anchorFormat: anchorFormats[0].value,
+        anchorFormat: campaignFormat,
         depth: "strategic",
       });
+      setCampaignSource(null);
       toast.success("Your campaign is built.");
       await navigate({ to: "/studio/campaigns/$campaignId", params: { campaignId: id } });
     } catch (error) {
@@ -280,10 +407,10 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
 
   return (
     <div className="mx-auto max-w-[92rem]">
-      <div className="grid min-h-[calc(100vh-7.5rem)] overflow-hidden rounded-[1.5rem] border border-border bg-white xl:grid-cols-[15rem_minmax(0,1fr)_19rem]">
+      <div className="relative grid h-[calc(100dvh-8rem)] min-h-[28rem] grid-cols-1 overflow-hidden rounded-[1.5rem] border border-border bg-white xl:grid-cols-[14rem_minmax(0,1fr)_18rem]">
         {/* History */}
         <aside
-          className={`border-b border-border p-3 xl:border-b-0 xl:border-r ${historyOpen ? "block" : "hidden xl:block"}`}
+          className={`min-h-0 overflow-y-auto border-border bg-white p-3 xl:relative xl:block xl:border-r ${historyOpen ? "absolute inset-0 z-30 block" : "hidden"}`}
         >
           <div className="flex items-center justify-between px-2 pt-2">
             <p className="studio-eyebrow text-system">Conversations</p>
@@ -312,7 +439,11 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                   params={{ conversationId: thread.id }}
                   onClick={() => setHistoryOpen(false)}
                   className={`block rounded-xl px-3 py-2.5 transition ${active ? "border border-current" : "border border-transparent hover:bg-mist"}`}
-                  style={{ color: active ? speaker.color : "var(--ink)" }}
+                  style={{
+                    color: active ? `var(--${speaker.lane}-ink, var(--ink))` : "var(--ink)",
+                    background: active ? speaker.soft : undefined,
+                  }}
+                  aria-current={active ? "page" : undefined}
                 >
                   <span className="block truncate text-xs font-bold">{thread.title}</span>
                   <span className="mt-1 block truncate text-[10px] text-muted-foreground">
@@ -331,8 +462,8 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
         </aside>
 
         {/* Conversation */}
-        <section className="flex min-h-[42rem] min-w-0 flex-col">
-          <header className="relative flex items-center gap-3 border-b border-border p-4 sm:p-5">
+        <section className="flex min-h-0 min-w-0 flex-col">
+          <header className="relative flex shrink-0 flex-wrap items-center gap-2 border-b border-border p-3 sm:p-4">
             <button
               onClick={() => setHistoryOpen(true)}
               className="grid size-10 shrink-0 place-items-center rounded-xl border border-border xl:hidden"
@@ -358,15 +489,17 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                 <>
                   <button
                     onClick={() => void rename()}
-                    className="hidden min-h-9 items-center gap-1.5 rounded-lg border border-border px-3 text-[11px] font-bold hover:border-ink sm:inline-flex"
+                    className="inline-flex min-h-9 items-center gap-1.5 rounded-lg px-2 text-[11px] font-bold hover:bg-mist"
                   >
-                    <Pencil className="size-3.5" /> Rename
+                    <Pencil className="size-3.5" />{" "}
+                    <span className="sr-only sm:not-sr-only">Rename</span>
                   </button>
                   <button
-                    onClick={() => void archiveConversation(activeConversation.id)}
-                    className="hidden min-h-9 items-center gap-1.5 rounded-lg border border-border px-3 text-[11px] font-bold hover:border-ink sm:inline-flex"
+                    onClick={() => void archiveCurrent()}
+                    className="inline-flex min-h-9 items-center gap-1.5 rounded-lg px-2 text-[11px] font-bold hover:bg-mist"
                   >
-                    Archive
+                    <Archive className="size-3.5" />{" "}
+                    <span className="sr-only sm:not-sr-only">Archive</span>
                   </button>
                 </>
               ) : null}
@@ -375,10 +508,18 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                 aria-expanded={pickerOpen}
                 className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border px-3 text-[11px] font-bold hover:border-ink"
               >
-                <Users className="size-3.5" /> Change Pal
+                <Users className="size-3.5" />{" "}
+                <span className="sr-only sm:not-sr-only">Change Pal</span>
               </button>
             </div>
 
+            <button
+              type="button"
+              onClick={() => setWorkOpen(true)}
+              className="min-h-9 rounded-lg px-2 text-[11px] font-bold hover:bg-mist xl:hidden"
+            >
+              Next steps
+            </button>
             {pickerOpen ? (
               <div className="absolute right-4 top-[calc(100%-0.5rem)] z-20 w-[min(26rem,calc(100vw-2rem))] rounded-[1.25rem] border border-border bg-white p-3 shadow-soft">
                 <p className="studio-eyebrow px-1 pb-2 text-system">Who do you want on this?</p>
@@ -389,7 +530,12 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                       onClick={() => void choosePal(item.key)}
                       aria-pressed={item.key === selected}
                       className={`flex min-h-14 items-center gap-3 rounded-xl p-2 text-left transition ${item.key === selected ? "border border-current" : "border border-transparent hover:bg-mist"}`}
-                      style={{ color: item.key === selected ? item.color : "var(--ink)" }}
+                      style={{
+                        color:
+                          item.key === selected
+                            ? `var(--${item.lane}-ink, var(--ink))`
+                            : "var(--ink)",
+                      }}
                     >
                       <img
                         src={item.headshot}
@@ -413,8 +559,41 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
             ) : null}
           </header>
 
-          <div className="flex-1 overflow-y-auto p-4 sm:p-6" aria-live="polite">
-            {!conversationMessages.length && !conversationLoading ? (
+          <div
+            ref={scrollRef}
+            className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6"
+            onScroll={(event) => {
+              const viewport = event.currentTarget;
+              nearBottom.current =
+                viewport.scrollHeight - viewport.scrollTop - viewport.clientHeight < 100;
+            }}
+          >
+            {threadError ? (
+              <div role="alert" className="mx-auto max-w-xl border-l-2 border-reel p-4">
+                <p className="font-bold">We couldn’t open this conversation.</p>
+                <p className="mt-2 text-sm text-muted-foreground">{threadError}</p>
+                <button
+                  type="button"
+                  className="mt-4 min-h-10 rounded-lg border border-border px-4 text-sm font-bold"
+                  onClick={() => {
+                    setThreadError(null);
+                    void openConversation(conversationId!).catch((error) =>
+                      setThreadError(error instanceof Error ? error.message : "Please try again."),
+                    );
+                  }}
+                >
+                  Try again
+                </button>
+              </div>
+            ) : conversationLoading && !conversationMessages.length ? (
+              <p
+                role="status"
+                className="flex items-center justify-center gap-2 py-12 text-sm text-muted-foreground"
+              >
+                <LoaderCircle className="size-4 animate-spin" /> Opening conversation…
+              </p>
+            ) : null}
+            {!conversationMessages.length && !conversationLoading && !threadError ? (
               <div className="mx-auto flex max-w-2xl flex-col items-center py-10 text-center sm:py-16">
                 <img
                   src={pal.headshot}
@@ -425,17 +604,18 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                   {pal.persona.firstQuestion}
                 </h1>
                 <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
-                  {pal.intro} Ask in plain language — I already have your brand, your work so far,
+                  {pal.intro} Ask in plain language — we have your saved brand, your work so far,
                   and what is on the calendar.
                 </p>
-                <div className="mt-7 grid w-full gap-2 sm:grid-cols-3">
+                <div className="mt-7 w-full divide-y divide-border border-y border-border text-left">
                   {starters.map((prompt) => (
                     <button
                       key={prompt}
                       onClick={() => setDraft(prompt)}
-                      className="min-h-16 rounded-xl border border-border bg-white px-4 py-3 text-left text-xs font-bold leading-snug hover:border-ink"
+                      className="flex min-h-12 w-full items-center justify-between gap-3 px-2 py-3 text-left text-sm font-medium leading-snug hover:bg-mist"
                     >
                       {prompt}
+                      <ArrowRight className="size-4 shrink-0" />
                     </button>
                   ))}
                 </div>
@@ -444,7 +624,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
               <div className="mx-auto max-w-3xl space-y-6">
                 {hasOlderMessages ? (
                   <button
-                    onClick={() => void loadOlderMessages()}
+                    onClick={() => void loadEarlier()}
                     disabled={conversationLoading}
                     className="mx-auto flex min-h-10 items-center gap-1.5 rounded-lg border border-border px-4 text-[11px] font-bold hover:border-ink disabled:opacity-40"
                   >
@@ -452,29 +632,27 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                   </button>
                 ) : null}
 
-                {conversationMessages.map((message) => {
+                {conversationMessages.map((message, messageIndex) => {
+                  const previousQuestion =
+                    conversationMessages
+                      .slice(0, messageIndex)
+                      .reverse()
+                      .find((item) => item.role === "user")?.body || "";
                   const meta = assistantMetadata(message.metadata);
                   const speaker = palDirectory[resolvePalName(message.pal)];
                   if (message.role === "user") {
                     return (
-                      <motion.div
+                      <div
                         key={message.id}
-                        initial={reduce ? false : { opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="ml-auto max-w-[80%] rounded-[1.25rem] rounded-br-md px-4 py-3 text-sm font-medium leading-relaxed text-white"
-                        style={{ background: pal.color }}
+                        className="ml-auto whitespace-pre-wrap break-words max-w-[90%] rounded-[1.25rem] rounded-br-md px-4 py-3 text-sm font-medium leading-relaxed text-white"
+                        style={{ background: `var(--${pal.lane}-ink, var(--ink))` }}
                       >
                         {message.body}
-                      </motion.div>
+                      </div>
                     );
                   }
                   return (
-                    <motion.div
-                      key={message.id}
-                      initial={reduce ? false : { opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="space-y-3"
-                    >
+                    <div key={message.id} className="space-y-3">
                       <div className="flex items-center gap-2">
                         <img
                           src={speaker.headshot}
@@ -484,7 +662,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                         <span className="text-xs font-black">{speaker.name}</span>
                         <span
                           className="font-mono text-[10px] uppercase tracking-[.14em]"
-                          style={{ color: speaker.color }}
+                          style={{ color: `var(--${speaker.lane}-ink, var(--ink))` }}
                         >
                           · {meta?.lane || speaker.lane}
                         </span>
@@ -496,7 +674,9 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                         </p>
                       ) : null}
 
-                      <StudioMarkdown accent={speaker.color}>{message.body}</StudioMarkdown>
+                      <StudioMarkdown accent={`var(--${speaker.lane}-ink, var(--ink))`}>
+                        {message.body}
+                      </StudioMarkdown>
 
                       {meta?.keyPoints?.length ? (
                         <ul
@@ -510,7 +690,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                             >
                               <Check
                                 className="mt-0.5 size-3.5 shrink-0"
-                                style={{ color: speaker.color }}
+                                style={{ color: `var(--${speaker.lane}-ink, var(--ink))` }}
                               />
                               {point}
                             </li>
@@ -537,7 +717,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                           <Plus className="size-3.5" /> Save as idea
                         </button>
                         <button
-                          onClick={() => void buildCampaign(message.body, meta)}
+                          onClick={() => setCampaignSource({ body: message.body, meta })}
                           disabled={busy || building}
                           className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink disabled:opacity-40"
                         >
@@ -549,8 +729,11 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                           Build this campaign
                         </button>
                         <button
-                          onClick={() => void send(lastQuestion)}
-                          disabled={busy || !lastQuestion}
+                          onClick={() => {
+                            setDraft(previousQuestion);
+                            composerRef.current?.focus();
+                          }}
+                          disabled={busy || !previousQuestion}
                           className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink disabled:opacity-40"
                         >
                           <RotateCcw className="size-3.5" /> Ask again
@@ -562,8 +745,13 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                           {meta.followUps.map((question) => (
                             <button
                               key={question}
-                              onClick={() => void send(question)}
-                              disabled={busy}
+                              onClick={() => {
+                                setDraft(question);
+                                composerRef.current?.focus();
+                              }}
+                              disabled={
+                                busy || sending || conversationLoading || Boolean(threadError)
+                              }
                               className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-dashed border-border px-3 text-left text-[11px] font-bold text-muted-foreground transition hover:border-ink hover:text-ink disabled:opacity-40"
                             >
                               {question}
@@ -572,82 +760,108 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                           ))}
                         </div>
                       ) : null}
-                    </motion.div>
+                    </div>
                   );
                 })}
                 {busy ? (
-                  <div className="flex items-center gap-3">
+                  <div role="status" className="flex items-center gap-3">
                     <img
                       src={pal.headshot}
                       alt=""
                       className="size-7 animate-pulse rounded-lg border border-border object-cover object-top"
                     />
                     <span className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
-                      <LoaderCircle className="size-3.5 animate-spin" style={{ color: pal.color }} />
+                      <LoaderCircle
+                        className="size-3.5 animate-spin"
+                        style={{ color: pal.color }}
+                      />
                       {pal.name} is reading the workspace…
                     </span>
                   </div>
                 ) : null}
-                <div ref={endRef} />
               </div>
             )}
           </div>
 
-          <form onSubmit={submit} className="border-t border-border bg-white p-4 sm:p-5">
+          <form onSubmit={submit} className="shrink-0 border-t border-border bg-white p-3 sm:p-4">
             <div
               className="mx-auto max-w-3xl rounded-[1.15rem] border border-border bg-white p-2 shadow-soft transition focus-within:border-current"
-              style={{ color: pal.color }}
+              style={{ color: `var(--${pal.lane}-ink, var(--ink))` }}
             >
               <div className="px-1 pb-2 pt-1">
                 <ComposerIntake
-                  color={pal.color}
+                  key={draftKey}
+                  color={`var(--${pal.lane}-ink, var(--ink))`}
                   conversationId={activeConversation?.id || conversationId}
                   attachments={attachments}
                   onAttachmentsChange={setAttachments}
+                  onBusyChange={setIntakeBusy}
                   onTranscript={(text) =>
                     setDraft((current) => (current ? `${current.trim()} ${text}` : text))
                   }
-                  disabled={busy}
+                  disabled={busy || sending || conversationLoading || Boolean(threadError)}
                 />
               </div>
               <div className="flex items-end gap-2">
-              <textarea
-                ref={composerRef}
-                value={draft}
-                onChange={(event) => setDraft(event.target.value)}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" && !event.shiftKey) {
-                    event.preventDefault();
-                    void send(draft);
+                <textarea
+                  ref={composerRef}
+                  aria-label={`Message ${pal.name}`}
+                  disabled={conversationLoading || Boolean(threadError)}
+                  value={draft}
+                  onChange={(event) => setDraft(event.target.value)}
+                  onKeyDown={(event) => {
+                    if (
+                      event.key === "Enter" &&
+                      !event.shiftKey &&
+                      !event.nativeEvent.isComposing
+                    ) {
+                      event.preventDefault();
+                      void send(draft);
+                    }
+                  }}
+                  rows={2}
+                  placeholder={`Tell ${pal.name} what you are working on…`}
+                  className="min-h-12 flex-1 resize-none border-0 bg-transparent p-2 text-sm text-ink outline-none"
+                />
+                <button
+                  disabled={
+                    busy ||
+                    sending ||
+                    intakeBusy ||
+                    conversationLoading ||
+                    Boolean(threadError) ||
+                    (draft.trim().length < 3 && !attachments.length)
                   }
-                }}
-                rows={2}
-                placeholder={`Tell ${pal.name} what you are working on…`}
-                className="min-h-12 flex-1 resize-none border-0 bg-transparent p-2 text-sm text-ink outline-none"
-              />
-              <button
-                disabled={busy || (draft.trim().length < 3 && !attachments.length)}
-                aria-label="Send message"
-                className="grid size-11 shrink-0 place-items-center rounded-xl text-white disabled:opacity-35"
-                style={{ background: pal.color }}
-              >
-                {busy ? (
-                  <LoaderCircle className="size-4 animate-spin" />
-                ) : (
-                  <Send className="size-4" />
-                )}
-              </button>
+                  aria-label="Send message"
+                  className="grid size-11 shrink-0 place-items-center rounded-xl text-white disabled:opacity-35"
+                  style={{ background: `var(--${pal.lane}-ink, var(--ink))` }}
+                >
+                  {busy ? (
+                    <LoaderCircle className="size-4 animate-spin" />
+                  ) : (
+                    <Send className="size-4" />
+                  )}
+                </button>
               </div>
             </div>
             <p className="mt-2 text-center text-[10px] text-muted-foreground">
-              Enter to send · Shift + Enter for a new line · Voice notes, PDFs, Word files, images
-              and recordings are all read privately in this workspace.
+              Enter to send · Shift + Enter for a new line
             </p>
           </form>
         </section>
 
         {/* Work panel */}
-        <aside className="border-t border-border bg-mist/55 p-4 xl:border-l xl:border-t-0">
+        <aside
+          className={`min-h-0 overflow-y-auto border-border bg-mist p-4 xl:relative xl:block xl:border-l ${workOpen ? "absolute inset-0 z-30 block" : "hidden"}`}
+        >
+          <button
+            type="button"
+            onClick={() => setWorkOpen(false)}
+            aria-label="Close next steps"
+            className="mb-4 ml-auto grid size-9 place-items-center rounded-lg hover:bg-white xl:hidden"
+          >
+            <X className="size-4" />
+          </button>
           <div className="flex items-center gap-2">
             <Sparkles className="size-4 text-system" />
             <p className="text-sm font-black">What we can do with this</p>
@@ -655,12 +869,9 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
           <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
             Everything here saves into your work — nothing runs on its own.
           </p>
-          <div className="mt-4 space-y-3">
+          <div className="mt-4 divide-y divide-border">
             {(latestResponse?.recommendations || []).map((item) => (
-              <article
-                key={item.title}
-                className="rounded-[1rem] border border-border bg-white p-4"
-              >
+              <article key={item.title} className="py-4">
                 <p className="text-sm font-black">{item.title}</p>
                 <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{item.reason}</p>
                 <div className="mt-4 grid grid-cols-2 gap-2">
@@ -680,7 +891,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
               </article>
             ))}
             {!latestResponse ? (
-              <div className="rounded-[1rem] border border-dashed border-border bg-white p-4">
+              <div className="border-t border-border py-5">
                 <Brain className="size-5 text-system" />
                 <p className="mt-3 text-xs font-bold">
                   Say one thing and this fills with real next steps.
@@ -726,6 +937,76 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
           ) : null}
         </aside>
       </div>
+      <Dialog
+        open={Boolean(campaignSource)}
+        onOpenChange={(open) => {
+          if (!open && !building) setCampaignSource(null);
+        }}
+      >
+        <DialogContent className="studio-app max-h-[90dvh] overflow-y-auto rounded-2xl">
+          <DialogTitle>Make this a campaign</DialogTitle>
+          <DialogDescription>
+            Choose the outcome and format. We’ll use this conversation and your Brand DNA to build
+            an editable campaign.
+          </DialogDescription>
+          <label className="grid gap-2 text-sm font-bold">
+            Goal
+            <select
+              value={campaignGoal}
+              onChange={(event) => setCampaignGoal(event.target.value)}
+              className="min-h-11 rounded-lg border border-border bg-white px-3 font-normal"
+              disabled={building}
+            >
+              {studioGoals.map((goal) => (
+                <option key={goal} value={goal}>
+                  {goal}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="grid gap-2 text-sm font-bold">
+            Anchor format
+            <select
+              value={campaignFormat}
+              onChange={(event) => setCampaignFormat(event.target.value)}
+              className="min-h-11 rounded-lg border border-border bg-white px-3 font-normal"
+              disabled={building}
+            >
+              {anchorFormats.map((format) => (
+                <option key={format.value} value={format.value}>
+                  {format.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <p className="text-xs leading-relaxed text-muted-foreground">
+            This uses one campaign from your plan. You can review and edit it before scheduling
+            anything.
+          </p>
+          <button
+            type="button"
+            disabled={building || busy}
+            onClick={() => {
+              if (campaignSource) void buildCampaign(campaignSource.body, campaignSource.meta);
+            }}
+            className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-ink px-4 text-sm font-bold text-white disabled:opacity-50"
+          >
+            {building ? (
+              <LoaderCircle className="size-4 animate-spin" />
+            ) : (
+              <Sparkles className="size-4" />
+            )}
+            {building ? "Building campaign…" : "Build campaign"}
+          </button>
+          <Link
+            to="/studio/create"
+            className="min-h-10 text-center text-sm font-bold underline underline-offset-4"
+            onClick={() => setCampaignSource(null)}
+          >
+            Open the full creation workflow
+          </Link>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

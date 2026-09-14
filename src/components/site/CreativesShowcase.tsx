@@ -1,21 +1,27 @@
 import chiropractor from "@/assets/work/Chiropractor.webm";
+import chiropractorPoster from "@/assets/work/Chiropractor-poster.jpg";
 import farmersMarket from "@/assets/work/FarmersMarket.webm";
+import farmersMarketPoster from "@/assets/work/FarmersMarket-poster.jpg";
 import hrEducation from "@/assets/work/HREducation.webm";
+import hrEducationPoster from "@/assets/work/HREducation-poster.jpg";
 import musicVideo from "@/assets/work/MusicVideo.webm";
+import musicVideoPoster from "@/assets/work/MusicVideo-poster.jpg";
 import naturopath from "@/assets/work/Naturopath.webm";
+import naturopathPoster from "@/assets/work/Naturopath-poster.jpg";
 import nonprofit from "@/assets/work/NonProfit.webm";
+import nonprofitPoster from "@/assets/work/NonProfit-poster.jpg";
 import politician from "@/assets/work/PoliticianAnnouncement.webm";
+import politicianPoster from "@/assets/work/PoliticianAnnouncement-poster.jpg";
 import { Marquee } from "./Marquee";
-import { ScrollHighlightText } from "./ScrollHighlightText";
 
-const work = [
-  { src: chiropractor, label: "Healthcare brand film" },
-  { src: farmersMarket, label: "Community event story" },
-  { src: hrEducation, label: "Internal education video" },
-  { src: musicVideo, label: "Music performance film" },
-  { src: naturopath, label: "Founder authority video" },
-  { src: nonprofit, label: "Nonprofit impact story" },
-  { src: politician, label: "Campaign announcement" },
+const work: Array<{ src: string; label: string; poster: string }> = [
+  { src: chiropractor, label: "Healthcare brand film", poster: chiropractorPoster },
+  { src: farmersMarket, label: "Community event story", poster: farmersMarketPoster },
+  { src: hrEducation, label: "Internal education video", poster: hrEducationPoster },
+  { src: musicVideo, label: "Music performance film", poster: musicVideoPoster },
+  { src: naturopath, label: "Founder authority video", poster: naturopathPoster },
+  { src: nonprofit, label: "Nonprofit impact story", poster: nonprofitPoster },
+  { src: politician, label: "Campaign announcement", poster: politicianPoster },
 ];
 
 export function CreativesShowcase() {
@@ -27,28 +33,28 @@ export function CreativesShowcase() {
           <span className="block text-muted-foreground">You just didn&apos;t know it was us.</span>
         </h2>
         <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-          Real Palmer House productions · Hover to pause
+          Real Palmer House productions · Scroll to explore · Play any film
         </p>
       </div>
 
       <div className="mt-14 overflow-hidden">
-        <Marquee duration="52s">
-          {work.concat(work).map((item, index) => (
+        <Marquee>
+          {work.map((item, index) => (
             <figure
               key={`${item.label}-${index}`}
               className="group relative h-[22rem] w-[16rem] shrink-0 overflow-hidden rounded-[2rem] bg-ink shadow-soft sm:h-[30rem] sm:w-[22rem]"
             >
               <video
                 src={item.src}
+                poster={item.poster}
                 aria-label={item.label}
-                autoPlay
-                loop
+                controls
                 muted
                 playsInline
-                preload="metadata"
-                className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.035]"
+                preload="none"
+                className="size-full object-cover"
               />
-              <figcaption className="absolute inset-x-0 bottom-0 bg-black/75 px-5 py-4 text-sm font-medium text-white">
+              <figcaption className="pointer-events-none absolute inset-x-0 top-0 bg-black/75 px-5 py-4 text-sm font-medium text-white">
                 {item.label}
               </figcaption>
             </figure>
@@ -57,15 +63,16 @@ export function CreativesShowcase() {
       </div>
 
       <div className="mx-auto mt-24 max-w-4xl px-4 text-center text-[clamp(1.6rem,3.5vw,2.65rem)] font-semibold leading-[1.22] tracking-[-0.035em]">
-        <ScrollHighlightText
-          paragraphClassName="mt-7"
-          paragraphs={[
-            "We don't just make videos; we solve business problems with them. Maybe your onboarding takes too long. Your message isn't landing. Your brand isn't getting seen where it counts.",
-            "Whatever the challenge, we start by understanding what's getting in the way — and then design a video system built to fix it.",
-            "From training to visibility to customer education, our process turns complex pain points into clear, measurable solutions.",
-            "Because video isn't the goal. It's the tool that gets you there.",
-          ]}
-        />
+        {[
+          "We don't just make videos; we solve business problems with them. Maybe your onboarding takes too long. Your message isn't landing. Your brand isn't getting seen where it counts.",
+          "Whatever the challenge, we start by understanding what's getting in the way — and then design a video system built to fix it.",
+          "From training to visibility to customer education, our process turns complex pain points into clear, measurable solutions.",
+          "Because video isn't the goal. It's the tool that gets you there.",
+        ].map((paragraph, index) => (
+          <p key={paragraph} className={index > 0 ? "mt-7" : undefined}>
+            {paragraph}
+          </p>
+        ))}
       </div>
     </section>
   );

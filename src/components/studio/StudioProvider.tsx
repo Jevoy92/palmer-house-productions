@@ -1,5 +1,15 @@
 import type { Session, User } from "@supabase/supabase-js";
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import { toast } from "sonner";
 import {
   analyzeStudioContentSource,
@@ -11,6 +21,7 @@ import {
 import { classifyLane } from "@/lib/studio-intelligence";
 import type { WebsiteBrandProfile } from "@/lib/studio-server";
 
+import { PlatformPostSchema } from "@/lib/studio-model";
 import type {
   AssistantResponse,
   CampaignOutput,
@@ -48,6 +59,8 @@ export type ConversationIntake = {
   text: string;
 };
 
+export type ConversationDraft = { text: string; files: ConversationIntake[] };
+
 /** How many messages load at once when opening or scrolling back a thread. */
 const MESSAGE_PAGE = 30;
 
@@ -59,8 +72,10 @@ function titleFromMessage(question: string) {
 type VideoProgress = Tables<"workspace_video_items">;
 type ServiceRequest = Tables<"service_requests">;
 
-type StudioContextValue = {
+export type StudioContextValue = {
   loading: boolean;
+  loadError: string | null;
+  retryWorkspace: () => Promise<void>;
   busy: boolean;
   session: Session | null;
   user: User | null;
@@ -78,6 +93,8 @@ type StudioContextValue = {
   conversations: Conversation[];
   activeConversation: Conversation | null;
   conversationMessages: AssistantMessage[];
+  conversationDrafts: Record<string, ConversationDraft>;
+  setConversationDrafts: Dispatch<SetStateAction<Record<string, ConversationDraft>>>;
   conversationLoading: boolean;
   hasOlderMessages: boolean;
   videoProgress: VideoProgress[];
@@ -121,6 +138,7 @@ type StudioContextValue = {
   askPal: (question: string, pal: PalName, conversationId?: string) => Promise<AssistantResponse>;
   startConversation: (pal: PalName, title?: string) => Promise<string>;
   openConversation: (id: string) => Promise<void>;
+  clearConversation: () => void;
   loadOlderMessages: () => Promise<void>;
   renameConversation: (id: string, title: string) => Promise<void>;
   archiveConversation: (id: string, archived?: boolean) => Promise<void>;
@@ -164,7 +182,8 @@ type StudioContextValue = {
   refresh: () => Promise<void>;
 };
 
-const StudioContext = createContext<StudioContextValue | null>(null);
+// eslint-disable-next-line react-refresh/only-export-components
+export const StudioContext = createContext<StudioContextValue | null>(null);
 
 function slugify(value: string) {
   return `${value
@@ -176,6 +195,10 @@ function slugify(value: string) {
 
 export function StudioProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const loadRequest = useRef(0);
+  const conversationRequest = useRef(0);
+  const sending = useRef(false);
   const [busy, setBusy] = useState(false);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -192,146 +215,235 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
   const [conversationMessages, setConversationMessages] = useState<AssistantMessage[]>([]);
+  const [conversationDrafts, setConversationDrafts] = useState<Record<string, ConversationDraft>>(
+    {},
+  );
   const [conversationLoading, setConversationLoading] = useState(false);
   const [hasOlderMessages, setHasOlderMessages] = useState(false);
   const [videoProgress, setVideoProgress] = useState<VideoProgress[]>([]);
   const [serviceRequests, setServiceRequests] = useState<ServiceRequest[]>([]);
   const [campaignOutputs, setCampaignOutputs] = useState<Record<string, CampaignOutput>>({});
 
-  const loadWorkspace = useCallback(async (activeSession: Session | null) => {
-    if (!activeSession) {
-      setProfile(null);
-      setWorkspace(null);
-      setSubscription(null);
-      setBrand(null);
-      setBrandReferences([]);
-      setSettings(null);
-      setCampaigns([]);
-      setAssets([]);
-      setCalendar([]);
-      setIdeas([]);
-      setAssistantMessages([]);
-      setConversations([]);
-      setActiveConversation(null);
-      setConversationMessages([]);
-      setHasOlderMessages(false);
-      setVideoProgress([]);
-      setServiceRequests([]);
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
-    const userId = activeSession.user.id;
-    const [profileResult, membershipResult] = await Promise.all([
-      supabase.from("profiles").select("*").eq("id", userId).maybeSingle(),
-      supabase
-        .from("workspace_members")
-        .select("workspace_id, role")
-        .eq("user_id", userId)
-        .order("created_at")
-        .limit(1)
-        .maybeSingle(),
-    ]);
-    if (profileResult.data) setProfile(profileResult.data);
-    const workspaceId = membershipResult.data?.workspace_id;
-    if (!workspaceId) {
-      setWorkspace(null);
-      setLoading(false);
-      return;
-    }
-    const [
-      workspaceResult,
-      subscriptionResult,
-      brandResult,
-      brandReferencesResult,
-      settingsResult,
-      campaignsResult,
-      assetsResult,
-      calendarResult,
-      ideasResult,
-      assistantResult,
-      conversationsResult,
-      videoProgressResult,
-      serviceRequestsResult,
-    ] = await Promise.all([
-      supabase.from("workspaces").select("*").eq("id", workspaceId).single(),
-      supabase.from("workspace_subscriptions").select("*").eq("workspace_id", workspaceId).single(),
-      supabase.from("brand_profiles").select("*").eq("workspace_id", workspaceId).single(),
-      supabase
-        .from("brand_references")
-        .select("*")
-        .eq("workspace_id", workspaceId)
-        .order("created_at", { ascending: false }),
-      supabase.from("workspace_settings").select("*").eq("workspace_id", workspaceId).single(),
-      supabase
-        .from("campaigns")
-        .select("*")
-        .eq("workspace_id", workspaceId)
-        .order("created_at", { ascending: false }),
-      supabase
-        .from("campaign_assets")
-        .select("*")
-        .eq("workspace_id", workspaceId)
-        .order("sort_order"),
-      supabase
-        .from("calendar_items")
-        .select("*")
-        .eq("workspace_id", workspaceId)
-        .order("publish_at"),
-      supabase
-        .from("content_ideas")
-        .select("*")
-        .eq("workspace_id", workspaceId)
-        .order("created_at", { ascending: false }),
-      supabase
-        .from("assistant_messages")
-        .select("*")
-        .eq("workspace_id", workspaceId)
-        .order("created_at", { ascending: true })
-        .limit(80),
-      supabase
-        .from("conversations")
-        .select("*")
-        .eq("workspace_id", workspaceId)
-        .order("last_message_at", { ascending: false, nullsFirst: false })
-        .order("created_at", { ascending: false })
-        .limit(50),
-      supabase.from("workspace_video_items").select("*").eq("workspace_id", workspaceId),
-      supabase
-        .from("service_requests")
-        .select("*")
-        .eq("workspace_id", workspaceId)
-        .order("created_at", { ascending: false }),
-    ]);
-    if (workspaceResult.data) setWorkspace(workspaceResult.data);
-    if (subscriptionResult.data) setSubscription(subscriptionResult.data);
-    if (brandResult.data) setBrand(brandResult.data);
-    setBrandReferences(brandReferencesResult.data || []);
-    if (settingsResult.data) setSettings(settingsResult.data);
-    setCampaigns(campaignsResult.data || []);
-    setAssets(assetsResult.data || []);
-    setCalendar(calendarResult.data || []);
-    setIdeas(ideasResult.data || []);
-    setAssistantMessages(assistantResult.data || []);
-    setConversations(conversationsResult.data || []);
-    setVideoProgress(videoProgressResult.data || []);
-    setServiceRequests(serviceRequestsResult.data || []);
-    setLoading(false);
+  const sessionUserRef = useRef(session?.user.id);
+  sessionUserRef.current = session?.user.id;
+  const activeConversationRef = useRef(activeConversation);
+  const messagesRef = useRef(conversationMessages);
+  activeConversationRef.current = activeConversation;
+  messagesRef.current = conversationMessages;
+
+  const clearConversation = useCallback(() => {
+    conversationRequest.current += 1;
+    activeConversationRef.current = null;
+    messagesRef.current = [];
+    setActiveConversation(null);
+    setConversationMessages([]);
+    setConversationLoading(false);
+    setHasOlderMessages(false);
   }, []);
 
+  const loadWorkspace = useCallback(
+    async (activeSession: Session | null) => {
+      const request = ++loadRequest.current;
+      setLoadError(null);
+      if (!activeSession) {
+        setProfile(null);
+        setWorkspace(null);
+        setSubscription(null);
+        setBrand(null);
+        setBrandReferences([]);
+        setSettings(null);
+        setCampaigns([]);
+        setAssets([]);
+        setCalendar([]);
+        setIdeas([]);
+        setAssistantMessages([]);
+        setConversations([]);
+        clearConversation();
+        setConversationDrafts({});
+        setCampaignOutputs({});
+        setVideoProgress([]);
+        setServiceRequests([]);
+        setLoading(false);
+        return;
+      }
+      setLoading(true);
+      try {
+        const userId = activeSession.user.id;
+        const [profileResult, membershipResult] = await Promise.all([
+          supabase.from("profiles").select("*").eq("id", userId).maybeSingle(),
+          supabase
+            .from("workspace_members")
+            .select("workspace_id, role")
+            .eq("user_id", userId)
+            .order("created_at")
+            .limit(1)
+            .maybeSingle(),
+        ]);
+        if (profileResult.error) throw profileResult.error;
+        if (membershipResult.error) throw membershipResult.error;
+        if (request !== loadRequest.current) return;
+        setProfile(profileResult.data);
+        const workspaceId = membershipResult.data?.workspace_id;
+        if (!workspaceId) {
+          setWorkspace(null);
+          setLoading(false);
+          return;
+        }
+        const [
+          workspaceResult,
+          subscriptionResult,
+          brandResult,
+          brandReferencesResult,
+          settingsResult,
+          campaignsResult,
+          assetsResult,
+          calendarResult,
+          ideasResult,
+          assistantResult,
+          conversationsResult,
+          videoProgressResult,
+          serviceRequestsResult,
+        ] = await Promise.all([
+          supabase.from("workspaces").select("*").eq("id", workspaceId).single(),
+          supabase
+            .from("workspace_subscriptions")
+            .select("*")
+            .eq("workspace_id", workspaceId)
+            .maybeSingle(),
+          supabase.from("brand_profiles").select("*").eq("workspace_id", workspaceId).maybeSingle(),
+          supabase
+            .from("brand_references")
+            .select("*")
+            .eq("workspace_id", workspaceId)
+            .order("created_at", { ascending: false }),
+          supabase
+            .from("workspace_settings")
+            .select("*")
+            .eq("workspace_id", workspaceId)
+            .maybeSingle(),
+          supabase
+            .from("campaigns")
+            .select("*")
+            .eq("workspace_id", workspaceId)
+            .order("created_at", { ascending: false }),
+          supabase
+            .from("campaign_assets")
+            .select("*")
+            .eq("workspace_id", workspaceId)
+            .order("sort_order"),
+          supabase
+            .from("calendar_items")
+            .select("*")
+            .eq("workspace_id", workspaceId)
+            .order("publish_at"),
+          supabase
+            .from("content_ideas")
+            .select("*")
+            .eq("workspace_id", workspaceId)
+            .order("created_at", { ascending: false }),
+          supabase
+            .from("assistant_messages")
+            .select("*")
+            .eq("workspace_id", workspaceId)
+            .order("created_at", { ascending: true })
+            .limit(80),
+          supabase
+            .from("conversations")
+            .select("*")
+            .eq("workspace_id", workspaceId)
+            .order("last_message_at", { ascending: false, nullsFirst: false })
+            .order("created_at", { ascending: false })
+            .limit(50),
+          supabase.from("workspace_video_items").select("*").eq("workspace_id", workspaceId),
+          supabase
+            .from("service_requests")
+            .select("*")
+            .eq("workspace_id", workspaceId)
+            .order("created_at", { ascending: false }),
+        ]);
+        const failed = [
+          workspaceResult,
+          subscriptionResult,
+          brandResult,
+          brandReferencesResult,
+          settingsResult,
+          campaignsResult,
+          assetsResult,
+          calendarResult,
+          ideasResult,
+          assistantResult,
+          conversationsResult,
+          videoProgressResult,
+          serviceRequestsResult,
+        ].find((result) => result.error);
+        if (failed?.error) throw failed.error;
+        if (request !== loadRequest.current) return;
+        setWorkspace(workspaceResult.data);
+        setSubscription(subscriptionResult.data);
+        setBrand(brandResult.data);
+        setBrandReferences(brandReferencesResult.data || []);
+        setSettings(settingsResult.data);
+        setCampaigns(campaignsResult.data || []);
+        setAssets(assetsResult.data || []);
+        setCalendar(calendarResult.data || []);
+        setIdeas(ideasResult.data || []);
+        setAssistantMessages(assistantResult.data || []);
+        setConversations(conversationsResult.data || []);
+        setVideoProgress(videoProgressResult.data || []);
+        setServiceRequests(serviceRequestsResult.data || []);
+      } catch {
+        if (request === loadRequest.current) {
+          setLoadError(
+            "We could not load your workspace. Your saved work is still there. Please try again.",
+          );
+        }
+      } finally {
+        if (request === loadRequest.current) setLoading(false);
+      }
+    },
+    [clearConversation],
+  );
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      void loadWorkspace(data.session);
-    });
+    let mounted = true;
+    supabase.auth
+      .getSession()
+      .then(({ data, error }) => {
+        if (!mounted) return;
+        if (error) throw error;
+        setSession(data.session);
+        void loadWorkspace(data.session);
+      })
+      .catch(() => {
+        if (!mounted) return;
+        setLoadError("We could not restore your session. Please try again.");
+        setLoading(false);
+      });
     const { data } = supabase.auth.onAuthStateChange((_event, nextSession) => {
       setSession(nextSession);
       void loadWorkspace(nextSession);
     });
-    return () => data.subscription.unsubscribe();
+    return () => {
+      mounted = false;
+      loadRequest.current += 1;
+      data.subscription.unsubscribe();
+    };
   }, [loadWorkspace]);
 
   const refresh = useCallback(async () => loadWorkspace(session), [loadWorkspace, session]);
+  const retryWorkspace = useCallback(async () => {
+    setLoading(true);
+    setLoadError(null);
+    try {
+      const { data, error } = await supabase.auth.getSession();
+      if (error) throw error;
+      setSession(data.session);
+      await loadWorkspace(data.session);
+    } catch {
+      setLoadError("We could not restore your session. Please try again.");
+      setLoading(false);
+    }
+  }, [loadWorkspace]);
   async function signIn(email: string, password: string) {
     setBusy(true);
     const result = await supabase.auth.signInWithPassword({ email, password });
@@ -401,11 +513,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       });
       if (result.error) throw new Error(result.error.message);
       workspaceCreated = true;
-      const created = await supabase
-        .from("workspaces")
-        .select("id")
-        .eq("slug", slug)
-        .single();
+      const created = await supabase.from("workspaces").select("id").eq("slug", slug).single();
       if (created.error) throw new Error(created.error.message);
       if (brandProfile) {
         const brandUpdate = await supabase
@@ -548,6 +656,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   async function startConversation(pal: PalName, title?: string) {
     if (!workspace) throw new Error("Create a workspace first.");
     if (!session) throw new Error("Sign in first.");
+    const request = ++conversationRequest.current;
     const result = await supabase
       .from("conversations")
       .insert({
@@ -560,41 +669,66 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       .single();
     if (result.error) throw result.error;
     setConversations((current) => [result.data, ...current]);
-    setActiveConversation(result.data);
-    setConversationMessages([]);
-    setHasOlderMessages(false);
+    if (request === conversationRequest.current) {
+      activeConversationRef.current = result.data;
+      messagesRef.current = [];
+      setActiveConversation(result.data);
+      setConversationMessages([]);
+      setHasOlderMessages(false);
+    }
     return result.data.id;
   }
 
-  async function openConversation(id: string) {
-    if (!workspace) throw new Error("Create a workspace first.");
-    setConversationLoading(true);
-    try {
-      const [conversation, messages] = await Promise.all([
-        supabase.from("conversations").select("*").eq("id", id).maybeSingle(),
-        // Newest first so the page we load is the part the member wants to see;
-        // reversed below for display.
-        supabase
-          .from("assistant_messages")
-          .select("*")
-          .eq("conversation_id", id)
-          .order("created_at", { ascending: false })
-          .limit(MESSAGE_PAGE + 1),
-      ]);
-      if (conversation.error) throw conversation.error;
-      if (messages.error) throw messages.error;
-      const rows = messages.data || [];
-      const page = rows.slice(0, MESSAGE_PAGE).reverse();
-      setActiveConversation(conversation.data);
-      setConversationMessages(page);
-      setHasOlderMessages(rows.length > MESSAGE_PAGE);
-    } finally {
-      setConversationLoading(false);
-    }
-  }
+  const openConversation = useCallback(
+    async (id: string) => {
+      if (!workspace) throw new Error("Create a workspace first.");
+      const request = ++conversationRequest.current;
+      activeConversationRef.current = null;
+      messagesRef.current = [];
+      setActiveConversation(null);
+      setConversationMessages([]);
+      setHasOlderMessages(false);
+      setConversationLoading(true);
+      try {
+        const [conversation, messages] = await Promise.all([
+          supabase
+            .from("conversations")
+            .select("*")
+            .eq("id", id)
+            .eq("workspace_id", workspace.id)
+            .maybeSingle(),
+          // Newest first so the page we load is the part the member wants to see;
+          // reversed below for display.
+          supabase
+            .from("assistant_messages")
+            .select("*")
+            .eq("conversation_id", id)
+            .order("created_at", { ascending: false })
+            .limit(MESSAGE_PAGE + 1),
+        ]);
+        if (conversation.error) throw conversation.error;
+        if (messages.error) throw messages.error;
+        if (!conversation.data || conversation.data.archived)
+          throw new Error("This conversation is unavailable or archived.");
+        if (request !== conversationRequest.current) return;
+        const rows = messages.data || [];
+        const page = rows.slice(0, MESSAGE_PAGE).reverse();
+        activeConversationRef.current = conversation.data;
+        messagesRef.current = page;
+        setActiveConversation(conversation.data);
+        setConversationMessages(page);
+        setHasOlderMessages(rows.length > MESSAGE_PAGE);
+      } finally {
+        if (request === conversationRequest.current) setConversationLoading(false);
+      }
+    },
+    [workspace],
+  );
 
   async function loadOlderMessages() {
     if (!activeConversation || !conversationMessages.length) return;
+    if (conversationLoading) return;
+    const request = conversationRequest.current;
     const oldest = conversationMessages[0];
     setConversationLoading(true);
     try {
@@ -606,19 +740,18 @@ export function StudioProvider({ children }: { children: ReactNode }) {
         .order("created_at", { ascending: false })
         .limit(MESSAGE_PAGE + 1);
       if (result.error) throw result.error;
+      if (request !== conversationRequest.current) return;
       const rows = result.data || [];
       const page = rows.slice(0, MESSAGE_PAGE).reverse();
       setConversationMessages((current) => [...page, ...current]);
       setHasOlderMessages(rows.length > MESSAGE_PAGE);
     } finally {
-      setConversationLoading(false);
+      if (request === conversationRequest.current) setConversationLoading(false);
     }
   }
 
   function applyConversation(next: Conversation) {
-    setConversations((current) =>
-      current.map((item) => (item.id === next.id ? next : item)),
-    );
+    setConversations((current) => current.map((item) => (item.id === next.id ? next : item)));
     setActiveConversation((current) => (current?.id === next.id ? next : current));
   }
 
@@ -639,10 +772,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
 
   async function archiveConversation(id: string, archived = true) {
     await patchConversation(id, { archived });
-    if (archived && activeConversation?.id === id) {
-      setActiveConversation(null);
-      setConversationMessages([]);
-    }
+    if (archived && activeConversationRef.current?.id === id) clearConversation();
   }
 
   /**
@@ -656,30 +786,39 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   async function askPal(question: string, pal: PalName, conversationId?: string) {
     if (!workspace || !brand) throw new Error("Finish Brand DNA before asking for guidance.");
     if (!session) throw new Error("Sign in first.");
+    if (sending.current)
+      throw new Error("Wait for the current reply before sending another message.");
 
-    let threadId = conversationId || activeConversation?.id || null;
-    if (!threadId) threadId = await startConversation(pal, titleFromMessage(question));
-
-    const now = new Date().toISOString();
-    const userMessage: AssistantMessage = {
-      id: crypto.randomUUID(),
-      workspace_id: workspace.id,
-      conversation_id: threadId,
-      user_id: session.user.id,
-      role: "user",
-      pal,
-      body: question,
-      metadata: {},
-      created_at: now,
-    };
-    setAssistantMessages((current) => [...current, userMessage]);
-    setConversationMessages((current) => [...current, userMessage]);
+    sending.current = true;
     setBusy(true);
+    let optimisticId: string | null = null;
     try {
-      const history = [...conversationMessages, userMessage].slice(-11).map((message) => ({
-        role: message.role as "user" | "assistant",
-        body: message.body,
-      }));
+      const threadId =
+        conversationId ||
+        activeConversationRef.current?.id ||
+        (await startConversation(pal, titleFromMessage(question)));
+      const userMessage: AssistantMessage = {
+        id: crypto.randomUUID(),
+        workspace_id: workspace.id,
+        conversation_id: threadId,
+        user_id: session.user.id,
+        role: "user",
+        pal,
+        body: question,
+        metadata: {},
+        created_at: new Date().toISOString(),
+      };
+      optimisticId = userMessage.id;
+      const history = [
+        ...messagesRef.current.filter((item) => item.conversation_id === threadId),
+        userMessage,
+      ]
+        .slice(-11)
+        .map((message) => ({ role: message.role as "user" | "assistant", body: message.body }));
+      setAssistantMessages((current) => [...current, userMessage]);
+      if (activeConversationRef.current?.id === threadId) {
+        setConversationMessages((current) => [...current, userMessage]);
+      }
       const generated = await askStudioPal({
         data: {
           workspaceId: workspace.id,
@@ -690,60 +829,71 @@ export function StudioProvider({ children }: { children: ReactNode }) {
         },
       });
       const response: AssistantResponse = generated.response;
-      const savedUser = await supabase
-        .from("assistant_messages")
-        .insert({
-          workspace_id: workspace.id,
-          conversation_id: threadId,
-          user_id: session.user.id,
-          role: "user",
-          pal,
-          body: question,
-        })
-        .select()
-        .single();
-      if (savedUser.error) throw savedUser.error;
+      if (sessionUserRef.current !== session.user.id)
+        throw new Error("Sign in again to continue this conversation.");
+      // One insert saves the exchange atomically. A failed assistant write must
+      // never leave a saved user row that gets duplicated when the member retries.
       const saved = await supabase
         .from("assistant_messages")
-        .insert({
-          workspace_id: workspace.id,
-          conversation_id: threadId,
-          role: "assistant",
-          pal,
-          body: response.reply,
-          metadata: response,
-        })
-        .select()
-        .single();
+        .insert([
+          userMessage,
+          {
+            workspace_id: workspace.id,
+            conversation_id: threadId,
+            role: "assistant",
+            pal,
+            body: response.reply,
+            metadata: response,
+            created_at: new Date().toISOString(),
+          },
+        ])
+        .select();
       if (saved.error) throw saved.error;
+      const stored = saved.data || [];
+      const mergeExchange = (current: AssistantMessage[]) => [
+        ...current.filter((item) => item.id !== userMessage.id),
+        ...stored.filter(
+          (item) =>
+            !current.some((existing) => existing.id === item.id && existing.id !== userMessage.id),
+        ),
+      ];
+      if (activeConversationRef.current?.id === threadId) setConversationMessages(mergeExchange);
+      setAssistantMessages(mergeExchange);
+      optimisticId = null;
 
-      // Swap the optimistic row for the stored one so ids stay real.
-      setConversationMessages((current) => [
-        ...current.map((item) => (item.id === userMessage.id ? savedUser.data : item)),
-        saved.data,
-      ]);
-      setAssistantMessages((current) => [
-        ...current.map((item) => (item.id === userMessage.id ? savedUser.data : item)),
-        saved.data,
-      ]);
-
-      const existing = conversations.find((item) => item.id === threadId);
-      const isFirstExchange = !existing?.message_count;
-      const updated = await supabase
-        .from("conversations")
-        .update({
-          pal,
-          last_message_at: saved.data.created_at,
-          message_count: (existing?.message_count || 0) + 2,
-          ...(isFirstExchange ? { title: titleFromMessage(question) } : {}),
-        })
-        .eq("id", threadId)
-        .select()
-        .single();
-      if (!updated.error && updated.data) applyConversation(updated.data);
-
+      const existing =
+        conversations.find((item) => item.id === threadId) ||
+        (activeConversationRef.current?.id === threadId ? activeConversationRef.current : null);
+      // Message storage succeeded; failure to refresh the title must not invite
+      // another send of an already saved exchange.
+      try {
+        const updated = await supabase
+          .from("conversations")
+          .update({
+            pal,
+            last_message_at:
+              stored.find((item) => item.role === "assistant")?.created_at ||
+              new Date().toISOString(),
+            message_count: (existing?.message_count || 0) + 2,
+            ...(!existing?.message_count ? { title: titleFromMessage(question) } : {}),
+          })
+          .eq("id", threadId)
+          .select()
+          .single();
+        if (updated.error) throw updated.error;
+        if (updated.data) applyConversation(updated.data);
+      } catch {
+        toast.info("Your reply was saved. The conversation title will refresh when you reopen it.");
+      }
       return response;
+    } catch (error) {
+      if (optimisticId) {
+        setConversationMessages((current) => current.filter((item) => item.id !== optimisticId));
+        setAssistantMessages((current) => current.filter((item) => item.id !== optimisticId));
+      }
+      throw error;
     } finally {
+      sending.current = false;
       setBusy(false);
     }
   }
@@ -905,14 +1055,85 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     }
   }
   async function updateAsset(id: string, values: Partial<Asset>) {
+    const previous = assets.find((asset) => asset.id === id);
+    let patch = values;
+    const previousMetadata =
+      previous?.metadata &&
+      typeof previous.metadata === "object" &&
+      !Array.isArray(previous.metadata)
+        ? previous.metadata
+        : {};
+    if (
+      previous &&
+      previous.kind !== "platform_post" &&
+      values.content !== undefined &&
+      values.content !== previous.content &&
+      values.metadata === undefined
+    ) {
+      // Plain editing cannot safely reconstruct scenes, slides, or article
+      // sections. Retain those structures and mark the saved text as the
+      // display authority, including after a fresh workspace load.
+      patch = { ...values, metadata: { ...previousMetadata, studioTextOverride: true } };
+    } else if (
+      values.content !== undefined &&
+      values.metadata &&
+      typeof values.metadata === "object" &&
+      !Array.isArray(values.metadata)
+    ) {
+      const structured = { ...values.metadata };
+      delete structured.studioTextOverride;
+      patch = { ...values, metadata: structured };
+    }
+    if (previous?.kind === "platform_post") {
+      const metadata = patch.metadata ?? previous.metadata;
+      if (metadata && typeof metadata === "object" && !Array.isArray(metadata)) {
+        // The plain-text editor and platform editor share one saved post. Keep
+        // their two representations aligned without dropping native features.
+        patch = {
+          ...patch,
+          metadata: {
+            ...previousMetadata,
+            ...metadata,
+            ...(values.content !== undefined ? { body: values.content } : {}),
+            ...(values.title !== undefined ? { title: values.title } : {}),
+          },
+        };
+      }
+    }
     const result = await supabase
       .from("campaign_assets")
-      .update(values)
+      .update(patch)
       .eq("id", id)
       .select()
       .single();
     if (result.error) throw result.error;
-    setAssets((items) => items.map((item) => (item.id === id ? result.data : item)));
+    const saved = result.data;
+    setAssets((items) => items.map((item) => (item.id === id ? saved : item)));
+    if (saved.kind === "platform_post") {
+      const metadata = saved.metadata;
+      if (metadata && typeof metadata === "object" && !Array.isArray(metadata)) {
+        const parsed = PlatformPostSchema.safeParse({
+          ...metadata,
+          body: saved.content,
+          title: saved.title,
+        });
+        if (parsed.success) {
+          setCampaignOutputs((current) => {
+            const output = current[saved.campaign_id];
+            if (!output) return current;
+            return {
+              ...current,
+              [saved.campaign_id]: {
+                ...output,
+                platformPosts: output.platformPosts.map((post) =>
+                  post.id === parsed.data.id ? parsed.data : post,
+                ),
+              },
+            };
+          });
+        }
+      }
+    }
   }
   async function updateCalendarItem(id: string, values: Partial<CalendarItem>) {
     const result = await supabase
@@ -1022,6 +1243,8 @@ export function StudioProvider({ children }: { children: ReactNode }) {
 
   const value: StudioContextValue = {
     loading,
+    loadError,
+    retryWorkspace,
     busy,
     session,
     user: session?.user || null,
@@ -1039,6 +1262,8 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     conversations,
     activeConversation,
     conversationMessages,
+    conversationDrafts,
+    setConversationDrafts,
     conversationLoading,
     hasOlderMessages,
     videoProgress,
@@ -1060,6 +1285,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     askPal,
     startConversation,
     openConversation,
+    clearConversation,
     loadOlderMessages,
     renameConversation,
     archiveConversation,

@@ -1,28 +1,14 @@
 import type { ReactNode } from "react";
 
-export function Marquee({
-  children,
-  duration = "40s",
-  reverse = false,
-}: {
-  children: ReactNode;
-  duration?: string;
-  reverse?: boolean;
-}) {
+export function Marquee({ children }: { children: ReactNode }) {
   return (
-    <div className="relative overflow-hidden">
-      <div
-        className="animate-marquee flex w-max gap-4"
-        style={{
-          ["--marquee-duration" as string]: duration,
-          animationDirection: reverse ? "reverse" : "normal",
-        }}
-      >
-        <div className="flex shrink-0 gap-4">{children}</div>
-        <div className="flex shrink-0 gap-4" aria-hidden>
-          {children}
-        </div>
-      </div>
+    <div
+      role="region"
+      aria-label="Selected productions. Scroll horizontally to browse."
+      tabIndex={0}
+      className="relative overflow-x-auto overscroll-x-contain px-4 pb-5"
+    >
+      <div className="flex w-max gap-4">{children}</div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, CheckCircle2, CircleDot, Film, Gauge, Sparkles } from "lucide-react";
+import { ArrowRight, Film, Gauge, Sparkles } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
 import { diagnoseVideoLibrary, universalVideoLibrary } from "@/lib/studio-intelligence";
@@ -64,58 +64,71 @@ export function VideoRoadmap() {
 
   return (
     <div className="mx-auto max-w-[90rem]">
-      <header className="grid gap-6 lg:grid-cols-[1fr_22rem] lg:items-end">
+      <header className="grid gap-4 border-b border-border pb-5 lg:grid-cols-[1fr_18rem] lg:items-center">
         <div>
-          <p className="studio-eyebrow text-system">Business video roadmap</p>
-          <h1 className="mt-4 max-w-4xl text-[clamp(2.6rem,5vw,5rem)] font-black leading-[.92] tracking-[-.065em]">
-            The videos this business actually needs.
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
-            A living checklist based on Brand DNA, the problems each asset solves, and the work
-            already in motion. Industry changes the examples—not the underlying business needs.
+          <h1 className="text-3xl font-extrabold tracking-[-.05em] sm:text-4xl">Video roadmap</h1>
+          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            A living checklist based on Brand DNA, the problems each video solves, and the work
+            already in motion.
           </p>
         </div>
-        <div className="rounded-[1.25rem] border border-system bg-system-soft p-5">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-black">Library health</p>
-            <span className="font-mono text-xs text-system">{percent}%</span>
+        <div className="rounded-xl border border-system/30 bg-system-soft px-4 py-3">
+          <div className="flex items-center justify-between gap-3 text-xs">
+            <p className="font-semibold">Library health</p>
+            <span className="font-mono font-semibold text-system">{percent}%</span>
           </div>
-          <div className="mt-4 h-2 overflow-hidden rounded-full bg-white">
+          <div
+            className="mt-2 h-1.5 overflow-hidden rounded-full bg-white"
+            role="progressbar"
+            aria-label="Video library completion"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={percent}
+          >
             <span
-              className="block h-full bg-system"
-              style={{ width: `${Math.max(3, percent)}%` }}
+              className="block h-full w-full origin-left bg-system"
+              style={{ transform: `scaleX(${percent / 100})` }}
             />
           </div>
-          <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-            {complete} complete · {universalVideoLibrary.length - complete} still worth deciding
+          <p className="mt-2 text-xs text-muted-foreground">
+            {complete} of {universalVideoLibrary.length} complete
           </p>
         </div>
       </header>
 
-      <section className="mt-8 rounded-[1.25rem] border border-border bg-white p-4 sm:p-5">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex flex-wrap gap-2">
-            {(["all", "spotlight", "reel", "evergreen", "system"] as const).map((value) => (
-              <button
-                key={value}
-                onClick={() => setLane(value)}
-                className={`min-h-11 rounded-full px-4 text-xs font-bold capitalize ${lane === value ? "bg-ink text-white" : "border border-border bg-white"}`}
-              >
-                {value}
-              </button>
+      <section aria-label="Filter video roadmap" className="mt-5 flex flex-wrap items-end gap-3">
+        <label className="min-w-0 flex-1 sm:max-w-52">
+          <span className="mb-1.5 block text-xs font-semibold text-muted-foreground">
+            Content lane
+          </span>
+          <select
+            value={lane}
+            onChange={(event) => setLane(event.target.value as "all" | StudioLane)}
+            className="min-h-11 w-full rounded-xl border border-border bg-white px-3 text-sm font-semibold"
+          >
+            <option value="all">All lanes</option>
+            {(["spotlight", "reel", "evergreen", "system"] as const).map((value) => (
+              <option key={value} value={value}>
+                {laneMeta[value].label}
+              </option>
             ))}
-          </div>
-          <div className="grid grid-cols-2 rounded-xl border border-border p-1">
-            {(["priority", "all"] as const).map((value) => (
-              <button
-                key={value}
-                onClick={() => setShow(value)}
-                className={`min-h-11 rounded-lg px-4 text-xs font-bold capitalize ${show === value ? "bg-system-soft text-system" : "text-muted-foreground"}`}
-              >
-                {value === "priority" ? "For you first" : "Master list"}
-              </button>
-            ))}
-          </div>
+          </select>
+        </label>
+        <div
+          className="grid shrink-0 grid-cols-2 rounded-xl border border-border bg-white p-1"
+          aria-label="Roadmap scope"
+        >
+          {(["priority", "all"] as const).map((value) => (
+            <button
+              key={value}
+              type="button"
+              aria-pressed={show === value}
+              onClick={() => setShow(value)}
+              className={`min-h-11 rounded-lg px-3 text-xs font-semibold ${show === value ? "bg-system-soft text-system" : "text-muted-foreground"}`}
+            >
+              {value === "priority" ? "For you first" : "Master list"}
+            </button>
+          ))}
         </div>
       </section>
 

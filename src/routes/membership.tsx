@@ -1,5 +1,6 @@
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
+import { useSiteMotion } from "@/components/site/site-motion";
 import {
   ArrowRight,
   BookOpen,
@@ -15,9 +16,7 @@ import {
   Video,
   WandSparkles,
 } from "lucide-react";
-import { useRef } from "react";
 import { PageShell } from "@/components/site/PageShell";
-import productionWorkspace from "@/assets/studio-visuals/production-workspace.png";
 import { studioPlans } from "@/lib/studio-model";
 
 const chapters = [
@@ -59,19 +58,12 @@ const chapters = [
 ];
 
 function MembershipPage() {
-  const heroRef = useRef<HTMLElement>(null);
-  const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const productY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : 100]);
-  const copyY = useTransform(scrollYProgress, [0, 1], [0, reduce ? 0 : -65]);
+  const { enter, transition } = useSiteMotion();
   return (
     <PageShell>
-      <section
-        ref={heroRef}
-        className="relative min-h-[calc(100vh-5rem)] overflow-hidden px-4 pb-16 pt-16 sm:pt-20"
-      >
+      <section className="relative min-h-[calc(100vh-5rem)] overflow-hidden px-4 pb-16 pt-16 sm:pt-20">
         <div className="mx-auto max-w-[90rem]">
-          <motion.div style={{ y: copyY }} className="relative z-10 text-center">
+          <div className="relative z-10 text-center">
             <p className="font-mono text-[10px] uppercase tracking-[.22em] text-system">
               Palmer House Studio
             </p>
@@ -96,11 +88,8 @@ function MembershipPage() {
             <p className="mt-5 font-mono text-[9px] uppercase tracking-[.14em] text-muted-foreground">
               7 days · one complete campaign · cancel anytime after upgrading
             </p>
-          </motion.div>
-          <motion.div
-            style={{ y: productY }}
-            className="relative mx-auto mt-14 max-w-6xl rounded-[2rem] border border-black/5 bg-white p-3 shadow-[0_50px_120px_-60px_rgba(31,35,40,.55)] sm:p-5"
-          >
+          </div>
+          <div className="relative mx-auto mt-14 max-w-6xl rounded-[2rem] border border-black/5 bg-white p-3 shadow-[0_50px_120px_-60px_rgba(31,35,40,.55)] sm:p-5">
             <div className="overflow-hidden rounded-[1.35rem] bg-white">
               <div className="flex min-h-14 items-center gap-3 border-b border-border px-4">
                 <span className="grid size-8 place-items-center rounded-lg bg-ink font-mono text-[8px] font-bold text-white">
@@ -151,25 +140,21 @@ function MembershipPage() {
                       ["Reel", "var(--reel)"],
                       ["Evergreen", "var(--evergreen)"],
                       ["System", "var(--system)"],
-                    ].map(([name, color], index) => (
-                      <motion.div
+                    ].map(([name, color]) => (
+                      <div
                         key={name}
-                        initial={reduce ? false : { scaleY: 0 }}
-                        whileInView={{ scaleY: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.08, duration: 0.45 }}
                         className="origin-bottom rounded-xl p-3 text-white"
                         style={{ background: color }}
                       >
                         <p className="hidden text-xs font-bold sm:block">{name}</p>
                         <span className="block h-10 sm:h-7" />
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
@@ -229,13 +214,13 @@ function MembershipPage() {
             Each room finishes the work the last room started.
           </h2>
           <div className="mt-16 divide-y divide-border">
-            {chapters.map((chapter, index) => (
+            {chapters.map((chapter) => (
               <motion.article
                 key={chapter.title}
-                initial={reduce ? false : { opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={enter}
+                whileInView={{ opacity: 1, transform: "translateY(0px)" }}
                 viewport={{ once: true, amount: 0.35 }}
-                transition={{ duration: 0.55 }}
+                transition={transition}
                 className="grid gap-6 py-10 md:grid-cols-[5rem_4rem_1fr_1fr] md:items-start"
               >
                 <span className="font-mono text-[10px] text-muted-foreground">
@@ -272,19 +257,48 @@ function MembershipPage() {
               responsible for shipping it.
             </p>
           </div>
-          <motion.figure
-            initial={reduce ? false : { opacity: 0, y: 28, scale: 0.985 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.65 }}
-            className="mt-12 overflow-hidden rounded-[2rem] border border-border bg-white"
-          >
-            <img
-              src={productionWorkspace}
-              alt="A visual production workspace connecting scripts, editing, analytics, and publishing"
-              className="aspect-[16/7] w-full object-cover"
-            />
-          </motion.figure>
+          <div className="mt-12 overflow-hidden rounded-2xl border border-border">
+            <div className="border-b border-border bg-cream px-6 py-5 sm:px-7">
+              <h3 className="text-xl font-bold">What travels with your campaign</h3>
+              <p className="mt-2 text-sm leading-relaxed text-ink-soft">
+                The practical details stay connected to the idea, whichever way you choose to film.
+              </p>
+            </div>
+            <dl className="grid md:grid-cols-3">
+              {[
+                {
+                  title: "Script & delivery",
+                  detail: "Anchor and short scripts, performance notes, and timing.",
+                  icon: BookOpen,
+                  lane: "spotlight",
+                },
+                {
+                  title: "Shoot preparation",
+                  detail: "Shot list, B-roll, location, wardrobe, props, and a filming checklist.",
+                  icon: Clapperboard,
+                  lane: "evergreen",
+                },
+                {
+                  title: "Publishing plan",
+                  detail: "Written assets, approvals, and an editable publishing schedule.",
+                  icon: CalendarDays,
+                  lane: "system",
+                },
+              ].map((item) => (
+                <div
+                  key={item.title}
+                  data-lane={item.lane}
+                  className="marketing-lane border-b border-border bg-[var(--lane-soft)] p-6 last:border-b-0 sm:p-7 md:border-b-0 md:border-r md:last:border-r-0"
+                >
+                  <dt className="flex items-center gap-3 font-bold text-[var(--lane-ink)]">
+                    <item.icon className="size-5 shrink-0" aria-hidden="true" />
+                    {item.title}
+                  </dt>
+                  <dd className="mt-3 text-sm leading-relaxed text-ink-soft">{item.detail}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
           <div className="mt-14 grid gap-4 md:grid-cols-3">
             {[
               {
@@ -303,9 +317,8 @@ function MembershipPage() {
                 body: "Request strategy, filming, or editing from the campaign itself—without a new intake.",
               },
             ].map((item, index) => (
-              <motion.article
+              <article
                 key={item.title}
-                whileHover={reduce ? undefined : { y: -6 }}
                 className="min-h-80 rounded-[2rem] border border-border bg-white p-7 shadow-[0_16px_50px_rgba(26,26,24,.04)]"
               >
                 <span
@@ -318,7 +331,7 @@ function MembershipPage() {
                 </span>
                 <h3 className="mt-16 text-2xl font-bold">{item.title}</h3>
                 <p className="mt-4 leading-relaxed text-muted-foreground">{item.body}</p>
-              </motion.article>
+              </article>
             ))}
           </div>
         </div>
@@ -466,7 +479,9 @@ function MembershipPage() {
               <details key={item.q} className="group rounded-2xl border border-border bg-white p-5">
                 <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-semibold">
                   {item.q}
-                  <span className="text-xl transition group-open:rotate-45">+</span>
+                  <span className="text-xl transition-transform motion-reduce:transition-none group-open:rotate-45">
+                    +
+                  </span>
                 </summary>
                 <p className="mt-4 max-w-2xl leading-relaxed text-muted-foreground">{item.a}</p>
               </details>

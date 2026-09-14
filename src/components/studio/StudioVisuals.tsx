@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "motion/react";
 import { CalendarDays, Lightbulb, MessageCircle, Play, Sparkles } from "lucide-react";
-import phMark from "@/assets/php-mark.png.asset.json";
+import phMark from "@/assets/php-mark.png";
 import kiana from "@/assets/pal-headshots/kiana.png";
 import ryder from "@/assets/pal-headshots/ryder.png";
 
@@ -44,7 +44,7 @@ export function StudioMark({ compact = false }: { compact?: boolean }) {
     <span className="flex items-center gap-3">
       <span className="relative grid size-10 place-items-center">
         <img
-          src={phMark.url}
+          src={phMark}
           alt="Palmer House Productions"
           className="size-9 object-contain"
           loading="eager"

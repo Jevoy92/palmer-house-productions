@@ -1,4 +1,12 @@
-import { FileText, Image as ImageIcon, LoaderCircle, Mic, Paperclip, Square, X } from "lucide-react";
+import {
+  FileText,
+  Image as ImageIcon,
+  LoaderCircle,
+  Mic,
+  Paperclip,
+  Square,
+  X,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { startRecording, type Recorder } from "@/lib/audio-wav";
@@ -25,6 +33,7 @@ export function ComposerIntake({
   onAttachmentsChange,
   onTranscript,
   disabled,
+  onBusyChange,
 }: {
   color: string;
   conversationId?: string;
@@ -32,13 +41,37 @@ export function ComposerIntake({
   onAttachmentsChange: (next: ConversationIntake[]) => void;
   onTranscript: (text: string) => void;
   disabled?: boolean;
+  onBusyChange?: (busy: boolean) => void;
 }) {
   const { uploadConversationFile } = useStudio();
   const [uploading, setUploading] = useState(false);
+  const [starting, setStarting] = useState(false);
   const [recorder, setRecorder] = useState<Recorder | null>(null);
   const [seconds, setSeconds] = useState(0);
   const [level, setLevel] = useState(0);
   const fileRef = useRef<HTMLInputElement | null>(null);
+  const recorderRef = useRef<Recorder | null>(null);
+  const generation = useRef(0);
+  const attachmentsRef = useRef(attachments);
+  attachmentsRef.current = attachments;
+
+  useEffect(() => {
+    generation.current += 1;
+    setRecorder(null);
+    setStarting(false);
+    setUploading(false);
+    setSeconds(0);
+    return () => {
+      generation.current += 1;
+      recorderRef.current?.cancel();
+      recorderRef.current = null;
+    };
+  }, [conversationId]);
+
+  useEffect(() => {
+    onBusyChange?.(uploading || starting || Boolean(recorder));
+    return () => onBusyChange?.(false);
+  }, [uploading, starting, recorder, onBusyChange]);
 
   useEffect(() => {
     if (!recorder) return;
@@ -50,43 +83,74 @@ export function ComposerIntake({
   }, [recorder]);
 
   async function send(file: File, kind: "voice" | "file") {
+    const request = generation.current;
     setUploading(true);
     try {
       const intake = await uploadConversationFile(file, { conversationId, kind });
+      if (request !== generation.current) return;
       if (kind === "voice") {
         if (!intake.text) throw new Error("We could not hear any speech in that recording.");
         onTranscript(intake.text);
         toast.success("Voice note added.");
       } else {
-        onAttachmentsChange([...attachments, intake]);
+        onAttachmentsChange([...attachmentsRef.current, intake]);
         toast.success(`${intake.attachment.label} is ready.`);
       }
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "That file could not be read.");
+      if (request === generation.current)
+        toast.error(error instanceof Error ? error.message : "That file could not be read.");
     } finally {
-      setUploading(false);
+      if (request === generation.current) setUploading(false);
     }
   }
 
   async function toggleRecording() {
-    if (recorder) {
-      const active = recorder;
+    const request = generation.current;
+    if (recorderRef.current) {
+      const active = recorderRef.current;
+      recorderRef.current = null;
       setRecorder(null);
       setSeconds(0);
-      const blob = await active.stop();
-      if (blob.size < 4096) {
-        toast.error("That recording was empty. Please try again.");
-        return;
+      setUploading(true);
+      try {
+        const blob = await active.stop();
+        if (request !== generation.current) return;
+        if (blob.size < 4096) throw new Error("That recording was empty. Please try again.");
+        await send(new File([blob], "voice-note.wav", { type: "audio/wav" }), "voice");
+      } catch (error) {
+        if (request === generation.current)
+          toast.error(error instanceof Error ? error.message : "That recording could not be read.");
+      } finally {
+        if (request === generation.current) setUploading(false);
       }
-      await send(new File([blob], "voice-note.wav", { type: "audio/wav" }), "voice");
       return;
     }
+    if (starting) return;
+    setStarting(true);
     try {
       setSeconds(0);
-      setRecorder(await startRecording());
+      const active = await startRecording();
+      // A permission dialog can resolve after leaving the conversation.
+      // Release that microphone immediately instead of starting a hidden recording.
+      if (request !== generation.current) {
+        active.cancel();
+        return;
+      }
+      recorderRef.current = active;
+      setRecorder(active);
     } catch {
-      toast.error("We need microphone access to record. Allow it in your browser and try again.");
+      if (request === generation.current)
+        toast.error("We need microphone access to record. Allow it in your browser and try again.");
+    } finally {
+      if (request === generation.current) setStarting(false);
     }
+  }
+
+  function cancelRecording() {
+    recorderRef.current?.cancel();
+    recorderRef.current = null;
+    setRecorder(null);
+    setSeconds(0);
   }
 
   return (
@@ -108,6 +172,8 @@ export function ComposerIntake({
               <button
                 type="button"
                 aria-label={`Remove ${item.attachment.label}`}
+                className="grid min-h-7 min-w-7 place-items-center rounded-md hover:bg-white"
+                disabled={disabled}
                 onClick={() =>
                   onAttachmentsChange(attachments.filter((_, position) => position !== index))
                 }
@@ -133,7 +199,7 @@ export function ComposerIntake({
         />
         <button
           type="button"
-          disabled={disabled || uploading || Boolean(recorder)}
+          disabled={disabled || uploading || starting || Boolean(recorder)}
           onClick={() => fileRef.current?.click()}
           aria-label="Attach a file"
           className="grid size-10 shrink-0 place-items-center rounded-xl border border-border bg-white text-muted-foreground transition hover:text-ink disabled:opacity-40"
@@ -146,7 +212,7 @@ export function ComposerIntake({
         </button>
         <button
           type="button"
-          disabled={disabled || uploading}
+          disabled={!recorder && (disabled || uploading || starting)}
           onClick={() => void toggleRecording()}
           aria-label={recorder ? "Stop recording" : "Record a voice note"}
           className="grid size-10 shrink-0 place-items-center rounded-xl border text-white transition disabled:opacity-40"
@@ -156,7 +222,13 @@ export function ComposerIntake({
             color: recorder ? "white" : color,
           }}
         >
-          {recorder ? <Square className="size-3.5" /> : <Mic className="size-4" />}
+          {starting ? (
+            <LoaderCircle className="size-4 animate-spin" />
+          ) : recorder ? (
+            <Square className="size-3.5" />
+          ) : (
+            <Mic className="size-4" />
+          )}
         </button>
         {recorder ? (
           <span className="flex items-center gap-2 text-[11px] font-bold" style={{ color }}>
@@ -164,10 +236,17 @@ export function ComposerIntake({
               className="inline-block size-2 rounded-full"
               style={{ background: color, opacity: 0.35 + Math.min(0.65, level) }}
             />
-            Recording {clock(seconds)} · tap stop when you are done
+            Recording {clock(seconds)}
+            <button
+              type="button"
+              onClick={cancelRecording}
+              className="min-h-9 px-2 underline underline-offset-4"
+            >
+              Cancel
+            </button>
           </span>
         ) : (
-          <span className="text-[10px] text-muted-foreground">
+          <span className="text-xs text-muted-foreground">
             Talk it out, or add a PDF, doc, image, or recording.
           </span>
         )}
@@ -177,6 +256,7 @@ export function ComposerIntake({
 }
 
 /** Fold attachment text into the message the Pal reads. */
+// eslint-disable-next-line react-refresh/only-export-components
 export function withAttachmentContext(message: string, attachments: ConversationIntake[]) {
   if (!attachments.length) return message;
   const blocks = attachments.map((item) => {

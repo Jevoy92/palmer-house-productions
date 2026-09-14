@@ -70,6 +70,7 @@ import { Route as StudioConversationsIndexRouteImport } from './routes/studio.co
 import { Route as StudioCampaignsIndexRouteImport } from './routes/studio.campaigns.index'
 import { Route as StudioConversationsConversationIdRouteImport } from './routes/studio.conversations.$conversationId'
 import { Route as StudioCampaignsCampaignIdRouteImport } from './routes/studio.campaigns.$campaignId'
+import { Route as ApiStudioIntakeRouteImport } from './routes/api.studio.intake'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -386,6 +387,11 @@ const StudioCampaignsCampaignIdRoute =
     path: '/campaigns/$campaignId',
     getParentRoute: () => StudioRoute,
   } as any)
+const ApiStudioIntakeRoute = ApiStudioIntakeRouteImport.update({
+  id: '/api/studio/intake',
+  path: '/api/studio/intake',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Char91DotmcpChar93InvokeToolToolRoute =
   Char91DotmcpChar93InvokeToolToolRouteImport.update({
     id: '/.mcp/invoke-tool/$tool',
@@ -474,6 +480,7 @@ export interface FileRoutesByFullPath {
   '/studio/': typeof StudioIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/studio/intake': typeof ApiStudioIntakeRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
   '/studio/conversations/$conversationId': typeof StudioConversationsConversationIdRoute
   '/studio/campaigns/': typeof StudioCampaignsIndexRoute
@@ -541,6 +548,7 @@ export interface FileRoutesByTo {
   '/studio': typeof StudioIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/studio/intake': typeof ApiStudioIntakeRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
   '/studio/conversations/$conversationId': typeof StudioConversationsConversationIdRoute
   '/studio/campaigns': typeof StudioCampaignsIndexRoute
@@ -610,6 +618,7 @@ export interface FileRoutesById {
   '/studio/': typeof StudioIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/studio/intake': typeof ApiStudioIntakeRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
   '/studio/conversations/$conversationId': typeof StudioConversationsConversationIdRoute
   '/studio/campaigns/': typeof StudioCampaignsIndexRoute
@@ -680,6 +689,7 @@ export interface FileRouteTypes {
     | '/studio/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/studio/intake'
     | '/studio/campaigns/$campaignId'
     | '/studio/conversations/$conversationId'
     | '/studio/campaigns/'
@@ -747,6 +757,7 @@ export interface FileRouteTypes {
     | '/studio'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/studio/intake'
     | '/studio/campaigns/$campaignId'
     | '/studio/conversations/$conversationId'
     | '/studio/campaigns'
@@ -815,6 +826,7 @@ export interface FileRouteTypes {
     | '/studio/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/studio/intake'
     | '/studio/campaigns/$campaignId'
     | '/studio/conversations/$conversationId'
     | '/studio/campaigns/'
@@ -869,6 +881,7 @@ export interface RootRouteChildren {
   BlogIndexRoute: typeof BlogIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
+  ApiStudioIntakeRoute: typeof ApiStudioIntakeRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -1303,6 +1316,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioCampaignsCampaignIdRouteImport
       parentRoute: typeof StudioRoute
     }
+    '/api/studio/intake': {
+      id: '/api/studio/intake'
+      path: '/api/studio/intake'
+      fullPath: '/api/studio/intake'
+      preLoaderRoute: typeof ApiStudioIntakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/.mcp/invoke-tool/$tool': {
       id: '/.mcp/invoke-tool/$tool'
       path: '/.mcp/invoke-tool/$tool'
@@ -1445,6 +1465,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogIndexRoute: BlogIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
+  ApiStudioIntakeRoute: ApiStudioIntakeRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,

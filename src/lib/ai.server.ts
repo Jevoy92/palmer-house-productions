@@ -11,11 +11,22 @@ type StudioInput =
  * Structured AI generation through the Lovable AI Gateway.
  * Uses the OpenAI-compatible chat completions endpoint, so no external API key is needed.
  */
+/**
+ * Models the Studio runs on. The previous default (openai/gpt-5-mini) is
+ * deprecated in the gateway catalog; Gemini Flash is current, cheaper and
+ * keeps strict structured output working on this chat-completions path.
+ */
+export const STUDIO_CHAT_MODEL =
+  process.env["STUDIO_CHAT_MODEL"] || process.env["STUDIO_AI_MODEL"] || "google/gemini-3.8-flash";
+export const STUDIO_BUILD_MODEL =
+  process.env["STUDIO_BUILD_MODEL"] || process.env["STUDIO_AI_MODEL"] || "google/gemini-3.8-flash";
+
 export async function parseStructured<T extends z.ZodTypeAny>(
   schema: T,
   schemaName: string,
   instructions: string,
   input: StudioInput,
+  options?: { model?: string },
 ): Promise<z.infer<T>> {
   const key = process.env['LOVABLE_API_KEY'];
   if (!key) throw new Error("AI is not configured for this project.");
@@ -40,7 +51,7 @@ export async function parseStructured<T extends z.ZodTypeAny>(
         );
 
   const completion = await client.chat.completions.create({
-    model: process.env['STUDIO_AI_MODEL'] || "openai/gpt-5-mini",
+    model: options?.model || STUDIO_CHAT_MODEL,
     messages: [
       { role: "system", content: instructions },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

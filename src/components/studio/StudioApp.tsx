@@ -2515,213 +2515,21 @@ function Approvals() {
 }
 
 function Campaigns() {
-  const { campaigns, createCampaign, busy, brand } = useStudio();
-  const navigate = useNavigate();
-  const [builder, setBuilder] = useState(campaigns.length === 0);
-  const [step, setStep] = useState(0);
-  const [brief, setBrief] = useState<{
-    title: string;
-    goal: string;
-    topic: string;
-    offer: string;
-    audience: string;
-    anchorFormat: string;
-    depth: "quick" | "strategic" | "deep";
-  }>({
-    title: "New campaign",
-    goal: studioGoals[0],
-    topic: "",
-    offer: "",
-    audience: brand?.primary_audience || "",
-    anchorFormat: anchorFormats[0].value,
-    depth: "strategic" as "quick" | "strategic" | "deep",
-  });
-  async function generate() {
-    try {
-      const id = await createCampaign(brief);
-      toast.success("Your campaign system is ready.");
-      celebrate({ title: "Campaign system built.", detail: brief.topic.slice(0, 90) });
-      void navigate({ to: "/studio/campaigns/$campaignId", params: { campaignId: id } });
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Campaign generation failed.");
-    }
-  }
-  if (builder)
-    return (
-      <div className="mx-auto max-w-5xl">
-        <button
-          onClick={() => setBuilder(false)}
-          className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground"
-        >
-          ← All campaigns
-        </button>
-        <PageIntro
-          eyebrow={`Campaign architect · ${step + 1} of 4`}
-          title={
-            [
-              "Choose the job.",
-              "Give it one useful idea.",
-              "Choose the anchor.",
-              "Ready for the Pals.",
-            ][step]
-          }
-          body={
-            [
-              "Every campaign begins with a business outcome—not a format.",
-              "Specific context produces useful work. Give the campaign something real to organize.",
-              "The anchor gives every smaller asset a source of truth.",
-              "The Studio will build strategy, scripts, production, and a schedule as one system.",
-            ][step]
-          }
-        />
-        <div className="mt-8 studio-card p-5 sm:p-8">
-          <div className="mb-8 h-1 overflow-hidden rounded-full bg-secondary">
-            <motion.div
-              animate={{ width: `${((step + 1) / 4) * 100}%` }}
-              className="h-full bg-system"
-            />
-          </div>
-          {step === 0 && (
-            <ChoiceGrid
-              options={studioGoals.map((goal) => ({ value: goal, label: goal }))}
-              value={brief.goal}
-              onChange={(goal) => setBrief({ ...brief, goal })}
-            />
-          )}
-          {step === 1 && (
-            <div className="grid gap-5">
-              <Field
-                as="textarea"
-                label="What is the idea, problem, or question?"
-                value={brief.topic}
-                onChange={(event) => setBrief({ ...brief, topic: event.target.value })}
-                placeholder="Customers keep asking whether…"
-                rows={6}
-                required
-              />
-              <div className="grid gap-5 sm:grid-cols-2">
-                <Field
-                  label="What are we inviting them toward?"
-                  value={brief.offer}
-                  onChange={(event) => setBrief({ ...brief, offer: event.target.value })}
-                  placeholder="A discovery call, service, event…"
-                />
-                <Field
-                  label="Who needs this most?"
-                  value={brief.audience}
-                  onChange={(event) => setBrief({ ...brief, audience: event.target.value })}
-                  placeholder="The exact audience…"
-                  required
-                />
-              </div>
-            </div>
-          )}
-          {step === 2 && (
-            <div className="grid gap-4 sm:grid-cols-2">
-              {anchorFormats.map((format) => (
-                <button
-                  key={format.value}
-                  onClick={() => setBrief({ ...brief, anchorFormat: format.value })}
-                  className={`rounded-2xl border p-5 text-left ${brief.anchorFormat === format.value ? "border-ink bg-ink text-white" : "border-border"}`}
-                >
-                  <p className="font-bold">{format.label}</p>
-                  <p
-                    className={`mt-2 text-sm ${brief.anchorFormat === format.value ? "text-white/60" : "text-muted-foreground"}`}
-                  >
-                    {format.detail}
-                  </p>
-                </button>
-              ))}
-            </div>
-          )}
-          {step === 3 && (
-            <div>
-              <div className="grid gap-3 sm:grid-cols-4">
-                {Object.values(lanes).map((lane) => (
-                  <div
-                    key={lane.label}
-                    className="rounded-2xl p-4"
-                    style={{ background: lane.soft }}
-                  >
-                    <span
-                      className="block size-2 rounded-full"
-                      style={{ background: lane.color }}
-                    />
-                    <p className="mt-8 font-bold">{lane.label}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{lane.role}</p>
-                  </div>
-                ))}
-              </div>
-              <label className="mt-6 block text-sm font-semibold">
-                Planning depth
-                <select
-                  value={brief.depth}
-                  onChange={(event) =>
-                    setBrief({ ...brief, depth: event.target.value as typeof brief.depth })
-                  }
-                  className="mt-2 min-h-12 w-full rounded-2xl border border-border bg-white px-4"
-                >
-                  <option value="quick">Quick direction</option>
-                  <option value="strategic">Strategic campaign</option>
-                  <option value="deep">Deep production plan</option>
-                </select>
-              </label>
-            </div>
-          )}
-          <div className="mt-8 flex items-center justify-between gap-3">
-            <button
-              onClick={() => (step > 0 ? setStep(step - 1) : setBuilder(false))}
-              className="min-h-12 rounded-2xl border border-border px-5 font-semibold"
-            >
-              Back
-            </button>
-            {step < 3 ? (
-              <button
-                disabled={step === 1 && (!brief.topic.trim() || !brief.audience.trim())}
-                onClick={() => setStep(step + 1)}
-                className="primary-action disabled:opacity-40"
-              >
-                Continue <ArrowRight className="size-4" />
-              </button>
-            ) : (
-              <button
-                disabled={busy}
-                onClick={() => void generate()}
-                className="primary-action min-w-44"
-              >
-                {busy ? (
-                  <>
-                    <LoaderCircle className="size-4 animate-spin" />
-                    Building campaign…
-                  </>
-                ) : (
-                  <>
-                    Build complete campaign <Sparkles className="size-4" />
-                  </>
-                )}
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-    );
+  const { campaigns } = useStudio();
   return (
     <div className="mx-auto max-w-[88rem]">
       <PageIntro
         eyebrow="Campaigns"
-        title="Every idea, fully connected."
-        body="No scattered prompt history. Each campaign keeps the strategy, scripts, production plan, assets, schedule, and human support together."
+        title="Everything we have built together."
         action={
-          <button
-            onClick={() => {
-              setStep(0);
-              setBuilder(true);
-            }}
+          <Link
+            to="/studio/conversations"
+            search={{ prompt: newConversationPrompt }}
             className="primary-action"
           >
             <Plus className="size-4" />
-            New campaign
-          </button>
+            New conversation
+          </Link>
         }
       />
       <div className="mt-8">
@@ -2730,12 +2538,16 @@ function Campaigns() {
           <div className="studio-card">
             <EmptyState
               icon={WandSparkles}
-              title="Build your first complete campaign."
-              body="It takes about three minutes to give the Studio enough direction."
+              title="Nothing built yet."
+              body="Tell your Pal what you have. They will turn it into a campaign with you."
               action={
-                <button onClick={() => setBuilder(true)} className="primary-action">
-                  Start campaign <ArrowRight className="size-4" />
-                </button>
+                <Link
+                  to="/studio/conversations"
+                  search={{ prompt: newConversationPrompt }}
+                  className="primary-action"
+                >
+                  Start a conversation <ArrowRight className="size-4" />
+                </Link>
               }
             />
           </div>

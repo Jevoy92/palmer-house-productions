@@ -6665,19 +6665,19 @@ function PageIntro({
 }: {
   eyebrow: string;
   title: string;
-  body: string;
+  body?: string;
   action?: ReactNode;
 }) {
   return (
-    <header className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+    <header className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
       <div>
         <p className="font-mono text-[9px] uppercase tracking-[.19em] text-system">{eyebrow}</p>
-        <h1 className="mt-3 max-w-4xl text-4xl font-extrabold leading-[.96] tracking-[-.055em] sm:text-5xl">
+        <h1 className="mt-3 max-w-3xl text-3xl font-extrabold leading-[1] tracking-[-.05em] sm:text-4xl">
           {title}
         </h1>
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-          {body}
-        </p>
+        {body ? (
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">{body}</p>
+        ) : null}
       </div>
       {action && <div className="shrink-0">{action}</div>}
     </header>

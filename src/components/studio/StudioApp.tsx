@@ -1621,7 +1621,7 @@ function ConversationInvite({
         <img
           src={pal.headshot}
           alt={`${pal.name}, your Palmer House guide`}
-          className="size-20 shrink-0 rounded-[1.25rem] border border-border bg-white object-cover object-top"
+          className="size-28 shrink-0 rounded-[1.25rem] border border-border bg-white object-cover object-top sm:size-36"
         />
         <div className="min-w-0 flex-1">
           <p className="studio-eyebrow" style={{ color: pal.color }}>
@@ -1666,9 +1666,25 @@ function ConversationInvite({
           </Link>
         </div>
       </div>
+      {!latest && pal.persona.starters.length ? (
+        <div className="flex flex-wrap gap-2 border-t border-border px-6 py-5 sm:px-8">
+          {pal.persona.starters.slice(0, 3).map((starter) => (
+            <Link
+              key={starter}
+              to="/studio/conversations"
+              search={{ prompt: starter }}
+              className="inline-flex min-h-11 items-center rounded-xl border border-border px-4 text-xs font-bold transition hover:border-ink"
+              style={{ background: pal.soft }}
+            >
+              {starter}
+            </Link>
+          ))}
+        </div>
+      ) : null}
     </section>
   );
 }
+
 
 function Dashboard() {
   const {

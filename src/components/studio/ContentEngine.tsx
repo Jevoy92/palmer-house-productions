@@ -377,7 +377,7 @@ export function ContentEngine() {
           <button onClick={() => setHistoryOpen((value) => !value)} className="secondary-action">
             <RefreshCw className="size-4" /> History
           </button>
-          <Link to="/studio/calendar" className="secondary-action">
+          <Link to="/studio/work" search={{ tab: "calendar" }} className="secondary-action">
             <CalendarDays className="size-4" /> Calendar
           </Link>
         </div>

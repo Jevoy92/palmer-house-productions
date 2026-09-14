@@ -1681,7 +1681,7 @@ function Dashboard() {
             </button>
           </div>
           <Link
-            to="/studio/create"
+            to="/studio/conversations" search={{ prompt: "I have something to turn into content." }}
             onClick={endFirstRun}
             className="mt-6 inline-flex min-h-12 items-center gap-2 bg-ink px-6 text-sm font-black text-white transition hover:bg-evergreen"
           >
@@ -1731,7 +1731,7 @@ function Dashboard() {
               </h2>
             </div>
             {campaigns.length ? (
-              <Link to="/studio/campaigns" className="text-xs font-bold underline underline-offset-4">
+              <Link to="/studio/work" search={{ tab: "campaigns" }} className="text-xs font-bold underline underline-offset-4">
                 All campaigns
               </Link>
             ) : null}
@@ -1802,7 +1802,7 @@ function Dashboard() {
                   title="Nothing in production yet."
                   body="Your first campaign starts with one useful idea — the strategy, drafts, and calendar are built together."
                   action={
-                    <Link to="/studio/create" className="primary-action">
+                    <Link to="/studio/conversations" search={{ prompt: "I have something to turn into content." }} className="primary-action">
                       Start with an idea
                     </Link>
                   }
@@ -1847,7 +1847,7 @@ function Dashboard() {
               {upcoming.slice(0, 3).map((item) => (
                 <Link
                   key={item.id}
-                  to="/studio/calendar"
+                  to="/studio/work" search={{ tab: "calendar" }}
                   className="flex items-baseline gap-4 py-4 transition-colors hover:bg-secondary/40"
                 >
                   <time className="studio-eyebrow w-16 shrink-0 text-muted-foreground">
@@ -1873,7 +1873,7 @@ function Dashboard() {
           <div>
             <div className="flex items-baseline justify-between">
               <p className="studio-eyebrow text-muted-foreground">Recently finished</p>
-              <Link to="/studio/library" className="text-xs font-bold underline underline-offset-4">
+              <Link to="/studio/work" search={{ tab: "library" }} className="text-xs font-bold underline underline-offset-4">
                 Library
               </Link>
             </div>
@@ -1881,7 +1881,7 @@ function Dashboard() {
               {assets.slice(0, 3).map((asset) => (
                 <Link
                   key={asset.id}
-                  to="/studio/library"
+                  to="/studio/work" search={{ tab: "library" }}
                   className="group overflow-hidden border border-border bg-white"
                 >
                   <span className="relative block aspect-[4/3] overflow-hidden bg-secondary">
@@ -2167,7 +2167,7 @@ function IdeasBoard() {
         body="Start with a thought, a link, or an image. The Studio keeps the source, names the real problem or opportunity, and helps turn it into a connected campaign."
         action={
           <Link
-            to="/studio/create"
+            to="/studio/conversations" search={{ prompt: "I have something to turn into content." }}
             className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-system px-5 text-sm font-bold text-white"
           >
             <Sparkles className="size-4" /> Open the engine
@@ -2311,7 +2311,7 @@ function IdeasBoard() {
                       {direction.angle}
                     </p>
                     <Link
-                      to="/studio/campaigns"
+                      to="/studio/work" search={{ tab: "campaigns" }}
                       className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-system"
                     >
                       Build campaign <ArrowRight className="size-3.5" />
@@ -2390,7 +2390,7 @@ function IdeasBoard() {
                   </div>
                   <div className="mt-auto flex gap-2 pt-6">
                     <Link
-                      to="/studio/create"
+                      to="/studio/conversations" search={{ prompt: "I have something to turn into content." }}
                       className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold"
                       style={{ background: meta.soft, color: meta.color }}
                     >
@@ -2596,7 +2596,7 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
           title="Campaign not found."
           body="It may have been archived or belongs to another workspace."
           action={
-            <Link to="/studio/campaigns" className="primary-action">
+            <Link to="/studio/work" search={{ tab: "campaigns" }} className="primary-action">
               Back to campaigns
             </Link>
           }
@@ -3888,7 +3888,7 @@ function PublishPanel({
         body="Work down the list. Each row is one post with its own date and channel."
         lane={lane}
         action={
-          <Link to="/studio/calendar" className="primary-action" style={{ background: lane.color }}>
+          <Link to="/studio/work" search={{ tab: "calendar" }} className="primary-action" style={{ background: lane.color }}>
             <CalendarDays className="size-4" /> Open calendar
           </Link>
         }
@@ -4009,7 +4009,7 @@ function PublishPanel({
           </p>
           <p className="mt-2 text-lg font-black">Give the work dates and owners.</p>
         </div>
-        <Link to="/studio/calendar" className="secondary-action border-0 bg-white">
+        <Link to="/studio/work" search={{ tab: "calendar" }} className="secondary-action border-0 bg-white">
           Review every date <ArrowRight className="size-4" />
         </Link>
       </div>
@@ -5227,10 +5227,10 @@ function Library() {
                 prefilled or invented.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link to="/studio/create" className="primary-action">
+                <Link to="/studio/conversations" search={{ prompt: "I have something to turn into content." }} className="primary-action">
                   <WandSparkles className="size-4" /> Create your first campaign
                 </Link>
-                <Link to="/studio/ideas" className="secondary-action">
+                <Link to="/studio/work" search={{ tab: "ideas" }} className="secondary-action">
                   <Lightbulb className="size-4" /> Save an idea
                 </Link>
               </div>
@@ -5881,7 +5881,7 @@ function CalendarView() {
               title="Nothing scheduled yet."
               body="Every completed campaign adds a practical publishing sequence here."
               action={
-                <Link to="/studio/create" className="primary-action">
+                <Link to="/studio/conversations" search={{ prompt: "I have something to turn into content." }} className="primary-action">
                   Build a campaign
                 </Link>
               }
@@ -6602,7 +6602,7 @@ function CampaignList({
           </p>
           <h2 className="mt-2 text-xl font-bold">Campaigns</h2>
         </div>
-        <Link to="/studio/campaigns" className="text-xs font-semibold">
+        <Link to="/studio/work" search={{ tab: "campaigns" }} className="text-xs font-semibold">
           View all
         </Link>
       </div>

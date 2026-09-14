@@ -1660,6 +1660,8 @@ function ConversationInvite({
           ) : null}
           <Link
             to="/studio/conversations"
+            search={{ prompt: undefined }}
+
             className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-border px-5 text-sm font-black hover:border-ink"
           >
             {latest ? "Start a new conversation" : `Talk with ${pal.name}`}

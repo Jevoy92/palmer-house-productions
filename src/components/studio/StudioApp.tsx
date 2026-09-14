@@ -1226,21 +1226,41 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
                 <X />
               </button>
             </div>
-            <nav className="mt-9 space-y-7">
-              {navSections.map((section) => (
-                <div key={section.label}>
-                  <p className="px-3 font-mono text-[9px] uppercase tracking-[.18em] text-muted-foreground">
-                    {section.label}
-                  </p>
-                  <div className="mt-2 space-y-1">
-                    {section.items.map((item) => (
-                      <div key={item.view} onClick={() => setMobileOpen(false)}>
-                        <StudioNavLink item={item} active={view === item.view} />
-                      </div>
-                    ))}
-                  </div>
+            <nav className="mt-9 space-y-2">
+              {nav.map((item) => (
+                <div key={item.view} onClick={() => setMobileOpen(false)}>
+                  <StudioNavLink item={item} active={isNavActive(view, item.view)} />
                 </div>
               ))}
+              <div className="pt-3">
+                <Link
+                  to="/studio/settings"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-[13px] font-bold text-muted-foreground"
+                >
+                  <Settings className="size-4" /> Profile & settings
+                </Link>
+                <Link
+                  to="/studio/billing"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-[13px] font-bold text-muted-foreground"
+                >
+                  <CreditCard className="size-4" /> Usage & billing
+                </Link>
+                <Link
+                  to="/studio/success"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-[13px] font-bold text-muted-foreground"
+                >
+                  <HandHeart className="size-4" /> Member success
+                </Link>
+                <button
+                  onClick={() => void signOut()}
+                  className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-[13px] font-bold text-muted-foreground"
+                >
+                  <LogOut className="size-4" /> Sign out
+                </button>
+              </div>
               <div className="border-t border-border pt-5">
                 <Link
                   to="/"

@@ -73,7 +73,9 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
   const selected = resolvePalName(activeConversation?.pal || settings?.preferred_pal);
   const pal = palDirectory[selected];
 
-  const [draft, setDraft] = useState("");
+  const startingPrompt = useSearch({ strict: false, select: (s) => (s as { prompt?: string }).prompt });
+  const [draft, setDraft] = useState(startingPrompt ?? "");
+
   const [attachments, setAttachments] = useState<ConversationIntake[]>([]);
   const [savedMemory, setSavedMemory] = useState<string[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);

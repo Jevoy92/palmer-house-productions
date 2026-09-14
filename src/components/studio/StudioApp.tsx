@@ -1305,7 +1305,74 @@ function StudioNavLink({ item, active }: { item: (typeof nav)[number]; active: b
 }
 
 
-function renderView(view: StudioView, campaignId?: string, conversationId?: string) {
+const newConversationPrompt = "I have something to turn into content.";
+
+const workTabs = [
+  { key: "campaigns", label: "Campaigns" },
+  { key: "ideas", label: "Ideas" },
+  { key: "library", label: "Library" },
+  { key: "approvals", label: "Needs review" },
+  { key: "calendar", label: "Calendar" },
+  { key: "roadmap", label: "Video roadmap" },
+] as const;
+
+export type WorkTab = (typeof workTabs)[number]["key"];
+
+function isNavActive(view: StudioView, item: (typeof nav)[number]["view"]) {
+  if (item === "work")
+    return (
+      view === "work" ||
+      view === "campaign" ||
+      view === "campaigns" ||
+      view === "engine" ||
+      view === "ideas" ||
+      view === "library" ||
+      view === "approvals" ||
+      view === "calendar" ||
+      view === "roadmap"
+    );
+  if (item === "conversations") return view === "conversations" || view === "assistant";
+  return view === item;
+}
+
+function MyWork({ tab }: { tab: WorkTab }) {
+  return (
+    <div className="mx-auto max-w-[80rem]">
+      <div className="flex flex-wrap items-center gap-2 border-b border-border pb-3">
+        {workTabs.map((item) => (
+          <Link
+            key={item.key}
+            to="/studio/work"
+            search={{ tab: item.key }}
+            className={`inline-flex min-h-10 items-center rounded-xl px-4 text-[13px] font-bold transition ${
+              tab === item.key
+                ? "bg-spotlight-soft text-spotlight"
+                : "text-muted-foreground hover:bg-mist hover:text-ink"
+            }`}
+          >
+            {item.label}
+          </Link>
+        ))}
+      </div>
+      <div className="pt-6">
+        {tab === "campaigns" ? <Campaigns /> : null}
+        {tab === "ideas" ? <IdeasBoard /> : null}
+        {tab === "library" ? <Library /> : null}
+        {tab === "approvals" ? <Approvals /> : null}
+        {tab === "calendar" ? <CalendarView /> : null}
+        {tab === "roadmap" ? <VideoRoadmap /> : null}
+      </div>
+    </div>
+  );
+}
+
+function renderView(
+  view: StudioView,
+  campaignId?: string,
+  conversationId?: string,
+  workTab?: WorkTab,
+) {
+  if (view === "work") return <MyWork tab={workTab || "campaigns"} />;
   if (view === "engine") return <ContentEngine />;
   if (view === "home") return <Dashboard />;
   if (view === "assistant" || view === "conversations")

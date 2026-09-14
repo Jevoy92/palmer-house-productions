@@ -1,0 +1,442 @@
+{
+  "schemaVersion": 1,
+  "id": "natureworks-howard-voice-2026-09-14-v1",
+  "scope": "voice-only",
+  "status": "editorial-draft",
+  "speaker": "Howard Lehmann",
+  "target": {
+    "businessNames": [
+      "natureworks",
+      "natureworks landscaping",
+      "natureworks landscape",
+      "natureworks landscape services",
+      "natureworks llc"
+    ],
+    "websiteHost": "gonatureworks.com"
+  },
+  "provenance": {
+    "preparedAt": "2026-09-14",
+    "basis": "Editorial analysis of the user-supplied filming interview; privately retained evidence uses paragraph IDs P001–P172. No raw transcript is included.",
+    "attribution": "Howard answers were distinguished from interviewer suggestions and other-speaker interjections. These are inferred writing patterns, not an audio model or transcript quotation.",
+    "reviewStatus": "Authorized for voice enrichment by Jevoy; Howard approval of individual generated scripts has not been established.",
+    "passageMap": [
+      {
+        "finding": "Irrigation diagnosis and qualified reasoning",
+        "passages": [
+          "P033–P039",
+          "P049–P052",
+          "P057"
+        ]
+      },
+      {
+        "finding": "How people use a patio",
+        "passages": [
+          "P065–P070"
+        ]
+      },
+      {
+        "finding": "Observation before planning with room for ready customers",
+        "passages": [
+          "P080–P085",
+          "P092–P094"
+        ]
+      },
+      {
+        "finding": "Selective landscape care",
+        "passages": [
+          "P142"
+        ]
+      },
+      {
+        "finding": "Specific scopes and explaining work stages",
+        "passages": [
+          "P150–P158"
+        ]
+      }
+    ]
+  },
+  "voiceTraits": [
+    "observant and practical",
+    "calm and precise",
+    "patiently curious",
+    "plainspoken and specific",
+    "collaborative"
+  ],
+  "avoidLanguage": [
+    "bespoke luxury transformation",
+    "ultimate authority",
+    "guaranteed results",
+    "manufactured urgency",
+    "generic excellence claims",
+    "scolding homeowners"
+  ],
+  "guidance": "Voice evidence: editorial analysis of Howard Lehmann’s supplied filming interview. The speakers were not labeled in the source; use the passages attributed to Howard for cadence and reasoning. The interviewer’s marketing suggestions are not Howard’s statements. These are voice findings for writing drafts, not client-approved quotations or approval of any business offer.\n\nCharacter: experienced through observations; patient and practically curious; precise without showing off; collaborative; interested in the ordinary ways people use a yard. Explain the thinking that earns trust instead of announcing excellence.\n\nSentence movement: open with a situation someone can picture. Make one useful observation, ask a question that changes the decision, explain what that tells us, and return to the homeowner’s next choice. Useful connections include so, then, because, once we know, before, and that tells us. Use contractions, mixed sentence lengths and short breath-readable paragraphs. Leave room for natural delivery; do not imitate repeated you know, right or yeah.\n\nTeaching patterns: (1) visible symptom → useful check → what it means → next decision; (2) ordinary behavior → friction → layout choice → easier experience; (3) visible work stage → reasonable homeowner concern → explanation of the sequence. Introduce technical vocabulary only when it helps explain the decision, and connect it to a visible effect.\n\nVocabulary: yard, patio, sprinkler head, valve, pruning, measurements, elevations, common name, botanical name, people coming over, carrying a plate, sitting with a book, what you’re noticing, what makes sense. Use one or two concrete details that belong to the topic; do not force these words into unrelated content.\n\nCertainty: distinguish what was observed from what may explain it. Preserve may, probably and we’ll see when a diagnosis or outcome remains uncertain. Never turn a possible result into a completed project outcome. Waiting to observe is one option for an uncertain new homeowner, not a universal one-year requirement. Customers who know what they want can move forward.\n\nEmotion and persuasion: quietly animated about a useful outdoor afternoon; steady and curious about confusing symptoms; reassuring through an explanation of the work; respectful of the care a homeowner enjoys doing. Let a specific detail establish competence. Avoid scolding, manufactured urgency, superlatives, luxury clichés and a sales pitch after every lesson.\n\nEndings: finish with the useful thought, a concrete thing to notice, or an existing approved next step. Use the saved calls_to_action and the actual destination. A practical educational piece does not need to close with an offer.\n\nFormat adaptation: talking-head output must contain the actual spoken words in hook, body and ending, with production notes separate. Keep one main decision in a short. Give a 15-second version one observation and one landing thought; a 45–60-second version one explained example; a 90-second version room for the reasoning and its qualification. Estimated durations are not measured delivery. For articles, keep the same reasoning but use headings; for email, answer the immediate question and next step; for captions, keep one concrete detail; for a carousel, let each slide advance the thought. Do not paste an identical script into every format.\n\nSource and claim boundaries: the script samples are original editorial drafts, not Howard quotations, verified proof, testimonials or new offer approvals. Use them for structure and language. Do not copy first-person case details into a new topic unless separately supplied as supported factual context. The irrigation/drainage example had an unresolved result; do not imply it eliminated drainage work or saved a stated amount. Do not infer a universal free maintenance program, membership pricing, minimum project spend, guaranteed callback deadline, hotel specialization, luxury positioning or Arizona expansion from brainstorming. Keep existing verified offers and proof intact.\n\nAttribution boundary: mechanics/alternator, doctor/flowers and dating/nurture analogies were supplied by the interviewer; do not teach the model that they are Howard’s signature metaphors. Do not turn another speaker’s biographical or operational suggestion into a Howard claim. The proposed website design guide, logo exploration, colors, fonts, photography treatment and AI-relit hero are excluded from this voice import.\n\nEditorial self-check: could Howard plausibly explain this while standing in the yard? Is the physical detail relevant? Does each question lead somewhere? Is every result or offer separately supported? Can the spoken draft be read aloud without marketing abstractions? A failed claim check requires revision even if the cadence sounds right.",
+  "activeExampleIds": [
+    "short-03",
+    "short-05",
+    "short-06",
+    "short-08",
+    "short-09",
+    "short-10"
+  ],
+  "examples": [
+    {
+      "id": "short-01",
+      "title": "Start with the plate of food",
+      "targetSeconds": 55,
+      "pattern": "ordinary behavior to design decision",
+      "audience": "A homeowner considering a patio or outdoor gathering area",
+      "sourceParagraphs": [
+        "P065",
+        "P066",
+        "P067",
+        "P068",
+        "P069",
+        "P070"
+      ],
+      "hook": "When you're planning a patio, picture somebody walking across it with a plate of food.",
+      "body": "Where are they going? Are they stepping down, stepping back up, trying to get around a table? Those little things become quite noticeable when you've got people over. I remember looking at a friend's yard where the gathering area moved between several levels. My first question was whether we could bring that space together on one level. Then you could still have different places to sit, without everybody watching their feet as they moved around. The layout starts to make more sense when you look at how people actually use it.",
+      "ending": "Before you choose the pavers, think about the people walking over them.",
+      "deliveryNote": "Begin with an easy visual invitation. Use a small hand movement for the level changes. Let the final sentence land without a sales pitch.",
+      "spokenWordCount": 118,
+      "estimatedReadSeconds": {
+        "at150wpm": 47,
+        "at130wpm": 54
+      }
+    },
+    {
+      "id": "short-02",
+      "title": "The wet patch did not settle the question",
+      "targetSeconds": 55,
+      "pattern": "sourced case with an unresolved result",
+      "audience": "A homeowner who assumes a wet yard automatically means drainage work",
+      "sourceParagraphs": [
+        "P046",
+        "P049",
+        "P050",
+        "P051",
+        "P052",
+        "P055",
+        "P057"
+      ],
+      "hook": "A wet area in the yard doesn't tell us, by itself, what needs fixing.",
+      "body": "We had a job where there was a question about drainage, but we also found irrigation problems. Some sprinkler heads weren't coming up properly through the lawn. Once that work was addressed, I told the homeowner we could give it some time before deciding on the drainage. There might still be another issue. We hadn't ruled that out. But now we had a better way to see what was happening, because we weren't trying to judge both problems at once.",
+      "ending": "Sometimes the useful next step is to fix what you've found, then see what that tells you.",
+      "deliveryNote": "Say the first line as a practical observation. Slow slightly on the fact that another issue could remain. Do not imply the customer ultimately avoided drainage work.",
+      "spokenWordCount": 111,
+      "estimatedReadSeconds": {
+        "at150wpm": 44,
+        "at130wpm": 51
+      }
+    },
+    {
+      "id": "short-03",
+      "title": "What a new yard can teach you",
+      "targetSeconds": 55,
+      "pattern": "permission to observe",
+      "audience": "Someone who has recently moved and is unsure about a renovation",
+      "sourceParagraphs": [
+        "P080",
+        "P081",
+        "P082",
+        "P083",
+        "P085",
+        "P092",
+        "P094"
+      ],
+      "hook": "If you've just moved into the house, the yard may take a little time to get to know.",
+      "body": "You might have ideas straight away, and that's fine. But notice where you actually end up sitting. Which way do you walk when you come outside? Where do your friends gather? I've seen places where the sidewalk goes one way, but people have made their own route through the landscape. That tells you something. If you already know how you want to use the space, we can work with that. If you're still figuring it out, those observations are useful.",
+      "ending": "You don't need every answer today. Start noticing the things a plan should make easier.",
+      "deliveryNote": "Keep the middle questions curious. Give equal weight to the customer who is ready and the customer who is still learning.",
+      "spokenWordCount": 113,
+      "estimatedReadSeconds": {
+        "at150wpm": 45,
+        "at130wpm": 52
+      }
+    },
+    {
+      "id": "short-04",
+      "title": "Why the plant gets two names",
+      "targetSeconds": 50,
+      "pattern": "one specific detail in the scope",
+      "audience": "A homeowner comparing landscape proposals",
+      "sourceParagraphs": [
+        "P151",
+        "P152",
+        "P153",
+        "P154"
+      ],
+      "hook": "When I put a plant in a quote, I want you to know which plant we're talking about.",
+      "body": "So we include the common name and the botanical name, along with the size and how many we're proposing. It gives us something specific to talk through. The same goes for the other parts of the project. Irrigation is shown separately. Pavers and other work are listed so you can look at the pieces. Then you can say, yes, let's do this part, or let's wait on that one. It makes the conversation much clearer.",
+      "ending": "A quote should help you understand the work you're choosing.",
+      "deliveryNote": "Have a sample scope nearby if useful, with private details removed. The two names are the interesting detail; avoid reading a whole quote to camera.",
+      "spokenWordCount": 103,
+      "estimatedReadSeconds": {
+        "at150wpm": 41,
+        "at130wpm": 48
+      }
+    },
+    {
+      "id": "short-05",
+      "title": "Why the yard gets opened up again",
+      "targetSeconds": 50,
+      "pattern": "what you see versus the project stage",
+      "audience": "Someone nervous about the disruption of landscape installation",
+      "sourceParagraphs": [
+        "P155",
+        "P156",
+        "P157",
+        "P158"
+      ],
+      "hook": "There can be a point in a landscape job where the yard looks quite tidy, and then we open it up again.",
+      "body": "That can be a little confusing if nobody has explained what comes next. We may have finished the rough grading, and now it's time for the irrigation trenching. So the ground you just saw taking shape is being disturbed again. That's why I like to walk people through the stages of the work. What gets cleared, what gets graded, and when the different parts go in. You can follow what's happening instead of trying to work it out from the window.",
+      "ending": "Knowing the sequence makes the middle of the job easier to understand.",
+      "deliveryNote": "Allow a small smile on opening it up again. Reassure by explaining the sequence, not by claiming a project will be disruption-free.",
+      "spokenWordCount": 115,
+      "estimatedReadSeconds": {
+        "at150wpm": 46,
+        "at130wpm": 53
+      }
+    },
+    {
+      "id": "short-06",
+      "title": "The sprinklers are on. What else do we know?",
+      "targetSeconds": 55,
+      "pattern": "visible operation versus useful diagnosis",
+      "audience": "A homeowner noticing uneven watering",
+      "sourceParagraphs": [
+        "P037",
+        "P038",
+        "P039"
+      ],
+      "hook": "You can see the sprinklers running and still have parts of the yard getting different amounts of water.",
+      "body": "One thing we come across is different types of heads or nozzles working on the same valve. They may be putting water down differently. So one area gets more than another, even though the system appears to be running. That's why I want to look at what's actually out there. What heads are being used? How are they arranged? What is the lawn showing us? Seeing the system turn on is part of the picture. We still need to understand how it's watering the space.",
+      "ending": "If you're noticing a difference across the yard, that's useful information to bring to the conversation.",
+      "deliveryNote": "If showing equipment, use the actual head types Howard wants to explain. Have him verify the technical phrasing during the read.",
+      "spokenWordCount": 119,
+      "estimatedReadSeconds": {
+        "at150wpm": 48,
+        "at130wpm": 55
+      }
+    },
+    {
+      "id": "short-07",
+      "title": "You can enjoy the lawn work and still want help",
+      "targetSeconds": 50,
+      "pattern": "a useful division of care",
+      "audience": "A homeowner who maintains the lawn but wants professional seasonal help",
+      "sourceParagraphs": [
+        "P138",
+        "P140",
+        "P142"
+      ],
+      "hook": "Some people enjoy doing the weekly mowing. They just don't want to do every part of the landscape care.",
+      "body": "We work with people who take care of those regular jobs themselves and have us come in for things like seasonal pruning. That can be a useful arrangement. You keep doing the parts you like, and we talk about the work you want help with. The important thing is being clear about who is taking care of what. So when somebody calls, I want to understand the yard, what they're already doing, and what they would like us to look after.",
+      "ending": "Tell us which part of the care is becoming difficult to keep up with.",
+      "deliveryNote": "Speak with respect for the homeowner's care. Confirm present availability before filming this as a service invitation.",
+      "spokenWordCount": 114,
+      "estimatedReadSeconds": {
+        "at150wpm": 46,
+        "at130wpm": 53
+      }
+    },
+    {
+      "id": "short-08",
+      "title": "A yard can have somewhere to gather and somewhere to be quiet",
+      "targetSeconds": 50,
+      "pattern": "two human uses within one space",
+      "audience": "A homeowner unsure what they want from an outdoor space",
+      "sourceParagraphs": [
+        "P001",
+        "P002",
+        "P150"
+      ],
+      "hook": "When we talk about using the yard, it might mean having people over. It might mean sitting by yourself with a book.",
+      "body": "Those are both useful things to understand before we start putting a plan together. A patio can be the central place where people gather. Then there may be another part of the yard that gives you a little more solitude. The question is how you want to spend time out there. What draws you outside now? What would you like to be able to do? Once we understand that, the different parts of the landscape have a purpose.",
+      "ending": "Start with the kind of afternoon you'd like to have in your yard.",
+      "deliveryNote": "Give the quiet-use example some space. This one can end as an invitation to imagine, with no verbal call to book.",
+      "spokenWordCount": 113,
+      "estimatedReadSeconds": {
+        "at150wpm": 45,
+        "at130wpm": 52
+      }
+    },
+    {
+      "id": "short-09",
+      "title": "You do not need the technical name",
+      "targetSeconds": 50,
+      "pattern": "help someone explain a symptom",
+      "audience": "A homeowner hesitant to call because they cannot diagnose the irrigation issue",
+      "sourceParagraphs": [
+        "P032",
+        "P033",
+        "P046",
+        "P047",
+        "P048",
+        "P049"
+      ],
+      "hook": "When you call about an irrigation problem, you don't have to tell us which part has failed.",
+      "body": "Tell us what you're seeing. Maybe the backyard is watering and the front yard isn't. Maybe one area is staying wet. Maybe it worked when you first turned it on, and now something has changed. Those details give us somewhere to start. Then we can look at the system and work through what's happening. We may use technical names while we're checking it, but the explanation should come back to your question: what did we find, and what does it mean for the yard?",
+      "ending": "A clear description of what you've noticed is useful. Start there.",
+      "deliveryNote": "Make the first line welcoming. Keep the three symptom examples distinct without making them sound like diagnoses.",
+      "spokenWordCount": 112,
+      "estimatedReadSeconds": {
+        "at150wpm": 45,
+        "at130wpm": 52
+      }
+    },
+    {
+      "id": "short-10",
+      "title": "Your ideas are the beginning of the plan",
+      "targetSeconds": 55,
+      "pattern": "client wish to specific scope",
+      "audience": "A homeowner wondering how a full landscape project begins",
+      "sourceParagraphs": [
+        "P093",
+        "P094",
+        "P150",
+        "P151",
+        "P152",
+        "P154"
+      ],
+      "hook": "You don't have to arrive with a finished landscape design. I want to hear what you have in mind.",
+      "body": "How do you want to use the area? What would you like to change? We start with that conversation, then look at the space, take measurements and understand the elevations. From there, we can put a scope together. An elaborate project may need a formal design. For other work, we can take the concept and explain the different parts in an itemized quote. Then we can talk through what you want to move forward with and what you may prefer to leave for later.",
+      "ending": "Your ideas give us a starting point. The next step is making them specific to your place.",
+      "deliveryNote": "Let this feel like answering a question from a new customer. Do not imply that formal design is included free of charge.",
+      "spokenWordCount": 120,
+      "estimatedReadSeconds": {
+        "at150wpm": 48,
+        "at130wpm": 55
+      }
+    },
+    {
+      "id": "fifteen-01",
+      "title": "Patio: one observation",
+      "targetSeconds": 15,
+      "parentScriptId": "short-01",
+      "sourceParagraphs": [
+        "P065",
+        "P068",
+        "P070"
+      ],
+      "hook": "Picture walking across your patio with a plate of food.",
+      "body": "Where do you have to watch your feet?",
+      "ending": "That's worth thinking about before you settle on the layout.",
+      "spokenWordCount": 28,
+      "estimatedReadSeconds": {
+        "at150wpm": 11,
+        "at130wpm": 13
+      }
+    },
+    {
+      "id": "fifteen-02",
+      "title": "Irrigation: one uncertainty",
+      "targetSeconds": 15,
+      "parentScriptId": "short-02",
+      "sourceParagraphs": [
+        "P052",
+        "P057"
+      ],
+      "hook": "A wet patch tells us where to look.",
+      "body": "It doesn't tell us the whole cause.",
+      "ending": "Let's understand what the irrigation is doing before deciding what else the yard needs.",
+      "spokenWordCount": 29,
+      "estimatedReadSeconds": {
+        "at150wpm": 12,
+        "at130wpm": 13
+      }
+    },
+    {
+      "id": "fifteen-03",
+      "title": "New homeowner: one thing to notice",
+      "targetSeconds": 15,
+      "parentScriptId": "short-03",
+      "sourceParagraphs": [
+        "P080",
+        "P083",
+        "P085"
+      ],
+      "hook": "Still getting to know your yard?",
+      "body": "Notice where you naturally walk and where you end up sitting.",
+      "ending": "Those little things can help us understand what a useful plan should do.",
+      "spokenWordCount": 30,
+      "estimatedReadSeconds": {
+        "at150wpm": 12,
+        "at130wpm": 14
+      }
+    },
+    {
+      "id": "ninety-01",
+      "title": "Patio: a complete explanation",
+      "targetSeconds": 90,
+      "parentScriptId": "short-01",
+      "sourceParagraphs": [
+        "P065",
+        "P066",
+        "P067",
+        "P068",
+        "P069",
+        "P070"
+      ],
+      "hook": "One of the things I look at in a patio is how somebody moves through it with a plate of food.",
+      "body": "It sounds like a small thing, but it tells you quite a bit about the layout. A friend of mine loved having people over. He cooked, he barbecued, and there could be forty or fifty people there. The outdoor area went between different levels, and the way you moved through it wasn't very clear. I remember asking whether it would make sense to bring the gathering area together on one level. You could still have tables around the space. People could be in smaller groups. But they wouldn't be stepping up and down quite so much while carrying their food. Now, that doesn't mean every patio has to be one flat area. If there are steps, I want to understand what they lead to and how people will use that next space. The point is to look at the experience before getting too far into the materials. Where does everybody go? Where do they stop? What are they working around?",
+      "ending": "Those are useful questions to answer while it's still a plan. Then the layout can help people enjoy being there.",
+      "deliveryNote": "The first-person case paraphrases the actual friend/patio story. It does not add a completed result, location, price or customer testimonial.",
+      "spokenWordCount": 201,
+      "estimatedReadSeconds": {
+        "at150wpm": 80,
+        "at130wpm": 93
+      }
+    },
+    {
+      "id": "ninety-02",
+      "title": "Irrigation: a complete explanation",
+      "targetSeconds": 90,
+      "parentScriptId": "short-02",
+      "sourceParagraphs": [
+        "P046",
+        "P049",
+        "P050",
+        "P051",
+        "P052",
+        "P055",
+        "P057"
+      ],
+      "hook": "Sometimes a homeowner will show us a wet area and ask about putting in drainage. That's a reasonable question. We still need to understand where the water is coming from.",
+      "body": "On one job, there were irrigation problems as well as the concern about drainage. Some sprinkler heads weren't coming up properly through the lawn. So we had work to do there before we could get a clear picture of the other issue. Once the irrigation was addressed, I explained what we'd found and suggested giving it some time. We could still discuss drainage if it was needed. There was also information about that area being wet in winter, so I wasn't saying the irrigation explained everything. We just had a better next step. Look at what happens now. Does that area change? Is there still something we need to investigate? That's part of working through a problem. You listen to what the homeowner has noticed, check what's happening, and explain what you know so far. You don't have to pretend the first answer explains every part of it.",
+      "ending": "If you've got an area you're concerned about, tell us what you've seen and when you've seen it. That helps us begin in the right place.",
+      "deliveryNote": "Keep the winter-water qualification. The original transcript does not establish the ultimate drainage outcome.",
+      "spokenWordCount": 204,
+      "estimatedReadSeconds": {
+        "at150wpm": 82,
+        "at130wpm": 94
+      }
+    },
+    {
+      "id": "ninety-03",
+      "title": "New homeowner: a complete explanation",
+      "targetSeconds": 90,
+      "parentScriptId": "short-03",
+      "sourceParagraphs": [
+        "P080",
+        "P081",
+        "P082",
+        "P083",
+        "P085",
+        "P092",
+        "P094"
+      ],
+      "hook": "If you've just moved into a house, you may already have a list of things you want to change in the yard. I like to ask how much time you've had to live with it.",
+      "body": "Sometimes people know exactly what they want. They've been there long enough to understand the space, and we can begin with those ideas. Other times, they're still finding their way around the house and deciding what happens inside. That can affect how they want to use the outside. So it may help to give yourself a little time to notice it. Where do you sit when you come out? Where do people naturally walk? I use the example of a sidewalk that goes one way, and then, after a while, you see a route worn through the landscape somewhere else. People have shown you the way they actually go. That's useful information for a plan. It doesn't mean you have to wait a certain number of months before we can talk. It means those ordinary habits are worth paying attention to.",
+      "ending": "Bring us the ideas you have, and the things you've noticed. We can talk about what they suggest for your yard.",
+      "deliveryNote": "This expands the observation lesson while preserving Howard's qualification that some customers are already ready. It does not impose a mandatory waiting period.",
+      "spokenWordCount": 197,
+      "estimatedReadSeconds": {
+        "at150wpm": 79,
+        "at130wpm": 91
+      }
+    }
+  ],
+  "exampleAttribution": "Original drafts based on Howard Lehmann's interview; not quotations or approved published copy.",
+  "countingRule": "Contractions and hyphenated terms count as one word; count hook, body and ending only."
+}

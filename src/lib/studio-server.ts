@@ -72,7 +72,6 @@ export const generateStudioCampaign = createServerFn({ method: "POST" })
     }
   });
 
-
 export const generateContentDirections = createServerFn({ method: "POST" })
   .validator(ContentDirectionRequestSchema)
   .handler(async ({ data }) => {
@@ -87,7 +86,7 @@ export const generateContentDirections = createServerFn({ method: "POST" })
         "You are a Palmer House strategist writing for one specific business. Return exactly three materially different content directions for the supplied idea.",
         "Ground every direction in this business: use its category, its actual services, its real customers, and the words a customer in that category would use. Never write advice that could be pasted onto any other company.",
         "The three directions must be deliberately different in register, and you must return them in this order. Direction 1 has flavor 'business': the straight, professional take a serious buyer would respect. Direction 2 has flavor 'personal': it braids the founder's real life outside work — their listed interests, hobbies, or personal note — into the business point, so the metaphor, setting, or opening story comes from that interest and lands on a real business decision. Direction 3 has flavor 'playful': lower-stakes and more fun — a challenge, a myth-bust, a bad-idea-versus-good-idea, a reaction, a demo that is entertaining to watch — still true and still useful, just not corporate.",
-        "If no founder interests were supplied, make direction 2 personal in a different way: the founder's own opinion, a mistake they made, or a moment from their day. Never fabricate a hobby that was not supplied.",
+        "If no founder interests or supported personal story were supplied, make direction 2 personal through a question the founder can answer or an explicitly hypothetical observation. Never invent an opinion, memory, mistake, hobby, or event from their life. Writing examples are not factual biography.",
         "Each direction must map to one Palmer House lane: spotlight for proof/trust, reel for attention/momentum, evergreen for durable education, system for repeatability/internal clarity. Use three different lanes when the idea allows.",
         "title: 4-8 words, plain English, names the actual piece of content. No jargon, no colons stacked with buzzwords.",
         "angle: 2-3 short sentences, maximum 45 words total. Say what gets filmed or shown, and what the viewer decides afterward. Write it as prose. Never use labels like 'Business problem:' or 'Audience decision:'. Never restate the brief back to the user.",
@@ -95,7 +94,6 @@ export const generateContentDirections = createServerFn({ method: "POST" })
         "Be concrete: name the job, the season, the location type, the product, or the customer situation. Do not invent proof, statistics, testimonials, or results that were not supplied.",
       ].join(" "),
       `${knowledge}\n\nBusiness: ${data.brand.businessName}\nCategory / industry: ${data.brand.industry || "Not supplied"}\nWhat they do: ${data.brand.description || "Not supplied"}\nWhat they sell: ${data.brand.offers.join(" | ") || "Not supplied"}\nWho they serve: ${data.brand.primaryAudience || data.audience}\nCreator type: ${data.brand.creatorType}\nPrimary goal: ${data.brand.primaryGoal}\nActive platforms: ${data.brand.platforms.join(" | ") || "Not supplied"}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied — do not invent any"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\nFounder interests outside work: ${data.brand.personalInterests.join(" | ") || "Not supplied"}\nFounder personal note: ${data.brand.personalStory || "Not supplied"}\n\nCampaign goal: ${data.goal}\nAudience for this campaign: ${data.audience}\nIdea in the owner's words: ${data.idea}`,
-
     );
     return { ok: true as const, ...ContentDirectionsSchema.parse(response) };
   });
@@ -234,7 +232,9 @@ function visualSignals(html: string) {
     match[1]
       .split(",")
       .map((item) => item.trim().replace(/["']/g, ""))
-      .filter((item) => item && !/^(inherit|initial|sans-serif|serif|monospace|system-ui)$/i.test(item))
+      .filter(
+        (item) => item && !/^(inherit|initial|sans-serif|serif|monospace|system-ui)$/i.test(item),
+      )
       .slice(0, 2)
       .forEach((item) => fonts.add(item));
   }
@@ -292,9 +292,11 @@ export const analyzeStudioWebsite = createServerFn({ method: "POST" })
 export const analyzeStudioContentSource = createServerFn({ method: "POST" })
   .validator(ContentSourceAnalysisRequestSchema)
   .handler(async ({ data }) => {
-    await authorizedClient(data.accessToken, data.workspaceId);
+    const { client } = await authorizedClient(data.accessToken, data.workspaceId);
+    const { loadWorkspaceVoice } = await import("./studio-knowledge");
+    const voice = await loadWorkspaceVoice(client, data.workspaceId);
 
-    const brandContext = `Business: ${data.brand.businessName}\nDescription: ${data.brand.description}\nAudience: ${data.brand.audience}\nOffers: ${data.brand.offers.join(" | ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied"}\nUser context: ${data.context || "None supplied"}`;
+    const brandContext = `${voice}\n\nBusiness: ${data.brand.businessName}\nDescription: ${data.brand.description}\nAudience: ${data.brand.audience}\nOffers: ${data.brand.offers.join(" | ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied"}\nUser context: ${data.context || "None supplied"}`;
     let sourceText = "";
     if (data.sourceType === "link") {
       const url = new URL(data.sourceUrl!);
@@ -313,7 +315,7 @@ export const analyzeStudioContentSource = createServerFn({ method: "POST" })
 
     const { parseStructured } = await import("./ai.server");
     const instructions =
-      "You are Palmer House Productions' content intake strategist. Turn supplied source material into one useful, campaign-ready idea for someone who uses video as leverage. Lead with the real problem or opportunity and the audience decision that needs to change. Map it to exactly one Palmer House lane: Spotlight for trust/proof, Reel for attention/momentum, Evergreen for durable education, or System for repeatability/internal clarity. For images, describe only visible evidence and clearly separate user-supplied context. Never infer identities, results, audience response, before/after improvement, or claims that are not visibly supported. For links, use only the supplied page text. Return concise, concrete language a creator or team can understand.";
+      "You are Palmer House Productions' content intake strategist. Turn supplied source material into one useful, campaign-ready idea for someone who uses video as leverage. Lead with the real problem or opportunity and the audience decision that needs to change. Map it to exactly one Palmer House lane: Spotlight for trust/proof, Reel for attention/momentum, Evergreen for durable education, or System for repeatability/internal clarity. For images, describe only visible evidence and clearly separate user-supplied context. Never infer identities, results, audience response, before/after improvement, or claims that are not visibly supported. For links, use only the supplied page text as evidence. Saved writing examples can guide language but never add evidence, biography or claims to a source analysis. Return concise, concrete language a creator or team can understand.";
     const input =
       data.sourceType === "image"
         ? [

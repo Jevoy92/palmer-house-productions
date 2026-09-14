@@ -1,3 +1,5 @@
+import { buildBrandVoiceContext } from "./studio-voice.ts";
+
 /**
  * Workspace knowledge base.
  *
@@ -18,8 +20,19 @@ const clip = (value: unknown, max = 220) => {
 const list = (label: string, rows: string[]) =>
   rows.length ? `${label}:\n${rows.map((row) => `- ${row}`).join("\n")}` : "";
 
+export async function loadWorkspaceVoice(client: Client, workspaceId: string) {
+  const brand = await client
+    .from("brand_profiles")
+    .select("voice_traits, avoid_language, brand_details, content_examples")
+    .eq("workspace_id", workspaceId)
+    .maybeSingle();
+  if (brand.error)
+    throw new Error("Could not load saved brand voice. Please retry before generating.");
+  return buildBrandVoiceContext(brand.data);
+}
+
 export async function loadWorkspaceKnowledge(client: Client, workspaceId: string) {
-  const [campaigns, ideas, calendar, settings, videos] = await Promise.all([
+  const [campaigns, ideas, calendar, settings, videos, voice] = await Promise.all([
     client
       .from("campaigns")
       .select("title, topic, goal, primary_lane, status, strategy, updated_at")
@@ -48,6 +61,7 @@ export async function loadWorkspaceKnowledge(client: Client, workspaceId: string
       .select("item_key, status")
       .eq("workspace_id", workspaceId)
       .limit(30),
+    loadWorkspaceVoice(client, workspaceId),
   ]);
 
   const campaignRows = (campaigns.data || []).map(
@@ -71,6 +85,7 @@ export async function loadWorkspaceKnowledge(client: Client, workspaceId: string
 
   const memory = settings.data?.ai_memory;
   const sections = [
+    voice,
     list("Campaigns already built (never repeat these angles verbatim)", campaignRows),
     list("Ideas captured but not yet produced", ideaRows),
     list("Already scheduled", calendarRows),
@@ -78,7 +93,8 @@ export async function loadWorkspaceKnowledge(client: Client, workspaceId: string
     memory && Object.keys(memory).length ? `Approved memory: ${JSON.stringify(memory)}` : "",
   ].filter(Boolean);
 
-  if (!sections.length) return "This workspace has no prior activity yet. This is their first piece of work.";
+  if (!sections.length)
+    return "This workspace has no prior activity yet. This is their first piece of work.";
   return `WORKSPACE KNOWLEDGE BASE — treat this as already-known context. Build on it, never ask the member to repeat it, and never duplicate work that already exists.\n\n${sections.join(
     "\n\n",
   )}`;

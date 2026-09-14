@@ -1847,22 +1847,19 @@ function Dashboard() {
                 : "Your studio is set up and quiet. Give it one real idea and it starts working."}
           </p>
         </div>
-        <div className="flex shrink-0 items-center gap-5">
-          <div className="text-right">
-            <p className="studio-eyebrow" style={{ color: guide.color }}>
-              {progression.tier.label}
-            </p>
-            <p className="mt-2 text-xs text-muted-foreground">
-              {progression.next ? `${progression.toNext} moves to ${progression.next.label}` : "Top tier"}
-            </p>
-          </div>
-          {guide.avatar ? (
-            <img src={guide.avatar} alt="" className="h-16 w-16 object-contain object-bottom" />
-          ) : null}
-        </div>
       </header>
 
       <ConversationInvite conversations={conversations} preferredPal={settings?.preferred_pal} />
+
+      <p className="mt-4 text-xs text-muted-foreground">
+        <span className="font-bold" style={{ color: guide.color }}>
+          {progression.tier.label}
+        </span>
+        {progression.next
+          ? ` · ${progression.toNext} moves to ${progression.next.label}`
+          : " · top tier"}
+      </p>
+
 
       {firstRun ? (
         <section className="mt-10 border border-ink bg-white p-6 sm:p-8">

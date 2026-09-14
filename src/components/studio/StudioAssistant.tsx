@@ -1,160 +1,135 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { motion, useReducedMotion } from "motion/react";
 import {
   ArrowRight,
   Brain,
   CalendarPlus,
   Check,
+  ChevronUp,
   Copy,
-  Lightbulb,
   LoaderCircle,
   MessageSquareText,
+  Pencil,
   Plus,
   RotateCcw,
   Send,
   Sparkles,
+  Users,
+  X,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { toast } from "sonner";
-import kareem from "@/assets/pal-headshots/kareem.png";
-import kiana from "@/assets/pal-headshots/kiana.png";
-import ryder from "@/assets/pal-headshots/ryder.png";
-import raquel from "@/assets/pal-headshots/raquel.png";
-import cyrus from "@/assets/pal-headshots/cyrus.png";
-import clara from "@/assets/pal-headshots/clara.png";
-import silas from "@/assets/pal-headshots/silas.png";
-import samira from "@/assets/pal-headshots/samira.png";
-import type { AssistantResponse, PalName, StudioLane } from "@/lib/studio-model";
+import { palDirectory, palList, resolvePalName } from "@/lib/pal-directory";
+import type { AssistantResponse, PalName } from "@/lib/studio-model";
 import { StudioMarkdown } from "./StudioMarkdown";
 import { useStudio } from "./StudioProvider";
-
-
-const palDirectory: Record<
-  PalName,
-  { name: string; role: string; lane: StudioLane; image: string; color: string; soft: string }
-> = {
-  kareem: {
-    name: "Kareem",
-    role: "Production quality",
-    lane: "spotlight",
-    image: kareem,
-    color: "var(--spotlight)",
-    soft: "var(--spotlight-soft)",
-  },
-  kiana: {
-    name: "Kiana",
-    role: "Story and presence",
-    lane: "spotlight",
-    image: kiana,
-    color: "var(--spotlight)",
-    soft: "var(--spotlight-soft)",
-  },
-  ryder: {
-    name: "Ryder",
-    role: "Hooks and momentum",
-    lane: "reel",
-    image: ryder,
-    color: "var(--reel)",
-    soft: "var(--reel-soft)",
-  },
-  raquel: {
-    name: "Raquel",
-    role: "Retention and connection",
-    lane: "reel",
-    image: raquel,
-    color: "var(--reel)",
-    soft: "var(--reel-soft)",
-  },
-  cyrus: {
-    name: "Cyrus",
-    role: "Authority strategy",
-    lane: "evergreen",
-    image: cyrus,
-    color: "var(--evergreen)",
-    soft: "var(--evergreen-soft)",
-  },
-  clara: {
-    name: "Clara",
-    role: "Clarity and structure",
-    lane: "evergreen",
-    image: clara,
-    color: "var(--evergreen)",
-    soft: "var(--evergreen-soft)",
-  },
-  silas: {
-    name: "Silas",
-    role: "Workflow and scale",
-    lane: "system",
-    image: silas,
-    color: "var(--system)",
-    soft: "var(--system-soft)",
-  },
-  samira: {
-    name: "Samira",
-    role: "Knowledge and onboarding",
-    lane: "system",
-    image: samira,
-    color: "var(--system)",
-    soft: "var(--system-soft)",
-  },
-};
 
 function assistantMetadata(value: unknown): AssistantResponse | null {
   if (!value || typeof value !== "object" || !("recommendations" in value)) return null;
   return value as AssistantResponse;
 }
 
-export function StudioAssistant() {
+function relativeDay(value: string | null) {
+  if (!value) return "New";
+  const date = new Date(value);
+  const days = Math.floor((Date.now() - date.getTime()) / 86_400_000);
+  if (days <= 0) return "Today";
+  if (days === 1) return "Yesterday";
+  if (days < 7) return `${days} days ago`;
+  return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+}
+
+export function StudioAssistant({ conversationId }: { conversationId?: string }) {
   const {
-    assistantMessages,
+    activeConversation,
+    archiveConversation,
     askPal,
     brand,
     busy,
     calendar,
     campaigns,
+    conversationLoading,
+    conversationMessages,
+    conversations,
     createCalendarItem,
     createIdea,
+    hasOlderMessages,
+    loadOlderMessages,
+    openConversation,
+    renameConversation,
     saveBrand,
     saveSettings,
+    setConversationPal,
     settings,
+    startConversation,
   } = useStudio();
+  const navigate = useNavigate();
   const reduce = useReducedMotion();
-  const selected = (settings?.preferred_pal || "kiana") as PalName;
-  const pal = palDirectory[selected] || palDirectory.kiana;
+
+  // The conversation's own Pal wins; otherwise the member's saved guide. The
+  // neutral option resolves to a real Pal so the name on screen always matches
+  // the one we send to the model.
+  const selected = resolvePalName(activeConversation?.pal || settings?.preferred_pal);
+  const pal = palDirectory[selected];
+
   const [draft, setDraft] = useState("");
   const [savedMemory, setSavedMemory] = useState<string[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const [historyOpen, setHistoryOpen] = useState(false);
   const endRef = useRef<HTMLDivElement | null>(null);
   const composerRef = useRef<HTMLTextAreaElement | null>(null);
-  const recent = assistantMessages.slice(-14);
+
+  const openThreads = useMemo(
+    () => conversations.filter((item) => !item.archived),
+    [conversations],
+  );
+
   const latestResponse = useMemo(() => {
-    for (let index = assistantMessages.length - 1; index >= 0; index -= 1) {
-      const metadata = assistantMetadata(assistantMessages[index].metadata);
+    for (let index = conversationMessages.length - 1; index >= 0; index -= 1) {
+      const metadata = assistantMetadata(conversationMessages[index].metadata);
       if (metadata) return metadata;
     }
     return null;
-  }, [assistantMessages]);
+  }, [conversationMessages]);
+
   const lastQuestion = useMemo(() => {
-    for (let index = assistantMessages.length - 1; index >= 0; index -= 1) {
-      if (assistantMessages[index].role === "user") return assistantMessages[index].body;
+    for (let index = conversationMessages.length - 1; index >= 0; index -= 1) {
+      if (conversationMessages[index].role === "user") return conversationMessages[index].body;
     }
     return "";
-  }, [assistantMessages]);
+  }, [conversationMessages]);
+
+  // Resume the thread in the URL after a refresh or a fresh sign-in.
+  useEffect(() => {
+    if (!conversationId) return;
+    if (activeConversation?.id === conversationId) return;
+    void openConversation(conversationId).catch(() => {
+      toast.error("That conversation could not be opened.");
+    });
+  }, [conversationId, activeConversation?.id, openConversation]);
 
   useEffect(() => {
     endRef.current?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "end" });
-  }, [assistantMessages.length, busy, reduce]);
+  }, [conversationMessages.length, busy, reduce]);
 
   useEffect(() => {
     if (!busy) composerRef.current?.focus();
-  }, [busy]);
+  }, [busy, conversationId]);
 
   async function send(question: string) {
     const value = question.trim();
     if (value.length < 3 || busy) return;
     setDraft("");
     try {
-      await askPal(value, selected);
+      const thread = activeConversation?.id || conversationId;
+      const response = await askPal(value, selected, thread);
+      if (!thread) {
+        // askPal created the thread; move the URL onto it so refresh resumes.
+        const created = activeConversation?.id;
+        if (created) void navigate({ to: "/studio/conversations/$conversationId", params: { conversationId: created } });
+      }
+      return response;
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Your Pal could not respond yet.");
     }
@@ -165,8 +140,13 @@ export function StudioAssistant() {
     await send(draft);
   }
 
-  async function retry() {
-    if (lastQuestion) await send(lastQuestion);
+  async function newConversation() {
+    try {
+      const id = await startConversation(selected);
+      await navigate({ to: "/studio/conversations/$conversationId", params: { conversationId: id } });
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not start a conversation.");
+    }
   }
 
   async function copyMessage(id: string, body: string) {
@@ -193,13 +173,26 @@ export function StudioAssistant() {
     }
   }
 
-
   async function choosePal(name: PalName) {
+    setPickerOpen(false);
     try {
+      // Keep the open thread with this Pal, and make it the default guide.
+      if (activeConversation) await setConversationPal(activeConversation.id, name);
       await saveSettings({ preferred_pal: name });
-      toast.success(`${palDirectory[name].name} is now your default guide.`);
+      toast.success(`${palDirectory[name].name} is with you now. Nothing was lost.`);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not save your Pal.");
+      toast.error(error instanceof Error ? error.message : "Could not change your Pal.");
+    }
+  }
+
+  async function rename() {
+    if (!activeConversation) return;
+    const next = window.prompt("Name this conversation", activeConversation.title);
+    if (next === null) return;
+    try {
+      await renameConversation(activeConversation.id, next);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not rename this conversation.");
     }
   }
 
@@ -250,96 +243,164 @@ export function StudioAssistant() {
     }
   }
 
-  const prompts = [
-    "What video should this business make next?",
-    "Turn a customer question into a campaign.",
-    "What gap is slowing down sales?",
-    "Give this month a realistic content rhythm.",
-  ];
+  const starters = pal.persona.starters;
 
   return (
     <div className="mx-auto max-w-[92rem]">
-      <div className="grid min-h-[calc(100vh-7.5rem)] overflow-hidden rounded-[1.5rem] border border-border bg-white xl:grid-cols-[12.5rem_minmax(0,1fr)_19rem]">
-        <aside className="border-b border-border p-3 xl:border-b-0 xl:border-r">
-          <p className="studio-eyebrow px-2 pt-2 text-system">Choose your guide</p>
-          <div className="mt-3 grid grid-cols-4 gap-2 xl:grid-cols-1">
-            {(Object.keys(palDirectory) as PalName[]).map((name) => {
-              const item = palDirectory[name];
-              const active = selected === name;
+      <div className="grid min-h-[calc(100vh-7.5rem)] overflow-hidden rounded-[1.5rem] border border-border bg-white xl:grid-cols-[15rem_minmax(0,1fr)_19rem]">
+        {/* History */}
+        <aside
+          className={`border-b border-border p-3 xl:border-b-0 xl:border-r ${historyOpen ? "block" : "hidden xl:block"}`}
+        >
+          <div className="flex items-center justify-between px-2 pt-2">
+            <p className="studio-eyebrow text-system">Conversations</p>
+            <button
+              onClick={() => setHistoryOpen(false)}
+              className="grid size-7 place-items-center rounded-lg hover:bg-mist xl:hidden"
+              aria-label="Close history"
+            >
+              <X className="size-4" />
+            </button>
+          </div>
+          <button
+            onClick={() => void newConversation()}
+            className="mt-3 flex min-h-11 w-full items-center gap-2 rounded-xl border border-border px-3 text-left text-xs font-black hover:border-ink"
+          >
+            <Plus className="size-4" /> New conversation
+          </button>
+          <div className="mt-3 space-y-1">
+            {openThreads.map((thread) => {
+              const active = activeConversation?.id === thread.id;
+              const speaker = palDirectory[resolvePalName(thread.pal)];
               return (
-                <button
-                  key={name}
-                  onClick={() => void choosePal(name)}
-                  aria-label={`${item.name} — ${item.role}`}
-                  aria-pressed={active}
-                  className={`flex min-h-12 items-center gap-3 rounded-xl p-2 text-left transition ${active ? "border border-current" : "border border-transparent hover:bg-mist"}`}
-                  style={{ color: active ? item.color : "var(--ink)" }}
+                <Link
+                  key={thread.id}
+                  to="/studio/conversations/$conversationId"
+                  params={{ conversationId: thread.id }}
+                  onClick={() => setHistoryOpen(false)}
+                  className={`block rounded-xl px-3 py-2.5 transition ${active ? "border border-current" : "border border-transparent hover:bg-mist"}`}
+                  style={{ color: active ? speaker.color : "var(--ink)" }}
                 >
-                  <img
-                    src={item.image}
-                    alt=""
-                    className="size-9 rounded-lg bg-white object-cover object-top"
-                  />
-                  <span className="hidden min-w-0 xl:block">
-                    <span className="block truncate text-xs font-black">{item.name}</span>
-                    <span className="mt-0.5 block truncate text-[9px] text-muted-foreground">
-                      {item.role}
-                    </span>
+                  <span className="block truncate text-xs font-bold">{thread.title}</span>
+                  <span className="mt-1 block truncate text-[10px] text-muted-foreground">
+                    {thread.is_legacy ? "Earlier history" : speaker.name} ·{" "}
+                    {relativeDay(thread.last_message_at)}
                   </span>
-                </button>
+                </Link>
               );
             })}
+            {!openThreads.length ? (
+              <p className="px-3 py-4 text-[11px] leading-relaxed text-muted-foreground">
+                Your conversations will be saved here so you can pick any of them back up.
+              </p>
+            ) : null}
           </div>
         </aside>
 
+        {/* Conversation */}
         <section className="flex min-h-[42rem] min-w-0 flex-col">
-          <header className="flex items-center gap-4 border-b border-border p-4 sm:p-5">
-            <div className="relative">
-              <img
-                src={pal.image}
-                alt={`${pal.name}, your selected Palmer House guide`}
-                className="size-14 shrink-0 rounded-[1rem] border border-border bg-white object-cover object-top"
-              />
-              <span
-                className="absolute -right-1 -top-1 grid size-6 place-items-center rounded-full bg-white shadow-soft"
-                style={{ color: pal.color }}
-              >
-                <Lightbulb className="size-3.5 fill-current" />
-              </span>
-            </div>
+          <header className="relative flex items-center gap-3 border-b border-border p-4 sm:p-5">
+            <button
+              onClick={() => setHistoryOpen(true)}
+              className="grid size-10 shrink-0 place-items-center rounded-xl border border-border xl:hidden"
+              aria-label="Open conversation history"
+            >
+              <MessageSquareText className="size-4" />
+            </button>
+            <img
+              src={pal.headshot}
+              alt={`${pal.name}, your Palmer House guide`}
+              className="size-11 shrink-0 rounded-[0.9rem] border border-border bg-white object-cover object-top"
+            />
             <div className="min-w-0">
-              <p className="text-lg font-black">Ask {pal.name}</p>
-              <p className="mt-1 text-xs text-muted-foreground">
-                Reads Brand DNA, recent campaigns, and your editable calendar.
+              <p className="truncate text-sm font-black">
+                {activeConversation?.title || `Talk with ${pal.name}`}
+              </p>
+              <p className="mt-0.5 truncate text-[11px] text-muted-foreground">
+                {pal.name} · {pal.role}
               </p>
             </div>
-            <Link to="/studio/roadmap" className="secondary-action ml-auto hidden sm:inline-flex">
-              Video roadmap <ArrowRight className="size-4" />
-            </Link>
+            <div className="ml-auto flex items-center gap-2">
+              {activeConversation ? (
+                <>
+                  <button
+                    onClick={() => void rename()}
+                    className="hidden min-h-9 items-center gap-1.5 rounded-lg border border-border px-3 text-[11px] font-bold hover:border-ink sm:inline-flex"
+                  >
+                    <Pencil className="size-3.5" /> Rename
+                  </button>
+                  <button
+                    onClick={() => void archiveConversation(activeConversation.id)}
+                    className="hidden min-h-9 items-center gap-1.5 rounded-lg border border-border px-3 text-[11px] font-bold hover:border-ink sm:inline-flex"
+                  >
+                    Archive
+                  </button>
+                </>
+              ) : null}
+              <button
+                onClick={() => setPickerOpen((open) => !open)}
+                aria-expanded={pickerOpen}
+                className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border px-3 text-[11px] font-bold hover:border-ink"
+              >
+                <Users className="size-3.5" /> Change Pal
+              </button>
+            </div>
+
+            {pickerOpen ? (
+              <div className="absolute right-4 top-[calc(100%-0.5rem)] z-20 w-[min(26rem,calc(100vw-2rem))] rounded-[1.25rem] border border-border bg-white p-3 shadow-soft">
+                <p className="studio-eyebrow px-1 pb-2 text-system">Who do you want on this?</p>
+                <div className="grid gap-1.5 sm:grid-cols-2">
+                  {palList.map((item) => (
+                    <button
+                      key={item.key}
+                      onClick={() => void choosePal(item.key)}
+                      aria-pressed={item.key === selected}
+                      className={`flex min-h-14 items-center gap-3 rounded-xl p-2 text-left transition ${item.key === selected ? "border border-current" : "border border-transparent hover:bg-mist"}`}
+                      style={{ color: item.key === selected ? item.color : "var(--ink)" }}
+                    >
+                      <img
+                        src={item.headshot}
+                        alt=""
+                        className="size-9 shrink-0 rounded-lg bg-white object-cover object-top"
+                      />
+                      <span className="min-w-0">
+                        <span className="block truncate text-xs font-black">{item.name}</span>
+                        <span className="mt-0.5 block truncate text-[10px] text-muted-foreground">
+                          {item.role}
+                        </span>
+                      </span>
+                    </button>
+                  ))}
+                </div>
+                <p className="px-1 pt-3 text-[10px] leading-relaxed text-muted-foreground">
+                  Your conversation stays exactly where it is. Earlier answers keep the name of the
+                  Pal who gave them.
+                </p>
+              </div>
+            ) : null}
           </header>
 
           <div className="flex-1 overflow-y-auto p-4 sm:p-6" aria-live="polite">
-            {!recent.length ? (
+            {!conversationMessages.length && !conversationLoading ? (
               <div className="mx-auto flex max-w-2xl flex-col items-center py-10 text-center sm:py-16">
-                <span
-                  className="grid size-16 place-items-center rounded-[1.25rem]"
-                  style={{ background: pal.soft, color: pal.color }}
-                >
-                  <MessageSquareText className="size-7" />
-                </span>
+                <img
+                  src={pal.headshot}
+                  alt=""
+                  className="size-20 rounded-[1.25rem] border border-border bg-white object-cover object-top"
+                />
                 <h1 className="mt-6 text-3xl font-black tracking-[-.045em] sm:text-4xl">
-                  What should the business solve next?
+                  {pal.persona.firstQuestion}
                 </h1>
                 <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
-                  Ask in plain language. {pal.name} will use what the Studio already knows, explain
-                  the problem behind the recommendation, and give you shortcuts into the work.
+                  {pal.intro} Ask in plain language — I already have your brand, your work so far,
+                  and what is on the calendar.
                 </p>
-                <div className="mt-7 grid w-full gap-2 sm:grid-cols-2">
-                  {prompts.map((prompt) => (
+                <div className="mt-7 grid w-full gap-2 sm:grid-cols-3">
+                  {starters.map((prompt) => (
                     <button
                       key={prompt}
                       onClick={() => setDraft(prompt)}
-                      className="min-h-14 rounded-xl border border-border bg-white px-4 text-left text-sm font-bold hover:border-ink"
+                      className="min-h-16 rounded-xl border border-border bg-white px-4 py-3 text-left text-xs font-bold leading-snug hover:border-ink"
                     >
                       {prompt}
                     </button>
@@ -348,9 +409,19 @@ export function StudioAssistant() {
               </div>
             ) : (
               <div className="mx-auto max-w-3xl space-y-6">
-                {recent.map((message) => {
+                {hasOlderMessages ? (
+                  <button
+                    onClick={() => void loadOlderMessages()}
+                    disabled={conversationLoading}
+                    className="mx-auto flex min-h-10 items-center gap-1.5 rounded-lg border border-border px-4 text-[11px] font-bold hover:border-ink disabled:opacity-40"
+                  >
+                    <ChevronUp className="size-3.5" /> Load earlier messages
+                  </button>
+                ) : null}
+
+                {conversationMessages.map((message) => {
                   const meta = assistantMetadata(message.metadata);
-                  const speaker = palDirectory[(message.pal as PalName) || selected] || pal;
+                  const speaker = palDirectory[resolvePalName(message.pal)];
                   if (message.role === "user") {
                     return (
                       <motion.div
@@ -373,13 +444,13 @@ export function StudioAssistant() {
                     >
                       <div className="flex items-center gap-2">
                         <img
-                          src={speaker.image}
+                          src={speaker.headshot}
                           alt=""
                           className="size-7 rounded-lg border border-border bg-white object-cover object-top"
                         />
                         <span className="text-xs font-black">{speaker.name}</span>
                         <span
-                          className="font-mono text-[9px] uppercase tracking-[.14em]"
+                          className="font-mono text-[10px] uppercase tracking-[.14em]"
                           style={{ color: speaker.color }}
                         >
                           · {meta?.lane || speaker.lane}
@@ -432,9 +503,15 @@ export function StudioAssistant() {
                         >
                           <Plus className="size-3.5" /> Save as idea
                         </button>
+                        <Link
+                          to="/studio"
+                          className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink"
+                        >
+                          Build this campaign <ArrowRight className="size-3.5" />
+                        </Link>
                         <button
-                          onClick={() => void retry()}
-                          disabled={busy}
+                          onClick={() => void send(lastQuestion)}
+                          disabled={busy || !lastQuestion}
                           className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink disabled:opacity-40"
                         >
                           <RotateCcw className="size-3.5" /> Ask again
@@ -462,7 +539,7 @@ export function StudioAssistant() {
                 {busy ? (
                   <div className="flex items-center gap-3">
                     <img
-                      src={pal.image}
+                      src={pal.headshot}
                       alt=""
                       className="size-7 animate-pulse rounded-lg border border-border object-cover object-top"
                     />
@@ -474,7 +551,6 @@ export function StudioAssistant() {
                 ) : null}
                 <div ref={endRef} />
               </div>
-
             )}
           </div>
 
@@ -494,12 +570,12 @@ export function StudioAssistant() {
                   }
                 }}
                 rows={2}
-                placeholder={`Ask ${pal.name} about a problem, idea, link, campaign, or next move…`}
+                placeholder={`Tell ${pal.name} what you are working on…`}
                 className="min-h-12 flex-1 resize-none border-0 bg-transparent p-2 text-sm text-ink outline-none"
               />
               <button
                 disabled={busy || draft.trim().length < 3}
-                aria-label="Send question"
+                aria-label="Send message"
                 className="grid size-11 shrink-0 place-items-center rounded-xl text-white disabled:opacity-35"
                 style={{ background: pal.color }}
               >
@@ -515,16 +591,16 @@ export function StudioAssistant() {
               without your approval.
             </p>
           </form>
-
         </section>
 
+        {/* Work panel */}
         <aside className="border-t border-border bg-mist/55 p-4 xl:border-l xl:border-t-0">
           <div className="flex items-center gap-2">
             <Sparkles className="size-4 text-system" />
-            <p className="text-sm font-black">Next useful moves</p>
+            <p className="text-sm font-black">What we can do with this</p>
           </div>
           <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
-            Updated from Brand DNA and the work already in motion.
+            Everything here saves into your work — nothing runs on its own.
           </p>
           <div className="mt-4 space-y-3">
             {(latestResponse?.recommendations || []).map((item) => (
@@ -554,11 +630,11 @@ export function StudioAssistant() {
               <div className="rounded-[1rem] border border-dashed border-border bg-white p-4">
                 <Brain className="size-5 text-system" />
                 <p className="mt-3 text-xs font-bold">
-                  Ask one question to create your first personalized move.
+                  Say one thing and this fills with real next steps.
                 </p>
                 <p className="mt-2 text-[10px] leading-relaxed text-muted-foreground">
-                  {campaigns.length} campaigns and {calendar.length} calendar items are available as
-                  context.
+                  {campaigns.length} campaigns and {calendar.length} calendar items are already
+                  available as context.
                 </p>
               </div>
             ) : null}
@@ -568,7 +644,7 @@ export function StudioAssistant() {
             <div className="mt-6 border-t border-border pt-5">
               <div className="flex items-center gap-2">
                 <Brain className="size-4 text-spotlight" />
-                <p className="text-sm font-black">Suggested memory</p>
+                <p className="text-sm font-black">Worth remembering</p>
               </div>
               <p className="mt-2 text-[10px] leading-relaxed text-muted-foreground">
                 Approve durable facts before they become Brand DNA.

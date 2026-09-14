@@ -33,6 +33,16 @@ type CalendarItem = Tables<"calendar_items">;
 type Settings = Tables<"workspace_settings">;
 type Idea = Tables<"content_ideas">;
 type AssistantMessage = Tables<"assistant_messages">;
+type Conversation = Tables<"conversations">;
+
+/** How many messages load at once when opening or scrolling back a thread. */
+const MESSAGE_PAGE = 30;
+
+function titleFromMessage(question: string) {
+  const clean = question.replace(/\s+/g, " ").trim();
+  if (clean.length <= 58) return clean || "New conversation";
+  return `${clean.slice(0, 58).trimEnd()}…`;
+}
 type VideoProgress = Tables<"workspace_video_items">;
 type ServiceRequest = Tables<"service_requests">;
 
@@ -52,6 +62,11 @@ type StudioContextValue = {
   calendar: CalendarItem[];
   ideas: Idea[];
   assistantMessages: AssistantMessage[];
+  conversations: Conversation[];
+  activeConversation: Conversation | null;
+  conversationMessages: AssistantMessage[];
+  conversationLoading: boolean;
+  hasOlderMessages: boolean;
   videoProgress: VideoProgress[];
   serviceRequests: ServiceRequest[];
   campaignOutputs: Record<string, CampaignOutput>;
@@ -86,7 +101,13 @@ type StudioContextValue = {
   }) => Promise<string>;
   updateIdea: (id: string, values: Partial<Idea>) => Promise<void>;
   uploadIdeaSource: (file: File) => Promise<string>;
-  askPal: (question: string, pal: PalName) => Promise<AssistantResponse>;
+  askPal: (question: string, pal: PalName, conversationId?: string) => Promise<AssistantResponse>;
+  startConversation: (pal: PalName, title?: string) => Promise<string>;
+  openConversation: (id: string) => Promise<void>;
+  loadOlderMessages: () => Promise<void>;
+  renameConversation: (id: string, title: string) => Promise<void>;
+  archiveConversation: (id: string, archived?: boolean) => Promise<void>;
+  setConversationPal: (id: string, pal: PalName) => Promise<void>;
   updateVideoProgress: (itemKey: string, status: string, campaignId?: string) => Promise<void>;
   createCampaign: (values: {
     title: string;
@@ -151,6 +172,11 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   const [calendar, setCalendar] = useState<CalendarItem[]>([]);
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [assistantMessages, setAssistantMessages] = useState<AssistantMessage[]>([]);
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [activeConversation, setActiveConversation] = useState<Conversation | null>(null);
+  const [conversationMessages, setConversationMessages] = useState<AssistantMessage[]>([]);
+  const [conversationLoading, setConversationLoading] = useState(false);
+  const [hasOlderMessages, setHasOlderMessages] = useState(false);
   const [videoProgress, setVideoProgress] = useState<VideoProgress[]>([]);
   const [serviceRequests, setServiceRequests] = useState<ServiceRequest[]>([]);
   const [campaignOutputs, setCampaignOutputs] = useState<Record<string, CampaignOutput>>({});
@@ -168,6 +194,10 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       setCalendar([]);
       setIdeas([]);
       setAssistantMessages([]);
+      setConversations([]);
+      setActiveConversation(null);
+      setConversationMessages([]);
+      setHasOlderMessages(false);
       setVideoProgress([]);
       setServiceRequests([]);
       setLoading(false);
@@ -203,6 +233,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       calendarResult,
       ideasResult,
       assistantResult,
+      conversationsResult,
       videoProgressResult,
       serviceRequestsResult,
     ] = await Promise.all([
@@ -241,6 +272,13 @@ export function StudioProvider({ children }: { children: ReactNode }) {
         .eq("workspace_id", workspaceId)
         .order("created_at", { ascending: true })
         .limit(80),
+      supabase
+        .from("conversations")
+        .select("*")
+        .eq("workspace_id", workspaceId)
+        .order("last_message_at", { ascending: false, nullsFirst: false })
+        .order("created_at", { ascending: false })
+        .limit(50),
       supabase.from("workspace_video_items").select("*").eq("workspace_id", workspaceId),
       supabase
         .from("service_requests")
@@ -258,6 +296,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     setCalendar(calendarResult.data || []);
     setIdeas(ideasResult.data || []);
     setAssistantMessages(assistantResult.data || []);
+    setConversations(conversationsResult.data || []);
     setVideoProgress(videoProgressResult.data || []);
     setServiceRequests(serviceRequestsResult.data || []);
     setLoading(false);
@@ -464,13 +503,127 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     if (result.error) throw result.error;
     return result.data.path;
   }
-  async function askPal(question: string, pal: PalName) {
+  async function startConversation(pal: PalName, title?: string) {
+    if (!workspace) throw new Error("Create a workspace first.");
+    if (!session) throw new Error("Sign in first.");
+    const result = await supabase
+      .from("conversations")
+      .insert({
+        workspace_id: workspace.id,
+        created_by: session.user.id,
+        title: title || "New conversation",
+        pal,
+      })
+      .select()
+      .single();
+    if (result.error) throw result.error;
+    setConversations((current) => [result.data, ...current]);
+    setActiveConversation(result.data);
+    setConversationMessages([]);
+    setHasOlderMessages(false);
+    return result.data.id;
+  }
+
+  async function openConversation(id: string) {
+    if (!workspace) throw new Error("Create a workspace first.");
+    setConversationLoading(true);
+    try {
+      const [conversation, messages] = await Promise.all([
+        supabase.from("conversations").select("*").eq("id", id).maybeSingle(),
+        // Newest first so the page we load is the part the member wants to see;
+        // reversed below for display.
+        supabase
+          .from("assistant_messages")
+          .select("*")
+          .eq("conversation_id", id)
+          .order("created_at", { ascending: false })
+          .limit(MESSAGE_PAGE + 1),
+      ]);
+      if (conversation.error) throw conversation.error;
+      if (messages.error) throw messages.error;
+      const rows = messages.data || [];
+      const page = rows.slice(0, MESSAGE_PAGE).reverse();
+      setActiveConversation(conversation.data);
+      setConversationMessages(page);
+      setHasOlderMessages(rows.length > MESSAGE_PAGE);
+    } finally {
+      setConversationLoading(false);
+    }
+  }
+
+  async function loadOlderMessages() {
+    if (!activeConversation || !conversationMessages.length) return;
+    const oldest = conversationMessages[0];
+    setConversationLoading(true);
+    try {
+      const result = await supabase
+        .from("assistant_messages")
+        .select("*")
+        .eq("conversation_id", activeConversation.id)
+        .lt("created_at", oldest.created_at)
+        .order("created_at", { ascending: false })
+        .limit(MESSAGE_PAGE + 1);
+      if (result.error) throw result.error;
+      const rows = result.data || [];
+      const page = rows.slice(0, MESSAGE_PAGE).reverse();
+      setConversationMessages((current) => [...page, ...current]);
+      setHasOlderMessages(rows.length > MESSAGE_PAGE);
+    } finally {
+      setConversationLoading(false);
+    }
+  }
+
+  function applyConversation(next: Conversation) {
+    setConversations((current) =>
+      current.map((item) => (item.id === next.id ? next : item)),
+    );
+    setActiveConversation((current) => (current?.id === next.id ? next : current));
+  }
+
+  async function patchConversation(id: string, values: Partial<Conversation>) {
+    const result = await supabase
+      .from("conversations")
+      .update(values)
+      .eq("id", id)
+      .select()
+      .single();
+    if (result.error) throw result.error;
+    applyConversation(result.data);
+  }
+
+  async function renameConversation(id: string, title: string) {
+    await patchConversation(id, { title: title.trim() || "Untitled conversation" });
+  }
+
+  async function archiveConversation(id: string, archived = true) {
+    await patchConversation(id, { archived });
+    if (archived && activeConversation?.id === id) {
+      setActiveConversation(null);
+      setConversationMessages([]);
+    }
+  }
+
+  /**
+   * Changing Pal keeps the thread and every previous message intact — earlier
+   * replies stay attributed to whoever actually said them.
+   */
+  async function setConversationPal(id: string, pal: PalName) {
+    await patchConversation(id, { pal });
+  }
+
+  async function askPal(question: string, pal: PalName, conversationId?: string) {
     if (!workspace || !brand) throw new Error("Finish Brand DNA before asking for guidance.");
+    if (!session) throw new Error("Sign in first.");
+
+    let threadId = conversationId || activeConversation?.id || null;
+    if (!threadId) threadId = await startConversation(pal, titleFromMessage(question));
+
     const now = new Date().toISOString();
     const userMessage: AssistantMessage = {
       id: crypto.randomUUID(),
       workspace_id: workspace.id,
-      user_id: session?.user.id || null,
+      conversation_id: threadId,
+      user_id: session.user.id,
       role: "user",
       pal,
       body: question,
@@ -478,10 +631,10 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       created_at: now,
     };
     setAssistantMessages((current) => [...current, userMessage]);
+    setConversationMessages((current) => [...current, userMessage]);
     setBusy(true);
     try {
-      if (!session) throw new Error("Sign in first.");
-      const recentMessages = assistantMessages.slice(-11).map((message) => ({
+      const history = [...conversationMessages, userMessage].slice(-11).map((message) => ({
         role: message.role as "user" | "assistant",
         body: message.body,
       }));
@@ -491,37 +644,62 @@ export function StudioProvider({ children }: { children: ReactNode }) {
           accessToken: session.access_token,
           question,
           pal,
-          recentMessages,
+          recentMessages: history,
         },
       });
       const response: AssistantResponse = generated.response;
-      const savedUser = await supabase.from("assistant_messages").insert({
-        workspace_id: workspace.id,
-        user_id: session.user.id,
-        role: "user",
-        pal,
-        body: question,
-      });
+      const savedUser = await supabase
+        .from("assistant_messages")
+        .insert({
+          workspace_id: workspace.id,
+          conversation_id: threadId,
+          user_id: session.user.id,
+          role: "user",
+          pal,
+          body: question,
+        })
+        .select()
+        .single();
       if (savedUser.error) throw savedUser.error;
-      const assistantMessage: AssistantMessage = {
-        id: crypto.randomUUID(),
-        workspace_id: workspace.id,
-        user_id: null,
-        role: "assistant",
-        pal,
-        body: response.reply,
-        metadata: response,
-        created_at: new Date().toISOString(),
-      };
-      const saved = await supabase.from("assistant_messages").insert({
-        workspace_id: workspace.id,
-        role: "assistant",
-        pal,
-        body: response.reply,
-        metadata: response,
-      });
+      const saved = await supabase
+        .from("assistant_messages")
+        .insert({
+          workspace_id: workspace.id,
+          conversation_id: threadId,
+          role: "assistant",
+          pal,
+          body: response.reply,
+          metadata: response,
+        })
+        .select()
+        .single();
       if (saved.error) throw saved.error;
-      setAssistantMessages((current) => [...current, assistantMessage]);
+
+      // Swap the optimistic row for the stored one so ids stay real.
+      setConversationMessages((current) => [
+        ...current.map((item) => (item.id === userMessage.id ? savedUser.data : item)),
+        saved.data,
+      ]);
+      setAssistantMessages((current) => [
+        ...current.map((item) => (item.id === userMessage.id ? savedUser.data : item)),
+        saved.data,
+      ]);
+
+      const existing = conversations.find((item) => item.id === threadId);
+      const isFirstExchange = !existing?.message_count;
+      const updated = await supabase
+        .from("conversations")
+        .update({
+          pal,
+          last_message_at: saved.data.created_at,
+          message_count: (existing?.message_count || 0) + 2,
+          ...(isFirstExchange ? { title: titleFromMessage(question) } : {}),
+        })
+        .eq("id", threadId)
+        .select()
+        .single();
+      if (!updated.error && updated.data) applyConversation(updated.data);
+
       return response;
     } finally {
       setBusy(false);
@@ -816,6 +994,11 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     calendar,
     ideas,
     assistantMessages,
+    conversations,
+    activeConversation,
+    conversationMessages,
+    conversationLoading,
+    hasOlderMessages,
     videoProgress,
     serviceRequests,
     campaignOutputs,
@@ -832,6 +1015,12 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     updateIdea,
     uploadIdeaSource,
     askPal,
+    startConversation,
+    openConversation,
+    loadOlderMessages,
+    renameConversation,
+    archiveConversation,
+    setConversationPal,
     updateVideoProgress,
     createCampaign,
     suggestDirections,

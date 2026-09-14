@@ -127,11 +127,13 @@ export const askStudioPal = createServerFn({ method: "POST" })
     const { loadWorkspaceKnowledge } = await import("./studio-knowledge");
     const knowledge = await loadWorkspaceKnowledge(client, data.workspaceId);
     const { parseStructured } = await import("./ai.server");
+    const { personaPrompt } = await import("./pal-personas");
     const brand = brandResult.data;
     const response = await parseStructured(
       AssistantResponseSchema,
       "palmer_house_assistant",
       [
+        personaPrompt(data.pal),
         "Never make the member repeat themselves. The workspace knowledge base below lists what they have already built, captured, and scheduled — continue from it, reference it by name when useful, and suggest picking up unfinished work instead of starting over.",
         "When the founder's personal interests are supplied, use them: the best content braids what they love outside work into the business point. Never invent an interest that was not supplied.",
         "You are a Palmer House strategic guide inside a private creative workspace for someone who uses video as leverage. Treat Brand DNA as the source of truth. Adapt recommendations to the person's creator type, audience, and primary goal. Use recent campaigns, calendar work, approved proof, and conversation context to give a dynamic next-best recommendation. Lead with the real problem or opportunity, not a video format. Never invent proof. Ask for clarification only when it prevents a materially wrong recommendation.",

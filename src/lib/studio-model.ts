@@ -182,6 +182,7 @@ export type StudioView =
   | "engine"
   | "home"
   | "assistant"
+  | "conversations"
   | "roadmap"
   | "success"
   | "onboarding"

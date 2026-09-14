@@ -29,13 +29,27 @@ export function Comparison() {
         </p>
       </div>
 
-      <div className="surface-card mx-auto mt-10 max-w-4xl overflow-x-auto p-4 sm:p-8">
+      <p
+        id="comparison-scroll-hint"
+        className="mx-auto mt-6 max-w-4xl text-center text-xs text-muted-foreground md:hidden"
+      >
+        Swipe or scroll to compare all four options.
+      </p>
+      <div
+        role="region"
+        aria-label="Production approach comparison"
+        aria-describedby="comparison-scroll-hint"
+        tabIndex={0}
+        className="surface-card mx-auto mt-4 max-w-4xl overflow-x-auto p-4 sm:p-8 md:mt-10"
+      >
         <table className="w-full min-w-[560px] border-collapse text-left">
           <thead>
             <tr>
-              <th className="w-1/3 pb-6" />
+              <th scope="col" className="sticky left-0 z-10 w-1/3 bg-white pb-6">
+                <span className="sr-only">Capability</span>
+              </th>
               {cols.map((c, i) => (
-                <th key={c} className="pb-6 text-center text-sm font-semibold">
+                <th key={c} scope="col" className="pb-6 text-center text-sm font-semibold">
                   <span className={i === 0 ? "text-gradient-brand font-display text-lg" : ""}>
                     {c}
                   </span>
@@ -46,7 +60,12 @@ export function Comparison() {
           <tbody>
             {rows.map((r) => (
               <tr key={r.label} className="border-t border-border">
-                <td className="py-4 text-sm font-medium">{r.label}</td>
+                <th
+                  scope="row"
+                  className="sticky left-0 z-10 bg-white py-4 pr-3 text-sm font-medium"
+                >
+                  {r.label}
+                </th>
                 {r.values.map((v, i) => (
                   <td key={i} className="py-4 text-center">
                     <Mark ok={v} />

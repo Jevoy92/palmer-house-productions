@@ -9,10 +9,9 @@ import {
   CtaBand,
   Eyebrow,
 } from "@/components/site/PageShell";
-import scene from "@/assets/dioramas/system-brain-web.jpg";
 import { MissionComparison } from "@/components/site/MissionComparison";
-import silas from "@/assets/pals-optimized/silas.webp";
-import samira from "@/assets/pals-optimized/samira.webp";
+import silas from "@/assets/pal-headshots/silas.png";
+import samira from "@/assets/pal-headshots/samira.png";
 
 const PACKAGES = [
   { title: "Onboarding Kit", pain: "New hires take forever to get up to speed." },
@@ -51,7 +50,7 @@ const FAQS = [
 
 function SystemPalPage() {
   return (
-    <PageShell>
+    <PageShell lane="system">
       <PageHero
         eyebrow="Internal Video Systems"
         title="Eliminate Chaos With"
@@ -59,44 +58,37 @@ function SystemPalPage() {
         subtitle="Silas builds the machine. Internal video packages that turn tribal knowledge into searchable, reusable training libraries."
       />
 
-      <Section>
-        <img
-          src={scene}
-          alt="System Pal lab where Silas and Samira build automated video systems"
-          loading="lazy"
-          className="mx-auto w-full max-w-4xl"
-        />
-      </Section>
-
-      <Section muted>
-        <div className="grid items-center gap-8 sm:grid-cols-2">
-          <div className="flex justify-center gap-6">
-            <div className="text-center">
+      <Section muted eyebrow="Your System guides" title="Meet Silas and Samira">
+        <div className="grid items-center gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
+          <div className="mx-auto grid w-full max-w-md grid-cols-2 gap-4">
+            <div className="overflow-hidden rounded-2xl bg-white p-3 text-center">
               <img
                 src={silas}
                 alt="Silas, the System Pal automation character"
-                className="mx-auto h-56 w-auto object-contain"
+                loading="lazy"
+                className="aspect-square w-full rounded-xl object-cover"
               />
-              <p className="mt-2 font-display font-bold">Silas</p>
-              <p className="text-xs text-muted-foreground">Automation</p>
+              <p className="mt-3 font-display text-lg font-bold">Silas</p>
+              <p className="text-sm font-medium text-[var(--lane-ink)]">Automation</p>
             </div>
-            <div className="text-center">
+            <div className="overflow-hidden rounded-2xl bg-white p-3 text-center">
               <img
                 src={samira}
                 alt="Samira, the System Pal architecture character"
-                className="mx-auto h-56 w-auto object-contain"
+                loading="lazy"
+                className="aspect-square w-full rounded-xl object-cover"
               />
-              <p className="mt-2 font-display font-bold">Samira</p>
-              <p className="text-xs text-muted-foreground">Architecture</p>
+              <p className="mt-3 font-display text-lg font-bold">Samira</p>
+              <p className="text-sm font-medium text-[var(--lane-ink)]">Architecture</p>
             </div>
           </div>
           <div>
             <Eyebrow>System Pal</Eyebrow>
-            <p className="mt-4 italic text-muted-foreground">
+            <p className="mt-4 border-l-2 border-[var(--lane)] pl-5 text-base leading-relaxed text-ink-soft">
               "Chaos punishes everyone — especially the most responsible person in the room." —
               Silas
             </p>
-            <p className="mt-4 italic text-muted-foreground">
+            <p className="mt-4 border-l-2 border-[var(--lane)] pl-5 text-base leading-relaxed text-ink-soft">
               "Samira became competent because she had to. She's the one who makes systems feel
               human — accountable without shame." — Samira
             </p>
@@ -113,7 +105,7 @@ function SystemPalPage() {
       </Section>
 
       <Section eyebrow="Pricing" title="How the System Pal Session Works">
-        <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-8 shadow-soft">
+        <div className="mx-auto max-w-4xl rounded-3xl border border-[var(--lane-soft)] border-t-4 border-t-[var(--lane)] bg-white p-6 shadow-soft sm:p-9">
           <p className="text-sm font-semibold text-muted-foreground">Onboarding Kit — 1 of 6</p>
           <h3 className="mt-1 font-display text-xl font-bold">
             Training videos so new hires get up to speed without repeating yourself for the 47th
@@ -123,27 +115,31 @@ function SystemPalPage() {
             2-hour filming session, onboarding walkthrough videos.
           </p>
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
-            <div className="rounded-xl bg-secondary/50 p-4">
+            <div className="rounded-2xl bg-[var(--lane-soft)] p-5">
               <p className="text-xs font-bold uppercase text-muted-foreground">
                 Production Session
               </p>
-              <p className="text-gradient-brand font-display text-2xl font-extrabold">$450</p>
+              <p className="font-display text-3xl font-extrabold tabular-nums text-[var(--lane-ink)]">
+                $450
+              </p>
               <p className="mt-1 text-xs text-muted-foreground">
                 Covers setup, lighting, audio, and direction
               </p>
             </div>
-            <div className="rounded-xl bg-secondary/50 p-4">
+            <div className="rounded-2xl bg-[var(--lane-soft)] p-5">
               <p className="text-xs font-bold uppercase text-muted-foreground">
                 Additional Videos (6)
               </p>
-              <p className="text-gradient-brand font-display text-2xl font-extrabold">$900</p>
+              <p className="font-display text-3xl font-extrabold tabular-nums text-[var(--lane-ink)]">
+                $900
+              </p>
               <p className="mt-1 text-xs text-muted-foreground">
                 1 min each • $150 each. Same session, already set up
               </p>
             </div>
             <div
-              className="rounded-xl p-4 text-white"
-              style={{ backgroundColor: "var(--spotlight)" }}
+              className="rounded-2xl p-5 text-white"
+              style={{ backgroundColor: "var(--lane-ink)" }}
             >
               <p className="text-xs font-bold uppercase text-white/80">Package Total</p>
               <p className="font-display text-2xl font-extrabold">$1,350</p>
@@ -155,8 +151,8 @@ function SystemPalPage() {
           <div className="mt-6 text-center">
             <Link
               to="/contact"
-              className="rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow"
-              style={{ backgroundColor: "var(--spotlight)" }}
+              className="inline-flex min-h-12 items-center justify-center rounded-full px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              style={{ backgroundColor: "var(--lane-ink)" }}
             >
               Customize This Package
             </Link>
@@ -183,7 +179,7 @@ function SystemPalPage() {
       </Section>
 
       <Section muted>
-        <blockquote className="mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8 text-center shadow-soft">
+        <blockquote className="mx-auto max-w-3xl border-l-4 border-[var(--lane)] bg-white px-6 py-8 text-left sm:px-9">
           <p className="text-lg italic text-muted-foreground">
             "We cut our onboarding time in half. New hires watch the video library and hit the
             ground running instead of shadowing for weeks."

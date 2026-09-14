@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { ArrowLeft, ArrowRight, Check, Sparkles } from "lucide-react";
+import * as Dialog from "@radix-ui/react-dialog";
+import { ArrowRight, Check, ListChecks, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { celebrateOnce } from "./Celebrate";
 import { useStudio } from "./StudioProvider";
@@ -21,9 +21,7 @@ const dismissKey = (workspaceId: string) => `phs.start-here.${workspaceId}`;
 
 export function StudioStartHere() {
   const { workspace, brand, brandReferences, campaigns, calendar } = useStudio();
-  const reduce = useReducedMotion();
   const [open, setOpen] = useState(false);
-  const [index, setIndex] = useState(0);
 
   const steps = useMemo<Step[]>(() => {
     const offers = Array.isArray(brand?.offers) ? (brand?.offers as unknown[]) : [];
@@ -78,21 +76,17 @@ export function StudioStartHere() {
 
   const completed = steps.filter((step) => step.done).length;
   const allDone = completed === steps.length;
-  const nextStep = steps.find((step) => !step.done) || steps[steps.length - 1];
-
 
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
     if (!workspace || typeof window === "undefined") return;
-    setHidden(window.localStorage.getItem(dismissKey(workspace.id)) === "done");
+    try {
+      setHidden(window.localStorage.getItem(dismissKey(workspace.id)) === "done");
+    } catch {
+      /* Storage may be disabled. */
+    }
   }, [workspace]);
-
-  useEffect(() => {
-    if (!open) return;
-    const next = steps.findIndex((step) => !step.done);
-    setIndex(next === -1 ? steps.length - 1 : next);
-  }, [open, steps]);
 
   useEffect(() => {
     if (!workspace || !allDone) return;
@@ -102,10 +96,13 @@ export function StudioStartHere() {
     });
   }, [workspace, allDone]);
 
-
   const dismiss = (permanent: boolean) => {
     if (permanent && workspace && typeof window !== "undefined") {
-      window.localStorage.setItem(dismissKey(workspace.id), "done");
+      try {
+        window.localStorage.setItem(dismissKey(workspace.id), "done");
+      } catch {
+        /* Dismiss for this session. */
+      }
       setHidden(true);
     }
     setOpen(false);
@@ -113,159 +110,87 @@ export function StudioStartHere() {
 
   if (!workspace) return null;
 
-  const active = steps[index] || steps[0];
-
+  if (hidden) return null;
   return (
-    <>
-      <AnimatePresence>
-        {open ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] grid place-items-center bg-ink/25 p-4 backdrop-blur-sm"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Start here"
-          >
-            <motion.div
-              initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={reduce ? { opacity: 0 } : { opacity: 0, y: 12, scale: 0.98 }}
-              className="w-full max-w-lg rounded-[1.75rem] border border-border bg-white p-6 shadow-[0_40px_120px_-50px_rgba(31,35,40,.7)]"
-            >
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setIndex((current) => Math.max(0, current - 1))}
-                    disabled={index === 0}
-                    className="flex min-h-10 items-center gap-2 rounded-full border border-border px-4 text-sm font-bold disabled:opacity-30"
-                  >
-                    <ArrowLeft className="size-4" /> Back
-                  </button>
-                  <span className="flex h-1.5 w-24 overflow-hidden rounded-full bg-border">
-                    <span
-                      className="h-full rounded-full transition-all"
-                      style={{
-                        width: `${(completed / steps.length) * 100}%`,
-                        background: active.color,
-                      }}
-                    />
-                  </span>
-                </div>
-                <p className="font-mono text-[10px] uppercase tracking-[.18em] text-muted-foreground">
-                  Step {index + 1} / {steps.length}
-                </p>
-              </div>
-
-              <h2 className="mt-6 text-3xl font-black tracking-[-.05em]">
-                {allDone ? "You're set up." : "Start here"}
-              </h2>
-              <p className="mt-2 text-sm text-muted-foreground">
-                {allDone
-                  ? "Everything on the setup list is done. Keep creating whenever you're ready."
-                  : "Optional setup you can finish whenever you want. Nothing here blocks the content engine."}
-              </p>
-
-              <div className="mt-6 space-y-2">
-                {steps.map((step, position) => (
-                  <Link
-                    key={step.key}
-                    to={step.to}
-                    onClick={() => dismiss(false)}
-                    onFocus={() => setIndex(position)}
-                    onMouseEnter={() => setIndex(position)}
-                    className="flex min-h-16 items-center gap-4 rounded-2xl border px-4 transition"
-                    style={{
-                      background: step.done ? step.soft : "transparent",
-                      borderColor: step.done ? step.color : "var(--border)",
-                    }}
-                  >
-                    <span
-                      className="grid size-10 shrink-0 place-items-center rounded-xl font-mono text-xs font-bold"
-                      style={{ background: step.soft, color: step.color }}
-                    >
-                      {String(position + 1).padStart(2, "0")}
-                    </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-extrabold">{step.title}</span>
-                      <span className="block text-xs text-muted-foreground">{step.detail}</span>
-                    </span>
-                    {step.done ? (
-                      <Check className="size-5 shrink-0" style={{ color: step.color }} />
-                    ) : (
-                      <ArrowRight className="size-4 shrink-0 text-muted-foreground" />
-                    )}
-                  </Link>
-                ))}
-              </div>
-
-              <div className="mt-6 flex items-center justify-between gap-3">
-                <button
-                  onClick={() => dismiss(true)}
-                  className="min-h-11 rounded-full px-4 text-sm font-bold text-muted-foreground hover:bg-spotlight-soft"
-                >
-                  Hide this checklist
-                </button>
-                <button
-                  onClick={() => dismiss(false)}
-                  className="flex min-h-11 items-center gap-2 rounded-full bg-ink px-5 text-sm font-bold text-white"
-                >
-                  Close <ArrowRight className="size-4" />
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
-
-      {!open && !hidden ? (
-        <motion.button
-          onClick={() => setOpen(true)}
-          initial={reduce ? false : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          whileHover={reduce ? undefined : { scale: 1.03 }}
-          whileTap={reduce ? undefined : { scale: 0.97 }}
-          className="fixed bottom-24 right-4 z-40 flex min-h-12 items-center gap-2.5 rounded-full border bg-white px-4 text-sm font-bold shadow-[0_20px_60px_-30px_rgba(31,35,40,.8)] lg:bottom-6"
-          style={{ borderColor: allDone ? "var(--evergreen)" : nextStep.color }}
+    <Dialog.Root open={open} onOpenChange={setOpen}>
+      <Dialog.Trigger asChild>
+        <button
+          className="studio-setup-button"
+          aria-label={`Workspace setup, ${completed} of ${steps.length} complete`}
         >
-          <span className="relative grid size-6 place-items-center">
-            {!allDone && !reduce ? (
-              <motion.span
-                className="absolute inset-0 rounded-full"
-                style={{ background: nextStep.color }}
-                animate={{ opacity: [0.35, 0, 0.35], scale: [1, 1.75, 1] }}
-                transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-              />
-            ) : null}
+          <ListChecks className="size-4" />
+          <span className="hidden sm:inline">Setup</span>
+          <span className="text-xs text-muted-foreground">
+            {completed}/{steps.length}
+          </span>
+        </button>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay className="studio-app studio-navigation-backdrop" />
+        <Dialog.Content className="studio-app studio-setup-dialog">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <Dialog.Title className="text-2xl font-bold">
+                {allDone ? "You're set up." : "Make your Studio yours."}
+              </Dialog.Title>
+              <Dialog.Description className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                {completed} of {steps.length} setup steps complete. Finish these whenever you’re
+                ready.
+              </Dialog.Description>
+            </div>
+            <Dialog.Close asChild>
+              <button className="studio-icon-button" aria-label="Close setup">
+                <X className="size-4" />
+              </button>
+            </Dialog.Close>
+          </div>
+          <div
+            className="my-5 h-1.5 overflow-hidden rounded bg-muted"
+            role="progressbar"
+            aria-label="Workspace setup"
+            aria-valuenow={completed}
+            aria-valuemin={0}
+            aria-valuemax={steps.length}
+          >
             <span
-              className="relative grid size-6 place-items-center rounded-full"
-              style={{
-                background: allDone ? "var(--evergreen-soft)" : nextStep.soft,
-                color: allDone ? "var(--evergreen)" : nextStep.color,
-              }}
-            >
-              {allDone ? <Check className="size-3.5" /> : <Sparkles className="size-3.5" />}
-            </span>
-          </span>
-          <span className="text-left leading-tight">
-            <span className="block">{allDone ? "Setup complete" : nextStep.title}</span>
-            <span className="block font-mono text-[9px] uppercase tracking-[.14em] text-muted-foreground">
-              {completed}/{steps.length} done
-            </span>
-          </span>
-          <span className="flex gap-1">
-            {steps.map((step) => (
-              <span
+              className="block h-full w-full origin-left bg-system"
+              style={{ transform: `scaleX(${completed / steps.length})` }}
+            />
+          </div>
+          <div className="space-y-2">
+            {steps.map((step, position) => (
+              <Link
                 key={step.key}
-                className="size-1.5 rounded-full transition-colors"
-                style={{ background: step.done ? step.color : "var(--border)" }}
-              />
+                to={step.to}
+                onClick={() => dismiss(false)}
+                className="flex min-h-16 items-center gap-3 rounded-lg border border-border p-3 hover:bg-mist"
+              >
+                <span
+                  className="grid size-9 shrink-0 place-items-center rounded-lg text-xs font-bold"
+                  style={{ background: step.soft, color: "var(--ink)" }}
+                >
+                  {step.done ? (
+                    <Check className="size-4" aria-label="Complete" />
+                  ) : (
+                    String(position + 1).padStart(2, "0")
+                  )}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-sm font-bold">{step.title}</span>
+                  <span className="mt-1 block text-xs text-muted-foreground">{step.detail}</span>
+                </span>
+                <ArrowRight className="size-4 shrink-0 text-muted-foreground" />
+              </Link>
             ))}
-          </span>
-        </motion.button>
-      ) : null}
-
-    </>
+          </div>
+          <button
+            onClick={() => dismiss(true)}
+            className="mt-5 min-h-11 text-xs font-semibold text-muted-foreground underline underline-offset-4"
+          >
+            Hide this checklist
+          </button>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }

@@ -1,0 +1,66 @@
+{
+  "url": "http://127.0.0.1:4177/?view=assistant&state=populated&controls=0",
+  "timestamp": "2026-09-14T18:45:35.718Z",
+  "overallTier": "S",
+  "overallScore": 88,
+  "desktop": {
+    "tier": "S",
+    "sections": {
+      "animations": {
+        "tier": "S",
+        "score": 99,
+        "count": 4
+      },
+      "thrashing": {
+        "tier": "A",
+        "score": 80
+      },
+      "gpu": {
+        "tier": "S",
+        "score": 100
+      }
+    }
+  },
+  "mobile": {
+    "tier": "S",
+    "sections": {
+      "animations": {
+        "tier": "S",
+        "score": 91,
+        "count": 6
+      },
+      "thrashing": {
+        "tier": "A",
+        "score": 80
+      },
+      "gpu": {
+        "tier": "S",
+        "score": 100
+      }
+    }
+  },
+  "threshold": null,
+  "pass": null,
+  "findingCounts": {
+    "critical": 0,
+    "high": 0,
+    "low": 2
+  },
+  "findings": [
+    {
+      "severity": "low",
+      "title": "Mount thrashing",
+      "recommendation": "Measure all initial values in a single read pass before writing any styles. Use requestAnimationFrame to separate the read and write phases.",
+      "viewport": "desktop",
+      "section": "thrashing"
+    },
+    {
+      "severity": "low",
+      "title": "Mount thrashing",
+      "recommendation": "Measure all initial values in a single read pass before writing any styles. Use requestAnimationFrame to separate the read and write phases.",
+      "viewport": "mobile",
+      "section": "thrashing"
+    }
+  ],
+  "resultsUrl": null
+}

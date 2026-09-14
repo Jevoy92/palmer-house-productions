@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import { useSiteMotion } from "@/components/site/site-motion";
 import { ArrowRight, Check, Moon, Search, ShoppingBag, Sun } from "lucide-react";
 import { useState } from "react";
 import { PageShell } from "@/components/site/PageShell";
@@ -11,7 +12,6 @@ import raquel from "@/assets/pal-headshots/raquel.png";
 import ryder from "@/assets/pal-headshots/ryder.png";
 import samira from "@/assets/pal-headshots/samira.png";
 import silas from "@/assets/pal-headshots/silas.png";
-import guidedLanes from "@/assets/studio-visuals/guided-lanes.png";
 import { cartStore, useCart } from "@/lib/cart-store";
 import { PAL_LANES, recommendLane, type PalLane } from "@/lib/dream-suite";
 import { PAL_GROUPS } from "@/lib/pricing-catalog";
@@ -36,9 +36,40 @@ const headshots: Record<string, string> = {
   silas,
 };
 
+const LANE_GUIDES = [
+  {
+    lane: "reel",
+    label: "Reel Pal",
+    name: "Ryder",
+    image: ryder,
+    purpose: "Short-form videos for social channels.",
+  },
+  {
+    lane: "spotlight",
+    label: "Spotlight Pal",
+    name: "Kiana",
+    image: kiana,
+    purpose: "Brand stories, client stories, and offer explainers.",
+  },
+  {
+    lane: "evergreen",
+    label: "Evergreen Pal",
+    name: "Clara",
+    image: clara,
+    purpose: "Educational series and answers to common questions.",
+  },
+  {
+    lane: "system",
+    label: "System Pal",
+    name: "Samira",
+    image: samira,
+    purpose: "Onboarding, training, and process walkthroughs.",
+  },
+] as const;
+
 function FindYourPalPage() {
   const cart = useCart();
-  const reduced = useReducedMotion();
+  const { enter, exit, transition } = useSiteMotion();
   const [problem, setProblem] = useState("");
   const [result, setResult] = useState<PalLane | null>(null);
   const [night, setNight] = useState(false);
@@ -106,7 +137,16 @@ function FindYourPalPage() {
                     key={item}
                     type="button"
                     onClick={() => solve(item)}
-                    className={`min-h-11 rounded-full border px-4 text-sm ${night ? "border-white/20 text-white/70" : "border-border text-muted-foreground"}`}
+                    aria-pressed={problem === item}
+                    className={`min-h-11 rounded-full border px-4 py-2 text-left text-sm font-medium ${
+                      problem === item
+                        ? night
+                          ? "border-white bg-white text-spotlight hover:bg-spotlight-soft"
+                          : "border-spotlight/40 bg-spotlight-soft text-spotlight hover:bg-spotlight-soft"
+                        : night
+                          ? "border-white/20 bg-white/10 text-white/90 hover:border-white/40 hover:bg-white/20"
+                          : "border-border bg-secondary text-ink hover:border-spotlight/30 hover:bg-spotlight-soft"
+                    }`}
                   >
                     {item}
                   </button>
@@ -114,25 +154,30 @@ function FindYourPalPage() {
               </div>
             </div>
 
-            <div
-              className={`relative overflow-hidden rounded-[2.5rem] border ${night ? "border-white/15 bg-ink" : "border-border bg-white"}`}
-            >
-              <motion.img
-                src={guidedLanes}
-                alt="A business owner choosing among four guided Palmer House solution paths"
-                className={`size-full min-h-[30rem] object-cover transition-opacity ${night ? "opacity-75" : "opacity-100"}`}
-                animate={
-                  reduced ? undefined : { transform: ["scale(1)", "scale(1.018)", "scale(1)"] }
-                }
-                transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-              />
-              <p
-                className={`absolute inset-x-6 bottom-5 rounded-2xl p-4 text-center font-mono text-[9px] uppercase tracking-[0.16em] ${night ? "bg-ink/85 text-white/70" : "bg-white/90 text-muted-foreground"}`}
-              >
-                {night
-                  ? "The guides rest. The system keeps working."
-                  : "Your problem chooses the path. A Pal helps you walk it."}
-              </p>
+            <div>
+              <h2 className="max-w-md text-3xl leading-tight">Four ways to put video to work.</h2>
+              <ul className="mt-6 space-y-3">
+                {LANE_GUIDES.map((guide) => (
+                  <li
+                    key={guide.lane}
+                    data-lane={guide.lane}
+                    className="marketing-lane flex items-center gap-4 rounded-2xl border-l-4 border-[var(--lane)] bg-[var(--lane-soft)] p-4 text-ink sm:gap-5"
+                  >
+                    <img
+                      src={guide.image}
+                      alt={guide.name + ", a " + guide.label + " guide"}
+                      width={512}
+                      height={512}
+                      className="size-20 shrink-0 rounded-xl object-cover mix-blend-multiply sm:size-24"
+                    />
+                    <div>
+                      <p className="text-sm font-semibold text-[var(--lane-ink)]">{guide.label}</p>
+                      <h3 className="mt-1 text-xl">{guide.name}</h3>
+                      <p className="mt-1 text-sm leading-relaxed text-ink-soft">{guide.purpose}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
@@ -142,10 +187,10 @@ function FindYourPalPage() {
         {result && (
           <motion.section
             key={result.key}
-            initial={reduced ? { opacity: 0 } : { opacity: 0, clipPath: "inset(0 0 100% 0)" }}
-            animate={{ opacity: 1, clipPath: "inset(0 0 0% 0)" }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.55, ease: "easeOut" }}
+            initial={enter}
+            animate={{ opacity: 1, transform: "translateY(0px)" }}
+            exit={exit}
+            transition={transition}
             className="px-4 py-16"
             style={{ background: result.soft }}
           >

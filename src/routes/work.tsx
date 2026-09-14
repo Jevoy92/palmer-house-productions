@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useSiteMotion } from "@/components/site/site-motion";
 import { ArrowRight, Play } from "lucide-react";
 import { PageShell } from "@/components/site/PageShell";
 import musicVideo from "@/assets/work/MusicVideo.webm";
@@ -67,7 +68,7 @@ const STORIES = [
 ];
 
 function WorkPage() {
-  const reduced = useReducedMotion();
+  const { enter, transition } = useSiteMotion();
   return (
     <PageShell>
       <section className="px-4 pb-16 pt-14">
@@ -86,10 +87,10 @@ function WorkPage() {
           {STORIES.map((story, index) => (
             <motion.article
               key={story.title}
-              initial={reduced ? false : { opacity: 0, transform: "translateY(24px)" }}
+              initial={enter}
               whileInView={{ opacity: 1, transform: "translateY(0px)" }}
               viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.5 }}
+              transition={transition}
               className="grid overflow-hidden rounded-[2rem] border border-border bg-white lg:grid-cols-[1.35fr_0.65fr]"
             >
               <div className={`relative bg-ink ${index % 2 === 1 ? "lg:order-2" : ""}`}>

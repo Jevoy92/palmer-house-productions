@@ -1,0 +1,28 @@
+## Motion Performance Audit · http://127.0.0.1:4177/?view=engine&state=populated&controls=0
+Library: motion · grep: `animate(`, `<motion.`, `useAnimate(`, `useMotionValue(`, `whileInView`, `layout`, `useScroll(`
+Animations: 10 (waapi 10, js 0, scroll 0)
+Overall S (96/100) · desktop S · anim S · thrash S · gpu S · mobile S · anim S · thrash S · gpu S
+
+```
+S █████████████████████████  10 · 100%
+```
+
+### Findings
+Format: `tier · selector · viewports` / props (source) / impact / grep / fix
+
+> 10 animations already S-tier — nice work.
+
+### Anti-Patterns
+
+**[low] Mount thrashing** · desktop+mobile
+- 1 forced recalculation before the first animation frame, likely from measuring elements while setting up animations.
+- fix: Measure all initial values in a single read pass before writing any styles. Use requestAnimationFrame to separate the read and write phases.
+- selectors: `main#studio-content`, `html`
+
+### Top 3
+
+1. Mount thrashing — Measure all initial values in a single read pass before writing any styles. Use requestAnimationFrame to separate the read and write phases.
+2. Off-screen animations — Only run animations when the element is visible. Use IntersectionObserver or a viewport-aware animation trigger like Motion's `inView()` or `whileInView`.
+
+---
+_Runtime only sees what loaded on this URL — continue skill Step 1 for unvisited routes + accessibility._

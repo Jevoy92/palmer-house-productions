@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import { useSiteMotion } from "@/components/site/site-motion";
 import { ArrowRight, Check, Minus, Plus, ShoppingBag, Sparkles } from "lucide-react";
 import { useMemo, useState } from "react";
 import { PageShell } from "@/components/site/PageShell";
@@ -16,7 +17,7 @@ const money = (value: number) => `$${value.toLocaleString()}`;
 
 function ShopPage() {
   const cart = useCart();
-  const reduced = useReducedMotion();
+  const { enter, exit, transition } = useSiteMotion();
   const [lastAdded, setLastAdded] = useState<string | null>(null);
   const lines = useMemo(() => buildReceiptLines(cart), [cart]);
   const subtotal = cartSubtotal(lines);
@@ -93,16 +94,16 @@ function ShopPage() {
             </Link>
           </div>
           <div className="grid gap-5 md:grid-cols-2">
-            {starters.map(({ group, item }, index) => {
+            {starters.map(({ group, item }) => {
               const qty = cart.selected[item.id] ?? 0;
               const price = computeItemPrice(item, cart.counts[item.id]);
               return (
                 <motion.article
                   key={group.id}
-                  initial={reduced ? false : { opacity: 0, transform: "translateY(18px)" }}
+                  initial={enter}
                   whileInView={{ opacity: 1, transform: "translateY(0px)" }}
                   viewport={{ once: true, amount: 0.2 }}
-                  transition={{ delay: index * 0.06, duration: 0.45 }}
+                  transition={transition}
                   className="group overflow-hidden rounded-[2rem] border border-border bg-white"
                 >
                   <div
@@ -326,9 +327,11 @@ function ShopPage() {
       <AnimatePresence>
         {lastAdded && (
           <motion.div
-            initial={{ opacity: 0, transform: "translateY(20px)" }}
+            initial={enter}
             animate={{ opacity: 1, transform: "translateY(0px)" }}
-            exit={{ opacity: 0, transform: "translateY(20px)" }}
+            exit={exit}
+            transition={transition}
+            role="status"
             className="fixed bottom-24 left-1/2 z-40 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 rounded-2xl border border-border bg-white p-4 shadow-soft sm:bottom-6"
           >
             <div className="flex items-center gap-3">
@@ -342,7 +345,7 @@ function ShopPage() {
               <button
                 type="button"
                 onClick={() => setLastAdded(null)}
-                className="text-xs font-semibold text-muted-foreground"
+                className="min-h-11 rounded-lg px-3 text-xs font-semibold text-muted-foreground hover:bg-secondary"
               >
                 Close
               </button>

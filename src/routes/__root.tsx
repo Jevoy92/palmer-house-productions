@@ -11,6 +11,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import satoshiFont from "../assets/fonts/Satoshi-Variable.woff2?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SITE_MAINTENANCE, isAlwaysOnPath } from "../lib/site-mode";
 import { ComingSoon } from "../components/site/ComingSoon";
@@ -110,11 +111,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
     ],
     links: [
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap",
+        rel: "preload",
+        as: "font",
+        href: satoshiFont,
+        type: "font/woff2",
+        crossOrigin: "anonymous",
       },
       {
         rel: "stylesheet",

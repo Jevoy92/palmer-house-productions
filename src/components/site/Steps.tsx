@@ -1,11 +1,11 @@
-import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
+import { motion } from "motion/react";
+import { useSiteMotion } from "./site-motion";
 import { Lightbulb, Map, Clapperboard, Rocket } from "lucide-react";
 
-import clara from "@/assets/pal-headshots/clara.png";
-import samira from "@/assets/pal-headshots/samira.png";
-import kiana from "@/assets/pal-headshots/kiana.png";
-import ryder from "@/assets/pal-headshots/ryder.png";
+import clara from "@/assets/pal-headshots/clara-192.webp";
+import samira from "@/assets/pal-headshots/samira-192.webp";
+import kiana from "@/assets/pal-headshots/kiana-192.webp";
+import ryder from "@/assets/pal-headshots/ryder-192.webp";
 
 const steps = [
   {
@@ -73,33 +73,17 @@ const laneStyles: Record<string, { bg: string; text: string; ring: string; dot: 
   },
 };
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.1 } },
-};
-
-const item = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 260, damping: 26 } },
-};
-
 export function Steps() {
-  const reduce = useReducedMotion();
-  const trackRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: trackRef,
-    offset: ["start 80%", "end 60%"],
-  });
-  const lineScale = useSpring(scrollYProgress, { stiffness: 90, damping: 24 });
+  const { enter, transition } = useSiteMotion();
 
   return (
     <section className="overflow-hidden px-4 py-20">
       <div className="mx-auto max-w-6xl">
         <motion.div
-          initial={reduce ? false : { opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={enter}
+          whileInView={{ opacity: 1, transform: "translateY(0px)" }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={transition}
         >
           <p className="font-mono text-xs tracking-widest text-muted-foreground uppercase">
             The Palmer House way
@@ -113,47 +97,31 @@ export function Steps() {
           </p>
         </motion.div>
 
-        <div ref={trackRef} className="relative mt-14">
-          {/* animated progress track */}
-          <div className="absolute top-[92px] right-0 left-0 hidden h-px bg-border lg:block">
-            <motion.div
-              className="bg-spotlight h-px origin-left"
-              style={{ scaleX: reduce ? 1 : lineScale }}
-            />
-          </div>
-
-          <motion.div
-            variants={container}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true, margin: "-80px" }}
-            className="relative grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
-          >
+        <div className="relative mt-14">
+          <div
+            aria-hidden="true"
+            className="absolute top-[92px] right-0 left-0 hidden h-px bg-spotlight/30 lg:block"
+          />
+          <div className="relative grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((s) => {
               const lane = laneStyles[s.lane];
               const Icon = s.icon;
               return (
-                <motion.article
+                <article
                   key={s.n}
-                  variants={reduce ? undefined : item}
-                  whileHover={reduce ? undefined : { y: -8 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 24 }}
                   className={`group surface-card relative overflow-hidden border p-6 transition-colors ${lane.ring}`}
                 >
                   <div
                     className={`relative flex h-28 items-center justify-center rounded-xl ${lane.bg}`}
                   >
-                    <motion.img
+                    <img
                       src={s.pal}
                       alt={`${s.palName}, guide for ${s.title}`}
                       loading="lazy"
+                      decoding="async"
+                      width={96}
+                      height={96}
                       className="size-24 rounded-full object-cover drop-shadow-sm"
-                      animate={reduce ? undefined : { y: [0, -6, 0] }}
-                      transition={{
-                        duration: 4 + Number(s.n) * 0.4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
                     />
                     <span
                       className={`absolute top-3 left-3 inline-flex h-8 w-8 items-center justify-center rounded-full bg-background text-xs font-bold ${lane.text}`}
@@ -173,18 +141,14 @@ export function Steps() {
                   <h3 className="mt-2 text-xl">{s.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
 
-                  <motion.span
+                  <span
                     aria-hidden="true"
                     className={`absolute bottom-0 left-0 h-1 w-full origin-left ${lane.dot}`}
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
                   />
-                </motion.article>
+                </article>
               );
             })}
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

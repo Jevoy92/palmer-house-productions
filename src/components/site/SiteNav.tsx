@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { ChevronDown, Menu, ShoppingBag, X } from "lucide-react";
-import { useState } from "react";
-import phMark from "@/assets/php-mark.png.asset.json";
+import { useEffect, useId, useRef, useState } from "react";
+import { useSiteMotion } from "./site-motion";
+import phMark from "@/assets/php-mark-108.webp";
 import { cartItemCount, useCart } from "@/lib/cart-store";
 
 const services = [
@@ -53,26 +54,72 @@ function BrandFace() {
 }
 
 function Dropdown({ label, items }: { label: string; items: NavItem[] }) {
+  const [open, setOpen] = useState(false);
+  const panelId = useId();
+  const rootRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const closeOutside = (event: PointerEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    document.addEventListener("pointerdown", closeOutside);
+    return () => document.removeEventListener("pointerdown", closeOutside);
+  }, [open]);
+
   return (
-    <div className="group relative">
-      <button className="flex min-h-11 items-center gap-1 rounded-full px-3.5 text-sm font-medium transition-colors hover:bg-secondary focus-visible:bg-secondary focus-visible:outline-none">
+    <div
+      ref={rootRef}
+      className="relative"
+      onPointerEnter={(event) => {
+        if (event.pointerType === "mouse") setOpen(true);
+      }}
+      onPointerLeave={() => {
+        if (!rootRef.current?.contains(document.activeElement)) setOpen(false);
+      }}
+      onBlur={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
+      }}
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && open) {
+          event.preventDefault();
+          setOpen(false);
+          triggerRef.current?.focus();
+        }
+      }}
+    >
+      <button
+        ref={triggerRef}
+        type="button"
+        aria-expanded={open}
+        aria-controls={panelId}
+        onClick={() => setOpen((value) => !value)}
+        className="flex min-h-11 items-center gap-1 rounded-full px-3.5 text-sm font-medium transition-colors hover:bg-secondary focus-visible:bg-secondary"
+      >
         {label}{" "}
-        <ChevronDown className="size-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" />
+        <ChevronDown
+          className={`size-3.5 transition-transform motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
+          aria-hidden="true"
+        />
       </button>
-      <div className="invisible absolute left-0 top-[calc(100%+.55rem)] w-60 translate-y-2 rounded-3xl border border-border bg-white p-2 opacity-0 shadow-soft transition-all duration-200 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:visible group-focus-within:translate-y-0 group-focus-within:opacity-100">
-        {items.map((item) => (
-          <Link
-            key={item.to}
-            to={item.to}
-            className="block rounded-2xl px-4 py-3 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:bg-secondary focus-visible:text-foreground focus-visible:outline-none"
-            activeProps={{
-              className:
-                "block rounded-2xl bg-secondary px-4 py-3 text-sm font-semibold text-foreground",
-            }}
-          >
-            {item.label}
-          </Link>
-        ))}
+      <div id={panelId} hidden={!open} className="absolute left-0 top-full w-60 pt-2">
+        <div className="rounded-3xl border border-border bg-white p-2 shadow-soft">
+          {items.map((item) => (
+            <Link
+              key={item.to}
+              to={item.to}
+              onClick={() => setOpen(false)}
+              className="block rounded-2xl px-4 py-3 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground focus-visible:bg-secondary focus-visible:text-foreground"
+              activeProps={{
+                className:
+                  "block rounded-2xl bg-secondary px-4 py-3 text-sm font-semibold text-foreground",
+              }}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -80,16 +127,29 @@ function Dropdown({ label, items }: { label: string; items: NavItem[] }) {
 
 export function SiteNav() {
   const [open, setOpen] = useState(false);
-  const reduce = useReducedMotion();
+  const { enter, exit, transition } = useSiteMotion();
+  const menuId = useId();
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [open]);
   const cart = useCart();
   const cartCount = cartItemCount(cart);
 
   return (
     <>
       <motion.header
-        initial={reduce ? false : { opacity: 0, transform: "translateY(-14px)" }}
+        initial={enter}
         animate={{ opacity: 1, transform: "translateY(0px)" }}
-        transition={{ duration: 0.55, ease: "easeOut" }}
+        transition={transition}
         className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-5"
       >
         <nav
@@ -101,8 +161,10 @@ export function SiteNav() {
             className="flex min-h-11 min-w-0 items-center gap-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight/40"
           >
             <img
-              src={phMark.url}
+              src={phMark}
               alt="Palmer House Productions"
+              width={36}
+              height={36}
               className="size-9 shrink-0 object-contain"
               loading="eager"
             />
@@ -132,7 +194,7 @@ export function SiteNav() {
             <Dropdown label="More" items={more} />
             <Link
               to="/studio"
-              className="ml-1 flex min-h-11 items-center rounded-full bg-system-soft px-4 text-sm font-semibold text-system transition-transform hover:scale-[1.03]"
+              className="ml-1 flex min-h-11 items-center rounded-full bg-system-soft px-4 text-sm font-semibold text-[#086e66] transition-transform hover:scale-[1.03]"
             >
               Studio
             </Link>
@@ -170,6 +232,8 @@ export function SiteNav() {
           </Link>
           <button
             type="button"
+            ref={menuButtonRef}
+            aria-controls={menuId}
             onClick={() => setOpen((value) => !value)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
@@ -185,39 +249,25 @@ export function SiteNav() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={
-              reduce ? { opacity: 0 } : { opacity: 0, clipPath: "inset(0 0 100% 0 round 2rem)" }
-            }
-            animate={{ opacity: 1, clipPath: "inset(0 0 0% 0 round 2rem)" }}
-            exit={
-              reduce ? { opacity: 0 } : { opacity: 0, clipPath: "inset(0 0 100% 0 round 2rem)" }
-            }
-            transition={{ duration: 0.35, ease: "easeOut" }}
+            id={menuId}
+            initial={enter}
+            animate={{ opacity: 1, transform: "translateY(0px)" }}
+            exit={exit}
+            transition={transition}
             className="fixed inset-x-3 bottom-3 top-[5.4rem] z-40 overflow-y-auto rounded-[2rem] border border-border bg-white p-6 shadow-soft lg:hidden"
           >
-            <MobileGroup label="Services" items={services} close={() => setOpen(false)} delay={0} />
-            <MobileGroup
-              label="Meet the Pals"
-              items={pals}
-              close={() => setOpen(false)}
-              delay={0.04}
-            />
+            <MobileGroup label="Services" items={services} close={() => setOpen(false)} />
+            <MobileGroup label="Meet the Pals" items={pals} close={() => setOpen(false)} />
             <MobileGroup
               label="Explore"
               items={[{ label: "Our Process", to: "/process" }, ...more]}
               close={() => setOpen(false)}
-              delay={0.08}
             />
-            <motion.div
-              initial={reduce ? false : { opacity: 0, transform: "translateY(12px)" }}
-              animate={{ opacity: 1, transform: "translateY(0px)" }}
-              transition={{ delay: 0.14 }}
-              className="mt-8 grid gap-3 sm:grid-cols-2"
-            >
+            <div className="mt-8 grid gap-3 sm:grid-cols-2">
               <Link
                 to="/studio"
                 onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center justify-center rounded-full bg-system-soft px-5 text-sm font-semibold text-system sm:col-span-2"
+                className="flex min-h-12 items-center justify-center rounded-full bg-system-soft px-5 text-sm font-semibold text-[#086e66] sm:col-span-2"
               >
                 Open Palmer House Studio
               </Link>
@@ -235,7 +285,7 @@ export function SiteNav() {
               >
                 Book a Discovery Call
               </Link>
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -247,20 +297,13 @@ function MobileGroup({
   label,
   items,
   close,
-  delay,
 }: {
   label: string;
   items: NavItem[];
   close: () => void;
-  delay: number;
 }) {
   return (
-    <motion.section
-      initial={{ opacity: 0, transform: "translateY(14px)" }}
-      animate={{ opacity: 1, transform: "translateY(0px)" }}
-      transition={{ delay }}
-      className="border-b border-border py-5 first:pt-0"
-    >
+    <section className="border-b border-border py-5 first:pt-0">
       <p className="font-mono text-[9px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
         {label}
       </p>
@@ -276,6 +319,6 @@ function MobileGroup({
           </Link>
         ))}
       </div>
-    </motion.section>
+    </section>
   );
 }

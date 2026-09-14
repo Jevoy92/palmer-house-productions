@@ -1,0 +1,16 @@
+## Motion Performance Audit · http://127.0.0.1:5175/
+Library: motion · grep: `animate(`, `<motion.`, `useAnimate(`, `useMotionValue(`, `whileInView`, `layout`, `useScroll(`
+Animations: 20 (waapi 16, js 0, scroll 4)
+Overall S (95/100) · desktop S · anim S · scroll S · gpu S · mobile S · anim S · scroll S · gpu S
+
+```
+S █████████████████████████  20 · 100%
+```
+
+### Findings
+Format: `tier · selector · viewports` / props (source) / impact / grep / fix
+
+> 20 animations already S-tier — nice work.
+
+---
+_Runtime only sees what loaded on this URL — continue skill Step 1 for unvisited routes + accessibility._

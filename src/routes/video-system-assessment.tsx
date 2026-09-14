@@ -299,8 +299,8 @@ function AssessmentPage() {
           </div>
           <div className="mb-8 h-2 overflow-hidden rounded-full bg-secondary">
             <div
-              className="h-full rounded-full transition-all"
-              style={{ width: `${percent}%`, backgroundColor: "var(--spotlight)" }}
+              className="h-full w-full origin-left rounded-full transition-transform duration-150 motion-reduce:transition-none"
+              style={{ transform: `scaleX(${percent / 100})`, backgroundColor: "var(--spotlight)" }}
             />
           </div>
 

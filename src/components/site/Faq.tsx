@@ -35,19 +35,21 @@ const faqs = [
 
 export function Faq() {
   return (
-    <section className="px-4 py-20">
+    <section className="marketing-lane px-4 py-16 sm:py-20" data-lane="spotlight">
       <div className="mx-auto max-w-3xl">
-        <h2 className="text-center text-[clamp(1.9rem,4.5vw,3rem)]">FAQ</h2>
-        <div className="mt-10 space-y-3">
+        <h2 className="text-[clamp(1.9rem,4.5vw,3rem)]">FAQ</h2>
+        <div className="marketing-faq mt-6">
           {faqs.map((f) => (
-            <details key={f.q} className="surface-card group p-6">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-lg font-semibold">
+            <details key={f.q} className="marketing-faq-item py-3 sm:py-4">
+              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-5 font-display text-base font-bold sm:text-lg">
                 {f.q}
-                <span className="text-gradient-brand text-2xl transition-transform group-open:rotate-45">
+                <span className="marketing-faq-toggle" aria-hidden="true">
                   +
                 </span>
               </summary>
-              <p className="mt-4 leading-relaxed text-muted-foreground">{f.a}</p>
+              <p className="mt-3 max-w-2xl pr-9 text-sm leading-relaxed text-ink-soft sm:text-base">
+                {f.a}
+              </p>
             </details>
           ))}
         </div>

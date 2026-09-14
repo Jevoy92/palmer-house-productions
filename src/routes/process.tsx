@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check } from "lucide-react";
 import { AwakeningSequence } from "@/components/process/AwakeningSequence";
 import { PageShell } from "@/components/site/PageShell";
-import productionCycle from "@/assets/studio-visuals/production-cycle.png";
+import { LaneTag } from "@/components/site/LaneTag";
 
 const steps = [
   {
@@ -78,13 +78,17 @@ function ProcessPage() {
                 Listen first. Build the system. Then turn on the cameras.
               </h2>
             </div>
-            <figure className="overflow-hidden rounded-[2rem] border border-border bg-white">
-              <img
-                src={productionCycle}
-                alt="A visual production cycle from script through filming, storage, publishing, and calendar planning"
-                className="aspect-[16/10] w-full object-cover"
-              />
-            </figure>
+            <aside className="rounded-3xl bg-cream p-6 sm:p-8">
+              <h3 className="max-w-xs text-2xl font-bold leading-tight">
+                Four lanes. One shared process.
+              </h3>
+              <div className="mt-5 flex flex-wrap gap-2">
+                <LaneTag lane="reel">Reel Pal</LaneTag>
+                <LaneTag lane="spotlight">Spotlight Pal</LaneTag>
+                <LaneTag lane="evergreen">Evergreen Pal</LaneTag>
+                <LaneTag lane="system">System Pal</LaneTag>
+              </div>
+            </aside>
           </div>
 
           <ol className="mt-16 border-t border-border">
@@ -104,7 +108,7 @@ function ProcessPage() {
         </div>
       </section>
 
-      <section className="bg-white px-4 py-24 sm:py-32">
+      <section className="bg-cream/60 px-4 py-16 sm:py-20">
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div>
             <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
@@ -118,16 +122,19 @@ function ProcessPage() {
               working is the real job.
             </p>
           </div>
-          <ul className="grid gap-3 sm:grid-cols-2">
+          <ul
+            className="marketing-lane divide-y divide-border border-y border-border"
+            data-lane="system"
+          >
             {promises.map((promise) => (
-              <li
-                key={promise}
-                className="flex gap-3 rounded-3xl border border-border bg-white p-5 shadow-soft"
-              >
-                <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-system text-white">
-                  <Check className="size-3.5" strokeWidth={3} />
+              <li key={promise} className="flex items-start gap-4 py-5 sm:gap-5 sm:py-6">
+                <span
+                  className="grid size-8 shrink-0 place-items-center rounded-lg bg-[var(--lane-soft)] text-[var(--lane-ink)]"
+                  aria-hidden="true"
+                >
+                  <Check className="size-4" strokeWidth={2.5} />
                 </span>
-                <span className="text-sm leading-relaxed">{promise}</span>
+                <span className="pt-0.5 text-base leading-relaxed text-ink-soft">{promise}</span>
               </li>
             ))}
           </ul>

@@ -1114,57 +1114,11 @@ function StudioShell({ view, children }: { view: StudioView; children: ReactNode
             <StudioNavLink key={item.view} item={item} active={isNavActive(view, item.view)} />
           ))}
         </nav>
-        <div className="relative mt-auto">
-          <AnimatePresence>
-            {accountOpen ? (
-              <motion.div
-                initial={reduce ? { opacity: 0 } : { opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 8 }}
-                className="absolute bottom-[4.5rem] left-0 right-0 rounded-[1.15rem] border border-border bg-white p-2 shadow-[0_28px_80px_-40px_rgba(31,35,40,.75)]"
-              >
-                <Link
-                  to="/studio/settings"
-                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-spotlight-soft"
-                >
-                  <CircleUserRound className="size-4" /> Profile & settings
-                </Link>
-                <Link
-                  to="/studio/billing"
-                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-spotlight-soft"
-                >
-                  <CreditCard className="size-4" /> Usage & billing
-                </Link>
-                <Link
-                  to="/"
-                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-system-soft"
-                >
-                  <ExternalLink className="size-4" /> Visit Palmer House website
-                </Link>
-                <button
-                  onClick={() => void signOut()}
-                  className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-bold text-muted-foreground hover:bg-spotlight-soft"
-                >
-                  <LogOut className="size-4" /> Sign out
-                </button>
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
-          <button
-            onClick={() => setAccountOpen((current) => !current)}
-            className="flex min-h-14 w-full items-center gap-3 rounded-xl border border-border p-2 text-left hover:border-spotlight"
-          >
-            <span className="grid size-9 shrink-0 place-items-center rounded-full bg-spotlight text-xs font-black text-white">
-              {memberName.slice(0, 1).toUpperCase()}
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block truncate text-xs font-extrabold">{memberName}</span>
-              <span className="mt-0.5 block truncate text-[10px] text-muted-foreground">
-                {subscription?.plan || "member"} · {workspace?.name}
-              </span>
-            </span>
-            <ChevronRight className={`size-3.5 transition ${accountOpen ? "rotate-90" : ""}`} />
-          </button>
+        <div className="mt-auto rounded-xl border border-border p-3">
+          <p className="truncate text-xs font-extrabold">{workspace?.name}</p>
+          <p className="mt-0.5 truncate text-[10px] text-muted-foreground">
+            {memberName} · {subscription?.plan || "member"}
+          </p>
         </div>
       </aside>
       <header className="sticky top-0 z-30 flex min-h-16 items-center border-b border-border bg-white px-4 lg:ml-[15.5rem] lg:px-7">

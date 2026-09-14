@@ -1269,6 +1269,7 @@ function Dashboard() {
       (a, b) => Date.parse(b.updated_at || b.created_at) - Date.parse(a.updated_at || a.created_at),
     )
     .slice(0, 3);
+  const brandIncomplete = (brand?.completion || 0) < 60;
   return (
     <div className="mx-auto max-w-[1240px]">
       <header className="flex flex-wrap items-end justify-between gap-5">
@@ -1280,10 +1281,12 @@ function Dashboard() {
               day: "numeric",
             })}
           </p>
-          <h1 className="mt-3 text-[clamp(2rem,3vw,2.75rem)] font-extrabold leading-tight tracking-[-.045em]">
-            Good to see you, {firstName}.
+          <h1 className="mt-3 text-[clamp(2.5rem,4.4vw,3.75rem)] font-extrabold leading-[0.95] tracking-[-.05em]">
+            Good to see you,
+            <br />
+            {firstName}.
           </h1>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+          <p className="mt-4 max-w-md text-base leading-relaxed text-muted-foreground">
             {reviewCount
               ? `${reviewCount} ${reviewCount === 1 ? "draft is" : "drafts are"} ready for your review.`
               : activeCampaigns.length
@@ -1291,147 +1294,95 @@ function Dashboard() {
                 : "Start with an idea. Build it into something useful."}
           </p>
         </div>
-        <Link to="/studio/create" className="primary-action">
-          <Plus className="size-4" /> Create a campaign
+        <Link to="/studio/conversations" search={{ prompt: newConversationPrompt }} className="primary-action">
+          <Plus className="size-4" /> New conversation
         </Link>
       </header>
+
       <ConversationInvite conversations={conversations} preferredPal={settings?.preferred_pal} />
-      {reviewCount > 0 || (brand?.completion || 0) < 60 ? (
-        <section
-          aria-label="Needs your attention"
-          className="mt-7 flex flex-col divide-y divide-border overflow-hidden rounded-xl border border-border bg-white sm:flex-row sm:divide-x sm:divide-y-0"
-        >
-          {reviewCount > 0 ? (
-            <Link
-              to="/studio/approvals"
-              className="group flex flex-1 items-center gap-3 px-5 py-4 hover:bg-reel-soft"
-            >
-              <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-reel-soft text-reel">
-                <CheckSquare2 className="size-4" />
-              </span>
-              <span className="flex-1 text-sm font-semibold">
-                Review {reviewCount} {reviewCount === 1 ? "draft" : "drafts"}
-              </span>
-              <ArrowRight className="size-4" />
-            </Link>
-          ) : null}
-          {(brand?.completion || 0) < 60 ? (
-            <Link
-              to="/studio/brand"
-              className="group flex flex-1 items-center gap-3 px-5 py-4 hover:bg-system-soft"
-            >
-              <span className="grid size-9 shrink-0 place-items-center rounded-lg bg-system-soft text-system">
-                <Gauge className="size-4" />
-              </span>
-              <span className="flex-1 text-sm font-semibold">
-                Complete your Brand DNA
-                <span className="mt-0.5 block text-xs font-normal text-muted-foreground">
-                  Add your voice, audience, and offers.
-                </span>
-              </span>
-              <ArrowRight className="size-4" />
-            </Link>
-          ) : null}
-        </section>
-      ) : null}
-      <div className="studio-home-grid mt-10">
-        <section className="min-w-0">
-          <div className="flex items-center justify-between gap-4 border-b border-border pb-4">
-            <h2 className="studio-section-title">Recent campaigns</h2>
-            <Link
-              to="/studio/campaigns"
-              className="text-xs font-semibold underline underline-offset-4"
-            >
-              All campaigns
-            </Link>
-          </div>
-          {activeCampaigns.length ? (
-            activeCampaigns.slice(0, 4).map((campaign) => {
-              const lane = lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
-              const outputs = assets.filter((asset) => asset.campaign_id === campaign.id);
-              const ready = outputs.filter((asset) => asset.status === "approved").length;
-              return (
-                <Link
-                  key={campaign.id}
-                  to="/studio/campaigns/$campaignId"
-                  params={{ campaignId: campaign.id }}
-                  className="studio-home-row group"
-                >
-                  <span
-                    className="grid size-11 shrink-0 place-items-center rounded-xl"
-                    style={{ background: lane.soft }}
-                  >
-                    <FolderOpen className="size-5" style={{ color: lane.ink }} />
-                  </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-[15px] font-bold">{campaign.title}</span>
-                    <span className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                      <span className="studio-lane-label">
-                        <span className="size-1.5 rounded-full" style={{ background: lane.ink }} />
-                        {lane.label}
-                      </span>
-                      <span>
-                        {ready} of {outputs.length} approved
-                      </span>
-                    </span>
-                  </span>
-                  <ArrowRight className="size-4 shrink-0 text-muted-foreground" />
-                </Link>
-              );
-            })
-          ) : (
-            <div className="my-5 rounded-xl border border-dashed border-border bg-white p-7">
-              <FolderOpen className="size-6 text-system" />
-              <h3 className="mt-4 text-lg font-bold">Your first campaign starts here.</h3>
-              <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
-                Bring a customer question, a story, or a rough idea. Choose a goal and turn it into
-                drafts.
-              </p>
-              <Link to="/studio/create" className="secondary-action mt-5">
-                Build your first campaign <ArrowRight className="size-4" />
-              </Link>
-            </div>
-          )}
-        </section>
-        <aside className="min-w-0 space-y-8">
+
+      <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <div className="min-w-0 space-y-12 lg:col-span-8">
           <section>
-            <div className="flex items-center justify-between border-b border-border pb-4">
-              <h2 className="studio-section-title">Coming up</h2>
+            <div className="mb-6 flex items-center justify-between gap-4 border-b border-border pb-4">
+              <h2 className="studio-section-title">Recent campaigns</h2>
               <Link
-                to="/studio/calendar"
+                to="/studio/campaigns"
                 className="text-xs font-semibold underline underline-offset-4"
               >
-                Calendar
+                All campaigns
               </Link>
             </div>
-            {upcoming.length ? (
-              upcoming.map((item) => (
-                <Link key={item.id} to="/studio/calendar" className="studio-home-row">
-                  <time
-                    dateTime={item.publish_at}
-                    className="grid w-11 shrink-0 place-items-center rounded-lg bg-evergreen-soft py-2 text-xs font-semibold text-evergreen"
-                  >
-                    <span>
-                      {new Date(item.publish_at).toLocaleDateString(undefined, { month: "short" })}
-                    </span>
-                    <span className="text-lg leading-tight">
-                      {new Date(item.publish_at).getDate()}
-                    </span>
-                  </time>
-                  <span className="min-w-0">
-                    <span className="block truncate text-sm font-semibold">{item.title}</span>
-                    <span className="mt-1 block text-xs text-muted-foreground">{item.channel}</span>
-                  </span>
-                </Link>
-              ))
+            {activeCampaigns.length ? (
+              <div className="grid gap-6 sm:grid-cols-2">
+                {activeCampaigns.slice(0, 4).map((campaign) => {
+                  const lane = lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
+                  const outputs = assets.filter((asset) => asset.campaign_id === campaign.id);
+                  const ready = outputs.filter((asset) => asset.status === "approved").length;
+                  const pct = outputs.length ? Math.round((ready / outputs.length) * 100) : 0;
+                  return (
+                    <Link
+                      key={campaign.id}
+                      to="/studio/campaigns/$campaignId"
+                      params={{ campaignId: campaign.id }}
+                      className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-white transition hover:-translate-y-0.5 hover:shadow-lg"
+                    >
+                      <AssetIllustration
+                        kind={campaign.primary_lane || "campaign"}
+                        title={campaign.title}
+                        className="h-32 w-full"
+                      />
+                      <div className="flex flex-1 flex-col p-5">
+                        <span className="studio-lane-label" style={{ color: lane.ink }}>
+                          <span
+                            className="size-1.5 rounded-full"
+                            style={{ background: lane.ink }}
+                          />
+                          {lane.label}
+                        </span>
+                        <h3 className="mt-3 line-clamp-2 text-[17px] font-bold leading-snug tracking-[-.02em]">
+                          {campaign.title}
+                        </h3>
+                        <div className="mt-auto pt-5">
+                          <div className="h-[3px] w-full overflow-hidden rounded-full bg-muted">
+                            <div
+                              className="h-full rounded-full"
+                              style={{ width: `${pct}%`, background: lane.ink }}
+                            />
+                          </div>
+                          <div className="mt-2 flex items-center justify-between font-mono text-[10px] font-bold uppercase tracking-[.12em] text-muted-foreground">
+                            <span>
+                              {ready} of {outputs.length} approved
+                            </span>
+                            <span>{pct}%</span>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
             ) : (
-              <p className="py-5 text-sm leading-relaxed text-muted-foreground">
-                No upcoming dates. Add approved work to your calendar when you’re ready.
-              </p>
+              <div className="rounded-2xl border border-dashed border-border bg-white p-7">
+                <FolderOpen className="size-6 text-system" />
+                <h3 className="mt-4 text-lg font-bold">Your first campaign starts here.</h3>
+                <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
+                  Bring a customer question, a story, or a rough idea. Your Pal turns it into
+                  drafts.
+                </p>
+                <Link
+                  to="/studio/conversations"
+                  search={{ prompt: newConversationPrompt }}
+                  className="secondary-action mt-5"
+                >
+                  Start a conversation <ArrowRight className="size-4" />
+                </Link>
+              </div>
             )}
           </section>
+
           <section>
-            <div className="flex items-center justify-between border-b border-border pb-4">
+            <div className="mb-6 flex items-center justify-between gap-4 border-b border-border pb-4">
               <h2 className="studio-section-title">Approved work</h2>
               <Link
                 to="/studio/library"
@@ -1441,21 +1392,112 @@ function Dashboard() {
               </Link>
             </div>
             {approved.length ? (
-              approved.map((asset) => {
-                const meta = assetKindMeta(asset.kind);
-                return (
-                  <Link key={asset.id} to="/studio/library" className="studio-home-row">
-                    <meta.icon className="size-5 shrink-0 text-evergreen" />
+              <div className="grid gap-4 sm:grid-cols-3">
+                {approved.map((asset) => (
+                  <Link
+                    key={asset.id}
+                    to="/studio/library"
+                    className="group overflow-hidden rounded-2xl border border-border bg-white transition hover:-translate-y-0.5 hover:shadow-lg"
+                  >
+                    <AssetIllustration
+                      kind={asset.kind}
+                      title={asset.title}
+                      className="h-28 w-full"
+                    />
+                    <div className="p-4">
+                      <p className="line-clamp-2 text-sm font-bold leading-snug">{asset.title}</p>
+                      <p className="mt-1.5 font-mono text-[10px] uppercase tracking-[.12em] text-muted-foreground">
+                        {assetKindMeta(asset.kind).label}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                Your approved drafts will appear here.
+              </p>
+            )}
+          </section>
+        </div>
+
+        <aside className="min-w-0 space-y-8 lg:col-span-4">
+          {reviewCount > 0 ? (
+            <Link
+              to="/studio/approvals"
+              className="block rounded-2xl border border-reel/25 bg-reel-soft p-7 transition hover:-translate-y-0.5"
+            >
+              <p className="studio-eyebrow text-reel">Needs you · Review</p>
+              <p className="mt-3 text-lg font-bold leading-snug">
+                {reviewCount} {reviewCount === 1 ? "draft is" : "drafts are"} waiting on your
+                approval.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em]">
+                Open approvals <ArrowRight className="size-3.5" />
+              </span>
+            </Link>
+          ) : null}
+
+          {brandIncomplete ? (
+            <Link
+              to="/studio/brand"
+              className="block rounded-2xl border border-system/25 bg-system-soft p-7 transition hover:-translate-y-0.5"
+            >
+              <p className="studio-eyebrow text-system">Brand DNA · {brand?.completion || 0}%</p>
+              <p className="mt-3 text-sm font-semibold leading-relaxed">
+                Add your voice, audience, and offers so every draft sounds like you.
+              </p>
+              <div className="mt-5 h-[3px] w-full overflow-hidden rounded-full bg-white">
+                <div
+                  className="h-full rounded-full bg-system"
+                  style={{ width: `${brand?.completion || 0}%` }}
+                />
+              </div>
+              <span className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em]">
+                Continue setup <ArrowRight className="size-3.5" />
+              </span>
+            </Link>
+          ) : null}
+
+          <section className="rounded-2xl border border-border bg-white p-7">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="studio-section-title">Coming up</h2>
+              <Link
+                to="/studio/calendar"
+                className="text-xs font-semibold underline underline-offset-4"
+              >
+                Calendar
+              </Link>
+            </div>
+            {upcoming.length ? (
+              <div className="mt-5 space-y-5">
+                {upcoming.map((item) => (
+                  <Link key={item.id} to="/studio/calendar" className="flex items-start gap-4">
+                    <time
+                      dateTime={item.publish_at}
+                      className="grid w-11 shrink-0 place-items-center rounded-lg bg-evergreen-soft py-2 text-[11px] font-semibold text-evergreen"
+                    >
+                      <span>
+                        {new Date(item.publish_at).toLocaleDateString(undefined, {
+                          month: "short",
+                        })}
+                      </span>
+                      <span className="text-lg leading-tight">
+                        {new Date(item.publish_at).getDate()}
+                      </span>
+                    </time>
                     <span className="min-w-0">
-                      <span className="block truncate text-sm font-semibold">{asset.title}</span>
-                      <span className="mt-1 block text-xs text-muted-foreground">{meta.label}</span>
+                      <span className="block truncate text-sm font-semibold">{item.title}</span>
+                      <span className="mt-1 block font-mono text-[10px] uppercase tracking-[.12em] text-muted-foreground">
+                        {item.channel}
+                      </span>
                     </span>
                   </Link>
-                );
-              })
+                ))}
+              </div>
             ) : (
-              <p className="py-5 text-sm leading-relaxed text-muted-foreground">
-                Your approved drafts will appear here.
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                No upcoming dates. Add approved work to your calendar when you’re ready.
               </p>
             )}
           </section>

@@ -83,7 +83,7 @@ import { StudioNotifications } from "./StudioNotifications";
 import { PalAvatar } from "./PalAvatar";
 import { classifyLane } from "@/lib/studio-intelligence";
 import { useGuide } from "./useGuide";
-import { palList } from "@/lib/pal-directory";
+import { palDirectory, palList, resolvePalName } from "@/lib/pal-directory";
 
 import { calculateTier } from "@/lib/studio-tiers";
 
@@ -1601,6 +1601,73 @@ function renderView(view: StudioView, campaignId?: string, conversationId?: stri
     );
   if (view === "billing") return <BillingView />;
   return <Dashboard />;
+}
+
+/**
+ * The first thing on Home: the Pal, and the conversation you were last in.
+ */
+function ConversationInvite({
+  conversations,
+  preferredPal,
+}: {
+  conversations: Tables<"conversations">[];
+  preferredPal?: string | null;
+}) {
+  const latest = conversations.find((item) => !item.archived && !item.is_legacy) || null;
+  const pal = palDirectory[resolvePalName(latest?.pal || preferredPal)];
+  return (
+    <section className="mt-10 overflow-hidden rounded-[1.5rem] border border-border bg-white">
+      <div className="flex flex-col gap-6 p-6 sm:flex-row sm:items-center sm:p-8">
+        <img
+          src={pal.headshot}
+          alt={`${pal.name}, your Palmer House guide`}
+          className="size-20 shrink-0 rounded-[1.25rem] border border-border bg-white object-cover object-top"
+        />
+        <div className="min-w-0 flex-1">
+          <p className="studio-eyebrow" style={{ color: pal.color }}>
+            {pal.name} · {pal.role}
+          </p>
+          {latest ? (
+            <>
+              <h2 className="mt-3 truncate text-2xl font-black tracking-[-.03em]">
+                {latest.title}
+              </h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                Pick this back up where you left it, or start something new.
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 className="mt-3 text-2xl font-black tracking-[-.03em]">
+                {pal.persona.firstQuestion}
+              </h2>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
+                {pal.intro}
+              </p>
+            </>
+          )}
+        </div>
+        <div className="flex shrink-0 flex-wrap gap-2">
+          {latest ? (
+            <Link
+              to="/studio/conversations/$conversationId"
+              params={{ conversationId: latest.id }}
+              className="inline-flex min-h-12 items-center gap-2 rounded-xl px-5 text-sm font-black text-white"
+              style={{ background: pal.color }}
+            >
+              Continue with {pal.name} <ArrowRight className="size-4" />
+            </Link>
+          ) : null}
+          <Link
+            to="/studio/conversations"
+            className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-border px-5 text-sm font-black hover:border-ink"
+          >
+            {latest ? "Start a new conversation" : `Talk with ${pal.name}`}
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 function Dashboard() {

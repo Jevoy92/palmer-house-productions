@@ -5,6 +5,7 @@ import clara from "@/assets/pal-headshots/clara.png";
 import kiana from "@/assets/pal-headshots/kiana.png";
 import ryder from "@/assets/pal-headshots/ryder.png";
 import samira from "@/assets/pal-headshots/samira.png";
+import guidedLanes from "@/assets/studio-visuals/guided-lanes.png";
 
 const intro = {
   hidden: { opacity: 0, transform: "translateY(26px)" },
@@ -14,32 +15,24 @@ const intro = {
 const palLanes = [
   {
     name: "Reel Pal",
-    lane: "reel",
-    to: "/reel-pal",
     promise: "Get seen",
     color: "#E8720C",
     guide: ryder,
   },
   {
     name: "Spotlight Pal",
-    lane: "spotlight",
-    to: "/spotlight-pal",
     promise: "Build trust",
     color: "#3D1A66",
     guide: kiana,
   },
   {
     name: "Evergreen Pal",
-    lane: "evergreen",
-    to: "/evergreen-pal",
     promise: "Teach once",
     color: "#5B8A2D",
     guide: clara,
   },
   {
     name: "System Pal",
-    lane: "system",
-    to: "/system-pal",
     promise: "Scale the know-how",
     color: "#0A9B8F",
     guide: samira,
@@ -50,7 +43,10 @@ export function Hero() {
   const reduce = useReducedMotion();
 
   return (
-    <section id="top" className="relative overflow-hidden px-4 pb-12 pt-14 sm:pb-16 sm:pt-20">
+    <section
+      id="top"
+      className="relative overflow-hidden px-4 pb-20 pt-20 sm:pb-24 sm:pt-28 lg:min-h-svh"
+    >
       <motion.div
         initial={reduce ? false : "hidden"}
         animate="show"
@@ -66,7 +62,7 @@ export function Hero() {
         <motion.h1
           variants={intro}
           transition={{ duration: 0.7, ease: "easeOut" }}
-          className="mt-7 max-w-5xl text-[clamp(3rem,7.2vw,6.8rem)] font-extrabold leading-[0.88] tracking-[-0.07em]"
+          className="mt-7 max-w-5xl text-[clamp(3.2rem,8.5vw,8.3rem)] font-extrabold leading-[0.88] tracking-[-0.07em]"
         >
           Build your video library, one shoot at a time.
         </motion.h1>
@@ -105,7 +101,7 @@ export function Hero() {
           className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-3 text-left"
         >
           <div className="flex items-center gap-3">
-            <span className="grid size-9 shrink-0 place-items-center rounded-2xl bg-evergreen-soft font-mono text-[10px] font-bold text-[#3f611e]">
+            <span className="grid size-9 shrink-0 place-items-center rounded-2xl bg-evergreen-soft font-mono text-[10px] font-bold text-evergreen">
               PNW
             </span>
             <span className="text-sm">
@@ -126,20 +122,36 @@ export function Hero() {
           </div>
         </motion.div>
 
+        <motion.figure
+          variants={intro}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="relative mt-12 w-full max-w-6xl overflow-hidden rounded-[2.25rem] border border-border bg-white shadow-soft"
+        >
+          <motion.img
+            src={guidedLanes}
+            alt="A business owner choosing among four Palmer House video solution paths"
+            className="w-full object-cover"
+            animate={reduce ? undefined : { transform: ["scale(1)", "scale(1.018)", "scale(1)"] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.figure>
+
         <motion.div
           variants={intro}
-          className="mt-12 grid w-full max-w-6xl gap-3 sm:grid-cols-2 lg:grid-cols-4"
+          className="mt-4 grid w-full max-w-6xl gap-2 sm:grid-cols-2 lg:grid-cols-4"
         >
           {palLanes.map((lane) => (
             <Link
               key={lane.name}
-              to={lane.to}
-              data-lane={lane.lane}
-              className="marketing-lane group flex min-h-28 items-center gap-3 rounded-2xl border border-transparent bg-[var(--lane-soft)] p-4 text-left hover:border-[var(--lane-ink)]"
+              to="/find-your-pal"
+              className="group flex min-h-20 items-center gap-3 rounded-2xl border border-border bg-white px-4 text-left transition hover:-translate-y-1 hover:shadow-soft"
             >
-              <img src={lane.guide} alt="" className="size-16 rounded-xl object-cover" />
+              <img src={lane.guide} alt="" className="size-12 rounded-xl object-cover" />
               <span>
-                <span className="block text-xs font-semibold" style={{ color: "var(--lane-ink)" }}>
+                <span
+                  className="block font-mono text-[8px] font-semibold uppercase tracking-[.15em]"
+                  style={{ color: lane.color }}
+                >
                   {lane.name}
                 </span>
                 <span className="mt-1 block text-sm font-bold">{lane.promise}</span>

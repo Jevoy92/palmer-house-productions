@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { ChevronDown, Menu, ShoppingBag, X } from "lucide-react";
 import { useState } from "react";
-import phMark from "@/assets/php-mark.png";
+import phMark from "@/assets/php-mark.png.asset.json";
 import { cartItemCount, useCart } from "@/lib/cart-store";
 
 const services = [
@@ -101,7 +101,7 @@ export function SiteNav() {
             className="flex min-h-11 min-w-0 items-center gap-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight/40"
           >
             <img
-              src={phMark}
+              src={phMark.url}
               alt="Palmer House Productions"
               className="size-9 shrink-0 object-contain"
               loading="eager"
@@ -132,7 +132,7 @@ export function SiteNav() {
             <Dropdown label="More" items={more} />
             <Link
               to="/studio"
-              className="ml-1 flex min-h-11 items-center rounded-full bg-system-soft px-4 text-sm font-semibold text-[#086e66] transition-transform hover:scale-[1.03]"
+              className="ml-1 flex min-h-11 items-center rounded-full bg-system-soft px-4 text-sm font-semibold text-system transition-transform hover:scale-[1.03]"
             >
               Studio
             </Link>
@@ -217,7 +217,7 @@ export function SiteNav() {
               <Link
                 to="/studio"
                 onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center justify-center rounded-full bg-system-soft px-5 text-sm font-semibold text-[#086e66] sm:col-span-2"
+                className="flex min-h-12 items-center justify-center rounded-full bg-system-soft px-5 text-sm font-semibold text-system sm:col-span-2"
               >
                 Open Palmer House Studio
               </Link>

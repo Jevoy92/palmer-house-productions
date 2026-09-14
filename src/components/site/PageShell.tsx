@@ -1,20 +1,11 @@
-import { Link, type LinkProps } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { SiteNav } from "./SiteNav";
 import { SiteFooter } from "./SiteFooter";
-import "./marketing.css";
 
-export type MarketingLane = "spotlight" | "reel" | "evergreen" | "system";
-
-export function PageShell({
-  children,
-  lane = "spotlight",
-}: {
-  children: ReactNode;
-  lane?: MarketingLane;
-}) {
+export function PageShell({ children }: { children: ReactNode }) {
   return (
-    <div className="marketing-site marketing-lane min-h-screen bg-background" data-lane={lane}>
+    <div className="min-h-screen bg-background">
       <SiteNav />
       <main>{children}</main>
       <SiteFooter />
@@ -23,7 +14,11 @@ export function PageShell({
 }
 
 export function Eyebrow({ children }: { children: ReactNode }) {
-  return <span className="marketing-eyebrow">{children}</span>;
+  return (
+    <span className="inline-block rounded-full border border-border bg-card px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+      {children}
+    </span>
+  );
 }
 
 export function PageHero({
@@ -40,7 +35,12 @@ export function PageHero({
   ctas?: boolean;
 }) {
   return (
-    <section className="marketing-page-hero px-5 py-14 sm:py-20">
+    <section className="relative overflow-hidden px-4 pb-14 pt-16 sm:pt-20">
+      <div
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{ backgroundImage: "var(--gradient-soft)" }}
+        aria-hidden
+      />
       <div className="mx-auto max-w-3xl text-center">
         {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
         <h1 className="mt-5 font-display text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
@@ -48,21 +48,28 @@ export function PageHero({
           {highlight && (
             <>
               {" "}
-              <span className="marketing-lane-text">{highlight}</span>
+              <span className="text-gradient-brand">{highlight}</span>
             </>
           )}
         </h1>
         {subtitle && (
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-ink-soft sm:text-lg">
+          <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground sm:text-lg">
             {subtitle}
           </p>
         )}
         {ctas && (
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Link to="/contact" className="marketing-action">
+            <Link
+              to="/contact"
+              className="rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow"
+              style={{ backgroundColor: "var(--spotlight)" }}
+            >
               Book a Discovery Call
             </Link>
-            <Link to="/production-pricing" className="marketing-action marketing-action-secondary">
+            <Link
+              to="/production-pricing"
+              className="rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold shadow-soft"
+            >
               See Pricing
             </Link>
           </div>
@@ -86,9 +93,7 @@ export function Section({
   muted?: boolean;
 }) {
   return (
-    <section
-      className={`marketing-section px-5 py-14 sm:py-16${muted ? " marketing-section-muted" : ""}`}
-    >
+    <section className={muted ? "bg-secondary/50 px-4 py-16" : "px-4 py-16"}>
       <div className="mx-auto max-w-6xl">
         {(eyebrow || title || subtitle) && (
           <div className="mx-auto mb-10 max-w-2xl text-center">
@@ -98,7 +103,7 @@ export function Section({
                 {title}
               </h2>
             )}
-            {subtitle && <p className="mt-3 leading-relaxed text-muted-foreground">{subtitle}</p>}
+            {subtitle && <p className="mt-3 text-muted-foreground">{subtitle}</p>}
           </div>
         )}
         {children}
@@ -117,15 +122,13 @@ export function Card({
   index?: number | string;
 }) {
   return (
-    <article className="marketing-card p-6 sm:p-7">
+    <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
       {index !== undefined && (
-        <span className="marketing-card-index font-display text-2xl font-extrabold">{index}</span>
+        <span className="text-gradient-brand font-display text-2xl font-extrabold">{index}</span>
       )}
-      <h3 className={`${index !== undefined ? "mt-5 " : ""}font-display text-xl font-bold`}>
-        {title}
-      </h3>
-      {body && <p className="mt-3 text-sm leading-relaxed text-ink-soft">{body}</p>}
-    </article>
+      <h3 className="mt-2 font-display text-lg font-bold">{title}</h3>
+      {body && <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>}
+    </div>
   );
 }
 
@@ -136,23 +139,24 @@ export function CardGrid({ children, cols = 3 }: { children: ReactNode; cols?: 2
       : cols === 4
         ? "sm:grid-cols-2 lg:grid-cols-4"
         : "sm:grid-cols-2 lg:grid-cols-3";
-  return <div className={`marketing-card-grid grid gap-4 sm:gap-5 ${cls}`}>{children}</div>;
+  return <div className={`grid gap-5 ${cls}`}>{children}</div>;
 }
 
 export function FaqList({ items }: { items: { q: string; a: string }[] }) {
   return (
-    <div className="marketing-faq mx-auto max-w-3xl">
+    <div className="mx-auto max-w-3xl space-y-3">
       {items.map((it) => (
-        <details key={it.q} className="marketing-faq-item group py-5 sm:py-6">
-          <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-5 font-display text-base font-bold sm:text-lg">
+        <details
+          key={it.q}
+          className="group rounded-2xl border border-border bg-card p-5 shadow-soft"
+        >
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-base font-bold">
             {it.q}
-            <span className="marketing-faq-toggle" aria-hidden="true">
+            <span className="text-muted-foreground transition-transform group-open:rotate-45">
               +
             </span>
           </summary>
-          <p className="mt-3 max-w-2xl pr-9 text-sm leading-relaxed text-ink-soft sm:text-base">
-            {it.a}
-          </p>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{it.a}</p>
         </details>
       ))}
     </div>
@@ -163,27 +167,30 @@ export function CtaBand({
   title,
   subtitle,
   primaryLabel = "Book a Discovery Call",
-  primaryTo = "/contact",
 }: {
   title: string;
   subtitle?: string;
   primaryLabel?: string;
-  primaryTo?: LinkProps["to"];
 }) {
   return (
-    <section className="px-5 py-12 sm:py-16">
-      <div className="marketing-cta mx-auto grid max-w-6xl items-center gap-7 rounded-2xl p-7 sm:p-10 lg:grid-cols-[minmax(0,1fr)_auto]">
-        <div>
-          <h2 className="max-w-2xl font-display text-3xl font-extrabold leading-tight sm:text-4xl">
-            {title}
-          </h2>
-          {subtitle && <p className="mt-4 max-w-xl leading-relaxed text-ink-soft">{subtitle}</p>}
-        </div>
-        <div className="flex flex-wrap gap-3 lg:max-w-64 lg:flex-col">
-          <Link to={primaryTo} className="marketing-action">
+    <section className="px-4 py-16">
+      <div
+        className="mx-auto max-w-5xl rounded-3xl px-6 py-14 text-center text-white shadow-glow"
+        style={{ backgroundColor: "var(--spotlight)" }}
+      >
+        <h2 className="font-display text-3xl font-extrabold sm:text-4xl">{title}</h2>
+        {subtitle && <p className="mx-auto mt-3 max-w-xl text-white/90">{subtitle}</p>}
+        <div className="mt-7 flex flex-wrap justify-center gap-3">
+          <Link
+            to="/contact"
+            className="rounded-full bg-white px-6 py-3 text-sm font-semibold text-foreground"
+          >
             {primaryLabel}
           </Link>
-          <Link to="/pals" className="marketing-action marketing-action-secondary">
+          <Link
+            to="/pals"
+            className="rounded-full border border-white/60 px-6 py-3 text-sm font-semibold text-white"
+          >
             Explore the Pals
           </Link>
         </div>

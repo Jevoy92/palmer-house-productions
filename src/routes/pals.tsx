@@ -1,13 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell, PageHero, Section, CtaBand, Eyebrow } from "@/components/site/PageShell";
-import ryder from "@/assets/pal-headshots/ryder.png";
-import raquel from "@/assets/pal-headshots/raquel.png";
-import silas from "@/assets/pal-headshots/silas.png";
-import samira from "@/assets/pal-headshots/samira.png";
-import cyrus from "@/assets/pal-headshots/cyrus.png";
-import clara from "@/assets/pal-headshots/clara.png";
-import kareem from "@/assets/pal-headshots/kareem.png";
-import kiana from "@/assets/pal-headshots/kiana.png";
+import ryder from "@/assets/pals-optimized/ryder.webp";
+import raquel from "@/assets/pals-optimized/raquel.webp";
+import silas from "@/assets/pals-optimized/silas.webp";
+import samira from "@/assets/pals-optimized/samira.webp";
+import cyrus from "@/assets/pals-optimized/cyrus.webp";
+import clara from "@/assets/pals-optimized/clara.webp";
+import kareem from "@/assets/pals-optimized/kareem.webp";
+import kiana from "@/assets/pals-optimized/kiana.webp";
 
 const LANES = [
   {
@@ -186,38 +186,25 @@ function PalsPage() {
           {LANES.map((lane) => (
             <div
               key={lane.key}
-              className="marketing-lane overflow-hidden rounded-3xl border-t-4 border-[var(--lane)] bg-[var(--lane-soft)] p-6 sm:p-9"
-              data-lane={lane.key}
+              className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-10"
             >
               <Eyebrow>{lane.tag}</Eyebrow>
               <h3 className="mt-4 font-display text-2xl font-extrabold sm:text-3xl">
                 {lane.title}
               </h3>
 
-              <div className="mt-8 grid items-start gap-8 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.4fr)]">
-                <div className="mx-auto grid w-full max-w-sm grid-cols-2 gap-3">
-                  <figure className="overflow-hidden rounded-2xl bg-white p-2.5">
-                    <img
-                      src={lane.a}
-                      alt={lane.aAlt}
-                      loading="lazy"
-                      className="aspect-square w-full rounded-xl object-cover"
-                    />
-                    <figcaption className="px-1 py-3 text-center text-base font-bold text-[var(--lane-ink)]">
-                      {lane.quotes[0].who}
-                    </figcaption>
-                  </figure>
-                  <figure className="overflow-hidden rounded-2xl bg-white p-2.5">
-                    <img
-                      src={lane.b}
-                      alt={lane.bAlt}
-                      loading="lazy"
-                      className="aspect-square w-full rounded-xl object-cover"
-                    />
-                    <figcaption className="px-1 py-3 text-center text-base font-bold text-[var(--lane-ink)]">
-                      {lane.quotes[1].who}
-                    </figcaption>
-                  </figure>
+              <div className="mt-6 grid gap-8 lg:grid-cols-[auto,1fr]">
+                <div className="flex justify-center gap-4 lg:justify-start">
+                  <img
+                    src={lane.a}
+                    alt={lane.aAlt}
+                    className="h-40 w-auto object-contain sm:h-52"
+                  />
+                  <img
+                    src={lane.b}
+                    alt={lane.bAlt}
+                    className="h-40 w-auto object-contain sm:h-52"
+                  />
                 </div>
 
                 <div>
@@ -225,7 +212,7 @@ function PalsPage() {
                     {lane.quotes.map((q) => (
                       <blockquote
                         key={q.who}
-                        className="rounded-2xl bg-white p-5 text-sm leading-relaxed text-ink-soft"
+                        className="rounded-xl border border-border bg-secondary/40 p-4 text-sm italic text-muted-foreground"
                       >
                         "{q.text}"
                         <footer className="mt-2 not-italic font-semibold text-foreground">
@@ -237,38 +224,42 @@ function PalsPage() {
 
                   <div className="mt-5 grid gap-4 sm:grid-cols-2">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-[var(--lane-ink)]">
+                      <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
                         The Problem
                       </p>
-                      <p className="mt-2 text-sm leading-relaxed text-ink-soft">{lane.problem}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{lane.problem}</p>
                     </div>
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-[var(--lane-ink)]">
+                      <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
                         The Solution
                       </p>
-                      <p className="mt-2 text-sm leading-relaxed text-ink-soft">{lane.solution}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{lane.solution}</p>
                     </div>
                   </div>
 
                   <div className="mt-6 grid gap-3 sm:grid-cols-3">
                     {lane.offerings.map((o) => (
-                      <div key={o.title} className="border-l-2 border-[var(--lane)] py-1 pl-4">
+                      <div
+                        key={o.title}
+                        className="rounded-xl border border-border bg-background p-4"
+                      >
                         <p className="font-display text-sm font-bold">{o.title}</p>
-                        <p className="mt-2 text-sm leading-relaxed text-ink-soft">"{o.quote}"</p>
+                        <p className="mt-1 text-xs italic text-muted-foreground">"{o.quote}"</p>
                       </div>
                     ))}
                   </div>
 
-                  <div className="mt-7 flex flex-wrap items-center justify-between gap-5 border-t border-[var(--lane)]/20 pt-6">
+                  <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-xl bg-secondary/50 p-4">
                     <div>
-                      <p className="text-xs font-bold uppercase tracking-wide text-[var(--lane-ink)]">
+                      <p className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
                         Signature Move
                       </p>
                       <p className="mt-1 text-sm font-semibold">{lane.signature}</p>
                     </div>
                     <Link
                       to={lane.path}
-                      className="inline-flex min-h-12 items-center justify-center rounded-full bg-[var(--lane-ink)] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                      className="rounded-full px-5 py-2.5 text-sm font-semibold text-white shadow-glow"
+                      style={{ backgroundColor: `var(--${lane.key})` }}
                     >
                       {lane.cta}
                     </Link>

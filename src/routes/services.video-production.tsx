@@ -1,17 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell, PageHero, Section, Card, CardGrid, CtaBand } from "@/components/site/PageShell";
 
-import { LaneTag } from "@/components/site/LaneTag";
-import ryder from "@/assets/pal-headshots/ryder.png";
-import kiana from "@/assets/pal-headshots/kiana.png";
-import clara from "@/assets/pal-headshots/clara.png";
-import samira from "@/assets/pal-headshots/samira.png";
-
 const pals = [
   {
     tag: "REEL",
-    lane: "reel" as const,
-    image: ryder,
     name: "Reel Pal",
     duo: "Ryder & Raquel",
     quote: "Stop the scroll. Start the conversation.",
@@ -21,8 +13,6 @@ const pals = [
   },
   {
     tag: "SPOTLIGHT",
-    lane: "spotlight" as const,
-    image: kiana,
     name: "Spotlight Pal",
     duo: "Kareem & Kiana",
     quote: "Craft cinematic stories that captivate.",
@@ -32,8 +22,6 @@ const pals = [
   },
   {
     tag: "EVERGREEN",
-    lane: "evergreen" as const,
-    image: clara,
     name: "Evergreen Pal",
     duo: "Cyrus & Clara",
     quote: "Build content that compounds forever.",
@@ -43,8 +31,6 @@ const pals = [
   },
   {
     tag: "SYSTEM",
-    lane: "system" as const,
-    image: samira,
     name: "System Pal",
     duo: "Silas & Samira",
     quote: "Automate your content machine.",
@@ -88,46 +74,33 @@ function VideoProductionPage() {
         title="Four Approaches. One Perfect Match."
         subtitle="Each Pal specializes in a different type of video content. Find the one that fits your goals."
       >
-        <CardGrid cols={2}>
+        <CardGrid cols={4}>
           {pals.map((p) => (
-            <article
-              key={p.name}
-              data-lane={p.lane}
-              className="marketing-lane flex flex-col rounded-3xl border border-transparent bg-[var(--lane-soft)] p-6 sm:p-8"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <span className="font-display text-sm font-extrabold uppercase tracking-widest text-[var(--lane-ink)]">
-                    {p.tag}
-                  </span>
-                  <h3 className="mt-2 font-display text-2xl font-bold">{p.name}</h3>
-                  <p className="mt-1 text-sm font-semibold text-muted-foreground">{p.duo}</p>
-                </div>
-                <img
-                  src={p.image}
-                  alt={p.name + " guide"}
-                  width={512}
-                  height={512}
-                  loading="lazy"
-                  className="size-20 rounded-2xl bg-white object-cover sm:size-24"
-                />
-              </div>
-              <p className="mt-5 text-base font-medium text-[var(--lane-ink)]">"{p.quote}"</p>
+            <div key={p.name} className="rounded-2xl border border-border bg-card p-6 shadow-soft">
+              <span className="text-gradient-brand font-display text-xs font-extrabold uppercase tracking-widest">
+                {p.tag}
+              </span>
+              <h3 className="mt-2 font-display text-lg font-bold">{p.name}</h3>
+              <p className="text-xs font-semibold text-muted-foreground">{p.duo}</p>
+              <p className="mt-3 text-sm italic text-muted-foreground">"{p.quote}"</p>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
               <div className="mt-4 flex flex-wrap gap-1.5">
                 {p.tags.map((t) => (
-                  <LaneTag key={t} lane={p.lane}>
+                  <span
+                    key={t}
+                    className="rounded-full border border-border px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground"
+                  >
                     {t}
-                  </LaneTag>
+                  </span>
                 ))}
               </div>
               <Link
                 to={p.to}
-                className="mt-auto inline-flex min-h-12 items-center pt-6 text-sm font-bold text-[var(--lane-ink)]"
+                className="mt-4 inline-block text-sm font-semibold text-gradient-brand"
               >
                 Learn more →
               </Link>
-            </article>
+            </div>
           ))}
         </CardGrid>
       </Section>
@@ -149,7 +122,6 @@ function VideoProductionPage() {
         title="Ready to Find Your Perfect Match?"
         subtitle="Take our quick assessment to discover which Pal's approach fits your video needs — or jump straight to pricing."
         primaryLabel="Take the Assessment"
-        primaryTo="/find-your-pal"
       />
     </PageShell>
   );

@@ -9,9 +9,10 @@ import {
   CtaBand,
   Eyebrow,
 } from "@/components/site/PageShell";
+import scene from "@/assets/dioramas/spotlight-stage-web.jpg";
 import { MissionComparison } from "@/components/site/MissionComparison";
-import kareem from "@/assets/pal-headshots/kareem.png";
-import kiana from "@/assets/pal-headshots/kiana.png";
+import kareem from "@/assets/pals-optimized/kareem.webp";
+import kiana from "@/assets/pals-optimized/kiana.webp";
 
 const PACKAGES = [
   { title: "Brand Presence Kit", pain: "People don't know who we really are." },
@@ -43,7 +44,7 @@ const FAQS = [
 
 function SpotlightPalPage() {
   return (
-    <PageShell lane="spotlight">
+    <PageShell>
       <PageHero
         eyebrow="Video Production Packages"
         title="Elevate Your Brand With"
@@ -51,37 +52,44 @@ function SpotlightPalPage() {
         subtitle="Kareem obsesses over every frame. Premium video packages built for brands that demand polished, high-production storytelling."
       />
 
-      <Section muted eyebrow="Your Spotlight guides" title="Meet Kareem and Kiana">
-        <div className="grid items-center gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
-          <div className="mx-auto grid w-full max-w-md grid-cols-2 gap-4">
-            <div className="overflow-hidden rounded-2xl bg-white p-3 text-center">
+      <Section>
+        <img
+          src={scene}
+          alt="Spotlight Pal stage set with Kareem and Kiana filming a live audience session"
+          loading="lazy"
+          className="mx-auto w-full max-w-4xl"
+        />
+      </Section>
+
+      <Section muted>
+        <div className="grid items-center gap-8 sm:grid-cols-2">
+          <div className="flex justify-center gap-6">
+            <div className="text-center">
               <img
                 src={kareem}
                 alt="Kareem, the Spotlight Pal production quality character"
-                loading="lazy"
-                className="aspect-square w-full rounded-xl object-cover"
+                className="mx-auto h-56 w-auto object-contain"
               />
-              <p className="mt-3 font-display text-lg font-bold">Kareem</p>
-              <p className="text-sm font-medium text-[var(--lane-ink)]">Production Quality</p>
+              <p className="mt-2 font-display font-bold">Kareem</p>
+              <p className="text-xs text-muted-foreground">Production Quality</p>
             </div>
-            <div className="overflow-hidden rounded-2xl bg-white p-3 text-center">
+            <div className="text-center">
               <img
                 src={kiana}
                 alt="Kiana, the Spotlight Pal creative direction character"
-                loading="lazy"
-                className="aspect-square w-full rounded-xl object-cover"
+                className="mx-auto h-56 w-auto object-contain"
               />
-              <p className="mt-3 font-display text-lg font-bold">Kiana</p>
-              <p className="text-sm font-medium text-[var(--lane-ink)]">Creative Direction</p>
+              <p className="mt-2 font-display font-bold">Kiana</p>
+              <p className="text-xs text-muted-foreground">Creative Direction</p>
             </div>
           </div>
           <div>
             <Eyebrow>Spotlight Pal</Eyebrow>
-            <p className="mt-4 border-l-2 border-[var(--lane)] pl-5 text-base leading-relaxed text-ink-soft">
+            <p className="mt-4 italic text-muted-foreground">
               "People will judge you before they understand you. I learned that the hard way. Now I
               make 'good' become 'credible' — first impressions that decide outcomes." — Kareem
             </p>
-            <p className="mt-4 border-l-2 border-[var(--lane)] pl-5 text-base leading-relaxed text-ink-soft">
+            <p className="mt-4 italic text-muted-foreground">
               "Most people don't need more takes — they need better direction. I make the founder
               feel like themselves instead of a nervous robot." — Kiana
             </p>
@@ -98,7 +106,7 @@ function SpotlightPalPage() {
       </Section>
 
       <Section eyebrow="Pricing" title="How the Spotlight Pal Session Works">
-        <div className="mx-auto max-w-4xl rounded-3xl border border-[var(--lane-soft)] border-t-4 border-t-[var(--lane)] bg-white p-6 shadow-soft sm:p-9">
+        <div className="mx-auto max-w-3xl rounded-2xl border border-border bg-card p-8 shadow-soft">
           <p className="text-sm font-semibold text-muted-foreground">Brand Presence Kit — 1 of 5</p>
           <h3 className="mt-1 font-display text-xl font-bold">
             Premium 1-minute videos that answer "who are you?"—founder story, company overview, and
@@ -108,31 +116,27 @@ function SpotlightPalPage() {
             2-hour cinematic filming session, polished 1-minute brand videos.
           </p>
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
-            <div className="rounded-2xl bg-[var(--lane-soft)] p-5">
+            <div className="rounded-xl bg-secondary/50 p-4">
               <p className="text-xs font-bold uppercase text-muted-foreground">
                 Production Session
               </p>
-              <p className="font-display text-3xl font-extrabold tabular-nums text-[var(--lane-ink)]">
-                $450
-              </p>
+              <p className="text-gradient-brand font-display text-2xl font-extrabold">$450</p>
               <p className="mt-1 text-xs text-muted-foreground">
                 Covers setup, lighting, audio, and direction
               </p>
             </div>
-            <div className="rounded-2xl bg-[var(--lane-soft)] p-5">
+            <div className="rounded-xl bg-secondary/50 p-4">
               <p className="text-xs font-bold uppercase text-muted-foreground">
                 Additional Videos (4)
               </p>
-              <p className="font-display text-3xl font-extrabold tabular-nums text-[var(--lane-ink)]">
-                $600
-              </p>
+              <p className="text-gradient-brand font-display text-2xl font-extrabold">$600</p>
               <p className="mt-1 text-xs text-muted-foreground">
                 1 min each • $150 each. Same session, already set up
               </p>
             </div>
             <div
-              className="rounded-2xl p-5 text-white"
-              style={{ backgroundColor: "var(--lane-ink)" }}
+              className="rounded-xl p-4 text-white"
+              style={{ backgroundColor: "var(--spotlight)" }}
             >
               <p className="text-xs font-bold uppercase text-white/80">Package Total</p>
               <p className="font-display text-2xl font-extrabold">$1,050</p>
@@ -144,8 +148,8 @@ function SpotlightPalPage() {
           <div className="mt-6 text-center">
             <Link
               to="/contact"
-              className="inline-flex min-h-12 items-center justify-center rounded-full px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: "var(--lane-ink)" }}
+              className="rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow"
+              style={{ backgroundColor: "var(--spotlight)" }}
             >
               Customize This Package
             </Link>
@@ -172,7 +176,7 @@ function SpotlightPalPage() {
       </Section>
 
       <Section muted>
-        <blockquote className="mx-auto max-w-3xl border-l-4 border-[var(--lane)] bg-white px-6 py-8 text-left sm:px-9">
+        <blockquote className="mx-auto max-w-2xl rounded-2xl border border-border bg-card p-8 text-center shadow-soft">
           <p className="text-lg italic text-muted-foreground">
             "Jevoy and his team did an amazing job with pictures & videos of our team and stores.
             Our management was blown away by the quality, professionalism, and speed at which their

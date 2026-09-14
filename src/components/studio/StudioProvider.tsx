@@ -35,6 +35,19 @@ type Idea = Tables<"content_ideas">;
 type AssistantMessage = Tables<"assistant_messages">;
 type Conversation = Tables<"conversations">;
 
+/** A voice note, document, image or recording a member added to a conversation. */
+export type ConversationIntake = {
+  attachment: {
+    id: string;
+    kind: string;
+    label: string;
+    summary: string;
+    byte_size: number;
+  };
+  /** Readable text we pulled out of it, already length-bounded. */
+  text: string;
+};
+
 /** How many messages load at once when opening or scrolling back a thread. */
 const MESSAGE_PAGE = 30;
 
@@ -101,6 +114,10 @@ type StudioContextValue = {
   }) => Promise<string>;
   updateIdea: (id: string, values: Partial<Idea>) => Promise<void>;
   uploadIdeaSource: (file: File) => Promise<string>;
+  uploadConversationFile: (
+    file: File,
+    options?: { conversationId?: string; kind?: "voice" | "file" },
+  ) => Promise<ConversationIntake>;
   askPal: (question: string, pal: PalName, conversationId?: string) => Promise<AssistantResponse>;
   startConversation: (pal: PalName, title?: string) => Promise<string>;
   openConversation: (id: string) => Promise<void>;
@@ -502,6 +519,31 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       .upload(path, file, { upsert: false });
     if (result.error) throw result.error;
     return result.data.path;
+  }
+  async function uploadConversationFile(
+    file: File,
+    options?: { conversationId?: string; kind?: "voice" | "file" },
+  ): Promise<ConversationIntake> {
+    if (!workspace) throw new Error("Create a workspace first.");
+    if (!session) throw new Error("Sign in first.");
+    const form = new FormData();
+    form.append("file", file);
+    form.append("workspaceId", workspace.id);
+    if (options?.conversationId) form.append("conversationId", options.conversationId);
+    if (options?.kind) form.append("kind", options.kind);
+    const response = await fetch("/api/studio/intake", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${session.access_token}` },
+      body: form,
+    });
+    const payload = (await response.json().catch(() => ({}))) as {
+      error?: string;
+      attachment?: ConversationIntake["attachment"];
+      text?: string;
+    };
+    if (!response.ok || !payload.attachment)
+      throw new Error(payload.error || "We could not read that file.");
+    return { attachment: payload.attachment, text: payload.text || "" };
   }
   async function startConversation(pal: PalName, title?: string) {
     if (!workspace) throw new Error("Create a workspace first.");
@@ -1014,6 +1056,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     createIdea,
     updateIdea,
     uploadIdeaSource,
+    uploadConversationFile,
     askPal,
     startConversation,
     openConversation,

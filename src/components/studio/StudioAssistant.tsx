@@ -21,8 +21,9 @@ import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { palDirectory, palList, resolvePalName } from "@/lib/pal-directory";
 import type { AssistantResponse, PalName } from "@/lib/studio-model";
+import { ComposerIntake, withAttachmentContext } from "./ComposerIntake";
 import { StudioMarkdown } from "./StudioMarkdown";
-import { useStudio } from "./StudioProvider";
+import { useStudio, type ConversationIntake } from "./StudioProvider";
 
 function assistantMetadata(value: unknown): AssistantResponse | null {
   if (!value || typeof value !== "object" || !("recommendations" in value)) return null;
@@ -73,6 +74,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
   const pal = palDirectory[selected];
 
   const [draft, setDraft] = useState("");
+  const [attachments, setAttachments] = useState<ConversationIntake[]>([]);
   const [savedMemory, setSavedMemory] = useState<string[]>([]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -119,11 +121,17 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
 
   async function send(question: string) {
     const value = question.trim();
-    if (value.length < 3 || busy) return;
+    if ((value.length < 3 && !attachments.length) || busy) return;
     setDraft("");
+    const sent = attachments;
+    setAttachments([]);
     try {
       const thread = activeConversation?.id || conversationId;
-      const response = await askPal(value, selected, thread);
+      const response = await askPal(
+        withAttachmentContext(value || "Read what I just attached and tell me what to do with it.", sent),
+        selected,
+        thread,
+      );
       if (!thread) {
         // askPal created the thread; move the URL onto it so refresh resumes.
         const created = activeConversation?.id;
@@ -556,9 +564,22 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
 
           <form onSubmit={submit} className="border-t border-border bg-white p-4 sm:p-5">
             <div
-              className="mx-auto flex max-w-3xl items-end gap-2 rounded-[1.15rem] border border-border bg-white p-2 shadow-soft transition focus-within:border-current"
+              className="mx-auto max-w-3xl rounded-[1.15rem] border border-border bg-white p-2 shadow-soft transition focus-within:border-current"
               style={{ color: pal.color }}
             >
+              <div className="px-1 pb-2 pt-1">
+                <ComposerIntake
+                  color={pal.color}
+                  conversationId={activeConversation?.id || conversationId}
+                  attachments={attachments}
+                  onAttachmentsChange={setAttachments}
+                  onTranscript={(text) =>
+                    setDraft((current) => (current ? `${current.trim()} ${text}` : text))
+                  }
+                  disabled={busy}
+                />
+              </div>
+              <div className="flex items-end gap-2">
               <textarea
                 ref={composerRef}
                 value={draft}
@@ -574,7 +595,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                 className="min-h-12 flex-1 resize-none border-0 bg-transparent p-2 text-sm text-ink outline-none"
               />
               <button
-                disabled={busy || draft.trim().length < 3}
+                disabled={busy || (draft.trim().length < 3 && !attachments.length)}
                 aria-label="Send message"
                 className="grid size-11 shrink-0 place-items-center rounded-xl text-white disabled:opacity-35"
                 style={{ background: pal.color }}
@@ -585,10 +606,11 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                   <Send className="size-4" />
                 )}
               </button>
+              </div>
             </div>
             <p className="mt-2 text-center text-[10px] text-muted-foreground">
-              Enter to send · Shift + Enter for a new line · Nothing publishes or changes Brand DNA
-              without your approval.
+              Enter to send · Shift + Enter for a new line · Voice notes, PDFs, Word files, images
+              and recordings are all read privately in this workspace.
             </p>
           </form>
         </section>

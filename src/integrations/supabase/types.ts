@@ -540,6 +540,72 @@ export type Database = {
           },
         ]
       }
+      conversation_attachments: {
+        Row: {
+          byte_size: number
+          conversation_id: string | null
+          created_at: string
+          created_by: string
+          extracted_text: string
+          id: string
+          kind: string
+          label: string
+          metadata: Json
+          mime_type: string
+          storage_path: string | null
+          summary: string
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          byte_size?: number
+          conversation_id?: string | null
+          created_at?: string
+          created_by: string
+          extracted_text?: string
+          id?: string
+          kind: string
+          label?: string
+          metadata?: Json
+          mime_type?: string
+          storage_path?: string | null
+          summary?: string
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          byte_size?: number
+          conversation_id?: string | null
+          created_at?: string
+          created_by?: string
+          extracted_text?: string
+          id?: string
+          kind?: string
+          label?: string
+          metadata?: Json
+          mime_type?: string
+          storage_path?: string | null
+          summary?: string
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_attachments_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversation_attachments_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       conversations: {
         Row: {
           archived: boolean

@@ -63,6 +63,7 @@ import { Route as StudioAssistantRouteImport } from './routes/studio.assistant'
 import { Route as StudioBillingRouteImport } from './routes/studio.billing'
 import { Route as StudioBrandRouteImport } from './routes/studio.brand'
 import { Route as StudioCalendarRouteImport } from './routes/studio.calendar'
+import { Route as StudioCreateRouteImport } from './routes/studio.create'
 import { Route as StudioDashboardRouteImport } from './routes/studio.dashboard'
 import { Route as StudioIdeasRouteImport } from './routes/studio.ideas'
 import { Route as StudioLibraryRouteImport } from './routes/studio.library'
@@ -70,10 +71,14 @@ import { Route as StudioOnboardingRouteImport } from './routes/studio.onboarding
 import { Route as StudioRoadmapRouteImport } from './routes/studio.roadmap'
 import { Route as StudioSettingsRouteImport } from './routes/studio.settings'
 import { Route as StudioSuccessRouteImport } from './routes/studio.success'
+import { Route as StudioWorkRouteImport } from './routes/studio.work'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as ApiStudioIntakeRouteImport } from './routes/api.studio.intake'
 import { Route as StudioCampaignsIndexRouteImport } from './routes/studio.campaigns.index'
 import { Route as StudioCampaignsCampaignIdRouteImport } from './routes/studio.campaigns.$campaignId'
+import { Route as StudioConversationsIndexRouteImport } from './routes/studio.conversations.index'
+import { Route as StudioConversationsConversationIdRouteImport } from './routes/studio.conversations.$conversationId'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
@@ -350,6 +355,11 @@ const StudioCalendarRoute = StudioCalendarRouteImport.update({
   path: '/calendar',
   getParentRoute: () => StudioRoute,
 } as any)
+const StudioCreateRoute = StudioCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => StudioRoute,
+} as any)
 const StudioDashboardRoute = StudioDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -385,6 +395,11 @@ const StudioSuccessRoute = StudioSuccessRouteImport.update({
   path: '/success',
   getParentRoute: () => StudioRoute,
 } as any)
+const StudioWorkRoute = StudioWorkRouteImport.update({
+  id: '/work',
+  path: '/work',
+  getParentRoute: () => StudioRoute,
+} as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   id: '/.lovable/oauth/consent',
   path: '/.lovable/oauth/consent',
@@ -396,6 +411,11 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiStudioIntakeRoute = ApiStudioIntakeRouteImport.update({
+  id: '/api/studio/intake',
+  path: '/api/studio/intake',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StudioCampaignsIndexRoute = StudioCampaignsIndexRouteImport.update({
   id: '/campaigns/',
   path: '/campaigns/',
@@ -405,6 +425,18 @@ const StudioCampaignsCampaignIdRoute =
   StudioCampaignsCampaignIdRouteImport.update({
     id: '/campaigns/$campaignId',
     path: '/campaigns/$campaignId',
+    getParentRoute: () => StudioRoute,
+  } as any)
+const StudioConversationsIndexRoute =
+  StudioConversationsIndexRouteImport.update({
+    id: '/conversations/',
+    path: '/conversations/',
+    getParentRoute: () => StudioRoute,
+  } as any)
+const StudioConversationsConversationIdRoute =
+  StudioConversationsConversationIdRouteImport.update({
+    id: '/conversations/$conversationId',
+    path: '/conversations/$conversationId',
     getParentRoute: () => StudioRoute,
   } as any)
 const LovableEmailAuthPreviewRoute = LovableEmailAuthPreviewRouteImport.update({
@@ -475,6 +507,7 @@ export interface FileRoutesByFullPath {
   '/studio/billing': typeof StudioBillingRoute
   '/studio/brand': typeof StudioBrandRoute
   '/studio/calendar': typeof StudioCalendarRoute
+  '/studio/create': typeof StudioCreateRoute
   '/studio/dashboard': typeof StudioDashboardRoute
   '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
@@ -482,14 +515,18 @@ export interface FileRoutesByFullPath {
   '/studio/roadmap': typeof StudioRoadmapRoute
   '/studio/settings': typeof StudioSettingsRoute
   '/studio/success': typeof StudioSuccessRoute
+  '/studio/work': typeof StudioWorkRoute
   '/blog/': typeof BlogIndexRoute
   '/industries/': typeof IndustriesIndexRoute
   '/locations/': typeof LocationsIndexRoute
   '/studio/': typeof StudioIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/studio/intake': typeof ApiStudioIntakeRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
+  '/studio/conversations/$conversationId': typeof StudioConversationsConversationIdRoute
   '/studio/campaigns/': typeof StudioCampaignsIndexRoute
+  '/studio/conversations/': typeof StudioConversationsIndexRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -544,6 +581,7 @@ export interface FileRoutesByTo {
   '/studio/billing': typeof StudioBillingRoute
   '/studio/brand': typeof StudioBrandRoute
   '/studio/calendar': typeof StudioCalendarRoute
+  '/studio/create': typeof StudioCreateRoute
   '/studio/dashboard': typeof StudioDashboardRoute
   '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
@@ -551,14 +589,18 @@ export interface FileRoutesByTo {
   '/studio/roadmap': typeof StudioRoadmapRoute
   '/studio/settings': typeof StudioSettingsRoute
   '/studio/success': typeof StudioSuccessRoute
+  '/studio/work': typeof StudioWorkRoute
   '/blog': typeof BlogIndexRoute
   '/industries': typeof IndustriesIndexRoute
   '/locations': typeof LocationsIndexRoute
   '/studio': typeof StudioIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/studio/intake': typeof ApiStudioIntakeRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
+  '/studio/conversations/$conversationId': typeof StudioConversationsConversationIdRoute
   '/studio/campaigns': typeof StudioCampaignsIndexRoute
+  '/studio/conversations': typeof StudioConversationsIndexRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -615,6 +657,7 @@ export interface FileRoutesById {
   '/studio/billing': typeof StudioBillingRoute
   '/studio/brand': typeof StudioBrandRoute
   '/studio/calendar': typeof StudioCalendarRoute
+  '/studio/create': typeof StudioCreateRoute
   '/studio/dashboard': typeof StudioDashboardRoute
   '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
@@ -622,14 +665,18 @@ export interface FileRoutesById {
   '/studio/roadmap': typeof StudioRoadmapRoute
   '/studio/settings': typeof StudioSettingsRoute
   '/studio/success': typeof StudioSuccessRoute
+  '/studio/work': typeof StudioWorkRoute
   '/blog/': typeof BlogIndexRoute
   '/industries/': typeof IndustriesIndexRoute
   '/locations/': typeof LocationsIndexRoute
   '/studio/': typeof StudioIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/studio/intake': typeof ApiStudioIntakeRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
+  '/studio/conversations/$conversationId': typeof StudioConversationsConversationIdRoute
   '/studio/campaigns/': typeof StudioCampaignsIndexRoute
+  '/studio/conversations/': typeof StudioConversationsIndexRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
@@ -687,6 +734,7 @@ export interface FileRouteTypes {
     | '/studio/billing'
     | '/studio/brand'
     | '/studio/calendar'
+    | '/studio/create'
     | '/studio/dashboard'
     | '/studio/ideas'
     | '/studio/library'
@@ -694,14 +742,18 @@ export interface FileRouteTypes {
     | '/studio/roadmap'
     | '/studio/settings'
     | '/studio/success'
+    | '/studio/work'
     | '/blog/'
     | '/industries/'
     | '/locations/'
     | '/studio/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/studio/intake'
     | '/studio/campaigns/$campaignId'
+    | '/studio/conversations/$conversationId'
     | '/studio/campaigns/'
+    | '/studio/conversations/'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
@@ -756,6 +808,7 @@ export interface FileRouteTypes {
     | '/studio/billing'
     | '/studio/brand'
     | '/studio/calendar'
+    | '/studio/create'
     | '/studio/dashboard'
     | '/studio/ideas'
     | '/studio/library'
@@ -763,14 +816,18 @@ export interface FileRouteTypes {
     | '/studio/roadmap'
     | '/studio/settings'
     | '/studio/success'
+    | '/studio/work'
     | '/blog'
     | '/industries'
     | '/locations'
     | '/studio'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/studio/intake'
     | '/studio/campaigns/$campaignId'
+    | '/studio/conversations/$conversationId'
     | '/studio/campaigns'
+    | '/studio/conversations'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
@@ -826,6 +883,7 @@ export interface FileRouteTypes {
     | '/studio/billing'
     | '/studio/brand'
     | '/studio/calendar'
+    | '/studio/create'
     | '/studio/dashboard'
     | '/studio/ideas'
     | '/studio/library'
@@ -833,14 +891,18 @@ export interface FileRouteTypes {
     | '/studio/roadmap'
     | '/studio/settings'
     | '/studio/success'
+    | '/studio/work'
     | '/blog/'
     | '/industries/'
     | '/locations/'
     | '/studio/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/studio/intake'
     | '/studio/campaigns/$campaignId'
+    | '/studio/conversations/$conversationId'
     | '/studio/campaigns/'
+    | '/studio/conversations/'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
@@ -895,6 +957,7 @@ export interface RootRouteChildren {
   LocationsIndexRoute: typeof LocationsIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
+  ApiStudioIntakeRoute: typeof ApiStudioIntakeRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
@@ -1280,6 +1343,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioCalendarRouteImport
       parentRoute: typeof StudioRoute
     }
+    '/studio/create': {
+      id: '/studio/create'
+      path: '/create'
+      fullPath: '/studio/create'
+      preLoaderRoute: typeof StudioCreateRouteImport
+      parentRoute: typeof StudioRoute
+    }
     '/studio/dashboard': {
       id: '/studio/dashboard'
       path: '/dashboard'
@@ -1329,6 +1399,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioSuccessRouteImport
       parentRoute: typeof StudioRoute
     }
+    '/studio/work': {
+      id: '/studio/work'
+      path: '/work'
+      fullPath: '/studio/work'
+      preLoaderRoute: typeof StudioWorkRouteImport
+      parentRoute: typeof StudioRoute
+    }
     '/.lovable/oauth/consent': {
       id: '/.lovable/oauth/consent'
       path: '/.lovable/oauth/consent'
@@ -1343,6 +1420,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/studio/intake': {
+      id: '/api/studio/intake'
+      path: '/api/studio/intake'
+      fullPath: '/api/studio/intake'
+      preLoaderRoute: typeof ApiStudioIntakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/studio/campaigns/': {
       id: '/studio/campaigns/'
       path: '/campaigns'
@@ -1355,6 +1439,20 @@ declare module '@tanstack/react-router' {
       path: '/campaigns/$campaignId'
       fullPath: '/studio/campaigns/$campaignId'
       preLoaderRoute: typeof StudioCampaignsCampaignIdRouteImport
+      parentRoute: typeof StudioRoute
+    }
+    '/studio/conversations/': {
+      id: '/studio/conversations/'
+      path: '/conversations'
+      fullPath: '/studio/conversations/'
+      preLoaderRoute: typeof StudioConversationsIndexRouteImport
+      parentRoute: typeof StudioRoute
+    }
+    '/studio/conversations/$conversationId': {
+      id: '/studio/conversations/$conversationId'
+      path: '/conversations/$conversationId'
+      fullPath: '/studio/conversations/$conversationId'
+      preLoaderRoute: typeof StudioConversationsConversationIdRouteImport
       parentRoute: typeof StudioRoute
     }
     '/lovable/email/auth/preview': {
@@ -1401,6 +1499,7 @@ interface StudioRouteChildren {
   StudioBillingRoute: typeof StudioBillingRoute
   StudioBrandRoute: typeof StudioBrandRoute
   StudioCalendarRoute: typeof StudioCalendarRoute
+  StudioCreateRoute: typeof StudioCreateRoute
   StudioDashboardRoute: typeof StudioDashboardRoute
   StudioIdeasRoute: typeof StudioIdeasRoute
   StudioLibraryRoute: typeof StudioLibraryRoute
@@ -1408,9 +1507,12 @@ interface StudioRouteChildren {
   StudioRoadmapRoute: typeof StudioRoadmapRoute
   StudioSettingsRoute: typeof StudioSettingsRoute
   StudioSuccessRoute: typeof StudioSuccessRoute
+  StudioWorkRoute: typeof StudioWorkRoute
   StudioIndexRoute: typeof StudioIndexRoute
   StudioCampaignsCampaignIdRoute: typeof StudioCampaignsCampaignIdRoute
+  StudioConversationsConversationIdRoute: typeof StudioConversationsConversationIdRoute
   StudioCampaignsIndexRoute: typeof StudioCampaignsIndexRoute
+  StudioConversationsIndexRoute: typeof StudioConversationsIndexRoute
 }
 
 const StudioRouteChildren: StudioRouteChildren = {
@@ -1419,6 +1521,7 @@ const StudioRouteChildren: StudioRouteChildren = {
   StudioBillingRoute: StudioBillingRoute,
   StudioBrandRoute: StudioBrandRoute,
   StudioCalendarRoute: StudioCalendarRoute,
+  StudioCreateRoute: StudioCreateRoute,
   StudioDashboardRoute: StudioDashboardRoute,
   StudioIdeasRoute: StudioIdeasRoute,
   StudioLibraryRoute: StudioLibraryRoute,
@@ -1426,9 +1529,13 @@ const StudioRouteChildren: StudioRouteChildren = {
   StudioRoadmapRoute: StudioRoadmapRoute,
   StudioSettingsRoute: StudioSettingsRoute,
   StudioSuccessRoute: StudioSuccessRoute,
+  StudioWorkRoute: StudioWorkRoute,
   StudioIndexRoute: StudioIndexRoute,
   StudioCampaignsCampaignIdRoute: StudioCampaignsCampaignIdRoute,
+  StudioConversationsConversationIdRoute:
+    StudioConversationsConversationIdRoute,
   StudioCampaignsIndexRoute: StudioCampaignsIndexRoute,
+  StudioConversationsIndexRoute: StudioConversationsIndexRoute,
 }
 
 const StudioRouteWithChildren =
@@ -1484,6 +1591,7 @@ const rootRouteChildren: RootRouteChildren = {
   LocationsIndexRoute: LocationsIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
+  ApiStudioIntakeRoute: ApiStudioIntakeRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,

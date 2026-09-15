@@ -1,0 +1,34 @@
+{
+  "report": [
+    {
+      "name": "navigation-focus",
+      "result": "pass"
+    },
+    {
+      "name": "setup-focus",
+      "result": "pass"
+    },
+    {
+      "name": "library-edit-persist",
+      "result": "pass"
+    },
+    {
+      "name": "library-error-retains-draft",
+      "result": "pass"
+    },
+    {
+      "name": "chat-error-retains-draft",
+      "result": "pass"
+    },
+    {
+      "name": "chat-pending-transition",
+      "result": "pass"
+    },
+    {
+      "name": "workspace-error-retry",
+      "result": "pass"
+    }
+  ],
+  "external": [],
+  "errors": []
+}

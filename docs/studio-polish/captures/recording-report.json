@@ -1,0 +1,26 @@
+[
+  {
+    "label": "baseline",
+    "origin": "http://127.0.0.1:4176",
+    "path": "/Users/yourboyjevoy/Documents/ChatGPT/Palmer House Productions/palmer-house-studio/docs/studio-polish/captures/baseline-mobile-nav-chat.webm",
+    "capturedAt": "2026-09-14T18:51:17.516Z",
+    "viewport": [
+      390,
+      844
+    ],
+    "errors": [],
+    "externalRequests": []
+  },
+  {
+    "label": "current",
+    "origin": "http://127.0.0.1:4175",
+    "path": "/Users/yourboyjevoy/Documents/ChatGPT/Palmer House Productions/palmer-house-studio/docs/studio-polish/captures/current-mobile-nav-chat.webm",
+    "capturedAt": "2026-09-14T18:51:42.103Z",
+    "viewport": [
+      390,
+      844
+    ],
+    "errors": [],
+    "externalRequests": []
+  }
+]

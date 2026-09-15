@@ -1,5 +1,5 @@
-import { Link } from "@tanstack/react-router";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
+import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowRight,
   AtSign,
@@ -34,11 +34,11 @@ import {
 } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import clara from "@/assets/pal-headshots/clara.webp";
-import kiana from "@/assets/pal-headshots/kiana.webp";
-import ryder from "@/assets/pal-headshots/ryder.webp";
-import samira from "@/assets/pal-headshots/samira.webp";
-import engineFlow from "@/assets/studio-visuals/content-engine-flow.png";
+import clara from "@/assets/pal-headshots/clara.png";
+import kiana from "@/assets/pal-headshots/kiana.png";
+import ryder from "@/assets/pal-headshots/ryder.png";
+import samira from "@/assets/pal-headshots/samira.png";
+import { AssetIllustration } from "./AssetIllustration";
 import {
   contentPlatforms,
   studioGoals,
@@ -50,6 +50,7 @@ import {
 import { celebrate } from "./Celebrate";
 import { useStudio } from "./StudioProvider";
 import { CarouselGraphicBuilder } from "./CarouselGraphicBuilder";
+import { useStudioMotion } from "./studio-motion";
 
 const CampaignMotionPreview = lazy(() =>
   import("./CampaignMotionPreview").then((module) => ({ default: module.CampaignMotionPreview })),
@@ -138,6 +139,7 @@ function fileToDataUrl(file: File) {
 }
 
 export function ContentEngine() {
+  const navigate = useNavigate();
   const {
     brand,
     campaigns,
@@ -152,9 +154,15 @@ export function ContentEngine() {
     createCalendarItem,
     uploadIdeaSource,
   } = useStudio();
-  const reduce = useReducedMotion();
+  const { reduceMotion: reduce, enter, exit, transition, fadeTransition } = useStudioMotion();
   const [stage, setStage] = useState<"idea" | "directions" | "results">("idea");
-  const [idea, setIdea] = useState("");
+  const initialIdea = useLocation({
+    select: (location) => {
+      const value = (location.search as { idea?: unknown }).idea;
+      return typeof value === "string" ? value.slice(0, 5000) : "";
+    },
+  });
+  const [idea, setIdea] = useState(initialIdea);
   const [sourceMode, setSourceMode] = useState<"text" | "link" | "image">("text");
   const [sourceUrl, setSourceUrl] = useState("");
   const [sourceContext, setSourceContext] = useState("");
@@ -216,9 +224,13 @@ export function ContentEngine() {
       toast.error("Give the engine one real idea to work with.");
       return;
     }
+    if (idea.trim().length > 1200) {
+      toast.error("Keep this idea to 1,200 characters before finding directions.");
+      return;
+    }
     setRunning("directions");
     try {
-      const result = await suggestDirections({ idea, goal, audience });
+      const result = await suggestDirections({ idea: idea.trim(), goal, audience });
       setDirections(result);
       setSelectedDirection(result[0]);
       setStage("directions");
@@ -353,7 +365,7 @@ export function ContentEngine() {
 
   function loadCampaign(id: string) {
     if (!campaignOutputs[id]) {
-      toast.info("Open this campaign from the Library to load its saved assets.");
+      void navigate({ to: "/studio/campaigns/$campaignId", params: { campaignId: id } });
       return;
     }
     setCampaignId(id);
@@ -363,7 +375,7 @@ export function ContentEngine() {
 
   return (
     <div className="mx-auto max-w-[96rem]">
-      <header className="flex flex-wrap items-start justify-between gap-4 border-b border-border pb-5">
+      <header className="flex flex-wrap items-start justify-between gap-3 border-b border-border pb-4">
         <div>
           <h1 className="text-3xl font-extrabold tracking-[-.05em] sm:text-4xl">Content Engine</h1>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
@@ -371,14 +383,26 @@ export function ContentEngine() {
             will live.
           </p>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Link to="/studio/brand" className="secondary-action">
+        <div className="grid w-full grid-cols-3 gap-2 sm:flex sm:w-auto">
+          <Link
+            to="/studio/brand"
+            className="secondary-action min-w-0 gap-1.5 px-2 text-xs sm:px-3"
+          >
             <FileStack className="size-4" /> Brand Vault
           </Link>
-          <button onClick={() => setHistoryOpen((value) => !value)} className="secondary-action">
+          <button
+            onClick={() => setHistoryOpen((value) => !value)}
+            aria-expanded={historyOpen}
+            aria-controls="content-engine-history"
+            className="secondary-action min-w-0 gap-1.5 px-2 text-xs sm:px-3"
+          >
             <RefreshCw className="size-4" /> History
           </button>
-          <Link to="/studio/calendar" className="secondary-action">
+          <Link
+            to="/studio/work"
+            search={{ tab: "calendar" }}
+            className="secondary-action min-w-0 gap-1.5 px-2 text-xs sm:px-3"
+          >
             <CalendarDays className="size-4" /> Calendar
           </Link>
         </div>
@@ -387,9 +411,11 @@ export function ContentEngine() {
       <AnimatePresence>
         {historyOpen && (
           <motion.section
-            initial={reduce ? { opacity: 0 } : { opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
+            id="content-engine-history"
+            initial={reduce ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={fadeTransition}
             className="overflow-hidden border-b border-border"
           >
             <div className="flex gap-3 overflow-x-auto py-4">
@@ -418,53 +444,56 @@ export function ContentEngine() {
         )}
       </AnimatePresence>
 
-      {!brand?.industry?.trim() || !brand?.description?.trim() ? (
-        <div
-          className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-[1.25rem] border p-5"
-          style={{ borderColor: "var(--spotlight)", background: "var(--spotlight-soft)" }}
-        >
-          <div className="min-w-0">
-            <p className="text-sm font-extrabold">
-              The engine is writing without knowing what you do.
-            </p>
-            <p className="mt-1 text-sm text-muted-foreground">
+      <details className="group mt-3 rounded-xl border border-border bg-mist">
+        <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 px-3 text-xs font-semibold [&::-webkit-details-marker]:hidden">
+          <ShieldCheck className="size-4 shrink-0 text-evergreen" aria-hidden="true" />
+          <span className="min-w-0 flex-1 truncate">
+            {!brand?.industry?.trim() || !brand?.description?.trim()
+              ? "Add your business context"
+              : `Brand DNA connected${brand.business_name ? ` · ${brand.business_name}` : ""}`}
+          </span>
+          <ChevronDown
+            className="size-4 shrink-0 transition-transform motion-reduce:transition-none group-open:rotate-180"
+            aria-hidden="true"
+          />
+        </summary>
+        <div className="border-t border-border px-4 pb-4 pt-3">
+          {!brand?.industry?.trim() || !brand?.description?.trim() ? (
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
               Add your category and a short description of what you offer, so campaigns sound like
               your business instead of a generic brand. A website is optional.
             </p>
-          </div>
-          <Link to="/studio/brand" className="secondary-action">
-            <FileStack className="size-4" /> Add your context
-          </Link>
-        </div>
-      ) : (
-        <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 rounded-[1.25rem] border border-border bg-mist px-5 py-4">
-          <span className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[.16em] text-evergreen">
-            <ShieldCheck className="size-3.5" /> Brand DNA connected
-          </span>
-          {[
-            brand?.business_name,
-            brand?.industry,
-            brand?.primary_audience,
-            Array.isArray(brand?.offers) && typeof brand.offers[0] === "string"
-              ? (brand.offers[0] as string)
-              : "",
-          ]
-            .filter((value): value is string => Boolean(value && value.trim()))
-            .slice(0, 4)
-            .map((value) => (
-              <span key={value} className="flex items-center gap-2 text-xs font-bold text-ink">
-                <span className="size-1.5 rounded-full bg-evergreen" />
-                <span className="max-w-[24ch] truncate">{value}</span>
-              </span>
-            ))}
+          ) : (
+            <div className="flex flex-wrap gap-x-5 gap-y-2">
+              {[
+                brand.business_name,
+                brand.industry,
+                brand.primary_audience,
+                Array.isArray(brand.offers) && typeof brand.offers[0] === "string"
+                  ? (brand.offers[0] as string)
+                  : "",
+              ]
+                .filter((value): value is string => Boolean(value && value.trim()))
+                .slice(0, 4)
+                .map((value) => (
+                  <span
+                    key={value}
+                    className="flex items-center gap-2 text-xs font-semibold text-ink"
+                  >
+                    <span className="size-1.5 shrink-0 rounded-full bg-evergreen" />
+                    {value}
+                  </span>
+                ))}
+            </div>
+          )}
           <Link
             to="/studio/brand"
-            className="ml-auto text-xs font-bold text-muted-foreground underline underline-offset-4 hover:text-ink"
+            className="mt-3 inline-flex min-h-11 items-center gap-2 rounded-lg text-sm font-semibold text-spotlight underline underline-offset-4"
           >
-            Edit
+            <FileStack className="size-4" /> Edit Brand DNA
           </Link>
         </div>
-      )}
+      </details>
 
       <Progress stage={stage} />
 
@@ -472,20 +501,20 @@ export function ContentEngine() {
         {stage === "idea" && (
           <motion.section
             key="idea"
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            className="grid gap-10 py-8 lg:grid-cols-[1fr_.78fr] lg:py-12"
+            initial={enter}
+            animate={{ opacity: 1, transform: "translateY(0px)" }}
+            exit={exit}
+            transition={transition}
+            className="grid gap-8 py-5 lg:grid-cols-[1fr_.78fr] lg:py-8"
           >
             <div>
-              <h2 className="max-w-[12ch] text-4xl font-extrabold leading-[.95] tracking-[-.055em] sm:text-6xl">
-                What do you need to say?
+              <h2 className="text-2xl font-extrabold leading-tight tracking-[-.04em] sm:text-3xl">
+                Start with an idea
               </h2>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
-                Start with a thought, a useful link, or a real image. The Engine will identify the
-                real job before it writes anything.
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
+                Write a thought, add a link, or share an image.
               </p>
-              <div className="mt-8 flex gap-2 overflow-x-auto pb-1" aria-label="Idea source">
+              <div className="mt-4 flex gap-2 overflow-x-auto pb-1" aria-label="Idea source">
                 {(
                   [
                     ["text", Type, "Write it"],
@@ -517,13 +546,27 @@ export function ContentEngine() {
                       id="engine-idea"
                       value={idea}
                       onChange={(event) => setIdea(event.target.value)}
-                      rows={5}
+                      rows={4}
+                      maxLength={1200}
+                      aria-describedby={idea.length > 1000 ? "engine-idea-limit" : undefined}
+                      aria-invalid={idea.trim().length > 1200 || undefined}
                       placeholder="Example: Customers keep asking whether they need the premium service or the standard one…"
                       className="w-full resize-none rounded-[1.2rem] border-0 bg-white p-4 text-base leading-relaxed outline-none sm:text-lg"
                     />
+                    {idea.length > 1000 && (
+                      <p
+                        id="engine-idea-limit"
+                        className={`px-4 pb-3 text-xs ${idea.trim().length > 1200 ? "font-semibold text-red-700" : "text-muted-foreground"}`}
+                        role={idea.trim().length > 1200 ? "alert" : undefined}
+                      >
+                        {idea.trim().length > 1200
+                          ? "Shorten this draft to 1,200 characters to find directions. Your saved idea is unchanged."
+                          : `${idea.length.toLocaleString()} / 1,200 characters`}
+                      </p>
+                    )}
                     <button
                       onClick={() => void findDirections()}
-                      disabled={busy}
+                      disabled={busy || idea.trim().length > 1200}
                       className="primary-action w-full rounded-2xl bg-spotlight sm:w-auto"
                     >
                       {busy ? (
@@ -534,14 +577,7 @@ export function ContentEngine() {
                       Find three angles <ArrowRight className="size-4" />
                     </button>
                     {running === "directions" ? (
-                      <GenerationProgress
-                        steps={[
-                          "Reading your idea and Brand DNA",
-                          "Naming the business problem",
-                          "Testing three different audience decisions",
-                          "Writing the three angles",
-                        ]}
-                      />
+                      <GenerationProgress label="Finding three angles for your idea…" />
                     ) : null}
                   </>
                 ) : (
@@ -617,8 +653,9 @@ export function ContentEngine() {
               </div>
               {sourceAnalysis ? (
                 <motion.div
-                  initial={reduce ? false : { opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={enter}
+                  animate={{ opacity: 1, transform: "translateY(0px)" }}
+                  transition={transition}
                   className="mt-4 rounded-[1.5rem] border border-system bg-system-soft p-5"
                 >
                   <p className="studio-eyebrow text-system">Useful angle found</p>
@@ -673,9 +710,10 @@ export function ContentEngine() {
         {stage === "directions" && (
           <motion.section
             key="directions"
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
+            initial={enter}
+            animate={{ opacity: 1, transform: "translateY(0px)" }}
+            exit={exit}
+            transition={transition}
             className="py-8 lg:py-12"
           >
             <div className="flex flex-wrap items-end justify-between gap-5">
@@ -700,8 +738,10 @@ export function ContentEngine() {
                   <motion.button
                     key={direction.id}
                     onClick={() => setSelectedDirection(direction)}
-                    whileHover={reduce ? undefined : { y: -5 }}
-                    className={`relative min-h-80 rounded-[1.75rem] border bg-white p-6 text-left transition ${selected ? "shadow-soft" : "border-border"}`}
+                    whileHover={reduce ? undefined : { transform: "translateY(-2px)" }}
+                    whileTap={reduce ? undefined : { transform: "translateY(0px) scale(0.99)" }}
+                    transition={transition}
+                    className={`relative min-h-80 rounded-[1.75rem] border bg-white p-6 text-left ${selected ? "shadow-soft" : "border-border"}`}
                     style={{ borderColor: selected ? lane.color : undefined }}
                   >
                     <span
@@ -759,16 +799,7 @@ export function ContentEngine() {
                   </button>
                 </div>
                 {running === "campaign" ? (
-                  <GenerationProgress
-                    color={coach.color}
-                    estimate={45000}
-                    steps={[
-                      "Locking the strategy and audience decision",
-                      "Writing the anchor script scene by scene",
-                      "Cutting platform-native posts",
-                      "Building the film plan and calendar",
-                    ]}
-                  />
+                  <GenerationProgress color={coach.color} label="Building your campaign…" />
                 ) : null}
               </>
             )}
@@ -778,8 +809,9 @@ export function ContentEngine() {
         {stage === "results" && output && selectedPost && (
           <motion.section
             key="results"
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={enter}
+            animate={{ opacity: 1, transform: "translateY(0px)" }}
+            transition={transition}
             className="py-5"
           >
             <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-4">
@@ -1088,7 +1120,7 @@ function SourceWorkbench({
   analysis: ContentSourceAnalysis | null;
   imagePreview: string;
 }) {
-  const reduce = useReducedMotion();
+  const { enter, exit, transition } = useStudioMotion();
   const lane = laneMeta[analysis?.lane || "system"];
   const modeLabel =
     mode === "text" ? "A thought" : mode === "link" ? "A useful link" : "A real image";
@@ -1115,10 +1147,10 @@ function SourceWorkbench({
           <AnimatePresence mode="wait">
             <motion.div
               key={`${mode}-${imagePreview ? "ready" : "empty"}`}
-              initial={reduce ? false : { opacity: 0, y: 14, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={reduce ? undefined : { opacity: 0, y: -8 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+              initial={enter}
+              animate={{ opacity: 1, transform: "translateY(0px)" }}
+              exit={exit}
+              transition={transition}
               className="overflow-hidden rounded-[1.4rem] border border-white/80 bg-white p-4 shadow-soft"
             >
               {mode === "image" && imagePreview ? (
@@ -1141,10 +1173,7 @@ function SourceWorkbench({
           </AnimatePresence>
 
           <div className="flex items-center justify-center" aria-hidden="true">
-            <motion.span
-              initial={reduce ? false : { scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.4, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+            <span
               className="hidden h-px w-full origin-left sm:block"
               style={{ background: lane.color }}
             />
@@ -1153,9 +1182,9 @@ function SourceWorkbench({
 
           <motion.div
             key={analysis?.suggestedIdea || "brief-empty"}
-            initial={reduce ? false : { opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+            initial={enter}
+            animate={{ opacity: 1, transform: "translateY(0px)" }}
+            transition={transition}
             className="rounded-[1.4rem] border bg-white p-5 shadow-soft"
             style={{ borderColor: analysis ? lane.color : "var(--line)" }}
           >
@@ -1196,61 +1225,31 @@ function SourceWorkbench({
 }
 
 export function GenerationProgress({
-  steps,
+  label,
   color = "var(--spotlight)",
-  estimate = 18000,
 }: {
-  steps: string[];
+  label: string;
   color?: string;
-  estimate?: number;
 }) {
-  const [elapsed, setElapsed] = useState(0);
-
-  useEffect(() => {
-    const start = Date.now();
-    const timer = setInterval(() => setElapsed(Date.now() - start), 120);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Asymptotic fill: fast at first, never reaches 100 until the work returns.
-  const percent = Math.min(96, 100 * (1 - Math.exp(-elapsed / (estimate / 2.2))));
-  const activeIndex = Math.min(steps.length - 1, Math.floor((percent / 100) * steps.length));
-
+  const { reduceMotion } = useStudioMotion();
   return (
     <div
-      className="mt-4 rounded-[1.25rem] border bg-white p-5"
+      className="mt-4 flex items-start gap-3 rounded-[1.25rem] border bg-white p-5"
       style={{ borderColor: color }}
       role="status"
       aria-live="polite"
+      aria-atomic="true"
     >
-      <div className="flex items-center justify-between gap-4">
-        <p className="text-sm font-extrabold">{steps[activeIndex]}</p>
-        <span className="font-mono text-[10px] uppercase tracking-[.18em] text-muted-foreground">
-          {Math.round(percent)}%
-        </span>
-      </div>
-      <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-border">
-        <div
-          className="h-full rounded-full transition-[width] duration-150 ease-out"
-          style={{ width: `${percent}%`, background: color }}
-        />
-      </div>
-      <div className="mt-4 space-y-1.5">
-        {steps.map((step, index) => (
-          <div
-            key={step}
-            className={`flex items-center gap-2 text-xs ${index <= activeIndex ? "font-bold text-ink" : "text-muted-foreground"}`}
-          >
-            {index < activeIndex ? (
-              <Check className="size-3.5 shrink-0" style={{ color }} />
-            ) : index === activeIndex ? (
-              <LoaderCircle className="size-3.5 shrink-0 animate-spin" style={{ color }} />
-            ) : (
-              <span className="size-3.5 shrink-0 rounded-full border border-border" />
-            )}
-            {step}
-          </div>
-        ))}
+      <LoaderCircle
+        className={`mt-0.5 size-5 shrink-0 ${reduceMotion ? "" : "animate-spin"}`}
+        style={{ color }}
+        aria-hidden="true"
+      />
+      <div>
+        <p className="text-sm font-bold">{label}</p>
+        <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+          Your results will appear here when they are ready.
+        </p>
       </div>
     </div>
   );
@@ -1258,27 +1257,31 @@ export function GenerationProgress({
 
 function Progress({ stage }: { stage: "idea" | "directions" | "results" }) {
   const steps = [
-    { key: "idea", label: "What do you need to say?" },
-    { key: "directions", label: "Find the angle" },
-    { key: "results", label: "Build the campaign" },
+    { key: "idea", label: "Idea" },
+    { key: "directions", label: "Angle" },
+    { key: "results", label: "Campaign" },
   ] as const;
   const active = steps.findIndex((step) => step.key === stage);
   return (
-    <div className="mt-5 grid gap-2 rounded-2xl border border-border bg-white p-2 sm:grid-cols-3">
+    <ol
+      aria-label="Campaign steps"
+      className="mt-3 grid grid-cols-3 gap-1 rounded-xl border border-border bg-white p-1"
+    >
       {steps.map((step, index) => (
-        <div
+        <li
           key={step.key}
-          className={`flex min-h-12 items-center gap-3 rounded-xl px-3 ${index === active ? "bg-spotlight-soft text-spotlight" : "text-muted-foreground"}`}
+          aria-current={index === active ? "step" : undefined}
+          className={`flex min-h-11 items-center justify-center gap-1.5 rounded-lg px-1 sm:gap-3 sm:px-3 ${index === active ? "bg-spotlight-soft text-spotlight" : "text-muted-foreground"}`}
         >
           <span
-            className={`grid size-7 place-items-center rounded-full border font-mono text-[9px] ${index < active ? "border-spotlight bg-spotlight text-white" : "border-current"}`}
+            className={`grid size-6 shrink-0 place-items-center rounded-full border font-mono text-[9px] ${index < active ? "border-spotlight bg-spotlight text-white" : "border-current"}`}
           >
-            {index < active ? <Check className="size-3.5" /> : index + 1}
+            {index < active ? <Check className="size-3.5" aria-label="Complete" /> : index + 1}
           </span>
           <span className="text-xs font-bold">{step.label}</span>
-        </div>
+        </li>
       ))}
-    </div>
+    </ol>
   );
 }
 
@@ -1437,7 +1440,7 @@ function YouTubePreview({ post, business }: { post: PlatformPost; business: stri
   return (
     <PreviewFrame>
       <div className="relative aspect-video bg-ink">
-        <img src={engineFlow} alt="" className="size-full object-cover opacity-90" />
+        <AssetIllustration kind="anchor_script" title={post.title} className="size-full" />
         <span className="absolute inset-0 grid place-items-center">
           <span className="grid size-12 place-items-center rounded-full bg-white/90 text-ink">
             <Play className="size-5 fill-current" />
@@ -1450,7 +1453,7 @@ function YouTubePreview({ post, business }: { post: PlatformPost; business: stri
           <BrandAvatar business={business} />
           <div className="min-w-0 flex-1">
             <p className="truncate text-xs font-bold">{business}</p>
-            <p className="text-[10px] text-muted-foreground">1.8K subscribers</p>
+            <p className="text-[10px] text-muted-foreground">Channel preview</p>
           </div>
           <button className="rounded-full bg-ink px-3 py-2 text-[10px] font-bold text-white">
             Subscribe
@@ -1512,10 +1515,10 @@ function TikTokPreview({ post, business }: { post: PlatformPost; business: strin
   return (
     <PreviewFrame>
       <div className="relative mx-auto aspect-[9/14] max-h-[32rem] overflow-hidden bg-ink text-white">
-        <img
-          src={engineFlow}
-          alt=""
-          className="absolute inset-0 size-full object-cover opacity-75"
+        <AssetIllustration
+          kind="short_script"
+          title={post.title}
+          className="absolute inset-0 size-full opacity-75"
         />
         <div className="absolute inset-x-4 top-4 flex justify-center gap-5 text-xs font-bold">
           <span className="text-white/65">Following</span>

@@ -180,8 +180,10 @@ export const studioPlanPrices = {
 } as const satisfies Record<StudioPlanKey, { month: string; year: string }>;
 export type StudioView =
   | "engine"
+  | "work"
   | "home"
   | "assistant"
+  | "conversations"
   | "roadmap"
   | "success"
   | "onboarding"

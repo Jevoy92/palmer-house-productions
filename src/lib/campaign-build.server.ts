@@ -38,6 +38,7 @@ export function campaignBriefText(data: CampaignBuildBrief) {
 }
 
 const groundingRules = [
+  "Use SAVED WORKSPACE WRITING VOICE when present. Writing examples guide language and reasoning; they are not verified proof, new offers, quotations or factual biography. Never reuse a first-person anecdote from an example as if it happened in this campaign.",
   "Ground every line in the supplied category, services, and customers. Use the vocabulary of that trade or field. If a sentence could be pasted onto a different company without changing a word, rewrite it.",
   "Write with calm confidence and concrete language. No hype, no filler, no marketing abstractions like 'leverage', 'authority positioning', or 'value proposition'. Never restate the brief back to the reader.",
   "Never invent proof, results, statistics, awards, or testimonials. If proof was not supplied, build around what can be filmed or written truthfully.",

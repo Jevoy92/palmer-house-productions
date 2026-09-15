@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import {
   ArrowRight,
   Award,
@@ -23,7 +23,6 @@ import {
 } from "lucide-react";
 import { useMemo, useState, type FormEvent } from "react";
 import { toast } from "sonner";
-import samiraHeadshot from "@/assets/pal-headshots/samira.webp";
 import {
   studioAdvisoryOffer,
   studioConsultingOffer,
@@ -31,6 +30,7 @@ import {
   type StudioPlanKey,
 } from "@/lib/studio-model";
 import { useStudio } from "./StudioProvider";
+import { useStudioMotion } from "./studio-motion";
 
 const bookingUrl = import.meta.env.VITE_STRATEGY_BOOKING_URL || "/contact";
 const publicReviewUrl = import.meta.env.VITE_PUBLIC_REVIEW_URL || "/resources/reviews";
@@ -70,6 +70,14 @@ function startOfCurrentPeriod(value?: string) {
   return Number.isNaN(parsed.getTime()) ? new Date(0) : parsed;
 }
 
+function reportRequestError(error: unknown) {
+  toast.error(
+    error instanceof Error
+      ? error.message
+      : "We couldn’t send your request. Your draft is still here; please try again.",
+  );
+}
+
 export function MemberSuccess() {
   const {
     subscription,
@@ -82,7 +90,7 @@ export function MemberSuccess() {
     serviceRequests,
     requestService,
   } = useStudio();
-  const reduce = useReducedMotion();
+  const { reduceMotion, transition, enter } = useStudioMotion();
   const [helpType, setHelpType] = useState<HelpType>("member_question");
   const [helpNote, setHelpNote] = useState("");
   const [helpCampaign, setHelpCampaign] = useState("");
@@ -160,7 +168,7 @@ export function MemberSuccess() {
         title: "Build a connected campaign",
         detail: "Turn one useful idea into a complete system of assets.",
         done: campaigns.length > 0 && assets.length > 0,
-        to: "/studio",
+        to: "/studio/create",
         icon: Sparkles,
         color: "var(--system)",
         soft: "var(--system-soft)",
@@ -250,6 +258,8 @@ export function MemberSuccess() {
       setHelpNote("");
       setHelpCampaign("");
       setHelpReference("");
+    } catch (error) {
+      reportRequestError(error);
     } finally {
       setBusy(false);
     }
@@ -289,6 +299,8 @@ export function MemberSuccess() {
       setPreferredTime("");
       setCallNote("");
       if (bookingUrl !== "/contact") window.location.assign(bookingUrl);
+    } catch (error) {
+      reportRequestError(error);
     } finally {
       setBusy(false);
     }
@@ -304,6 +316,8 @@ export function MemberSuccess() {
       );
       setPodcastTopic("");
       setPodcastOpen(false);
+    } catch (error) {
+      reportRequestError(error);
     } finally {
       setBusy(false);
     }
@@ -318,6 +332,8 @@ export function MemberSuccess() {
       setFeedback("");
       setFeedbackOpen(false);
       toast.success("Thank you. This went privately to Palmer House.");
+    } catch (error) {
+      reportRequestError(error);
     } finally {
       setBusy(false);
     }
@@ -325,152 +341,155 @@ export function MemberSuccess() {
 
   return (
     <div className="mx-auto max-w-[88rem]">
-      <header className="grid gap-7 lg:grid-cols-[1fr_23rem] lg:items-end">
-        <div>
-          <p className="studio-eyebrow text-system">Member success</p>
-          <h1 className="mt-4 max-w-[12ch] text-5xl font-black leading-[.92] tracking-[-.055em] sm:text-7xl">
-            Tools when you can. Humans when you need us.
-          </h1>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-muted-foreground">
-            Complete useful missions, get a second set of eyes, and use every Palmer House benefit
-            included with your membership.
-          </p>
-        </div>
-        <div className="relative overflow-hidden rounded-[1.75rem] bg-system-soft p-6">
-          <div className="relative z-10 max-w-[11rem] sm:max-w-[13rem]">
-            <p className="studio-eyebrow text-system">Samira’s nudge</p>
-            <p className="mt-3 text-sm font-bold leading-relaxed">
-              The best next move is the one that removes a real bottleneck—not the one with the
-              fanciest name.
-            </p>
-          </div>
-          <img
-            src={samiraHeadshot}
-            alt="Samira, your systems guide"
-            className="absolute -bottom-5 -right-2 h-32 w-32 object-contain object-bottom sm:-bottom-7 sm:-right-3 sm:h-40 sm:w-40"
-          />
-        </div>
+      <header>
+        <p className="studio-eyebrow text-system">Palmer House team</p>
+        <h1 className="mt-3 text-3xl font-bold tracking-[-.04em] sm:text-4xl">Member support</h1>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+          Ask our team a question, share work for review, or plan your next session.
+        </p>
+        <nav
+          aria-label="Member support sections"
+          className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold"
+        >
+          <a
+            href="#member-help"
+            className="inline-flex min-h-11 items-center underline underline-offset-4"
+          >
+            Ask our team
+          </a>
+          <a
+            href="#member-guidance"
+            className="inline-flex min-h-11 items-center underline underline-offset-4"
+          >
+            Guidance
+          </a>
+          <a
+            href="#member-benefits"
+            className="inline-flex min-h-11 items-center underline underline-offset-4"
+          >
+            Benefits
+          </a>
+        </nav>
       </header>
 
-      <section className="mt-10 grid gap-5 xl:grid-cols-[1.15fr_.85fr]">
-        <article className="studio-card">
-          <div className="flex flex-wrap items-end justify-between gap-5">
-            <div>
-              <p className="studio-eyebrow text-spotlight">Your useful-work streak</p>
-              <h2 className="mt-3 text-3xl font-black">
-                {completed} of {missions.length} missions complete
-              </h2>
-            </div>
-            <div className="text-right">
-              <p className="text-3xl font-black text-spotlight">{earnedPoints}</p>
-              <p className="text-[10px] font-bold uppercase tracking-[.12em] text-muted-foreground">
-                of {totalPoints} useful-work points
-              </p>
-            </div>
-          </div>
-          <div
-            className="mt-6 h-3 overflow-hidden rounded-full bg-spotlight-soft"
-            aria-label={`${progress}% of missions complete`}
-          >
-            <motion.span
-              initial={reduce ? false : { width: 0 }}
-              animate={{ width: `${progress}%` }}
-              transition={{ duration: 0.65, ease: "easeOut" }}
-              className="block h-full rounded-full bg-spotlight"
-            />
-          </div>
-          <div className="mt-5 grid gap-2 sm:grid-cols-3" aria-label="Member achievements">
-            {achievements.map((achievement) => (
-              <div
-                key={achievement.label}
-                className="flex min-h-24 items-start gap-3 rounded-[1rem] border border-border p-3"
-                style={{ background: achievement.done ? achievement.soft : "white" }}
-              >
-                <span
-                  className="grid size-8 shrink-0 place-items-center rounded-lg"
-                  style={{
-                    color: achievement.done ? achievement.color : "var(--muted)",
-                    background: achievement.done ? "white" : "var(--mist)",
-                  }}
-                >
-                  {achievement.done ? <Award className="size-4" /> : <Flame className="size-4" />}
-                </span>
-                <span>
-                  <span className="block text-xs font-black">{achievement.label}</span>
-                  <span className="mt-1 block text-[10px] leading-relaxed text-muted-foreground">
-                    {achievement.done ? achievement.detail : "Complete the connected missions."}
-                  </span>
-                </span>
-              </div>
-            ))}
-          </div>
-          {nextMission ? (
-            <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-[1rem] bg-spotlight-soft p-4">
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-[.12em] text-spotlight">
-                  Best next move · +{nextMission.points} points
-                </p>
-                <p className="mt-1 text-sm font-black">{nextMission.title}</p>
-              </div>
-              <Link to={nextMission.to} className="secondary-action bg-white">
-                Start this mission <ArrowRight className="size-4" />
-              </Link>
-            </div>
-          ) : (
-            <div className="mt-5 rounded-[1rem] bg-evergreen-soft p-4 text-sm font-black text-evergreen">
-              You completed the full useful-work loop. Keep the rhythm by building the next real
-              campaign—not by collecting empty points.
-            </div>
-          )}
-          <div className="mt-7 grid gap-3 sm:grid-cols-2">
-            {missions.map((mission, index) => (
-              <motion.div
-                key={mission.title}
-                initial={reduce ? false : { opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: reduce ? 0 : index * 0.045, duration: 0.3 }}
-              >
-                <Link
-                  to={mission.to}
-                  className="group flex min-h-36 items-start gap-4 rounded-[1.25rem] border border-border bg-white p-4 transition hover:-translate-y-0.5 hover:border-ink"
-                >
-                  <span
-                    className="grid size-10 shrink-0 place-items-center rounded-xl"
-                    style={{ background: mission.soft, color: mission.color }}
+      <section className="mt-6 grid items-start gap-5 xl:grid-cols-[1.15fr_.85fr]">
+        <article id="member-help" className="studio-card scroll-mt-24">
+          <p className="studio-eyebrow text-system">Palmer House help desk</p>
+          <h2 className="mt-3 text-2xl font-bold">What can we help with?</h2>
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
+            Your request stays with your workspace, brand, and campaign context.
+          </p>
+          <form onSubmit={submitHelp} className="mt-5">
+            <fieldset>
+              <legend className="sr-only">Type of help</legend>
+              <div className="grid grid-cols-3 gap-2">
+                {helpTypes.map((item) => (
+                  <label
+                    key={item.id}
+                    className={`cursor-pointer rounded-lg border p-3 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-system ${helpType === item.id ? "border-system bg-system-soft" : "border-border bg-white hover:border-system"}`}
                   >
-                    {mission.done ? (
-                      <Check className="size-5" />
-                    ) : (
-                      <mission.icon className="size-5" />
-                    )}
-                  </span>
-                  <span>
-                    <span className="block text-sm font-black">{mission.title}</span>
-                    <span className="mt-2 block text-xs leading-relaxed text-muted-foreground">
-                      {mission.detail}
+                    <input
+                      type="radio"
+                      name="help-type"
+                      value={item.id}
+                      checked={helpType === item.id}
+                      onChange={() => setHelpType(item.id)}
+                      className="sr-only"
+                    />
+                    <item.icon className="size-4 text-system" aria-hidden="true" />
+                    <span className="mt-2 block text-xs font-bold leading-relaxed">
+                      {item.label}
                     </span>
-                    <span className="mt-3 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-[.1em]">
-                      {mission.done ? "Complete" : "Do this next"} <ArrowRight className="size-3" />
+                  </label>
+                ))}
+              </div>
+              <p className="mt-3 text-xs text-muted-foreground">
+                {helpTypes.find((item) => item.id === helpType)?.detail}
+              </p>
+            </fieldset>
+            {helpType !== "member_question" && campaigns.length ? (
+              <label className="mt-4 block">
+                <span className="mb-2 block text-xs font-black">Attach a Studio campaign</span>
+                <select
+                  value={helpCampaign}
+                  onChange={(event) => setHelpCampaign(event.target.value)}
+                  className="min-h-12 w-full rounded-[1rem] border border-border bg-white px-4 text-sm outline-none transition focus:border-system"
+                >
+                  <option value="">No campaign selected yet</option>
+                  {campaigns.map((campaign) => (
+                    <option key={campaign.id} value={campaign.id}>
+                      {campaign.title}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            ) : null}
+            <label className="mt-4 block">
+              <span className="mb-2 block text-xs font-black">What should we know?</span>
+              <textarea
+                value={helpNote}
+                onChange={(event) => setHelpNote(event.target.value)}
+                rows={4}
+                placeholder="Share the decision, link, campaign name, or place where you feel stuck…"
+                className="w-full rounded-[1.2rem] border border-border bg-white p-4 outline-none transition focus:border-system"
+              />
+            </label>
+            <label className="mt-4 block">
+              <span className="mb-2 flex items-center gap-2 text-xs font-black">
+                <Link2 className="size-3.5" /> Reference link{" "}
+                <span className="font-medium text-muted-foreground">(optional)</span>
+              </span>
+              <input
+                type="url"
+                value={helpReference}
+                onChange={(event) => setHelpReference(event.target.value)}
+                placeholder="https://…"
+                className="min-h-12 w-full rounded-[1rem] border border-border bg-white px-4 text-sm outline-none transition focus:border-system"
+              />
+            </label>
+            <button
+              disabled={busy || helpNote.trim().length < 8}
+              className="primary-action mt-4 disabled:opacity-40"
+            >
+              <Send className="size-4" /> Send to Palmer House
+            </button>
+          </form>
+          {serviceRequests.length ? (
+            <div className="mt-7 border-t border-border pt-6">
+              <div className="flex items-center justify-between gap-4">
+                <p className="text-sm font-black">Recent requests</p>
+                <p className="text-[10px] uppercase tracking-[.1em] text-muted-foreground">
+                  Saved with this workspace
+                </p>
+              </div>
+              <div className="mt-3 grid gap-2">
+                {serviceRequests.slice(0, 3).map((request) => (
+                  <div
+                    key={request.id}
+                    className="flex items-center gap-3 rounded-xl bg-cream px-4 py-3"
+                  >
+                    <span className="grid size-8 place-items-center rounded-lg bg-white text-system">
+                      <Check className="size-4" />
                     </span>
-                  </span>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
-          <Link
-            to="/games"
-            className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-bold underline underline-offset-4"
-          >
-            Open the Skill Lab: camera check, mission spinner, and Pal finder{" "}
-            <ArrowRight className="size-4" />
-          </Link>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-xs font-black capitalize">
+                        {request.request_type.replaceAll("_", " ")}
+                      </p>
+                      <p className="mt-1 text-[10px] text-muted-foreground">
+                        {new Date(request.created_at).toLocaleDateString()} · {request.status}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </article>
-
-        <article className="studio-card bg-cream">
+        <article id="member-guidance" className="studio-card scroll-mt-24 bg-cream">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="studio-eyebrow text-reel">Included guidance</p>
-              <h2 className="mt-3 text-3xl font-black">Your Palmer House time</h2>
+              <h2 className="mt-3 text-2xl font-bold">Your Palmer House time</h2>
             </div>
             <span className="rounded-full bg-white px-3 py-1 text-[10px] font-black uppercase tracking-[.1em]">
               {plan.name}
@@ -637,7 +656,7 @@ export function MemberSuccess() {
                 void requestService(
                   "advisory_application",
                   `Interested in the ${studioAdvisoryOffer.name}. Please follow up with fit and scope questions.`,
-                )
+                ).catch(reportRequestError)
               }
               className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl bg-white px-4 text-sm font-black text-spotlight disabled:opacity-50"
             >
@@ -647,214 +666,227 @@ export function MemberSuccess() {
         </article>
       </section>
 
-      <section className="mt-5 grid gap-5 xl:grid-cols-[1fr_.72fr]">
-        <article className="studio-card">
-          <p className="studio-eyebrow text-system">Palmer House help desk</p>
-          <h2 className="mt-3 text-3xl font-black">Submit the question or the work.</h2>
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            Keep the context attached to your workspace. We can see the Brand DNA, campaigns, and
-            approved work you have already built.
+      <section
+        id="member-benefits"
+        aria-label="Member benefits"
+        className="mt-6 grid scroll-mt-24 gap-5 lg:grid-cols-2"
+      >
+        <article className="studio-card bg-spotlight-soft">
+          <span className="grid size-11 place-items-center rounded-xl bg-spotlight text-white">
+            <Mic2 className="size-5" />
+          </span>
+          <p className="studio-eyebrow mt-6 text-spotlight">Member benefit</p>
+          <h2 className="mt-3 text-2xl font-black">Bring your story to MINDYOURBIZNIZ.</h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            Active members can request one included guest appearance every six months, subject to
+            editorial fit and scheduling.
           </p>
-          <form onSubmit={submitHelp} className="mt-7">
-            <div className="grid gap-3 sm:grid-cols-3" role="radiogroup" aria-label="Type of help">
-              {helpTypes.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  role="radio"
-                  aria-checked={helpType === item.id}
-                  onClick={() => setHelpType(item.id)}
-                  className={`min-h-32 rounded-[1.2rem] border p-4 text-left transition ${helpType === item.id ? "border-system bg-system-soft" : "border-border bg-white hover:border-system"}`}
-                >
-                  <item.icon className="size-5 text-system" />
-                  <span className="mt-4 block text-sm font-black">{item.label}</span>
-                  <span className="mt-1 block text-xs leading-relaxed text-muted-foreground">
-                    {item.detail}
-                  </span>
-                </button>
-              ))}
-            </div>
-            {helpType !== "member_question" && campaigns.length ? (
-              <label className="mt-4 block">
-                <span className="mb-2 block text-xs font-black">Attach a Studio campaign</span>
-                <select
-                  value={helpCampaign}
-                  onChange={(event) => setHelpCampaign(event.target.value)}
-                  className="min-h-12 w-full rounded-[1rem] border border-border bg-white px-4 text-sm outline-none transition focus:border-system"
-                >
-                  <option value="">No campaign selected yet</option>
-                  {campaigns.map((campaign) => (
-                    <option key={campaign.id} value={campaign.id}>
-                      {campaign.title}
-                    </option>
-                  ))}
-                </select>
+          <button
+            disabled={busy || !podcastEligible}
+            onClick={() => setPodcastOpen((value) => !value)}
+            className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 text-sm font-black text-white disabled:opacity-45"
+          >
+            <Mic2 className="size-4" />{" "}
+            {podcastEligible
+              ? podcastOpen
+                ? "Close topic request"
+                : "Request my guest spot"
+              : `Eligible again ${nextPodcastDate?.toLocaleDateString()}`}
+          </button>
+          {podcastOpen ? (
+            <div className="mt-4 rounded-xl bg-white p-4">
+              <label className="text-xs font-black">
+                What useful story should we explore?
+                <textarea
+                  value={podcastTopic}
+                  onChange={(event) => setPodcastTopic(event.target.value)}
+                  rows={4}
+                  placeholder="The decision, lesson, or story you can help another person understand…"
+                  className="mt-2 w-full rounded-xl border border-border p-3 text-sm"
+                />
               </label>
-            ) : null}
-            <label className="mt-4 block">
-              <span className="mb-2 block text-xs font-black">What should we know?</span>
-              <textarea
-                value={helpNote}
-                onChange={(event) => setHelpNote(event.target.value)}
-                rows={5}
-                placeholder="Share the decision, link, campaign name, or place where you feel stuck…"
-                className="w-full rounded-[1.2rem] border border-border bg-white p-4 outline-none transition focus:border-system"
-              />
-            </label>
-            <label className="mt-4 block">
-              <span className="mb-2 flex items-center gap-2 text-xs font-black">
-                <Link2 className="size-3.5" /> Reference link{" "}
-                <span className="font-medium text-muted-foreground">(optional)</span>
-              </span>
-              <input
-                type="url"
-                value={helpReference}
-                onChange={(event) => setHelpReference(event.target.value)}
-                placeholder="https://…"
-                className="min-h-12 w-full rounded-[1rem] border border-border bg-white px-4 text-sm outline-none transition focus:border-system"
-              />
-            </label>
-            <button
-              disabled={busy || helpNote.trim().length < 8}
-              className="primary-action mt-4 disabled:opacity-40"
-            >
-              <Send className="size-4" /> Send to Palmer House
-            </button>
-          </form>
-          {serviceRequests.length ? (
-            <div className="mt-7 border-t border-border pt-6">
-              <div className="flex items-center justify-between gap-4">
-                <p className="text-sm font-black">Recent requests</p>
-                <p className="text-[10px] uppercase tracking-[.1em] text-muted-foreground">
-                  Saved with this workspace
-                </p>
-              </div>
-              <div className="mt-3 grid gap-2">
-                {serviceRequests.slice(0, 3).map((request) => (
-                  <div
-                    key={request.id}
-                    className="flex items-center gap-3 rounded-xl bg-cream px-4 py-3"
-                  >
-                    <span className="grid size-8 place-items-center rounded-lg bg-white text-system">
-                      <Check className="size-4" />
-                    </span>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-xs font-black capitalize">
-                        {request.request_type.replaceAll("_", " ")}
-                      </p>
-                      <p className="mt-1 text-[10px] text-muted-foreground">
-                        {new Date(request.created_at).toLocaleDateString()} · {request.status}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <button
+                type="button"
+                disabled={busy || podcastTopic.trim().length < 8}
+                onClick={() => void requestPodcast()}
+                className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-4 text-xs font-black text-white disabled:opacity-40"
+              >
+                Send topic for editorial review <Send className="size-3.5" />
+              </button>
             </div>
           ) : null}
         </article>
 
-        <div className="grid gap-5">
-          <article className="studio-card bg-spotlight-soft">
-            <span className="grid size-11 place-items-center rounded-xl bg-spotlight text-white">
-              <Mic2 className="size-5" />
-            </span>
-            <p className="studio-eyebrow mt-6 text-spotlight">Member benefit</p>
-            <h2 className="mt-3 text-2xl font-black">Bring your story to MINDYOURBIZNIZ.</h2>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Active members can request one included guest appearance every six months, subject to
-              editorial fit and scheduling.
-            </p>
-            <button
-              disabled={busy || !podcastEligible}
-              onClick={() => setPodcastOpen((value) => !value)}
-              className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 text-sm font-black text-white disabled:opacity-45"
-            >
-              <Mic2 className="size-4" />{" "}
-              {podcastEligible
-                ? podcastOpen
-                  ? "Close topic request"
-                  : "Request my guest spot"
-                : `Eligible again ${nextPodcastDate?.toLocaleDateString()}`}
-            </button>
-            {podcastOpen ? (
-              <div className="mt-4 rounded-xl bg-white p-4">
-                <label className="text-xs font-black">
-                  What useful story should we explore?
-                  <textarea
-                    value={podcastTopic}
-                    onChange={(event) => setPodcastTopic(event.target.value)}
-                    rows={4}
-                    placeholder="The decision, lesson, or story you can help another person understand…"
-                    className="mt-2 w-full rounded-xl border border-border p-3 text-sm"
-                  />
-                </label>
-                <button
-                  type="button"
-                  disabled={busy || podcastTopic.trim().length < 8}
-                  onClick={() => void requestPodcast()}
-                  className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-4 text-xs font-black text-white disabled:opacity-40"
-                >
-                  Send topic for editorial review <Send className="size-3.5" />
-                </button>
-              </div>
-            ) : null}
-          </article>
-
-          <article className="studio-card">
-            <div className="flex gap-1 text-reel" aria-hidden="true">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <Star key={index} className="size-4 fill-current" />
-              ))}
-            </div>
-            <h2 className="mt-4 text-2xl font-black">
-              {completed >= 4
-                ? "Has the Studio earned a review?"
-                : "Help us make this more useful."}
-            </h2>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              {completed >= 4
-                ? "Share an honest public review, or tell us privately what would make the experience better. Both paths stay available to every member."
-                : "You should feel useful value before we ask for a public review. For now, tell us privately what would improve the next step."}
-            </p>
-            <div className="mt-5 grid gap-2 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
-              {completed >= 4 ? (
-                <a
-                  href={publicReviewUrl}
-                  target={publicReviewUrl.startsWith("http") ? "_blank" : undefined}
-                  rel="noreferrer"
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-reel px-4 text-sm font-black text-white"
-                >
-                  <Heart className="size-4" /> Leave an honest review
-                </a>
-              ) : null}
-              <button
-                type="button"
-                onClick={() => setFeedbackOpen((value) => !value)}
-                className={`inline-flex min-h-11 items-center justify-center rounded-xl border border-border px-4 text-sm font-black ${completed < 4 ? "w-full" : ""}`}
+        <article className="studio-card">
+          <div className="flex gap-1 text-reel" aria-hidden="true">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <Star key={index} className="size-4 fill-current" />
+            ))}
+          </div>
+          <h2 className="mt-4 text-2xl font-black">
+            {completed >= 4 ? "Has the Studio earned a review?" : "Help us make this more useful."}
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            {completed >= 4
+              ? "Share an honest public review, or tell us privately what would make the experience better. Both paths stay available to every member."
+              : "You should feel useful value before we ask for a public review. For now, tell us privately what would improve the next step."}
+          </p>
+          <div className="mt-5 grid gap-2 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+            {completed >= 4 ? (
+              <a
+                href={publicReviewUrl}
+                target={publicReviewUrl.startsWith("http") ? "_blank" : undefined}
+                rel="noreferrer"
+                className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-reel px-4 text-sm font-black text-white"
               >
-                Help us improve
-              </button>
-            </div>
-            {feedbackOpen ? (
-              <form onSubmit={sendFeedback} className="mt-4 rounded-xl bg-reel-soft p-4">
-                <label className="text-xs font-black">What would make this better?</label>
-                <textarea
-                  value={feedback}
-                  onChange={(event) => setFeedback(event.target.value)}
-                  rows={4}
-                  className="mt-2 w-full rounded-xl border border-border bg-white p-3 text-sm"
-                />
-                <button
-                  disabled={busy || feedback.trim().length < 8}
-                  className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-xl bg-ink px-4 text-xs font-black text-white disabled:opacity-40"
-                >
-                  Send privately <Send className="size-3.5" />
-                </button>
-              </form>
+                <Heart className="size-4" /> Leave an honest review
+              </a>
             ) : null}
-          </article>
-        </div>
+            <button
+              type="button"
+              onClick={() => setFeedbackOpen((value) => !value)}
+              className={`inline-flex min-h-11 items-center justify-center rounded-xl border border-border px-4 text-sm font-black ${completed < 4 ? "w-full" : ""}`}
+            >
+              Help us improve
+            </button>
+          </div>
+          {feedbackOpen ? (
+            <form onSubmit={sendFeedback} className="mt-4 rounded-xl bg-reel-soft p-4">
+              <label className="text-xs font-black">What would make this better?</label>
+              <textarea
+                value={feedback}
+                onChange={(event) => setFeedback(event.target.value)}
+                rows={4}
+                className="mt-2 w-full rounded-xl border border-border bg-white p-3 text-sm"
+              />
+              <button
+                disabled={busy || feedback.trim().length < 8}
+                className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-xl bg-ink px-4 text-xs font-black text-white disabled:opacity-40"
+              >
+                Send privately <Send className="size-3.5" />
+              </button>
+            </form>
+          ) : null}
+        </article>
       </section>
+
+      <details className="studio-card mt-6">
+        <summary className="cursor-pointer text-base font-bold">
+          Your Studio progress · {completed} of {missions.length} missions complete
+        </summary>
+        <div className="mt-6 border-t border-border pt-6">
+          <div className="flex flex-wrap items-end justify-between gap-5">
+            <div>
+              <p className="studio-eyebrow text-spotlight">Your useful-work streak</p>
+              <h2 className="mt-3 text-3xl font-black">
+                {completed} of {missions.length} missions complete
+              </h2>
+            </div>
+            <div className="text-right">
+              <p className="text-3xl font-black text-spotlight">{earnedPoints}</p>
+              <p className="text-[10px] font-bold uppercase tracking-[.12em] text-muted-foreground">
+                of {totalPoints} useful-work points
+              </p>
+            </div>
+          </div>
+          <div
+            className="mt-6 h-3 overflow-hidden rounded-full bg-spotlight-soft"
+            aria-label={`${progress}% of missions complete`}
+          >
+            <motion.span
+              initial={reduceMotion ? false : { scaleX: 0 }}
+              animate={{ scaleX: progress / 100 }}
+              transition={transition}
+              className="block h-full w-full origin-left rounded-full bg-spotlight"
+            />
+          </div>
+          <div className="mt-5 grid gap-2 sm:grid-cols-3" aria-label="Member achievements">
+            {achievements.map((achievement) => (
+              <div
+                key={achievement.label}
+                className="flex min-h-24 items-start gap-3 rounded-[1rem] border border-border p-3"
+                style={{ background: achievement.done ? achievement.soft : "white" }}
+              >
+                <span
+                  className="grid size-8 shrink-0 place-items-center rounded-lg"
+                  style={{
+                    color: achievement.done ? achievement.color : "var(--muted)",
+                    background: achievement.done ? "white" : "var(--mist)",
+                  }}
+                >
+                  {achievement.done ? <Award className="size-4" /> : <Flame className="size-4" />}
+                </span>
+                <span>
+                  <span className="block text-xs font-black">{achievement.label}</span>
+                  <span className="mt-1 block text-[10px] leading-relaxed text-muted-foreground">
+                    {achievement.done ? achievement.detail : "Complete the connected missions."}
+                  </span>
+                </span>
+              </div>
+            ))}
+          </div>
+          {nextMission ? (
+            <div className="mt-5 flex flex-wrap items-center justify-between gap-3 rounded-[1rem] bg-spotlight-soft p-4">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[.12em] text-spotlight">
+                  Best next move · +{nextMission.points} points
+                </p>
+                <p className="mt-1 text-sm font-black">{nextMission.title}</p>
+              </div>
+              <Link to={nextMission.to} className="secondary-action bg-white">
+                Start this mission <ArrowRight className="size-4" />
+              </Link>
+            </div>
+          ) : (
+            <div className="mt-5 rounded-[1rem] bg-evergreen-soft p-4 text-sm font-black text-evergreen">
+              You completed the full useful-work loop. Keep the rhythm by building the next real
+              campaign—not by collecting empty points.
+            </div>
+          )}
+          <div className="mt-7 grid gap-3 sm:grid-cols-2">
+            {missions.map((mission) => (
+              <motion.div
+                key={mission.title}
+                initial={enter}
+                animate={{ opacity: 1, transform: "translateY(0px)" }}
+                transition={transition}
+              >
+                <Link
+                  to={mission.to}
+                  className="group flex min-h-36 items-start gap-4 rounded-[1.25rem] border border-border bg-white p-4 transition hover:-translate-y-0.5 hover:border-ink"
+                >
+                  <span
+                    className="grid size-10 shrink-0 place-items-center rounded-xl"
+                    style={{ background: mission.soft, color: mission.color }}
+                  >
+                    {mission.done ? (
+                      <Check className="size-5" />
+                    ) : (
+                      <mission.icon className="size-5" />
+                    )}
+                  </span>
+                  <span>
+                    <span className="block text-sm font-black">{mission.title}</span>
+                    <span className="mt-2 block text-xs leading-relaxed text-muted-foreground">
+                      {mission.detail}
+                    </span>
+                    <span className="mt-3 inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-[.1em]">
+                      {mission.done ? "Complete" : "Do this next"} <ArrowRight className="size-3" />
+                    </span>
+                  </span>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+          <Link
+            to="/games"
+            className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-bold underline underline-offset-4"
+          >
+            Open the Skill Lab: camera check, mission spinner, and Pal finder{" "}
+            <ArrowRight className="size-4" />
+          </Link>
+        </div>
+      </details>
     </div>
   );
 }

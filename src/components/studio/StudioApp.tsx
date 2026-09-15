@@ -1,5 +1,10 @@
+import { StudioIdeasBoard } from "./StudioIdeasBoard";
+import * as Dialog from "@radix-ui/react-dialog";
+import { StudioCalendarEditor } from "./StudioCalendarEditor";
+import * as AlertDialog from "@radix-ui/react-alert-dialog";
+import { StudioCopyButton, StudioAssetEditor } from "./StudioAssetActions";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "motion/react";
 import {
   Archive,
   Activity,
@@ -78,12 +83,14 @@ import {
   type StudioView,
 } from "@/lib/studio-model";
 import type { Tables } from "@/lib/supabase/database.types";
-import samiraHeadshot from "@/assets/pal-headshots/samira.webp";
-import { StudioNotifications } from "./StudioNotifications";
+import samiraHeadshot from "@/assets/pal-headshots/samira.png";
+import { StudioWorkspaceShell as StudioShell } from "./StudioWorkspaceShell";
+import { STUDIO_SPRING, useStudioMotion } from "./studio-motion";
+import "./studio.css";
 import { PalAvatar } from "./PalAvatar";
 import { classifyLane } from "@/lib/studio-intelligence";
 import { useGuide } from "./useGuide";
-import { palList } from "@/lib/pal-directory";
+import { palDirectory, palList, resolvePalName } from "@/lib/pal-directory";
 
 import { calculateTier } from "@/lib/studio-tiers";
 
@@ -92,8 +99,6 @@ import { useStudio } from "./StudioProvider";
 import { ContentEngine } from "./ContentEngine";
 import { StudioMark } from "./StudioVisuals";
 import { PalAuthShowcase } from "./PalAuthShowcase";
-import { Scene } from "@/components/site/PalVisuals";
-import { Glyph, type GlyphName } from "@/components/site/Glyphs";
 import { CelebrationLayer, celebrate, celebrateOnce } from "./Celebrate";
 import { StudioStartHere } from "./StudioStartHere";
 import { StudioAssistant } from "./StudioAssistant";
@@ -111,19 +116,28 @@ type CalendarItem = Tables<"calendar_items">;
 const lanes = {
   spotlight: {
     color: "var(--spotlight)",
+    ink: "var(--spotlight-ink)",
     soft: "var(--spotlight-soft)",
     label: "Spotlight",
     role: "Build trust",
   },
-  reel: { color: "var(--reel)", soft: "var(--reel-soft)", label: "Reel", role: "Earn attention" },
+  reel: {
+    color: "var(--reel)",
+    ink: "var(--reel-ink)",
+    soft: "var(--reel-soft)",
+    label: "Reel",
+    role: "Earn attention",
+  },
   evergreen: {
     color: "var(--evergreen)",
+    ink: "var(--evergreen-ink)",
     soft: "var(--evergreen-soft)",
     label: "Evergreen",
     role: "Teach clearly",
   },
   system: {
     color: "var(--system)",
+    ink: "var(--system-ink)",
     soft: "var(--system-soft)",
     label: "System",
     role: "Create clarity",
@@ -205,52 +219,62 @@ function PalTip({
   );
 }
 
-const navSections = [
-  {
-    label: "Make",
-    items: [
-      { view: "home", label: "Dashboard", to: "/studio/dashboard", icon: Home },
-      { view: "engine", label: "Create", to: "/studio", icon: Plus },
-      { view: "assistant", label: "Ask a Pal", to: "/studio/assistant", icon: MessageSquareText },
-      { view: "campaigns", label: "Campaigns", to: "/studio/campaigns", icon: WandSparkles },
-      { view: "ideas", label: "Content ideas", to: "/studio/ideas", icon: Lightbulb },
-    ],
-  },
-  {
-    label: "Organize",
-    items: [
-      { view: "roadmap", label: "Video roadmap", to: "/studio/roadmap", icon: Film },
-      { view: "library", label: "Library", to: "/studio/library", icon: FolderOpen },
-      { view: "brand", label: "Brand DNA", to: "/studio/brand", icon: Gauge },
-      { view: "approvals", label: "Approvals", to: "/studio/approvals", icon: CheckSquare2 },
-    ],
-  },
-  {
-    label: "Plan",
-    items: [
-      { view: "calendar", label: "Calendar", to: "/studio/calendar", icon: CalendarDays },
-      { view: "success", label: "Member success", to: "/studio/success", icon: HandHeart },
-      { view: "settings", label: "Settings", to: "/studio/settings", icon: Settings },
-    ],
-  },
-] as const;
-
-const nav = navSections.flatMap((section) => [...section.items]);
-
-export function StudioPage({ view, campaignId }: { view: StudioView; campaignId?: string }) {
+export function StudioPage({
+  view,
+  campaignId,
+  conversationId,
+  workTab,
+}: {
+  view: StudioView;
+  campaignId?: string;
+  conversationId?: string;
+  workTab?: WorkTab;
+}) {
   return (
-    <>
-      <StudioGate view={view} campaignId={campaignId} />
-    </>
+    <MotionConfig reducedMotion="user" transition={STUDIO_SPRING}>
+      <div className="studio-app">
+        <StudioGate
+          view={view}
+          campaignId={campaignId}
+          conversationId={conversationId}
+          workTab={workTab}
+        />
+      </div>
+    </MotionConfig>
   );
 }
 
-function StudioGate({ view, campaignId }: { view: StudioView; campaignId?: string }) {
+function StudioGate({
+  view,
+  campaignId,
+  conversationId,
+  workTab,
+}: {
+  view: StudioView;
+  campaignId?: string;
+  conversationId?: string;
+  workTab?: WorkTab;
+}) {
   const studio = useStudio();
   if (studio.loading) return <StudioLoading />;
+  if (studio.loadError)
+    return (
+      <main className="grid min-h-dvh place-items-center bg-mist p-6">
+        <div role="alert" className="max-w-md rounded-2xl border border-border bg-white p-8">
+          <p className="studio-eyebrow text-spotlight">Workspace unavailable</p>
+          <h1 className="mt-3 text-2xl font-bold">We couldn’t open your Studio.</h1>
+          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{studio.loadError}</p>
+          <button onClick={() => void studio.retryWorkspace()} className="primary-action mt-6">
+            Try again
+          </button>
+        </div>
+      </main>
+    );
   if (!studio.session) return <AuthExperience />;
   if (!studio.workspace) return <Onboarding />;
-  return <StudioShell view={view}>{renderView(view, campaignId)}</StudioShell>;
+  return (
+    <StudioShell view={view}>{renderView(view, campaignId, conversationId, workTab)}</StudioShell>
+  );
 }
 
 function StudioLoading() {
@@ -260,7 +284,7 @@ function StudioLoading() {
         <div className="mx-auto grid size-14 place-items-center rounded-2xl bg-ink text-white">
           <LoaderCircle className="size-5 animate-spin" />
         </div>
-        <p className="mt-4 font-mono text-[10px] uppercase tracking-[.18em] text-muted-foreground">
+        <p className="mt-4 font-mono text-[11px] uppercase tracking-[.18em] text-muted-foreground">
           Opening your studio
         </p>
       </div>
@@ -432,18 +456,14 @@ function AuthExperience() {
         : "border-system bg-system-soft text-system";
 
   return (
-    <main className="min-h-screen bg-cream px-4 py-5 sm:px-7 lg:px-10 lg:py-7">
+    <main className="min-h-screen bg-white px-4 py-5 sm:px-7 lg:px-10 lg:py-7">
       <header className="mx-auto flex max-w-[96rem] items-center justify-between">
-        <Link
-          to="/"
-          aria-label="Palmer House home"
-          className="rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight focus-visible:ring-offset-2"
-        >
+        <Link to="/" aria-label="Palmer House home">
           <StudioMark />
         </Link>
         <Link
           to="/"
-          className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-bold hover:bg-spotlight-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-bold hover:bg-spotlight-soft"
         >
           <ChevronLeft className="size-4" /> Back to the website
         </Link>
@@ -454,10 +474,8 @@ function AuthExperience() {
           <PalAuthShowcase />
         </section>
 
-        <section className="mx-auto w-full max-w-[32rem] rounded-[2rem] border border-border bg-white p-6 shadow-[0_28px_90px_-50px_rgba(31,35,40,.35)] sm:p-9 lg:mx-0">
-          <p className="font-mono text-xs font-bold uppercase tracking-[.16em] text-spotlight">
-            Palmer House Studio
-          </p>
+        <section className="mx-auto w-full max-w-[31rem] lg:mx-0">
+          <p className="studio-eyebrow text-spotlight">Your content operating system</p>
           <h1 className="mt-5 text-[clamp(2.5rem,4.6vw,4rem)] font-black leading-[.94] tracking-[-.065em]">
             {mode === "signin"
               ? "Welcome back. Let’s keep building."
@@ -465,7 +483,7 @@ function AuthExperience() {
           </h1>
           <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground">
             {mode === "signin"
-              ? "Choose whichever sign-in is easiest. Every option opens the same Palmer House Studio workspace."
+              ? "Choose whichever sign-in is easiest for you. They all open the same studio."
               : "Create the private workspace where your ideas become campaigns your audience can use."}
           </p>
 
@@ -473,7 +491,7 @@ function AuthExperience() {
             type="button"
             onClick={() => void continueWithGoogle()}
             disabled={googleBusy}
-            className="mt-8 flex min-h-13 w-full items-center justify-center gap-3 rounded-xl border border-ink px-5 font-bold transition hover:bg-spotlight-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+            className="mt-8 flex min-h-13 w-full items-center justify-center gap-3 rounded-xl border border-ink px-5 font-bold transition hover:bg-spotlight-soft disabled:opacity-60"
           >
             {googleBusy ? (
               <LoaderCircle className="size-5 animate-spin" />
@@ -500,7 +518,7 @@ function AuthExperience() {
             {googleBusy ? "Opening Google…" : "Continue with Google"}
           </button>
 
-          <div className="mt-6 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[.14em] text-muted-foreground">
+          <div className="mt-6 flex items-center gap-3 text-xs font-bold uppercase tracking-[.18em] text-muted-foreground">
             <span className="h-px flex-1 bg-border" /> or use email{" "}
             <span className="h-px flex-1 bg-border" />
           </div>
@@ -525,7 +543,7 @@ function AuthExperience() {
                   setMethod(value);
                   setNotice(null);
                 }}
-                className={`min-h-11 rounded-xl px-3 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight ${
+                className={`min-h-11 rounded-xl px-3 text-sm font-bold transition ${
                   method === value
                     ? "bg-ink text-white"
                     : "text-muted-foreground hover:bg-spotlight-soft"
@@ -562,10 +580,10 @@ function AuthExperience() {
               />
               <button
                 disabled={busy}
-                className="flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 font-bold text-white transition hover:bg-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 font-bold text-white transition hover:bg-ink disabled:opacity-50"
               >
                 {busy ? <LoaderCircle className="size-4 animate-spin" /> : null}
-                {mode === "signin" ? "Sign in" : "Create Palmer House Studio"}
+                {mode === "signin" ? "Sign in" : "Create my Studio"}
                 <ArrowRight className="size-4" />
               </button>
               {mode === "signin" ? (
@@ -573,7 +591,7 @@ function AuthExperience() {
                   type="button"
                   onClick={() => void requestReset()}
                   disabled={resetBusy}
-                  className="rounded-lg text-sm font-bold text-spotlight underline decoration-spotlight/30 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight disabled:opacity-60"
+                  className="text-sm font-bold text-spotlight underline decoration-spotlight/30 underline-offset-4 disabled:opacity-60"
                 >
                   {resetBusy ? "Sending reset link…" : "Forgot password?"}
                 </button>
@@ -593,7 +611,7 @@ function AuthExperience() {
               />
               <button
                 disabled={linkBusy}
-                className="flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 font-bold text-white transition hover:bg-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                className="flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 font-bold text-white transition hover:bg-ink disabled:opacity-50"
               >
                 {linkBusy ? (
                   <LoaderCircle className="size-4 animate-spin" />
@@ -604,19 +622,15 @@ function AuthExperience() {
                   ? "Send another link"
                   : "Email me a sign-in link"}
               </button>
-              <p className="text-sm leading-relaxed text-muted-foreground">
+              <p className="text-xs leading-relaxed text-muted-foreground">
                 No password needed. We email you a secure link — tap it on any device and your
-                Palmer House Studio workspace opens.
+                studio opens.
               </p>
             </form>
           )}
 
           {notice ? (
-            <p
-              role={notice.tone === "error" ? "alert" : "status"}
-              aria-live={notice.tone === "error" ? "assertive" : "polite"}
-              className={`mt-4 rounded-xl border p-4 text-sm leading-relaxed ${noticeClass}`}
-            >
+            <p role="status" className={`mt-4 rounded-xl border p-4 text-sm ${noticeClass}`}>
               {notice.text}
             </p>
           ) : null}
@@ -628,7 +642,7 @@ function AuthExperience() {
                 setMethod("password");
                 setNotice(null);
               }}
-              className="rounded-lg font-bold text-spotlight underline decoration-spotlight/30 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight"
+              className="font-bold text-spotlight underline decoration-spotlight/30 underline-offset-4"
             >
               {mode === "signin"
                 ? "New here? Create an account"
@@ -640,7 +654,7 @@ function AuthExperience() {
             <ShieldCheck className="mt-0.5 size-5 text-evergreen" />
             <div>
               <p className="text-sm font-bold">Private by default.</p>
-              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                 Every member gets a private workspace built during onboarding. Your Brand DNA,
                 campaigns, library, and calendar stay connected to your account.
               </p>
@@ -649,39 +663,27 @@ function AuthExperience() {
         </section>
       </div>
 
-      <section className="mx-auto grid max-w-[90rem] items-center gap-6 rounded-[2rem] border border-white/80 bg-system-soft p-5 sm:p-6 lg:grid-cols-[14rem_1fr]">
-        <Scene name="membershipStudio" className="mx-auto w-full max-w-[14rem]" />
-        <div className="grid gap-5 md:grid-cols-[1.4fr_repeat(4,1fr)] md:items-center">
-          <div>
-            <p className="font-mono text-[10px] font-bold uppercase tracking-[.16em] text-system-text">
-              Palmer House Studio
-            </p>
-            <p className="mt-2 text-xl font-extrabold leading-tight">
-              Your brand, campaigns, calendar, and content—in one place.
-            </p>
-          </div>
-          {(
-            [
-              ["bulb", "Ideas", "Capture what matters"],
-              ["play", "Content", "Create once, reshape well"],
-              ["calendar", "Campaigns", "Keep the work moving"],
-              ["handshake", "Pals", "Get useful guidance"],
-            ] as [GlyphName, string, string][]
-          ).map(([glyph, label, note]) => (
-            <div
-              key={label}
-              className="flex items-center gap-3 md:border-l md:border-white/70 md:pl-5"
-            >
-              <span className="grid size-12 shrink-0 place-items-center rounded-[1.25rem] bg-white shadow-sm">
-                <Glyph name={glyph} lane="system" className="size-8" />
-              </span>
-              <div>
-                <p className="text-sm font-extrabold">{label}</p>
-                <p className="mt-1 text-sm leading-snug text-muted-foreground">{note}</p>
-              </div>
+      <section className="mx-auto grid max-w-[90rem] gap-5 rounded-[1.25rem] border border-border p-5 md:grid-cols-[1.4fr_repeat(4,1fr)] md:items-center">
+        <p className="text-xl font-extrabold leading-tight">
+          Your brand, campaigns, calendar, and content—in one place.
+        </p>
+        {[
+          [Lightbulb, "Ideas", "Capture what matters"],
+          [Play, "Content", "Create once, reshape well"],
+          [CalendarDays, "Campaigns", "Keep the work moving"],
+          [Users, "Pals", "Get useful guidance"],
+        ].map(([Icon, label, note]) => (
+          <div
+            key={String(label)}
+            className="flex items-center gap-3 md:border-l md:border-border md:pl-5"
+          >
+            <Icon className="size-5 text-system" />
+            <div>
+              <p className="text-xs font-extrabold uppercase tracking-[.06em]">{String(label)}</p>
+              <p className="mt-1 text-[11px] text-muted-foreground">{String(note)}</p>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </section>
     </main>
   );
@@ -936,7 +938,7 @@ function Onboarding() {
                       className={`min-h-16 rounded-xl border p-3 text-left ${guidePick === "none" ? "border-ink" : "border-border"}`}
                     >
                       <span className="text-sm font-black">No guide</span>
-                      <span className="mt-1 block text-[10px] font-medium text-muted-foreground">
+                      <span className="mt-1 block text-[11px] font-medium text-muted-foreground">
                         Just the guidance
                       </span>
                     </button>
@@ -950,7 +952,7 @@ function Onboarding() {
                         <PalAvatar pal={pal} size="sm" />
                         <span className="min-w-0">
                           <span className="block text-sm font-black">{pal.name}</span>
-                          <span className="block truncate text-[10px] font-medium text-muted-foreground">
+                          <span className="block truncate text-[11px] font-medium text-muted-foreground">
                             {pal.role}
                           </span>
                         </span>
@@ -994,10 +996,6 @@ function Onboarding() {
                         return;
                       }
                       setSetupStep(0);
-                      const ticker = setInterval(
-                        () => setSetupStep((current) => (current < 2 ? current + 1 : current)),
-                        1400,
-                      );
                       try {
                         await createWorkspace(name || "My Studio", {
                           creatorType,
@@ -1016,7 +1014,6 @@ function Onboarding() {
                             // guide preference is not worth blocking workspace creation
                           }
                         }
-                        clearInterval(ticker);
                         setSetupStep(3);
                         try {
                           window.localStorage.setItem("phs-studio-first-run", "1");
@@ -1024,7 +1021,6 @@ function Onboarding() {
                           // the tour is a nicety, not a requirement
                         }
                       } catch (error) {
-                        clearInterval(ticker);
                         setSetupStep(-1);
                         toast.error(
                           error instanceof Error ? error.message : "Could not create workspace.",
@@ -1099,485 +1095,61 @@ function Onboarding() {
   );
 }
 
-function StudioShell({ view, children }: { view: StudioView; children: ReactNode }) {
-  const { workspace, subscription, profile, user, signOut } = useStudio();
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [createOpen, setCreateOpen] = useState(false);
-  const [chatOpen, setChatOpen] = useState(false);
-  const [accountOpen, setAccountOpen] = useState(false);
-  const reduce = useReducedMotion();
-  const memberName =
-    profile?.full_name || (user?.user_metadata?.full_name as string) || "Studio member";
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [view]);
+const newConversationPrompt = "I have something to turn into content.";
+
+const workTabs = [
+  { key: "campaigns", label: "Campaigns" },
+  { key: "ideas", label: "Ideas" },
+  { key: "library", label: "Library" },
+  { key: "approvals", label: "Needs review" },
+  { key: "calendar", label: "Calendar" },
+  { key: "roadmap", label: "Video roadmap" },
+] as const;
+
+export type WorkTab = (typeof workTabs)[number]["key"];
+
+function MyWork({ tab }: { tab: WorkTab }) {
   return (
-    <div className="min-h-screen bg-white text-ink">
-      <CelebrationLayer />
-      <StudioStartHere />
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[15.5rem] flex-col border-r border-border bg-white px-4 py-5 lg:flex">
-        <StudioBrand />
-        <button
-          onClick={() => setCreateOpen(true)}
-          className="mt-8 flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-ink text-sm font-bold text-white transition hover:bg-evergreen"
-        >
-          <Plus className="size-4" /> Create
-        </button>
-        <nav className="mt-7 space-y-6" aria-label="Studio navigation">
-          {navSections.map((section) => (
-            <div key={section.label}>
-              <p className="px-3 font-mono text-[8px] font-semibold uppercase tracking-[.18em] text-muted-foreground">
-                {section.label}
-              </p>
-              <div className="mt-2 space-y-1">
-                {section.items.map((item) => (
-                  <StudioNavLink
-                    key={item.view}
-                    item={item}
-                    active={
-                      view === item.view || (view === "campaign" && item.view === "campaigns")
-                    }
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
-        </nav>
-        <div className="relative mt-auto">
-          <AnimatePresence>
-            {accountOpen ? (
-              <motion.div
-                initial={reduce ? { opacity: 0 } : { opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 8 }}
-                className="absolute bottom-[4.5rem] left-0 right-0 rounded-[1.15rem] border border-border bg-white p-2 shadow-[0_28px_80px_-40px_rgba(31,35,40,.75)]"
-              >
-                <Link
-                  to="/studio/settings"
-                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-spotlight-soft"
-                >
-                  <CircleUserRound className="size-4" /> Profile & settings
-                </Link>
-                <Link
-                  to="/studio/billing"
-                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-spotlight-soft"
-                >
-                  <CreditCard className="size-4" /> Usage & billing
-                </Link>
-                <Link
-                  to="/"
-                  className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-bold hover:bg-system-soft"
-                >
-                  <ExternalLink className="size-4" /> Visit Palmer House website
-                </Link>
-                <button
-                  onClick={() => void signOut()}
-                  className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-left text-sm font-bold text-muted-foreground hover:bg-spotlight-soft"
-                >
-                  <LogOut className="size-4" /> Sign out
-                </button>
-              </motion.div>
-            ) : null}
-          </AnimatePresence>
-          <button
-            onClick={() => setAccountOpen((current) => !current)}
-            className="flex min-h-14 w-full items-center gap-3 rounded-xl border border-border p-2 text-left hover:border-spotlight"
+    <div className="mx-auto max-w-[80rem]">
+      <div className="flex flex-wrap items-center gap-2 border-b border-border pb-3">
+        {workTabs.map((item) => (
+          <Link
+            key={item.key}
+            to="/studio/work"
+            search={{ tab: item.key }}
+            className={`inline-flex min-h-10 items-center rounded-xl px-4 text-[13px] font-bold transition ${
+              tab === item.key
+                ? "bg-spotlight-soft text-spotlight"
+                : "text-muted-foreground hover:bg-mist hover:text-ink"
+            }`}
           >
-            <span className="grid size-9 shrink-0 place-items-center rounded-full bg-spotlight text-xs font-black text-white">
-              {memberName.slice(0, 1).toUpperCase()}
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block truncate text-xs font-extrabold">{memberName}</span>
-              <span className="mt-0.5 block truncate text-[10px] text-muted-foreground">
-                {subscription?.plan || "member"} · {workspace?.name}
-              </span>
-            </span>
-            <ChevronRight className={`size-3.5 transition ${accountOpen ? "rotate-90" : ""}`} />
-          </button>
-        </div>
-      </aside>
-      <header className="sticky top-0 z-30 flex min-h-16 items-center border-b border-border bg-white px-4 lg:ml-[15.5rem] lg:px-7">
-        <button
-          onClick={() => setMobileOpen(true)}
-          className="grid size-11 shrink-0 place-items-center rounded-xl border border-border lg:hidden"
-          aria-label="Open navigation"
-        >
-          <Menu className="size-5" />
-        </button>
-        <div className="ml-3 min-w-0 lg:ml-0">
-          <p className="truncate text-sm font-bold">{workspace?.name}</p>
-          <p className="hidden font-mono text-[8px] uppercase tracking-[.16em] text-muted-foreground sm:block">
-            Private member workspace
-          </p>
-        </div>
-        <div className="ml-auto hidden items-center gap-2 rounded-full bg-mist px-3 py-2 sm:flex">
-          <span className="size-2 rounded-full bg-evergreen" />
-          <span className="font-mono text-[8px] uppercase tracking-[.14em] text-muted-foreground">
-            Brand context active
-          </span>
-        </div>
-        <button
-          aria-label="Ask a Pal"
-          onClick={() => setChatOpen(true)}
-          className="ml-3 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-full border border-border bg-white px-3 text-xs font-bold text-ink"
-        >
-          <MessageSquareText className="size-4" />
-          <span className="hidden md:inline">Ask a Pal</span>
-        </button>
-        <StudioNotifications />
-        <button
-          aria-label="Create something new"
-          onClick={() => setCreateOpen(true)}
-          className="ml-2 inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-ink px-4 text-sm font-bold text-white"
-        >
-          <Plus className="size-4" />
-          <span className="hidden sm:inline">Create</span>
-        </button>
-      </header>
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={reduce ? { opacity: 0 } : { opacity: 0, clipPath: "inset(0 100% 0 0)" }}
-            animate={{ opacity: 1, clipPath: "inset(0 0 0 0)" }}
-            exit={{ opacity: 0, clipPath: "inset(0 100% 0 0)" }}
-            className="fixed inset-0 z-50 bg-white p-4 lg:hidden"
-          >
-            <div className="flex items-center justify-between">
-              <StudioBrand />
-              <button
-                onClick={() => setMobileOpen(false)}
-                aria-label="Close navigation"
-                className="grid size-11 place-items-center rounded-xl bg-secondary"
-              >
-                <X />
-              </button>
-            </div>
-            <nav className="mt-9 space-y-7">
-              {navSections.map((section) => (
-                <div key={section.label}>
-                  <p className="px-3 font-mono text-[9px] uppercase tracking-[.18em] text-muted-foreground">
-                    {section.label}
-                  </p>
-                  <div className="mt-2 space-y-1">
-                    {section.items.map((item) => (
-                      <div key={item.view} onClick={() => setMobileOpen(false)}>
-                        <StudioNavLink item={item} active={view === item.view} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-              <div className="border-t border-border pt-5">
-                <Link
-                  to="/"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex min-h-12 items-center gap-3 rounded-xl bg-system-soft px-4 text-sm font-bold text-system"
-                >
-                  <ExternalLink className="size-4" /> Visit Palmer House website
-                </Link>
-              </div>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <motion.main
-        key={view}
-        initial={reduce ? false : { opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, ease: "easeOut" }}
-        className="min-h-[calc(100vh-4rem)] px-4 py-6 sm:px-6 lg:ml-[15.5rem] lg:px-7 lg:py-7"
-      >
-        {children}
-      </motion.main>
-      <AnimatePresence>
-        {createOpen ? <CreateOverlay onClose={() => setCreateOpen(false)} /> : null}
-      </AnimatePresence>
-      <PalChat open={chatOpen} onClose={() => setChatOpen(false)} />
+            {item.label}
+          </Link>
+        ))}
+      </div>
+      <div className="pt-6">
+        {tab === "campaigns" ? <Campaigns /> : null}
+        {tab === "ideas" ? <IdeasBoard /> : null}
+        {tab === "library" ? <Library /> : null}
+        {tab === "approvals" ? <Approvals /> : null}
+        {tab === "calendar" ? <CalendarView /> : null}
+        {tab === "roadmap" ? <VideoRoadmap /> : null}
+      </div>
     </div>
   );
 }
 
-function StudioBrand() {
-  return (
-    <Link to="/studio/dashboard" className="flex min-h-12 items-center gap-3 rounded-xl">
-      <StudioMark />
-    </Link>
-  );
-}
-function StudioNavLink({ item, active }: { item: (typeof nav)[number]; active: boolean }) {
-  return (
-    <Link
-      to={item.to}
-      className={`flex min-h-11 items-center gap-3 rounded-xl px-3 text-[13px] font-bold transition ${active ? "bg-spotlight-soft text-spotlight" : "text-muted-foreground hover:bg-spotlight-soft hover:text-ink"}`}
-    >
-      <item.icon className="size-4" />
-      {item.label}
-    </Link>
-  );
-}
-
-function CreateOverlay({ onClose }: { onClose: () => void }) {
-  const reduce = useReducedMotion();
-  const options = [
-    {
-      to: "/studio",
-      icon: Sparkles,
-      lane: "Spotlight",
-      title: "Start with an idea",
-      body: "Find the angle, then build the campaign.",
-      color: "var(--spotlight)",
-      soft: "var(--spotlight-soft)",
-    },
-    {
-      to: "/studio/campaigns",
-      icon: Video,
-      lane: "Reel",
-      title: "Plan from a video",
-      body: "Turn one shoot into a useful content system.",
-      color: "var(--reel)",
-      soft: "var(--reel-soft)",
-    },
-    {
-      to: "/studio/ideas",
-      icon: Lightbulb,
-      lane: "Evergreen",
-      title: "Save a content idea",
-      body: "Capture the repeated question before it disappears.",
-      color: "var(--evergreen)",
-      soft: "var(--evergreen-soft)",
-    },
-    {
-      to: "/studio/calendar",
-      icon: CalendarDays,
-      lane: "System",
-      title: "Plan the rhythm",
-      body: "See what is ready, next, and waiting.",
-      color: "var(--system)",
-      soft: "var(--system-soft)",
-    },
-  ] as const;
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[80] grid place-items-center bg-ink/35 p-4"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Create something new"
-      onMouseDown={(event) => {
-        if (event.target === event.currentTarget) onClose();
-      }}
-    >
-      <motion.section
-        initial={reduce ? false : { opacity: 0, y: 24, scale: 0.97 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 16, scale: 0.98 }}
-        className="w-full max-w-4xl overflow-hidden rounded-[1.5rem] bg-white shadow-[0_40px_120px_-50px_rgba(0,0,0,.8)]"
-      >
-        <header className="flex items-start justify-between border-b border-border p-5 sm:p-7">
-          <div>
-            <p className="studio-eyebrow text-system">Create new</p>
-            <h2 className="mt-3 text-3xl font-black">What should we make useful?</h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Choose the starting point. Nothing publishes automatically.
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            aria-label="Close create menu"
-            className="grid size-11 place-items-center rounded-full border border-border"
-          >
-            <X className="size-4" />
-          </button>
-        </header>
-        <div className="grid gap-3 p-5 sm:grid-cols-2 sm:p-7">
-          {options.map((item, index) => (
-            <motion.div
-              key={item.title}
-              initial={reduce ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.06 * index }}
-            >
-              <Link
-                to={item.to}
-                onClick={onClose}
-                className="group flex min-h-36 items-start gap-4 rounded-[1.15rem] border border-border p-5 transition hover:-translate-y-0.5 hover:border-ink"
-              >
-                <span
-                  className="grid size-11 shrink-0 place-items-center rounded-xl"
-                  style={{ color: item.color, background: item.soft }}
-                >
-                  <item.icon className="size-5" />
-                </span>
-                <span className="min-w-0">
-                  <span className="studio-eyebrow" style={{ color: item.color }}>
-                    {item.lane}
-                  </span>
-                  <span className="mt-2 block text-lg font-extrabold">{item.title}</span>
-                  <span className="mt-2 block text-sm leading-relaxed text-muted-foreground">
-                    {item.body}
-                  </span>
-                </span>
-                <ArrowRight className="ml-auto mt-1 size-4 shrink-0 transition-transform group-hover:translate-x-1" />
-              </Link>
-            </motion.div>
-          ))}
-        </div>
-      </motion.section>
-    </motion.div>
-  );
-}
-
-function PalChat({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { suggestDirections, brand, busy } = useStudio();
-  const { guide } = useGuide();
-
-  const reduce = useReducedMotion();
-  const [draft, setDraft] = useState("");
-  const [messages, setMessages] = useState<
-    Array<{ id: string; from: "you" | "pal"; body: string }>
-  >([
-    {
-      id: "welcome",
-      from: "pal",
-      body: "Tell me what feels unclear, repetitive, invisible, or stuck. I’ll help you find the most useful content move.",
-    },
-  ]);
-  async function ask(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const question = draft.trim();
-    if (question.length < 8) return;
-    setMessages((current) => [
-      ...current,
-      { id: crypto.randomUUID(), from: "you", body: question },
-    ]);
-    setDraft("");
-    try {
-      const directions = await suggestDirections({
-        idea: question,
-        goal: studioGoals[0],
-        audience: brand?.primary_audience || "Your primary audience",
-      });
-      const best = directions[0];
-      setMessages((current) => [
-        ...current,
-        {
-          id: crypto.randomUUID(),
-          from: "pal",
-          body: best
-            ? `${best.title}: ${best.angle}\n\nWhy it works: ${best.whyItWorks}`
-            : "Start by naming the exact decision you need the audience to make. That gives the content a real job.",
-        },
-      ]);
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "The Pal could not respond yet.");
-    }
-  }
-  return (
-    <AnimatePresence>
-      {open ? (
-        <motion.div
-          initial={reduce ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[95] flex justify-end bg-ink/30"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) onClose();
-          }}
-        >
-          <motion.aside
-            initial={reduce ? false : { transform: "translateX(100%)" }}
-            animate={{ transform: "translateX(0%)" }}
-            exit={reduce ? { opacity: 0 } : { transform: "translateX(100%)" }}
-            transition={
-              reduce ? { duration: 0.01 } : { type: "spring", bounce: 0.12, visualDuration: 0.4 }
-            }
-            className="flex h-full w-full flex-col bg-white shadow-2xl sm:max-w-[32rem]"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Ask a Palmer House Pal"
-          >
-            <header className="flex items-center gap-4 border-b border-border p-5">
-              <div className="relative">
-                <PalAvatar pal={guide} size="md" className="rounded-xl" />
-                <span className="absolute -right-1 -top-1 size-3 rounded-full border-2 border-white bg-evergreen" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <p className="font-black">Ask a Pal</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  {guide.key
-                    ? `${guide.name} is working this through with you`
-                    : "Straight answers grounded in your workspace"}
-                </p>
-              </div>
-
-              <button
-                onClick={onClose}
-                aria-label="Close Pal chat"
-                className="grid size-11 place-items-center rounded-full border border-border"
-              >
-                <X className="size-4" />
-              </button>
-            </header>
-            <div className="border-b border-border px-5 py-3">
-              <Link
-                to="/studio/assistant"
-                onClick={onClose}
-                className="flex min-h-10 items-center justify-between rounded-xl bg-system-soft px-4 text-xs font-bold text-system"
-              >
-                Open the full Assistant workspace <ArrowRight className="size-4" />
-              </Link>
-            </div>
-            <div className="flex-1 space-y-4 overflow-y-auto p-5" aria-live="polite">
-              {messages.map((message) => (
-                <motion.div
-                  key={message.id}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`max-w-[88%] whitespace-pre-line rounded-[1.25rem] p-4 text-sm leading-relaxed ${message.from === "you" ? "ml-auto bg-spotlight text-white" : "bg-system-soft text-ink"}`}
-                >
-                  {message.body}
-                </motion.div>
-              ))}
-              {busy ? (
-                <div className="flex items-center gap-2 text-xs font-bold text-system">
-                  <LoaderCircle className="size-4 animate-spin" /> Finding the useful angle…
-                </div>
-              ) : null}
-            </div>
-            <form onSubmit={ask} className="border-t border-border p-4">
-              <div className="flex items-end gap-2 rounded-[1.15rem] border border-border bg-white p-2 shadow-soft">
-                <textarea
-                  value={draft}
-                  onChange={(event) => setDraft(event.target.value)}
-                  rows={2}
-                  placeholder="What feels stuck?"
-                  className="min-h-12 flex-1 resize-none border-0 bg-transparent p-2 text-sm outline-none"
-                />
-                <button
-                  disabled={busy || draft.trim().length < 8}
-                  aria-label="Send question"
-                  className="grid size-11 shrink-0 place-items-center rounded-xl bg-system text-white disabled:opacity-35"
-                >
-                  <Send className="size-4" />
-                </button>
-              </div>
-              <p className="mt-2 text-center text-[10px] text-muted-foreground">
-                Guidance only. Nothing publishes automatically.
-              </p>
-            </form>
-          </motion.aside>
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
-  );
-}
-
-function renderView(view: StudioView, campaignId?: string) {
+function renderView(
+  view: StudioView,
+  campaignId?: string,
+  conversationId?: string,
+  workTab?: WorkTab,
+) {
+  if (view === "work") return <MyWork tab={workTab || "campaigns"} />;
   if (view === "engine") return <ContentEngine />;
   if (view === "home") return <Dashboard />;
-  if (view === "assistant") return <StudioAssistant />;
+  if (view === "assistant" || view === "conversations")
+    return <StudioAssistant conversationId={conversationId} />;
   if (view === "roadmap") return <VideoRoadmap />;
   if (view === "success") return <MemberSuccess />;
   if (view === "brand") return <BrandStudio />;
@@ -1587,923 +1159,356 @@ function renderView(view: StudioView, campaignId?: string) {
   if (view === "campaign") return <CampaignDetail campaignId={campaignId} />;
   if (view === "library") return <Library />;
   if (view === "calendar") return <CalendarView />;
-  if (view === "settings")
-    return (
-      <>
-        <div aria-hidden="true">
-          <Dashboard />
-        </div>
-        <SettingsView />
-      </>
-    );
+  if (view === "settings") return <SettingsView />;
   if (view === "billing") return <BillingView />;
   return <Dashboard />;
 }
 
+/**
+ * The first thing on Home: the Pal, and the conversation you were last in.
+ */
+function ConversationInvite({
+  conversations,
+  preferredPal,
+}: {
+  conversations: Tables<"conversations">[];
+  preferredPal?: string | null;
+}) {
+  const latest = conversations.find((item) => !item.archived && !item.is_legacy) || null;
+  const pal = palDirectory[resolvePalName(latest?.pal || preferredPal)];
+  return (
+    <section className="mt-7 overflow-hidden rounded-2xl border border-system/20 bg-system-soft/40">
+      <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
+        <img
+          src={pal.headshot}
+          alt={`${pal.name}, your Palmer House guide`}
+          className="size-16 shrink-0 rounded-xl border border-white bg-white object-cover object-top sm:size-20"
+        />
+        <div className="min-w-0 flex-1">
+          <p className="studio-eyebrow" style={{ color: pal.color }}>
+            {pal.name} · {pal.role}
+          </p>
+          {latest ? (
+            <>
+              <h2 className="mt-2 text-xl font-bold tracking-[-.03em]">{latest.title}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                Pick this back up where you left it, or start something new.
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 className="mt-3 text-2xl font-black tracking-[-.03em]">
+                {pal.persona.firstQuestion}
+              </h2>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
+                {pal.intro}
+              </p>
+            </>
+          )}
+        </div>
+        <div className="flex shrink-0 flex-wrap gap-2 sm:max-w-52">
+          {latest ? (
+            <Link
+              to="/studio/conversations/$conversationId"
+              params={{ conversationId: latest.id }}
+              className="primary-action w-full"
+            >
+              Continue with {pal.name} <ArrowRight className="size-4" />
+            </Link>
+          ) : null}
+          <Link
+            to="/studio/conversations"
+            search={{ prompt: undefined }}
+
+            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-2 text-xs font-bold underline underline-offset-4 hover:bg-white"
+          >
+            {latest ? "Start a new conversation" : `Talk with ${pal.name}`}
+          </Link>
+        </div>
+      </div>
+      {!latest && pal.persona.starters.length ? (
+        <div className="flex flex-wrap gap-2 border-t border-border px-6 py-5 sm:px-8">
+          {pal.persona.starters.slice(0, 3).map((starter) => (
+            <Link
+              key={starter}
+              to="/studio/conversations"
+              search={{ prompt: starter }}
+              className="inline-flex min-h-11 items-center rounded-xl border border-border px-4 text-xs font-bold transition hover:border-ink"
+              style={{ background: pal.soft }}
+            >
+              {starter}
+            </Link>
+          ))}
+        </div>
+      ) : null}
+    </section>
+  );
+}
+
 function Dashboard() {
-  const { campaigns, assets, calendar, brand, profile, user, ideas, videoProgress } = useStudio();
-  const { guide, hasChosen, tip } = useGuide();
-  const progression = calculateTier({
-    campaigns: campaigns.length,
-    approvedAssets: assets.filter((asset) => asset.status === "approved").length,
-    completedVideos: videoProgress.filter((item) => item.status === "published").length,
-    brandCompletion: brand?.completion || 0,
-  });
-
-  const [firstRun, setFirstRun] = useState(false);
-  useEffect(() => {
-    try {
-      setFirstRun(window.localStorage.getItem("phs-studio-first-run") === "1");
-    } catch {
-      setFirstRun(false);
-    }
-  }, []);
-  function endFirstRun() {
-    setFirstRun(false);
-    try {
-      window.localStorage.removeItem("phs-studio-first-run");
-    } catch {
-      // dismissing is best effort
-    }
-  }
-
-  const upcoming = calendar.filter((item) => new Date(item.publish_at) >= new Date()).slice(0, 4);
+  const { campaigns, assets, calendar, brand, profile, user, conversations, settings } =
+    useStudio();
   const firstName = (
     profile?.full_name ||
     (user?.user_metadata?.full_name as string) ||
     "there"
   ).split(" ")[0];
-  const ready = assets.filter((asset) => asset.status === "approved").length;
-  const review = assets.filter((asset) => asset.status === "review").length;
-  const scheduled = calendar.filter((item) => item.status !== "published").length;
-  const brandCompletion = brand?.completion || 0;
-  const activeCampaigns = campaigns.filter((campaign) => campaign.status !== "archived");
-
-  const today = new Date().toLocaleDateString(undefined, {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-  });
-
-  // Progressive disclosure: only genuine, state-derived items reach the attention stack.
-  const attention = [
-    review > 0
-      ? {
-          key: "review",
-          title: `${review} ${review === 1 ? "piece is" : "pieces are"} waiting on your decision`,
-          body: "Approve what is ready, leave one note on what is not.",
-          to: "/studio/approvals" as const,
-          action: "Review",
-          color: "var(--reel)",
-        }
-      : null,
-    brandCompletion < 60
-      ? {
-          key: "brand",
-          title: "Your Brand DNA is still thin",
-          body: "Every draft gets sharper the moment your offer, proof, and voice are on file.",
-          to: "/studio/brand" as const,
-          action: "Continue",
-          color: "var(--spotlight)",
-        }
-      : null,
-    upcoming[0]
-      ? {
-          key: "calendar",
-          title: `${upcoming[0].title} publishes ${new Date(upcoming[0].publish_at).toLocaleDateString(undefined, { month: "long", day: "numeric" })}`,
-          body: `Planned for ${upcoming[0].channel}. Check the asset before the date arrives.`,
-          to: "/studio/calendar" as const,
-          action: "Open",
-          color: "var(--evergreen)",
-        }
-      : null,
-  ].filter(Boolean) as {
-    key: string;
-    title: string;
-    body: string;
-    to: "/studio/approvals" | "/studio/brand" | "/studio/calendar";
-    action: string;
-    color: string;
-  }[];
-
-  // A trusted strategist noticing openings — never an upsell feed.
-  const opportunities = [
-    !campaigns.length
-      ? {
-          key: "first",
-          title: "One real customer question is enough to start",
-          body: "The engine turns a single sentence into a full set of drafts you can edit and approve.",
-          to: "/studio" as const,
-          action: "Build the first campaign",
-        }
-      : null,
-    campaigns.length && ready >= 3 && !scheduled
-      ? {
-          key: "schedule",
-          title: `${ready} approved pieces are sitting unpublished`,
-          body: "Put dates on them so the work leaves the Studio and starts doing its job.",
-          to: "/studio/calendar" as const,
-          action: "Plan the dates",
-        }
-      : null,
-    ideas.length >= 2
-      ? {
-          key: "ideas",
-          title: `${ideas.length} saved ideas are ready to be ranked`,
-          body: "The roadmap orders them by the business problem each one removes.",
-          to: "/studio/roadmap" as const,
-          action: "See the roadmap",
-        }
-      : null,
-    campaigns.length && videoProgress.length < 4
-      ? {
-          key: "lanes",
-          title: "Your video mix leans on one lane",
-          body: "Momentum, attention, authority, and scale each need a home in the plan.",
-          to: "/studio/roadmap" as const,
-          action: "Balance the plan",
-        }
-      : null,
-  ]
-    .filter(Boolean)
-    .slice(0, 2) as {
-    key: string;
-    title: string;
-    body: string;
-    to: "/studio" | "/studio/calendar" | "/studio/roadmap";
-    action: string;
-  }[];
-
+  const reviewCount = assets.filter((asset) => asset.status === "review").length;
+  const activeCampaigns = campaigns
+    .filter((campaign) => campaign.status !== "archived")
+    .slice()
+    .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at));
+  const upcoming = calendar
+    .filter((item) => item.status !== "published" && Date.parse(item.publish_at) >= Date.now())
+    .sort((a, b) => Date.parse(a.publish_at) - Date.parse(b.publish_at))
+    .slice(0, 3);
+  const approved = assets
+    .filter((asset) => asset.status === "approved")
+    .slice()
+    .sort(
+      (a, b) => Date.parse(b.updated_at || b.created_at) - Date.parse(a.updated_at || a.created_at),
+    )
+    .slice(0, 3);
+  const brandIncomplete = (brand?.completion || 0) < 60;
   return (
-    <div className="mx-auto max-w-[86rem]">
-      <header className="flex flex-col gap-6 border-b border-border pb-8 sm:flex-row sm:items-end sm:justify-between">
-        <div className="min-w-0">
-          <p className="studio-eyebrow text-muted-foreground">{today}</p>
-          <h1 className="mt-4 text-[clamp(2rem,3.6vw,3.5rem)] font-black leading-[1.02] tracking-[-.055em]">
-            Good to see you, {firstName}.
+    <div className="mx-auto max-w-[1240px]">
+      <header className="flex flex-wrap items-end justify-between gap-5">
+        <div>
+          <p className="studio-eyebrow text-muted-foreground">
+            {new Date().toLocaleDateString(undefined, {
+              weekday: "long",
+              month: "long",
+              day: "numeric",
+            })}
+          </p>
+          <h1 className="mt-3 text-[clamp(2.5rem,4.4vw,3.75rem)] font-extrabold leading-[0.95] tracking-[-.05em]">
+            Good to see you,
+            <br />
+            {firstName}.
           </h1>
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
-            {attention.length
-              ? `${attention.length} ${attention.length === 1 ? "thing needs" : "things need"} you today. Everything else is handled.`
-              : campaigns.length
-                ? "Nothing needs you right now. Your team is working in the background."
-                : "Your studio is set up and quiet. Give it one real idea and it starts working."}
+          <p className="mt-4 max-w-md text-base leading-relaxed text-muted-foreground">
+            {reviewCount
+              ? `${reviewCount} ${reviewCount === 1 ? "draft is" : "drafts are"} ready for your review.`
+              : activeCampaigns.length
+                ? "Pick up a conversation or move your next campaign forward."
+                : "Start with an idea. Build it into something useful."}
           </p>
         </div>
-        <div className="flex shrink-0 items-center gap-5">
-          <div className="text-right">
-            <p className="studio-eyebrow" style={{ color: guide.color }}>
-              {progression.tier.label}
-            </p>
-            <p className="mt-2 text-xs text-muted-foreground">
-              {progression.next
-                ? `${progression.toNext} moves to ${progression.next.label}`
-                : "Top tier"}
-            </p>
-          </div>
-          {guide.avatar ? (
-            <img src={guide.avatar} alt="" className="h-16 w-16 object-contain object-bottom" />
-          ) : null}
-        </div>
+        <Link to="/studio/conversations" search={{ prompt: newConversationPrompt }} className="primary-action">
+          <Plus className="size-4" /> New conversation
+        </Link>
       </header>
 
-      {firstRun ? (
-        <section className="mt-10 border border-ink bg-white p-6 sm:p-8">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="min-w-0">
-              <p className="studio-eyebrow text-evergreen">Your studio is ready</p>
-              <h2 className="mt-4 text-2xl font-black leading-tight tracking-[-.03em]">
-                Here is the whole thing in one move.
-              </h2>
-              <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                Write one real thing you know — a customer question, a job you finished, an opinion
-                you hold. The Content Engine turns it into three angles, then a full set of
-                platform-ready drafts you can edit, approve, and schedule.
-              </p>
-            </div>
-            <button
-              onClick={endFirstRun}
-              className="shrink-0 text-xs font-bold text-muted-foreground underline underline-offset-4"
-            >
-              Skip the tour
-            </button>
-          </div>
-          <Link
-            to="/studio"
-            onClick={endFirstRun}
-            className="mt-6 inline-flex min-h-12 items-center gap-2 bg-ink px-6 text-sm font-black text-white transition hover:bg-evergreen"
-          >
-            Build my first campaign <ArrowRight className="size-4" />
-          </Link>
-        </section>
-      ) : null}
+      <ConversationInvite conversations={conversations} preferredPal={settings?.preferred_pal} />
 
-      {attention.length ? (
-        <section className="mt-12">
-          <p className="studio-eyebrow text-ink">Needs your attention · {attention.length}</p>
-          <div className="mt-5 divide-y divide-border border-y border-border">
-            {attention.map((item) => (
-              <Link
-                key={item.key}
-                to={item.to}
-                className="group flex items-center gap-5 py-6 transition-colors hover:bg-secondary/40"
-              >
-                <span
-                  className="h-10 w-[3px] shrink-0"
-                  style={{ background: item.color }}
-                  aria-hidden="true"
-                />
-                <span className="min-w-0 flex-1">
-                  <span className="block text-lg font-black leading-snug tracking-[-.02em]">
-                    {item.title}
-                  </span>
-                  <span className="mt-1.5 block text-sm text-muted-foreground">{item.body}</span>
-                </span>
-                <span className="hidden shrink-0 items-center gap-2 text-xs font-black sm:inline-flex">
-                  {item.action}
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
-                </span>
-              </Link>
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      <section className="mt-12 grid gap-10 lg:grid-cols-[1.5fr_1fr]">
-        <div className="min-w-0">
-          <div className="flex items-end justify-between">
-            <div>
-              <p className="studio-eyebrow text-evergreen">In motion</p>
-              <h2 className="mt-3 text-2xl font-black tracking-[-.03em]">What we are working on</h2>
-            </div>
-            {campaigns.length ? (
+      <div className="mt-12 grid gap-10 lg:grid-cols-12 lg:gap-12">
+        <div className="min-w-0 space-y-12 lg:col-span-8">
+          <section>
+            <div className="mb-6 flex items-center justify-between gap-4 border-b border-border pb-4">
+              <h2 className="studio-section-title">Recent campaigns</h2>
               <Link
                 to="/studio/campaigns"
-                className="text-xs font-bold underline underline-offset-4"
+                className="text-xs font-semibold underline underline-offset-4"
               >
                 All campaigns
               </Link>
-            ) : null}
-          </div>
-          <div className="mt-5 divide-y divide-border border-t border-border">
-            {activeCampaigns.slice(0, 4).map((campaign) => {
-              const lane = lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
-              const campaignAssets = assets.filter((asset) => asset.campaign_id === campaign.id);
-              const completed = campaignAssets.filter(
-                (asset) => asset.status === "approved",
-              ).length;
-              const percent = campaignAssets.length
-                ? Math.round((completed / campaignAssets.length) * 100)
-                : 0;
-              return (
-                <Link
-                  key={campaign.id}
-                  to="/studio/campaigns/$campaignId"
-                  params={{ campaignId: campaign.id }}
-                  className="group flex items-center gap-5 py-5 transition-colors hover:bg-secondary/40"
-                >
-                  <span
-                    className="size-2.5 shrink-0 rounded-full"
-                    style={{ background: lane.color }}
-                    aria-hidden="true"
-                  />
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-base font-extrabold tracking-[-.02em]">
-                      {campaign.title}
-                    </span>
-                    <span className="studio-eyebrow mt-2 block text-muted-foreground">
-                      {lane.label} · {completed} of {campaignAssets.length} approved
-                    </span>
-                  </span>
-                  <span className="hidden w-28 shrink-0 sm:block">
-                    <span className="block h-[3px] w-full overflow-hidden bg-muted">
-                      <span
-                        className="block h-full transition-[width] duration-500"
-                        style={{ width: `${Math.max(4, percent)}%`, background: lane.color }}
-                      />
-                    </span>
-                  </span>
-                  <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
-                </Link>
-              );
-            })}
-            {!activeCampaigns.length ? (
-              <div className="py-10">
-                <EmptyState
-                  icon={WandSparkles}
-                  title="Nothing in production yet."
-                  body="Your first campaign starts with one useful idea — the strategy, drafts, and calendar are built together."
-                  action={
-                    <Link to="/studio" className="primary-action">
-                      Start with an idea
-                    </Link>
-                  }
-                />
-              </div>
-            ) : null}
-          </div>
-
-          {opportunities.length ? (
-            <div className="mt-12">
-              <p className="studio-eyebrow text-spotlight">What we would do next</p>
-              <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                {opportunities.map((item) => (
-                  <article
-                    key={item.key}
-                    className="flex flex-col border border-border bg-white p-5"
-                  >
-                    <p className="text-base font-black leading-snug tracking-[-.02em]">
-                      {item.title}
-                    </p>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                      {item.body}
-                    </p>
+            </div>
+            {activeCampaigns.length ? (
+              <div className="grid gap-6 sm:grid-cols-2">
+                {activeCampaigns.slice(0, 4).map((campaign) => {
+                  const lane = lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
+                  const outputs = assets.filter((asset) => asset.campaign_id === campaign.id);
+                  const ready = outputs.filter((asset) => asset.status === "approved").length;
+                  const pct = outputs.length ? Math.round((ready / outputs.length) * 100) : 0;
+                  return (
                     <Link
-                      to={item.to}
-                      className="mt-5 inline-flex items-center gap-2 text-xs font-black underline underline-offset-4"
+                      key={campaign.id}
+                      to="/studio/campaigns/$campaignId"
+                      params={{ campaignId: campaign.id }}
+                      className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-white transition hover:-translate-y-0.5 hover:shadow-lg"
                     >
-                      {item.action} <ArrowRight className="size-3.5" />
+                      <AssetIllustration
+                        kind={campaign.primary_lane || "campaign"}
+                        title={campaign.title}
+                        className="h-32 w-full"
+                      />
+                      <div className="flex flex-1 flex-col p-5">
+                        <span className="studio-lane-label" style={{ color: lane.ink }}>
+                          <span
+                            className="size-1.5 rounded-full"
+                            style={{ background: lane.ink }}
+                          />
+                          {lane.label}
+                        </span>
+                        <h3 className="mt-3 line-clamp-2 text-[17px] font-bold leading-snug tracking-[-.02em]">
+                          {campaign.title}
+                        </h3>
+                        <div className="mt-auto pt-5">
+                          <div className="h-[3px] w-full overflow-hidden rounded-full bg-muted">
+                            <div
+                              className="h-full rounded-full"
+                              style={{ width: `${pct}%`, background: lane.ink }}
+                            />
+                          </div>
+                          <div className="mt-2 flex items-center justify-between font-mono text-[10px] font-bold uppercase tracking-[.12em] text-muted-foreground">
+                            <span>
+                              {ready} of {outputs.length} approved
+                            </span>
+                            <span>{pct}%</span>
+                          </div>
+                        </div>
+                      </div>
                     </Link>
-                  </article>
-                ))}
+                  );
+                })}
               </div>
-            </div>
-          ) : null}
-        </div>
-
-        <aside className="min-w-0 space-y-10">
-          <div>
-            <p className="studio-eyebrow text-muted-foreground">Coming up</p>
-            <div className="mt-5 divide-y divide-border border-t border-border">
-              {upcoming.slice(0, 3).map((item) => (
-                <Link
-                  key={item.id}
-                  to="/studio/calendar"
-                  className="flex items-baseline gap-4 py-4 transition-colors hover:bg-secondary/40"
-                >
-                  <time className="studio-eyebrow w-16 shrink-0 text-muted-foreground">
-                    {new Date(item.publish_at).toLocaleDateString(undefined, {
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </time>
-                  <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm font-extrabold">{item.title}</span>
-                    <span className="mt-1 block text-xs text-muted-foreground">{item.channel}</span>
-                  </span>
-                </Link>
-              ))}
-              {!upcoming.length ? (
-                <p className="py-6 text-sm text-muted-foreground">
-                  Nothing scheduled. Dates get added when work is approved.
+            ) : (
+              <div className="rounded-2xl border border-dashed border-border bg-white p-7">
+                <FolderOpen className="size-6 text-system" />
+                <h3 className="mt-4 text-lg font-bold">Your first campaign starts here.</h3>
+                <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
+                  Bring a customer question, a story, or a rough idea. Your Pal turns it into
+                  drafts.
                 </p>
-              ) : null}
-            </div>
-          </div>
+                <Link
+                  to="/studio/conversations"
+                  search={{ prompt: newConversationPrompt }}
+                  className="secondary-action mt-5"
+                >
+                  Start a conversation <ArrowRight className="size-4" />
+                </Link>
+              </div>
+            )}
+          </section>
 
-          <div>
-            <div className="flex items-baseline justify-between">
-              <p className="studio-eyebrow text-muted-foreground">Recently finished</p>
-              <Link to="/studio/library" className="text-xs font-bold underline underline-offset-4">
+          <section>
+            <div className="mb-6 flex items-center justify-between gap-4 border-b border-border pb-4">
+              <h2 className="studio-section-title">Approved work</h2>
+              <Link
+                to="/studio/library"
+                className="text-xs font-semibold underline underline-offset-4"
+              >
                 Library
               </Link>
             </div>
-            <div className="mt-5 grid grid-cols-3 gap-3">
-              {assets.slice(0, 3).map((asset) => (
-                <Link
-                  key={asset.id}
-                  to="/studio/library"
-                  className="group overflow-hidden border border-border bg-white"
-                >
-                  <span className="relative block aspect-[4/3] overflow-hidden bg-secondary">
-                    {assetMediaUrl(asset) ? (
-                      <img
-                        src={assetMediaUrl(asset)}
-                        alt=""
-                        className="size-full object-cover transition duration-500 group-hover:scale-105"
-                      />
-                    ) : (
-                      <AssetIllustration
-                        kind={asset.kind}
-                        title={asset.title}
-                        className="size-full transition duration-500 group-hover:scale-105"
-                      />
-                    )}
-                    {(() => {
-                      const meta = assetKindMeta(asset.kind);
-                      return (
-                        <span
-                          className="absolute bottom-2 left-2 grid size-7 place-items-center bg-white shadow-soft"
-                          style={{ color: meta.color }}
-                        >
-                          <meta.icon className="size-3.5" />
-                        </span>
-                      );
-                    })()}
-                  </span>
-                  <span className="line-clamp-2 block p-2 text-[10px] font-bold leading-snug">
-                    {asset.title}
-                  </span>
-                </Link>
-              ))}
-              {!assets.length ? (
-                <p className="col-span-3 py-4 text-sm text-muted-foreground">
-                  Finished work will collect here.
-                </p>
-              ) : null}
-            </div>
-          </div>
-
-          <div>
-            <p className="studio-eyebrow text-muted-foreground">Where the work stands</p>
-            <div className="mt-3">
-              <CampaignFlowMap
-                campaigns={campaigns.length}
-                assets={assets.length}
-                review={review}
-                scheduled={scheduled}
-              />
-            </div>
-            <p className="mt-4 text-xs leading-relaxed italic text-muted-foreground">
-              “{tip("home")}”
-              {!hasChosen ? (
-                <>
-                  {" "}
-                  <Link to="/studio/settings" className="font-bold underline underline-offset-4">
-                    Pick your guide
+            {approved.length ? (
+              <div className="grid gap-4 sm:grid-cols-3">
+                {approved.map((asset) => (
+                  <Link
+                    key={asset.id}
+                    to="/studio/library"
+                    className="group overflow-hidden rounded-2xl border border-border bg-white transition hover:-translate-y-0.5 hover:shadow-lg"
+                  >
+                    <AssetIllustration
+                      kind={asset.kind}
+                      title={asset.title}
+                      className="h-28 w-full"
+                    />
+                    <div className="p-4">
+                      <p className="line-clamp-2 text-sm font-bold leading-snug">{asset.title}</p>
+                      <p className="mt-1.5 font-mono text-[10px] uppercase tracking-[.12em] text-muted-foreground">
+                        {assetKindMeta(asset.kind).label}
+                      </p>
+                    </div>
                   </Link>
-                </>
-              ) : null}
-            </p>
-          </div>
-        </aside>
-      </section>
-    </div>
-  );
-}
-
-function CampaignFlowMap({
-  campaigns,
-  assets,
-  review,
-  scheduled,
-}: {
-  campaigns: number;
-  assets: number;
-  review: number;
-  scheduled: number;
-}) {
-  const reduce = useReducedMotion();
-  const steps = [
-    {
-      label: "Campaign briefs",
-      note: "The outcome and audience",
-      value: campaigns,
-      icon: Target,
-      color: "var(--ink)",
-      soft: "var(--mist)",
-      to: "/studio/campaigns" as const,
-    },
-    {
-      label: "Assets built",
-      note: "Scripts, posts, and plans",
-      value: assets,
-      icon: LayoutGrid,
-      color: "var(--ink)",
-      soft: "var(--mist)",
-      to: "/studio/library" as const,
-    },
-    {
-      label: "Needs a decision",
-      note: "Waiting for your review",
-      value: review,
-      icon: Eye,
-      color: "var(--ink)",
-      soft: "var(--mist)",
-      to: "/studio/approvals" as const,
-    },
-    {
-      label: "On the calendar",
-      note: "Ready with a date",
-      value: scheduled,
-      icon: CalendarDays,
-      color: "var(--evergreen)",
-      soft: "var(--evergreen-soft)",
-      to: "/studio/calendar" as const,
-    },
-  ];
-  return (
-    <div className="mt-5 px-2 pb-2">
-      <div className="grid gap-2 sm:grid-cols-2">
-        {steps.map((step, index) => (
-          <motion.div
-            key={step.label}
-            initial={reduce ? false : { opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.06, duration: 0.3 }}
-          >
-            <Link
-              to={step.to}
-              className="group flex min-h-28 items-start gap-3 rounded-[1rem] border border-border bg-white p-4 hover:border-ink"
-            >
-              <span
-                className="grid size-10 shrink-0 place-items-center rounded-xl"
-                style={{ background: step.soft, color: step.color }}
-              >
-                <step.icon className="size-4" />
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block text-2xl font-black">{step.value}</span>
-                <span className="mt-1 block text-xs font-extrabold">{step.label}</span>
-                <span className="mt-1 block text-[10px] leading-relaxed text-muted-foreground">
-                  {step.note}
-                </span>
-              </span>
-              <ArrowRight className="size-3.5 shrink-0 transition-transform group-hover:translate-x-1" />
-            </Link>
-          </motion.div>
-        ))}
-      </div>
-      <div className="mt-3 flex items-center gap-3 rounded-xl bg-mist px-4 py-3 text-xs text-ink">
-        <Activity className="size-4 shrink-0" />
-        <p>
-          <strong>{assets ? Math.round((scheduled / assets) * 100) : 0}%</strong> of created assets
-          currently have a publishing date.
-        </p>
-      </div>
-    </div>
-  );
-}
-
-type StarterIdea = {
-  id: string;
-  text: string;
-  lane: keyof typeof lanes;
-  source: string;
-  problem: string;
-};
-
-const starterIdeas: StarterIdea[] = [
-  {
-    id: "starter-faq",
-    text: "Answer the question customers ask right before they buy.",
-    lane: "evergreen",
-    source: "Repeated question",
-    problem: "Sales conversations repeat the same education before a customer can decide.",
-  },
-  {
-    id: "starter-proof",
-    text: "Show the moment a client finally understood the value.",
-    lane: "spotlight",
-    source: "Proof moment",
-    problem: "The business has results, but the proof is hard for a new customer to see.",
-  },
-  {
-    id: "starter-process",
-    text: "Turn one invisible team process into a useful walkthrough.",
-    lane: "system",
-    source: "Tribal knowledge",
-    problem: "A useful process lives in one person’s head instead of a reusable system.",
-  },
-  {
-    id: "starter-conversation",
-    text: "Ask the audience what keeps delaying the decision.",
-    lane: "reel",
-    source: "Conversation starter",
-    problem: "The business is posting without learning what the audience needs next.",
-  },
-];
-
-function IdeasBoard() {
-  const { ideas, createIdea, updateIdea, uploadIdeaSource, suggestDirections, brand, busy } =
-    useStudio();
-  const [draft, setDraft] = useState("");
-  const [sourceType, setSourceType] = useState<"text" | "link" | "image">("text");
-  const [sourceUrl, setSourceUrl] = useState("");
-  const [sourceFile, setSourceFile] = useState<File | null>(null);
-  const [sourcePreview, setSourcePreview] = useState("");
-  const [previewById, setPreviewById] = useState<Record<string, string>>({});
-  const [problem, setProblem] = useState("");
-  const [filter, setFilter] = useState<"all" | keyof typeof lanes>("all");
-  const detectedLane = classifyLane(`${draft} ${problem}`) as keyof typeof lanes;
-
-  const [directions, setDirections] = useState<Awaited<ReturnType<typeof suggestDirections>>>([]);
-  const savedIdeas = ideas.filter((item) => item.status !== "archived");
-  const combined = savedIdeas.length
-    ? savedIdeas.map((item) => ({
-        id: item.id,
-        text: item.body,
-        lane: item.primary_lane as keyof typeof lanes,
-        source: item.source_type,
-        problem: item.business_problem,
-        sourceUrl: item.source_url,
-        saved: true,
-      }))
-    : starterIdeas.map((item) => ({ ...item, sourceUrl: null, saved: false }));
-  const visible = filter === "all" ? combined : combined.filter((item) => item.lane === filter);
-
-  async function addIdea(findAngles = false) {
-    const fallback =
-      sourceType === "image" && sourceFile
-        ? `Use ${sourceFile.name} as the visual source for a campaign.`
-        : sourceType === "link" && sourceUrl
-          ? `Turn the useful material at ${sourceUrl} into a campaign.`
-          : "";
-    const body = draft.trim() || fallback;
-    if (body.length < 8) {
-      toast.error("Add a thought, link, or image with enough context to guide the campaign.");
-      return;
-    }
-    try {
-      const mediaPath = sourceFile ? await uploadIdeaSource(sourceFile) : undefined;
-      const id = await createIdea({
-        body,
-        sourceType,
-        sourceUrl: sourceType === "link" ? sourceUrl : undefined,
-        sourceMediaPath: mediaPath,
-        lane: detectedLane,
-        businessProblem: problem.trim() || `${lanes[detectedLane].role}: ${body}`,
-      });
-      if (sourcePreview) setPreviewById((current) => ({ ...current, [id]: sourcePreview }));
-      if (findAngles) {
-        const next = await suggestDirections({
-          idea: body,
-          goal: "Turn source material into a useful campaign",
-          audience: brand?.primary_audience || "The business’s primary audience",
-        });
-        setDirections(next);
-      }
-      setDraft("");
-      setSourceUrl("");
-      setSourceFile(null);
-      setSourcePreview("");
-      setProblem("");
-      toast.success(
-        findAngles
-          ? "Saved and shaped into three campaign directions."
-          : "Saved to this workspace.",
-      );
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not save this source.");
-    }
-  }
-  return (
-    <div className="mx-auto max-w-[88rem]">
-      <PageIntro
-        eyebrow="Content ideas"
-        title="Catch the useful thought before it disappears."
-        body="Start with a thought, a link, or an image. The Studio keeps the source, names the real problem or opportunity, and helps turn it into a connected campaign."
-        action={
-          <Link
-            to="/studio"
-            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-system px-5 text-sm font-bold text-white"
-          >
-            <Sparkles className="size-4" /> Open the engine
-          </Link>
-        }
-      />
-      <section className="mt-8 grid gap-6 xl:grid-cols-[.72fr_1.28fr]">
-        <div className="studio-card h-fit xl:sticky xl:top-24">
-          <p className="studio-eyebrow text-system">Quick capture</p>
-          <h2 className="mt-3 text-2xl font-black">What are we starting with?</h2>
-          <div className="mt-5 grid grid-cols-3 rounded-xl border border-border bg-white p-1">
-            {(["text", "link", "image"] as const).map((value) => (
-              <button
-                key={value}
-                onClick={() => setSourceType(value)}
-                className={`min-h-11 rounded-lg text-xs font-bold capitalize ${sourceType === value ? "bg-system-soft text-system" : "text-muted-foreground"}`}
-              >
-                {value}
-              </button>
-            ))}
-          </div>
-          {sourceType === "link" ? (
-            <label className="mt-4 block text-sm font-bold">
-              Link to use as the source
-              <input
-                type="url"
-                value={sourceUrl}
-                onChange={(event) => setSourceUrl(event.target.value)}
-                placeholder="https://…"
-                className="mt-2 min-h-12 w-full rounded-xl border border-border px-4 text-sm outline-none focus:border-system"
-              />
-            </label>
-          ) : null}
-          {sourceType === "image" ? (
-            <label className="mt-4 flex min-h-36 cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed border-system bg-system-soft p-4 text-center">
-              {sourcePreview ? (
-                <img
-                  src={sourcePreview}
-                  alt="Selected campaign source"
-                  className="max-h-44 w-full rounded-lg object-cover"
-                />
-              ) : (
-                <>
-                  <ImageUp className="size-6 text-system" />
-                  <span className="mt-3 text-sm font-black text-system">
-                    Choose a before-and-after, product, or reference image
-                  </span>
-                  <span className="mt-1 text-[10px] text-muted-foreground">
-                    PNG, JPG, or WebP · private workspace upload
-                  </span>
-                </>
-              )}
-              <input
-                type="file"
-                accept="image/png,image/jpeg,image/webp"
-                className="sr-only"
-                onChange={(event) => {
-                  const file = event.target.files?.[0] || null;
-                  setSourceFile(file);
-                  if (sourcePreview) URL.revokeObjectURL(sourcePreview);
-                  setSourcePreview(file ? URL.createObjectURL(file) : "");
-                }}
-              />
-            </label>
-          ) : null}
-          <textarea
-            value={draft}
-            onChange={(event) => setDraft(event.target.value)}
-            rows={6}
-            placeholder={
-              sourceType === "image"
-                ? "What should the audience notice about this image?"
-                : sourceType === "link"
-                  ? "What is useful about this link?"
-                  : "A customer asked why…"
-            }
-            className="mt-5 w-full resize-none rounded-xl border border-border p-4 text-base outline-none focus:border-system"
-          />
-          <label className="mt-4 block text-sm font-extrabold">
-            What problem or opportunity could this address?
-            <input
-              value={problem}
-              onChange={(event) => setProblem(event.target.value)}
-              placeholder="Customers cannot see the difference…"
-              className="mt-2 min-h-12 w-full rounded-xl border border-border px-4 text-sm font-medium outline-none focus:border-system"
-            />
-          </label>
-          <div
-            className="mt-5 rounded-xl border border-border p-4"
-            style={{ background: lanes[detectedLane].soft }}
-          >
-            <p className="studio-eyebrow" style={{ color: lanes[detectedLane].color }}>
-              Category · {lanes[detectedLane].label}
-            </p>
-            <p className="mt-2 text-xs font-medium text-muted-foreground">
-              We sort this for you from what you wrote — {lanes[detectedLane].role.toLowerCase()}.
-              You can change it later on the idea itself.
-            </p>
-          </div>
-
-          <div className="mt-5 grid gap-2 sm:grid-cols-2">
-            <button
-              onClick={() => void addIdea(false)}
-              disabled={busy}
-              className="flex min-h-12 items-center justify-center gap-2 rounded-xl border border-system px-4 text-sm font-bold text-system disabled:opacity-45"
-            >
-              <Plus className="size-4" /> Save source
-            </button>
-            <button
-              onClick={() => void addIdea(true)}
-              disabled={busy}
-              className="flex min-h-12 items-center justify-center gap-2 rounded-xl bg-system px-4 text-sm font-bold text-white disabled:opacity-45"
-            >
-              {busy ? (
-                <LoaderCircle className="size-4 animate-spin" />
-              ) : (
-                <Sparkles className="size-4" />
-              )}{" "}
-              Suggest campaign
-            </button>
-          </div>
-          <div className="mt-6">
-            <PalTip name="Samira" headshot={samiraHeadshot} color="var(--system)">
-              If your team has said it twice, save the exact wording. That is usually the useful
-              part.
-            </PalTip>
-          </div>
-        </div>
-        <div>
-          {directions.length ? (
-            <section className="mb-6 rounded-[1.25rem] border border-system bg-system-soft p-5">
-              <p className="studio-eyebrow text-system">Campaign directions</p>
-              <div className="mt-4 grid gap-3 lg:grid-cols-3">
-                {directions.map((direction) => (
-                  <article key={direction.id} className="rounded-xl bg-white p-4">
-                    <p className="text-[9px] font-black uppercase tracking-[.12em] text-system">
-                      {direction.lane}
-                    </p>
-                    <p className="mt-2 text-sm font-black">{direction.title}</p>
-                    <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                      {direction.angle}
-                    </p>
-                    <Link
-                      to="/studio/campaigns"
-                      className="mt-4 inline-flex items-center gap-2 text-xs font-bold text-system"
-                    >
-                      Build campaign <ArrowRight className="size-3.5" />
-                    </Link>
-                  </article>
                 ))}
               </div>
-            </section>
-          ) : null}
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <p className="studio-eyebrow text-reel">Idea bank</p>
-              <h2 className="mt-2 text-2xl font-black">Ready when you are</h2>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              {(["all", "spotlight", "reel", "evergreen", "system"] as const).map((item) => (
-                <button
-                  key={item}
-                  onClick={() => setFilter(item)}
-                  className={`min-h-11 rounded-full px-4 text-xs font-bold capitalize ${filter === item ? "bg-system text-white" : "border border-border bg-white"}`}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="studio-content-list mt-5 grid gap-4 sm:grid-cols-2">
-            {visible.map((idea) => {
-              const meta = lanes[idea.lane];
-              return (
-                <motion.article layout key={idea.id} className="studio-card flex min-h-56 flex-col">
-                  <div className="flex items-center justify-between">
-                    <span
-                      className="flex items-center gap-2 text-xs font-extrabold"
-                      style={{ color: meta.color }}
-                    >
-                      <span
-                        className="grid size-8 place-items-center rounded-lg"
-                        style={{ background: meta.soft }}
-                      >
-                        <Lightbulb className="size-3.5" />
-                      </span>
-                      {meta.label} idea
-                    </span>
-                    <button
-                      aria-label="More idea options"
-                      className="grid size-12 place-items-center rounded-full border border-border"
-                    >
-                      <MoreHorizontal className="size-4" />
-                    </button>
-                  </div>
-                  <p className="mt-6 text-xl font-extrabold leading-snug">{idea.text}</p>
-                  {previewById[idea.id] ? (
-                    <img
-                      src={previewById[idea.id]}
-                      alt="Idea source"
-                      className="mt-4 h-32 w-full rounded-xl object-cover"
-                    />
-                  ) : null}
-                  <p className="mt-3 text-xs text-muted-foreground">Source: {idea.source}</p>
-                  {idea.sourceUrl ? (
-                    <a
-                      href={idea.sourceUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-2 inline-flex items-center gap-1 text-xs font-bold text-system"
-                    >
-                      Open source <ExternalLink className="size-3" />
-                    </a>
-                  ) : null}
-                  <div className="mt-4 rounded-xl bg-mist p-3">
-                    <p className="text-[9px] font-black uppercase tracking-[.12em] text-muted-foreground">
-                      Problem it solves
-                    </p>
-                    <p className="mt-2 text-xs font-bold leading-relaxed">{idea.problem}</p>
-                  </div>
-                  <div className="mt-auto flex gap-2 pt-6">
-                    <Link
-                      to="/studio"
-                      className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold"
-                      style={{ background: meta.soft, color: meta.color }}
-                    >
-                      Build this <ArrowRight className="size-4" />
-                    </Link>
-                    <button
-                      onClick={() =>
-                        idea.saved
-                          ? void updateIdea(idea.id, { status: "archived" })
-                          : toast.success("Starter hidden once you save your first workspace idea.")
-                      }
-                      className="grid size-12 place-items-center rounded-xl border border-border"
-                      aria-label={`Archive ${idea.text}`}
-                    >
-                      <Archive className="size-4" />
-                    </button>
-                  </div>
-                </motion.article>
-              );
-            })}
-          </div>
+            ) : (
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                Your approved drafts will appear here.
+              </p>
+            )}
+          </section>
         </div>
-      </section>
+
+        <aside className="min-w-0 space-y-8 lg:col-span-4">
+          {reviewCount > 0 ? (
+            <Link
+              to="/studio/approvals"
+              className="block rounded-2xl border border-reel/25 bg-reel-soft p-7 transition hover:-translate-y-0.5"
+            >
+              <p className="studio-eyebrow text-reel">Needs you · Review</p>
+              <p className="mt-3 text-lg font-bold leading-snug">
+                {reviewCount} {reviewCount === 1 ? "draft is" : "drafts are"} waiting on your
+                approval.
+              </p>
+              <span className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em]">
+                Open approvals <ArrowRight className="size-3.5" />
+              </span>
+            </Link>
+          ) : null}
+
+          {brandIncomplete ? (
+            <Link
+              to="/studio/brand"
+              className="block rounded-2xl border border-system/25 bg-system-soft p-7 transition hover:-translate-y-0.5"
+            >
+              <p className="studio-eyebrow text-system">Brand DNA · {brand?.completion || 0}%</p>
+              <p className="mt-3 text-sm font-semibold leading-relaxed">
+                Add your voice, audience, and offers so every draft sounds like you.
+              </p>
+              <div className="mt-5 h-[3px] w-full overflow-hidden rounded-full bg-white">
+                <div
+                  className="h-full rounded-full bg-system"
+                  style={{ width: `${brand?.completion || 0}%` }}
+                />
+              </div>
+              <span className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em]">
+                Continue setup <ArrowRight className="size-3.5" />
+              </span>
+            </Link>
+          ) : null}
+
+          <section className="rounded-2xl border border-border bg-white p-7">
+            <div className="flex items-center justify-between gap-3">
+              <h2 className="studio-section-title">Coming up</h2>
+              <Link
+                to="/studio/calendar"
+                className="text-xs font-semibold underline underline-offset-4"
+              >
+                Calendar
+              </Link>
+            </div>
+            {upcoming.length ? (
+              <div className="mt-5 space-y-5">
+                {upcoming.map((item) => (
+                  <Link key={item.id} to="/studio/calendar" className="flex items-start gap-4">
+                    <time
+                      dateTime={item.publish_at}
+                      className="grid w-11 shrink-0 place-items-center rounded-lg bg-evergreen-soft py-2 text-[11px] font-semibold text-evergreen"
+                    >
+                      <span>
+                        {new Date(item.publish_at).toLocaleDateString(undefined, {
+                          month: "short",
+                        })}
+                      </span>
+                      <span className="text-lg leading-tight">
+                        {new Date(item.publish_at).getDate()}
+                      </span>
+                    </time>
+                    <span className="min-w-0">
+                      <span className="block truncate text-sm font-semibold">{item.title}</span>
+                      <span className="mt-1 block font-mono text-[10px] uppercase tracking-[.12em] text-muted-foreground">
+                        {item.channel}
+                      </span>
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                No upcoming dates. Add approved work to your calendar when you’re ready.
+              </p>
+            )}
+          </section>
+        </aside>
+      </div>
     </div>
   );
+}
+
+function IdeasBoard() {
+  return <StudioIdeasBoard />;
 }
 
 function Approvals() {
@@ -2531,6 +1536,7 @@ function Approvals() {
         {(["review", "draft", "approved", "all"] as const).map((item) => (
           <button
             key={item}
+            aria-pressed={filter === item}
             onClick={() => setFilter(item)}
             className={`min-h-11 rounded-full px-5 text-sm font-bold capitalize ${filter === item ? "bg-ink text-white" : "border border-border"}`}
           >
@@ -2547,11 +1553,11 @@ function Approvals() {
         {items.map((asset) => (
           <article key={asset.id} className="studio-card flex flex-col sm:min-h-80">
             <div className="flex items-center justify-between gap-3">
-              <span className="rounded-full bg-spotlight-soft px-3 py-1 font-mono text-[8px] uppercase tracking-[.13em] text-spotlight">
+              <span className="rounded-full bg-spotlight-soft px-3 py-1 font-mono text-[11px] uppercase tracking-[.13em] text-spotlight">
                 {asset.kind.replaceAll("_", " ")}
               </span>
               <span
-                className={`rounded-full px-3 py-1 text-[9px] font-bold ${asset.status === "approved" ? "bg-evergreen-soft text-evergreen" : asset.status === "review" ? "bg-reel-soft text-reel" : "border border-border"}`}
+                className={`rounded-full px-3 py-1 text-[11px] font-bold ${asset.status === "approved" ? "bg-evergreen-soft text-evergreen" : asset.status === "review" ? "bg-reel-soft text-reel" : "border border-border"}`}
               >
                 {asset.status}
               </span>
@@ -2560,6 +1566,9 @@ function Approvals() {
             <p className="mt-3 line-clamp-5 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
               {asset.content}
             </p>
+            <div className="mt-4">
+              <StudioAssetEditor asset={asset} />
+            </div>
             <div className="mt-auto flex flex-col gap-2 pt-6 sm:flex-row">
               <button
                 onClick={() => void setStatus(asset, "approved")}
@@ -2603,213 +1612,17 @@ function Approvals() {
 }
 
 function Campaigns() {
-  const { campaigns, createCampaign, busy, brand } = useStudio();
-  const navigate = useNavigate();
-  const [builder, setBuilder] = useState(campaigns.length === 0);
-  const [step, setStep] = useState(0);
-  const [brief, setBrief] = useState<{
-    title: string;
-    goal: string;
-    topic: string;
-    offer: string;
-    audience: string;
-    anchorFormat: string;
-    depth: "quick" | "strategic" | "deep";
-  }>({
-    title: "New campaign",
-    goal: studioGoals[0],
-    topic: "",
-    offer: "",
-    audience: brand?.primary_audience || "",
-    anchorFormat: anchorFormats[0].value,
-    depth: "strategic" as "quick" | "strategic" | "deep",
-  });
-  async function generate() {
-    try {
-      const id = await createCampaign(brief);
-      toast.success("Your campaign system is ready.");
-      celebrate({ title: "Campaign system built.", detail: brief.topic.slice(0, 90) });
-      void navigate({ to: "/studio/campaigns/$campaignId", params: { campaignId: id } });
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Campaign generation failed.");
-    }
-  }
-  if (builder)
-    return (
-      <div className="mx-auto max-w-5xl">
-        <button
-          onClick={() => setBuilder(false)}
-          className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground"
-        >
-          ← All campaigns
-        </button>
-        <PageIntro
-          eyebrow={`Campaign architect · ${step + 1} of 4`}
-          title={
-            [
-              "Choose the job.",
-              "Give it one useful idea.",
-              "Choose the anchor.",
-              "Ready for the Pals.",
-            ][step]
-          }
-          body={
-            [
-              "Every campaign begins with a business outcome—not a format.",
-              "Specific context produces useful work. Give the campaign something real to organize.",
-              "The anchor gives every smaller asset a source of truth.",
-              "The Studio will build strategy, scripts, production, and a schedule as one system.",
-            ][step]
-          }
-        />
-        <div className="mt-8 studio-card p-5 sm:p-8">
-          <div className="mb-8 h-1 overflow-hidden rounded-full bg-secondary">
-            <motion.div
-              animate={{ width: `${((step + 1) / 4) * 100}%` }}
-              className="h-full bg-system"
-            />
-          </div>
-          {step === 0 && (
-            <ChoiceGrid
-              options={studioGoals.map((goal) => ({ value: goal, label: goal }))}
-              value={brief.goal}
-              onChange={(goal) => setBrief({ ...brief, goal })}
-            />
-          )}
-          {step === 1 && (
-            <div className="grid gap-5">
-              <Field
-                as="textarea"
-                label="What is the idea, problem, or question?"
-                value={brief.topic}
-                onChange={(event) => setBrief({ ...brief, topic: event.target.value })}
-                placeholder="Customers keep asking whether…"
-                rows={6}
-                required
-              />
-              <div className="grid gap-5 sm:grid-cols-2">
-                <Field
-                  label="What are we inviting them toward?"
-                  value={brief.offer}
-                  onChange={(event) => setBrief({ ...brief, offer: event.target.value })}
-                  placeholder="A discovery call, service, event…"
-                />
-                <Field
-                  label="Who needs this most?"
-                  value={brief.audience}
-                  onChange={(event) => setBrief({ ...brief, audience: event.target.value })}
-                  placeholder="The exact audience…"
-                  required
-                />
-              </div>
-            </div>
-          )}
-          {step === 2 && (
-            <div className="grid gap-4 sm:grid-cols-2">
-              {anchorFormats.map((format) => (
-                <button
-                  key={format.value}
-                  onClick={() => setBrief({ ...brief, anchorFormat: format.value })}
-                  className={`rounded-2xl border p-5 text-left ${brief.anchorFormat === format.value ? "border-ink bg-ink text-white" : "border-border"}`}
-                >
-                  <p className="font-bold">{format.label}</p>
-                  <p
-                    className={`mt-2 text-sm ${brief.anchorFormat === format.value ? "text-white/60" : "text-muted-foreground"}`}
-                  >
-                    {format.detail}
-                  </p>
-                </button>
-              ))}
-            </div>
-          )}
-          {step === 3 && (
-            <div>
-              <div className="grid gap-3 sm:grid-cols-4">
-                {Object.values(lanes).map((lane) => (
-                  <div
-                    key={lane.label}
-                    className="rounded-2xl p-4"
-                    style={{ background: lane.soft }}
-                  >
-                    <span
-                      className="block size-2 rounded-full"
-                      style={{ background: lane.color }}
-                    />
-                    <p className="mt-8 font-bold">{lane.label}</p>
-                    <p className="mt-1 text-xs text-muted-foreground">{lane.role}</p>
-                  </div>
-                ))}
-              </div>
-              <label className="mt-6 block text-sm font-semibold">
-                Planning depth
-                <select
-                  value={brief.depth}
-                  onChange={(event) =>
-                    setBrief({ ...brief, depth: event.target.value as typeof brief.depth })
-                  }
-                  className="mt-2 min-h-12 w-full rounded-2xl border border-border bg-white px-4"
-                >
-                  <option value="quick">Quick direction</option>
-                  <option value="strategic">Strategic campaign</option>
-                  <option value="deep">Deep production plan</option>
-                </select>
-              </label>
-            </div>
-          )}
-          <div className="mt-8 flex items-center justify-between gap-3">
-            <button
-              onClick={() => (step > 0 ? setStep(step - 1) : setBuilder(false))}
-              className="min-h-12 rounded-2xl border border-border px-5 font-semibold"
-            >
-              Back
-            </button>
-            {step < 3 ? (
-              <button
-                disabled={step === 1 && (!brief.topic.trim() || !brief.audience.trim())}
-                onClick={() => setStep(step + 1)}
-                className="primary-action disabled:opacity-40"
-              >
-                Continue <ArrowRight className="size-4" />
-              </button>
-            ) : (
-              <button
-                disabled={busy}
-                onClick={() => void generate()}
-                className="primary-action min-w-44"
-              >
-                {busy ? (
-                  <>
-                    <LoaderCircle className="size-4 animate-spin" />
-                    Building campaign…
-                  </>
-                ) : (
-                  <>
-                    Build complete campaign <Sparkles className="size-4" />
-                  </>
-                )}
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-    );
+  const { campaigns } = useStudio();
   return (
     <div className="mx-auto max-w-[88rem]">
       <PageIntro
         eyebrow="Campaigns"
-        title="Every idea, fully connected."
-        body="No scattered prompt history. Each campaign keeps the strategy, scripts, production plan, assets, schedule, and human support together."
+        title="Everything we have built together."
         action={
-          <button
-            onClick={() => {
-              setStep(0);
-              setBuilder(true);
-            }}
-            className="primary-action"
-          >
+          <Link to="/studio/create" className="primary-action">
             <Plus className="size-4" />
-            New campaign
-          </button>
+            Create a campaign
+          </Link>
         }
       />
       <div className="mt-8">
@@ -2818,12 +1631,12 @@ function Campaigns() {
           <div className="studio-card">
             <EmptyState
               icon={WandSparkles}
-              title="Build your first complete campaign."
-              body="It takes about three minutes to give the Studio enough direction."
+              title="Nothing built yet."
+              body="Choose your goal and bring an idea to build your first campaign."
               action={
-                <button onClick={() => setBuilder(true)} className="primary-action">
-                  Start campaign <ArrowRight className="size-4" />
-                </button>
+                <Link to="/studio/create" className="primary-action">
+                  Create a campaign <ArrowRight className="size-4" />
+                </Link>
               }
             />
           </div>
@@ -2857,7 +1670,7 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
   const items = assets.filter((item) => item.campaign_id === campaignId);
   const output = campaignId ? campaignOutputs[campaignId] : undefined;
   const [stage, setStage] = useState<CampaignStage>("strategy");
-  const reduce = useReducedMotion();
+  const { enter, exit, transition } = useStudioMotion();
   if (!campaign)
     return (
       <div className="mx-auto max-w-4xl studio-card">
@@ -2877,6 +1690,23 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
   const stageIndex = campaignStages.findIndex((item) => item.id === stage);
   const currentStage = campaignStages[stageIndex];
   const business = brand?.business_name || campaign.title.split(":")[0] || "Your brand";
+  const kindsForStage: Partial<Record<CampaignStage, string[]>> = {
+    longform: ["anchor_script"],
+    shorts: ["short_script"],
+    socials: ["platform_post", "caption", "carousel"],
+    blog: ["article", "newsletter", "faq"],
+    filmplan: ["production_note"],
+  };
+  const stageAssets = items.filter((item) => kindsForStage[stage]?.includes(item.kind));
+  const hasSavedText =
+    stageAssets.some(
+      (item) =>
+        item.metadata &&
+        typeof item.metadata === "object" &&
+        !Array.isArray(item.metadata) &&
+        item.metadata.studioTextOverride === true,
+    ) ||
+    (stage === "blog" && !output && stageAssets.length > 0);
   const approved = items.filter((item) => item.status === "approved").length;
   const copyAll = () =>
     void navigator.clipboard
@@ -2886,24 +1716,24 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
     <div className="mx-auto max-w-[88rem] pb-24">
       <header
         className="relative overflow-hidden rounded-[2rem] px-6 py-7 text-white sm:px-9 sm:py-8"
-        style={{ background: lane.color }}
+        style={{ background: lane.ink }}
       >
         <div className="max-w-5xl">
           <div className="flex flex-wrap items-center gap-3">
-            <p className="font-mono text-[9px] uppercase tracking-[.2em] text-white/65">
+            <p className="font-mono text-[11px] uppercase tracking-[.2em] text-white/85">
               {lane.label} campaign
             </p>
-            <span className="rounded-full border border-white/25 px-3 py-1 font-mono text-[8px] uppercase tracking-[.15em] text-white/75">
+            <span className="rounded-full border border-white/25 px-3 py-1 font-mono text-[11px] uppercase tracking-[.15em] text-white/75">
               {campaign.status}
             </span>
-            <span className="font-mono text-[8px] uppercase tracking-[.15em] text-white/55">
+            <span className="font-mono text-[11px] uppercase tracking-[.15em] text-white/85">
               {approved}/{items.length} assets approved
             </span>
           </div>
           <h1 className="mt-4 max-w-4xl text-[clamp(1.9rem,3vw,3.1rem)] font-extrabold leading-[1] tracking-[-.045em]">
             {clampWords(campaign.title, 14)}
           </h1>
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/72">{campaign.goal}</p>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/85">{campaign.goal}</p>
         </div>
       </header>
 
@@ -2922,7 +1752,7 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
               className={`inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border px-4 text-[13px] font-bold transition ${
                 active ? "border-transparent text-white" : "border-border bg-white hover:bg-mist"
               }`}
-              style={active ? { background: lane.color } : undefined}
+              style={active ? { background: lane.ink } : undefined}
             >
               <Icon className="size-4" />
               {item.label}
@@ -2932,7 +1762,7 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
       </nav>
 
       <div className="mt-5 flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-center sm:justify-between">
-        <p className="font-mono text-[9px] uppercase tracking-[.18em] text-muted-foreground">
+        <p className="font-mono text-[11px] uppercase tracking-[.18em] text-muted-foreground">
           Step {String(stageIndex + 1).padStart(2, "0")} of {campaignStages.length} ·{" "}
           {currentStage.detail}
         </p>
@@ -2951,32 +1781,58 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
       </div>
 
       <AnimatePresence mode="wait">
-        <motion.main
+        <motion.section
           key={stage}
-          initial={reduce ? false : { opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={reduce ? undefined : { opacity: 0, y: -8 }}
-          transition={{ duration: 0.22 }}
+          initial={enter}
+          animate={{ opacity: 1, transform: "translateY(0px)" }}
+          exit={exit}
+          transition={transition}
           className="mt-6"
         >
-          {stage === "strategy" && (
-            <StrategyPanel campaign={campaign} output={output} lane={lane} />
+          {hasSavedText ? (
+            <section className="space-y-4" aria-label={`${currentStage.label} saved drafts`}>
+              {stageAssets.map((asset) => (
+                <article key={asset.id} className="studio-card">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <p className="studio-eyebrow text-muted-foreground">
+                        {asset.kind.replaceAll("_", " ")} · {asset.status}
+                      </p>
+                      <h2 className="mt-3 text-xl font-bold">{asset.title}</h2>
+                    </div>
+                    <StudioAssetEditor asset={asset} />
+                  </div>
+                  <p className="my-6 whitespace-pre-wrap text-base leading-relaxed">
+                    {asset.content}
+                  </p>
+                  <ArtifactActions asset={asset} content={asset.content} />
+                </article>
+              ))}
+            </section>
+          ) : (
+            <>
+              {stage === "strategy" && (
+                <StrategyPanel campaign={campaign} output={output} lane={lane} />
+              )}
+              {stage === "longform" && (
+                <LongFormResult campaign={campaign} output={output} items={items} lane={lane} />
+              )}
+              {stage === "shorts" && <ShortFormResult output={output} items={items} lane={lane} />}
+              {stage === "socials" && (
+                <SocialsResult output={output} items={items} lane={lane} business={business} />
+              )}
+              {stage === "blog" && (
+                <BlogWrittenResult campaign={campaign} output={output} items={items} lane={lane} />
+              )}
+              {stage === "filmplan" && (
+                <ProductionPanel campaign={campaign} output={output} lane={lane} />
+              )}
+              {stage === "publish" && (
+                <PublishPanel campaign={campaign} output={output} lane={lane} />
+              )}
+            </>
           )}
-          {stage === "longform" && (
-            <LongFormResult campaign={campaign} output={output} items={items} lane={lane} />
-          )}
-          {stage === "shorts" && <ShortFormResult output={output} items={items} lane={lane} />}
-          {stage === "socials" && (
-            <SocialsResult output={output} items={items} lane={lane} business={business} />
-          )}
-          {stage === "blog" && (
-            <BlogWrittenResult campaign={campaign} output={output} items={items} lane={lane} />
-          )}
-          {stage === "filmplan" && (
-            <ProductionPanel campaign={campaign} output={output} lane={lane} />
-          )}
-          {stage === "publish" && <PublishPanel campaign={campaign} output={output} lane={lane} />}
-        </motion.main>
+        </motion.section>
       </AnimatePresence>
 
       <footer className="sticky bottom-4 z-20 mt-7 rounded-[1.25rem] border border-border bg-white/95 p-3 shadow-soft backdrop-blur sm:flex sm:items-center sm:justify-between">
@@ -3000,7 +1856,7 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
             <button
               onClick={() => setStage(campaignStages[stageIndex + 1].id)}
               className="primary-action min-w-0 flex-1 px-3"
-              style={{ background: lane.color }}
+              style={{ background: lane.ink }}
             >
               Next: {campaignStages[stageIndex + 1].label} <ArrowRight className="size-4" />
             </button>
@@ -3040,7 +1896,7 @@ function CampaignScreenHeader({
   return (
     <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <p className="font-mono text-[9px] uppercase tracking-[.2em]" style={{ color: lane.color }}>
+        <p className="font-mono text-[11px] uppercase tracking-[.2em]" style={{ color: lane.ink }}>
           {eyebrow}
         </p>
         <h2 className="mt-2 max-w-3xl text-[clamp(1.6rem,2.4vw,2.35rem)] font-black leading-[1.05] tracking-[-.04em]">
@@ -3077,14 +1933,7 @@ function ArtifactActions({ asset, content }: { asset?: Asset; content: string })
           </>
         )}
       </div>
-      <button
-        onClick={() =>
-          void navigator.clipboard.writeText(content).then(() => toast.success("Draft copied."))
-        }
-        className="secondary-action"
-      >
-        <Clipboard className="size-4" /> Copy
-      </button>
+      <StudioCopyButton content={content} />
     </div>
   );
 }
@@ -3116,7 +1965,7 @@ function StrategyPanel({
 
       <section className="overflow-hidden rounded-[1.75rem] border border-border bg-white">
         <div className="p-6 sm:p-9">
-          <p className="font-mono text-[9px] uppercase tracking-[.18em] text-muted-foreground">
+          <p className="font-mono text-[11px] uppercase tracking-[.18em] text-muted-foreground">
             Big idea
           </p>
           <h3 className="mt-3 max-w-4xl text-[clamp(1.6rem,3vw,2.75rem)] font-black leading-[1.05] tracking-[-.045em]">
@@ -3136,7 +1985,7 @@ function StrategyPanel({
               key={label}
               className="border-b border-border p-6 last:border-b-0 md:border-b-0 md:border-r md:last:border-r-0"
             >
-              <span className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+              <span className="font-mono text-[11px] uppercase tracking-[.16em] text-muted-foreground">
                 0{index + 1} · {label}
               </span>
               <p className="mt-3 text-[15px] font-semibold leading-snug">{text}</p>
@@ -3150,7 +1999,7 @@ function StrategyPanel({
         <div className="mt-5 grid gap-3 md:grid-cols-3">
           {pillars.map((pillar, index) => (
             <div key={pillar} className="rounded-[1.25rem] p-5" style={{ background: lane.soft }}>
-              <span className="font-mono text-[9px]" style={{ color: lane.color }}>
+              <span className="font-mono text-[11px]" style={{ color: lane.ink }}>
                 0{index + 1}
               </span>
               <p className="mt-4 text-base font-black leading-snug">{clampWords(pillar, 14)}</p>
@@ -3265,10 +2114,7 @@ function LongFormResult({
         className="rounded-[1.5rem] border border-border p-6 sm:p-7"
         style={{ background: lane.soft }}
       >
-        <p
-          className="font-mono text-[9px] uppercase tracking-[.18em]"
-          style={{ color: lane.color }}
-        >
+        <p className="font-mono text-[11px] uppercase tracking-[.18em]" style={{ color: lane.ink }}>
           The hook
         </p>
         <p className="mt-3 max-w-4xl text-[clamp(1.25rem,2.2vw,1.9rem)] font-black leading-[1.15] tracking-[-.03em]">
@@ -3285,8 +2131,8 @@ function LongFormResult({
             <div className="grid lg:grid-cols-[14rem_minmax(0,1fr)]">
               <aside className="border-b border-border bg-mist/55 p-5 lg:border-b-0 lg:border-r">
                 <p
-                  className="font-mono text-[9px] uppercase tracking-[.18em]"
-                  style={{ color: lane.color }}
+                  className="font-mono text-[11px] uppercase tracking-[.18em]"
+                  style={{ color: lane.ink }}
                 >
                   Beat {String(index + 1).padStart(2, "0")}
                 </p>
@@ -3299,7 +2145,7 @@ function LongFormResult({
                 </p>
                 {scene.onScreenText ? (
                   <div className="mt-4 rounded-xl border border-border bg-white p-3">
-                    <p className="font-mono text-[8px] uppercase tracking-[.14em] text-muted-foreground">
+                    <p className="font-mono text-[11px] uppercase tracking-[.14em] text-muted-foreground">
                       On-screen text
                     </p>
                     <p className="mt-1.5 text-xs font-black">{scene.onScreenText}</p>
@@ -3307,7 +2153,7 @@ function LongFormResult({
                 ) : null}
               </aside>
               <section className="p-6 sm:p-7">
-                <p className="font-mono text-[9px] uppercase tracking-[.18em] text-muted-foreground">
+                <p className="font-mono text-[11px] uppercase tracking-[.18em] text-muted-foreground">
                   Say this
                 </p>
                 <p className="mt-3 whitespace-pre-wrap text-[16px] leading-[1.75]">
@@ -3315,7 +2161,7 @@ function LongFormResult({
                 </p>
                 {scene.broll.length ? (
                   <div className="mt-5 border-t border-border pt-4">
-                    <p className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+                    <p className="font-mono text-[11px] uppercase tracking-[.16em] text-muted-foreground">
                       Cover with
                     </p>
                     <div className="mt-2 flex flex-wrap gap-2">
@@ -3412,7 +2258,7 @@ function ShortFormResult({
               {clampWords(current.title, 10)}
             </h3>
           </div>
-          <span className="rounded-full bg-mist px-3 py-1.5 font-mono text-[9px] uppercase tracking-[.12em]">
+          <span className="rounded-full bg-mist px-3 py-1.5 font-mono text-[11px] uppercase tracking-[.12em]">
             30–45 sec · vertical
           </span>
         </div>
@@ -3426,7 +2272,7 @@ function ShortFormResult({
               key={label}
               className="border-b border-border p-6 last:border-b-0 sm:p-7 lg:border-b-0 lg:border-r lg:last:border-r-0"
             >
-              <p className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+              <p className="font-mono text-[11px] uppercase tracking-[.16em] text-muted-foreground">
                 0{index + 1} · {label}
               </p>
               <p className="mt-3 whitespace-pre-wrap text-sm leading-[1.7]">{text}</p>
@@ -3554,7 +2400,7 @@ function PlatformDraftPreview({ entry, business }: { entry: SocialEntry; busines
             </span>
           ) : null}
           {slides.length > 1 ? (
-            <span className="absolute right-4 top-4 rounded-full bg-ink px-2.5 py-1 font-mono text-[8px] text-white">
+            <span className="absolute right-4 top-4 rounded-full bg-ink px-2.5 py-1 font-mono text-[11px] text-white">
               1 / {slides.length}
             </span>
           ) : null}
@@ -3741,7 +2587,7 @@ function SocialsResult({
         <PlatformDraftPreview entry={current} business={business} />
         <aside className="h-fit space-y-4 rounded-[1.5rem] border border-border bg-white p-5">
           <div>
-            <p className="font-mono text-[9px] uppercase tracking-[.18em] text-muted-foreground">
+            <p className="font-mono text-[11px] uppercase tracking-[.18em] text-muted-foreground">
               Format
             </p>
             <p className="mt-1.5 text-sm font-black capitalize">
@@ -3750,8 +2596,8 @@ function SocialsResult({
           </div>
           <div>
             <p
-              className="font-mono text-[9px] uppercase tracking-[.18em]"
-              style={{ color: lane.color }}
+              className="font-mono text-[11px] uppercase tracking-[.18em]"
+              style={{ color: lane.ink }}
             >
               Why this version
             </p>
@@ -3761,7 +2607,7 @@ function SocialsResult({
           </div>
           {current.publishNotes ? (
             <div className="rounded-xl bg-mist p-4">
-              <p className="font-mono text-[8px] uppercase tracking-[.15em] text-muted-foreground">
+              <p className="font-mono text-[11px] uppercase tracking-[.15em] text-muted-foreground">
                 Posting notes
               </p>
               <p className="mt-1.5 text-xs leading-relaxed">{current.publishNotes}</p>
@@ -3855,7 +2701,7 @@ function BlogWrittenResult({
 
       {tab === "article" && (
         <article className="rounded-[1.75rem] border border-border bg-white p-6 sm:p-10">
-          <p className="font-mono text-[9px] uppercase tracking-[.18em] text-muted-foreground">
+          <p className="font-mono text-[11px] uppercase tracking-[.18em] text-muted-foreground">
             Blog post · {articleMinutes} min read
           </p>
           <h3 className="mt-3 max-w-3xl text-[clamp(1.7rem,3vw,2.6rem)] font-black leading-[1.06] tracking-[-.045em]">
@@ -3893,10 +2739,7 @@ function BlogWrittenResult({
                 <ul className="mt-4 space-y-3">
                   {takeaways.map((pillar) => (
                     <li key={pillar} className="flex gap-3 text-[17px] leading-[1.7]">
-                      <CheckCircle2
-                        className="mt-1 size-4 shrink-0"
-                        style={{ color: lane.color }}
-                      />
+                      <CheckCircle2 className="mt-1 size-4 shrink-0" style={{ color: lane.ink }} />
                       {pillar}
                     </li>
                   ))}
@@ -3916,7 +2759,7 @@ function BlogWrittenResult({
       {tab === "email" && (
         <article className="mx-auto w-full max-w-2xl overflow-hidden rounded-[1.5rem] border border-border bg-white">
           <div className="border-b border-border bg-mist px-5 py-4">
-            <p className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+            <p className="font-mono text-[11px] uppercase tracking-[.16em] text-muted-foreground">
               Subject
             </p>
             <p className="mt-1.5 text-base font-black">
@@ -4008,7 +2851,7 @@ function ProductionPanel({
 
       <section className="grid gap-3 md:grid-cols-3">
         <div className="rounded-[1.25rem] border border-border bg-white p-5">
-          <p className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+          <p className="font-mono text-[11px] uppercase tracking-[.16em] text-muted-foreground">
             Gear
           </p>
           <p className="mt-3 text-base font-black">Cell phone camera</p>
@@ -4021,14 +2864,14 @@ function ProductionPanel({
           </p>
         </div>
         <div className="rounded-[1.25rem] border border-border bg-white p-5">
-          <p className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+          <p className="font-mono text-[11px] uppercase tracking-[.16em] text-muted-foreground">
             Props
           </p>
           {props.length ? (
             <ul className="mt-3 space-y-2">
               {props.map((item) => (
                 <li key={item} className="flex gap-2 text-sm font-semibold">
-                  <span style={{ color: lane.color }}>·</span>
+                  <span style={{ color: lane.ink }}>·</span>
                   {item}
                 </li>
               ))}
@@ -4040,7 +2883,7 @@ function ProductionPanel({
           )}
         </div>
         <div className="rounded-[1.25rem] border border-border bg-white p-5">
-          <p className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+          <p className="font-mono text-[11px] uppercase tracking-[.16em] text-muted-foreground">
             Where to film
           </p>
           <p className="mt-3 text-sm font-semibold leading-relaxed">
@@ -4048,7 +2891,7 @@ function ProductionPanel({
           </p>
           {plan?.wardrobe?.length ? (
             <>
-              <p className="mt-4 font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+              <p className="mt-4 font-mono text-[11px] uppercase tracking-[.16em] text-muted-foreground">
                 Wear
               </p>
               <p className="mt-2 text-sm text-muted-foreground">{plan.wardrobe.join(" · ")}</p>
@@ -4071,7 +2914,7 @@ function ProductionPanel({
           <ol className="mt-4 space-y-3">
             {longSteps.map((step, index) => (
               <li key={step} className="flex gap-3 text-sm leading-relaxed">
-                <span className="font-mono text-[10px] text-muted-foreground">
+                <span className="font-mono text-[11px] text-muted-foreground">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 {step}
@@ -4092,7 +2935,7 @@ function ProductionPanel({
           <ol className="mt-4 space-y-3">
             {shortSteps.map((step, index) => (
               <li key={step} className="flex gap-3 text-sm leading-relaxed">
-                <span className="font-mono text-[10px] text-muted-foreground">
+                <span className="font-mono text-[11px] text-muted-foreground">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 {step}
@@ -4108,7 +2951,7 @@ function ProductionPanel({
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             {checklist.map((item) => (
               <p key={item} className="flex gap-3 text-sm">
-                <CheckCircle2 className="mt-0.5 size-4 shrink-0" style={{ color: lane.color }} />
+                <CheckCircle2 className="mt-0.5 size-4 shrink-0" style={{ color: lane.ink }} />
                 {item}
               </p>
             ))}
@@ -4160,7 +3003,12 @@ function PublishPanel({
         body="Work down the list. Each row is one post with its own date and channel."
         lane={lane}
         action={
-          <Link to="/studio/calendar" className="primary-action" style={{ background: lane.color }}>
+          <Link
+            to="/studio/work"
+            search={{ tab: "calendar" }}
+            className="primary-action"
+            style={{ background: lane.ink }}
+          >
             <CalendarDays className="size-4" /> Open calendar
           </Link>
         }
@@ -4178,7 +3026,7 @@ function PublishPanel({
           ],
         ].map(([label, value]) => (
           <div key={label} className="rounded-[1.25rem] border border-border bg-white p-5">
-            <p className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+            <p className="font-mono text-[11px] uppercase tracking-[.16em] text-muted-foreground">
               {label}
             </p>
             <p className="mt-2 text-2xl font-black tracking-[-.03em]">{value}</p>
@@ -4188,7 +3036,7 @@ function PublishPanel({
 
       {channels.length ? (
         <section className="flex flex-wrap items-center gap-2 rounded-[1.25rem] border border-border bg-white p-4">
-          <span className="mr-1 font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+          <span className="mr-1 font-mono text-[11px] uppercase tracking-[.16em] text-muted-foreground">
             Channels used
           </span>
           {channels.map((channel) => {
@@ -4217,7 +3065,7 @@ function PublishPanel({
                 key={item.id}
                 className="flex items-center gap-4 border-b border-border p-4 last:border-b-0 sm:gap-5 sm:p-5"
               >
-                <span className="w-8 shrink-0 font-mono text-[10px] text-muted-foreground">
+                <span className="w-8 shrink-0 font-mono text-[11px] text-muted-foreground">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <span
@@ -4261,7 +3109,7 @@ function PublishPanel({
             "Mark the asset approved here once it is live so the calendar stays honest.",
           ].map((tip) => (
             <p key={tip} className="flex gap-3 text-sm leading-relaxed">
-              <CheckCircle2 className="mt-0.5 size-4 shrink-0" style={{ color: lane.color }} />
+              <CheckCircle2 className="mt-0.5 size-4 shrink-0" style={{ color: lane.ink }} />
               {tip}
             </p>
           ))}
@@ -4274,14 +3122,18 @@ function PublishPanel({
       >
         <div>
           <p
-            className="font-mono text-[9px] uppercase tracking-[.17em]"
-            style={{ color: lane.color }}
+            className="font-mono text-[11px] uppercase tracking-[.17em]"
+            style={{ color: lane.ink }}
           >
             Campaign ready
           </p>
           <p className="mt-2 text-lg font-black">Give the work dates and owners.</p>
         </div>
-        <Link to="/studio/calendar" className="secondary-action border-0 bg-white">
+        <Link
+          to="/studio/work"
+          search={{ tab: "calendar" }}
+          className="secondary-action border-0 bg-white"
+        >
           Review every date <ArrowRight className="size-4" />
         </Link>
       </div>
@@ -4329,7 +3181,7 @@ function BrandGuidePreview({
         className="rounded-2xl p-6 text-white"
         style={{ background: value("primaryColor") || "var(--ink)" }}
       >
-        <p className="font-mono text-[9px] uppercase tracking-[.2em] text-white/65">Brand guide</p>
+        <p className="font-mono text-[11px] uppercase tracking-[.2em] text-white/85">Brand guide</p>
         <p
           className="mt-3 text-2xl font-black leading-tight"
           style={{ fontFamily: value("primaryFont") || undefined }}
@@ -4351,7 +3203,7 @@ function BrandGuidePreview({
                   className="h-14 rounded-xl border border-border"
                   style={{ background: value(key) }}
                 />
-                <p className="mt-1 font-mono text-[9px] uppercase text-muted-foreground">
+                <p className="mt-1 font-mono text-[11px] uppercase text-muted-foreground">
                   {label} {value(key)}
                 </p>
               </div>
@@ -4550,11 +3402,12 @@ function BrandStudio() {
   const [referenceUrl, setReferenceUrl] = useState("");
   const [activeStep, setActiveStep] = useState(0);
   const [showPreview, setShowPreview] = useState(false);
+  const previewOpener = useRef<HTMLButtonElement | null>(null);
   const [fromWebsite, setFromWebsite] = useState<Set<string>>(() => new Set());
   const [intakeUrl, setIntakeUrl] = useState(brand?.website || "");
   const [intakeStep, setIntakeStep] = useState(-1);
   const [intakeResult, setIntakeResult] = useState<{ filled: number; error?: string } | null>(null);
-  const reduceMotion = useReducedMotion();
+  const { enter, transition, reduceMotion } = useStudioMotion();
   const sourceMark = (key: DraftKey) => (fromWebsite.has(key) ? "From your website" : undefined);
 
   // A scrape that says "no photography found" is not a filled field.
@@ -4573,10 +3426,8 @@ function BrandStudio() {
     const normalized = /^https?:\/\//i.test(target) ? target : `https://${target}`;
     setIntakeResult(null);
     setIntakeStep(0);
-    const ticker = setInterval(() => setIntakeStep((step) => (step < 2 ? step + 1 : step)), 2200);
     try {
       const profile = await analyzeWebsite(normalized);
-      clearInterval(ticker);
       setIntakeStep(3);
       const filled = new Set<string>();
       const apply = (key: DraftKey, value: string) => {
@@ -4614,7 +3465,6 @@ function BrandStudio() {
       void addBrandReference("website", new URL(normalized).hostname, normalized).catch(() => {});
       toast.success(`Filled ${filled.size} fields from your website. Review and edit anything.`);
     } catch (error) {
-      clearInterval(ticker);
       setIntakeStep(-1);
       const message = error instanceof Error ? error.message : "We could not read that website.";
       setIntakeResult({ filled: 0, error: message });
@@ -4744,12 +3594,18 @@ function BrandStudio() {
   return (
     <div className="mx-auto max-w-[88rem]">
       <PageIntro
-        eyebrow="Brand DNA"
-        title="Teach the Studio how your business earns trust."
-        body="Nothing here has to be written from scratch. Paste your website, pick from the suggestions, and edit what does not sound like you."
+        eyebrow="Your business"
+        title="Brand DNA"
+        body="Keep your voice, audience, proof, and visual direction in one place."
         action={
           <div className="flex flex-wrap gap-2">
-            <button onClick={() => setShowPreview(true)} className="secondary-action">
+            <button
+              onClick={(event) => {
+                previewOpener.current = event.currentTarget;
+                setShowPreview(true);
+              }}
+              className="secondary-action"
+            >
               <Eye className="size-4" /> Preview guide
             </button>
             <button
@@ -4765,115 +3621,127 @@ function BrandStudio() {
         }
       />
 
-      <section className="mt-8 rounded-[1.5rem] border border-system bg-system-soft p-5 sm:p-6">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div className="min-w-64 flex-1">
-            <p className="studio-eyebrow text-system">Fastest start</p>
-            <h2 className="mt-2 text-xl font-black tracking-[-.03em]">
-              Build most of this from your website.
-            </h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              We read the page once and fill every section we can — including colors and type.
-              Nothing is invented, and you can edit all of it.
-            </p>
+      <details className="group mt-6 rounded-xl border border-system/30 bg-system-soft/50">
+        <summary className="flex min-h-12 cursor-pointer list-none items-center gap-3 px-4 py-3 text-sm font-semibold [&::-webkit-details-marker]:hidden">
+          <Sparkles className="size-4 text-system" />
+          Import from your website
+          <span className="ml-auto text-xs font-normal text-muted-foreground">Optional</span>
+          <ChevronRight className="size-4 transition-transform group-open:rotate-90" />
+        </summary>
+        <div className="border-t border-system/20 p-4 sm:p-5">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div className="min-w-64 flex-1">
+              <p className="studio-eyebrow text-system">Fastest start</p>
+              <h2 className="mt-2 text-xl font-black tracking-[-.03em]">
+                Build most of this from your website.
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                We read the page once and fill every section we can — including colors and type.
+                Nothing is invented, and you can edit all of it.
+              </p>
+            </div>
+            <div className="flex w-full max-w-md gap-2">
+              <input
+                type="url"
+                value={intakeUrl}
+                onChange={(event) => setIntakeUrl(event.target.value)}
+                placeholder="yourbusiness.com"
+                aria-label="Website to import"
+                className="min-h-12 min-w-0 flex-1 rounded-lg border border-border bg-white px-4 text-sm outline-none focus:border-system"
+              />
+              <button
+                type="button"
+                disabled={running || !intakeUrl.trim()}
+                onClick={() => void pullFromWebsite()}
+                className="primary-action shrink-0 disabled:opacity-50"
+              >
+                {running ? (
+                  <>
+                    <LoaderCircle className="size-4 animate-spin" /> Reading…
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="size-4" /> Pull my brand
+                  </>
+                )}
+              </button>
+            </div>
           </div>
-          <div className="flex w-full max-w-md gap-2">
-            <input
-              type="url"
-              value={intakeUrl}
-              onChange={(event) => setIntakeUrl(event.target.value)}
-              placeholder="yourbusiness.com"
-              className="min-h-12 flex-1 rounded-2xl border border-border bg-white px-4 text-sm outline-none focus:border-system"
-            />
-            <button
-              type="button"
-              disabled={running || !intakeUrl.trim()}
-              onClick={() => void pullFromWebsite()}
-              className="primary-action shrink-0 disabled:opacity-50"
-            >
-              {running ? (
-                <>
-                  <LoaderCircle className="size-4 animate-spin" /> Reading…
-                </>
-              ) : (
-                <>
-                  <Sparkles className="size-4" /> Pull my brand
-                </>
-              )}
-            </button>
-          </div>
-        </div>
 
-        {intakeStep >= 0 || intakeResult ? (
-          <div className="mt-5 rounded-2xl border border-border bg-white p-4">
-            <ol className="grid gap-2 sm:grid-cols-4">
-              {intakeStepLabels.map((label, index) => {
-                const state: IntakeStepState =
-                  intakeStep > index || (intakeStep === 3 && index === 3)
-                    ? "done"
-                    : intakeStep === index
-                      ? "running"
-                      : "waiting";
-                return (
-                  <li key={label} className="flex items-center gap-2 text-[12px] font-semibold">
-                    <span
-                      className={`grid size-5 shrink-0 place-items-center rounded-full ${
-                        state === "done"
-                          ? "bg-evergreen text-white"
-                          : state === "running"
-                            ? "bg-system text-white"
-                            : "border border-border text-muted-foreground"
-                      }`}
+          {intakeStep >= 0 || intakeResult ? (
+            <div className="mt-5 rounded-2xl border border-border bg-white p-4">
+              <ol className="grid gap-2 sm:grid-cols-4">
+                {intakeStepLabels.map((label, index) => {
+                  const state: IntakeStepState =
+                    intakeStep > index || (intakeStep === 3 && index === 3)
+                      ? "done"
+                      : intakeStep === index
+                        ? "running"
+                        : "waiting";
+                  return (
+                    <li key={label} className="flex items-center gap-2 text-[12px] font-semibold">
+                      <span
+                        className={`grid size-5 shrink-0 place-items-center rounded-full ${
+                          state === "done"
+                            ? "bg-evergreen text-white"
+                            : state === "running"
+                              ? "bg-system text-white"
+                              : "border border-border text-muted-foreground"
+                        }`}
+                      >
+                        {state === "done" ? (
+                          <Check className="size-3" />
+                        ) : state === "running" ? (
+                          <LoaderCircle className="size-3 animate-spin" />
+                        ) : null}
+                      </span>
+                      <span className={state === "waiting" ? "text-muted-foreground" : ""}>
+                        {label}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ol>
+              {intakeResult ? (
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
+                  <p className="text-sm font-semibold">
+                    {intakeResult.error
+                      ? intakeResult.error
+                      : `Done — ${intakeResult.filled} fields filled from your website. Review each one below.`}
+                  </p>
+                  {!intakeResult.error ? (
+                    <button
+                      onClick={(event) => {
+                        previewOpener.current = event.currentTarget;
+                        setShowPreview(true);
+                      }}
+                      className="secondary-action"
                     >
-                      {state === "done" ? (
-                        <Check className="size-3" />
-                      ) : state === "running" ? (
-                        <LoaderCircle className="size-3 animate-spin" />
-                      ) : null}
-                    </span>
-                    <span className={state === "waiting" ? "text-muted-foreground" : ""}>
-                      {label}
-                    </span>
-                  </li>
-                );
-              })}
-            </ol>
-            {intakeResult ? (
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
-                <p className="text-sm font-semibold">
-                  {intakeResult.error
-                    ? intakeResult.error
-                    : `Done — ${intakeResult.filled} fields filled from your website. Review each one below.`}
-                </p>
-                {!intakeResult.error ? (
-                  <button onClick={() => setShowPreview(true)} className="secondary-action">
-                    <Eye className="size-4" /> See the guide so far
-                  </button>
-                ) : null}
-              </div>
-            ) : null}
-          </div>
-        ) : null}
-      </section>
+                      <Eye className="size-4" /> See the guide so far
+                    </button>
+                  ) : null}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
+      </details>
 
-      <nav
-        aria-label="Brand DNA sections"
-        className="mt-6 grid gap-2 sm:grid-cols-2 xl:grid-cols-4"
-      >
+      <nav aria-label="Brand DNA sections" className="mt-5 flex gap-2 overflow-x-auto pb-2">
         {brandSteps.map((step, index) => (
           <button
             key={step.title}
             type="button"
             onClick={() => setActiveStep(index)}
             aria-current={activeStep === index ? "step" : undefined}
-            className={`flex items-center gap-3 rounded-2xl border p-3 text-left transition ${
+            className={`flex min-h-11 shrink-0 items-center gap-2 rounded-lg border px-3 py-2 text-left sm:flex-1 ${
               activeStep === index
                 ? "border-system bg-system-soft"
                 : "border-border bg-white hover:border-line-strong"
             }`}
           >
             <span
-              className={`grid size-10 shrink-0 place-items-center rounded-xl ${activeStep === index ? "bg-system text-white" : "bg-mist text-ink"}`}
+              className={`hidden size-8 shrink-0 place-items-center rounded-lg sm:grid ${activeStep === index ? "bg-system text-white" : "bg-mist text-ink"}`}
             >
               <step.icon className="size-4" strokeWidth={1.6} />
             </span>
@@ -4882,7 +3750,9 @@ function BrandStudio() {
                 {index + 1}. {step.title}
                 {step.complete ? <CheckCircle2 className="size-4 text-evergreen" /> : null}
               </span>
-              <span className="block text-[11px] text-muted-foreground">{step.detail}</span>
+              <span className="hidden text-[11px] text-muted-foreground xl:block">
+                {step.detail}
+              </span>
             </span>
           </button>
         ))}
@@ -4891,9 +3761,9 @@ function BrandStudio() {
       <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1fr)_21rem]">
         <motion.section
           key={activeStep}
-          initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.22 }}
+          initial={enter}
+          animate={{ opacity: 1, transform: "translateY(0px)" }}
+          transition={transition}
           className="studio-card"
         >
           <header className="flex items-start gap-3 border-b border-border pb-4">
@@ -4901,7 +3771,7 @@ function BrandStudio() {
               <stepMeta.icon className="size-4" strokeWidth={1.6} />
             </span>
             <div>
-              <p className="font-mono text-[9px] font-semibold uppercase tracking-[.18em] text-system">
+              <p className="font-mono text-[11px] font-semibold uppercase tracking-[.18em] text-system">
                 Step {activeStep + 1} of {brandSteps.length}
               </p>
               <h2 className="mt-1 text-xl font-black tracking-[-.035em]">{stepMeta.title}</h2>
@@ -5135,7 +4005,7 @@ function BrandStudio() {
                   <p className="text-sm font-semibold">
                     Brand colors
                     {fromWebsite.has("primaryColor") ? (
-                      <span className="ml-2 inline-flex items-center gap-1 align-middle font-mono text-[9px] uppercase tracking-[.12em] text-evergreen">
+                      <span className="ml-2 inline-flex items-center gap-1 align-middle font-mono text-[11px] uppercase tracking-[.12em] text-evergreen">
                         <Check className="size-3" /> From your website
                       </span>
                     ) : null}
@@ -5304,18 +4174,25 @@ function BrandStudio() {
               <span className="font-mono text-xs">{completion}%</span>
             </div>
             <div className="mt-3 h-2 overflow-hidden rounded-full bg-secondary">
-              <motion.div animate={{ width: `${completion}%` }} className="h-full bg-system" />
+              <motion.div
+                initial={false}
+                animate={{ transform: `scaleX(${completion / 100})` }}
+                className="h-full origin-left bg-system"
+              />
             </div>
             <button
               type="button"
-              onClick={() => setShowPreview(true)}
+              onClick={(event) => {
+                previewOpener.current = event.currentTarget;
+                setShowPreview(true);
+              }}
               className="secondary-action mt-4 w-full"
             >
               <Eye className="size-4" /> Preview the guide
             </button>
             <div className="mt-4 grid grid-cols-2 gap-x-3 gap-y-2">
               {guideChecks.map(([label, complete]) => (
-                <div key={label} className="flex items-center gap-2 text-[10px] font-bold">
+                <div key={label} className="flex items-center gap-2 text-[11px] font-bold">
                   <span
                     className={`grid size-4 place-items-center rounded-full ${complete ? "bg-evergreen text-white" : "border border-border text-muted-foreground"}`}
                   >
@@ -5385,7 +4262,7 @@ function BrandStudio() {
                     <FileStack className="size-4 text-system" />
                     <div className="min-w-0">
                       <p className="truncate text-xs font-black">{item.label}</p>
-                      <p className="mt-1 text-[9px] uppercase tracking-[.1em] text-muted-foreground">
+                      <p className="mt-1 text-[11px] uppercase tracking-[.1em] text-muted-foreground">
                         {item.kind}
                       </p>
                     </div>
@@ -5395,7 +4272,7 @@ function BrandStudio() {
             </div>
           ) : null}
           <div className="rounded-[1.5rem] bg-ink p-5 text-white">
-            <p className="font-mono text-[9px] uppercase tracking-[.17em] text-system-soft">
+            <p className="font-mono text-[11px] uppercase tracking-[.17em] text-system-soft">
               The rule
             </p>
             <p className="mt-3 text-base font-semibold leading-snug">
@@ -5405,32 +4282,28 @@ function BrandStudio() {
         </aside>
       </div>
 
-      {showPreview ? (
-        <div className="fixed inset-0 z-50 flex justify-end bg-ink/40" role="dialog" aria-modal>
-          <button
-            type="button"
-            aria-label="Close preview"
-            className="flex-1"
-            onClick={() => setShowPreview(false)}
-          />
-          <motion.div
-            initial={reduceMotion ? false : { x: 40, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            className="h-full w-full max-w-md overflow-y-auto bg-white p-6"
+      <Dialog.Root open={showPreview} onOpenChange={setShowPreview}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="studio-app studio-navigation-backdrop" />
+          <Dialog.Content
+            className="studio-app studio-detail-drawer"
+            onCloseAutoFocus={(event) => {
+              event.preventDefault();
+              previewOpener.current?.focus();
+            }}
           >
-            <div className="mb-5 flex items-center justify-between">
+            <div className="mb-5 flex items-start justify-between gap-4">
               <div>
-                <p className="studio-eyebrow text-system">Live preview</p>
-                <p className="mt-1 text-lg font-black">Your brand guide so far</p>
+                <Dialog.Title className="text-xl font-bold">Your brand guide so far</Dialog.Title>
+                <Dialog.Description className="mt-2 text-sm text-muted-foreground">
+                  Preview the voice and visual direction saved in your Brand DNA.
+                </Dialog.Description>
               </div>
-              <button
-                type="button"
-                onClick={() => setShowPreview(false)}
-                className="grid size-9 place-items-center rounded-xl border border-border"
-                aria-label="Close"
-              >
-                <X className="size-4" />
-              </button>
+              <Dialog.Close asChild>
+                <button className="studio-icon-button" aria-label="Close preview">
+                  <X className="size-4" />
+                </button>
+              </Dialog.Close>
             </div>
             <BrandGuidePreview draft={draft} completion={completion} />
             <button
@@ -5439,19 +4312,29 @@ function BrandStudio() {
             >
               <Download className="size-4" /> Download the full guide
             </button>
-          </motion.div>
-        </div>
-      ) : null}
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </div>
   );
 }
 
 function Library() {
-  const { assets, campaigns } = useStudio();
+  const { assets, campaigns, workspace } = useStudio();
+  const favoritesKey = `phs.library.favorites.${workspace?.id || "guest"}`;
   const [query, setQuery] = useState("");
   const [kind, setKind] = useState("all");
   const [collection, setCollection] = useState<"all" | "favorites" | "approved">("all");
-  const [favorites, setFavorites] = useState<Set<string>>(() => new Set());
+  const [favorites, setFavorites] = useState<Set<string>>(() => {
+    try {
+      const saved = JSON.parse(window.localStorage.getItem(favoritesKey) || "[]");
+      return new Set(
+        Array.isArray(saved) ? saved.filter((id): id is string => typeof id === "string") : [],
+      );
+    } catch {
+      return new Set();
+    }
+  });
   const uniqueMediaByAsset = useMemo(() => {
     const seen = new Set<string>();
     return new Map(
@@ -5474,7 +4357,7 @@ function Library() {
     <div className="mx-auto max-w-[88rem]">
       <PageIntro
         eyebrow="Content library"
-        title="Everything the system has made."
+        title="Your content, ready to use."
         body="Search, edit, approve, copy, and reuse every campaign asset without digging through old chats."
       />
       {!assets.length ? (
@@ -5494,7 +4377,7 @@ function Library() {
                 prefilled or invented.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
-                <Link to="/studio" className="primary-action">
+                <Link to="/studio/create" className="primary-action">
                   <WandSparkles className="size-4" /> Create your first campaign
                 </Link>
                 <Link to="/studio/ideas" className="secondary-action">
@@ -5548,6 +4431,7 @@ function Library() {
               return (
                 <button
                   key={String(value)}
+                  aria-pressed={collection === value}
                   onClick={() => setCollection(value as typeof collection)}
                   className={`flex min-w-44 items-center gap-3 rounded-[1.1rem] border p-3 text-left ${collection === value ? "border-evergreen bg-evergreen-soft" : "border-border"}`}
                 >
@@ -5568,6 +4452,7 @@ function Library() {
             <label className="flex min-h-12 flex-1 items-center gap-3 rounded-xl border border-border bg-white px-4">
               <Search className="size-4 text-muted-foreground" />
               <input
+                aria-label="Search library"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search scripts, captions, FAQs…"
@@ -5575,6 +4460,7 @@ function Library() {
               />
             </label>
             <select
+              aria-label="Filter by format"
               value={kind}
               onChange={(e) => setKind(e.target.value)}
               className="min-h-12 rounded-xl border border-border bg-white px-4 text-sm font-semibold"
@@ -5596,43 +4482,40 @@ function Library() {
                   key={asset.id}
                   className="studio-card group flex min-h-80 flex-col overflow-hidden p-0"
                 >
-                  <div className="relative aspect-[16/9] overflow-hidden border-b border-border bg-secondary">
+                  <div
+                    className={`relative overflow-hidden border-b border-border ${mediaUrl ? "aspect-[16/9]" : "flex min-h-20 items-center bg-mist px-5 py-4 pr-20"}`}
+                  >
                     {mediaUrl ? (
                       <img
                         src={mediaUrl}
                         alt={`Media attached to ${asset.title}`}
-                        className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                        className="size-full object-cover"
                       />
                     ) : (
-                      <div className="relative size-full">
-                        <AssetIllustration
-                          kind={asset.kind}
-                          title={`${asset.title} ${asset.content?.slice(0, 160) ?? ""}`}
-                          className="size-full transition-transform duration-500 group-hover:scale-[1.03]"
-                        />
-                        <p className="absolute inset-x-6 bottom-5 line-clamp-2 text-lg font-black leading-tight tracking-[-.03em]">
-                          {asset.title}
-                        </p>
-                      </div>
+                      <span className="flex items-center gap-3">
+                        <span className="grid size-10 place-items-center rounded-lg bg-white">
+                          <meta.icon className="size-5 text-spotlight" />
+                        </span>
+                        <span className="text-xs font-bold text-muted-foreground">
+                          {meta.label}
+                        </span>
+                      </span>
                     )}
-                    <span
-                      className="absolute left-3 top-3 grid size-10 place-items-center rounded-xl bg-white shadow-soft"
-                      style={{ color: meta.color }}
-                    >
-                      <meta.icon className="size-4" />
-                    </span>
-                    <span className="absolute bottom-3 left-3 rounded-full bg-white px-2.5 py-1 font-mono text-[8px] uppercase tracking-[.13em]">
-                      {meta.label}
-                    </span>
                     <button
                       onClick={() =>
                         setFavorites((current) => {
                           const next = new Set(current);
                           if (next.has(asset.id)) next.delete(asset.id);
                           else next.add(asset.id);
+                          try {
+                            window.localStorage.setItem(favoritesKey, JSON.stringify([...next]));
+                          } catch {
+                            /* Keep favorites available for this visit. */
+                          }
                           return next;
                         })
                       }
+                      aria-pressed={favorites.has(asset.id)}
                       aria-label={`${favorites.has(asset.id) ? "Remove" : "Add"} ${asset.title} ${favorites.has(asset.id) ? "from" : "to"} favorites`}
                       className={`absolute right-3 top-3 grid size-12 place-items-center rounded-full bg-white ${favorites.has(asset.id) ? "text-reel" : "text-muted-foreground"}`}
                     >
@@ -5644,11 +4527,11 @@ function Library() {
                   <div className="flex flex-1 flex-col p-5">
                     <div className="flex items-center justify-between">
                       <span
-                        className={`rounded-full px-3 py-1 text-[9px] font-bold ${asset.status === "approved" ? "bg-evergreen-soft text-evergreen" : asset.status === "review" ? "bg-reel-soft text-reel" : "border border-border"}`}
+                        className={`rounded-full px-3 py-1 text-[11px] font-bold ${asset.status === "approved" ? "bg-evergreen-soft text-evergreen" : asset.status === "review" ? "bg-reel-soft text-reel" : "border border-border"}`}
                       >
                         {asset.status}
                       </span>
-                      <span className="text-[10px] text-muted-foreground">
+                      <span className="text-[11px] text-muted-foreground">
                         {new Date(asset.updated_at).toLocaleDateString()}
                       </span>
                     </div>
@@ -5656,21 +4539,14 @@ function Library() {
                     <p className="mt-3 line-clamp-4 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
                       {asset.content}
                     </p>
-                    <div className="mt-auto flex items-center justify-between pt-6">
+                    <div className="mt-4">
+                      <StudioAssetEditor asset={asset} />
+                    </div>
+                    <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-6">
                       <p className="max-w-[14rem] truncate text-xs text-muted-foreground">
                         {campaigns.find((item) => item.id === asset.campaign_id)?.title}
                       </p>
-                      <button
-                        onClick={() =>
-                          void navigator.clipboard
-                            .writeText(asset.content)
-                            .then(() => toast.success("Copied."))
-                        }
-                        aria-label={`Copy ${asset.title}`}
-                        className="grid size-12 place-items-center rounded-xl bg-secondary"
-                      >
-                        <Clipboard className="size-4" />
-                      </button>
+                      <StudioCopyButton content={asset.content} />
                     </div>
                   </div>
                 </article>
@@ -5694,7 +4570,21 @@ function Library() {
 
 function CalendarView() {
   const { calendar, updateCalendarItem, createCalendarItem, campaigns, assets } = useStudio();
-  const [mode, setMode] = useState<"month" | "week" | "list">("month");
+  const calendarRef = useRef<HTMLElement | null>(null);
+  const [compactCalendar, setCompactCalendar] = useState(true);
+  const [chosenMode, setChosenMode] = useState<"month" | "week" | "list" | null>(null);
+  const mode = chosenMode ?? (compactCalendar ? "list" : "month");
+  useEffect(() => {
+    const container = calendarRef.current;
+    if (!container) return;
+    const observer = new ResizeObserver(([entry]) => {
+      const gridMinimum =
+        56 * Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
+      setCompactCalendar(entry.contentRect.width < gridMinimum);
+    });
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
   const [selected, setSelected] = useState<CalendarItem | null>(null);
   const [planning, setPlanning] = useState(false);
   const reduce = useReducedMotion();
@@ -5744,8 +4634,11 @@ function CalendarView() {
     const previous = new Date(item.publish_at);
     const next = new Date(date);
     next.setHours(previous.getHours() || 10, previous.getMinutes(), 0, 0);
-    void updateCalendarItem(id, { publish_at: next.toISOString() });
-    toast.success(`Moved “${item.title}” to ${next.toLocaleDateString()}.`);
+    void updateCalendarItem(id, { publish_at: next.toISOString() })
+      .then(() => toast.success(`Moved “${item.title}” to ${next.toLocaleDateString()}.`))
+      .catch((error) =>
+        toast.error(error instanceof Error ? error.message : "Could not move this item."),
+      );
   }
 
   async function generateMonthPlan() {
@@ -5806,7 +4699,7 @@ function CalendarView() {
     : undefined;
 
   return (
-    <div className="mx-auto max-w-[88rem]">
+    <div className="mx-auto min-w-0 max-w-[88rem]">
       <PageIntro
         eyebrow="Content calendar"
         title="A visible publishing rhythm."
@@ -5832,7 +4725,10 @@ function CalendarView() {
           </div>
         }
       />
-      <section className="mt-8 overflow-hidden rounded-[1.75rem] border border-border bg-white shadow-[0_18px_60px_rgba(26,26,24,.05)]">
+      <section
+        ref={calendarRef}
+        className="mt-8 overflow-hidden rounded-[1.75rem] border border-border bg-white shadow-[0_18px_60px_rgba(26,26,24,.05)]"
+      >
         <div className="flex flex-col gap-4 border-b border-border p-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2">
             <button
@@ -5861,7 +4757,8 @@ function CalendarView() {
             {(["month", "week", "list"] as const).map((option) => (
               <button
                 key={option}
-                onClick={() => setMode(option)}
+                onClick={() => setChosenMode(option)}
+                aria-pressed={mode === option}
                 className={`min-h-11 rounded-lg px-4 text-xs font-bold capitalize ${mode === option ? "bg-ink text-white" : "text-muted-foreground"}`}
               >
                 {option}
@@ -5871,70 +4768,83 @@ function CalendarView() {
         </div>
 
         {mode !== "list" && (
-          <div className="overflow-x-auto">
-            <div className="min-w-[56rem]">
-              <div className="grid grid-cols-7 border-b border-border bg-white">
-                {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-                  <div
-                    key={day}
-                    className="px-3 py-3 font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground"
-                  >
-                    {day}
-                  </div>
-                ))}
-              </div>
-              <div className="grid grid-cols-7">
-                {calendarDays.map((date) => {
-                  const key = calendarDateKey(date);
-                  const items = calendar.filter(
-                    (item) => calendarDateKey(new Date(item.publish_at)) === key,
-                  );
-                  const outsideMonth = mode === "month" && date.getMonth() !== focusDate.getMonth();
-                  const today = calendarDateKey(new Date()) === key;
-                  return (
+          <div>
+            {compactCalendar && (
+              <p className="border-b border-border bg-mist px-4 py-3 text-xs text-muted-foreground">
+                Scroll horizontally to see all seven days, or choose List for a compact view.
+              </p>
+            )}
+            <div
+              role="region"
+              aria-label={`${mode === "week" ? "Week" : "Month"} calendar${compactCalendar ? ". Scroll horizontally to see all seven days." : ""}`}
+              tabIndex={0}
+              className="overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ink"
+            >
+              <div className="min-w-[56rem]">
+                <div className="grid grid-cols-7 border-b border-border bg-white">
+                  {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
                     <div
-                      key={key}
-                      onDragOver={(event) => event.preventDefault()}
-                      onDrop={(event) => moveItem(event, date)}
-                      className={`min-h-36 border-b border-r border-border p-2 last:border-r-0 ${outsideMonth ? "bg-white text-muted-foreground/45" : "bg-white"}`}
+                      key={day}
+                      className="px-3 py-3 font-mono text-[11px] uppercase tracking-[.16em] text-muted-foreground"
                     >
-                      <span
-                        className={`grid size-7 place-items-center rounded-full text-xs font-bold ${today ? "bg-ink text-white" : ""}`}
-                      >
-                        {date.getDate()}
-                      </span>
-                      <div className="mt-2 space-y-1.5">
-                        {items.slice(0, 3).map((item) => (
-                          <button
-                            key={item.id}
-                            draggable
-                            onClick={() => setSelected(item)}
-                            onDragStart={(event) =>
-                              event.dataTransfer.setData("text/calendar-item", item.id)
-                            }
-                            className="w-full cursor-grab rounded-lg border border-border bg-white px-2 py-2 text-left shadow-sm transition hover:border-ink active:cursor-grabbing"
-                          >
-                            <div className="flex items-center gap-1.5">
-                              <span
-                                className="size-1.5 shrink-0 rounded-full"
-                                style={{ background: channelColor(item.channel) }}
-                              />
-                              <p className="truncate text-[10px] font-extrabold">{item.title}</p>
-                            </div>
-                            <p className="mt-1 truncate pl-3 text-[9px] text-muted-foreground">
-                              {item.channel}
-                            </p>
-                          </button>
-                        ))}
-                        {items.length > 3 && (
-                          <p className="px-2 text-[9px] font-bold text-muted-foreground">
-                            +{items.length - 3} more
-                          </p>
-                        )}
-                      </div>
+                      {day}
                     </div>
-                  );
-                })}
+                  ))}
+                </div>
+                <div className="grid grid-cols-7">
+                  {calendarDays.map((date) => {
+                    const key = calendarDateKey(date);
+                    const items = calendar.filter(
+                      (item) => calendarDateKey(new Date(item.publish_at)) === key,
+                    );
+                    const outsideMonth =
+                      mode === "month" && date.getMonth() !== focusDate.getMonth();
+                    const today = calendarDateKey(new Date()) === key;
+                    return (
+                      <div
+                        key={key}
+                        onDragOver={(event) => event.preventDefault()}
+                        onDrop={(event) => moveItem(event, date)}
+                        className={`min-h-36 border-b border-r border-border p-2 last:border-r-0 ${outsideMonth ? "bg-white text-muted-foreground/45" : "bg-white"}`}
+                      >
+                        <span
+                          className={`grid size-7 place-items-center rounded-full text-xs font-bold ${today ? "bg-ink text-white" : ""}`}
+                        >
+                          {date.getDate()}
+                        </span>
+                        <div className="mt-2 space-y-1.5">
+                          {items.slice(0, 3).map((item) => (
+                            <button
+                              key={item.id}
+                              draggable
+                              onClick={() => setSelected(item)}
+                              onDragStart={(event) =>
+                                event.dataTransfer.setData("text/calendar-item", item.id)
+                              }
+                              className="w-full cursor-grab rounded-lg border border-border bg-white px-2 py-2 text-left shadow-sm transition hover:border-ink active:cursor-grabbing"
+                            >
+                              <div className="flex items-center gap-1.5">
+                                <span
+                                  className="size-1.5 shrink-0 rounded-full"
+                                  style={{ background: channelColor(item.channel) }}
+                                />
+                                <p className="truncate text-[11px] font-extrabold">{item.title}</p>
+                              </div>
+                              <p className="mt-1 truncate pl-3 text-[11px] text-muted-foreground">
+                                {item.channel}
+                              </p>
+                            </button>
+                          ))}
+                          {items.length > 3 && (
+                            <p className="px-2 text-[11px] font-bold text-muted-foreground">
+                              +{items.length - 3} more
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
@@ -5945,7 +4855,7 @@ function CalendarView() {
             {grouped.flatMap(([month, items]) => [
               <div
                 key={`${month}-heading`}
-                className="bg-white px-5 py-3 font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground"
+                className="bg-white px-5 py-3 font-mono text-[11px] uppercase tracking-[.16em] text-muted-foreground"
               >
                 {month}
               </div>,
@@ -5973,19 +4883,31 @@ function CalendarView() {
                   <input
                     type="date"
                     aria-label={`Publish date for ${item.title}`}
-                    value={item.publish_at.slice(0, 10)}
-                    onChange={(event) =>
-                      void updateCalendarItem(item.id, {
-                        publish_at: new Date(`${event.target.value}T17:00:00`).toISOString(),
-                      })
-                    }
+                    value={calendarDateKey(new Date(item.publish_at))}
+                    onChange={(event) => {
+                      if (!event.target.value) return;
+                      const previous = new Date(item.publish_at);
+                      const next = new Date(`${event.target.value}T00:00:00`);
+                      next.setHours(previous.getHours(), previous.getMinutes(), 0, 0);
+                      void updateCalendarItem(item.id, { publish_at: next.toISOString() }).catch(
+                        (error) =>
+                          toast.error(
+                            error instanceof Error ? error.message : "Could not update the date.",
+                          ),
+                      );
+                    }}
                     className="min-h-11 rounded-xl border border-border bg-white px-3 text-sm"
                   />
                   <select
                     aria-label={`Status for ${item.title}`}
                     value={item.status}
                     onChange={(event) =>
-                      void updateCalendarItem(item.id, { status: event.target.value })
+                      void updateCalendarItem(item.id, { status: event.target.value }).catch(
+                        (error) =>
+                          toast.error(
+                            error instanceof Error ? error.message : "Could not update the status.",
+                          ),
+                      )
                     }
                     className="min-h-11 rounded-xl border border-border bg-white px-3 text-sm font-semibold"
                   >
@@ -6009,136 +4931,9 @@ function CalendarView() {
         )}
       </section>
 
-      <AnimatePresence>
-        {selected ? (
-          <motion.div
-            initial={reduce ? false : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[90] flex justify-end bg-ink/30"
-            role="dialog"
-            aria-modal="true"
-            aria-label={`Calendar item: ${selected.title}`}
-            onMouseDown={(event) => {
-              if (event.target === event.currentTarget) setSelected(null);
-            }}
-          >
-            <motion.aside
-              initial={reduce ? false : { transform: "translateX(100%)" }}
-              animate={{ transform: "translateX(0%)" }}
-              exit={reduce ? { opacity: 0 } : { transform: "translateX(100%)" }}
-              transition={
-                reduce ? { duration: 0.01 } : { type: "spring", bounce: 0.12, visualDuration: 0.4 }
-              }
-              className="h-full w-full overflow-y-auto bg-white p-5 shadow-2xl sm:max-w-[31rem] sm:p-7"
-            >
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="studio-eyebrow text-system">Scheduled content</p>
-                  <h2 className="mt-3 text-3xl font-black leading-tight">{selected.title}</h2>
-                </div>
-                <button
-                  onClick={() => setSelected(null)}
-                  aria-label="Close calendar item"
-                  className="grid size-11 shrink-0 place-items-center rounded-full border border-border"
-                >
-                  <X className="size-4" />
-                </button>
-              </div>
-
-              <div className="relative mt-6 aspect-[16/9] overflow-hidden rounded-[1.25rem] border border-border bg-secondary">
-                <img
-                  src={selectedAsset ? assetMediaUrl(selectedAsset) : ""}
-                  alt=""
-                  className="size-full object-cover"
-                />
-                <span
-                  className="absolute bottom-3 left-3 rounded-full bg-white px-3 py-1 text-[9px] font-bold"
-                  style={{ color: channelColor(selected.channel) }}
-                >
-                  {selected.channel}
-                </span>
-              </div>
-
-              <div className="mt-6 grid gap-5 sm:grid-cols-2">
-                <label className="text-sm font-extrabold">
-                  Publish date
-                  <input
-                    type="date"
-                    value={selected.publish_at.slice(0, 10)}
-                    onChange={(event) => {
-                      const publish_at = new Date(`${event.target.value}T17:00:00`).toISOString();
-                      setSelected({ ...selected, publish_at });
-                      void updateCalendarItem(selected.id, { publish_at });
-                    }}
-                    className="mt-2 min-h-12 w-full rounded-xl border border-border bg-white px-4 text-sm"
-                  />
-                </label>
-                <label className="text-sm font-extrabold">
-                  Status
-                  <select
-                    value={selected.status}
-                    onChange={(event) => {
-                      const status = event.target.value;
-                      setSelected({ ...selected, status });
-                      void updateCalendarItem(selected.id, { status });
-                    }}
-                    className="mt-2 min-h-12 w-full rounded-xl border border-border bg-white px-4 text-sm"
-                  >
-                    {["planned", "scripted", "filmed", "editing", "approved", "published"].map(
-                      (status) => (
-                        <option key={status}>{status}</option>
-                      ),
-                    )}
-                  </select>
-                </label>
-                <label className="text-sm font-extrabold sm:col-span-2">
-                  Channel
-                  <select
-                    value={selected.channel}
-                    onChange={(event) => {
-                      const channel = event.target.value;
-                      setSelected({ ...selected, channel });
-                      void updateCalendarItem(selected.id, { channel });
-                    }}
-                    className="mt-2 min-h-12 w-full rounded-xl border border-border bg-white px-4 text-sm"
-                  >
-                    {["Instagram", "LinkedIn", "YouTube", "TikTok", "Email", "Website"].map(
-                      (channel) => (
-                        <option key={channel}>{channel}</option>
-                      ),
-                    )}
-                  </select>
-                </label>
-                <label className="text-sm font-extrabold sm:col-span-2">
-                  Working notes
-                  <textarea
-                    defaultValue={selected.notes}
-                    rows={5}
-                    onBlur={(event) =>
-                      void updateCalendarItem(selected.id, { notes: event.target.value })
-                    }
-                    className="mt-2 w-full resize-y rounded-xl border border-border bg-white p-4 text-sm leading-relaxed"
-                  />
-                </label>
-              </div>
-              {selectedCampaign ? (
-                <Link
-                  to="/studio/campaigns/$campaignId"
-                  params={{ campaignId: selectedCampaign.id }}
-                  className="mt-6 flex items-center justify-between rounded-[1.15rem] bg-spotlight-soft p-5 text-spotlight"
-                >
-                  <span>
-                    <span className="block text-xs font-bold">Part of campaign</span>
-                    <span className="mt-1 block font-black text-ink">{selectedCampaign.title}</span>
-                  </span>
-                  <ArrowRight className="size-4" />
-                </Link>
-              ) : null}
-            </motion.aside>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      {selected ? (
+        <StudioCalendarEditor key={selected.id} item={selected} close={() => setSelected(null)} />
+      ) : null}
 
       <div className="mt-8 space-y-8">
         {!grouped.length && (
@@ -6148,7 +4943,7 @@ function CalendarView() {
               title="Nothing scheduled yet."
               body="Every completed campaign adds a practical publishing sequence here."
               action={
-                <Link to="/studio" className="primary-action">
+                <Link to="/studio/create" className="primary-action">
                   Build a campaign
                 </Link>
               }
@@ -6184,9 +4979,6 @@ function SettingsView() {
     useStudio();
 
   const { guide, setGuide } = useGuide();
-  const navigate = useNavigate();
-
-  const modalRef = useRef<HTMLDivElement>(null);
   const [tab, setTab] = useState<"workspace" | "brands" | "team" | "usage" | "account">(
     "workspace",
   );
@@ -6211,71 +5003,21 @@ function SettingsView() {
     ["usage", CreditCard, "Usage & plan"],
     ["account", CircleUserRound, "Account"],
   ] as const;
-  useEffect(() => {
-    const previous = document.activeElement as HTMLElement | null;
-    const modal = modalRef.current;
-    const focusable = modal?.querySelectorAll<HTMLElement>(
-      "button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled])",
-    );
-    focusable?.[0]?.focus();
-    const handleKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") void navigate({ to: "/studio/dashboard" });
-      if (event.key !== "Tab" || !focusable?.length) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-    document.addEventListener("keydown", handleKey);
-    const priorOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", handleKey);
-      document.body.style.overflow = priorOverflow;
-      previous?.focus();
-    };
-  }, [navigate]);
   return (
-    <div
-      className="fixed inset-0 z-[90] grid place-items-center bg-ink/25 p-3 backdrop-blur-[3px] sm:p-6"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Workspace settings"
-      onMouseDown={(event) => {
-        if (event.target === event.currentTarget) void navigate({ to: "/studio/dashboard" });
-      }}
-    >
-      <motion.div
-        ref={modalRef}
-        initial={{ opacity: 0, y: 18, scale: 0.985 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        className="flex max-h-[min(46rem,calc(100vh-2rem))] w-full max-w-[52rem] flex-col overflow-hidden rounded-[1.5rem] border border-border bg-white shadow-[0_40px_120px_-45px_rgba(31,35,40,.8)]"
-      >
+    <div className="mx-auto max-w-5xl">
+      <div className="overflow-hidden rounded-2xl border border-border bg-white">
         <header className="flex items-start gap-4 border-b border-border px-5 py-4 sm:px-6">
           <div className="min-w-0 flex-1">
             <p className="studio-eyebrow text-system">Workspace settings</p>
-            <h1 className="mt-2 text-2xl font-black tracking-[-.04em]">
-              The controls behind the work.
-            </h1>
+            <h1 className="mt-2 text-2xl font-black tracking-[-.04em]">Settings</h1>
           </div>
-          <button
-            onClick={() => void navigate({ to: "/studio/dashboard" })}
-            aria-label="Close settings"
-            className="grid size-11 place-items-center rounded-full border border-border"
-          >
-            <X className="size-4" />
-          </button>
         </header>
         <div className="grid min-h-0 flex-1 overflow-hidden lg:grid-cols-[11.5rem_1fr]">
           <aside className="flex gap-1 overflow-x-auto border-b border-border p-3 lg:block lg:overflow-visible lg:border-b-0 lg:border-r">
             {tabs.map(([value, Icon, label]) => (
               <button
                 key={value}
+                aria-pressed={tab === value}
                 onClick={() => setTab(value)}
                 className={`flex min-h-11 shrink-0 items-center gap-3 rounded-xl px-3 text-left text-sm font-bold lg:w-full ${tab === value ? "bg-spotlight-soft text-spotlight" : "text-muted-foreground hover:bg-mist"}`}
               >
@@ -6305,8 +5047,10 @@ function SettingsView() {
                       </div>
                       <div className="rounded-xl bg-evergreen-soft p-4">
                         <SettingStat
-                          value={`${Math.round(assets.length * 0.45)}h`}
-                          label="estimated time saved"
+                          value={String(
+                            assets.filter((asset) => asset.status === "approved").length,
+                          )}
+                          label="approved assets"
                         />
                       </div>
                     </div>
@@ -6348,10 +5092,7 @@ function SettingsView() {
             ) : null}
             {tab === "team" ? (
               <div>
-                <SettingHeading
-                  title="Team"
-                  body="Make the company visible inside the workspace without sending unfinished invitations."
-                />
+                <SettingHeading title="Team" body="The people who have access to this workspace." />
                 <div className="mt-7 rounded-[1.25rem] border border-border p-5">
                   <div className="flex items-center gap-4">
                     <span className="grid size-12 place-items-center rounded-full bg-spotlight text-sm font-black text-white">
@@ -6363,7 +5104,7 @@ function SettingsView() {
                         {user?.email || "Account email unavailable"} · Owner
                       </p>
                     </div>
-                    <span className="rounded-full bg-evergreen-soft px-3 py-1 text-[9px] font-bold text-evergreen">
+                    <span className="rounded-full bg-evergreen-soft px-3 py-1 text-[11px] font-bold text-evergreen">
                       Active
                     </span>
                   </div>
@@ -6372,11 +5113,11 @@ function SettingsView() {
                   <UserPlus className="mt-0.5 size-5 text-system" />
                   <div>
                     <p className="text-sm font-extrabold text-system">
-                      Team access is ready for the next connection.
+                      Team invitations are not available yet.
                     </p>
                     <p className="mt-2 text-sm leading-relaxed">
-                      Member roles and workspace permissions are designed. Email invitations stay
-                      hidden until delivery is connected and tested.
+                      You can manage your own profile in Account. Contact Palmer House if you need
+                      another person to access your work.
                     </p>
                   </div>
                 </div>
@@ -6386,7 +5127,7 @@ function SettingsView() {
               <div>
                 <SettingHeading
                   title="Usage & plan"
-                  body="See the current allowance without turning the dashboard into a slot machine."
+                  body="Your plan and current campaign allowance."
                 />
                 <div className="mt-7 rounded-[1.25rem] border border-system bg-white p-6">
                   <p className="studio-eyebrow text-system">Current plan</p>
@@ -6450,7 +5191,7 @@ function SettingsView() {
                     <p className="mt-2 text-sm text-muted-foreground">
                       {user?.email || "Account email unavailable"}
                     </p>
-                    <p className="mt-3 text-[10px] uppercase tracking-[.1em] text-muted-foreground">
+                    <p className="mt-3 text-[11px] uppercase tracking-[.1em] text-muted-foreground">
                       Signed in with{" "}
                       {user?.app_metadata?.provider === "google" ? "Google" : "email & password"}
                     </p>
@@ -6470,7 +5211,7 @@ function SettingsView() {
                         className={`min-h-16 rounded-xl border p-3 text-left ${guide.key ? "border-border" : "border-ink"}`}
                       >
                         <span className="text-sm font-black">No guide</span>
-                        <span className="mt-1 block text-[10px] font-medium text-muted-foreground">
+                        <span className="mt-1 block text-[11px] font-medium text-muted-foreground">
                           Straight guidance, no character
                         </span>
                       </button>
@@ -6486,7 +5227,7 @@ function SettingsView() {
                           <PalAvatar pal={pal} size="sm" />
                           <span className="min-w-0">
                             <span className="block text-sm font-black">{pal.name}</span>
-                            <span className="block truncate text-[10px] font-medium text-muted-foreground">
+                            <span className="block truncate text-[11px] font-medium text-muted-foreground">
                               {pal.role}
                             </span>
                           </span>
@@ -6511,7 +5252,7 @@ function SettingsView() {
             ) : null}
           </section>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -6529,7 +5270,7 @@ function SettingStat({ value, label }: { value: string; label: string }) {
   return (
     <div>
       <p className="text-2xl font-black capitalize">{value}</p>
-      <p className="mt-1 text-[10px] uppercase tracking-[.1em] text-muted-foreground">{label}</p>
+      <p className="mt-1 text-[11px] uppercase tracking-[.1em] text-muted-foreground">{label}</p>
     </div>
   );
 }
@@ -6546,7 +5287,7 @@ function WorkspaceActivity({ dates }: { dates: string[] }) {
     <div className="mt-6 border-t border-border pt-5">
       <div className="flex items-center justify-between gap-3">
         <p className="text-xs font-extrabold">12-week workspace activity</p>
-        <p className="text-[10px] text-muted-foreground">Every created campaign or asset</p>
+        <p className="text-[11px] text-muted-foreground">Every created campaign or asset</p>
       </div>
       <div
         className="mt-3 grid grid-flow-col grid-rows-7 gap-1 overflow-hidden"
@@ -6625,7 +5366,7 @@ function BillingView() {
       <section className="mt-8 studio-card bg-system-soft">
         <div className="grid gap-7 md:grid-cols-[1fr_auto]">
           <div>
-            <p className="font-mono text-[9px] uppercase tracking-[.17em] text-system">
+            <p className="font-mono text-[11px] uppercase tracking-[.17em] text-system">
               Current period
             </p>
             <h2 className="mt-3 text-3xl font-extrabold">
@@ -6644,10 +5385,11 @@ function BillingView() {
             </div>
             <div className="mt-3 h-2 overflow-hidden rounded-full bg-white">
               <motion.div
+                initial={false}
                 animate={{
-                  width: `${Math.min(100, (used / (subscription?.campaign_allowance || 1)) * 100)}%`,
+                  transform: `scaleX(${Math.min(1, used / (subscription?.campaign_allowance || 1))})`,
                 }}
-                className="h-full bg-system"
+                className="h-full origin-left bg-system"
               />
             </div>
           </div>
@@ -6685,7 +5427,7 @@ function BillingView() {
             key={key}
             className={`studio-card flex flex-col ${activePlanKey === key ? "ring-2 ring-ink" : ""}`}
           >
-            <p className="font-mono text-[9px] uppercase tracking-[.17em] text-muted-foreground">
+            <p className="font-mono text-[11px] uppercase tracking-[.17em] text-muted-foreground">
               {plan.name}
             </p>
             <p className="mt-5 text-4xl font-extrabold">
@@ -6741,103 +5483,91 @@ function CampaignCard({ campaign }: { campaign: Campaign }) {
   const [confirming, setConfirming] = useState(false);
   const [removing, setRemoving] = useState(false);
   const lane = lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
-  const Icon = laneIcons[campaign.primary_lane as keyof typeof laneIcons] || Target;
-  const count = assets.filter((item) => item.campaign_id === campaign.id).length;
-  const created = new Date(campaign.created_at).toLocaleDateString(undefined, {
-    month: "short",
-    day: "numeric",
-  });
+  const campaignAssets = assets.filter((item) => item.campaign_id === campaign.id);
+  const approved = campaignAssets.filter((item) => item.status === "approved").length;
   return (
-    <article className="group relative overflow-hidden rounded-[1.5rem] border border-border bg-white shadow-soft transition hover:border-line-strong">
+    <article className="relative overflow-hidden rounded-xl border border-border bg-white">
       <Link
         to="/studio/campaigns/$campaignId"
         params={{ campaignId: campaign.id }}
-        className="block"
+        className="block p-5 pr-14 hover:bg-mist"
       >
-        <div
-          className="relative h-24 overflow-hidden px-5 pt-4"
-          style={{ background: lane.color }}
-          aria-hidden
-        >
-          <span
-            className="absolute -bottom-6 -right-4 opacity-20"
-            style={{ color: "var(--paper, #fff)" }}
-          >
-            <Icon className="size-28" strokeWidth={1} />
+        <span className="studio-lane-label">
+          <span className="size-2 rounded-full" style={{ background: lane.ink }} />
+          {lane.label}
+          <span className="ml-2 rounded px-2 py-1 capitalize" style={{ background: lane.soft }}>
+            {campaign.status}
           </span>
-          <span className="absolute inset-x-0 bottom-0 h-px bg-white/25" />
-          <p className="font-mono text-[9px] uppercase tracking-[.2em] text-white/70">
-            {lane.label} · {campaign.status}
-          </p>
-          <p className="mt-1.5 line-clamp-2 pr-16 text-[15px] font-black leading-tight text-white">
-            {clampWords(campaign.title, 10)}
-          </p>
-        </div>
-        <div className="p-4">
-          <p className="line-clamp-2 text-[13px] leading-snug text-muted-foreground">
-            {campaign.topic || campaign.goal}
-          </p>
-          <div className="mt-3 flex items-center justify-between font-mono text-[9px] uppercase tracking-[.12em] text-muted-foreground">
-            <span>
-              {count} asset{count === 1 ? "" : "s"} · {created}
-            </span>
-            <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-1" />
-          </div>
-        </div>
+        </span>
+        <h2 className="mt-4 text-lg font-bold leading-snug">{campaign.title}</h2>
+        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
+          {campaign.goal || campaign.topic || "Open the campaign to develop your idea."}
+        </p>
+        <span className="mt-6 flex items-center justify-between gap-3 border-t border-border pt-4 text-xs text-muted-foreground">
+          <span>
+            {approved} of {campaignAssets.length} approved ·{" "}
+            {new Date(campaign.created_at).toLocaleDateString(undefined, {
+              month: "short",
+              day: "numeric",
+            })}
+          </span>
+          <ArrowRight className="size-4" />
+        </span>
       </Link>
-      {confirming ? (
-        <div className="absolute inset-0 grid place-items-center bg-white/95 p-5 text-center">
-          <div>
-            <p className="text-sm font-black">Delete this campaign?</p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Its scripts, posts, and calendar dates are removed too.
-            </p>
-            <div className="mt-4 flex justify-center gap-2">
+      <AlertDialog.Root
+        open={confirming}
+        onOpenChange={(value) => {
+          if (!removing) setConfirming(value);
+        }}
+      >
+        <AlertDialog.Trigger asChild>
+          <button
+            type="button"
+            aria-label={`Delete ${campaign.title}`}
+            className="absolute right-3 top-3 grid size-10 place-items-center rounded-lg text-muted-foreground hover:bg-mist"
+          >
+            <Trash2 className="size-4" />
+          </button>
+        </AlertDialog.Trigger>
+        <AlertDialog.Portal>
+          <AlertDialog.Overlay className="studio-app studio-navigation-backdrop" />
+          <AlertDialog.Content className="studio-app studio-confirm-dialog">
+            <AlertDialog.Title className="text-xl font-bold">
+              Delete this campaign?
+            </AlertDialog.Title>
+            <AlertDialog.Description className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              “{campaign.title}” and its scripts, posts, and calendar dates will be permanently
+              removed.
+            </AlertDialog.Description>
+            <div className="mt-6 flex flex-wrap justify-end gap-3">
+              <AlertDialog.Cancel asChild>
+                <button disabled={removing} className="secondary-action">
+                  Keep campaign
+                </button>
+              </AlertDialog.Cancel>
               <button
-                type="button"
-                onClick={() => setConfirming(false)}
-                className="min-h-10 rounded-xl border border-border px-4 text-xs font-bold"
-              >
-                Keep it
-              </button>
-              <button
-                type="button"
                 disabled={removing}
-                onClick={() => {
+                onClick={async () => {
                   setRemoving(true);
-                  void deleteCampaign(campaign.id)
-                    .catch((error: unknown) =>
-                      toast.error(
-                        error instanceof Error ? error.message : "Could not delete campaign.",
-                      ),
-                    )
-                    .finally(() => {
-                      setRemoving(false);
-                      setConfirming(false);
-                    });
+                  try {
+                    await deleteCampaign(campaign.id);
+                    setConfirming(false);
+                  } catch (error) {
+                    toast.error(
+                      error instanceof Error ? error.message : "Could not delete campaign.",
+                    );
+                  } finally {
+                    setRemoving(false);
+                  }
                 }}
-                className="inline-flex min-h-10 items-center gap-1.5 rounded-xl bg-ink px-4 text-xs font-bold text-white disabled:opacity-50"
+                className="primary-action bg-red-800"
               >
-                {removing ? (
-                  <LoaderCircle className="size-3.5 animate-spin" />
-                ) : (
-                  <Trash2 className="size-3.5" />
-                )}
-                Delete
+                {removing ? "Deleting…" : "Delete campaign"}
               </button>
             </div>
-          </div>
-        </div>
-      ) : (
-        <button
-          type="button"
-          aria-label={`Delete ${campaign.title}`}
-          onClick={() => setConfirming(true)}
-          className="absolute right-3 top-3 grid size-8 place-items-center rounded-xl bg-white/15 text-white opacity-0 transition hover:bg-white/30 focus-visible:opacity-100 group-hover:opacity-100"
-        >
-          <Trash2 className="size-4" />
-        </button>
-      )}
+          </AlertDialog.Content>
+        </AlertDialog.Portal>
+      </AlertDialog.Root>
     </article>
   );
 }
@@ -6862,12 +5592,12 @@ function CampaignList({
     <div className="studio-card">
       <div className="mb-5 flex items-center justify-between">
         <div>
-          <p className="font-mono text-[9px] uppercase tracking-[.17em] text-muted-foreground">
+          <p className="font-mono text-[11px] uppercase tracking-[.17em] text-muted-foreground">
             Recent work
           </p>
           <h2 className="mt-2 text-xl font-bold">Campaigns</h2>
         </div>
-        <Link to="/studio/campaigns" className="text-xs font-semibold">
+        <Link to="/studio/work" search={{ tab: "campaigns" }} className="text-xs font-semibold">
           View all
         </Link>
       </div>
@@ -6882,13 +5612,13 @@ function CampaignList({
           >
             <span
               className="grid size-11 shrink-0 place-items-center rounded-xl text-white"
-              style={{ background: lane.color }}
+              style={{ background: lane.ink }}
             >
               <LayoutGrid className="size-4" />
             </span>
             <span className="min-w-0 flex-1">
               <span className="block truncate font-semibold">{campaign.title}</span>
-              <span className="mt-1 block font-mono text-[8px] uppercase tracking-[.14em] text-muted-foreground">
+              <span className="mt-1 block font-mono text-[11px] uppercase tracking-[.14em] text-muted-foreground">
                 {lane.label} · {campaign.status}
               </span>
             </span>
@@ -6914,7 +5644,7 @@ function Metric({
   return (
     <article className="studio-card relative overflow-hidden">
       <span className="absolute inset-y-0 left-0 w-1" style={{ background: color }} />
-      <p className="font-mono text-[9px] uppercase tracking-[.16em] text-muted-foreground">
+      <p className="font-mono text-[11px] uppercase tracking-[.16em] text-muted-foreground">
         {label}
       </p>
       <p className="mt-5 text-4xl font-extrabold tracking-[-.05em]">{value}</p>
@@ -6930,19 +5660,19 @@ function PageIntro({
 }: {
   eyebrow: string;
   title: string;
-  body: string;
+  body?: string;
   action?: ReactNode;
 }) {
   return (
-    <header className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+    <header className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
       <div>
-        <p className="font-mono text-[9px] uppercase tracking-[.19em] text-system">{eyebrow}</p>
-        <h1 className="mt-3 max-w-4xl text-4xl font-extrabold leading-[.96] tracking-[-.055em] sm:text-5xl">
+        <p className="font-mono text-[11px] uppercase tracking-[.19em] text-system">{eyebrow}</p>
+        <h1 className="mt-3 max-w-3xl text-3xl font-extrabold leading-[1] tracking-[-.05em] sm:text-4xl">
           {title}
         </h1>
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-          {body}
-        </p>
+        {body ? (
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">{body}</p>
+        ) : null}
       </div>
       {action && <div className="shrink-0">{action}</div>}
     </header>
@@ -6951,7 +5681,7 @@ function PageIntro({
 function Insight({ label, text }: { label: string; text?: string }) {
   return (
     <div className="rounded-2xl bg-secondary p-5">
-      <p className="font-mono text-[8px] uppercase tracking-[.15em] text-muted-foreground">
+      <p className="font-mono text-[11px] uppercase tracking-[.15em] text-muted-foreground">
         {label}
       </p>
       <p className="mt-4 text-sm leading-relaxed">{text || "Add this context in Brand Studio."}</p>

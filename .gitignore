@@ -30,3 +30,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Reproducible local visual audit output (retain a small reviewable comparison set).
+docs/studio-polish/captures/*
+!docs/studio-polish/captures/baseline-home-populated-1440x900.png
+!docs/studio-polish/captures/baseline-home-populated-390x844.png
+!docs/studio-polish/captures/final-home-populated-1440x900.png
+!docs/studio-polish/captures/final-home-populated-390x844.png
+!docs/studio-polish/captures/interaction-report.json
+!docs/studio-polish/captures/recording-report.json
+docs/studio-polish/performance/*lighthouse*.json

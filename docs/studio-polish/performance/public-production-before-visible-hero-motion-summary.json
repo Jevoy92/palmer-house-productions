@@ -1,0 +1,61 @@
+{
+  "url": "http://127.0.0.1:5176/",
+  "timestamp": "2026-09-14T18:38:27.870Z",
+  "overallTier": "S",
+  "overallScore": 95,
+  "desktop": {
+    "tier": "S",
+    "sections": {
+      "animations": {
+        "tier": "S",
+        "score": 97,
+        "count": 8
+      },
+      "scrollAnimations": {
+        "tier": "S",
+        "score": 91,
+        "count": 2
+      },
+      "thrashing": {
+        "tier": "S",
+        "score": 100
+      },
+      "gpu": {
+        "tier": "S",
+        "score": 100
+      }
+    }
+  },
+  "mobile": {
+    "tier": "S",
+    "sections": {
+      "animations": {
+        "tier": "S",
+        "score": 96,
+        "count": 8
+      },
+      "scrollAnimations": {
+        "tier": "S",
+        "score": 88,
+        "count": 2
+      },
+      "thrashing": {
+        "tier": "S",
+        "score": 100
+      },
+      "gpu": {
+        "tier": "S",
+        "score": 100
+      }
+    }
+  },
+  "threshold": null,
+  "pass": null,
+  "findingCounts": {
+    "critical": 0,
+    "high": 0,
+    "low": 0
+  },
+  "findings": [],
+  "resultsUrl": null
+}

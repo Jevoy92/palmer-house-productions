@@ -1,0 +1,27 @@
+## Motion Performance Audit · http://127.0.0.1:4177/?view=assistant&state=populated&controls=0
+Library: motion · grep: `animate(`, `<motion.`, `useAnimate(`, `useMotionValue(`, `whileInView`, `layout`, `useScroll(`
+Animations: 4 (waapi 4, js 0, scroll 0)
+Overall S (91/100) · desktop S · anim S · thrash A · gpu S · mobile S · anim S · thrash A · gpu S
+
+```
+S █████████████████████████   4 · 100%
+```
+
+### Findings
+Format: `tier · selector · viewports` / props (source) / impact / grep / fix
+
+> 4 animations already S-tier — nice work.
+
+### Anti-Patterns
+
+**[low] Mount thrashing** · desktop+mobile
+- 2 forced recalculations before the first animation frame, likely from measuring elements while setting up animations.
+- fix: Measure all initial values in a single read pass before writing any styles. Use requestAnimationFrame to separate the read and write phases.
+- selectors: `main#studio-content`, `html`, `main#studio-content > div.mx-auto.max-w-[92rem] > div.relative.grid.h-[calc(100dvh-8rem)].min-h-[28rem].grid-cols-1.overflow-hidden.rounded-[1.5rem].border.border-border.bg-white.xl:grid-cols-[14rem_minmax(0,1fr)_18rem] > section.flex.min-h-0.min-w-0.flex-col > div.min-h-0.flex-1.overflow-y-auto.overscroll-contain.p-4.sm:p-6`
+
+### Top 3
+
+1. Mount thrashing — Measure all initial values in a single read pass before writing any styles. Use requestAnimationFrame to separate the read and write phases.
+
+---
+_Runtime only sees what loaded on this URL — continue skill Step 1 for unvisited routes + accessibility._

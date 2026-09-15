@@ -86,7 +86,7 @@ export const generateContentDirections = createServerFn({ method: "POST" })
         "You are a Palmer House strategist writing for one specific business. Return exactly three materially different content directions for the supplied idea.",
         "Ground every direction in this business: use its category, its actual services, its real customers, and the words a customer in that category would use. Never write advice that could be pasted onto any other company.",
         "The three directions must be deliberately different in register, and you must return them in this order. Direction 1 has flavor 'business': the straight, professional take a serious buyer would respect. Direction 2 has flavor 'personal': it braids the founder's real life outside work — their listed interests, hobbies, or personal note — into the business point, so the metaphor, setting, or opening story comes from that interest and lands on a real business decision. Direction 3 has flavor 'playful': lower-stakes and more fun — a challenge, a myth-bust, a bad-idea-versus-good-idea, a reaction, a demo that is entertaining to watch — still true and still useful, just not corporate.",
-        "If no founder interests were supplied, make direction 2 personal in a different way: the founder's own opinion, a mistake they made, or a moment from their day. Never fabricate a hobby that was not supplied.",
+        "If no founder interests or supported personal story were supplied, make direction 2 personal through a question the founder can answer or an explicitly hypothetical observation. Never invent an opinion, memory, mistake, hobby, or event from their life. Writing examples are not factual biography.",
         "Each direction must map to one Palmer House lane: spotlight for proof/trust, reel for attention/momentum, evergreen for durable education, system for repeatability/internal clarity. Use three different lanes when the idea allows.",
         "title: 4-8 words, plain English, names the actual piece of content. No jargon, no colons stacked with buzzwords.",
         "angle: 2-3 short sentences, maximum 45 words total. Say what gets filmed or shown, and what the viewer decides afterward. Write it as prose. Never use labels like 'Business problem:' or 'Audience decision:'. Never restate the brief back to the user.",
@@ -127,11 +127,13 @@ export const askStudioPal = createServerFn({ method: "POST" })
     const { loadWorkspaceKnowledge } = await import("./studio-knowledge");
     const knowledge = await loadWorkspaceKnowledge(client, data.workspaceId);
     const { parseStructured } = await import("./ai.server");
+    const { personaPrompt } = await import("./pal-personas");
     const brand = brandResult.data;
     const response = await parseStructured(
       AssistantResponseSchema,
       "palmer_house_assistant",
       [
+        personaPrompt(data.pal),
         "Never make the member repeat themselves. The workspace knowledge base below lists what they have already built, captured, and scheduled — continue from it, reference it by name when useful, and suggest picking up unfinished work instead of starting over.",
         "When the founder's personal interests are supplied, use them: the best content braids what they love outside work into the business point. Never invent an interest that was not supplied.",
         "You are a Palmer House strategic guide inside a private creative workspace for someone who uses video as leverage. Treat Brand DNA as the source of truth. Adapt recommendations to the person's creator type, audience, and primary goal. Use recent campaigns, calendar work, approved proof, and conversation context to give a dynamic next-best recommendation. Lead with the real problem or opportunity, not a video format. Never invent proof. Ask for clarification only when it prevents a materially wrong recommendation.",
@@ -292,9 +294,11 @@ export const analyzeStudioWebsite = createServerFn({ method: "POST" })
 export const analyzeStudioContentSource = createServerFn({ method: "POST" })
   .validator(ContentSourceAnalysisRequestSchema)
   .handler(async ({ data }) => {
-    await authorizedClient(data.accessToken, data.workspaceId);
+    const { client } = await authorizedClient(data.accessToken, data.workspaceId);
+    const { loadWorkspaceVoice } = await import("./studio-knowledge");
+    const voice = await loadWorkspaceVoice(client, data.workspaceId);
 
-    const brandContext = `Business: ${data.brand.businessName}\nDescription: ${data.brand.description}\nAudience: ${data.brand.audience}\nOffers: ${data.brand.offers.join(" | ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied"}\nUser context: ${data.context || "None supplied"}`;
+    const brandContext = `${voice}\n\nBusiness: ${data.brand.businessName}\nDescription: ${data.brand.description}\nAudience: ${data.brand.audience}\nOffers: ${data.brand.offers.join(" | ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied"}\nUser context: ${data.context || "None supplied"}`;
     let sourceText = "";
     if (data.sourceType === "link") {
       const url = new URL(data.sourceUrl!);
@@ -313,7 +317,7 @@ export const analyzeStudioContentSource = createServerFn({ method: "POST" })
 
     const { parseStructured } = await import("./ai.server");
     const instructions =
-      "You are Palmer House Productions' content intake strategist. Turn supplied source material into one useful, campaign-ready idea for someone who uses video as leverage. Lead with the real problem or opportunity and the audience decision that needs to change. Map it to exactly one Palmer House lane: Spotlight for trust/proof, Reel for attention/momentum, Evergreen for durable education, or System for repeatability/internal clarity. For images, describe only visible evidence and clearly separate user-supplied context. Never infer identities, results, audience response, before/after improvement, or claims that are not visibly supported. For links, use only the supplied page text. Return concise, concrete language a creator or team can understand.";
+      "You are Palmer House Productions' content intake strategist. Turn supplied source material into one useful, campaign-ready idea for someone who uses video as leverage. Lead with the real problem or opportunity and the audience decision that needs to change. Map it to exactly one Palmer House lane: Spotlight for trust/proof, Reel for attention/momentum, Evergreen for durable education, or System for repeatability/internal clarity. For images, describe only visible evidence and clearly separate user-supplied context. Never infer identities, results, audience response, before/after improvement, or claims that are not visibly supported. For links, use only the supplied page text as evidence. Saved writing examples can guide language but never add evidence, biography or claims to a source analysis. Return concise, concrete language a creator or team can understand.";
     const input =
       data.sourceType === "image"
         ? [

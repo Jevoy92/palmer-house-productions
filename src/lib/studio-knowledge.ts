@@ -1,3 +1,5 @@
+import { buildBrandVoiceContext } from "./studio-voice.ts";
+
 /**
  * Workspace knowledge base.
  *
@@ -18,8 +20,19 @@ const clip = (value: unknown, max = 220) => {
 const list = (label: string, rows: string[]) =>
   rows.length ? `${label}:\n${rows.map((row) => `- ${row}`).join("\n")}` : "";
 
+export async function loadWorkspaceVoice(client: Client, workspaceId: string) {
+  const brand = await client
+    .from("brand_profiles")
+    .select("voice_traits, avoid_language, brand_details, content_examples")
+    .eq("workspace_id", workspaceId)
+    .maybeSingle();
+  if (brand.error)
+    throw new Error("Could not load saved brand voice. Please retry before generating.");
+  return buildBrandVoiceContext(brand.data);
+}
+
 export async function loadWorkspaceKnowledge(client: Client, workspaceId: string) {
-  const [campaigns, ideas, calendar, settings, videos] = await Promise.all([
+  const [campaigns, ideas, calendar, settings, videos, voice] = await Promise.all([
     client
       .from("campaigns")
       .select("title, topic, goal, primary_lane, status, strategy, updated_at")
@@ -48,7 +61,21 @@ export async function loadWorkspaceKnowledge(client: Client, workspaceId: string
       .select("item_key, status")
       .eq("workspace_id", workspaceId)
       .limit(30),
+    loadWorkspaceVoice(client, workspaceId),
   ]);
+
+  // Voice notes, documents and recordings the member dropped into conversations.
+  // Summaries only — the full text stays in the database so prompts stay bounded.
+  const attachments = await client
+    .from("conversation_attachments")
+    .select("kind, label, summary")
+    .eq("workspace_id", workspaceId)
+    .order("created_at", { ascending: false })
+    .limit(8);
+  const attachmentRows = (attachments.data || []).map(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (row: any) => `${row.kind}: ${row.label} — ${clip(row.summary, 200)}`,
+  );
 
   const campaignRows = (campaigns.data || []).map(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -71,9 +98,11 @@ export async function loadWorkspaceKnowledge(client: Client, workspaceId: string
 
   const memory = settings.data?.ai_memory;
   const sections = [
+    voice,
     list("Campaigns already built (never repeat these angles verbatim)", campaignRows),
     list("Ideas captured but not yet produced", ideaRows),
     list("Already scheduled", calendarRows),
+    list("Files and voice notes the member has shared", attachmentRows),
     doneVideos.length ? `Roadmap videos already finished: ${doneVideos.join(", ")}` : "",
     memory && Object.keys(memory).length ? `Approved memory: ${JSON.stringify(memory)}` : "",
   ].filter(Boolean);

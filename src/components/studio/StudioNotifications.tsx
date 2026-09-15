@@ -1,10 +1,11 @@
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { Bell, Check, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { palList } from "@/lib/pal-directory";
 import { PalAvatar } from "./PalAvatar";
 import { useStudio } from "./StudioProvider";
+import { useStudioMotion } from "./studio-motion";
 
 type Note = {
   id: string;
@@ -35,7 +36,7 @@ export function StudioNotifications() {
   const { workspace, brand, campaigns, ideas, calendar, assets } = useStudio();
   const [open, setOpen] = useState(false);
   const [read, setRead] = useState<Set<string>>(new Set());
-  const reduce = useReducedMotion();
+  const { enter, exit, transition } = useStudioMotion();
   const wrap = useRef<HTMLDivElement>(null);
   const storageKey = `phs-notifications-read:${workspace?.id || "none"}`;
 
@@ -69,7 +70,7 @@ export function StudioNotifications() {
         body: `“${draft.title}” is still a draft. Pick it back up where you stopped.`,
         color: "var(--reel)",
         soft: "var(--reel-soft)",
-        to: `/studio/campaign/${draft.id}`,
+        to: `/studio/campaigns/${draft.id}`,
       });
 
     const openIdea = ideas.find((item) => item.status === "captured" || item.status === "new");
@@ -81,7 +82,7 @@ export function StudioNotifications() {
         body: openIdea.body.slice(0, 140),
         color: "var(--evergreen)",
         soft: "var(--evergreen-soft)",
-        to: "/studio",
+        to: "/studio/create",
       });
 
     if (brand && (brand.personal_interests || []).length === 0)
@@ -154,10 +155,10 @@ export function StudioNotifications() {
       <AnimatePresence>
         {open ? (
           <motion.div
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: -8, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -8, scale: 0.98 }}
-            transition={{ duration: 0.18, ease: "easeOut" }}
+            initial={enter}
+            animate={{ opacity: 1, transform: "translateY(0px)" }}
+            exit={exit}
+            transition={transition}
             className="absolute right-0 top-[3.25rem] z-50 w-[min(23rem,calc(100vw-2rem))] overflow-hidden rounded-[1.5rem] border border-border bg-white shadow-[0_40px_90px_-50px_rgba(31,35,40,.8)]"
           >
             <div className="flex items-center justify-between border-b border-border px-5 py-4">

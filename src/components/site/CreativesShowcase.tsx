@@ -203,7 +203,7 @@ export function CreativesShowcase() {
       </div>
 
       <div className="mt-14 overflow-hidden">
-        <Marquee duration="52s">
+        <Marquee duration="52s" label="Selected productions">
           {work.map((item) => (
             <figure
               key={item.label}

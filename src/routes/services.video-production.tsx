@@ -211,6 +211,8 @@ function VideoProductionPage() {
         title="Ready to give every video a clear job?"
         subtitle="Bring us the bottleneck. We will match it to the right Pal lane, production plan, and working package."
         primaryLabel="Book a Discovery Call"
+        secondaryLabel="Find your Pal"
+        secondaryTo="/find-your-pal"
       />
     </PageShell>
   );

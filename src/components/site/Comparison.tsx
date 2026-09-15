@@ -75,52 +75,68 @@ export function Comparison() {
       subtitle="Compare what a Pal-guided production includes against the usual alternatives."
     >
       <div className="grid gap-8 lg:grid-cols-[1.35fr_0.65fr] lg:items-start">
-        <div className="surface-card overflow-x-auto p-2 sm:p-4">
-          <table className="w-full min-w-[600px] border-collapse text-left">
-            <thead>
-              <tr>
-                <th className="w-[38%] p-4" />
-                {cols.map((c, i) => (
-                  <th key={c} className="p-4 text-center text-sm font-semibold">
-                    {i === 0 ? (
-                      <span className="inline-flex items-center gap-2 rounded-full bg-ink px-3.5 py-1.5 text-white">
-                        {c}
-                      </span>
-                    ) : (
-                      <span className="text-muted-foreground">{c}</span>
-                    )}
+        <div>
+          <p id="comparison-scroll-hint" className="mb-2 text-xs text-muted-foreground lg:hidden">
+            Swipe or scroll sideways to compare all four options.
+          </p>
+          <div
+            role="region"
+            aria-label="Production approach comparison"
+            aria-describedby="comparison-scroll-hint"
+            tabIndex={0}
+            className="surface-card overflow-x-auto p-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight/40 sm:p-4"
+          >
+            <table className="w-full min-w-[600px] border-collapse text-left">
+              <caption className="sr-only">
+                What each production option includes, compared with a Pal-guided session.
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col" className="w-[38%] p-4">
+                    <span className="sr-only">What's included</span>
                   </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r, i) => (
-                <motion.tr
-                  key={r.label}
-                  className="border-t border-border"
-                  initial={reduce ? false : { opacity: 0, x: -12 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.4 }}
-                  transition={{ duration: 0.4, delay: i * 0.06, ease: "easeOut" }}
-                >
-                  <td className="p-4">
-                    <span className="flex items-center gap-3 text-sm font-semibold">
-                      <GlyphBadge name={r.glyph} lane={r.lane} size="sm" />
-                      {r.label}
-                    </span>
-                  </td>
-                  {r.values.map((v, j) => (
-                    <td
-                      key={j}
-                      className={`p-4 text-center ${j === 0 ? "bg-spotlight-soft/60" : ""}`}
-                    >
-                      <Mark ok={v} hero={j === 0} />
-                    </td>
+                  {cols.map((c, i) => (
+                    <th key={c} scope="col" className="p-4 text-center text-sm font-semibold">
+                      {i === 0 ? (
+                        <span className="inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-ink px-3.5 py-1.5 text-white">
+                          {c}
+                        </span>
+                      ) : (
+                        <span className="text-muted-foreground">{c}</span>
+                      )}
+                    </th>
                   ))}
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((r, i) => (
+                  <motion.tr
+                    key={r.label}
+                    className="border-t border-border"
+                    initial={reduce ? false : { opacity: 0, x: -12 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 0.4, delay: i * 0.06, ease: "easeOut" }}
+                  >
+                    <th scope="row" className="p-4 text-left font-semibold">
+                      <span className="flex items-center gap-3 text-sm">
+                        <GlyphBadge name={r.glyph} lane={r.lane} size="sm" />
+                        {r.label}
+                      </span>
+                    </th>
+                    {r.values.map((v, j) => (
+                      <td
+                        key={j}
+                        className={`p-4 text-center ${j === 0 ? "bg-spotlight-soft/60" : ""}`}
+                      >
+                        <Mark ok={v} hero={j === 0} />
+                      </td>
+                    ))}
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
         <PalCallout
           pal="kareem"

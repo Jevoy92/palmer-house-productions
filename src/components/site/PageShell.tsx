@@ -12,7 +12,7 @@ import { palDirectory } from "@/lib/pal-directory";
 import type { PalName } from "@/lib/studio-model";
 import type { PalAccent } from "@/lib/pricing-catalog";
 
-export type Tone = "paper" | "mist" | "ink" | PalAccent;
+export type Tone = "paper" | "mist" | "cream" | "ink" | PalAccent;
 
 const LANE_SET: ReadonlySet<string> = new Set(["reel", "spotlight", "evergreen", "system"]);
 const isLane = (v: unknown): v is PalAccent => typeof v === "string" && LANE_SET.has(v);
@@ -338,6 +338,8 @@ function toneClass(tone: Tone) {
   switch (tone) {
     case "mist":
       return "bg-mist";
+    case "cream":
+      return "bg-cream/60";
     case "ink":
       return "bg-ink text-white";
     default:

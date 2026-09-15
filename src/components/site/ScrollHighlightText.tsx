@@ -3,6 +3,14 @@ import { motion, useScroll, useTransform } from "motion/react";
 import type { MotionValue } from "motion/react";
 import { useHydratedReducedMotion } from "@/hooks/use-hydrated-reduced-motion";
 
+/**
+ * Phrases start in muted ink (AA-readable on paper, 4.8:1) and darken to full ink
+ * as they scroll into focus. Content is always legible — the highlight is emphasis,
+ * never a reveal. Keep these in sync with --muted-foreground / --ink in styles.css.
+ */
+const MUTED_INK = "#6b7280";
+const FULL_INK = "#1f2328";
+
 function Phrase({
   children,
   progress,
@@ -12,8 +20,8 @@ function Phrase({
   progress: MotionValue<number>;
   range: [number, number];
 }) {
-  const opacity = useTransform(progress, range, [0.18, 1]);
-  return <motion.span style={{ opacity }}>{children} </motion.span>;
+  const color = useTransform(progress, range, [MUTED_INK, FULL_INK]);
+  return <motion.span style={{ color }}>{children} </motion.span>;
 }
 
 export function ScrollHighlightText({

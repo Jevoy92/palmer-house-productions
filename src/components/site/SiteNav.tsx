@@ -5,8 +5,7 @@ import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { exploreLinks, palLinks, serviceLinks, startHereLinks, type NavLink } from "@/data/nav";
 import { useHydratedReducedMotion } from "@/hooks/use-hydrated-reduced-motion";
 import { cartItemCount, useCart } from "@/lib/cart-store";
-
-const phMark = "/favicon.png";
+import phMark from "@/assets/php-mark-108.webp";
 
 function BrandFace() {
   return (
@@ -235,6 +234,8 @@ export function SiteNav() {
               <img
                 src={phMark}
                 alt="Palmer House Productions"
+                width={36}
+                height={36}
                 className="size-9 shrink-0 object-contain"
                 loading="eager"
                 decoding="async"

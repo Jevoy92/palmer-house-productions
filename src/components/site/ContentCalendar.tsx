@@ -1,26 +1,39 @@
-import transformationEngine from "@/assets/transformation-engine.webp";
-import { Marquee } from "./Marquee";
+import { Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
+import { motion } from "motion/react";
+import { InView, Section, Stagger } from "@/components/site/PageShell";
+import { Glyph, GlyphBadge, type GlyphName } from "@/components/site/Glyphs";
+import { laneVar } from "@/lib/pal-lanes";
+import { staggerItem } from "@/lib/motion-presets";
+import type { PalAccent } from "@/lib/pricing-catalog";
 
-const ideas = [
-  "Product Demos",
-  "Team Stories",
-  "Training Videos",
-  "Testimonials",
-  "Brand Stories",
-  "Social Content",
-  "Event Coverage",
-];
-const ideas2 = [
-  "Explainer Videos",
-  "Before & After",
-  "Client Success",
-  "How-To Guides",
-  "Company Culture",
-  "Industry Insights",
-  "Behind the Scenes",
+/** What one production day turns into, by lane. */
+const OUTPUTS: { lane: PalAccent; label: string; detail: string; glyph: GlyphName }[] = [
+  { lane: "spotlight", label: "Your main story", detail: "Website · Brand film", glyph: "camera" },
+  { lane: "reel", label: "Short social cuts", detail: "Reels · TikTok · Shorts", glyph: "reel" },
+  { lane: "evergreen", label: "Useful explainers", detail: "YouTube · Education", glyph: "play" },
+  { lane: "system", label: "Reusable know-how", detail: "Training · Onboarding", glyph: "library" },
 ];
 
-const businesses = [
+/** Every format we shoot, tagged with the lane that usually owns it. */
+const FORMATS: { label: string; lane: PalAccent }[] = [
+  { label: "Product demos", lane: "spotlight" },
+  { label: "Team stories", lane: "spotlight" },
+  { label: "Training videos", lane: "system" },
+  { label: "Testimonials", lane: "spotlight" },
+  { label: "Brand stories", lane: "spotlight" },
+  { label: "Social content", lane: "reel" },
+  { label: "Event coverage", lane: "reel" },
+  { label: "Explainer videos", lane: "evergreen" },
+  { label: "Before & after", lane: "spotlight" },
+  { label: "Client stories", lane: "spotlight" },
+  { label: "How-to guides", lane: "evergreen" },
+  { label: "Company culture", lane: "system" },
+  { label: "Industry insights", lane: "evergreen" },
+  { label: "Behind the scenes", lane: "reel" },
+];
+
+const BUSINESSES = [
   "Small businesses",
   "Startups",
   "Healthcare systems",
@@ -28,9 +41,17 @@ const businesses = [
   "Government agencies",
 ];
 
-function Pill({ label }: { label: string }) {
+function LaneChip({ label, lane }: { label: string; lane: PalAccent }) {
   return (
-    <span className="whitespace-nowrap rounded-full border border-border bg-card px-6 py-3 text-base font-medium shadow-soft">
+    <span
+      className="inline-flex min-h-9 items-center gap-2 rounded-full border px-3.5 text-sm font-semibold"
+      style={{
+        background: laneVar(lane, "-soft"),
+        color: laneVar(lane, "-text"),
+        borderColor: `color-mix(in srgb, ${laneVar(lane)} 24%, transparent)`,
+      }}
+    >
+      <span aria-hidden className="size-1.5 rounded-full" style={{ background: laneVar(lane) }} />
       {label}
     </span>
   );
@@ -38,73 +59,90 @@ function Pill({ label }: { label: string }) {
 
 export function ContentCalendar() {
   return (
-    <section className="py-20">
-      <div className="mx-auto max-w-6xl px-4">
-        <p className="text-brand text-sm font-semibold uppercase tracking-widest">
-          One shoot day, weeks of content
-        </p>
-        <h2 className="mt-4 max-w-3xl text-[clamp(1.9rem,4.5vw,3rem)]">
-          Fill out your content calendar, months in advance
-        </h2>
-        <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
-          From one raw master we generate a YouTube longform cut, three Reels and TikToks, a
-          LinkedIn teaser, and an email newsletter asset — so your channels stay fed long after the
-          crew packs up.
-        </p>
-
-        <div className="surface-card group mt-10 grid items-center gap-8 p-8 sm:p-12 md:grid-cols-2">
-          <img
-            src={transformationEngine}
-            alt="The Palmer House transformation engine turning one shoot into many useful content formats"
-            width={800}
-            height={800}
-            loading="lazy"
-            decoding="async"
-            className="mx-auto w-64 mix-blend-darken transition-transform duration-500 ease-out group-hover:-translate-y-1 group-hover:rotate-1 motion-reduce:transition-none"
-          />
-          <div>
-            <h3 className="text-2xl">Maximum output, minimal effort.</h3>
-            <p className="mt-3 text-muted-foreground">
-              One shoot day delivers weeks of content across all your channels.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3 text-sm">
-              <span className="rounded-full border border-border bg-background px-4 py-2">
-                Raw Master.mov
-              </span>
-              <span className="bg-brand rounded-full px-4 py-2 font-semibold text-primary-foreground shadow-glow">
-                1 Shoot Day
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-16">
-        <h3 className="px-4 text-center text-2xl">
-          Every type of video content your business needs
-        </h3>
-        <div className="mt-8 space-y-4">
-          <Marquee duration="38s">
-            {ideas.map((i) => (
-              <Pill key={i} label={i} />
-            ))}
-          </Marquee>
-          <Marquee duration="44s" reverse>
-            {ideas2.map((i) => (
-              <Pill key={i} label={i} />
-            ))}
-          </Marquee>
-        </div>
-      </div>
-
-      <div className="mx-auto mt-20 max-w-6xl px-4">
-        <h2 className="text-center text-[clamp(1.9rem,4.5vw,3rem)]">Works for any business type</h2>
-        <div className="mt-8 flex flex-wrap justify-center gap-3">
-          {businesses.map((b) => (
-            <Pill key={b} label={b} />
+    <Section
+      tone="cream"
+      eyebrow="From the shoot to the places you show up"
+      title="Plan the content together. Make every format useful."
+      subtitle="Start with your story and the channels you need. We plan what to capture, then shape the footage into the formats agreed for your project."
+      align="left"
+    >
+      <div className="grid items-center gap-5 lg:grid-cols-[0.8fr_auto_1.5fr]">
+        <InView className="rounded-[2rem] bg-ink p-8 text-white sm:p-10">
+          <Glyph name="camera" lane="reel" className="size-16" />
+          <p className="mt-7 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-white/65">
+            The starting point
+          </p>
+          <h3 className="mt-2 text-3xl font-extrabold leading-tight tracking-[-0.03em]">
+            One focused production day.
+          </h3>
+          <p className="mt-4 leading-relaxed text-white/80">
+            Your people, your expertise, and the details that make your business yours.
+          </p>
+          <p className="mt-6 border-t border-white/20 pt-5 text-sm text-white/70">
+            Planned together · Captured with purpose
+          </p>
+        </InView>
+        <ArrowRight aria-hidden className="mx-auto size-6 rotate-90 text-spotlight lg:rotate-0" />
+        <Stagger className="grid gap-3 sm:grid-cols-2">
+          {OUTPUTS.map((output) => (
+            <motion.div
+              key={output.lane}
+              variants={staggerItem}
+              className="rounded-[1.5rem] border p-6"
+              style={{
+                background: laneVar(output.lane, "-soft"),
+                borderColor: `color-mix(in srgb, ${laneVar(output.lane)} 20%, transparent)`,
+              }}
+            >
+              <GlyphBadge name={output.glyph} lane={output.lane} size="sm" />
+              <h3 className="mt-5 text-xl font-bold tracking-[-0.02em]">{output.label}</h3>
+              <p
+                className="mt-2 text-sm font-semibold"
+                style={{ color: laneVar(output.lane, "-text") }}
+              >
+                {output.detail}
+              </p>
+            </motion.div>
           ))}
-        </div>
+        </Stagger>
       </div>
-    </section>
+
+      <InView className="mt-14 border-t border-ink/10 pt-10">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <h3 className="max-w-lg text-2xl font-bold tracking-[-0.03em] sm:text-3xl">
+            A format for the story you need to tell.
+          </h3>
+          <Link
+            to="/services/video-production"
+            className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-spotlight underline-offset-4 hover:underline"
+          >
+            Explore video services <ArrowRight className="size-4" aria-hidden />
+          </Link>
+        </div>
+        <ul className="mt-6 flex flex-wrap gap-2.5" aria-label="Video formats we produce">
+          {FORMATS.map((format) => (
+            <li key={format.label}>
+              <LaneChip label={format.label} lane={format.lane} />
+            </li>
+          ))}
+        </ul>
+      </InView>
+
+      <InView className="mt-10 flex flex-col gap-5 rounded-[1.5rem] border border-ink/10 bg-white/75 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between">
+        <h3 className="shrink-0 text-xl font-bold tracking-[-0.02em]">
+          Built around your business.
+        </h3>
+        <ul className="flex flex-wrap gap-2" aria-label="Who we work with">
+          {BUSINESSES.map((b) => (
+            <li
+              key={b}
+              className="inline-flex min-h-9 items-center rounded-full border border-border bg-white px-3.5 text-sm font-medium"
+            >
+              {b}
+            </li>
+          ))}
+        </ul>
+      </InView>
+    </Section>
   );
 }

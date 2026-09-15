@@ -18,9 +18,9 @@ export const PRODUCTION_OFFERS: ProductionOffer[] = [
     name: "Visibility + Trust Duo",
     eyebrow: "Bundle and save 10%",
     description:
-      "Pair a Reel service pack with a Spotlight brand-presence kit so attention and credibility launch together.",
-    terms: "10% off both starter kits when booked together as a one-time production.",
-    itemIds: ["reel-services", "spotlight-brand-presence"],
+      "Pair Social Content with Commercials so attention and credibility launch together.",
+    terms: "10% off both packages when booked together as a one-time production.",
+    itemIds: ["social-content", "commercials"],
     accent: "spotlight",
   },
   {
@@ -57,16 +57,15 @@ export function offerUnitPrice({
   let discountedBase = baseUnitPrice;
 
   if (code === "STARTERDUO") {
-    const eligible =
-      (selected["reel-services"] ?? 0) > 0 && (selected["spotlight-brand-presence"] ?? 0) > 0;
-    if (eligible && (itemId === "reel-services" || itemId === "spotlight-brand-presence")) {
+    const eligible = (selected["social-content"] ?? 0) > 0 && (selected["commercials"] ?? 0) > 0;
+    if (eligible && (itemId === "social-content" || itemId === "commercials")) {
       discountedBase = Math.round(baseUnitPrice * 0.9);
     }
   }
 
   if (code === "EDIT2FOR1" && itemId === "extra-edited-video" && qty >= 2) {
     const chargedUnits = Math.ceil(qty / 2);
-    discountedBase = Math.round((baseUnitPrice * chargedUnits) / qty);
+    discountedBase = (baseUnitPrice * chargedUnits) / qty;
   }
 
   return discountedBase + addOnUnitPrice;

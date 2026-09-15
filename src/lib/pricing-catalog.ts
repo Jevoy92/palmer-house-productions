@@ -4,19 +4,27 @@ import clara from "@/assets/pals-optimized/clara.webp";
 import raquel from "@/assets/pals-optimized/raquel.webp";
 
 // =============================================================================
-// Real pricing constants — pulled directly from
-// palmerhouseproductions.com production bundle (ProductionPricing).
+// Approved production pricing. Legacy edited-minute constants remain exported
+// for standalone editing products and historical cart migration.
 // =============================================================================
-export const SESSION_PRICE = 500;
+export type PackagePricingBasis = "edited-minute" | "finished-video";
+/** Approved production pricing: sessions plus finished videos; episode bundles for Evergreen. */
+export const PACKAGE_PRICING_BASIS = "finished-video" as PackagePricingBasis;
+export const FINISHED_VIDEO_PRICE = 150;
+export const MAX_PACKAGE_SESSIONS = 4;
+export function isFinishedVideoPricing(): boolean {
+  return PACKAGE_PRICING_BASIS === "finished-video";
+}
+export const SESSION_PRICE = 450;
 export const INCLUDED_EDITED_MINUTES_PER_SESSION = 1;
 export const SAME_SESSION_ADDITIONAL_MINUTE_PRICE = 100;
 export const STANDALONE_EDITED_MINUTE_PRICE = 150;
 /** Backwards-compatible alias for standalone à-la-carte output. */
 export const ADDITIONAL_VIDEO_PRICE = STANDALONE_EDITED_MINUTE_PRICE;
 export const EVERGREEN_LENGTH_PRICE: Record<5 | 10 | 15, number> = {
-  5: 1200,
-  10: 1800,
-  15: 2400,
+  5: 1050,
+  10: 1650,
+  15: 2250,
 };
 
 export type PalAccent = "system" | "spotlight" | "evergreen" | "reel";
@@ -152,7 +160,14 @@ export const VIBES: { id: Vibe; label: string }[] = [
 ];
 
 export type Audience =
-  "customers" | "leads" | "employees" | "managers" | "sales" | "investors" | "community" | "social";
+  | "customers"
+  | "leads"
+  | "employees"
+  | "managers"
+  | "sales"
+  | "investors"
+  | "community"
+  | "social";
 export const AUDIENCES: { id: Audience; label: string }[] = [
   { id: "customers", label: "Customers" },
   { id: "leads", label: "Leads" },
@@ -201,6 +216,19 @@ export type ServiceItem = {
   tags?: ItemTags;
 };
 
+export type PackageItem = ServiceItem & {
+  slug: string;
+  lane: PalAccent;
+  icon: string;
+  formats: string[];
+  format: string;
+  learn: string[];
+  outcome: string;
+  /** Zero for a bundled Evergreen episode; otherwise default filming sessions. */
+  sessions: number;
+};
+export type PackageConfiguration = { count: number; sessions: number };
+
 type GroupDefaults = {
   speed: Speed;
   effort: Effort;
@@ -218,27 +246,34 @@ export type PalGroup = {
   pitch: string;
   image: string;
   accent: PalAccent;
-  items: ServiceItem[];
+  items: PackageItem[];
   defaults: GroupDefaults;
 };
 
 /** Build a session mission where each session includes one edited minute. */
 const sessionPack = (sessions: number, editedMinutes: number) => {
   const fixedBase = sessions * SESSION_PRICE;
-  const includedCount = sessions * INCLUDED_EDITED_MINUTES_PER_SESSION;
+  const includedCount = isFinishedVideoPricing()
+    ? 0
+    : sessions * INCLUDED_EDITED_MINUTES_PER_SESSION;
+  const unitPrice = isFinishedVideoPricing()
+    ? FINISHED_VIDEO_PRICE
+    : SAME_SESSION_ADDITIONAL_MINUTE_PRICE;
   const additionalMinutes = Math.max(0, editedMinutes - includedCount);
   return {
-    price: fixedBase + additionalMinutes * SAME_SESSION_ADDITIONAL_MINUTE_PRICE,
+    price: fixedBase + additionalMinutes * unitPrice,
     editable: {
       fixedBase,
       baseLabel: `${sessions} session${sessions > 1 ? "s" : ""} · $${fixedBase.toLocaleString()}`,
-      unitLabel: "edited min",
-      unitLabelPlural: "edited min",
-      unitPrice: SAME_SESSION_ADDITIONAL_MINUTE_PRICE,
-      unitPriceLabel: `${includedCount} min included · + $${SAME_SESSION_ADDITIONAL_MINUTE_PRICE} per added min`,
+      unitLabel: isFinishedVideoPricing() ? "finished video" : "edited min",
+      unitLabelPlural: isFinishedVideoPricing() ? "finished videos" : "edited min",
+      unitPrice,
+      unitPriceLabel: isFinishedVideoPricing()
+        ? `$${unitPrice} per finished video`
+        : `${includedCount} min included · + $${unitPrice} per added min`,
       includedCount,
       defaultCount: editedMinutes,
-      min: includedCount,
+      min: Math.max(1, includedCount),
       max: 20,
       step: 1,
     } satisfies Editable,
@@ -246,7 +281,7 @@ const sessionPack = (sessions: number, editedMinutes: number) => {
 };
 
 /** Build an evergreen long-form mission with editable runtime blocks. */
-const EVERGREEN_BLOCK_PRICE = 600;
+export const EVERGREEN_BLOCK_PRICE = EVERGREEN_LENGTH_PRICE[10] - EVERGREEN_LENGTH_PRICE[5];
 const evergreenPack = (mins: 5 | 10 | 15) => {
   const fixedBase = EVERGREEN_LENGTH_PRICE[5];
   const extraBlocks = ((mins - 5) / 5) as 0 | 1 | 2;
@@ -269,6 +304,7 @@ const evergreenPack = (mins: 5 | 10 | 15) => {
 
 /** Compute the live total for an item given the user's chosen component count. */
 export function computeItemPrice(item: ServiceItem, count?: number): number {
+  if ("lane" in item) return computePackagePrice(item as PackageItem, count);
   if (!item.editable) return item.price;
   const c = count ?? item.editable.defaultCount;
   const billable = Math.max(0, c - (item.editable.includedCount ?? 0));
@@ -284,7 +320,9 @@ export const BASE_INCLUDED = [
   "2-hour on-location filming session",
   "Setup, breakdown, teleprompter & on-set direction",
   "Pre-shoot planning, script help & wardrobe guidance",
-  "1 edited minute included per session — split into 60s, 2×30s, or 4×15s",
+  ...(isFinishedVideoPricing()
+    ? []
+    : ["1 edited minute included per session — split into 60s, 2×30s, or 4×15s"]),
   "Professional editing, color & sound mix",
   "Professional lighting & broadcast-grade audio",
 ];
@@ -294,7 +332,7 @@ const INCLUDED_BY_LANE: Record<PalAccent, string[]> = {
   spotlight: [
     ...BASE_INCLUDED,
     "Cinematic look — premium framing, color & b-roll",
-    "Polished 1-minute deliverables",
+    "Polished finished videos — length agreed in scope",
   ],
   system: [
     ...BASE_INCLUDED,
@@ -312,13 +350,8 @@ const INCLUDED_BY_LANE: Record<PalAccent, string[]> = {
 
 export function getIncluded(item: ServiceItem, group: PalGroup): string[] {
   const base = INCLUDED_BY_LANE[group.id];
-  // Reel Momentum is the only mission that books two sessions.
-  if (item.id === "reel-momentum") {
-    return [
-      "2 filming sessions (2 hrs each) with direction",
-      ...base.slice(1),
-      "30-day posting calendar built around your videos",
-    ];
+  if ("sessions" in item && Number(item.sessions) > 1) {
+    return [`${item.sessions} filming sessions (2 hrs each) with direction`, ...base.slice(1)];
   }
   return base;
 }
@@ -335,7 +368,7 @@ export const ADD_ONS: AddOn[] = [
     id: "extra-edited-video",
     name: "Standalone Edited Minute",
     description:
-      "One edited minute booked outside a paired production session; pair it with a session for the lower $100 rate",
+      "One standalone edited minute using existing footage; separate from a finished-video production package",
     price: ADDITIONAL_VIDEO_PRICE,
     category: "universal",
   },
@@ -464,57 +497,27 @@ export const PAL_GROUPS: PalGroup[] = [
     },
     items: [
       {
-        id: "reel-services",
-        name: "Service Pack",
-        description: "Punchy reels that explain exactly what you do · 1 session + 6 videos",
-        ...sessionPack(1, 6),
+        id: "social-content",
+        slug: "social-content",
+        lane: "reel",
+        name: "Social Content",
+        description:
+          "Short videos that introduce your business, answer questions, and keep your channels active.",
+        sessions: 1,
+        icon: "/packages/icons/reel-services.png",
+        formats: ["9:16", "1:1", "16:9"],
+        format: "Social short-form · framing agreed in scope",
+        learn: [
+          "Service introductions and product highlights",
+          "Hot takes, objection answers, and behind the scenes",
+          "Customer proof and day-to-day updates",
+        ],
+        outcome: "A set of short videos built around the topics your audience cares about.",
         recommended: true,
-        tags: { problems: ["explain-offer", "social-visibility", "leads"] },
-      },
-      {
-        id: "reel-objection",
-        name: "Objection Pack",
-        description: "Reels that answer buyer hesitations · 1 session + 6 videos",
-        ...sessionPack(1, 6),
-        tags: { problems: ["improve-sales", "leads", "trust"], vibe: "bold" },
-      },
-      {
-        id: "reel-proof",
-        name: "Proof Pack",
-        description: "Results, wins, testimonials in reel form · 1 session + 6 videos",
-        ...sessionPack(1, 6),
-        tags: { problems: ["trust", "leads", "build-authority"] },
-      },
-      {
-        id: "reel-day-in-life",
-        name: "Day-in-the-Life Pack",
-        description: "Authentic BTS reels · 1 session + 4 videos",
-        ...sessionPack(1, 4),
         tags: {
-          problems: ["trust", "social-visibility", "consistent-content"],
-          vibe: "documentary",
+          problems: ["social-visibility", "consistent-content", "leads"],
         },
-      },
-      {
-        id: "reel-pov",
-        name: "POV / Hot Take Pack",
-        description: "Opinion-driven reels with edge · 1 session + 6 videos",
         ...sessionPack(1, 6),
-        tags: {
-          problems: ["build-authority", "social-visibility"],
-          vibe: "bold",
-          stages: ["personal-brand", "coach", "solo"],
-        },
-      },
-      {
-        id: "reel-momentum",
-        name: "30-Day Momentum Pack",
-        description: "Full month of reels + posting calendar · 2 sessions + 12 videos",
-        ...sessionPack(2, 12),
-        tags: {
-          problems: ["consistent-content", "social-visibility", "leads"],
-          speed: "medium",
-        },
       },
     ],
   },
@@ -536,43 +539,96 @@ export const PAL_GROUPS: PalGroup[] = [
     },
     items: [
       {
-        id: "spotlight-brand-presence",
-        name: "Brand Presence Kit",
-        description: "Polished 1-min brand videos · 1 cinematic session + 4 videos",
-        ...sessionPack(1, 4),
+        id: "commercials",
+        slug: "commercials",
+        lane: "spotlight",
+        name: "Commercials",
+        description:
+          "A polished introduction to your business, your offer, and why people should choose you.",
+        sessions: 1,
+        icon: "/packages/icons/spotlight-brand-presence.png",
+        formats: ["16:9", "9:16"],
+        format: "Landscape or vertical · agreed in scope",
+        learn: [
+          "Business and brand introductions",
+          "Service, offer, and campaign promotions",
+          "A clear message and call to action",
+        ],
+        outcome: "A focused introduction that connects your offer to the people it is for.",
         recommended: true,
-        tags: { problems: ["look-premium", "trust", "build-authority"] },
-      },
-      {
-        id: "spotlight-proof-builder",
-        name: "Proof Builder Kit",
-        description: "Client testimonial 1-min videos with b-roll · 1 session + 4 videos",
-        ...sessionPack(1, 4),
-        tags: { problems: ["trust", "improve-sales", "leads"] },
-      },
-      {
-        id: "spotlight-offer-clarity",
-        name: "Offer Clarity Kit",
-        description: "Explainer 1-min videos for your offer · 1 session + 4 videos",
-        ...sessionPack(1, 4),
-        tags: { problems: ["explain-offer", "improve-sales", "launch"] },
-      },
-      {
-        id: "spotlight-objection-crusher",
-        name: "Objection Crusher Set",
-        description: "In-depth 1-min objection videos · 1 session + 3 videos",
-        ...sessionPack(1, 3),
-        tags: { problems: ["improve-sales", "trust", "reduce-repetition"] },
-      },
-      {
-        id: "spotlight-bts",
-        name: "BTS Credibility Pack",
-        description: "Premium BTS 1-min videos with production value · 1 session + 4 videos",
-        ...sessionPack(1, 4),
         tags: {
-          problems: ["trust", "look-premium", "build-authority"],
-          vibe: "documentary",
+          problems: ["look-premium", "trust", "leads"],
         },
+        ...sessionPack(1, 4),
+      },
+      {
+        id: "product-demos",
+        slug: "product-demos",
+        lane: "spotlight",
+        name: "Product Demos",
+        description:
+          "Show how your product or service works, with the details people need to understand it.",
+        sessions: 1,
+        icon: "/packages/icons/spotlight-offer-clarity.png",
+        formats: ["16:9", "9:16"],
+        format: "Landscape or vertical · agreed in scope",
+        learn: [
+          "Product features shown in use",
+          "Service walkthroughs and customer handoffs",
+          "Practical answers to common product questions",
+        ],
+        outcome: "A clear demonstration of what your product or service does and how to use it.",
+        recommended: false,
+        tags: {
+          problems: ["explain-offer", "educate-customers"],
+        },
+        ...sessionPack(1, 4),
+      },
+      {
+        id: "customer-stories",
+        slug: "customer-stories",
+        lane: "spotlight",
+        name: "Customer Stories",
+        description:
+          "Let customers describe their experience and what changed after working with you.",
+        sessions: 1,
+        icon: "/packages/icons/spotlight-proof-builder.png",
+        formats: ["16:9", "9:16"],
+        format: "Landscape or vertical · agreed in scope",
+        learn: [
+          "Customer interviews",
+          "The challenge, experience, and outcome",
+          "Supporting footage that gives the story context",
+        ],
+        outcome:
+          "Customer experiences told in their own words, with the context that makes them useful.",
+        recommended: false,
+        tags: {
+          problems: ["trust", "improve-sales"],
+        },
+        ...sessionPack(1, 4),
+      },
+      {
+        id: "employee-spotlights",
+        slug: "employee-spotlights",
+        lane: "spotlight",
+        name: "Employee Spotlights",
+        description: "Introduce the people behind the work and show what they bring to your team.",
+        sessions: 1,
+        icon: "/packages/icons/evergreen-founder-pov.png",
+        formats: ["16:9", "9:16"],
+        format: "Landscape or vertical · agreed in scope",
+        learn: [
+          "Team member introductions",
+          "A look at their role and day-to-day work",
+          "People stories for recruiting and company culture",
+        ],
+        outcome: "A human introduction to the people who make your business work.",
+        recommended: false,
+        tags: {
+          problems: ["improve-hiring", "trust"],
+        },
+        ...sessionPack(1, 4),
       },
     ],
   },
@@ -594,76 +650,93 @@ export const PAL_GROUPS: PalGroup[] = [
     },
     items: [
       {
-        id: "system-onboarding",
-        name: "Onboarding Kit",
-        description: "Training videos so new hires get up to speed · 1 session + 6 videos",
-        ...sessionPack(1, 6),
+        id: "onboarding",
+        slug: "onboarding",
+        lane: "system",
+        name: "Onboarding",
+        description: "Help new hires understand the team, the tools, and their first steps.",
+        sessions: 1,
+        icon: "/packages/icons/system-onboarding.png",
+        formats: ["16:9"],
+        format: "16:9 · internal learning",
+        learn: [
+          "A welcome and team overview",
+          "Tools, routines, and first steps",
+          "Answers new hires can revisit",
+        ],
+        outcome: "A repeatable introduction that helps new team members find their footing.",
         recommended: true,
         tags: {
-          problems: [
-            "shorten-onboarding",
-            "train-employees",
-            "reduce-repetition",
-            "improve-hiring",
-          ],
-          audiences: ["employees"],
-          automation: ["train-faster", "self-service"],
+          problems: ["shorten-onboarding", "train-employees"],
         },
-      },
-      {
-        id: "system-sop",
-        name: "SOP Walkthrough Kit",
-        description: "Step-by-step process documentation · 1 session + 8 videos",
-        ...sessionPack(1, 8),
-        tags: {
-          problems: ["clarify-process", "train-employees", "reduce-repetition"],
-          audiences: ["employees", "managers"],
-          automation: ["improve-handoffs", "self-service"],
-        },
-      },
-      {
-        id: "system-training",
-        name: "Training Kit",
-        description: "Tool / software training videos · 1 session + 6 videos",
         ...sessionPack(1, 6),
-        tags: {
-          problems: ["train-employees", "reduce-repetition"],
-          audiences: ["employees"],
-          automation: ["train-faster"],
-        },
       },
       {
-        id: "system-client-handoff",
-        name: "Client Handoff System",
-        description: "Client-facing handoff videos · 1 session + 4 videos",
-        ...sessionPack(1, 4),
+        id: "safety-training",
+        slug: "safety-training",
+        lane: "system",
+        name: "Safety Training",
+        description: "Show your team the safety procedures and checks they need to follow.",
+        sessions: 1,
+        icon: "/packages/icons/spotlight-objection-crusher.png",
+        formats: ["16:9"],
+        format: "16:9 · internal training",
+        learn: [
+          "Your workplace safety procedures",
+          "Equipment checks and protective practices",
+          "Clear demonstrations of the steps to follow",
+        ],
+        outcome: "Visual instruction for the safety practices you want your team to understand.",
+        recommended: false,
         tags: {
-          problems: ["client-experience", "reduce-repetition", "replace-meetings"],
-          audiences: ["customers"],
-          automation: ["reduce-meetings", "improve-handoffs"],
+          problems: ["train-employees", "clarify-process"],
         },
-      },
-      {
-        id: "system-sales-enablement",
-        name: "Sales Enablement Library",
-        description: "Internal sales support videos · 1 session + 6 videos",
         ...sessionPack(1, 6),
+      },
+      {
+        id: "sales-training",
+        slug: "sales-training",
+        lane: "system",
+        name: "Sales Training",
+        description:
+          "Help your sales team explain the offer and handle common sales conversations.",
+        sessions: 1,
+        icon: "/packages/icons/system-sales-enablement.png",
+        formats: ["16:9"],
+        format: "16:9 · internal training",
+        learn: [
+          "Offer and product knowledge",
+          "Common questions and sales conversations",
+          "Demonstrations your team can learn from",
+        ],
+        outcome: "A shared reference that helps your team explain the offer consistently.",
+        recommended: false,
         tags: {
           problems: ["improve-sales", "train-employees"],
-          audiences: ["sales"],
-          automation: ["train-faster", "scale-knowledge"],
         },
+        ...sessionPack(1, 6),
       },
       {
-        id: "system-tool-tutorial",
-        name: "Tool Tutorial Pack",
-        description: '"How we use X" videos for your tech stack · 1 session + 6 videos',
-        ...sessionPack(1, 6),
+        id: "video-sops",
+        slug: "video-sops",
+        lane: "system",
+        name: "Video SOPs",
+        description: "Turn repeatable tasks into clear, step-by-step videos your team can revisit.",
+        sessions: 1,
+        icon: "/packages/icons/system-sop.png",
+        formats: ["16:9"],
+        format: "16:9 · step-by-step instruction",
+        learn: [
+          "Standard operating procedures",
+          "Tool and software walkthroughs",
+          "Repeatable tasks, checks, and handoffs",
+        ],
+        outcome: "Clear visual procedures your team can follow and return to when needed.",
+        recommended: false,
         tags: {
-          problems: ["train-employees", "reduce-repetition", "clarify-process"],
-          audiences: ["employees", "customers"],
-          automation: ["self-service", "replace-explanations"],
+          problems: ["reduce-repetition", "clarify-process", "replace-meetings"],
         },
+        ...sessionPack(1, 8),
       },
     ],
   },
@@ -686,52 +759,27 @@ export const PAL_GROUPS: PalGroup[] = [
     },
     items: [
       {
-        id: "evergreen-faq-deep-dive",
-        name: "FAQ Deep Dive",
-        description: "Answer your top 3-5 questions in depth · 5-min episode",
-        ...evergreenPack(5),
+        id: "educational-videos",
+        slug: "educational-videos",
+        lane: "evergreen",
+        name: "Educational Videos",
+        description:
+          "Teach a useful topic in depth, with clear explanations and practical examples.",
+        sessions: 0,
+        icon: "/packages/icons/evergreen-how-it-works.png",
+        formats: ["16:9"],
+        format: "16:9 · long-form education",
+        learn: [
+          "In-depth answers to common questions",
+          "Practical explanations and demonstrations",
+          "Case studies, industry topics, and expert perspectives",
+        ],
+        outcome: "A useful episode that teaches one topic clearly and in depth.",
         recommended: true,
         tags: {
-          problems: ["reduce-repetition", "educate-customers", "build-authority"],
-          automation: ["replace-explanations", "self-service"],
-        },
-      },
-      {
-        id: "evergreen-how-it-works",
-        name: "How It Works",
-        description: "Walk through your process step-by-step · 5-min episode",
-        ...evergreenPack(5),
-        tags: {
-          problems: ["explain-offer", "build-authority", "educate-customers", "clarify-process"],
-        },
-      },
-      {
-        id: "evergreen-myth-vs-reality",
-        name: "Myth vs Reality",
-        description: "Bust industry myths · 5-min episode",
-        ...evergreenPack(5),
-        tags: {
           problems: ["build-authority", "educate-customers"],
-          vibe: "bold",
         },
-      },
-      {
-        id: "evergreen-case-study",
-        name: "Case Study Breakdown",
-        description: "Break down a real client win · 5-min episode",
         ...evergreenPack(5),
-        tags: { problems: ["trust", "leads", "build-authority"] },
-      },
-      {
-        id: "evergreen-founder-pov",
-        name: "Founder POV",
-        description: "Share your unique industry perspective · 5-min episode",
-        ...evergreenPack(5),
-        tags: {
-          problems: ["build-authority", "trust"],
-          stages: ["personal-brand", "coach", "solo"],
-          vibe: "personality",
-        },
       },
     ],
   },
@@ -756,12 +804,213 @@ export function getItemTags(
   };
 }
 
+/** Shared aliases keep existing links and saved plans readable after consolidation. */
+export const LEGACY_PACKAGE_IDS: Readonly<Record<string, string>> = {
+  "reel-services": "social-content",
+  "reel-objection": "social-content",
+  "reel-proof": "social-content",
+  "reel-day-in-life": "social-content",
+  "reel-pov": "social-content",
+  "reel-momentum": "social-content",
+  "spotlight-objection-crusher": "social-content",
+  "spotlight-bts": "social-content",
+  "spotlight-brand-presence": "commercials",
+  "spotlight-offer-clarity": "product-demos",
+  "spotlight-proof-builder": "customer-stories",
+  "system-onboarding": "onboarding",
+  "system-sop": "video-sops",
+  "system-training": "video-sops",
+  "system-tool-tutorial": "video-sops",
+  "system-sales-enablement": "sales-training",
+  "system-client-handoff": "product-demos",
+  "evergreen-faq-deep-dive": "educational-videos",
+  "evergreen-how-it-works": "educational-videos",
+  "evergreen-myth-vs-reality": "educational-videos",
+  "evergreen-case-study": "educational-videos",
+  "evergreen-founder-pov": "educational-videos",
+};
+export const LEGACY_PACKAGE_DEFAULTS: Readonly<Record<string, PackageConfiguration>> = {
+  "reel-services": {
+    count: 6,
+    sessions: 1,
+  },
+  "reel-objection": {
+    count: 6,
+    sessions: 1,
+  },
+  "reel-proof": {
+    count: 6,
+    sessions: 1,
+  },
+  "reel-day-in-life": {
+    count: 4,
+    sessions: 1,
+  },
+  "reel-pov": {
+    count: 6,
+    sessions: 1,
+  },
+  "reel-momentum": {
+    count: 12,
+    sessions: 2,
+  },
+  "spotlight-brand-presence": {
+    count: 4,
+    sessions: 1,
+  },
+  "spotlight-proof-builder": {
+    count: 4,
+    sessions: 1,
+  },
+  "spotlight-offer-clarity": {
+    count: 4,
+    sessions: 1,
+  },
+  "spotlight-objection-crusher": {
+    count: 3,
+    sessions: 1,
+  },
+  "spotlight-bts": {
+    count: 4,
+    sessions: 1,
+  },
+  "system-onboarding": {
+    count: 6,
+    sessions: 1,
+  },
+  "system-sop": {
+    count: 8,
+    sessions: 1,
+  },
+  "system-training": {
+    count: 6,
+    sessions: 1,
+  },
+  "system-client-handoff": {
+    count: 4,
+    sessions: 1,
+  },
+  "system-sales-enablement": {
+    count: 6,
+    sessions: 1,
+  },
+  "system-tool-tutorial": {
+    count: 6,
+    sessions: 1,
+  },
+  "evergreen-faq-deep-dive": {
+    count: 0,
+    sessions: 0,
+  },
+  "evergreen-how-it-works": {
+    count: 0,
+    sessions: 0,
+  },
+  "evergreen-myth-vs-reality": {
+    count: 0,
+    sessions: 0,
+  },
+  "evergreen-case-study": {
+    count: 0,
+    sessions: 0,
+  },
+  "evergreen-founder-pov": {
+    count: 0,
+    sessions: 0,
+  },
+};
+
+export function resolvePackageId(id: string): string {
+  return Object.prototype.hasOwnProperty.call(LEGACY_PACKAGE_IDS, id) ? LEGACY_PACKAGE_IDS[id] : id;
+}
+
+export function getPackageById(id: string): PackageItem | undefined {
+  const canonical = resolvePackageId(id);
+  return PAL_GROUPS.flatMap((group) => group.items).find((item) => item.id === canonical);
+}
+
 export function getItemById(id: string): ServiceItem | undefined {
-  for (const g of PAL_GROUPS) {
-    const it = g.items.find((x) => x.id === id);
-    if (it) return it;
+  return (
+    getPackageById(id) ??
+    ADD_ONS.find((item) => item.id === id) ??
+    DIY_DOWNLOADS.find((item) => item.id === id)
+  );
+}
+
+/** UI normalization. Server entry points also call the strict validator below. */
+export function normalizePackageConfiguration(
+  item: PackageItem,
+  count?: number,
+  sessions?: number,
+): PackageConfiguration {
+  const filmingSessions =
+    item.lane === "evergreen"
+      ? 0
+      : Math.max(
+          1,
+          Math.min(
+            MAX_PACKAGE_SESSIONS,
+            Number.isFinite(sessions) ? Math.trunc(sessions!) : item.sessions,
+          ),
+        );
+  const minimum =
+    item.lane === "evergreen"
+      ? 0
+      : isFinishedVideoPricing()
+        ? 1
+        : filmingSessions * INCLUDED_EDITED_MINUTES_PER_SESSION;
+  return {
+    count: Math.max(
+      minimum,
+      Math.min(
+        item.editable!.max,
+        Number.isFinite(count) ? Math.trunc(count!) : item.editable!.defaultCount,
+      ),
+    ),
+    sessions: filmingSessions,
+  };
+}
+
+/** Reject malformed, out-of-range or noncanonical scope before accepting a quote or payment. */
+export function validatePackageConfiguration(
+  item: PackageItem,
+  count?: number,
+  sessions?: number,
+): PackageConfiguration {
+  const rawCount = count ?? item.editable!.defaultCount;
+  const rawSessions = sessions ?? item.sessions;
+  const normalized = normalizePackageConfiguration(item, rawCount, rawSessions);
+  if (
+    !Number.isInteger(rawCount) ||
+    !Number.isInteger(rawSessions) ||
+    rawCount !== normalized.count ||
+    rawSessions !== normalized.sessions
+  ) {
+    throw new Error(`Invalid configuration for package: ${item.id}`);
   }
-  return ADD_ONS.find((a) => a.id === id) ?? DIY_DOWNLOADS.find((d) => d.id === id);
+  return normalized;
+}
+
+export function computePackagePrice(item: PackageItem, count?: number, sessions?: number): number {
+  const config = normalizePackageConfiguration(item, count, sessions);
+  if (item.lane === "evergreen")
+    return EVERGREEN_LENGTH_PRICE[5] + config.count * EVERGREEN_BLOCK_PRICE;
+  const included = isFinishedVideoPricing()
+    ? 0
+    : config.sessions * INCLUDED_EDITED_MINUTES_PER_SESSION;
+  const unitPrice = isFinishedVideoPricing()
+    ? FINISHED_VIDEO_PRICE
+    : SAME_SESSION_ADDITIONAL_MINUTE_PRICE;
+  return config.sessions * SESSION_PRICE + Math.max(0, config.count - included) * unitPrice;
+}
+
+export function getPackageScope(item: PackageItem, count?: number, sessions?: number): string {
+  const config = normalizePackageConfiguration(item, count, sessions);
+  if (item.lane === "evergreen") return `${5 + config.count * 5}-minute episode`;
+  const noun = isFinishedVideoPricing()
+    ? `finished video${config.count === 1 ? "" : "s"}`
+    : `edited minute${config.count === 1 ? "" : "s"}`;
+  return `${config.sessions} filming session${config.sessions === 1 ? "" : "s"} · ${config.count} ${noun}`;
 }
 
 /** Add-ons available given the user's currently-selected pal groups. */

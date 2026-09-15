@@ -106,8 +106,8 @@ const groups: {
         a: "Yes — every package can be tailored to fit your specific goals, timeline, and budget.",
       },
       {
-        q: "What types of video missions do you offer?",
-        a: "We offer missions across social visibility, internal systems, evergreen authority content, and spotlight/brand proof content through our Pal-based framework.",
+        q: "What video packages do you offer?",
+        a: "Choose Social Content, Commercials, Product Demos, Customer Stories, Employee Spotlights, Onboarding, Safety Training, Sales Training, Video SOPs, or Educational Videos. Each package includes an example and adjustable scope.",
       },
       {
         q: "Do you offer a starter option for first-timers?",

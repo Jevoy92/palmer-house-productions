@@ -5,7 +5,7 @@ export const startHereLinks: NavLink[] = [
   {
     label: "Find Your Pal",
     to: "/find-your-pal",
-    description: "Choose the right video lane",
+    description: "A package and a price in two choices",
   },
   {
     label: "Video System Assessment",
@@ -21,7 +21,7 @@ export const startHereLinks: NavLink[] = [
   {
     label: "Browse Packages",
     to: "/shop",
-    description: "Build a production plan",
+    description: "Explore packages and watch examples",
   },
 ];
 
@@ -47,9 +47,9 @@ export const serviceLinks: NavLink[] = [
     description: "Plan scope and investment",
   },
   {
-    label: "Shop Packages",
+    label: "Browse Packages",
     to: "/shop",
-    description: "Ready-to-build video packages",
+    description: "Explore packages and watch examples",
     badge: "New",
   },
 ];

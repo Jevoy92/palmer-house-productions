@@ -36,7 +36,7 @@ export const PAL_LANES: PalLane[] = [
       { name: "Raquel", role: "Engagement anchor", image: raquel },
     ],
     signals: ["reels", "social", "posting", "hooks", "visibility", "short form"],
-    starterId: "reel-services",
+    starterId: "social-content",
   },
   {
     key: "spotlight",
@@ -51,7 +51,7 @@ export const PAL_LANES: PalLane[] = [
       { name: "Kiana", role: "Creative direction", image: kiana },
     ],
     signals: ["trust", "premium", "testimonial", "brand", "camera", "proof", "stiff"],
-    starterId: "spotlight-brand-presence",
+    starterId: "commercials",
   },
   {
     key: "evergreen",
@@ -66,7 +66,7 @@ export const PAL_LANES: PalLane[] = [
       { name: "Clara", role: "Clarity specialist", image: clara },
     ],
     signals: ["authority", "youtube", "education", "expertise", "faq", "long form"],
-    starterId: "evergreen-faq-deep-dive",
+    starterId: "educational-videos",
   },
   {
     key: "system",
@@ -81,7 +81,7 @@ export const PAL_LANES: PalLane[] = [
       { name: "Samira", role: "Knowledge architecture", image: samira },
     ],
     signals: ["onboarding", "training", "team", "process", "sop", "repeating", "meetings"],
-    starterId: "system-onboarding",
+    starterId: "onboarding",
   },
 ];
 

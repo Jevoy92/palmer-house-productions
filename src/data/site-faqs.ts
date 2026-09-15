@@ -5,15 +5,15 @@ export const HOME_FAQS = [
   },
   {
     q: "How is your process different from hiring a videographer?",
-    a: "A videographer shows up and shoots. We start with strategy, then capture multiple formats in one production day, then help you launch and optimize. You end up with a library, not a single file.",
+    a: "A videographer shows up and shoots. We plan around your business goal, film the agreed scope, and deliver finished videos prepared for the channels you choose. The formats and number of deliverables are agreed before production.",
   },
   {
     q: "What do I actually receive from one shoot day?",
-    a: "From a single raw master we deliver a YouTube longform cut, roughly three Reels or TikToks, a LinkedIn teaser, and email newsletter assets — plus anything else your plan calls for.",
+    a: "Your package defines the number of finished videos or the length of an educational episode. We agree on topics, length, framing, and delivery formats before production; extra versions are included only when they are part of your scope.",
   },
   {
     q: "What types of video do you produce?",
-    a: "Product demos, team stories, training videos, testimonials, brand stories, social content, event coverage, explainers, how-to guides, culture pieces, and behind-the-scenes.",
+    a: "Our collection includes Social Content, Commercials, Product Demos, Customer Stories, Employee Spotlights, Onboarding, Safety Training, Sales Training, Video SOPs, and Educational Videos.",
   },
   {
     q: "Which areas do you serve?",

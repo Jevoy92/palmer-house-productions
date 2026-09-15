@@ -14,19 +14,63 @@ import {
   computeItemPrice,
   type SelectedMap,
 } from "./pricing-catalog";
+import { isOfferCode, offerUnitPrice, type OfferCode } from "./offer-catalog";
 import type { ReceiptLine } from "@/components/pricing/Receipt";
 
 export type CountsMap = Record<string, number>;
 
 export type PurchaseCadence = "one-time" | "monthly";
+export const MONTHLY_DISCOUNT_RATE = 0.2;
+
+export function monthlyPrice(price: number): number {
+  return Math.round(price * (1 - MONTHLY_DISCOUNT_RATE));
+}
+
+export function kitAddOnCountKey(itemId: string, addOnId: string): string {
+  return `kit-addon:${itemId}:${addOnId}`;
+}
+
+export const VIDEO_DURATION_OPTIONS = [15, 30, 60] as const;
+export type VideoDurationSeconds = (typeof VIDEO_DURATION_OPTIONS)[number];
+
+export function kitDurationCountKey(itemId: string): string {
+  return `kit-duration:${itemId}`;
+}
+
+export function kitCadenceCountKey(itemId: string): string {
+  return `kit-cadence:${itemId}`;
+}
+
+export function getKitCadence(
+  counts: CountsMap,
+  itemId: string,
+  fallback: PurchaseCadence = "one-time",
+): PurchaseCadence {
+  const key = kitCadenceCountKey(itemId);
+  if (!Object.prototype.hasOwnProperty.call(counts, key)) return fallback;
+  return counts[key] === 1 ? "monthly" : "one-time";
+}
+
+export function getKitDurationSeconds(counts: CountsMap, itemId: string): VideoDurationSeconds {
+  const duration = counts[kitDurationCountKey(itemId)];
+  return VIDEO_DURATION_OPTIONS.includes(duration as VideoDurationSeconds)
+    ? (duration as VideoDurationSeconds)
+    : 60;
+}
+
+export function getKitOutputCount(runtimeMinutes: number, durationSeconds: number): number {
+  return Math.max(1, Math.round((runtimeMinutes * 60) / durationSeconds));
+}
 
 export type CartState = {
   selected: SelectedMap;
   counts: CountsMap;
   cadence: PurchaseCadence;
+  offerCode?: OfferCode;
 };
 
-const STORAGE_KEY = "ph.quote.cart.v1";
+export const CART_STORAGE_KEY = "ph.quote.cart.v1";
+const STORAGE_KEY = CART_STORAGE_KEY;
 const EMPTY: CartState = { selected: {}, counts: {}, cadence: "one-time" };
 
 function read(): CartState {
@@ -39,6 +83,7 @@ function read(): CartState {
       selected: parsed?.selected ?? {},
       counts: parsed?.counts ?? {},
       cadence: parsed?.cadence === "monthly" ? "monthly" : "one-time",
+      offerCode: isOfferCode(parsed?.offerCode) ? parsed.offerCode : undefined,
     };
   } catch {
     return EMPTY;
@@ -109,6 +154,14 @@ export const cartStore = {
   setSelected: (selected: SelectedMap) => set((s) => ({ ...s, selected })),
   setCounts: (counts: CountsMap) => set((s) => ({ ...s, counts })),
   setCadence: (cadence: PurchaseCadence) => set((s) => ({ ...s, cadence })),
+  applyOffer: (offerCode?: OfferCode) =>
+    set((s) => {
+      if (!offerCode) return { ...s, offerCode: undefined };
+      const counts = Object.fromEntries(
+        Object.entries(s.counts).filter(([key]) => !key.startsWith("kit-cadence:")),
+      );
+      return { ...s, counts, offerCode, cadence: "one-time" };
+    }),
   add: (itemId: string, qty = 1) =>
     set((s) => ({
       ...s,
@@ -149,13 +202,53 @@ export function useCart(): CartState {
 /** Derive receipt lines from the cart for previews/checkout. */
 export function buildReceiptLines(s: CartState): ReceiptLine[] {
   const out: ReceiptLine[] = [];
+  let studioIncluded = false;
   for (const g of PAL_GROUPS) {
     for (const it of g.items) {
       const qty = s.selected[it.id] ?? 0;
       if (qty > 0) {
+        const kitAddOns = ADD_ONS.filter((addOn) => s.counts[kitAddOnCountKey(it.id, addOn.id)]);
+        const addOnTotal = kitAddOns.reduce((sum, addOn) => sum + addOn.price, 0);
+        const runtimeCount = s.counts[it.id] ?? it.editable?.defaultCount ?? 0;
+        const basePrice = computeItemPrice(it, runtimeCount);
+        const configuredPrice = basePrice + addOnTotal;
+        const itemCadence = getKitCadence(s.counts, it.id, s.cadence);
+        const isLongForm = g.id === "evergreen";
+        const duration = getKitDurationSeconds(s.counts, it.id);
+        const outputCount = getKitOutputCount(runtimeCount, duration);
+        const configuration = isLongForm
+          ? `${5 + runtimeCount * 5}-minute episode`
+          : `${outputCount} × ${duration}-second videos`;
+        const included = [
+          ...kitAddOns.map((addOn) => addOn.name),
+          ...(itemCadence === "monthly" && !studioIncluded
+            ? ["Studio membership ($99/month value)"]
+            : []),
+        ];
+        if (itemCadence === "monthly") studioIncluded = true;
         out.push({
           ...it,
-          price: computeItemPrice(it, s.counts[it.id]),
+          description: `${configuration} · ${it.description}${
+            included.length > 0 ? ` · Includes ${included.join(", ")}` : ""
+          }`,
+          price:
+            itemCadence === "monthly"
+              ? monthlyPrice(configuredPrice)
+              : offerUnitPrice({
+                  code: s.offerCode,
+                  itemId: it.id,
+                  baseUnitPrice: basePrice,
+                  addOnUnitPrice: addOnTotal,
+                  qty,
+                  selected: s.selected,
+                }),
+          cadence: itemCadence,
+          runtimeLabel: isLongForm
+            ? `${5 + runtimeCount * 5} minutes`
+            : `${runtimeCount} edited ${runtimeCount === 1 ? "minute" : "minutes"}`,
+          durationSeconds: isLongForm ? undefined : duration,
+          outputCount: isLongForm ? undefined : outputCount,
+          addOnNames: kitAddOns.map((addOn) => addOn.name),
           qty,
           accent: `var(--${g.accent})`,
           groupId: g.id,
@@ -169,6 +262,17 @@ export function buildReceiptLines(s: CartState): ReceiptLine[] {
     if (qty > 0) {
       out.push({
         ...a,
+        price:
+          s.cadence === "monthly"
+            ? monthlyPrice(a.price)
+            : offerUnitPrice({
+                code: s.offerCode,
+                itemId: a.id,
+                baseUnitPrice: a.price,
+                qty,
+                selected: s.selected,
+              }),
+        cadence: s.cadence,
         qty,
         accent: "var(--primary)",
         groupId: "add-ons",
@@ -181,6 +285,7 @@ export function buildReceiptLines(s: CartState): ReceiptLine[] {
     if (qty > 0) {
       out.push({
         ...d,
+        cadence: "one-time",
         qty,
         accent: "var(--primary)",
         groupId: "diy",
@@ -196,6 +301,19 @@ export function cartItemCount(s: CartState): number {
   let n = 0;
   for (const k in s.selected) n += s.selected[k] ?? 0;
   return n;
+}
+
+export function receiptLineConfiguration(item: ReceiptLine): string {
+  return [
+    item.runtimeLabel,
+    item.outputCount && item.durationSeconds
+      ? `${item.outputCount} × ${item.durationSeconds}-second outputs`
+      : undefined,
+    item.cadence === "monthly" ? "Monthly" : "One-time",
+    item.addOnNames?.length ? `Add-ons: ${item.addOnNames.join(", ")}` : undefined,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 }
 
 /** Pre-tax subtotal across all lines. */

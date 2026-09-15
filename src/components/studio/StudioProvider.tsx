@@ -345,11 +345,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       });
       if (result.error) throw new Error(result.error.message);
       workspaceCreated = true;
-      const created = await supabase
-        .from("workspaces")
-        .select("id")
-        .eq("slug", slug)
-        .single();
+      const created = await supabase.from("workspaces").select("id").eq("slug", slug).single();
       if (created.error) throw new Error(created.error.message);
       if (brandProfile) {
         const brandUpdate = await supabase

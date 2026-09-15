@@ -17,6 +17,8 @@ export type QuoteLineItem = {
   id: string;
   name: string;
   price: number;
+  cadence?: "one-time" | "monthly";
+  configuration?: string;
 };
 
 export type QuoteSummary = {
@@ -25,6 +27,17 @@ export type QuoteSummary = {
   subtotal: number;
   tax: number;
   total: number;
+  offerCode?: string;
+  cadenceMix?: "one-time" | "monthly" | "mixed";
+  customer?: {
+    name: string;
+    email: string;
+    company?: string;
+    recipient?: string;
+    note?: string;
+    gift?: boolean;
+    expandedScriptwriting?: boolean;
+  };
 };
 
 // Configure in Lovable/Vercel as VITE_HONEYBOOK_LEAD_FORM_URL. Keeping the
@@ -43,8 +56,29 @@ export function buildHoneyBookUrl(quote: QuoteSummary): string {
   url.searchParams.set("quote_ref", quote.reference);
   url.searchParams.set("quote_total", quote.total.toFixed(2));
   url.searchParams.set("quote_items", quote.items.map((i) => i.name).join(", "));
-  // 👉 If your HB form has named custom fields, map them here:
-  // url.searchParams.set("notes", `Quote ${quote.reference}: ${quote.items.map(i => i.name).join(", ")} = $${quote.total.toFixed(2)}`);
+  url.searchParams.set(
+    "quote_details",
+    JSON.stringify(
+      quote.items.map(({ id, name, price, cadence, configuration }) => ({
+        id,
+        name,
+        price,
+        cadence,
+        configuration,
+      })),
+    ),
+  );
+  if (quote.offerCode) url.searchParams.set("offer_code", quote.offerCode);
+  if (quote.cadenceMix) url.searchParams.set("cadence", quote.cadenceMix);
+  if (quote.customer?.name) url.searchParams.set("name", quote.customer.name);
+  if (quote.customer?.email) url.searchParams.set("email", quote.customer.email);
+  if (quote.customer?.company) url.searchParams.set("company", quote.customer.company);
+  if (quote.customer?.recipient) url.searchParams.set("gift_recipient", quote.customer.recipient);
+  if (quote.customer?.note) url.searchParams.set("notes", quote.customer.note);
+  if (quote.customer?.gift) url.searchParams.set("gift", "yes");
+  if (quote.customer?.expandedScriptwriting) {
+    url.searchParams.set("expanded_scriptwriting", "yes");
+  }
   return url.toString();
 }
 
@@ -55,6 +89,16 @@ export function openHoneyBookBooking(quote: QuoteSummary): void {
       quote: quote.reference,
       total: quote.total.toFixed(2),
       services: quote.items.map((item) => item.name).join(", "),
+      details: JSON.stringify(quote.items),
+      ...(quote.customer?.name ? { name: quote.customer.name } : {}),
+      ...(quote.customer?.email ? { email: quote.customer.email } : {}),
+      ...(quote.customer?.company ? { company: quote.customer.company } : {}),
+      ...(quote.offerCode ? { offer: quote.offerCode } : {}),
+      ...(quote.cadenceMix ? { cadence: quote.cadenceMix } : {}),
+      ...(quote.customer?.recipient ? { recipient: quote.customer.recipient } : {}),
+      ...(quote.customer?.note ? { note: quote.customer.note } : {}),
+      ...(quote.customer?.gift ? { gift: "yes" } : {}),
+      ...(quote.customer?.expandedScriptwriting ? { expanded_scriptwriting: "yes" } : {}),
     });
     window.location.assign(`/contact?${params.toString()}`);
     return;

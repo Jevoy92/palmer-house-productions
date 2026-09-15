@@ -23,8 +23,14 @@ function oauthApi(): OAuthApi {
 
 export const Route = createFileRoute("/.lovable/oauth/consent")({
   ssr: false,
+  head: () => ({
+    meta: [
+      { title: "Authorize Application — Palmer House Studio" },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+  }),
   validateSearch: (s: Record<string, unknown>) => ({
-    authorization_id: typeof s['authorization_id'] === "string" ? s['authorization_id'] : "",
+    authorization_id: typeof s["authorization_id"] === "string" ? s["authorization_id"] : "",
   }),
   beforeLoad: ({ search }) => {
     if (!search.authorization_id) throw new Error("Missing authorization_id");
@@ -92,7 +98,6 @@ function Consent() {
     window.location.href = target;
   }
 
-
   if (loaded.needsSignIn) {
     return (
       <main className="mx-auto max-w-md px-6 py-20">
@@ -109,23 +114,27 @@ function Consent() {
           <input
             type="email"
             required
+            aria-label="Email address"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@company.com"
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
+            className="min-h-11 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
           />
           <input
             type="password"
             required
+            aria-label="Password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
+            className="min-h-11 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
           />
           <button
             type="submit"
             disabled={busy}
-            className="w-full rounded-md bg-pal-purple px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+            className="min-h-11 w-full rounded-md bg-pal-purple px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
           >
             {busy ? "Signing in…" : "Sign in"}
           </button>
@@ -142,8 +151,8 @@ function Consent() {
         Connect {clientName} to your account
       </h1>
       <p className="mt-3 text-sm text-muted-foreground">
-        This lets {clientName} read your Palmer House Studio workspaces, brand profile, campaigns and
-        calendar, and capture new content ideas, acting as you.
+        This lets {clientName} read your Palmer House Studio workspaces, brand profile, campaigns
+        and calendar, and capture new content ideas, acting as you.
       </p>
       {error && (
         <p role="alert" className="mt-4 text-sm text-destructive">
@@ -152,16 +161,18 @@ function Consent() {
       )}
       <div className="mt-8 flex gap-3">
         <button
+          type="button"
           disabled={busy}
           onClick={() => decide(true)}
-          className="flex-1 rounded-md bg-pal-purple px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
+          className="min-h-11 flex-1 rounded-md bg-pal-purple px-4 py-2 text-sm font-semibold text-white disabled:opacity-60"
         >
           Approve
         </button>
         <button
+          type="button"
           disabled={busy}
           onClick={() => decide(false)}
-          className="flex-1 rounded-md border border-border px-4 py-2 text-sm font-semibold text-foreground disabled:opacity-60"
+          className="min-h-11 flex-1 rounded-md border border-border px-4 py-2 text-sm font-semibold text-foreground disabled:opacity-60"
         >
           Deny
         </button>

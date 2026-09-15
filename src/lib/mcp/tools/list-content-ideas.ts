@@ -16,7 +16,9 @@ export default defineTool({
     const supabase = supabaseForUser(ctx);
     const { data, error } = await supabase
       .from("content_ideas")
-      .select("id, body, primary_lane, business_problem, status, source_type, source_url, created_at")
+      .select(
+        "id, body, primary_lane, business_problem, status, source_type, source_url, created_at",
+      )
       .eq("workspace_id", workspace_id)
       .order("created_at", { ascending: false })
       .limit(limit ?? 25);

@@ -1,4 +1,5 @@
-import { Calendar, Check } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { ArrowRight, Calendar, Check } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -7,6 +8,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import type { ReceiptLine } from "./Receipt";
+import { receiptLineConfiguration } from "@/lib/cart-store";
 import type { QuoteSummary } from "@/lib/honeybook";
 import { openHoneyBookBooking } from "@/lib/honeybook";
 
@@ -16,6 +18,7 @@ export function QuoteSummaryDialog({
   items,
   taxRate,
   reference,
+  offerCode,
   onReset,
 }: {
   open: boolean;
@@ -23,11 +26,15 @@ export function QuoteSummaryDialog({
   items: ReceiptLine[];
   taxRate: number;
   reference: string;
+  offerCode?: string;
   onReset: () => void;
 }) {
   const subtotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
   const tax = subtotal * taxRate;
   const total = subtotal + tax;
+  const hasMonthly = items.some((item) => item.cadence === "monthly");
+  const hasOneTime = items.some((item) => item.cadence !== "monthly");
+  const cadenceMix = hasMonthly && hasOneTime ? "mixed" : hasMonthly ? "monthly" : "one-time";
 
   const quote: QuoteSummary = {
     reference,
@@ -35,10 +42,14 @@ export function QuoteSummaryDialog({
       id: i.id,
       name: i.qty > 1 ? `${i.name} × ${i.qty}` : i.name,
       price: i.price * i.qty,
+      cadence: i.cadence,
+      configuration: receiptLineConfiguration(i),
     })),
     subtotal,
     tax,
     total,
+    offerCode,
+    cadenceMix,
   };
 
   return (
@@ -63,7 +74,10 @@ export function QuoteSummaryDialog({
           <div className="space-y-1.5 text-sm">
             {quote.items.map((i) => (
               <div key={i.id} className="flex justify-between gap-3">
-                <span className="truncate">{i.name}</span>
+                <span className="min-w-0">
+                  <span className="block truncate">{i.name}</span>
+                  <span className="block text-xs text-muted-foreground">{i.configuration}</span>
+                </span>
                 <span className="font-medium tabular-nums">${i.price.toFixed(2)}</span>
               </div>
             ))}
@@ -74,10 +88,17 @@ export function QuoteSummaryDialog({
               <span>Subtotal</span>
               <span className="tabular-nums">${subtotal.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between">
-              <span>Tax ({(taxRate * 100).toFixed(1)}%)</span>
-              <span className="tabular-nums">${tax.toFixed(2)}</span>
-            </div>
+            {taxRate > 0 ? (
+              <div className="flex justify-between">
+                <span>Estimated tax ({(taxRate * 100).toFixed(1)}%)</span>
+                <span className="tabular-nums">${tax.toFixed(2)}</span>
+              </div>
+            ) : (
+              <div className="flex justify-between gap-4">
+                <span>Tax &amp; travel</span>
+                <span className="text-right">Confirmed after location</span>
+              </div>
+            )}
           </div>
           <div className="my-3 border-t border-dashed border-border" />
           <div className="flex items-baseline justify-between">
@@ -96,12 +117,20 @@ export function QuoteSummaryDialog({
         </div>
 
         <div className="flex flex-col gap-2">
+          <Link
+            to="/checkout"
+            search={{ quote: reference }}
+            onClick={() => onOpenChange(false)}
+            className="flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+          >
+            Review &amp; Continue <ArrowRight className="h-4 w-4" />
+          </Link>
           <button
             type="button"
             onClick={() => openHoneyBookBooking(quote)}
-            className="flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary/90"
+            className="flex items-center justify-center gap-2 rounded-full border border-border px-6 py-3 text-sm font-semibold transition hover:bg-accent"
           >
-            <Calendar className="h-4 w-4" /> Book Now
+            <Calendar className="h-4 w-4" /> Book a strategy call instead
           </button>
           <button
             type="button"

@@ -57,7 +57,10 @@ export function ComingSoon() {
           <p className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
             <Mail className="size-4" />
             Need our team for a project?{" "}
-            <a className="font-bold text-ink underline" href="mailto:hello@palmerhouseproductions.com">
+            <a
+              className="font-bold text-ink underline"
+              href="mailto:hello@palmerhouseproductions.com"
+            >
               hello@palmerhouseproductions.com
             </a>
           </p>
@@ -71,7 +74,7 @@ export function ComingSoon() {
               style={{ background: lane.soft }}
             >
               <p
-                className="font-mono text-[10px] font-bold uppercase tracking-[.2em]"
+                className="font-mono text-[11px] font-bold uppercase tracking-[.2em]"
                 style={{ color: lane.color }}
               >
                 {lane.label} Pal
@@ -112,7 +115,9 @@ export function ComingSoon() {
               our team shoots and edits video for Pacific Northwest businesses.
             </li>
           </ul>
-          <h3 className="mt-8 text-lg font-black tracking-[-.03em]">Why we ask to sign in with Google</h3>
+          <h3 className="mt-8 text-lg font-black tracking-[-.03em]">
+            Why we ask to sign in with Google
+          </h3>
           <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground">
             Signing in with Google is an optional way to create and access a Palmer House Studio
             account. We request only your basic profile and email address so we can identify your

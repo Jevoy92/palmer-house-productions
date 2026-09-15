@@ -1,6 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { ArrowRight, Check, RotateCcw, Sparkles } from "lucide-react";
 import { useState } from "react";
-import { PageShell, Section, Eyebrow } from "@/components/site/PageShell";
+import {
+  CtaBand,
+  Eyebrow,
+  IncludedPanel,
+  PageHero,
+  PageShell,
+  Section,
+} from "@/components/site/PageShell";
+import { PalCallout, PalDuo, Scene, StatBand } from "@/components/site/PalVisuals";
+import type { PalAccent } from "@/lib/pricing-catalog";
+import { createSeo } from "@/lib/seo";
 
 type Answers = {
   businessType: string;
@@ -169,26 +181,18 @@ function tierFor(score: number) {
 
 export const Route = createFileRoute("/video-system-assessment")({
   head: () => ({
-    meta: [
-      { title: "Free Video System Assessment | Palmer House Productions" },
-      {
-        name: "description",
-        content:
-          "Answer a few quick questions and get a personalized readiness score, strategic breakdown, and tailored video system recommendation in under 2 minutes.",
-      },
-      { property: "og:title", content: "How Ready Is Your Business for a Video System?" },
-      {
-        property: "og:description",
-        content: "Take the free 4-step Palmer House video system assessment.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
+    ...createSeo({
+      title: "Free Video System Assessment | Palmer House Productions",
+      description:
+        "Answer a few quick questions and get a personalized readiness score, strategic breakdown, and tailored video system recommendation in under 2 minutes.",
+      pathname: "/video-system-assessment",
+    }),
   }),
   component: AssessmentPage,
 });
 
 function AssessmentPage() {
+  const reduce = useReducedMotion();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<Answers>(EMPTY);
   const [done, setDone] = useState(false);
@@ -227,56 +231,134 @@ function AssessmentPage() {
     const score = scoreFor(answers);
     const tier = tierFor(score);
     const rec = recommendationFor(answers);
+    const laneKey = rec.pal.split(" ")[0].toLowerCase() as PalAccent;
     return (
       <PageShell>
-        <Section
-          eyebrow="Your Results"
-          title="How Ready Is Your Business for a Video System?"
-          subtitle="Here's your personalized readiness score and recommendation."
+        <PageHero
+          eyebrow="Your assessment result"
+          title={`You’re ${tier.label.toLowerCase()}.`}
+          highlight={`${score}/100 ready.`}
+          subtitle={tier.body}
+          ctas={false}
+          lane={laneKey}
         >
-          <div className="mx-auto max-w-2xl rounded-3xl border border-border bg-card p-8 text-center shadow-soft sm:p-10">
-            <p className="font-display text-6xl font-extrabold text-gradient-brand">{score}</p>
-            <p className="mt-1 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-              Readiness Score / 100
-            </p>
-            <div className="mx-auto mt-4 h-2 max-w-sm overflow-hidden rounded-full bg-secondary">
-              <div
-                className="h-full rounded-full"
-                style={{ width: `${score}%`, backgroundColor: "var(--spotlight)" }}
+          <div className="rounded-[2.5rem] border border-white/80 bg-white p-7 shadow-soft sm:p-9">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p className="font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                  Video-system readiness
+                </p>
+                <p className="mt-2 text-7xl font-extrabold tracking-[-0.06em]">{score}</p>
+              </div>
+              <span
+                className="grid size-14 place-items-center rounded-full text-white"
+                style={{ background: `var(--${laneKey})` }}
+              >
+                <Sparkles className="size-6" />
+              </span>
+            </div>
+            <div
+              className="mt-6 h-3 overflow-hidden rounded-full bg-secondary"
+              role="progressbar"
+              aria-label="Readiness score"
+              aria-valuenow={score}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            >
+              <motion.div
+                initial={reduce ? false : { transform: "scaleX(0)" }}
+                animate={{ transform: `scaleX(${score / 100})` }}
+                transition={{ duration: reduce ? 0 : 0.7, ease: "easeOut" }}
+                className="h-full origin-left rounded-full"
+                style={{ background: `var(--${laneKey})` }}
               />
             </div>
-            <h3 className="mt-6 font-display text-2xl font-bold">{tier.label}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{tier.body}</p>
+            <p className="mt-3 text-sm font-bold">{tier.label}</p>
+          </div>
+        </PageHero>
 
-            <div className="mt-8 rounded-2xl border border-border bg-background p-6 text-left">
-              <Eyebrow>Recommended Lane</Eyebrow>
-              <h4 className="mt-3 font-display text-xl font-bold">{rec.pal}</h4>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{rec.body}</p>
+        <Section
+          eyebrow="Your strongest next move"
+          title={`${rec.pal} matches the outcome you chose.`}
+          subtitle="This recommendation is a practical starting point based on your answers—not a fixed diagnosis."
+        >
+          <StatBand
+            stats={[
+              { value: score, suffix: "/100", label: "readiness score", lane: laneKey },
+              { value: tier.label, label: "system tier", lane: "evergreen" },
+              { value: rec.pal, label: "recommended lane", lane: laneKey },
+              { value: 5, label: "questions answered", lane: "system" },
+            ]}
+          />
+          <div className="mx-auto mt-10 grid max-w-5xl gap-5 lg:grid-cols-[1.1fr_.9fr]">
+            <div
+              className="rounded-[2.25rem] border p-7 shadow-soft sm:p-9"
+              style={{
+                borderColor: `color-mix(in srgb, var(--${laneKey}) 25%, var(--border))`,
+                background: `color-mix(in srgb, var(--${laneKey}-soft) 60%, white)`,
+              }}
+            >
+              <Eyebrow lane={laneKey}>Recommended Lane</Eyebrow>
+              <h2 className="mt-5 text-4xl font-extrabold tracking-[-0.045em]">{rec.pal}</h2>
+              <p className="mt-4 leading-relaxed text-muted-foreground">{rec.body}</p>
               <Link
                 to={rec.path}
-                className="mt-5 inline-block rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow"
-                style={{ backgroundColor: "var(--spotlight)" }}
+                className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-full px-6 text-sm font-bold text-white shadow-soft"
+                style={{ background: `var(--${laneKey})` }}
               >
-                Explore {rec.pal}
+                Explore {rec.pal} <ArrowRight className="size-4" />
               </Link>
             </div>
-
-            <div className="mt-6 flex flex-wrap justify-center gap-3">
-              <Link
-                to="/contact"
-                className="rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold shadow-soft"
-              >
-                Book a Discovery Call
-              </Link>
-              <button
-                onClick={restart}
-                className="rounded-full border border-border px-6 py-3 text-sm font-semibold text-muted-foreground"
-              >
-                Retake Assessment
-              </button>
-            </div>
+            <PalDuo lane={laneKey} />
           </div>
         </Section>
+
+        <Section tone="mist" eyebrow="What you told us" title="Your answers, in one place.">
+          <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[.9fr_1.1fr] lg:items-start">
+            <PalCallout
+              pal="silas"
+              quote="A score is a starting point, not a verdict. Bring these answers to a call and we will pressure-test the lane, the scope, and the timing together."
+              action={{ label: "Book a discovery call", to: "/contact" }}
+            />
+            <div className="rounded-[2.25rem] border border-border bg-card p-7 shadow-soft">
+              <p className="font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-muted-foreground">
+                Your answers
+              </p>
+              <dl className="mt-5 space-y-4">
+                {[
+                  ["Business", answers.businessType],
+                  ["Team", answers.teamSize],
+                  ["Current use", answers.videoHabits],
+                  ["Priority", answers.goal],
+                  ["Bottleneck", answers.bottleneck],
+                ].map(([label, value]) => (
+                  <div key={label} className="border-b border-border pb-3 last:border-0">
+                    <dt className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                      {label}
+                    </dt>
+                    <dd className="mt-1 text-sm font-semibold">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </div>
+
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link to="/contact" className="primary-action">
+              Book a Discovery Call
+            </Link>
+            <button onClick={restart} type="button" className="secondary-action">
+              <RotateCcw className="size-4" /> Retake Assessment
+            </button>
+          </div>
+        </Section>
+
+        <CtaBand
+          title="Turn the recommendation into a production plan."
+          subtitle="Bring your result to a discovery call and we’ll pressure-test the lane, scope, and timing with you."
+          primaryLabel="Book a Discovery Call"
+          lane={laneKey}
+        />
       </PageShell>
     );
   }
@@ -285,74 +367,198 @@ function AssessmentPage() {
 
   return (
     <PageShell>
+      <PageHero
+        eyebrow="Free two-minute assessment"
+        title="How ready is your business"
+        highlight="for a video system?"
+        subtitle="Answer five practical questions to get a readiness score, a plain-language breakdown, and the Palmer House lane that best matches your goal."
+        ctas={false}
+        lane="system"
+        visual={
+          <Scene
+            name="assessment"
+            priority
+            tags={["Readiness score", "System tier", "Recommended Pal"]}
+          />
+        }
+      />
+
+      <Section tone="system">
+        <IncludedPanel
+          headingLevel={2}
+          title="What you’ll get in under two minutes."
+          items={["Readiness score", "System tier", "Recommended Pal", "Clear next step"]}
+          lane="system"
+          glyph="search"
+          tone="paper"
+        />
+      </Section>
+
       <Section
-        eyebrow="Free Assessment"
-        title="How Ready Is Your Business for a Video System?"
-        subtitle="Answer a few quick questions and get a personalized readiness score, a strategic breakdown, and tailored recommendations — all in under 2 minutes."
+        eyebrow="Your assessment"
+        title="Choose the answer that is true today."
+        subtitle="There are no perfect answers. The score is only useful when it reflects how your team actually works."
       >
-        <div className="mx-auto max-w-2xl">
+        <div className="mx-auto max-w-3xl">
+          <ol className="mb-6 grid grid-cols-4 gap-2" aria-label="Assessment progress">
+            {STEPS.map((item, index) => (
+              <li
+                key={item.key}
+                aria-current={index === step ? "step" : undefined}
+                className={`h-2 rounded-full transition-colors ${
+                  index < step ? "bg-evergreen" : index === step ? "bg-system" : "bg-secondary"
+                }`}
+              >
+                <span className="sr-only">
+                  {item.title}:{" "}
+                  {index < step ? "complete" : index === step ? "current" : "upcoming"}
+                </span>
+              </li>
+            ))}
+          </ol>
           <div className="mb-2 flex items-center justify-between text-xs font-semibold text-muted-foreground">
             <span>
               Step {step + 1} of {totalSteps}
             </span>
             <span>{percent}% complete</span>
           </div>
-          <div className="mb-8 h-2 overflow-hidden rounded-full bg-secondary">
-            <div
-              className="h-full rounded-full transition-all"
-              style={{ width: `${percent}%`, backgroundColor: "var(--spotlight)" }}
+          <div
+            className="mb-8 h-2 overflow-hidden rounded-full bg-secondary"
+            role="progressbar"
+            aria-valuenow={percent}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          >
+            <motion.div
+              className="h-full origin-left rounded-full"
+              animate={{ transform: `scaleX(${percent / 100})` }}
+              transition={{ duration: reduce ? 0 : 0.35, ease: "easeOut" }}
+              style={{ backgroundColor: "var(--system)" }}
             />
           </div>
 
-          <div className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">
-            <h2 className="font-display text-xl font-bold">{current.title}</h2>
-            <div className="mt-6 space-y-8">
-              {current.fields.map((field) => (
-                <div key={field.key}>
-                  <p className="text-sm font-semibold">{field.label}</p>
-                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                    {field.options.map((opt) => {
-                      const active = answers[field.key] === opt;
-                      return (
-                        <button
-                          type="button"
-                          key={opt}
-                          onClick={() => select(field.key, opt)}
-                          className={`rounded-xl border px-4 py-3 text-left text-sm font-medium transition-colors ${
-                            active
-                              ? "border-transparent text-white shadow-glow"
-                              : "border-border bg-background text-foreground hover:border-primary/50"
-                          }`}
-                          style={active ? { backgroundColor: "var(--spotlight)" } : undefined}
-                        >
-                          {opt}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
-            </div>
+          <p className="sr-only" aria-live="polite">
+            Step {step + 1} of {totalSteps}: {current.title}
+          </p>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={current.key}
+              initial={reduce ? { opacity: 0 } : { opacity: 0, x: 18 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={reduce ? { opacity: 0 } : { opacity: 0, x: -18 }}
+              transition={{ duration: reduce ? 0 : 0.22 }}
+              className="rounded-[2.25rem] border border-border bg-card p-6 shadow-soft sm:p-9"
+            >
+              <p className="font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-system-text">
+                Step {step + 1}
+              </p>
+              <h2 className="mt-2 text-2xl font-extrabold">{current.title}</h2>
+              <div className="mt-7 space-y-8">
+                {current.fields.map((field) => (
+                  <fieldset key={field.key}>
+                    <legend id={`assessment-${field.key}-label`} className="text-base font-bold">
+                      {field.label}
+                    </legend>
+                    <div
+                      className="mt-3 grid gap-3 sm:grid-cols-2"
+                      role="radiogroup"
+                      aria-labelledby={`assessment-${field.key}-label`}
+                    >
+                      {field.options.map((opt) => {
+                        const active = answers[field.key] === opt;
+                        return (
+                          <button
+                            type="button"
+                            key={opt}
+                            role="radio"
+                            aria-checked={active}
+                            tabIndex={active || !answers[field.key] ? 0 : -1}
+                            onClick={() => select(field.key, opt)}
+                            onKeyDown={(event) => {
+                              if (
+                                ![
+                                  "ArrowLeft",
+                                  "ArrowRight",
+                                  "ArrowUp",
+                                  "ArrowDown",
+                                  "Home",
+                                  "End",
+                                ].includes(event.key)
+                              )
+                                return;
+                              event.preventDefault();
+                              const options = field.options;
+                              const currentIndex = options.indexOf(opt);
+                              const forward =
+                                event.key === "ArrowRight" || event.key === "ArrowDown";
+                              const nextIndex =
+                                event.key === "Home"
+                                  ? 0
+                                  : event.key === "End"
+                                    ? options.length - 1
+                                    : (currentIndex + (forward ? 1 : -1) + options.length) %
+                                      options.length;
+                              select(field.key, options[nextIndex]);
+                              event.currentTarget.parentElement
+                                ?.querySelectorAll<HTMLButtonElement>('[role="radio"]')
+                                [nextIndex]?.focus();
+                            }}
+                            className={`min-h-14 rounded-2xl border px-4 py-3 text-left text-sm font-semibold transition-colors ${
+                              active
+                                ? "border-system bg-system-soft text-foreground shadow-soft"
+                                : "border-border bg-background text-foreground hover:border-system/50"
+                            }`}
+                          >
+                            <span className="flex items-center justify-between gap-3">
+                              {opt}
+                              {active && (
+                                <span className="grid size-6 shrink-0 place-items-center rounded-full bg-system text-white">
+                                  <Check className="size-3.5" />
+                                </span>
+                              )}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </fieldset>
+                ))}
+              </div>
 
-            <div className="mt-8 flex justify-between gap-3">
-              <button
-                type="button"
-                onClick={handleBack}
-                disabled={step === 0}
-                className="rounded-full border border-border px-6 py-3 text-sm font-semibold text-muted-foreground disabled:opacity-40"
-              >
-                Back
-              </button>
-              <button
-                type="button"
-                onClick={handleContinue}
-                disabled={!currentStepComplete()}
-                className="rounded-full px-6 py-3 text-sm font-semibold text-white shadow-glow disabled:opacity-40"
-                style={{ backgroundColor: "var(--spotlight)" }}
-              >
-                {step === totalSteps - 1 ? "See My Results" : "Continue"}
-              </button>
-            </div>
+              <div className="mt-8 border-t border-border pt-6">
+                {!currentStepComplete() && (
+                  <p className="mb-3 text-right text-xs font-semibold text-muted-foreground">
+                    Choose {current.fields.length === 1 ? "an answer" : "both answers"} to continue.
+                  </p>
+                )}
+                <div className="flex justify-between gap-3">
+                  <button
+                    type="button"
+                    onClick={handleBack}
+                    disabled={step === 0}
+                    className="secondary-action disabled:cursor-not-allowed disabled:opacity-35"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleContinue}
+                    disabled={!currentStepComplete()}
+                    className="primary-action disabled:cursor-not-allowed disabled:opacity-35"
+                  >
+                    {step === totalSteps - 1 ? "See My Results" : "Continue"}{" "}
+                    <ArrowRight className="size-4" />
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+          <div className="mt-10">
+            <PalCallout
+              pal="silas"
+              compact
+              quote="Answer for how the team actually works today, not how you hope it will work next quarter. The honest score is the useful one."
+            />
           </div>
         </div>
       </Section>

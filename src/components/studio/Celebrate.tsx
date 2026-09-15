@@ -69,7 +69,11 @@ function Confetti({ colors }: { colors: string[] }) {
               scale: 1,
               rotate: piece.rotate,
             }}
-            transition={{ duration: 1.5 + Math.random() * 0.5, ease: "easeOut", delay: piece.delay }}
+            transition={{
+              duration: 1.5 + Math.random() * 0.5,
+              ease: "easeOut",
+              delay: piece.delay,
+            }}
             className="absolute block"
             style={{
               width: piece.size,

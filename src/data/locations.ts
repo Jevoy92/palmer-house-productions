@@ -9,6 +9,7 @@ export type Location = {
   subtitle: string;
   intro: string;
   heroEyebrow: string;
+  localPlanning: { title: string; body: string }[];
   services: { title: string; body: string }[];
   whyLocal: { title: string; body: string }[];
   serviceAreasTitle: string;
@@ -29,8 +30,22 @@ export const locations: Record<string, Location> = {
     subtitle:
       "Professional, affordable video production built for Seattle small businesses. We create content systems — social reels, brand films, training libraries, and testimonials — that grow with your company.",
     intro:
-      "We're not a massive agency. We're a nimble, Seattle-based video production team that understands the hustle of small business. No bloated crews, no surprise invoices — just great content that moves the needle.",
+      "Palmer House Productions plans and produces reusable video systems for Seattle-area businesses, including social reels, brand stories, testimonials, and training content. We film on location and shape each production day around the content your team needs to keep using.",
     heroEyebrow: "Seattle, WA",
+    localPlanning: [
+      {
+        title: "City access",
+        body: "For downtown and neighborhood shoots, we confirm loading, parking, building access, and permitted filming needs before production day.",
+      },
+      {
+        title: "Puget Sound schedules",
+        body: "When a project spans Seattle and the Eastside, we group locations and interview windows to reduce travel time and team disruption.",
+      },
+      {
+        title: "Weather-ready production",
+        body: "For outdoor scenes, we plan a practical indoor alternative or a flexible shot order around Pacific Northwest weather.",
+      },
+    ],
     services: [
       {
         title: "Social media reels",
@@ -121,10 +136,24 @@ export const locations: Record<string, Location> = {
     state: "WA",
     title: "Bellevue, WA Video Production",
     subtitle:
-      "Our Bellevue studio specializes in tech company video production. We build content systems for startups, SaaS platforms, and established tech brands throughout the Seattle metro area.",
+      "Video production for Bellevue startups, SaaS platforms, professional teams, and established brands throughout the Eastside and Seattle metro area.",
     intro:
-      "From startup launches to enterprise communications, we create video systems that scale with your tech company. Product demos, team training, and brand storytelling that resonates with your audience.",
+      "Palmer House Productions creates Bellevue video systems for product education, team training, launches, and brand storytelling. We combine on-location production with screen capture and reusable edits so one project can support sales, onboarding, and ongoing communication.",
     heroEyebrow: "Bellevue, WA",
+    localPlanning: [
+      {
+        title: "Office access",
+        body: "For office towers and shared campuses, we confirm building approval, loading instructions, room access, and any vendor requirements in advance.",
+      },
+      {
+        title: "Hybrid-team interviews",
+        body: "We organize subject-matter expert interviews into focused windows and plan companion screen recordings for distributed teams.",
+      },
+      {
+        title: "Eastside routing",
+        body: "Projects with stops in Bellevue, Redmond, Kirkland, or Issaquah are grouped to make the production schedule easier on your team.",
+      },
+    ],
     services: [
       {
         title: "SaaS product demonstrations",
@@ -194,7 +223,7 @@ export const locations: Record<string, Location> = {
     faqs: [
       {
         q: "Do you work with early-stage startups as well as enterprise tech?",
-        a: "Yes — from startup pitch and brand videos to enterprise training and communications, our Bellevue studio builds systems for tech companies at every stage.",
+        a: "Yes — from startup pitch and brand videos to enterprise training and communications, we build systems for tech companies at every stage.",
       },
       {
         q: "Can you help with product launch content?",
@@ -217,8 +246,22 @@ export const locations: Record<string, Location> = {
     subtitle:
       "Professional video production for Tacoma small businesses and organizations. From social content to training systems, we build video that works as hard as you do.",
     intro:
-      "We're a Pacific Northwest video production team that understands the hustle of small business. No bloated crews, no surprise invoices — just great content that moves the needle for Pierce County companies.",
+      "Palmer House Productions creates on-location video systems for Tacoma and South Sound businesses, nonprofits, and organizations. We turn interviews, demonstrations, and day-to-day expertise into social, brand, testimonial, and training assets your team can reuse.",
     heroEyebrow: "Tacoma, WA",
+    localPlanning: [
+      {
+        title: "Downtown and waterfront access",
+        body: "We confirm parking, loading, room access, and audio conditions before filming at offices, venues, and public-facing locations.",
+      },
+      {
+        title: "Industrial-site preparation",
+        body: "For production floors and working facilities, we document site rules, required protective equipment, and safe camera positions with your contact.",
+      },
+      {
+        title: "South Sound routing",
+        body: "We group Tacoma, Lakewood, Puyallup, Gig Harbor, and nearby stops when a project needs more than one location.",
+      },
+    ],
     services: [
       {
         title: "Social media reels",
@@ -309,10 +352,24 @@ export const locations: Record<string, Location> = {
     state: "OR",
     title: "Portland, OR Video Production",
     subtitle:
-      "Our Portland studio partners with local Oregon companies as well as remote-first and global teams. We build content systems — not one-off videos.",
+      "Video production for Portland-area companies and distributed teams. We build reusable content systems — not disconnected one-off videos.",
     intro:
-      "From artisanal brands to global corporations, we craft video content that captures Portland's innovative spirit. Creative storytelling, remote collaboration, and content systems that scale with your business.",
+      "Palmer House Productions plans Portland-area video production for brand storytelling, social campaigns, customer proof, and training libraries. Our review workflow also gives distributed stakeholders a clear way to comment and approve without being in the same room.",
     heroEyebrow: "Portland, OR",
+    localPlanning: [
+      {
+        title: "Location logistics",
+        body: "We confirm loading, parking, power, ambient sound, and filming permissions for offices, shops, and public-facing spaces before the shoot.",
+      },
+      {
+        title: "Metro-area routing",
+        body: "When a project includes Portland, Beaverton, Lake Oswego, Hillsboro, or another nearby stop, we organize the day to limit backtracking.",
+      },
+      {
+        title: "Remote review",
+        body: "Distributed teams can consolidate timestamped feedback and approvals through a shared review workflow after production.",
+      },
+    ],
     services: [
       {
         title: "Brand storytelling & narratives",
@@ -378,7 +435,7 @@ export const locations: Record<string, Location> = {
     faqs: [
       {
         q: "Do you only work with Portland-based companies?",
-        a: "No — while we love supporting local Oregon brands, our Portland studio also partners with remote-first and global teams via cloud-based review and flexible scheduling.",
+        a: "No — we support Oregon brands as well as distributed teams through cloud-based review and flexible scheduling.",
       },
       {
         q: "How do you support distributed or remote teams?",

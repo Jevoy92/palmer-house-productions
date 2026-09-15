@@ -26,14 +26,22 @@ import { MobileReceiptBar } from "./MobileReceiptBar";
 import { QuoteSummaryDialog } from "./QuoteSummaryDialog";
 import { generateQuoteReference } from "@/lib/honeybook";
 import { cn } from "@/lib/utils";
-import { PAL_GROUPS, relevantAddOns, type PalAccent } from "@/lib/pricing-catalog";
+import {
+  PAL_GROUPS,
+  SAME_SESSION_ADDITIONAL_MINUTE_PRICE,
+  SESSION_PRICE,
+  relevantAddOns,
+  type PalAccent,
+} from "@/lib/pricing-catalog";
 
 export type CountsMap = Record<string, number>;
 
-const TAX_RATE = 0.089; // WA default
+// Tax and travel depend on the confirmed production location and are not
+// represented as a universal estimate in the public builder.
+const TAX_RATE = 0;
 
 export function QuoteBuilder() {
-  const { selected, counts, cadence } = useCart();
+  const { selected, counts, cadence, offerCode } = useCart();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [reference, setReference] = useState<string>(() => generateQuoteReference());
   /** Carousel index — which Pal is currently being chosen on desktop. */
@@ -60,8 +68,8 @@ export function QuoteBuilder() {
   }, [selected]);
 
   const lines = useMemo(
-    () => buildReceiptLines({ selected, counts, cadence }),
-    [selected, counts, cadence],
+    () => buildReceiptLines({ selected, counts, cadence, offerCode }),
+    [selected, counts, cadence, offerCode],
   );
 
   const handleChange = (itemId: string, nextQty: number) => cartStore.changeQty(itemId, nextQty);
@@ -127,7 +135,7 @@ export function QuoteBuilder() {
                     onClick={() => setActiveIndex(i)}
                     aria-current={isActive ? "step" : undefined}
                     className={cn(
-                      "group relative flex flex-1 items-center gap-2.5 rounded-full px-3 py-2 text-left transition-all duration-300",
+                      "group relative flex flex-1 items-center gap-2.5 rounded-full px-3 py-2 text-left transition-[color,background-color,border-color,box-shadow,transform] duration-300",
                       isActive
                         ? "bg-background shadow-sm ring-1 ring-border/80"
                         : "hover:bg-background/60",
@@ -138,7 +146,7 @@ export function QuoteBuilder() {
                         <span
                           key={idx}
                           className={cn(
-                            "absolute h-8 w-8 overflow-hidden rounded-full bg-background ring-2 transition-all duration-300",
+                            "absolute h-8 w-8 overflow-hidden rounded-full bg-background ring-2 transition-[color,background-color,border-color,box-shadow,transform,opacity,filter] duration-300",
                             idx === 0 ? "left-0 z-10" : "right-0",
                             isActive || done ? "ring-[var(--pal-accent)]" : "ring-border",
                             !isActive &&
@@ -188,7 +196,7 @@ export function QuoteBuilder() {
             {/* Progress line */}
             <div className="mt-3 h-0.5 w-full overflow-hidden rounded-full bg-border/50">
               <div
-                className="h-full rounded-full bg-foreground/80 transition-all duration-500 ease-out"
+                className="h-full rounded-full bg-foreground/80 transition-[width] duration-500 ease-out"
                 style={{ width: `${((activeIndex + 1) / PAL_GROUPS.length) * 100}%` }}
               />
             </div>
@@ -255,9 +263,10 @@ export function QuoteBuilder() {
           )}
 
           <p className="mt-6 text-sm text-muted-foreground">
-            Mission prices use base session defaults ($
-            {(450).toLocaleString()}/session + $150/additional video). Evergreen shows 5-min episode
-            pricing — longer episodes confirmed on the call.
+            Production sessions start at ${SESSION_PRICE.toLocaleString()} with one edited minute
+            included. Added output from the same session is $
+            {SAME_SESSION_ADDITIONAL_MINUTE_PRICE.toLocaleString()} per edited minute. Evergreen
+            shows separate long-form episode pricing.
           </p>
         </div>
 
@@ -280,6 +289,7 @@ export function QuoteBuilder() {
         items={lines}
         taxRate={TAX_RATE}
         reference={reference}
+        offerCode={offerCode}
         onReset={reset}
       />
     </section>

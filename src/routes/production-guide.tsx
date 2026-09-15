@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import {
   PageShell,
   PageHero,
@@ -7,7 +7,19 @@ import {
   CardGrid,
   FaqList,
   CtaBand,
+  IncludedPanel,
 } from "@/components/site/PageShell";
+import {
+  FeatureSplit,
+  GraphicFrame,
+  PalCallout,
+  PalFigure,
+  ProcessTimeline,
+  Scene,
+} from "@/components/site/PalVisuals";
+import { Glyph, type GlyphName } from "@/components/site/Glyphs";
+import type { PalAccent } from "@/lib/pricing-catalog";
+import { createSeo, faqSchema, jsonLdScript, schemaGraph } from "@/lib/seo";
 
 const doThis = [
   "Wear solid, muted colors — navy, charcoal, olive, burgundy, cream work great",
@@ -27,42 +39,100 @@ const avoidThis = [
   "Heavy cologne or perfume — you'll be in close quarters with the crew",
 ];
 
-const environment = [
+const environment: { title: string; body: string; lane: PalAccent; glyph: GlyphName }[] = [
   {
     title: "Natural Light",
     body: "A room with large windows is ideal. If shooting indoors, turn off overhead lights to avoid mixed color temperatures.",
+    lane: "spotlight",
+    glyph: "light",
   },
   {
     title: "Quiet Atmosphere",
     body: "Ensure AC is off or quiet, windows are closed to street noise, and coworkers know you are recording.",
+    lane: "evergreen",
+    glyph: "mic",
   },
   {
     title: "Depth & Space",
     body: "Avoid standing directly against a wall. We need at least 6-8 feet of depth to create that professional blurred background.",
+    lane: "system",
+    glyph: "camera",
   },
 ];
 
-const planning = [
+const planning: { title: string; body: string; lane: PalAccent; glyph: GlyphName }[] = [
   {
     title: "Bullet Points > Scripts",
     body: "Reading a script makes you look like a robot. Know your key bullets and speak naturally.",
+    lane: "spotlight",
+    glyph: "script",
   },
   {
     title: 'The "Pause" Trick',
     body: "Mess up? Don't apologize. Just stop, take a breath, smile, and start the sentence over. We'll cut the bad take.",
+    lane: "reel",
+    glyph: "teleprompter",
   },
   {
     title: "Energy Levels",
     body: "The camera eats energy. Aim for 10-15% more enthusiasm than your normal conversation level.",
+    lane: "evergreen",
+    glyph: "spark",
   },
 ];
 
 const schedule = [
-  { time: "9:00 AM", item: "Crew Arrival & Setup" },
-  { time: "9:45 AM", item: "Sound & Light Check" },
-  { time: "10:00 AM", item: "First Take / Warm-up" },
-  { time: "12:00 PM", item: "Wrap Up" },
+  { time: "9:00 AM", item: "Crew Arrival & Setup", glyph: "clock" },
+  { time: "9:45 AM", item: "Sound & Light Check", glyph: "mic" },
+  { time: "10:00 AM", item: "First Take / Warm-up", glyph: "camera" },
+  { time: "12:00 PM", item: "Wrap Up", glyph: "publish" },
+] as const;
+
+const dayOf: { title: string; body: string; lane: PalAccent; glyph: GlyphName }[] = [
+  {
+    title: "Hydrate & Rest",
+    body: "Drink plenty of water the day before. Avoid salty foods to prevent puffiness. Get a good night's sleep.",
+    lane: "evergreen",
+    glyph: "spark",
+  },
+  {
+    title: "Emergency Kit",
+    body: "Bring a comb, translucent powder (for shine), lip balm, and lint roller. We have some, but personal is best.",
+    lane: "reel",
+    glyph: "gift",
+  },
+  {
+    title: "Guests",
+    body: "Keep the set clear. Only essential personnel in the room to maintain focus and audio quality.",
+    lane: "system",
+    glyph: "shield",
+  },
 ];
+
+const resources: { title: string; body: string; to: string; lane: PalAccent; glyph: GlyphName }[] =
+  [
+    {
+      to: "/blog/audio-quality-business-video",
+      title: "Understand clean audio",
+      body: "Learn why sound quality changes how professional a video feels.",
+      lane: "evergreen",
+      glyph: "mic",
+    },
+    {
+      to: "/blog/professional-lighting-budget",
+      title: "Plan better lighting",
+      body: "See how location and light placement shape the final image.",
+      lane: "spotlight",
+      glyph: "light",
+    },
+    {
+      to: "/faq",
+      title: "Read production FAQs",
+      body: "Get direct answers about process, ownership, support, and results.",
+      lane: "system",
+      glyph: "chat",
+    },
+  ];
 
 const faqs = [
   {
@@ -83,56 +153,89 @@ function ProductionGuidePage() {
   return (
     <PageShell>
       <PageHero
-        eyebrow="You're Booked — Let's Prep!"
-        title="Production Day"
-        highlight="Guide"
-        subtitle="Congrats on booking your session! Here's everything you need to show up confident and camera-ready. No stress, just great content."
+        eyebrow="You’re booked — let’s prep"
+        title="Production day,"
+        highlight="without the guesswork."
+        subtitle="The practical wardrobe, location, content, and day-of checklist for showing up confident and camera-ready."
+        ctas={false}
+        lane="spotlight"
+        visual={
+          <Scene
+            name="productionGuide"
+            priority
+            tags={["Wardrobe", "Location", "Talking points"]}
+          />
+        }
       />
 
+      <Section tone="mist">
+        <IncludedPanel
+          headingLevel={2}
+          title="Wear something comfortable and camera-safe, bring options, arrive early, and know your key points—not a memorized script."
+          items={[
+            "2–3 outfit options",
+            "Quiet room with depth",
+            "HVAC and street noise off",
+            "Arrive 15 minutes early",
+          ]}
+          lane="spotlight"
+          glyph="camera"
+        />
+      </Section>
+
       <Section
-        eyebrow="Wardrobe"
+        eyebrow="Look polished on camera"
         title="What to Wear & Grooming"
         subtitle="Your wardrobe plays a bigger role on camera than you'd think. Here's how to look polished without overthinking it."
       >
-        <div className="grid gap-6 sm:grid-cols-2">
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-            <h3 className="font-display text-lg font-bold">Do This</h3>
-            <ul className="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground">
-              {doThis.map((t) => (
-                <li key={t} className="flex gap-2">
-                  <span className="text-gradient-brand">✓</span>
-                  {t}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-soft">
-            <h3 className="font-display text-lg font-bold">Avoid This</h3>
-            <ul className="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground">
-              {avoidThis.map((t) => (
-                <li key={t} className="flex gap-2">
-                  <span className="text-muted-foreground">✕</span>
-                  {t}
-                </li>
-              ))}
-            </ul>
-          </div>
+        <div className="space-y-16">
+          <FeatureSplit
+            lane="evergreen"
+            eyebrow="Do this"
+            title="Solid colors, clean lines, a few options."
+            bullets={doThis}
+            visual={
+              <PalFigure
+                pal="kiana"
+                size="lg"
+                lane="evergreen"
+                className="min-h-[22rem]"
+                tags={["Solid, muted colors", "2–3 outfit options", "Simple jewelry"]}
+              />
+            }
+          />
+          <FeatureSplit
+            reverse
+            lane="reel"
+            eyebrow="Avoid this"
+            title="Skip what fights the camera and the lights."
+            bullets={avoidThis}
+            visual={
+              <GraphicFrame lane="reel" label="Moiré, glare, and squeaks">
+                <div className="grid h-full grid-cols-3 items-center gap-3 pt-8">
+                  <Glyph name="camera" lane="reel" className="size-16 sm:size-24" />
+                  <Glyph name="light" lane="reel" className="size-16 sm:size-24" />
+                  <Glyph name="mic" lane="reel" className="size-16 sm:size-24" />
+                </div>
+              </GraphicFrame>
+            }
+          />
         </div>
-        <p className="mx-auto mt-6 max-w-2xl text-center text-sm text-muted-foreground">
+        <p className="mx-auto mt-10 max-w-2xl text-center text-sm text-muted-foreground">
           If you're doing multiple videos, plan outfits that look noticeably different so content
           feels fresh across videos.
         </p>
       </Section>
 
       <Section
-        muted
-        eyebrow="Location"
+        tone="mist"
+        eyebrow="Set the scene"
         title="Location & Environment"
         subtitle="We'll handle the lighting and camera angles, but the environment sets the mood. Here's what we need from the space."
       >
         <CardGrid cols={3}>
           {environment.map((e) => (
-            <Card key={e.title} title={e.title} body={e.body} />
+            <Card key={e.title} title={e.title} body={e.body} lane={e.lane} glyph={e.glyph} />
           ))}
         </CardGrid>
       </Section>
@@ -144,53 +247,72 @@ function ProductionGuidePage() {
       >
         <CardGrid cols={3}>
           {planning.map((p, i) => (
-            <Card key={p.title} index={i + 1} title={p.title} body={p.body} />
+            <Card
+              key={p.title}
+              index={`0${i + 1}`}
+              title={p.title}
+              body={p.body}
+              lane={p.lane}
+              glyph={p.glyph}
+            />
           ))}
         </CardGrid>
-        <p className="mx-auto mt-8 max-w-xl text-center font-display text-xl font-bold italic">
-          "Authenticity wins over perfection every time."
-        </p>
+        <div className="mx-auto mt-10 max-w-2xl">
+          <PalCallout pal="kareem" quote="Authenticity wins over perfection every time." />
+        </div>
       </Section>
 
-      <Section muted eyebrow="Day-Of Logistics" title="Sample Schedule">
-        <div className="mx-auto max-w-xl overflow-hidden rounded-2xl border border-border bg-card shadow-soft">
-          {schedule.map((s, i) => (
-            <div
-              key={s.time}
-              className={`flex items-center justify-between px-6 py-4 ${i !== schedule.length - 1 ? "border-b border-border" : ""}`}
-            >
-              <span className="font-display font-bold text-gradient-brand">{s.time}</span>
-              <span className="text-sm text-muted-foreground">{s.item}</span>
-            </div>
-          ))}
+      <Section
+        tone="spotlight"
+        eyebrow="Day-Of Logistics"
+        title="Sample Schedule"
+        subtitle="Please arrive 15 mins early."
+      >
+        <ProcessTimeline
+          steps={schedule.map((s) => ({
+            title: s.time,
+            body: s.item,
+            glyph: s.glyph,
+            lane: "spotlight",
+          }))}
+        />
+        <div className="mt-10">
+          <CardGrid cols={3}>
+            {dayOf.map((d) => (
+              <Card key={d.title} title={d.title} body={d.body} lane={d.lane} glyph={d.glyph} />
+            ))}
+          </CardGrid>
         </div>
-        <p className="mt-4 text-center text-sm font-semibold text-muted-foreground">
-          Please arrive 15 mins early.
-        </p>
-        <CardGrid cols={3}>
-          <Card
-            title="Hydrate & Rest"
-            body="Drink plenty of water the day before. Avoid salty foods to prevent puffiness. Get a good night's sleep."
-          />
-          <Card
-            title="Emergency Kit"
-            body="Bring a comb, translucent powder (for shine), lip balm, and lint roller. We have some, but personal is best."
-          />
-          <Card
-            title="Guests"
-            body="Keep the set clear. Only essential personnel in the room to maintain focus and audio quality."
-          />
-        </CardGrid>
       </Section>
 
       <Section eyebrow="Common Questions" title="Frequently Asked Questions">
-        <FaqList items={faqs} />
+        <FaqList items={faqs} lane="spotlight" pal="kareem" />
+      </Section>
+
+      <Section
+        tone="mist"
+        eyebrow="Useful before and after the shoot"
+        title="Keep the production moving."
+      >
+        <CardGrid cols={3}>
+          {resources.map((item) => (
+            <Card
+              key={item.title}
+              title={item.title}
+              body={item.body}
+              to={item.to}
+              lane={item.lane}
+              glyph={item.glyph}
+            />
+          ))}
+        </CardGrid>
       </Section>
 
       <CtaBand
-        title="Ready to Create Something Amazing?"
-        subtitle="We're excited to work with you. If you have any last-minute questions before the shoot, just reply to your confirmation email."
+        title="Have a shoot-day question that is not covered here?"
+        subtitle="Reply to your confirmation email for project-specific help, or contact the Palmer House team."
         primaryLabel="Contact Support"
+        lane="spotlight"
       />
     </PageShell>
   );
@@ -198,22 +320,13 @@ function ProductionGuidePage() {
 
 export const Route = createFileRoute("/production-guide")({
   head: () => ({
-    meta: [
-      { title: "Production Day Guide | Palmer House Productions" },
-      {
-        name: "description",
-        content:
-          "Everything you need to prep for your video shoot: wardrobe tips, environment setup, content planning, and day-of logistics.",
-      },
-      { property: "og:title", content: "Production Day Guide | Palmer House Productions" },
-      {
-        property: "og:description",
-        content:
-          "Show up confident and camera-ready with our full production day preparation guide.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
+    ...createSeo({
+      title: "Production Day Guide | Palmer House Productions",
+      description:
+        "Everything you need to prep for your video shoot: wardrobe tips, environment setup, content planning, and day-of logistics.",
+      pathname: "/production-guide",
+    }),
+    scripts: [jsonLdScript(schemaGraph(faqSchema(faqs)))],
   }),
   component: ProductionGuidePage,
 });

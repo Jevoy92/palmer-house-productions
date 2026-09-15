@@ -34,10 +34,10 @@ import {
 } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import clara from "@/assets/pal-headshots/clara.png";
-import kiana from "@/assets/pal-headshots/kiana.png";
-import ryder from "@/assets/pal-headshots/ryder.png";
-import samira from "@/assets/pal-headshots/samira.png";
+import clara from "@/assets/pal-headshots/clara.webp";
+import kiana from "@/assets/pal-headshots/kiana.webp";
+import ryder from "@/assets/pal-headshots/ryder.webp";
+import samira from "@/assets/pal-headshots/samira.webp";
 import engineFlow from "@/assets/studio-visuals/content-engine-flow.png";
 import {
   contentPlatforms,
@@ -179,7 +179,6 @@ export function ContentEngine() {
   const [publishAt, setPublishAt] = useState(tomorrowAtTen);
   const [running, setRunning] = useState<null | "directions" | "campaign" | "source">(null);
 
-
   const output = campaignId ? campaignOutputs[campaignId] : null;
   const platformPosts = useMemo(() => output?.platformPosts || [], [output]);
   const matchingPosts = platformPosts.filter((post) => post.platform === platform);
@@ -229,7 +228,6 @@ export function ContentEngine() {
       setRunning(null);
     }
   }
-
 
   async function analyzeExternalSource() {
     if (sourceMode === "link") {
@@ -306,7 +304,6 @@ export function ContentEngine() {
     }
   }
 
-
   function updatePost(values: Partial<PlatformPost>) {
     if (!selectedPost) return;
     setDrafts((current) => ({
@@ -344,7 +341,11 @@ export function ContentEngine() {
         notes: `${selectedPost.nativeFeature}\n${selectedPost.publishNotes}`,
       });
       toast.success("Post added to the content calendar.");
-      celebrate({ title: "On the calendar.", detail: "The work now has a date.", colors: ["#5b8a2d", "#0a9b8f"] });
+      celebrate({
+        title: "On the calendar.",
+        detail: "The work now has a date.",
+        colors: ["#5b8a2d", "#0a9b8f"],
+      });
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "The post could not be scheduled.");
     }
@@ -465,7 +466,6 @@ export function ContentEngine() {
         </div>
       )}
 
-
       <Progress stage={stage} />
 
       <AnimatePresence mode="wait">
@@ -544,7 +544,6 @@ export function ContentEngine() {
                       />
                     ) : null}
                   </>
-
                 ) : (
                   <div className="p-2">
                     {sourceMode === "link" ? (
@@ -773,7 +772,6 @@ export function ContentEngine() {
                 ) : null}
               </>
             )}
-
           </motion.section>
         )}
 
@@ -1257,7 +1255,6 @@ export function GenerationProgress({
     </div>
   );
 }
-
 
 function Progress({ stage }: { stage: "idea" | "directions" | "results" }) {
   const steps = [

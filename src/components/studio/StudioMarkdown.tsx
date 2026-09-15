@@ -34,12 +34,16 @@ export function StudioMarkdown({ children, accent }: { children: string; accent?
             <strong className="font-black text-ink">{content}</strong>
           ),
           ul: ({ children: content }: { children?: ReactNode }) => (
-            <ul className="my-3 list-disc space-y-2 pl-5 marker:text-muted-foreground">{content}</ul>
+            <ul className="my-3 list-disc space-y-2 pl-5 marker:text-muted-foreground">
+              {content}
+            </ul>
           ),
           ol: ({ children: content }: { children?: ReactNode }) => (
             <ol className="my-3 list-decimal space-y-2 pl-5 marker:font-black">{content}</ol>
           ),
-          li: ({ children: content }: { children?: ReactNode }) => <li className="pl-1">{content}</li>,
+          li: ({ children: content }: { children?: ReactNode }) => (
+            <li className="pl-1">{content}</li>
+          ),
           a: ({ children: content, href }: { children?: ReactNode; href?: string }) => (
             <a
               href={href}
@@ -70,7 +74,9 @@ export function StudioMarkdown({ children, accent }: { children: string; accent?
               <table className="w-full border-collapse text-sm">{content}</table>
             </div>
           ),
-          thead: ({ children: content }: { children?: ReactNode }) => <thead className="bg-mist">{content}</thead>,
+          thead: ({ children: content }: { children?: ReactNode }) => (
+            <thead className="bg-mist">{content}</thead>
+          ),
           th: ({ children: content }: { children?: ReactNode }) => (
             <th className="border-b border-border px-3 py-2 text-left text-[11px] font-black uppercase tracking-[.08em]">
               {content}

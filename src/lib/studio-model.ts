@@ -349,7 +349,6 @@ export const ContentDirectionRequestSchema = z.object({
     personalInterests: z.array(z.string()).max(20).default([]),
     personalStory: z.string().max(1200).default(""),
   }),
-
 });
 
 export const ContentDirectionSchema = z.object({
@@ -417,7 +416,6 @@ export const CampaignBriefSchema = z.object({
     personalInterests: z.array(z.string()).max(20).default([]),
     personalStory: z.string().max(1200).default(""),
   }),
-
 });
 
 // NOTE: the model provider ignores JSON-Schema minItems, so array minimums are

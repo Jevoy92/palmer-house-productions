@@ -34,6 +34,8 @@ import {
   PAIN_POINTS,
   PAL_GROUPS,
   PROBLEMS,
+  SAME_SESSION_ADDITIONAL_MINUTE_PRICE,
+  SESSION_PRICE,
   SPEEDS,
   STAGES,
   VIBES,
@@ -319,7 +321,7 @@ export function MobilePricingView({
         onClick={() => setQuoteOpen((v) => !v)}
         className="flex w-full items-center gap-3 rounded-2xl border border-border bg-card p-3 text-left shadow-sm transition active:scale-[0.99]"
       >
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--receipt-paper,#f5f0e6)] text-foreground">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--receipt-paper)] text-foreground">
           <ReceiptIcon className="h-5 w-5" />
         </div>
         <div className="min-w-0 flex-1">
@@ -385,6 +387,7 @@ export function MobilePricingView({
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="search"
+            aria-label="Search Palmer House packages"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search Pals or keywords..."
@@ -415,7 +418,7 @@ export function MobilePricingView({
           <button
             type="button"
             onClick={() => setPainOpen(true)}
-            className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-foreground/70 hover:text-foreground"
+            className="inline-flex min-h-11 items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-foreground/70 hover:text-foreground"
           >
             <Heart className="h-3 w-3" /> What's hurting most?
           </button>
@@ -429,8 +432,9 @@ export function MobilePricingView({
                 key={id}
                 type="button"
                 onClick={() => toggleProblem(id)}
+                aria-pressed={on}
                 className={cn(
-                  "shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition",
+                  "min-h-11 shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition",
                   on
                     ? "border-foreground bg-foreground text-background"
                     : "border-border bg-card text-foreground",
@@ -443,7 +447,7 @@ export function MobilePricingView({
           <button
             type="button"
             onClick={() => setFilterOpen(true)}
-            className="shrink-0 rounded-full border border-dashed border-border bg-card px-3 py-1.5 text-xs font-semibold text-muted-foreground"
+            className="min-h-11 shrink-0 rounded-full border border-dashed border-border bg-card px-3 py-1.5 text-xs font-semibold text-muted-foreground"
           >
             More +
           </button>
@@ -593,7 +597,7 @@ export function MobilePricingView({
                 active ? "border-foreground/40" : "border-border",
               )}
             >
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--receipt-paper,#f5f0e6)] text-[10px] font-bold text-foreground">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[var(--receipt-paper)] text-[10px] font-bold text-foreground">
                 {d.format}
               </div>
               <div className="min-w-0 flex-1">
@@ -614,8 +618,10 @@ export function MobilePricingView({
       </div>
 
       <p className="mt-4 text-xs text-muted-foreground">
-        Mission prices use base session defaults ($450/session + $150/additional video). Evergreen
-        shows 5-min episode pricing — longer episodes confirmed on the call.
+        Production sessions start at ${SESSION_PRICE.toLocaleString()} with one edited minute
+        included. Added output from the same session is $
+        {SAME_SESSION_ADDITIONAL_MINUTE_PRICE.toLocaleString()} per edited minute. Evergreen uses
+        separate long-form episode pricing.
       </p>
 
       {/* Filter sheet */}
@@ -638,8 +644,9 @@ export function MobilePricingView({
                 key={s.id}
                 type="button"
                 onClick={() => setSort(s.id)}
+                aria-pressed={sort === s.id}
                 className={cn(
-                  "rounded-full border px-3.5 py-1.5 text-xs font-semibold transition",
+                  "min-h-11 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition",
                   sort === s.id
                     ? "border-foreground bg-foreground text-background"
                     : "border-border bg-card text-foreground",
@@ -659,8 +666,9 @@ export function MobilePricingView({
                 key={c.id}
                 type="button"
                 onClick={() => setCategory(c.id)}
+                aria-pressed={category === c.id}
                 className={cn(
-                  "rounded-full border px-3.5 py-1.5 text-xs font-semibold transition",
+                  "min-h-11 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition",
                   category === c.id
                     ? "border-foreground bg-foreground text-background"
                     : "border-border bg-card text-foreground",
@@ -799,7 +807,9 @@ export function MobilePricingView({
                     <div className="min-w-0 flex-1">
                       <div
                         className="text-[10px] font-bold uppercase tracking-[0.16em]"
-                        style={{ color: `var(--${g.accent})` }}
+                        style={{
+                          color: `var(--${g.accent}-text, var(--${g.accent}))`,
+                        }}
                       >
                         {g.role}
                       </div>
@@ -866,7 +876,9 @@ export function MobilePricingView({
                   <div className="min-w-0 flex-1">
                     <div
                       className="text-[10px] font-bold uppercase tracking-[0.16em]"
-                      style={{ color: `var(--${g.accent})` }}
+                      style={{
+                        color: `var(--${g.accent}-text, var(--${g.accent}))`,
+                      }}
                     >
                       {g.role}
                     </div>
@@ -917,6 +929,7 @@ export function MobilePricingView({
                   key={p.id}
                   type="button"
                   onClick={() => toggleProblem(p.id)}
+                  aria-pressed={on}
                   className={cn(
                     "flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left text-sm font-semibold transition",
                     on
@@ -978,8 +991,9 @@ function FilterChipGroup<T extends string>({
           <button
             type="button"
             onClick={() => onPickSingle!("any")}
+            aria-pressed={selectedSingle === "any"}
             className={cn(
-              "rounded-full border px-3.5 py-1.5 text-xs font-semibold transition",
+              "min-h-11 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition",
               selectedSingle === "any"
                 ? "border-foreground bg-foreground text-background"
                 : "border-border bg-card text-foreground",
@@ -995,8 +1009,9 @@ function FilterChipGroup<T extends string>({
               key={o.id}
               type="button"
               onClick={() => (isSingle ? onPickSingle!(o.id) : onToggle?.(o.id))}
+              aria-pressed={on}
               className={cn(
-                "rounded-full border px-3.5 py-1.5 text-xs font-semibold transition",
+                "min-h-11 rounded-full border px-3.5 py-1.5 text-xs font-semibold transition",
                 on
                   ? "border-foreground bg-foreground text-background"
                   : "border-border bg-card text-foreground",
@@ -1114,7 +1129,7 @@ function EditableControls({
 }) {
   const e = item.editable!;
   const clamp = (n: number) => Math.max(e.min, Math.min(e.max, n));
-  const total = e.fixedBase + count * e.unitPrice;
+  const total = computeItemPrice(item, count);
   const included = getIncluded(item, group);
   return (
     <div

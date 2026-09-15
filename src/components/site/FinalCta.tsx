@@ -9,18 +9,20 @@ export function FinalCta() {
         className="mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] px-6 py-20 text-center"
         style={{ backgroundColor: "var(--spotlight)" }}
       >
-        <div className="mx-auto flex h-44 items-end justify-center" aria-hidden="true">
+        <div className="group mx-auto flex h-44 items-end justify-center" aria-hidden="true">
           <img
             src={kareem}
             alt=""
             loading="lazy"
-            className="animate-float -mr-4 h-40 w-auto object-contain"
+            decoding="async"
+            className="-mr-4 h-40 w-auto object-contain transition-transform duration-500 ease-out group-hover:-translate-x-1 group-hover:-rotate-2 motion-reduce:transition-none"
           />
           <img
             src={kiana}
             alt=""
             loading="lazy"
-            className="animate-float -ml-4 h-44 w-auto object-contain [animation-delay:-2s]"
+            decoding="async"
+            className="-ml-4 h-44 w-auto object-contain transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:rotate-2 motion-reduce:transition-none"
           />
         </div>
         <h2 className="mt-8 text-[clamp(2rem,5vw,3.4rem)] leading-tight text-primary-foreground">

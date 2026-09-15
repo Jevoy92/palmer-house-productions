@@ -7,12 +7,16 @@ import raquel from "@/assets/pals-optimized/raquel.webp";
 // Real pricing constants — pulled directly from
 // palmerhouseproductions.com production bundle (ProductionPricing).
 // =============================================================================
-export const SESSION_PRICE = 450;
-export const ADDITIONAL_VIDEO_PRICE = 150;
+export const SESSION_PRICE = 500;
+export const INCLUDED_EDITED_MINUTES_PER_SESSION = 1;
+export const SAME_SESSION_ADDITIONAL_MINUTE_PRICE = 100;
+export const STANDALONE_EDITED_MINUTE_PRICE = 150;
+/** Backwards-compatible alias for standalone à-la-carte output. */
+export const ADDITIONAL_VIDEO_PRICE = STANDALONE_EDITED_MINUTE_PRICE;
 export const EVERGREEN_LENGTH_PRICE: Record<5 | 10 | 15, number> = {
-  5: 1050,
-  10: 1650,
-  15: 2250,
+  5: 1200,
+  10: 1800,
+  15: 2400,
 };
 
 export type PalAccent = "system" | "spotlight" | "evergreen" | "reel";
@@ -26,6 +30,8 @@ export type Editable = {
   unitLabelPlural: string; // plural noun, e.g. "videos"
   unitPrice: number;
   unitPriceLabel: string; // "+ $150 per video"
+  /** Units already covered by fixedBase before unit pricing begins. */
+  includedCount?: number;
   defaultCount: number;
   min: number;
   max: number;
@@ -216,20 +222,23 @@ export type PalGroup = {
   defaults: GroupDefaults;
 };
 
-/** Build a session-based mission (Reel / Spotlight / System) with editable videos. */
-const sessionPack = (sessions: number, videos: number) => {
+/** Build a session mission where each session includes one edited minute. */
+const sessionPack = (sessions: number, editedMinutes: number) => {
   const fixedBase = sessions * SESSION_PRICE;
+  const includedCount = sessions * INCLUDED_EDITED_MINUTES_PER_SESSION;
+  const additionalMinutes = Math.max(0, editedMinutes - includedCount);
   return {
-    price: fixedBase + videos * ADDITIONAL_VIDEO_PRICE,
+    price: fixedBase + additionalMinutes * SAME_SESSION_ADDITIONAL_MINUTE_PRICE,
     editable: {
       fixedBase,
       baseLabel: `${sessions} session${sessions > 1 ? "s" : ""} · $${fixedBase.toLocaleString()}`,
-      unitLabel: "video",
-      unitLabelPlural: "videos",
-      unitPrice: ADDITIONAL_VIDEO_PRICE,
-      unitPriceLabel: `+ $${ADDITIONAL_VIDEO_PRICE} per video`,
-      defaultCount: videos,
-      min: 1,
+      unitLabel: "edited min",
+      unitLabelPlural: "edited min",
+      unitPrice: SAME_SESSION_ADDITIONAL_MINUTE_PRICE,
+      unitPriceLabel: `${includedCount} min included · + $${SAME_SESSION_ADDITIONAL_MINUTE_PRICE} per added min`,
+      includedCount,
+      defaultCount: editedMinutes,
+      min: includedCount,
       max: 20,
       step: 1,
     } satisfies Editable,
@@ -237,7 +246,7 @@ const sessionPack = (sessions: number, videos: number) => {
 };
 
 /** Build an evergreen long-form mission with editable runtime blocks. */
-const EVERGREEN_BLOCK_PRICE = 600; // delta between successive tiers (1050→1650→2250)
+const EVERGREEN_BLOCK_PRICE = 600;
 const evergreenPack = (mins: 5 | 10 | 15) => {
   const fixedBase = EVERGREEN_LENGTH_PRICE[5];
   const extraBlocks = ((mins - 5) / 5) as 0 | 1 | 2;
@@ -262,7 +271,8 @@ const evergreenPack = (mins: 5 | 10 | 15) => {
 export function computeItemPrice(item: ServiceItem, count?: number): number {
   if (!item.editable) return item.price;
   const c = count ?? item.editable.defaultCount;
-  return item.editable.fixedBase + c * item.editable.unitPrice;
+  const billable = Math.max(0, c - (item.editable.includedCount ?? 0));
+  return item.editable.fixedBase + billable * item.editable.unitPrice;
 }
 
 /**
@@ -270,9 +280,11 @@ export function computeItemPrice(item: ServiceItem, count?: number): number {
  * mission in a Pal lane. Surfaced inside each pack's expand panel so buyers
  * see the value baked into the base session, not just the unit math.
  */
-const BASE_INCLUDED = [
+export const BASE_INCLUDED = [
   "2-hour on-location filming session",
-  "Pre-shoot planning, strategy & on-set direction",
+  "Setup, breakdown, teleprompter & on-set direction",
+  "Pre-shoot planning, script help & wardrobe guidance",
+  "1 edited minute included per session — split into 60s, 2×30s, or 4×15s",
   "Professional editing, color & sound mix",
   "Professional lighting & broadcast-grade audio",
 ];
@@ -321,8 +333,9 @@ export const ADD_ONS: AddOn[] = [
   // Universal
   {
     id: "extra-edited-video",
-    name: "Additional Edited Video",
-    description: "One more fully edited video from the same production session",
+    name: "Standalone Edited Minute",
+    description:
+      "One edited minute booked outside a paired production session; pair it with a session for the lower $100 rate",
     price: ADDITIONAL_VIDEO_PRICE,
     category: "universal",
   },
@@ -345,21 +358,21 @@ export const ADD_ONS: AddOn[] = [
     id: "posting-plan",
     name: "30-Day Posting Plan",
     description: "Strategic posting schedule with optimal times",
-    price: 100,
+    price: 125,
     category: "universal",
   },
   {
     id: "brand-kit",
     name: "Brand Kit Integration",
     description: "Lower thirds, fonts, colors, branding overlays",
-    price: 150,
+    price: 200,
     category: "universal",
   },
   {
     id: "rush-delivery",
     name: "Rush Delivery",
     description: "48-hour turnaround on editing",
-    price: 200,
+    price: 300,
     category: "universal",
   },
   // Pal-specific

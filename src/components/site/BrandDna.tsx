@@ -12,7 +12,7 @@ const dna = [
   {
     title: "Audience Engagement Framework",
     body: "Likes are nice. Comments, shares, conversion are better. Hooks, loops, and CTA strategies that turn viewers into participants.",
-    tag: "10x Comments · 5x Shares · Higher CTR",
+    tag: "Hooks · Loops · Clear CTAs",
   },
   {
     title: "Brand Momentum Engine",
@@ -49,7 +49,7 @@ export function BrandDna() {
         </div>
 
         <div className="mt-16">
-          <p className="text-gradient-brand text-sm font-semibold uppercase tracking-widest">
+          <p className="text-brand text-sm font-semibold uppercase tracking-widest">
             Guided by Reel Pal
           </p>
           <h2 className="mt-3 max-w-3xl text-[clamp(1.9rem,4.5vw,3rem)]">
@@ -66,7 +66,7 @@ export function BrandDna() {
               <article key={d.title} className="surface-card p-8">
                 <h3 className="text-2xl">{d.title}</h3>
                 <p className="mt-3 leading-relaxed text-muted-foreground">{d.body}</p>
-                <p className="text-gradient-brand mt-6 text-sm font-semibold">{d.tag}</p>
+                <p className="text-brand mt-6 text-sm font-semibold">{d.tag}</p>
               </article>
             ))}
           </div>

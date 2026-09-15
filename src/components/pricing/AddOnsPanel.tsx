@@ -1,4 +1,5 @@
-import { Minus, Plus, Sparkles } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
+import { GlyphBadge } from "@/components/site/Glyphs";
 import { cn } from "@/lib/utils";
 import type { AddOn, SelectedMap } from "@/lib/pricing-catalog";
 
@@ -21,14 +22,16 @@ export function AddOnsPanel({
   if (addOns.length === 0) return null;
 
   return (
-    <div className="overflow-hidden rounded-3xl border border-dashed border-border bg-card/60 p-5">
-      <div className="mb-4 flex items-baseline justify-between">
-        <div>
-          <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-primary">
-            <Sparkles className="-mt-0.5 mr-1 inline h-3 w-3" />
-            Boost it
+    <div className="overflow-hidden rounded-3xl border border-dashed border-border bg-spotlight-soft/40 p-5">
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <GlyphBadge name="spark" lane="spotlight" size="sm" />
+          <div>
+            <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-spotlight-text">
+              Boost it
+            </div>
+            <h3 className="font-display text-lg font-bold">Add-ons</h3>
           </div>
-          <h3 className="font-display text-lg font-bold">Add-ons</h3>
         </div>
         <span className="text-xs text-muted-foreground">À-la-carte extras</span>
       </div>
@@ -43,7 +46,7 @@ export function AddOnsPanel({
               onClick={() => onChange(a.id, active ? 0 : 1)}
               aria-pressed={active}
               className={cn(
-                "group grid grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-2xl border p-3 text-left transition-all sm:flex sm:items-start",
+                "group grid grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-2xl border p-3 text-left transition-[color,background-color,border-color,box-shadow,transform] sm:flex sm:items-start",
                 active
                   ? "border-primary bg-primary/5 shadow-sm"
                   : "border-border bg-background hover:border-foreground/20",

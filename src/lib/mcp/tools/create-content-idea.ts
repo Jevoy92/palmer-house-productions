@@ -13,7 +13,11 @@ export default defineTool({
     workspace_id: z.string().uuid().describe("Workspace id from list_workspaces."),
     body: z.string().trim().min(1).describe("The idea itself, in plain language."),
     primary_lane: z.enum(LANES).optional().describe("Palmer House lane for this idea."),
-    business_problem: z.string().trim().optional().describe("The business problem or decision this idea addresses."),
+    business_problem: z
+      .string()
+      .trim()
+      .optional()
+      .describe("The business problem or decision this idea addresses."),
     source_url: z.string().url().optional().describe("Optional source link the idea came from."),
   },
   annotations: { readOnlyHint: false, destructiveHint: false, openWorldHint: false },

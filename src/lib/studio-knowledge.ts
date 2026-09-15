@@ -78,7 +78,8 @@ export async function loadWorkspaceKnowledge(client: Client, workspaceId: string
     memory && Object.keys(memory).length ? `Approved memory: ${JSON.stringify(memory)}` : "",
   ].filter(Boolean);
 
-  if (!sections.length) return "This workspace has no prior activity yet. This is their first piece of work.";
+  if (!sections.length)
+    return "This workspace has no prior activity yet. This is their first piece of work.";
   return `WORKSPACE KNOWLEDGE BASE — treat this as already-known context. Build on it, never ask the member to repeat it, and never duplicate work that already exists.\n\n${sections.join(
     "\n\n",
   )}`;

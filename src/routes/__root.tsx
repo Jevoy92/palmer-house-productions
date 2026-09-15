@@ -12,8 +12,18 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import {
+  createSeo,
+  jsonLdScript,
+  organizationSchema,
+  schemaGraph,
+  SITE_DESCRIPTION,
+  websiteSchema,
+} from "../lib/seo";
 import { SITE_MAINTENANCE, isAlwaysOnPath } from "../lib/site-mode";
 import { ComingSoon } from "../components/site/ComingSoon";
+
+const DEFAULT_TITLE = "Palmer House Productions — Video Systems That Solve Business Problems";
 
 function NotFoundComponent() {
   return (
@@ -55,6 +65,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
+            type="button"
             onClick={() => {
               router.invalidate();
               reset();
@@ -76,54 +87,37 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Palmer House Productions — Video Systems That Solve Business Problems" },
-      {
-        name: "description",
-        content:
-          "Palmer House Productions builds video systems for Pacific Northwest businesses — one shoot day delivers a content library for social, web, and training.",
-      },
-      { name: "author", content: "Palmer House Productions" },
-      {
-        property: "og:title",
-        content: "Palmer House Productions — Video Systems That Solve Business Problems",
-      },
-      {
-        property: "og:description",
-        content:
-          "Palmer House Productions builds video systems for Pacific Northwest businesses — one shoot day delivers a content library for social, web, and training.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@palmerhouseviz" },
-      {
-        name: "twitter:title",
-        content: "Palmer House Productions — Video Systems That Solve Business Problems",
-      },
-      {
-        name: "twitter:description",
-        content:
-          "Palmer House Productions builds video systems for Pacific Northwest businesses — one shoot day delivers a content library for social, web, and training.",
-      },
-    ],
-    links: [
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap",
-      },
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-      { rel: "icon", href: "/favicon.png", type: "image/png" },
-      { rel: "apple-touch-icon", href: "/favicon.png" },
-    ],
-  }),
+  head: () => {
+    const seo = createSeo({
+      title: DEFAULT_TITLE,
+      description: SITE_DESCRIPTION,
+      pathname: "/",
+    });
+
+    return {
+      meta: [
+        { charSet: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { name: "theme-color", content: "#ffffff" },
+        ...seo.meta,
+      ],
+      links: [
+        { rel: "preconnect", href: "https://fonts.googleapis.com" },
+        { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap",
+        },
+        {
+          rel: "stylesheet",
+          href: appCss,
+        },
+        { rel: "icon", href: "/favicon.png", type: "image/png" },
+        { rel: "apple-touch-icon", href: "/favicon.png" },
+      ],
+      scripts: [jsonLdScript(schemaGraph(organizationSchema(), websiteSchema()))],
+    };
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,

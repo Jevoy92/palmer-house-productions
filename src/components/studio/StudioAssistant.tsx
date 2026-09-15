@@ -16,18 +16,17 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { toast } from "sonner";
-import kareem from "@/assets/pal-headshots/kareem.png";
-import kiana from "@/assets/pal-headshots/kiana.png";
-import ryder from "@/assets/pal-headshots/ryder.png";
-import raquel from "@/assets/pal-headshots/raquel.png";
-import cyrus from "@/assets/pal-headshots/cyrus.png";
-import clara from "@/assets/pal-headshots/clara.png";
-import silas from "@/assets/pal-headshots/silas.png";
-import samira from "@/assets/pal-headshots/samira.png";
+import kareem from "@/assets/pal-headshots/kareem.webp";
+import kiana from "@/assets/pal-headshots/kiana.webp";
+import ryder from "@/assets/pal-headshots/ryder.webp";
+import raquel from "@/assets/pal-headshots/raquel.webp";
+import cyrus from "@/assets/pal-headshots/cyrus.webp";
+import clara from "@/assets/pal-headshots/clara.webp";
+import silas from "@/assets/pal-headshots/silas.webp";
+import samira from "@/assets/pal-headshots/samira.webp";
 import type { AssistantResponse, PalName, StudioLane } from "@/lib/studio-model";
 import { StudioMarkdown } from "./StudioMarkdown";
 import { useStudio } from "./StudioProvider";
-
 
 const palDirectory: Record<
   PalName,
@@ -192,7 +191,6 @@ export function StudioAssistant() {
       toast.error(error instanceof Error ? error.message : "Could not save this answer.");
     }
   }
-
 
   async function choosePal(name: PalName) {
     try {
@@ -467,14 +465,16 @@ export function StudioAssistant() {
                       className="size-7 animate-pulse rounded-lg border border-border object-cover object-top"
                     />
                     <span className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
-                      <LoaderCircle className="size-3.5 animate-spin" style={{ color: pal.color }} />
+                      <LoaderCircle
+                        className="size-3.5 animate-spin"
+                        style={{ color: pal.color }}
+                      />
                       {pal.name} is reading the workspace…
                     </span>
                   </div>
                 ) : null}
                 <div ref={endRef} />
               </div>
-
             )}
           </div>
 
@@ -515,7 +515,6 @@ export function StudioAssistant() {
               without your approval.
             </p>
           </form>
-
         </section>
 
         <aside className="border-t border-border bg-mist/55 p-4 xl:border-l xl:border-t-0">

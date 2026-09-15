@@ -1,33 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageShell, PageHero, Section } from "@/components/site/PageShell";
+import { LegalDocument, type LegalSection } from "@/components/site/LegalDocument";
+import { createSeo } from "@/lib/seo";
 
 const LAST_UPDATED = "August 7, 2026";
 
 export const Route = createFileRoute("/terms")({
   head: () => ({
-    meta: [
-      { title: "Terms of Service | Palmer House Productions" },
-      {
-        name: "description",
-        content:
-          "The terms that govern Palmer House Productions video production services, digital downloads, and the Palmer House Studio membership app.",
-      },
-      { property: "og:title", content: "Terms of Service | Palmer House Productions" },
-      {
-        property: "og:description",
-        content:
-          "The terms that govern Palmer House Productions video production services, digital downloads, and the Palmer House Studio membership app.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "robots", content: "index, follow" },
-    ],
-    links: [{ rel: "canonical", href: "https://www.palmerhouseproductions.com/terms" }],
+    ...createSeo({
+      title: "Terms of Service | Palmer House Productions",
+      description:
+        "The terms that govern Palmer House Productions video production services, digital downloads, and the Palmer House Studio membership app.",
+      pathname: "/terms",
+    }),
   }),
   component: TermsPage,
 });
 
-const sections: { title: string; body: string[] }[] = [
+const sections: LegalSection[] = [
   {
     title: "Agreement",
     body: [
@@ -98,7 +87,7 @@ const sections: { title: string; body: string[] }[] = [
   {
     title: "Availability and Disclaimers",
     body: [
-      "We work to keep Studio available, but we do not guarantee uninterrupted or error-free service, and maintenance windows may occur. Studio and our digital products are provided \"as is\" without warranties of any kind, express or implied.",
+      'We work to keep Studio available, but we do not guarantee uninterrupted or error-free service, and maintenance windows may occur. Studio and our digital products are provided "as is" without warranties of any kind, express or implied.',
       "We do not guarantee any particular business result — views, leads, followers, rankings, or revenue — from our services or from content produced with them.",
     ],
   },
@@ -133,35 +122,12 @@ const sections: { title: string; body: string[] }[] = [
 
 function TermsPage() {
   return (
-    <PageShell>
-      <PageHero
-        eyebrow="Legal"
-        title="Terms of"
-        highlight="Service"
-        subtitle="The terms covering our production work, digital products, and the Palmer House Studio membership."
-        ctas={false}
-      />
-      <Section>
-        <div className="mx-auto max-w-3xl">
-          <p className="font-mono text-xs uppercase tracking-[.16em] text-muted-foreground">
-            Last updated · {LAST_UPDATED}
-          </p>
-          <div className="mt-10 space-y-10">
-            {sections.map((s) => (
-              <div key={s.title}>
-                <h2 className="font-display text-xl font-bold">{s.title}</h2>
-                <div className="mt-3 space-y-3">
-                  {s.body.map((paragraph) => (
-                    <p key={paragraph} className="text-sm leading-relaxed text-muted-foreground">
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
-    </PageShell>
+    <LegalDocument
+      title="Terms of Service"
+      subtitle="The terms covering our production work, digital products, and Palmer House Studio membership."
+      lastUpdated={LAST_UPDATED}
+      related={{ label: "Read our Privacy Policy", to: "/privacy" }}
+      sections={sections}
+    />
   );
 }

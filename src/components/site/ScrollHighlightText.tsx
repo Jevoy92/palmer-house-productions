@@ -1,8 +1,9 @@
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import type { MotionValue } from "motion/react";
+import { useHydratedReducedMotion } from "@/hooks/use-hydrated-reduced-motion";
 
-function Word({
+function Phrase({
   children,
   progress,
   range,
@@ -12,11 +13,7 @@ function Word({
   range: [number, number];
 }) {
   const opacity = useTransform(progress, range, [0.18, 1]);
-  return (
-    <motion.span style={{ opacity }} className="inline-block">
-      {children}&nbsp;
-    </motion.span>
-  );
+  return <motion.span style={{ opacity }}>{children} </motion.span>;
 }
 
 export function ScrollHighlightText({
@@ -28,15 +25,21 @@ export function ScrollHighlightText({
   className?: string;
   paragraphClassName?: string;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start 0.85", "end 0.4"],
   });
 
-  const wordLists = paragraphs.map((p) => p.split(" "));
-  const total = wordLists.reduce((n, l) => n + l.length, 0);
+  const phraseLists = paragraphs.map(
+    (paragraph) =>
+      paragraph
+        .match(/[^.!?]+[.!?]+|[^.!?]+$/g)
+        ?.map((phrase) => phrase.trim())
+        .filter(Boolean) ?? [paragraph],
+  );
+  const total = phraseLists.reduce((count, phrases) => count + phrases.length, 0);
 
   if (reduce) {
     return (
@@ -54,22 +57,19 @@ export function ScrollHighlightText({
 
   return (
     <div ref={ref} className={className}>
-      {wordLists.map((words, pi) => {
+      {phraseLists.map((phrases, pi) => {
         const start = offset;
-        offset += words.length;
+        offset += phrases.length;
         return (
-          <p
-            key={pi}
-            className={`flex flex-wrap justify-center ${pi > 0 ? paragraphClassName : ""}`}
-          >
-            {words.map((w, i) => (
-              <Word
-                key={`${w}-${i}`}
+          <p key={pi} className={pi > 0 ? paragraphClassName : undefined}>
+            {phrases.map((phrase, i) => (
+              <Phrase
+                key={`${phrase}-${i}`}
                 progress={scrollYProgress}
                 range={[(start + i) / total, (start + i + 1) / total]}
               >
-                {w}
-              </Word>
+                {phrase}
+              </Phrase>
             ))}
           </p>
         );

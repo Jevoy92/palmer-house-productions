@@ -11,4 +11,9 @@ function StudioLayout() {
   );
 }
 
-export const Route = createFileRoute("/studio")({ component: StudioLayout });
+export const Route = createFileRoute("/studio")({
+  head: () => ({
+    meta: [{ title: "Palmer House Studio" }, { name: "robots", content: "noindex, nofollow" }],
+  }),
+  component: StudioLayout,
+});

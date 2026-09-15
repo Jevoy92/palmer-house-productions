@@ -22,7 +22,7 @@ export function MobileReceiptBar({
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-2 pb-3 sm:px-3 lg:hidden">
       <div
         className={cn(
-          "pointer-events-auto mx-auto flex max-w-md items-center gap-2 rounded-2xl border border-border bg-background/95 p-2 shadow-2xl backdrop-blur-md transition-all min-[361px]:gap-3 min-[361px]:pl-3",
+          "pointer-events-auto mx-auto flex max-w-md items-center gap-2 rounded-2xl border border-border bg-background/95 p-2 shadow-2xl backdrop-blur-md transition-[color,background-color,border-color,box-shadow,transform,opacity] min-[361px]:gap-3 min-[361px]:pl-3",
           isEmpty && "opacity-90",
         )}
       >
@@ -42,7 +42,7 @@ export function MobileReceiptBar({
           disabled={isEmpty}
           onClick={onBook}
           className={cn(
-            "flex min-w-[8.65rem] shrink-0 items-center justify-center gap-1.5 rounded-xl bg-foreground px-3 py-3 font-display text-xs font-bold text-background transition-all min-[361px]:min-w-[9.25rem] min-[361px]:gap-2 min-[361px]:px-4",
+            "flex min-w-[8.65rem] shrink-0 items-center justify-center gap-1.5 rounded-xl bg-foreground px-3 py-3 font-display text-xs font-bold text-background transition-[color,background-color,border-color,box-shadow,transform,opacity] min-[361px]:min-w-[9.25rem] min-[361px]:gap-2 min-[361px]:px-4",
             isEmpty ? "cursor-not-allowed opacity-35" : "hover:bg-foreground/85",
           )}
         >

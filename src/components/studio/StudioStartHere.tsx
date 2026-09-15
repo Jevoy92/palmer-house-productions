@@ -80,7 +80,6 @@ export function StudioStartHere() {
   const allDone = completed === steps.length;
   const nextStep = steps.find((step) => !step.done) || steps[steps.length - 1];
 
-
   const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
@@ -101,7 +100,6 @@ export function StudioStartHere() {
       detail: "Brand DNA, moodboard, first campaign, and calendar are all in place.",
     });
   }, [workspace, allDone]);
-
 
   const dismiss = (permanent: boolean) => {
     if (permanent && workspace && typeof window !== "undefined") {
@@ -265,7 +263,6 @@ export function StudioStartHere() {
           </span>
         </motion.button>
       ) : null}
-
     </>
   );
 }

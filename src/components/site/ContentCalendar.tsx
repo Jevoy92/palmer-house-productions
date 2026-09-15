@@ -1,4 +1,3 @@
-import { motion, useReducedMotion } from "motion/react";
 import transformationEngine from "@/assets/transformation-engine.webp";
 import { Marquee } from "./Marquee";
 
@@ -38,12 +37,10 @@ function Pill({ label }: { label: string }) {
 }
 
 export function ContentCalendar() {
-  const reduce = useReducedMotion();
-
   return (
     <section className="py-20">
       <div className="mx-auto max-w-6xl px-4">
-        <p className="text-gradient-brand text-sm font-semibold uppercase tracking-widest">
+        <p className="text-brand text-sm font-semibold uppercase tracking-widest">
           One shoot day, weeks of content
         </p>
         <h2 className="mt-4 max-w-3xl text-[clamp(1.9rem,4.5vw,3rem)]">
@@ -55,16 +52,15 @@ export function ContentCalendar() {
           crew packs up.
         </p>
 
-        <div className="surface-card mt-10 grid items-center gap-8 p-8 sm:p-12 md:grid-cols-2">
-          <motion.img
+        <div className="surface-card group mt-10 grid items-center gap-8 p-8 sm:p-12 md:grid-cols-2">
+          <img
             src={transformationEngine}
             alt="The Palmer House transformation engine turning one shoot into many useful content formats"
             width={800}
             height={800}
             loading="lazy"
-            className="mx-auto w-64 mix-blend-darken"
-            animate={reduce ? undefined : { rotate: [-2, 2, -2], y: [0, -7, 0] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            decoding="async"
+            className="mx-auto w-64 mix-blend-darken transition-transform duration-500 ease-out group-hover:-translate-y-1 group-hover:rotate-1 motion-reduce:transition-none"
           />
           <div>
             <h3 className="text-2xl">Maximum output, minimal effort.</h3>
@@ -75,7 +71,7 @@ export function ContentCalendar() {
               <span className="rounded-full border border-border bg-background px-4 py-2">
                 Raw Master.mov
               </span>
-              <span className="bg-gradient-brand rounded-full px-4 py-2 font-semibold text-primary-foreground shadow-glow">
+              <span className="bg-brand rounded-full px-4 py-2 font-semibold text-primary-foreground shadow-glow">
                 1 Shoot Day
               </span>
             </div>

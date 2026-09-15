@@ -9,7 +9,7 @@ import listCalendarItems from "./tools/list-calendar-items";
 
 // Must be the direct Supabase host; the published SUPABASE_URL is a proxy form
 // that fails RFC 8414 issuer matching. Vite inlines this literal at build time.
-const projectRef = import.meta.env['VITE_SUPABASE_PROJECT_ID'] ?? "project-ref-unset";
+const projectRef = import.meta.env["VITE_SUPABASE_PROJECT_ID"] ?? "project-ref-unset";
 
 export default defineMcp({
   name: "palmer-house-productions",

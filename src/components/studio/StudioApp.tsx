@@ -78,7 +78,7 @@ import {
   type StudioView,
 } from "@/lib/studio-model";
 import type { Tables } from "@/lib/supabase/database.types";
-import samiraHeadshot from "@/assets/pal-headshots/samira.png";
+import samiraHeadshot from "@/assets/pal-headshots/samira.webp";
 import { StudioNotifications } from "./StudioNotifications";
 import { PalAvatar } from "./PalAvatar";
 import { classifyLane } from "@/lib/studio-intelligence";
@@ -92,6 +92,8 @@ import { useStudio } from "./StudioProvider";
 import { ContentEngine } from "./ContentEngine";
 import { StudioMark } from "./StudioVisuals";
 import { PalAuthShowcase } from "./PalAuthShowcase";
+import { Scene } from "@/components/site/PalVisuals";
+import { Glyph, type GlyphName } from "@/components/site/Glyphs";
 import { CelebrationLayer, celebrate, celebrateOnce } from "./Celebrate";
 import { StudioStartHere } from "./StudioStartHere";
 import { StudioAssistant } from "./StudioAssistant";
@@ -430,14 +432,18 @@ function AuthExperience() {
         : "border-system bg-system-soft text-system";
 
   return (
-    <main className="min-h-screen bg-white px-4 py-5 sm:px-7 lg:px-10 lg:py-7">
+    <main className="min-h-screen bg-cream px-4 py-5 sm:px-7 lg:px-10 lg:py-7">
       <header className="mx-auto flex max-w-[96rem] items-center justify-between">
-        <Link to="/" aria-label="Palmer House home">
+        <Link
+          to="/"
+          aria-label="Palmer House home"
+          className="rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight focus-visible:ring-offset-2"
+        >
           <StudioMark />
         </Link>
         <Link
           to="/"
-          className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-bold hover:bg-spotlight-soft"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full px-3 text-sm font-bold hover:bg-spotlight-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight"
         >
           <ChevronLeft className="size-4" /> Back to the website
         </Link>
@@ -448,8 +454,10 @@ function AuthExperience() {
           <PalAuthShowcase />
         </section>
 
-        <section className="mx-auto w-full max-w-[31rem] lg:mx-0">
-          <p className="studio-eyebrow text-spotlight">Your content operating system</p>
+        <section className="mx-auto w-full max-w-[32rem] rounded-[2rem] border border-border bg-white p-6 shadow-[0_28px_90px_-50px_rgba(31,35,40,.35)] sm:p-9 lg:mx-0">
+          <p className="font-mono text-xs font-bold uppercase tracking-[.16em] text-spotlight">
+            Palmer House Studio
+          </p>
           <h1 className="mt-5 text-[clamp(2.5rem,4.6vw,4rem)] font-black leading-[.94] tracking-[-.065em]">
             {mode === "signin"
               ? "Welcome back. Let’s keep building."
@@ -457,7 +465,7 @@ function AuthExperience() {
           </h1>
           <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground">
             {mode === "signin"
-              ? "Choose whichever sign-in is easiest for you. They all open the same studio."
+              ? "Choose whichever sign-in is easiest. Every option opens the same Palmer House Studio workspace."
               : "Create the private workspace where your ideas become campaigns your audience can use."}
           </p>
 
@@ -465,7 +473,7 @@ function AuthExperience() {
             type="button"
             onClick={() => void continueWithGoogle()}
             disabled={googleBusy}
-            className="mt-8 flex min-h-13 w-full items-center justify-center gap-3 rounded-xl border border-ink px-5 font-bold transition hover:bg-spotlight-soft disabled:opacity-60"
+            className="mt-8 flex min-h-13 w-full items-center justify-center gap-3 rounded-xl border border-ink px-5 font-bold transition hover:bg-spotlight-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {googleBusy ? (
               <LoaderCircle className="size-5 animate-spin" />
@@ -492,7 +500,7 @@ function AuthExperience() {
             {googleBusy ? "Opening Google…" : "Continue with Google"}
           </button>
 
-          <div className="mt-6 flex items-center gap-3 text-xs font-bold uppercase tracking-[.18em] text-muted-foreground">
+          <div className="mt-6 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[.14em] text-muted-foreground">
             <span className="h-px flex-1 bg-border" /> or use email{" "}
             <span className="h-px flex-1 bg-border" />
           </div>
@@ -517,7 +525,7 @@ function AuthExperience() {
                   setMethod(value);
                   setNotice(null);
                 }}
-                className={`min-h-11 rounded-xl px-3 text-sm font-bold transition ${
+                className={`min-h-11 rounded-xl px-3 text-sm font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight ${
                   method === value
                     ? "bg-ink text-white"
                     : "text-muted-foreground hover:bg-spotlight-soft"
@@ -554,10 +562,10 @@ function AuthExperience() {
               />
               <button
                 disabled={busy}
-                className="flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 font-bold text-white transition hover:bg-ink disabled:opacity-50"
+                className="flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 font-bold text-white transition hover:bg-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {busy ? <LoaderCircle className="size-4 animate-spin" /> : null}
-                {mode === "signin" ? "Sign in" : "Create my Studio"}
+                {mode === "signin" ? "Sign in" : "Create Palmer House Studio"}
                 <ArrowRight className="size-4" />
               </button>
               {mode === "signin" ? (
@@ -565,7 +573,7 @@ function AuthExperience() {
                   type="button"
                   onClick={() => void requestReset()}
                   disabled={resetBusy}
-                  className="text-sm font-bold text-spotlight underline decoration-spotlight/30 underline-offset-4 disabled:opacity-60"
+                  className="rounded-lg text-sm font-bold text-spotlight underline decoration-spotlight/30 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight disabled:opacity-60"
                 >
                   {resetBusy ? "Sending reset link…" : "Forgot password?"}
                 </button>
@@ -585,24 +593,30 @@ function AuthExperience() {
               />
               <button
                 disabled={linkBusy}
-                className="flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 font-bold text-white transition hover:bg-ink disabled:opacity-50"
+                className="flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 font-bold text-white transition hover:bg-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {linkBusy ? (
                   <LoaderCircle className="size-4 animate-spin" />
                 ) : (
                   <Mail className="size-4" />
                 )}
-                {sentTo && sentTo === email.trim() ? "Send another link" : "Email me a sign-in link"}
+                {sentTo && sentTo === email.trim()
+                  ? "Send another link"
+                  : "Email me a sign-in link"}
               </button>
-              <p className="text-xs leading-relaxed text-muted-foreground">
-                No password needed. We email you a secure link — tap it on any device and your studio
-                opens.
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                No password needed. We email you a secure link — tap it on any device and your
+                Palmer House Studio workspace opens.
               </p>
             </form>
           )}
 
           {notice ? (
-            <p role="status" className={`mt-4 rounded-xl border p-4 text-sm ${noticeClass}`}>
+            <p
+              role={notice.tone === "error" ? "alert" : "status"}
+              aria-live={notice.tone === "error" ? "assertive" : "polite"}
+              className={`mt-4 rounded-xl border p-4 text-sm leading-relaxed ${noticeClass}`}
+            >
               {notice.text}
             </p>
           ) : null}
@@ -614,7 +628,7 @@ function AuthExperience() {
                 setMethod("password");
                 setNotice(null);
               }}
-              className="font-bold text-spotlight underline decoration-spotlight/30 underline-offset-4"
+              className="rounded-lg font-bold text-spotlight underline decoration-spotlight/30 underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight"
             >
               {mode === "signin"
                 ? "New here? Create an account"
@@ -626,7 +640,7 @@ function AuthExperience() {
             <ShieldCheck className="mt-0.5 size-5 text-evergreen" />
             <div>
               <p className="text-sm font-bold">Private by default.</p>
-              <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+              <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
                 Every member gets a private workspace built during onboarding. Your Brand DNA,
                 campaigns, library, and calendar stay connected to your account.
               </p>
@@ -635,28 +649,39 @@ function AuthExperience() {
         </section>
       </div>
 
-
-      <section className="mx-auto grid max-w-[90rem] gap-5 rounded-[1.25rem] border border-border p-5 md:grid-cols-[1.4fr_repeat(4,1fr)] md:items-center">
-        <p className="text-xl font-extrabold leading-tight">
-          Your brand, campaigns, calendar, and content—in one place.
-        </p>
-        {[
-          [Lightbulb, "Ideas", "Capture what matters"],
-          [Play, "Content", "Create once, reshape well"],
-          [CalendarDays, "Campaigns", "Keep the work moving"],
-          [Users, "Pals", "Get useful guidance"],
-        ].map(([Icon, label, note]) => (
-          <div
-            key={String(label)}
-            className="flex items-center gap-3 md:border-l md:border-border md:pl-5"
-          >
-            <Icon className="size-5 text-system" />
-            <div>
-              <p className="text-xs font-extrabold uppercase tracking-[.06em]">{String(label)}</p>
-              <p className="mt-1 text-[11px] text-muted-foreground">{String(note)}</p>
-            </div>
+      <section className="mx-auto grid max-w-[90rem] items-center gap-6 rounded-[2rem] border border-white/80 bg-system-soft p-5 sm:p-6 lg:grid-cols-[14rem_1fr]">
+        <Scene name="membershipStudio" className="mx-auto w-full max-w-[14rem]" />
+        <div className="grid gap-5 md:grid-cols-[1.4fr_repeat(4,1fr)] md:items-center">
+          <div>
+            <p className="font-mono text-[10px] font-bold uppercase tracking-[.16em] text-system-text">
+              Palmer House Studio
+            </p>
+            <p className="mt-2 text-xl font-extrabold leading-tight">
+              Your brand, campaigns, calendar, and content—in one place.
+            </p>
           </div>
-        ))}
+          {(
+            [
+              ["bulb", "Ideas", "Capture what matters"],
+              ["play", "Content", "Create once, reshape well"],
+              ["calendar", "Campaigns", "Keep the work moving"],
+              ["handshake", "Pals", "Get useful guidance"],
+            ] as [GlyphName, string, string][]
+          ).map(([glyph, label, note]) => (
+            <div
+              key={label}
+              className="flex items-center gap-3 md:border-l md:border-white/70 md:pl-5"
+            >
+              <span className="grid size-12 shrink-0 place-items-center rounded-[1.25rem] bg-white shadow-sm">
+                <Glyph name={glyph} lane="system" className="size-8" />
+              </span>
+              <div>
+                <p className="text-sm font-extrabold">{label}</p>
+                <p className="mt-1 text-sm leading-snug text-muted-foreground">{note}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
     </main>
   );
@@ -797,32 +822,33 @@ function Onboarding() {
                 <div>
                   <p className="mb-3 text-sm font-bold">Pick anything that is genuinely you</p>
                   <div className="flex flex-wrap gap-2">
-                    {[...interestOptions, ...interests.filter((item) => !interestOptions.includes(item))].map(
-                      (option) => {
-                        const active = interests.includes(option);
-                        return (
-                          <button
-                            key={option}
-                            type="button"
-                            onClick={() =>
-                              setInterests((current) =>
-                                current.includes(option)
-                                  ? current.filter((item) => item !== option)
-                                  : [...current, option],
-                              )
-                            }
-                            className="min-h-11 rounded-xl border px-4 text-sm font-bold transition"
-                            style={{
-                              borderColor: active ? match.color : "var(--border)",
-                              background: active ? match.color : "white",
-                              color: active ? "white" : "var(--ink)",
-                            }}
-                          >
-                            {option}
-                          </button>
-                        );
-                      },
-                    )}
+                    {[
+                      ...interestOptions,
+                      ...interests.filter((item) => !interestOptions.includes(item)),
+                    ].map((option) => {
+                      const active = interests.includes(option);
+                      return (
+                        <button
+                          key={option}
+                          type="button"
+                          onClick={() =>
+                            setInterests((current) =>
+                              current.includes(option)
+                                ? current.filter((item) => item !== option)
+                                : [...current, option],
+                            )
+                          }
+                          className="min-h-11 rounded-xl border px-4 text-sm font-bold transition"
+                          style={{
+                            borderColor: active ? match.color : "var(--border)",
+                            background: active ? match.color : "white",
+                            color: active ? "white" : "var(--ink)",
+                          }}
+                        >
+                          {option}
+                        </button>
+                      );
+                    })}
                   </div>
                   <div className="mt-3 flex gap-2">
                     <input
@@ -934,7 +960,6 @@ function Onboarding() {
                 </div>
               </>
             ) : null}
-
           </div>
 
           {(() => {
@@ -1020,7 +1045,6 @@ function Onboarding() {
               </>
             );
           })()}
-
         </section>
         <section className="hidden lg:block">
           <PalAuthShowcase />
@@ -1732,7 +1756,9 @@ function Dashboard() {
               {progression.tier.label}
             </p>
             <p className="mt-2 text-xs text-muted-foreground">
-              {progression.next ? `${progression.toNext} moves to ${progression.next.label}` : "Top tier"}
+              {progression.next
+                ? `${progression.toNext} moves to ${progression.next.label}`
+                : "Top tier"}
             </p>
           </div>
           {guide.avatar ? (
@@ -1808,12 +1834,13 @@ function Dashboard() {
           <div className="flex items-end justify-between">
             <div>
               <p className="studio-eyebrow text-evergreen">In motion</p>
-              <h2 className="mt-3 text-2xl font-black tracking-[-.03em]">
-                What we are working on
-              </h2>
+              <h2 className="mt-3 text-2xl font-black tracking-[-.03em]">What we are working on</h2>
             </div>
             {campaigns.length ? (
-              <Link to="/studio/campaigns" className="text-xs font-bold underline underline-offset-4">
+              <Link
+                to="/studio/campaigns"
+                className="text-xs font-bold underline underline-offset-4"
+              >
                 All campaigns
               </Link>
             ) : null}
@@ -2015,7 +2042,6 @@ function Dashboard() {
   );
 }
 
-
 function CampaignFlowMap({
   campaigns,
   assets,
@@ -2161,7 +2187,6 @@ function IdeasBoard() {
   const [filter, setFilter] = useState<"all" | keyof typeof lanes>("all");
   const detectedLane = classifyLane(`${draft} ${problem}`) as keyof typeof lanes;
 
-
   const [directions, setDirections] = useState<Awaited<ReturnType<typeof suggestDirections>>>([]);
   const savedIdeas = ideas.filter((item) => item.status !== "archived");
   const combined = savedIdeas.length
@@ -2198,7 +2223,6 @@ function IdeasBoard() {
         sourceMediaPath: mediaPath,
         lane: detectedLane,
         businessProblem: problem.trim() || `${lanes[detectedLane].role}: ${body}`,
-
       });
       if (sourcePreview) setPreviewById((current) => ({ ...current, [id]: sourcePreview }));
       if (findAngles) {
@@ -2810,13 +2834,7 @@ function Campaigns() {
 }
 
 type CampaignStage =
-  | "strategy"
-  | "longform"
-  | "shorts"
-  | "socials"
-  | "blog"
-  | "filmplan"
-  | "publish";
+  "strategy" | "longform" | "shorts" | "socials" | "blog" | "filmplan" | "publish";
 
 const campaignStages: Array<{
   id: CampaignStage;
@@ -3789,7 +3807,9 @@ function BlogWrittenResult({
   const articleDek = article?.dek || strategy?.promise || "";
   const articleBody = [
     articleDek,
-    ...sections.map((section) => (section.heading ? `${section.heading}\n\n${section.body}` : section.body)),
+    ...sections.map((section) =>
+      section.heading ? `${section.heading}\n\n${section.body}` : section.body,
+    ),
     takeaways.length ? `Key takeaways\n\n- ${takeaways.join("\n- ")}` : "",
     closing,
   ]
@@ -4462,14 +4482,8 @@ function BrandGuidePreview({
 }
 
 function BrandStudio() {
-  const {
-    brand,
-    brandReferences,
-    saveBrand,
-    uploadBrandAsset,
-    addBrandReference,
-    analyzeWebsite,
-  } = useStudio();
+  const { brand, brandReferences, saveBrand, uploadBrandAsset, addBrandReference, analyzeWebsite } =
+    useStudio();
   const details =
     brand?.brand_details &&
     typeof brand.brand_details === "object" &&
@@ -4541,8 +4555,7 @@ function BrandStudio() {
   const [intakeStep, setIntakeStep] = useState(-1);
   const [intakeResult, setIntakeResult] = useState<{ filled: number; error?: string } | null>(null);
   const reduceMotion = useReducedMotion();
-  const sourceMark = (key: DraftKey) =>
-    fromWebsite.has(key) ? "From your website" : undefined;
+  const sourceMark = (key: DraftKey) => (fromWebsite.has(key) ? "From your website" : undefined);
 
   // A scrape that says "no photography found" is not a filled field.
   function hasSubstance(value?: string | null) {
@@ -4603,8 +4616,7 @@ function BrandStudio() {
     } catch (error) {
       clearInterval(ticker);
       setIntakeStep(-1);
-      const message =
-        error instanceof Error ? error.message : "We could not read that website.";
+      const message = error instanceof Error ? error.message : "We could not read that website.";
       setIntakeResult({ filled: 0, error: message });
       toast.error(message);
     }
@@ -4633,7 +4645,10 @@ function BrandStudio() {
       title: "Visual system",
       detail: "How the work looks and moves",
       icon: Images,
-      complete: hasSubstance(draft.typography) && hasSubstance(draft.photography) && hasSubstance(draft.imageStyle),
+      complete:
+        hasSubstance(draft.typography) &&
+        hasSubstance(draft.photography) &&
+        hasSubstance(draft.imageStyle),
     },
   ];
   const guideChecks = [
@@ -6491,9 +6506,7 @@ function SettingsView() {
                       <LogOut className="size-4" /> Sign out
                     </button>
                   </div>
-
                 </div>
-
               </div>
             ) : null}
           </section>

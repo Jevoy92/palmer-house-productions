@@ -5,7 +5,8 @@ import { supabaseForUser, unauthenticated, fail, ok } from "../supabase";
 export default defineTool({
   name: "get_campaign",
   title: "Get campaign",
-  description: "Read one campaign with its strategy, production plan and generated assets (scripts, captions, posts).",
+  description:
+    "Read one campaign with its strategy, production plan and generated assets (scripts, captions, posts).",
   inputSchema: {
     campaign_id: z.string().uuid().describe("Campaign id from list_campaigns."),
   },

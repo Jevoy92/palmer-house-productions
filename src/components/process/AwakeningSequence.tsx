@@ -15,9 +15,11 @@ import cyrus from "@/assets/pals-optimized/cyrus.webp";
 import clara from "@/assets/pals-optimized/clara.webp";
 import silas from "@/assets/pals-optimized/silas.webp";
 import samira from "@/assets/pals-optimized/samira.webp";
+import { laneVar } from "@/lib/pal-lanes";
+import type { PalAccent } from "@/lib/pricing-catalog";
 
 type Lane = {
-  id: "reel" | "spotlight" | "evergreen" | "system";
+  id: PalAccent;
   label: string;
   pals: string;
   outcome: string;
@@ -30,14 +32,16 @@ type Lane = {
   images: [string, string];
 };
 
+const laneSoft = (lane: PalAccent) => `color-mix(in srgb, ${laneVar(lane)} 10%, transparent)`;
+
 const lanes: Lane[] = [
   {
     id: "reel",
     label: "Reel",
     pals: "Ryder + Raquel",
     outcome: "Turn scattered ideas into consistent visibility.",
-    color: "#E8720C",
-    soft: "rgba(232,114,12,.1)",
+    color: laneVar("reel"),
+    soft: laneSoft("reel"),
     corner: "left-[4vw] top-[14vh]",
     start: 0.28,
     end: 0.43,
@@ -49,8 +53,8 @@ const lanes: Lane[] = [
     label: "Spotlight",
     pals: "Kareem + Kiana",
     outcome: "Turn invisible value into proof people trust.",
-    color: "#3D1A66",
-    soft: "rgba(61,26,102,.1)",
+    color: laneVar("spotlight"),
+    soft: laneSoft("spotlight"),
     corner: "right-[4vw] top-[14vh]",
     start: 0.4,
     end: 0.55,
@@ -62,8 +66,8 @@ const lanes: Lane[] = [
     label: "Evergreen",
     pals: "Cyrus + Clara",
     outcome: "Turn repeated explanations into lasting authority.",
-    color: "#5B8A2D",
-    soft: "rgba(91,138,45,.1)",
+    color: laneVar("evergreen"),
+    soft: laneSoft("evergreen"),
     corner: "left-[4vw] bottom-[12vh]",
     start: 0.52,
     end: 0.67,
@@ -75,8 +79,8 @@ const lanes: Lane[] = [
     label: "System",
     pals: "Silas + Samira",
     outcome: "Turn tribal knowledge into a system that scales.",
-    color: "#0A9B8F",
-    soft: "rgba(10,155,143,.1)",
+    color: laneVar("system"),
+    soft: laneSoft("system"),
     corner: "right-[4vw] bottom-[12vh]",
     start: 0.64,
     end: 0.79,
@@ -144,7 +148,7 @@ export function AwakeningSequence() {
                 <li key={item.label} className="flex items-center gap-2">
                   <span
                     className="size-1.5 rounded-full transition-colors duration-300"
-                    style={{ backgroundColor: index <= stage ? "#1F2328" : "#d9dadd" }}
+                    style={{ backgroundColor: index <= stage ? "var(--ink)" : "var(--border)" }}
                   />
                   <span
                     className={`font-mono text-[9px] uppercase tracking-[0.18em] transition-opacity ${
@@ -175,7 +179,7 @@ export function AwakeningSequence() {
               className="pointer-events-none absolute left-1/2 top-1/2 size-[min(42vw,34rem)] -translate-x-1/2 -translate-y-1/2 rounded-full border border-system/10"
               style={{
                 opacity: reduce ? 0.7 : unified,
-                boxShadow: "0 0 120px rgba(10,155,143,.16)",
+                boxShadow: "0 0 120px color-mix(in srgb, var(--system) 16%, transparent)",
               }}
             />
             <SystemSwitch progress={switchProgress} reduce={Boolean(reduce)} />
@@ -333,21 +337,23 @@ function PalPair({ lane, className = "" }: { lane: Lane; className?: string }) {
 
 function SystemSwitch({ progress, reduce }: { progress: MotionValue<number>; reduce: boolean }) {
   const knobX = useTransform(progress, [0, 1], [0, 42]);
-  const backgroundColor = useTransform(progress, [0, 1], ["#e6e6e7", "#0A9B8F"]);
   return (
     <div className="relative flex items-center gap-4">
       <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
         Plan
       </span>
-      <motion.div
-        className="flex h-10 w-20 items-center rounded-full p-1"
-        style={{ backgroundColor: reduce ? "#0A9B8F" : backgroundColor }}
-      >
+      <div className="relative flex h-10 w-20 items-center overflow-hidden rounded-full bg-border p-1">
+        {/* Token-driven fill: fades the lane colour over the neutral track instead of interpolating hex values. */}
         <motion.span
-          className="size-8 rounded-full bg-white shadow-md"
+          aria-hidden="true"
+          className="absolute inset-0 bg-system"
+          style={{ opacity: reduce ? 1 : progress }}
+        />
+        <motion.span
+          className="relative size-8 rounded-full bg-white shadow-md"
           style={{ x: reduce ? 42 : knobX }}
         />
-      </motion.div>
+      </div>
       <span className="font-mono text-[9px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
         Launch
       </span>
@@ -383,14 +389,17 @@ function Rail({
   const opacity = useTransform(progress, [lane.start - 0.05, lane.end], [0.12, 0.9]);
   return (
     <>
-      <path d={lane.rail} fill="none" stroke="#e9eaec" strokeWidth="1" />
+      <path d={lane.rail} fill="none" className="stroke-border" strokeWidth="1" />
       <motion.path
         d={lane.rail}
         fill="none"
-        stroke={lane.color}
         strokeLinecap="round"
         strokeWidth="2"
-        style={{ pathLength: reduce ? 1 : pathLength, opacity: reduce ? 0.9 : opacity }}
+        style={{
+          stroke: lane.color,
+          pathLength: reduce ? 1 : pathLength,
+          opacity: reduce ? 0.9 : opacity,
+        }}
       />
     </>
   );

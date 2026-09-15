@@ -45,12 +45,16 @@
   --color-brand-blue: var(--brand-blue);
   --color-reel: var(--reel);
   --color-reel-soft: var(--reel-soft);
+  --color-reel-text: var(--reel-text);
   --color-spotlight: var(--spotlight);
   --color-spotlight-soft: var(--spotlight-soft);
+  --color-spotlight-text: var(--spotlight-text);
   --color-evergreen: var(--evergreen);
   --color-evergreen-soft: var(--evergreen-soft);
+  --color-evergreen-text: var(--evergreen-text);
   --color-system: var(--system);
   --color-system-soft: var(--system-soft);
+  --color-system-text: var(--system-text);
   --color-cream: var(--cream);
   --color-mist: var(--mist);
   --color-ink: var(--ink);
@@ -73,12 +77,25 @@
   /* 4 pillar lanes */
   --reel: #e8720c;
   --reel-soft: #fdf1e6;
+  --reel-text: #9b3f00;
   --spotlight: #3d1a66;
   --spotlight-soft: #eee9f4;
+  --spotlight-text: var(--spotlight);
   --evergreen: #5b8a2d;
   --evergreen-soft: #eef4e4;
+  --evergreen-text: #3f6819;
   --system: #0a9b8f;
   --system-soft: #e4f4f2;
+  --system-text: #00665f;
+
+  /* Deep lane shades — dark CTA bands only */
+  --reel-deep: #b85405;
+  --spotlight-deep: var(--spotlight);
+  --evergreen-deep: var(--evergreen-text);
+  --system-deep: #0b5e58;
+
+  /* Pricing receipt paper */
+  --receipt-paper: #f5f0e6;
 
   --background: var(--paper);
   --foreground: var(--ink);
@@ -151,6 +168,8 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     overflow-x: clip;
   }
@@ -172,14 +191,19 @@
     font-family: var(--font-display);
     font-weight: 700;
     letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 }
 
-@utility text-gradient-brand {
+@utility text-brand {
   color: var(--spotlight);
 }
 
-@utility bg-gradient-brand {
+@utility bg-brand {
   background-color: var(--spotlight);
   color: var(--paper);
 }
@@ -199,6 +223,11 @@
   box-shadow: var(--shadow-soft);
 }
 
+.render-lazy {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
 @keyframes marquee-x {
   from {
     transform: translateX(0);
@@ -210,20 +239,6 @@
 
 @utility animate-marquee {
   animation: marquee-x var(--marquee-duration, 40s) linear infinite;
-}
-
-@keyframes float-y {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-14px);
-  }
-}
-
-@utility animate-float {
-  animation: float-y 6s ease-in-out infinite;
 }
 
 .animate-marquee:hover {
@@ -272,7 +287,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border-radius: 0.875rem;
+  border-radius: 999px;
   background: var(--ink);
   padding-inline: 1.25rem;
   color: white;
@@ -290,11 +305,11 @@
   justify-content: center;
   gap: 0.5rem;
   border: 1px solid var(--border);
-  border-radius: 0.875rem;
+  border-radius: 999px;
   background: white;
   padding-inline: 1rem;
   color: var(--ink);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 700;
   transition: background-color 180ms ease;
 }
@@ -374,6 +389,113 @@
 .pricing-builder button,
 .pricing-builder a {
   touch-action: manipulation;
+}
+
+.medicare-home {
+  --medicare-navy: #10204a;
+  --medicare-blush: #ffffff;
+}
+
+.medicare-home :focus-visible {
+  outline: 2px solid #10204a;
+  outline-offset: 3px;
+}
+
+@keyframes medicare-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes medicare-wiggle {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+
+@keyframes medicare-ripple {
+  0% {
+    transform: scaleX(0.7);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scaleX(1);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scaleX(0.7);
+    opacity: 0.2;
+  }
+}
+
+@keyframes medicare-pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.7);
+  }
+}
+
+@keyframes medicare-kenburns {
+  0% {
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    transform: scale(1.08) translateY(-2%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .medicare-bob {
+    animation: medicare-bob 2.6s ease-in-out infinite;
+  }
+
+  .medicare-ripple {
+    animation: medicare-ripple 1.4s ease-in-out infinite;
+  }
+
+  .medicare-pulse-dot {
+    animation: medicare-pulse-dot 1.2s ease-in-out infinite;
+  }
+
+  .medicare-kenburns {
+    animation: medicare-kenburns 18s ease-in-out infinite alternate;
+  }
+}
+
+/* Utility so variants like `group-hover:medicare-wiggle` are generated. */
+@utility medicare-wiggle {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: medicare-wiggle 0.7s ease-in-out infinite;
+  }
+}
+
+.kit-cart-cluster {
+  container-type: inline-size;
+}
+
+@container (max-width: 20rem) {
+  .kit-cart-button {
+    width: 2.25rem;
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .kit-cart-label {
+    display: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

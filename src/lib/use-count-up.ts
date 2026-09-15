@@ -14,6 +14,13 @@ export function useCountUp(value: number, duration = 450) {
     fromRef.current = display;
     startRef.current = null;
 
+    // No animation requested (e.g. reduced motion): jump straight to the value.
+    // Guards against 0/0 = NaN in the easing math below.
+    if (!(duration > 0)) {
+      setDisplay(value);
+      return;
+    }
+
     const tick = (t: number) => {
       if (startRef.current === null) startRef.current = t;
       const elapsed = t - startRef.current;

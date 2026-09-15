@@ -174,7 +174,10 @@ export function GuidedList({
   filledFrom?: string;
   optional?: boolean;
 }) {
-  const items = value.split("\n").map((item) => item.trim()).filter(Boolean);
+  const items = value
+    .split("\n")
+    .map((item) => item.trim())
+    .filter(Boolean);
   const [entry, setEntry] = useState("");
   const add = (next: string) => {
     const clean = next.trim();
@@ -265,7 +268,10 @@ export function GuidedTags({
   filledFrom?: string;
   optional?: boolean;
 }) {
-  const items = value.split(",").map((item) => item.trim()).filter(Boolean);
+  const items = value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
   const [entry, setEntry] = useState("");
   const toggle = (item: string) =>
     onChange(

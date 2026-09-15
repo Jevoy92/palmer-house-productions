@@ -5,7 +5,8 @@ import { supabaseForUser, unauthenticated, fail, ok } from "../supabase";
 export default defineTool({
   name: "list_calendar_items",
   title: "List calendar items",
-  description: "List scheduled content calendar items for a workspace, optionally within a date range.",
+  description:
+    "List scheduled content calendar items for a workspace, optionally within a date range.",
   inputSchema: {
     workspace_id: z.string().uuid().describe("Workspace id from list_workspaces."),
     from: z.string().datetime().optional().describe("ISO timestamp lower bound for publish_at."),

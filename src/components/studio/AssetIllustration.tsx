@@ -42,7 +42,16 @@ export const ASSET_MOTIFS: Motif[] = [
     ...LANES.spotlight,
     draw: ({ color, seed }) => (
       <>
-        <rect x="54" y="40" width="150" height="100" rx="10" fill="none" stroke={color} strokeWidth="2" />
+        <rect
+          x="54"
+          y="40"
+          width="150"
+          height="100"
+          rx="10"
+          fill="none"
+          stroke={color}
+          strokeWidth="2"
+        />
         <circle cx="129" cy="90" r="26" fill="none" stroke={color} strokeWidth="2" />
         <circle cx="129" cy="90" r="9" fill={color} opacity=".75" />
         <path d="M204 66 264 44v92l-60-22z" fill="none" stroke={color} strokeWidth="2" />
@@ -88,13 +97,31 @@ export const ASSET_MOTIFS: Motif[] = [
           <rect width="150" height="60" rx="14" fill="none" stroke={color} strokeWidth="2" />
           <path d="M22 60 20 78 44 60z" fill="none" stroke={color} strokeWidth="2" />
           {range(3).map((i) => (
-            <rect key={i} x="18" y={16 + i * 13} width={108 - i * 30} height="5" rx="2.5" fill={color} opacity={0.45 - i * 0.12} />
+            <rect
+              key={i}
+              x="18"
+              y={16 + i * 13}
+              width={108 - i * 30}
+              height="5"
+              rx="2.5"
+              fill={color}
+              opacity={0.45 - i * 0.12}
+            />
           ))}
         </g>
         <g transform="translate(146 92)">
           <rect width="130" height="52" rx="14" fill={color} opacity=".1" />
           {range(2).map((i) => (
-            <rect key={i} x="18" y={16 + i * 14} width={90 - i * 34} height="5" rx="2.5" fill={color} opacity=".45" />
+            <rect
+              key={i}
+              x="18"
+              y={16 + i * 14}
+              width={90 - i * 34}
+              height="5"
+              rx="2.5"
+              fill={color}
+              opacity=".45"
+            />
           ))}
         </g>
       </>
@@ -108,10 +135,26 @@ export const ASSET_MOTIFS: Motif[] = [
     ...LANES.evergreen,
     draw: ({ color, seed }) => (
       <>
-        <rect x="64" y="42" width="192" height="118" rx="10" fill="none" stroke={color} strokeWidth="2" />
+        <rect
+          x="64"
+          y="42"
+          width="192"
+          height="118"
+          rx="10"
+          fill="none"
+          stroke={color}
+          strokeWidth="2"
+        />
         <path d="M64 52 160 112 256 52" fill="none" stroke={color} strokeWidth="2" />
         {range(4).map((i) => (
-          <circle key={i} cx={92 + i * 46} cy={28 + (i % 2) * 8 + seed * 5} r="4" fill={color} opacity={0.5 - i * 0.1} />
+          <circle
+            key={i}
+            cx={92 + i * 46}
+            cy={28 + (i % 2) * 8 + seed * 5}
+            r="4"
+            fill={color}
+            opacity={0.5 - i * 0.1}
+          />
         ))}
       </>
     ),
@@ -139,7 +182,14 @@ export const ASSET_MOTIFS: Motif[] = [
           />
         ))}
         {range(3).map((i) => (
-          <circle key={i} cx={140 + i * 20} cy="152" r="3.5" fill={color} opacity={i === 0 ? 0.8 : 0.25} />
+          <circle
+            key={i}
+            cx={140 + i * 20}
+            cy="152"
+            r="3.5"
+            fill={color}
+            opacity={i === 0 ? 0.8 : 0.25}
+          />
         ))}
       </>
     ),
@@ -184,7 +234,16 @@ export const ASSET_MOTIFS: Motif[] = [
     ...LANES.system,
     draw: ({ color, seed }) => (
       <>
-        <rect x="60" y="32" width="200" height="116" rx="10" fill="none" stroke={color} strokeWidth="2" />
+        <rect
+          x="60"
+          y="32"
+          width="200"
+          height="116"
+          rx="10"
+          fill="none"
+          stroke={color}
+          strokeWidth="2"
+        />
         <path d="M60 62h200" stroke={color} strokeWidth="2" />
         {range(12).map((i) => (
           <rect
@@ -220,7 +279,13 @@ export const ASSET_MOTIFS: Motif[] = [
             opacity={0.16 + i * 0.14}
           />
         ))}
-        <path d="M74 118 114 96 154 84 194 56 234 40" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" />
+        <path
+          d="M74 118 114 96 154 84 194 56 234 40"
+          fill="none"
+          stroke={color}
+          strokeWidth="2.5"
+          strokeLinecap="round"
+        />
         <circle cx="234" cy="40" r="6" fill={color} />
       </>
     ),
@@ -260,7 +325,16 @@ export const ASSET_MOTIFS: Motif[] = [
       <>
         {range(3).map((i) => (
           <g key={i}>
-            <rect x={54 + i * 82} y={70 + (i % 2 ? 22 : -12)} width="72" height="44" rx="10" fill="none" stroke={color} strokeWidth="2" />
+            <rect
+              x={54 + i * 82}
+              y={70 + (i % 2 ? 22 : -12)}
+              width="72"
+              height="44"
+              rx="10"
+              fill="none"
+              stroke={color}
+              strokeWidth="2"
+            />
             {i < 2 ? (
               <path
                 d={`M${126 + i * 82} ${92 + (i % 2 ? 22 : -12)}h${10 + seed * 4}`}
@@ -272,7 +346,14 @@ export const ASSET_MOTIFS: Motif[] = [
           </g>
         ))}
         {range(3).map((i) => (
-          <circle key={i} cx={72 + i * 82} cy={88 + (i % 2 ? 22 : -12)} r="5" fill={color} opacity=".55" />
+          <circle
+            key={i}
+            cx={72 + i * 82}
+            cy={88 + (i % 2 ? 22 : -12)}
+            r="5"
+            fill={color}
+            opacity=".55"
+          />
         ))}
       </>
     ),

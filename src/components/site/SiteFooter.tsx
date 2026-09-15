@@ -1,29 +1,87 @@
 import { Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
 import { footerColumns, locations, socials, contactInfo } from "@/data/nav";
+import { PAL_HEADSHOTS, laneVar } from "@/lib/pal-lanes";
+import type { PalName } from "@/lib/studio-model";
+import type { PalAccent } from "@/lib/pricing-catalog";
+
+const quickLinks: Array<{
+  label: string;
+  hint: string;
+  to: string;
+  lane: PalAccent;
+  pal: PalName;
+}> = [
+  {
+    label: "Find your Pal",
+    hint: "Problem-first match",
+    to: "/find-your-pal",
+    lane: "spotlight",
+    pal: "kiana",
+  },
+  {
+    label: "Build a package",
+    hint: "Sessions, cadence, add-ons",
+    to: "/shop",
+    lane: "reel",
+    pal: "ryder",
+  },
+  {
+    label: "Watch the proof",
+    hint: "Real film, real businesses",
+    to: "/work",
+    lane: "evergreen",
+    pal: "clara",
+  },
+  {
+    label: "Open the Studio",
+    hint: "Your content system",
+    to: "/studio",
+    lane: "system",
+    pal: "silas",
+  },
+];
 
 export function SiteFooter() {
   return (
     <footer className="mt-24 border-t border-border bg-card">
-      <div className="grid border-b border-border sm:grid-cols-2 lg:grid-cols-4">
-        {[
-          { label: "Find your Pal", to: "/find-your-pal", color: "var(--spotlight-soft)" },
-          { label: "Build a package", to: "/shop", color: "var(--reel-soft)" },
-          { label: "Watch the proof", to: "/work", color: "var(--evergreen-soft)" },
-          { label: "Open the Studio", to: "/studio", color: "var(--system-soft)" },
-        ].map((item) => (
+      <div className="mx-auto grid max-w-7xl gap-4 px-4 pt-10 sm:grid-cols-2 lg:grid-cols-4">
+        {quickLinks.map((item) => (
           <Link
             key={item.to}
             to={item.to}
-            className="group flex min-h-28 items-end justify-between border-b border-border p-5 text-lg font-bold sm:border-r lg:border-b-0"
-            style={{ background: item.color }}
+            className="group relative flex min-h-44 flex-col justify-end overflow-hidden rounded-[1.75rem] border border-white/80 p-5 shadow-soft transition-transform hover:-translate-y-1 motion-reduce:transition-none"
+            style={{ background: laneVar(item.lane, "-soft") }}
           >
-            {item.label}
-            <span className="transition-transform group-hover:translate-x-1">→</span>
+            <span
+              aria-hidden
+              className="absolute -right-8 -top-10 size-40 rounded-full"
+              style={{ background: `color-mix(in srgb, ${laneVar(item.lane)} 14%, white)` }}
+            />
+            <img
+              src={PAL_HEADSHOTS[item.pal]}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              className="pointer-events-none absolute -top-1 right-3 size-28 rounded-full mix-blend-multiply transition-transform duration-500 ease-out group-hover:-translate-y-1 group-hover:scale-105 motion-reduce:transition-none"
+            />
+            <span className="relative z-10 max-w-[60%]">
+              <span
+                className="block font-mono text-[10px] font-bold uppercase tracking-[0.16em]"
+                style={{ color: laneVar(item.lane, "-text") }}
+              >
+                {item.hint}
+              </span>
+              <span className="mt-1 flex items-center gap-2 text-lg font-bold leading-tight">
+                {item.label}
+                <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
+              </span>
+            </span>
           </Link>
         ))}
       </div>
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-2 lg:grid-cols-6">
-        <div className="lg:col-span-2">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-2 lg:grid-cols-[2fr_repeat(5,minmax(0,1fr))]">
+        <div className="md:col-span-2 lg:col-span-1">
           <p className="font-display text-lg font-bold">Palmer House Productions</p>
           <p className="mt-3 max-w-sm text-sm text-muted-foreground">
             We turn invisible expertise into visible proof, repeated explanations into reusable
@@ -53,7 +111,7 @@ export function SiteFooter() {
                 href={s.href}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-border px-3 text-xs text-muted-foreground transition-colors hover:text-foreground"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-full border border-border px-3 text-xs text-muted-foreground transition-colors hover:border-ink hover:text-foreground"
               >
                 {s.label}
               </a>
@@ -80,7 +138,14 @@ export function SiteFooter() {
         ))}
 
         <div>
-          <p className="mb-3 text-sm font-bold">Locations</p>
+          <p className="mb-3 text-sm font-bold">
+            <Link
+              to="/locations"
+              className="-my-3 inline-flex min-h-11 items-center hover:underline"
+            >
+              Locations
+            </Link>
+          </p>
           <ul className="space-y-2">
             {locations.map((l) => (
               <li key={l.to}>
@@ -95,8 +160,7 @@ export function SiteFooter() {
           </ul>
           <Link
             to="/contact"
-            className="mt-5 inline-flex min-h-11 items-center rounded-full px-4 text-xs font-semibold text-white"
-            style={{ backgroundColor: "var(--spotlight)" }}
+            className="mt-5 inline-flex min-h-11 items-center rounded-full bg-spotlight px-4 text-xs font-semibold text-white"
           >
             Get Started
           </Link>

@@ -3,7 +3,6 @@ import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Hero } from "@/components/site/Hero";
 import { CreativesShowcase } from "@/components/site/CreativesShowcase";
-import { Steps } from "@/components/site/Steps";
 import { BrandDna } from "@/components/site/BrandDna";
 import { ContentCalendar } from "@/components/site/ContentCalendar";
 import { Stats } from "@/components/site/Stats";
@@ -12,48 +11,64 @@ import { Testimonials } from "@/components/site/Testimonials";
 import { Team } from "@/components/site/Team";
 import { Faq } from "@/components/site/Faq";
 import { FinalCta } from "@/components/site/FinalCta";
+import { PackageShelf } from "@/components/site/HomeLandingExtras";
+import { HOME_FAQS } from "@/data/site-faqs";
+import { createSeo, faqSchema, jsonLdScript, schemaGraph, SITE_DESCRIPTION } from "@/lib/seo";
+
+const TITLE = "Palmer House Productions — Video Systems That Solve Business Problems";
 
 export const Route = createFileRoute("/")({
   head: () => ({
-    meta: [
-      { title: "Palmer House Productions — Video Systems That Solve Business Problems" },
-      {
-        name: "description",
-        content:
-          "Palmer House Productions builds video systems for Pacific Northwest businesses — one shoot day delivers a content library for social, web, and training.",
-      },
-      {
-        property: "og:title",
-        content: "Palmer House Productions — Video Systems That Solve Business Problems",
-      },
-      {
-        property: "og:description",
-        content:
-          "Palmer House Productions builds video systems for Pacific Northwest businesses — one shoot day delivers a content library for social, web, and training.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
+    ...createSeo({ title: TITLE, description: SITE_DESCRIPTION, pathname: "/" }),
+    scripts: [jsonLdScript(schemaGraph(faqSchema(HOME_FAQS)))],
   }),
   component: Index,
 });
 
 function Index() {
   return (
-    <main className="min-h-screen bg-background">
+    <div className="min-h-screen overflow-x-clip bg-background">
+      <a
+        href="#main-content"
+        className="fixed left-4 top-4 z-[100] -translate-y-24 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white shadow-soft transition-transform focus:translate-y-0"
+      >
+        Skip to content
+      </a>
       <SiteNav />
-      <Hero />
-      <CreativesShowcase />
-      <Steps />
-      <BrandDna />
-      <ContentCalendar />
-      <Stats />
-      <Comparison />
-      <Testimonials />
-      <Team />
-      <Faq />
-      <FinalCta />
-      <SiteFooter />
-    </main>
+      <main id="main-content" tabIndex={-1}>
+        <Hero />
+        <CreativesShowcase />
+        <div className="render-lazy">
+          <PackageShelf />
+        </div>
+        <div className="render-lazy">
+          <BrandDna />
+        </div>
+        <div className="render-lazy">
+          <ContentCalendar />
+        </div>
+        <div className="render-lazy">
+          <Stats />
+        </div>
+        <div className="render-lazy">
+          <Comparison />
+        </div>
+        <div className="render-lazy">
+          <Testimonials />
+        </div>
+        <div className="render-lazy">
+          <Team />
+        </div>
+        <div className="render-lazy">
+          <Faq />
+        </div>
+        <div className="render-lazy">
+          <FinalCta />
+        </div>
+      </main>
+      <div className="render-lazy">
+        <SiteFooter />
+      </div>
+    </div>
   );
 }

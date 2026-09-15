@@ -4,6 +4,7 @@ export type Industry = {
   eyebrow: string;
   title: string;
   subtitle: string;
+  metaDescription: string;
   intro: string[];
   painPoints: string[];
   solutions: { title: string; body: string }[];
@@ -17,12 +18,14 @@ export const industries: Record<string, Industry> = {
     slug: "healthcare",
     name: "Healthcare",
     eyebrow: "Healthcare Solutions",
-    title: "Pacific Northwest Healthcare Video Production That Saves Lives & Drives Growth",
+    title: "Pacific Northwest Healthcare Video Production for Clearer Communication",
     subtitle:
-      "From HIPAA-compliant staff training at Puget Sound hospital systems to patient education for clinics across Washington and Oregon — we create video content that improves clinical outcomes and positions your organization as a regional leader.",
+      "Video production for healthcare teams across Washington and Oregon, including staff training, patient education, service explanations, and trust-building stories.",
+    metaDescription:
+      "Healthcare video production across Washington and Oregon for staff training, patient education, service explanations, and trust-building stories.",
     intro: [
-      "Our expertise spans hospitals and health systems, private practices, pharmaceutical companies, and medical education programs. We understand the unique challenges and opportunities in healthcare — from compliance requirements to patient trust.",
-      "Every healthcare video project follows the same proven process: discovery to understand your goals, audience, and compliance requirements; planning to develop scripts, storyboards, and timelines tailored to your environment; production with healthcare-specific equipment and techniques that minimize disruption; and delivery with accessibility features and compliance documentation built in.",
+      "Palmer House Productions creates healthcare video systems that make recurring education, training, and service information easier to understand and reuse.",
+      "We begin with your audience, workflow, privacy requirements, and internal review process; then develop scripts, production plans, and delivery formats for your team to approve. Your legal, clinical, privacy, and accessibility owners remain the final authority on regulated content.",
     ],
     painPoints: [
       "Clinical errors caused by inconsistent staff training",
@@ -37,7 +40,7 @@ export const industries: Record<string, Industry> = {
       },
       {
         title: "Training Content",
-        body: "Professional development videos that enhance skills and ensure consistent care standards, covering compliance training, safety protocols, and new technology guides.",
+        body: "Professional development videos that support consistent instruction, covering safety protocols, internal procedures, and new technology guides.",
       },
       {
         title: "Promotional Videos",
@@ -52,38 +55,38 @@ export const industries: Record<string, Industry> = {
     ],
     outcomes: [
       {
-        stat: "Up to 45%",
-        label: "Reduce Medical Errors",
-        body: "Video training improves retention and reduces clinical errors.",
+        stat: "Consistent",
+        label: "Staff Instruction",
+        body: "Give teams a repeatable explanation of approved procedures and expectations.",
       },
       {
-        stat: "60% Faster",
-        label: "Faster Onboarding",
-        body: "Get new clinical staff up to speed in half the time.",
+        stat: "Reusable",
+        label: "Onboarding Support",
+        body: "Turn recurring orientation topics into a library new hires can revisit.",
       },
       {
-        stat: "30% Improvement",
-        label: "Better Patient Outcomes",
-        body: "Educated patients have better treatment adherence.",
+        stat: "Clearer",
+        label: "Patient Education",
+        body: "Explain services, preparation, and next steps in accessible language.",
       },
       {
-        stat: "100% Compliant",
-        label: "Maintain Accreditation",
-        body: "Meet Joint Commission and CMS documentation requirements.",
+        stat: "Reviewable",
+        label: "Compliance Support",
+        body: "Build internal review and approval into the production workflow.",
       },
     ],
     faqs: [
       {
-        q: "Can you produce HIPAA-compliant video content?",
-        a: "Yes. We follow HIPAA-compliant production practices for staff training, patient education, and testimonial content across Puget Sound hospital systems and clinics throughout Washington and Oregon.",
+        q: "Can you work with healthcare privacy and consent requirements?",
+        a: "Yes. We coordinate with your privacy, legal, and clinical contacts on access, releases, protected information, and internal review. Your organization approves the final requirements and content.",
       },
       {
         q: "How do you minimize disruption to clinical operations?",
-        a: "We use healthcare-specific equipment and techniques, and plan production schedules around your facility's workflow so filming doesn't interrupt patient care.",
+        a: "We plan crew size, equipment, locations, and production windows around your facility's workflow, subject to the access and safety rules your team provides.",
       },
       {
         q: "Do your videos meet accessibility requirements?",
-        a: "Every project is delivered with accessibility features and compliance documentation, so your content is ready for accreditation review.",
+        a: "Captions, transcripts, audio-description planning, and alternate delivery formats can be included in scope. Your accessibility or compliance owner should validate the final requirements.",
       },
     ],
   },
@@ -91,12 +94,14 @@ export const industries: Record<string, Industry> = {
     slug: "manufacturing",
     name: "Manufacturing",
     eyebrow: "Manufacturing Solutions",
-    title: "Seattle & PNW Manufacturing Video Production That Trains Teams & Reduces Risk",
+    title: "Seattle & PNW Manufacturing Video Production for Training & Process Clarity",
     subtitle:
-      "From Boeing suppliers in the Kent Valley to food processors in Tacoma and aerospace manufacturers across Washington State — we create video content that standardizes training, reduces workplace incidents, and scales your manufacturing knowledge across every shift and facility.",
+      "Video production for aerospace suppliers, food processors, fabricators, and other manufacturers across Washington — built to document processes, support training, and share capabilities.",
+    metaDescription:
+      "Manufacturing video production across Washington for process documentation, workforce training, recruitment, and capability marketing.",
     intro: [
-      "Our expertise spans automotive manufacturing, aerospace and defense, food and beverage, and chemical processing — each with its own regulatory and safety demands.",
-      "We follow a proven process: discovery to understand your goals, audience, and compliance requirements; planning to develop scripts, storyboards, and timelines tailored to your manufacturing environment; production with manufacturing-specific equipment ensuring minimal disruption; and delivery optimized for your platforms with accessibility features and compliance documentation.",
+      "Palmer House Productions creates manufacturing video systems for repeatable training, process documentation, recruitment, and capability marketing.",
+      "We start with your audience, work area, site rules, subject-matter experts, and approval process; then plan scripts, camera positions, protective equipment, and production windows with your site contact.",
     ],
     painPoints: [
       "Workplace accidents from inconsistent safety training",
@@ -107,7 +112,7 @@ export const industries: Record<string, Industry> = {
     solutions: [
       {
         title: "Training Content",
-        body: "Professional development videos that ensure OSHA compliance and reduce workplace incidents — covering safety protocols, equipment operation, and emergency response.",
+        body: "Professional development videos that support your approved safety program, covering protocols, equipment operation, and emergency response.",
       },
       {
         title: "Operational Videos",
@@ -126,24 +131,24 @@ export const industries: Record<string, Industry> = {
     ],
     outcomes: [
       {
-        stat: "Up to 70%",
-        label: "Reduce Accidents",
-        body: "Video safety training dramatically reduces workplace incidents.",
+        stat: "Repeatable",
+        label: "Safety Instruction",
+        body: "Give every shift access to the same approved demonstration and message.",
       },
       {
-        stat: "3x Faster",
-        label: "Faster Training",
-        body: "Get workers productive faster with video training.",
+        stat: "On Demand",
+        label: "Training Access",
+        body: "Let workers revisit procedures without waiting for a live session.",
       },
       {
-        stat: "45% Fewer Defects",
-        label: "Improve Quality",
-        body: "Standardized training reduces production errors.",
+        stat: "Visible",
+        label: "Process Clarity",
+        body: "Show critical steps and quality checks in the actual work environment.",
       },
       {
-        stat: "35% Increase",
-        label: "Better Retention",
-        body: "Strong culture videos improve employee retention.",
+        stat: "Credible",
+        label: "Recruiting Stories",
+        body: "Help candidates understand the work, environment, and team before applying.",
       },
     ],
     faqs: [
@@ -152,12 +157,12 @@ export const industries: Record<string, Industry> = {
         a: "Yes. We use manufacturing-specific equipment and techniques designed to capture accurate procedures while minimizing disruption to your shift schedule.",
       },
       {
-        q: "Do you produce OSHA-compliant safety training?",
-        a: "We build safety protocol, equipment operation, and emergency response training designed to meet OSHA compliance and documentation needs.",
+        q: "Can you support OSHA-related safety training?",
+        a: "We can turn your approved safety protocols, equipment procedures, and emergency guidance into video. Your safety and compliance owners remain responsible for reviewing the content against current requirements.",
       },
       {
         q: "Can training scale across multiple shifts and facilities?",
-        a: "Yes — video training standardizes knowledge so every shift and facility receives the exact same instruction, cutting onboarding time and reducing defects.",
+        a: "Yes — video can give each shift and facility access to the same approved instruction while preserving site-specific notes where procedures differ.",
       },
     ],
   },
@@ -165,11 +170,13 @@ export const industries: Record<string, Industry> = {
     slug: "technology",
     name: "Technology",
     eyebrow: "Technology Solutions",
-    title: "Seattle Tech Video Production That Accelerates Product Adoption",
+    title: "Seattle Tech Video Production for Product Education & Adoption",
     subtitle:
       "From SaaS startups in South Lake Union to enterprise software teams on the Eastside — we create product demos, developer documentation, and launch content that helps users adopt your technology faster.",
+    metaDescription:
+      "Seattle technology video production for product demos, tutorials, developer education, launches, and reusable customer onboarding.",
     intro: [
-      "Our expertise spans SaaS and cloud platforms, developer tools and APIs, enterprise software, and mobile apps — from startups to enterprise software companies.",
+      "Palmer House Productions creates technology video systems for SaaS and cloud platforms, developer tools and APIs, enterprise software, mobile apps, and technical products.",
       "We follow a proven process: discovery to understand your product, users, and technical requirements; planning to create scripts, storyboards, and technical documentation strategies; production with screen capture, animations, and technical demonstrations; and delivery with interactive elements, captions, and multi-platform formatting.",
     ],
     painPoints: [
@@ -202,24 +209,24 @@ export const industries: Record<string, Industry> = {
     ],
     outcomes: [
       {
-        stat: "3x Faster",
+        stat: "Guided",
         label: "Faster Adoption",
-        body: "Users adopt products quicker with video training.",
+        body: "Help users see the right workflow and next step without parsing a long document.",
       },
       {
-        stat: "40% Reduction",
-        label: "Reduce Support Tickets",
-        body: "Self-service video resources decrease support load.",
+        stat: "Self-Serve",
+        label: "Support Answers",
+        body: "Turn recurring setup and feature questions into reusable resources.",
       },
       {
-        stat: "85% Satisfaction",
-        label: "Better User Experience",
-        body: "Video documentation improves user satisfaction.",
+        stat: "Visual",
+        label: "Product Clarity",
+        body: "Show interfaces, interactions, and outcomes in the context users need.",
       },
       {
-        stat: "2x Higher",
-        label: "Boost Conversions",
-        body: "Product demos double trial-to-paid conversion.",
+        stat: "Focused",
+        label: "Conversion Support",
+        body: "Connect product capabilities to specific buyer problems and use cases.",
       },
     ],
     faqs: [
@@ -241,11 +248,13 @@ export const industries: Record<string, Industry> = {
     slug: "professional-services",
     name: "Professional Services",
     eyebrow: "Professional Services Solutions",
-    title: "Seattle Professional Services Video That Builds Authority & Wins Clients",
+    title: "Seattle Professional Services Video That Builds Authority & Client Trust",
     subtitle:
       "From downtown Seattle law firms to Bellevue consulting practices and Tacoma financial advisors — we create video content that showcases your expertise, builds trust with Pacific Northwest clients, and positions your firm as the clear choice in competitive markets.",
+    metaDescription:
+      "Professional services video production for Pacific Northwest firms that need authority content, client stories, and clear service explanations.",
     intro: [
-      "Our expertise spans law firms, accounting and finance, consulting firms, and architecture and engineering practices.",
+      "Palmer House Productions creates professional-services video systems for law firms, accounting and finance teams, consultants, and architecture and engineering practices.",
       "We follow a proven process: discovery to understand your firm, clients, and competitive positioning; planning to develop messaging, content strategy, and production timelines; production that reflects your firm's professionalism; and delivery optimized for your website, social media, and business development needs.",
     ],
     painPoints: [
@@ -276,24 +285,24 @@ export const industries: Record<string, Industry> = {
     ],
     outcomes: [
       {
-        stat: "5x More Inquiries",
-        label: "Generate More Leads",
-        body: "Video content drives significantly more qualified leads.",
+        stat: "Clearer",
+        label: "Qualified Inquiries",
+        body: "Help prospects understand who you serve and when your expertise fits.",
       },
       {
-        stat: "3x Trust Factor",
+        stat: "Visible",
         label: "Build Authority",
-        body: "Video establishes expertise faster than written content.",
+        body: "Let partners and subject-matter experts explain how they think and work.",
       },
       {
-        stat: "40% Higher Close Rate",
-        label: "Win More Business",
-        body: "Prospects who watch videos are more likely to engage.",
+        stat: "Credible",
+        label: "Sales Support",
+        body: "Give business-development teams proof, explanations, and stories to share.",
       },
       {
-        stat: "24/7 Availability",
+        stat: "Reusable",
         label: "Scale Your Expertise",
-        body: "Multiply your reach without multiplying your time.",
+        body: "Answer recurring questions without requiring the same live explanation every time.",
       },
     ],
     faqs: [
@@ -315,11 +324,13 @@ export const industries: Record<string, Industry> = {
     slug: "education",
     name: "Education",
     eyebrow: "Education Solutions",
-    title: "Pacific Northwest Education Video Production That Inspires Learning & Drives Growth",
+    title: "Pacific Northwest Education Video Production for Learning and Engagement",
     subtitle:
-      "From UW and WSU to community colleges and K-12 districts across Washington — we create video content that enhances learning outcomes, attracts students, engages donors, and positions your Pacific Northwest institution as a leader in student success.",
+      "Video production for colleges, K-12 districts, training programs, museums, libraries, and learning organizations across the Pacific Northwest.",
+    metaDescription:
+      "Education video production across the Pacific Northwest for instruction, professional development, recruitment, and community storytelling.",
     intro: [
-      "Our expertise spans K-12 schools and districts, colleges and universities, online learning platforms, and museums and libraries.",
+      "Palmer House Productions creates education video systems for instruction, professional development, recruitment, campus communication, and donor storytelling.",
       "We follow a proven process: discovery to understand your goals, audience, and learning objectives; planning to develop scripts, storyboards, and timelines tailored to your educational environment; production with education-specific equipment ensuring minimal disruption; and delivery optimized for your platforms with accessibility features and learning analytics.",
     ],
     painPoints: [
@@ -350,24 +361,24 @@ export const industries: Record<string, Industry> = {
     ],
     outcomes: [
       {
-        stat: "45% Increase",
-        label: "Boost Enrollment",
-        body: "Video tours and testimonials drive enrollment growth.",
+        stat: "Human",
+        label: "Enrollment Stories",
+        body: "Help prospective students and families hear directly from your community.",
       },
       {
-        stat: "10x Reach",
+        stat: "Reusable",
         label: "Scale Learning",
-        body: "Deliver quality education to unlimited students.",
+        body: "Give learners access to approved lessons, demonstrations, and explanations on demand.",
       },
       {
-        stat: "60% Better",
-        label: "Improve Retention",
-        body: "Video learning increases information retention.",
+        stat: "Visual",
+        label: "Explain Clearly",
+        body: "Combine demonstration, narration, graphics, and captions for complex topics.",
       },
       {
-        stat: "3x More Donors",
-        label: "Increase Giving",
-        body: "Compelling stories inspire more generous giving.",
+        stat: "Specific",
+        label: "Donor Engagement",
+        body: "Show the people, programs, and needs behind a fundraising message.",
       },
     ],
     faqs: [
@@ -389,12 +400,14 @@ export const industries: Record<string, Industry> = {
     slug: "government",
     name: "Government",
     eyebrow: "Government Solutions",
-    title: "Washington Government Video Production That Serves the Public Good",
+    title: "Washington Government Video Production for Clear Public Communication",
     subtitle:
-      "From City of Seattle departments to King County agencies and Washington State offices — we create compliant, Section 508-accessible video content that helps Pacific Northwest government agencies fulfill their mission and build public trust.",
+      "Video production for public agencies across Washington, including workforce training, service explanations, public information, recruitment, and community updates.",
+    metaDescription:
+      "Washington government video production for workforce training, public information, service explanations, recruitment, and community updates.",
     intro: [
-      "Our expertise spans federal agencies, state and local government, law enforcement, and public services — each with its own compliance and communication requirements.",
-      "We follow a proven process: discovery to understand your agency's mission, audience, and compliance requirements; planning to develop scripts, storyboards, and timelines that meet government standards; production with security clearances and protocols ensuring minimal disruption; and delivery with Section 508 compliance, public records documentation, and approved file formats.",
+      "Palmer House Productions creates government video systems that help agencies explain services, train teams, recruit staff, and communicate with the public more consistently.",
+      "We begin with your audience, procurement constraints, access rules, records requirements, accessibility criteria, and approval chain. We then plan scripts, production, captions, transcripts, and delivery formats for the appropriate agency owners to review.",
     ],
     painPoints: [
       "Inconsistent emergency preparedness across departments and locations",
@@ -424,34 +437,34 @@ export const industries: Record<string, Industry> = {
     ],
     outcomes: [
       {
-        stat: "60% Better Preparedness",
-        label: "Improve Public Safety",
-        body: "Video training improves emergency response readiness.",
+        stat: "Consistent",
+        label: "Preparedness Training",
+        body: "Give departments access to the same approved emergency guidance.",
       },
       {
-        stat: "10x Efficiency",
+        stat: "Reusable",
         label: "Scale Training",
-        body: "Train employees across locations consistently.",
+        body: "Share repeatable workforce instruction across locations and schedules.",
       },
       {
-        stat: "45% Satisfaction Increase",
-        label: "Better Citizen Service",
-        body: "Informed citizens are more satisfied with services.",
+        stat: "Plain-Language",
+        label: "Citizen Service",
+        body: "Explain eligibility, processes, deadlines, and next steps in a visual format.",
       },
       {
-        stat: "3x More Applicants",
+        stat: "Human",
         label: "Attract Talent",
-        body: "Compelling recruitment videos attract quality candidates.",
+        body: "Show candidates the mission, roles, workplace, and people behind public service.",
       },
     ],
     faqs: [
       {
-        q: "Can you meet Section 508 accessibility requirements?",
-        a: "Yes. Every government project is delivered with Section 508 compliance, public records documentation, and approved file formats built in.",
+        q: "Can you support Section 508 accessibility requirements?",
+        a: "Captions, transcripts, audio-description planning, and specified file formats can be included in scope. Your agency's accessibility and legal owners should review and approve the final requirements and deliverables.",
       },
       {
-        q: "Do you work with agencies requiring security clearances or protocols?",
-        a: "We follow your agency's security clearances and protocols during production to ensure minimal disruption to operations and full compliance with your standards.",
+        q: "Can you work with agency access and security protocols?",
+        a: "We coordinate crew lists, equipment, production areas, and required access steps with your designated contact. Projects that require formal clearances are scoped only after those requirements are confirmed.",
       },
       {
         q: "Can video help improve emergency preparedness across departments?",

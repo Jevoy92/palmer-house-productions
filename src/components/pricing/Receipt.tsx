@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Minus, Receipt as ReceiptIcon, Star } from "lucide-react";
+import { receiptLineConfiguration } from "@/lib/cart-store";
 import { cn } from "@/lib/utils";
 import { useCountUp } from "@/lib/use-count-up";
 import type { ServiceItem } from "@/lib/pricing-catalog";
@@ -7,6 +8,11 @@ import type { ServiceItem } from "@/lib/pricing-catalog";
 export type ReceiptLine = ServiceItem & {
   qty: number;
   accent: string;
+  cadence?: "one-time" | "monthly";
+  runtimeLabel?: string;
+  durationSeconds?: number;
+  outputCount?: number;
+  addOnNames?: string[];
   /** Stable section key — e.g. Pal accent or "add-ons" / "diy". */
   groupId?: string;
   /** Human label for the section header. */
@@ -145,15 +151,20 @@ export function Receipt({ items, taxRate, onBook, onDecrement }: ReceiptProps) {
                         key={item.id}
                         className="group flex animate-in fade-in slide-in-from-right-2 items-baseline justify-between gap-3 text-sm duration-300"
                       >
-                        <div className="flex min-w-0 items-baseline gap-2">
+                        <div className="flex min-w-0 items-start gap-2">
                           <span className="font-mono text-[11px] text-[oklch(0.5_0.02_60)]">
                             {String(lineNo).padStart(2, "0")}
                           </span>
-                          <span className="truncate font-medium uppercase tracking-wide">
-                            {item.name}
-                            {item.qty > 1 && (
-                              <span className="ml-1 text-[oklch(0.5_0.02_60)]">× {item.qty}</span>
-                            )}
+                          <span className="min-w-0">
+                            <span className="block truncate font-medium uppercase tracking-wide">
+                              {item.name}
+                              {item.qty > 1 && (
+                                <span className="ml-1 text-[oklch(0.5_0.02_60)]">× {item.qty}</span>
+                              )}
+                            </span>
+                            <span className="mt-0.5 block text-[10px] leading-relaxed text-[oklch(0.45_0.02_60)]">
+                              {receiptLineConfiguration(item)}
+                            </span>
                           </span>
                         </div>
                         <div className="flex shrink-0 items-center gap-2">
@@ -182,10 +193,16 @@ export function Receipt({ items, taxRate, onBook, onDecrement }: ReceiptProps) {
 
             <div className="space-y-1.5 text-sm">
               <Row label="SUBTOTAL" value={`$${formatMoney(subtotalAnim)}`} />
-              <Row
-                label={`TAX (${(taxRate * 100).toFixed(1)}%)`}
-                value={`$${formatMoney(taxAnim)}`}
-              />
+              {taxRate > 0 ? (
+                <Row
+                  label={`ESTIMATED TAX (${(taxRate * 100).toFixed(1)}%)`}
+                  value={`$${formatMoney(taxAnim)}`}
+                />
+              ) : (
+                <p className="pt-1 text-xs leading-relaxed text-[oklch(0.45_0.02_60)]">
+                  Applicable tax and travel are confirmed after location and scope.
+                </p>
+              )}
             </div>
 
             <div className="my-5 border-t border-dashed border-[oklch(0.4_0.02_60)]/40" />
@@ -204,7 +221,7 @@ export function Receipt({ items, taxRate, onBook, onDecrement }: ReceiptProps) {
           disabled={isEmpty}
           onClick={onBook}
           className={cn(
-            "mt-6 flex w-full items-center justify-center gap-2 rounded-md bg-foreground px-6 py-3.5 font-display text-sm font-bold uppercase tracking-[0.16em] text-background transition-all",
+            "mt-6 flex w-full items-center justify-center gap-2 rounded-md bg-foreground px-6 py-3.5 font-display text-sm font-bold uppercase tracking-[0.16em] text-background transition-[color,background-color,border-color,box-shadow,transform,opacity]",
             isEmpty ? "cursor-not-allowed opacity-30" : "hover:bg-foreground/85 hover:shadow-lg",
           )}
         >

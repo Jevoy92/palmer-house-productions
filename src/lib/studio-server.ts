@@ -72,7 +72,6 @@ export const generateStudioCampaign = createServerFn({ method: "POST" })
     }
   });
 
-
 export const generateContentDirections = createServerFn({ method: "POST" })
   .validator(ContentDirectionRequestSchema)
   .handler(async ({ data }) => {
@@ -95,7 +94,6 @@ export const generateContentDirections = createServerFn({ method: "POST" })
         "Be concrete: name the job, the season, the location type, the product, or the customer situation. Do not invent proof, statistics, testimonials, or results that were not supplied.",
       ].join(" "),
       `${knowledge}\n\nBusiness: ${data.brand.businessName}\nCategory / industry: ${data.brand.industry || "Not supplied"}\nWhat they do: ${data.brand.description || "Not supplied"}\nWhat they sell: ${data.brand.offers.join(" | ") || "Not supplied"}\nWho they serve: ${data.brand.primaryAudience || data.audience}\nCreator type: ${data.brand.creatorType}\nPrimary goal: ${data.brand.primaryGoal}\nActive platforms: ${data.brand.platforms.join(" | ") || "Not supplied"}\nVoice: ${data.brand.voice.join(", ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied — do not invent any"}\nPreferred CTAs: ${data.brand.callsToAction.join(" | ")}\nAvoid: ${data.brand.avoidLanguage.join(" | ")}\nFounder interests outside work: ${data.brand.personalInterests.join(" | ") || "Not supplied"}\nFounder personal note: ${data.brand.personalStory || "Not supplied"}\n\nCampaign goal: ${data.goal}\nAudience for this campaign: ${data.audience}\nIdea in the owner's words: ${data.idea}`,
-
     );
     return { ok: true as const, ...ContentDirectionsSchema.parse(response) };
   });
@@ -234,7 +232,9 @@ function visualSignals(html: string) {
     match[1]
       .split(",")
       .map((item) => item.trim().replace(/["']/g, ""))
-      .filter((item) => item && !/^(inherit|initial|sans-serif|serif|monospace|system-ui)$/i.test(item))
+      .filter(
+        (item) => item && !/^(inherit|initial|sans-serif|serif|monospace|system-ui)$/i.test(item),
+      )
       .slice(0, 2)
       .forEach((item) => fonts.add(item));
   }

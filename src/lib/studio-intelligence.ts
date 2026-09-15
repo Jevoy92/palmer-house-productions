@@ -262,12 +262,10 @@ export const universalVideoLibrary: VideoLibraryItem[] = [
     category: "Customer operations",
     problem: "Progress happens but nobody sees the shape of it.",
     outcome: "A record that builds trust and gives the team something to point at.",
-    prompt:
-      "Summarize the period: what changed, what you learned, and what is next for customers.",
+    prompt: "Summarize the period: what changed, what you learned, and what is next for customers.",
     prioritySignals: ["trust", "operations"],
   },
 ];
-
 
 type BrandSignals = {
   description?: string | null;

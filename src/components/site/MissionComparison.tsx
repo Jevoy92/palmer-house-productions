@@ -1,4 +1,11 @@
 import { Section } from "@/components/site/PageShell";
+import {
+  EVERGREEN_LENGTH_PRICE,
+  SAME_SESSION_ADDITIONAL_MINUTE_PRICE,
+  SESSION_PRICE,
+} from "@/lib/pricing-catalog";
+
+const money = (value: number) => `$${value.toLocaleString()}`;
 
 const ROWS: { label: string; values: [string, string, string, string] }[] = [
   {
@@ -35,10 +42,10 @@ const ROWS: { label: string; values: [string, string, string, string] }[] = [
   {
     label: "Pricing Model",
     values: [
-      "$450 + $150/video",
-      "$450 + $150/video",
-      "$450 + $150/video",
-      "$1,050 / $1,650 / $2,250",
+      `${money(SESSION_PRICE)} incl. 1 min + ${money(SAME_SESSION_ADDITIONAL_MINUTE_PRICE)}/min`,
+      `${money(SESSION_PRICE)} incl. 1 min + ${money(SAME_SESSION_ADDITIONAL_MINUTE_PRICE)}/min`,
+      `${money(SESSION_PRICE)} incl. 1 min + ${money(SAME_SESSION_ADDITIONAL_MINUTE_PRICE)}/min`,
+      `${money(EVERGREEN_LENGTH_PRICE[5])} / ${money(EVERGREEN_LENGTH_PRICE[10])} / ${money(EVERGREEN_LENGTH_PRICE[15])}`,
     ],
   },
   {
@@ -77,28 +84,41 @@ export function MissionComparison() {
       <div className="mb-8 grid gap-4 sm:grid-cols-3">
         <div className="rounded-2xl border border-border bg-card p-5 text-center shadow-soft">
           <p className="font-display text-lg font-bold">Mission Session</p>
-          <p className="text-gradient-brand mt-1 font-display text-2xl font-extrabold">$450</p>
+          <p className="text-brand mt-1 font-display text-2xl font-extrabold">
+            {money(SESSION_PRICE)}
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">Includes 1 edited minute</p>
         </div>
         <div className="rounded-2xl border border-border bg-card p-5 text-center shadow-soft">
-          <p className="font-display text-lg font-bold">Additional Videos</p>
-          <p className="text-gradient-brand mt-1 font-display text-2xl font-extrabold">$150 each</p>
+          <p className="font-display text-lg font-bold">Same-session output</p>
+          <p className="text-brand mt-1 font-display text-2xl font-extrabold">
+            {money(SAME_SESSION_ADDITIONAL_MINUTE_PRICE)} / min
+          </p>
         </div>
         <div className="rounded-2xl border border-border bg-card p-5 text-center shadow-soft">
-          <p className="font-display text-lg font-bold">Evergreen Videos</p>
-          <p className="text-gradient-brand mt-1 font-display text-2xl font-extrabold">
-            $1,050 / $1,650 / $2,250
+          <p className="font-display text-lg font-bold">Evergreen episodes</p>
+          <p className="text-brand mt-1 font-display text-2xl font-extrabold">
+            {money(EVERGREEN_LENGTH_PRICE[5])} / {money(EVERGREEN_LENGTH_PRICE[10])} /{" "}
+            {money(EVERGREEN_LENGTH_PRICE[15])}
           </p>
         </div>
       </div>
       <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-soft">
         <table className="w-full min-w-[720px] border-collapse text-left text-sm">
+          <caption className="sr-only">
+            Comparison of the Reel, Spotlight, System, and Evergreen mission lanes by goal, best
+            fit, style, video count, pricing, impact, speed, and compounding value.
+          </caption>
           <thead>
             <tr className="border-b border-border">
-              <th className="p-4 font-display text-xs font-bold uppercase tracking-wide text-muted-foreground">
+              <th
+                scope="col"
+                className="p-4 font-display text-xs font-bold uppercase tracking-wide text-muted-foreground"
+              >
                 Category
               </th>
               {LANES.map((lane) => (
-                <th key={lane.name} className="p-4 font-display text-sm font-bold">
+                <th key={lane.name} scope="col" className="p-4 font-display text-sm font-bold">
                   {lane.name}
                   <span className="block text-xs font-normal text-muted-foreground">
                     ({lane.tag})
@@ -110,7 +130,9 @@ export function MissionComparison() {
           <tbody>
             {ROWS.map((row) => (
               <tr key={row.label} className="border-b border-border last:border-0">
-                <td className="p-4 align-top font-semibold">{row.label}</td>
+                <th scope="row" className="p-4 align-top font-semibold">
+                  {row.label}
+                </th>
                 {row.values.map((v, i) => (
                   <td key={i} className="p-4 align-top text-muted-foreground">
                     {v}

@@ -1,49 +1,123 @@
-export type NavLink = { label: string; to: string };
+export type NavLink = { label: string; to: string; description?: string; badge?: string };
 export type NavGroup = { label: string; links: NavLink[] };
+
+export const startHereLinks: NavLink[] = [
+  {
+    label: "Find Your Pal",
+    to: "/find-your-pal",
+    description: "Choose the right video lane",
+  },
+  {
+    label: "Video System Assessment",
+    to: "/video-system-assessment",
+    description: "Find the biggest content gap",
+  },
+  {
+    label: "Current Offers",
+    to: "/offers",
+    description: "Bundles, BOGO, and monthly savings",
+    badge: "New",
+  },
+  {
+    label: "Browse Packages",
+    to: "/shop",
+    description: "Build a production plan",
+  },
+];
+
+export const serviceLinks: NavLink[] = [
+  {
+    label: "Video Production",
+    to: "/services/video-production",
+    description: "Strategy, crews, and shoot days",
+  },
+  {
+    label: "Post-Production",
+    to: "/services/post-production",
+    description: "Editing, motion, and delivery",
+  },
+  {
+    label: "Content Strategy",
+    to: "/content-strategy",
+    description: "Build the system before filming",
+  },
+  {
+    label: "Production Pricing",
+    to: "/production-pricing",
+    description: "Plan scope and investment",
+  },
+  {
+    label: "Shop Packages",
+    to: "/shop",
+    description: "Ready-to-build video packages",
+    badge: "New",
+  },
+];
+
+export const palLinks: NavLink[] = [
+  { label: "Meet the Pals", to: "/meet-the-pals" },
+  { label: "Pal Lane Guide", to: "/pals" },
+  { label: "Find Your Pal", to: "/find-your-pal" },
+  { label: "Reel Pal", to: "/reel-pal" },
+  { label: "Spotlight Pal", to: "/spotlight-pal" },
+  { label: "Evergreen Pal", to: "/evergreen-pal" },
+  { label: "System Pal", to: "/system-pal" },
+];
+
+export const industryLinks: NavLink[] = [
+  { label: "Healthcare", to: "/industries/healthcare" },
+  { label: "Manufacturing", to: "/industries/manufacturing" },
+  { label: "Professional Services", to: "/industries/professional-services" },
+  { label: "Technology", to: "/industries/technology" },
+  { label: "Education", to: "/industries/education" },
+  { label: "Government", to: "/industries/government" },
+  { label: "Startups", to: "/startups" },
+];
+
+export const resourceLinks: NavLink[] = [
+  { label: "Blog & Insights", to: "/blog" },
+  { label: "Downloads & Templates", to: "/services/diy-downloads" },
+  { label: "Games & Guided Tools", to: "/games" },
+  { label: "Production Guide", to: "/production-guide" },
+  { label: "Video System Assessment", to: "/video-system-assessment" },
+  { label: "Free Webinar", to: "/webinar" },
+];
+
+export const exploreLinks: NavLink[] = [
+  {
+    label: "Our Process",
+    to: "/process",
+    description: "From discovery through delivery",
+  },
+  { label: "About Palmer House", to: "/about-us" },
+  { label: "Selected Work", to: "/work" },
+  { label: "Client Reviews", to: "/resources/reviews" },
+  { label: "Blog & Insights", to: "/blog" },
+  { label: "Production Guide", to: "/production-guide" },
+  { label: "Industries", to: "/industries" },
+  { label: "Locations", to: "/locations" },
+  { label: "FAQ", to: "/faq" },
+  { label: "Games & Tools", to: "/games" },
+  { label: "Membership", to: "/membership" },
+  { label: "Our View on AI", to: "/ai-pov" },
+];
 
 export const navGroups: NavGroup[] = [
   {
     label: "Services",
-    links: [
-      { label: "Video Production", to: "/services/video-production" },
-      { label: "Post-Production", to: "/services/post-production" },
-      { label: "Consulting & Strategy", to: "/content-strategy" },
-      { label: "Shop Packages", to: "/shop" },
-    ],
+    links: serviceLinks,
   },
   {
     label: "Industries",
-    links: [
-      { label: "Healthcare", to: "/industries/healthcare" },
-      { label: "Manufacturing", to: "/industries/manufacturing" },
-      { label: "Professional Services", to: "/industries/professional-services" },
-      { label: "Technology", to: "/industries/technology" },
-      { label: "Education", to: "/industries/education" },
-      { label: "Government", to: "/industries/government" },
-      { label: "Startups", to: "/startups" },
-    ],
+    links: industryLinks,
   },
   {
     label: "Meet the Pals",
-    links: [
-      { label: "Palmer House Pals", to: "/pals" },
-      { label: "Find Your Pal", to: "/find-your-pal" },
-      { label: "Reel Pal", to: "/reel-pal" },
-      { label: "System Pal", to: "/system-pal" },
-      { label: "Evergreen Pal", to: "/evergreen-pal" },
-      { label: "Spotlight Pal", to: "/spotlight-pal" },
-    ],
+    links: palLinks,
   },
   {
     label: "Resources",
-    links: [
-      { label: "Blog / Insights", to: "/blog" },
-      { label: "Downloads & Templates", to: "/services/diy-downloads" },
-      { label: "Games & Guided Tools", to: "/games" },
-      { label: "Production Guide", to: "/production-guide" },
-      { label: "Video System Assessment", to: "/video-system-assessment" },
-      { label: "Free Webinar", to: "/webinar" },
-    ],
+    links: resourceLinks,
   },
   {
     label: "Locations",
@@ -59,6 +133,7 @@ export const navGroups: NavGroup[] = [
     links: [
       { label: "About Us", to: "/about-us" },
       { label: "Pricing", to: "/production-pricing" },
+      { label: "Current Offers", to: "/offers" },
       { label: "Selected Work", to: "/work" },
       { label: "Membership", to: "/membership" },
       { label: "Our View on AI", to: "/ai-pov" },

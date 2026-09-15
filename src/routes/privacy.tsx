@@ -1,33 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PageShell, PageHero, Section } from "@/components/site/PageShell";
+import { LegalDocument, type LegalSection } from "@/components/site/LegalDocument";
+import { createSeo } from "@/lib/seo";
 
 const LAST_UPDATED = "August 7, 2026";
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
-    meta: [
-      { title: "Privacy Policy | Palmer House Productions" },
-      {
-        name: "description",
-        content:
-          "How Palmer House Productions collects, uses, and protects information across our video production services and the Palmer House Studio app.",
-      },
-      { property: "og:title", content: "Privacy Policy | Palmer House Productions" },
-      {
-        property: "og:description",
-        content:
-          "How Palmer House Productions collects, uses, and protects information across our video production services and the Palmer House Studio app.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "robots", content: "index, follow" },
-    ],
-    links: [{ rel: "canonical", href: "https://www.palmerhouseproductions.com/privacy" }],
+    ...createSeo({
+      title: "Privacy Policy | Palmer House Productions",
+      description:
+        "How Palmer House Productions collects, uses, and protects information across our video production services and the Palmer House Studio app.",
+      pathname: "/privacy",
+    }),
   }),
   component: PrivacyPage,
 });
 
-const sections: { title: string; body: string[] }[] = [
+const sections: LegalSection[] = [
   {
     title: "Who We Are",
     body: [
@@ -129,35 +118,12 @@ const sections: { title: string; body: string[] }[] = [
 
 function PrivacyPage() {
   return (
-    <PageShell>
-      <PageHero
-        eyebrow="Legal"
-        title="Privacy"
-        highlight="Policy"
-        subtitle="How Palmer House Productions handles your information across our production work and the Palmer House Studio app."
-        ctas={false}
-      />
-      <Section>
-        <div className="mx-auto max-w-3xl">
-          <p className="font-mono text-xs uppercase tracking-[.16em] text-muted-foreground">
-            Last updated · {LAST_UPDATED}
-          </p>
-          <div className="mt-10 space-y-10">
-            {sections.map((s) => (
-              <div key={s.title}>
-                <h2 className="font-display text-xl font-bold">{s.title}</h2>
-                <div className="mt-3 space-y-3">
-                  {s.body.map((paragraph) => (
-                    <p key={paragraph} className="text-sm leading-relaxed text-muted-foreground">
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </Section>
-    </PageShell>
+    <LegalDocument
+      title="Privacy Policy"
+      subtitle="How Palmer House Productions handles your information across our production work and Palmer House Studio."
+      lastUpdated={LAST_UPDATED}
+      related={{ label: "Read our Terms of Service", to: "/terms" }}
+      sections={sections}
+    />
   );
 }

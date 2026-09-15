@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { useMemo, useState, type FormEvent } from "react";
 import { toast } from "sonner";
-import samiraHeadshot from "@/assets/pal-headshots/samira.png";
+import samiraHeadshot from "@/assets/pal-headshots/samira.webp";
 import {
   studioAdvisoryOffer,
   studioConsultingOffer,

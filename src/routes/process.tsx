@@ -1,29 +1,91 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Check } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
 import { AwakeningSequence } from "@/components/process/AwakeningSequence";
-import { PageShell } from "@/components/site/PageShell";
-import productionCycle from "@/assets/studio-visuals/production-cycle.png";
+import {
+  CtaBand,
+  Eyebrow,
+  IncludedPanel,
+  InView,
+  PageHero,
+  PageShell,
+  Section,
+} from "@/components/site/PageShell";
+import {
+  FeatureSplit,
+  GraphicFrame,
+  PalCallout,
+  ProcessTimeline,
+  Scene,
+} from "@/components/site/PalVisuals";
+import { Glyph, type GlyphName } from "@/components/site/Glyphs";
+import type { PalName } from "@/lib/studio-model";
+import type { PalAccent } from "@/lib/pricing-catalog";
+import { createSeo } from "@/lib/seo";
 
-const steps = [
+const steps: {
+  number: string;
+  title: string;
+  short: string;
+  headline: string;
+  body: string;
+  pal: PalName;
+  lane: PalAccent;
+  glyph: GlyphName;
+  frame: string;
+}[] = [
   {
     number: "01",
     title: "Discovery",
+    short: "Map the audience, the bottleneck, and the questions your team keeps answering.",
+    headline: "We listen before we film.",
     body: "We map the audience, the business bottleneck, and the questions your team keeps answering.",
+    pal: "clara",
+    lane: "evergreen",
+    glyph: "search",
+    frame: "Listen first",
   },
   {
     number: "02",
     title: "Strategy",
+    short: "Choose the right Pal lanes and design the system around measurable outcomes.",
+    headline: "Choose the lanes. Design around outcomes.",
     body: "We choose the right Pal lanes and design a video system around measurable business outcomes.",
+    pal: "samira",
+    lane: "system",
+    glyph: "workflow",
+    frame: "Build the system",
   },
   {
     number: "03",
     title: "Production",
+    short: "Our crew handles planning, direction, cameras, lighting, and sound.",
+    headline: "You focus on being yourself.",
     body: "Our crew handles the planning, direction, cameras, lighting, and sound so you can focus on being yourself.",
+    pal: "kareem",
+    lane: "spotlight",
+    glyph: "camera",
+    frame: "Cameras on",
   },
   {
     number: "04",
     title: "Launch",
+    short: "Receive a reusable library built for social, web, sales, onboarding, and training.",
+    headline: "A library built to be used.",
     body: "You receive a reusable library built for social, web, sales, onboarding, training, and support.",
+    pal: "ryder",
+    lane: "reel",
+    glyph: "publish",
+    frame: "Publish everywhere",
+  },
+  {
+    number: "05",
+    title: "Expand",
+    short: "The system grows without rebuilding everything from scratch.",
+    headline: "The system keeps compounding.",
+    body: "The system can expand without rebuilding everything from scratch.",
+    pal: "silas",
+    lane: "system",
+    glyph: "layers",
+    frame: "Keep compounding",
   },
 ];
 
@@ -39,137 +101,128 @@ const promises = [
 function ProcessPage() {
   return (
     <PageShell>
-      <section className="px-4 pb-20 pt-20 sm:pt-28">
-        <div className="mx-auto max-w-5xl text-center">
-          <h1 className="text-[clamp(3.2rem,8vw,7.6rem)] font-extrabold leading-[0.92] tracking-[-0.065em]">
-            Build a content system that works while you sleep.
-          </h1>
-          <p className="mx-auto mt-7 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-            Not random posts. Not marketing fluff. A clear process that turns business problems into
-            reusable video assets.
-          </p>
-          <div className="mt-9 flex flex-wrap justify-center gap-3">
-            <Link
-              to="/contact"
-              className="inline-flex min-h-12 items-center gap-2 rounded-full bg-ink px-7 py-3 text-sm font-semibold text-white transition-transform hover:scale-[1.03]"
-            >
-              Book a strategy call <ArrowRight className="size-4" />
-            </Link>
-            <a
-              href="#how-it-works"
-              className="inline-flex min-h-12 items-center rounded-full border border-border bg-white px-7 py-3 text-sm font-semibold transition-colors hover:bg-secondary"
-            >
-              See the four steps
-            </a>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="From bottleneck to useful library"
+        title="Production is not the first step."
+        highlight="Clarity is."
+        subtitle="If your team is posting randomly, repeating answers, or filming without a plan, the Palmer House process connects every video to a business problem before the cameras turn on."
+        lane="evergreen"
+        visual={
+          <Scene
+            name="processPlanning"
+            priority
+            tags={["Discovery", "Strategy", "Production", "Launch"]}
+            caption="One connected system"
+          />
+        }
+      />
 
       <AwakeningSequence />
 
       <section id="how-it-works" className="scroll-mt-24 px-4 py-24 sm:py-32">
         <div className="mx-auto max-w-6xl">
-          <div className="grid gap-10 lg:grid-cols-[1fr_.8fr] lg:items-end">
+          <InView className="grid gap-10 lg:grid-cols-[1fr_.8fr] lg:items-end">
             <div className="max-w-3xl">
-              <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-                How Palmer House works
-              </p>
+              <Eyebrow lane="evergreen">How Palmer House works</Eyebrow>
               <h2 className="mt-4 text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold leading-[0.96] tracking-[-0.055em]">
                 Listen first. Build the system. Then turn on the cameras.
               </h2>
             </div>
-            <figure className="overflow-hidden rounded-[2rem] border border-border bg-white">
-              <img
-                src={productionCycle}
-                alt="A visual production cycle from script through filming, storage, publishing, and calendar planning"
-                className="aspect-[16/10] w-full object-cover"
-              />
-            </figure>
-          </div>
+            <div className="flex gap-5 rounded-[2rem] bg-system-soft p-6">
+              <Glyph name="bulb" lane="system" className="size-16 shrink-0 sm:size-20" />
+              <div>
+                <p className="text-sm font-bold text-system-text">The useful-output test</p>
+                <p className="mt-3 text-2xl font-extrabold">
+                  Who needs this, what should it change, and where will it live?
+                </p>
+              </div>
+            </div>
+          </InView>
 
-          <ol className="mt-16 border-t border-border">
-            {steps.map((step) => (
-              <li
-                key={step.number}
-                className="grid gap-4 border-b border-border py-8 sm:grid-cols-[5rem_1fr_1.2fr] sm:items-start sm:gap-8 sm:py-10"
-              >
-                <span className="font-mono text-xs font-semibold tracking-[0.2em] text-muted-foreground">
-                  {step.number}
-                </span>
-                <h3 className="text-2xl font-bold sm:text-3xl">{step.title}</h3>
-                <p className="max-w-xl leading-relaxed text-muted-foreground">{step.body}</p>
-              </li>
-            ))}
-          </ol>
+          <ProcessTimeline
+            className="mt-16"
+            steps={steps.map((step) => ({
+              title: step.title,
+              body: step.short,
+              pal: step.pal,
+              lane: step.lane,
+            }))}
+          />
         </div>
       </section>
 
-      <section className="bg-white px-4 py-24 sm:py-32">
-        <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-          <div>
-            <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-              Before the camera turns on
-            </p>
-            <h2 className="mt-4 text-4xl font-extrabold leading-tight tracking-[-0.045em] sm:text-5xl">
-              Six promises that keep the work useful.
-            </h2>
-            <p className="mt-5 leading-relaxed text-muted-foreground">
-              Production is the easy part. Knowing what to film, who it is for, and how it keeps
-              working is the real job.
-            </p>
-          </div>
-          <ul className="grid gap-3 sm:grid-cols-2">
-            {promises.map((promise) => (
-              <li
-                key={promise}
-                className="flex gap-3 rounded-3xl border border-border bg-white p-5 shadow-soft"
-              >
-                <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-system text-white">
-                  <Check className="size-3.5" strokeWidth={3} />
-                </span>
-                <span className="text-sm leading-relaxed">{promise}</span>
-              </li>
-            ))}
-          </ul>
+      <Section
+        tone="mist"
+        eyebrow="Each step, explained"
+        title="Every stage has a job before the next one starts."
+        subtitle="Each stage hands the next one something concrete, so nothing is filmed without a reason."
+      >
+        <div className="space-y-16">
+          {steps.slice(0, 4).map((step, index) => (
+            <FeatureSplit
+              key={step.number}
+              reverse={index % 2 === 1}
+              lane={step.lane}
+              eyebrow={`Step ${step.number} · ${step.title}`}
+              title={step.headline}
+              body={step.body}
+              visual={
+                <GraphicFrame lane={step.lane} label={step.frame}>
+                  <div className="grid h-full place-items-center pt-8">
+                    <Glyph name={step.glyph} lane={step.lane} className="size-40 sm:size-52" />
+                  </div>
+                </GraphicFrame>
+              }
+            />
+          ))}
         </div>
-      </section>
+        <div className="mt-16 grid gap-6 lg:grid-cols-2">
+          <PalCallout
+            pal="clara"
+            quote="If a customer has to ask twice, that is a video waiting to be made. Give me the steps in order — I will handle the shape."
+          />
+          <PalCallout
+            pal="silas"
+            quote="Plan the shoot once, harvest it for a month. One anchor, many outputs."
+            action={{ label: "Build a package", to: "/production-pricing" }}
+          />
+        </div>
+      </Section>
 
-      <section className="px-4 py-24 sm:py-32">
-        <div className="mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] bg-spotlight px-6 py-16 text-center text-white sm:px-12 sm:py-24">
-          <h2 className="mx-auto max-w-3xl text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[0.98] tracking-[-0.05em]">
-            Ready to stop explaining the same thing twice?
-          </h2>
-          <p className="mx-auto mt-5 max-w-xl text-lg text-white/75">
-            Book a free 30-minute strategy call and we will map the first version of your video
-            system together.
-          </p>
-          <Link
-            to="/contact"
-            className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-full bg-white px-7 py-3 text-sm font-semibold text-ink transition-transform hover:scale-[1.03]"
-          >
-            Book the call <ArrowRight className="size-4" />
-          </Link>
-        </div>
-      </section>
+      <Section
+        eyebrow="Before the camera turns on"
+        title="Six promises that keep the work useful."
+        subtitle="Production is the easy part. Knowing what to film, who it is for, and how it keeps working is the real job."
+      >
+        <IncludedPanel
+          title="What every project is held to."
+          items={promises}
+          lane="system"
+          glyph="shield"
+        />
+      </Section>
+
+      <CtaBand
+        lane="spotlight"
+        title="Ready to stop explaining the same thing twice?"
+        subtitle="Book a free 30-minute strategy call and we will map the first version of your video system together."
+        primaryLabel="Book a Discovery Call"
+        primaryTo="/contact"
+        secondaryLabel="Build a package"
+        secondaryTo="/production-pricing"
+      />
     </PageShell>
   );
 }
 
 export const Route = createFileRoute("/process")({
   head: () => ({
-    meta: [
-      { title: "Our Process | Palmer House Productions" },
-      {
-        name: "description",
-        content:
-          "Discovery, strategy, production, and launch: the Palmer House process for turning repeated business problems into reusable video systems.",
-      },
-      { property: "og:title", content: "Our Process | Palmer House Productions" },
-      {
-        property: "og:description",
-        content: "See how Palmer House turns one production day into a connected video library.",
-      },
-    ],
+    ...createSeo({
+      title: "Our Process | Palmer House Productions",
+      description:
+        "Discovery, strategy, production, and launch: the Palmer House process for turning repeated business problems into reusable video systems.",
+      pathname: "/process",
+    }),
   }),
   component: ProcessPage,
 });

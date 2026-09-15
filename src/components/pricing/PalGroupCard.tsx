@@ -28,7 +28,7 @@ export function PalGroupCard({
   return (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-3xl border bg-card transition-all duration-300",
+        "group relative overflow-hidden rounded-3xl border bg-card transition-[color,background-color,border-color,box-shadow,transform] duration-300",
         isActive
           ? "border-transparent shadow-lg ring-2"
           : "border-border hover:border-foreground/20 hover:shadow-md",
@@ -186,7 +186,7 @@ export function PalGroupCard({
                           aria-pressed={active}
                           aria-label={`${active ? "Remove" : "Add"} ${item.name}`}
                           className={cn(
-                            "flex h-11 w-11 items-center justify-center rounded-full transition-all",
+                            "flex h-11 w-11 items-center justify-center rounded-full transition-[color,background-color,border-color,box-shadow,transform]",
                             active
                               ? "text-primary-foreground shadow"
                               : "bg-muted text-muted-foreground hover:bg-foreground/10",
@@ -233,7 +233,7 @@ function DesktopEditableControls({
 }) {
   const e = item.editable!;
   const clamp = (n: number) => Math.max(e.min, Math.min(e.max, n));
-  const total = e.fixedBase + count * e.unitPrice;
+  const total = computeItemPrice(item, count);
   const included = getIncluded(item, group);
   return (
     <div

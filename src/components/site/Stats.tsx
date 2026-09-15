@@ -16,7 +16,7 @@ const PURPOSES: { lane: PalAccent; purpose: string; formats: string }[] = [
   {
     lane: "spotlight",
     purpose: "Tell your brand story",
-    formats: "Brand films, client stories, and offer explainers.",
+    formats: "Commercials, product demos, customer stories, and employee spotlights.",
   },
   {
     lane: "evergreen",
@@ -26,7 +26,7 @@ const PURPOSES: { lane: PalAccent; purpose: string; formats: string }[] = [
   {
     lane: "system",
     purpose: "Put the process on video",
-    formats: "Onboarding, training, and step-by-step walkthroughs.",
+    formats: "Onboarding, safety training, sales training, and video SOPs.",
   },
 ];
 
@@ -48,7 +48,7 @@ export function Stats() {
           <StatBand
             stats={[
               { value: 1, suffix: " day", label: "shoot day generating a full content library" },
-              { value: 4, suffix: " formats", label: "social, web, sales, and training outputs" },
+              { value: 4, suffix: " goals", label: "visibility, trust, training, and education" },
               {
                 value: 1,
                 suffix: " system",
@@ -90,7 +90,8 @@ export function Stats() {
               return (
                 <li key={item.lane}>
                   <Link
-                    to={lane.to}
+                    to="/shop"
+                    search={{ lane: item.lane }}
                     className="group flex min-h-11 items-center gap-4 py-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight/40"
                   >
                     <span

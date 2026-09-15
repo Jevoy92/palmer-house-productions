@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Check, Plus } from "lucide-react";
-import { useMemo, useState } from "react";
+import { ArrowRight, Check } from "lucide-react";
+import { useMemo } from "react";
 import {
   Card,
   CardGrid,
@@ -16,14 +16,14 @@ import {
 import { PalCallout, ProcessTimeline, StatBand, type Stat } from "./PalVisuals";
 import { GlyphBadge, type GlyphName } from "./Glyphs";
 import { MissionComparison } from "./MissionComparison";
-import { cartStore, kitCadenceCountKey, monthlyPrice, useCart } from "@/lib/cart-store";
+import { monthlyPrice } from "@/lib/cart-store";
 import { palList } from "@/lib/pal-directory";
 import { LANES, PAL_PORTRAITS, laneById, laneVar } from "@/lib/pal-lanes";
 import {
   BASE_INCLUDED,
   EVERGREEN_LENGTH_PRICE,
   PAL_GROUPS,
-  SAME_SESSION_ADDITIONAL_MINUTE_PRICE,
+  FINISHED_VIDEO_PRICE,
   SESSION_PRICE,
   computeItemPrice,
   getIncluded,
@@ -57,7 +57,7 @@ const laneCopy: Record<
     outputBodies: [
       "Platform-native short videos cut for the first two seconds and built to publish on a rhythm.",
       "Several openers from one filming block so you can test what stops the scroll.",
-      "Vertical and square masters with captions ready, so publishing is a paste, not a project.",
+      "Framing and delivery formats agreed in scope, with edits prepared for the channels you choose.",
     ],
     process: [
       "Pick the one point of view the reels should keep repeating.",
@@ -67,8 +67,8 @@ const laneCopy: Record<
     ],
     faqs: [
       {
-        q: "How many short videos can one edited minute become?",
-        a: "You can keep it as one 60-second video or split it into two 30-second or four 15-second videos at no extra editing charge.",
+        q: "Can I choose how many social videos we make?",
+        a: "Yes. Choose the number of finished videos on the package page. We agree on length, framing, and topics before filming.",
       },
       {
         q: "Do you help with hooks and scripts?",
@@ -81,14 +81,14 @@ const laneCopy: Record<
     title: "Make the first impression feel",
     highlight: "as credible as the work.",
     subtitle:
-      "Kareem and Kiana shape premium founder stories, client proof, and offer films that make quality visible before a sales call.",
+      "Kareem and Kiana create commercials, product demos, customer stories, and employee spotlights that make quality visible before a sales call.",
     problemTitle: "Choose the trust gap you need to close.",
-    outputs: ["Founder stories", "Client proof", "Offer films"],
+    outputs: ["Commercials", "Product demos", "Customer & employee stories"],
     outputGlyphs: ["mic", "handshake", "camera"],
     outputBodies: [
-      "The story underneath the service description, told by the person who lives it.",
-      "Real customers describing what changed — the proof a stranger believes first.",
-      "A polished walkthrough of what you offer so quality is visible before the call.",
+      "A clear offer and reason to act, built around the people you want to reach.",
+      "A practical demonstration of what your product does and how someone uses it.",
+      "Real customers and employees sharing their experience in their own words.",
     ],
     process: [
       "Find the story a first-time visitor should meet before anything else.",
@@ -103,7 +103,7 @@ const laneCopy: Record<
       },
       {
         q: "Can a Spotlight shoot also create short clips?",
-        a: "Yes. Add same-session edited minutes or a Reel repurpose add-on and the shared footage can support both trust and visibility.",
+        a: "Yes. Add finished social videos to the scope and the shared footage can support both trust and visibility.",
       },
     ],
   },
@@ -130,11 +130,11 @@ const laneCopy: Record<
     faqs: [
       {
         q: "Why is Evergreen priced differently?",
-        a: "Long-form work requires deeper narrative planning, longer production coverage, and a more involved edit. It uses episode pricing rather than short-form edited-minute pricing.",
+        a: "Long-form work requires deeper narrative planning, longer production coverage, and a more involved edit. It uses episode pricing rather than session-plus-video pricing.",
       },
       {
         q: "Can long-form episodes become short clips?",
-        a: "Yes. Repurpose packs turn the long-form master into platform-native clips without rebuilding the story from scratch.",
+        a: "Yes. Repurposed edits turn the long-form master into platform-native clips without rebuilding the story from scratch.",
       },
     ],
   },
@@ -143,7 +143,7 @@ const laneCopy: Record<
     title: "Move repeated knowledge out of",
     highlight: "people’s heads.",
     subtitle:
-      "Silas and Samira build onboarding, training, SOP, and client-handoff libraries that make important knowledge easier to find and reuse.",
+      "Silas and Samira create onboarding, safety training, sales training, and video SOPs that make important knowledge easier to find and reuse.",
     problemTitle: "Choose the repeat loop your team needs to remove.",
     outputs: ["Onboarding", "SOP walkthroughs", "Training libraries"],
     outputGlyphs: ["handshake", "workflow", "library"],
@@ -173,10 +173,14 @@ const laneCopy: Record<
 
 const PROCESS_TITLES = [
   "Name the problem",
-  "Plan the mission",
+  "Plan the package",
   "Production day",
   "Polished delivery",
 ];
+
+function groupPackageCount(accent: PalAccent) {
+  return PAL_GROUPS.find((group) => group.id === accent)?.items.length ?? 0;
+}
 
 function laneStats(accent: PalAccent): Stat[] {
   if (accent === "evergreen") {
@@ -205,11 +209,10 @@ function laneStats(accent: PalAccent): Stat[] {
   return [
     { value: SESSION_PRICE, prefix: "$", label: "per production session", lane: accent },
     { value: 2, suffix: " hrs", label: "on-location filming per session", lane: accent },
-    { value: 1, suffix: " min", label: "edited output included, split 60/30/15", lane: accent },
+    { value: FINISHED_VIDEO_PRICE, prefix: "$", label: "per finished video", lane: accent },
     {
-      value: SAME_SESSION_ADDITIONAL_MINUTE_PRICE,
-      prefix: "$",
-      label: "per added same-session minute",
+      value: groupPackageCount(accent),
+      label: groupPackageCount(accent) === 1 ? "package in this lane" : "packages in this lane",
       lane: accent,
     },
   ];
@@ -219,18 +222,9 @@ export function PalLanePage({ accent }: { accent: PalAccent }) {
   const group = PAL_GROUPS.find((candidate) => candidate.id === accent)!;
   const copy = laneCopy[accent];
   const laneInfo = laneById[accent];
-  const cart = useCart();
-  const [added, setAdded] = useState<string | null>(null);
   const pals = useMemo(() => palList.filter((pal) => pal.lane === accent), [accent]);
   const [leadPal, secondPal] = laneInfo.pals;
   const otherLanes = LANES.filter((lane) => lane.id !== accent);
-
-  function addPackage(itemId: string) {
-    cartStore.applyOffer(undefined);
-    cartStore.setCount(kitCadenceCountKey(itemId), 0);
-    if (!cart.selected[itemId]) cartStore.add(itemId);
-    setAdded(itemId);
-  }
 
   const processSteps = copy.process.map((body, i) => ({
     title: PROCESS_TITLES[i],
@@ -366,25 +360,14 @@ export function PalLanePage({ accent }: { accent: PalAccent }) {
                             or ${monthlyPrice(oneTime).toLocaleString()} monthly
                           </p>
                         </div>
-                        <button
-                          type="button"
-                          onClick={() => addPackage(item.id)}
-                          className="grid size-12 shrink-0 place-items-center rounded-full bg-ink text-white"
-                          aria-label={`Add ${item.name} to cart`}
-                        >
-                          {added === item.id ? (
-                            <Check className="size-5" />
-                          ) : (
-                            <Plus className="size-5" />
-                          )}
-                        </button>
                       </div>
                       <Link
-                        to="/production-pricing"
+                        to="/packages/$packageId"
+                        params={{ packageId: item.id }}
                         className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-bold underline underline-offset-4"
                         style={{ color: laneVar(accent, "-text") }}
                       >
-                        Customize this package <ArrowRight className="size-4" />
+                        View package and scope <ArrowRight className="size-4" />
                       </Link>
                     </div>
                   </div>
@@ -393,6 +376,11 @@ export function PalLanePage({ accent }: { accent: PalAccent }) {
             );
           })}
         </CardGrid>
+        <div className="mt-8 flex justify-center">
+          <Link to="/shop" search={{ lane: accent }} className="secondary-action">
+            Browse {group.role} packages <ArrowRight className="size-4" />
+          </Link>
+        </div>
       </Section>
 
       <Section

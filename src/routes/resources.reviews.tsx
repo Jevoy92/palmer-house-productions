@@ -264,8 +264,8 @@ function ReviewsPage() {
             lane="spotlight"
             glyph="camera"
             title="Need proof?"
-            body="Explore trust-building Spotlight Pal missions."
-            to="/spotlight-pal"
+            body="Explore the Customer Stories package."
+            to="/packages/customer-stories"
           />
           <Card
             lane="system"

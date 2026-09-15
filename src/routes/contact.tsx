@@ -5,21 +5,18 @@ import { PageShell, PageHero, Section, Card, CardGrid } from "@/components/site/
 import { PalCallout, Scene } from "@/components/site/PalVisuals";
 import { Glyph, type GlyphName } from "@/components/site/Glyphs";
 import { contactInfo } from "@/data/nav";
-import type { PalAccent } from "@/lib/pricing-catalog";
+import { PAL_GROUPS, type PalAccent } from "@/lib/pricing-catalog";
 import { createSeo } from "@/lib/seo";
 
 const PROJECT_TYPES = [
-  "Spotlight (Brand Story)",
-  "Reel (Short-Form)",
-  "Evergreen (Training/FAQ)",
-  "System (Full Ecosystem)",
+  ...PAL_GROUPS.flatMap((group) => group.items.map((item) => item.name)),
   "Not Sure Yet",
 ];
 
 const STATS: { title: string; body: string; lane: PalAccent; glyph: GlyphName }[] = [
   {
     title: "One Shoot",
-    body: "A reusable, multi-format content library",
+    body: "Finished videos planned around your goals",
     lane: "spotlight",
     glyph: "camera",
   },

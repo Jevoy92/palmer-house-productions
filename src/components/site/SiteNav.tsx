@@ -267,8 +267,8 @@ export function SiteNav() {
             <input
               type="search"
               name="q"
-              placeholder="Search the shop"
-              aria-label="Search the Palmer House shop"
+              placeholder="Search packages"
+              aria-label="Search video packages"
               className="size-full rounded-full border border-border bg-mist py-2 pl-9 pr-3 text-xs font-medium text-ink outline-none transition-colors placeholder:text-muted-foreground focus:border-system focus:bg-white"
             />
           </form>
@@ -396,8 +396,8 @@ export function SiteNav() {
                 <input
                   type="search"
                   name="q"
-                  placeholder="Search the Palmer House shop"
-                  aria-label="Search the Palmer House shop"
+                  placeholder="Search video packages"
+                  aria-label="Search video packages"
                   className="h-13 w-full rounded-full border border-border bg-mist py-3 pl-11 pr-4 text-sm font-medium outline-none focus:border-system focus:bg-white"
                 />
               </motion.form>

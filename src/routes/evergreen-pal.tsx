@@ -7,7 +7,7 @@ export const Route = createFileRoute("/evergreen-pal")({
     ...createServiceSeo({
       title: "Evergreen Pal Long-Form Video Packages | Palmer House Productions",
       description:
-        "Turn complex expertise into clear long-form video with Cyrus and Clara. Explore Evergreen Pal packages for authority, education, and reusable explanations.",
+        "Create Educational Videos with Cyrus and Clara. Explore long-form examples, episode lengths, and pricing for reusable explanations.",
       pathname: "/evergreen-pal",
       serviceName: "Evergreen Pal educational video production",
       serviceType: "Long-form educational and authority video production",

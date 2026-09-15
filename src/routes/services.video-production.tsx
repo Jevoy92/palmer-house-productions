@@ -18,7 +18,7 @@ import {
 } from "@/components/site/PalVisuals";
 import { Glyph } from "@/components/site/Glyphs";
 import { MONTHLY_DISCOUNT_RATE } from "@/lib/cart-store";
-import { BASE_INCLUDED, SAME_SESSION_ADDITIONAL_MINUTE_PRICE } from "@/lib/pricing-catalog";
+import { BASE_INCLUDED, FINISHED_VIDEO_PRICE, SESSION_PRICE } from "@/lib/pricing-catalog";
 import { createServiceSeo } from "@/lib/seo";
 
 const steps = [
@@ -28,7 +28,7 @@ const steps = [
     pal: "clara",
   },
   {
-    title: "Plan the mission",
+    title: "Plan the package",
     body: "Deliverables, script help, wardrobe guidance, and creative direction are locked before anyone picks up a camera.",
     pal: "samira",
   },
@@ -71,7 +71,7 @@ function VideoProductionPage() {
           />
           <PalCallout
             pal="silas"
-            quote="One production day should feed a month of publishing. Plan it that way and the price per finished video drops fast."
+            quote="Plan the videos together so one filming session can support several useful finished pieces."
             action={{ label: "See how sessions stack", to: "/production-pricing" }}
           />
         </div>
@@ -100,15 +100,15 @@ function VideoProductionPage() {
               lane: "spotlight",
             },
             {
-              value: 1,
-              suffix: " min",
-              label: "edited output included, split 60/30/15",
+              value: SESSION_PRICE,
+              prefix: "$",
+              label: "per filming session",
               lane: "reel",
             },
             {
-              value: SAME_SESSION_ADDITIONAL_MINUTE_PRICE,
+              value: FINISHED_VIDEO_PRICE,
               prefix: "$",
-              label: "per added same-session minute",
+              label: "per finished video",
               lane: "evergreen",
             },
             {
@@ -138,19 +138,23 @@ function VideoProductionPage() {
         <div className="space-y-16">
           <FeatureSplit
             lane="reel"
-            eyebrow="Split without extra cost"
-            title="One edited minute becomes one, two, or four videos."
-            body="Keep it as a 60-second piece or split it into two 30s or four 15s cuts at no extra editing charge. Short-form platforms reward volume; we plan for it."
-            bullets={["Hook-first openers", "Caption-ready exports", "Vertical and square masters"]}
-            action={{ label: "Explore Reel Pal", to: "/reel-pal" }}
+            eyebrow="Plan the finished pieces"
+            title="One filming session. Several clear ideas."
+            body="Choose how many finished videos you need. We agree on the length, framing, and topic of each piece before filming, so the scope is clear from the start."
+            bullets={[
+              "One clear idea per video",
+              "Finished-video pricing",
+              "Formats agreed in your scope",
+            ]}
+            action={{ label: "Explore Social Content", to: "/packages/social-content" }}
             visual={
-              <GraphicFrame lane="reel" label="1 minute → 4 cuts">
+              <GraphicFrame lane="reel" label="Social content ideas">
                 <div className="grid h-full grid-cols-4 items-end gap-3 pt-10">
-                  {[60, 30, 15, 15].map((s, i) => (
+                  {["Hook", "Answer", "Demo", "Story"].map((label, i) => (
                     <div key={i} className="flex flex-col items-center gap-2">
                       <Glyph name="reel" lane="reel" className="size-14 sm:size-20" />
                       <span className="rounded-full bg-white px-2.5 py-1 font-mono text-[10px] font-bold text-reel-text shadow-sm">
-                        {s}s
+                        {label}
                       </span>
                     </div>
                   ))}

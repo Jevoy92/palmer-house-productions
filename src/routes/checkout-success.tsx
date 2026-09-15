@@ -1,140 +1,184 @@
+/* eslint-disable react-refresh/only-export-components -- Verification and reconciliation boundaries are exported for network-free tests. */
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AlertTriangle, ArrowRight, Clock } from "lucide-react";
+import { AlertTriangle, ArrowRight, CheckCircle2, Clock, RefreshCw } from "lucide-react";
 import { useEffect } from "react";
-import { PageHero, PageShell, Section } from "@/components/site/PageShell";
-import { PalCallout, PalFigure, ProcessTimeline, Scene } from "@/components/site/PalVisuals";
-import { CelebrationLayer, celebrateOnce } from "@/components/studio/Celebrate";
+import { CollectionShell } from "@/components/collection/CollectionShell";
 import { cartStore } from "@/lib/cart-store";
+import { DIY_DOWNLOADS } from "@/lib/pricing-catalog";
 import { verifyDepositCheckout } from "@/lib/stripe-checkout";
 
-const NEXT_STEPS = [
-  {
-    title: "Scope confirmed",
-    body: "Palmer House reviews the working plan and confirms the project scope with you by email.",
-    pal: "kiana",
-  },
-  {
-    title: "Schedule set",
-    body: "Production timing is locked in around your calendar before anything else moves.",
-    pal: "samira",
-  },
-  {
-    title: "Get production-ready",
-    body: "You receive the next preparation step so the session day feels natural, not rushed.",
-    pal: "kareem",
-  },
-] as const;
+type Verification = Awaited<ReturnType<typeof verifyDepositCheckout>>;
+
+export async function loadCheckoutReceipt(
+  sessionId: string | null,
+  verify: (input: { data: { sessionId: string } }) => Promise<Verification> = verifyDepositCheckout,
+): Promise<Verification> {
+  const id = sessionId?.trim() ?? "";
+  if (id.length < 8 || id.length > 255) return { status: "invalid" };
+  try {
+    return await verify({ data: { sessionId: id } });
+  } catch {
+    return { status: "unavailable" };
+  }
+}
+
+/** Cart changes require verified digital items and a locally remembered checkout. */
+export function reconcileVerifiedReceipt(
+  sessionId: string,
+  verification: Verification,
+  reconcile: (
+    sessionId: string,
+    reference: string,
+    items: { id: string; qty: number }[],
+  ) => unknown = (id, reference, items) => cartStore.reconcileDigitalPurchase(id, reference, items),
+): void {
+  if (sessionId && verification.status === "paid" && verification.purchaseKind === "digital") {
+    reconcile(sessionId, verification.reference, verification.purchasedItems);
+  }
+}
 
 function CheckoutSuccessPage() {
   const { session_id: sessionId } = Route.useSearch();
   const verification = Route.useLoaderData();
   const paid = verification.status === "paid";
+  const digital = paid && verification.purchaseKind === "digital";
 
   useEffect(() => {
-    if (!sessionId || !paid) return;
-    cartStore.reset();
-    const timer = window.setTimeout(
-      () =>
-        celebrateOnce(`checkout.${sessionId}`, {
-          title: "Your production is officially moving.",
-          detail: "Watch your inbox for scope and scheduling details.",
-        }),
-      0,
-    );
-    return () => window.clearTimeout(timer);
-  }, [paid, sessionId]);
+    reconcileVerifiedReceipt(sessionId, verification);
+  }, [sessionId, verification]);
 
   if (!paid) {
     const pending = verification.status === "pending";
+    const unavailable = verification.status === "unavailable";
     return (
-      <PageShell>
-        <section className="px-4 py-12 sm:py-20">
-          <div className="mx-auto grid max-w-5xl items-center gap-10 rounded-[2.5rem] bg-mist px-6 py-12 sm:px-12 lg:grid-cols-[1.1fr_.9fr]">
-            <div className="text-center lg:text-left">
-              <span className="mx-auto grid size-16 place-items-center rounded-full bg-system-soft text-system-text lg:mx-0">
-                {pending ? <Clock className="size-8" /> : <AlertTriangle className="size-8" />}
-              </span>
-              <h1 className="mt-7 text-5xl font-extrabold tracking-[-0.05em] sm:text-6xl">
-                {pending ? "Payment confirmation is pending." : "We couldn’t verify this payment."}
-              </h1>
-              <p className="mx-auto mt-5 max-w-xl text-lg text-muted-foreground lg:mx-0">
-                {pending
-                  ? "Your cart is still saved. Refresh this page after Stripe finishes processing, or contact Palmer House if this status does not update."
-                  : "No cart items were removed. Return to checkout or contact Palmer House if you completed payment and reached this page unexpectedly."}
-              </p>
-              <div className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start">
-                <Link
-                  to="/checkout"
-                  className="inline-flex min-h-12 items-center gap-2 rounded-full bg-ink px-6 font-semibold text-white"
-                >
-                  Return to checkout <ArrowRight className="size-4" />
-                </Link>
-                <Link
-                  to="/contact"
-                  className="inline-flex min-h-12 items-center rounded-full border border-border px-6 font-semibold"
-                >
-                  Contact Palmer House
-                </Link>
-              </div>
-            </div>
-            <PalFigure
-              pal="samira"
-              size="lg"
-              lane="system"
-              className="min-h-[20rem]"
-              tags={["Cart still saved", "Nothing removed"]}
-            />
+      <CollectionShell active="plan" backTo="/checkout">
+        <section className="pc-guide" aria-labelledby="payment-status-title">
+          {pending ? (
+            <Clock size={36} aria-hidden="true" />
+          ) : (
+            <AlertTriangle size={36} aria-hidden="true" />
+          )}
+          <div className="mt-6">
+            <p className="pc-eyebrow">Payment status</p>
+          </div>
+          <h1 id="payment-status-title">
+            {pending
+              ? "Your payment is processing."
+              : unavailable
+                ? "Payment verification is unavailable."
+                : "We couldn’t verify this payment."}
+          </h1>
+          <p>
+            {pending
+              ? "Stripe has not confirmed payment yet. Your cart is still saved. Check again in a moment."
+              : "Your cart is still saved. If you completed a payment, contact Palmer House before starting another checkout."}
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            {(pending || unavailable) && (
+              <button type="button" className="pc-primary" onClick={() => window.location.reload()}>
+                <RefreshCw size={18} /> Check payment status
+              </button>
+            )}
+            <Link to="/contact" className={pending || unavailable ? "pc-outline" : "pc-primary"}>
+              Contact Palmer House <ArrowRight size={18} />
+            </Link>
+            <Link to="/checkout" className="pc-text-button">
+              Review your cart
+            </Link>
           </div>
         </section>
-      </PageShell>
+      </CollectionShell>
     );
   }
 
-  return (
-    <PageShell>
-      <CelebrationLayer />
-      <PageHero
-        eyebrow="Booking received"
-        title="Your booking is"
-        highlight="moving."
-        subtitle="Stripe accepted the payment handoff. Palmer House will confirm the project scope, schedule, and next preparation step by email."
-        lane="spotlight"
-        primary={{ label: "Get production-ready", to: "/production-guide" }}
-        secondary={{ label: "Return home", to: "/" }}
-        visual={<Scene name="success" priority tags={["Deposit received", "Scope next"]} />}
-      />
+  const supportSubject = `${digital ? "Digital purchase" : "Payment"} support · ${verification.reference}`;
+  const supportUrl = `mailto:info@palmerhouseproductions.com?subject=${encodeURIComponent(supportSubject)}`;
+  // This checkout sells the catalog in USD. Never reconstruct a receipt from current catalog prices.
+  const paidTotal =
+    verification.currency === "usd" &&
+    typeof verification.amountTotal === "number" &&
+    Number.isFinite(verification.amountTotal)
+      ? new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(
+          verification.amountTotal / 100,
+        )
+      : undefined;
 
-      <Section
-        tone="mist"
-        eyebrow="What happens next"
-        title="Three short steps before the camera rolls."
-        subtitle="Each one arrives by email, guided by the Pal who owns that part of the process."
-      >
-        <ProcessTimeline steps={[...NEXT_STEPS]} />
-        <div className="mx-auto mt-12 max-w-3xl">
-          <PalCallout
-            pal="kiana"
-            quote="Watch your inbox for scope and scheduling details. Once those are confirmed, the production guide walks you through everything to prepare."
-            action={{ label: "Open the production guide", to: "/production-guide" }}
-          />
+  return (
+    <CollectionShell active="plan" backTo="/checkout">
+      <section className="pc-guide" aria-labelledby="payment-status-title">
+        <CheckCircle2 size={38} aria-hidden="true" />
+        <div className="mt-6">
+          <p className="pc-eyebrow">Payment confirmed</p>
         </div>
-      </Section>
-    </PageShell>
+        <h1 id="payment-status-title">
+          {digital ? "Thanks for your purchase." : "Your payment is confirmed."}
+        </h1>
+        <p>
+          {digital
+            ? "Your digital purchase is paid in full. Keep your order reference for download access or support."
+            : "Stripe confirmed this payment. Contact Palmer House with your reference for details about this order."}
+        </p>
+        <div className="pc-status" aria-labelledby="order-summary-title">
+          <h2 id="order-summary-title">{digital ? "Your digital order" : "Payment receipt"}</h2>
+          {digital && (
+            <div className="pc-summary-items">
+              {verification.purchasedItems.map((item) => (
+                <div key={item.id}>
+                  <span>
+                    {DIY_DOWNLOADS.find((download) => download.id === item.id)?.name ??
+                      "Digital product"}
+                    <small>PDF download</small>
+                  </span>
+                  <strong>Qty {item.qty}</strong>
+                </div>
+              ))}
+            </div>
+          )}
+          {paidTotal && (
+            <div className="pc-total">
+              <strong>{digital ? "Paid in full" : "Amount paid"}</strong>
+              <strong>{paidTotal}</strong>
+            </div>
+          )}
+          <p className="pc-reference">
+            {digital ? "Order reference" : "Payment reference"}:{" "}
+            <strong>{verification.reference}</strong>
+          </p>
+        </div>
+        {digital && (
+          <div className="mt-6">
+            <h2>Need your download links?</h2>
+            <div className="mt-3">
+              <p>
+                Contact Palmer House with the order reference above for download access or help with
+                your purchase.
+              </p>
+            </div>
+          </div>
+        )}
+        <div className="mt-8 flex flex-wrap gap-3">
+          <a className="pc-primary" href={supportUrl}>
+            {digital ? "Get help with downloads" : "Ask about this payment"}{" "}
+            <ArrowRight size={18} />
+          </a>
+          <Link to={digital ? "/services/diy-downloads" : "/shop"} className="pc-outline">
+            {digital ? "Browse more downloads" : "Explore packages"}
+          </Link>
+        </div>
+      </section>
+    </CollectionShell>
   );
 }
 
 export const Route = createFileRoute("/checkout-success")({
   validateSearch: (search: Record<string, unknown>) => ({
-    session_id: typeof search.session_id === "string" ? search.session_id : "",
+    session_id: typeof search.session_id === "string" ? search.session_id.trim() : "",
   }),
-  loader: async ({ location }) => {
-    const sessionId = new URLSearchParams(location.search).get("session_id");
-    if (!sessionId) return { status: "invalid" as const };
-    return verifyDepositCheckout({ data: { sessionId } });
-  },
+  loader: async ({ location }) =>
+    loadCheckoutReceipt(new URLSearchParams(location.search).get("session_id")),
   head: () => ({
     meta: [
-      { title: "Booking Received | Palmer House Productions" },
+      { title: "Payment Status | Palmer House Productions" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),

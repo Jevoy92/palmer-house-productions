@@ -7,7 +7,7 @@ export const Route = createFileRoute("/reel-pal")({
     ...createServiceSeo({
       title: "Reel Pal Short-Form Video Packages | Palmer House Productions",
       description:
-        "Build a repeatable short-form video system with Ryder and Raquel. Explore Reel Pal packages for visibility, proof, and consistent publishing.",
+        "Create Social Content with Ryder and Raquel. Explore short-form videos, clear hooks, and examples for consistent publishing.",
       pathname: "/reel-pal",
       serviceName: "Reel Pal short-form video production",
       serviceType: "Short-form social video production",

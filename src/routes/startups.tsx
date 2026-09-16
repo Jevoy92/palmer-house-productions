@@ -18,7 +18,8 @@ import {
 } from "@/components/site/PalVisuals";
 import { Glyph, type GlyphName } from "@/components/site/Glyphs";
 import {
-  SAME_SESSION_ADDITIONAL_MINUTE_PRICE,
+  FINISHED_VIDEO_PRICE,
+  PAL_GROUPS,
   SESSION_PRICE,
   type PalAccent,
 } from "@/lib/pricing-catalog";
@@ -233,15 +234,14 @@ function StartupsPage() {
               lane: "spotlight",
             },
             {
-              value: 1,
-              suffix: " min",
-              label: "edited output included, split 60/30/15",
+              value: FINISHED_VIDEO_PRICE,
+              prefix: "$",
+              label: "per finished video",
               lane: "evergreen",
             },
             {
-              value: SAME_SESSION_ADDITIONAL_MINUTE_PRICE,
-              prefix: "$",
-              label: "per added same-session minute",
+              value: PAL_GROUPS.length,
+              label: "Pal lanes to match your goal",
               lane: "system",
             },
           ]}

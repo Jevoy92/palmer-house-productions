@@ -161,15 +161,15 @@ function OffersPage() {
             lane="spotlight"
             eyebrow="Bundle and save 10%"
             title="Attention and credibility launch together."
-            body="Pair a Reel service pack with a Spotlight brand-presence kit and both starter kits drop 10% when booked together as a one-time production."
+            body="Pair Social Content with Commercials and both packages drop 10% when booked together as a one-time production."
             bullets={[
-              "Reel service pack + Spotlight brand-presence kit",
-              "10% off both starter kits",
+              "Social Content + Commercials",
+              "10% off both packages",
               "One-time production booking",
             ]}
-            action={{ label: "Claim the Visibility + Trust Duo", to: "/checkout" }}
+            action={{ label: "Review your plan", to: "/checkout" }}
             visual={
-              <GraphicFrame lane="spotlight" label="Two kits, one discount">
+              <GraphicFrame lane="spotlight" label="Two packages, one discount">
                 <div className="grid h-full grid-cols-[1fr_auto_1fr] items-center gap-3 pt-10">
                   <div className="flex flex-col items-center gap-2">
                     <Glyph name="reel" lane="reel" className="size-20 sm:size-24" />
@@ -199,7 +199,7 @@ function OffersPage() {
               "Palmer House Studio included",
               "Repeats monthly until you change or cancel it",
             ]}
-            action={{ label: "Choose a monthly package", to: "/shop" }}
+            action={{ label: "Compare packages", to: "/shop" }}
             visual={
               <GraphicFrame lane="reel" label="Monthly rhythm">
                 <div className="grid h-full place-items-center pt-8">
@@ -212,7 +212,7 @@ function OffersPage() {
         <div className="mx-auto mt-14 max-w-3xl">
           <PalCallout
             pal="ryder"
-            quote="Monthly is the quiet 20%. Same production standard, same edited minutes, and the Studio tier rides along — you just stop re-buying the plan every month."
+            quote="Monthly is the quiet 20%. Same production standard, same package scope, and the Studio tier rides along — you just stop re-buying the plan every month."
             action={{ label: "See how sessions stack", to: "/production-pricing" }}
           />
         </div>
@@ -289,6 +289,13 @@ function OffersPage() {
                       <p className="mt-1 text-xs text-muted-foreground">
                         One-time ${oneTime.toLocaleString()}
                       </p>
+                      <Link
+                        to="/packages/$packageId"
+                        params={{ packageId: item.id }}
+                        className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline underline-offset-4"
+                      >
+                        View package <ArrowRight className="size-4" />
+                      </Link>
                       <button
                         type="button"
                         onClick={() => chooseMonthly(item.id)}

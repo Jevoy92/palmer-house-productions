@@ -7,7 +7,7 @@ export const Route = createFileRoute("/spotlight-pal")({
     ...createServiceSeo({
       title: "Spotlight Pal Brand Video Packages | Palmer House Productions",
       description:
-        "Build premium founder stories, client proof, and offer films with Kareem and Kiana. Explore Spotlight Pal packages designed to make trust visible.",
+        "Explore Commercials, Product Demos, Customer Stories, and Employee Spotlights with Kareem and Kiana. See examples, scope, and pricing.",
       pathname: "/spotlight-pal",
       serviceName: "Spotlight Pal brand video production",
       serviceType: "Brand film and testimonial video production",

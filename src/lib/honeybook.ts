@@ -1,7 +1,7 @@
 // =============================================================================
 // HoneyBook hand-off
 // -----------------------------------------------------------------------------
-// The QuoteBuilder on /pricing is a marketing/price-discovery tool.
+// The package estimator on /production-pricing is a price-discovery tool.
 // Real booking happens in your HoneyBook lead form.
 //
 // HOW TO WIRE THIS UP LATER:

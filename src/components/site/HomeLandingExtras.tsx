@@ -1,20 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { motion, useInView, usePageInView } from "motion/react";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Check,
-  ChevronDown,
-  Minus,
-  Play,
-  Plus,
-  Settings2,
-  ShoppingCart,
-  Sparkles,
-  X,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import kiana from "@/assets/pals-optimized/kiana.webp";
 import silas from "@/assets/pals-optimized/silas.webp";
 import samira from "@/assets/pals-optimized/samira.webp";
@@ -31,25 +18,10 @@ import servicePackScene from "@/assets/pals-scenes/service-pack-pal.webp";
 import brandPresenceScene from "@/assets/pals-scenes/brand-presence-pal.webp";
 import onboardingKitScene from "@/assets/pals-scenes/onboarding-kit-pal.webp";
 import teachOnceScene from "@/assets/pals-scenes/teach-once-pal.webp";
-import {
-  cartStore,
-  getKitCadence,
-  getKitDurationSeconds,
-  getKitOutputCount,
-  kitAddOnCountKey,
-  kitCadenceCountKey,
-  kitDurationCountKey,
-  MONTHLY_DISCOUNT_RATE,
-  monthlyPrice,
-  type PurchaseCadence,
-  useCart,
-  VIDEO_DURATION_OPTIONS,
-} from "@/lib/cart-store";
-import { ADD_ONS, PAL_GROUPS, computeItemPrice } from "@/lib/pricing-catalog";
+import { computePackagePrice, getPackageById, getPackageScope } from "@/lib/pricing-catalog";
 import { footerColumns, locations, socials } from "@/data/nav";
 import { useHydratedReducedMotion } from "@/hooks/use-hydrated-reduced-motion";
 import { cn } from "@/lib/utils";
-import { useCountUp } from "@/lib/use-count-up";
 
 function BrandMark({ className }: { className?: string }) {
   return (
@@ -126,553 +98,89 @@ function Count({ to, suffix = "" }: { to: number; suffix?: string }) {
 
 const PROBLEMS = [
   {
-    id: "reel-services",
+    id: "social-content",
     pal: visibilityShootScene,
     name: "Ryder",
     tone: "bg-reel-soft",
     category: "Social video",
-    badge: "6 videos · 15–45 sec",
-    title: "Social video kit",
+    title: "Social Content",
     copy: "When nothing you post actually gets seen.",
-    href: "/reel-pal" as const,
   },
   {
-    id: "spotlight-brand-presence",
+    id: "commercials",
     pal: trustFilmScene,
     name: "Kiana",
     tone: "bg-spotlight-soft",
-    category: "Brand film",
-    badge: "4 videos · about 1 min",
-    title: "Brand film kit",
+    category: "Commercials",
+    title: "Commercials",
     copy: "When the message is right and still does not land.",
-    href: "/spotlight-pal" as const,
   },
   {
-    id: "system-onboarding",
+    id: "onboarding",
     pal: trainingLibraryScene,
     name: "Silas",
     tone: "bg-system-soft",
     category: "Training video",
-    badge: "6 videos · 1–3 min",
-    title: "Training video kit",
+    title: "Onboarding",
     copy: "When the same questions eat the same hours.",
-    href: "/system-pal" as const,
   },
 ];
 
 const DEALS = [
   {
-    id: "reel-services",
-    scope: "1 session · 6 videos",
+    id: "social-content",
     img: servicePackScene,
     cat: "Social video",
-    title: "Service explainers",
+    title: "Social Content",
   },
   {
-    id: "spotlight-brand-presence",
-    scope: "1 session · 4 videos",
+    id: "commercials",
     img: brandPresenceScene,
-    cat: "Brand film",
-    title: "Brand presence",
+    cat: "Commercials",
+    title: "Commercials",
   },
   {
-    id: "system-onboarding",
-    scope: "1 session · 6 videos",
+    id: "onboarding",
     img: onboardingKitScene,
     cat: "Onboarding",
-    title: "Employee onboarding",
+    title: "Onboarding",
   },
   {
-    id: "evergreen-faq-deep-dive",
-    scope: "5-minute episode",
+    id: "educational-videos",
     img: teachOnceScene,
-    cat: "Long-form FAQ",
-    title: "FAQ deep dive",
+    cat: "Education",
+    title: "Educational Videos",
   },
 ];
 
-const CATALOG_ITEMS = PAL_GROUPS.flatMap((group) =>
-  group.items.map((item) => ({ item, lane: group.id })),
-);
-const CARD_ADD_ONS = ADD_ONS.filter((item) =>
-  ["caption-pack", "thumbnail-set", "posting-plan", "brand-kit", "rush-delivery"].includes(item.id),
-);
-const EVERY_PRODUCTION_INCLUDES = [
-  "Strategy, script + talking-point help",
-  "Wardrobe + on-camera prep guidance",
-  "Set setup, styling + shot design",
-  "Professional cameras + lenses",
-  "Professional lighting + broadcast audio",
-  "Direction, editing, color + sound mix",
-];
-
-function KitControls({ itemId }: { itemId: string }) {
-  const cart = useCart();
-  const reduce = useHydratedReducedMotion();
-  const [open, setOpen] = useState(false);
-  const [cadenceDraft, setCadenceDraft] = useState<PurchaseCadence | null>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const dialogRef = useRef<HTMLDivElement>(null);
-  const entry = CATALOG_ITEMS.find(({ item }) => item.id === itemId)!;
-  const { item, lane } = entry;
-  const editable = item.editable;
-  const count = editable ? (cart.counts[itemId] ?? editable.defaultCount) : 0;
-  const durationSeconds = getKitDurationSeconds(cart.counts, itemId);
-  const outputCount = getKitOutputCount(count, durationSeconds);
-  const addOnTotal = CARD_ADD_ONS.reduce(
-    (total, addOn) => total + (cart.counts[kitAddOnCountKey(itemId, addOn.id)] ? addOn.price : 0),
-    0,
-  );
-  const oneTimePrice = computeItemPrice(item, count) + addOnTotal;
-  const isMonthly = (cadenceDraft ?? getKitCadence(cart.counts, itemId)) === "monthly";
-  const price = isMonthly ? monthlyPrice(oneTimePrice) : oneTimePrice;
-  const animatedPrice = useCountUp(price, reduce ? 0 : 360);
-  const inCart = (cart.selected[itemId] ?? 0) > 0;
-  const countLabel =
-    lane === "evergreen"
-      ? `${5 + count * 5} min`
-      : `${outputCount} ${outputCount === 1 ? "video" : "videos"}`;
-  const formatLabel =
-    lane === "evergreen" ? countLabel : `${outputCount} × ${durationSeconds}-sec videos`;
-  const runtimeControlLabel = lane === "evergreen" ? countLabel : `${count} edited min`;
-
-  function setCount(next: number) {
-    if (!editable) return;
-    cartStore.setCount(itemId, Math.min(editable.max, Math.max(editable.min, next)));
+function packageScope(itemId: string, compact = false) {
+  const item = getPackageById(itemId);
+  if (!item) return "Scope confirmed with your quote";
+  if (compact && item.lane !== "evergreen") {
+    const count = item.editable?.defaultCount ?? 1;
+    return `${count} ${count === 1 ? "finished video" : "finished videos"}`;
   }
+  return getPackageScope(item);
+}
 
-  function addCurrentBuild() {
-    cartStore.setCount(kitCadenceCountKey(itemId), isMonthly ? 1 : 0);
-    setCadenceDraft(null);
-    cartStore.add(itemId);
-  }
-
-  function closeCustomizer() {
-    if (cadenceDraft) {
-      cartStore.setCount(kitCadenceCountKey(itemId), cadenceDraft === "monthly" ? 1 : 0);
-      setCadenceDraft(null);
-    }
-    setOpen(false);
-    window.requestAnimationFrame(() => triggerRef.current?.focus());
-  }
-
-  function toggleAddOn(addOnId: string) {
-    if (!inCart) addCurrentBuild();
-    const key = kitAddOnCountKey(itemId, addOnId);
-    cartStore.setCount(key, cart.counts[key] ? 0 : 1);
-  }
-
-  function setDuration(seconds: number) {
-    cartStore.setCount(kitDurationCountKey(itemId), seconds);
-  }
-
-  useEffect(() => {
-    if (!open) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        if (cadenceDraft) {
-          cartStore.setCount(kitCadenceCountKey(itemId), cadenceDraft === "monthly" ? 1 : 0);
-          setCadenceDraft(null);
-        }
-        setOpen(false);
-        window.requestAnimationFrame(() => triggerRef.current?.focus());
-        return;
-      }
-      if (event.key !== "Tab" || !dialogRef.current) return;
-      const focusable = dialogRef.current.querySelectorAll<HTMLElement>(
-        'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
-      );
-      if (!focusable.length) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    window.requestAnimationFrame(() => {
-      dialogRef.current?.querySelector<HTMLElement>("button, a, input")?.focus();
-    });
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [cadenceDraft, itemId, open]);
-
-  const kitName = {
-    reel: "Social video kit",
-    spotlight: "Brand film kit",
-    system: "Training video kit",
-    evergreen: "Long-form video kit",
-  }[lane];
-
-  const optionsPanel = editable ? (
-    <>
-      <div
-        className="mb-4 grid grid-cols-2 rounded-2xl bg-[#F1F3F6] p-1"
-        role="group"
-        aria-label="Booking frequency"
-      >
-        <button
-          type="button"
-          onClick={() => setCadenceDraft("one-time")}
-          aria-pressed={!isMonthly}
-          className={cn(
-            "min-h-11 rounded-xl px-3 text-xs font-extrabold transition",
-            !isMonthly ? "bg-white shadow-sm" : "text-[#10204A]/55",
-          )}
-        >
-          Single booking
-        </button>
-        <button
-          type="button"
-          onClick={() => setCadenceDraft("monthly")}
-          aria-pressed={isMonthly}
-          className={cn(
-            "min-h-11 rounded-xl px-3 text-xs font-extrabold transition",
-            isMonthly ? "bg-[#10204A] text-white shadow-sm" : "text-[#10204A]/55",
-          )}
-        >
-          Monthly · save {MONTHLY_DISCOUNT_RATE * 100}%
-        </button>
-      </div>
-
-      {isMonthly && (
-        <div className="mb-4 rounded-2xl border border-system/20 bg-system-soft/70 p-3.5">
-          <div className="flex items-start gap-3">
-            <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-white text-system shadow-sm">
-              <Sparkles className="size-4" />
-            </span>
-            <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <p className="text-xs font-extrabold">Palmer House Studio included</p>
-                <span className="rounded-full bg-white px-2 py-1 text-[11px] font-extrabold text-system">
-                  $99/mo value
-                </span>
-              </div>
-              <p className="mt-1 text-[11px] leading-relaxed text-[#10204A]/65">
-                Automatically included with every monthly video package.
-              </p>
-            </div>
-            <span
-              aria-label="Included"
-              className="ml-auto grid size-6 shrink-0 place-items-center rounded-full bg-system text-white"
-            >
-              <Check className="size-3.5" />
-            </span>
-          </div>
-          <div className="mt-3 grid gap-1.5 text-[11px] font-bold text-[#10204A]/75 sm:grid-cols-2">
-            {[
-              "Brand DNA buildout + Pal guidance",
-              "Personalized video roadmap",
-              "2 complete campaigns each month",
-              "Content calendar, library + help desk",
-            ].map((benefit) => (
-              <span key={benefit} className="flex items-start gap-1.5">
-                <Check className="mt-0.5 size-3 shrink-0 text-system" />
-                {benefit}
-              </span>
-            ))}
-          </div>
-          <p className="mt-2 text-[11px] leading-relaxed text-[#10204A]/50">
-            Studio Brand DNA builds your software profile. “Brand Kit Integration” below applies
-            that identity to the finished video edits.
-          </p>
-        </div>
-      )}
-
-      {lane !== "evergreen" && (
-        <div className="mb-4">
-          <div className="flex items-end justify-between gap-4">
-            <div>
-              <p className="text-sm font-extrabold">Length per video</p>
-              <p className="mt-0.5 text-[11px] text-[#10204A]/60">
-                Same runtime, reformatted into the cuts you need.
-              </p>
-            </div>
-            <p className="text-right text-[11px] font-extrabold text-system">{formatLabel}</p>
-          </div>
-          <div
-            className="mt-2 grid grid-cols-3 gap-1.5"
-            role="radiogroup"
-            aria-label="Length per video"
-          >
-            {VIDEO_DURATION_OPTIONS.map((seconds) => (
-              <button
-                key={seconds}
-                type="button"
-                role="radio"
-                aria-checked={durationSeconds === seconds}
-                onClick={() => setDuration(seconds)}
-                className={cn(
-                  "min-h-11 rounded-xl border px-2 text-[11px] font-extrabold transition",
-                  durationSeconds === seconds
-                    ? "border-[#10204A] bg-[#10204A] text-white"
-                    : "border-[#D7DCE6] bg-white text-[#10204A]",
-                )}
-              >
-                {seconds} sec
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="text-sm font-extrabold">
-            {lane === "evergreen" ? "Episode length" : "Edited runtime"}
-          </p>
-          <p className="mt-0.5 text-[11px] leading-snug text-[#10204A]/60">
-            {lane === "evergreen"
-              ? "Choose a 5, 10, or 15-minute long-form episode."
-              : "Each minute is one production credit. Shorter cuts create more deliverables."}
-          </p>
-        </div>
-        <div className="inline-flex shrink-0 items-center rounded-full border border-[#D7DCE6] bg-[#F7F8FA] p-1">
-          <motion.button
-            type="button"
-            whileTap={reduce ? undefined : { scale: 0.9 }}
-            onClick={() => setCount(count - editable.step)}
-            disabled={count <= editable.min}
-            aria-label={`Decrease ${editable.unitLabelPlural}`}
-            className="grid size-11 place-items-center rounded-full bg-white shadow-sm disabled:cursor-not-allowed disabled:opacity-25"
-          >
-            <Minus className="size-4" />
-          </motion.button>
-          <span className="min-w-[6rem] text-center text-sm font-extrabold" aria-live="polite">
-            {runtimeControlLabel}
-          </span>
-          <motion.button
-            type="button"
-            whileTap={reduce ? undefined : { scale: 0.9 }}
-            onClick={() => setCount(count + editable.step)}
-            disabled={count >= editable.max}
-            aria-label={`Increase ${editable.unitLabelPlural}`}
-            className="grid size-11 place-items-center rounded-full bg-[#10204A] text-white shadow-sm disabled:cursor-not-allowed disabled:opacity-25"
-          >
-            <Plus className="size-4" />
-          </motion.button>
-        </div>
-      </div>
-
-      <label className="mt-3 block">
-        <span className="sr-only">
-          {lane === "evergreen" ? "Episode length" : "Edited runtime in minutes"}
-        </span>
-        <input
-          type="range"
-          min={editable.min}
-          max={editable.max}
-          step={editable.step}
-          value={count}
-          onChange={(event) => setCount(Number(event.target.value))}
-          className="h-2 w-full cursor-pointer accent-[#10204A]"
-        />
-        <span className="mt-1 flex justify-between text-[11px] font-semibold text-[#10204A]/50">
-          <span>Minimum {lane === "evergreen" ? "5 min" : `${editable.min} min`}</span>
-          <span>{lane === "evergreen" ? "15 min" : `Up to ${editable.max} min`}</span>
-        </span>
-      </label>
-
-      <div className="mt-4 rounded-2xl border border-[#D7DCE6] bg-[#F8F9FB] p-3.5">
-        <p className="text-xs font-extrabold">Every production includes</p>
-        <p className="mt-0.5 text-[11px] text-[#10204A]/50">
-          Included with single bookings and monthly packages.
-        </p>
-        <div className="mt-3 grid gap-x-3 gap-y-2 sm:grid-cols-2">
-          {EVERY_PRODUCTION_INCLUDES.map((benefit) => (
-            <span
-              key={benefit}
-              className="flex items-start gap-1.5 text-[11px] font-bold leading-snug text-[#10204A]/75"
-            >
-              <Check className="mt-0.5 size-3 shrink-0 text-evergreen" />
-              {benefit}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      <div className="my-3 h-px bg-[#E2E5EB]" />
-      <p className="text-xs font-extrabold">Add to this kit</p>
-      <div className="mt-2 grid grid-cols-2 gap-1.5">
-        {CARD_ADD_ONS.map((addOn) => {
-          const selected = Boolean(cart.counts[kitAddOnCountKey(itemId, addOn.id)]);
-          return (
-            <motion.button
-              key={addOn.id}
-              type="button"
-              whileTap={reduce ? undefined : { scale: 0.97 }}
-              onClick={() => toggleAddOn(addOn.id)}
-              aria-pressed={selected}
-              className={cn(
-                "flex min-h-12 items-center justify-between gap-2 rounded-xl border px-3 py-2 text-left text-[11px] font-bold transition-colors",
-                selected
-                  ? "border-[#10204A] bg-[#10204A] text-white"
-                  : "border-[#D7DCE6] bg-white text-[#10204A] hover:bg-[#F7F8FA]",
-              )}
-            >
-              <span className="leading-tight">
-                {addOn.id === "brand-kit"
-                  ? "Apply Brand Kit to edits"
-                  : addOn.name.replace(" Pack", "").replace(" Set", "")}
-              </span>
-              <span className="shrink-0 opacity-65">
-                {selected ? "✓" : `+$${addOn.price.toLocaleString()}`}
-              </span>
-            </motion.button>
-          );
-        })}
-      </div>
-    </>
-  ) : null;
-
+function PackageLink({ itemId }: { itemId: string }) {
+  const item = getPackageById(itemId);
+  if (!item) return null;
   return (
-    <div className="kit-cart-cluster relative w-full max-w-[30rem] rounded-[18px] bg-white/95 p-3 text-[#10204A] shadow-[0_12px_30px_-20px_rgb(16_32_74_/_0.7)]">
-      <div className="flex flex-wrap items-center gap-2.5">
-        <div className="mr-1 min-w-[5.5rem]">
-          <p
-            aria-label={`Current estimate $${price.toLocaleString()}`}
-            aria-live="polite"
-            className="tabular-nums text-xl font-extrabold leading-none sm:text-2xl"
-          >
-            ${Math.round(animatedPrice).toLocaleString()}
-            {isMonthly && <span className="ml-1 text-[11px] font-bold text-[#10204A]/55">/mo</span>}
-          </p>
-          <p className="mt-1.5 text-[11px] font-bold leading-none text-[#10204A]/60">
-            {formatLabel} · {isMonthly ? "monthly" : "single booking"}
-          </p>
-          {isMonthly && (
-            <p className="mt-1 text-[11px] font-bold leading-none text-system">
-              Save ${(oneTimePrice - price).toLocaleString()} · was ${oneTimePrice.toLocaleString()}
-            </p>
-          )}
-        </div>
-        {inCart ? (
-          <Link
-            to="/checkout"
-            className="kit-cart-button inline-flex min-h-11 items-center gap-1.5 rounded-full bg-system-soft px-3 text-[11px] font-bold text-system"
-          >
-            <Check className="size-3.5" /> <span className="kit-cart-label">In cart</span>
-          </Link>
-        ) : (
-          <button
-            type="button"
-            onClick={addCurrentBuild}
-            className="kit-cart-button inline-flex min-h-11 items-center gap-1.5 rounded-full bg-[#10204A] px-3 text-[11px] font-bold text-white"
-          >
-            <ShoppingCart className="size-3.5" />{" "}
-            <span className="kit-cart-label">Add to cart</span>
-          </button>
-        )}
-        <button
-          ref={triggerRef}
-          type="button"
-          onClick={() => setOpen(true)}
-          aria-expanded={open}
-          className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-[#D7DCE6] bg-white px-3 text-[11px] font-bold"
-        >
-          <Settings2 className="size-3.5" /> Customize
-          <motion.span
-            animate={{ rotate: open ? 180 : 0 }}
-            transition={{ duration: reduce ? 0 : 0.2 }}
-          >
-            <ChevronDown className="size-3.5" />
-          </motion.span>
-        </button>
+    <div className="flex w-full max-w-[30rem] flex-wrap items-center justify-between gap-3 rounded-[18px] bg-white/95 p-3 text-ink shadow-soft">
+      <div className="min-w-0">
+        <p className="text-xl font-extrabold">${computePackagePrice(item).toLocaleString()}</p>
+        <p className="mt-1 text-[11px] font-medium text-muted-foreground">
+          {getPackageScope(item)}
+        </p>
       </div>
-
-      {typeof document !== "undefined" &&
-        createPortal(
-          open ? (
-            <div className="fixed inset-0 z-[999] flex items-center justify-center p-3 sm:p-6">
-              <button
-                type="button"
-                onClick={closeCustomizer}
-                aria-label="Close customization"
-                className="absolute inset-0 z-0 bg-[#10204A]/35 backdrop-blur-[7px]"
-              />
-              <div
-                ref={dialogRef}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby={`kit-customizer-${itemId}`}
-                className="relative z-10 max-h-[calc(100dvh-1.5rem)] w-full max-w-[34rem] overflow-y-auto rounded-[28px] border border-white/70 bg-white p-4 text-[#10204A] shadow-[0_35px_100px_-30px_rgb(16_32_74_/_0.8)] sm:max-h-[calc(100dvh-3rem)] sm:p-6"
-              >
-                <div className="mb-5 flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#10204A]/50">
-                      Customize
-                    </p>
-                    <h3
-                      id={`kit-customizer-${itemId}`}
-                      className="mt-1 text-xl font-extrabold tracking-[-0.035em]"
-                    >
-                      {kitName}
-                    </h3>
-                  </div>
-                  <div className="ml-auto text-right">
-                    <p className="tabular-nums text-2xl font-extrabold">
-                      ${Math.round(animatedPrice).toLocaleString()}
-                      {isMonthly && (
-                        <span className="ml-1 text-xs font-bold text-[#10204A]/50">/mo</span>
-                      )}
-                    </p>
-                    <p className="text-[11px] font-semibold text-[#10204A]/50">
-                      {isMonthly
-                        ? `Save $${(oneTimePrice - price).toLocaleString()}`
-                        : "Live estimate"}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={closeCustomizer}
-                    aria-label="Exit customizer"
-                    className="grid size-11 shrink-0 place-items-center rounded-full border border-[#D7DCE6] bg-white transition hover:bg-[#F1F3F6]"
-                  >
-                    <X className="size-4" />
-                  </button>
-                </div>
-
-                {optionsPanel}
-
-                <div className="sticky -bottom-4 -mx-4 mt-5 flex gap-2 border-t border-[#E2E5EB] bg-white/95 px-4 pb-1 pt-4 backdrop-blur sm:-bottom-6 sm:-mx-6 sm:px-6">
-                  {inCart ? (
-                    <Link
-                      to="/checkout"
-                      className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full bg-system-soft px-5 text-sm font-bold text-system"
-                    >
-                      <Check className="size-4" /> Review cart
-                    </Link>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={addCurrentBuild}
-                      className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-full bg-[#10204A] px-5 text-sm font-bold text-white"
-                    >
-                      <ShoppingCart className="size-4" /> Add this build
-                    </button>
-                  )}
-                  <button
-                    type="button"
-                    onClick={closeCustomizer}
-                    className="inline-flex min-h-12 items-center gap-1.5 rounded-full border border-[#D7DCE6] px-4 text-sm font-bold"
-                  >
-                    <ChevronDown className="size-4" /> Minimize
-                  </button>
-                </div>
-              </div>
-            </div>
-          ) : null,
-          document.body,
-        )}
+      <Link
+        to="/packages/$packageId"
+        params={{ packageId: item.id }}
+        className="inline-flex min-h-11 items-center gap-2 rounded-full bg-ink px-4 text-xs font-bold text-white"
+      >
+        View package <ArrowRight className="size-4" />
+      </Link>
     </div>
   );
 }
@@ -704,7 +212,7 @@ export function PackageShelf({ embedded = false }: { embedded?: boolean }) {
       <section className="overflow-hidden rounded-[40px] border border-border bg-background px-5 py-10 text-ink sm:px-8">
         <div className="mb-6 flex items-end justify-between gap-4">
           <h2 className="text-[clamp(1.9rem,3.8vw,3rem)] font-extrabold tracking-[-0.05em]">
-            Frequently booked shoots
+            Find your starting package
           </h2>
           <Link
             to="/shop"
@@ -724,7 +232,7 @@ export function PackageShelf({ embedded = false }: { embedded?: boolean }) {
 
         <div className="mb-5 mt-10 flex items-end justify-between gap-4">
           <h2 className="text-[clamp(1.65rem,3.2vw,2.5rem)] font-extrabold tracking-[-0.045em]">
-            Popular starting packages
+            Explore the collection
           </h2>
           <Link
             to="/shop"
@@ -782,9 +290,9 @@ function ProblemCard({
             {card.category}
           </span>
           <p className="mt-2 font-mono text-[11px] font-bold uppercase tracking-[0.1em] text-ink/55">
-            {card.badge}
+            {packageScope(card.id, true)}
           </p>
-          <Link to={card.href} className="w-fit">
+          <Link to="/packages/$packageId" params={{ packageId: card.id }} className="w-fit">
             <h3
               className={cn(
                 "mt-2 text-[1.2rem] font-extrabold leading-[1.02] tracking-[-0.045em] hover:underline sm:mt-3 sm:text-[1.35rem]",
@@ -805,7 +313,7 @@ function ProblemCard({
         </div>
 
         <div className="absolute inset-x-4 bottom-4 z-20 sm:inset-x-5">
-          <KitControls itemId={card.id} />
+          <PackageLink itemId={card.id} />
         </div>
       </motion.article>
     </InView>
@@ -829,7 +337,7 @@ function DealCard({ deal, delay }: { deal: (typeof DEALS)[number]; delay: number
               !reduce && "group-hover:medicare-wiggle",
             )}
           >
-            {deal.scope}
+            {packageScope(deal.id, true)}
           </span>
           <img
             src={deal.img}
@@ -849,7 +357,7 @@ function DealCard({ deal, delay }: { deal: (typeof DEALS)[number]; delay: number
           {deal.title}
         </h3>
         <div className="mt-3">
-          <KitControls itemId={deal.id} />
+          <PackageLink itemId={deal.id} />
         </div>
       </motion.article>
     </InView>

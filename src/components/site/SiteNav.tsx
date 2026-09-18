@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronDown, Menu, Search, ShoppingBag, Sparkles, Tag, UserRound, X } from "lucide-react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import { exploreLinks, palLinks, serviceLinks, startHereLinks, type NavLink } from "@/data/nav";
+import { companyLinks, palLinks, pricingLinks, serviceLinks, type NavLink } from "@/data/nav";
 import { useHydratedReducedMotion } from "@/hooks/use-hydrated-reduced-motion";
 import { cartItemCount, useCart } from "@/lib/cart-store";
 import phMark from "@/assets/php-mark-108.webp";
@@ -251,8 +251,14 @@ export function SiteNav() {
           </Link>
 
           <div className="ml-1 hidden border-l border-border pl-1 min-[1120px]:block">
-            <Dropdown label="Start here" items={startHereLinks} compact />
+            <Link
+              to="/find-your-pal"
+              className="flex min-h-11 items-center rounded-full px-2 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary xl:px-3 xl:text-sm"
+            >
+              Find your Pal
+            </Link>
           </div>
+
 
           <form
             action="/shop"
@@ -274,15 +280,10 @@ export function SiteNav() {
           </form>
 
           <div className="ml-auto hidden items-center min-[1120px]:flex">
-            <Dropdown label="Services" items={serviceLinks} badge="New" />
+            <Dropdown label="Services" items={serviceLinks} />
             <Dropdown label="Pals" items={palLinks} />
-            <Link
-              to="/work"
-              className="flex min-h-11 items-center rounded-full px-2 text-xs font-medium transition-colors hover:bg-secondary xl:px-3 xl:text-sm"
-            >
-              Work
-            </Link>
-            <Dropdown label="Explore" items={exploreLinks} />
+            <Dropdown label="Pricing" items={pricingLinks} badge="New" />
+            <Dropdown label="Company" items={companyLinks} />
             <Link
               to="/offers"
               aria-label="Offers"
@@ -402,26 +403,26 @@ export function SiteNav() {
                 />
               </motion.form>
               <MobileGroup
-                label="Start here"
-                items={startHereLinks}
-                close={() => setOpen(false)}
-                delay={0}
-              />
-              <MobileGroup
                 label="Services"
                 items={serviceLinks}
                 close={() => setOpen(false)}
-                delay={0.03}
+                delay={0}
               />
               <MobileGroup
                 label="Meet the Pals"
                 items={palLinks}
                 close={() => setOpen(false)}
+                delay={0.03}
+              />
+              <MobileGroup
+                label="Pricing"
+                items={pricingLinks}
+                close={() => setOpen(false)}
                 delay={0.06}
               />
               <MobileGroup
-                label="Explore"
-                items={exploreLinks}
+                label="Company"
+                items={companyLinks}
                 close={() => setOpen(false)}
                 delay={0.09}
               />

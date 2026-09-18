@@ -403,26 +403,26 @@ export function SiteNav() {
                 />
               </motion.form>
               <MobileGroup
-                label="Start here"
-                items={startHereLinks}
-                close={() => setOpen(false)}
-                delay={0}
-              />
-              <MobileGroup
                 label="Services"
                 items={serviceLinks}
                 close={() => setOpen(false)}
-                delay={0.03}
+                delay={0}
               />
               <MobileGroup
                 label="Meet the Pals"
                 items={palLinks}
                 close={() => setOpen(false)}
+                delay={0.03}
+              />
+              <MobileGroup
+                label="Pricing"
+                items={pricingLinks}
+                close={() => setOpen(false)}
                 delay={0.06}
               />
               <MobileGroup
-                label="Explore"
-                items={exploreLinks}
+                label="Company"
+                items={companyLinks}
                 close={() => setOpen(false)}
                 delay={0.09}
               />

@@ -1,30 +1,6 @@
 export type NavLink = { label: string; to: string; description?: string; badge?: string };
 export type NavGroup = { label: string; links: NavLink[] };
 
-export const startHereLinks: NavLink[] = [
-  {
-    label: "Find Your Pal",
-    to: "/find-your-pal",
-    description: "A package and a price in two choices",
-  },
-  {
-    label: "Video System Assessment",
-    to: "/video-system-assessment",
-    description: "Find the biggest content gap",
-  },
-  {
-    label: "Current Offers",
-    to: "/offers",
-    description: "Bundles, BOGO, and monthly savings",
-    badge: "New",
-  },
-  {
-    label: "Browse Packages",
-    to: "/shop",
-    description: "Explore packages and watch examples",
-  },
-];
-
 export const serviceLinks: NavLink[] = [
   {
     label: "Video Production",
@@ -42,106 +18,68 @@ export const serviceLinks: NavLink[] = [
     description: "Build the system before filming",
   },
   {
-    label: "Production Pricing",
-    to: "/production-pricing",
-    description: "Plan scope and investment",
+    label: "Our Process",
+    to: "/process",
+    description: "From discovery through delivery",
   },
   {
-    label: "Browse Packages",
-    to: "/shop",
-    description: "Explore packages and watch examples",
-    badge: "New",
+    label: "Industries",
+    to: "/industries",
+    description: "How we work in your field",
   },
 ];
 
 export const palLinks: NavLink[] = [
-  { label: "Meet the Pals", to: "/meet-the-pals" },
-  { label: "Pal Lane Guide", to: "/pals" },
-  { label: "Find Your Pal", to: "/find-your-pal" },
+  {
+    label: "Find Your Pal",
+    to: "/find-your-pal",
+    description: "A package and a price in two choices",
+  },
+  { label: "Meet the Pals", to: "/meet-the-pals", description: "The eight characters" },
+  { label: "Pal Lane Guide", to: "/pals", description: "Which lane fits your problem" },
   { label: "Reel Pal", to: "/reel-pal" },
   { label: "Spotlight Pal", to: "/spotlight-pal" },
   { label: "Evergreen Pal", to: "/evergreen-pal" },
   { label: "System Pal", to: "/system-pal" },
 ];
 
-export const industryLinks: NavLink[] = [
-  { label: "Healthcare", to: "/industries/healthcare" },
-  { label: "Manufacturing", to: "/industries/manufacturing" },
-  { label: "Professional Services", to: "/industries/professional-services" },
-  { label: "Technology", to: "/industries/technology" },
-  { label: "Education", to: "/industries/education" },
-  { label: "Government", to: "/industries/government" },
-  { label: "Startups", to: "/startups" },
-];
-
-export const resourceLinks: NavLink[] = [
-  { label: "Blog & Insights", to: "/blog" },
-  { label: "Downloads & Templates", to: "/services/diy-downloads" },
-  { label: "Games & Guided Tools", to: "/games" },
-  { label: "Production Guide", to: "/production-guide" },
-  { label: "Video System Assessment", to: "/video-system-assessment" },
-  { label: "Free Webinar", to: "/webinar" },
-];
-
-export const exploreLinks: NavLink[] = [
+export const pricingLinks: NavLink[] = [
   {
-    label: "Our Process",
-    to: "/process",
-    description: "From discovery through delivery",
+    label: "Pricing Overview",
+    to: "/pricing",
+    description: "Every way to work with us",
   },
+  {
+    label: "Production Estimate",
+    to: "/production-pricing",
+    description: "Build an editable estimate",
+  },
+  {
+    label: "Studio Plans",
+    to: "/membership/pricing",
+    description: "Monthly membership tiers",
+  },
+  {
+    label: "Browse Packages",
+    to: "/shop",
+    description: "Ten packages with examples",
+  },
+  {
+    label: "Current Offers",
+    to: "/offers",
+    description: "Bundles, BOGO, and savings",
+    badge: "New",
+  },
+];
+
+export const companyLinks: NavLink[] = [
   { label: "About Palmer House", to: "/about-us" },
   { label: "Selected Work", to: "/work" },
   { label: "Client Reviews", to: "/resources/reviews" },
   { label: "Blog & Insights", to: "/blog" },
-  { label: "Production Guide", to: "/production-guide" },
-  { label: "Industries", to: "/industries" },
-  { label: "Locations", to: "/locations" },
+  { label: "Guides & Tools", to: "/production-guide", description: "Guides, downloads, and games" },
   { label: "FAQ", to: "/faq" },
-  { label: "Games & Tools", to: "/games" },
-  { label: "Membership", to: "/membership" },
-  { label: "Our View on AI", to: "/ai-pov" },
-];
-
-export const navGroups: NavGroup[] = [
-  {
-    label: "Services",
-    links: serviceLinks,
-  },
-  {
-    label: "Industries",
-    links: industryLinks,
-  },
-  {
-    label: "Meet the Pals",
-    links: palLinks,
-  },
-  {
-    label: "Resources",
-    links: resourceLinks,
-  },
-  {
-    label: "Locations",
-    links: [
-      { label: "Seattle, WA", to: "/locations/seattle-wa" },
-      { label: "Bellevue, WA", to: "/locations/bellevue-wa" },
-      { label: "Tacoma, WA", to: "/locations/tacoma-wa" },
-      { label: "Portland, OR", to: "/locations/portland-or" },
-    ],
-  },
-  {
-    label: "Company",
-    links: [
-      { label: "About Us", to: "/about-us" },
-      { label: "Pricing", to: "/production-pricing" },
-      { label: "Current Offers", to: "/offers" },
-      { label: "Selected Work", to: "/work" },
-      { label: "Membership", to: "/membership" },
-      { label: "Our View on AI", to: "/ai-pov" },
-      { label: "FAQ", to: "/faq" },
-      { label: "Client Reviews", to: "/resources/reviews" },
-      { label: "Get Started", to: "/contact" },
-    ],
-  },
+  { label: "Locations", to: "/locations" },
 ];
 
 export const footerColumns: NavGroup[] = [
@@ -151,11 +89,24 @@ export const footerColumns: NavGroup[] = [
       { label: "Video Production", to: "/services/video-production" },
       { label: "Post-Production", to: "/services/post-production" },
       { label: "Consulting & Strategy", to: "/content-strategy" },
+      { label: "Our Process", to: "/process" },
+      { label: "Industries", to: "/industries" },
+    ],
+  },
+  {
+    label: "Pricing",
+    links: [
+      { label: "Pricing Overview", to: "/pricing" },
+      { label: "Production Estimate", to: "/production-pricing" },
+      { label: "Studio Plans", to: "/membership/pricing" },
+      { label: "Browse Packages", to: "/shop" },
+      { label: "Current Offers", to: "/offers" },
     ],
   },
   {
     label: "Meet the Pals",
     links: [
+      { label: "Find Your Pal", to: "/find-your-pal" },
       { label: "Palmer House Pals", to: "/pals" },
       { label: "Reel Pal", to: "/reel-pal" },
       { label: "System Pal", to: "/system-pal" },
@@ -164,23 +115,14 @@ export const footerColumns: NavGroup[] = [
     ],
   },
   {
-    label: "Resources",
-    links: [
-      { label: "Blog / Insights", to: "/blog" },
-      { label: "Client Reviews", to: "/resources/reviews" },
-      { label: "Downloads & Templates", to: "/services/diy-downloads" },
-      { label: "FAQ", to: "/faq" },
-      { label: "Free Webinar", to: "/webinar" },
-    ],
-  },
-  {
     label: "Company",
     links: [
       { label: "About Us", to: "/about-us" },
-      { label: "Pricing", to: "/production-pricing" },
+      { label: "Selected Work", to: "/work" },
+      { label: "Client Reviews", to: "/resources/reviews" },
+      { label: "Blog / Insights", to: "/blog" },
       { label: "Production Guide", to: "/production-guide" },
-      { label: "Privacy Policy", to: "/privacy" },
-      { label: "Terms of Service", to: "/terms" },
+      { label: "FAQ", to: "/faq" },
     ],
   },
 ];

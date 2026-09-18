@@ -55,8 +55,8 @@ const options: Array<{
     lane: "reel",
     eyebrow: "Packages",
     title: "Pick something ready-made",
-    from: "10 packages",
-    note: "watch an example before you choose",
+    from: "$1,050",
+    note: "ten packages, example included",
     body: "Social content, commercials, product demos, customer stories, training, onboarding, and more — each with scope and price up front.",
     bullets: [
       "See a real example for every package",

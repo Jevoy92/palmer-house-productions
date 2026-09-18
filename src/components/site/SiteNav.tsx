@@ -280,15 +280,10 @@ export function SiteNav() {
           </form>
 
           <div className="ml-auto hidden items-center min-[1120px]:flex">
-            <Dropdown label="Services" items={serviceLinks} badge="New" />
+            <Dropdown label="Services" items={serviceLinks} />
             <Dropdown label="Pals" items={palLinks} />
-            <Link
-              to="/work"
-              className="flex min-h-11 items-center rounded-full px-2 text-xs font-medium transition-colors hover:bg-secondary xl:px-3 xl:text-sm"
-            >
-              Work
-            </Link>
-            <Dropdown label="Explore" items={exploreLinks} />
+            <Dropdown label="Pricing" items={pricingLinks} badge="New" />
+            <Dropdown label="Company" items={companyLinks} />
             <Link
               to="/offers"
               aria-label="Offers"

@@ -12,10 +12,10 @@ export const studioCreditOperations = {
 } as const;
 export type StudioCreditOperation = keyof typeof studioCreditOperations;
 export const studioCreditAllowance = {
-  trial: 100,
-  creator: 1000,
-  business: 2500,
-  partner: 6000,
+  trial: 300,
+  creator: 3500,
+  business: 7500,
+  partner: 15000,
 } as const;
 export const studioCreditTopUps = {
   boost: { label: "Credit boost", credits: 500, priceUsd: 20 },

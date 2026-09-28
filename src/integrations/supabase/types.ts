@@ -1137,6 +1137,167 @@ export type Database = {
           },
         ]
       }
+      studio_billing_events: {
+        Row: {
+          created_at: string
+          event_created: number
+          event_id: string
+          kind: string
+          workspace_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_created: number
+          event_id: string
+          kind: string
+          workspace_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_created?: number
+          event_id?: string
+          kind?: string
+          workspace_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studio_billing_events_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      studio_credit_debts: {
+        Row: {
+          credits: number
+          workspace_id: string
+        }
+        Insert: {
+          credits?: number
+          workspace_id: string
+        }
+        Update: {
+          credits?: number
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studio_credit_debts_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: true
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      studio_credit_grants: {
+        Row: {
+          amount_paid_cents: number | null
+          created_at: string
+          credits: number
+          debt_credits: number
+          expires_at: string | null
+          id: string
+          kind: string
+          payment_intent_id: string | null
+          remaining: number
+          reversed_credits: number
+          source_key: string
+          workspace_id: string
+        }
+        Insert: {
+          amount_paid_cents?: number | null
+          created_at?: string
+          credits: number
+          debt_credits?: number
+          expires_at?: string | null
+          id?: string
+          kind: string
+          payment_intent_id?: string | null
+          remaining: number
+          reversed_credits?: number
+          source_key: string
+          workspace_id: string
+        }
+        Update: {
+          amount_paid_cents?: number | null
+          created_at?: string
+          credits?: number
+          debt_credits?: number
+          expires_at?: string | null
+          id?: string
+          kind?: string
+          payment_intent_id?: string | null
+          remaining?: number
+          reversed_credits?: number
+          source_key?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studio_credit_grants_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      studio_credit_usage: {
+        Row: {
+          allocations: Json
+          completed_at: string | null
+          cost_ceiling_usd: number
+          created_at: string
+          credits: number
+          estimated_cost_usd: number
+          id: string
+          operation: string
+          provider_usage: Json
+          status: string
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          allocations?: Json
+          completed_at?: string | null
+          cost_ceiling_usd: number
+          created_at?: string
+          credits: number
+          estimated_cost_usd?: number
+          id?: string
+          operation: string
+          provider_usage?: Json
+          status?: string
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          allocations?: Json
+          completed_at?: string | null
+          cost_ceiling_usd?: number
+          created_at?: string
+          credits?: number
+          estimated_cost_usd?: number
+          id?: string
+          operation?: string
+          provider_usage?: Json
+          status?: string
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studio_credit_usage_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       studio_feed_comments: {
         Row: {
           author: Json
@@ -1325,6 +1486,47 @@ export type Database = {
           },
         ]
       }
+      studio_membership_checkouts: {
+        Row: {
+          attempt_id: string
+          created_at: string
+          interval_name: string
+          lease_token: string | null
+          lease_until: string | null
+          plan: string
+          session_id: string | null
+          workspace_id: string
+        }
+        Insert: {
+          attempt_id?: string
+          created_at?: string
+          interval_name: string
+          lease_token?: string | null
+          lease_until?: string | null
+          plan: string
+          session_id?: string | null
+          workspace_id: string
+        }
+        Update: {
+          attempt_id?: string
+          created_at?: string
+          interval_name?: string
+          lease_token?: string | null
+          lease_until?: string | null
+          plan?: string
+          session_id?: string | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studio_membership_checkouts_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: true
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       studio_pal_profiles: {
         Row: {
           avatar_path: string | null
@@ -1362,6 +1564,96 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "studio_pal_profiles_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      studio_trial_claims: {
+        Row: {
+          created_at: string
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studio_trial_claims_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: true
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      studio_voice_requests: {
+        Row: {
+          actor_id: string
+          attachment_id: string | null
+          attempt_token: string
+          content_sha256: string
+          conversation_id: string | null
+          created_at: string
+          request_key: string
+          status: string
+          updated_at: string
+          usage_id: string | null
+          workspace_id: string
+        }
+        Insert: {
+          actor_id: string
+          attachment_id?: string | null
+          attempt_token?: string
+          content_sha256: string
+          conversation_id?: string | null
+          created_at?: string
+          request_key: string
+          status?: string
+          updated_at?: string
+          usage_id?: string | null
+          workspace_id: string
+        }
+        Update: {
+          actor_id?: string
+          attachment_id?: string | null
+          attempt_token?: string
+          content_sha256?: string
+          conversation_id?: string | null
+          created_at?: string
+          request_key?: string
+          status?: string
+          updated_at?: string
+          usage_id?: string | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studio_voice_requests_attachment_id_fkey"
+            columns: ["attachment_id"]
+            isOneToOne: false
+            referencedRelation: "conversation_attachments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "studio_voice_requests_usage_id_fkey"
+            columns: ["usage_id"]
+            isOneToOne: false
+            referencedRelation: "studio_credit_usage"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "studio_voice_requests_workspace_id_fkey"
             columns: ["workspace_id"]
             isOneToOne: false
             referencedRelation: "workspaces"
@@ -2022,11 +2314,19 @@ export type Database = {
       }
       workspace_subscriptions: {
         Row: {
+          billing_event_created: number
+          billing_hold: boolean
           billing_interval: string
           campaign_allowance: number
           cancel_at_period_end: boolean
           current_period_end: string
           current_period_start: string
+          paid_billing_interval: string | null
+          paid_credit_allowance: number | null
+          paid_event_created: number
+          paid_period_end: string | null
+          paid_period_start: string | null
+          paid_plan: string | null
           plan: string
           status: string
           stripe_customer_id: string | null
@@ -2036,11 +2336,19 @@ export type Database = {
           workspace_id: string
         }
         Insert: {
+          billing_event_created?: number
+          billing_hold?: boolean
           billing_interval?: string
           campaign_allowance?: number
           cancel_at_period_end?: boolean
           current_period_end?: string
           current_period_start?: string
+          paid_billing_interval?: string | null
+          paid_credit_allowance?: number | null
+          paid_event_created?: number
+          paid_period_end?: string | null
+          paid_period_start?: string | null
+          paid_plan?: string | null
           plan?: string
           status?: string
           stripe_customer_id?: string | null
@@ -2050,11 +2358,19 @@ export type Database = {
           workspace_id: string
         }
         Update: {
+          billing_event_created?: number
+          billing_hold?: boolean
           billing_interval?: string
           campaign_allowance?: number
           cancel_at_period_end?: boolean
           current_period_end?: string
           current_period_start?: string
+          paid_billing_interval?: string | null
+          paid_credit_allowance?: number | null
+          paid_event_created?: number
+          paid_period_end?: string | null
+          paid_period_start?: string | null
+          paid_plan?: string | null
           plan?: string
           status?: string
           stripe_customer_id?: string | null
@@ -2165,9 +2481,37 @@ export type Database = {
         }
         Returns: undefined
       }
+      bind_studio_voice_usage: {
+        Args: {
+          actor: string
+          request_id: string
+          target_workspace_id: string
+          token: string
+          usage: string
+        }
+        Returns: undefined
+      }
       check_credits: {
         Args: { p_required_credits: number; p_user_id: string }
         Returns: boolean
+      }
+      claim_studio_membership_checkout: {
+        Args: {
+          interval_key: string
+          plan_key: string
+          target_workspace_id: string
+        }
+        Returns: Json
+      }
+      claim_studio_voice: {
+        Args: {
+          actor: string
+          content_hash: string
+          conversation?: string
+          request_id: string
+          target_workspace_id: string
+        }
+        Returns: Json
       }
       complete_studio_feed_generation: {
         Args: {
@@ -2176,6 +2520,20 @@ export type Database = {
           replies_value: Json
           request_token: string
           target_workspace_id: string
+        }
+        Returns: string
+      }
+      complete_studio_voice: {
+        Args: {
+          actor: string
+          details: Json
+          file_bytes: number
+          file_label: string
+          request_id: string
+          saved_path: string
+          target_workspace_id: string
+          token: string
+          transcript: string
         }
         Returns: string
       }
@@ -2206,8 +2564,35 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      fail_studio_voice: {
+        Args: {
+          actor: string
+          request_id: string
+          target_workspace_id: string
+          token: string
+        }
+        Returns: undefined
+      }
       finish_campaign_usage: {
         Args: { outcome: string; target_event_id: string }
+        Returns: undefined
+      }
+      finish_studio_credits: {
+        Args: {
+          outcome: string
+          provider_calls: Json
+          provider_cost: number
+          usage_id: string
+        }
+        Returns: undefined
+      }
+      finish_studio_membership_checkout: {
+        Args: {
+          clear_attempt: boolean
+          request_token: string
+          stripe_session_id: string
+          target_workspace_id: string
+        }
         Returns: undefined
       }
       forget_workspace_legacy_memory: {
@@ -2225,6 +2610,27 @@ export type Database = {
       get_total_system_completion: {
         Args: { p_user_id: string }
         Returns: number
+      }
+      grant_studio_topup: {
+        Args: {
+          credit_count: number
+          event_key: string
+          event_time: number
+          paid_cents: number
+          payment_id: string
+          session_id: string
+          target_workspace_id: string
+        }
+        Returns: boolean
+      }
+      hold_studio_billing: {
+        Args: {
+          event_key: string
+          event_time: number
+          subscription_id: string
+          target_workspace_id: string
+        }
+        Returns: undefined
       }
       increment_pal_spot: { Args: { p_pal_id: string }; Returns: undefined }
       move_to_dlq: {
@@ -2245,6 +2651,10 @@ export type Database = {
         }[]
       }
       refill_monthly_credits: { Args: never; Returns: undefined }
+      refresh_studio_credits: {
+        Args: { allowance: number; target_workspace_id: string }
+        Returns: Json
+      }
       release_studio_feed_generation: {
         Args: { request_token: string; target_workspace_id: string }
         Returns: undefined
@@ -2257,6 +2667,20 @@ export type Database = {
         }
         Returns: string
       }
+      reserve_studio_credits: {
+        Args: {
+          actor_id: string
+          allowance: number
+          automatic_monthly_budget: number
+          cost_ceiling: number
+          credit_count: number
+          global_monthly_budget: number
+          operation_name: string
+          target_workspace_id: string
+          workspace_monthly_budget: number
+        }
+        Returns: string
+      }
       reserve_studio_feed_generation: {
         Args: {
           context_fingerprint: string
@@ -2264,6 +2688,16 @@ export type Database = {
           target_workspace_id: string
         }
         Returns: Json
+      }
+      reverse_studio_topup: {
+        Args: {
+          disputed: boolean
+          event_key: string
+          event_time: number
+          payment_id: string
+          refunded_cents: number
+        }
+        Returns: boolean
       }
       save_workspace_memory: {
         Args: {
@@ -2274,6 +2708,21 @@ export type Database = {
           target_workspace_id: string
         }
         Returns: Json
+      }
+      studio_credit_cost_snapshot: { Args: never; Returns: Json }
+      studio_credit_snapshot: {
+        Args: { period_start: string; target_workspace_id: string }
+        Returns: Json
+      }
+      sync_studio_subscription: {
+        Args: {
+          event_key: string
+          event_time: number
+          paid_invoice: boolean
+          subscription_data: Json
+          target_workspace_id: string
+        }
+        Returns: boolean
       }
     }
     Enums: {

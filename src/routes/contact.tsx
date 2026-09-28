@@ -8,7 +8,7 @@ import { contactInfo } from "@/data/nav";
 import { PAL_GROUPS, type PalAccent } from "@/lib/pricing-catalog";
 import { inquiryIntents, parseInquiryIntent, type InquiryIntent } from "@/lib/public-journey";
 import { createSeo } from "@/lib/seo";
-import { HONEYBOOK_LEAD_FORM_URL } from "@/lib/honeybook";
+import { HoneyBookEmbed } from "@/components/HoneyBookEmbed";
 
 const PROJECT_TYPES = [
   ...Object.values(inquiryIntents).map((intent) => intent.label),
@@ -312,12 +312,9 @@ function ContactPage() {
             <p className="mt-2 px-2 text-sm leading-relaxed text-muted-foreground">
               Tell us a little about your project. Your inquiry goes straight to our team.
             </p>
-            <iframe
-              title="Palmer House Productions contact form"
-              src={HONEYBOOK_LEAD_FORM_URL}
-              className="mt-4 h-[1100px] w-full rounded-[1.75rem] border-0"
-              loading="lazy"
-            />
+            <div className="mt-4 min-h-[600px]">
+              <HoneyBookEmbed />
+            </div>
           </div>
 
           <aside className="space-y-4 lg:sticky lg:top-28">

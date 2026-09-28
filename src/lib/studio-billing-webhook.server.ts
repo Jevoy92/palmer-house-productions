@@ -1,11 +1,11 @@
 import type Stripe from "stripe";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { studioPlans, studioPlanPrices, type StudioPlanKey } from "./studio-model";
+import { studioPlans, studioPlanPrices, studioPlanTestPrices, type StudioPlanKey } from "./studio-model";
 import { studioCreditAllowance, studioCreditTopUps } from "./studio-credits";
 const id = (value: string | { id: string } | null | undefined) =>
   typeof value === "string" ? value : value?.id;
 function planForPrice(price: string) {
-  for (const [plan, intervals] of Object.entries(studioPlanPrices))
+  for (const [plan, intervals] of [...Object.entries(studioPlanPrices), ...Object.entries(studioPlanTestPrices)])
     for (const [interval, priceId] of Object.entries(intervals))
       if (priceId === price) return { plan: plan as StudioPlanKey, interval };
   return null;

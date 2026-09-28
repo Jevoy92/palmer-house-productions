@@ -178,6 +178,12 @@ export const studioPlanPrices = {
     year: "price_1U1u5tGcAcCB6YlQn1JfwLux",
   },
 } as const satisfies Record<StudioPlanKey, { month: string; year: string }>;
+/** Stripe test-mode price IDs, used only when STRIPE_USE_TEST is on. */
+export const studioPlanTestPrices = {
+  creator: { month: "price_1UKkiSGcAcCB6YlQWTnorj0r", year: "price_1UKkiTGcAcCB6YlQ9sTvuSmu" },
+  business: { month: "price_1UKkiTGcAcCB6YlQ8NxTduOb", year: "price_1UKkiUGcAcCB6YlQ02VGTXf2" },
+  partner: { month: "price_1UKkiUGcAcCB6YlQfpgPE7nT", year: "price_1UKkiVGcAcCB6YlQumPKH4TA" },
+} as const satisfies Record<StudioPlanKey, { month: string; year: string }>;
 export type StudioView =
   | "feed"
   | "engine"

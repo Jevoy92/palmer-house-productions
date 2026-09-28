@@ -1,3 +1,4 @@
+import { stripeSecretKey } from "@/lib/stripe-env";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestUrl } from "@tanstack/react-start/server";
 import { z } from "zod";
@@ -48,12 +49,12 @@ export const getStudioCreditSummary = createServerFn({ method: "POST" })
         sub.data.status === "active" &&
         sub.data.stripe_subscription_id &&
         !sub.data.paid_period_end &&
-        process.env.STRIPE_SECRET_KEY
+        stripeSecretKey()
       ) {
         // One-time migration catch-up verifies the real current Stripe invoice; never
         // award credits merely because a legacy local row says active.
         const { default: Stripe } = await import("stripe");
-        const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+        const stripe = new Stripe(stripeSecretKey()!);
         const subscription = await stripe.subscriptions.retrieve(sub.data.stripe_subscription_id);
         const invoiceId =
           typeof subscription.latest_invoice === "string"
@@ -128,7 +129,7 @@ export const getStudioCreditSummary = createServerFn({ method: "POST" })
         canManageBilling,
         topUpsEnabled:
           canManageBilling &&
-          Boolean(process.env.STRIPE_SECRET_KEY) &&
+          Boolean(stripeSecretKey()) &&
           Boolean(process.env.LOVABLE_API_KEY) &&
           process.env.STUDIO_AI_SALES_READY === "true" &&
           process.env.STUDIO_CREDIT_TOPUPS_ENABLED === "true" &&
@@ -161,7 +162,7 @@ export const createStudioCreditCheckout = createServerFn({ method: "POST" })
       process.env.STUDIO_CREDIT_TOPUPS_ENABLED !== "true" ||
       process.env.STUDIO_AI_SALES_READY !== "true" ||
       !process.env.LOVABLE_API_KEY ||
-      !process.env.STRIPE_SECRET_KEY
+      !stripeSecretKey()
     )
       return { ok: false as const, code: "CREDIT_TOPUPS_NOT_CONFIGURED" as const };
     const admin = studioBillingAdmin();
@@ -195,7 +196,7 @@ export const createStudioCreditCheckout = createServerFn({ method: "POST" })
         "A billing adjustment needs to be resolved before buying more credits. Contact Palmer House.",
       );
     const { default: Stripe } = await import("stripe");
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    const stripe = new Stripe(stripeSecretKey()!);
     const pack = studioCreditTopUps[data.pack];
     const origin = process.env.PUBLIC_SITE_URL || getRequestUrl().origin;
     const session = await stripe.checkout.sessions.create(

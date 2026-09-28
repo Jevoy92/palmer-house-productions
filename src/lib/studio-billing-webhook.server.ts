@@ -119,6 +119,30 @@ export async function applyStudioBillingEvent(
       await sync(await stripe.subscriptions.retrieve(id(session.subscription)!));
       return;
     }
+    if (
+      session.mode === "payment" &&
+      session.metadata?.purchase_kind === "production_deposit" &&
+      session.payment_status === "paid"
+    ) {
+      const { queueTeamEmail } = await import("./team-email.server");
+      const money = (cents: number | null) =>
+        cents == null ? "" : `$${(cents / 100).toFixed(2)}`;
+      await queueTeamEmail(
+        "deposit-booked",
+        {
+          reference: session.metadata.quote_reference,
+          customerName: session.metadata.customer_name,
+          customerEmail: session.customer_details?.email ?? session.customer_email ?? "",
+          company: session.metadata.company,
+          depositPaid: money(session.amount_total),
+          estimatedTotal: session.metadata.estimated_total
+            ? `$${session.metadata.estimated_total}`
+            : "",
+        },
+        `deposit-${session.id}`,
+      );
+      return;
+    }
     if (session.mode !== "payment" || session.metadata?.purchase_kind !== "studio_credits") return;
     if (session.payment_status !== "paid" || session.status !== "complete") return;
     const key = session.metadata.pack as keyof typeof studioCreditTopUps;

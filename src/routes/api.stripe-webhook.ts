@@ -1,4 +1,4 @@
-import { stripeSecretKey } from "@/lib/stripe-env";
+import { stripeSecretKey, stripeWebhookSecrets } from "@/lib/stripe-env";
 import { createClient } from "@supabase/supabase-js";
 import { createFileRoute } from "@tanstack/react-router";
 import Stripe from "stripe";
@@ -8,21 +8,26 @@ import { applyStudioBillingEvent } from "@/lib/studio-billing-webhook.server";
 
 async function handleStripeWebhook({ request }: { request: Request }) {
   const stripeSecret = stripeSecretKey();
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const webhookSecrets = stripeWebhookSecrets();
   const supabaseSecret =
     process.env["SUPABASE_SERVICE_ROLE_KEY"] || process.env["SUPABASE_SECRET_KEY"];
-  if (!stripeSecret || !webhookSecret || !supabaseSecret) {
+  if (!stripeSecret || !webhookSecrets.length || !supabaseSecret) {
     return Response.json({ error: "Billing webhook is not configured." }, { status: 503 });
   }
   const signature = request.headers.get("stripe-signature");
   if (!signature) return Response.json({ error: "Missing Stripe signature." }, { status: 400 });
   const stripe = new Stripe(stripeSecret);
-  let event: Stripe.Event;
-  try {
-    event = stripe.webhooks.constructEvent(await request.text(), signature, webhookSecret);
-  } catch {
-    return Response.json({ error: "Invalid Stripe signature." }, { status: 400 });
+  const body = await request.text();
+  let event: Stripe.Event | null = null;
+  for (const secret of webhookSecrets) {
+    try {
+      event = stripe.webhooks.constructEvent(body, signature, secret);
+      break;
+    } catch {
+      /* try next secret */
+    }
   }
+  if (!event) return Response.json({ error: "Invalid Stripe signature." }, { status: 400 });
   const admin = createClient<Database>(
     process.env["SUPABASE_URL"] || SUPABASE_URL,
     supabaseSecret,

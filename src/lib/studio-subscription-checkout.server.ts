@@ -1,7 +1,7 @@
-import { stripeSecretKey } from "@/lib/stripe-env";
+import { stripeSecretKey, stripeTestMode } from "@/lib/stripe-env";
 import Stripe from "stripe";
 import { studioBillingAdmin } from "./studio-credit-runtime.server";
-import { studioPlanPrices, type StudioPlanKey } from "./studio-model";
+import { studioPlanPrices, studioPlanTestPrices, type StudioPlanKey } from "./studio-model";
 
 /** Recoverable one-pending-checkout-per-workspace lease. Never create a second
  * subscription just because a browser returned before its webhook arrived. */
@@ -92,7 +92,7 @@ export async function openStudioMembershipCheckout(input: {
               mode: "subscription",
               customer: customerId,
               client_reference_id: input.workspaceId,
-              line_items: [{ quantity: 1, price: studioPlanPrices[plan][interval] }],
+              line_items: [{ quantity: 1, price: (stripeTestMode() ? studioPlanTestPrices : studioPlanPrices)[plan][interval] }],
               allow_promotion_codes: true,
               success_url: `${input.origin}/studio/billing?checkout=success`,
               cancel_url: `${input.origin}/studio/billing?checkout=canceled`,

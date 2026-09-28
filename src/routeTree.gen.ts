@@ -70,6 +70,7 @@ import { Route as MembershipSprintRouteImport } from './routes/membership.sprint
 import { Route as MembershipPricingRouteImport } from './routes/membership.pricing'
 import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
+import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe-webhook'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
@@ -78,9 +79,12 @@ import { Route as StudioConversationsIndexRouteImport } from './routes/studio.co
 import { Route as StudioCampaignsIndexRouteImport } from './routes/studio.campaigns.index'
 import { Route as StudioConversationsConversationIdRouteImport } from './routes/studio.conversations.$conversationId'
 import { Route as StudioCampaignsCampaignIdRouteImport } from './routes/studio.campaigns.$campaignId'
+import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as ApiStudioIntakeRouteImport } from './routes/api.studio.intake'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as LovableEmailTransactionalSendRouteImport } from './routes/lovable/email/transactional/send'
+import { Route as LovableEmailTransactionalPreviewRouteImport } from './routes/lovable/email/transactional/preview'
 import { Route as LovableEmailQueueProcessRouteImport } from './routes/lovable/email/queue/process'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
@@ -390,6 +394,11 @@ const IndustriesSlugRoute = IndustriesSlugRouteImport.update({
   path: '/industries/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
+  id: '/email/unsubscribe',
+  path: '/email/unsubscribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
@@ -435,6 +444,11 @@ const StudioCampaignsCampaignIdRoute =
     path: '/campaigns/$campaignId',
     getParentRoute: () => StudioRoute,
   } as any)
+const LovableEmailSuppressionRoute = LovableEmailSuppressionRouteImport.update({
+  id: '/lovable/email/suppression',
+  path: '/lovable/email/suppression',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStudioIntakeRoute = ApiStudioIntakeRouteImport.update({
   id: '/api/studio/intake',
   path: '/api/studio/intake',
@@ -451,6 +465,18 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   path: '/.lovable/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LovableEmailTransactionalSendRoute =
+  LovableEmailTransactionalSendRouteImport.update({
+    id: '/lovable/email/transactional/send',
+    path: '/lovable/email/transactional/send',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const LovableEmailTransactionalPreviewRoute =
+  LovableEmailTransactionalPreviewRouteImport.update({
+    id: '/lovable/email/transactional/preview',
+    path: '/lovable/email/transactional/preview',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LovableEmailQueueProcessRoute =
   LovableEmailQueueProcessRouteImport.update({
     id: '/lovable/email/queue/process',
@@ -506,6 +532,7 @@ export interface FileRoutesByFullPath {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/membership/pricing': typeof MembershipPricingRoute
@@ -537,6 +564,7 @@ export interface FileRoutesByFullPath {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/studio/intake': typeof ApiStudioIntakeRoute
+  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
   '/studio/conversations/$conversationId': typeof StudioConversationsConversationIdRoute
   '/studio/campaigns/': typeof StudioCampaignsIndexRoute
@@ -544,6 +572,8 @@ export interface FileRoutesByFullPath {
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -582,6 +612,7 @@ export interface FileRoutesByTo {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/membership/pricing': typeof MembershipPricingRoute
@@ -613,6 +644,7 @@ export interface FileRoutesByTo {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/studio/intake': typeof ApiStudioIntakeRoute
+  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
   '/studio/conversations/$conversationId': typeof StudioConversationsConversationIdRoute
   '/studio/campaigns': typeof StudioCampaignsIndexRoute
@@ -620,6 +652,8 @@ export interface FileRoutesByTo {
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -660,6 +694,7 @@ export interface FileRoutesById {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/membership/pricing': typeof MembershipPricingRoute
@@ -691,6 +726,7 @@ export interface FileRoutesById {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/api/studio/intake': typeof ApiStudioIntakeRoute
+  '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
   '/studio/conversations/$conversationId': typeof StudioConversationsConversationIdRoute
   '/studio/campaigns/': typeof StudioCampaignsIndexRoute
@@ -698,6 +734,8 @@ export interface FileRoutesById {
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
   '/lovable/email/queue/process': typeof LovableEmailQueueProcessRoute
+  '/lovable/email/transactional/preview': typeof LovableEmailTransactionalPreviewRoute
+  '/lovable/email/transactional/send': typeof LovableEmailTransactionalSendRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -739,6 +777,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/api/stripe-webhook'
     | '/blog/$slug'
+    | '/email/unsubscribe'
     | '/industries/$slug'
     | '/locations/$slug'
     | '/membership/pricing'
@@ -770,6 +809,7 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/api/studio/intake'
+    | '/lovable/email/suppression'
     | '/studio/campaigns/$campaignId'
     | '/studio/conversations/$conversationId'
     | '/studio/campaigns/'
@@ -777,6 +817,8 @@ export interface FileRouteTypes {
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
+    | '/lovable/email/transactional/preview'
+    | '/lovable/email/transactional/send'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -815,6 +857,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/api/stripe-webhook'
     | '/blog/$slug'
+    | '/email/unsubscribe'
     | '/industries/$slug'
     | '/locations/$slug'
     | '/membership/pricing'
@@ -846,6 +889,7 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/api/studio/intake'
+    | '/lovable/email/suppression'
     | '/studio/campaigns/$campaignId'
     | '/studio/conversations/$conversationId'
     | '/studio/campaigns'
@@ -853,6 +897,8 @@ export interface FileRouteTypes {
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
+    | '/lovable/email/transactional/preview'
+    | '/lovable/email/transactional/send'
   id:
     | '__root__'
     | '/'
@@ -892,6 +938,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/api/stripe-webhook'
     | '/blog/$slug'
+    | '/email/unsubscribe'
     | '/industries/$slug'
     | '/locations/$slug'
     | '/membership/pricing'
@@ -923,6 +970,7 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/api/studio/intake'
+    | '/lovable/email/suppression'
     | '/studio/campaigns/$campaignId'
     | '/studio/conversations/$conversationId'
     | '/studio/campaigns/'
@@ -930,6 +978,8 @@ export interface FileRouteTypes {
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
     | '/lovable/email/queue/process'
+    | '/lovable/email/transactional/preview'
+    | '/lovable/email/transactional/send'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -970,6 +1020,7 @@ export interface RootRouteChildren {
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   IndustriesSlugRoute: typeof IndustriesSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
   PackagesPackageIdRoute: typeof PackagesPackageIdRoute
@@ -983,9 +1034,12 @@ export interface RootRouteChildren {
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
   ApiStudioIntakeRoute: typeof ApiStudioIntakeRoute
+  LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
   LovableEmailQueueProcessRoute: typeof LovableEmailQueueProcessRoute
+  LovableEmailTransactionalPreviewRoute: typeof LovableEmailTransactionalPreviewRoute
+  LovableEmailTransactionalSendRoute: typeof LovableEmailTransactionalSendRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1417,6 +1471,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndustriesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/email/unsubscribe': {
+      id: '/email/unsubscribe'
+      path: '/email/unsubscribe'
+      fullPath: '/email/unsubscribe'
+      preLoaderRoute: typeof EmailUnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/blog/$slug'
@@ -1473,6 +1534,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioCampaignsCampaignIdRouteImport
       parentRoute: typeof StudioRoute
     }
+    '/lovable/email/suppression': {
+      id: '/lovable/email/suppression'
+      path: '/lovable/email/suppression'
+      fullPath: '/lovable/email/suppression'
+      preLoaderRoute: typeof LovableEmailSuppressionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/studio/intake': {
       id: '/api/studio/intake'
       path: '/api/studio/intake'
@@ -1492,6 +1560,20 @@ declare module '@tanstack/react-router' {
       path: '/.lovable/oauth/consent'
       fullPath: '/.lovable/oauth/consent'
       preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/transactional/send': {
+      id: '/lovable/email/transactional/send'
+      path: '/lovable/email/transactional/send'
+      fullPath: '/lovable/email/transactional/send'
+      preLoaderRoute: typeof LovableEmailTransactionalSendRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lovable/email/transactional/preview': {
+      id: '/lovable/email/transactional/preview'
+      path: '/lovable/email/transactional/preview'
+      fullPath: '/lovable/email/transactional/preview'
+      preLoaderRoute: typeof LovableEmailTransactionalPreviewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/lovable/email/queue/process': {
@@ -1621,6 +1703,7 @@ const rootRouteChildren: RootRouteChildren = {
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   BlogSlugRoute: BlogSlugRoute,
+  EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   IndustriesSlugRoute: IndustriesSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,
   PackagesPackageIdRoute: PackagesPackageIdRoute,
@@ -1634,9 +1717,12 @@ const rootRouteChildren: RootRouteChildren = {
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
   ApiStudioIntakeRoute: ApiStudioIntakeRoute,
+  LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,
   LovableEmailQueueProcessRoute: LovableEmailQueueProcessRoute,
+  LovableEmailTransactionalPreviewRoute: LovableEmailTransactionalPreviewRoute,
+  LovableEmailTransactionalSendRoute: LovableEmailTransactionalSendRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -54,11 +54,28 @@ export const createDepositCheckout = createServerFn({ method: "POST" })
     // Production is quote-first. A future payment endpoint must look up a persisted,
     // approved quote rather than treating a client-created reference as approval.
     // Existing standalone digital purchases remain available.
-    if (priced.some((line) => !line.isDigital)) {
-      return { ok: false as const, code: "PRODUCTION_REQUIRES_CONFIRMED_QUOTE" as const };
-    }
+    // Production books with a 50% deposit of the server-priced total; the balance is invoiced in HoneyBook.
+    const isProduction = priced.some((line) => !line.isDigital);
     const stripe = new Stripe(secret);
-    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = priced.map((line) => ({
+    const productionTotal = priced.reduce(
+      (sum, line) => sum + line.unitPrice * line.configuration.qty,
+      0,
+    );
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = isProduction
+      ? [
+          {
+            quantity: 1,
+            price_data: {
+              currency: "usd",
+              product_data: {
+                name: "Video production deposit (50%)",
+                description: `Books your project (${priced.map((l) => l.name).join(", ").slice(0, 300)}). Estimated total $${productionTotal.toFixed(2)}; balance invoiced before delivery.`,
+              },
+              unit_amount: Math.round(productionTotal * 50),
+            },
+          },
+        ]
+      : priced.map((line) => ({
       quantity: line.configuration.qty,
       price_data: {
         currency: "usd",
@@ -87,7 +104,7 @@ export const createDepositCheckout = createServerFn({ method: "POST" })
       line_items: lineItems,
       success_url: `${siteOrigin}/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteOrigin}/checkout`,
-      allow_promotion_codes: !data.offerCode,
+      allow_promotion_codes: !data.offerCode && !isProduction,
       metadata: {
         quote_reference: data.reference,
         customer_name: data.name,
@@ -96,6 +113,8 @@ export const createDepositCheckout = createServerFn({ method: "POST" })
         gift: data.gift ? "yes" : "no",
         expanded_scriptwriting: data.expandedScriptwriting ? "yes" : "no",
         configuration_version: "2",
+        purchase_kind: isProduction ? "production_deposit" : "digital",
+        estimated_total: isProduction ? productionTotal.toFixed(2) : "",
         item_count: String(priced.length),
         ...configurationMetadata,
       },
@@ -161,7 +180,12 @@ export const verifyDepositCheckout = createServerFn({ method: "GET" })
         }
         return {
           status: "paid" as const,
-          purchaseKind: digital ? ("digital" as const) : ("legacy" as const),
+          purchaseKind:
+            session.metadata?.purchase_kind === "production_deposit"
+              ? ("production_deposit" as const)
+              : digital
+                ? ("digital" as const)
+                : ("legacy" as const),
           reference: quoteReference!,
           purchasedItems: digital ? purchasedItems : [],
           amountTotal: session.amount_total,

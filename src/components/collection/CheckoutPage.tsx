@@ -125,6 +125,14 @@ export function isDigitalOnly(items: readonly { id: string }[], pendingReviewCou
   );
 }
 
+/** One-time carts (digital or production) can be paid now; production pays a 50% deposit. */
+export function isPayableNow(
+  items: readonly { id: string; cadence?: string }[],
+  pendingReviewCount = 0,
+): boolean {
+  return items.length > 0 && pendingReviewCount === 0 && items.every((i) => i.cadence !== "monthly");
+}
+
 type DigitalCheckoutData = {
   name: string;
   email: string;
@@ -142,7 +150,7 @@ export async function submitCheckoutRequest(
   request: PlanRequest,
   options: Parameters<typeof submitPlanRequest>[1] & { createCheckout?: DigitalCheckoutCreator },
 ): Promise<PlanRequestResult> {
-  if (!isDigitalOnly(request.quote.items, request.quote.legacyReview?.length ?? 0))
+  if (!isPayableNow(request.quote.items, request.quote.legacyReview?.length ?? 0))
     return submitPlanRequest(request, options);
   try {
     const response = await (options.createCheckout ?? createDepositCheckout)({
@@ -180,6 +188,7 @@ export function CheckoutPage({ quoteReference }: { quoteReference?: string }) {
   const lines = useMemo(() => buildReceiptLines(cart), [cart]);
   const subtotal = cartSubtotal(lines);
   const digitalOnly = isDigitalOnly(lines, cart.migrationReview?.length ?? 0);
+  const payable = isPayableNow(lines, cart.migrationReview?.length ?? 0);
   const hasPlan = lines.length > 0 || Boolean(cart.migrationReview?.length);
   const estimate = lines.length ? money(subtotal) : "Scope to confirm";
   const [step, setStep] = useState<1 | 2>(1);
@@ -323,7 +332,7 @@ export function CheckoutPage({ quoteReference }: { quoteReference?: string }) {
     setLastRequest(request);
     setSubmission({ kind: "sending" });
     // Open external handoffs during the gesture. Neither represents a sent request.
-    if (!digitalOnly && !CONTACT_ENDPOINT) {
+    if (!payable && !CONTACT_ENDPOINT) {
       const handoff = planHandoff(request, honeyBookUrl);
       setSubmission(handoff);
       if (handoff.kind === "honeybook") window.open(handoff.url, "_blank", "noopener,noreferrer");
@@ -346,7 +355,9 @@ export function CheckoutPage({ quoteReference }: { quoteReference?: string }) {
   }
   const actionLabel = digitalOnly
     ? "Pay securely"
-    : CONTACT_ENDPOINT
+    : payable
+      ? `Pay ${money(Math.round(subtotal * 50) / 100)} deposit`
+      : CONTACT_ENDPOINT
       ? "Request this plan"
       : HAS_HONEYBOOK
         ? "Continue to HoneyBook"
@@ -368,7 +379,7 @@ export function CheckoutPage({ quoteReference }: { quoteReference?: string }) {
           {sending ? (
             <>
               <LoaderCircle size={18} className="pc-spin" />{" "}
-              {digitalOnly ? "Opening secure checkout…" : "Sending request…"}
+              {payable ? "Opening secure checkout…" : "Sending request…"}
             </>
           ) : submitted ? (
             <>

@@ -1080,6 +1080,8 @@ export function StudioProvider({ children }: { children: ReactNode }) {
         .insert([
           userMessage,
           {
+            // Multi-row inserts share one column list; without an explicit id this row sends null.
+            id: crypto.randomUUID(),
             workspace_id: workspace.id,
             conversation_id: threadId,
             role: "assistant",

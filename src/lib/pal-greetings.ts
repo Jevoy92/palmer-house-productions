@@ -166,11 +166,16 @@ export function composePalOpening(
   const body = fact
     ? `${fact} ${voice.question}`
     : `${nameLead}${nameLead ? voice.start[0].toLowerCase() + voice.start.slice(1) : voice.start}${business ? ` We’ll make it sound like ${business}.` : ""}`;
+  const brand = business || "my business";
+  // Proactive starters: members always get three ready angles, never a blank box.
   const suggestions = [
-    subject ? `${voice.next} for “${subject}”.` : `${voice.next} for ${business || "my business"}.`,
-    context.draftCount
-      ? `Help me choose the next step for my ${context.draftCount} saved drafts.`
-      : `Help me turn one idea into a useful post for ${business || "my business"}.`,
+    subject ? `${voice.next} for “${subject}”.` : `${voice.next} for ${brand}.`,
+    `Pitch me a business angle for ${brand} this week — the problem we solve and a clear next step.`,
+    `Pitch me a personal angle that mixes my story with ${brand}.`,
+    `Pitch me a playful, scroll-stopping idea for ${brand}.`,
+    ...(context.draftCount
+      ? [`Help me choose the next step for my ${context.draftCount} saved drafts.`]
+      : []),
   ];
   return { headline, body, contextLabel, suggestions };
 }

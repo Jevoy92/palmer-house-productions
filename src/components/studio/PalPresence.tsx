@@ -114,7 +114,7 @@ export function PalWelcome({
           )}
         </p>
         <div className="studio-pal-opening-prompts">
-          {opening.suggestions.slice(0, compact ? 1 : 2).map((prompt) => (
+          {opening.suggestions.slice(0, compact ? 1 : 4).map((prompt) => (
             <button key={prompt} type="button" onClick={() => onPrompt(prompt)}>
               {prompt}
               <ArrowRight size={15} />

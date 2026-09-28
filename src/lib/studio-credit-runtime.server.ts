@@ -142,14 +142,7 @@ export async function withStudioCredits<T>(
   work: () => Promise<T>,
   metering?: { audioSeconds: number },
 ): Promise<T> {
-  if (
-    operation === "transcription"
-      ? !(
-          process.env.STUDIO_TRANSCRIPTION_ENABLED === "true" &&
-          (process.env.STUDIO_TRANSCRIPTION_API_KEY || process.env.OPENAI_API_KEY)
-        )
-      : !process.env.LOVABLE_API_KEY
-  )
+  if (!process.env.LOVABLE_API_KEY)
     throw new Error("AI is not configured for this project. No credits were used.");
   const { user } = await authorizedStudioClient(auth.accessToken, auth.workspaceId);
   const admin = studioBillingAdmin();

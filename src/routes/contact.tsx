@@ -8,6 +8,7 @@ import { contactInfo } from "@/data/nav";
 import { PAL_GROUPS, type PalAccent } from "@/lib/pricing-catalog";
 import { inquiryIntents, parseInquiryIntent, type InquiryIntent } from "@/lib/public-journey";
 import { createSeo } from "@/lib/seo";
+import { HONEYBOOK_LEAD_FORM_URL } from "@/lib/honeybook";
 
 const PROJECT_TYPES = [
   ...Object.values(inquiryIntents).map((intent) => intent.label),
@@ -301,187 +302,23 @@ function ContactPage() {
           />
         </div>
         <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[1.35fr_.65fr] lg:items-start">
-          <form
+          <div
             id="project-inquiry"
-            onSubmit={handleSubmit}
-            noValidate
-            className="rounded-[2.5rem] border border-border bg-white p-6 shadow-soft sm:p-10"
+            className="rounded-[2.5rem] border border-border bg-white p-4 shadow-soft sm:p-6"
           >
-            <h3 className="text-3xl font-extrabold">
+            <h3 className="px-2 pt-2 text-3xl font-extrabold">
               {intent ? intent.label : "How can we help?"}
             </h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              {intent
-                ? "Your choice is carried into the inquiry below. Add whatever context will help us understand your project."
-                : "Choose the kind of help you need, then tell us a little about your project."}
+            <p className="mt-2 px-2 text-sm leading-relaxed text-muted-foreground">
+              Tell us a little about your project. Your inquiry goes straight to our team.
             </p>
-            <div className="mt-6 grid gap-5 sm:grid-cols-2">
-              <div className="sm:col-span-1">
-                <label className="text-sm font-semibold" htmlFor="name">
-                  Name
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  autoComplete="name"
-                  aria-required="true"
-                  aria-invalid={Boolean(errors.name)}
-                  aria-describedby={errors.name ? "name-error" : undefined}
-                  value={form.name}
-                  onChange={(e) => update("name", e.target.value)}
-                  className="mt-2 min-h-12 w-full rounded-2xl border border-border bg-mist px-4 text-sm"
-                  placeholder="Jane Doe"
-                />
-                {errors.name && (
-                  <p id="name-error" className="mt-1 text-xs text-destructive" role="alert">
-                    {errors.name}
-                  </p>
-                )}
-              </div>
-              <div className="sm:col-span-1">
-                <label className="text-sm font-semibold" htmlFor="email">
-                  Email
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  aria-required="true"
-                  aria-invalid={Boolean(errors.email)}
-                  aria-describedby={errors.email ? "email-error" : undefined}
-                  value={form.email}
-                  onChange={(e) => update("email", e.target.value)}
-                  className="mt-2 min-h-12 w-full rounded-2xl border border-border bg-mist px-4 text-sm"
-                  placeholder="jane@company.com"
-                />
-                {errors.email && (
-                  <p id="email-error" className="mt-1 text-xs text-destructive" role="alert">
-                    {errors.email}
-                  </p>
-                )}
-              </div>
-              <div className="sm:col-span-1">
-                <label className="text-sm font-semibold" htmlFor="company">
-                  Company
-                </label>
-                <input
-                  id="company"
-                  name="company"
-                  autoComplete="organization"
-                  value={form.company}
-                  onChange={(e) => update("company", e.target.value)}
-                  className="mt-2 min-h-12 w-full rounded-2xl border border-border bg-mist px-4 text-sm"
-                  placeholder="Company name (optional)"
-                />
-              </div>
-              <div className="sm:col-span-1">
-                <label className="text-sm font-semibold" htmlFor="projectType">
-                  Project Type
-                </label>
-                <select
-                  id="projectType"
-                  name="projectType"
-                  aria-required="true"
-                  aria-invalid={Boolean(errors.projectType)}
-                  aria-describedby={errors.projectType ? "project-type-error" : undefined}
-                  value={form.projectType}
-                  onChange={(e) => update("projectType", e.target.value)}
-                  className="mt-2 min-h-12 w-full rounded-2xl border border-border bg-mist px-4 text-sm"
-                >
-                  <option value="">Select one...</option>
-                  {PROJECT_TYPES.map((t) => (
-                    <option key={t} value={t}>
-                      {t}
-                    </option>
-                  ))}
-                </select>
-                {errors.projectType && (
-                  <p id="project-type-error" className="mt-1 text-xs text-destructive" role="alert">
-                    {errors.projectType}
-                  </p>
-                )}
-              </div>
-              <div className="sm:col-span-2">
-                <label className="text-sm font-semibold" htmlFor="message">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  aria-required="true"
-                  aria-invalid={Boolean(errors.message)}
-                  aria-describedby={errors.message ? "message-error" : undefined}
-                  value={form.message}
-                  onChange={(e) => update("message", e.target.value)}
-                  rows={5}
-                  className="mt-2 w-full rounded-2xl border border-border bg-mist px-4 py-3 text-sm"
-                  placeholder="Tell us about your goals, timeline, and budget..."
-                />
-                {errors.message && (
-                  <p id="message-error" className="mt-1 text-xs text-destructive" role="alert">
-                    {errors.message}
-                  </p>
-                )}
-              </div>
-            </div>
-            <button
-              type="submit"
-              disabled={submitState === "sending"}
-              className="primary-action mt-6 w-full justify-center sm:w-auto"
-            >
-              {submitState === "sending"
-                ? "Sending…"
-                : import.meta.env.VITE_CONTACT_FORM_ENDPOINT
-                  ? "Send Project Inquiry"
-                  : "Open Email Draft"}
-            </button>
-            <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-              {import.meta.env.VITE_CONTACT_FORM_ENDPOINT
-                ? "Send your inquiry to Palmer House. This requests a conversation; it does not book a session or authorize payment."
-                : "This opens a prefilled message in your email app. Nothing is sent until you review and send it."}
-            </p>
-            {submitState === "sent" && (
-              <p className="mt-3 text-sm font-medium text-evergreen" role="status">
-                Your inquiry was received. Our team will follow up to confirm scope and the next
-                step. No booking or payment has been made.
-              </p>
-            )}
-            {deliveryError && (
-              <p className="mt-4 text-sm text-destructive" role="alert">
-                {deliveryError}
-              </p>
-            )}
-            <div className="mt-4 flex flex-wrap gap-4">
-              <button
-                type="button"
-                onClick={() => void copyInquiry()}
-                className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline"
-              >
-                <Copy className="size-4" />
-                Copy inquiry
-              </button>
-              {deliveryError && (
-                <a
-                  className="inline-flex min-h-11 items-center text-sm font-semibold underline"
-                  href={`mailto:info@palmerhouseproductions.com?subject=${encodeURIComponent(`Project inquiry from ${form.name}`)}&body=${encodeURIComponent(draftText())}`}
-                >
-                  Open email draft
-                </a>
-              )}
-            </div>
-            {copyState && (
-              <p className="text-sm text-muted-foreground" role="status">
-                {copyState}
-              </p>
-            )}
-            {draftOpened && (
-              <p className="mt-3 text-sm font-medium text-evergreen" role="status">
-                Your email draft should be open. If it did not launch, email us directly at
-                info@palmerhouseproductions.com.
-              </p>
-            )}
-          </form>
+            <iframe
+              title="Palmer House Productions contact form"
+              src={HONEYBOOK_LEAD_FORM_URL}
+              className="mt-4 h-[1100px] w-full rounded-[1.75rem] border-0"
+              loading="lazy"
+            />
+          </div>
 
           <aside className="space-y-4 lg:sticky lg:top-28">
             <Scene

@@ -142,14 +142,7 @@ export async function withStudioCredits<T>(
   work: () => Promise<T>,
   metering?: { audioSeconds: number },
 ): Promise<T> {
-  if (
-    operation === "transcription"
-      ? !(
-          process.env.STUDIO_TRANSCRIPTION_ENABLED === "true" &&
-          (process.env.STUDIO_TRANSCRIPTION_API_KEY || process.env.OPENAI_API_KEY)
-        )
-      : !process.env.LOVABLE_API_KEY
-  )
+  if (!process.env.LOVABLE_API_KEY)
     throw new Error("AI is not configured for this project. No credits were used.");
   const { user } = await authorizedStudioClient(auth.accessToken, auth.workspaceId);
   const admin = studioBillingAdmin();
@@ -239,7 +232,7 @@ export function beginStudioTranscriptionCall(model: string, seconds: number) {
   const run = context.getStore();
   if (!run || run.operation !== "transcription")
     throw new Error("A voice usage reservation is required before transcription.");
-  if (model !== "gpt-transcribe")
+  if (model !== "google/gemini-3.5-transcribe")
     throw new Error("This transcription model has no approved duration price.");
   if (run.calls.length)
     throw new Error("Only one transcription request is allowed per reservation.");

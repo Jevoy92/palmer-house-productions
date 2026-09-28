@@ -43,7 +43,8 @@ export type QuoteSummary = {
 // Configure in Lovable/Vercel as VITE_HONEYBOOK_LEAD_FORM_URL. Keeping the
 // value outside source control prevents accidental production/vendor drift.
 export const HONEYBOOK_LEAD_FORM_URL =
-  (import.meta.env.VITE_HONEYBOOK_LEAD_FORM_URL as string | undefined) ?? "";
+  (import.meta.env.VITE_HONEYBOOK_LEAD_FORM_URL as string | undefined) ||
+  "https://www.honeybook.com/widget/palmer_house_productions_297353/cf_id/64f18afbfb99b50197686f93";
 
 // "new-tab" → opens HB form in a new tab with prefilled query params
 // "modal"   → opens HB form inside an iframe modal (set up <HoneyBookModal/>)

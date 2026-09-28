@@ -1,5 +1,3 @@
--- Workspace credits are prepaid entitlements, not money. Only the trusted server
--- reserves usage or processes verified Stripe events; members have no ledger writes.
 alter table public.workspace_subscriptions
   add column if not exists billing_hold boolean not null default false,
   add column if not exists paid_plan text,
@@ -48,7 +46,6 @@ create table public.studio_billing_events (
   workspace_id uuid references public.workspaces(id) on delete cascade,
   created_at timestamptz not null default now()
 );
--- Negative balances are represented as debt, never silently discarded after a refund.
 create table public.studio_credit_debts (
   workspace_id uuid primary key references public.workspaces(id) on delete cascade,
   credits integer not null default 0 check(credits>=0)
@@ -69,7 +66,6 @@ create table public.studio_trial_claims (
 alter table public.studio_trial_claims enable row level security;
 revoke all on public.studio_trial_claims from public,anon,authenticated;
 grant all on public.studio_trial_claims to service_role;
--- Explicitly retain read-only member access to subscriptions after adding columns.
 revoke insert,update,delete,truncate,references,trigger on public.workspace_subscriptions from authenticated,anon;
 
 create function public.refresh_studio_credits(target_workspace_id uuid, allowance integer)
@@ -91,7 +87,6 @@ begin
     start_at:=s.current_period_start; end_at:=s.trial_ends_at; key:='trial:'||target_workspace_id::text; active:=true;
   elsif s.status='active' and s.paid_period_end>now() and s.paid_period_start<=now() then
     start_at:=s.paid_period_start; end_at:=s.paid_period_end;
-    -- Calculate every window from the original anchor: Jan 31 -> Feb 28 -> Mar 31.
     if coalesce(s.paid_billing_interval,s.billing_interval)='year' then
       n:=greatest(0,(extract(year from age(now(),start_at))*12+extract(month from age(now(),start_at)))::integer);
       while s.paid_period_start+make_interval(months=>n+1)<=now() loop n:=n+1; end loop;
@@ -101,7 +96,6 @@ begin
     key:='included:'||target_workspace_id::text||':'||start_at::text; active:=true;
   end if;
   if active then
-    -- Replacing a trial or an earlier paid period never leaves two allowances.
     update public.studio_credit_grants set expires_at=least(expires_at,now()) where workspace_id=target_workspace_id and kind='included' and source_key<>key and expires_at>now();
     insert into public.studio_credit_grants(workspace_id,source_key,kind,credits,remaining,expires_at)
       values(target_workspace_id,key,'included',allowance,allowance,end_at)
@@ -114,7 +108,6 @@ create function public.reserve_studio_credits(target_workspace_id uuid, actor_id
 returns uuid language plpgsql security definer set search_path='' as $$
 declare period_info jsonb; used numeric; available integer; need integer; grant_row record; take integer; allocations jsonb:='[]'; result uuid; automatic boolean:=operation_name='automatic_feed'; debt integer;
 begin
-  -- Lock budget globally before the workspace; all reserve paths use the same order.
   perform pg_advisory_xact_lock(280200,1);
   perform pg_advisory_xact_lock(hashtextextended(target_workspace_id::text,280200));
   if not exists(select 1 from public.workspace_members where workspace_id=target_workspace_id and user_id=actor_id) then raise exception 'Not authorized'; end if;
@@ -173,7 +166,6 @@ begin
   update public.studio_credit_usage set status=outcome,estimated_cost_usd=provider_cost,provider_usage=provider_calls,completed_at=now() where id=usage_id;
 end $$;
 
--- One transaction records the payment event and entitlement. Retries do not multiply credits.
 create function public.grant_studio_topup(event_key text,event_time bigint,target_workspace_id uuid,session_id text,payment_id text,credit_count integer,paid_cents integer)
 returns boolean language plpgsql security definer set search_path='' as $$
 begin
@@ -215,7 +207,6 @@ begin
   if not found then return false; end if;
   changing_subscription:=existing.stripe_subscription_id is not null and existing.stripe_subscription_id<>subscription_data->>'subscriptionId';
   if changing_subscription then
-    -- Late events from a previous subscription cannot replace the current one.
     if event_time<existing.billing_event_created or existing.status in ('active','past_due','trialing') or subscription_data->>'status' in ('canceled','paused','past_due') then return false; end if;
     update public.workspace_subscriptions set paid_period_start=null,paid_period_end=null,paid_plan=null,paid_billing_interval=null,paid_credit_allowance=null where workspace_id=target_workspace_id;
   end if;
@@ -223,12 +214,9 @@ begin
   if paid_invoice and (changing_subscription or end_at>coalesce(existing.paid_period_end,'-infinity')) then
     update public.workspace_subscriptions set paid_period_start=start_at,paid_period_end=end_at,paid_plan=subscription_data->>'paidPlan',paid_billing_interval=subscription_data->>'paidInterval',paid_credit_allowance=(subscription_data->>'paidAllowance')::integer,paid_event_created=event_time where workspace_id=target_workspace_id;
   end if;
-  -- A paid mid-cycle upgrade adds only the unused fraction of the monthly
-  -- allowance difference. The event ledger makes retries and plan toggles safe.
   if paid_invoice and coalesce((subscription_data->>'paidUpgrade')::boolean,false) and end_at=existing.paid_period_end and event_time>=existing.paid_event_created then
     new_allowance:=(subscription_data->>'paidAllowance')::integer;
     if new_allowance>coalesce(existing.paid_credit_allowance,0) and existing.paid_plan is not null then
-      -- The paid invoice may be recovering a previously past-due upgrade.
       if subscription_data->>'status'='active' then update public.workspace_subscriptions set status='active' where workspace_id=target_workspace_id; end if;
       period_info:=public.refresh_studio_credits(target_workspace_id,existing.paid_credit_allowance);
       if (period_info->>'active')::boolean then
@@ -269,7 +257,6 @@ $$;
 revoke all on function public.studio_credit_snapshot(uuid,timestamptz),public.studio_credit_cost_snapshot() from public,anon,authenticated;
 grant execute on function public.studio_credit_snapshot(uuid,timestamptz),public.studio_credit_cost_snapshot() to service_role;
 
-alter table public.workspace_subscriptions add column if not exists billing_hold boolean not null default false;
 create function public.hold_studio_billing(event_key text,event_time bigint,target_workspace_id uuid,subscription_id text)
 returns void language plpgsql security definer set search_path='' as $$
 begin
@@ -317,3 +304,68 @@ begin
 end $$;
 revoke all on function public.claim_studio_membership_checkout(uuid,text,text),public.finish_studio_membership_checkout(uuid,uuid,text,boolean) from public,anon,authenticated;
 grant execute on function public.claim_studio_membership_checkout(uuid,text,text),public.finish_studio_membership_checkout(uuid,uuid,text,boolean) to service_role;
+
+alter table public.studio_credit_usage drop constraint studio_credit_usage_operation_check;
+alter table public.studio_credit_usage add constraint studio_credit_usage_operation_check check(operation in ('chat','directions','analysis','campaign','image','pdf','avatar','feed','automatic_feed','transcription'));
+create table public.studio_voice_requests (
+ workspace_id uuid not null references public.workspaces(id) on delete cascade,
+ actor_id uuid not null references auth.users(id),
+ request_key uuid not null,
+ content_sha256 text not null check(length(content_sha256)=64),
+ conversation_id uuid,
+ status text not null default 'pending' check(status in ('pending','completed','failed')),
+ attempt_token uuid not null default gen_random_uuid(),
+ usage_id uuid references public.studio_credit_usage(id),
+ attachment_id uuid references public.conversation_attachments(id) on delete set null,
+ created_at timestamptz not null default now(),
+ updated_at timestamptz not null default now(),
+ primary key(workspace_id,actor_id,request_key)
+);
+alter table public.studio_voice_requests enable row level security;
+revoke all on public.studio_voice_requests from public,anon,authenticated;
+grant all on public.studio_voice_requests to service_role;
+create function public.claim_studio_voice(target_workspace_id uuid, actor uuid, request_id uuid, content_hash text, conversation uuid default null)
+returns jsonb language plpgsql security definer set search_path=public as $$
+declare r public.studio_voice_requests%rowtype; inserted boolean;
+begin
+ if not exists(select 1 from workspace_members where workspace_id=target_workspace_id and user_id=actor) then raise exception 'Workspace access required.'; end if;
+ if conversation is not null and not exists(select 1 from conversations where id=conversation and workspace_id=target_workspace_id) then raise exception 'Conversation unavailable in this workspace.'; end if;
+ insert into studio_voice_requests(workspace_id,actor_id,request_key,content_sha256,conversation_id) values(target_workspace_id,actor,request_id,content_hash,conversation) on conflict do nothing;
+ inserted:=found;
+ select * into r from studio_voice_requests where workspace_id=target_workspace_id and actor_id=actor and request_key=request_id for update;
+ if r.content_sha256<>content_hash or r.conversation_id is distinct from conversation then raise exception 'This recording request belongs to a different recording or conversation.'; end if;
+ if r.status='failed' then
+  update studio_voice_requests set status='pending',attempt_token=gen_random_uuid(),usage_id=null,updated_at=now() where workspace_id=target_workspace_id and actor_id=actor and request_key=request_id returning * into r;
+  inserted:=true;
+ end if;
+ return jsonb_build_object('claimed',inserted,'status',r.status,'token',case when inserted then r.attempt_token else null end,'attachmentId',r.attachment_id);
+end $$;
+create function public.bind_studio_voice_usage(target_workspace_id uuid, actor uuid, request_id uuid, token uuid, usage uuid)
+returns void language plpgsql security definer set search_path=public as $$
+begin
+ if not exists(select 1 from studio_credit_usage where id=usage and workspace_id=target_workspace_id and user_id=actor and operation='transcription' and status='reserved') then raise exception 'A voice usage reservation is required.'; end if;
+ update studio_voice_requests set usage_id=usage,updated_at=now() where workspace_id=target_workspace_id and actor_id=actor and request_key=request_id and attempt_token=token and status='pending' and usage_id is null;
+ if not found then raise exception 'This voice request is already running.'; end if;
+end $$;
+create function public.complete_studio_voice(target_workspace_id uuid, actor uuid, request_id uuid, token uuid, saved_path text, file_label text, file_bytes integer, transcript text, details jsonb)
+returns uuid language plpgsql security definer set search_path=public as $$
+declare r public.studio_voice_requests%rowtype; attached uuid;
+begin
+ select * into r from studio_voice_requests where workspace_id=target_workspace_id and actor_id=actor and request_key=request_id for update;
+ if r.attempt_token is distinct from token then raise exception 'This recording attempt has changed.'; end if;
+ if r.status='completed' then return r.attachment_id; end if;
+ if r.status<>'pending' or r.usage_id is null then raise exception 'A voice usage reservation is required.'; end if;
+ if not exists(select 1 from studio_credit_usage where id=r.usage_id and workspace_id=target_workspace_id and user_id=actor and status='reserved') or not exists(select 1 from workspace_members where workspace_id=target_workspace_id and user_id=actor) then raise exception 'This voice reservation or workspace membership is no longer available.'; end if;
+ if saved_path not like target_workspace_id::text||'/conversation/%' or saved_path like '%..%' or length(transcript)>40000 or length(trim(transcript))=0 or file_bytes<32044 or file_bytes>9600044 then raise exception 'Invalid saved voice recording.'; end if;
+ if r.conversation_id is not null and not exists(select 1 from conversations where id=r.conversation_id and workspace_id=target_workspace_id) then raise exception 'Conversation unavailable in this workspace.'; end if;
+ insert into conversation_attachments(workspace_id,conversation_id,created_by,kind,label,mime_type,byte_size,storage_path,extracted_text,summary,metadata) values(target_workspace_id,r.conversation_id,actor,'voice',left(file_label,200),'audio/wav',file_bytes,saved_path,transcript,'Voice note: '||left(transcript,160),details||jsonb_build_object('usageReservationId',r.usage_id)) returning id into attached;
+ update studio_voice_requests set status='completed',attachment_id=attached,updated_at=now() where workspace_id=target_workspace_id and actor_id=actor and request_key=request_id;
+ return attached;
+end $$;
+create function public.fail_studio_voice(target_workspace_id uuid, actor uuid, request_id uuid, token uuid)
+returns void language plpgsql security definer set search_path=public as $$
+begin
+ update studio_voice_requests set status='failed',updated_at=now() where workspace_id=target_workspace_id and actor_id=actor and request_key=request_id and attempt_token=token and status='pending';
+end $$;
+revoke all on function public.claim_studio_voice(uuid,uuid,uuid,text,uuid),public.bind_studio_voice_usage(uuid,uuid,uuid,uuid,uuid),public.complete_studio_voice(uuid,uuid,uuid,uuid,text,text,integer,text,jsonb),public.fail_studio_voice(uuid,uuid,uuid,uuid) from public,anon,authenticated;
+grant execute on function public.claim_studio_voice(uuid,uuid,uuid,text,uuid),public.bind_studio_voice_usage(uuid,uuid,uuid,uuid,uuid),public.complete_studio_voice(uuid,uuid,uuid,uuid,text,text,integer,text,jsonb),public.fail_studio_voice(uuid,uuid,uuid,uuid) to service_role;

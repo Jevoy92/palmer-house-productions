@@ -33,10 +33,11 @@ export const saveStudioMemory = createServerFn({ method: "POST" })
     const { client } = await authorizedStudioClient(data.accessToken, data.workspaceId);
     const result = await client.rpc("save_workspace_memory", {
       target_workspace_id: data.workspaceId,
-      memory_id: data.memory.id || null,
+      // New entries pass null; the database function accepts it.
+      memory_id: (data.memory.id || null) as string,
       memory_title: data.memory.title,
       memory_content: data.memory.content,
-      expected_revision: data.memory.expectedRevision || null,
+      expected_revision: (data.memory.expectedRevision || null) as number,
     });
     mutationError(result.error);
     if (!result.data) throw new Error("Memory was not saved. Please retry.");

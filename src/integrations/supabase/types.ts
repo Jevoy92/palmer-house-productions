@@ -306,7 +306,7 @@ export type Database = {
       }
       campaign_assets: {
         Row: {
-          campaign_id: string
+          campaign_id: string | null
           content: string
           created_at: string
           id: string
@@ -319,7 +319,7 @@ export type Database = {
           workspace_id: string
         }
         Insert: {
-          campaign_id: string
+          campaign_id?: string | null
           content?: string
           created_at?: string
           id?: string
@@ -332,7 +332,7 @@ export type Database = {
           workspace_id: string
         }
         Update: {
-          campaign_id?: string
+          campaign_id?: string | null
           content?: string
           created_at?: string
           id?: string
@@ -1137,6 +1137,238 @@ export type Database = {
           },
         ]
       }
+      studio_feed_comments: {
+        Row: {
+          author: Json
+          body: string
+          created_at: string
+          created_by: string
+          id: string
+          post_id: string
+          workspace_id: string
+        }
+        Insert: {
+          author: Json
+          body: string
+          created_at?: string
+          created_by: string
+          id?: string
+          post_id: string
+          workspace_id: string
+        }
+        Update: {
+          author?: Json
+          body?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          post_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studio_feed_comments_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "studio_feed_comments_workspace_id_post_id_fkey"
+            columns: ["workspace_id", "post_id"]
+            isOneToOne: false
+            referencedRelation: "studio_feed_posts"
+            referencedColumns: ["workspace_id", "id"]
+          },
+        ]
+      }
+      studio_feed_generation_state: {
+        Row: {
+          last_fingerprint: string | null
+          last_generated_at: string | null
+          last_output_fingerprint: string | null
+          lease_until: string | null
+          pending_fingerprint: string | null
+          request_token: string | null
+          requested_by: string | null
+          retry_after: string | null
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          last_fingerprint?: string | null
+          last_generated_at?: string | null
+          last_output_fingerprint?: string | null
+          lease_until?: string | null
+          pending_fingerprint?: string | null
+          request_token?: string | null
+          requested_by?: string | null
+          retry_after?: string | null
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          last_fingerprint?: string | null
+          last_generated_at?: string | null
+          last_output_fingerprint?: string | null
+          lease_until?: string | null
+          pending_fingerprint?: string | null
+          request_token?: string | null
+          requested_by?: string | null
+          retry_after?: string | null
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studio_feed_generation_state_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: true
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      studio_feed_posts: {
+        Row: {
+          asset_id: string | null
+          author: Json
+          body: string
+          created_at: string
+          created_by: string
+          generated: boolean
+          id: string
+          lane: string
+          sources: Json
+          title: string
+          workspace_id: string
+        }
+        Insert: {
+          asset_id?: string | null
+          author: Json
+          body: string
+          created_at?: string
+          created_by: string
+          generated?: boolean
+          id?: string
+          lane?: string
+          sources?: Json
+          title?: string
+          workspace_id: string
+        }
+        Update: {
+          asset_id?: string | null
+          author?: Json
+          body?: string
+          created_at?: string
+          created_by?: string
+          generated?: boolean
+          id?: string
+          lane?: string
+          sources?: Json
+          title?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studio_feed_posts_workspace_id_asset_id_fkey"
+            columns: ["workspace_id", "asset_id"]
+            isOneToOne: false
+            referencedRelation: "campaign_assets"
+            referencedColumns: ["workspace_id", "id"]
+          },
+          {
+            foreignKeyName: "studio_feed_posts_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      studio_feed_reactions: {
+        Row: {
+          created_at: string
+          post_id: string
+          reaction: string
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          post_id: string
+          reaction: string
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          post_id?: string
+          reaction?: string
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studio_feed_reactions_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "studio_feed_reactions_workspace_id_post_id_fkey"
+            columns: ["workspace_id", "post_id"]
+            isOneToOne: false
+            referencedRelation: "studio_feed_posts"
+            referencedColumns: ["workspace_id", "id"]
+          },
+        ]
+      }
+      studio_pal_profiles: {
+        Row: {
+          avatar_path: string | null
+          base_pal: string
+          created_at: string
+          created_by: string
+          id: string
+          name: string
+          personality: string
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          avatar_path?: string | null
+          base_pal: string
+          created_at?: string
+          created_by: string
+          id?: string
+          name: string
+          personality: string
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          avatar_path?: string | null
+          base_pal?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          name?: string
+          personality?: string
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "studio_pal_profiles_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       subscription_plans: {
         Row: {
           created_at: string | null
@@ -1690,8 +1922,50 @@ export type Database = {
           },
         ]
       }
+      workspace_memories: {
+        Row: {
+          content: string
+          created_at: string
+          created_by: string
+          id: string
+          revision: number
+          title: string
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          created_by: string
+          id?: string
+          revision?: number
+          title: string
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          revision?: number
+          title?: string
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_memories_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workspace_settings: {
         Row: {
+          active_pal_profile_id: string | null
           ai_memory: Json
           default_depth: string
           email_campaign_ready: boolean
@@ -1704,6 +1978,7 @@ export type Database = {
           workspace_id: string
         }
         Insert: {
+          active_pal_profile_id?: string | null
           ai_memory?: Json
           default_depth?: string
           email_campaign_ready?: boolean
@@ -1716,6 +1991,7 @@ export type Database = {
           workspace_id: string
         }
         Update: {
+          active_pal_profile_id?: string | null
           ai_memory?: Json
           default_depth?: string
           email_campaign_ready?: boolean
@@ -1728,6 +2004,13 @@ export type Database = {
           workspace_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "workspace_active_pal_fk"
+            columns: ["workspace_id", "active_pal_profile_id"]
+            isOneToOne: false
+            referencedRelation: "studio_pal_profiles"
+            referencedColumns: ["workspace_id", "id"]
+          },
           {
             foreignKeyName: "workspace_settings_workspace_id_fkey"
             columns: ["workspace_id"]
@@ -1873,9 +2156,28 @@ export type Database = {
         }
         Returns: boolean
       }
+      associate_studio_asset_image: {
+        Args: {
+          expected_source_updated_at: string
+          image_asset_id: string
+          source_asset_id: string
+          target_workspace_id: string
+        }
+        Returns: undefined
+      }
       check_credits: {
         Args: { p_required_credits: number; p_user_id: string }
         Returns: boolean
+      }
+      complete_studio_feed_generation: {
+        Args: {
+          output_fingerprint: string
+          post_value: Json
+          replies_value: Json
+          request_token: string
+          target_workspace_id: string
+        }
+        Returns: string
       }
       consume_credits: {
         Args: {
@@ -1885,6 +2187,14 @@ export type Database = {
           p_user_id: string
         }
         Returns: boolean
+      }
+      create_studio_feed_discussion: {
+        Args: {
+          post_value: Json
+          replies_value: Json
+          target_workspace_id: string
+        }
+        Returns: string
       }
       decrement_pal_spot: { Args: { p_pal_id: string }; Returns: boolean }
       delete_email: {
@@ -1898,6 +2208,18 @@ export type Database = {
       }
       finish_campaign_usage: {
         Args: { outcome: string; target_event_id: string }
+        Returns: undefined
+      }
+      forget_workspace_legacy_memory: {
+        Args: { expected_value: Json; target_workspace_id: string }
+        Returns: undefined
+      }
+      forget_workspace_memory: {
+        Args: {
+          expected_revision: number
+          memory_id: string
+          target_workspace_id: string
+        }
         Returns: undefined
       }
       get_total_system_completion: {
@@ -1923,6 +2245,10 @@ export type Database = {
         }[]
       }
       refill_monthly_credits: { Args: never; Returns: undefined }
+      release_studio_feed_generation: {
+        Args: { request_token: string; target_workspace_id: string }
+        Returns: undefined
+      }
       reserve_campaign_usage: {
         Args: {
           request_key: string
@@ -1930,6 +2256,24 @@ export type Database = {
           target_workspace_id: string
         }
         Returns: string
+      }
+      reserve_studio_feed_generation: {
+        Args: {
+          context_fingerprint: string
+          request_mode: string
+          target_workspace_id: string
+        }
+        Returns: Json
+      }
+      save_workspace_memory: {
+        Args: {
+          expected_revision: number
+          memory_content: string
+          memory_id: string
+          memory_title: string
+          target_workspace_id: string
+        }
+        Returns: Json
       }
     }
     Enums: {

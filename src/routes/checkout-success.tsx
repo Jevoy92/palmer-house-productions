@@ -6,6 +6,7 @@ import { CollectionShell } from "@/components/collection/CollectionShell";
 import { cartStore } from "@/lib/cart-store";
 import { DIY_DOWNLOADS } from "@/lib/pricing-catalog";
 import { verifyDepositCheckout } from "@/lib/stripe-checkout";
+import { HONEYBOOK_LEAD_FORM_URL } from "@/lib/honeybook";
 
 type Verification = Awaited<ReturnType<typeof verifyDepositCheckout>>;
 
@@ -42,6 +43,7 @@ function CheckoutSuccessPage() {
   const verification = Route.useLoaderData();
   const paid = verification.status === "paid";
   const digital = paid && verification.purchaseKind === "digital";
+  const deposit = paid && verification.purchaseKind === "production_deposit";
 
   useEffect(() => {
     reconcileVerifiedReceipt(sessionId, verification);
@@ -111,13 +113,31 @@ function CheckoutSuccessPage() {
           <p className="pc-eyebrow">Payment confirmed</p>
         </div>
         <h1 id="payment-status-title">
-          {digital ? "Thanks for your purchase." : "Your payment is confirmed."}
+          {digital
+            ? "Thanks for your purchase."
+            : deposit
+              ? "Your project is booked."
+              : "Your payment is confirmed."}
         </h1>
         <p>
           {digital
             ? "Your digital purchase is paid in full. Keep your order reference for download access or support."
-            : "Stripe confirmed this payment. Contact Palmer House with your reference for details about this order."}
+            : deposit
+              ? "Your 50% deposit is paid and our team has your order. One last step: tell us about your project in our intake form so we can schedule your shoot."
+              : "Stripe confirmed this payment. Contact Palmer House with your reference for details about this order."}
         </p>
+        {deposit && (
+          <div className="mt-6">
+            <a
+              href={`${HONEYBOOK_LEAD_FORM_URL}${HONEYBOOK_LEAD_FORM_URL.includes("?") ? "&" : "?"}quote_ref=${encodeURIComponent(verification.reference)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="pc-primary"
+            >
+              Complete your project intake <ArrowRight size={18} />
+            </a>
+          </div>
+        )}
         <div className="pc-status" aria-labelledby="order-summary-title">
           <h2 id="order-summary-title">{digital ? "Your digital order" : "Payment receipt"}</h2>
           {digital && (
@@ -136,7 +156,7 @@ function CheckoutSuccessPage() {
           )}
           {paidTotal && (
             <div className="pc-total">
-              <strong>{digital ? "Paid in full" : "Amount paid"}</strong>
+              <strong>{digital ? "Paid in full" : deposit ? "Deposit paid" : "Amount paid"}</strong>
               <strong>{paidTotal}</strong>
             </div>
           )}

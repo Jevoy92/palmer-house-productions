@@ -1,3 +1,4 @@
+import { stripeSecretKey } from "@/lib/stripe-env";
 import { createServerFn } from "@tanstack/react-start";
 import { getRequestUrl } from "@tanstack/react-start/server";
 import { z } from "zod";
@@ -376,7 +377,7 @@ export const createStudioSubscriptionCheckout = createServerFn({ method: "POST" 
       throw new Error("Only a workspace admin can change billing.");
     if (process.env.STUDIO_AI_SALES_READY !== "true" || !process.env.LOVABLE_API_KEY)
       return { ok: false as const, code: "STUDIO_BILLING_NOT_READY" as const };
-    const secret = process.env.STRIPE_SECRET_KEY;
+    const secret = stripeSecretKey();
     if (!secret) return { ok: false as const, code: "STRIPE_NOT_CONFIGURED" as const };
     const { openStudioMembershipCheckout } = await import("./studio-subscription-checkout.server");
     return openStudioMembershipCheckout({
@@ -394,7 +395,7 @@ export const createStudioBillingPortal = createServerFn({ method: "POST" })
     const { role } = await authorizedClient(data.accessToken, data.workspaceId);
     if (role !== "owner" && role !== "admin")
       throw new Error("Only a workspace admin can manage billing.");
-    const secret = process.env.STRIPE_SECRET_KEY;
+    const secret = stripeSecretKey();
     if (!secret) return { ok: false as const, code: "STRIPE_NOT_CONFIGURED" as const };
     const { client } = await authorizedClient(data.accessToken, data.workspaceId);
     const subscription = await client

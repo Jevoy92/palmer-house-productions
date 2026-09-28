@@ -1,3 +1,4 @@
+import { stripeSecretKey } from "@/lib/stripe-env";
 import Stripe from "stripe";
 import { studioBillingAdmin } from "./studio-credit-runtime.server";
 import { studioPlanPrices, type StudioPlanKey } from "./studio-model";
@@ -11,7 +12,7 @@ export async function openStudioMembershipCheckout(input: {
   interval: "month" | "year";
   origin: string;
 }) {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  const stripe = new Stripe(stripeSecretKey()!, {
     maxNetworkRetries: 0,
     timeout: 30000,
   });

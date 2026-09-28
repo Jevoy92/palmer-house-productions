@@ -1,3 +1,4 @@
+import { stripeSecretKey } from "@/lib/stripe-env";
 import { createClient } from "@supabase/supabase-js";
 import { createFileRoute } from "@tanstack/react-router";
 import Stripe from "stripe";
@@ -6,7 +7,7 @@ import { SUPABASE_URL } from "@/lib/supabase/client";
 import { applyStudioBillingEvent } from "@/lib/studio-billing-webhook.server";
 
 async function handleStripeWebhook({ request }: { request: Request }) {
-  const stripeSecret = process.env.STRIPE_SECRET_KEY;
+  const stripeSecret = stripeSecretKey();
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
   const supabaseSecret =
     process.env["SUPABASE_SERVICE_ROLE_KEY"] || process.env["SUPABASE_SECRET_KEY"];

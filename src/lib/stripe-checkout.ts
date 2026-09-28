@@ -1,3 +1,4 @@
+import { stripeSecretKey } from "@/lib/stripe-env";
 import { createServerFn } from "@tanstack/react-start";
 import type Stripe from "stripe";
 import { z } from "zod";
@@ -38,7 +39,7 @@ const CheckoutVerificationInput = z.object({
 export const createDepositCheckout = createServerFn({ method: "POST" })
   .validator(CheckoutInput)
   .handler(async ({ data }) => {
-    const secret = process.env.STRIPE_SECRET_KEY;
+    const secret = stripeSecretKey();
     if (!secret) return { ok: false as const, code: "STRIPE_NOT_CONFIGURED" as const };
 
     const [{ default: Stripe }, { getRequestUrl }, { priceCheckoutItems }] = await Promise.all([
@@ -131,7 +132,7 @@ export const createDepositCheckout = createServerFn({ method: "POST" })
 export const verifyDepositCheckout = createServerFn({ method: "GET" })
   .validator(CheckoutVerificationInput)
   .handler(async ({ data }) => {
-    const secret = process.env.STRIPE_SECRET_KEY;
+    const secret = stripeSecretKey();
     if (!secret) return { status: "unavailable" as const };
 
     try {

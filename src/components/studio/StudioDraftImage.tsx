@@ -1,3 +1,4 @@
+import { StudioCreditCost } from "./StudioCredits";
 import { useRef, useState } from "react";
 import { ImagePlus, LoaderCircle } from "lucide-react";
 import type { Tables } from "@/lib/supabase/database.types";
@@ -105,6 +106,7 @@ export function StudioDraftImage({
               rows={3}
             />
           </label>
+          <StudioCreditCost operation="image" />
           {disabled && <p>Save your text changes first so the image uses the latest draft.</p>}
           {error && (
             <p role="alert" className="studio-chat-error">

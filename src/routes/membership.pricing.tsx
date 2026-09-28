@@ -1,3 +1,8 @@
+import {
+  studioCreditAllowance,
+  studioCreditOperations,
+  studioCreditTopUps,
+} from "@/lib/studio-credits";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check, ChevronDown, Minus } from "lucide-react";
 import { useState } from "react";
@@ -14,7 +19,12 @@ const PLAN_LANES: PalAccent[] = ["system", "spotlight", "reel"];
 const PLAN_GLYPHS: GlyphName[] = ["spark", "clock", "calendar"];
 
 const rows = [
-  ["Complete campaigns / month", "2", "5", "12"],
+  [
+    "AI credits / month",
+    studioCreditAllowance.creator.toLocaleString(),
+    studioCreditAllowance.business.toLocaleString(),
+    studioCreditAllowance.partner.toLocaleString(),
+  ],
   ["Brand DNA + Pal guidance", true, true, true],
   ["Personalized video roadmap", true, true, true],
   ["Scripts, platform posts + production plans", true, true, true],
@@ -27,6 +37,14 @@ const rows = [
 ] as const;
 
 const faqs = [
+  {
+    q: "How do AI credits work?",
+    a: `Each action shows its cost before you start: a Pal reply uses ${studioCreditOperations.chat.credits} credit, a complete written campaign ${studioCreditOperations.campaign.credits}, and an image ${studioCreditOperations.image.credits}. Included credits refresh monthly, even on annual plans. Images are separate from campaign writing. Saved work stays available to edit, copy, and download.`,
+  },
+  {
+    q: "What if I need more credits?",
+    a: `Add ${studioCreditTopUps.boost.credits} credits for $${studioCreditTopUps.boost.priceUsd} or ${studioCreditTopUps.bundle.credits.toLocaleString()} for $${studioCreditTopUps.bundle.priceUsd}. Purchases are one-time, with no automatic refills. Included credits expire at the end of their monthly window; purchased credits carry over and require active membership to use.`,
+  },
   {
     q: "Is Palmer House time really included?",
     a: "Yes. Guided includes one private 60-minute session each billing month. Partner keeps one 60-minute working session available each week. Use Member Success to choose the focus and request a time without starting a new intake.",
@@ -169,7 +187,9 @@ function PricingPage() {
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex gap-3 text-base leading-relaxed">
                       <Check className="mt-0.5 size-4 shrink-0 text-evergreen" />
-                      {feature}
+                      {feature.includes("complete campaigns")
+                        ? `A suggested rhythm of ${plan.campaigns} campaigns, with credits for chat and visuals`
+                        : feature}
                     </li>
                   ))}
                 </ul>
@@ -188,8 +208,12 @@ function PricingPage() {
           <StatBand
             stats={[
               ...plans.map((plan, index) => ({
-                value: plan.campaigns,
-                label: `complete campaigns each month · ${plan.name}`,
+                value: [
+                  studioCreditAllowance.creator,
+                  studioCreditAllowance.business,
+                  studioCreditAllowance.partner,
+                ][index],
+                label: `AI credits each month · ${plan.name}`,
                 lane: PLAN_LANES[index],
               })),
               { value: 17, suffix: "%", label: "saved with annual billing", lane: "evergreen" },

@@ -1,3 +1,4 @@
+import { studioCreditAllowance } from "@/lib/studio-credits";
 import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight, Check, Clapperboard, FileStack, Gauge, Sparkles } from "lucide-react";
@@ -360,13 +361,17 @@ function MembershipPage() {
       <Section
         eyebrow="Membership"
         title="Choose the amount of momentum."
-        subtitle="Every plan includes the same connected Studio. The difference is campaign volume and how much private Palmer House guidance you want beside it."
+        subtitle="Every plan includes the same connected Studio. The difference is AI credits and how much private Palmer House guidance you want beside it."
         lane="system"
       >
         <StatBand
           stats={Object.values(studioPlans).map((plan, index) => ({
-            value: plan.campaigns,
-            label: `complete campaigns each month · ${plan.name}`,
+            value: [
+              studioCreditAllowance.creator,
+              studioCreditAllowance.business,
+              studioCreditAllowance.partner,
+            ][index],
+            label: `AI credits each month · ${plan.name}`,
             lane: PLAN_LANES[index],
           }))}
         />
@@ -410,13 +415,18 @@ function MembershipPage() {
                         }
                   }
                 >
-                  {plan.campaigns} complete campaigns each month
+                  {studioCreditAllowance[
+                    key as keyof typeof studioCreditAllowance
+                  ].toLocaleString()}{" "}
+                  AI credits each month
                 </p>
                 <ul className="relative mt-7 space-y-4 text-sm">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex gap-3">
                       <Check className="mt-0.5 size-4 shrink-0 text-evergreen" />
-                      {feature}
+                      {feature.includes("complete campaigns")
+                        ? `A suggested rhythm of ${plan.campaigns} campaigns, with credits for chat and visuals`
+                        : feature}
                     </li>
                   ))}
                 </ul>

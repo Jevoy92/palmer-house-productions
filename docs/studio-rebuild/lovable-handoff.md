@@ -6,11 +6,14 @@ Actual React screens and authenticated server handlers, not a separate static mo
 
 ## Database updates
 
-Apply the normal project migrations in order through the project's usual deployment process. The local rebuild adds these three migrations; check the remote migration history before applying anything twice:
+Apply the normal project migrations in order through the project's usual deployment process. The local rebuild adds these four migrations; check the remote migration history before applying anything twice:
 
 1. `20260927180000_studio_recovery.sql` — custom Pals, saved Feed/discussions and generated artifacts.
 2. `20260927210000_studio_shared_memory.sql` — canonical workspace memory, RLS and revision-controlled mutations.
 3. `20260928010000_studio_proactive_media.sql` — atomic Feed generation reservation/completion and exact per-output image associations.
+4. `20260928020000_studio_credit_ledger.sql` — prepaid credits, provider budget reservations, invoice-backed renewals, payment event idempotency, refund adjustments, and one pending membership checkout.
+
+Read `billing-activation.md` for payment setup and reconciliation before enabling sales. See `ai-economics.md` for model pricing, workload simulations, and service labor assumptions.
 
 No live database was modified during this work. Keep existing private storage policies; test signed portrait and artifact URLs using two independent workspace accounts.
 
@@ -38,4 +41,4 @@ Automatic Feed policy: one reservation per workspace; 5-minute lease; 6-hour aut
 
 ## Local preview and evidence
 
-Use the existing `dev/studio-preview` harness at port 4175. It uses fictional fixtures and never calls a live model. See `quality-audit.md` for current evidence, scores and limitations. The implementation remains on the local recovery branch for review; it has not been deployed.
+Use the existing `dev/studio-preview` harness at port 4175. It uses fictional fixtures and never calls a live model. See `quality-audit.md` for current evidence, scores and limitations. The synthetic preview uses fictional data. GitHub synchronization does not verify deployed Stripe, AI, or database configuration; complete the live checks above and the billing activation checklist before enabling sales.

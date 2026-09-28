@@ -1,3 +1,4 @@
+import { StudioCreditCost } from "./StudioCredits";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "motion/react";
 import {
@@ -564,6 +565,7 @@ export function ContentEngine() {
                           : `${idea.length.toLocaleString()} / 1,200 characters`}
                       </p>
                     )}
+                    <StudioCreditCost operation="directions" />
                     <button
                       onClick={() => void findDirections()}
                       disabled={busy || idea.trim().length > 1200}
@@ -635,6 +637,7 @@ export function ContentEngine() {
                         className="mt-2 w-full resize-none rounded-xl border border-border bg-white p-4 text-sm leading-relaxed outline-none focus:border-system"
                       />
                     </label>
+                    <StudioCreditCost operation="analysis" />
                     <button
                       type="button"
                       onClick={() => void analyzeExternalSource()}
@@ -798,6 +801,7 @@ export function ContentEngine() {
                     Build the campaign <ArrowRight className="size-4" />
                   </button>
                 </div>
+                <StudioCreditCost operation="campaign" />
                 {running === "campaign" ? (
                   <GenerationProgress color={coach.color} label="Building your campaign…" />
                 ) : null}

@@ -1,3 +1,4 @@
+import { studioCreditOperations } from "@/lib/studio-credits";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
@@ -241,7 +242,11 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
           aria-label={`Build campaign from ${post.title || "this idea"}`}
         >
           <Plus size={18} />
-          <span>{pending === "campaign" ? "Building…" : "Campaign"}</span>
+          <span>
+            {pending === "campaign"
+              ? "Building…"
+              : `Campaign · ${studioCreditOperations.campaign.credits} credits`}
+          </span>
         </button>
       </div>
       <motion.div
@@ -362,12 +367,17 @@ export function StudioFeed() {
           <button
             className="studio-icon-button"
             aria-label="Refresh Pal ideas"
+            title={`${studioCreditOperations.feed.credits} credits for a fresh discussion`}
             disabled={working}
             onClick={() => void refresh()}
           >
             <RefreshCw size={18} className={working ? "animate-spin" : ""} />
           </button>
         </header>
+        <p className="studio-credit-note text-xs text-muted-foreground">
+          Refresh ideas · {studioCreditOperations.feed.credits} credits. Automatic suggestions have
+          a separate limit.
+        </p>
         <StudioFilterPills
           label="Filter feed"
           value={filter}

@@ -23,15 +23,19 @@ import {
   Search,
   History,
   PanelLeftClose,
+  CircleHelp,
 } from "lucide-react";
 import type { StudioView } from "@/lib/studio-model";
 import { useStudio } from "./StudioProvider";
+import { StudioCreditPill } from "./StudioCredits";
 import { StudioNotifications } from "./StudioNotifications";
 import { CelebrationLayer } from "./Celebrate";
 import { useStudioMotion } from "./studio-motion";
 import { useGuide } from "./useGuide";
 import { StudioPageTrail } from "./StudioPageTrail";
 import { PalAvatar } from "./PalAvatar";
+import { StudioStartHere } from "./StudioStartHere";
+import { openStudioGuide } from "@/lib/studio-onboarding";
 
 const mainItems = [
   { view: "assistant", label: "Chat", to: "/studio/conversations", icon: MessageCircle },
@@ -127,6 +131,17 @@ function Navigation({ view, close }: { view: StudioView; close?: () => void }) {
         </Link>
       </div>
       <div className="studio-sidebar-footer">
+        <button
+          type="button"
+          className="studio-nav-item"
+          onClick={() => {
+            close?.();
+            window.requestAnimationFrame(openStudioGuide);
+          }}
+        >
+          <CircleHelp size={19} />
+          Studio guide
+        </button>
         <Link to="/studio/conversations" onClick={close} className="studio-current-pal">
           <PalAvatar pal={pal} size="sm" />
           <span>
@@ -201,6 +216,16 @@ export function StudioWorkspaceShell({
           <button type="submit">Search</button>
         </form>
         <div className="studio-topbar-actions">
+          <button
+            type="button"
+            className="studio-guide-trigger"
+            aria-label="Open Studio guide"
+            onClick={openStudioGuide}
+          >
+            <CircleHelp size={16} />
+            Guide
+          </button>
+          <StudioCreditPill />
           <StudioNotifications />
           <MenuPrimitive.Root>
             <MenuPrimitive.Trigger asChild>
@@ -242,6 +267,13 @@ export function StudioWorkspaceShell({
                     <ExternalLink size={17} />
                     Palmer House website
                   </Link>
+                </MenuPrimitive.Item>
+                <MenuPrimitive.Item
+                  onSelect={() => window.requestAnimationFrame(openStudioGuide)}
+                  className="studio-menu-item"
+                >
+                  <CircleHelp size={17} />
+                  Studio guide
                 </MenuPrimitive.Item>
                 <MenuPrimitive.Item onSelect={() => void signOut()} className="studio-menu-item">
                   <LogOut size={17} />
@@ -316,6 +348,7 @@ export function StudioWorkspaceShell({
         transition={transition}
         className="studio-workspace-content"
       >
+        <StudioStartHere />
         {!chat && <StudioPageTrail view={view} />}
         {children}
       </motion.main>

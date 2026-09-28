@@ -1,3 +1,4 @@
+import { StudioCreditCost } from "./StudioCredits";
 import { Link, useLocation, useNavigate, useSearch } from "@tanstack/react-router";
 import { useStudioMotion } from "./studio-motion";
 import { motion } from "motion/react";
@@ -939,6 +940,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
               )}
             </button>
           </div>
+          <StudioCreditCost operation="chat" compact />
           <p>Ideas become drafts. Nothing publishes without you.</p>
         </form>
       </section>
@@ -1156,6 +1158,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
       >
         <DialogContent
           className="studio-app studio-custom-pal"
+          closeDisabled={artifactBusy}
           onCloseAutoFocus={(event) => returnFocus(event, composerToolsRef.current)}
           onEscapeKeyDown={(event) => {
             if (artifactBusy) event.preventDefault();
@@ -1169,6 +1172,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
             Title
             <input
               value={artifactTitle}
+              disabled={artifactBusy}
               onChange={(event) => setArtifactTitle(event.target.value)}
               maxLength={120}
               placeholder={
@@ -1181,6 +1185,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
             <textarea
               rows={6}
               value={artifactPrompt}
+              disabled={artifactBusy}
               onChange={(event) => setArtifactPrompt(event.target.value)}
               maxLength={3000}
               placeholder={
@@ -1190,6 +1195,10 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
               }
             />
           </label>
+          <StudioCreditCost operation={artifactKind || "image"} />
+          {artifactBusy && (
+            <PalActivity pal={pal} custom={Boolean(customPal)} task={artifactKind || "image"} />
+          )}
           {artifactError ? (
             <p role="alert" className="studio-chat-error">
               {artifactError}
@@ -1255,8 +1264,9 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
               ))}
             </select>
           </label>
+          <StudioCreditCost operation="campaign" />
           <p className="studio-picker-note">
-            This uses one campaign from your plan. Review it before scheduling.
+            Written drafts and video scripts. Generate images separately when you need them.
           </p>
           <button
             type="button"

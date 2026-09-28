@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { withStudioCredits } from "./studio-credit-runtime.server";
 import {
   StudioAuthSchema,
   assertWorkspaceStoragePath,
@@ -16,33 +17,36 @@ export const generateStudioPalAvatar = createServerFn({ method: "POST" })
       basePal: z.enum(palNames).optional(),
     }),
   )
-  .handler(async ({ data }): Promise<StudioPalAvatar> => {
-    const { client } = await (
-      await import("./studio-auth.server")
-    ).authorizedStudioClient(data.accessToken, data.workspaceId);
-    const image = await (
-      await import("./ai.server")
-    ).generateStudioImage(palAvatarPrompt(data.name, data.description));
-    if (image.bytes.length > 5 * 1024 * 1024)
-      throw new Error(
-        "The portrait is too large to use as an avatar. Try a simpler portrait or upload an image under 5 MB.",
-      );
-    const path = `${data.workspaceId}/pals/${crypto.randomUUID()}.${image.extension}`;
-    const uploaded = await client.storage.from("campaign-assets").upload(path, image.bytes, {
-      contentType: image.mimeType,
-      upsert: false,
-      metadata: { styleVersion: palAvatarStyleVersion, purpose: "pal-avatar" },
-    });
-    if (uploaded.error) throw new Error("The portrait could not be saved. Please retry.");
-    const signed = await client.storage.from("campaign-assets").createSignedUrl(path, 3600);
-    // The portrait exists even if URL signing is temporarily unavailable.
-    return {
-      storagePath: path,
-      mimeType: image.mimeType,
-      url: signed.data?.signedUrl || "",
-      styleVersion: palAvatarStyleVersion,
-    };
-  });
+  .handler(
+    async ({ data }): Promise<StudioPalAvatar> =>
+      withStudioCredits(data, "avatar", async () => {
+        const { client } = await (
+          await import("./studio-auth.server")
+        ).authorizedStudioClient(data.accessToken, data.workspaceId);
+        const image = await (
+          await import("./ai.server")
+        ).generateStudioImage(palAvatarPrompt(data.name, data.description));
+        if (image.bytes.length > 5 * 1024 * 1024)
+          throw new Error(
+            "The portrait is too large to use as an avatar. Try a simpler portrait or upload an image under 5 MB.",
+          );
+        const path = `${data.workspaceId}/pals/${crypto.randomUUID()}.${image.extension}`;
+        const uploaded = await client.storage.from("campaign-assets").upload(path, image.bytes, {
+          contentType: image.mimeType,
+          upsert: false,
+          metadata: { styleVersion: palAvatarStyleVersion, purpose: "pal-avatar" },
+        });
+        if (uploaded.error) throw new Error("The portrait could not be saved. Please retry.");
+        const signed = await client.storage.from("campaign-assets").createSignedUrl(path, 3600);
+        // The portrait exists even if URL signing is temporarily unavailable.
+        return {
+          storagePath: path,
+          mimeType: image.mimeType,
+          url: signed.data?.signedUrl || "",
+          styleVersion: palAvatarStyleVersion,
+        };
+      }),
+  );
 
 export const getStudioAssetImageUrl = createServerFn({ method: "POST" })
   .validator(StudioAuthSchema.extend({ assetId: z.string().uuid() }))

@@ -15,6 +15,7 @@ import { PAL_SCENES, type PalSceneName } from "@/lib/pal-scenes";
 import { composePalOpening, type PalOpeningContext } from "@/lib/pal-greetings";
 import { PalAvatar } from "./PalAvatar";
 import { useStudioMotion } from "./studio-motion";
+import { palActivityCopy, type PalTask } from "@/lib/pal-activity";
 import "./pal-presence.css";
 
 const scenes: Record<PalName, PalSceneName> = {
@@ -169,9 +170,10 @@ export function PalActivity({
 }: {
   pal: GuideProfile;
   custom: boolean;
-  task: "reply" | "campaign" | "image" | "pdf";
+  task: PalTask;
 }) {
   const { reduceMotion, fadeTransition } = useStudioMotion();
+  const activity = palActivityCopy(pal.key || "kiana", task);
   const Icon =
     task === "image"
       ? Sparkles
@@ -180,42 +182,53 @@ export function PalActivity({
         : task === "campaign"
           ? Layers3
           : MessageSquareText;
-  const label =
-    task === "image"
-      ? "is creating your image"
-      : task === "pdf"
-        ? "is making your PDF"
-        : task === "campaign"
-          ? "is building your campaign"
-          : "is putting a response together";
   return (
     <motion.div
       className="studio-pal-activity studio-chat-working"
+      data-task={task}
+      data-reduced-motion={reduceMotion}
       role="status"
       aria-live="polite"
+      aria-label={`${pal.name}: ${activity.label}`}
       initial={reduceMotion ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={fadeTransition}
     >
-      <PalScene pal={pal} custom={custom} working />
+      <div className="studio-pal-activity-art">
+        <PalScene pal={pal} custom={custom} working />
+        <div className={`studio-task-motif is-${activity.shape}`} aria-hidden="true">
+          <i />
+          <i />
+          <i />
+        </div>
+      </div>
       <div>
         <span className="studio-pal-activity-badge">
           <Icon size={14} />
-          {task === "reply" ? "Working on your reply" : "Creating"}
+          {activity.label}
         </span>
         <strong>
-          {pal.name} {label}
+          {pal.name}
           <span className="studio-working-dots" aria-hidden="true">
             <i />
             <i />
             <i />
           </span>
         </strong>
-        <p>
-          {task === "reply"
-            ? "Using the conversation and shared workspace context."
-            : "This request is running. Your finished work will save to Library."}
-        </p>
+        <p className="studio-pal-task-voice">{activity.voice}</p>
+        <div
+          className="studio-task-progress"
+          role="progressbar"
+          aria-label={activity.label}
+          aria-valuetext="Request in progress"
+        >
+          <span />
+        </div>
+        <details className="studio-task-details">
+          <summary>What’s happening</summary>
+          <p>{activity.detail}</p>
+          <span>{activity.next}</span>
+        </details>
       </div>
     </motion.div>
   );

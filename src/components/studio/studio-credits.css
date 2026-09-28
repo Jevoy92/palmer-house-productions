@@ -1,0 +1,282 @@
+.studio-credit-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--studio-border);
+  border-radius: 999px;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--studio-text);
+  background: var(--studio-surface);
+  transition: background 0.16s ease;
+}
+.studio-credit-pill:hover {
+  background: var(--studio-soft);
+}
+.studio-credit-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--reel);
+}
+.studio-credit-stack {
+  display: grid;
+  gap: 20px;
+  margin-top: 24px;
+}
+.studio-credit-panel {
+  padding: clamp(20px, 4vw, 32px);
+  border: 1px solid var(--studio-border);
+  border-radius: 20px;
+  background: var(--studio-surface);
+}
+.studio-credit-panel h2 {
+  font-size: clamp(21px, 2.5vw, 28px);
+  font-weight: 750;
+  letter-spacing: -0.045em;
+  line-height: 1.15;
+  margin: 5px 0 12px;
+}
+.studio-credit-panel p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--studio-muted);
+  max-width: 68ch;
+}
+.studio-credit-panel .studio-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
+.studio-credit-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: start;
+}
+.studio-credit-number {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 22px 0;
+}
+.studio-credit-number strong {
+  font-size: clamp(48px, 8vw, 72px);
+  font-weight: 750;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+.studio-credit-number span {
+  font-size: 14px;
+  color: var(--studio-muted);
+}
+.studio-credit-meter {
+  height: 8px;
+  background: var(--studio-soft);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.studio-credit-meter span {
+  display: block;
+  height: 100%;
+  background: var(--studio-accent);
+  border-radius: inherit;
+  transition: width 0.24s ease;
+}
+.studio-credit-breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  margin: 12px 0;
+}
+.studio-credit-panel .studio-credit-note {
+  font-size: 12px;
+  margin-top: 16px;
+}
+.studio-credit-low {
+  padding: 16px 18px;
+  border: 1px solid var(--studio-border);
+  border-left: 3px solid var(--reel);
+  border-radius: 12px;
+  margin: 20px 0;
+}
+.studio-credit-low strong {
+  font-size: 14px;
+}
+.studio-credit-low p {
+  font-size: 13px;
+  margin-top: 6px;
+}
+.studio-credit-rules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 22px;
+  margin-top: 22px;
+  font-size: 12px;
+  color: var(--studio-muted);
+}
+.studio-credit-rules span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.studio-credit-packs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 24px 0 16px;
+}
+.studio-credit-packs article {
+  border: 1px solid var(--studio-border);
+  border-radius: 16px;
+  padding: 22px;
+  background: var(--studio-canvas);
+}
+.studio-credit-packs h3 {
+  font-size: 14px;
+  font-weight: 700;
+}
+.studio-credit-packs .studio-credit-pack-size {
+  font-size: 28px;
+  font-weight: 750;
+  color: var(--studio-text);
+  margin: 12px 0 2px;
+  letter-spacing: -0.035em;
+}
+.studio-credit-pack-size span {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.studio-credit-pack-price {
+  font-size: 18px;
+  font-weight: 600;
+}
+.studio-credit-packs button {
+  display: flex;
+  width: 100%;
+  margin-top: 22px;
+}
+.studio-credit-packs button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.studio-credit-prices {
+  margin-top: 22px;
+}
+.studio-credit-prices > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid var(--studio-border);
+  padding: 13px 0;
+  font-size: 14px;
+}
+.studio-credit-prices dd {
+  white-space: nowrap;
+  font-weight: 700;
+}
+.studio-credit-history {
+  margin-top: 10px;
+}
+.studio-credit-history li {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 17px 0;
+  border-bottom: 1px solid var(--studio-border);
+  font-size: 13px;
+}
+.studio-credit-history strong,
+.studio-credit-history small {
+  display: block;
+}
+.studio-credit-history small {
+  margin-top: 4px;
+  color: var(--studio-muted);
+}
+.studio-credit-cost {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 14px;
+  margin: 14px 0;
+  font-size: 12px !important;
+  line-height: 1.5;
+  color: var(--studio-muted);
+}
+.studio-credit-cost > span:first-child {
+  font-weight: 650;
+  color: var(--studio-text);
+}
+.studio-credit-cost a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--studio-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.studio-credit-cost.is-compact {
+  margin: 4px 0;
+  justify-content: center;
+  font-size: 11px !important;
+}
+.studio-credit-error {
+  color: var(--reel) !important;
+  margin-top: 14px;
+}
+@media (max-width: 600px) {
+  .studio-credit-packs {
+    grid-template-columns: 1fr;
+  }
+  .studio-credit-prices > div {
+    font-size: 13px;
+  }
+  .studio-credit-panel {
+    border-radius: 16px;
+  }
+  .studio-credit-pill {
+    padding: 0 9px;
+    font-size: 11px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .studio-credit-meter span,
+  .studio-credit-pill {
+    transition: none;
+  }
+}
+html[data-studio-motion="reduce"] .studio-credit-meter span {
+  transition: none;
+}
+
+@media (min-width: 768px) and (max-width: 1100px) {
+  .studio-topbar {
+    gap: 14px;
+    padding-inline: 20px;
+  }
+  .studio-global-search {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+  }
+  .studio-global-search input {
+    min-width: 0;
+  }
+  .studio-topbar-actions {
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .studio-wordmark {
+    min-width: 180px;
+  }
+  .studio-global-search button {
+    display: none;
+  }
+}

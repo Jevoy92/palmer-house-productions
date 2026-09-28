@@ -161,7 +161,9 @@ try {
     await page.getByRole("button", { name: "Send message", exact: true }).click();
     const activity = page.locator(".studio-pal-activity");
     await activity.waitFor();
-    assert.match(await activity.innerText(), /putting a response together/);
+    assert.match(await activity.innerText(), /Writing a reply/);
+    assert.match(await activity.innerText(), /Finding the story in your idea/);
+    assert.equal(await activity.getByRole("progressbar").getAttribute("aria-valuenow"), null);
     assert.equal(await page.locator(".studio-pal-welcome").count(), 0);
     assert.notEqual(
       await activity

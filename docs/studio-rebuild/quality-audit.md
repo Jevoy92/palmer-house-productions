@@ -20,7 +20,7 @@ Scores are editorial judgments against this project's approved references, not a
 | Content and image relevance      | 9                             | Each output stores its own image brief. Editor sends exact asset identity; private association is checked on the server. Native covers/storyboards use actual saved text. Final AI image quality still depends on the configured model. |
 | Accessibility                    | 8                             | Keyboard filters/tabs, menu/dialog focus, labels, error retention, reduced motion, palette contrast checks. No claim of a complete WCAG or assistive-technology certification.                                                          |
 | Persistence and memory           | 9                             | Workspace-scoped canonical memory, provenance, revision conflicts, exports and explicit forgetting; cross-Pal context and model changes tested. Live migrations still need deployment.                                                  |
-| Performance                      | Not scored                    | Production build passes. Studio client chunk is about 676 kB minified / 192 kB gzip and triggers Vite's size warning. No production Core Web Vitals measurement was taken.                                                              |
+| Performance                      | Not scored                    | Production build passes. Studio client chunk is about 699 kB minified / 199 kB gzip and triggers Vite's size warning. No production Core Web Vitals measurement was taken.                                                              |
 | Search indexing / SEO            | Appropriate for a private app | Studio routes inherit noindex/nofollow. Public marketing SEO, sitemap and search ranking were outside this Studio pass.                                                                                                                 |
 | Production readiness             | Conditional                   | Local behavior and build verified. Live credentials, migrations, storage, paid generation, account/billing and publishing integrations require deployment checks.                                                                       |
 
@@ -75,3 +75,24 @@ Captures and machine-readable reports are kept outside Git in `../Studio Rebuild
 - Video generation is not exposed. Scripts, storyboards, thumbnails and optional attached footage are separate concepts.
 - The Motion React runtime is used. No callable Motion+ AI Kit MCP was available in this session, so no premium MotionScore result is claimed.
 - Long-lived conversation/file storage is canonical. Runtime prompts retrieve a bounded recent/relevant context window, not every historical token at once.
+
+
+## Billing, economics, onboarding and activity addendum — September 28
+
+This pass adds a server-owned credit meter, fixed generation prices, monthly included balances, prepaid top-ups, and a private operator cost/budget view. Subscription prices remain unchanged. Public membership pages explain credits consistently with the Studio. Top-ups never recharge automatically.
+
+Independent review corrected paid paths that bypassed usage limits, duplicate and out-of-order payment handling, annual renewal anchors, unpaid upgrades, refund/reservation races, duplicate membership checkout, canceled accounts rejoining, and legacy paid-period verification. Provider calls fail closed if the ledger or cost profile cannot be verified. Audio transcription is visibly unavailable until a separately priced adapter is added; text/document/image intake remains available.
+
+New and returning members get a dismissible guide, a checklist based on saved work, and a five-part orientation they can reopen. Task indicators have distinct reply, campaign, image and PDF motifs and Pal-specific language. They report real pending work without fabricated progress percentages. Credit costs appear before paid actions; drafts survive failures.
+
+### Final local evidence
+
+- 95 unit/server/helper/economics tests passed.
+- 12 conversation lifecycle checks passed, including drafts retained after failures and model-independent shared context.
+- 41 offline PostgreSQL financial checks passed.
+- The 60 earlier Studio browser journeys passed again, with targeted reruns where development hot reload interrupted an initial run.
+- 9 additional onboarding, activity, modal and tablet-header browser checks passed.
+- 11 billing browser checks cover light/dark desktop/mobile, empty credits, member purchase permissions, unavailable balances, visible action prices and failed checkout without false grants.
+- TypeScript, production build and lint of changed application files passed. Vite still reports the Studio bundle-size warning; there is no new performance-score claim.
+
+The browser tests use fictional fixtures and do not demonstrate live Stripe settlement or provider quality. Required live tests and deployment settings are in [Billing activation](billing-activation.md). The operating model, explicit labor assumptions, sources and runnable light/moderate/heavy simulations are in [AI economics](ai-economics.md). This is a verified local implementation with gated sales, not an assertion that the deployed payment system is activated.

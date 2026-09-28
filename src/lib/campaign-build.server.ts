@@ -223,8 +223,13 @@ export async function persistCampaign(
     throw new Error(`Could not save the campaign strategy: ${campaignUpdate.error.message}`);
 
   await client.from("campaign_assets").delete().eq("campaign_id", campaignId);
+  const { currentStudioUsageId } = await import("./studio-credit-runtime.server");
   const rows = assetsFromOutput(output).map((row) => ({
     ...row,
+    metadata: {
+      ...(row.metadata as Record<string, Json>),
+      usageReservationId: currentStudioUsageId?.() || null,
+    },
     campaign_id: campaignId,
     workspace_id: workspaceId,
   }));

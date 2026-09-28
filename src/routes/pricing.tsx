@@ -1,3 +1,4 @@
+import { studioCreditAllowance } from "@/lib/studio-credits";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { CtaBand, PageHero, PageShell, Section } from "@/components/site/PageShell";
@@ -44,7 +45,7 @@ const options: Array<{
     note: "per month, 17% off annually",
     body: "Your Pal, your Brand DNA, and a content system that turns one idea into a month of content.",
     bullets: [
-      `${studioPlans.creator.campaigns} complete campaigns to start`,
+      `${studioCreditAllowance.creator.toLocaleString()} AI credits per month to start`,
       "Personalized video roadmap and calendar",
       "Private Palmer House time on higher plans",
     ],

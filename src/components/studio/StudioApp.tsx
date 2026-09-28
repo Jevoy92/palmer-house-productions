@@ -1,5 +1,7 @@
 import { buildMonthPlan, shiftCalendarPeriod } from "@/lib/studio-calendar-plan";
 import { StudioMemory } from "./StudioMemory";
+import { StudioCreditCost, StudioCreditPanel, StudioCreditsProvider } from "./StudioCredits";
+import { studioCreditAllowance } from "@/lib/studio-credits";
 import { StudioBrandGuide } from "./StudioBrandGuide";
 import { StudioFeed } from "./StudioFeed";
 import { StudioLibrary } from "./StudioLibrary";
@@ -285,7 +287,9 @@ function StudioGate({
   if (!studio.session) return <AuthExperience />;
   if (!studio.workspace) return <Onboarding />;
   return (
-    <StudioShell view={view}>{renderView(view, campaignId, conversationId, workTab)}</StudioShell>
+    <StudioCreditsProvider key={studio.workspace.id}>
+      <StudioShell view={view}>{renderView(view, campaignId, conversationId, workTab)}</StudioShell>
+    </StudioCreditsProvider>
   );
 }
 
@@ -1065,40 +1069,11 @@ function Onboarding() {
             <h2 className="mt-3 text-2xl font-black leading-tight tracking-[-.03em]">
               Give us a moment, {name || "friend"}.
             </h2>
-            <ul className="mt-6 space-y-3">
-              {[
-                "Creating your private workspace",
-                "Writing your brand memory",
-                "Teaching your guide who you are",
-                "Ready",
-              ].map((label, index) => (
-                <li key={label} className="flex items-center gap-3 text-sm font-bold">
-                  <span
-                    className="grid size-7 shrink-0 place-items-center rounded-full border"
-                    style={{
-                      borderColor: index <= setupStep ? match.color : "var(--border)",
-                      background: index < setupStep ? match.color : "white",
-                      color: index < setupStep ? "white" : "var(--muted-foreground)",
-                    }}
-                  >
-                    {index < setupStep ? (
-                      <Check className="size-3.5" />
-                    ) : index === setupStep ? (
-                      <LoaderCircle className="size-3.5 animate-spin" />
-                    ) : null}
-                  </span>
-                  <span className={index <= setupStep ? "" : "text-muted-foreground"}>{label}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-6 h-1.5 overflow-hidden rounded-full bg-border">
-              <div
-                className="h-full rounded-full transition-all duration-700"
-                style={{
-                  width: `${((setupStep + 1) / 4) * 100}%`,
-                  background: match.color,
-                }}
-              />
+            <div className="mt-6 flex items-center gap-3" role="status">
+              <LoaderCircle className="size-5 animate-spin" aria-hidden="true" />
+              <p className="text-sm text-muted-foreground">
+                Saving your workspace and Brand DNA. Your Studio opens when everything is ready.
+              </p>
             </div>
           </div>
         </div>
@@ -3429,6 +3404,7 @@ function BrandStudio() {
             </div>
           </div>
 
+          <StudioCreditCost operation="analysis" />
           {intakeStep >= 0 || intakeResult ? (
             <div className="mt-5 rounded-2xl border border-border bg-white p-4">
               <ol className="grid gap-2 sm:grid-cols-4">
@@ -4686,35 +4662,9 @@ function SettingsView() {
               <div>
                 <SettingHeading
                   title="Usage & plan"
-                  body="Your plan and current campaign allowance."
+                  body="Know what is available before your next creation."
                 />
-                <div className="mt-7 rounded-[1.25rem] border border-system bg-white p-6">
-                  <p className="studio-eyebrow text-system">Current plan</p>
-                  <p className="mt-3 text-3xl font-black capitalize text-ink">
-                    {subscription?.plan || "Trial"}
-                  </p>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    {campaigns.length} campaigns in this workspace
-                  </p>
-                  <div className="mt-6 h-2 overflow-hidden rounded-full bg-system-soft">
-                    <span
-                      className="block h-full bg-system"
-                      style={{
-                        width: `${Math.min(100, (campaigns.length / Math.max(1, subscription?.campaign_allowance || 5)) * 100)}%`,
-                      }}
-                    />
-                  </div>
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    {campaigns.length} of {subscription?.campaign_allowance || 5} campaign builds
-                    used this period
-                  </p>
-                  <Link
-                    to="/studio/billing"
-                    className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-xl bg-system px-5 text-sm font-bold text-white"
-                  >
-                    Open billing <ArrowRight className="size-4" />
-                  </Link>
-                </div>
+                <StudioCreditPanel compact />
               </div>
             ) : null}
             {tab === "account" ? (
@@ -4865,14 +4815,11 @@ function WorkspaceActivity({ dates }: { dates: string[] }) {
 }
 
 function BillingView() {
-  const { session, workspace, subscription, campaigns } = useStudio();
+  const { session, workspace, subscription } = useStudio();
   const [loadingPlan, setLoadingPlan] = useState<string>("");
   const [interval, setInterval] = useState<"month" | "year">(
     subscription?.billing_interval === "year" ? "year" : "month",
   );
-  const used = campaigns.filter(
-    (item) => new Date(item.created_at) >= new Date(subscription?.current_period_start || 0),
-  ).length;
   const activePlanKey: StudioPlanKey =
     subscription?.plan === "business" ||
     subscription?.plan === "partner" ||
@@ -4882,6 +4829,10 @@ function BillingView() {
   const activePlan = studioPlans[activePlanKey];
   async function checkout(plan: StudioPlanKey) {
     if (!session || !workspace) return;
+    if (subscription?.status === "active" || subscription?.status === "past_due") {
+      await portal();
+      return;
+    }
     setLoadingPlan(plan);
     try {
       const result = await createStudioSubscriptionCheckout({
@@ -4890,7 +4841,7 @@ function BillingView() {
       if (result.ok) window.location.assign(result.url);
       else
         toast.info(
-          "Stripe is ready in the product, but the live Stripe secret still needs to be connected.",
+          "Membership checkout will open when Studio billing and AI setup are complete. No payment was taken.",
         );
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Billing could not open.");
@@ -4903,57 +4854,38 @@ function BillingView() {
       toast.info("The billing portal opens for a live paid workspace.");
       return;
     }
-    const result = await createStudioBillingPortal({
-      data: { accessToken: session.access_token, workspaceId: workspace.id },
-    });
-    if (result.ok) window.location.assign(result.url);
-    else toast.info("No active Stripe customer is linked yet.");
+    if (loadingPlan) return;
+    setLoadingPlan("portal");
+    try {
+      const result = await createStudioBillingPortal({
+        data: { accessToken: session.access_token, workspaceId: workspace.id },
+      });
+      if (result.ok) window.location.assign(result.url);
+      else toast.info("No active Stripe customer is linked yet.");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Billing could not open. Please retry.");
+    } finally {
+      setLoadingPlan("");
+    }
   }
   return (
     <div className="mx-auto max-w-[88rem]">
       <PageIntro
         eyebrow="Usage & billing"
         title="A plan matched to the work."
-        body="Campaign allowance is reserved before generation, so retries and failures never silently double-charge usage."
+        body="Your membership, creative credits, and recent activity. One place to stay in control."
         action={
-          <button onClick={() => void portal()} className="secondary-action">
+          <button
+            onClick={() => void portal()}
+            disabled={Boolean(loadingPlan)}
+            className="secondary-action"
+          >
             <ExternalLink className="size-4" />
             Manage billing
           </button>
         }
       />
-      <section className="mt-8 studio-card bg-system-soft">
-        <div className="grid gap-7 md:grid-cols-[1fr_auto]">
-          <div>
-            <p className="font-mono text-[11px] uppercase tracking-[.17em] text-system">
-              Current period
-            </p>
-            <h2 className="mt-3 text-3xl font-extrabold">
-              {subscription?.status === "active" ? activePlan.name : "Trial"} workspace
-            </h2>
-            <p className="mt-3 text-sm text-muted-foreground">
-              Renews {new Date(subscription?.current_period_end || Date.now()).toLocaleDateString()}
-            </p>
-          </div>
-          <div className="min-w-52">
-            <div className="flex justify-between text-sm">
-              <span>Campaigns used</span>
-              <strong>
-                {used} / {subscription?.campaign_allowance || 1}
-              </strong>
-            </div>
-            <div className="mt-3 h-2 overflow-hidden rounded-full bg-white">
-              <motion.div
-                initial={false}
-                animate={{
-                  transform: `scaleX(${Math.min(1, used / (subscription?.campaign_allowance || 1))})`,
-                }}
-                className="h-full origin-left bg-system"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+      <StudioCreditPanel />
       <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-[1.25rem] border border-border bg-white p-3 pl-5">
         <div>
           <p className="text-sm font-black">Choose how you pay</p>
@@ -4984,7 +4916,7 @@ function BillingView() {
         {Object.entries(studioPlans).map(([key, plan]) => (
           <article
             key={key}
-            className={`studio-card flex flex-col ${activePlanKey === key ? "ring-2 ring-ink" : ""}`}
+            className={`studio-card flex flex-col ${subscription?.status === "active" && activePlanKey === key ? "ring-2 ring-ink" : ""}`}
           >
             <p className="font-mono text-[11px] uppercase tracking-[.17em] text-muted-foreground">
               {plan.name}
@@ -5000,24 +4932,28 @@ function BillingView() {
             ) : null}
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{plan.audience}</p>
             <p className="mt-7 rounded-xl bg-cream p-3 text-sm font-semibold">
-              {plan.campaigns} complete campaigns / month
+              {studioCreditAllowance[key as StudioPlanKey].toLocaleString()} AI credits / month
             </p>
             <ul className="mt-6 space-y-3">
               {plan.features.map((feature) => (
                 <li key={feature} className="flex gap-3 text-sm">
                   <Check className="mt-0.5 size-4 text-evergreen" />
-                  {feature}
+                  {feature.includes("complete campaigns")
+                    ? `Plan your rhythm around ${plan.campaigns} complete campaigns, with credits for chat and visuals`
+                    : feature}
                 </li>
               ))}
             </ul>
             <button
-              disabled={Boolean(loadingPlan) || activePlanKey === key}
+              disabled={
+                Boolean(loadingPlan) || (subscription?.status === "active" && activePlanKey === key)
+              }
               onClick={() => void checkout(key as StudioPlanKey)}
               className="primary-action mt-8 w-full disabled:bg-secondary disabled:text-muted-foreground"
             >
               {loadingPlan === key ? (
                 <LoaderCircle className="size-4 animate-spin" />
-              ) : activePlanKey === key ? (
+              ) : subscription?.status === "active" && activePlanKey === key ? (
                 "Current plan"
               ) : (
                 `Choose ${plan.name}`

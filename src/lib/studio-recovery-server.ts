@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { currentStudioUsageId, withStudioCredits } from "./studio-credit-runtime.server";
 import { palNames } from "./studio-model";
 import { buildAssetImageBrief, assetImagePrompt } from "./studio-image-brief";
 export { generateStudioPalAvatar, getStudioAssetImageUrl } from "./studio-media-server";
@@ -203,191 +204,197 @@ export const getStudioArtifactUrl = createServerFn({ method: "POST" })
 export const generateStudioArtifact = createServerFn({ method: "POST" })
   .validator(StudioAuthSchema.extend({ artifact: ArtifactInputSchema }))
   .handler(async ({ data }) => {
-    const { client, user } = await auth(data);
-    const input = data.artifact;
-    const target = input.targetAssetId
-      ? await client
-          .from("campaign_assets")
-          .select("id,kind,title,content,metadata,campaign_id,updated_at")
+    const run = async () => {
+      const { client, user } = await auth(data);
+      const input = data.artifact;
+      const target = input.targetAssetId
+        ? await client
+            .from("campaign_assets")
+            .select("id,kind,title,content,metadata,campaign_id,updated_at")
+            .eq("workspace_id", data.workspaceId)
+            .eq("id", input.targetAssetId)
+            .maybeSingle()
+        : null;
+      if (target && (target.error || !target.data))
+        throw new Error("This output is not in the active workspace.");
+      if (target?.data && input.campaignId && target.data.campaign_id !== input.campaignId)
+        throw new Error("The image target does not belong to this campaign.");
+      const campaignId = input.campaignId || target?.data?.campaign_id || null;
+      const imageBrief =
+        input.kind === "image"
+          ? buildAssetImageBrief(
+              target?.data || { kind: "image", title: input.title, content: input.prompt },
+              input.imagePurpose,
+            )
+          : undefined;
+      const { resolveStudioAuthor } = await import("./studio-auth.server");
+      const origin = await resolveStudioAuthor(
+        client,
+        data.workspaceId,
+        input.pal || "kiana",
+        input.palProfileId,
+      );
+      // Validate ownership BEFORE any billable model call or storage write.
+      if (input.campaignId) {
+        const campaign = await client
+          .from("campaigns")
+          .select("id")
           .eq("workspace_id", data.workspaceId)
-          .eq("id", input.targetAssetId)
-          .maybeSingle()
-      : null;
-    if (target && (target.error || !target.data))
-      throw new Error("This output is not in the active workspace.");
-    if (target?.data && input.campaignId && target.data.campaign_id !== input.campaignId)
-      throw new Error("The image target does not belong to this campaign.");
-    const campaignId = input.campaignId || target?.data?.campaign_id || null;
-    const imageBrief =
-      input.kind === "image"
-        ? buildAssetImageBrief(
-            target?.data || { kind: "image", title: input.title, content: input.prompt },
-            input.imagePurpose,
-          )
-        : undefined;
-    const { resolveStudioAuthor } = await import("./studio-auth.server");
-    const origin = await resolveStudioAuthor(
-      client,
-      data.workspaceId,
-      input.pal || "kiana",
-      input.palProfileId,
-    );
-    // Validate ownership BEFORE any billable model call or storage write.
-    if (input.campaignId) {
-      const campaign = await client
-        .from("campaigns")
-        .select("id")
-        .eq("workspace_id", data.workspaceId)
-        .eq("id", input.campaignId)
-        .maybeSingle();
-      if (campaign.error || !campaign.data)
-        throw new Error("This campaign is not in the active workspace.");
-    }
-    if (input.conversationId) {
-      const conversation = await client
-        .from("conversations")
-        .select("id")
-        .eq("workspace_id", data.workspaceId)
-        .eq("id", input.conversationId)
-        .maybeSingle();
-      if (conversation.error || !conversation.data)
-        throw new Error("This conversation is not in the active workspace.");
-    }
-    const { loadWorkspaceKnowledge } = await import("./studio-knowledge");
-    const knowledge = await loadWorkspaceKnowledge(client, data.workspaceId);
-    let bytes: Uint8Array;
-    let mimeType: string;
-    let extension: string;
-    let content = input.content || "";
-    if (input.kind === "image") {
-      const image = await (
-        await import("./ai.server")
-      ).generateStudioImage(assetImagePrompt(imageBrief!, input.prompt, knowledge));
-      ({ bytes, mimeType, extension } = image);
-      content = input.prompt;
-    } else {
-      if (!content) {
-        const generated = await (
-          await import("./ai.server")
-        ).parseStructured(
-          z.object({ content: z.string().min(40).max(30000) }),
-          "studio_document",
-          "Write a complete, useful document for this workspace. Use clear headings and paragraphs. Ground claims in supplied context; never invent proof or describe actions as completed. Output the document body only in content.",
-          `${knowledge}\nDocument title: ${input.title}\nRequest: ${input.prompt}`,
-        );
-        content = generated.content;
+          .eq("id", input.campaignId)
+          .maybeSingle();
+        if (campaign.error || !campaign.data)
+          throw new Error("This campaign is not in the active workspace.");
       }
-      bytes = await (
-        await import("./studio-artifact.server")
-      ).renderStudioPdf(input.title, content);
-      mimeType = "application/pdf";
-      extension = "pdf";
-    }
-    const id = crypto.randomUUID();
-    const path = `${data.workspaceId}/generated/${id}.${extension}`;
-    const upload = await client.storage
-      .from("campaign-assets")
-      .upload(path, bytes, { contentType: mimeType, upsert: false });
-    if (upload.error)
-      throw new Error("The file was generated but could not be saved. Please retry.");
-    let saved = false;
-    try {
-      const metadata = {
-        storagePath: path,
-        mimeType,
-        generated: true,
-        title: input.title,
-        byteSize: bytes.length,
-        originatingPal: origin.author,
-        prompt: input.prompt,
-        createdBy: user.id,
-        ...(imageBrief ? { imageBrief } : {}),
-        ...(target?.data
-          ? {
-              targetAssetId: target.data.id,
-              sourceUpdatedAt: target.data.updated_at,
-              imageAlt: `Image for ${target.data.title}`,
-            }
-          : {}),
-      };
-      const asset = await client
-        .from("campaign_assets")
-        .insert({
-          id,
-          workspace_id: data.workspaceId,
-          campaign_id: campaignId,
-          kind: input.kind === "pdf" ? "document" : "image",
-          title: input.title,
-          content,
-          metadata: json(metadata),
-          status: "draft",
-        })
-        .select("id")
-        .single();
-      if (asset.error) throw new Error("Could not add the generated file to your library.");
-      saved = true;
-      let associationWarning: string | undefined;
-      if (target?.data) {
-        const linked = await client.rpc("associate_studio_asset_image", {
-          target_workspace_id: data.workspaceId,
-          source_asset_id: target.data.id,
-          image_asset_id: id,
-          expected_source_updated_at: target.data.updated_at,
-        });
-        if (linked.error)
-          associationWarning =
-            "The image is saved in Library. Its source changed or could not be updated, so it has not replaced that output's visual.";
-      }
-      let messageId: string | undefined;
       if (input.conversationId) {
-        const message = await client
-          .from("assistant_messages")
+        const conversation = await client
+          .from("conversations")
+          .select("id")
+          .eq("workspace_id", data.workspaceId)
+          .eq("id", input.conversationId)
+          .maybeSingle();
+        if (conversation.error || !conversation.data)
+          throw new Error("This conversation is not in the active workspace.");
+      }
+      const { loadWorkspaceKnowledge } = await import("./studio-knowledge");
+      const knowledge = await loadWorkspaceKnowledge(client, data.workspaceId);
+      let bytes: Uint8Array;
+      let mimeType: string;
+      let extension: string;
+      let content = input.content || "";
+      if (input.kind === "image") {
+        const image = await (
+          await import("./ai.server")
+        ).generateStudioImage(assetImagePrompt(imageBrief!, input.prompt, knowledge));
+        ({ bytes, mimeType, extension } = image);
+        content = input.prompt;
+      } else {
+        if (!content) {
+          const generated = await (
+            await import("./ai.server")
+          ).parseStructured(
+            z.object({ content: z.string().min(40).max(30000) }),
+            "studio_document",
+            "Write a complete, useful document for this workspace. Use clear headings and paragraphs. Ground claims in supplied context; never invent proof or describe actions as completed. Output the document body only in content.",
+            `${knowledge}\nDocument title: ${input.title}\nRequest: ${input.prompt}`,
+          );
+          content = generated.content;
+        }
+        bytes = await (
+          await import("./studio-artifact.server")
+        ).renderStudioPdf(input.title, content);
+        mimeType = "application/pdf";
+        extension = "pdf";
+      }
+      const id = crypto.randomUUID();
+      const path = `${data.workspaceId}/generated/${id}.${extension}`;
+      const upload = await client.storage
+        .from("campaign-assets")
+        .upload(path, bytes, { contentType: mimeType, upsert: false });
+      if (upload.error)
+        throw new Error("The file was generated but could not be saved. Please retry.");
+      let saved = false;
+      try {
+        const metadata = {
+          usageReservationId: currentStudioUsageId?.(),
+          storagePath: path,
+          mimeType,
+          generated: true,
+          title: input.title,
+          byteSize: bytes.length,
+          originatingPal: origin.author,
+          prompt: input.prompt,
+          createdBy: user.id,
+          ...(imageBrief ? { imageBrief } : {}),
+          ...(target?.data
+            ? {
+                targetAssetId: target.data.id,
+                sourceUpdatedAt: target.data.updated_at,
+                imageAlt: `Image for ${target.data.title}`,
+              }
+            : {}),
+        };
+        const asset = await client
+          .from("campaign_assets")
           .insert({
+            id,
             workspace_id: data.workspaceId,
-            conversation_id: input.conversationId,
-            role: "assistant",
-            pal: origin.author.pal || "kiana",
-            user_id: user.id,
-            body: `${input.title} is saved in your library.`,
-            metadata: json({
-              assetIds: [id],
-              originatingPal: origin.author,
-              ...(campaignId ? { campaignId } : {}),
-            }),
+            campaign_id: campaignId,
+            kind: input.kind === "pdf" ? "document" : "image",
+            title: input.title,
+            content,
+            metadata: json(metadata),
+            status: "draft",
           })
           .select("id")
           .single();
-        if (message.error) {
-          // The real artifact remains saved. Never describe this as generation failure.
-          return {
-            assetId: id,
-            storagePath: path,
-            mimeType,
-            url: "",
-            title: input.title,
-            kind: input.kind,
-            warning:
-              "Your file is saved in Library. It could not be attached to this conversation.",
-          };
+        if (asset.error) throw new Error("Could not add the generated file to your library.");
+        saved = true;
+        let associationWarning: string | undefined;
+        if (target?.data) {
+          const linked = await client.rpc("associate_studio_asset_image", {
+            target_workspace_id: data.workspaceId,
+            source_asset_id: target.data.id,
+            image_asset_id: id,
+            expected_source_updated_at: target.data.updated_at,
+          });
+          if (linked.error)
+            associationWarning =
+              "The image is saved in Library. Its source changed or could not be updated, so it has not replaced that output's visual.";
         }
-        messageId = message.data.id;
+        let messageId: string | undefined;
+        if (input.conversationId) {
+          const message = await client
+            .from("assistant_messages")
+            .insert({
+              workspace_id: data.workspaceId,
+              conversation_id: input.conversationId,
+              role: "assistant",
+              pal: origin.author.pal || "kiana",
+              user_id: user.id,
+              body: `${input.title} is saved in your library.`,
+              metadata: json({
+                assetIds: [id],
+                originatingPal: origin.author,
+                ...(campaignId ? { campaignId } : {}),
+              }),
+            })
+            .select("id")
+            .single();
+          if (message.error) {
+            // The real artifact remains saved. Never describe this as generation failure.
+            return {
+              assetId: id,
+              storagePath: path,
+              mimeType,
+              url: "",
+              title: input.title,
+              kind: input.kind,
+              warning:
+                "Your file is saved in Library. It could not be attached to this conversation.",
+            };
+          }
+          messageId = message.data.id;
+        }
+        const signed = await client.storage.from("campaign-assets").createSignedUrl(path, 3600);
+        return {
+          assetId: id,
+          storagePath: path,
+          mimeType,
+          url: signed.data?.signedUrl || "",
+          messageId,
+          title: input.title,
+          kind: input.kind,
+          targetAssetId: target?.data?.id,
+          warning: associationWarning,
+        };
+      } catch (error) {
+        if (!saved) await client.storage.from("campaign-assets").remove([path]);
+        throw error;
       }
-      const signed = await client.storage.from("campaign-assets").createSignedUrl(path, 3600);
-      return {
-        assetId: id,
-        storagePath: path,
-        mimeType,
-        url: signed.data?.signedUrl || "",
-        messageId,
-        title: input.title,
-        kind: input.kind,
-        targetAssetId: target?.data?.id,
-        warning: associationWarning,
-      };
-    } catch (error) {
-      if (!saved) await client.storage.from("campaign-assets").remove([path]);
-      throw error;
-    }
+    };
+    return data.artifact.kind === "pdf" && data.artifact.content
+      ? run()
+      : withStudioCredits(data, data.artifact.kind === "image" ? "image" : "pdf", run);
   });
 
 export const createStudioFeedPost = createServerFn({ method: "POST" })

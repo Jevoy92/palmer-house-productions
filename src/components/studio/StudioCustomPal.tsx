@@ -1,3 +1,4 @@
+import { StudioCreditCost } from "./StudioCredits";
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { Check, LoaderCircle, Sparkles, Upload } from "lucide-react";
 import { toast } from "sonner";
@@ -195,6 +196,7 @@ export function StudioCustomPal({
               placeholder="A Jamaican woman with curls, round glasses, and a yellow jacket…"
             />
           </label>
+          <StudioCreditCost operation="avatar" />
           <div className="studio-custom-portrait-actions">
             <button
               type="button"

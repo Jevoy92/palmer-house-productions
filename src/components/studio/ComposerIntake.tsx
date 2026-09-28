@@ -13,7 +13,7 @@ import { startRecording, type Recorder } from "@/lib/audio-wav";
 import { useStudio, type ConversationIntake } from "./StudioProvider";
 
 export const ACCEPTED_INTAKE =
-  ".pdf,.doc,.docx,.txt,.md,.csv,.json,.jpg,.jpeg,.png,.webp,.heic,.gif,.mp3,.m4a,.wav,.aac,.ogg,.mp4,.mov,.webm";
+  ".pdf,.doc,.docx,.txt,.md,.csv,.json,.jpg,.jpeg,.png,.webp,.heic,.gif";
 
 function sizeLabel(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
@@ -34,6 +34,7 @@ export function ComposerIntake({
   onTranscript,
   disabled,
   onBusyChange,
+  transcriptionEnabled = false,
 }: {
   color: string;
   conversationId?: string;
@@ -42,6 +43,8 @@ export function ComposerIntake({
   onTranscript: (text: string) => void;
   disabled?: boolean;
   onBusyChange?: (busy: boolean) => void;
+  /** Keep disabled until the server has a priced transcription adapter. */
+  transcriptionEnabled?: boolean;
 }) {
   const { uploadConversationFile } = useStudio();
   const [uploading, setUploading] = useState(false);
@@ -83,6 +86,17 @@ export function ComposerIntake({
   }, [recorder]);
 
   async function send(file: File, kind: "voice" | "file") {
+    if (
+      !transcriptionEnabled &&
+      (kind === "voice" ||
+        /^(audio|video)\//.test(file.type) ||
+        /\.(mp3|m4a|wav|aac|ogg|mp4|mov|webm)$/i.test(file.name))
+    ) {
+      toast.info(
+        "Voice transcription is being connected. Paste a transcript or attach a text document for now.",
+      );
+      return;
+    }
     const request = generation.current;
     setUploading(true);
     try {
@@ -212,7 +226,12 @@ export function ComposerIntake({
         </button>
         <button
           type="button"
-          disabled={!recorder && (disabled || uploading || starting)}
+          disabled={!transcriptionEnabled || (!recorder && (disabled || uploading || starting))}
+          title={
+            !transcriptionEnabled
+              ? "Voice transcription is being connected. Paste a transcript for now."
+              : undefined
+          }
           onClick={() => void toggleRecording()}
           aria-label={recorder ? "Stop recording" : "Record a voice note"}
           className="grid size-10 shrink-0 place-items-center rounded-xl border text-white transition disabled:opacity-40"
@@ -247,7 +266,9 @@ export function ComposerIntake({
           </span>
         ) : (
           <span className="text-xs text-muted-foreground">
-            Talk it out, or add a PDF, doc, image, or recording.
+            {transcriptionEnabled
+              ? "Talk it out, or add a document or image."
+              : "Add a PDF, document, or image. Voice is being connected."}
           </span>
         )}
       </div>

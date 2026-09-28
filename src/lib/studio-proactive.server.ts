@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { withStudioCredits } from "./studio-credit-runtime.server";
 import { palNames } from "./studio-model";
 import {
   safeFeedSources,
@@ -91,54 +92,66 @@ export async function generateProactiveFeed(data: {
     };
   const token = String(reservation.token);
   try {
-    const { personaPrompt } = await import("./pal-personas");
-    const generated = await (
-      await import("./ai.server")
-    ).parseStructured(
-      FeedGenerationSchema,
-      "studio_pal_feed",
-      [
-        "Write one useful workspace discussion opener and 2–4 short replies from different Pals. These are AI collaborators, never real humans or outside community members.",
-        "Every Pal has every available tool. Vary voice and point of view, never permissions. No video generation. Proactively identify a concrete next step from the supplied saved workspace context.",
-        "Do not invent research, news, outside links, evidence, completed work, or customer results. References are member-provided context, never newly researched sources. Only cite exact Allowed source URLs, or use no sources.",
-        "Let different Pals build on or constructively challenge the opener. Avoid repeating recent posts. Assistant-history drafts are not factual evidence.",
-        ...palNames.map(personaPrompt),
-      ].join("\n"),
-      `${knowledge}\nAllowed sources: ${JSON.stringify(sources)}\nRecent discussions: ${JSON.stringify(previous.data || [])}`,
-      { timeoutMs: 120000 },
+    return await withStudioCredits(
+      data,
+      data.mode === "automatic" ? "automatic_feed" : "feed",
+      async () => {
+        const { personaPrompt } = await import("./pal-personas");
+        const generated = await (
+          await import("./ai.server")
+        ).parseStructured(
+          FeedGenerationSchema,
+          "studio_pal_feed",
+          [
+            "Write one useful workspace discussion opener and 2–4 short replies from different Pals. These are AI collaborators, never real humans or outside community members.",
+            "Every Pal has every available tool. Vary voice and point of view, never permissions. No video generation. Proactively identify a concrete next step from the supplied saved workspace context.",
+            "Do not invent research, news, outside links, evidence, completed work, or customer results. References are member-provided context, never newly researched sources. Only cite exact Allowed source URLs, or use no sources.",
+            "Let different Pals build on or constructively challenge the opener. Avoid repeating recent posts. Assistant-history drafts are not factual evidence.",
+            ...palNames.map(personaPrompt),
+          ].join("\n"),
+          `${knowledge}\nAllowed sources: ${JSON.stringify(sources)}\nRecent discussions: ${JSON.stringify(previous.data || [])}`,
+          { timeoutMs: 120000 },
+        );
+        const validated = FeedGenerationSchema.parse(generated);
+        if (new Set(validated.discussion.map((reply) => reply.pal)).size < 2)
+          throw new Error(
+            "The provider did not return a complete Pal discussion. Please retry later.",
+          );
+        const normalized = (text: string) => text.toLowerCase().replace(/\s+/g, " ").trim();
+        if (
+          (previous.data || []).some((post) => normalized(post.body) === normalized(validated.body))
+        )
+          throw new Error(
+            "Your Pals returned an idea already in the feed. They will try again later.",
+          );
+        const author = (pal: typeof validated.pal): StudioAuthor => ({
+          kind: "pal",
+          pal,
+          name: pal[0].toUpperCase() + pal.slice(1),
+        });
+        const post = await client.rpc("complete_studio_feed_generation", {
+          target_workspace_id: data.workspaceId,
+          request_token: token,
+          post_value: {
+            title: validated.title,
+            body: validated.body,
+            lane: validated.lane,
+            author: author(validated.pal),
+            sources: validatedFeedSources(validated.sources, sources),
+          } as unknown as Json,
+          replies_value: validated.discussion.map((reply) => ({
+            body: reply.body,
+            author: author(reply.pal),
+          })) as unknown as Json,
+          output_fingerprint: await feedContextHash(normalized(validated.body)),
+        });
+        if (post.error || !post.data)
+          throw new Error(
+            "The complete discussion could not be saved. Your existing feed is unchanged.",
+          );
+        return { status: "generated" as const, postId: post.data };
+      },
     );
-    const validated = FeedGenerationSchema.parse(generated);
-    if (new Set(validated.discussion.map((reply) => reply.pal)).size < 2)
-      throw new Error("The provider did not return a complete Pal discussion. Please retry later.");
-    const normalized = (text: string) => text.toLowerCase().replace(/\s+/g, " ").trim();
-    if ((previous.data || []).some((post) => normalized(post.body) === normalized(validated.body)))
-      throw new Error("Your Pals returned an idea already in the feed. They will try again later.");
-    const author = (pal: typeof validated.pal): StudioAuthor => ({
-      kind: "pal",
-      pal,
-      name: pal[0].toUpperCase() + pal.slice(1),
-    });
-    const post = await client.rpc("complete_studio_feed_generation", {
-      target_workspace_id: data.workspaceId,
-      request_token: token,
-      post_value: {
-        title: validated.title,
-        body: validated.body,
-        lane: validated.lane,
-        author: author(validated.pal),
-        sources: validatedFeedSources(validated.sources, sources),
-      } as unknown as Json,
-      replies_value: validated.discussion.map((reply) => ({
-        body: reply.body,
-        author: author(reply.pal),
-      })) as unknown as Json,
-      output_fingerprint: await feedContextHash(normalized(validated.body)),
-    });
-    if (post.error || !post.data)
-      throw new Error(
-        "The complete discussion could not be saved. Your existing feed is unchanged.",
-      );
-    return { status: "generated", postId: post.data };
   } catch (error) {
     await client.rpc("release_studio_feed_generation", {
       target_workspace_id: data.workspaceId,

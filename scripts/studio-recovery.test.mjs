@@ -46,6 +46,19 @@ function loader(overrides = {}, globals = {}) {
         process: { env: {} },
         ...globals,
         require(name) {
+          // Billing and cost enforcement have dedicated integration/SQL tests.
+          // These fixtures focus on saved-work behavior with a successful reservation.
+          if (name === "./studio-credit-runtime.server")
+            return {
+              withStudioCredits: async (_auth, _operation, work) => work(),
+              beginStudioProviderCall: () => () => {},
+              studioCallLimits: () => ({
+                maxInputTokens: 20000,
+                maxOutputTokens: 4000,
+                imageSize: "2K",
+              }),
+            };
+
           if (name in overrides) return overrides[name];
           if (name === "@tanstack/react-start")
             return {

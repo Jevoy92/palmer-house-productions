@@ -89,6 +89,7 @@ export async function askStudioPal({data}){
   return {response,originatingPal:{kind:"pal",pal:data.pal,name:data.pal}};
 }
 export const analyzeStudioContentSource=()=>{}, analyzeStudioWebsite=()=>{};
+export const getStudioCreditSummary=async()=>null, createStudioCreditCheckout=async()=>({ok:false});
 export async function loadStudioMemory(){return {entries:[],legacy:{},available:true};}
 export const saveStudioMemory=()=>{},forgetStudioMemory=()=>{},forgetStudioLegacyMemory=()=>{},exportStudioMemory=()=>{};
 export async function loadStudioRecovery(){return {customPals:[],posts:[],comments:[],reactions:[]};}
@@ -133,7 +134,7 @@ function Capture(){
   window.showRecorder=setRecorderVisible;
   window.showAssistant=setAssistantVisible;
   return <>{assistantVisible && <RouterProvider router={router}/>}<output>{value.loading ? 'loading' : value.loadError ? 'error' : 'ready'}</output>
-    {recorderVisible && <ComposerIntake color='#3d1a66' conversationId={value.activeConversation?.id} attachments={files} onAttachmentsChange={setFiles} onTranscript={()=>{}}/>}
+    {recorderVisible && <ComposerIntake transcriptionEnabled color='#3d1a66' conversationId={value.activeConversation?.id} attachments={files} onAttachmentsChange={setFiles} onTranscript={()=>{}}/>}
   </>;
 }
 createRoot(document.getElementById('root')).render(<StudioProvider><Capture/></StudioProvider>);
@@ -157,6 +158,7 @@ before(async () => {
               "@/lib/studio-server",
               "@/lib/studio-recovery-server",
               "@/lib/studio-memory-server",
+              "@/lib/studio-credit-server",
               "@/lib/supabase/client",
               "@/lib/audio-wav",
             ].includes(id)

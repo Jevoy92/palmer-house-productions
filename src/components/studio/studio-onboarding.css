@@ -1,0 +1,402 @@
+.studio-guide-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--studio-border);
+  border-radius: 11px;
+  font-size: 12px;
+  white-space: nowrap;
+  background: var(--studio-surface);
+  color: var(--studio-text);
+}
+.studio-guide-arrival {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 42px 12px 16px;
+  margin-bottom: 20px;
+  border: 1px solid var(--studio-border);
+  border-radius: 15px;
+  background: var(--studio-surface);
+  color: var(--studio-text);
+  flex-shrink: 0;
+}
+.studio-chat-shell .studio-guide-arrival {
+  margin: 12px 28px 0;
+}
+.studio-guide-arrival > div {
+  flex: 1;
+  min-width: 0;
+}
+.studio-guide-arrival strong,
+.studio-guide-arrival span {
+  display: block;
+}
+.studio-guide-arrival strong {
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+.studio-guide-arrival span {
+  font-size: 11px;
+  color: var(--studio-muted);
+  margin-top: 3px;
+  line-height: 1.5;
+}
+.studio-guide-arrival > button:not(.studio-guide-dismiss) {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 12px;
+  color: var(--studio-accent);
+  font-weight: 600;
+  min-height: 40px;
+}
+.studio-guide-dismiss {
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--studio-muted);
+}
+.studio-guide-trigger:hover,
+.studio-guide-dismiss:hover {
+  background: var(--studio-soft);
+}
+.studio-guide-dialog {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 160;
+  width: min(620px, calc(100vw - 32px));
+  max-height: calc(100dvh - 48px);
+  overflow: auto;
+  border: 1px solid var(--studio-border);
+  border-radius: 24px;
+  background: var(--studio-surface);
+  color: var(--studio-text);
+  padding: 24px;
+  box-shadow: 0 24px 80px #0003;
+}
+.studio-guide-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.studio-guide-heading small {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--studio-muted);
+}
+.studio-guide-heading h2 {
+  font-size: 26px;
+  font-weight: 650;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+  margin-top: 7px;
+}
+.studio-guide-description {
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--studio-muted);
+  max-width: 440px;
+  margin: 12px 0 20px;
+}
+.studio-guide-tabs {
+  display: flex;
+  gap: 5px;
+  border-radius: 12px;
+  padding: 4px;
+  background: var(--studio-soft);
+}
+.studio-guide-tabs button {
+  flex: 1;
+  min-height: 40px;
+  border-radius: 9px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.studio-guide-tabs button[aria-pressed="true"] {
+  background: var(--studio-surface);
+  box-shadow: 0 1px 4px #0001;
+}
+.studio-guide-tabs span {
+  display: inline-block;
+  margin-left: 6px;
+  color: var(--studio-muted);
+  font-size: 10px;
+}
+.studio-guide-checklist {
+  padding-top: 20px;
+}
+.studio-guide-progress {
+  height: 5px;
+  overflow: hidden;
+  background: var(--studio-soft);
+  border-radius: 5px;
+}
+.studio-guide-progress span {
+  height: 100%;
+  background: var(--studio-accent);
+  display: block;
+  border-radius: inherit;
+  transition: width 220ms ease;
+}
+.studio-guide-checklist > p {
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--studio-muted);
+  margin: 10px 0 15px;
+}
+.studio-guide-checklist ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 7px;
+}
+.studio-guide-checklist li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 10px;
+  border: 1px solid var(--studio-border);
+  border-radius: 13px;
+  transition: background 160ms ease;
+}
+.studio-guide-checklist li a:hover {
+  background: var(--studio-soft);
+}
+.studio-guide-checklist li a > div {
+  flex: 1;
+}
+.studio-guide-checklist strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+.studio-guide-checklist li a > div > span {
+  display: block;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--studio-muted);
+  margin-top: 4px;
+}
+.studio-guide-step-state {
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  color: var(--studio-muted);
+  flex-shrink: 0;
+}
+.studio-guide-step-state.is-done {
+  border-radius: 50%;
+  background: var(--studio-accent-soft);
+  color: var(--studio-accent);
+}
+.studio-guide-usage-link {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--studio-accent);
+  padding-top: 15px;
+  min-height: 44px;
+}
+.studio-guide-tour {
+  padding-top: 18px;
+}
+.studio-guide-tour > div:first-child > .studio-graphic {
+  margin: 0 auto 4px;
+  display: block;
+}
+.studio-guide-tour-count {
+  display: block;
+  text-align: center;
+  color: var(--studio-muted);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+}
+.studio-guide-tour h3 {
+  text-align: center;
+  font-size: 23px;
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  line-height: 1.25;
+}
+.studio-guide-tour p {
+  font-size: 13px;
+  line-height: 1.8;
+  margin: 14px 0;
+  color: var(--studio-text);
+}
+.studio-guide-tour aside {
+  padding: 12px 14px;
+  background: var(--studio-soft);
+  border-radius: 12px;
+  font-size: 11px;
+  line-height: 1.75;
+  color: var(--studio-muted);
+}
+.studio-guide-tour > div > a {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--studio-accent);
+}
+.studio-guide-tour-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 16px;
+}
+.studio-guide-tour-controls button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 42px;
+  padding: 9px 12px;
+  border-radius: 11px;
+  border: 1px solid var(--studio-border);
+  font-size: 12px;
+}
+.studio-guide-tour-controls button:last-child {
+  background: var(--studio-accent);
+  color: var(--studio-action-text);
+  border-color: transparent;
+}
+.studio-guide-tour-controls button:disabled {
+  opacity: 0.4;
+}
+.studio-guide-tour-controls > span {
+  display: flex;
+  gap: 5px;
+}
+.studio-guide-tour-controls i {
+  width: 5px;
+  height: 5px;
+  background: var(--studio-border);
+  border-radius: 50%;
+}
+.studio-guide-tour-controls i.is-current {
+  background: var(--studio-accent);
+}
+.studio-guide-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-top: 1px solid var(--studio-border);
+  margin-top: 22px;
+  padding-top: 14px;
+  font-size: 10px;
+  color: var(--studio-muted);
+}
+.studio-guide-footer > span {
+  flex: 1;
+}
+.studio-guide-footer button {
+  min-height: 36px;
+  font-size: 11px;
+  color: var(--studio-text);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.studio-guide-dialog button:focus-visible,
+.studio-guide-dialog a:focus-visible,
+.studio-guide-arrival button:focus-visible,
+.studio-guide-trigger:focus-visible {
+  outline: 2px solid var(--studio-accent);
+  outline-offset: 3px;
+}
+@media (max-width: 700px) {
+  .studio-guide-dialog {
+    padding: 20px 17px;
+    border-radius: 21px;
+    max-height: calc(100dvh - 28px);
+  }
+  .studio-guide-heading h2 {
+    font-size: 23px;
+  }
+  .studio-guide-arrival {
+    padding: 10px 32px 10px 12px;
+    gap: 9px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .studio-chat-shell .studio-guide-arrival {
+    margin: 8px 12px 0;
+  }
+  .studio-guide-arrival > .studio-graphic {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .studio-guide-arrival > div {
+    min-width: 190px;
+  }
+  .studio-guide-arrival strong {
+    font-size: 11px;
+  }
+  .studio-guide-arrival span {
+    font-size: 10px;
+  }
+  .studio-guide-arrival > button:not(.studio-guide-dismiss) {
+    margin-left: 41px;
+    min-height: 28px;
+    font-size: 11px;
+  }
+  .studio-guide-checklist li a {
+    gap: 9px;
+    padding: 10px 8px;
+  }
+  .studio-guide-checklist .studio-graphic {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  .studio-guide-tour h3 {
+    font-size: 22px;
+  }
+  .studio-guide-footer {
+    font-size: 9px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .studio-guide-progress span,
+  .studio-guide-checklist li a {
+    transition: none;
+  }
+}
+html[data-studio-motion="reduce"] .studio-guide-progress span,
+html[data-studio-motion="reduce"] .studio-guide-checklist li a {
+  transition: none;
+}
+/* Keep the composer visible when the arrival banner is offered above Chat. */
+.studio-chat-shell main.studio-workspace-content {
+  display: flex;
+  flex-direction: column;
+}
+.studio-chat-shell main.studio-workspace-content > .studio-chat-workspace {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+}

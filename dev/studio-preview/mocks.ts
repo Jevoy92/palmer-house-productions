@@ -63,3 +63,43 @@ export const exportStudioMemory = unavailable;
 
 export const generateStudioPalAvatar = unavailable;
 export const getStudioAssetImageUrl = unavailable;
+
+export async function getStudioCreditSummary() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get("credits") === "error")
+    throw new Error("Preview: balance service unavailable. Your work is safe.");
+  const available =
+    params.get("credits") === "empty" ? 0 : params.get("credits") === "low" ? 20 : 720;
+  return {
+    enforcement: "ready" as const,
+    available,
+    includedRemaining: available,
+    includedAllowance: 1000,
+    topUpRemaining: 0,
+    usedThisPeriod: 1000 - available,
+    reserved: 0,
+    renewsAt: "2026-10-01T00:00:00Z",
+    status: "active" as const,
+    recent: [
+      {
+        id: "credit-sample-1",
+        operation: "campaign" as const,
+        credits: 100,
+        status: "completed" as const,
+        createdAt: "2026-09-27T16:00:00Z",
+      },
+      {
+        id: "credit-sample-2",
+        operation: "image" as const,
+        credits: 30,
+        status: "released" as const,
+        createdAt: "2026-09-27T17:00:00Z",
+      },
+    ],
+    canManageBilling: params.get("billingRole") !== "member",
+    topUpsEnabled: true,
+  };
+}
+export async function createStudioCreditCheckout() {
+  throw new Error("Preview only: secure checkout is connected in the app. No payment was taken.");
+}

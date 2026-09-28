@@ -648,6 +648,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     void refreshStudioPalFeed({
       data: { workspaceId: workspace.id, accessToken: session.access_token, mode: "automatic" },
     })
+      .finally(notifyCreditBalance)
       .then(async (result) => {
         if (attempt !== feedAttempt.current || memoryScopeRef.current !== scope) return;
         if (result?.status === "unavailable")
@@ -1066,7 +1067,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
             ? { palProfileId: settings.active_pal_profile_id }
             : {}),
         },
-      });
+      }).finally(notifyCreditBalance);
       const response: AssistantResponse = generated.response;
       if (sessionUserRef.current !== session.user.id)
         throw new Error("Sign in again to continue this conversation.");
@@ -1213,7 +1214,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
             personalStory: brand.personal_story || "",
           },
         },
-      });
+      }).finally(notifyCreditBalance);
       if (generated.ok)
         setCampaignOutputs((current) => ({ ...current, [inserted.data.id]: generated.output }));
       await refresh();
@@ -1253,7 +1254,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
             personalStory: brand.personal_story || "",
           },
         },
-      });
+      }).finally(notifyCreditBalance);
       return result.directions;
     } finally {
       setBusy(false);
@@ -1287,7 +1288,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
             proof: brand.proof_points,
           },
         },
-      });
+      }).finally(notifyCreditBalance);
       return result.analysis;
     } finally {
       setBusy(false);
@@ -1494,7 +1495,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     if (!session) throw new Error("Sign in first.");
     const result = await analyzeStudioWebsite({
       data: { workspaceId: workspace.id, accessToken: session.access_token, website },
-    });
+    }).finally(notifyCreditBalance);
     return result.profile;
   }
 
@@ -1587,7 +1588,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   async function generatePalAvatar(input: StudioPalAvatarInput) {
     return generateStudioPalAvatar({
       data: { ...recoveryAuth(), ...input, name: input.name || "My Pal" },
-    });
+    }).finally(notifyCreditBalance);
   }
   async function getAssetImageUrl(assetId: string) {
     return getStudioAssetImageUrl({ data: { ...recoveryAuth(), assetId } });
@@ -1627,7 +1628,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
           pal: values.pal || (settings?.preferred_pal as PalName) || "kiana",
         },
       },
-    });
+    }).finally(notifyCreditBalance);
     // A successful generation must not turn into a false failure when a view
     // refresh fails: the file is already saved and retrying would bill twice.
     const latest = await supabase
@@ -1679,7 +1680,9 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     setFeedGenerating(true);
     setFeedGenerationError(null);
     try {
-      const result = await refreshStudioPalFeed({ data: { ...recoveryAuth(), mode: "manual" } });
+      const result = await refreshStudioPalFeed({
+        data: { ...recoveryAuth(), mode: "manual" },
+      }).finally(notifyCreditBalance);
       if (scope !== memoryScopeRef.current || attempt !== feedAttempt.current) return;
       if (result.status === "unavailable")
         setFeedGenerationError(result.reason || "Pal discussions are not connected yet.");
@@ -1801,4 +1804,9 @@ export function useStudio() {
   const context = useContext(StudioContext);
   if (!context) throw new Error("useStudio must be used inside StudioProvider.");
   return context;
+}
+
+/** Refresh the server-owned meter after every paid action, including failures. */
+function notifyCreditBalance() {
+  if (typeof window !== "undefined") window.dispatchEvent(new Event("studio:credits-changed"));
 }

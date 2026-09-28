@@ -143,8 +143,7 @@ function ContactPage() {
     quote.expanded_scriptwriting ? "Expanded scriptwriting requested." : "",
   ]
     .filter(Boolean)
-    .join("
-");
+    .join("\n");
   const [form, setForm] = useState<FormState>(() => ({
     ...EMPTY,
     name: quote.name ?? "",
@@ -153,9 +152,7 @@ function ContactPage() {
     projectType: quote.quote ? "Full video production" : (intent?.label ?? ""),
     message: quote.quote
       ? quoteContext
-      : [intent?.message, quote.context].filter(Boolean).join("
-
-"),
+      : [intent?.message, quote.context].filter(Boolean).join("\n\n"),
   }));
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [draftOpened, setDraftOpened] = useState(false);
@@ -188,8 +185,7 @@ function ContactPage() {
       `Project type: ${form.projectType}`,
       "",
       form.message,
-    ].join("
-");
+    ].join("\n");
   }
   async function copyInquiry() {
     try {
@@ -217,8 +213,7 @@ function ContactPage() {
       `Project type: ${form.projectType}`,
       "",
       form.message,
-    ].join("
-");
+    ].join("\n");
     const endpoint = (import.meta.env.VITE_CONTACT_FORM_ENDPOINT as string | undefined) ?? "";
     if (endpoint) {
       setSubmitState("sending");

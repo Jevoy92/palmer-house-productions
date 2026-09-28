@@ -1,18 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { StudioPage, type WorkTab } from "@/components/studio/StudioApp";
 
-const tabs = [
-  "campaigns",
-  "ideas",
-  "library",
-  "approvals",
-  "calendar",
-  "roadmap",
-] as const;
+const tabs = ["campaigns", "ideas", "library", "calendar", "roadmap"] as const;
 
 export const Route = createFileRoute("/studio/work")({
   validateSearch: (search: Record<string, unknown>): { tab: WorkTab } => {
-    const value = String(search.tab ?? "campaigns") as WorkTab;
+    const value = String(
+      search.tab === "approvals" ? "library" : (search.tab ?? "campaigns"),
+    ) as WorkTab;
     return { tab: tabs.includes(value) ? value : "campaigns" };
   },
   head: () => ({

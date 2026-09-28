@@ -343,3 +343,27 @@
     border-radius: 18px;
   }
 }
+
+.studio-feed-generation-note {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid var(--studio-border);
+  background: var(--studio-soft);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 16px 0;
+  color: var(--studio-muted);
+}
+.studio-feed-generation-note p {
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.studio-feed-text-action {
+  flex-shrink: 0;
+  min-height: 40px;
+  color: var(--studio-accent);
+  font-size: 13px;
+  font-weight: 650;
+}

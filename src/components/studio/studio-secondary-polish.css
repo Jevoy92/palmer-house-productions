@@ -1,0 +1,42 @@
+.studio-calendar-copy-editor {
+  display: grid;
+  gap: 12px;
+}
+.studio-calendar-copy-editor textarea {
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.studio-calendar-copy-editor > p {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.studio-calendar-footer.is-confirming {
+  flex-wrap: wrap;
+}
+.studio-calendar-footer > .studio-calendar-discard {
+  flex: 1 0 100%;
+  order: -1;
+  flex-wrap: wrap;
+  padding: 12px;
+  border: 1px solid var(--studio-border);
+  border-radius: 12px;
+}
+.studio-calendar-discard > p {
+  flex: 1 0 100%;
+  max-width: none;
+  color: var(--studio-text);
+}
+.studio-roadmap-setup-note a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.studio-calendar-script-cover {
+  margin: 0 18px 14px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.studio-calendar-script-cover > .studio-asset-visual {
+  aspect-ratio: 16 / 10;
+}

@@ -178,11 +178,12 @@ function ScriptCover({ asset }: { asset: Asset }) {
   );
 }
 export function StudioAssetVisual({ asset, className = "" }: { asset: Asset; className?: string }) {
-  const { getArtifactUrl } = useStudio();
+  const { getAssetImageUrl } = useStudio();
   const metadata = studioAssetMetadata(asset);
   const source = studioAssetMedia(asset);
   const storagePath = typeof metadata.storagePath === "string" ? metadata.storagePath : "";
-  const mediaKey = `${asset.id}:${asset.updated_at}:${source}:${storagePath}`;
+  const mediaAssetId = typeof metadata.mediaAssetId === "string" ? metadata.mediaAssetId : "";
+  const mediaKey = `${asset.id}:${asset.updated_at}:${source}:${storagePath}:${mediaAssetId}`;
   const [resolved, setResolved] = useState({
     key: mediaKey,
     url: source,
@@ -196,10 +197,11 @@ export function StudioAssetVisual({ asset, className = "" }: { asset: Asset; cla
       : { key: mediaKey, url: source, failed: false, loading: false };
   useEffect(() => {
     let live = true;
-    const privateImage = !source && asset.kind === "image" && Boolean(storagePath);
+    const privateImage =
+      !source && Boolean(mediaAssetId || (asset.kind === "image" && storagePath));
     setResolved({ key: mediaKey, url: source, failed: false, loading: privateImage });
-    if (privateImage && getArtifactUrl)
-      void getArtifactUrl(asset.id)
+    if (privateImage && getAssetImageUrl)
+      void getAssetImageUrl(asset.id)
         .then((value) => {
           if (!live) return;
           const url = imageUrl(value);
@@ -211,11 +213,11 @@ export function StudioAssetVisual({ asset, className = "" }: { asset: Asset; cla
     return () => {
       live = false;
     };
-  }, [asset.id, asset.kind, mediaKey, source, storagePath, getArtifactUrl]);
+  }, [asset.id, asset.kind, mediaKey, source, storagePath, mediaAssetId, getAssetImageUrl]);
   const document = /^(article|blog|newsletter|document|pdf|faq)$/.test(asset.kind);
   const script = /script/.test(asset.kind);
   const media = current.failed ? "" : current.url;
-  const storyboard = script && (!media || metadata.visualType === "storyboard");
+  const storyboard = script && (!media || (metadata.visualType === "storyboard" && !mediaAssetId));
   const fail = () => setResolved({ key: mediaKey, url: "", failed: true, loading: false });
   return (
     <div

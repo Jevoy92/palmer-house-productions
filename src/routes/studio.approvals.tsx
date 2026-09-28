@@ -1,12 +1,8 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { StudioPage } from "@/components/studio/StudioApp";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
+// Keep old bookmarks useful after removing the dedicated Approvals page.
 export const Route = createFileRoute("/studio/approvals")({
-  head: () => ({
-    meta: [
-      { title: "Approvals — Palmer House Studio" },
-      { name: "robots", content: "noindex, nofollow" },
-    ],
-  }),
-  component: () => <StudioPage view="approvals" />,
+  beforeLoad: () => {
+    throw redirect({ to: "/studio/library", replace: true });
+  },
 });

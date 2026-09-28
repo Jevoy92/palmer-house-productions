@@ -17,7 +17,7 @@ export async function parseStructured<T extends z.ZodTypeAny>(
   schemaName: string,
   instructions: string,
   input: StudioInput,
-  options?: { model?: string },
+  options?: { model?: string; timeoutMs?: number },
 ): Promise<z.infer<T>> {
   const key = process.env["LOVABLE_API_KEY"];
   if (!key) throw new Error("AI is not configured for this project.");
@@ -25,6 +25,7 @@ export async function parseStructured<T extends z.ZodTypeAny>(
   const client = new OpenAI({
     apiKey: key,
     baseURL: studioAIConfig().baseURL,
+    ...(options?.timeoutMs ? { timeout: options.timeoutMs, maxRetries: 0 } : {}),
   });
 
   const userContent =

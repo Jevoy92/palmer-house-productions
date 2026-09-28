@@ -1690,6 +1690,12 @@ export type Database = {
           },
         ]
       }
+      studio_feed_generation_state: {
+        Row: {workspace_id:string;request_token:string|null;requested_by:string|null;lease_until:string|null;pending_fingerprint:string|null;last_fingerprint:string|null;last_output_fingerprint:string|null;last_generated_at:string|null;retry_after:string|null;updated_at:string}
+        Insert: {workspace_id:string}
+        Update: never
+        Relationships: []
+      }
       workspace_memories: {
         Row: { id: string; workspace_id: string; title: string; content: string; revision: number; created_by: string; created_at: string; updated_at: string }
         Insert: { id?: string; workspace_id: string; title: string; content: string; revision?: number; created_by: string; created_at?: string; updated_at?: string }
@@ -2005,6 +2011,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      associate_studio_asset_image: { Args: { target_workspace_id: string; source_asset_id: string; image_asset_id: string; expected_source_updated_at: string }; Returns: undefined }
+      reserve_studio_feed_generation: { Args: { target_workspace_id: string; context_fingerprint: string; request_mode: string }; Returns: Json }
+      complete_studio_feed_generation: { Args: { target_workspace_id: string; request_token: string; post_value: Json; replies_value: Json; output_fingerprint: string }; Returns: string }
+      release_studio_feed_generation: { Args: { target_workspace_id: string; request_token: string }; Returns: undefined }
       save_workspace_memory: {
         Args: { target_workspace_id: string; memory_id: string | null; memory_title: string; memory_content: string; expected_revision: number | null }
         Returns: Json

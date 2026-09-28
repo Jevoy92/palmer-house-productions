@@ -7,6 +7,7 @@ import type { StudioLane } from "@/lib/studio-model";
 import { StudioGraphic, type StudioGraphicName } from "./StudioGraphic";
 import { useStudio } from "./StudioProvider";
 import "./studio-support.css";
+import "./studio-secondary-polish.css";
 
 const lanes: Record<StudioLane, { label: string; purpose: string }> = {
   spotlight: { label: "Spotlight", purpose: "Build trust" },
@@ -58,6 +59,7 @@ export function VideoRoadmap() {
   const [show, setShow] = useState<"priority" | "all">("priority");
   const [pending, setPending] = useState<string[]>([]);
   const [savedHere, setSavedHere] = useState<string[]>([]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const activeKeys = useRef(new Set<string>());
   const createdKeys = useRef(new Set<string>());
   const diagnosed = useMemo(
@@ -96,6 +98,7 @@ export function VideoRoadmap() {
     if (activeKeys.current.has(key)) return false;
     activeKeys.current.add(key);
     setPending(Array.from(activeKeys.current));
+    setErrors((current) => ({ ...current, [key]: "" }));
     return true;
   }
   function finish(key: string) {
@@ -107,7 +110,10 @@ export function VideoRoadmap() {
     try {
       await updateVideoProgress(key, status, progress.get(key)?.campaign_id || undefined);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not update this video's status.");
+      const message =
+        error instanceof Error ? error.message : "Could not update this video's status.";
+      setErrors((current) => ({ ...current, [key]: message }));
+      toast.error(message);
     } finally {
       finish(key);
     }
@@ -134,13 +140,13 @@ export function VideoRoadmap() {
       }
       toast.success("Saved to Ideas. Your starting brief is ready.");
     } catch (error) {
-      toast.error(
-        created
-          ? "Your idea was saved, but the roadmap status could not update. You can change its status here."
-          : error instanceof Error
-            ? error.message
-            : "Could not save this idea.",
-      );
+      const message = created
+        ? "Your idea was saved, but the roadmap status could not update. You can change its status here."
+        : error instanceof Error
+          ? error.message
+          : "Could not save this idea.";
+      setErrors((current) => ({ ...current, [item.key]: message }));
+      toast.error(message);
     } finally {
       finish(item.key);
     }
@@ -156,6 +162,12 @@ export function VideoRoadmap() {
             Choose the videos that fit your business. Save a starting brief to Ideas, then build it
             into a campaign when you're ready.
           </p>
+          {!brand?.description && (
+            <p className="studio-roadmap-setup-note">
+              These are general starting points. Add your business story in{" "}
+              <Link to="/studio/brand">Brand DNA</Link> to help order the suggestions.
+            </p>
+          )}
         </div>
         <div className="studio-roadmap-summary">
           <StudioGraphic name="roadmap" size={90} />
@@ -261,6 +273,11 @@ export function VideoRoadmap() {
                   </button>
                 )}
               </div>
+              {errors[item.key] && (
+                <p role="alert" className="studio-support-error">
+                  {errors[item.key]}
+                </p>
+              )}
               {campaign && (
                 <Link
                   to="/studio/campaigns/$campaignId"

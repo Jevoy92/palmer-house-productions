@@ -20,7 +20,7 @@ let cacheDir;
 
 const fixture = `
 export const fixture = window.studioFixture = {
-  membershipError: false, insertError: false, responseError: false, responseDelay: 0,
+  feedRuns:0, membershipError: false, insertError: false, responseError: false, responseDelay: 0,
   ideas: [], uploads: [], directionError: false, assets: [], campaigns: [], assetUpdateError: false, campaignOutput: null,
   delays: {}, inserts: [], recentMessages: [], microphoneCancels: 0, permissionDelay: 0,
   messages: [], conversations: [
@@ -92,13 +92,15 @@ export const analyzeStudioContentSource=()=>{}, analyzeStudioWebsite=()=>{};
 export async function loadStudioMemory(){return {entries:[],legacy:{},available:true};}
 export const saveStudioMemory=()=>{},forgetStudioMemory=()=>{},forgetStudioLegacyMemory=()=>{},exportStudioMemory=()=>{};
 export async function loadStudioRecovery(){return {customPals:[],posts:[],comments:[],reactions:[]};}
+export const generateStudioPalAvatar=async()=>{},getStudioAssetImageUrl=async()=>"";
 const unavailableRecovery=async()=>{throw new Error("Recovery action not supplied by this lifecycle fixture");};
 export const saveStudioPalProfile=unavailableRecovery,selectStudioPalProfile=unavailableRecovery,
   uploadStudioPalAvatar=unavailableRecovery,resolveStudioPalAvatar=unavailableRecovery,
   generateStudioArtifact=unavailableRecovery,getStudioArtifactUrl=unavailableRecovery,
   createStudioFeedPost=unavailableRecovery,commentOnStudioFeed=unavailableRecovery,
-  reactToStudioFeed=unavailableRecovery,refreshStudioPalFeed=unavailableRecovery,
+  reactToStudioFeed=unavailableRecovery,
   linkStudioCampaignToConversation=unavailableRecovery,reviseStudioDocument=unavailableRecovery;
+export async function refreshStudioPalFeed(){fixture.feedRuns++;return {status:"deferred",reason:"Already current"};}
 export async function generateStudioCampaign(){return {ok:true,output:fixture.campaignOutput};}
 export async function generateContentDirections(){if(fixture.directionError)throw new Error("Directions unavailable");return {directions:[1,2,3].map(id=>({id:String(id),title:"Direction "+id,angle:"A useful angle",whyItWorks:"The audience needs an answer",lane:"evergreen",flavor:"business"}))};}
 export async function startRecording(){
@@ -629,5 +631,22 @@ test("plain script edits persist an override while retaining structured metadata
     await page.evaluate(() => window.studioFixture.assets[0].metadata.scenes[0].spoken),
     "New scene",
   );
+  await page.close();
+});
+
+test("workspace visits trigger one proactive feed check while ordinary refreshes do not repeat it", async () => {
+  const page = await pageForTest();
+  await page.waitForFunction(
+    () => window.studioFixture.feedRuns === 1 && !window.studioApi.feedGenerating,
+  );
+  await page.evaluate(async () => {
+    await window.studioApi.retryWorkspace();
+    await window.studioApi.refresh();
+  });
+  assert.equal(await page.evaluate(() => window.studioFixture.feedRuns), 1);
+  await page.evaluate(() => window.studioApi.refreshPalFeed());
+  assert.equal(await page.evaluate(() => window.studioFixture.feedRuns), 2);
+  assert.equal(await page.evaluate(() => window.studioApi.feedGenerating), false);
+  assert.equal(await page.evaluate(() => window.studioApi.feedGenerationError), null);
   await page.close();
 });

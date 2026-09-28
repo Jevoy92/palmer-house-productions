@@ -1,0 +1,332 @@
+.studio-pal-welcome {
+  display: grid;
+  grid-template-columns: minmax(160px, 0.75fr) minmax(0, 1.35fr);
+  align-items: center;
+  gap: 28px;
+  padding: 24px;
+  margin: 16px 0 30px;
+  border: 1px solid var(--studio-border);
+  border-radius: 24px;
+  background: var(--studio-surface);
+  color: var(--studio-text);
+}
+.studio-pal-welcome-portrait {
+  min-width: 0;
+  align-self: stretch;
+}
+.studio-pal-scene {
+  overflow: hidden;
+  height: 100%;
+  min-height: 240px;
+  border-radius: 18px;
+  background: var(--studio-soft);
+  isolation: isolate;
+}
+.studio-pal-scene img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.studio-pal-scene[data-pal="raquel"] img {
+  object-position: center 25%;
+}
+.studio-pal-scene.is-custom img {
+  object-position: center 28%;
+}
+.studio-pal-welcome-copy {
+  min-width: 0;
+}
+.studio-pal-welcome-byline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+  font-size: 12px;
+}
+.studio-pal-welcome-byline > span:last-child {
+  color: var(--studio-muted);
+  font-size: 11px;
+}
+.studio-pal-welcome h1 {
+  margin: 0;
+  font-size: clamp(25px, 2.3vw, 34px);
+  line-height: 1.16;
+  letter-spacing: -0.045em;
+  font-weight: 650;
+  text-wrap: balance;
+}
+.studio-pal-welcome-copy > p {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--studio-muted);
+  margin: 14px 0 18px;
+}
+.studio-pal-opening-prompts {
+  display: grid;
+  gap: 7px;
+}
+.studio-pal-opening-prompts button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+  padding: 11px 13px;
+  min-height: 44px;
+  border: 1px solid var(--studio-border);
+  border-radius: 12px;
+  font-size: 12px;
+  line-height: 1.5;
+  background: var(--studio-soft);
+  transition:
+    background 160ms ease,
+    border-color 160ms ease;
+}
+.studio-pal-opening-prompts svg {
+  flex-shrink: 0;
+  color: var(--studio-accent);
+}
+.studio-pal-opening-prompts button:hover {
+  background: var(--studio-accent-soft);
+  border-color: var(--studio-accent);
+}
+.studio-pal-shared-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 18px 0 12px;
+}
+.studio-pal-shared-tools button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 7px 10px;
+  border: 1px solid var(--studio-border);
+  border-radius: 10px;
+  font-size: 11px;
+}
+.studio-pal-shared-tools button:hover {
+  background: var(--studio-soft);
+}
+.studio-pal-capabilities {
+  display: block;
+  color: var(--studio-muted);
+  font-size: 10px;
+  line-height: 1.6;
+}
+.studio-pal-welcome.is-compact {
+  position: relative;
+  flex-shrink: 0;
+  grid-template-columns: 98px minmax(0, 1fr);
+  gap: 18px;
+  width: calc(100% - 68px);
+  max-width: 820px;
+  margin: 0 auto 12px;
+  padding: 15px 44px 15px 15px;
+  border-radius: 18px;
+}
+.studio-pal-welcome.is-compact .studio-pal-scene {
+  min-height: 110px;
+  border-radius: 12px;
+}
+.studio-pal-welcome.is-compact .studio-pal-welcome-byline {
+  margin-bottom: 5px;
+  gap: 6px;
+}
+.studio-pal-welcome.is-compact .studio-pal-welcome-byline .studio-pal-avatar {
+  display: none;
+}
+.studio-pal-welcome.is-compact h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+.studio-pal-welcome.is-compact .studio-pal-welcome-copy > p {
+  margin: 6px 0 9px;
+  font-size: 12px;
+  line-height: 1.55;
+}
+.studio-pal-welcome.is-compact .studio-pal-opening-prompts button {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  justify-content: flex-start;
+  min-height: 30px;
+  font-size: 11px;
+  color: var(--studio-accent);
+}
+.studio-pal-welcome-dismiss {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--studio-muted);
+}
+.studio-pal-welcome-dismiss:hover {
+  background: var(--studio-soft);
+  color: var(--studio-text);
+}
+.studio-pal-activity.studio-chat-working {
+  align-items: center;
+  padding: 16px;
+  gap: 16px;
+  border: 1px solid var(--studio-border);
+  background: var(--studio-surface);
+  border-radius: 18px;
+  margin-left: 0;
+}
+.studio-pal-activity .studio-pal-scene {
+  width: 84px;
+  height: 92px;
+  min-height: 0;
+  flex-shrink: 0;
+  border-radius: 12px;
+}
+.studio-pal-activity > div:last-child {
+  min-width: 0;
+}
+.studio-pal-activity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--studio-accent);
+  font-size: 10px;
+  margin-bottom: 8px;
+}
+.studio-pal-activity.studio-chat-working strong {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.studio-pal-activity.studio-chat-working p {
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 5px;
+}
+.studio-pal-scene[data-working="true"] img {
+  transform-origin: center 80%;
+  animation: studio-pal-scene-work 3.4s ease-in-out infinite;
+}
+.studio-pal-scene[data-working="true"][data-pal="ryder"] img {
+  animation-duration: 2.7s;
+}
+.studio-pal-scene[data-working="true"][data-pal="cyrus"] img,
+.studio-pal-scene[data-working="true"][data-pal="samira"] img {
+  animation-duration: 4.3s;
+}
+@keyframes studio-pal-scene-work {
+  0%,
+  100% {
+    transform: scale(1.015) translateY(0);
+  }
+  50% {
+    transform: scale(1.045) translateY(-2px);
+  }
+}
+.studio-pal-welcome button:focus-visible {
+  outline: 2px solid var(--studio-accent);
+  outline-offset: 3px;
+}
+@media (max-width: 1100px) {
+  .studio-pal-welcome {
+    gap: 20px;
+    padding: 20px;
+    grid-template-columns: 150px minmax(0, 1fr);
+  }
+}
+@media (max-width: 700px) {
+  .studio-pal-welcome {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    margin: 0 0 18px;
+    padding: 16px;
+    border-radius: 20px;
+  }
+  .studio-pal-welcome-portrait {
+    height: 168px;
+  }
+  .studio-pal-welcome .studio-pal-scene {
+    min-height: 0;
+    border-radius: 13px;
+  }
+  .studio-pal-welcome .studio-pal-scene img {
+    object-position: center 35%;
+  }
+  .studio-pal-welcome h1 {
+    font-size: 28px;
+  }
+  .studio-pal-welcome-byline {
+    margin-bottom: 12px;
+  }
+  .studio-pal-welcome-copy > p {
+    margin: 12px 0 16px;
+    font-size: 13px;
+  }
+  .studio-pal-shared-tools button {
+    min-height: 44px;
+  }
+  .studio-pal-welcome.is-compact {
+    grid-template-columns: 54px minmax(0, 1fr);
+    align-items: start;
+    gap: 11px;
+    margin: 0 16px 10px;
+    width: calc(100% - 32px);
+    padding: 12px 34px 12px 12px;
+    border-radius: 16px;
+  }
+  .studio-pal-welcome.is-compact .studio-pal-welcome-portrait {
+    height: 62px;
+  }
+  .studio-pal-welcome.is-compact .studio-pal-scene {
+    min-height: 0;
+    border-radius: 10px;
+  }
+  .studio-pal-welcome.is-compact h2 {
+    font-size: 15px;
+  }
+  .studio-pal-welcome.is-compact .studio-pal-welcome-copy > p {
+    font-size: 11px;
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+  .studio-pal-welcome.is-compact .studio-pal-opening-prompts {
+    display: none;
+  }
+  .studio-pal-welcome.is-compact .studio-pal-welcome-byline {
+    font-size: 11px;
+  }
+  .studio-pal-welcome.is-compact .studio-pal-welcome-byline > span:last-child {
+    font-size: 9px;
+  }
+  .studio-pal-activity.studio-chat-working {
+    gap: 12px;
+    padding: 12px;
+  }
+  .studio-pal-activity .studio-pal-scene {
+    width: 68px;
+    height: 84px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .studio-pal-scene[data-working="true"] img {
+    animation: none;
+  }
+  .studio-pal-opening-prompts button {
+    transition: none;
+  }
+}
+html[data-studio-motion="reduce"] .studio-pal-scene[data-working="true"] img {
+  animation: none;
+}
+html[data-studio-motion="reduce"] .studio-pal-opening-prompts button {
+  transition: none;
+}

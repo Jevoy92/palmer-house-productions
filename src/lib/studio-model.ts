@@ -190,7 +190,6 @@ export type StudioView =
   | "onboarding"
   | "brand"
   | "ideas"
-  | "approvals"
   | "campaigns"
   | "campaign"
   | "library"

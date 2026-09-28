@@ -28,6 +28,7 @@ export function PalAvatar({
     <span
       className={`studio-pal-avatar inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full ${sizes[size]} ${className}`}
       data-activity={activity}
+      data-pal={guide.key || "neutral"}
       style={{
         background: guide.soft,
         boxShadow: ring ? `inset 0 0 0 1.5px ${guide.color}` : undefined,
@@ -39,7 +40,7 @@ export function PalAvatar({
           src={guide.avatar}
           alt=""
           className="size-full scale-110 object-cover object-top"
-          loading="lazy"
+          loading={size === "md" || size === "lg" ? "eager" : "lazy"}
         />
       ) : (
         <span className="text-xs font-black" style={{ color: guide.color }}>

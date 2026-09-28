@@ -60,3 +60,6 @@ export const saveStudioMemory = unavailable;
 export const forgetStudioMemory = unavailable;
 export const forgetStudioLegacyMemory = unavailable;
 export const exportStudioMemory = unavailable;
+
+export const generateStudioPalAvatar = unavailable;
+export const getStudioAssetImageUrl = unavailable;

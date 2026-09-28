@@ -1,6 +1,7 @@
+import { StudioAssetVisual } from "./StudioAssetVisual";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, X } from "lucide-react";
+import { ArrowRight, Pencil, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import type { Tables } from "@/lib/supabase/database.types";
@@ -9,6 +10,7 @@ import { StudioCopyButton } from "./StudioAssetActions";
 import { StudioGraphic, studioGraphicForAsset } from "./StudioGraphic";
 import { StudioMarkdown } from "./StudioMarkdown";
 import "./studio-support.css";
+import "./studio-secondary-polish.css";
 
 type Asset = Tables<"campaign_assets">;
 function localDate(value: string) {
@@ -21,6 +23,15 @@ function localTime(value: string) {
   return Number.isFinite(date.getTime())
     ? `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`
     : "09:00";
+}
+// eslint-disable-next-line react-refresh/only-export-components
+export function parseLocalSchedule(date: string, time: string): Date | null {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !/^\d{2}:\d{2}$/.test(time)) return null;
+  const value = new Date(`${date}T${time}`);
+  if (!Number.isFinite(value.getTime())) return null;
+  return localDate(value.toISOString()) === date && localTime(value.toISOString()) === time
+    ? value
+    : null;
 }
 function metadataOf(asset?: Asset) {
   return asset?.metadata && typeof asset.metadata === "object" && !Array.isArray(asset.metadata)
@@ -38,8 +49,12 @@ function assetMedia(asset?: Asset): { url: string; type: "image" | "video" } | n
     "coverImageUrl",
     "mediaUrl",
   ]) {
-    const url = metadata[key];
-    if (typeof url !== "string" || !(/^(https?:\/\/)/i.test(url) || /^\/(?!\/)/.test(url)))
+    const url = typeof metadata[key] === "string" ? String(metadata[key]).trim() : "";
+    if (
+      !url ||
+      !(/^(https?:\/\/)/i.test(url) || /^\/(?!\/)/.test(url)) ||
+      /\.(pdf|mp3|wav)(?:[?#]|$)/i.test(url)
+    )
       continue;
     const video = key === "videoUrl" || /\.(mp4|webm|mov)(?:[?#]|$)/i.test(url);
     return { url, type: video ? "video" : "image" };
@@ -61,7 +76,8 @@ export function StudioCalendarEditor({
   item: Tables<"calendar_items">;
   close: () => void;
 }) {
-  const { updateCalendarItem, campaigns, assets, brand, workspace, getArtifactUrl } = useStudio();
+  const { updateCalendarItem, updateAsset, campaigns, assets, brand, workspace, getAssetImageUrl } =
+    useStudio();
   const opener = useRef(
     typeof document !== "undefined" ? (document.activeElement as HTMLElement | null) : null,
   );
@@ -75,6 +91,11 @@ export function StudioCalendarEditor({
   const [mediaError, setMediaError] = useState(false);
   const [privateImageUrl, setPrivateImageUrl] = useState("");
   const [mediaLoading, setMediaLoading] = useState(false);
+  const [editingCopy, setEditingCopy] = useState(false);
+  const [copyDraft, setCopyDraft] = useState("");
+  const [copySaving, setCopySaving] = useState(false);
+  const [copyError, setCopyError] = useState("");
+  const [discarding, setDiscarding] = useState(false);
   const campaign = campaigns.find((value) => value.id === item.campaign_id);
   const asset = assets.find((value) => value.id === item.asset_id);
   const metadata = metadataOf(asset);
@@ -84,17 +105,25 @@ export function StudioCalendarEditor({
   const assetId = asset?.id;
   const assetUpdatedAt = asset?.updated_at;
   const privateImage =
-    asset?.kind === "image" && typeof metadata.storagePath === "string" && !assetMedia(asset);
+    !assetMedia(asset) &&
+    Boolean(
+      typeof metadata.mediaAssetId === "string" ||
+      (asset?.kind === "image" && typeof metadata.storagePath === "string"),
+    );
   useEffect(() => {
     let active = true;
     setPrivateImageUrl("");
     setMediaError(false);
     setMediaLoading(false);
-    if (privateImage && assetId && getArtifactUrl) {
+    if (privateImage && assetId && getAssetImageUrl) {
       setMediaLoading(true);
-      void getArtifactUrl(assetId)
+      void getAssetImageUrl(assetId)
         .then((url) => {
-          if (active) setPrivateImageUrl(url);
+          if (active) {
+            const safe = /^https?:\/\//i.test(url) || /^\/(?!\/)/.test(url);
+            setPrivateImageUrl(safe ? url : "");
+            setMediaError(!safe);
+          }
         })
         .catch(() => {
           if (active) setMediaError(true);
@@ -106,7 +135,7 @@ export function StudioCalendarEditor({
     return () => {
       active = false;
     };
-  }, [assetId, assetUpdatedAt, privateImage, getArtifactUrl]);
+  }, [assetId, assetUpdatedAt, privateImage, getAssetImageUrl]);
   const graphic = studioGraphicForAsset(asset?.kind ?? "", channel);
   const content = asset?.content || (typeof metadata.body === "string" ? metadata.body : "");
   const hook =
@@ -130,12 +159,39 @@ export function StudioCalendarEditor({
         )
       : "";
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone.replaceAll("_", " ");
+  const locked = saving || copySaving;
+  const unsavedCopy = editingCopy && copyDraft !== (asset?.content || "");
+  function requestClose() {
+    if (locked) return;
+    if (unsavedCopy) setDiscarding(true);
+    else close();
+  }
+  async function saveCopy() {
+    if (!asset || copySaving) return;
+    setCopySaving(true);
+    setCopyError("");
+    try {
+      await updateAsset(asset.id, { content: copyDraft });
+      setEditingCopy(false);
+      toast.success("Draft text saved wherever this content appears.");
+    } catch (reason) {
+      setCopyError(
+        reason instanceof Error
+          ? reason.message
+          : "Could not save the text. Your edits are still here.",
+      );
+    } finally {
+      setCopySaving(false);
+    }
+  }
 
   async function save() {
-    if (saving) return;
-    const publish = new Date(`${date}T${time}`);
-    if (!date || !time || !Number.isFinite(publish.getTime())) {
-      setError("Choose a valid date and time.");
+    if (locked || editingCopy) return;
+    const publish = parseLocalSchedule(date, time);
+    if (!publish) {
+      setError(
+        "Choose a valid local date and time. Some times do not exist when the clocks change.",
+      );
       return;
     }
     setSaving(true);
@@ -162,7 +218,7 @@ export function StudioCalendarEditor({
     <Dialog.Root
       open
       onOpenChange={(open) => {
-        if (!open && !saving) close();
+        if (!open) requestClose();
       }}
     >
       <Dialog.Portal>
@@ -175,7 +231,10 @@ export function StudioCalendarEditor({
           }}
           onInteractOutside={(event) => event.preventDefault()}
           onEscapeKeyDown={(event) => {
-            if (saving) event.preventDefault();
+            if (locked || unsavedCopy) {
+              event.preventDefault();
+              requestClose();
+            }
           }}
         >
           <header className="studio-calendar-heading">
@@ -189,7 +248,7 @@ export function StudioCalendarEditor({
             </div>
             <Dialog.Close asChild>
               <button
-                disabled={saving}
+                disabled={locked}
                 className="studio-icon-button"
                 aria-label="Close calendar item"
               >
@@ -218,9 +277,54 @@ export function StudioCalendarEditor({
                         </small>
                       </div>
                     </div>
+                    {/script/.test(asset.kind) && !media && (
+                      <div className="studio-calendar-script-cover">
+                        <StudioAssetVisual asset={asset} />
+                      </div>
+                    )}
                     <div className="studio-calendar-copy">
                       {asset.kind !== "platform_post" && <h3>{asset.title}</h3>}
-                      {fullCopy ? (
+                      {editingCopy ? (
+                        <div className="studio-calendar-copy-editor">
+                          <label className="studio-calendar-field">
+                            <span>Draft text</span>
+                            <textarea
+                              value={copyDraft}
+                              onChange={(event) => setCopyDraft(event.target.value)}
+                              rows={8}
+                              disabled={copySaving}
+                              autoFocus
+                            />
+                          </label>
+                          <p className="studio-support-muted">
+                            Changes update this draft in your Library and campaign too.
+                          </p>
+                          {copyError && (
+                            <p role="alert" className="studio-support-error">
+                              {copyError}
+                            </p>
+                          )}
+                          <div className="studio-calendar-actions">
+                            <button
+                              className="studio-support-button is-primary"
+                              disabled={copySaving}
+                              onClick={() => void saveCopy()}
+                            >
+                              {copySaving ? "Saving text…" : "Save text"}
+                            </button>
+                            <button
+                              className="studio-support-button"
+                              disabled={copySaving}
+                              onClick={() => {
+                                setEditingCopy(false);
+                                setCopyError("");
+                              }}
+                            >
+                              Cancel text edit
+                            </button>
+                          </div>
+                        </div>
+                      ) : fullCopy ? (
                         <StudioMarkdown>{fullCopy}</StudioMarkdown>
                       ) : (
                         <p className="studio-support-muted">This draft does not have text yet.</p>
@@ -242,8 +346,8 @@ export function StudioCalendarEditor({
                           className="studio-calendar-media"
                           src={media.url}
                           alt={
-                            typeof metadata.imageAlt === "string"
-                              ? metadata.imageAlt
+                            typeof metadata.imageAlt === "string" && metadata.imageAlt.trim()
+                              ? metadata.imageAlt.trim()
                               : `Attached image for ${asset.title}`
                           }
                           onError={() => setMediaError(true)}
@@ -279,6 +383,20 @@ export function StudioCalendarEditor({
               {asset && (
                 <>
                   <div className="studio-calendar-actions">
+                    {!editingCopy && (
+                      <button
+                        className="studio-support-button"
+                        disabled={locked}
+                        onClick={() => {
+                          setCopyDraft(asset.content);
+                          setCopyError("");
+                          setEditingCopy(true);
+                        }}
+                      >
+                        <Pencil size={15} />
+                        Edit text
+                      </button>
+                    )}
                     {fullCopy && (
                       <StudioCopyButton
                         content={fullCopy}
@@ -293,8 +411,10 @@ export function StudioCalendarEditor({
                         className="studio-support-button"
                         aria-disabled={saving}
                         onClick={(event) => {
-                          if (saving) event.preventDefault();
-                          else close();
+                          if (locked || unsavedCopy) {
+                            event.preventDefault();
+                            requestClose();
+                          } else close();
                         }}
                       >
                         Open campaign <ArrowRight size={16} />
@@ -406,16 +526,31 @@ export function StudioCalendarEditor({
               )}
             </section>
           </div>
-          <footer className="studio-calendar-footer">
-            <p>Saving updates your calendar. Publish to the channel separately.</p>
+          <footer className={`studio-calendar-footer ${discarding ? "is-confirming" : ""}`}>
+            <p>
+              {editingCopy
+                ? "Save or cancel your text edit before saving the schedule."
+                : "Saving updates your calendar. Publish to the channel separately."}
+            </p>
+            {discarding && (
+              <div className="studio-calendar-discard" role="alert">
+                <p>Your text edits have not been saved.</p>
+                <button className="studio-support-button" onClick={() => setDiscarding(false)}>
+                  Keep editing
+                </button>
+                <button className="studio-support-button" onClick={close}>
+                  Discard text edits
+                </button>
+              </div>
+            )}
             <div>
               <Dialog.Close asChild>
-                <button disabled={saving} className="studio-support-button">
+                <button disabled={locked} className="studio-support-button">
                   Cancel
                 </button>
               </Dialog.Close>
               <button
-                disabled={saving || !date || !time}
+                disabled={locked || editingCopy || !date || !time}
                 onClick={() => void save()}
                 className="studio-support-button is-primary"
               >

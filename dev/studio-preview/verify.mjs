@@ -81,6 +81,168 @@ async function check(name, fn) {
   }
 }
 try {
+  for (const width of [390, 1440]) {
+    await check(`pal-presence-arrival-and-switch-${width}`, async () => {
+      await page.setViewportSize({ width, height: width === 390 ? 844 : 1000 });
+      await go("assistant");
+      const welcome = page.locator(".studio-pal-welcome");
+      await welcome.waitFor();
+      assert.equal(await welcome.locator(".studio-pal-welcome-byline strong").innerText(), "Kiana");
+      assert.match(await welcome.locator("p").innerText(), /picking up/);
+      assert.equal(await page.locator(".studio-chat-working").count(), 0);
+      const welcomeBox = await welcome.boundingBox();
+      assert(welcomeBox.width <= 820, "Returning welcome escaped the conversation column");
+      assert(
+        welcomeBox.height < (width === 390 ? 215 : 240),
+        "Returning welcome consumes too much chat space",
+      );
+      const headlines = new Set([await welcome.locator("h2").innerText()]);
+      let previous = "Kiana";
+      for (const name of ["Kareem", "Ryder", "Raquel", "Cyrus", "Clara", "Silas", "Samira"]) {
+        await page
+          .getByRole("button", { name: `Change Pal, currently ${previous}`, exact: true })
+          .click();
+        await page
+          .getByRole("dialog")
+          .getByRole("button", { name: new RegExp(`^${name} `) })
+          .click();
+        await page
+          .getByRole("button", { name: `Change Pal, currently ${name}`, exact: true })
+          .waitFor();
+        await page.waitForFunction(
+          (expected) =>
+            document.querySelector(".studio-pal-welcome-byline strong")?.textContent === expected,
+          name,
+        );
+        headlines.add(await welcome.locator("h2").innerText());
+        assert.match(await page.locator(".studio-chat-author").first().innerText(), /Kiana/);
+        assert.equal(await page.locator(".studio-chat-working").count(), 0);
+        previous = name;
+      }
+      assert.equal(headlines.size, 8, "Pals reused the same opening voice");
+      await shot("pal-returning-welcome");
+      await page.getByRole("button", { name: "Dismiss welcome", exact: true }).click();
+      assert.equal(await welcome.count(), 0);
+      await page
+        .getByRole("textbox", { name: "Message Samira", exact: true })
+        .fill("Preserve my unsent draft.");
+      assert.equal(await welcome.count(), 0, "Typing resurrected a dismissed opening");
+      if (width === 390) {
+        await page.getByRole("button", { name: "Open conversation history", exact: true }).click();
+        await page
+          .getByRole("dialog")
+          .getByRole("button", { name: "New conversation", exact: true })
+          .click();
+      } else await page.getByRole("button", { name: "New conversation", exact: true }).click();
+      await welcome.locator("h1").waitFor();
+      assert(
+        await welcome.getByRole("button", { name: "Create an image", exact: true }).isVisible(),
+      );
+      assert(await welcome.getByRole("button", { name: "Make a PDF", exact: true }).isVisible());
+      assert(
+        await welcome.getByRole("button", { name: "Build a campaign", exact: true }).isVisible(),
+      );
+      await shot("pal-new-welcome");
+      const bounds = await page
+        .getByRole("textbox", { name: "Message Samira", exact: true })
+        .boundingBox();
+      assert(
+        bounds.y + bounds.height <= page.viewportSize().height,
+        "Composer fell below the viewport",
+      );
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth), width);
+    });
+  }
+  await check("pal-presence-real-work-and-reduced-motion", async () => {
+    await go("assistant", "populated", "pending", 1);
+    await page
+      .getByRole("textbox", { name: "Message Kiana", exact: true })
+      .fill("Help me make this draft clearer.");
+    await page.getByRole("button", { name: "Send message", exact: true }).click();
+    const activity = page.locator(".studio-pal-activity");
+    await activity.waitFor();
+    assert.match(await activity.innerText(), /putting a response together/);
+    assert.equal(await page.locator(".studio-pal-welcome").count(), 0);
+    assert.notEqual(
+      await activity
+        .locator(".studio-pal-scene img")
+        .evaluate((el) => getComputedStyle(el).animationName),
+      "none",
+    );
+    await shot("pal-actual-work");
+    await page.evaluate(() => {
+      localStorage.setItem(
+        "palmer.studio.appearance.v1",
+        JSON.stringify({ theme: "light", reduceMotion: true, largerText: false }),
+      );
+      window.dispatchEvent(new CustomEvent("studio:appearance"));
+    });
+    await page.waitForFunction(() => document.documentElement.dataset.studioMotion === "reduce");
+    assert.equal(
+      await activity
+        .locator(".studio-pal-scene img")
+        .evaluate((el) => getComputedStyle(el).animationName),
+      "none",
+    );
+    await page.getByText("Local fixtures", { exact: true }).click();
+    await page.getByRole("button", { name: "Resolve pending", exact: true }).click();
+    await activity.waitFor({ state: "hidden" });
+    assert.equal(
+      await page.locator(".studio-pal-welcome").count(),
+      0,
+      "Finished reply resurrected an intro",
+    );
+  });
+  for (const outcome of ["success", "error"]) {
+    await check(`pal-custom-portrait-${outcome}`, async () => {
+      await go("assistant", "populated", outcome);
+      await page.getByRole("button", { name: "Change Pal, currently Kiana", exact: true }).click();
+      await page.getByRole("button", { name: "Create a Pal", exact: true }).click();
+      const dialog = page.getByRole("dialog", { name: "Create your Pal", exact: true });
+      await dialog.getByRole("textbox", { name: "Name", exact: true }).fill("Maya");
+      await dialog
+        .getByRole("textbox", { name: "Personality", exact: true })
+        .fill("Warm and concise, with a thoughtful sense of humor.");
+      const appearance = dialog.getByRole("textbox", {
+        name: "Describe their appearance",
+        exact: true,
+      });
+      assert(await appearance.isVisible(), "Portrait prompt is hidden");
+      await appearance.fill(
+        "A cheerful adult with dark curls, round glasses, and a mustard jacket.",
+      );
+      await dialog.getByRole("button", { name: "Generate portrait", exact: true }).click();
+      if (outcome === "error") {
+        await dialog.getByRole("alert").waitFor();
+        assert.match(await appearance.inputValue(), /mustard jacket/);
+        assert(
+          await dialog.getByRole("button", { name: "Generate portrait", exact: true }).isEnabled(),
+        );
+        await shot("pal-portrait-error");
+      } else {
+        await dialog.getByText("Your custom portrait", { exact: true }).waitFor();
+        const generatedSrc = await dialog
+          .locator(".studio-custom-pal-portrait img")
+          .getAttribute("src");
+        await shot("pal-portrait-created");
+        await dialog.getByRole("button", { name: "Meet your Pal", exact: true }).click();
+        await dialog.waitFor({ state: "hidden" });
+        const header = page.getByRole("button", {
+          name: "Change Pal, currently Maya",
+          exact: true,
+        });
+        await header.waitFor();
+        assert.equal(
+          await header.locator("img").getAttribute("src"),
+          generatedSrc,
+          "Saved portrait changed from the generated result",
+        );
+        assert.match(await page.locator(".studio-pal-welcome h2").innerText(), /I’m Maya/);
+        assert.match(await page.locator(".studio-chat-author").first().innerText(), /Kiana/);
+        await shot("pal-custom-arrival");
+      }
+    });
+  }
   for (const view of ["home", "assistant"]) {
     await check(`navigation-focus-${view}`, async () => {
       await go(view);

@@ -1,3 +1,4 @@
+import { buildMonthPlan, shiftCalendarPeriod } from "@/lib/studio-calendar-plan";
 import { StudioMemory } from "./StudioMemory";
 import { StudioBrandGuide } from "./StudioBrandGuide";
 import { StudioFeed } from "./StudioFeed";
@@ -1112,7 +1113,6 @@ const workTabs = [
   { key: "campaigns", label: "Campaigns" },
   { key: "ideas", label: "Ideas" },
   { key: "library", label: "Library" },
-  { key: "approvals", label: "Needs review" },
   { key: "calendar", label: "Calendar" },
   { key: "roadmap", label: "Video roadmap" },
 ] as const;
@@ -1142,7 +1142,6 @@ function MyWork({ tab }: { tab: WorkTab }) {
         {tab === "campaigns" ? <Campaigns /> : null}
         {tab === "ideas" ? <IdeasBoard /> : null}
         {tab === "library" ? <Library /> : null}
-        {tab === "approvals" ? <Approvals /> : null}
         {tab === "calendar" ? <CalendarView /> : null}
         {tab === "roadmap" ? <VideoRoadmap /> : null}
       </div>
@@ -1166,7 +1165,6 @@ function renderView(
   if (view === "success") return <MemberSuccess />;
   if (view === "brand") return <BrandStudio />;
   if (view === "ideas") return <IdeasBoard />;
-  if (view === "approvals") return <Approvals />;
   if (view === "campaigns") return <Campaigns />;
   if (view === "campaign") return <CampaignDetail campaignId={campaignId} />;
   if (view === "library") return <Library />;
@@ -1440,16 +1438,15 @@ function Dashboard() {
         <aside className="min-w-0 space-y-8 lg:col-span-4">
           {reviewCount > 0 ? (
             <Link
-              to="/studio/approvals"
+              to="/studio/library"
               className="block rounded-2xl border border-reel/25 bg-reel-soft p-7 transition hover:-translate-y-0.5"
             >
               <p className="studio-eyebrow text-reel">Needs you · Review</p>
               <p className="mt-3 text-lg font-bold leading-snug">
-                {reviewCount} {reviewCount === 1 ? "draft is" : "drafts are"} waiting on your
-                approval.
+                {reviewCount} {reviewCount === 1 ? "draft is" : "drafts are"} ready for your review.
               </p>
               <span className="mt-5 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[.14em]">
-                Open approvals <ArrowRight className="size-3.5" />
+                Review in Library <ArrowRight className="size-3.5" />
               </span>
             </Link>
           ) : null}
@@ -1525,106 +1522,6 @@ function Dashboard() {
 
 function IdeasBoard() {
   return <StudioIdeasBoard />;
-}
-
-function Approvals() {
-  const { assets, updateAsset } = useStudio();
-  const [filter, setFilter] = useState<"review" | "approved" | "draft" | "all">("review");
-  const items = filter === "all" ? assets : assets.filter((asset) => asset.status === filter);
-  async function setStatus(asset: Asset, status: string) {
-    try {
-      await updateAsset(asset.id, { status });
-      toast.success(
-        status === "approved" ? "Approved and ready to use." : "Moved back to draft for revisions.",
-      );
-    } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not update this asset.");
-    }
-  }
-  return (
-    <div className="mx-auto max-w-[88rem]">
-      <PageIntro
-        eyebrow="Approvals"
-        title="One clear place to make the final call."
-        body="Review the words, approve what is ready, and send revisions back without losing the campaign context."
-      />
-      <div className="mt-7 flex flex-wrap gap-2">
-        {(["review", "draft", "approved", "all"] as const).map((item) => (
-          <button
-            key={item}
-            aria-pressed={filter === item}
-            onClick={() => setFilter(item)}
-            className={`min-h-11 rounded-full px-5 text-sm font-bold capitalize ${filter === item ? "bg-ink text-white" : "border border-border"}`}
-          >
-            {item}
-            <span className="ml-2 opacity-60">
-              {item === "all"
-                ? assets.length
-                : assets.filter((asset) => asset.status === item).length}
-            </span>
-          </button>
-        ))}
-      </div>
-      <div className="studio-content-list mt-6 grid gap-4 xl:grid-cols-2">
-        {items.map((asset) => (
-          <article key={asset.id} className="studio-card flex flex-col sm:min-h-80">
-            <div className="flex items-center justify-between gap-3">
-              <span className="rounded-full bg-spotlight-soft px-3 py-1 font-mono text-[11px] uppercase tracking-[.13em] text-spotlight">
-                {asset.kind.replaceAll("_", " ")}
-              </span>
-              <span
-                className={`rounded-full px-3 py-1 text-[11px] font-bold ${asset.status === "approved" ? "bg-evergreen-soft text-evergreen" : asset.status === "review" ? "bg-reel-soft text-reel" : "border border-border"}`}
-              >
-                {asset.status}
-              </span>
-            </div>
-            <h2 className="mt-5 text-xl font-black">{asset.title}</h2>
-            <p className="mt-3 line-clamp-5 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
-              {asset.content}
-            </p>
-            <div className="mt-4">
-              <StudioAssetEditor asset={asset} />
-            </div>
-            <div className="mt-auto flex flex-col gap-2 pt-6 sm:flex-row">
-              <button
-                onClick={() => void setStatus(asset, "approved")}
-                disabled={asset.status === "approved"}
-                className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl bg-evergreen px-4 text-sm font-bold text-white disabled:opacity-40"
-              >
-                <Check className="size-4" /> Approve
-              </button>
-              <button
-                onClick={() => void setStatus(asset, "draft")}
-                className="flex min-h-12 flex-1 items-center justify-center gap-2 rounded-xl border border-border px-4 text-sm font-bold"
-              >
-                <ListTodo className="size-4" /> Needs changes
-              </button>
-              <button
-                onClick={() =>
-                  void navigator.clipboard
-                    .writeText(asset.content)
-                    .then(() => toast.success("Copied."))
-                }
-                className="grid size-12 place-items-center rounded-xl border border-border"
-                aria-label={`Copy ${asset.title}`}
-              >
-                <Clipboard className="size-4" />
-              </button>
-            </div>
-          </article>
-        ))}
-        {!items.length ? (
-          <div className="studio-card xl:col-span-2">
-            <EmptyState
-              icon={CheckCircle2}
-              title="Nothing is waiting here."
-              body="Choose another status or build a campaign to create reviewable work."
-            />
-          </div>
-        ) : null}
-      </div>
-    </div>
-  );
 }
 
 function Campaigns() {
@@ -3130,10 +3027,10 @@ function PublishPanel({
         <h3 className="text-lg font-black">After you post</h3>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
           {[
-            "Reply to every comment in the first hour — it decides how far the post travels.",
+            "Make time to answer questions and reply to comments after you post.",
             "Pin the best comment with your next step or link.",
             "Note which hook got the most watch time; reuse it in the next campaign.",
-            "Mark the asset approved here once it is live so the calendar stays honest.",
+            "Mark the calendar item published once it is live so your schedule stays current.",
           ].map((tip) => (
             <p key={tip} className="flex gap-3 text-sm leading-relaxed">
               <CheckCircle2 className="mt-0.5 size-4 shrink-0" style={{ color: lane.ink }} />
@@ -3249,6 +3146,9 @@ function BrandStudio() {
   const [showPreview, setShowPreview] = useState(false);
   const previewOpener = useRef<HTMLButtonElement | null>(null);
   const [fromWebsite, setFromWebsite] = useState<Set<string>>(() => new Set());
+  const [savingBrand, setSavingBrand] = useState(false);
+  const [brandSaveError, setBrandSaveError] = useState("");
+  const brandSaveLock = useRef(false);
   const [intakeUrl, setIntakeUrl] = useState(brand?.website || "");
   const [intakeStep, setIntakeStep] = useState(-1);
   const [intakeResult, setIntakeResult] = useState<{ filled: number; error?: string } | null>(null);
@@ -3374,6 +3274,10 @@ function BrandStudio() {
     (guideChecks.filter(([, complete]) => complete).length / guideChecks.length) * 100,
   );
   async function save() {
+    if (brandSaveLock.current) return false;
+    brandSaveLock.current = true;
+    setSavingBrand(true);
+    setBrandSaveError("");
     try {
       await saveBrand({
         business_name: draft.business_name,
@@ -3430,8 +3334,15 @@ function BrandStudio() {
           colors: ["#3d1a66"],
         });
       }
+      return true;
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not save brand.");
+      setBrandSaveError(
+        error instanceof Error ? error.message : "Could not save brand. Your edits are still here.",
+      );
+      return false;
+    } finally {
+      brandSaveLock.current = false;
+      setSavingBrand(false);
     }
   }
   const stepMeta = brandSteps[activeStep];
@@ -3459,13 +3370,18 @@ function BrandStudio() {
             >
               <Download className="size-4" /> Download
             </button>
-            <button onClick={() => void save()} className="primary-action">
+            <button disabled={savingBrand} onClick={() => void save()} className="primary-action">
               <Check className="size-4" /> Save Brand DNA
             </button>
           </div>
         }
       />
 
+      {brandSaveError && (
+        <p role="alert" className="studio-chat-error mt-5">
+          {brandSaveError}
+        </p>
+      )}
       <details className="group mt-6 rounded-xl border border-system/30 bg-system-soft/50">
         <summary className="flex min-h-12 cursor-pointer list-none items-center gap-3 px-4 py-3 text-sm font-semibold [&::-webkit-details-marker]:hidden">
           <Sparkles className="size-4 text-system" />
@@ -3996,16 +3912,22 @@ function BrandStudio() {
               <button
                 type="button"
                 onClick={() =>
-                  void save().then(() =>
-                    setActiveStep((step) => Math.min(brandSteps.length - 1, step + 1)),
-                  )
+                  void save().then((saved) => {
+                    if (saved) setActiveStep((step) => Math.min(brandSteps.length - 1, step + 1));
+                  })
                 }
+                disabled={savingBrand}
                 className="primary-action"
               >
-                Save and continue <ArrowRight className="size-4" />
+                {savingBrand ? "Saving…" : "Save and continue"} <ArrowRight className="size-4" />
               </button>
             ) : (
-              <button type="button" onClick={() => void save()} className="primary-action">
+              <button
+                type="button"
+                disabled={savingBrand}
+                onClick={() => void save()}
+                className="primary-action"
+              >
                 <Check className="size-4" /> Save Brand DNA
               </button>
             )}
@@ -4050,7 +3972,11 @@ function BrandStudio() {
           </div>
           <div className="studio-card">
             <p className="font-semibold">Add a live reference</p>
+            <label className="mt-3 block text-xs font-semibold" htmlFor="studio-reference-type">
+              Reference type
+            </label>
             <select
+              id="studio-reference-type"
               value={referenceKind}
               onChange={(event) => setReferenceKind(event.target.value)}
               className="mt-3 min-h-11 w-full rounded-xl border border-border bg-white px-3 text-sm"
@@ -4059,7 +3985,11 @@ function BrandStudio() {
               <option value="social">Social profile</option>
               <option value="youtube">YouTube channel</option>
             </select>
+            <label className="mt-3 block text-xs font-semibold" htmlFor="studio-reference-url">
+              Reference URL
+            </label>
             <input
+              id="studio-reference-url"
               type="url"
               value={referenceUrl}
               onChange={(event) => setReferenceUrl(event.target.value)}
@@ -4074,7 +4004,13 @@ function BrandStudio() {
                   referenceKind,
                   referenceUrl.replace(/^https?:\/\//, "").split("/")[0],
                   referenceUrl,
-                ).then(() => setReferenceUrl(""));
+                )
+                  .then(() => setReferenceUrl(""))
+                  .catch((error) =>
+                    toast.error(
+                      error instanceof Error ? error.message : "Could not add this reference.",
+                    ),
+                  );
               }}
               className="secondary-action mt-3 w-full"
             >
@@ -4089,7 +4025,14 @@ function BrandStudio() {
               onChange={(event) => {
                 const file = event.target.files?.[0];
                 if (file)
-                  void uploadBrandAsset(file, file.type.startsWith("image/") ? "logo" : "guide");
+                  void uploadBrandAsset(
+                    file,
+                    file.type.startsWith("image/") ? "logo" : "guide",
+                  ).catch((error) =>
+                    toast.error(
+                      error instanceof Error ? error.message : "Could not upload this file.",
+                    ),
+                  );
               }}
             />
             <ImageUp className="size-6 text-system" />
@@ -4141,7 +4084,7 @@ function BrandStudio() {
               <div>
                 <Dialog.Title className="text-xl font-bold">Your brand guide so far</Dialog.Title>
                 <Dialog.Description className="mt-2 text-sm text-muted-foreground">
-                  Preview the voice and visual direction saved in your Brand DNA.
+                  Preview your current Brand DNA draft, including unsaved edits.
                 </Dialog.Description>
               </div>
               <Dialog.Close asChild>
@@ -4169,7 +4112,7 @@ function Library() {
 }
 
 function CalendarView() {
-  const { calendar, updateCalendarItem, createCalendarItem, campaigns, assets } = useStudio();
+  const { calendar, updateCalendarItem, createCalendarItem, assets } = useStudio();
   const calendarRef = useRef<HTMLElement | null>(null);
   const [compactCalendar, setCompactCalendar] = useState(true);
   const [chosenMode, setChosenMode] = useState<"month" | "week" | "list" | null>(null);
@@ -4187,7 +4130,8 @@ function CalendarView() {
   }, []);
   const [selected, setSelected] = useState<CalendarItem | null>(null);
   const [planning, setPlanning] = useState(false);
-  const { reduceMotion: reduce } = useStudioMotion();
+  const planningLock = useRef(false);
+  const [expandedDays, setExpandedDays] = useState<Set<string>>(() => new Set());
   const [focusDate, setFocusDate] = useState(() => {
     const first = calendar[0]?.publish_at;
     return first ? new Date(first) : new Date();
@@ -4195,16 +4139,25 @@ function CalendarView() {
   const grouped = useMemo(
     () =>
       Object.entries(
-        calendar.reduce<Record<string, typeof calendar>>((result, item) => {
-          const key = new Date(item.publish_at).toLocaleDateString(undefined, {
-            month: "long",
-            year: "numeric",
-          });
-          (result[key] ||= []).push(item);
-          return result;
-        }, {}),
+        calendar
+          .filter((item) => {
+            const date = new Date(item.publish_at);
+            return (
+              date.getFullYear() === focusDate.getFullYear() &&
+              date.getMonth() === focusDate.getMonth()
+            );
+          })
+          .sort((a, b) => Date.parse(a.publish_at) - Date.parse(b.publish_at))
+          .reduce<Record<string, typeof calendar>>((result, item) => {
+            const key = new Date(item.publish_at).toLocaleDateString(undefined, {
+              month: "long",
+              year: "numeric",
+            });
+            (result[key] ||= []).push(item);
+            return result;
+          }, {}),
       ),
-    [calendar],
+    [calendar, focusDate],
   );
   const calendarDays = useMemo(() => {
     const start =
@@ -4220,10 +4173,8 @@ function CalendarView() {
   }, [focusDate, mode]);
 
   function moveFocus(direction: number) {
-    const next = new Date(focusDate);
-    if (mode === "week") next.setDate(next.getDate() + direction * 7);
-    else next.setMonth(next.getMonth() + direction);
-    setFocusDate(next);
+    setFocusDate(shiftCalendarPeriod(focusDate, direction, mode));
+    setExpandedDays(new Set());
   }
 
   function moveItem(event: DragEvent<HTMLElement>, date: Date) {
@@ -4233,7 +4184,7 @@ function CalendarView() {
     if (!item) return;
     const previous = new Date(item.publish_at);
     const next = new Date(date);
-    next.setHours(previous.getHours() || 10, previous.getMinutes(), 0, 0);
+    next.setHours(previous.getHours(), previous.getMinutes(), 0, 0);
     void updateCalendarItem(id, { publish_at: next.toISOString() })
       .then(() => toast.success(`Moved “${item.title}” to ${next.toLocaleDateString()}.`))
       .catch((error) =>
@@ -4242,65 +4193,38 @@ function CalendarView() {
   }
 
   async function generateMonthPlan() {
+    if (planningLock.current) return;
+    planningLock.current = true;
     setPlanning(true);
+    let added = 0;
     try {
-      const monthStart = new Date(focusDate.getFullYear(), focusDate.getMonth(), 1, 10);
-      const used = new Set(
-        calendar
-          .filter((item) => {
-            const date = new Date(item.publish_at);
-            return (
-              date.getMonth() === monthStart.getMonth() &&
-              date.getFullYear() === monthStart.getFullYear()
-            );
-          })
-          .map((item) => item.asset_id),
-      );
-      const sourceAssets = assets
-        .filter(
-          (asset) => !used.has(asset.id) && asset.kind !== "image" && asset.kind !== "document",
-        )
-        .slice(0, 8);
-      if (!sourceAssets.length) {
+      const plan = buildMonthPlan(assets, calendar, focusDate);
+      if (!plan.items.length) {
         toast.info(
-          assets.length
-            ? "Your available drafts are already planned this month."
-            : "Create a campaign first, then plan its drafts here.",
+          plan.reason === "past"
+            ? "Choose a month with upcoming days to plan your content."
+            : "No unscheduled, platform-ready drafts this month. Create a campaign or choose a channel for a draft first.",
         );
         return;
       }
-      for (const [index, asset] of sourceAssets.entries()) {
-        const metadata =
-          asset.metadata && typeof asset.metadata === "object" && !Array.isArray(asset.metadata)
-            ? asset.metadata
-            : {};
-        const channel =
-          typeof metadata.platform === "string"
-            ? metadata.platform
-            : asset.kind === "newsletter"
-              ? "Email"
-              : asset.kind === "anchor_script"
-                ? "YouTube"
-                : asset.kind === "short_script"
-                  ? "Instagram"
-                  : asset.kind === "article"
-                    ? "Website"
-                    : "Facebook";
-        const publishAt = new Date(monthStart);
-        publishAt.setDate(2 + index * 3);
+      for (const { asset, channel, publishAt } of plan.items) {
         await createCalendarItem({
           campaignId: asset.campaign_id || undefined,
           assetId: asset.id,
           title: asset.title,
           channel,
-          publishAt: publishAt.toISOString(),
+          publishAt,
           notes: "Review this saved draft and choose the final publishing time.",
         });
+        added += 1;
       }
-      toast.success(`${sourceAssets.length} saved drafts added to this month.`);
+      toast.success(`${added} saved drafts added to this month.`);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not build the month plan.");
+      toast.error(
+        `${added ? `${added} drafts were saved. ` : ""}${error instanceof Error ? error.message : "Could not finish the month plan."}`,
+      );
     } finally {
+      planningLock.current = false;
       setPlanning(false);
     }
   }
@@ -4309,19 +4233,13 @@ function CalendarView() {
     mode === "week"
       ? `${calendarDays[0]?.toLocaleDateString(undefined, { month: "short", day: "numeric" })} – ${calendarDays[6]?.toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}`
       : focusDate.toLocaleDateString(undefined, { month: "long", year: "numeric" });
-  const selectedAsset = selected?.asset_id
-    ? assets.find((asset) => asset.id === selected.asset_id)
-    : undefined;
-  const selectedCampaign = selected?.campaign_id
-    ? campaigns.find((campaign) => campaign.id === selected.campaign_id)
-    : undefined;
 
   return (
     <div className="mx-auto min-w-0 max-w-[88rem]">
       <PageIntro
         eyebrow="Content calendar"
         title="A visible publishing rhythm."
-        body="The schedule is created with the campaign, then stays editable as your team scripts, films, approves, and publishes."
+        body="Open any post to see its draft, copy the words, and choose when it goes out. Planning adds your saved drafts to upcoming days; nothing publishes automatically."
         action={
           <div className="flex flex-wrap gap-2">
             <button
@@ -4379,7 +4297,7 @@ function CalendarView() {
                 aria-pressed={mode === option}
                 className={`min-h-11 rounded-lg px-4 text-xs font-bold capitalize ${mode === option ? "bg-ink text-white" : "text-muted-foreground"}`}
               >
-                {option}
+                {option[0].toUpperCase() + option.slice(1)}
               </button>
             ))}
           </div>
@@ -4431,7 +4349,7 @@ function CalendarView() {
                           {date.getDate()}
                         </span>
                         <div className="mt-2 space-y-1.5">
-                          {items.slice(0, 3).map((item) => (
+                          {(expandedDays.has(key) ? items : items.slice(0, 3)).map((item) => (
                             <button
                               key={item.id}
                               draggable
@@ -4454,9 +4372,21 @@ function CalendarView() {
                             </button>
                           ))}
                           {items.length > 3 && (
-                            <p className="px-2 text-[11px] font-bold text-muted-foreground">
-                              +{items.length - 3} more
-                            </p>
+                            <button
+                              onClick={() =>
+                                setExpandedDays((current) => {
+                                  const next = new Set(current);
+                                  if (next.has(key)) next.delete(key);
+                                  else next.add(key);
+                                  return next;
+                                })
+                              }
+                              aria-expanded={expandedDays.has(key)}
+                              aria-label={`${expandedDays.has(key) ? "Show fewer posts" : `Show all ${items.length} posts`} for ${date.toLocaleDateString()}`}
+                              className="min-h-9 px-2 text-[11px] font-bold text-muted-foreground underline underline-offset-4"
+                            >
+                              {expandedDays.has(key) ? "Show fewer" : `+${items.length - 3} more`}
+                            </button>
                           )}
                         </div>
                       </div>
@@ -4488,16 +4418,24 @@ function CalendarView() {
                       day: "numeric",
                     })}
                   </time>
-                  <div>
-                    <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setSelected(item)}
+                    className="group min-h-14 rounded-lg text-left"
+                    aria-label={`Preview ${item.title}`}
+                  >
+                    <span className="flex items-center gap-2">
                       <span
                         className="size-2 rounded-full"
                         style={{ background: channelColor(item.channel) }}
                       />
-                      <p className="font-semibold">{item.title}</p>
-                    </div>
-                    <p className="mt-1 pl-4 text-xs text-muted-foreground">{item.channel}</p>
-                  </div>
+                      <span className="font-semibold group-hover:underline underline-offset-4">
+                        {item.title}
+                      </span>
+                    </span>
+                    <span className="mt-1 block pl-4 text-xs text-muted-foreground">
+                      {item.channel} · Preview & copy
+                    </span>
+                  </button>
                   <input
                     type="date"
                     aria-label={`Publish date for ${item.title}`}
@@ -4558,8 +4496,8 @@ function CalendarView() {
           <div className="studio-card">
             <EmptyState
               icon={CalendarDays}
-              title="Nothing scheduled yet."
-              body="Every completed campaign adds a practical publishing sequence here."
+              title="Nothing scheduled this month."
+              body="Choose another month or plan your saved campaign drafts. Your existing schedule stays available in its original month."
               action={
                 <Link to="/studio/create" className="primary-action">
                   Build a campaign

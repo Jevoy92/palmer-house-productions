@@ -1,6 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { Archive, ArrowRight, ExternalLink, LoaderCircle, Plus, Sparkles, X } from "lucide-react";
+import {
+  Archive,
+  ArrowRight,
+  ExternalLink,
+  LoaderCircle,
+  Pencil,
+  Plus,
+  Sparkles,
+  X,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { classifyLane } from "@/lib/studio-intelligence";
@@ -127,7 +136,15 @@ export function StudioIdeasBoard() {
   const [directions, setDirections] = useState<ContentDirection[]>([]);
   const [directionSource, setDirectionSource] = useState("");
   const [directionError, setDirectionError] = useState<string | null>(null);
-  const [pendingIdea, setPendingIdea] = useState<string | null>(null);
+  const [pendingIdeas, setPendingIdeas] = useState<string[]>([]);
+  const pendingIdeaIds = useRef(new Set<string>());
+  const [captureError, setCaptureError] = useState("");
+  const [ideaErrors, setIdeaErrors] = useState<Record<string, string>>({});
+  const [editingIdea, setEditingIdea] = useState<{
+    id: string;
+    body: string;
+    problem: string;
+  } | null>(null);
   const detectedLane = classifyLane(`${draft} ${problem}`);
   const draftRef = useRef<HTMLTextAreaElement>(null);
   const savedIdeas = ideas.filter((idea) => idea.status !== "archived");
@@ -188,6 +205,7 @@ export function StudioIdeasBoard() {
     }
     savingRef.current = true;
     setSaving(true);
+    setCaptureError("");
     try {
       const mediaPath =
         sourceType === "image" && sourceFile ? await uploadIdeaSource(sourceFile) : undefined;
@@ -211,30 +229,47 @@ export function StudioIdeasBoard() {
         await findDirections(body);
       }
     } catch (error) {
-      toast.error(
+      const message =
         error instanceof Error
           ? error.message
-          : "Could not save this source. Your draft is still here.",
-      );
+          : "Could not save this source. Your draft is still here.";
+      setCaptureError(message);
+      toast.error(message);
     } finally {
       savingRef.current = false;
       setSaving(false);
     }
   }
 
-  async function changeIdea(id: string, values: { status?: string; primary_lane?: StudioLane }) {
+  async function changeIdea(
+    id: string,
+    values: {
+      status?: string;
+      primary_lane?: StudioLane;
+      body?: string;
+      business_problem?: string;
+    },
+  ) {
+    if (pendingIdeaIds.current.has(id)) return false;
+    pendingIdeaIds.current.add(id);
     const previousStatus = ideas.find((idea) => idea.id === id)?.status || "saved";
-    setPendingIdea(id);
+    setPendingIdeas(Array.from(pendingIdeaIds.current));
+    setIdeaErrors((errors) => ({ ...errors, [id]: "" }));
     try {
       await updateIdea(id, values);
       if (values.status === "archived")
         toast.success("Idea archived.", {
           action: { label: "Undo", onClick: () => void changeIdea(id, { status: previousStatus }) },
         });
+      return true;
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not update this idea.");
+      const message = error instanceof Error ? error.message : "Could not update this idea.";
+      setIdeaErrors((errors) => ({ ...errors, [id]: message }));
+      toast.error(message);
+      return false;
     } finally {
-      setPendingIdea(null);
+      pendingIdeaIds.current.delete(id);
+      setPendingIdeas(Array.from(pendingIdeaIds.current));
     }
   }
 
@@ -390,8 +425,15 @@ export function StudioIdeasBoard() {
               <Sparkles className="size-4" /> Find directions
             </button>
           </div>
+          {captureError && (
+            <p role="alert" className="mt-4 studio-support-error">
+              {captureError}
+            </p>
+          )}
           <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
-            If your team has said it twice, save the exact wording. That is often the useful part.
+            {sourceType === "text"
+              ? "If your team has said it twice, save the exact wording. That is often the useful part."
+              : "Directions use the context you write here. Your link or image stays attached as a reference."}
           </p>
         </section>
         <div className="min-w-0">
@@ -515,7 +557,7 @@ export function StudioIdeasBoard() {
                             primary_lane: event.target.value as StudioLane,
                           })
                         }
-                        disabled={pendingIdea === idea.id}
+                        disabled={pendingIdeas.includes(idea.id)}
                         className="min-h-9 rounded-md bg-transparent pr-2"
                       >
                         {laneKeys.map((key) => (
@@ -533,26 +575,101 @@ export function StudioIdeasBoard() {
                           : `${idea.source_type} source`}
                     </span>
                   </div>
-                  <h3 className="studio-saved-idea-copy">{idea.body}</h3>
-                  {idea.business_problem ? (
+                  {editingIdea?.id === idea.id ? (
+                    <div className="grid gap-3">
+                      <label className="studio-calendar-field">
+                        <span>Idea text</span>
+                        <textarea
+                          rows={4}
+                          value={editingIdea.body}
+                          disabled={pendingIdeas.includes(idea.id)}
+                          onChange={(event) =>
+                            setEditingIdea({ ...editingIdea, body: event.target.value })
+                          }
+                          autoFocus
+                        />
+                      </label>
+                      <label className="studio-calendar-field">
+                        <span>Problem or opportunity</span>
+                        <input
+                          value={editingIdea.problem}
+                          disabled={pendingIdeas.includes(idea.id)}
+                          onChange={(event) =>
+                            setEditingIdea({ ...editingIdea, problem: event.target.value })
+                          }
+                        />
+                      </label>
+                      <div className="flex flex-wrap gap-2">
+                        <button
+                          className="studio-support-button is-primary"
+                          disabled={
+                            pendingIdeas.includes(idea.id) || editingIdea.body.trim().length < 8
+                          }
+                          onClick={async () => {
+                            if (
+                              await changeIdea(idea.id, {
+                                body: editingIdea.body.trim(),
+                                business_problem: editingIdea.problem.trim(),
+                              })
+                            ) {
+                              setEditingIdea(null);
+                              toast.success("Idea updated.");
+                            }
+                          }}
+                        >
+                          {pendingIdeas.includes(idea.id) ? "Saving…" : "Save idea changes"}
+                        </button>
+                        <button
+                          className="studio-support-button"
+                          disabled={pendingIdeas.includes(idea.id)}
+                          onClick={() => setEditingIdea(null)}
+                        >
+                          Cancel idea edit
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <h3 className="studio-saved-idea-copy">{idea.body}</h3>
+                  )}
+                  {idea.business_problem && editingIdea?.id !== idea.id ? (
                     <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                       {idea.business_problem}
                     </p>
                   ) : null}
                   <div className="mt-4 flex flex-wrap items-center gap-3">
-                    <Link
-                      to="/studio/create"
-                      search={{
-                        idea: [idea.body, idea.business_problem]
-                          .filter(Boolean)
-                          .join("\n\n")
-                          .slice(0, 5000),
-                      }}
-                      className="inline-flex min-h-10 items-center gap-2 text-sm font-bold"
-                      style={{ color: ink(lane) }}
-                    >
-                      Build this <ArrowRight className="size-4" />
-                    </Link>
+                    {editingIdea?.id !== idea.id && (
+                      <>
+                        <Link
+                          to="/studio/create"
+                          search={{
+                            idea: [idea.body, idea.business_problem]
+                              .filter(Boolean)
+                              .join("\n\n")
+                              .slice(0, 5000),
+                          }}
+                          className="inline-flex min-h-10 items-center gap-2 text-sm font-bold"
+                          style={{ color: ink(lane) }}
+                        >
+                          Build this <ArrowRight className="size-4" />
+                        </Link>
+                        <button
+                          className="studio-support-button"
+                          disabled={Boolean(editingIdea) || pendingIdeas.includes(idea.id)}
+                          onClick={() => {
+                            setIdeaErrors((errors) => ({ ...errors, [idea.id]: "" }));
+                            setEditingIdea({
+                              id: idea.id,
+                              body: idea.body,
+                              problem: idea.business_problem || "",
+                            });
+                          }}
+                          aria-label={`Edit idea ${idea.body.slice(0, 60)}`}
+                        >
+                          <Pencil size={14} />
+                          Edit
+                        </button>
+                      </>
+                    )}
                     {url ? (
                       <a
                         href={url}
@@ -565,7 +682,7 @@ export function StudioIdeasBoard() {
                     ) : null}
                     <button
                       type="button"
-                      disabled={pendingIdea === idea.id}
+                      disabled={pendingIdeas.includes(idea.id) || editingIdea?.id === idea.id}
                       onClick={() => void changeIdea(idea.id, { status: "archived" })}
                       className="ml-auto grid size-10 place-items-center rounded-lg text-muted-foreground hover:bg-mist disabled:opacity-50"
                       aria-label={`Archive ${idea.body.slice(0, 60)}`}
@@ -573,6 +690,11 @@ export function StudioIdeasBoard() {
                       <Archive className="size-4" />
                     </button>
                   </div>
+                  {ideaErrors[idea.id] && (
+                    <p role="alert" className="studio-support-error">
+                      {ideaErrors[idea.id]}
+                    </p>
+                  )}
                 </motion.article>
               );
             })}

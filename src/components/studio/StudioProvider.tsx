@@ -35,6 +35,8 @@ import type { Tables } from "@/lib/supabase/database.types";
 
 import {
   loadStudioRecovery,
+  generateStudioPalAvatar,
+  getStudioAssetImageUrl,
   saveStudioPalProfile,
   selectStudioPalProfile,
   uploadStudioPalAvatar,
@@ -49,6 +51,8 @@ import {
   reviseStudioDocument,
 } from "@/lib/studio-recovery-server";
 import type {
+  StudioPalAvatarInput,
+  StudioPalAvatar,
   PalProfileInput,
   StudioPalProfile,
   StudioFeedPost,
@@ -113,6 +117,10 @@ type VideoProgress = Tables<"workspace_video_items">;
 type ServiceRequest = Tables<"service_requests">;
 
 export type StudioContextValue = {
+  feedGenerating: boolean;
+  feedGenerationError: string | null;
+  generatePalAvatar: (input: StudioPalAvatarInput) => Promise<StudioPalAvatar>;
+  getAssetImageUrl: (assetId: string) => Promise<string>;
   workspaceMemories: StudioMemoryEntry[];
   legacyMemory: StudioMemorySnapshot["legacy"];
   memoryLoading: boolean;
@@ -286,6 +294,10 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   const [feedComments, setFeedComments] = useState<StudioFeedComment[]>([]);
   const [feedReactions, setFeedReactions] = useState<StudioFeedReaction[]>([]);
   const [recoveryError, setRecoveryError] = useState<string | null>(null);
+  const [feedGenerating, setFeedGenerating] = useState(false);
+  const [feedGenerationError, setFeedGenerationError] = useState<string | null>(null);
+  const feedVisit = useRef<string | null>(null);
+  const feedAttempt = useRef(0);
   const recoveryRequest = useRef(0);
   const recoveryScope = useRef<string | null>(null);
   const loadRequest = useRef(0);
@@ -618,6 +630,41 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       data.subscription.unsubscribe();
     };
   }, [loadWorkspace]);
+
+  useEffect(() => {
+    const scope = session && workspace ? `${session.user.id}:${workspace.id}` : null;
+    if (!scope) {
+      feedVisit.current = null;
+      feedAttempt.current += 1;
+      setFeedGenerating(false);
+      setFeedGenerationError(null);
+      return;
+    }
+    if (loading || !session || !workspace || feedVisit.current === scope) return;
+    feedVisit.current = scope;
+    const attempt = ++feedAttempt.current;
+    setFeedGenerating(true);
+    setFeedGenerationError(null);
+    void refreshStudioPalFeed({
+      data: { workspaceId: workspace.id, accessToken: session.access_token, mode: "automatic" },
+    })
+      .then(async (result) => {
+        if (attempt !== feedAttempt.current || memoryScopeRef.current !== scope) return;
+        if (result?.status === "unavailable")
+          setFeedGenerationError(result.reason || "Pal discussions are not connected yet.");
+        if (result?.status === "generated") await loadRecoveryFor(session, workspace.id);
+      })
+      .catch((error) => {
+        if (attempt === feedAttempt.current && memoryScopeRef.current === scope)
+          setFeedGenerationError(
+            error instanceof Error ? error.message : "Your Pals could not refresh the feed yet.",
+          );
+      })
+      .finally(() => {
+        if (attempt === feedAttempt.current && memoryScopeRef.current === scope)
+          setFeedGenerating(false);
+      });
+  }, [session, workspace, loading, loadRecoveryFor]);
 
   const refresh = useCallback(async () => loadWorkspace(session), [loadWorkspace, session]);
   const retryWorkspace = useCallback(async () => {
@@ -1537,6 +1584,14 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   async function resolvePalAvatar(path: string) {
     return resolveStudioPalAvatar({ data: { ...recoveryAuth(), path } });
   }
+  async function generatePalAvatar(input: StudioPalAvatarInput) {
+    return generateStudioPalAvatar({
+      data: { ...recoveryAuth(), ...input, name: input.name || "My Pal" },
+    });
+  }
+  async function getAssetImageUrl(assetId: string) {
+    return getStudioAssetImageUrl({ data: { ...recoveryAuth(), assetId } });
+  }
   async function getArtifactUrl(assetId: string) {
     return getStudioArtifactUrl({ data: { ...recoveryAuth(), assetId } });
   }
@@ -1580,7 +1635,12 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       .select("*")
       .eq("workspace_id", requestAuth.workspaceId)
       .order("sort_order");
-    if (!latest.error && sessionUserRef.current === session?.user.id) setAssets(latest.data || []);
+    if (
+      !latest.error &&
+      sessionUserRef.current === session?.user.id &&
+      memoryScopeRef.current === `${session?.user.id}:${requestAuth.workspaceId}`
+    )
+      setAssets(latest.data || []);
     if (values.conversationId && activeConversationRef.current?.id === values.conversationId) {
       try {
         await openConversation(values.conversationId);
@@ -1614,8 +1674,28 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     await refreshRecovery();
   }
   async function refreshPalFeed() {
-    await refreshStudioPalFeed({ data: recoveryAuth() });
-    await refreshRecovery();
+    const scope = memoryScope;
+    const attempt = ++feedAttempt.current;
+    setFeedGenerating(true);
+    setFeedGenerationError(null);
+    try {
+      const result = await refreshStudioPalFeed({ data: { ...recoveryAuth(), mode: "manual" } });
+      if (scope !== memoryScopeRef.current || attempt !== feedAttempt.current) return;
+      if (result.status === "unavailable")
+        setFeedGenerationError(result.reason || "Pal discussions are not connected yet.");
+      else if (result.status === "deferred")
+        toast.info(result.reason || "Your Pals have already checked this workspace.");
+      else await refreshRecovery();
+    } catch (error) {
+      if (scope === memoryScopeRef.current && attempt === feedAttempt.current)
+        setFeedGenerationError(
+          error instanceof Error ? error.message : "Your Pals could not refresh the feed yet.",
+        );
+      throw error;
+    } finally {
+      if (scope === memoryScopeRef.current && attempt === feedAttempt.current)
+        setFeedGenerating(false);
+    }
   }
 
   const value: StudioContextValue = {
@@ -1629,6 +1709,10 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     forgetMemory,
     forgetLegacyMemory,
     exportMemory,
+    feedGenerating,
+    feedGenerationError,
+    generatePalAvatar,
+    getAssetImageUrl,
     customPals,
     activeCustomPalId: settings?.active_pal_profile_id || null,
     feedPosts,

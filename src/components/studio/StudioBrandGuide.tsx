@@ -5,11 +5,22 @@ import { supabase } from "@/lib/supabase/client";
 import { StudioGraphic } from "./StudioGraphic";
 import "./studio-brand.css";
 
-function colorInk(value: string) {
-  const hex = /^#([a-f\d]{6})$/i.exec(value)?.[1];
+// eslint-disable-next-line react-refresh/only-export-components
+export function brandColorInk(value: string) {
+  const full = /^#([a-f\d]{3})$/i.test(value)
+    ? `#${value
+        .slice(1)
+        .split("")
+        .map((v) => v + v)
+        .join("")}`
+    : value;
+  const hex = /^#([a-f\d]{6})$/i.exec(full)?.[1];
   if (!hex) return "var(--studio-text)";
-  const rgb = [0, 2, 4].map((i) => parseInt(hex.slice(i, i + 2), 16));
-  return rgb[0] * 0.299 + rgb[1] * 0.587 + rgb[2] * 0.114 > 150 ? "#211a20" : "#fff";
+  const rgb = [0, 2, 4]
+    .map((i) => parseInt(hex.slice(i, i + 2), 16) / 255)
+    .map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+  const luminance = rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722;
+  return (luminance + 0.05) / 0.05 >= 1.05 / (luminance + 0.05) ? "#000" : "#fff";
 }
 export function StudioBrandGuide({
   draft,
@@ -22,6 +33,8 @@ export function StudioBrandGuide({
   const [references, setReferences] = useState<
     Array<{ id: string; label: string; url: string; image: boolean }>
   >([]);
+  const [loading, setLoading] = useState(false);
+  const [failedImages, setFailedImages] = useState<string[]>([]);
   const value = (key: string) => String(draft[key] || "").trim();
   const list = (key: string) =>
     value(key)
@@ -30,6 +43,9 @@ export function StudioBrandGuide({
       .filter(Boolean);
   useEffect(() => {
     let live = true;
+    setLoading(true);
+    setReferences([]);
+    setFailedImages([]);
     void Promise.all(
       brandReferences.map(async (ref) => {
         const metadata =
@@ -41,11 +57,18 @@ export function StudioBrandGuide({
           ["image", "logo"].includes(ref.kind) ||
           /\.(png|jpe?g|webp)(?:\?|$)/i.test(ref.source_url || ref.label);
         let url = ref.source_url || "";
-        if (ref.storage_path && workspace && ref.storage_path.startsWith(`${workspace.id}/`)) {
-          const result = await supabase.storage
-            .from("brand-assets")
-            .createSignedUrl(ref.storage_path, 3600);
-          url = result.data?.signedUrl || "";
+        if (ref.storage_path) {
+          url = "";
+          if (workspace && ref.storage_path.startsWith(`${workspace.id}/`)) {
+            try {
+              const result = await supabase.storage
+                .from("brand-assets")
+                .createSignedUrl(ref.storage_path, 3600);
+              url = result.data?.signedUrl || "";
+            } catch {
+              /* Keep other valid references when one upload cannot resolve. */
+            }
+          }
         }
         return {
           id: ref.id,
@@ -60,18 +83,26 @@ export function StudioBrandGuide({
       })
       .catch(() => {
         if (live) setReferences([]);
+      })
+      .finally(() => {
+        if (live) setLoading(false);
       });
     return () => {
       live = false;
     };
   }, [brandReferences, workspace]);
-  const images = references.filter((r) => r.image && r.url);
-  const primary = value("primaryColor") || "#57258a";
+  const images = references.filter((r) => r.image && r.url && !failedImages.includes(r.id));
+  const unavailable = references.filter((r) => !r.url || failedImages.includes(r.id)).length;
+  const failImage = (id: string) =>
+    setFailedImages((ids) => (ids.includes(id) ? ids : [...ids, id]));
+  const primary = /^#(?:[a-f\d]{3}|[a-f\d]{6})$/i.test(value("primaryColor"))
+    ? value("primaryColor")
+    : "var(--studio-soft)";
   return (
     <div className="studio-brand-guide">
       <section
         className="studio-brand-cover"
-        style={{ background: primary, color: colorInk(primary) }}
+        style={{ background: primary, color: brandColorInk(primary) }}
       >
         <div>
           <span>Brand guide · {completion}% complete</span>
@@ -85,7 +116,7 @@ export function StudioBrandGuide({
           </p>
         </div>
         {images[0] ? (
-          <img src={images[0].url} alt={images[0].label} />
+          <img src={images[0].url} alt={images[0].label} onError={() => failImage(images[0].id)} />
         ) : (
           <StudioGraphic name="brand" size={148} />
         )}
@@ -117,8 +148,10 @@ export function StudioBrandGuide({
             <div
               key={key}
               style={{
-                background: value(key) || "var(--studio-soft)",
-                color: colorInk(value(key)),
+                background: /^#(?:[a-f\d]{3}|[a-f\d]{6})$/i.test(value(key))
+                  ? value(key)
+                  : "var(--studio-soft)",
+                color: brandColorInk(value(key)),
               }}
             >
               <strong>{label}</strong>
@@ -174,7 +207,12 @@ export function StudioBrandGuide({
           <div className="studio-brand-moodboard">
             {images.map((ref) => (
               <figure key={ref.id}>
-                <img src={ref.url} alt={ref.label} />
+                <img
+                  src={ref.url}
+                  alt={ref.label}
+                  onError={() => failImage(ref.id)}
+                  loading="lazy"
+                />
                 <figcaption>{ref.label}</figcaption>
               </figure>
             ))}
@@ -183,9 +221,19 @@ export function StudioBrandGuide({
           <div className="studio-brand-reference-empty">
             <StudioGraphic name="image" size={88} />
             <p>
-              Add your logos, photography, or reference images in Brand DNA. They will appear here.
+              {loading
+                ? "Loading your visual references…"
+                : unavailable
+                  ? "Your saved references could not be previewed. They remain in Brand DNA; check the original files or links there."
+                  : "Add your logos, photography, or reference images in Brand DNA. They will appear here."}
             </p>
           </div>
+        )}
+        {unavailable > 0 && images.length > 0 && (
+          <p role="status">
+            {unavailable} {unavailable === 1 ? "reference is" : "references are"} unavailable. Your
+            other references are shown.
+          </p>
         )}
         <p>
           {[value("photography"), value("imageStyle"), value("motion")].filter(Boolean).join(" ")}

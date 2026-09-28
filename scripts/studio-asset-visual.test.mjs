@@ -175,3 +175,20 @@ test("Daybreak photo assets have distinct files while written/script assets have
   for (const item of fixture.assets.filter((item) => /script|article|newsletter/.test(item.kind)))
     assert.equal(helpers.studioAssetMedia(item), "");
 });
+
+test("a generated script thumbnail replaces its earlier storyboard cover", () => {
+  const html = renderToStaticMarkup(
+    React.createElement(helpers.StudioAssetVisual, {
+      asset: asset({
+        kind: "anchor_script",
+        metadata: {
+          imageUrl: "/own-thumbnail.png",
+          mediaAssetId: "new-media",
+          visualType: "storyboard",
+        },
+      }),
+    }),
+  );
+  assert.match(html, /own-thumbnail.png/);
+  assert.doesNotMatch(html, /studio-script-cover-top/);
+});

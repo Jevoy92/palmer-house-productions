@@ -45,7 +45,6 @@ const screens: Array<{ view: StudioView; label: string; path: string }> = [
   { view: "campaigns", label: "Campaigns", path: "/studio/campaigns" },
   { view: "campaign", label: "Campaign detail", path: `/studio/campaigns/${f.campaignId}` },
   { view: "library", label: "Library", path: "/studio/library" },
-  { view: "approvals", label: "Approvals", path: "/studio/approvals" },
   { view: "calendar", label: "Calendar", path: "/studio/calendar" },
   { view: "roadmap", label: "Video roadmap", path: "/studio/roadmap" },
   { view: "brand", label: "Brand", path: "/studio/brand" },
@@ -83,7 +82,7 @@ function FixtureScreen() {
   const view = campaign ? "campaign" : conversation ? "assistant" : match?.view || "home";
   const workTab = (
     location.search as {
-      tab?: "ideas" | "campaigns" | "library" | "approvals" | "calendar" | "roadmap";
+      tab?: "ideas" | "campaigns" | "library" | "calendar" | "roadmap";
     }
   ).tab;
   return (
@@ -212,8 +211,12 @@ function FixtureProvider({
   const [activeCustomPalId, setActiveCustomPalId] = useState<string | null>(null);
   const [feedPosts, setFeedPosts] = useState(empty ? [] : f.feedPosts);
   const [feedComments, setFeedComments] = useState(empty ? [] : f.feedComments);
+  const [feedGenerating, setFeedGenerating] = useState(false);
+  const [feedGenerationError, setFeedGenerationError] = useState<string | null>(null);
   const [feedReactions, setFeedReactions] = useState<StudioFeedReaction[]>([]);
   const artifactUrls = useRef(new Map<string, string>());
+  const avatarUrls = useRef(new Map<string, string>());
+  const previewProactiveStarted = useRef(false);
   const artifactAssets = useRef(assets);
   artifactAssets.current = assets;
   const getArtifactUrl = useCallback(async (id: string) => {
@@ -366,6 +369,29 @@ function FixtureProvider({
     feedComments,
     feedReactions,
     recoveryError: null,
+    feedGenerating,
+    feedGenerationError,
+    generatePalAvatar: async (input) => {
+      await complete();
+      const selected = input.basePal || "kiana";
+      const storagePath = `${f.workspaceId}/pals/preview-${selected}.png`;
+      avatarUrls.current.set(storagePath, palDirectory[selected].avatar);
+      return {
+        storagePath,
+        url: palDirectory[selected].avatar,
+        mimeType: "image/png",
+        styleVersion: "palmer-sculpted-portrait-v1",
+      };
+    },
+    getAssetImageUrl: async (id) => {
+      const source = assets.find((asset) => asset.id === id);
+      const metadata = source?.metadata as Record<string, unknown> | undefined;
+      const mediaId = typeof metadata?.mediaAssetId === "string" ? metadata.mediaAssetId : id;
+      const media = assets.find((asset) => asset.id === mediaId);
+      const url = artifactUrls.current.get(mediaId) || (media ? studioAssetMedia(media) : "");
+      if (!url) throw new Error("This output has no saved preview image.");
+      return url;
+    },
     refreshRecovery: async () => {
       await complete();
     },
@@ -407,7 +433,9 @@ function FixtureProvider({
         base_pal: input.basePal,
         personality: input.personality,
         avatar_path: input.avatarPath || null,
-        avatar_url: input.avatarPath ? palDirectory[input.basePal].headshot : null,
+        avatar_url: input.avatarPath
+          ? avatarUrls.current.get(input.avatarPath) || palDirectory[input.basePal].avatar
+          : null,
         created_by: f.userId,
         created_at: stamp(),
         updated_at: stamp(),
@@ -421,15 +449,26 @@ function FixtureProvider({
     },
     uploadPalAvatar: async () => {
       await complete();
-      return `${f.workspaceId}/sample-avatar.png`;
+      const path = `${f.workspaceId}/pals/sample-avatar.png`;
+      avatarUrls.current.set(path, palDirectory.kiana.avatar);
+      return path;
     },
-    resolvePalAvatar: async () => palDirectory.kiana.headshot,
+    resolvePalAvatar: async (path) => avatarUrls.current.get(path) || palDirectory.kiana.avatar,
     getArtifactUrl,
     generateArtifact: async (input) => {
       await complete();
       const id = crypto.randomUUID();
       // Fixed local sample output; this harness never calls an image model.
-      let url = studioAssetMedia(f.assets.find((asset) => asset.kind === "image")!);
+      const target = assets.find((asset) => asset.id === input.targetAssetId);
+      const choices = f.assets.map(studioAssetMedia).filter(Boolean);
+      const seed = [...(input.targetAssetId || input.prompt)].reduce(
+        (sum, letter) => sum + letter.charCodeAt(0),
+        0,
+      );
+      let url =
+        (target && studioAssetMedia(target)) ||
+        choices[seed % choices.length] ||
+        studioAssetMedia(f.assets.find((asset) => asset.kind === "image")!);
       const storagePath = `${f.workspaceId}/generated/${id}.${input.kind === "pdf" ? "pdf" : "png"}`;
       if (input.kind === "pdf") {
         const { PDFDocument, StandardFonts } = await import("pdf-lib");
@@ -455,7 +494,7 @@ function FixtureProvider({
         {
           ...f.assets[0],
           id,
-          campaign_id: input.campaignId || null,
+          campaign_id: input.campaignId || target?.campaign_id || null,
           kind: input.kind === "pdf" ? "document" : "image",
           title: input.title,
           content: input.content || input.prompt,
@@ -464,12 +503,27 @@ function FixtureProvider({
             mimeType: input.kind === "pdf" ? "application/pdf" : "image/png",
             generated: true,
             syntheticPreview: true,
+            ...(input.targetAssetId ? { targetAssetId: input.targetAssetId } : {}),
             ...(input.kind === "image" ? { imageUrl: url } : {}),
           },
           created_at: stamp(),
           updated_at: stamp(),
         },
-        ...current,
+        ...current.map((asset) =>
+          asset.id === input.targetAssetId
+            ? {
+                ...asset,
+                metadata: {
+                  ...(asset.metadata as Record<string, unknown>),
+                  mediaAssetId: id,
+                  imageAlt: `Image for ${asset.title}`,
+                  imageUrl: undefined,
+                  thumbnailUrl: undefined,
+                },
+                updated_at: stamp(),
+              }
+            : asset,
+        ),
       ]);
       if (input.conversationId)
         setMessages((current) => [
@@ -558,16 +612,45 @@ function FixtureProvider({
       ]);
     },
     refreshPalFeed: async () => {
-      await complete();
-      setFeedPosts((current) => [
-        {
-          ...f.feedPosts[1],
-          id: crypto.randomUUID(),
-          title: "A fresh angle on the morning story",
-          created_at: stamp(),
-        },
-        ...current,
-      ]);
+      if (feedGenerating) return;
+      setFeedGenerating(true);
+      setFeedGenerationError(null);
+      try {
+        await complete();
+        const id = "synthetic-proactive-discussion";
+        setFeedPosts((current) =>
+          current.some((post) => post.id === id)
+            ? current
+            : [
+                {
+                  ...f.feedPosts[1],
+                  id,
+                  title: "A fresh angle on the morning story",
+                  created_at: stamp(),
+                },
+                ...current,
+              ],
+        );
+        setFeedComments((current) =>
+          current.some((comment) => comment.post_id === id)
+            ? current
+            : [
+                ...current,
+                ...f.feedComments.slice(0, 2).map((comment, index) => ({
+                  ...comment,
+                  id: `synthetic-proactive-reply-${index}`,
+                  post_id: id,
+                })),
+              ],
+        );
+      } catch (error) {
+        setFeedGenerationError(
+          error instanceof Error ? error.message : "Preview generation failed.",
+        );
+        throw error;
+      } finally {
+        setFeedGenerating(false);
+      }
     },
     signIn: async () => {
       await complete();
@@ -839,6 +922,12 @@ function FixtureProvider({
       await complete();
     },
   };
+  const initialPreviewFeed = useRef(value.refreshPalFeed);
+  useEffect(() => {
+    if (params.get("proactive") !== "1" || previewProactiveStarted.current) return;
+    previewProactiveStarted.current = true;
+    void initialPreviewFeed.current().catch(() => {});
+  }, []);
   return <StudioContext.Provider value={value}>{children}</StudioContext.Provider>;
 }
 

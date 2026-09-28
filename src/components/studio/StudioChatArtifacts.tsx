@@ -1,3 +1,4 @@
+import { StudioDraftImage } from "./StudioDraftImage";
 import { Link } from "@tanstack/react-router";
 import {
   Check,
@@ -92,28 +93,38 @@ export function chatAssetLabel(asset: Asset) {
 
 const mediaUrl = studioAssetMedia;
 
-function useAssetMedia(asset: Asset) {
-  const { getArtifactUrl } = useStudio();
-  const [url, setUrl] = useState(mediaUrl(asset));
-  const meta = record(asset.metadata);
+function useAssetMedia(asset?: Asset) {
+  const { getAssetImageUrl } = useStudio();
+  const meta = record(asset?.metadata);
   const storagePath = meta.storagePath || meta.storage_path;
-  const directUrl = mediaUrl(asset);
+  const directUrl = asset ? mediaUrl(asset) : "";
+  const mediaAssetId = meta.mediaAssetId;
+  const id = asset?.id;
+  const kind = asset?.kind;
+  const key = `${id}:${String(mediaAssetId || storagePath || "")}:${directUrl}`;
+  const [resolved, setResolved] = useState({ key, url: directUrl });
   useEffect(() => {
     let active = true;
-    setUrl(directUrl);
-    if (directUrl || !storagePath || !getArtifactUrl || asset.kind !== "image") return;
-    void getArtifactUrl(asset.id)
-      .then((result) => {
-        if (active) setUrl(result);
+    setResolved({ key, url: directUrl });
+    if (
+      !id ||
+      directUrl ||
+      !getAssetImageUrl ||
+      !(mediaAssetId || (kind === "image" && storagePath))
+    )
+      return;
+    void getAssetImageUrl(id)
+      .then((url) => {
+        if (active) setResolved({ key, url });
       })
       .catch(() => {
-        if (active) setUrl("");
+        if (active) setResolved({ key, url: "" });
       });
     return () => {
       active = false;
     };
-  }, [asset.id, asset.kind, directUrl, getArtifactUrl, storagePath]);
-  return url;
+  }, [id, kind, key, directUrl, getAssetImageUrl, storagePath, mediaAssetId]);
+  return resolved.key === key ? resolved.url : directUrl;
 }
 
 export function StudioNativeDraft({
@@ -330,10 +341,12 @@ export function StudioChatEditor({
   const { reduceMotion, fadeTransition } = useStudioMotion();
   const modeId = useId();
   const asset = assets.find((item) => item.id === assetId);
+  const editImage = useAssetMedia(asset);
   const [mode, setMode] = useState(initialMode);
   const [draft, setDraft] = useState(asset?.content || "");
   const lastPersisted = useRef(asset?.content || "");
   const [saving, setSaving] = useState(false);
+  const [imageBusy, setImageBusy] = useState(false);
   const [error, setError] = useState("");
   const [refinement, setRefinement] = useState("");
   const [mobile, setMobile] = useState(
@@ -374,7 +387,7 @@ export function StudioChatEditor({
     }
   }
   function close() {
-    if (saving) return;
+    if (saving || imageBusy) return;
     if (dirty && !window.confirm("Discard the unsaved changes to this draft?")) return;
     onClose();
     if (!mobile) opener.current?.focus();
@@ -486,11 +499,11 @@ export function StudioChatEditor({
             </label>
           )}
         </motion.div>
-        {mode === "edit" && mediaUrl(asset) ? (
+        {mode === "edit" && editImage ? (
           <div className="studio-editor-image">
             <strong>Image</strong>
             <img
-              src={mediaUrl(asset)}
+              src={editImage}
               alt={
                 typeof record(asset.metadata).imageAlt === "string" &&
                 String(record(asset.metadata).imageAlt).trim()
@@ -500,6 +513,7 @@ export function StudioChatEditor({
             />
           </div>
         ) : null}
+        <StudioDraftImage asset={asset} disabled={dirty || saving} onBusyChange={setImageBusy} />
         <section className="studio-editor-refine">
           <div>
             <PalAvatar pal={pal} size="sm" />
@@ -580,10 +594,10 @@ export function StudioChatEditor({
             opener.current?.focus();
           }}
           onInteractOutside={(event) => {
-            if (dirty || saving) event.preventDefault();
+            if (dirty || saving || imageBusy) event.preventDefault();
           }}
           onEscapeKeyDown={(event) => {
-            if (saving) event.preventDefault();
+            if (saving || imageBusy) event.preventDefault();
           }}
           aria-describedby={undefined}
         >

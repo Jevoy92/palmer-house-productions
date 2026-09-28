@@ -2,6 +2,7 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { CampaignOutputSchema, LongFormOutputSchema } from "./studio-model";
 import type { Json } from "./supabase/database.types";
 import type { z } from "zod";
+import { buildAssetImageBrief } from "./studio-image-brief";
 
 export type CampaignOutput = z.infer<typeof CampaignOutputSchema>;
 
@@ -68,7 +69,7 @@ const wordCount = (value: string) => value.trim().split(/\s+/).filter(Boolean).l
 
 /** Runs both AI passes and merges them into one validated campaign output. */
 export async function buildCampaignOutput(brief: CampaignBuildBrief): Promise<CampaignOutput> {
-  const { parseStructured } = await import("./ai.server");
+  const { parseStructured, STUDIO_BUILD_MODEL } = await import("./ai.server");
   const briefText = campaignBriefText(brief);
   const [response, longForm] = await Promise.all([
     parseStructured(
@@ -76,12 +77,14 @@ export async function buildCampaignOutput(brief: CampaignBuildBrief): Promise<Ca
       "palmer_house_campaign",
       campaignCoreInstructions,
       briefText,
+      { model: STUDIO_BUILD_MODEL },
     ),
     parseStructured(
       LongFormOutputSchema,
       "palmer_house_longform",
       campaignLongFormInstructions,
       briefText,
+      { model: STUDIO_BUILD_MODEL },
     ),
   ]);
 
@@ -185,7 +188,13 @@ export function assetsFromOutput(output: CampaignOutput) {
       sort_order: 45,
     });
   }
-  return rows;
+  return rows.map((row) => ({
+    ...row,
+    metadata: {
+      ...((row.metadata as Record<string, Json>) || {}),
+      imageBrief: buildAssetImageBrief(row) as unknown as Json,
+    },
+  }));
 }
 
 /**

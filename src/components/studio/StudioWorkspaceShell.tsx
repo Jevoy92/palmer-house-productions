@@ -9,7 +9,6 @@ import {
   FolderOpen,
   Lightbulb,
   Images,
-  CheckSquare2,
   CalendarDays,
   Fingerprint,
   ListVideo,
@@ -31,6 +30,7 @@ import { StudioNotifications } from "./StudioNotifications";
 import { CelebrationLayer } from "./Celebrate";
 import { useStudioMotion } from "./studio-motion";
 import { useGuide } from "./useGuide";
+import { StudioPageTrail } from "./StudioPageTrail";
 import { PalAvatar } from "./PalAvatar";
 
 const mainItems = [
@@ -44,7 +44,6 @@ const businessItems = [
   { view: "calendar", label: "Calendar", to: "/studio/calendar", icon: CalendarDays },
   { view: "brand", label: "Brand DNA", to: "/studio/brand", icon: Fingerprint },
   { view: "roadmap", label: "Video roadmap", to: "/studio/roadmap", icon: ListVideo },
-  { view: "approvals", label: "Approvals", to: "/studio/approvals", icon: CheckSquare2 },
 ] as const;
 function active(view: StudioView, item: string) {
   return (
@@ -317,6 +316,7 @@ export function StudioWorkspaceShell({
         transition={transition}
         className="studio-workspace-content"
       >
+        {!chat && <StudioPageTrail view={view} />}
         {children}
       </motion.main>
       <nav className="studio-bottom-nav" aria-label="Main navigation">

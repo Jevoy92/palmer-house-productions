@@ -1,3 +1,4 @@
+import { StudioDraftImage } from "./StudioDraftImage";
 import * as Dialog from "@radix-ui/react-dialog";
 import { AnimatePresence, motion } from "motion/react";
 import { Check, Clipboard, PenLine, X } from "lucide-react";
@@ -62,9 +63,10 @@ export function StudioAssetEditor({ asset }: { asset: Tables<"campaign_assets"> 
   const [content, setContent] = useState(asset.content);
   const [status, setStatus] = useState(asset.status);
   const [saving, setSaving] = useState(false);
+  const [imageBusy, setImageBusy] = useState(false);
   const [error, setError] = useState("");
   async function save() {
-    if (saving) return;
+    if (saving || imageBusy) return;
     setSaving(true);
     setError("");
     try {
@@ -85,7 +87,7 @@ export function StudioAssetEditor({ asset }: { asset: Tables<"campaign_assets"> 
     <Dialog.Root
       open={open}
       onOpenChange={(value) => {
-        if (saving) return;
+        if (saving || imageBusy) return;
         if (value) {
           setContent(asset.content);
           setStatus(asset.status);
@@ -104,7 +106,7 @@ export function StudioAssetEditor({ asset }: { asset: Tables<"campaign_assets"> 
         <Dialog.Content
           className="studio-app studio-edit-dialog"
           onEscapeKeyDown={(event) => {
-            if (saving) event.preventDefault();
+            if (saving || imageBusy) event.preventDefault();
           }}
           onInteractOutside={(event) => event.preventDefault()}
         >
@@ -116,7 +118,11 @@ export function StudioAssetEditor({ asset }: { asset: Tables<"campaign_assets"> 
               </Dialog.Description>
             </div>
             <Dialog.Close asChild>
-              <button disabled={saving} aria-label="Close draft" className="studio-icon-button">
+              <button
+                disabled={saving || imageBusy}
+                aria-label="Close draft"
+                className="studio-icon-button"
+              >
                 <X className="size-4" />
               </button>
             </Dialog.Close>
@@ -146,6 +152,11 @@ export function StudioAssetEditor({ asset }: { asset: Tables<"campaign_assets"> 
                 <option value="published">Published</option>
               </select>
             </label>
+            <StudioDraftImage
+              asset={asset}
+              disabled={saving || content !== asset.content}
+              onBusyChange={setImageBusy}
+            />
             {error ? (
               <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-800">
                 {error}

@@ -44,6 +44,7 @@ import {
   record,
 } from "./StudioChatArtifacts";
 import { StudioCustomPal } from "./StudioCustomPal";
+import { PalActivity, PalWelcome } from "./PalPresence";
 import "./studio-chat.css";
 
 function assistantMetadata(value: unknown): AssistantResponse | null {
@@ -71,10 +72,15 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
     activeConversation,
     archiveConversation,
     askPal,
+    assets,
     brand,
     busy,
     calendar,
     campaigns,
+    ideas,
+    profile,
+    workspace,
+    workspaceMemories,
     conversationLoading,
     conversationMessages,
     conversationDrafts: composers,
@@ -100,7 +106,11 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
   // The conversation's own Pal wins; otherwise the member's saved guide. The
   // neutral option resolves to a real Pal so the name on screen always matches
   // the one we send to the model.
-  const selected = resolvePalName(activeConversation?.pal || settings?.preferred_pal);
+  const selected = resolvePalName(
+    (activeConversation && activeConversation.id === conversationId
+      ? activeConversation.pal
+      : null) || settings?.preferred_pal,
+  );
   const customPal = customPals.find((item) => item.id === activeCustomPalId);
   const basePal = palDirectory[customPal?.base_pal || selected];
   const pal = customPal
@@ -153,6 +163,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
   const [pickerOpen, setPickerOpen] = useState(false);
   const [customOpen, setCustomOpen] = useState(false);
   const [greetingCycle, setGreetingCycle] = useState(0);
+  const [dismissedOpening, setDismissedOpening] = useState("");
   const [composerTools, setComposerTools] = useState(false);
   const [editor, setEditor] = useState<{ assetId: string; mode: "preview" | "edit" } | null>(null);
   const [artifactKind, setArtifactKind] = useState<"image" | "pdf" | null>(null);
@@ -178,6 +189,43 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
   const routeRef = useRef(conversationId);
   routeRef.current = conversationId;
   const composerRef = useRef<HTMLTextAreaElement | null>(null);
+  const presenceKey = `${workspace?.id || "workspace"}:${draftKey}:${customPal?.id || selected}:${greetingCycle}:${navigationKey || "arrival"}`;
+  const actualWork = sending || artifactBusy || building;
+  useEffect(() => {
+    // Creating a thread changes its URL during a request. Keep that arrival quiet too.
+    if (actualWork) setDismissedOpening(presenceKey);
+  }, [actualWork, presenceKey]);
+  const upcoming = [...calendar]
+    .filter((item) => item.status !== "published" && Date.parse(item.publish_at) >= Date.now())
+    .sort((a, b) => Date.parse(a.publish_at) - Date.parse(b.publish_at))[0];
+  const currentCampaign = [...campaigns].sort((a, b) =>
+    b.updated_at.localeCompare(a.updated_at),
+  )[0];
+  const openingContext = {
+    memberName: profile?.full_name || undefined,
+    businessName: brand?.business_name || workspace?.name,
+    threadTitle:
+      conversationId && activeConversation?.id === conversationId
+        ? activeConversation.title
+        : undefined,
+    campaignTitle: currentCampaign?.title,
+    upcomingTitle: upcoming?.title,
+    ideaTitle: ideas[0]?.body,
+    memoryTitle: workspaceMemories[0]?.title,
+    draftCount: assets.length,
+    customName: customPal?.name,
+  };
+  const showOpening =
+    !actualWork &&
+    !conversationLoading &&
+    !threadError &&
+    dismissedOpening !== presenceKey &&
+    (!conversationId || activeConversation?.id === conversationId);
+  function useOpeningPrompt(prompt: string) {
+    setDraft(prompt);
+    if (conversationMessages.length) setDismissedOpening(presenceKey);
+    composerRef.current?.focus();
+  }
   useLayoutEffect(() => {
     if (!editor || window.matchMedia("(max-width: 1100px)").matches) return;
     const viewport = scrollRef.current;
@@ -333,6 +381,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
 
   async function newConversation() {
     setHistoryOpen(false);
+    setGreetingCycle((cycle) => cycle + 1);
     clearConversation();
     setComposers((current) => ({ ...current, new: { text: "", files: [] } }));
     await navigate({ to: "/studio/conversations", search: { prompt: undefined } });
@@ -418,13 +467,12 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
 
   async function choosePal(name: PalName) {
     setPickerOpen(false);
-    setGreetingCycle((cycle) => cycle + 1);
     try {
       if (activeCustomPalId && selectCustomPal) await selectCustomPal(null);
       // Keep the open thread with this Pal, and make it the default guide.
       if (activeConversation) await setConversationPal(activeConversation.id, name);
       await saveSettings({ preferred_pal: name });
-      toast.success(`${palDirectory[name].name} is with you now. Nothing was lost.`);
+      setGreetingCycle((cycle) => cycle + 1);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not change your Pal.");
     }
@@ -488,10 +536,6 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
     }
   }
 
-  const starters = pal.persona.starters;
-  const greeting = customPal
-    ? `Hi, I’m ${customPal.name}. ${campaigns[0] ? `Want to pick up “${campaigns[0].title}”, or start with something new?` : `What would you like to make for ${brand?.business_name || "your business"} today?`}`
-    : `${pal.persona.phrases[greetingCycle % pal.persona.phrases.length]} ${campaigns[0] ? `Shall we build on “${campaigns[0].title}”?` : pal.persona.firstQuestion}`;
   async function createArtifact() {
     if (!artifactKind || !artifactPrompt.trim() || artifactBusy) return;
     setArtifactBusy(true);
@@ -550,13 +594,14 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
             type="button"
             className="studio-chat-pal"
             ref={palTriggerRef}
+            disabled={actualWork}
             onClick={() => setPickerOpen(true)}
             aria-label={`Change Pal, currently ${pal.name}`}
           >
             <PalAvatar
               pal={pal}
               size="md"
-              activity={sending || artifactBusy || building ? "thinking" : "idle"}
+              activity={artifactBusy || building ? "creating" : sending ? "thinking" : "idle"}
               ring={false}
             />
             <span>
@@ -593,6 +638,19 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
             </button>
           </div>
         </header>
+        {showOpening && conversationMessages.length > 0 ? (
+          <PalWelcome
+            key={presenceKey}
+            pal={pal}
+            context={openingContext}
+            variant={greetingCycle}
+            compact
+            onPrompt={useOpeningPrompt}
+            onImage={() => openArtifact("image")}
+            onPdf={() => openArtifact("pdf")}
+            onDismiss={() => setDismissedOpening(presenceKey)}
+          />
+        ) : null}
         <div
           ref={scrollRef}
           className="studio-chat-scroll"
@@ -625,38 +683,17 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                 <LoaderCircle size={18} className="animate-spin" /> Opening conversation…
               </p>
             ) : null}
-            {!conversationMessages.length && !conversationLoading && !threadError ? (
-              <div className="studio-chat-welcome">
-                <PalAvatar pal={pal} size="lg" ring={false} />
-                <h1>What are we making today?</h1>
-                <div className="studio-welcome-message">
-                  <strong>{pal.name}</strong>
-                  <p>{greeting}</p>
-                </div>
-                <div className="studio-chat-starters">
-                  {starters.map((prompt) => (
-                    <button
-                      type="button"
-                      key={prompt}
-                      onClick={() => {
-                        setDraft(prompt);
-                        composerRef.current?.focus();
-                      }}
-                    >
-                      {prompt}
-                      <ArrowRight size={16} />
-                    </button>
-                  ))}
-                </div>
-                <div className="studio-welcome-actions">
-                  <button onClick={() => openArtifact("image")}>
-                    <ImagePlus size={17} /> Create an image
-                  </button>
-                  <button onClick={() => openArtifact("pdf")}>
-                    <FileText size={17} /> Make a document
-                  </button>
-                </div>
-              </div>
+            {showOpening && !conversationMessages.length ? (
+              <PalWelcome
+                key={presenceKey}
+                pal={pal}
+                context={openingContext}
+                variant={greetingCycle}
+                onPrompt={useOpeningPrompt}
+                onImage={() => openArtifact("image")}
+                onPdf={() => openArtifact("pdf")}
+                onDismiss={() => setDismissedOpening(presenceKey)}
+              />
             ) : null}
             {hasOlderMessages ? (
               <button
@@ -802,32 +839,12 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                 </div>
               );
             })}
-            {sending || artifactBusy || building ? (
-              <div role="status" className="studio-chat-working">
-                <PalAvatar pal={pal} activity="thinking" size="sm" ring={false} />
-                <div>
-                  <strong>
-                    {pal.name}{" "}
-                    {artifactBusy
-                      ? "is creating your file"
-                      : building
-                        ? "is building your campaign"
-                        : "is thinking"}
-                    <span className="studio-working-dots" aria-hidden="true">
-                      <i />
-                      <i />
-                      <i />
-                    </span>
-                  </strong>
-                  <p>
-                    {artifactBusy
-                      ? "Creating → saving to your Library"
-                      : building
-                        ? "Story → platform drafts → your Library"
-                        : "Using your Brand DNA and workspace context"}
-                  </p>
-                </div>
-              </div>
+            {actualWork ? (
+              <PalActivity
+                pal={pal}
+                custom={Boolean(customPal)}
+                task={artifactBusy ? artifactKind || "image" : building ? "campaign" : "reply"}
+              />
             ) : null}
           </div>
         </div>

@@ -41,7 +41,7 @@ function FeedAvatar({ author }: { author: StudioAuthor }) {
       alive = false;
     };
   }, [author.avatarPath, resolvePalAvatar]);
-  const avatar = customAvatar || (author.pal ? palDirectory[author.pal]?.headshot : "");
+  const avatar = customAvatar || (author.pal ? palDirectory[author.pal]?.avatar : "");
   return avatar ? (
     <img className="studio-feed-avatar" src={avatar} alt="" />
   ) : (
@@ -306,7 +306,14 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
   );
 }
 export function StudioFeed() {
-  const { feedPosts, recoveryError, refreshPalFeed, createFeedPost } = useStudio();
+  const {
+    feedPosts,
+    recoveryError,
+    refreshPalFeed,
+    createFeedPost,
+    feedGenerating,
+    feedGenerationError,
+  } = useStudio();
   const [refreshing, setRefreshing] = useState(false);
   const [posting, setPosting] = useState(false);
   const [draft, setDraft] = useState("");
@@ -315,8 +322,9 @@ export function StudioFeed() {
   const { reduceMotion, fadeTransition } = useStudioMotion();
   const postingRef = useRef(false);
   const refreshingRef = useRef(false);
+  const working = refreshing || feedGenerating;
   async function refresh() {
-    if (refreshingRef.current) return;
+    if (refreshingRef.current || feedGenerating) return;
     refreshingRef.current = true;
     setRefreshing(true);
     try {
@@ -354,10 +362,10 @@ export function StudioFeed() {
           <button
             className="studio-icon-button"
             aria-label="Refresh Pal ideas"
-            disabled={refreshing}
+            disabled={working}
             onClick={() => void refresh()}
           >
-            <RefreshCw size={18} className={refreshing ? "animate-spin" : ""} />
+            <RefreshCw size={18} className={working ? "animate-spin" : ""} />
           </button>
         </header>
         <StudioFilterPills
@@ -400,7 +408,15 @@ export function StudioFeed() {
             {recoveryError}
           </p>
         )}
-        {refreshing && (
+        {feedGenerationError && !recoveryError && !working && (
+          <div className="studio-feed-generation-note" role="status">
+            <p>{feedGenerationError}</p>
+            <button className="studio-feed-text-action" onClick={() => void refresh()}>
+              Try again
+            </button>
+          </div>
+        )}
+        {working && (
           <motion.div
             className="studio-feed-working"
             role="status"
@@ -410,7 +426,7 @@ export function StudioFeed() {
           >
             <div>
               {["clara", "kiana", "ryder"].map((p) => (
-                <img key={p} src={palDirectory[p as keyof typeof palDirectory].headshot} alt="" />
+                <img key={p} src={palDirectory[p as keyof typeof palDirectory].avatar} alt="" />
               ))}
             </div>
             <span>Your Pals are reading your workspace and finding an angle…</span>
@@ -421,7 +437,7 @@ export function StudioFeed() {
             <FeedThread key={post.id} post={post} />
           ))}
         </AnimatePresence>
-        {!posts.length && !refreshing && (
+        {!posts.length && !working && (
           <div className="studio-library-empty">
             <StudioGraphic name="feed" size={150} />
             <h2>
@@ -430,8 +446,8 @@ export function StudioFeed() {
                 : "A fresh angle is still ahead."}
             </h2>
             <p>
-              Invite the Pals to explore your Brand DNA, saved ideas, campaigns, and calendar. Save
-              the ideas you want to take further.
+              Your Pals check your Brand DNA, saved work, and recent conversations when you visit.
+              Useful discussions will land here, ready to take further.
             </p>
             {filter !== "all" ? (
               <button
@@ -451,7 +467,7 @@ export function StudioFeed() {
                 onClick={() => void refresh()}
                 disabled={!!recoveryError}
               >
-                Find our next idea
+                Check for fresh ideas
                 <ArrowRight size={16} />
               </button>
             )}
@@ -463,7 +479,7 @@ export function StudioFeed() {
           {["kiana", "ryder", "clara", "samira"].map((p) => (
             <img
               key={p}
-              src={palDirectory[p as keyof typeof palDirectory].headshot}
+              src={palDirectory[p as keyof typeof palDirectory].avatar}
               alt={palDirectory[p as keyof typeof palDirectory].name}
             />
           ))}

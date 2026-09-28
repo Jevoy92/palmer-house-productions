@@ -64,16 +64,22 @@ export type StudioFeedReaction = {
   reaction: (typeof feedReactions)[number];
   created_at: string;
 };
-export const ArtifactInputSchema = z.object({
-  kind: z.enum(["image", "pdf"]),
-  title: z.string().trim().min(2).max(180),
-  prompt: z.string().trim().min(3).max(3000),
-  content: z.string().trim().max(30000).optional(),
-  campaignId: z.string().uuid().optional(),
-  conversationId: z.string().uuid().optional(),
-  palProfileId: z.string().uuid().optional(),
-  pal: z.enum(palNames).optional(),
-});
+export const ArtifactInputSchema = z
+  .object({
+    kind: z.enum(["image", "pdf"]),
+    title: z.string().trim().min(2).max(180),
+    prompt: z.string().trim().min(3).max(3000),
+    content: z.string().trim().max(30000).optional(),
+    campaignId: z.string().uuid().optional(),
+    targetAssetId: z.string().uuid().optional(),
+    imagePurpose: z.enum(["cover", "social", "thumbnail", "storyboard"]).optional(),
+    conversationId: z.string().uuid().optional(),
+    palProfileId: z.string().uuid().optional(),
+    pal: z.enum(palNames).optional(),
+  })
+  .refine((input) => input.kind === "image" || (!input.targetAssetId && !input.imagePurpose), {
+    message: "Only still images can be attached as an asset visual.",
+  });
 export type StudioArtifactInput = z.infer<typeof ArtifactInputSchema>;
 export type StudioArtifact = {
   assetId: string;
@@ -84,6 +90,20 @@ export type StudioArtifact = {
   warning?: string;
   title: string;
   kind: "image" | "pdf";
+  targetAssetId?: string;
+};
+export type StudioPalAvatar = {
+  storagePath: string;
+  url: string;
+  mimeType: string;
+  styleVersion: string;
+};
+export type StudioPalAvatarInput = { name?: string; description: string; basePal?: PalName };
+export type StudioFeedGenerationResult = {
+  status: "generated" | "deferred" | "unavailable";
+  postId?: string;
+  reason?: string;
+  nextAttemptAt?: string;
 };
 export const FeedPostInputSchema = z.object({
   title: z.string().trim().max(180).default(""),

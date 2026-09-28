@@ -1,6 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { palNames } from "./studio-model";
+import { buildAssetImageBrief, assetImagePrompt } from "./studio-image-brief";
+export { generateStudioPalAvatar, getStudioAssetImageUrl } from "./studio-media-server";
 import type { Json } from "./supabase/database.types";
 import {
   ArtifactInputSchema,
@@ -9,14 +11,12 @@ import {
   StudioAuthSchema,
   assertWorkspaceStoragePath,
   feedReactions,
-  validatedFeedSources,
   safeFeedSources,
   safeStudioAuthor,
   type StudioAuthor,
   type StudioFeedComment,
   type StudioFeedPost,
   type StudioFeedReaction,
-  type StudioFeedSource,
   type StudioPalProfile,
 } from "./studio-recovery";
 
@@ -205,6 +205,26 @@ export const generateStudioArtifact = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { client, user } = await auth(data);
     const input = data.artifact;
+    const target = input.targetAssetId
+      ? await client
+          .from("campaign_assets")
+          .select("id,kind,title,content,metadata,campaign_id,updated_at")
+          .eq("workspace_id", data.workspaceId)
+          .eq("id", input.targetAssetId)
+          .maybeSingle()
+      : null;
+    if (target && (target.error || !target.data))
+      throw new Error("This output is not in the active workspace.");
+    if (target?.data && input.campaignId && target.data.campaign_id !== input.campaignId)
+      throw new Error("The image target does not belong to this campaign.");
+    const campaignId = input.campaignId || target?.data?.campaign_id || null;
+    const imageBrief =
+      input.kind === "image"
+        ? buildAssetImageBrief(
+            target?.data || { kind: "image", title: input.title, content: input.prompt },
+            input.imagePurpose,
+          )
+        : undefined;
     const { resolveStudioAuthor } = await import("./studio-auth.server");
     const origin = await resolveStudioAuthor(
       client,
@@ -242,9 +262,7 @@ export const generateStudioArtifact = createServerFn({ method: "POST" })
     if (input.kind === "image") {
       const image = await (
         await import("./ai.server")
-      ).generateStudioImage(
-        `Create one polished still image for this member. No video. Match the supplied brand voice and actual brief. Do not invent factual claims.\n${knowledge}\n\nImage title: ${input.title}\nRequest: ${input.prompt}`,
-      );
+      ).generateStudioImage(assetImagePrompt(imageBrief!, input.prompt, knowledge));
       ({ bytes, mimeType, extension } = image);
       content = input.prompt;
     } else {
@@ -283,13 +301,21 @@ export const generateStudioArtifact = createServerFn({ method: "POST" })
         originatingPal: origin.author,
         prompt: input.prompt,
         createdBy: user.id,
+        ...(imageBrief ? { imageBrief } : {}),
+        ...(target?.data
+          ? {
+              targetAssetId: target.data.id,
+              sourceUpdatedAt: target.data.updated_at,
+              imageAlt: `Image for ${target.data.title}`,
+            }
+          : {}),
       };
       const asset = await client
         .from("campaign_assets")
         .insert({
           id,
           workspace_id: data.workspaceId,
-          campaign_id: input.campaignId || null,
+          campaign_id: campaignId,
           kind: input.kind === "pdf" ? "document" : "image",
           title: input.title,
           content,
@@ -300,6 +326,18 @@ export const generateStudioArtifact = createServerFn({ method: "POST" })
         .single();
       if (asset.error) throw new Error("Could not add the generated file to your library.");
       saved = true;
+      let associationWarning: string | undefined;
+      if (target?.data) {
+        const linked = await client.rpc("associate_studio_asset_image", {
+          target_workspace_id: data.workspaceId,
+          source_asset_id: target.data.id,
+          image_asset_id: id,
+          expected_source_updated_at: target.data.updated_at,
+        });
+        if (linked.error)
+          associationWarning =
+            "The image is saved in Library. Its source changed or could not be updated, so it has not replaced that output's visual.";
+      }
       let messageId: string | undefined;
       if (input.conversationId) {
         const message = await client
@@ -314,7 +352,7 @@ export const generateStudioArtifact = createServerFn({ method: "POST" })
             metadata: json({
               assetIds: [id],
               originatingPal: origin.author,
-              ...(input.campaignId ? { campaignId: input.campaignId } : {}),
+              ...(campaignId ? { campaignId } : {}),
             }),
           })
           .select("id")
@@ -343,6 +381,8 @@ export const generateStudioArtifact = createServerFn({ method: "POST" })
         messageId,
         title: input.title,
         kind: input.kind,
+        targetAssetId: target?.data?.id,
+        warning: associationWarning,
       };
     } catch (error) {
       if (!saved) await client.storage.from("campaign-assets").remove([path]);
@@ -433,99 +473,11 @@ export const reactToStudioFeed = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
-const FeedGenerationSchema = z.object({
-  title: z.string().min(3).max(180),
-  body: z.string().min(20).max(4000),
-  pal: z.enum(palNames),
-  lane: z.enum(["spotlight", "reel", "evergreen", "system"]),
-  sources: z.array(z.object({ label: z.string().max(180), url: z.string().max(2048) })).max(6),
-  discussion: z
-    .array(z.object({ pal: z.enum(palNames), body: z.string().min(10).max(2000) }))
-    .min(2)
-    .max(4),
-});
 export const refreshStudioPalFeed = createServerFn({ method: "POST" })
-  .validator(StudioAuthSchema)
-  .handler(async ({ data }) => {
-    const { client } = await auth(data);
-    const { loadWorkspaceKnowledge } = await import("./studio-knowledge");
-    const knowledge = await loadWorkspaceKnowledge(client, data.workspaceId);
-    const [references, campaigns, previous] = await Promise.all([
-      client
-        .from("brand_references")
-        .select("label, source_url")
-        .eq("workspace_id", data.workspaceId)
-        .limit(15),
-      client
-        .from("campaigns")
-        .select("id,title")
-        .eq("workspace_id", data.workspaceId)
-        .order("created_at", { ascending: false })
-        .limit(8),
-      client
-        .from("studio_feed_posts")
-        .select("title,body")
-        .eq("workspace_id", data.workspaceId)
-        .order("created_at", { ascending: false })
-        .limit(6),
-    ]);
-    if (references.error || campaigns.error || previous.error)
-      throw new Error("Could not load feed context. Please retry.");
-    const sources: StudioFeedSource[] = safeFeedSources([
-      ...(references.data || []).flatMap((source) => {
-        try {
-          const url = new URL(source.source_url || "");
-          return ["https:", "http:"].includes(url.protocol)
-            ? [{ label: source.label, url: source.source_url! }]
-            : [];
-        } catch {
-          return [];
-        }
-      }),
-      ...(campaigns.data || []).map((campaign) => ({
-        label: campaign.title,
-        url: `/studio/campaigns/${campaign.id}`,
-      })),
-    ]);
-    const { parseStructured } = await import("./ai.server");
-    const { personaPrompt } = await import("./pal-personas");
-    const generated = await parseStructured(
-      FeedGenerationSchema,
-      "studio_pal_feed",
-      [
-        "Write one useful workspace discussion opener and 2–4 short replies from different Pals. These are AI-generated collaborators, never real humans or outside community members.",
-        "Every Pal can help with every task. Vary personality, not permissions. No video generation. Ground the post in actual saved workspace context and give a concrete next action.",
-        "Do not invent research, news, external links, evidence, completed tasks, or customer results. Supplied reference URLs are member-provided context, not newly researched sources. Only cite URLs copied exactly from Allowed sources, or use an empty sources list.",
-        "Use different Pals in the discussion and let them build on or constructively challenge the opening idea. Avoid repeating recent posts.",
-        ...palNames.map(personaPrompt),
-      ].join("\n"),
-      `${knowledge}\nAllowed sources: ${JSON.stringify(sources)}\nRecent posts: ${JSON.stringify(previous.data || [])}`,
-    );
-    const validated = FeedGenerationSchema.parse(generated);
-    const author = (pal: typeof validated.pal): StudioAuthor => ({
-      kind: "pal",
-      pal,
-      name: pal[0].toUpperCase() + pal.slice(1),
-    });
-    if (new Set(validated.discussion.map((reply) => reply.pal)).size < 2)
-      throw new Error("The provider did not return a complete discussion. Please try again.");
-    const post = await client.rpc("create_studio_feed_discussion", {
-      target_workspace_id: data.workspaceId,
-      post_value: json({
-        title: validated.title,
-        body: validated.body,
-        lane: validated.lane,
-        author: author(validated.pal),
-        sources: validatedFeedSources(validated.sources, sources),
-      }),
-      replies_value: json(
-        validated.discussion.map((reply) => ({ body: reply.body, author: author(reply.pal) })),
-      ),
-    });
-    if (post.error || !post.data)
-      throw new Error("The complete discussion could not be saved. Please retry.");
-    return post.data;
-  });
+  .validator(StudioAuthSchema.extend({ mode: z.enum(["automatic", "manual"]).default("manual") }))
+  .handler(async ({ data }) =>
+    (await import("./studio-proactive.server")).generateProactiveFeed(data),
+  );
 
 export const linkStudioCampaignToConversation = createServerFn({ method: "POST" })
   .validator(

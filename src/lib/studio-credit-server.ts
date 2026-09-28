@@ -54,7 +54,7 @@ export const getStudioCreditSummary = createServerFn({ method: "POST" })
         // One-time migration catch-up verifies the real current Stripe invoice; never
         // award credits merely because a legacy local row says active.
         const { default: Stripe } = await import("stripe");
-        const stripe = new Stripe(stripeSecretKey());
+        const stripe = new Stripe(stripeSecretKey()!);
         const subscription = await stripe.subscriptions.retrieve(sub.data.stripe_subscription_id);
         const invoiceId =
           typeof subscription.latest_invoice === "string"
@@ -196,7 +196,7 @@ export const createStudioCreditCheckout = createServerFn({ method: "POST" })
         "A billing adjustment needs to be resolved before buying more credits. Contact Palmer House.",
       );
     const { default: Stripe } = await import("stripe");
-    const stripe = new Stripe(stripeSecretKey());
+    const stripe = new Stripe(stripeSecretKey()!);
     const pack = studioCreditTopUps[data.pack];
     const origin = process.env.PUBLIC_SITE_URL || getRequestUrl().origin;
     const session = await stripe.checkout.sessions.create(

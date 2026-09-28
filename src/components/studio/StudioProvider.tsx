@@ -59,6 +59,20 @@ import type {
   StudioArtifactInput,
 } from "@/lib/studio-recovery";
 
+import {
+  loadStudioMemory,
+  saveStudioMemory,
+  forgetStudioMemory,
+  forgetStudioLegacyMemory,
+  exportStudioMemory,
+} from "@/lib/studio-memory-server";
+import type {
+  StudioMemoryEntry,
+  StudioMemoryInput,
+  StudioMemorySnapshot,
+  StudioMemoryExport,
+} from "@/lib/studio-memory";
+
 type Profile = Tables<"profiles">;
 type Workspace = Tables<"workspaces">;
 type Subscription = Tables<"workspace_subscriptions">;
@@ -99,6 +113,16 @@ type VideoProgress = Tables<"workspace_video_items">;
 type ServiceRequest = Tables<"service_requests">;
 
 export type StudioContextValue = {
+  workspaceMemories: StudioMemoryEntry[];
+  legacyMemory: StudioMemorySnapshot["legacy"];
+  memoryLoading: boolean;
+  memoryError: string | null;
+  memoryAvailable: boolean;
+  refreshMemory: () => Promise<void>;
+  saveMemory: (input: StudioMemoryInput) => Promise<StudioMemoryEntry>;
+  forgetMemory: (id: string, expectedRevision: number) => Promise<void>;
+  forgetLegacyMemory: () => Promise<void>;
+  exportMemory: () => Promise<StudioMemoryExport>;
   customPals: StudioPalProfile[];
   activeCustomPalId: string | null;
   feedPosts: StudioFeedPost[];
@@ -249,6 +273,13 @@ function slugify(value: string) {
 
 export function StudioProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
+  const [memoryState, setMemoryState] = useState<{
+    scope: string;
+    snapshot: StudioMemorySnapshot;
+  } | null>(null);
+  const [memoryLoading, setMemoryLoading] = useState(false);
+  const [memoryError, setMemoryError] = useState<string | null>(null);
+  const memoryRequest = useRef(0);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [customPals, setCustomPals] = useState<StudioPalProfile[]>([]);
   const [feedPosts, setFeedPosts] = useState<StudioFeedPost[]>([]);
@@ -291,6 +322,46 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   const messagesRef = useRef(conversationMessages);
   activeConversationRef.current = activeConversation;
   messagesRef.current = conversationMessages;
+
+  const memoryScope = session && workspace ? `${session.user.id}:${workspace.id}` : null;
+  const memoryScopeRef = useRef(memoryScope);
+  memoryScopeRef.current = memoryScope;
+  const loadedMemory = memoryState?.scope === memoryScope ? memoryState.snapshot : null;
+  const workspaceMemories = loadedMemory?.entries || [];
+  const legacyMemory = loadedMemory?.legacy || {};
+  const memoryAvailable = Boolean(loadedMemory?.available);
+  const refreshMemory = useCallback(async () => {
+    if (!session || !workspace || !memoryScope) return;
+    const scope = memoryScope;
+    const request = ++memoryRequest.current;
+    setMemoryLoading(true);
+    setMemoryError(null);
+    try {
+      const snapshot = await loadStudioMemory({
+        data: { workspaceId: workspace.id, accessToken: session.access_token },
+      });
+      if (request !== memoryRequest.current || scope !== memoryScopeRef.current) return;
+      setMemoryState({ scope, snapshot });
+      if (!snapshot.available)
+        setMemoryError(
+          "Shared memory needs the latest database migration. Existing workspace context remains available.",
+        );
+    } catch (error) {
+      if (request === memoryRequest.current && scope === memoryScopeRef.current)
+        setMemoryError(error instanceof Error ? error.message : "Could not load shared memory.");
+    } finally {
+      if (request === memoryRequest.current) setMemoryLoading(false);
+    }
+  }, [session, workspace, memoryScope]);
+  useEffect(() => {
+    setMemoryState(null);
+    setMemoryError(null);
+    if (memoryScope) void refreshMemory();
+    else setMemoryLoading(false);
+    return () => {
+      memoryRequest.current += 1;
+    };
+  }, [memoryScope, refreshMemory]);
 
   const clearConversation = useCallback(() => {
     conversationRequest.current += 1;
@@ -1385,6 +1456,56 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       throw new Error("Sign in and open a workspace first.");
     return { workspaceId: workspace.id, accessToken: session.access_token };
   }
+  async function saveMemory(input: StudioMemoryInput) {
+    const scope = memoryScope;
+    const saved = await saveStudioMemory({ data: { ...recoveryAuth(), memory: input } });
+    if (scope === memoryScopeRef.current) {
+      setMemoryState((current) =>
+        current?.scope === scope
+          ? {
+              ...current,
+              snapshot: {
+                ...current.snapshot,
+                entries: [
+                  ...current.snapshot.entries.filter((entry) => entry.id !== saved.id),
+                  saved,
+                ],
+              },
+            }
+          : current,
+      );
+    }
+    return saved;
+  }
+  async function forgetMemory(id: string, expectedRevision: number) {
+    const scope = memoryScope;
+    await forgetStudioMemory({ data: { ...recoveryAuth(), id, expectedRevision } });
+    if (scope === memoryScopeRef.current)
+      setMemoryState((current) =>
+        current?.scope === scope
+          ? {
+              ...current,
+              snapshot: {
+                ...current.snapshot,
+                entries: current.snapshot.entries.filter((entry) => entry.id !== id),
+              },
+            }
+          : current,
+      );
+  }
+  async function forgetLegacyMemory() {
+    const scope = memoryScope;
+    await forgetStudioLegacyMemory({ data: { ...recoveryAuth(), expectedValue: legacyMemory } });
+    if (scope === memoryScopeRef.current)
+      setMemoryState((current) =>
+        current?.scope === scope
+          ? { ...current, snapshot: { ...current.snapshot, legacy: {} } }
+          : current,
+      );
+  }
+  async function exportMemory() {
+    return exportStudioMemory({ data: recoveryAuth() });
+  }
   async function refreshRecovery() {
     if (!workspace || !session) return;
     await loadRecoveryFor(session, workspace.id);
@@ -1498,6 +1619,16 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   }
 
   const value: StudioContextValue = {
+    workspaceMemories,
+    legacyMemory,
+    memoryLoading,
+    memoryError,
+    memoryAvailable,
+    refreshMemory,
+    saveMemory,
+    forgetMemory,
+    forgetLegacyMemory,
+    exportMemory,
     customPals,
     activeCustomPalId: settings?.active_pal_profile_id || null,
     feedPosts,

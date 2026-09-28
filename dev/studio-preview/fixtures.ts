@@ -2,6 +2,9 @@ import type { Tables } from "@/lib/supabase/database.types";
 import type { AssistantResponse, CampaignOutput } from "@/lib/studio-model";
 import type { StudioFeedPost, StudioFeedComment } from "@/lib/studio-recovery";
 import bakeryImage from "./media/daybreak-bakery.png";
+import bakeryPastries from "./media/daybreak-pastries.png";
+import bakeryPeople from "./media/daybreak-baker-story.png";
+import bakerySourdough from "./media/daybreak-sourdough.png";
 export { bakeryImage };
 export const workspaceId = "00000000-0000-4000-8000-000000000001";
 export const userId = "00000000-0000-4000-8000-000000000002";
@@ -273,15 +276,25 @@ export const assets: Tables<"campaign_assets">[] = [
     "platform_post",
     "Made before sunrise",
     output.captions[0].copy,
-    { platform: "facebook", imageUrl: bakeryImage },
+    {
+      platform: "facebook",
+      imageUrl: bakeryPastries,
+      imageAlt: "Fresh croissants and morning buns on a tray in the bakery",
+      syntheticPreview: true,
+    },
     0,
   ),
   asset(
     "sample-caption",
     "caption",
-    "The morning story",
-    "Your morning starts here. Ours starts a little earlier. Fresh bread, made from scratch.\n\n#DaybreakBakery #MadeFromScratch #MorningRitual",
-    { platform: "instagram", imageUrl: bakeryImage },
+    "The person behind your morning loaf",
+    "Before the doors open, there’s someone here making something with care. A little patience, a familiar ritual, and a loaf made to share.\n\nMeet the people behind your morning.\n\n#DaybreakBakery #PeopleBehindTheBread",
+    {
+      platform: "instagram",
+      imageUrl: bakeryPeople,
+      imageAlt: "A fictional baker holding a sourdough loaf beside the bakery's bread shelves",
+      syntheticPreview: true,
+    },
     1,
   ),
   asset(
@@ -297,7 +310,14 @@ export const assets: Tables<"campaign_assets">[] = [
     "anchor_script",
     output.anchor.title,
     output.anchor.script,
-    { thumbnailUrl: bakeryImage },
+    {
+      visualType: "storyboard",
+      storyboard: [
+        { label: "Opening", text: "Flour falls across the workbench." },
+        { label: "The craft", text: "Hands shape a fresh loaf." },
+        { label: "Invitation", text: "The door opens in the morning light." },
+      ],
+    },
     3,
   ),
   asset(
@@ -305,7 +325,14 @@ export const assets: Tables<"campaign_assets">[] = [
     "short_script",
     output.shorts[0].title,
     output.shorts[0].script,
-    { thumbnailUrl: bakeryImage },
+    {
+      visualType: "storyboard",
+      storyboard: [
+        { label: "0–3s", text: "Flour falls onto the bench." },
+        { label: "3–12s", text: "Hands knead and shape the dough." },
+        { label: "12–20s", text: "A loaf comes out of the oven." },
+      ],
+    },
     4,
   ),
   asset(
@@ -319,9 +346,14 @@ export const assets: Tables<"campaign_assets">[] = [
   asset(
     "sample-image",
     "image",
-    "Morning at the bakery",
-    "A fictional sample photograph of hands shaping bread in warm morning light.",
-    { imageUrl: bakeryImage, generated: true },
+    "A loaf, ready to share",
+    "A fictional sample photograph of sliced sourdough on a pale tabletop with linen and crumbs.",
+    {
+      imageUrl: bakerySourdough,
+      imageAlt: "Overhead view of sliced sourdough on pale stone with a linen cloth",
+      generated: true,
+      syntheticPreview: true,
+    },
     6,
   ),
 ];

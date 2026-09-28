@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Monitor, Moon, Sun } from "lucide-react";
+import { useGuide } from "./useGuide";
 
 type Theme = "light" | "dark" | "system";
 const key = "palmer.studio.appearance.v1";
@@ -47,6 +48,13 @@ export function useStudioAppearance() {
   return { appearance, update };
 }
 export function StudioAppearanceScope() {
+  const { guide } = useGuide();
+  useEffect(() => {
+    document.documentElement.dataset.studioPalLane = guide.key ? guide.lane : "neutral";
+    return () => {
+      delete document.documentElement.dataset.studioPalLane;
+    };
+  }, [guide.key, guide.lane]);
   const { appearance } = useStudioAppearance();
   useEffect(() => {
     const query = window.matchMedia("(prefers-color-scheme: dark)");

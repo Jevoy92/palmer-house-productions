@@ -4,8 +4,8 @@ import type { PalName } from "@/lib/studio-model";
 import { useStudio } from "./StudioProvider";
 
 /**
- * The guide is chosen once (onboarding or settings) and themes the whole studio:
- * greeting, accent color, avatar, and the tips shown on each surface.
+ * The guide controls voice, avatar, tips, and small accent highlights.
+ * Light and dark surface colors stay independent of the chosen Pal.
  */
 export function useGuide(): {
   guide: GuideProfile;

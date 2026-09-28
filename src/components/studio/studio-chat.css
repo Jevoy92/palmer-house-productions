@@ -1,14 +1,14 @@
 /* Accepted Studio chat references: light lavender canvas, native draft cards, purple composer. */
 .studio-chat-workspace {
   --chat-accent: var(--studio-accent, #592b88);
-  --chat-soft: var(--studio-soft, #f5f2f8);
-  --chat-border: var(--studio-border, #e8e1ee);
+  --chat-soft: var(--studio-soft, #f5f5f5);
+  --chat-border: var(--studio-border, #e5e5e5);
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   height: 100%;
   min-height: 0;
-  color: var(--studio-text, #17112b);
-  background: var(--studio-canvas, #fcfaff);
+  color: var(--studio-text, #171717);
+  background: var(--studio-canvas, #ffffff);
 }
 .studio-chat-workspace.has-editor {
   grid-template-columns: minmax(0, 1fr) 370px;
@@ -30,9 +30,9 @@
 .studio-chat-icon {
   width: 42px;
   height: 42px;
-  border: 1px solid var(--chat-border, var(--studio-border, #e8e1ee));
+  border: 1px solid var(--chat-border, var(--studio-border, #e5e5e5));
   border-radius: 50%;
-  background: var(--studio-soft, #f5f2f8);
+  background: var(--studio-soft, #f5f5f5);
   display: inline-grid;
   place-items: center;
   color: inherit;
@@ -57,7 +57,7 @@
 }
 .studio-chat-pal small {
   font-size: 12px;
-  color: var(--studio-muted, #94859f);
+  color: var(--studio-muted, #737373);
 }
 .studio-chat-header-actions {
   margin-left: auto;
@@ -109,7 +109,7 @@
 .studio-chat-bubble {
   max-width: calc(100% - 42px);
   border-radius: 4px 22px 22px 22px;
-  background: var(--studio-soft, #f5f2f8);
+  background: var(--studio-soft, #f5f5f5);
   padding: 18px 21px;
   overflow-wrap: anywhere;
   min-width: 0;
@@ -118,7 +118,7 @@
   display: block;
   margin-bottom: 8px;
   font-size: 11px;
-  color: var(--studio-muted, #897b95);
+  color: var(--studio-muted, #737373);
 }
 .studio-chat-bubble > h2 {
   font-weight: 750;
@@ -136,7 +136,7 @@
   gap: 16px;
   flex-wrap: wrap;
   margin-left: 42px;
-  color: var(--studio-muted, #897b95);
+  color: var(--studio-muted, #737373);
 }
 .studio-chat-message-actions button {
   display: flex;
@@ -255,7 +255,7 @@
 .studio-chat-composer {
   flex-shrink: 0;
   padding: 12px 24px 10px;
-  background: var(--studio-canvas, #fcfaff);
+  background: var(--studio-canvas, #ffffff);
   position: relative;
 }
 .studio-composer-row {
@@ -266,7 +266,7 @@
   border-radius: 30px;
   background: var(--studio-surface, #fff);
   padding: 7px;
-  box-shadow: 0 4px 18px #33205204;
+  box-shadow: 0 4px 18px #00000004;
   max-width: 870px;
   margin: 0 auto;
 }
@@ -288,8 +288,8 @@
   color: var(--studio-action-text, #fff);
 }
 .studio-composer-send:disabled {
-  background: var(--studio-accent-soft, #e9e1f1);
-  color: #ad93c3;
+  background: var(--studio-soft, #f5f5f5);
+  color: var(--studio-muted, #737373);
 }
 .studio-composer-row textarea {
   flex: 1;
@@ -308,12 +308,12 @@
   color: inherit;
 }
 .studio-composer-row textarea::placeholder {
-  color: var(--studio-muted, #95879f);
+  color: var(--studio-muted, #737373);
 }
 .studio-chat-composer > p {
   text-align: center;
   font-size: 10px;
-  color: var(--studio-muted, #998da4);
+  color: var(--studio-muted, #737373);
   margin-top: 7px;
 }
 .studio-composer-intake-hidden {
@@ -326,7 +326,7 @@
   padding: 14px;
   margin: 0 auto 8px;
   max-width: 870px;
-  box-shadow: 0 8px 22px #25103a08;
+  box-shadow: 0 8px 22px #00000008;
 }
 .studio-composer-create {
   display: flex;
@@ -493,7 +493,7 @@
   align-items: center;
   gap: 4px;
   font-size: 9px;
-  color: #26756d;
+  color: var(--studio-accent);
   background: var(--chat-soft);
   padding: 5px 6px;
   border-radius: 8px;
@@ -594,9 +594,9 @@
   flex-direction: column;
   min-height: 0;
   min-width: 0;
-  background: var(--studio-canvas, #fcfaff);
-  border-left: 1px solid var(--studio-border, #e8e1ee);
-  color: var(--studio-text, #17112b);
+  background: var(--studio-canvas, #ffffff);
+  border-left: 1px solid var(--studio-border, #e5e5e5);
+  color: var(--studio-text, #171717);
 }
 .studio-editor-header {
   display: flex;
@@ -672,7 +672,7 @@
 .studio-editor-label input,
 .studio-editor-label select {
   display: block;
-  border: 1px solid var(--studio-border, #e8e1ee);
+  border: 1px solid var(--studio-border, #e5e5e5);
   border-radius: 12px;
   padding: 13px 12px;
   line-height: 1.75;
@@ -785,13 +785,13 @@
   justify-content: center;
   gap: 8px;
   min-height: 42px;
-  border: 1px solid var(--studio-border, #e8e1ee);
+  border: 1px solid var(--studio-border, #e5e5e5);
   border-radius: 12px;
   padding: 10px 15px;
   font-size: 12px;
   font-weight: 500;
   background: var(--studio-surface, #fff);
-  color: var(--studio-text, #17112b);
+  color: var(--studio-text, #171717);
 }
 .studio-chat-button.is-primary {
   background: var(--studio-accent, #592b88);
@@ -1052,7 +1052,7 @@
     position: fixed;
     inset: 0;
     z-index: 70;
-    background: #17112b70;
+    background: #00000070;
     backdrop-filter: blur(4px);
   }
   .studio-chat-editor.is-sheet {
@@ -1061,7 +1061,7 @@
     inset: 20px 0 0;
     border: 0;
     border-radius: 25px 25px 0 0;
-    box-shadow: 0 -15px 50px #10071f22;
+    box-shadow: 0 -15px 50px #00000022;
     max-width: 640px;
     margin-left: auto;
     outline: none;

@@ -1,23 +1,16 @@
 import { zodResponseFormat } from "openai/helpers/zod";
 import type { z } from "zod";
+import { studioAIConfig } from "./studio-ai-config.server";
 
 type ImagePart = { type: "input_image"; image_url: string; detail?: "low" | "high" | "auto" };
 type TextPart = { type: "input_text"; text: string };
 type StudioInput = string | Array<{ role: "user"; content: Array<TextPart | ImagePart> }>;
 
-/**
- * Structured AI generation through the Lovable AI Gateway.
- * Uses the OpenAI-compatible chat completions endpoint, so no external API key is needed.
+/** Structured generation uses server credentials and an OpenAI-compatible endpoint.
+ * Model configuration is separate from the workspace's durable knowledge store.
  */
-/**
- * Models the Studio runs on. The previous default (openai/gpt-5-mini) is
- * deprecated in the gateway catalog; Gemini Flash is current, cheaper and
- * keeps strict structured output working on this chat-completions path.
- */
-export const STUDIO_CHAT_MODEL =
-  process.env["STUDIO_CHAT_MODEL"] || process.env["STUDIO_AI_MODEL"] || "google/gemini-3.8-flash";
-export const STUDIO_BUILD_MODEL =
-  process.env["STUDIO_BUILD_MODEL"] || process.env["STUDIO_AI_MODEL"] || "google/gemini-3.8-flash";
+export const STUDIO_CHAT_MODEL = studioAIConfig().chatModel;
+export const STUDIO_BUILD_MODEL = studioAIConfig().buildModel;
 
 export async function parseStructured<T extends z.ZodTypeAny>(
   schema: T,
@@ -31,7 +24,7 @@ export async function parseStructured<T extends z.ZodTypeAny>(
   const { default: OpenAI } = await import("openai");
   const client = new OpenAI({
     apiKey: key,
-    baseURL: process.env["AI_GATEWAY_URL"] || "https://ai.gateway.lovable.dev/v1",
+    baseURL: studioAIConfig().baseURL,
   });
 
   const userContent =
@@ -49,7 +42,7 @@ export async function parseStructured<T extends z.ZodTypeAny>(
         );
 
   const completion = await client.chat.completions.create({
-    model: options?.model || STUDIO_CHAT_MODEL,
+    model: options?.model || studioAIConfig().chatModel,
     messages: [
       { role: "system", content: instructions },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -67,19 +60,16 @@ export async function parseStructured<T extends z.ZodTypeAny>(
 export async function generateStudioImage(prompt: string) {
   const key = process.env["LOVABLE_API_KEY"];
   if (!key) throw new Error("Image generation is not configured for this project.");
-  const response = await fetch(
-    `${(process.env["AI_GATEWAY_URL"] || "https://ai.gateway.lovable.dev/v1").replace(/\/$/, "")}/chat/completions`,
-    {
-      method: "POST",
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: process.env["STUDIO_IMAGE_MODEL"] || "google/gemini-3.1-flash-image",
-        modalities: ["image", "text"],
-        messages: [{ role: "user", content: prompt }],
-      }),
-      signal: AbortSignal.timeout(120000),
-    },
-  );
+  const response = await fetch(`${studioAIConfig().baseURL.replace(/\/$/, "")}/chat/completions`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      model: studioAIConfig().imageModel,
+      modalities: ["image", "text"],
+      messages: [{ role: "user", content: prompt }],
+    }),
+    signal: AbortSignal.timeout(120000),
+  });
   if (!response.ok) {
     if (response.status === 429)
       throw new Error("Image generation is busy. Please try again shortly.");

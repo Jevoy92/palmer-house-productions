@@ -1690,6 +1690,12 @@ export type Database = {
           },
         ]
       }
+      workspace_memories: {
+        Row: { id: string; workspace_id: string; title: string; content: string; revision: number; created_by: string; created_at: string; updated_at: string }
+        Insert: { id?: string; workspace_id: string; title: string; content: string; revision?: number; created_by: string; created_at?: string; updated_at?: string }
+        Update: { title?: string; content?: string }
+        Relationships: []
+      }
       studio_pal_profiles: {
         Row: {
           id: string
@@ -1999,6 +2005,18 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      save_workspace_memory: {
+        Args: { target_workspace_id: string; memory_id: string | null; memory_title: string; memory_content: string; expected_revision: number | null }
+        Returns: Json
+      }
+      forget_workspace_memory: {
+        Args: { target_workspace_id: string; memory_id: string; expected_revision: number }
+        Returns: undefined
+      }
+      forget_workspace_legacy_memory: {
+        Args: { target_workspace_id: string; expected_value: Json }
+        Returns: undefined
+      }
       create_studio_feed_discussion: {
         Args: { target_workspace_id: string; post_value: Json; replies_value: Json }
         Returns: string

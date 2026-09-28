@@ -1,18 +1,40 @@
 /* Studio tokens are independent of the public website palette. */
+/* Surfaces belong to the theme. Only small accents belong to the selected Pal. */
 .studio-app {
-  --studio-canvas: #fcfaff;
-  --studio-surface: #fff;
-  --studio-soft: #f5f1f9;
-  --studio-accent: #57258a;
-  --studio-action-text: #fff;
-  --studio-accent-soft: #eee5fa;
-  --studio-text: #17102a;
-  --studio-muted: #81748f;
-  --studio-border: #e6deee;
-  --studio-user: #ebcaff;
-  --studio-shadow: 0 8px 24px #35185107;
+  --studio-canvas: #ffffff;
+  --studio-surface: #ffffff;
+  --studio-soft: #f4f4f4;
+  --studio-text: #1b1b1b;
+  --studio-muted: #696969;
+  --studio-border: #e3e3e3;
+  --studio-shadow: 0 8px 24px #00000007;
+  --studio-action-text: #ffffff;
+  --spotlight: #67369d;
+  --spotlight-ink: #67369d;
+  --spotlight-soft: #f4eff9;
+  --reel: #a34b17;
+  --reel-ink: #a34b17;
+  --reel-soft: #faf2eb;
+  --system: #08756c;
+  --system-ink: #08756c;
+  --system-soft: #edf6f4;
+  --evergreen: #486c32;
+  --evergreen-ink: #486c32;
+  --evergreen-soft: #f0f5ec;
+  --studio-accent: var(--spotlight-ink);
+  --studio-accent-soft: var(--spotlight-soft);
+  --studio-user: var(--studio-accent-soft);
   --background: var(--studio-surface);
   --foreground: var(--studio-text);
+  --card: var(--studio-surface);
+  --card-foreground: var(--studio-text);
+  --popover: var(--studio-surface);
+  --popover-foreground: var(--studio-text);
+  --accent: var(--studio-soft);
+  --accent-foreground: var(--studio-text);
+  --primary: var(--studio-accent);
+  --primary-foreground: var(--studio-action-text);
+  --ring: var(--studio-accent);
   --ink: var(--studio-text);
   --secondary: var(--studio-soft);
   --muted: var(--studio-soft);
@@ -21,32 +43,52 @@
   --input: var(--studio-border);
   --mist: var(--studio-soft);
   --cream: var(--studio-surface);
-  --spotlight: var(--studio-accent);
-  --spotlight-soft: var(--studio-accent-soft);
-  --spotlight-ink: var(--studio-accent);
   color: var(--studio-text);
   background: var(--studio-canvas);
   font-family: "Satoshi", var(--font-body), sans-serif;
 }
 html[data-studio-theme="dark"] .studio-app {
   color-scheme: dark;
-  --studio-canvas: #111014;
-  --studio-surface: #1c1a21;
-  --studio-soft: #25222b;
-  --studio-accent: #dcacfb;
-  --studio-action-text: #241031;
-  --studio-accent-soft: #312141;
-  --studio-text: #f7f3fb;
-  --studio-muted: #b4a8c2;
-  --studio-border: #3a3443;
-  --studio-user: #dfb6f7;
+  --studio-canvas: #101010;
+  --studio-surface: #191919;
+  --studio-soft: #242424;
+  --studio-text: #f5f5f5;
+  --studio-muted: #acacac;
+  --studio-border: #343434;
   --studio-shadow: 0 8px 28px #0002;
-  --reel-ink: #ffb974;
-  --evergreen-ink: #b8d992;
-  --system-ink: #83d9ce;
-  --reel-soft: #38271d;
-  --evergreen-soft: #253025;
-  --system-soft: #1b3231;
+  --studio-action-text: #161616;
+  --spotlight: #cfb2ed;
+  --spotlight-ink: #cfb2ed;
+  --spotlight-soft: #2d2634;
+  --reel: #edb07c;
+  --reel-ink: #edb07c;
+  --reel-soft: #33291f;
+  --system: #71cbbf;
+  --system-ink: #71cbbf;
+  --system-soft: #202e2c;
+  --evergreen: #aacc94;
+  --evergreen-ink: #aacc94;
+  --evergreen-soft: #272f23;
+}
+html[data-studio-pal-lane="reel"] .studio-app {
+  --studio-accent: var(--reel-ink);
+  --studio-accent-soft: var(--reel-soft);
+}
+html[data-studio-pal-lane="system"] .studio-app {
+  --studio-accent: var(--system-ink);
+  --studio-accent-soft: var(--system-soft);
+}
+html[data-studio-pal-lane="evergreen"] .studio-app {
+  --studio-accent: var(--evergreen-ink);
+  --studio-accent-soft: var(--evergreen-soft);
+}
+html[data-studio-pal-lane="neutral"] .studio-app {
+  --studio-accent: var(--studio-text);
+  --studio-accent-soft: var(--studio-soft);
+  --studio-action-text: var(--studio-surface);
+}
+.studio-app :focus-visible {
+  outline-color: var(--studio-accent);
 }
 .studio-app .bg-white {
   background-color: var(--studio-surface);
@@ -72,14 +114,14 @@ html[data-studio-theme="dark"] .studio-app {
 }
 .studio-app .primary-action {
   background: var(--studio-accent);
-  color: var(--studio-surface);
+  color: var(--studio-action-text);
   border-color: var(--studio-accent);
   min-height: 44px;
   font-size: 14px;
   border-radius: 13px;
 }
 html[data-studio-theme="dark"] .studio-app .primary-action {
-  color: #241031;
+  color: var(--studio-action-text);
 }
 .studio-app .secondary-action {
   background: var(--studio-surface);
@@ -229,7 +271,7 @@ html[data-studio-theme="dark"] .studio-app .primary-action {
 .studio-create-action {
   margin: 0 0 20px;
   background: var(--studio-accent);
-  color: var(--studio-surface);
+  color: var(--studio-action-text);
   border: 0;
   border-radius: 13px;
   height: 44px;
@@ -238,7 +280,7 @@ html[data-studio-theme="dark"] .studio-app .primary-action {
   font-weight: 650;
 }
 html[data-studio-theme="dark"] .studio-create-action {
-  color: #23122f;
+  color: var(--studio-action-text);
 }
 .studio-nav-items {
   display: grid;
@@ -332,7 +374,10 @@ html[data-studio-theme="dark"] .studio-create-action {
   color: var(--studio-text);
 }
 .studio-navigation-drawer,
-.studio-edit-dialog {
+.studio-edit-dialog,
+.studio-setup-dialog,
+.studio-confirm-dialog,
+.studio-detail-drawer {
   background: var(--studio-surface);
   color: var(--studio-text);
 }
@@ -489,7 +534,7 @@ html[data-studio-motion="reduce"] .studio-app *::after {
     height: 66px;
     border: 1px solid var(--studio-border);
     border-radius: 25px;
-    box-shadow: 0 4px 28px #31114712;
+    box-shadow: 0 4px 28px #00000012;
     z-index: 50;
     background: var(--studio-surface);
     display: grid;
@@ -528,11 +573,29 @@ html[data-studio-motion="reduce"] .studio-app *::after {
 }
 
 html[data-studio-theme="dark"] .studio-app .bg-ink {
-  background-color: #2c223c;
+  background-color: #2b2b2b;
 }
 
 /* Keep completion feedback below navigation, including on narrow screens. */
 html[data-studio-theme] [data-sonner-toaster][data-y-position="top"] {
   --offset-top: 84px !important;
   --mobile-offset-top: 80px !important;
+}
+
+/* Legacy lane-colored buttons use the same accessible foreground as newer controls. */
+.studio-app :is(.bg-spotlight, .bg-reel, .bg-system, .bg-evergreen).text-white {
+  color: var(--studio-action-text);
+}
+.studio-app .primary-action.bg-ink {
+  background-color: var(--studio-text);
+  border-color: var(--studio-text);
+  color: var(--studio-surface);
+}
+
+html[data-studio-theme] .studio-navigation-backdrop {
+  background: #00000070;
+}
+.studio-app .studio-skip-link {
+  background: var(--studio-accent);
+  color: var(--studio-action-text);
 }

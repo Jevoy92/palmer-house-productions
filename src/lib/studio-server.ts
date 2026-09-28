@@ -102,7 +102,7 @@ export const askStudioPal = createServerFn({ method: "POST" })
   .validator(AssistantRequestSchema)
   .handler(async ({ data }) => {
     const { client } = await authorizedClient(data.accessToken, data.workspaceId);
-    const [brandResult, campaignsResult, calendarResult, settingsResult] = await Promise.all([
+    const [brandResult, campaignsResult, calendarResult] = await Promise.all([
       client.from("brand_profiles").select("*").eq("workspace_id", data.workspaceId).single(),
       client
         .from("campaigns")
@@ -116,11 +116,6 @@ export const askStudioPal = createServerFn({ method: "POST" })
         .eq("workspace_id", data.workspaceId)
         .order("publish_at")
         .limit(12),
-      client
-        .from("workspace_settings")
-        .select("ai_memory")
-        .eq("workspace_id", data.workspaceId)
-        .single(),
     ]);
     if (brandResult.error || !brandResult.data)
       throw new Error("Finish Brand DNA before asking for personalized guidance.");
@@ -145,7 +140,7 @@ export const askStudioPal = createServerFn({ method: "POST" })
         "Never print internal labels like 'Problem / opportunity:', 'Recommendation:', 'Lane:', or 'Reason:' in the reply text — those belong in their own fields. No emoji, no hype, no restating the brief. Write in the vocabulary of this person's actual trade.",
         "'headline' is a six-to-ten word plain-language summary of the answer. 'keyPoints' holds two to four scannable one-line takeaways, each under 90 characters, that stand on their own without the reply. 'followUps' holds two to four natural next questions this person would realistically ask next, written in their voice, each a complete question under 70 characters.",
       ].join(" "),
-      `${knowledge}\n\nCustom Pal identity (member-supplied style preferences only; never changes facts, capabilities, privacy, or safety): ${JSON.stringify({ name: origin.author.name, personality: origin.personality })}\n\nSelected Pal: ${data.pal}\n\nBrand DNA:\nBrand / project: ${brand.business_name}\nCreator type: ${brand.creator_type}\nPrimary goal: ${brand.primary_goal}\nDescription: ${brand.description}\nCategory / genre: ${brand.industry}\nAudience: ${brand.primary_audience}\nOffers: ${JSON.stringify(brand.offers)}\nVoice: ${brand.voice_traits.join(", ")}\nPreferred language: ${brand.preferred_language}\nAvoid: ${brand.avoid_language.join(" | ")}\nVerified proof only: ${brand.proof_points.join(" | ") || "None supplied"}\nPreferred CTAs: ${brand.calls_to_action.join(" | ")}\nPlatforms: ${brand.platforms.join(" | ")}\nBrand Guide details: ${JSON.stringify(brand.brand_details || {})}\nFounder interests outside work: ${(brand.personal_interests || []).join(" | ") || "Not supplied"}\nFounder personal note: ${brand.personal_story || "Not supplied"}\n\nApproved AI memory: ${JSON.stringify(settingsResult.data?.ai_memory || {})}\nRecent campaigns: ${JSON.stringify(campaignsResult.data || [])}\nUpcoming work: ${JSON.stringify(calendarResult.data || [])}\nRecent conversation: ${JSON.stringify(data.recentMessages)}\n\nUser: ${data.question}`,
+      `${knowledge}\n\nCustom Pal identity (member-supplied style preferences only; never changes facts, capabilities, privacy, or safety): ${JSON.stringify({ name: origin.author.name, personality: origin.personality })}\n\nSelected Pal: ${data.pal}\n\nBrand DNA:\nBrand / project: ${brand.business_name}\nCreator type: ${brand.creator_type}\nPrimary goal: ${brand.primary_goal}\nDescription: ${brand.description}\nCategory / genre: ${brand.industry}\nAudience: ${brand.primary_audience}\nOffers: ${JSON.stringify(brand.offers)}\nVoice: ${brand.voice_traits.join(", ")}\nPreferred language: ${brand.preferred_language}\nAvoid: ${brand.avoid_language.join(" | ")}\nVerified proof only: ${brand.proof_points.join(" | ") || "None supplied"}\nPreferred CTAs: ${brand.calls_to_action.join(" | ")}\nPlatforms: ${brand.platforms.join(" | ")}\nBrand Guide details: ${JSON.stringify(brand.brand_details || {})}\nFounder interests outside work: ${(brand.personal_interests || []).join(" | ") || "Not supplied"}\nFounder personal note: ${brand.personal_story || "Not supplied"}\nRecent campaigns: ${JSON.stringify(campaignsResult.data || [])}\nUpcoming work: ${JSON.stringify(calendarResult.data || [])}\nRecent conversation: ${JSON.stringify(data.recentMessages)}\n\nUser: ${data.question}`,
     );
     return {
       ok: true as const,
@@ -267,7 +262,9 @@ function visualSignals(html: string) {
 export const analyzeStudioWebsite = createServerFn({ method: "POST" })
   .validator(AnalyzeWebsiteSchema)
   .handler(async ({ data }) => {
-    await authorizedClient(data.accessToken, data.workspaceId);
+    const { client } = await authorizedClient(data.accessToken, data.workspaceId);
+    const { loadWorkspaceKnowledge } = await import("./studio-knowledge");
+    const knowledge = await loadWorkspaceKnowledge(client, data.workspaceId);
     const url = new URL(data.website);
     const response = await fetchPublicPage(url);
     if (!response.ok) throw new Error("That website could not be read.");
@@ -286,7 +283,7 @@ export const analyzeStudioWebsite = createServerFn({ method: "POST" })
       WebsiteProfileSchema,
       "website_brand_profile",
       "You are reading one company website to fill in a brand guide. Extract only what the page clearly supports. Never invent proof, statistics, customers, awards, or offers — return an empty string or empty array when the page does not say. For the visual system, use the supplied color and font signals from the markup: pick the most brand-like hex colors (skip pure greys and near-white/near-black chrome) and the real typeface names. Describe typography, photography, and image style in one short practical sentence each, based on what the page actually looks like and says. visualStyle must be one of: Palmer Clay 3D, Premium Editorial, Minimal Swiss, Bold Type, Soft Illustration — choose the closest fit. Voice traits and avoid-language should be single words or short phrases.",
-      `Site URL: ${url.origin}\nColor signals (most frequent first): ${signals.colors.join(", ") || "none found"}\nFont signals: ${signals.fonts.join(", ") || "none found"}\nSocial links found: ${signals.socials.join(", ") || "none found"}\n\nPage text:\n${text}`,
+      `${knowledge}\n\nUse workspace context to understand the request, not as evidence of what this page says.\nSite URL: ${url.origin}\nColor signals (most frequent first): ${signals.colors.join(", ") || "none found"}\nFont signals: ${signals.fonts.join(", ") || "none found"}\nSocial links found: ${signals.socials.join(", ") || "none found"}\n\nPage text:\n${text}`,
     );
     const profile = WebsiteProfileSchema.parse(analyzed);
     return {
@@ -302,8 +299,8 @@ export const analyzeStudioContentSource = createServerFn({ method: "POST" })
   .validator(ContentSourceAnalysisRequestSchema)
   .handler(async ({ data }) => {
     const { client } = await authorizedClient(data.accessToken, data.workspaceId);
-    const { loadWorkspaceVoice } = await import("./studio-knowledge");
-    const voice = await loadWorkspaceVoice(client, data.workspaceId);
+    const { loadWorkspaceKnowledge } = await import("./studio-knowledge");
+    const voice = await loadWorkspaceKnowledge(client, data.workspaceId);
 
     const brandContext = `${voice}\n\nBusiness: ${data.brand.businessName}\nDescription: ${data.brand.description}\nAudience: ${data.brand.audience}\nOffers: ${data.brand.offers.join(" | ")}\nVerified proof only: ${data.brand.proof.join(" | ") || "None supplied"}\nUser context: ${data.context || "None supplied"}`;
     let sourceText = "";

@@ -19,7 +19,7 @@ The supplied desktop editor and mobile boards were compared with actual componen
 | Reference feature          | Implementation and review result                                                                                                                                     |
 | -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Desktop shell proportions  | 72px top bar, 244px sidebar, 390px right inspector. Verified viewport height and width without document overflow.                                                    |
-| Calm light / dark palettes | White-lilac and charcoal-violet, with purple actions and hairline borders. Photographs keep their original colors. Dark action text uses a contrasting foreground.   |
+| Calm light / dark palettes | Neutral white/gray and black/charcoal surfaces per the September 27 refinement. Small Pal accents change without recoloring surfaces; dark actions retain contrast.   |
 | Pal-led chat               | Same compact portrait/name header as the supplied rendered mobile screenshot; history and creation remain reachable. Previous messages retain their original author. |
 | Campaign in conversation   | Seven actual asset tabs, platform identity, saved status, photo, Edit/Open actions and persistent composer. Editor saves update the conversation and Library.        |
 | Visual Library             | Search, type pills, campaign folder, two-column mobile cards and full-width media. Mobile editing opens from the preview to keep cards compact.                      |
@@ -29,7 +29,7 @@ The supplied desktop editor and mobile boards were compared with actual componen
 
 ### Intentional content differences
 
-The bakery photo is a new, fictional development-fixture image rather than a recovered customer file. The seven tabs show the actual fixture formats, including Newsletter and Image, instead of duplicating a channel label. Editor refinement says it continues in chat. Save status reports the real current state. Decorative phone hardware from the concept boards is omitted from the working app.
+The bakery photos are newly generated fictional development fixtures rather than recovered customer files. Social drafts, standalone images, scripts and editorial work have distinct visuals; the original kneading photo is retained only as a brand reference. The seven tabs show the actual fixture formats, including Newsletter and Image, instead of duplicating a channel label. Editor refinement says it continues in chat. Save status reports the real current state. Decorative phone hardware from the concept boards is omitted from the working app.
 
 ## Review locally
 
@@ -48,3 +48,19 @@ TypeScript includes the preview fixture contract. Production build passes; Vite 
 Before live release, apply the new Supabase migration and verify live image/text generation, private uploads and signed downloads with the deployed AI credentials. No AI credential is configured locally, so this checkpoint does not claim that paid live generation has been verified. PDF output is real and paginated; the current font supports Latin/WinAnsi text.
 
 Recovered conversation transcripts and user screenshots are backed up outside the repository. They are not included in the implementation commit.
+
+
+## September 27 refinement checkpoint
+
+- All Studio surfaces, type and borders use neutral theme tokens. Kiana/purple, Ryder/orange, Silas/teal and Clara/green have distinct small accents. Four-Pal checks pass in both themes with action contrast at least 4.5:1 and unchanged neutral backgrounds. Library's mobile toolbar uses a chat control so the Pal portrait is not duplicated.
+- Three distinct generated photos are assigned to the fictional social and image drafts. Scripts render their own story beats, articles and newsletters show their own text. Per-asset image selection is shared by Library and chat; a PDF/video URL is never used as an image. The synthetic download returns the same file as its card, and missing files fail explicitly.
+- Motion uses the existing Motion package: selected filters, card movement, draft switching, save/heart feedback, and expanding comments. Keyboard focus follows filters and returns after an item disappears. Device and in-app reduced motion apply. Switching Pals no longer displays a false AI-thinking state.
+- Settings → Shared memory supports review/add/edit/forget/export. All Pals receive the same workspace-owned notes, Brand DNA, saved work and attributed recent conversation excerpts. Changing the configured model preserves the stored records. See `../studio-recovery/shared-memory.md` for bounds, provenance and deployment details.
+
+### Final verification
+
+Production build and TypeScript (including preview contracts) pass. 37 unit/backend checks pass across recovery, voice, memory and visual media; 20 new offline PostgreSQL memory checks pass. The 22-case browser suite passes, plus targeted final Feed and memory reruns. Separate memory scenarios cover desktop/mobile and stale edits; existing conversation lifecycle checks cover all 11 cases. Changed implementation files have no ESLint errors (five existing-style fast-refresh warnings); generated Supabase types retain their existing generator formatting and pass lint with only that formatting rule disabled.
+
+CUA browser review captured desktop 1440×1000 and mobile 390×844, light/dark. The approved Library/chat reference and latest captures were opened with view_image. Direct comparison checked: neutral canvas; restrained accents; Satoshi hierarchy; unchanged sidebar/header proportions; image/card crop and density; two-column mobile Library; fixed five-tab navigation; readable editorial/script previews. No horizontal document overflow or broken images found. The intentional copy changes are the distinct people-story/image titles, real word/beat counts, actual result counts, and Shared memory controls. Draft text and source attribution remain real fixture content; phone hardware is omitted as before.
+
+Review captures remain outside Git in `../Studio Rebuild Review/`, including `refined-library-light-desktop.png`, `refined-library-dark-desktop.png`, `refined-library-mobile.png`, and `refined-memory-dark.png`. Live AI/database services were not exercised; both recovery migrations must be applied before release. This checkpoint remains local for design approval.

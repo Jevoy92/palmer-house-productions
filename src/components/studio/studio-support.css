@@ -771,7 +771,7 @@
 }
 
 html[data-studio-theme="dark"] .studio-support-button.is-primary {
-  color: #241031;
+  color: var(--studio-action-text);
 }
 .studio-calendar-heading,
 .studio-calendar-footer {

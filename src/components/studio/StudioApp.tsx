@@ -1,3 +1,4 @@
+import { StudioMemory } from "./StudioMemory";
 import { StudioBrandGuide } from "./StudioBrandGuide";
 import { StudioFeed } from "./StudioFeed";
 import { StudioLibrary } from "./StudioLibrary";
@@ -15,6 +16,7 @@ import {
   Activity,
   ArrowRight,
   Building2,
+  BrainCircuit,
   CalendarDays,
   Captions,
   Check,
@@ -1734,26 +1736,25 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
       .then(() => toast.success("Complete campaign copied."));
   return (
     <div className="mx-auto max-w-[88rem] pb-24">
-      <header
-        className="relative overflow-hidden rounded-[2rem] px-6 py-7 text-white sm:px-9 sm:py-8"
-        style={{ background: lane.ink }}
-      >
+      <header className="relative overflow-hidden rounded-[2rem] border border-border bg-white px-6 py-7 sm:px-9 sm:py-8">
         <div className="max-w-5xl">
           <div className="flex flex-wrap items-center gap-3">
-            <p className="font-mono text-[11px] uppercase tracking-[.2em] text-white/85">
+            <p className="font-mono text-[11px] uppercase tracking-[.2em] text-muted-foreground">
               {lane.label} campaign
             </p>
-            <span className="rounded-full border border-white/25 px-3 py-1 font-mono text-[11px] uppercase tracking-[.15em] text-white/75">
+            <span className="rounded-full border border-border px-3 py-1 font-mono text-[11px] uppercase tracking-[.15em] text-muted-foreground">
               {campaign.status}
             </span>
-            <span className="font-mono text-[11px] uppercase tracking-[.15em] text-white/85">
+            <span className="font-mono text-[11px] uppercase tracking-[.15em] text-muted-foreground">
               {approved}/{items.length} assets approved
             </span>
           </div>
           <h1 className="mt-4 max-w-4xl text-[clamp(1.9rem,3vw,3.1rem)] font-extrabold leading-[1] tracking-[-.045em]">
             {clampWords(campaign.title, 14)}
           </h1>
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-white/85">{campaign.goal}</p>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            {campaign.goal}
+          </p>
         </div>
       </header>
 
@@ -1770,7 +1771,9 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
               onClick={() => setStage(item.id)}
               aria-current={active ? "step" : undefined}
               className={`inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border px-4 text-[13px] font-bold transition ${
-                active ? "border-transparent text-white" : "border-border bg-white hover:bg-mist"
+                active
+                  ? "border-transparent text-[var(--studio-action-text)]"
+                  : "border-border bg-white hover:bg-mist"
               }`}
               style={active ? { background: lane.ink } : undefined}
             >
@@ -2249,7 +2252,9 @@ function ShortFormResult({
             key={`${item.title}-${index}`}
             onClick={() => setSelected(index)}
             className={`min-h-11 shrink-0 rounded-full border px-4 text-sm font-bold ${
-              selected === index ? "border-transparent text-white" : "border-border bg-white"
+              selected === index
+                ? "border-transparent text-[var(--studio-action-text)]"
+                : "border-border bg-white"
             }`}
             style={selected === index ? { background: lane.color } : undefined}
           >
@@ -2710,7 +2715,9 @@ function BlogWrittenResult({
             key={item.id}
             onClick={() => setTab(item.id)}
             className={`inline-flex min-h-10 items-center gap-2 rounded-full border px-4 text-sm font-bold ${
-              tab === item.id ? "border-transparent text-white" : "border-border bg-white"
+              tab === item.id
+                ? "border-transparent text-[var(--studio-action-text)]"
+                : "border-border bg-white"
             }`}
             style={tab === item.id ? { background: lane.color } : undefined}
           >
@@ -4590,7 +4597,7 @@ function SettingsView() {
     useStudio();
 
   const { guide, setGuide } = useGuide();
-  const [tab, setTab] = useState<"workspace" | "brands" | "team" | "usage" | "account">(
+  const [tab, setTab] = useState<"workspace" | "memory" | "brands" | "team" | "usage" | "account">(
     "workspace",
   );
   const [draft, setDraft] = useState({
@@ -4609,6 +4616,7 @@ function SettingsView() {
   }
   const tabs = [
     ["workspace", Settings, "Workspace"],
+    ["memory", BrainCircuit, "Shared memory"],
     ["brands", Gauge, "Brand DNA"],
     ["team", Users, "Team"],
     ["usage", CreditCard, "Usage & plan"],
@@ -4702,6 +4710,7 @@ function SettingsView() {
                 </div>
               </div>
             ) : null}
+            {tab === "memory" ? <StudioMemory key={workspace?.id} /> : null}
             {tab === "team" ? (
               <div>
                 <SettingHeading title="Team" body="The people who have access to this workspace." />

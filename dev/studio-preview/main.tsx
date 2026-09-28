@@ -12,8 +12,10 @@ import {
 } from "@tanstack/react-router";
 import { Toaster, toast } from "sonner";
 import type { Session } from "@supabase/supabase-js";
+import type { StudioMemoryEntry } from "@/lib/studio-memory";
 import type { StudioView } from "@/lib/studio-model";
 import { StudioPage } from "@/components/studio/StudioApp";
+import { studioAssetMedia } from "@/components/studio/StudioAssetVisual";
 import { StudioContext, useStudio } from "@/components/studio/StudioProvider";
 import "@/styles.css";
 import "./preview.css";
@@ -212,10 +214,16 @@ function FixtureProvider({
   const [feedComments, setFeedComments] = useState(empty ? [] : f.feedComments);
   const [feedReactions, setFeedReactions] = useState<StudioFeedReaction[]>([]);
   const artifactUrls = useRef(new Map<string, string>());
-  const getArtifactUrl = useCallback(
-    async (id: string) => artifactUrls.current.get(id) || f.bakeryImage,
-    [],
-  );
+  const artifactAssets = useRef(assets);
+  artifactAssets.current = assets;
+  const getArtifactUrl = useCallback(async (id: string) => {
+    const generated = artifactUrls.current.get(id);
+    if (generated) return generated;
+    const asset = artifactAssets.current.find((item) => item.id === id);
+    const media = asset ? studioAssetMedia(asset) : "";
+    if (media) return media;
+    throw new Error("This preview asset has no downloadable file.");
+  }, []);
   const [serviceRequests, setServiceRequests] = useState<ContextValue["serviceRequests"]>([]);
   const stamp = () => new Date().toISOString();
   const localId = () => `synthetic-${crypto.randomUUID()}`;
@@ -243,7 +251,69 @@ function FixtureProvider({
     [resolver],
   );
 
+  const [workspaceMemories, setWorkspaceMemories] = useState<StudioMemoryEntry[]>(
+    state === "empty"
+      ? []
+      : [
+          {
+            id: "10000000-0000-4000-8000-000000000001",
+            workspace_id: f.workspaceId,
+            title: "Morning audience",
+            content: "Regular customers stop in before work. Keep weekday offers useful and brief.",
+            revision: 1,
+            created_by: f.userId,
+            created_at: f.now,
+            updated_at: f.now,
+          },
+        ],
+  );
   const value: ContextValue = {
+    workspaceMemories,
+    legacyMemory: {},
+    memoryLoading: false,
+    memoryError: null,
+    memoryAvailable: true,
+    refreshMemory: async () => {
+      await complete();
+    },
+    saveMemory: async (input) => {
+      await complete();
+      const current = workspaceMemories.find((entry) => entry.id === input.id);
+      if (input.id && (!current || current.revision !== input.expectedRevision))
+        throw new Error("Memory changed. Reload before saving.");
+      const saved = {
+        id: input.id || crypto.randomUUID(),
+        workspace_id: f.workspaceId,
+        title: input.title,
+        content: input.content,
+        revision: (current?.revision || 0) + 1,
+        created_by: f.userId,
+        created_at: current?.created_at || new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+      setWorkspaceMemories((entries) => [
+        ...entries.filter((entry) => entry.id !== saved.id),
+        saved,
+      ]);
+      return saved;
+    },
+    forgetMemory: async (id, revision) => {
+      await complete();
+      if (workspaceMemories.find((entry) => entry.id === id)?.revision !== revision)
+        throw new Error("Memory changed. Reload before forgetting.");
+      setWorkspaceMemories((entries) => entries.filter((entry) => entry.id !== id));
+    },
+    forgetLegacyMemory: async () => {
+      await complete();
+    },
+    exportMemory: async () => ({
+      format: "palmer-house-workspace-memory",
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      workspaceId: f.workspaceId,
+      entries: workspaceMemories,
+      legacyUnreviewedNotes: {},
+    }),
     loading: state === "loading",
     loadError:
       state === "error"
@@ -358,7 +428,8 @@ function FixtureProvider({
     generateArtifact: async (input) => {
       await complete();
       const id = crypto.randomUUID();
-      let url = f.bakeryImage;
+      // Fixed local sample output; this harness never calls an image model.
+      let url = studioAssetMedia(f.assets.find((asset) => asset.kind === "image")!);
       const storagePath = `${f.workspaceId}/generated/${id}.${input.kind === "pdf" ? "pdf" : "png"}`;
       if (input.kind === "pdf") {
         const { PDFDocument, StandardFonts } = await import("pdf-lib");
@@ -392,6 +463,7 @@ function FixtureProvider({
             storagePath,
             mimeType: input.kind === "pdf" ? "application/pdf" : "image/png",
             generated: true,
+            syntheticPreview: true,
             ...(input.kind === "image" ? { imageUrl: url } : {}),
           },
           created_at: stamp(),

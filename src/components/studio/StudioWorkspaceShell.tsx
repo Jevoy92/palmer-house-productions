@@ -299,8 +299,12 @@ export function StudioWorkspaceShell({
             <Menu size={21} />
           </button>
           <span>Palmer House Studio</span>
-          <Link to="/studio/conversations" aria-label="Open chat">
-            <PalAvatar pal={guide} size="sm" />
+          <Link
+            to="/studio/conversations"
+            aria-label="Open chat"
+            className={view === "library" ? "studio-icon-button" : undefined}
+          >
+            {view === "library" ? <MessageCircle size={21} /> : <PalAvatar pal={guide} size="sm" />}
           </Link>
         </div>
       )}

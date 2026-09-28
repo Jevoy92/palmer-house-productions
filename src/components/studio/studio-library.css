@@ -40,14 +40,25 @@
   width: 100%;
   font-size: 15px;
 }
+.studio-library-search > button {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
 .studio-filter-pills {
   display: flex;
   overflow-x: auto;
   gap: 8px;
   padding: 16px 0 20px;
+  padding-inline: 4px;
+  margin-inline: -4px;
   scrollbar-width: none;
 }
 .studio-filter-pills button {
+  position: relative;
   flex-shrink: 0;
   min-width: 83px;
   min-height: 40px;
@@ -57,8 +68,29 @@
   background: var(--studio-soft);
 }
 .studio-filter-pills button[aria-pressed="true"] {
+  color: var(--studio-action-text, #fff);
+}
+.studio-filter-selection {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
   background: var(--studio-accent);
-  color: var(--studio-surface);
+}
+.studio-filter-label {
+  position: relative;
+  z-index: 1;
+}
+.studio-filter-pills button:focus-visible {
+  outline: 2px solid var(--studio-accent);
+  outline-offset: 3px;
+}
+.studio-library-result-count {
+  display: inline-block;
+  margin-left: 10px;
+  color: var(--studio-muted);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
 }
 .studio-library-folders {
   display: grid;
@@ -132,12 +164,13 @@
   background: var(--studio-surface);
   box-shadow: var(--studio-shadow);
   transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+    border-color 0.16s ease,
+    box-shadow 0.16s ease;
 }
-.studio-library-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 26px #38145610;
+.studio-library-card:hover,
+.studio-library-card:focus-within {
+  border-color: var(--studio-accent);
+  box-shadow: 0 10px 26px #0000000d;
 }
 .studio-asset-visual {
   aspect-ratio: 16/10;
@@ -158,7 +191,7 @@
   align-self: end;
   padding: 18px;
   background: var(--studio-surface);
-  box-shadow: 0 4px 18px #30163c12;
+  box-shadow: 0 4px 18px #00000012;
   border-radius: 5px 5px 0 0;
   overflow: hidden;
 }
@@ -206,6 +239,14 @@
   display: grid;
   place-items: center;
   color: var(--studio-accent);
+  border-radius: 50%;
+  transition: background 0.16s ease;
+}
+.studio-library-kind button > span {
+  display: grid;
+}
+.studio-library-kind button[aria-pressed="true"] {
+  background: var(--studio-accent-soft);
 }
 .studio-library-card h3 {
   font-size: 17px;
@@ -401,5 +442,16 @@
   }
   .studio-library-card-body > p {
     font-size: 11px;
+  }
+}
+
+html[data-studio-motion="reduce"] .studio-library-card,
+html[data-studio-motion="reduce"] .studio-library-kind button {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .studio-library-card,
+  .studio-library-kind button {
+    transition: none;
   }
 }

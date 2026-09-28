@@ -4,7 +4,7 @@
 Reconstructed from user-supplied mobile boards (8d946ab8 and ab81c4ed), desktop chat-editor1440×1000, mobile chat390×844, and recovered September27 requirements. The references are backed up outside the repository in Conversation Recovery. The cloud implementation was not found on any of32 remote branch heads. Base:9577ea3. Build locally; review before publishing.
 
 ## Locked design
-- White/lilac light canvas, charcoal/violet dark canvas; never beige. Light/Dark/System preferences. Purple text/actions, soft lavender user bubbles, white/charcoal assistant cards.
+- White light canvas and neutral black/charcoal dark canvas; neutral text, borders, inputs, and cards. Light/Dark/System preferences. The September 27 review supersedes the lavender canvas in the original reference: Pal colors appear only on selected controls, small highlights, and user bubbles. Switching Pals never recolors the app surfaces.
 - Satoshi interface type, 14–16px readable body, restrained captions; display36–48px page titles, 20–24px chat identity. Every control styled deliberately.
 - Desktop:72px topbar,244px persistent sidebar, flexible conversation and390px editor. Mobile: focused Pal header, edge-to-edge chat with16px margins, floating composer above5tab bottom navigation. Editor becomes accessible full-height sheet.
 - Nav: Chat, Feed, Ideas, Campaigns, Library. Business tools: Calendar, Brand DNA, Video roadmap, Approvals. Recent chats and Settings remain accessible.

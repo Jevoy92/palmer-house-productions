@@ -46,22 +46,22 @@
   cursor: not-allowed;
 }
 .studio-app .text-reel {
-  color: #9d4705;
+  color: var(--reel-ink);
 }
 .studio-app .text-evergreen {
-  color: #3f611e;
+  color: var(--evergreen-ink);
 }
 .studio-app .text-system {
-  color: #086e66;
+  color: var(--system-ink);
 }
 .studio-app .bg-system.text-white {
-  background-color: #086e66;
+  background-color: var(--system-ink);
 }
 .studio-app .bg-evergreen.text-white {
-  background-color: #3f611e;
+  background-color: var(--evergreen-ink);
 }
 .studio-app .bg-reel.text-white {
-  background-color: #9d4705;
+  background-color: var(--reel-ink);
 }
 .studio-app .studio-eyebrow {
   font-size: 11px;
@@ -260,7 +260,7 @@
   border-bottom: 1px solid var(--border);
 }
 .studio-home-row:hover {
-  background: #f2f5f3;
+  background: var(--studio-soft, var(--mist));
 }
 .studio-home-row:last-child {
   border-bottom: 0;

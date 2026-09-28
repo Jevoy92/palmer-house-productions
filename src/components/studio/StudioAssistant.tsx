@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate, useSearch } from "@tanstack/react-router";
 import { useStudioMotion } from "./studio-motion";
+import { motion } from "motion/react";
 import {
   Archive,
   ArrowRight,
@@ -94,7 +95,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
     startConversation,
   } = useStudio();
   const navigate = useNavigate();
-  const { reduceMotion: reduce } = useStudioMotion();
+  const { reduceMotion: reduce, fadeTransition } = useStudioMotion();
 
   // The conversation's own Pal wins; otherwise the member's saved guide. The
   // neutral option resolves to a real Pal so the name on screen always matches
@@ -555,7 +556,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
             <PalAvatar
               pal={pal}
               size="md"
-              activity={busy || artifactBusy ? "thinking" : "idle"}
+              activity={sending || artifactBusy || building ? "thinking" : "idle"}
               ring={false}
             />
             <span>
@@ -801,7 +802,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                 </div>
               );
             })}
-            {busy || artifactBusy || building ? (
+            {sending || artifactBusy || building ? (
               <div role="status" className="studio-chat-working">
                 <PalAvatar pal={pal} activity="thinking" size="sm" ring={false} />
                 <div>
@@ -832,7 +833,12 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
         </div>
         <form onSubmit={submit} className="studio-chat-composer">
           {composerTools || attachments.length ? (
-            <div className="studio-composer-tools">
+            <motion.div
+              className="studio-composer-tools"
+              initial={reduce ? false : { opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              transition={fadeTransition}
+            >
               <ComposerIntake
                 key={draftKey}
                 color="var(--studio-accent)"
@@ -853,7 +859,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                   <FileText size={15} /> Create PDF
                 </button>
               </div>
-            </div>
+            </motion.div>
           ) : (
             <div className="studio-composer-intake-hidden">
               <ComposerIntake
@@ -909,7 +915,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
               aria-label="Send message"
               className="studio-composer-send"
             >
-              {busy || sending ? (
+              {sending ? (
                 <LoaderCircle size={21} className="animate-spin" />
               ) : (
                 <ArrowUp size={22} />

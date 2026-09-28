@@ -12,15 +12,18 @@ import {
   ThumbsUp,
   X,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { motion } from "motion/react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { toast } from "sonner";
 import type { Tables } from "@/lib/supabase/database.types";
 import type { GuideProfile } from "@/lib/pal-directory";
+import { studioAssetMedia } from "./StudioAssetVisual";
 import { StudioMarkdown } from "./StudioMarkdown";
 import { StudioCopyButton } from "./StudioAssetActions";
 import { PalAvatar } from "./PalAvatar";
 import { useStudio } from "./StudioProvider";
+import { useStudioMotion } from "./studio-motion";
 
 type Asset = Tables<"campaign_assets">;
 
@@ -87,15 +90,7 @@ export function chatAssetLabel(asset: Asset) {
   return labels[asset.kind] || asset.kind.replaceAll("_", " ");
 }
 
-function mediaUrl(asset: Asset) {
-  const meta = record(asset.metadata);
-  for (const key of ["thumbnailUrl", "imageUrl", "mediaUrl", "previewUrl", "url"]) {
-    const value = meta[key];
-    if (typeof value === "string" && (/^https?:\/\//i.test(value) || value.startsWith("/")))
-      return value;
-  }
-  return "";
-}
+const mediaUrl = studioAssetMedia;
 
 function useAssetMedia(asset: Asset) {
   const { getArtifactUrl } = useStudio();
@@ -106,7 +101,7 @@ function useAssetMedia(asset: Asset) {
   useEffect(() => {
     let active = true;
     setUrl(directUrl);
-    if (!storagePath || !getArtifactUrl || ["pdf", "document"].includes(asset.kind)) return;
+    if (directUrl || !storagePath || !getArtifactUrl || asset.kind !== "image") return;
     void getArtifactUrl(asset.id)
       .then((result) => {
         if (active) setUrl(result);
@@ -162,7 +157,16 @@ export function StudioNativeDraft({
       </div>
       {image && !["pdf", "document"].includes(asset.kind) ? (
         <div className="studio-native-media">
-          <img src={image} alt={asset.title} loading="lazy" />
+          <img
+            src={image}
+            alt={
+              typeof record(asset.metadata).imageAlt === "string" &&
+              String(record(asset.metadata).imageAlt).trim()
+                ? String(record(asset.metadata).imageAlt).trim()
+                : asset.title
+            }
+            loading="lazy"
+          />
           {isScript ? (
             <span className="studio-video-marker">
               <Play size={24} fill="currentColor" />
@@ -206,6 +210,8 @@ export function StudioChatArtifactCard({
   onOpen: (assetId: string, mode: "preview" | "edit") => void;
 }) {
   const { assets, campaigns } = useStudio();
+  const { reduceMotion, fadeTransition } = useStudioMotion();
+  const previewId = useId();
   const campaign = campaigns.find((item) => item.id === campaignId);
   const drafts = assets.filter((asset) =>
     campaignId
@@ -242,20 +248,56 @@ export function StudioChatArtifactCard({
       </header>
       {drafts.length > 1 ? (
         <div className="studio-artifact-tabs" role="tablist" aria-label="Campaign drafts">
-          {drafts.map((asset) => (
+          {drafts.map((asset, index) => (
             <button
               type="button"
               key={asset.id}
               role="tab"
+              id={`${previewId}-tab-${asset.id}`}
+              aria-controls={`${previewId}-preview`}
               aria-selected={asset.id === selected.id}
+              tabIndex={asset.id === selected.id ? 0 : -1}
               onClick={() => setSelectedId(asset.id)}
+              onKeyDown={(event) => {
+                const next =
+                  event.key === "ArrowRight"
+                    ? (index + 1) % drafts.length
+                    : event.key === "ArrowLeft"
+                      ? (index + drafts.length - 1) % drafts.length
+                      : event.key === "Home"
+                        ? 0
+                        : event.key === "End"
+                          ? drafts.length - 1
+                          : -1;
+                if (next < 0) return;
+                event.preventDefault();
+                setSelectedId(drafts[next].id);
+                const button = event.currentTarget.parentElement?.querySelectorAll("button")[next];
+                button?.focus({ preventScroll: true });
+                button?.scrollIntoView({
+                  block: "nearest",
+                  inline: "nearest",
+                  behavior: reduceMotion ? "instant" : "smooth",
+                });
+              }}
             >
               {chatAssetLabel(asset)}
             </button>
           ))}
         </div>
       ) : null}
-      <StudioNativeDraft asset={selected} />
+      <motion.div
+        key={selected.id}
+        id={`${previewId}-preview`}
+        role={drafts.length > 1 ? "tabpanel" : undefined}
+        aria-labelledby={drafts.length > 1 ? `${previewId}-tab-${selected.id}` : undefined}
+        tabIndex={drafts.length > 1 ? 0 : undefined}
+        initial={reduceMotion ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={fadeTransition}
+      >
+        <StudioNativeDraft asset={selected} />
+      </motion.div>
       <div className="studio-artifact-actions">
         <button type="button" onClick={() => onOpen(selected.id, "edit")}>
           <Pencil size={15} /> Edit
@@ -285,6 +327,8 @@ export function StudioChatEditor({
   onRefine: (prompt: string) => void;
 }) {
   const { assets, updateAsset, getArtifactUrl } = useStudio();
+  const { reduceMotion, fadeTransition } = useStudioMotion();
+  const modeId = useId();
   const asset = assets.find((item) => item.id === assetId);
   const [mode, setMode] = useState(initialMode);
   const [draft, setDraft] = useState(asset?.content || "");
@@ -376,32 +420,84 @@ export function StudioChatEditor({
         <p className="studio-editor-status">
           <Check size={14} /> Saved changes update this draft everywhere.
         </p>
-        <div className="studio-editor-tabs" role="tablist" aria-label="Draft view">
-          <button role="tab" aria-selected={mode === "preview"} onClick={() => setMode("preview")}>
+        <div
+          className="studio-editor-tabs"
+          role="tablist"
+          aria-label="Draft view"
+          onKeyDown={(event) => {
+            if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+            event.preventDefault();
+            const next =
+              event.key === "Home"
+                ? "preview"
+                : event.key === "End"
+                  ? "edit"
+                  : mode === "preview"
+                    ? "edit"
+                    : "preview";
+            setMode(next);
+            event.currentTarget
+              .querySelectorAll<HTMLButtonElement>("button")
+              [next === "preview" ? 0 : 1]?.focus();
+          }}
+        >
+          <button
+            role="tab"
+            id={`${modeId}-preview`}
+            aria-controls={`${modeId}-panel`}
+            tabIndex={mode === "preview" ? 0 : -1}
+            aria-selected={mode === "preview"}
+            onClick={() => setMode("preview")}
+          >
             Preview
           </button>
-          <button role="tab" aria-selected={mode === "edit"} onClick={() => setMode("edit")}>
+          <button
+            role="tab"
+            id={`${modeId}-edit`}
+            aria-controls={`${modeId}-panel`}
+            tabIndex={mode === "edit" ? 0 : -1}
+            aria-selected={mode === "edit"}
+            onClick={() => setMode("edit")}
+          >
             Edit
           </button>
         </div>
-        {mode === "preview" ? (
-          <StudioNativeDraft asset={asset} content={draft} compact />
-        ) : (
-          <label className="studio-editor-label">
-            {asset.kind.includes("script") ? "Script" : "Post text"}
-            <textarea
-              value={draft}
-              onChange={(event) => setDraft(event.target.value)}
-              disabled={saving}
-              rows={6}
-            />
-            <small>{draft.length} characters</small>
-          </label>
-        )}
+        <motion.div
+          key={mode}
+          id={`${modeId}-panel`}
+          role="tabpanel"
+          aria-labelledby={`${modeId}-${mode}`}
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={fadeTransition}
+        >
+          {mode === "preview" ? (
+            <StudioNativeDraft asset={asset} content={draft} compact />
+          ) : (
+            <label className="studio-editor-label">
+              {asset.kind.includes("script") ? "Script" : "Post text"}
+              <textarea
+                value={draft}
+                onChange={(event) => setDraft(event.target.value)}
+                disabled={saving}
+                rows={6}
+              />
+              <small>{draft.length} characters</small>
+            </label>
+          )}
+        </motion.div>
         {mode === "edit" && mediaUrl(asset) ? (
           <div className="studio-editor-image">
             <strong>Image</strong>
-            <img src={mediaUrl(asset)} alt={asset.title} />
+            <img
+              src={mediaUrl(asset)}
+              alt={
+                typeof record(asset.metadata).imageAlt === "string" &&
+                String(record(asset.metadata).imageAlt).trim()
+                  ? String(record(asset.metadata).imageAlt).trim()
+                  : asset.title
+              }
+            />
           </div>
         ) : null}
         <section className="studio-editor-refine">
@@ -445,7 +541,7 @@ export function StudioChatEditor({
         ) : null}
       </div>
       <footer className="studio-editor-footer">
-        <p>
+        <p role="status">
           <Check size={14} /> {dirty ? "Unsaved changes" : "Saved to Library"}
         </p>
         <div>
@@ -497,8 +593,14 @@ export function StudioChatEditor({
       </Dialog.Portal>
     </Dialog.Root>
   ) : (
-    <aside className="studio-chat-editor" aria-label={`Edit ${asset.title}`}>
+    <motion.aside
+      className="studio-chat-editor"
+      aria-label={`Edit ${asset.title}`}
+      initial={reduceMotion ? false : { opacity: 0, x: 12 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={fadeTransition}
+    >
       {content}
-    </aside>
+    </motion.aside>
   );
 }

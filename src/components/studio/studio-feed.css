@@ -140,8 +140,25 @@
 .studio-feed-actions button[aria-pressed="true"] {
   color: var(--studio-accent);
 }
+.studio-feed-actions button > span {
+  display: inline-flex;
+}
+.studio-feed-actions button:focus-visible {
+  outline: 2px solid var(--studio-accent);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
 .studio-feed-comments {
   border-top: 1px solid var(--studio-border);
+  overflow: hidden;
+}
+.studio-feed-comments[aria-hidden="true"] {
+  border-top-color: transparent;
+}
+.studio-feed-action-error {
+  color: var(--studio-text);
+  border-top: 1px solid var(--studio-border);
+  padding: 12px 18px;
 }
 .studio-feed-comments form {
   display: flex;
@@ -151,6 +168,11 @@
   background: var(--studio-soft);
   border-radius: 23px;
   padding: 6px 7px 6px 16px;
+}
+.studio-feed-comments form:focus-within,
+.studio-feed-compose:focus-within {
+  outline: 2px solid var(--studio-accent);
+  outline-offset: 3px;
 }
 .studio-feed-comments input {
   min-width: 0;
@@ -199,7 +221,8 @@
   top: 105px;
   padding: 28px 20px;
   border-radius: 24px;
-  background: var(--studio-accent-soft);
+  background: var(--studio-soft);
+  border: 1px solid var(--studio-border);
   margin-top: 22px;
 }
 .studio-feed-team {
@@ -212,7 +235,7 @@
   object-fit: cover;
   object-position: top;
   border-radius: 50%;
-  border: 3px solid var(--studio-accent-soft);
+  border: 3px solid var(--studio-soft);
   margin-right: -10px;
 }
 .studio-feed-aside h2 {

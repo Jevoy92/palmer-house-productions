@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { writeFile, mkdir } from "node:fs/promises";
+import { writeFile, readFile, mkdir } from "node:fs/promises";
 import { resolve } from "node:path";
 
 // All requests and writes belong to the synthetic preview, never the live Studio.
@@ -25,6 +25,7 @@ async function go(view, state = "populated", outcome = "success", controls = 0) 
   );
 }
 async function shot(name) {
+  await page.waitForTimeout(300);
   const { width, height } = page.viewportSize();
   await page.screenshot({ path: `${out}/interaction-${name}-${width}x${height}.png` });
 }
@@ -314,6 +315,268 @@ try {
       assert.equal(dimensions.width, width, "Horizontal page overflow");
       assert.equal(dimensions.height, height, "Chat escapes the viewport");
       await shot("dark-editor");
+    });
+  }
+  await check("polish-library-keyboard-and-saved", async () => {
+    await go("library");
+    const filters = page.getByRole("toolbar", { name: "Filter library" });
+    await filters.getByRole("button", { name: "All", exact: true }).focus();
+    await page.keyboard.press("ArrowRight");
+    const posts = filters.getByRole("button", { name: "Posts", exact: true });
+    assert.equal(await posts.getAttribute("aria-pressed"), "true");
+    await focused(posts);
+    await page.keyboard.press("Home");
+    const card = page.locator(".studio-library-card").first();
+    const title = await card.locator("h3").innerText();
+    await card.getByRole("button", { name: `Save ${title}`, exact: true }).click();
+    await card.getByRole("button", { name: `Unsave ${title}`, exact: true }).waitFor();
+    await filters.getByRole("button", { name: "Saved", exact: true }).click();
+    await page.waitForTimeout(250);
+    assert.equal(await page.locator(".studio-library-card").count(), 1);
+    await page.reload({ waitUntil: "networkidle" });
+    await filters.getByRole("button", { name: "Saved", exact: true }).click();
+    await page.getByRole("button", { name: `Unsave ${title}`, exact: true }).click();
+    await focused(filters.getByRole("button", { name: "Saved", exact: true }));
+    await page.getByRole("button", { name: "Clear filters", exact: true }).click();
+    await focused(page.getByRole("textbox", { name: "Search library" }));
+    await page.waitForFunction(
+      () => document.querySelector('[aria-label="Filter library"]').scrollLeft < 2,
+    );
+    await page.getByRole("textbox", { name: "Search library" }).fill("no-such-synthetic-result");
+    await page.getByRole("button", { name: "Clear search", exact: true }).click();
+    await focused(page.getByRole("textbox", { name: "Search library" }));
+    await page.getByRole("button", { name: "List view", exact: true }).click();
+    await page.waitForTimeout(250);
+    assert.equal(await page.locator(".studio-library-list").count(), 1);
+    await shot("polish-library-list");
+  });
+  await check("polish-chat-tab-keyboard-and-real-activity", async () => {
+    await go("assistant", "populated", "pending", 1);
+    const tabs = page.getByRole("tablist", { name: "Campaign drafts" });
+    await tabs.getByRole("tab", { name: "Facebook", exact: true }).focus();
+    await page.keyboard.press("ArrowRight");
+    assert.equal(
+      await tabs.getByRole("tab", { name: "Instagram", exact: true }).getAttribute("aria-selected"),
+      "true",
+    );
+    await page.keyboard.press("Home");
+    await page.getByRole("button", { name: "Edit", exact: true }).click();
+    const editorTabs = page.getByRole("tablist", { name: "Draft view" });
+    await editorTabs.getByRole("tab", { name: "Edit", exact: true }).focus();
+    await page.keyboard.press("ArrowLeft");
+    assert.equal(
+      await editorTabs
+        .getByRole("tab", { name: "Preview", exact: true })
+        .getAttribute("aria-selected"),
+      "true",
+    );
+    await closeDialog(page.getByRole("dialog"));
+    await page.getByRole("button", { name: "Change Pal, currently Kiana", exact: true }).focus();
+    await page.keyboard.press("Enter");
+    await page
+      .getByRole("dialog")
+      .getByRole("button", { name: /^Clara/ })
+      .click();
+    await page.waitForTimeout(100);
+    assert.equal(
+      await page.locator(".studio-chat-working").count(),
+      0,
+      "Saving a Pal preference was labelled as AI thinking",
+    );
+    await page.getByText("Local fixtures", { exact: true }).click();
+    await page.getByRole("button", { name: "Resolve pending", exact: true }).click();
+    await page.getByText("Local fixtures", { exact: true }).click();
+    await page.getByRole("textbox", { name: "Message Clara", exact: true }).waitFor();
+  });
+  await check("polish-feed-feedback-and-comment-focus", async () => {
+    await go("feed");
+    const thread = page.locator(".studio-feed-thread").first();
+    await thread.getByRole("button", { name: "Heart this idea", exact: true }).click();
+    await thread.getByRole("button", { name: "Remove heart", exact: true }).waitFor();
+    await thread.getByRole("button", { name: "Save idea", exact: true }).click();
+    await thread.getByRole("button", { name: "Saved", exact: true }).waitFor();
+    assert(await thread.getByRole("button", { name: "Saved", exact: true }).isDisabled());
+    await thread.getByRole("button", { name: "Open comments", exact: true }).click();
+    const input = thread.getByRole("textbox", { name: /^Comment on / });
+    await focused(input);
+    await input.fill("A useful synthetic comment.");
+    await thread.getByRole("button", { name: "Post comment", exact: true }).click();
+    await thread.getByText("A useful synthetic comment.", { exact: true }).waitFor();
+    assert.equal(await input.inputValue(), "");
+    await input.focus();
+    await page.keyboard.press("Escape");
+    await focused(thread.getByRole("button", { name: "Open comments", exact: true }));
+    assert.equal(await thread.locator(".studio-feed-comments").getAttribute("inert"), "");
+    const filters = page.getByRole("toolbar", { name: "Filter feed" });
+    await filters.getByRole("button", { name: "For you", exact: true }).focus();
+    await page.keyboard.press("End");
+    await focused(filters.getByRole("button", { name: "Evergreen", exact: true }));
+    await page.waitForTimeout(250);
+    for (const lane of await page.locator(".studio-feed-lane").allTextContents())
+      assert.equal(lane, "evergreen");
+    await shot("polish-feed-filter");
+    await filters.getByRole("button", { name: "System", exact: true }).click();
+    await page.getByRole("button", { name: "See all ideas", exact: true }).click();
+    await focused(filters.getByRole("button", { name: "For you", exact: true }));
+  });
+  await check("polish-feed-error-retains-comment", async () => {
+    await go("feed", "populated", "error");
+    const thread = page.locator(".studio-feed-thread").first();
+    await thread.getByRole("button", { name: "Open comments", exact: true }).click();
+    const input = thread.getByRole("textbox", { name: /^Comment on / });
+    await input.fill("Keep this comment when saving fails.");
+    await thread.getByRole("button", { name: "Post comment", exact: true }).click();
+    await thread.getByRole("alert").waitFor();
+    assert.equal(await input.inputValue(), "Keep this comment when saving fails.");
+    assert(await input.isEnabled());
+  });
+  await check("polish-reduced-motion", async () => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await go("library");
+    await page
+      .getByRole("toolbar", { name: "Filter library" })
+      .getByRole("button", { name: "Images", exact: true })
+      .click();
+    await page.waitForTimeout(50);
+    assert.equal(
+      await page
+        .locator(".studio-library-card")
+        .first()
+        .evaluate((el) => getComputedStyle(el).transform),
+      "none",
+    );
+    assert.equal(
+      await page
+        .locator(".studio-library-card")
+        .first()
+        .evaluate((el) => getComputedStyle(el).transitionDuration),
+      "0s",
+    );
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await go("settings");
+    await page.getByRole("checkbox", { name: /^Reduce motion/ }).check();
+    await page.reload({ waitUntil: "networkidle" });
+    assert(await page.getByRole("checkbox", { name: /^Reduce motion/ }).isChecked());
+    await go("library");
+    await page.waitForFunction(() => document.documentElement.dataset.studioMotion === "reduce");
+    await page
+      .getByRole("toolbar", { name: "Filter library" })
+      .getByRole("button", { name: "All", exact: true })
+      .click();
+    assert.equal(
+      await page
+        .locator(".studio-library-card")
+        .first()
+        .evaluate((el) => getComputedStyle(el).transform),
+      "none",
+    );
+  });
+  await check("polish-shared-memory", async () => {
+    await go("settings");
+    await page.getByRole("button", { name: "Shared memory", exact: true }).click();
+    const memory = page.getByRole("region", { name: "Shared memory", exact: true });
+    await memory.getByRole("button", { name: "Add memory", exact: true }).click();
+    let editor = memory.getByRole("form", { name: "Add shared memory", exact: true });
+    await editor
+      .getByRole("textbox", { name: "Title", exact: true })
+      .fill("Synthetic brand preference");
+    await editor
+      .getByRole("textbox", { name: "What should every Pal remember?", exact: true })
+      .fill("Use warm, plain language for our bakery.");
+    await editor.getByRole("button", { name: "Save memory", exact: true }).click();
+    await editor.waitFor({ state: "hidden" });
+    await memory
+      .getByRole("button", { name: "Edit Synthetic brand preference", exact: true })
+      .click();
+    editor = memory.getByRole("form", { name: "Edit shared memory", exact: true });
+    await editor
+      .getByRole("textbox", { name: "What should every Pal remember?", exact: true })
+      .fill("Use warm, plain language and mention our daily sourdough.");
+    await editor.getByRole("button", { name: "Save memory", exact: true }).click();
+    await editor.waitFor({ state: "hidden" });
+    await memory
+      .getByText("Use warm, plain language and mention our daily sourdough.", { exact: true })
+      .waitFor();
+    const downloading = page.waitForEvent("download");
+    await memory.getByRole("button", { name: "Export memory", exact: true }).click();
+    const download = await downloading;
+    const exportedPath = `${out}/synthetic-memory-export.json`;
+    await download.saveAs(exportedPath);
+    const exported = JSON.parse(await readFile(exportedPath, "utf8"));
+    const entry = exported.entries.find((item) => item.title === "Synthetic brand preference");
+    assert.equal(entry?.content, "Use warm, plain language and mention our daily sourdough.");
+    assert.equal(entry?.revision, 2);
+    await memory
+      .getByRole("button", { name: "Forget Synthetic brand preference", exact: true })
+      .click();
+    await memory.getByRole("button", { name: "Confirm forget", exact: true }).click();
+    await memory
+      .getByRole("heading", { name: "Synthetic brand preference", exact: true })
+      .waitFor({ state: "hidden" });
+    await shot("polish-shared-memory");
+  });
+  for (const theme of ["light", "dark"]) {
+    await check(`polish-pal-neutral-surfaces-${theme}`, async () => {
+      await page.setViewportSize({ width: 1440, height: 1000 });
+      await go("settings");
+      await page
+        .getByRole("button", { name: theme === "light" ? "Light" : "Dark", exact: true })
+        .click();
+      await page.getByRole("button", { name: "Account", exact: true }).click();
+      let baseline;
+      const accents = new Set();
+      for (const [name, lane] of [
+        ["Kiana", "spotlight"],
+        ["Ryder", "reel"],
+        ["Silas", "system"],
+        ["Clara", "evergreen"],
+      ]) {
+        await page.getByRole("button", { name: new RegExp(`^${name}`) }).click();
+        await page.waitForFunction(
+          (expected) => document.documentElement.dataset.studioPalLane === expected,
+          lane,
+        );
+        const palette = await page.evaluate(() => {
+          const read = (selector) =>
+            getComputedStyle(document.querySelector(selector)).backgroundColor;
+          const action = document.querySelector(".studio-workspace-content .primary-action");
+          const style = getComputedStyle(action);
+          const light = (rgb) => {
+            const values = rgb
+              .match(/[\d.]+/g)
+              .slice(0, 3)
+              .map(Number)
+              .map((v) => v / 255)
+              .map((v) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+            return values[0] * 0.2126 + values[1] * 0.7152 + values[2] * 0.0722;
+          };
+          const a = light(style.color),
+            b = light(style.backgroundColor);
+          return {
+            surfaces: [
+              read(".studio-workspace"),
+              read(".studio-sidebar"),
+              read(".studio-workspace-content .bg-white"),
+            ],
+            accent: style.backgroundColor,
+            contrast: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05),
+          };
+        });
+        for (const surface of palette.surfaces) {
+          const [r, g, b] = surface.match(/[\d.]+/g).map(Number);
+          assert.equal(r, g, `${name} surface is tinted`);
+          assert.equal(g, b, `${name} surface is tinted`);
+        }
+        baseline ||= palette.surfaces;
+        assert.deepEqual(palette.surfaces, baseline, `${name} changed the neutral surfaces`);
+        assert(
+          palette.contrast >= 4.5,
+          `${name} ${theme} action contrast ${palette.contrast.toFixed(2)}:1`,
+        );
+        accents.add(palette.accent);
+      }
+      assert.equal(accents.size, 4, "Every Pal lane should change the accent");
+      await shot(`polish-neutral-${theme}`);
     });
   }
 } finally {

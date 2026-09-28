@@ -1,6 +1,7 @@
 import { Link, useSearch, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
-import { ChevronRight, Search, Grid2X2, List, Heart, Download, Pencil } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
+import { ChevronRight, Search, Grid2X2, List, Heart, Download, Pencil, X } from "lucide-react";
 import { toast } from "sonner";
 import { useStudio } from "./StudioProvider";
 import { StudioGraphic } from "./StudioGraphic";
@@ -10,12 +11,18 @@ import "./studio-chat.css";
 import { StudioCopyButton } from "./StudioAssetActions";
 import { useGuide } from "./useGuide";
 import { PalAvatar } from "./PalAvatar";
+import { StudioFilterPills } from "./StudioFilterPills";
+import { useStudioMotion } from "./studio-motion";
 import "./studio-library.css";
 
 export function StudioLibrary() {
   const { assets, campaigns, workspace, getArtifactUrl } = useStudio();
   const navigate = useNavigate();
   const { guide } = useGuide();
+  const { reduceMotion, transition, fadeTransition } = useStudioMotion();
+  const searchRef = useRef<HTMLInputElement>(null);
+  const pageRef = useRef<HTMLDivElement>(null);
+  const [announcement, setAnnouncement] = useState("");
   const [selected, setSelected] = useState<{ id: string; mode: "preview" | "edit" } | null>(null);
   const search = useSearch({ strict: false }) as { q?: string };
   const [query, setQuery] = useState(search.q || "");
@@ -50,7 +57,14 @@ export function StudioLibrary() {
       }),
     [assets, filter, query, favorites],
   );
-  function favorite(id: string) {
+  function favorite(id: string, title: string) {
+    const removing = favorites.includes(id);
+    if (removing && filter === "Saved") {
+      pageRef.current
+        ?.querySelector<HTMLButtonElement>('.studio-filter-pills button[aria-pressed="true"]')
+        ?.focus();
+    }
+    setAnnouncement(`${title} ${removing ? "removed from" : "added to"} Saved.`);
     setFavorites((current) => {
       const next = current.includes(id) ? current.filter((x) => x !== id) : [...current, id];
       try {
@@ -78,7 +92,7 @@ export function StudioLibrary() {
   }
   return (
     <div className={`studio-library-layout ${selected ? "has-editor" : ""}`}>
-      <div className="studio-library-page">
+      <div className="studio-library-page" ref={pageRef}>
         <header className="studio-section-heading">
           <div>
             <h1>Library</h1>
@@ -89,19 +103,36 @@ export function StudioLibrary() {
         <label className="studio-library-search">
           <Search size={21} />
           <input
+            ref={searchRef}
             aria-label="Search library"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search your content…"
           />
-        </label>
-        <div className="studio-filter-pills" aria-label="Filter library">
-          {["All", "Posts", "Images", "Articles", "Scripts", "Documents", "Saved"].map((item) => (
-            <button key={item} aria-pressed={filter === item} onClick={() => setFilter(item)}>
-              {item}
+          {query && (
+            <button
+              type="button"
+              aria-label="Clear search"
+              onClick={() => {
+                setQuery("");
+                searchRef.current?.focus();
+              }}
+            >
+              <X size={17} />
             </button>
-          ))}
-        </div>
+          )}
+        </label>
+        <StudioFilterPills
+          label="Filter library"
+          value={filter}
+          onChange={setFilter}
+          options={["All", "Posts", "Images", "Articles", "Scripts", "Documents", "Saved"].map(
+            (value) => ({ value, label: value }),
+          )}
+        />
+        <p className="sr-only" role="status">
+          {announcement}
+        </p>
         {campaigns.length > 0 && (
           <div className="studio-library-folders">
             {campaigns.slice(0, 3).map((c) => (
@@ -117,7 +148,12 @@ export function StudioLibrary() {
           </div>
         )}
         <div className="studio-library-sectionbar">
-          <h2>{query ? "Search results" : "Recently saved"}</h2>
+          <h2>
+            {query ? "Search results" : filter === "Saved" ? "Your saved picks" : "Recently saved"}
+            <span className="studio-library-result-count" role="status">
+              {visible.length} {visible.length === 1 ? "item" : "items"}
+            </span>
+          </h2>
           <div>
             <button
               aria-label="Grid view"
@@ -136,62 +172,80 @@ export function StudioLibrary() {
           </div>
         </div>
         <div className={`studio-library-grid ${layout === "list" ? "studio-library-list" : ""}`}>
-          {visible.map((asset) => (
-            <article key={asset.id} className="studio-library-card">
-              <button
-                className="studio-library-open"
-                onClick={() => setSelected({ id: asset.id, mode: "preview" })}
-                aria-label={`Open ${asset.title}`}
+          <AnimatePresence initial={false} mode="popLayout">
+            {visible.map((asset) => (
+              <motion.article
+                key={asset.id}
+                className="studio-library-card"
+                layout={reduceMotion ? false : "position"}
+                initial={reduceMotion ? false : { opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: reduceMotion ? 0 : -4 }}
+                transition={{ ...fadeTransition, layout: transition }}
               >
-                <StudioAssetVisual asset={asset} />
-              </button>
-              <div className="studio-library-card-body">
-                <div className="studio-library-kind">
-                  <span>{studioAssetLabel(asset)}</span>
-                  <button
-                    aria-label={`${favorites.includes(asset.id) ? "Unsave" : "Save"} ${asset.title}`}
-                    aria-pressed={favorites.includes(asset.id)}
-                    onClick={() => favorite(asset.id)}
-                  >
-                    <Heart
-                      size={16}
-                      fill={favorites.includes(asset.id) ? "currentColor" : "none"}
-                    />
-                  </button>
-                </div>
-                <h3>{asset.title}</h3>
-                <p>
-                  {asset.status.charAt(0).toUpperCase() + asset.status.slice(1)} ·{" "}
-                  {new Date(asset.updated_at).toLocaleDateString(undefined, {
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </p>
-                <div className="studio-library-card-actions">
-                  <button
-                    className="secondary-action"
-                    onClick={() => setSelected({ id: asset.id, mode: "edit" })}
-                  >
-                    <Pencil size={14} />
-                    Edit
-                  </button>
-                  {/^(image|document)$/.test(asset.kind) ? (
+                <button
+                  className="studio-library-open"
+                  onClick={() => setSelected({ id: asset.id, mode: "preview" })}
+                  aria-label={`Open ${asset.title}`}
+                >
+                  <StudioAssetVisual asset={asset} />
+                </button>
+                <div className="studio-library-card-body">
+                  <div className="studio-library-kind">
+                    <span>{studioAssetLabel(asset)}</span>
+                    <button
+                      aria-label={`${favorites.includes(asset.id) ? "Unsave" : "Save"} ${asset.title}`}
+                      aria-pressed={favorites.includes(asset.id)}
+                      onClick={() => favorite(asset.id, asset.title)}
+                    >
+                      <motion.span
+                        initial={false}
+                        animate={{
+                          scale: !reduceMotion && favorites.includes(asset.id) ? [1, 1.18, 1] : 1,
+                        }}
+                        transition={fadeTransition}
+                      >
+                        <Heart
+                          size={16}
+                          fill={favorites.includes(asset.id) ? "currentColor" : "none"}
+                        />
+                      </motion.span>
+                    </button>
+                  </div>
+                  <h3>{asset.title}</h3>
+                  <p>
+                    {asset.status.charAt(0).toUpperCase() + asset.status.slice(1)} ·{" "}
+                    {new Date(asset.updated_at).toLocaleDateString(undefined, {
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </p>
+                  <div className="studio-library-card-actions">
                     <button
                       className="secondary-action"
-                      disabled={downloading === asset.id}
-                      onClick={() => void download(asset.id)}
-                      aria-label={`Download ${asset.title}`}
+                      onClick={() => setSelected({ id: asset.id, mode: "edit" })}
                     >
-                      <Download size={15} />
-                      {downloading === asset.id ? "Opening…" : "Download"}
+                      <Pencil size={14} />
+                      Edit
                     </button>
-                  ) : (
-                    <StudioCopyButton content={asset.content} label="Copy text" />
-                  )}
+                    {/^(image|document)$/.test(asset.kind) ? (
+                      <button
+                        className="secondary-action"
+                        disabled={downloading === asset.id}
+                        onClick={() => void download(asset.id)}
+                        aria-label={`Download ${asset.title}`}
+                      >
+                        <Download size={15} />
+                        {downloading === asset.id ? "Opening…" : "Download"}
+                      </button>
+                    ) : (
+                      <StudioCopyButton content={asset.content} label="Copy text" />
+                    )}
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
+              </motion.article>
+            ))}
+          </AnimatePresence>
         </div>
         {!visible.length && (
           <div className="studio-library-empty">
@@ -202,9 +256,22 @@ export function StudioLibrary() {
                 ? "Try another search or content type."
                 : "Create with your Pal. Your posts, images, articles, and scripts will stay together here."}
             </p>
-            <Link to="/studio/conversations" className="primary-action">
-              Start a conversation
-            </Link>
+            {assets.length ? (
+              <button
+                className="primary-action"
+                onClick={() => {
+                  setQuery("");
+                  setFilter("All");
+                  searchRef.current?.focus();
+                }}
+              >
+                Clear filters
+              </button>
+            ) : (
+              <Link to="/studio/conversations" className="primary-action">
+                Start a conversation
+              </Link>
+            )}
           </div>
         )}
       </div>

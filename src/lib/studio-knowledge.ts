@@ -1,5 +1,6 @@
 import { isCompletedRoadmapStatus } from "./studio-recovery.ts";
 import { buildBrandVoiceContext } from "./studio-voice.ts";
+import { buildWorkspaceMemoryContext, loadWorkspaceMemory } from "./studio-memory.ts";
 
 /**
  * Workspace knowledge base.
@@ -11,6 +12,15 @@ import { buildBrandVoiceContext } from "./studio-voice.ts";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Client = { from: (table: string) => any };
+type SharedMessage = {
+  id: string;
+  conversation_id: string | null;
+  role: string;
+  pal: string;
+  body: string;
+  created_at: string;
+  conversations?: { title: string; archived: boolean } | null;
+};
 
 const clip = (value: unknown, max = 220) => {
   const text = typeof value === "string" ? value.trim() : "";
@@ -33,7 +43,7 @@ export async function loadWorkspaceVoice(client: Client, workspaceId: string) {
 }
 
 export async function loadWorkspaceKnowledge(client: Client, workspaceId: string) {
-  const [campaigns, ideas, calendar, settings, videos, assets, brand] = await Promise.all([
+  const [campaigns, ideas, calendar, memory, videos, assets, brand, messages] = await Promise.all([
     client
       .from("campaigns")
       .select("title, topic, goal, primary_lane, status, strategy, updated_at")
@@ -52,11 +62,7 @@ export async function loadWorkspaceKnowledge(client: Client, workspaceId: string
       .eq("workspace_id", workspaceId)
       .order("publish_at")
       .limit(10),
-    client
-      .from("workspace_settings")
-      .select("ai_memory, preferred_pal")
-      .eq("workspace_id", workspaceId)
-      .maybeSingle(),
+    loadWorkspaceMemory(client, workspaceId),
     client
       .from("workspace_video_items")
       .select("item_key, status")
@@ -75,9 +81,15 @@ export async function loadWorkspaceKnowledge(client: Client, workspaceId: string
       )
       .eq("workspace_id", workspaceId)
       .maybeSingle(),
+    client
+      .from("assistant_messages")
+      .select("id, conversation_id, role, pal, body, created_at, conversations(title, archived)")
+      .eq("workspace_id", workspaceId)
+      .order("created_at", { ascending: false })
+      .limit(20),
   ]);
 
-  if ([campaigns, ideas, calendar, settings, videos, assets, brand].some((result) => result.error))
+  if ([campaigns, ideas, calendar, videos, assets, brand, messages].some((result) => result.error))
     throw new Error("Could not load shared workspace context. Please retry before generating.");
 
   // Voice notes, documents and recordings the member dropped into conversations.
@@ -113,8 +125,23 @@ export async function loadWorkspaceKnowledge(client: Client, workspaceId: string
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .map((row: any) => String(row.item_key));
 
-  const memory = settings.data?.ai_memory;
   const sections = [
+    buildWorkspaceMemoryContext(memory),
+    list(
+      "Recent shared conversations across Pals (bounded excerpts; member statements are user-provided context, assistant messages are unverified drafts, never evidence or approved facts)",
+      (messages.data || [])
+
+        .filter(
+          (row: SharedMessage) =>
+            !row.conversations?.archived && ["user", "assistant"].includes(row.role),
+        )
+        .reverse()
+
+        .map(
+          (row: SharedMessage) =>
+            `${row.role === "user" ? "Member statement" : `Assistant draft (${row.pal || "Pal"})`} | ${row.conversations?.title || "Conversation"} | ${row.created_at} | source message ${row.id}, conversation ${row.conversation_id || "legacy"}: ${clip(row.body, 700)}`,
+        ),
+    ),
     brand.data ? `Saved Brand DNA: ${JSON.stringify(brand.data).slice(0, 10000)}` : "",
     buildBrandVoiceContext(brand.data),
     list("Campaigns already built (never repeat these angles verbatim)", campaignRows),
@@ -130,12 +157,11 @@ export async function loadWorkspaceKnowledge(client: Client, workspaceId: string
     ),
     list("Files and voice notes the member has shared", attachmentRows),
     doneVideos.length ? `Roadmap videos already finished: ${doneVideos.join(", ")}` : "",
-    memory && Object.keys(memory).length ? `Approved memory: ${JSON.stringify(memory)}` : "",
   ].filter(Boolean);
 
   if (!sections.length)
     return "This workspace has no prior activity yet. This is their first piece of work.";
-  return `WORKSPACE KNOWLEDGE BASE — treat this as already-known context. Build on it, never ask the member to repeat it, and never duplicate work that already exists.\n\n${sections.join(
+  return `WORKSPACE KNOWLEDGE BASE — shared saved memory and bounded excerpts of existing work and conversations. Build on supplied context without needlessly repeating questions or work. This is not an exhaustive history; ask for missing details when necessary. Member statements are supplied context, and assistant drafts are not verified facts.\n\n${sections.join(
     "\n\n",
   )}`;
 }

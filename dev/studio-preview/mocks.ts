@@ -54,3 +54,9 @@ export const refreshStudioPalFeed = unavailable;
 export const updateStudioArtifact = unavailable;
 export const linkStudioCampaignToConversation = unavailable;
 export const reviseStudioDocument = unavailable;
+
+export const loadStudioMemory = unavailable;
+export const saveStudioMemory = unavailable;
+export const forgetStudioMemory = unavailable;
+export const forgetStudioLegacyMemory = unavailable;
+export const exportStudioMemory = unavailable;

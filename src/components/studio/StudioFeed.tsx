@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import {
   Heart,
   MessageCircle,
@@ -9,6 +10,7 @@ import {
   Send,
   Plus,
   ArrowRight,
+  Check,
 } from "lucide-react";
 import { toast } from "sonner";
 import type { StudioAuthor, StudioFeedPost } from "@/lib/studio-recovery";
@@ -16,6 +18,8 @@ import { useStudio } from "./StudioProvider";
 import { palDirectory } from "@/lib/pal-directory";
 import { StudioGraphic } from "./StudioGraphic";
 import { StudioAssetVisual } from "./StudioAssetVisual";
+import { StudioFilterPills } from "./StudioFilterPills";
+import { useStudioMotion } from "./studio-motion";
 import "./studio-feed.css";
 
 function safeSource(url: string) {
@@ -58,10 +62,17 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
     brand,
   } = useStudio();
   const navigate = useNavigate();
+  const { reduceMotion, transition, fadeTransition } = useStudioMotion();
   const [expanded, setExpanded] = useState(false);
   const [comment, setComment] = useState("");
   const [pending, setPending] = useState<string | null>(null);
   const pendingRef = useRef(false);
+  const commentRef = useRef<HTMLInputElement>(null);
+  const commentTrigger = useRef<HTMLButtonElement>(null);
+  const [actionError, setActionError] = useState("");
+  useEffect(() => {
+    if (expanded) commentRef.current?.focus({ preventScroll: true });
+  }, [expanded]);
   const replies = (feedComments || []).filter((c) => c.post_id === post.id);
   const hearts = (feedReactions || []).filter(
     (r) => r.post_id === post.id && r.reaction === "love",
@@ -78,10 +89,13 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
     if (pendingRef.current) return;
     pendingRef.current = true;
     setPending(kind);
+    setActionError("");
     try {
       await fn();
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not save that change.");
+      const message = e instanceof Error ? e.message : "Could not save that change.";
+      setActionError(message);
+      toast.error(message);
     } finally {
       pendingRef.current = false;
       setPending(null);
@@ -124,7 +138,14 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
     });
   }
   return (
-    <article className="studio-feed-thread">
+    <motion.article
+      className="studio-feed-thread"
+      layout={reduceMotion ? false : "position"}
+      initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0 }}
+      transition={{ ...fadeTransition, layout: transition }}
+    >
       <header>
         <FeedAvatar author={post.author} />
         <div>
@@ -178,17 +199,40 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
           disabled={!!pending}
           aria-label={loved ? "Remove heart" : "Heart this idea"}
           aria-pressed={loved}
+          aria-busy={pending === "love"}
           onClick={() => void action("love", () => setFeedReaction(post.id, "love", !loved))}
         >
-          <Heart size={18} fill={loved ? "currentColor" : "none"} />
+          <motion.span
+            initial={false}
+            animate={{ scale: loved && !reduceMotion ? [1, 1.2, 1] : 1 }}
+            transition={fadeTransition}
+          >
+            <Heart size={18} fill={loved ? "currentColor" : "none"} />
+          </motion.span>
           {hearts.length || "Like"}
         </button>
-        <button onClick={() => setExpanded((v) => !v)} aria-expanded={expanded}>
+        <button
+          ref={commentTrigger}
+          onClick={() => setExpanded((v) => !v)}
+          aria-expanded={expanded}
+          aria-controls={`feed-comments-${post.id}`}
+          aria-label={expanded ? "Close comments" : "Open comments"}
+        >
           <MessageCircle size={18} />
           {replies.filter((c) => c.author.kind === "member").length || "Comment"}
         </button>
-        <button disabled={saved || !!pending} onClick={() => void saveIdea()}>
-          <Bookmark size={18} fill={saved ? "currentColor" : "none"} />
+        <button
+          disabled={saved || !!pending}
+          onClick={() => void saveIdea()}
+          aria-busy={pending === "save"}
+        >
+          <motion.span
+            initial={false}
+            animate={{ scale: saved && !reduceMotion ? [1, 1.12, 1] : 1 }}
+            transition={fadeTransition}
+          >
+            {saved ? <Check size={18} /> : <Bookmark size={18} />}
+          </motion.span>
           {saved ? "Saved" : pending === "save" ? "Saving…" : "Save idea"}
         </button>
         <button
@@ -200,45 +244,65 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
           <span>{pending === "campaign" ? "Building…" : "Campaign"}</span>
         </button>
       </div>
-      {expanded && (
-        <div className="studio-feed-comments">
-          {replies
-            .filter((c) => c.author.kind === "member")
-            .map((reply) => (
-              <div key={reply.id} className="studio-feed-reply">
-                <FeedAvatar author={reply.author} />
-                <div>
-                  <strong>{reply.author.name}</strong>
-                  <p>{reply.body}</p>
-                </div>
+      <motion.div
+        className="studio-feed-comments"
+        id={`feed-comments-${post.id}`}
+        initial={false}
+        animate={{ height: expanded ? "auto" : 0, opacity: expanded ? 1 : 0 }}
+        transition={fadeTransition}
+        inert={!expanded}
+        aria-hidden={!expanded}
+        onKeyDown={(event) => {
+          if (event.key !== "Escape") return;
+          event.preventDefault();
+          setExpanded(false);
+          commentTrigger.current?.focus();
+        }}
+      >
+        {replies
+          .filter((c) => c.author.kind === "member")
+          .map((reply) => (
+            <div key={reply.id} className="studio-feed-reply">
+              <FeedAvatar author={reply.author} />
+              <div>
+                <strong>{reply.author.name}</strong>
+                <p>{reply.body}</p>
               </div>
-            ))}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              void action("comment", async () => {
-                await addFeedComment(post.id, comment.trim());
-                setComment("");
-              });
-            }}
-          >
-            <label className="sr-only" htmlFor={`comment-${post.id}`}>
-              Comment on {post.title || "this idea"}
-            </label>
-            <input
-              id={`comment-${post.id}`}
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              placeholder="Join the conversation…"
-              maxLength={2000}
-            />
-            <button type="submit" aria-label="Post comment" disabled={!comment.trim() || !!pending}>
-              <Send size={17} />
-            </button>
-          </form>
-        </div>
+            </div>
+          ))}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (!comment.trim() || pendingRef.current) return;
+            void action("comment", async () => {
+              await addFeedComment(post.id, comment.trim());
+              setComment("");
+            });
+          }}
+        >
+          <label className="sr-only" htmlFor={`comment-${post.id}`}>
+            Comment on {post.title || "this idea"}
+          </label>
+          <input
+            id={`comment-${post.id}`}
+            ref={commentRef}
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Join the conversation…"
+            maxLength={2000}
+            disabled={pending === "comment"}
+          />
+          <button type="submit" aria-label="Post comment" disabled={!comment.trim() || !!pending}>
+            <Send size={17} />
+          </button>
+        </form>
+      </motion.div>
+      {actionError && (
+        <p className="studio-feed-action-error" role="alert">
+          {actionError}
+        </p>
       )}
-    </article>
+    </motion.article>
   );
 }
 export function StudioFeed() {
@@ -247,17 +311,26 @@ export function StudioFeed() {
   const [posting, setPosting] = useState(false);
   const [draft, setDraft] = useState("");
   const [filter, setFilter] = useState("all");
+  const feedRef = useRef<HTMLElement>(null);
+  const { reduceMotion, fadeTransition } = useStudioMotion();
+  const postingRef = useRef(false);
+  const refreshingRef = useRef(false);
   async function refresh() {
+    if (refreshingRef.current) return;
+    refreshingRef.current = true;
     setRefreshing(true);
     try {
       await refreshPalFeed();
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Your Pals couldn’t update the feed.");
     } finally {
+      refreshingRef.current = false;
       setRefreshing(false);
     }
   }
   async function post() {
+    if (!draft.trim() || postingRef.current) return;
+    postingRef.current = true;
     setPosting(true);
     try {
       await createFeedPost({ body: draft.trim() });
@@ -265,13 +338,14 @@ export function StudioFeed() {
     } catch (e) {
       toast.error(e instanceof Error ? e.message : "Could not share this thought.");
     } finally {
+      postingRef.current = false;
       setPosting(false);
     }
   }
   const posts = (feedPosts || []).filter((p) => filter === "all" || p.lane === filter);
   return (
     <div className="studio-feed-layout">
-      <section className="studio-feed-main">
+      <section className="studio-feed-main" ref={feedRef}>
         <header className="studio-section-heading">
           <div>
             <h1>For you</h1>
@@ -286,19 +360,21 @@ export function StudioFeed() {
             <RefreshCw size={18} className={refreshing ? "animate-spin" : ""} />
           </button>
         </header>
-        <div className="studio-filter-pills" aria-label="Filter feed">
-          {[
+        <StudioFilterPills
+          label="Filter feed"
+          value={filter}
+          onChange={setFilter}
+          options={[
             ["all", "For you"],
             ["reel", "Reel"],
             ["spotlight", "Spotlight"],
             ["system", "System"],
             ["evergreen", "Evergreen"],
-          ].map(([value, label]) => (
-            <button key={value} aria-pressed={filter === value} onClick={() => setFilter(value)}>
-              {label}
-            </button>
-          ))}
-        </div>
+          ].map(([value, label]) => ({ value, label }))}
+        />
+        <p className="sr-only" role="status">
+          {posts.length} {posts.length === 1 ? "idea" : "ideas"} in this feed.
+        </p>
         <form
           className="studio-feed-compose"
           onSubmit={(e) => {
@@ -312,6 +388,7 @@ export function StudioFeed() {
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             maxLength={4000}
+            disabled={posting}
           />
           <button className="primary-action" disabled={!draft.trim() || posting} type="submit">
             {posting ? "Sharing…" : "Share thought"}
@@ -324,34 +401,60 @@ export function StudioFeed() {
           </p>
         )}
         {refreshing && (
-          <div className="studio-feed-working" role="status">
+          <motion.div
+            className="studio-feed-working"
+            role="status"
+            initial={reduceMotion ? false : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={fadeTransition}
+          >
             <div>
               {["clara", "kiana", "ryder"].map((p) => (
                 <img key={p} src={palDirectory[p as keyof typeof palDirectory].headshot} alt="" />
               ))}
             </div>
             <span>Your Pals are reading your workspace and finding an angle…</span>
-          </div>
+          </motion.div>
         )}
-        {posts.map((post) => (
-          <FeedThread key={post.id} post={post} />
-        ))}
+        <AnimatePresence initial={false}>
+          {posts.map((post) => (
+            <FeedThread key={post.id} post={post} />
+          ))}
+        </AnimatePresence>
         {!posts.length && !refreshing && (
           <div className="studio-library-empty">
             <StudioGraphic name="feed" size={150} />
-            <h2>Your team has a place to think.</h2>
+            <h2>
+              {filter === "all"
+                ? "Your team has a place to think."
+                : "A fresh angle is still ahead."}
+            </h2>
             <p>
               Invite the Pals to explore your Brand DNA, saved ideas, campaigns, and calendar. Save
               the ideas you want to take further.
             </p>
-            <button
-              className="primary-action"
-              onClick={() => void refresh()}
-              disabled={!!recoveryError}
-            >
-              Find our next idea
-              <ArrowRight size={16} />
-            </button>
+            {filter !== "all" ? (
+              <button
+                className="primary-action"
+                onClick={() => {
+                  setFilter("all");
+                  feedRef.current
+                    ?.querySelector<HTMLButtonElement>(".studio-filter-pills button")
+                    ?.focus();
+                }}
+              >
+                See all ideas <ArrowRight size={16} />
+              </button>
+            ) : (
+              <button
+                className="primary-action"
+                onClick={() => void refresh()}
+                disabled={!!recoveryError}
+              >
+                Find our next idea
+                <ArrowRight size={16} />
+              </button>
+            )}
           </div>
         )}
       </section>

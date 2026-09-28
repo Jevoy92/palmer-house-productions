@@ -1,6 +1,7 @@
+import { useHydratedReducedMotion } from "@/hooks/use-hydrated-reduced-motion";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import {
   Card,
   CardGrid,
@@ -74,7 +75,7 @@ export const Route = createFileRoute("/locations/")({
 });
 
 function LocationsPage() {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   return (
     <PageShell>
       <PageHero

@@ -7,6 +7,7 @@ export const studioCreditOperations = {
   image: { label: "Generated image", credits: 30 },
   pdf: { label: "Written PDF document", credits: 10 },
   avatar: { label: "Custom Pal portrait", credits: 20 },
+  transcription: { label: "Voice transcription / started minute", credits: 2 },
   feed: { label: "Fresh Pal discussion", credits: 5 },
 } as const;
 export type StudioCreditOperation = keyof typeof studioCreditOperations;

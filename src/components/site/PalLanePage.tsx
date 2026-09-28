@@ -2,8 +2,6 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight, Check } from "lucide-react";
 import { useMemo } from "react";
 import {
-  Card,
-  CardGrid,
   CtaBand,
   Eyebrow,
   FaqList,
@@ -13,10 +11,7 @@ import {
   PageShell,
   Section,
 } from "./PageShell";
-import { PalCallout, ProcessTimeline, StatBand, type Stat } from "./PalVisuals";
-import { GlyphBadge, type GlyphName } from "./Glyphs";
-import { MissionComparison } from "./MissionComparison";
-import { monthlyPrice } from "@/lib/cart-store";
+import { StatBand, type Stat } from "./PalVisuals";
 import { palList } from "@/lib/pal-directory";
 import { LANES, PAL_PORTRAITS, laneById, laneVar } from "@/lib/pal-lanes";
 import {
@@ -39,32 +34,17 @@ const laneCopy: Record<
     subtitle: string;
     problemTitle: string;
     outputs: string[];
-    outputGlyphs: [GlyphName, GlyphName, GlyphName];
-    outputBodies: [string, string, string];
-    process: [string, string, string, string];
     faqs: { q: string; a: string }[];
   }
 > = {
   reel: {
     eyebrow: "Reel Pal · Get Seen",
-    title: "Turn one clear idea into",
-    highlight: "repeatable momentum.",
+    title: "Social videos.",
+    highlight: "Something worth sharing.",
     subtitle:
-      "Ryder and Raquel build short-form systems that earn attention, hold it, and give your team a reliable publishing rhythm.",
-    problemTitle: "Choose the visibility problem that sounds familiar.",
+      "Short social videos with a clear point, a strong opening, and room for your personality. Our crew helps you plan, film, and edit them.",
+    problemTitle: "Choose your starting package.",
     outputs: ["15–90s reels", "Hook variations", "Caption-ready cuts"],
-    outputGlyphs: ["reel", "spark", "edit"],
-    outputBodies: [
-      "Platform-native short videos cut for the first two seconds and built to publish on a rhythm.",
-      "Several openers from one filming block so you can test what stops the scroll.",
-      "Framing and delivery formats agreed in scope, with edits prepared for the channels you choose.",
-    ],
-    process: [
-      "Pick the one point of view the reels should keep repeating.",
-      "Plan hooks, talking points, and the questions your audience keeps asking.",
-      "Two focused hours on set with teleprompter, direction, and momentum.",
-      "Edited, captioned, split into cuts, and organized to publish this week.",
-    ],
     faqs: [
       {
         q: "Can I choose how many social videos we make?",
@@ -78,28 +58,16 @@ const laneCopy: Record<
   },
   spotlight: {
     eyebrow: "Spotlight Pal · Build Trust",
-    title: "Make the first impression feel",
-    highlight: "as credible as the work.",
+    title: "Show your work.",
+    highlight: "Let people see the difference.",
     subtitle:
-      "Kareem and Kiana create commercials, product demos, customer stories, and employee spotlights that make quality visible before a sales call.",
-    problemTitle: "Choose the trust gap you need to close.",
+      "Show the people, products, and work behind your business. Our crew produces commercials, product demos, customer stories, and employee spotlights.",
+    problemTitle: "Choose the story you want to tell.",
     outputs: ["Commercials", "Product demos", "Customer & employee stories"],
-    outputGlyphs: ["mic", "handshake", "camera"],
-    outputBodies: [
-      "A clear offer and reason to act, built around the people you want to reach.",
-      "A practical demonstration of what your product does and how someone uses it.",
-      "Real customers and employees sharing their experience in their own words.",
-    ],
-    process: [
-      "Find the story a first-time visitor should meet before anything else.",
-      "Lock the interview plan, b-roll list, wardrobe, and location for production day.",
-      "Cinematic camera, lighting, and audio with direction that keeps people natural.",
-      "Color, sound, and story edit delivered ready for your site and sales process.",
-    ],
     faqs: [
       {
         q: "What makes Spotlight different from a Reel package?",
-        a: "Spotlight prioritizes story, production polish, b-roll, and trust. Reel prioritizes publishing velocity and platform-native short-form delivery.",
+        a: "Spotlight packages center on a product, customer, employee, or offer. Social Content focuses on shorter videos for your channels. We agree the formats and finish in your scope.",
       },
       {
         q: "Can a Spotlight shoot also create short clips?",
@@ -109,59 +77,35 @@ const laneCopy: Record<
   },
   evergreen: {
     eyebrow: "Evergreen Pal · Explain Clearly",
-    title: "Answer the important question",
-    highlight: "once—and keep earning.",
+    title: "Good questions.",
+    highlight: "Answers worth keeping.",
     subtitle:
-      "Cyrus and Clara turn complex expertise into structured long-form videos that educate buyers, build authority, and reduce repeated explanations.",
+      "Give your expertise the time it needs. Our crew turns your explanation into an educational video customers can watch and return to.",
     problemTitle: "Choose the explanation that should keep working.",
-    outputs: ["5–15 min episodes", "Web explainers", "Repurpose-ready masters"],
-    outputGlyphs: ["play", "bulb", "layers"],
-    outputBodies: [
-      "Structured long-form answers to the questions buyers ask before they trust you.",
-      "Pricing, process, and offer explainers that shorten sales calls and support search.",
-      "Long-form masters planned so clips, articles, and posts can be pulled later.",
-    ],
-    process: [
-      "Pick the question you answer most and make it permanent.",
-      "Outline the episode structure, examples, and the reasoning behind each claim.",
-      "Longer production coverage with teleprompter support and clear direction.",
-      "A deeper edit, chaptered and organized for web, YouTube, and repurposing.",
-    ],
+    outputs: ["5–15 min episodes", "Web explainers", "Your expertise"],
     faqs: [
       {
         q: "Why is Evergreen priced differently?",
-        a: "Long-form work requires deeper narrative planning, longer production coverage, and a more involved edit. It uses episode pricing rather than session-plus-video pricing.",
+        a: "An educational episode gives one explanation more room. It uses length-based episode pricing, including filming and editing, rather than session-plus-video pricing.",
       },
       {
         q: "Can long-form episodes become short clips?",
-        a: "Yes. Repurposed edits turn the long-form master into platform-native clips without rebuilding the story from scratch.",
+        a: "Yes. We can quote additional short edits from the agreed footage. Tell us which channels and formats you need.",
       },
     ],
   },
   system: {
     eyebrow: "System Pal · Train & Scale",
-    title: "Move repeated knowledge out of",
-    highlight: "people’s heads.",
+    title: "Show the steps.",
+    highlight: "Help people get it right.",
     subtitle:
-      "Silas and Samira create onboarding, safety training, sales training, and video SOPs that make important knowledge easier to find and reuse.",
-    problemTitle: "Choose the repeat loop your team needs to remove.",
-    outputs: ["Onboarding", "SOP walkthroughs", "Training libraries"],
-    outputGlyphs: ["handshake", "workflow", "library"],
-    outputBodies: [
-      "Welcome and first-week videos so new hires and new clients hear the same clear answer.",
-      "Real tools, real spaces, and real steps documented once instead of explained weekly.",
-      "An organized library your team can search, delivered into the tools you already use.",
-    ],
-    process: [
-      "List the explanations your team repeats and rank them by time saved.",
-      "Map the workflow, script the steps in order, and confirm on-site access.",
-      "Film at your workplace so the tools, spaces, and processes are the real ones.",
-      "Clear, chaptered edits organized for Notion, Loom, drives, or your LMS.",
-    ],
+      "Help new hires, customers, and teammates follow the same clear steps. Our crew films onboarding, safety training, sales training, and video SOPs.",
+    problemTitle: "Choose what your team needs to learn.",
+    outputs: ["Onboarding", "Video SOPs", "Training videos"],
     faqs: [
       {
         q: "Where can our team host the finished videos?",
-        a: "We organize delivery for the tools you already use, including Notion, Loom, internal drives, and learning-management systems.",
+        a: "Use the video files in your existing knowledge or learning tools. Tell us how you plan to host them so we can agree the formats and handoff; hosting and platform setup are confirmed separately.",
       },
       {
         q: "Can you film at our workplace?",
@@ -170,13 +114,6 @@ const laneCopy: Record<
     ],
   },
 };
-
-const PROCESS_TITLES = [
-  "Name the problem",
-  "Plan the package",
-  "Production day",
-  "Polished delivery",
-];
 
 function groupPackageCount(accent: PalAccent) {
   return PAL_GROUPS.find((group) => group.id === accent)?.items.length ?? 0;
@@ -223,15 +160,8 @@ export function PalLanePage({ accent }: { accent: PalAccent }) {
   const copy = laneCopy[accent];
   const laneInfo = laneById[accent];
   const pals = useMemo(() => palList.filter((pal) => pal.lane === accent), [accent]);
-  const [leadPal, secondPal] = laneInfo.pals;
+  const [, secondPal] = laneInfo.pals;
   const otherLanes = LANES.filter((lane) => lane.id !== accent);
-
-  const processSteps = copy.process.map((body, i) => ({
-    title: PROCESS_TITLES[i],
-    body,
-    pal: i % 2 === 0 ? leadPal : secondPal,
-    lane: accent,
-  }));
 
   return (
     <PageShell>
@@ -243,12 +173,111 @@ export function PalLanePage({ accent }: { accent: PalAccent }) {
         lane={accent}
         pal={accent}
         palTags={copy.outputs}
+        primary={{ label: "Browse these packages", to: "/shop", search: { lane: accent } }}
+        secondary={{ label: "See production pricing", to: "/production-pricing" }}
       />
+
+      <Section eyebrow="Packages" title={copy.problemTitle} lane={accent}>
+        <div
+          className={`grid gap-5 ${group.items.length === 1 ? "mx-auto max-w-2xl" : "md:grid-cols-2"}`}
+        >
+          {group.items.map((item, index) => {
+            const oneTime = computeItemPrice(item);
+            const included = getIncluded(item, group);
+            return (
+              <InView key={item.id} delay={(index % 3) * 0.05} className="h-full">
+                <article className="surface-card relative flex h-full flex-col overflow-hidden">
+                  <div className="relative flex flex-1 flex-col p-6">
+                    <div className="flex items-center justify-between gap-3">
+                      <p
+                        className="font-mono text-[11px] font-bold uppercase tracking-[0.14em]"
+                        style={{ color: laneVar(accent, "-text") }}
+                      >
+                        Package {String(index + 1).padStart(2, "0")}
+                      </p>
+                      <img
+                        src={item.icon}
+                        alt=""
+                        className="size-14 object-contain"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                    <h3 className="mt-3 text-2xl font-extrabold">{item.name}</h3>
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                      {item.description}
+                    </p>
+                    <ul className="mt-5 space-y-2">
+                      {included.slice(0, 3).map((line) => (
+                        <li key={line} className="flex gap-2 text-sm">
+                          <Check
+                            className="mt-0.5 size-4 shrink-0"
+                            style={{ color: laneVar(accent, "-text") }}
+                          />
+                          <span>{line}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="mt-auto pt-6">
+                      <div className="flex items-end justify-between gap-4">
+                        <div>
+                          <p className="text-3xl font-extrabold">${oneTime.toLocaleString()}</p>
+                          <p className="text-xs text-muted-foreground">
+                            Working estimate · scope confirmed before payment
+                          </p>
+                        </div>
+                      </div>
+                      <Link
+                        to="/packages/$packageId"
+                        params={{ packageId: item.id }}
+                        className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-bold underline underline-offset-4"
+                        style={{ color: laneVar(accent, "-text") }}
+                      >
+                        View package and scope <ArrowRight className="size-4" />
+                      </Link>
+                    </div>
+                  </div>
+                </article>
+              </InView>
+            );
+          })}
+        </div>
+        <div className="mt-8 flex justify-center">
+          <Link to="/shop" search={{ lane: accent }} className="secondary-action">
+            Browse {group.role} packages <ArrowRight className="size-4" />
+          </Link>
+        </div>
+      </Section>
+
+      <Section
+        eyebrow="Pricing, plainly"
+        title={
+          accent === "evergreen"
+            ? "One episode. Room for the detail."
+            : "One session, plus your finished videos."
+        }
+        subtitle={
+          accent === "evergreen"
+            ? "Educational episodes use length-based pricing, with filming and editing included."
+            : "A filming session plus the finished videos you choose. We confirm scope, tax, and travel in your quote."
+        }
+        lane={accent}
+      >
+        <StatBand stats={laneStats(accent)} />
+        <div className="mt-12">
+          <IncludedPanel
+            title="Included in every production, one-time or monthly."
+            items={BASE_INCLUDED}
+            lane={accent}
+            glyph={laneInfo.glyph}
+          />
+        </div>
+      </Section>
 
       <Section
         eyebrow="Your guides"
-        title={`${group.palName} work as a pair.`}
-        subtitle={laneInfo.promise}
+        title={`Meet ${group.palName}.`}
+        subtitle="Our Pals are creative guides and AI assistants in Studio. They bring different perspectives; Palmer House’s human crew delivers the production."
         lane={accent}
       >
         <div className="grid gap-5 md:grid-cols-2">
@@ -278,6 +307,7 @@ export function PalLanePage({ accent }: { accent: PalAccent }) {
                   <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
                     {pal.intro}
                   </p>
+                  <p className="mt-4 text-sm font-semibold">“{pal.persona.firstQuestion}”</p>
                 </div>
               </article>
             </InView>
@@ -285,162 +315,35 @@ export function PalLanePage({ accent }: { accent: PalAccent }) {
         </div>
       </Section>
 
-      <Section
-        tone="mist"
-        eyebrow="What this lane produces"
-        title={`Three outputs ${group.palName} plan every shoot around.`}
-        subtitle="Each deliverable is designed for the job the video needs to do, then organized so your team can publish or share it immediately."
-        lane={accent}
-      >
-        <CardGrid cols={3}>
-          {copy.outputs.map((output, i) => (
-            <Card
-              key={output}
-              lane={accent}
-              glyph={copy.outputGlyphs[i]}
-              index={String(i + 1).padStart(2, "0")}
-              title={output}
-              body={copy.outputBodies[i]}
-            />
-          ))}
-        </CardGrid>
-        <div className="mt-10">
-          <PalCallout
-            pal={leadPal}
-            quote={palList.find((pal) => pal.key === leadPal)?.intro ?? laneInfo.promise}
-            action={{ label: "Not sure this is your lane? Find your Pal", to: "/find-your-pal" }}
-          />
-        </div>
-      </Section>
-
-      <Section eyebrow="Packages" title={copy.problemTitle} lane={accent}>
-        <CardGrid cols={3}>
-          {group.items.map((item, index) => {
-            const oneTime = computeItemPrice(item);
-            const included = getIncluded(item, group);
-            return (
-              <InView key={item.id} delay={(index % 3) * 0.05} className="h-full">
-                <article className="surface-card relative flex h-full flex-col overflow-hidden">
-                  <span
-                    aria-hidden
-                    className="absolute -right-12 -top-12 size-28 rounded-full"
-                    style={{ background: laneVar(accent, "-soft") }}
-                  />
-                  <div className="h-2" style={{ background: laneVar(accent) }} aria-hidden />
-                  <div className="relative flex flex-1 flex-col p-6">
-                    <div className="flex items-center justify-between gap-3">
-                      <p
-                        className="font-mono text-[11px] font-bold uppercase tracking-[0.14em]"
-                        style={{ color: laneVar(accent, "-text") }}
-                      >
-                        Package {String(index + 1).padStart(2, "0")}
-                      </p>
-                      <GlyphBadge name={laneInfo.glyph} lane={accent} size="sm" />
-                    </div>
-                    <h3 className="mt-3 text-2xl font-extrabold">{item.name}</h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                      {item.description}
-                    </p>
-                    <ul className="mt-5 space-y-2">
-                      {included.slice(0, 3).map((line) => (
-                        <li key={line} className="flex gap-2 text-sm">
-                          <Check
-                            className="mt-0.5 size-4 shrink-0"
-                            style={{ color: laneVar(accent, "-text") }}
-                          />
-                          <span>{line}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-auto pt-6">
-                      <div className="flex items-end justify-between gap-4">
-                        <div>
-                          <p className="text-3xl font-extrabold">${oneTime.toLocaleString()}</p>
-                          <p className="text-xs text-muted-foreground">
-                            or ${monthlyPrice(oneTime).toLocaleString()} monthly
-                          </p>
-                        </div>
-                      </div>
-                      <Link
-                        to="/packages/$packageId"
-                        params={{ packageId: item.id }}
-                        className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-bold underline underline-offset-4"
-                        style={{ color: laneVar(accent, "-text") }}
-                      >
-                        View package and scope <ArrowRight className="size-4" />
-                      </Link>
-                    </div>
-                  </div>
-                </article>
-              </InView>
-            );
-          })}
-        </CardGrid>
-        <div className="mt-8 flex justify-center">
-          <Link to="/shop" search={{ lane: accent }} className="secondary-action">
-            Browse {group.role} packages <ArrowRight className="size-4" />
-          </Link>
-        </div>
-      </Section>
-
-      <Section
-        tone={accent}
-        eyebrow="How the lane works"
-        title={`From the problem to a library, guided by ${group.palName}.`}
-        subtitle="The business problem, audience, and deliverables are clear before production day."
-      >
-        <ProcessTimeline steps={processSteps} />
-      </Section>
-
-      <Section
-        eyebrow="Pricing, plainly"
-        title="One session. A usable library."
-        subtitle="Every shoot is priced the same transparent way and includes the same production standard."
-        lane={accent}
-      >
-        <StatBand stats={laneStats(accent)} />
-        <div className="mt-12">
-          <IncludedPanel
-            title="Included in every production, one-time or monthly."
-            items={BASE_INCLUDED}
-            lane={accent}
-            glyph={laneInfo.glyph}
-          />
-        </div>
-      </Section>
-
-      <MissionComparison />
-
-      <Section
-        tone="mist"
-        eyebrow="Related lanes"
-        title="Different problem? Different Pals."
-        subtitle="Every lane uses the same session pricing, so footage from one shoot can support another when it makes sense."
-        lane={accent}
-      >
-        <CardGrid cols={3}>
+      <Section eyebrow="Another direction?" title="You can combine different kinds of video.">
+        <div className="flex flex-wrap justify-center gap-3">
           {otherLanes.map((lane) => (
-            <Card
-              key={lane.id}
-              lane={lane.id}
-              glyph={lane.glyph}
-              pal={lane.pals[0]}
-              title={`${lane.label} · ${lane.problem}`}
-              body={lane.promise}
-              to={lane.to}
-            />
+            <Link key={lane.id} to={lane.to} className="secondary-action">
+              {lane.problem} <ArrowRight className="size-4" />
+            </Link>
           ))}
-        </CardGrid>
+        </div>
+        <p className="mx-auto mt-6 max-w-2xl text-center text-sm leading-relaxed text-muted-foreground">
+          We confirm what each idea needs and which packages can share a shoot. Prefer to develop
+          the script yourself?{" "}
+          <Link to="/membership" className="font-semibold underline underline-offset-4">
+            Explore Studio.
+          </Link>
+        </p>
       </Section>
 
-      <Section eyebrow="Questions" title={`Before you book ${group.role}`} lane={accent}>
+      <Section eyebrow="Questions" title="Before you choose" lane={accent}>
         <FaqList items={copy.faqs} lane={accent} pal={secondPal} />
       </Section>
 
       <CtaBand
-        title={`Build your ${group.role} package with ${group.palName}.`}
-        subtitle="Start with a proven package, then adjust the duration, cadence, and support around the problem you need to solve."
-        primaryLabel="Book a Discovery Call"
+        title="Choose the package. Make it your own."
+        subtitle="See an example, adjust the scope, and review your estimate. Our team confirms the final plan before payment."
+        primaryLabel="Browse video packages"
+        primaryTo="/shop"
+        secondaryLabel="Talk to our team"
+        secondaryTo="/contact"
+        secondarySearch={{ intent: "production" }}
         lane={accent}
       />
     </PageShell>

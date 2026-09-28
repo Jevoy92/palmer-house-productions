@@ -6,17 +6,30 @@
  * models reject. A plain WAV works everywhere.
  */
 
-const TARGET_RATE = 16_000;
+import {
+  STUDIO_VOICE_SAMPLE_RATE,
+  STUDIO_VOICE_MAX_SECONDS,
+  STUDIO_VOICE_SOURCE_MAX_BYTES,
+  inspectStudioVoiceWav,
+} from "./studio-transcription";
+const TARGET_RATE = STUDIO_VOICE_SAMPLE_RATE;
 
 export type Recorder = {
   stop: () => Promise<Blob>;
   cancel: () => void;
   /** 0-1 input level, for the live meter. */
   level: () => number;
+  duration: () => number;
 };
 
 function downsample(input: Float32Array, from: number, to: number) {
-  if (to >= from) return input;
+  if (to === from) return input;
+  if (to > from) {
+    const output = new Float32Array(Math.floor((input.length * to) / from));
+    for (let i = 0; i < output.length; i++)
+      output[i] = input[Math.min(input.length - 1, Math.floor((i * from) / to))];
+    return output;
+  }
   const ratio = from / to;
   const length = Math.floor(input.length / ratio);
   const output = new Float32Array(length);
@@ -71,36 +84,89 @@ function encodeWav(chunks: Float32Array[], sampleRate: number) {
   return new Blob([buffer], { type: "audio/wav" });
 }
 
-export async function startRecording(): Promise<Recorder> {
+/** Convert supported audio locally; the server independently inspects the resulting PCM. */
+export async function prepareStudioVoiceFile(file: File) {
+  if (file.size > STUDIO_VOICE_SOURCE_MAX_BYTES)
+    throw new Error("Audio uploads must be under 25 MB and five minutes.");
+  const context = new AudioContext();
+  try {
+    let audio: AudioBuffer;
+    try {
+      audio = await context.decodeAudioData(await file.arrayBuffer());
+    } catch {
+      throw new Error(
+        "Your browser could not read this audio. Try a WAV or MP3 file, or record a voice note.",
+      );
+    }
+    if (
+      !Number.isFinite(audio.duration) ||
+      audio.duration < 1 ||
+      audio.duration > STUDIO_VOICE_MAX_SECONDS
+    )
+      throw new Error("Choose audio between one second and five minutes.");
+    const mono = new Float32Array(audio.length);
+    for (let channel = 0; channel < audio.numberOfChannels; channel++) {
+      const samples = audio.getChannelData(channel);
+      for (let i = 0; i < mono.length; i++) mono[i] += samples[i] / audio.numberOfChannels;
+    }
+    const blob = encodeWav([mono], audio.sampleRate);
+    const quote = inspectStudioVoiceWav(new Uint8Array(await blob.arrayBuffer()));
+    return {
+      file: new File([blob], file.name.replace(/\.[^.]*$/, "") + ".wav", { type: "audio/wav" }),
+      durationSeconds: quote.seconds,
+    };
+  } finally {
+    await context.close();
+  }
+}
+
+export async function startRecording(options?: { onLimit?: () => void }): Promise<Recorder> {
   const stream = await navigator.mediaDevices.getUserMedia({
     audio: { echoCancellation: true, noiseSuppression: true },
   });
-  const context = new AudioContext();
+  let context: AudioContext;
+  try {
+    context = new AudioContext();
+  } catch (error) {
+    stream.getTracks().forEach((track) => track.stop());
+    throw error;
+  }
   const source = context.createMediaStreamSource(stream);
   const analyser = context.createAnalyser();
   analyser.fftSize = 512;
   const processor = context.createScriptProcessor(4096, 1, 1);
   const chunks: Float32Array[] = [];
   const meter = new Uint8Array(analyser.frequencyBinCount);
-
-  processor.onaudioprocess = (event) => {
-    chunks.push(new Float32Array(event.inputBuffer.getChannelData(0)));
-  };
-
-  source.connect(analyser);
-  source.connect(processor);
-  processor.connect(context.destination);
-
+  const maxFrames = Math.floor(STUDIO_VOICE_MAX_SECONDS * context.sampleRate);
+  let frames = 0,
+    stopped = false;
+  let result: Promise<Blob> | undefined;
   const teardown = () => {
+    if (stopped) return;
+    stopped = true;
     processor.onaudioprocess = null;
     processor.disconnect();
     analyser.disconnect();
     source.disconnect();
     stream.getTracks().forEach((track) => track.stop());
   };
-
+  processor.onaudioprocess = (event) => {
+    if (stopped) return;
+    const chunk = event.inputBuffer.getChannelData(0).slice(0, maxFrames - frames);
+    chunks.push(chunk);
+    frames += chunk.length;
+    if (frames >= maxFrames) {
+      teardown();
+      options?.onLimit?.();
+    }
+  };
+  source.connect(analyser);
+  source.connect(processor);
+  processor.connect(context.destination);
   return {
+    duration: () => frames / context.sampleRate,
     level: () => {
+      if (stopped) return 0;
       analyser.getByteTimeDomainData(meter);
       let peak = 0;
       for (const value of meter) peak = Math.max(peak, Math.abs(value - 128) / 128);
@@ -108,13 +174,15 @@ export async function startRecording(): Promise<Recorder> {
     },
     cancel: () => {
       teardown();
-      void context.close();
+      chunks.length = 0;
+      if (context.state !== "closed") void context.close();
     },
-    stop: async () => {
-      const rate = context.sampleRate;
-      teardown();
-      await context.close();
-      return encodeWav(chunks, rate);
-    },
+    stop: () =>
+      (result ??= (async () => {
+        const rate = context.sampleRate;
+        teardown();
+        if (context.state !== "closed") await context.close();
+        return encodeWav(chunks, rate);
+      })()),
   };
 }

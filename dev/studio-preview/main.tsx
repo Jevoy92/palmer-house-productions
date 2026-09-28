@@ -716,8 +716,20 @@ function FixtureProvider({
       await complete();
       return "synthetic/no-upload";
     },
-    uploadConversationFile: async (file) => {
+    uploadConversationFile: async (file, options) => {
       await complete();
+      if (options?.kind === "voice") {
+        const attempts = JSON.parse(
+          sessionStorage.getItem("studio-preview-voice-attempts") || "[]",
+        ) as string[];
+        attempts.push(options.requestId || "missing");
+        sessionStorage.setItem("studio-preview-voice-attempts", JSON.stringify(attempts));
+        const result = new URLSearchParams(location.search).get("voiceResult");
+        if (result === "empty")
+          throw new Error("Not enough Studio credits. Your recording is kept here.");
+        if (result === "fail-once" && attempts.length === 1)
+          throw new Error("Transcription is busy. Your recording is kept here; try again shortly.");
+      }
       return {
         attachment: {
           id: localId(),

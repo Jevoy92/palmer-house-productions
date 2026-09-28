@@ -34,11 +34,46 @@ export const supabase = {
 };
 export const createUserScopedSupabase = () => supabase;
 export const lovable = { auth: { signInWithOAuth: unavailable } };
+// Synthetic recording only: no microphone, AI service, or credit transaction.
+function previewVoiceFile() {
+  const buffer = new ArrayBuffer(44 + 32000 * 3),
+    v = new DataView(buffer);
+  const tag = (at: number, text: string) => {
+    for (let i = 0; i < text.length; i++) v.setUint8(at + i, text.charCodeAt(i));
+  };
+  tag(0, "RIFF");
+  v.setUint32(4, buffer.byteLength - 8, true);
+  tag(8, "WAVE");
+  tag(12, "fmt ");
+  v.setUint32(16, 16, true);
+  v.setUint16(20, 1, true);
+  v.setUint16(22, 1, true);
+  v.setUint32(24, 16000, true);
+  v.setUint32(28, 32000, true);
+  v.setUint16(32, 2, true);
+  v.setUint16(34, 16, true);
+  tag(36, "data");
+  v.setUint32(40, buffer.byteLength - 44, true);
+  return new File([buffer], "voice-note.wav", { type: "audio/wav" });
+}
 export const startRecording = async () => ({
   level: () => 0.35,
+  duration: () => 3,
   cancel() {},
-  stop: async () => new Blob([new Uint8Array(5000)], { type: "audio/wav" }),
+  stop: async () => previewVoiceFile(),
 });
+export const prepareStudioVoiceFile = async () => ({
+  file: previewVoiceFile(),
+  durationSeconds: 3,
+});
+export const getStudioTranscriptionStatus = async () =>
+  new URLSearchParams(location.search).get("voice") === "ready"
+    ? { enabled: true, reason: "" }
+    : {
+        enabled: false,
+        reason:
+          "Voice transcription is not connected yet. Paste text or attach a document for now.",
+      };
 
 export const loadStudioRecovery = unavailable;
 export const saveStudioPalProfile = unavailable;

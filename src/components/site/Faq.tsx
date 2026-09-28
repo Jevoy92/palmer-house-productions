@@ -7,8 +7,8 @@ export function Faq() {
       tone="mist"
       eyebrow="Questions, answered"
       lane="system"
-      title="FAQ"
-      subtitle="The things people ask before their first session. Samira keeps the answers current."
+      title="A few practical answers."
+      subtitle="Choose the right help and understand what happens next."
     >
       <FaqList items={HOME_FAQS} lane="system" pal="samira" />
     </Section>

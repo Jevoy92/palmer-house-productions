@@ -1,154 +1,105 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { MissionComparison } from "@/components/site/MissionComparison";
-import { Card, CardGrid, CtaBand, PageHero, PageShell, Section } from "@/components/site/PageShell";
-import { PalCallout, PalCrew, PalDuo, PalRoster } from "@/components/site/PalVisuals";
-import { GlyphBadge } from "@/components/site/Glyphs";
+import { CtaBand, PageHero, PageShell, Section } from "@/components/site/PageShell";
+import { PalDuo } from "@/components/site/PalVisuals";
 import { laneById, laneVar } from "@/lib/pal-lanes";
 import { PAL_GROUPS } from "@/lib/pricing-catalog";
 import { createSeo } from "@/lib/seo";
 
 const outcomes = {
-  reel: "Get seen with a reliable short-form publishing rhythm.",
-  spotlight: "Build trust with founder stories, client proof, and premium presence.",
-  evergreen: "Explain clearly with long-form content that keeps answering.",
-  system: "Train and scale with onboarding, SOP, and internal knowledge libraries.",
+  reel: {
+    title: "Stay visible",
+    body: "Short social videos to introduce your business, answer questions, and give people a reason to keep watching.",
+  },
+  spotlight: {
+    title: "Show what makes you worth choosing",
+    body: "Commercials, product demos, customer stories, and employee spotlights built around real people and work.",
+  },
+  evergreen: {
+    title: "Share what you know",
+    body: "Longer educational videos that give an important question the time and detail it needs.",
+  },
+  system: {
+    title: "Help people do the work",
+    body: "Onboarding, safety training, sales training, and video SOPs your team can return to.",
+  },
 } as const;
 
 function PalsPage() {
   return (
     <PageShell>
       <PageHero
-        eyebrow="Pal Lane Guide"
-        title="Four lanes."
-        highlight="One problem-first system."
-        subtitle="This guide explains how each Pal lane works. If you want to browse the eight specialists directly, visit Meet the Pals."
-        lane="spotlight"
-        primary={{ label: "Meet the Pals", to: "/meet-the-pals" }}
-        secondary={{ label: "Find Your Pal", to: "/find-your-pal" }}
-        visual={<PalCrew className="w-full" />}
+        eyebrow="A guide to our video packages"
+        title="Start with what your"
+        highlight="video needs to do."
+        subtitle="We group our production packages into four goals. You’ll see a pair of Pals beside each one to help explain the choice. Palmer House’s human crew plans, films, and edits the work."
+        primary={{ label: "Browse video packages", to: "/shop" }}
+        secondary={{ label: "Help me choose", to: "/find-your-pal" }}
       />
-
       <Section
-        eyebrow="Choose an outcome"
-        title="The lane is the strategy. The Pals are your guides."
-        subtitle="Every package, recommendation, and add-on maps back to one of these four jobs."
-        lane="spotlight"
+        eyebrow="Four video goals"
+        title="Find the job. Then choose the scope."
+        subtitle="You can combine packages in one plan. We confirm the filming needs, final scope, and quote with you before payment."
       >
         <div className="grid gap-5 md:grid-cols-2">
-          {PAL_GROUPS.map((group, index) => {
+          {PAL_GROUPS.map((group) => {
             const lane = laneById[group.accent];
             return (
-              <article
-                key={group.id}
-                className="surface-card group grid min-h-72 overflow-hidden lg:grid-cols-[1fr_16rem]"
-              >
-                <div className="flex flex-col p-6 sm:p-8">
-                  <div className="flex items-center gap-3">
-                    <GlyphBadge name={lane.glyph} lane={group.accent} size="sm" />
-                    <p
-                      className="font-mono text-[11px] font-bold uppercase tracking-[0.16em]"
-                      style={{ color: laneVar(group.accent, "-text") }}
-                    >
-                      Lane {String(index + 1).padStart(2, "0")} · {group.role}
-                    </p>
-                  </div>
-                  <h3 className="mt-4 text-3xl font-extrabold">{group.tagline}</h3>
-                  <p className="mt-3 leading-relaxed text-muted-foreground">{outcomes[group.id]}</p>
-                  <div className="mt-auto flex flex-wrap items-center gap-4 pt-6">
-                    <Link
-                      to={`/${group.id}-pal`}
-                      className="inline-flex min-h-11 items-center gap-2 rounded-full bg-ink px-5 text-sm font-bold text-white"
-                    >
-                      Explore {group.role} <ArrowRight className="size-4" />
-                    </Link>
-                    <span className="text-sm font-semibold text-muted-foreground">
-                      {group.palName}
-                    </span>
-                  </div>
+              <article key={group.id} className="surface-card flex flex-col overflow-hidden">
+                <div className="p-6 sm:p-8">
+                  <p
+                    className="text-xs font-bold uppercase tracking-wider"
+                    style={{ color: laneVar(group.accent, "-text") }}
+                  >
+                    {group.role}
+                  </p>
+                  <h2 className="mt-3 text-3xl font-extrabold tracking-tight">
+                    {outcomes[group.id].title}
+                  </h2>
+                  <p className="mt-4 leading-relaxed text-muted-foreground">
+                    {outcomes[group.id].body}
+                  </p>
+                  <Link
+                    to="/shop"
+                    search={{ lane: group.accent }}
+                    className="mt-6 inline-flex min-h-11 items-center gap-2 font-semibold underline underline-offset-4"
+                  >
+                    See the packages <ArrowRight className="size-4" />
+                  </Link>
                 </div>
                 <PalDuo
                   lane={group.accent}
                   labels={lane.outputs.slice(0, 2)}
-                  minHeight="min-h-[16rem]"
-                  className="m-4 lg:ml-0"
+                  minHeight="min-h-[13rem]"
+                  className="mx-5 mb-5 mt-auto"
                 />
               </article>
             );
           })}
         </div>
-        <div className="mt-8 text-center">
-          <Link to="/meet-the-pals" className="secondary-action">
-            Meet all eight Pals <ArrowRight className="size-4" />
+      </Section>
+      <Section
+        tone="mist"
+        eyebrow="The same Pals, inside Studio"
+        title="A personality, not a limit."
+        subtitle="In Studio, every Pal can help with the same writing, planning, campaign, image, and PDF tools. Choose the voice you like; you won’t lose access to other kinds of work."
+      >
+        <div className="flex flex-wrap justify-center gap-4">
+          <Link to="/meet-the-pals" className="primary-action">
+            Meet the eight Pals <ArrowRight className="size-4" />
+          </Link>
+          <Link to="/membership" className="secondary-action">
+            Explore Studio <ArrowRight className="size-4" />
           </Link>
         </div>
       </Section>
-
-      <Section
-        tone="mist"
-        eyebrow="How to choose"
-        title="Match the lane to the friction, not the format."
-        subtitle="Start with what keeps happening in the business. The format follows."
-        lane="evergreen"
-      >
-        <CardGrid cols={4}>
-          <Card
-            lane="reel"
-            glyph="reel"
-            title="People don’t know we exist"
-            body="Visibility is the bottleneck. Reel Pal builds a short-form rhythm that keeps you in front of the right audience."
-            to="/reel-pal"
-          />
-          <Card
-            lane="spotlight"
-            glyph="camera"
-            title="We look smaller than we are"
-            body="Perception is the bottleneck. Spotlight Pal makes quality visible before the first call."
-            to="/spotlight-pal"
-          />
-          <Card
-            lane="evergreen"
-            glyph="library"
-            title="We explain the same thing weekly"
-            body="Repeated explanation is the bottleneck. Evergreen Pal answers it once and keeps it working."
-            to="/evergreen-pal"
-          />
-          <Card
-            lane="system"
-            glyph="workflow"
-            title="Knowledge lives in people’s heads"
-            body="Internal chaos is the bottleneck. System Pal turns onboarding and SOPs into a library."
-            to="/system-pal"
-          />
-        </CardGrid>
-        <div className="mt-10 grid gap-6 lg:grid-cols-2">
-          <PalCallout
-            pal="clara"
-            quote="If a customer has to ask twice, that is a video waiting to be made."
-            action={{ label: "Explore Evergreen Pal", to: "/evergreen-pal" }}
-          />
-          <PalCallout
-            pal="ryder"
-            quote="Momentum beats perfection. Publish something this week."
-            action={{ label: "Explore Reel Pal", to: "/reel-pal" }}
-          />
-        </div>
-      </Section>
-
-      <Section
-        eyebrow="The specialists"
-        title="Two Pals per lane. Eight ways to help."
-        subtitle="Each pair covers the strategy and the craft their lane needs."
-        lane="system"
-      >
-        <PalRoster />
-      </Section>
-
-      <MissionComparison />
-
       <CtaBand
-        title="Still deciding between two lanes?"
-        subtitle="Use the Pal finder for a recommendation or book a call and we will shape the package around the actual problem."
+        title="You don’t need a finished brief."
+        subtitle="Bring the idea or the question you keep hearing. We can help you plan it before you decide how to produce it."
+        primaryLabel="Planning and preparation"
+        primaryTo="/content-strategy"
+        secondaryLabel="Find a video package"
+        secondaryTo="/find-your-pal"
       />
     </PageShell>
   );
@@ -157,9 +108,9 @@ function PalsPage() {
 export const Route = createFileRoute("/pals")({
   head: () => ({
     ...createSeo({
-      title: "Pal Video Lane Guide | Palmer House Productions",
+      title: "Choose Your Video Goal | Palmer House Productions",
       description:
-        "Compare Reel, Spotlight, Evergreen, and System Pal video lanes for visibility, trust, authority, onboarding, and training.",
+        "Compare social content, brand stories, educational videos, and team training. Choose a production package by the job you need your video to do.",
       pathname: "/pals",
     }),
   }),

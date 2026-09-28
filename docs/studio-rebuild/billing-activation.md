@@ -4,7 +4,7 @@
 
 The subscription prices and Stripe recurring Price IDs are unchanged. Studio, Guided, and Partner include 1,000, 2,500, and 6,000 credits per month; the seven-day trial has 100 credits once per workspace creator. Credits replace the former hard campaign-count limit. Additional campaigns are possible with available credits, including purchased credits.
 
-Every paid AI entry point now reserves credits atomically before contacting the provider: Pal replies, directions, website/reference analysis, campaigns, generated images, AI-written PDFs, custom portraits, and manual feed requests. Rendering a PDF from supplied text, reading documents, uploading files, and browsing saved work make no paid model call. Audio transcription is deliberately unavailable until duration-based pricing and reservations are implemented. It returns a clear instruction to paste a transcript or upload a document and cannot contact a transcription provider.
+Every paid AI entry point now reserves credits atomically before contacting the provider: Pal replies, directions, website/reference analysis, campaigns, generated images, AI-written PDFs, custom portraits, and manual feed requests. Rendering a PDF from supplied text, reading documents, uploading files, and browsing saved work make no paid model call. Voice transcription also uses prepaid credits: **2 credits per started minute, up to five minutes per recording**. Members record or attach supported audio, review playback and the price, then explicitly choose Transcribe. See [voice activation and recovery](voice-transcription.md) for the separate OpenAI configuration and live checks.
 
 Automatic Pal discussions cost zero customer credits, observe their existing time/context cooldown, and have a separate internal allowance: $0.10 per trial workspace and $0.50 per paid workspace per calendar month. They still require an active membership. The global provider cap also applies.
 
@@ -16,27 +16,31 @@ Apply these migrations in order if they are not yet deployed:
 2. `20260927210000_studio_shared_memory.sql`
 3. `20260928010000_studio_proactive_media.sql`
 4. `20260928020000_studio_credit_ledger.sql`
+5. `20260928030000_studio_voice_usage.sql`
 
 Do not apply historical baseline migrations a second time. The ledger migration adds service-only credit grants, reservations, payment event records, refund debts, trial claims, and membership checkout leases. Members cannot directly edit subscriptions or the financial ledger. No live migration or real payment was performed during local verification.
 
 Configure server secrets through the deployment secret manager, never in client bundles or Git:
 
-| Setting | Purpose |
-| --- | --- |
-| `SUPABASE_SERVICE_ROLE_KEY` or `SUPABASE_SECRET_KEY` | Trusted server ledger operations; required before generation. |
-| `SUPABASE_URL` | Same project as the authenticated Studio workspace. |
-| `STRIPE_SECRET_KEY` | Stripe server API. Use test mode for the checklist below first. |
-| `STRIPE_WEBHOOK_SECRET` | Signing secret for this deployment's `/api/stripe-webhook`. |
-| `PUBLIC_SITE_URL` | Canonical HTTPS deployment origin for Checkout/Portal returns. |
-| `LOVABLE_API_KEY` | Provider gateway credentials. |
-| `AI_GATEWAY_URL` | Optional OpenAI-compatible base URL; default Lovable gateway. |
-| `STUDIO_CHAT_MODEL` | Default `openai/gpt-6-luna`. |
-| `STUDIO_BUILD_MODEL` | Default `google/gemini-3.8-flash`. |
-| `STUDIO_IMAGE_MODEL` | Default `google/gemini-3.1-flash-image`. |
-| `STUDIO_AI_MONTHLY_BUDGET_USD` | Global calendar-month generation safety cap. **Defaults to $100 for all workspaces combined.** Set a deliberate operating budget before inviting customers. |
-| `STUDIO_BILLING_OPERATOR_IDS` | Comma-separated authenticated user UUIDs allowed to see internal, global estimated provider spend. Workspace owners/admins are not automatically operators. |
-| `STUDIO_AI_SALES_READY` | Keep unset until migrations, provider routes, smoke tests, and checkout tests pass. Set to `true` to allow new memberships and credit sales. |
-| `STUDIO_CREDIT_TOPUPS_ENABLED` | Separately set to `true` to enable prepaid credit packs after the sales gate is ready. |
+| Setting                                              | Purpose                                                                                                                                                     |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SUPABASE_SERVICE_ROLE_KEY` or `SUPABASE_SECRET_KEY` | Trusted server ledger operations; required before generation.                                                                                               |
+| `SUPABASE_URL`                                       | Same project as the authenticated Studio workspace.                                                                                                         |
+| `STRIPE_SECRET_KEY`                                  | Stripe server API. Use test mode for the checklist below first.                                                                                             |
+| `STRIPE_WEBHOOK_SECRET`                              | Signing secret for this deployment's `/api/stripe-webhook`.                                                                                                 |
+| `PUBLIC_SITE_URL`                                    | Canonical HTTPS deployment origin for Checkout/Portal returns.                                                                                              |
+| `LOVABLE_API_KEY`                                    | Provider gateway credentials.                                                                                                                               |
+| `STUDIO_TRANSCRIPTION_ENABLED`                       | Explicitly set `true` only after the separate voice smoke test. Defaults off.                                                                               |
+| `STUDIO_TRANSCRIPTION_API_KEY` or `OPENAI_API_KEY`   | Server-only OpenAI credential for the fixed transcription endpoint. Lovable gateway credentials do not enable voice.                                        |
+| `STUDIO_TRANSCRIPTION_MODEL`                         | Optional; only `gpt-transcribe` is priced and permitted.                                                                                                    |
+| `AI_GATEWAY_URL`                                     | Optional OpenAI-compatible base URL; default Lovable gateway.                                                                                               |
+| `STUDIO_CHAT_MODEL`                                  | Default `openai/gpt-6-luna`.                                                                                                                                |
+| `STUDIO_BUILD_MODEL`                                 | Default `google/gemini-3.8-flash`.                                                                                                                          |
+| `STUDIO_IMAGE_MODEL`                                 | Default `google/gemini-3.1-flash-image`.                                                                                                                    |
+| `STUDIO_AI_MONTHLY_BUDGET_USD`                       | Global calendar-month generation safety cap. **Defaults to $100 for all workspaces combined.** Set a deliberate operating budget before inviting customers. |
+| `STUDIO_BILLING_OPERATOR_IDS`                        | Comma-separated authenticated user UUIDs allowed to see internal, global estimated provider spend. Workspace owners/admins are not automatically operators. |
+| `STUDIO_AI_SALES_READY`                              | Keep unset until migrations, provider routes, smoke tests, and checkout tests pass. Set to `true` to allow new memberships and credit sales.                |
+| `STUDIO_CREDIT_TOPUPS_ENABLED`                       | Separately set to `true` to enable prepaid credit packs after the sales gate is ready.                                                                      |
 
 Set `STUDIO_CHAT_MODEL` and `STUDIO_BUILD_MODEL` explicitly when deploying, or remove the legacy `STUDIO_AI_MODEL` override. The legacy fallback takes precedence over the new defaults; leaving a shared Flash override in place makes a one-credit chat reject its cost envelope instead of using Luna.
 
@@ -81,7 +85,7 @@ Text requests conservatively cap input using UTF-8 byte counts and an output cap
 
 Global budget checks serialize reservations across workspaces. A second workspace-level cap bounds **failed and still-running** generation spend to the plan's credit cost allowance plus its small automatic-discussion budget. Successful work is governed by prepaid credits, so a calendar-month cap cannot incorrectly block legitimate credits refreshed in the middle of the month. Old consumed top-ups never create a permanent extra failed-generation allowance.
 
-The operator meter shows combined monthly estimated spend, provider calls, reserved exposure, and the configured global cap. Customer billing administrators see credits and purchases, not Palmer House's private provider cost data. Provider usage records contain operation, model, tokens, image count, timestamps, and estimated cost; prompts and private document contents are not logged there.
+The operator meter shows combined monthly estimated spend, provider calls, reserved exposure, and the configured global cap. Customer billing administrators see credits and purchases, not Palmer House's private provider cost data. Provider usage records contain operation, model, tokens, image count, validated audio duration for voice, timestamps, and estimated cost; prompts and private document contents are not logged there.
 
 ## Reconciliation procedures
 

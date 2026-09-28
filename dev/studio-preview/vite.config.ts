@@ -42,6 +42,7 @@ export default defineConfig(({ command }) => {
       alias: [
         { find: "@/lib/studio-server", replacement: mock },
         { find: "@/lib/studio-credit-server", replacement: mock },
+        { find: "@/lib/studio-transcription-server", replacement: mock },
         { find: "@/lib/studio-recovery-server", replacement: mock },
         { find: "@/lib/studio-memory-server", replacement: mock },
         { find: "@/lib/supabase/client", replacement: mock },

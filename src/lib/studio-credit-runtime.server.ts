@@ -36,12 +36,14 @@ export type ProviderUsage = {
   outputTokens: number | null;
   images: number;
   estimatedCostUsd: number;
-  costBasis: "reported_tokens" | "reserved_ceiling";
+  audioSeconds?: number;
+  costBasis: "reported_tokens" | "reserved_ceiling" | "validated_audio_duration";
 };
 type Run = {
   id: string;
   operation: StudioCreditOperation | "automatic_feed";
   ceiling: number;
+  audioSeconds?: number;
   calls: ProviderUsage[];
 };
 const context = new AsyncLocalStorage<Run>();
@@ -55,6 +57,7 @@ const operationCeilings: Record<StudioCreditOperation | "automatic_feed", number
   avatar: 0.1,
   feed: 0.025,
   automatic_feed: 0.025,
+  transcription: 0.01,
 };
 // Conservative post-promotion rates. Only explicitly priced routes are enabled.
 export const studioModelRates: Record<
@@ -130,12 +133,23 @@ export function beginStudioProviderCall(
     }
   };
 }
+/** A saved result may exist after a network timeout; leave the debit reserved for reconciliation. */
+export class StudioCreditReconciliationError extends Error {}
+
 export async function withStudioCredits<T>(
   auth: { accessToken: string; workspaceId: string },
   operation: StudioCreditOperation | "automatic_feed",
   work: () => Promise<T>,
+  metering?: { audioSeconds: number },
 ): Promise<T> {
-  if (!process.env.LOVABLE_API_KEY)
+  if (
+    operation === "transcription"
+      ? !(
+          process.env.STUDIO_TRANSCRIPTION_ENABLED === "true" &&
+          (process.env.STUDIO_TRANSCRIPTION_API_KEY || process.env.OPENAI_API_KEY)
+        )
+      : !process.env.LOVABLE_API_KEY
+  )
     throw new Error("AI is not configured for this project. No credits were used.");
   const { user } = await authorizedStudioClient(auth.accessToken, auth.workspaceId);
   const admin = studioBillingAdmin();
@@ -152,12 +166,16 @@ export async function withStudioCredits<T>(
   const allowance = studioCreditAllowance[plan];
   if (allowance === undefined) throw new Error("Your membership plan is unavailable.");
   const automatic = operation === "automatic_feed";
-  const ceiling = operationCeilings[operation];
+  const voice =
+    operation === "transcription"
+      ? (await import("./studio-transcription")).studioVoiceQuote(metering?.audioSeconds || 0)
+      : null;
+  const ceiling = voice?.costCeilingUsd ?? operationCeilings[operation];
   const reserved = await admin.rpc("reserve_studio_credits", {
     target_workspace_id: auth.workspaceId,
     actor_id: user.id,
     operation_name: operation,
-    credit_count: automatic ? 0 : studioCreditOperations[operation].credits,
+    credit_count: automatic ? 0 : (voice?.credits ?? studioCreditOperations[operation].credits),
     cost_ceiling: ceiling,
     global_monthly_budget: studioGlobalBudget(),
     workspace_monthly_budget: allowance * 0.005 + (plan === "trial" ? 0.1 : 0.5),
@@ -168,19 +186,34 @@ export async function withStudioCredits<T>(
     throw new Error(
       reserved.error?.message || "Could not reserve credits. No generation was started.",
     );
-  const run: Run = { id: reserved.data, operation, ceiling, calls: [] };
+  const run: Run = {
+    id: reserved.data,
+    operation,
+    ceiling,
+    audioSeconds: voice?.seconds,
+    calls: [],
+  };
   let result: T;
   try {
     result = await context.run(run, work);
   } catch (error) {
+    if (error instanceof StudioCreditReconciliationError) {
+      console.error("Studio usage needs reconciliation", { usageId: run.id });
+      throw error;
+    }
     const released = await admin.rpc("finish_studio_credits", {
       usage_id: run.id,
       outcome: "released",
       provider_cost: run.calls.reduce((sum, row) => sum + row.estimatedCostUsd, 0),
       provider_calls: run.calls,
     });
-    if (released.error)
+    if (released.error) {
       console.error("Studio credit release pending reconciliation", { usageId: run.id });
+      if (operation === "transcription")
+        throw new StudioCreditReconciliationError(
+          "Your recording did not finish and its credit release is still being confirmed. Keep this recording and contact Palmer House before retrying.",
+        );
+    }
     throw error;
   }
   // If the output is saved but bookkeeping fails, preserve the success and debit.
@@ -199,4 +232,33 @@ export async function withStudioCredits<T>(
 /** Non-secret reference lets operators reconcile a saved file after a DB timeout. */
 export function currentStudioUsageId() {
   return context.getStore()?.id;
+}
+
+/** Fixed-duration transcription pricing, with the same 25% operating contingency. */
+export function beginStudioTranscriptionCall(model: string, seconds: number) {
+  const run = context.getStore();
+  if (!run || run.operation !== "transcription")
+    throw new Error("A voice usage reservation is required before transcription.");
+  if (model !== "gpt-transcribe")
+    throw new Error("This transcription model has no approved duration price.");
+  if (run.calls.length)
+    throw new Error("Only one transcription request is allowed per reservation.");
+  const cost = (seconds / 60) * 0.0045 * 1.25;
+  if (
+    !Number.isFinite(seconds) ||
+    seconds <= 0 ||
+    seconds > 300 ||
+    seconds !== run.audioSeconds ||
+    cost > run.ceiling
+  )
+    throw new Error("The audio exceeds its reserved usage budget.");
+  run.calls.push({
+    model,
+    inputTokens: null,
+    outputTokens: null,
+    images: 0,
+    audioSeconds: seconds,
+    estimatedCostUsd: cost,
+    costBasis: "validated_audio_duration",
+  });
 }

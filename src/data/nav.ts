@@ -82,47 +82,64 @@ export const companyLinks: NavLink[] = [
   { label: "Locations", to: "/locations" },
 ];
 
-export const footerColumns: NavGroup[] = [
+export const primaryLinks: NavLink[] = [
   {
-    label: "Services",
-    links: [
-      { label: "Video Production", to: "/services/video-production" },
-      { label: "Post-Production", to: "/services/post-production" },
-      { label: "Consulting & Strategy", to: "/content-strategy" },
-      { label: "Our Process", to: "/process" },
-      { label: "Industries", to: "/industries" },
-    ],
+    label: "Full production",
+    to: "/services/video-production",
+    description: "We plan, film and edit your videos.",
   },
+  { label: "Studio", to: "/membership", description: "Create with our software and AI Pals." },
   {
-    label: "Pricing",
-    links: [
-      { label: "Pricing Overview", to: "/pricing" },
-      { label: "Production Estimate", to: "/production-pricing" },
-      { label: "Studio Plans", to: "/membership/pricing" },
-      { label: "Browse Packages", to: "/shop" },
-      { label: "Current Offers", to: "/offers" },
-    ],
+    label: "Planning & prep",
+    to: "/content-strategy",
+    description: "Get your ideas, scripts and team ready.",
   },
+];
+
+export const resourceLinks: NavLink[] = [
   {
     label: "Meet the Pals",
+    to: "/meet-the-pals",
+    description: "Eight personalities. One connected Studio.",
+  },
+  {
+    label: "Production guide",
+    to: "/production-guide",
+    description: "Prepare for your day on camera.",
+  },
+  { label: "Articles & ideas", to: "/blog", description: "Useful advice for your next project." },
+  { label: "About Palmer House", to: "/about-us" },
+  { label: "Questions & answers", to: "/faq" },
+  { label: "Current offers", to: "/offers" },
+];
+
+export const footerColumns: NavGroup[] = [
+  {
+    label: "Work with us",
     links: [
-      { label: "Find Your Pal", to: "/find-your-pal" },
-      { label: "Palmer House Pals", to: "/pals" },
-      { label: "Reel Pal", to: "/reel-pal" },
-      { label: "System Pal", to: "/system-pal" },
-      { label: "Evergreen Pal", to: "/evergreen-pal" },
-      { label: "Spotlight Pal", to: "/spotlight-pal" },
+      ...primaryLinks,
+      { label: "Editing & finishing", to: "/services/post-production" },
+      { label: "Talk to the team", to: "/contact" },
     ],
   },
   {
-    label: "Company",
+    label: "Choose your next step",
     links: [
-      { label: "About Us", to: "/about-us" },
-      { label: "Selected Work", to: "/work" },
-      { label: "Client Reviews", to: "/resources/reviews" },
-      { label: "Blog / Insights", to: "/blog" },
-      { label: "Production Guide", to: "/production-guide" },
-      { label: "FAQ", to: "/faq" },
+      { label: "Browse video packages", to: "/shop" },
+      { label: "Compare pricing", to: "/pricing" },
+      { label: "Build a production estimate", to: "/production-pricing" },
+      { label: "Studio plans", to: "/membership/pricing" },
+      { label: "Your Studio account", to: "/studio" },
+    ],
+  },
+  {
+    label: "Get to know us",
+    links: [
+      { label: "Selected work", to: "/work" },
+      { label: "Client reviews", to: "/resources/reviews" },
+      { label: "Meet the Pals", to: "/meet-the-pals" },
+      { label: "About Palmer House", to: "/about-us" },
+      { label: "Guides & answers", to: "/production-guide" },
     ],
   },
 ];

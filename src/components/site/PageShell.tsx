@@ -1,7 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { motion, useInView, useReducedMotion } from "motion/react";
-import { useRef, useState } from "react";
+import { motion } from "motion/react";
+import { useHydratedReducedMotion } from "@/hooks/use-hydrated-reduced-motion";
+import { useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
 import { SiteNav } from "./SiteNav";
 import { SiteFooter } from "./SiteFooter";
@@ -19,7 +20,7 @@ const isLane = (v: unknown): v is PalAccent => typeof v === "string" && LANE_SET
 
 export function PageShell({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen overflow-x-clip bg-background text-foreground">
+    <div className="public-site min-h-screen overflow-x-clip bg-background text-foreground">
       <a
         href="#main-content"
         className="fixed left-4 top-4 z-[100] -translate-y-24 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-white shadow-soft transition-transform focus:translate-y-0"
@@ -45,15 +46,11 @@ export function Eyebrow({
   className?: string;
 }) {
   return (
-    <span
-      className={`inline-flex min-h-8 items-center gap-2 rounded-full border border-border bg-card px-3.5 py-1 font-mono text-[11px] font-bold uppercase tracking-[0.16em] shadow-sm ${className}`}
-      style={{ color: lane ? laneVar(lane, "-text") : undefined }}
-    >
+    <span className={`site-eyebrow ${className}`}>
       {lane && (
-        <span aria-hidden className="size-2 rounded-full" style={{ background: laneVar(lane) }} />
+        <span aria-hidden className="site-eyebrow-dot" style={{ background: laneVar(lane) }} />
       )}
-      {!lane && <span className="text-muted-foreground">{children}</span>}
-      {lane && children}
+      {children}
     </span>
   );
 }
@@ -88,141 +85,64 @@ export function PageHero({
   pal?: PalName | PalAccent;
   palTags?: string[];
   visual?: ReactNode;
-  primary?: { label: string; to: string };
-  secondary?: { label: string; to: string };
+  primary?: { label: string; to: string; search?: Record<string, string | undefined> };
+  secondary?: { label: string; to: string; search?: Record<string, string | undefined> };
   children?: ReactNode;
 }) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const reduce = useReducedMotion();
-  const inView = useInView(sectionRef, { margin: "100px 0px" });
-  const play = !reduce && inView;
-  const heroPromote = useEntrancePromotion(!!reduce);
-
-  const resolvedLane: PalAccent | undefined =
+  const reduce = useHydratedReducedMotion();
+  const resolvedLane =
     lane ?? (isLane(pal) ? pal : pal ? (palDirectory[pal].lane as PalAccent) : undefined);
-
-  // Right-column visual: explicit `visual` wins, then a Pal figure/duo, and —
-  // for backwards compatibility — `children` when nothing else is supplied.
-  // When a visual or pal is present, `children` renders under the copy column.
-  const palVisual: ReactNode = pal ? (
+  const palVisual = pal ? (
     isLane(pal) ? (
       <PalDuo lane={pal} labels={palTags} />
     ) : (
-      <PalFigure pal={pal} size="xl" tags={palTags} className="min-h-[22rem]" />
+      <PalFigure pal={pal} size="xl" tags={palTags} />
     )
   ) : null;
-  const resolvedVisual: ReactNode = visual ?? palVisual ?? children ?? null;
-  const below: ReactNode = visual || palVisual ? children : null;
-
-  const blobA = resolvedLane ? laneVar(resolvedLane, "-soft") : "var(--spotlight-soft)";
-  const blobB = resolvedLane
-    ? `color-mix(in srgb, ${laneVar(resolvedLane)} 14%, white)`
-    : "var(--reel-soft)";
-  const highlightColor = resolvedLane ? laneVar(resolvedLane, "-text") : "var(--spotlight)";
-  const split = !!resolvedVisual;
-  // Long SEO-style headlines (industry/location pages) step down a size so
-  // they stay at 3-4 lines instead of stacking six and dwarfing the visual.
-  const titleLength = title.length + (highlight?.length ?? 0);
-  const titleSize =
-    titleLength > 48
-      ? split
-        ? "text-[clamp(2.1rem,4.2vw,4rem)]"
-        : "text-[clamp(2.4rem,5.2vw,4.8rem)]"
-      : split
-        ? "text-[clamp(2.5rem,5.6vw,5.4rem)]"
-        : "text-[clamp(2.75rem,7vw,6.4rem)]";
-
+  const resolvedVisual = visual ?? palVisual ?? children ?? null;
+  const below = visual || palVisual ? children : null;
   return (
-    <section
-      ref={sectionRef}
-      className="relative isolate overflow-hidden px-4 pb-4 pt-8 sm:pb-6 sm:pt-12"
-    >
-      <div className="pointer-events-none absolute inset-x-4 inset-y-0 -z-10 mx-auto max-w-7xl overflow-hidden rounded-[2.5rem] bg-mist sm:rounded-[3.5rem]">
-        <motion.span
-          aria-hidden
-          className="absolute -right-16 -top-20 size-64 rounded-full sm:size-80"
-          style={{ background: blobA }}
-          animate={
-            play
-              ? {
-                  transform: [
-                    "translate3d(0px, 0px, 0)",
-                    "translate3d(-12px, 10px, 0)",
-                    "translate3d(0px, 0px, 0)",
-                  ],
-                }
-              : { transform: "translate3d(0px, 0px, 0)" }
-          }
-          transition={
-            play ? { duration: 12, repeat: Infinity, ease: "easeInOut" } : { duration: 0.4 }
-          }
-        />
-        <motion.span
-          aria-hidden
-          className="absolute -bottom-28 -left-16 size-72 rounded-full sm:size-96"
-          style={{ background: blobB }}
-          animate={
-            play
-              ? {
-                  transform: [
-                    "translate3d(0px, 0px, 0)",
-                    "translate3d(14px, -8px, 0)",
-                    "translate3d(0px, 0px, 0)",
-                  ],
-                }
-              : { transform: "translate3d(0px, 0px, 0)" }
-          }
-          transition={
-            play ? { duration: 14, repeat: Infinity, ease: "easeInOut" } : { duration: 0.4 }
-          }
-        />
-      </div>
-
+    <section className="site-page-hero" data-lane={resolvedLane}>
       <motion.div
-        initial={reduce ? false : { opacity: 0, transform: "translate3d(0,24px,0)" }}
-        animate={{ opacity: 1, transform: "translate3d(0,0,0)" }}
-        transition={{ duration: reduce ? 0 : 0.6, ease: [0.22, 1, 0.36, 1] }}
-        onAnimationComplete={heroPromote.settle}
-        style={heroPromote.style}
-        className={`mx-auto grid max-w-6xl items-center gap-10 px-5 py-14 sm:px-10 sm:py-20 ${
-          split ? "lg:grid-cols-[1.05fr_.95fr] lg:text-left" : "text-center"
-        }`}
+        className={`site-page-hero-inner ${resolvedVisual ? "is-split" : "is-centered"}`}
+        initial={reduce ? false : { y: 12 }}
+        animate={{ y: 0 }}
+        transition={{ duration: reduce ? 0 : 0.35, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className={split ? "" : "mx-auto max-w-4xl"}>
+        <div>
           {eyebrow && <Eyebrow lane={resolvedLane}>{eyebrow}</Eyebrow>}
-          <h1
-            className={`mt-5 font-extrabold leading-[0.94] tracking-[-0.055em] text-balance ${titleSize}`}
-          >
+          <h1 className={title.length + (highlight?.length ?? 0) > 58 ? "is-long" : undefined}>
             {title}
             {highlight && (
               <>
                 {" "}
-                <span style={{ color: highlightColor }}>{highlight}</span>
+                <span>{highlight}</span>
               </>
             )}
           </h1>
-          {subtitle && (
-            <p
-              className={`mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg ${
-                split ? "" : "mx-auto"
-              }`}
-            >
-              {subtitle}
-            </p>
-          )}
+          {subtitle && <p className="site-hero-description">{subtitle}</p>}
           {ctas && (
-            <div className={`mt-8 flex flex-wrap gap-3 ${split ? "" : "justify-center"}`}>
-              <Link to={primary?.to ?? "/contact"} className="primary-action">
-                {primary?.label ?? "Book a Discovery Call"}
+            <div className="site-hero-actions">
+              <Link
+                to={primary?.to ?? "/contact"}
+                search={primary?.search}
+                className="primary-action"
+              >
+                {primary?.label ?? "Talk to the team"}
+                <ArrowRight size={16} aria-hidden />
               </Link>
-              <Link to={secondary?.to ?? "/production-pricing"} className="secondary-action">
-                {secondary?.label ?? "Build Your Package"}
+              <Link
+                to={secondary?.to ?? "/shop"}
+                search={secondary?.search}
+                className="secondary-action"
+              >
+                {secondary?.label ?? "Browse packages"}
               </Link>
             </div>
           )}
           {below}
         </div>
-        {split && <div className="min-w-0">{resolvedVisual}</div>}
+        {resolvedVisual && <div className="site-hero-visual min-w-0">{resolvedVisual}</div>}
       </motion.div>
     </section>
   );
@@ -239,14 +159,14 @@ export function InView({
   delay?: number;
   style?: CSSProperties;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const promote = useEntrancePromotion(!!reduce);
   return (
     <motion.div
-      initial={reduce ? false : { opacity: 0, transform: "translate3d(0,24px,0)" }}
+      initial={reduce ? false : { transform: "translate3d(0,12px,0)" }}
       whileInView={{ opacity: 1, transform: "translate3d(0,0,0)" }}
       viewport={{ once: true, amount: 0.18 }}
-      transition={{ duration: reduce ? 0 : 0.55, delay: reduce ? 0 : delay, ease: "easeOut" }}
+      transition={{ duration: reduce ? 0 : 0.35, delay: reduce ? 0 : delay, ease: "easeOut" }}
       onAnimationComplete={promote.settle}
       className={className}
       style={{ ...style, ...promote.style }}
@@ -279,7 +199,7 @@ export function Stagger({
   className?: string;
   step?: number;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   return (
     <motion.div
       className={className}
@@ -310,41 +230,12 @@ export function SectionHeading({
 }) {
   if (!eyebrow && !title && !subtitle) return null;
   return (
-    <div className={`mb-10 max-w-3xl ${align === "center" ? "mx-auto text-center" : ""}`}>
+    <div className={`site-section-heading ${align === "center" ? "is-centered" : ""}`}>
       {eyebrow && <Eyebrow lane={lane}>{eyebrow}</Eyebrow>}
-      {title && (
-        <h2
-          className={`mt-4 text-[clamp(2rem,4.5vw,3.8rem)] font-extrabold leading-[0.98] tracking-[-0.045em] text-balance ${
-            onDark ? "text-white" : ""
-          }`}
-        >
-          {title}
-        </h2>
-      )}
-      {subtitle && (
-        <p
-          className={`mt-4 text-base leading-relaxed sm:text-lg ${
-            onDark ? "text-white/70" : "text-muted-foreground"
-          }`}
-        >
-          {subtitle}
-        </p>
-      )}
+      {title && <h2 className={onDark ? "text-white" : undefined}>{title}</h2>}
+      {subtitle && <p>{subtitle}</p>}
     </div>
   );
-}
-
-function toneClass(tone: Tone) {
-  switch (tone) {
-    case "mist":
-      return "bg-mist";
-    case "cream":
-      return "bg-cream/60";
-    case "ink":
-      return "bg-ink text-white";
-    default:
-      return "";
-  }
 }
 
 export function Section({
@@ -376,8 +267,7 @@ export function Section({
   return (
     <section
       id={id}
-      className={`relative px-4 py-16 sm:py-24 ${toneClass(resolvedTone)} ${className}`}
-      style={laneTone ? { background: laneVar(laneTone, "-soft") } : undefined}
+      className={`site-section ${dark ? "is-dark" : resolvedTone !== "paper" ? "is-muted" : ""} ${className}`}
     >
       <InView className="mx-auto max-w-6xl">
         <SectionHeading
@@ -418,11 +308,6 @@ export function Card({
   const accent: PalAccent = lane ?? (pal ? (palDirectory[pal].lane as PalAccent) : "spotlight");
   const content = (
     <>
-      <span
-        aria-hidden
-        className="absolute -right-12 -top-12 size-28 rounded-full transition-transform duration-500 group-hover:scale-125 motion-reduce:transition-none"
-        style={{ background: laneVar(accent, "-soft") }}
-      />
       <div className="relative flex items-start justify-between gap-3">
         <div className="flex items-center gap-3">
           {glyph && <GlyphBadge name={glyph} lane={accent} size="sm" />}
@@ -556,7 +441,7 @@ export function FaqList({
           >
             <p className="text-sm font-bold">Still have a question?</p>
             <p className="mt-1 text-sm text-muted-foreground">
-              {palDirectory[pal].name} and the team answer within one business day.
+              Tell the Palmer House team what you need help with.
             </p>
             <Link
               to="/contact"
@@ -574,10 +459,12 @@ export function FaqList({
 export function CtaBand({
   title,
   subtitle,
-  primaryLabel = "Book a Discovery Call",
+  primaryLabel = "Talk to the team",
   primaryTo = "/contact",
-  secondaryLabel = "Find Your Pal",
-  secondaryTo = "/find-your-pal",
+  primarySearch,
+  secondaryLabel = "Browse packages",
+  secondaryTo = "/shop",
+  secondarySearch,
   lane = "spotlight",
   crew = true,
 }: {
@@ -585,32 +472,22 @@ export function CtaBand({
   subtitle?: string;
   primaryLabel?: string;
   primaryTo?: string;
+  primarySearch?: Record<string, string | undefined>;
   secondaryLabel?: string;
   secondaryTo?: string;
+  secondarySearch?: Record<string, string | undefined>;
   lane?: PalAccent;
   crew?: boolean;
 }) {
-  const reduce = useReducedMotion();
-  const dark = lane === "spotlight" || lane === "system";
-  const bg = laneVar(lane, "-deep");
+  const reduce = useHydratedReducedMotion();
   return (
     <section className="px-4 py-16 sm:py-24">
       <InView
-        className={`relative mx-auto grid max-w-6xl overflow-hidden rounded-[2.5rem] px-6 py-14 text-white shadow-glow sm:px-10 sm:py-16 ${
+        className={`site-cta-band relative mx-auto grid max-w-6xl overflow-hidden rounded-[1.75rem] px-6 py-14 text-white shadow-glow sm:px-10 sm:py-16 ${
           crew ? "lg:grid-cols-[1.1fr_.9fr] lg:items-end lg:text-left" : "text-center"
         }`}
-        style={{ background: bg }}
+        style={{ "--site-cta-accent": laneVar(lane) } as CSSProperties}
       >
-        <span aria-hidden className="absolute -left-16 -top-20 size-56 rounded-full bg-white/10" />
-        <span
-          aria-hidden
-          className="absolute -bottom-24 -right-12 size-64 rounded-full"
-          style={{
-            background: dark
-              ? "color-mix(in srgb, var(--reel) 35%, transparent)"
-              : "color-mix(in srgb, var(--paper) 14%, transparent)",
-          }}
-        />
         <div className="relative pb-2 lg:pb-6">
           <h2 className="text-[clamp(2rem,5vw,4rem)] font-extrabold leading-[0.98] tracking-[-0.045em] text-balance">
             {title}
@@ -625,16 +502,10 @@ export function CtaBand({
             </p>
           )}
           <div className={`mt-8 flex flex-wrap gap-3 ${crew ? "" : "justify-center"}`}>
-            <Link
-              to={primaryTo}
-              className="inline-flex min-h-12 items-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-ink transition-transform hover:scale-[1.03] motion-reduce:transition-none"
-            >
+            <Link to={primaryTo} search={primarySearch} className="primary-action">
               {primaryLabel}
             </Link>
-            <Link
-              to={secondaryTo}
-              className="inline-flex min-h-12 items-center rounded-full border border-white/50 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-white hover:text-ink"
-            >
+            <Link to={secondaryTo} search={secondarySearch} className="secondary-action">
               {secondaryLabel}
             </Link>
           </div>

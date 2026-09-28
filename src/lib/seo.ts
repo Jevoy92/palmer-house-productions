@@ -3,7 +3,7 @@ import defaultSocialImage from "@/assets/hero/pal-crew.png";
 export const SITE_NAME = "Palmer House Productions";
 export const SITE_URL = "https://www.palmerhouseproductions.com";
 export const SITE_DESCRIPTION =
-  "Palmer House Productions builds video systems for Pacific Northwest businesses — one shoot day delivers a content library for social, web, and training.";
+  "Video production, planning and preparation, and AI creative tools for your business. Work with the Palmer House team or create in your own Studio workspace.";
 
 export const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 export const WEBSITE_ID = `${SITE_URL}/#website`;

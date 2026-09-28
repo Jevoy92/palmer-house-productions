@@ -1,226 +1,143 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { AwakeningSequence } from "@/components/process/AwakeningSequence";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
 import {
+  Card,
+  CardGrid,
   CtaBand,
-  Eyebrow,
   IncludedPanel,
-  InView,
   PageHero,
   PageShell,
   Section,
 } from "@/components/site/PageShell";
-import {
-  FeatureSplit,
-  GraphicFrame,
-  PalCallout,
-  ProcessTimeline,
-  Scene,
-} from "@/components/site/PalVisuals";
-import { Glyph, type GlyphName } from "@/components/site/Glyphs";
-import type { PalName } from "@/lib/studio-model";
-import type { PalAccent } from "@/lib/pricing-catalog";
+import { ProcessTimeline, Scene } from "@/components/site/PalVisuals";
 import { createSeo } from "@/lib/seo";
 
-const steps: {
-  number: string;
-  title: string;
-  short: string;
-  headline: string;
-  body: string;
-  pal: PalName;
-  lane: PalAccent;
-  glyph: GlyphName;
-  frame: string;
-}[] = [
+const steps = [
   {
-    number: "01",
-    title: "Discovery",
-    short: "Map the audience, the bottleneck, and the questions your team keeps answering.",
-    headline: "We listen before we film.",
-    body: "We map the audience, the business bottleneck, and the questions your team keeps answering.",
+    title: "Tell us what you need",
+    body: "Share your audience, the idea, and where the video will live. Browse a package or start with a conversation.",
+    pal: "kiana",
+    lane: "spotlight",
+  },
+  {
+    title: "Agree the plan",
+    body: "We confirm the topics, finished videos, filming sessions, delivery timing, and quote before payment. Planning includes script and on-camera preparation.",
     pal: "clara",
     lane: "evergreen",
-    glyph: "search",
-    frame: "Listen first",
   },
   {
-    number: "02",
-    title: "Strategy",
-    short: "Choose the right Pal lanes and design the system around measurable outcomes.",
-    headline: "Choose the lanes. Design around outcomes.",
-    body: "We choose the right Pal lanes and design a video system around measurable business outcomes.",
-    pal: "samira",
-    lane: "system",
-    glyph: "workflow",
-    frame: "Build the system",
-  },
-  {
-    number: "03",
-    title: "Production",
-    short: "Our crew handles planning, direction, cameras, lighting, and sound.",
-    headline: "You focus on being yourself.",
-    body: "Our crew handles the planning, direction, cameras, lighting, and sound so you can focus on being yourself.",
+    title: "Film with our crew",
+    body: "Our people handle cameras, lighting, audio, and direction. We help you feel prepared and keep the shoot focused.",
     pal: "kareem",
     lane: "spotlight",
-    glyph: "camera",
-    frame: "Cameras on",
   },
   {
-    number: "04",
-    title: "Launch",
-    short: "Receive a reusable library built for social, web, sales, onboarding, and training.",
-    headline: "A library built to be used.",
-    body: "You receive a reusable library built for social, web, sales, onboarding, training, and support.",
-    pal: "ryder",
-    lane: "reel",
-    glyph: "publish",
-    frame: "Publish everywhere",
-  },
-  {
-    number: "05",
-    title: "Expand",
-    short: "The system grows without rebuilding everything from scratch.",
-    headline: "The system keeps compounding.",
-    body: "The system can expand without rebuilding everything from scratch.",
+    title: "Review and receive",
+    body: "Review the edits and share feedback within the agreed scope. Receive finished files in the agreed formats for your team to publish or share.",
     pal: "silas",
     lane: "system",
-    glyph: "layers",
-    frame: "Keep compounding",
   },
-];
-
-const promises = [
-  "The business problem is defined before the shot list.",
-  "Every video has a job, an audience, and a useful shelf life.",
-  "Camera-shy founders get clear direction without sounding scripted.",
-  "One production day is planned for maximum useful output.",
-  "The final library is organized so your team can actually use it.",
-  "The system can expand without rebuilding everything from scratch.",
-];
+] as const;
 
 function ProcessPage() {
   return (
     <PageShell>
       <PageHero
-        eyebrow="From bottleneck to useful library"
-        title="Production is not the first step."
-        highlight="Clarity is."
-        subtitle="If your team is posting randomly, repeating answers, or filming without a plan, the Palmer House process connects every video to a business problem before the cameras turn on."
-        lane="evergreen"
+        eyebrow="How production works"
+        title="From the first idea"
+        highlight="to the finished video."
+        subtitle="A clear plan, a supported shoot, and an edit you can review. You know what’s being made and what happens next."
+        primary={{ label: "Browse video packages", to: "/shop" }}
+        secondary={{
+          label: "Talk through an idea",
+          to: "/contact",
+          search: { intent: "production" },
+        }}
         visual={
           <Scene
             name="processPlanning"
             priority
-            tags={["Discovery", "Strategy", "Production", "Launch"]}
-            caption="One connected system"
+            tags={["Plan", "Film", "Edit"]}
+            caption="Our creative guides illustrate the process; our crew does the production."
           />
         }
       />
-
-      <AwakeningSequence />
-
-      <section id="how-it-works" className="scroll-mt-24 px-4 py-24 sm:py-32">
-        <div className="mx-auto max-w-6xl">
-          <InView className="grid gap-10 lg:grid-cols-[1fr_.8fr] lg:items-end">
-            <div className="max-w-3xl">
-              <Eyebrow lane="evergreen">How Palmer House works</Eyebrow>
-              <h2 className="mt-4 text-[clamp(2.5rem,6vw,5.5rem)] font-extrabold leading-[0.96] tracking-[-0.055em]">
-                Listen first. Build the system. Then turn on the cameras.
-              </h2>
-            </div>
-            <div className="flex gap-5 rounded-[2rem] bg-system-soft p-6">
-              <Glyph name="bulb" lane="system" className="size-16 shrink-0 sm:size-20" />
-              <div>
-                <p className="text-sm font-bold text-system-text">The useful-output test</p>
-                <p className="mt-3 text-2xl font-extrabold">
-                  Who needs this, what should it change, and where will it live?
-                </p>
-              </div>
-            </div>
-          </InView>
-
-          <ProcessTimeline
-            className="mt-16"
-            steps={steps.map((step) => ({
-              title: step.title,
-              body: step.short,
-              pal: step.pal,
-              lane: step.lane,
-            }))}
-          />
-        </div>
-      </section>
-
       <Section
-        tone="mist"
-        eyebrow="Each step, explained"
-        title="Every stage has a job before the next one starts."
-        subtitle="Each stage hands the next one something concrete, so nothing is filmed without a reason."
+        eyebrow="Four steps"
+        title="A little preparation goes a long way."
+        subtitle="You stay involved in the creative decisions. Our team handles the production details."
       >
-        <div className="space-y-16">
-          {steps.slice(0, 4).map((step, index) => (
-            <FeatureSplit
-              key={step.number}
-              reverse={index % 2 === 1}
-              lane={step.lane}
-              eyebrow={`Step ${step.number} · ${step.title}`}
-              title={step.headline}
-              body={step.body}
-              visual={
-                <GraphicFrame lane={step.lane} label={step.frame}>
-                  <div className="grid h-full place-items-center pt-8">
-                    <Glyph name={step.glyph} lane={step.lane} className="size-40 sm:size-52" />
-                  </div>
-                </GraphicFrame>
-              }
-            />
-          ))}
-        </div>
-        <div className="mt-16 grid gap-6 lg:grid-cols-2">
-          <PalCallout
-            pal="clara"
-            quote="If a customer has to ask twice, that is a video waiting to be made. Give me the steps in order — I will handle the shape."
-          />
-          <PalCallout
-            pal="silas"
-            quote="Plan the shoot once, harvest it for a month. One anchor, many outputs."
-            action={{ label: "Build a package", to: "/production-pricing" }}
-          />
-        </div>
+        <ProcessTimeline steps={[...steps]} />
       </Section>
-
-      <Section
-        eyebrow="Before the camera turns on"
-        title="Six promises that keep the work useful."
-        subtitle="Production is the easy part. Knowing what to film, who it is for, and how it keeps working is the real job."
-      >
+      <Section tone="mist" eyebrow="Before you commit" title="Make the important details clear.">
         <IncludedPanel
-          title="What every project is held to."
-          items={promises}
+          title="We agree these together."
+          items={[
+            "What each video needs to say and who it is for.",
+            "The number of videos, their lengths, and delivery formats.",
+            "Filming sessions, location, access, and who will be on camera.",
+            "Scripts, talking points, wardrobe guidance, and preparation.",
+            "Editing scope, feedback, and delivery timing.",
+            "The final quote, including any travel, tax, and agreed extras.",
+          ]}
           lane="system"
-          glyph="shield"
+          glyph="script"
         />
+        <div className="mt-7 text-center">
+          <Link
+            to="/production-guide"
+            className="inline-flex min-h-11 items-center gap-2 font-semibold underline underline-offset-4"
+          >
+            Read the production guide <ArrowRight className="size-4" />
+          </Link>
+        </div>
       </Section>
-
+      <Section
+        eyebrow="Choose your starting point"
+        title="You can start before you’re ready to film."
+      >
+        <CardGrid cols={3}>
+          <Card
+            lane="evergreen"
+            glyph="script"
+            title="Help with preparation"
+            body="Work with us on concepts, scripts, and getting comfortable on camera. Preparation can stand alone or lead into a shoot."
+            to="/content-strategy"
+          />
+          <Card
+            lane="system"
+            glyph="chat"
+            title="Develop it in Studio"
+            body="Use the Pals and software to draft ideas, plan campaigns, and organize your material. Bring that work into a production conversation when you’re ready."
+            to="/membership"
+          />
+          <Card
+            lane="spotlight"
+            glyph="camera"
+            title="Ready for production"
+            body="See the video packages, choose a starting scope, and request your plan. Our team confirms the details with you."
+            to="/shop"
+          />
+        </CardGrid>
+      </Section>
       <CtaBand
-        lane="spotlight"
-        title="Ready to stop explaining the same thing twice?"
-        subtitle="Book a free 30-minute strategy call and we will map the first version of your video system together."
-        primaryLabel="Book a Discovery Call"
+        title="Bring the idea you keep coming back to."
+        subtitle="We’ll help you decide what it needs and what you can do next."
+        primaryLabel="Talk to the team"
         primaryTo="/contact"
-        secondaryLabel="Build a package"
+        primarySearch={{ intent: "call" }}
+        secondaryLabel="See production pricing"
         secondaryTo="/production-pricing"
       />
     </PageShell>
   );
 }
-
 export const Route = createFileRoute("/process")({
   head: () => ({
     ...createSeo({
-      title: "Our Process | Palmer House Productions",
+      title: "How Video Production Works | Palmer House",
       description:
-        "Discovery, strategy, production, and launch: the Palmer House process for turning repeated business problems into reusable video systems.",
+        "See the steps from planning and preparation to filming, editing, review, and delivery with Palmer House Productions.",
       pathname: "/process",
     }),
   }),

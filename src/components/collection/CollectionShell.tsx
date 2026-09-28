@@ -1,69 +1,65 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { SiteAppearance } from "@/components/site/SiteAppearance";
+import { useSiteAppearance } from "@/components/site/useSiteAppearance";
 import "./collection.css";
-
-type Appearance = "light" | "dark" | "system";
-const appearanceKey = "palmer-house-appearance";
 
 export function CollectionShell({
   children,
+  active = "products",
   backTo,
+  backSearch,
+  backLabel = "Back to packages",
+  pricingSearch,
   footer,
   detail = false,
 }: {
   children: ReactNode;
   active?: "products" | "pricing" | "plan";
   backTo?: string;
+  backSearch?: Record<string, string>;
+  backLabel?: string;
+  pricingSearch?: { package?: string; count?: number; sessions?: number };
   footer?: ReactNode;
   detail?: boolean;
 }) {
-  const [appearance, setAppearance] = useState<Appearance>("system");
-  const [systemDark, setSystemDark] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const syncSystem = () => setSystemDark(media.matches);
-    const syncSaved = () => {
-      try {
-        const saved = window.localStorage.getItem(appearanceKey);
-        setAppearance(saved === "light" || saved === "dark" ? saved : "system");
-      } catch {
-        setAppearance("system");
-      }
-    };
-    syncSystem();
-    syncSaved();
-    media.addEventListener("change", syncSystem);
-    const onStorage = (event: StorageEvent) => {
-      if (event.key === appearanceKey || event.key === null) syncSaved();
-    };
-    window.addEventListener("storage", onStorage);
-    return () => {
-      media.removeEventListener("change", syncSystem);
-      window.removeEventListener("storage", onStorage);
-    };
-  }, []);
-
+  const { appearance, theme } = useSiteAppearance();
   return (
     <div
-      className={`pc-shell${detail ? " pc-detail-shell" : ""}${footer ? " pc-has-dock" : ""}`}
+      className={`public-site pc-shell${detail ? " pc-detail-shell" : ""}${footer ? " pc-has-dock" : ""}`}
       data-appearance={appearance}
-      data-theme={appearance === "system" ? (systemDark ? "dark" : "light") : appearance}
+      data-theme={theme}
     >
       <a className="pc-skip" href="#main-content">
         Skip to content
       </a>
       <SiteNav />
-      {backTo && (
-        <div className="mx-auto w-full max-w-7xl px-4">
+      <div className="pc-collection-bar">
+        <nav aria-label="Production packages">
+          <Link to="/shop" aria-current={active === "products" ? "page" : undefined}>
+            Products
+          </Link>
           <Link
-            to={backTo}
-            className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+            to="/production-pricing"
+            search={pricingSearch}
+            aria-current={active === "pricing" ? "page" : undefined}
           >
-            <ArrowLeft size={18} /> Back to packages
+            Pricing
+          </Link>
+          <Link to="/checkout" aria-current={active === "plan" ? "page" : undefined}>
+            Your plan
+          </Link>
+        </nav>
+        <SiteAppearance compact />
+      </div>
+      {backTo && (
+        <div className="pc-back-row">
+          <Link to={backTo} search={backSearch}>
+            <ArrowLeft size={17} aria-hidden />
+            {backLabel}
           </Link>
         </div>
       )}

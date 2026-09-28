@@ -1,36 +1,140 @@
-import { createFileRoute } from "@tanstack/react-router";
-import {
-  PageShell,
-  PageHero,
-  Section,
-  Card,
-  CardGrid,
-  CtaBand,
-  IncludedPanel,
-} from "@/components/site/PageShell";
-import {
-  FeatureSplit,
-  GraphicFrame,
-  PalCallout,
-  ProcessTimeline,
-  Scene,
-  StatBand,
-} from "@/components/site/PalVisuals";
-import { Glyph, type GlyphName } from "@/components/site/Glyphs";
-import {
-  FINISHED_VIDEO_PRICE,
-  PAL_GROUPS,
-  SESSION_PRICE,
-  type PalAccent,
-} from "@/lib/pricing-catalog";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
+import { Card, CardGrid, CtaBand, PageHero, PageShell, Section } from "@/components/site/PageShell";
+import { PalCallout, Scene } from "@/components/site/PalVisuals";
 import { createServiceSeo } from "@/lib/seo";
 
+function StartupsPage() {
+  return (
+    <PageShell>
+      <PageHero
+        eyebrow="Video for Pacific Northwest startups"
+        title="Show the thing"
+        highlight="you’re building."
+        subtitle="Make your product easier to understand and your team easier to know. We help Seattle and Pacific Northwest startups plan, film, and edit demos, founder stories, and customer-facing video."
+        primary={{ label: "Browse video packages", to: "/shop" }}
+        secondary={{
+          label: "Talk through your project",
+          to: "/contact",
+          search: { intent: "production" },
+        }}
+        visual={
+          <Scene
+            name="startups"
+            priority
+            tags={["Product demos", "Founder stories", "Social content"]}
+          />
+        }
+      />
+      <Section
+        eyebrow="Start with the next conversation"
+        title="What does someone need to understand?"
+      >
+        <CardGrid cols={2}>
+          <Card
+            lane="spotlight"
+            glyph="play"
+            title="How the product works"
+            body="Show a real use case, the workflow, and what someone can do next. Start with a Product Demos package."
+            to="/spotlight-pal"
+          />
+          <Card
+            lane="spotlight"
+            glyph="chat"
+            title="Why you’re building it"
+            body="Put the founder and the problem at the center. Discuss a story for your site, a pitch, or a launch."
+            to="/services/video-production"
+          />
+          <Card
+            lane="reel"
+            glyph="reel"
+            title="What’s new this week"
+            body="Introduce a feature, answer a customer question, or take people behind the scenes with short social videos."
+            to="/reel-pal"
+          />
+          <Card
+            lane="system"
+            glyph="workflow"
+            title="What the team needs to know"
+            body="Turn a repeated explanation into onboarding, sales training, or a clear video SOP."
+            to="/system-pal"
+          />
+        </CardGrid>
+      </Section>
+      <Section
+        tone="mist"
+        eyebrow="Choose how to make it"
+        title="Match the support to your stage."
+        subtitle="You can develop the idea yourself, work on the preparation together, or have our team handle the production."
+      >
+        <CardGrid cols={3}>
+          <Card
+            lane="system"
+            glyph="chat"
+            title="Develop it in Studio"
+            body="Use AI Pals for ideas, scripts, campaign drafts, images, and PDFs. Review and refine the work in your own workspace."
+            to="/membership"
+          />
+          <Card
+            lane="evergreen"
+            glyph="script"
+            title="Get ready with our team"
+            body="Work through the message, structure a script, and prepare to present on camera before arranging a shoot."
+            to="/content-strategy"
+          />
+          <Card
+            lane="spotlight"
+            glyph="camera"
+            title="Bring in the crew"
+            body="Choose a package and adjust its scope. We confirm the filming plan, timing, and final quote before payment."
+            to="/shop"
+          />
+        </CardGrid>
+      </Section>
+      <Section eyebrow="A place to start" title="Use one real example.">
+        <div className="grid gap-6 lg:grid-cols-2">
+          <PalCallout
+            pal="kiana"
+            quote="Tell me about one customer this actually happened to."
+            action={{ label: "Meet your AI creative guides", to: "/meet-the-pals" }}
+          />
+          <PalCallout
+            pal="ryder"
+            quote="What could you film in the next hour?"
+            action={{ label: "Explore social video packages", to: "/reel-pal" }}
+          />
+        </div>
+        <p className="mx-auto mt-8 max-w-2xl text-center leading-relaxed text-muted-foreground">
+          These are the Pals’ creative starting points. Palmer House’s human crew films and edits
+          your production. We agree the intended use, claims, and final scope with your team.
+        </p>
+        <div className="mt-5 text-center">
+          <Link
+            to="/process"
+            className="inline-flex min-h-11 items-center gap-2 font-semibold underline underline-offset-4"
+          >
+            See how production works <ArrowRight className="size-4" />
+          </Link>
+        </div>
+      </Section>
+      <CtaBand
+        title="Make the next conversation clearer."
+        subtitle="Show us what you’re building, who it’s for, and when you need it. We’ll help you choose a useful first video."
+        primaryLabel="Talk to the team"
+        primaryTo="/contact"
+        primarySearch={{ intent: "production" }}
+        secondaryLabel="See production pricing"
+        secondaryTo="/production-pricing"
+      />
+    </PageShell>
+  );
+}
 export const Route = createFileRoute("/startups")({
   head: () => ({
     ...createServiceSeo({
-      title: "Startup Video Production Seattle — Palmer House Productions",
+      title: "Startup Video Production Seattle | Palmer House",
       description:
-        "Seattle startup video production for pitch videos, product demos, and growth content built for Pacific Northwest startups.",
+        "Product demos, founder stories, social content, and training videos for Seattle and Pacific Northwest startups. Plan, film, and edit with Palmer House.",
       pathname: "/startups",
       serviceName: "Startup video production",
       serviceType: "Startup pitch, product demo, and brand video production",
@@ -38,274 +142,3 @@ export const Route = createFileRoute("/startups")({
   }),
   component: StartupsPage,
 });
-
-const outcomes: { stat: string; label: string; body: string; lane: PalAccent }[] = [
-  {
-    stat: "Funding Clarity",
-    label: "Explain the opportunity",
-    body: "Give investors a concise story they can understand before the next meeting.",
-    lane: "spotlight",
-  },
-  {
-    stat: "Product Understanding",
-    label: "Show the product",
-    body: "Demonstrate the workflow, customer problem, and value without a long explanation.",
-    lane: "evergreen",
-  },
-  {
-    stat: "Repeatable Onboarding",
-    label: "Scale the knowledge",
-    body: "Turn repeated founder and team explanations into a reusable onboarding library.",
-    lane: "system",
-  },
-  {
-    stat: "Reusable Distribution",
-    label: "Build the campaign",
-    body: "Plan one production around web, pitch, sales, and social delivery from the start.",
-    lane: "reel",
-  },
-];
-
-const specialties: { title: string; body: string; lane: PalAccent; glyph: GlyphName }[] = [
-  {
-    title: "Investor Pitch Videos",
-    body: "Compelling narratives that capture attention and communicate traction.",
-    lane: "spotlight",
-    glyph: "chart",
-  },
-  {
-    title: "Product Demonstrations",
-    body: "Clear showcases of features, benefits, and competitive advantages.",
-    lane: "evergreen",
-    glyph: "play",
-  },
-  {
-    title: "Growth Marketing",
-    body: "Viral-ready social content that drives customer acquisition.",
-    lane: "reel",
-    glyph: "reel",
-  },
-  {
-    title: "Brand Storytelling",
-    body: "Authentic stories that build emotional connections with customers.",
-    lane: "spotlight",
-    glyph: "mic",
-  },
-];
-
-const services: {
-  title: string;
-  eyebrow: string;
-  body: string;
-  items: string[];
-  lane: PalAccent;
-  glyph: GlyphName;
-}[] = [
-  {
-    title: "Investor Videos",
-    eyebrow: "Pitch & Funding",
-    body: "Compelling pitch videos and investor presentations that communicate your vision and traction.",
-    items: ["Pitch deck videos", "Demo day content", "Investor updates"],
-    lane: "spotlight",
-    glyph: "chart",
-  },
-  {
-    title: "Product Demos",
-    eyebrow: "Product",
-    body: "Clear, engaging product demonstrations that showcase features and convert prospects.",
-    items: ["Feature demos", "Explainer videos", "Onboarding content"],
-    lane: "evergreen",
-    glyph: "teleprompter",
-  },
-  {
-    title: "Marketing Content",
-    eyebrow: "Growth",
-    body: "High-impact social content that drives viral growth and builds community.",
-    items: ["Social media reels", "Customer stories", "Brand content"],
-    lane: "reel",
-    glyph: "publish",
-  },
-];
-
-function StartupsPage() {
-  return (
-    <PageShell>
-      <PageHero
-        eyebrow="Startup Solutions"
-        title="Seattle Startup Video Production That Accelerates Growth & Funding"
-        subtitle="From South Lake Union SaaS companies to Eastside deep-tech startups and Pioneer Square accelerator cohorts — we create pitch videos, product demos, and growth content that helps Pacific Northwest startups raise more capital and build stronger brands."
-        lane="reel"
-        visual={
-          <Scene
-            name="startups"
-            priority
-            tags={["Pitch videos", "Product demos", "Growth reels"]}
-          />
-        }
-      />
-
-      <Section
-        eyebrow="Four jobs, four lanes"
-        title="Outcomes That Matter"
-        subtitle="Four jobs a startup video system needs to do — each one mapped to a Pal lane."
-        lane="reel"
-      >
-        <CardGrid cols={4}>
-          {outcomes.map((o) => (
-            <Card
-              key={o.label}
-              lane={o.lane}
-              glyph="spark"
-              index={o.stat}
-              title={o.label}
-              body={o.body}
-            />
-          ))}
-        </CardGrid>
-      </Section>
-
-      <Section
-        tone="mist"
-        eyebrow="Discovery to delivery"
-        title="Our Process"
-        subtitle="From discovery to delivery, a proven system for startup video"
-        lane="reel"
-      >
-        <ProcessTimeline
-          steps={[
-            {
-              title: "Discovery",
-              body: "Understanding your startup's vision, target market, and growth goals through detailed consultation.",
-              pal: "kiana",
-            },
-            {
-              title: "Planning",
-              body: "Developing compelling scripts and storyboards that communicate your unique value proposition.",
-              pal: "clara",
-            },
-            {
-              title: "Production",
-              body: "Professional filming that captures your team's passion and showcases your product's potential.",
-              pal: "kareem",
-            },
-            {
-              title: "Delivery",
-              body: "Optimized videos ready for pitches, social media, websites, and investor presentations.",
-              pal: "ryder",
-            },
-          ]}
-        />
-        <div className="mt-10">
-          <PalCallout
-            pal="ryder"
-            quote="Momentum beats perfection. If you are staring at a blank week before demo day, throw me one sentence and I will hand you three things you could film today."
-            action={{ label: "Explore Reel Pal", to: "/reel-pal" }}
-          />
-        </div>
-      </Section>
-
-      <Section
-        eyebrow="Specialties"
-        title="Startup Video Specialties"
-        subtitle="We understand the unique challenges startups face at every stage, from pre-seed to Series A and beyond."
-        lane="reel"
-      >
-        <CardGrid cols={4}>
-          {specialties.map((s) => (
-            <Card key={s.title} lane={s.lane} glyph={s.glyph} title={s.title} body={s.body} />
-          ))}
-        </CardGrid>
-      </Section>
-
-      <Section
-        tone="reel"
-        eyebrow="Services"
-        title="Our Startup Video Services"
-        subtitle="Comprehensive video production solutions tailored for startups at every stage, designed to help you raise capital, acquire customers, and scale operations."
-      >
-        <StatBand
-          className="mb-16"
-          stats={[
-            { value: SESSION_PRICE, prefix: "$", label: "per production session", lane: "reel" },
-            {
-              value: 2,
-              suffix: " hrs",
-              label: "on-location filming per session",
-              lane: "spotlight",
-            },
-            {
-              value: FINISHED_VIDEO_PRICE,
-              prefix: "$",
-              label: "per finished video",
-              lane: "evergreen",
-            },
-            {
-              value: PAL_GROUPS.length,
-              label: "Pal lanes to match your goal",
-              lane: "system",
-            },
-          ]}
-        />
-        <div className="space-y-16">
-          {services.map((s, i) => (
-            <FeatureSplit
-              key={s.title}
-              reverse={i % 2 === 1}
-              lane={s.lane}
-              eyebrow={s.eyebrow}
-              title={s.title}
-              body={s.body}
-              bullets={s.items}
-              action={{ label: "Build this into a package", to: "/production-pricing" }}
-              visual={
-                <GraphicFrame lane={s.lane}>
-                  <div className="grid h-full place-items-center">
-                    <Glyph name={s.glyph} lane={s.lane} className="size-40 sm:size-52" />
-                  </div>
-                </GraphicFrame>
-              }
-            />
-          ))}
-        </div>
-      </Section>
-
-      <Section
-        eyebrow="Spotlight Pal for startups"
-        title="How Spotlight Pal Serves Startups"
-        subtitle="Every startup stage needs different video solutions. Our specialized Pals deliver exactly what you need—from pitch videos to product demos to growth content."
-        lane="spotlight"
-      >
-        <IncludedPanel
-          title="Investor & Brand Stories"
-          items={[
-            "Investor pitch videos and demo day content",
-            "Founder story and mission films",
-            "Brand identity and culture videos",
-            "Customer testimonial productions",
-          ]}
-          lane="spotlight"
-          glyph="camera"
-        />
-        <div className="mt-10 grid gap-6 lg:grid-cols-2">
-          <PalCallout
-            pal="kiana"
-            quote="Cinematic pitch videos, founder stories, and brand films that capture investor attention and build emotional connections with your audience — that is my corner."
-            action={{ label: "Explore Spotlight Pal", to: "/spotlight-pal" }}
-          />
-          <PalCallout
-            pal="samira"
-            quote="Founders repeat the same onboarding explanation to every hire and every customer. Record it once and the team scales without you in every room."
-            action={{ label: "Explore System Pal", to: "/system-pal" }}
-          />
-        </div>
-      </Section>
-
-      <CtaBand
-        title="Ready to Accelerate Your Startup's Growth?"
-        subtitle="Let's create video content that helps you raise more capital, grow faster, and build a stronger brand."
-        primaryLabel="Book a Discovery Call"
-        lane="reel"
-      />
-    </PageShell>
-  );
-}

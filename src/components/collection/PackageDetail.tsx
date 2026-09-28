@@ -68,6 +68,8 @@ export function PackageDetail({
     <CollectionShell
       active="products"
       backTo="/shop"
+      backSearch={{ lane: item.lane }}
+      pricingSearch={{ package: item.id, count, sessions }}
       detail
       footer={
         <div className="pc-detail-dock" data-lane={item.lane}>
@@ -211,7 +213,11 @@ export function PackageDetail({
               <dd>After scope approval</dd>
             </div>
           </dl>
-          <Link to="/production-pricing" search={{ package: item.id }} className="pc-section-link">
+          <Link
+            to="/production-pricing"
+            search={{ package: item.id, count, sessions }}
+            className="pc-section-link"
+          >
             See how pricing works <ArrowRight size={18} />
           </Link>
           <p className="pc-detail-disclosure">

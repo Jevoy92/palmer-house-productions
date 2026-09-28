@@ -67,6 +67,8 @@ function DiyDownloadsPage() {
         highlight="You need a clear next step."
         subtitle="If the budget, timing, or idea is not ready for full production, start with the same strategic structure: choose the problem, use the tool, and make one useful thing."
         lane="evergreen"
+        primary={{ label: "Browse the guides", to: "/services/diy-downloads#guides" }}
+        secondary={{ label: "Explore Studio tools", to: "/membership" }}
         visual={
           <Scene
             name="diyDownloads"
@@ -79,9 +81,9 @@ function DiyDownloadsPage() {
       <Section
         eyebrow="Real tools from the catalog"
         title="Buy the fix for the page you are stuck on."
-        subtitle="These items use the same live cart and checkout as Palmer House production packages. Prices and quantities stay in sync."
+        subtitle="One-time PDF purchases. After payment, contact Palmer House with your order reference for access. Delivery is handled by our team; there is no instant download on this site."
       >
-        <div className="grid gap-5 lg:grid-cols-3">
+        <div id="guides" className="grid gap-5 lg:grid-cols-3 scroll-mt-32">
           {DIY_DOWNLOADS.map((download) => {
             const details = DOWNLOAD_DETAILS[download.id] ?? FALLBACK_DETAILS;
             const qty = cart.selected[download.id] ?? 0;

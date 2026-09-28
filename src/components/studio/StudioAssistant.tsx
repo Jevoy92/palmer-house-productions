@@ -850,7 +850,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
           </div>
         </div>
         <form onSubmit={submit} className="studio-chat-composer">
-          {composerTools || attachments.length ? (
+          {composerTools || attachments.length || intakeBusy ? (
             <motion.div
               className="studio-composer-tools"
               initial={reduce ? false : { opacity: 0, height: 0 }}

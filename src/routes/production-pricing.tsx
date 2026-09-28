@@ -1,9 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PricingPage } from "@/components/collection/PricingPage";
+import { productionDraft } from "@/lib/public-journey";
 import { createSeo } from "@/lib/seo";
 
 export const Route = createFileRoute("/production-pricing")({
-  validateSearch: (search: Record<string, unknown>): { package?: string } => ({
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): { package?: string; count?: number; sessions?: number } => ({
+    ...productionDraft(search),
     package: typeof search.package === "string" ? search.package.slice(0, 100) : undefined,
   }),
   head: () =>
@@ -18,5 +22,12 @@ export const Route = createFileRoute("/production-pricing")({
 
 function ProductionPricingRoute() {
   const search = Route.useSearch();
-  return <PricingPage key={search.package ?? "default"} packageId={search.package} />;
+  return (
+    <PricingPage
+      key={`${search.package ?? "default"}-${search.count}-${search.sessions}`}
+      packageId={search.package}
+      initialCount={search.count}
+      initialSessions={search.sessions}
+    />
+  );
 }

@@ -1,3 +1,4 @@
+import { studioAuthReturnUrl } from "@/lib/public-journey";
 import type { Session, User } from "@supabase/supabase-js";
 import {
   createContext,
@@ -219,7 +220,7 @@ export type StudioContextValue = {
   uploadIdeaSource: (file: File) => Promise<string>;
   uploadConversationFile: (
     file: File,
-    options?: { conversationId?: string; kind?: "voice" | "file" },
+    options?: { conversationId?: string; kind?: "voice" | "file"; requestId?: string },
   ) => Promise<ConversationIntake>;
   askPal: (question: string, pal: PalName, conversationId?: string) => Promise<AssistantResponse>;
   startConversation: (pal: PalName, title?: string) => Promise<string>;
@@ -694,7 +695,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       password,
       options: {
         data: { full_name: fullName },
-        emailRedirectTo: `${window.location.origin}/studio`,
+        emailRedirectTo: studioAuthReturnUrl(),
       },
     });
     setBusy(false);
@@ -707,7 +708,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     setBusy(true);
     const result = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${window.location.origin}/studio` },
+      options: { emailRedirectTo: studioAuthReturnUrl() },
     });
     setBusy(false);
     if (result.error) throw result.error;
@@ -867,7 +868,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   }
   async function uploadConversationFile(
     file: File,
-    options?: { conversationId?: string; kind?: "voice" | "file" },
+    options?: { conversationId?: string; kind?: "voice" | "file"; requestId?: string },
   ): Promise<ConversationIntake> {
     if (!workspace) throw new Error("Create a workspace first.");
     if (!session) throw new Error("Sign in first.");
@@ -876,11 +877,12 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     form.append("workspaceId", workspace.id);
     if (options?.conversationId) form.append("conversationId", options.conversationId);
     if (options?.kind) form.append("kind", options.kind);
+    if (options?.requestId) form.append("requestId", options.requestId);
     const response = await fetch("/api/studio/intake", {
       method: "POST",
       headers: { Authorization: `Bearer ${session.access_token}` },
       body: form,
-    });
+    }).finally(notifyCreditBalance);
     const payload = (await response.json().catch(() => ({}))) as {
       error?: string;
       attachment?: ConversationIntake["attachment"];

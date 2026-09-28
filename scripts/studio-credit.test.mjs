@@ -296,13 +296,6 @@ test("proration alone does not replenish the included allowance", async () => {
   );
   assert.equal(calls.length, 0);
 });
-test("audio transcription fails closed without any provider request", async () => {
-  const { transcribeAudio } = loader()("src/lib/intake.server");
-  await assert.rejects(
-    transcribeAudio(new Uint8Array([1]), "audio/wav"),
-    /No AI credits were used/,
-  );
-});
 
 function membershipCheckoutFixture(
   priorStatus = "canceled",

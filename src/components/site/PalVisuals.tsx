@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { motion, useInView, useReducedMotion } from "motion/react";
+import { motion, useInView } from "motion/react";
+import { useHydratedReducedMotion } from "@/hooks/use-hydrated-reduced-motion";
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { palDirectory, palList } from "@/lib/pal-directory";
@@ -14,30 +15,15 @@ import { Glyph, type GlyphName } from "./Glyphs";
 /* Hooks                                                               */
 /* ------------------------------------------------------------------ */
 
-/** Plays continuous motion only when visible, motion is allowed, and we are on desktop. */
-function useAmbientMotion(ref: React.RefObject<HTMLElement | null>) {
-  const reduce = useReducedMotion();
-  const inView = useInView(ref, { margin: "80px 0px" });
-  const [desktop, setDesktop] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)");
-    const update = () => setDesktop(mq.matches);
-    update();
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
-  return { reduce: !!reduce, play: !reduce && inView && desktop };
-}
-
 /* ------------------------------------------------------------------ */
 /* PalFigure — a single Pal standing on a lane-colored disc            */
 /* ------------------------------------------------------------------ */
 
 const figureSizes = {
-  sm: "h-40 sm:h-44",
-  md: "h-56 sm:h-64",
-  lg: "h-72 sm:h-80",
-  xl: "h-80 sm:h-[26rem]",
+  sm: "w-40 sm:w-44",
+  md: "w-56 sm:w-64",
+  lg: "w-72 sm:w-80",
+  xl: "w-80 sm:w-[26rem]",
 } as const;
 
 export function PalFigure({
@@ -55,67 +41,34 @@ export function PalFigure({
   caption?: string;
   tags?: string[];
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { reduce, play } = useAmbientMotion(ref);
+  const reduce = useHydratedReducedMotion();
   const profile = palDirectory[pal];
   const accent = lane ?? (profile.lane as PalAccent);
   return (
-    <div
-      ref={ref}
-      className={`relative isolate flex flex-col items-center justify-end overflow-hidden rounded-[2rem] ${className}`}
-      style={{ background: laneVar(accent, "-soft") }}
-    >
-      <span
-        aria-hidden
-        className="absolute left-1/2 top-[18%] -z-10 aspect-square w-[72%] -translate-x-1/2 rounded-full"
-        style={{ background: `color-mix(in srgb, ${laneVar(accent)} 22%, white)` }}
-      />
-      <motion.img
-        src={PAL_PORTRAITS[pal]}
-        alt={`${profile.name}, ${profile.role}`}
-        loading="lazy"
-        decoding="async"
-        className={`relative w-auto max-w-[88%] object-contain object-bottom ${figureSizes[size]}`}
-        initial={reduce ? false : { opacity: 0, y: 22 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      />
-      {tags.map((tag, i) => (
-        <motion.span
-          key={tag}
-          className="absolute rounded-full border border-white/80 bg-white px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] shadow-soft"
-          style={{
-            color: laneVar(accent, "-text"),
-            left: i % 2 === 0 ? "6%" : "auto",
-            right: i % 2 === 1 ? "6%" : "auto",
-            top: `${12 + i * 18}%`,
-          }}
-          animate={
-            play
-              ? {
-                  transform: [
-                    "translate3d(0,0,0)",
-                    `translate3d(0,${i % 2 ? 5 : -5}px,0)`,
-                    "translate3d(0,0,0)",
-                  ],
-                }
-              : { transform: "translate3d(0,0,0)" }
-          }
-          transition={
-            play
-              ? { duration: 3.4 + i * 0.6, repeat: Infinity, ease: "easeInOut" }
-              : { duration: 0.4 }
-          }
-        >
-          {tag}
-        </motion.span>
-      ))}
-      {caption && (
-        <span className="absolute bottom-4 left-4 rounded-full bg-ink/85 px-3 py-1.5 text-xs font-bold text-white backdrop-blur">
-          {caption}
-        </span>
+    <div className={`site-pal-art ${className}`}>
+      <div className="site-visual-frame relative flex items-end justify-center overflow-hidden">
+        <motion.img
+          src={PAL_PORTRAITS[pal]}
+          alt={`${profile.name}, ${profile.role}`}
+          loading="lazy"
+          decoding="async"
+          className={`h-auto max-w-full object-contain ${figureSizes[size]}`}
+          initial={reduce ? false : { y: 12 }}
+          whileInView={{ y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: reduce ? 0 : 0.35 }}
+        />
+      </div>
+      {!!tags.length && (
+        <div className="site-scene-tags">
+          {tags.map((tag) => (
+            <span key={tag} style={{ color: laneVar(accent, "-text") }}>
+              {tag}
+            </span>
+          ))}
+        </div>
       )}
+      {caption && <p className="site-visual-caption">{caption}</p>}
     </div>
   );
 }
@@ -128,29 +81,22 @@ export function PalDuo({
   lane,
   labels,
   className = "",
-  minHeight = "min-h-[22rem]",
+  minHeight = "",
 }: {
   lane: PalAccent;
   labels?: string[];
   className?: string;
   minHeight?: string;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { reduce, play } = useAmbientMotion(ref);
+  const reduce = useHydratedReducedMotion();
   const info = laneById[lane];
   const tags = labels ?? info.outputs;
   return (
-    <div
-      ref={ref}
-      className={`relative isolate overflow-hidden rounded-[2.25rem] border border-white/75 ${minHeight} ${className}`}
-      style={{ background: laneVar(lane, "-soft") }}
-    >
-      <span
-        aria-hidden
-        className="absolute left-1/2 top-[14%] -z-10 aspect-square w-[62%] -translate-x-1/2 rounded-full"
-        style={{ background: `color-mix(in srgb, ${laneVar(lane)} 20%, white)` }}
-      />
-      <div className="absolute inset-x-5 bottom-0 flex items-end justify-center">
+    <div className={`site-pal-art ${className}`}>
+      <div
+        className={`site-visual-frame relative grid grid-cols-2 overflow-hidden ${minHeight}`}
+        style={{ aspectRatio: "16/9" }}
+      >
         {info.pals.map((pal, index) => (
           <motion.img
             key={pal}
@@ -158,46 +104,23 @@ export function PalDuo({
             alt={`${palDirectory[pal].name}, ${palDirectory[pal].role}`}
             loading="lazy"
             decoding="async"
-            className={`h-72 w-auto max-w-[58%] object-contain object-bottom sm:h-80 ${
-              index === 0 ? "-mr-10" : "-ml-10"
-            }`}
-            initial={reduce ? false : { opacity: 0, y: 24, rotate: index === 0 ? -2 : 2 }}
-            whileInView={{ opacity: 1, y: 0, rotate: index === 0 ? -1 : 1 }}
-            viewport={{ once: true, amount: 0.25 }}
-            transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
+            className="size-full min-h-0 object-cover object-top"
+            initial={reduce ? false : { y: 12 }}
+            whileInView={{ y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: reduce ? 0 : 0.35, delay: reduce ? 0 : index * 0.08 }}
           />
         ))}
       </div>
-      {tags.map((label, index) => (
-        <motion.span
-          key={label}
-          className="absolute rounded-full border border-white/80 bg-white px-3 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.1em] shadow-soft"
-          style={{
-            color: laneVar(lane, "-text"),
-            left: index === 1 ? "auto" : index === 0 ? "5%" : "8%",
-            right: index === 1 ? "5%" : "auto",
-            top: `${14 + index * 16}%`,
-          }}
-          animate={
-            play
-              ? {
-                  transform: [
-                    "translate3d(0px, 0px, 0)",
-                    "translate3d(0px, -5px, 0)",
-                    "translate3d(0px, 0px, 0)",
-                  ],
-                }
-              : { transform: "translate3d(0px, 0px, 0)" }
-          }
-          transition={
-            play
-              ? { duration: 3.5 + index * 0.5, repeat: Infinity, ease: "easeInOut" }
-              : { duration: 0.4 }
-          }
-        >
-          {label}
-        </motion.span>
-      ))}
+      {!!tags.length && (
+        <div className="site-scene-tags">
+          {tags.map((tag) => (
+            <span key={tag} style={{ color: laneVar(lane, "-text") }}>
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -207,7 +130,7 @@ export function PalDuo({
 /* ------------------------------------------------------------------ */
 
 export function PalCrew({ className = "" }: { className?: string }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   return (
     <motion.div
       className={`relative isolate ${className}`}
@@ -248,9 +171,9 @@ export function PalCallout({
   label?: string;
   compact?: boolean;
   className?: string;
-  action?: { label: string; to: string };
+  action?: { label: string; to: string; search?: Record<string, string | undefined> };
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const profile = palDirectory[pal];
   const lane = profile.lane as PalAccent;
   return (
@@ -297,6 +220,7 @@ export function PalCallout({
         {action && (
           <Link
             to={action.to}
+            search={action.search}
             className="mt-3 inline-flex min-h-10 items-center gap-1.5 text-sm font-bold underline underline-offset-4"
             style={{ color: laneVar(lane, "-text") }}
           >
@@ -321,7 +245,7 @@ export function LaneTiles({
   className?: string;
   ctaLabel?: string;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   if (variant === "compact") {
     return (
       <div className={`grid grid-cols-2 gap-3 ${className}`}>
@@ -465,25 +389,20 @@ export type Stat = {
 
 function StatTile({ stat, index, lane }: { stat: Stat; index: number; lane: PalAccent }) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const inView = useInView(ref, { once: true, amount: 0.5 });
   const numeric = typeof stat.value === "number" ? stat.value : null;
   const count = useCountUp(numeric ?? 0, !!inView && !reduce && numeric !== null);
   return (
     <motion.div
       ref={ref}
-      className="relative overflow-hidden rounded-[1.75rem] p-5 sm:p-6"
-      style={{ background: laneVar(lane, "-soft") }}
+      className="relative overflow-hidden rounded-[1.25rem] border border-border p-5 sm:p-6"
+      style={{ background: "var(--site-raised)" }}
       initial={reduce ? false : { opacity: 0, y: 18 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.4 }}
       transition={{ duration: 0.5, delay: index * 0.07, ease: "easeOut" }}
     >
-      <span
-        aria-hidden
-        className="absolute -right-6 -top-6 size-24 rounded-full"
-        style={{ background: `color-mix(in srgb, ${laneVar(lane)} 18%, white)` }}
-      />
       <p
         className="relative flex flex-wrap items-baseline gap-x-1.5 font-mono text-[clamp(2rem,4vw,3rem)] font-extrabold leading-none tracking-[-0.04em]"
         style={{ color: laneVar(lane, "-text") }}
@@ -540,10 +459,10 @@ export function FeatureSplit({
   visual: ReactNode;
   reverse?: boolean;
   lane?: PalAccent;
-  action?: { label: string; to: string };
+  action?: { label: string; to: string; search?: Record<string, string | undefined> };
   children?: ReactNode;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   return (
     <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
       <motion.div
@@ -585,6 +504,7 @@ export function FeatureSplit({
         {action && (
           <Link
             to={action.to}
+            search={action.search}
             className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-bold underline underline-offset-4"
             style={{ color: laneVar(lane, "-text") }}
           >
@@ -624,22 +544,12 @@ export function GraphicFrame({
 }) {
   return (
     <div
-      className={`relative isolate overflow-hidden rounded-[2.25rem] border border-white/75 p-6 sm:p-8 ${minHeight} ${className}`}
+      className={`site-visual-frame relative isolate overflow-hidden rounded-[2.25rem] border border-white/75 p-6 sm:p-8 ${minHeight} ${className}`}
       style={{ background: laneVar(lane, "-soft") }}
     >
-      <span
-        aria-hidden
-        className="absolute -right-12 -top-12 -z-10 size-48 rounded-full"
-        style={{ background: `color-mix(in srgb, ${laneVar(lane)} 16%, white)` }}
-      />
-      <span
-        aria-hidden
-        className="absolute -bottom-16 -left-10 -z-10 size-40 rounded-full"
-        style={{ background: `color-mix(in srgb, ${laneVar(lane)} 10%, white)` }}
-      />
       {label && (
         <span
-          className="absolute left-5 top-5 rounded-full bg-white px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.14em] shadow-sm"
+          className="site-visual-tag absolute left-5 top-5 rounded-full bg-white px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.14em] shadow-sm"
           style={{ color: laneVar(lane, "-text") }}
         >
           {label}
@@ -668,70 +578,32 @@ export function Scene({
   /** Set for above-the-fold hero usage so the image is not lazy-loaded. */
   priority?: boolean;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { reduce, play } = useAmbientMotion(ref);
+  const reduce = useHydratedReducedMotion();
   const scene = PAL_SCENES[name];
   return (
-    <div
-      ref={ref}
-      className={`relative isolate overflow-hidden rounded-[2.25rem] border border-white/75 ${className}`}
-      style={{ background: laneVar(scene.lane, "-soft"), aspectRatio: scene.ratio }}
-    >
-      <motion.img
-        src={scene.src}
-        alt={scene.alt}
-        loading={priority ? "eager" : "lazy"}
-        decoding="async"
-        fetchPriority={priority ? "high" : undefined}
-        className="size-full object-cover"
-        initial={reduce ? false : { opacity: 0, scale: 1.04 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-      />
-      {tags.map((tag, i) => (
-        <motion.span
-          key={tag}
-          className="absolute rounded-full border border-white/80 bg-white px-3 py-1.5 font-mono text-[10px] font-bold uppercase tracking-[0.12em] shadow-soft sm:text-[11px]"
-          style={{
-            color: laneVar(scene.lane, "-text"),
-            left: i % 2 === 0 ? "5%" : "auto",
-            right: i % 2 === 1 ? "5%" : "auto",
-            top: `${8 + i * 16}%`,
-          }}
-          initial={reduce ? false : { opacity: 0, y: 8 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.4, delay: 0.3 + i * 0.1 }}
-        >
-          <motion.span
-            className="block"
-            animate={
-              play
-                ? {
-                    transform: [
-                      "translate3d(0,0,0)",
-                      `translate3d(0,${i % 2 ? 4 : -4}px,0)`,
-                      "translate3d(0,0,0)",
-                    ],
-                  }
-                : { transform: "translate3d(0,0,0)" }
-            }
-            transition={
-              play
-                ? { duration: 3.2 + i * 0.5, repeat: Infinity, ease: "easeInOut" }
-                : { duration: 0.4 }
-            }
-          >
-            {tag}
-          </motion.span>
-        </motion.span>
-      ))}
-      {caption && (
-        <span className="absolute bottom-4 left-4 rounded-full bg-ink/85 px-3 py-1.5 text-xs font-bold text-white backdrop-blur">
-          {caption}
-        </span>
+    <div className={className}>
+      <div className="site-visual-frame overflow-hidden" style={{ aspectRatio: scene.ratio }}>
+        <motion.img
+          src={scene.src}
+          alt={scene.alt}
+          loading={priority ? "eager" : "lazy"}
+          decoding="async"
+          fetchPriority={priority ? "high" : undefined}
+          className="size-full object-cover"
+          initial={reduce ? false : { scale: 1.015 }}
+          whileInView={{ scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: reduce ? 0 : 0.4 }}
+        />
+      </div>
+      {!!tags.length && (
+        <div className="site-scene-tags">
+          {tags.map((tag) => (
+            <span key={tag}>{tag}</span>
+          ))}
+        </div>
       )}
+      {caption && <p className="site-visual-caption">{caption}</p>}
     </div>
   );
 }
@@ -759,7 +631,7 @@ export function SceneCard({
   to?: string;
   index?: number;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const inner = (
     <>
       <div
@@ -837,7 +709,7 @@ export function ProcessTimeline({
   steps: ProcessStep[];
   className?: string;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const cycle: PalAccent[] = ["reel", "spotlight", "evergreen", "system"];
   const cols =
     steps.length <= 3 ? "lg:grid-cols-3" : steps.length === 4 ? "lg:grid-cols-4" : "lg:grid-cols-5";
@@ -912,7 +784,7 @@ export function ProcessTimeline({
 /* ------------------------------------------------------------------ */
 
 export function PalRoster({ className = "" }: { className?: string }) {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   return (
     <div className={`grid grid-cols-2 gap-3 sm:grid-cols-4 ${className}`}>
       {palList.map((pal, i) => {

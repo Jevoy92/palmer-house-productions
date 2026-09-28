@@ -85,7 +85,7 @@ function FindYourPalPage() {
       }
     >
       <section className="pc-guide" data-lane={lane}>
-        <p className="pc-eyebrow">Find your starting point · {step} of 2</p>
+        <p className="pc-eyebrow">Find your production package · {step} of 2</p>
         <h1 ref={heading} tabIndex={-1} className="pc-heading">
           {step === 1
             ? "What should video do for your business?"
@@ -93,7 +93,7 @@ function FindYourPalPage() {
         </h1>
         <p className="pc-muted">
           {step === 1
-            ? "Two quick choices. A package and a starting price."
+            ? "Two quick choices for a project we plan, film, and edit. A package and a starting estimate."
             : "Choose a starting scope. You can adjust it on the package page."}
         </p>
         {step === 1 ? (
@@ -171,6 +171,17 @@ function FindYourPalPage() {
             </button>
           </>
         )}
+        <p className="pc-muted mt-6">
+          Making it yourself?{" "}
+          <Link to="/membership" className="underline">
+            Explore Studio
+          </Link>
+          . Need help getting ready?{" "}
+          <Link to="/content-strategy" className="underline">
+            Planning & preparation
+          </Link>
+          .
+        </p>
         <Link className="pc-guide-browse" to="/shop" search={step === 2 ? { lane } : {}}>
           {step === 1 ? "Browse all packages instead" : `See all ${group.role} packages`}{" "}
           <ArrowRight size={16} />

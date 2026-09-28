@@ -1,14 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Copy } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { PageShell, PageHero, Section, Card, CardGrid } from "@/components/site/PageShell";
 import { PalCallout, Scene } from "@/components/site/PalVisuals";
 import { Glyph, type GlyphName } from "@/components/site/Glyphs";
 import { contactInfo } from "@/data/nav";
 import { PAL_GROUPS, type PalAccent } from "@/lib/pricing-catalog";
+import { inquiryIntents, parseInquiryIntent, type InquiryIntent } from "@/lib/public-journey";
 import { createSeo } from "@/lib/seo";
 
 const PROJECT_TYPES = [
+  ...Object.values(inquiryIntents).map((intent) => intent.label),
   ...PAL_GROUPS.flatMap((group) => group.items.map((item) => item.name)),
   "Not Sure Yet",
 ];
@@ -74,6 +76,8 @@ export const Route = createFileRoute("/contact")({
   validateSearch: (
     search: Record<string, unknown>,
   ): {
+    intent?: InquiryIntent;
+    context?: string;
     quote?: string;
     total?: string;
     services?: string;
@@ -88,6 +92,8 @@ export const Route = createFileRoute("/contact")({
     gift?: string;
     expanded_scriptwriting?: string;
   } => ({
+    intent: parseInquiryIntent(search.intent),
+    context: typeof search.context === "string" ? search.context.slice(0, 2000) : undefined,
     quote: typeof search.quote === "string" ? search.quote : undefined,
     total:
       typeof search.total === "string" || typeof search.total === "number"
@@ -114,11 +120,17 @@ export const Route = createFileRoute("/contact")({
       pathname: "/contact",
     }),
   }),
-  component: ContactPage,
+  component: ContactRoute,
 });
+
+function ContactRoute() {
+  const search = Route.useSearch();
+  return <ContactPage key={`${search.intent ?? "general"}-${search.quote ?? ""}`} />;
+}
 
 function ContactPage() {
   const quote = Route.useSearch();
+  const intent = quote.intent ? inquiryIntents[quote.intent] : undefined;
   const quoteDetails = formatQuoteDetails(quote.details);
   const quoteContext = [
     `I'd like to discuss quote ${quote.quote} (${quote.services || "selected Palmer House services"}), estimated at $${quote.total}.`,
@@ -136,15 +148,21 @@ function ContactPage() {
     name: quote.name ?? "",
     email: quote.email ?? "",
     company: quote.company ?? "",
-    projectType: quote.quote ? "Not Sure Yet" : "",
-    message: quote.quote ? quoteContext : "",
+    projectType: quote.quote ? "Full video production" : (intent?.label ?? ""),
+    message: quote.quote
+      ? quoteContext
+      : [intent?.message, quote.context].filter(Boolean).join("\n\n"),
   }));
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
   const [draftOpened, setDraftOpened] = useState(false);
+  const [copyState, setCopyState] = useState("");
+  const [deliveryError, setDeliveryError] = useState("");
   const [submitState, setSubmitState] = useState<"idle" | "sending" | "sent" | "email">("idle");
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((f) => ({ ...f, [key]: value }));
+    setErrors((old) => ({ ...old, [key]: undefined }));
+    setCopyState("");
   }
 
   function validate(): boolean {
@@ -158,8 +176,28 @@ function ContactPage() {
     return Object.keys(next).length === 0;
   }
 
+  function draftText() {
+    return [
+      `Name: ${form.name}`,
+      `Email: ${form.email}`,
+      `Company: ${form.company || "Not provided"}`,
+      `Project type: ${form.projectType}`,
+      "",
+      form.message,
+    ].join("\n");
+  }
+  async function copyInquiry() {
+    try {
+      await navigator.clipboard.writeText(draftText());
+      setCopyState("Copied. Paste this into an email to info@palmerhouseproductions.com.");
+    } catch {
+      setCopyState("Copy is unavailable here. You can select and copy your message below.");
+    }
+  }
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    if (submitState === "sending") return;
+    setDeliveryError("");
     if (!validate()) {
       window.requestAnimationFrame(() => {
         document.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
@@ -178,18 +216,31 @@ function ContactPage() {
     const endpoint = (import.meta.env.VITE_CONTACT_FORM_ENDPOINT as string | undefined) ?? "";
     if (endpoint) {
       setSubmitState("sending");
+      const controller = new AbortController();
+      const timeout = window.setTimeout(() => controller.abort(), 20000);
       try {
         const response = await fetch(endpoint, {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ ...form, source: "palmerhouseproductions.com" }),
+          body: JSON.stringify({
+            ...form,
+            source: "palmerhouseproductions.com",
+            intent: quote.intent,
+          }),
+          signal: controller.signal,
         });
         if (!response.ok) throw new Error("Contact endpoint rejected the request.");
         setSubmitState("sent");
         setForm(EMPTY);
         return;
       } catch {
+        setDeliveryError(
+          "We couldn’t confirm receipt. Your message is still here. You can send an email draft or copy it below.",
+        );
         setSubmitState("email");
+        return;
+      } finally {
+        window.clearTimeout(timeout);
       }
     }
     setDraftOpened(true);
@@ -203,9 +254,9 @@ function ContactPage() {
     <PageShell>
       <PageHero
         eyebrow="Start with the problem"
-        title="Tell us what keeps"
-        highlight="getting repeated, missed, or misunderstood."
-        subtitle="You do not need a finished brief. Share the bottleneck, goal, timing, and budget you know. We'll get back to you within 24 hours with a personalized game plan."
+        title="A useful next step"
+        highlight="starts with a conversation."
+        subtitle="Tell us whether you need full production, help with Studio, or preparation before a shoot. Share the goal, timing and budget you know; we can shape the rest together."
         ctas={false}
         lane="spotlight"
       >
@@ -219,7 +270,7 @@ function ContactPage() {
           <div className="mt-6 space-y-3">
             {[
               "We read the context before replying.",
-              "We identify the likely Pal lane or strategy path.",
+              "We match the right kind of support to your goal.",
               "We confirm the useful next step before scope grows.",
             ].map((item, index) => (
               <div key={item} className="flex items-start gap-3 rounded-2xl bg-white/8 p-4">
@@ -251,14 +302,18 @@ function ContactPage() {
         </div>
         <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[1.35fr_.65fr] lg:items-start">
           <form
+            id="project-inquiry"
             onSubmit={handleSubmit}
             noValidate
             className="rounded-[2.5rem] border border-border bg-white p-6 shadow-soft sm:p-10"
           >
-            <h3 className="text-3xl font-extrabold">What is not working yet?</h3>
+            <h3 className="text-3xl font-extrabold">
+              {intent ? intent.label : "How can we help?"}
+            </h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              Repeated questions, weak trust, random content, slow training, an unclear offer, or
-              something else—we can start there.
+              {intent
+                ? "Your choice is carried into the inquiry below. Add whatever context will help us understand your project."
+                : "Choose the kind of help you need, then tell us a little about your project."}
             </p>
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
               <div className="sm:col-span-1">
@@ -383,12 +438,41 @@ function ContactPage() {
             </button>
             <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
               {import.meta.env.VITE_CONTACT_FORM_ENDPOINT
-                ? "Your message is sent to the configured Palmer House intake system."
+                ? "Send your inquiry to Palmer House. This requests a conversation; it does not book a session or authorize payment."
                 : "This opens a prefilled message in your email app. Nothing is sent until you review and send it."}
             </p>
             {submitState === "sent" && (
               <p className="mt-3 text-sm font-medium text-evergreen" role="status">
-                Your inquiry was accepted by the configured Palmer House intake endpoint.
+                Your inquiry was received. Our team will follow up to confirm scope and the next
+                step. No booking or payment has been made.
+              </p>
+            )}
+            {deliveryError && (
+              <p className="mt-4 text-sm text-destructive" role="alert">
+                {deliveryError}
+              </p>
+            )}
+            <div className="mt-4 flex flex-wrap gap-4">
+              <button
+                type="button"
+                onClick={() => void copyInquiry()}
+                className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold underline"
+              >
+                <Copy className="size-4" />
+                Copy inquiry
+              </button>
+              {deliveryError && (
+                <a
+                  className="inline-flex min-h-11 items-center text-sm font-semibold underline"
+                  href={`mailto:info@palmerhouseproductions.com?subject=${encodeURIComponent(`Project inquiry from ${form.name}`)}&body=${encodeURIComponent(draftText())}`}
+                >
+                  Open email draft
+                </a>
+              )}
+            </div>
+            {copyState && (
+              <p className="text-sm text-muted-foreground" role="status">
+                {copyState}
               </p>
             )}
             {draftOpened && (
@@ -428,7 +512,7 @@ function ContactPage() {
         subtitle="Book a call, send a note, or ring the studio. We serve the Pacific Northwest from Bellevue and Portland."
       >
         <CardGrid cols={4}>
-          <Card lane="spotlight" glyph="calendar" title="Book a Strategy Call">
+          <Card lane="spotlight" glyph="calendar" title="Request an introductory call">
             <p className="relative mt-1 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-spotlight-text">
               Free 30-minute session
             </p>
@@ -436,6 +520,12 @@ function ContactPage() {
               Talk directly with our team about your goals, timeline, and budget. We'll map out the
               right content path for you.
             </p>
+            <a
+              href="#project-inquiry"
+              className="relative mt-4 inline-flex min-h-11 items-center font-semibold underline"
+            >
+              Tell us about your project <ArrowRight className="ml-2 size-4" />
+            </a>
             {import.meta.env.VITE_CLICKUP_INTAKE_URL && (
               <a
                 href={import.meta.env.VITE_CLICKUP_INTAKE_URL as string}

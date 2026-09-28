@@ -466,11 +466,19 @@ export function CheckoutPage({ quoteReference }: { quoteReference?: string }) {
   return (
     <CollectionShell
       active="plan"
+      backLabel={digitalOnly ? "Back to DIY guides" : "Back to packages"}
       backTo={digitalOnly ? "/services/diy-downloads" : "/shop"}
       footer={action("pc-checkout-mobile-action")}
     >
       <div className="pc-checkout">
         <section className="pc-checkout-main" aria-labelledby="pc-checkout-title">
+          {digitalOnly && (
+            <p className="pc-status">
+              Delivery is handled by Palmer House. After payment, contact the team with your order
+              reference for PDF access. No instant download is provided here.
+            </p>
+          )}
+
           <ol className="pc-steps" aria-label="Plan request progress">
             <li aria-current={step === 1 ? "step" : undefined}>
               {step === 2 ? (

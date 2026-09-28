@@ -1,156 +1,108 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
-import { InView, PageHero, PageShell, Section } from "@/components/site/PageShell";
-import { FeatureSplit, GraphicFrame, PalCallout } from "@/components/site/PalVisuals";
-import { Glyph, type GlyphName } from "@/components/site/Glyphs";
-import type { PalAccent } from "@/lib/pricing-catalog";
+import { createFileRoute } from "@tanstack/react-router";
+import { Card, CardGrid, CtaBand, PageHero, PageShell, Section } from "@/components/site/PageShell";
+import { PalCallout, Scene } from "@/components/site/PalVisuals";
 import { createSeo } from "@/lib/seo";
-
-const PRINCIPLES: {
-  n: string;
-  title: string;
-  body: string;
-  lane: PalAccent;
-  glyph: GlyphName;
-  frame: string;
-}[] = [
-  {
-    n: "01",
-    title: "AI should remove blank-page friction.",
-    body: "Use it to structure options, surface patterns, and turn raw thinking into a draft you can challenge.",
-    lane: "system",
-    glyph: "bulb",
-    frame: "Drafts you can challenge",
-  },
-  {
-    n: "02",
-    title: "The human point of view stays in charge.",
-    body: "A fast generic answer is not a brand. Your experience, judgment, proof, and delivery are the material.",
-    lane: "spotlight",
-    glyph: "chat",
-    frame: "Your voice, not a template",
-  },
-  {
-    n: "03",
-    title: "Automation must tell the truth.",
-    body: "No fake people, fake proof, fake live feeds, or invisible charges. The interface should say what is generated, stored, or sent.",
-    lane: "evergreen",
-    glyph: "shield",
-    frame: "Honest by default",
-  },
-  {
-    n: "04",
-    title: "Better systems create more room for craft.",
-    body: "When planning, repurposing, and handoffs become repeatable, the team can spend its energy on direction and story.",
-    lane: "reel",
-    glyph: "workflow",
-    frame: "Repeatable handoffs",
-  },
-];
 
 function AiPovPage() {
   return (
     <PageShell>
       <PageHero
-        eyebrow="Our point of view on AI"
-        title="Generic speed is not the goal."
-        highlight="Useful judgment is."
-        subtitle="Palmer House uses AI to accelerate the parts that should be easier—not to manufacture trust, replace direction, or sand every voice into the same answer."
-        lane="system"
-        pal="system"
-        palTags={["Machine speed", "Human judgment", "More useful human work"]}
+        eyebrow="Our approach to AI"
+        title="More room for ideas."
+        highlight="Your judgment stays central."
+        subtitle="Studio helps you get from a rough thought to something you can work with. The Pals bring different voices, the tools handle drafting, and you decide what’s right for your business."
+        primary={{ label: "Explore Studio", to: "/membership" }}
+        secondary={{ label: "Meet the Pals", to: "/meet-the-pals" }}
+        visual={
+          <Scene
+            name="contentStrategy"
+            priority
+            tags={["Your context", "Creative options", "Your decision"]}
+          />
+        }
       />
-
       <Section
-        eyebrow="Four operating principles"
-        title="The guardrails matter as much as the tool."
-        subtitle="Each principle shapes how the Studio drafts, what it stores, and where a person stays in the loop."
-        lane="system"
+        eyebrow="What you can do"
+        title="Useful drafts. A place to keep them."
+        subtitle="Every Pal shares the same capabilities. Pick a voice you enjoy, then ask for the work you need."
       >
-        <div className="space-y-16">
-          {PRINCIPLES.map((item, index) => (
-            <FeatureSplit
-              key={item.n}
-              reverse={index % 2 === 1}
-              lane={item.lane}
-              eyebrow={`Principle ${item.n}`}
-              title={item.title}
-              body={item.body}
-              visual={
-                <GraphicFrame lane={item.lane} label={item.frame}>
-                  <div className="grid h-full place-items-center pt-8">
-                    <Glyph name={item.glyph} lane={item.lane} className="size-40 sm:size-52" />
-                  </div>
-                </GraphicFrame>
-              }
-            />
-          ))}
-        </div>
+        <CardGrid cols={3}>
+          <Card
+            lane="spotlight"
+            glyph="chat"
+            title="Think it through"
+            body="Develop ideas, organize a campaign, and work on the message. Your Brand DNA and shared workspace context help keep the conversation specific."
+          />
+          <Card
+            lane="reel"
+            glyph="script"
+            title="Make the materials"
+            body="Draft posts, articles, newsletters, and video scripts. Generate images and PDFs, then review what you want to keep."
+          />
+          <Card
+            lane="system"
+            glyph="library"
+            title="Build on your work"
+            body="Save drafts and generated files to your Library. Organize your plan in the calendar, copy or export the results, and publish through your own channels."
+          />
+        </CardGrid>
+        <p className="mx-auto mt-8 max-w-3xl text-center text-sm leading-relaxed text-muted-foreground">
+          Studio helps plan and script video; it doesn’t generate finished footage. The calendar is
+          for planning, with publishing handled by you. Credits and action costs are shown in
+          Studio.
+        </p>
       </Section>
-
-      <Section
-        tone="system"
-        eyebrow="The Pals' take"
-        title="Machine speed. Human material."
-        subtitle="Silas and Samira run the System lane — the part of Palmer House where automation earns its keep."
-      >
-        <div className="grid gap-6 lg:grid-cols-2">
+      <Section tone="mist" eyebrow="How we work" title="Keep the material honest.">
+        <CardGrid cols={3}>
+          <Card
+            lane="evergreen"
+            glyph="bulb"
+            title="Start with something real"
+            body="Your knowledge, customer questions, and examples are the source material. Review facts, claims, and generated visuals before you use them."
+          />
+          <Card
+            lane="spotlight"
+            glyph="camera"
+            title="Show what is an example"
+            body="AI concept previews illustrate a format. They are labeled and separate from our portfolio of production work. A generated example isn’t a client testimonial."
+          />
+          <Card
+            lane="system"
+            glyph="shield"
+            title="Keep control of the project"
+            body="You can review and edit shared memory. Saved work belongs to the workspace, so changing a Pal or the underlying model doesn’t require starting over."
+          />
+        </CardGrid>
+        <div className="mt-10 grid gap-6 lg:grid-cols-2">
           <PalCallout
-            pal="silas"
-            quote="Think in systems: one anchor, many outputs. The machine is good at the many. The anchor still has to come from you."
-            action={{ label: "Open Palmer House Studio", to: "/studio" }}
+            pal="clara"
+            quote="Walk me through it in order — what happens first?"
+            action={{ label: "Meet Clara and the Pals", to: "/meet-the-pals" }}
           />
           <PalCallout
-            pal="samira"
-            quote="Write down the answers you repeat — that is your knowledge base. Drafting from it is fast. Deciding what is true is still your job."
-            action={{ label: "Build the human strategy", to: "/content-strategy" }}
+            pal="kiana"
+            quote="What actually happened? That is the part people will remember."
+            action={{ label: "See human production work", to: "/work" }}
           />
         </div>
       </Section>
-
-      <section className="bg-mist px-4 py-20 sm:py-28">
-        <InView className="mx-auto grid max-w-6xl overflow-hidden rounded-[2.5rem] bg-ink text-white lg:grid-cols-2">
-          <div className="p-8 sm:p-12">
-            <Glyph name="spark" lane="system" className="size-16" />
-            <p className="mt-6 font-mono text-[11px] uppercase tracking-[0.18em] text-white/50">
-              The practical version
-            </p>
-            <h2 className="mt-4 text-4xl font-extrabold sm:text-6xl">
-              Use the machine to make the human work more useful.
-            </h2>
-          </div>
-          <div className="grid content-center gap-3 bg-white/5 p-8 sm:p-12">
-            <Link
-              to="/studio"
-              className="flex min-h-14 items-center justify-between rounded-2xl bg-white px-5 font-semibold text-ink"
-            >
-              Open Palmer House Studio <ArrowRight className="size-4" />
-            </Link>
-            <Link
-              to="/content-strategy"
-              className="flex min-h-14 items-center justify-between rounded-2xl border border-white/25 px-5 font-semibold"
-            >
-              Build the human strategy <ArrowRight className="size-4" />
-            </Link>
-            <Link
-              to="/contact"
-              className="flex min-h-14 items-center justify-between rounded-2xl border border-white/25 px-5 font-semibold"
-            >
-              Talk through your system <ArrowRight className="size-4" />
-            </Link>
-          </div>
-        </InView>
-      </section>
+      <CtaBand
+        title="Choose where you want the help."
+        subtitle="Work independently in Studio, plan with our team, or have us produce the video. You can bring your ideas and drafts from one step to the next."
+        primaryLabel="Explore Studio"
+        primaryTo="/membership"
+        secondaryLabel="Planning and preparation"
+        secondaryTo="/content-strategy"
+      />
     </PageShell>
   );
 }
-
 export const Route = createFileRoute("/ai-pov")({
   head: () => ({
     ...createSeo({
-      title: "Our View on AI | Palmer House Productions",
+      title: "Our Approach to AI | Palmer House",
       description:
-        "Palmer House uses AI to reduce friction while keeping human judgment, proof, direction, and brand voice in charge.",
+        "How Palmer House Studio uses AI for ideas, campaigns, writing, images, and PDFs while keeping your judgment, context, and creative choices central.",
       pathname: "/ai-pov",
     }),
   }),

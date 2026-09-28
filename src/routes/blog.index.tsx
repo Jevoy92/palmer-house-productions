@@ -53,7 +53,7 @@ const resources: { to: string; title: string; body: string; lane: PalAccent; gly
     {
       to: "/video-system-assessment",
       title: "Assess your current system",
-      body: "Get a readiness score and a recommended Pal lane.",
+      body: "Find a useful next step from your goal and what is getting in the way.",
       lane: "system",
       glyph: "search",
     },

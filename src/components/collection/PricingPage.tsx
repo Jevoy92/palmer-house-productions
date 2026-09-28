@@ -25,13 +25,27 @@ const ESTIMATE_EXTRA_IDS = new Set([
   "rush-delivery",
 ]);
 
-export function PricingPage({ packageId }: { packageId?: string }) {
+export function PricingPage({
+  packageId,
+  initialCount,
+  initialSessions,
+}: {
+  packageId?: string;
+  initialCount?: number;
+  initialSessions?: number;
+}) {
   const starting =
     getPackageById(packageId ?? "social-content") ?? getPackageById("social-content")!;
   const [id, setId] = useState(starting.id);
   const cart = useCart();
-  const [chosenSessions, setSessions] = useState<number | undefined>();
-  const [chosenCount, setCount] = useState<number | undefined>();
+  const [chosenSessions, setSessions] = useState<number | undefined>(initialSessions);
+  const [chosenCount, setCount] = useState<number | undefined>(
+    initialCount !== undefined &&
+      initialCount >= (starting.lane === "evergreen" ? 0 : 1) &&
+      initialCount <= starting.editable!.max
+      ? initialCount
+      : undefined,
+  );
   const [chosenExtraIds, setExtraIds] = useState<string[] | undefined>();
   const item = getPackageById(id)!;
   const sessions =
@@ -96,6 +110,8 @@ export function PricingPage({ packageId }: { packageId?: string }) {
     <CollectionShell
       active="pricing"
       backTo="/shop"
+      backSearch={{ lane: item.lane }}
+      pricingSearch={{ package: item.id, count, sessions }}
       footer={
         <div className="pc-price-dock" data-lane={item.lane}>
           <div>

@@ -1,4 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
 import {
   Card,
   CardGrid,
@@ -8,230 +9,167 @@ import {
   PageShell,
   Section,
 } from "@/components/site/PageShell";
+import { ProcessTimeline } from "@/components/site/PalVisuals";
+import { HomePackages } from "@/components/site/PublicHome";
 import {
-  FeatureSplit,
-  GraphicFrame,
-  LaneTiles,
-  PalCallout,
-  ProcessTimeline,
-  StatBand,
-} from "@/components/site/PalVisuals";
-import { Glyph } from "@/components/site/Glyphs";
-import { MONTHLY_DISCOUNT_RATE } from "@/lib/cart-store";
-import { BASE_INCLUDED, FINISHED_VIDEO_PRICE, SESSION_PRICE } from "@/lib/pricing-catalog";
+  BASE_INCLUDED,
+  EVERGREEN_LENGTH_PRICE,
+  FINISHED_VIDEO_PRICE,
+  SESSION_PRICE,
+} from "@/lib/pricing-catalog";
 import { createServiceSeo } from "@/lib/seo";
-
-const steps = [
-  {
-    title: "Match your Pal",
-    body: "A quick, problem-first assessment pairs you with the lane whose approach fits the job the video needs to do.",
-    pal: "clara",
-  },
-  {
-    title: "Plan the package",
-    body: "Deliverables, script help, wardrobe guidance, and creative direction are locked before anyone picks up a camera.",
-    pal: "samira",
-  },
-  {
-    title: "Production day",
-    body: "Two focused hours on location with professional camera, lighting, audio, teleprompter, and on-set direction.",
-    pal: "kareem",
-  },
-  {
-    title: "Polished delivery",
-    body: "Editing, color, sound, and platform-ready exports — organized so your team can publish immediately.",
-    pal: "ryder",
-  },
-] as const;
+import production from "@/assets/work/PoliticianAnnouncement-poster.jpg";
 
 function VideoProductionPage() {
   return (
     <PageShell>
       <PageHero
-        eyebrow="Pal-guided video production"
-        title="Stop buying videos without a job."
-        highlight="Choose the business outcome."
-        subtitle="Whether the problem is low visibility, weak trust, repeated explanations, or slow training, our Pal system matches production to the work the video needs to do."
-        lane="spotlight"
-        pal="spotlight"
-        palTags={["Visibility", "Trust", "Education", "Operations"]}
+        eyebrow="Full production · Pacific Northwest"
+        title="You bring the business."
+        highlight="We help tell the story."
+        subtitle="A human team to plan, film, and edit your videos. From a customer story to training your next hire, start with what the video needs to do."
+        visual={
+          <Link to="/work" className="ph-production-visual">
+            <img
+              src={production}
+              alt="An on-camera speaker in a Palmer House portfolio film"
+              width={960}
+              height={540}
+            />
+            <span>
+              See our work <ArrowRight size={17} />
+            </span>
+          </Link>
+        }
+        primary={{ label: "Explore video packages", to: "/shop" }}
+        secondary={{ label: "Help me choose", to: "/find-your-pal" }}
       />
-
-      <Section
-        eyebrow="Four production lanes"
-        title="Name the friction. Then meet the specialist."
-        subtitle="Each lane is designed around a different communication problem, with a real package path when you are ready to scope it."
-      >
-        <LaneTiles ctaLabel="Meet" />
-        <div className="mt-10 grid gap-6 lg:grid-cols-2">
-          <PalCallout
-            pal="kiana"
-            quote="Tell me what a video is supposed to change for your business and I can tell you which lane it belongs in — before we talk about cameras."
-            action={{ label: "Find your Pal", to: "/find-your-pal" }}
-          />
-          <PalCallout
-            pal="silas"
-            quote="Plan the videos together so one filming session can support several useful finished pieces."
-            action={{ label: "See how sessions stack", to: "/production-pricing" }}
-          />
-        </div>
-      </Section>
-
+      <HomePackages />
       <Section
         tone="mist"
-        eyebrow="Production process"
-        title="Strategy keeps the shoot efficient."
-        subtitle="The business problem, audience, and deliverables are clear before production day."
+        eyebrow="How we work together"
+        title="Clear before the camera rolls."
+        subtitle="Your package starts the conversation. We confirm the scope, timing, and final quote with you before payment."
+        align="left"
       >
-        <ProcessTimeline steps={[...steps]} />
-      </Section>
-
-      <Section
-        eyebrow="What one session produces"
-        title="Two hours on set. A library to publish."
-        subtitle="Every session is priced the same way and includes the same production standard, no matter which lane you choose."
-      >
-        <StatBand
-          stats={[
+        <ProcessTimeline
+          steps={[
             {
-              value: 2,
-              suffix: " hrs",
-              label: "on-location filming per session",
+              title: "Choose a starting point",
+              body: "Pick the kind of video you need and adjust the amount of work. Your plan keeps the package and working estimate together.",
+              glyph: "bulb",
               lane: "spotlight",
             },
             {
-              value: SESSION_PRICE,
-              prefix: "$",
-              label: "per filming session",
-              lane: "reel",
-            },
-            {
-              value: FINISHED_VIDEO_PRICE,
-              prefix: "$",
-              label: "per finished video",
+              title: "Prepare the shoot",
+              body: "We confirm the audience, message, scripts, location, and deliverables. Planning includes wardrobe guidance and getting comfortable on camera.",
+              glyph: "script",
               lane: "evergreen",
             },
             {
-              value: Math.round(MONTHLY_DISCOUNT_RATE * 100),
-              suffix: "%",
-              label: "saved on monthly cadence",
+              title: "Film with our team",
+              body: "Standard package sessions are two hours on location, with professional lighting, sound, and direction. Educational episodes have their own scope; we confirm the time needed in your quote.",
+              glyph: "camera",
+              lane: "reel",
+            },
+            {
+              title: "Review the finished work",
+              body: "We edit, color, and mix the sound, then deliver the agreed formats. Your quote confirms the review process and delivery schedule.",
+              glyph: "edit",
               lane: "system",
             },
           ]}
         />
-        <div className="mt-12">
+      </Section>
+      <Section
+        eyebrow="Understand the estimate"
+        title="Know what goes into the price."
+        align="left"
+      >
+        <div className="ph-production-prices">
+          <div>
+            <span className="ph-kicker">Short-form & training packages</span>
+            <strong>
+              ${SESSION_PRICE} <span>+ ${FINISHED_VIDEO_PRICE}</span>
+            </strong>
+            <p>
+              Per filming session + per finished video. One session and six videos is $
+              {(SESSION_PRICE + FINISHED_VIDEO_PRICE * 6).toLocaleString()}.
+            </p>
+          </div>
+          <div>
+            <span className="ph-kicker">Educational episodes · Evergreen</span>
+            <strong>${EVERGREEN_LENGTH_PRICE[5].toLocaleString()}</strong>
+            <p>
+              For a five-minute episode, with its own production scope. Add $
+              {EVERGREEN_LENGTH_PRICE[10] - EVERGREEN_LENGTH_PRICE[5]} per extra five minutes.
+            </p>
+          </div>
+        </div>
+        <p className="ph-connection-note">
+          These are working estimates. Final scope, filming capacity, tax, and travel are confirmed
+          in your quote. <Link to="/production-pricing">Build your estimate.</Link>
+        </p>
+        <div className="mt-10">
           <IncludedPanel
-            title="Included in every production, one-time or monthly."
+            title="The production essentials are included."
             items={BASE_INCLUDED}
-            lane="spotlight"
-            glyph="light"
+            lane="system"
+            glyph="camera"
           />
         </div>
       </Section>
-
       <Section
         tone="mist"
-        eyebrow="Built for reuse"
-        title="One shoot, many outputs."
-        subtitle="Production is designed so the footage keeps paying you back across channels."
-      >
-        <div className="space-y-16">
-          <FeatureSplit
-            lane="reel"
-            eyebrow="Plan the finished pieces"
-            title="One filming session. Several clear ideas."
-            body="Choose how many finished videos you need. We agree on the length, framing, and topic of each piece before filming, so the scope is clear from the start."
-            bullets={[
-              "One clear idea per video",
-              "Finished-video pricing",
-              "Formats agreed in your scope",
-            ]}
-            action={{ label: "Explore Social Content", to: "/packages/social-content" }}
-            visual={
-              <GraphicFrame lane="reel" label="Social content ideas">
-                <div className="grid h-full grid-cols-4 items-end gap-3 pt-10">
-                  {["Hook", "Answer", "Demo", "Story"].map((label, i) => (
-                    <div key={i} className="flex flex-col items-center gap-2">
-                      <Glyph name="reel" lane="reel" className="size-14 sm:size-20" />
-                      <span className="rounded-full bg-white px-2.5 py-1 font-mono text-[10px] font-bold text-reel-text shadow-sm">
-                        {label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </GraphicFrame>
-            }
-          />
-          <FeatureSplit
-            reverse
-            lane="evergreen"
-            eyebrow="Long-form when it matters"
-            title="Some answers deserve ten minutes, not fifteen seconds."
-            body="Evergreen episodes use their own pricing because they take deeper planning and a more involved edit — and they keep earning search traffic for years."
-            bullets={["Pricing explainers", "Process walkthroughs", "Expert Q&A series"]}
-            action={{ label: "Explore Evergreen Pal", to: "/evergreen-pal" }}
-            visual={
-              <GraphicFrame lane="evergreen" label="Compounding library">
-                <div className="grid h-full place-items-center pt-8">
-                  <Glyph name="library" lane="evergreen" className="size-40 sm:size-52" />
-                </div>
-              </GraphicFrame>
-            }
-          />
-        </div>
-      </Section>
-
-      <Section
-        eyebrow="Need a narrower next step?"
-        title="Choose support by where you are stuck."
-        subtitle="Production can start with strategy, existing footage, or a problem-first assessment."
+        eyebrow="Start where you are"
+        title="Need a different level of help?"
+        align="left"
       >
         <CardGrid cols={3}>
           <Card
+            glyph="script"
             lane="evergreen"
-            glyph="bulb"
-            title="The plan is unclear"
-            body="Map the audience, message, and useful video sequence first."
+            title="Help before the shoot"
+            body="Work through strategy, scripts, wardrobe, or on-camera preparation with our team."
             to="/content-strategy"
           />
           <Card
-            lane="spotlight"
             glyph="edit"
-            title="The footage already exists"
-            body="Turn raw media into polished, platform-ready deliverables."
+            lane="spotlight"
+            title="Your footage, our edit"
+            body="Already filmed it? Bring your footage and a clear brief for editing support."
             to="/services/post-production"
           />
           <Card
+            glyph="library"
             lane="system"
-            glyph="search"
-            title="The right lane is unclear"
-            body="Answer a few problem-first questions and meet your Pal."
-            to="/find-your-pal"
+            title="Make the plan yourself"
+            body="Use Studio’s AI Pals and tools to develop your own campaign, drafts, and scripts."
+            to="/membership"
           />
         </CardGrid>
       </Section>
-
       <CtaBand
-        title="Ready to give every video a clear job?"
-        subtitle="Bring us the bottleneck. We will match it to the right Pal lane, production plan, and working package."
-        primaryLabel="Book a Discovery Call"
-        secondaryLabel="Find your Pal"
-        secondaryTo="/find-your-pal"
+        title="Let’s find the video your business needs."
+        subtitle="Choose a package or tell the team what you have in mind."
+        primaryLabel="Browse packages"
+        primaryTo="/shop"
+        secondaryLabel="Talk to the team"
+        secondaryTo="/contact"
+        crew={false}
       />
     </PageShell>
   );
 }
-
 export const Route = createFileRoute("/services/video-production")({
-  head: () => ({
-    ...createServiceSeo({
-      title: "Video Production Services | Palmer House Productions",
+  head: () =>
+    createServiceSeo({
+      title: "Video Production — Planning, Filming & Editing | Palmer House",
       description:
-        "Pal-guided video production for reels, brand films, evergreen education, and internal training — matched to your goals.",
+        "A Pacific Northwest production team for business videos, customer stories, commercials, onboarding, and training. Choose a package and see your working estimate.",
       pathname: "/services/video-production",
       serviceName: "Video production services",
       serviceType: "Commercial video production",
     }),
-  }),
   component: VideoProductionPage,
 });

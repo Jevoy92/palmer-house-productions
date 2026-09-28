@@ -1,5 +1,6 @@
+import { useHydratedReducedMotion } from "@/hooks/use-hydrated-reduced-motion";
 import { Check, X } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { Section } from "@/components/site/PageShell";
 import { PalCallout } from "@/components/site/PalVisuals";
 import { GlyphBadge, type GlyphName } from "@/components/site/Glyphs";
@@ -65,7 +66,7 @@ function Mark({ ok, hero }: { ok: boolean; hero: boolean }) {
 }
 
 export function Comparison() {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   return (
     <Section
       id="pricing"

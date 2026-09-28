@@ -12,6 +12,7 @@ import { GlyphBadge, type GlyphName } from "@/components/site/Glyphs";
 import { laneVar } from "@/lib/pal-lanes";
 import type { PalAccent } from "@/lib/pricing-catalog";
 import { studioAdvisoryOffer, studioConsultingOffer, studioPlans } from "@/lib/studio-model";
+import { rememberStudioIntent } from "@/lib/public-journey";
 import { createSeo, faqSchema, jsonLdScript, schemaGraph } from "@/lib/seo";
 
 const BILLING_INTERVALS = ["month", "year"] as const;
@@ -195,6 +196,13 @@ function PricingPage() {
                 </ul>
                 <Link
                   to="/studio/billing"
+                  search={{ plan: (["creator", "business", "partner"] as const)[index], interval }}
+                  onClick={() =>
+                    rememberStudioIntent({
+                      plan: (["creator", "business", "partner"] as const)[index],
+                      interval,
+                    })
+                  }
                   className="primary-action mt-8 w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-spotlight focus-visible:ring-offset-2"
                 >
                   Choose {plan.name} <ArrowRight className="size-4" />
@@ -225,7 +233,7 @@ function PricingPage() {
           <PalCallout
             pal="samira"
             quote="Guided includes one private hour with Palmer House each billing month. Partner keeps a working session open every week. Either way, curiosity never turns into a week of guessing."
-            action={{ label: "Book the Clarity Intensive instead", to: "/contact" }}
+            action={{ label: "Ask about the Clarity Intensive", to: "/contact?intent=intensive" }}
           />
         </div>
 
@@ -304,12 +312,16 @@ function PricingPage() {
               {studioConsultingOffer.includedDays} days of {studioConsultingOffer.includedPlan}{" "}
               included
             </p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              The team confirms availability, your session focus, and Studio access before booking.
+            </p>
           </div>
           <Link
             to="/contact"
+            search={{ intent: "intensive" }}
             className="primary-action whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-system focus-visible:ring-offset-2"
           >
-            Book the intensive <ArrowRight className="size-4" />
+            Request the intensive <ArrowRight className="size-4" />
           </Link>
         </section>
 
@@ -339,6 +351,7 @@ function PricingPage() {
             </ul>
             <Link
               to="/contact"
+              search={{ intent: "advisory" }}
               className="mt-6 inline-flex min-h-12 items-center gap-2 rounded-xl bg-white px-5 text-sm font-black text-spotlight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-spotlight"
             >
               Explore the partnership <ArrowRight className="size-4" />

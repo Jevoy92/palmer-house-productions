@@ -1,354 +1,172 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  Card,
-  CardGrid,
-  CtaBand,
-  IncludedPanel,
-  PageHero,
-  PageShell,
-  Section,
-} from "@/components/site/PageShell";
-import {
-  FeatureSplit,
-  GraphicFrame,
-  PalCallout,
-  PalDuo,
-  ProcessTimeline,
-  Scene,
-} from "@/components/site/PalVisuals";
-import { Glyph, type GlyphName } from "@/components/site/Glyphs";
-import type { PalAccent } from "@/lib/pricing-catalog";
+import { Card, CardGrid, CtaBand, PageHero, PageShell, Section } from "@/components/site/PageShell";
+import { ProcessTimeline, Scene } from "@/components/site/PalVisuals";
 import { createServiceSeo } from "@/lib/seo";
 
-const services: {
-  title: string;
-  body: string;
-  tags: string[];
-  lane: PalAccent;
-  glyph: GlyphName;
-}[] = [
+const services = [
   {
-    title: "Video Editing & Assembly",
-    body: "Expert editing that transforms raw footage into polished, engaging content. We craft narratives that capture attention and maintain viewer interest from start to finish.",
-    tags: ["Multi-cam Editing", "Narrative Flow", "Pacing Optimization", "Transitions & Effects"],
+    title: "Story and editing",
+    body: "Find the useful takes, shape the story, and get the pacing right. We can work from your footage or continue a Palmer House production.",
     lane: "spotlight",
     glyph: "edit",
   },
   {
-    title: "Color Grading & Correction",
-    body: "Professional color grading that establishes mood, ensures brand consistency, and creates a cinematic look that elevates your content above standard video.",
-    tags: ["Color Matching", "Mood Creation", "Brand Consistency", "Cinematic Grading"],
-    lane: "reel",
-    glyph: "light",
-  },
-  {
-    title: "Audio Engineering & Sound Design",
-    body: "Crystal-clear audio mixing, sound effects, and music integration that enhances emotional impact and ensures professional broadcast-quality sound.",
-    tags: ["Audio Mixing", "Noise Reduction", "Sound Effects", "Music Licensing"],
+    title: "Color and sound",
+    body: "Match the shots, balance dialogue, and refine the overall look and sound. We assess the source material before promising what can be restored.",
     lane: "evergreen",
     glyph: "mic",
   },
   {
-    title: "Motion Graphics & Animation",
-    body: "Eye-catching motion graphics, lower thirds, title animations, and visual effects that reinforce your brand and explain complex concepts clearly.",
-    tags: ["Animated Titles", "Infographics", "Logo Animation", "Visual Effects"],
+    title: "Titles and graphics",
+    body: "Use names, titles, diagrams, or motion graphics where they make the video easier to follow. The complexity is agreed in scope.",
     lane: "system",
-    glyph: "spark",
-  },
-  {
-    title: "Format Optimization & Delivery",
-    body: "Multi-platform optimization ensuring your video looks perfect whether it's on YouTube, LinkedIn, Instagram, or your website—formatted for maximum engagement.",
-    tags: [
-      "Platform-Specific Edits",
-      "Aspect Ratio Variants",
-      "Compression Optimization",
-      "Subtitle Integration",
-    ],
-    lane: "spotlight",
     glyph: "layers",
   },
   {
-    title: "Revision & Refinement",
-    body: "Collaborative revision process that ensures the final product perfectly aligns with your vision, brand standards, and business objectives.",
-    tags: ["Structured Feedback", "Unlimited Revisions", "Version Control", "Final Delivery"],
+    title: "Versions for your channels",
+    body: "Plan the aspect ratios, captions, and additional edits you need for your website, social channels, or internal tools.",
     lane: "reel",
     glyph: "publish",
-  },
-];
-
-const steps = [
-  {
-    title: "Review & Assessment",
-    body: "We review all raw footage, identify the best takes, and create a detailed editing plan aligned with your goals.",
-    pal: "kareem",
-    lane: "spotlight",
-  },
-  {
-    title: "First Cut Assembly",
-    body: "Rough cut assembly establishing narrative flow, pacing, and structure for your approval before detail work begins.",
-    glyph: "edit",
-    lane: "spotlight",
-  },
-  {
-    title: "Refinement & Polish",
-    body: "Color grading, audio mixing, motion graphics, and visual effects are added to create a professional, polished product.",
-    glyph: "layers",
-    lane: "spotlight",
-  },
-  {
-    title: "Final Delivery",
-    body: "Optimized final files delivered in all required formats for seamless deployment across your chosen platforms.",
-    glyph: "publish",
-    lane: "spotlight",
   },
 ] as const;
-
-const deliverables = [
-  "Audio Restoration",
-  "Subtitle & Caption Creation",
-  "Archive & Asset Management",
-  "Platform-Specific Edits",
-  "Aspect Ratio Variants",
-  "Compression Optimization",
-  "Structured Feedback",
-  "Version Control",
-];
-
-const related: { title: string; body: string; to: string; lane: PalAccent; glyph: GlyphName }[] = [
-  {
-    title: "Video Production",
-    body: "Professional filming services for all your video content needs.",
-    to: "/services/video-production",
-    lane: "spotlight",
-    glyph: "camera",
-  },
-  {
-    title: "Consulting & Strategy",
-    body: "Strategic planning to maximize your video content ROI.",
-    to: "/content-strategy",
-    lane: "evergreen",
-    glyph: "bulb",
-  },
-  {
-    title: "DIY Tools & Downloads",
-    body: "Templates and resources for self-service video creation.",
-    to: "/services/diy-downloads",
-    lane: "reel",
-    glyph: "gift",
-  },
-];
 
 function PostProductionPage() {
   return (
     <PageShell>
       <PageHero
-        eyebrow="Professional post-production"
-        title="Raw footage is not the finish line."
-        highlight="Make it useful everywhere."
-        subtitle="When the story is buried, the sound distracts, or one master file cannot serve every platform, post-production turns the raw material into polished, usable content."
-        lane="spotlight"
+        eyebrow="Editing and post-production"
+        title="You have the footage."
+        highlight="Let’s find the film in it."
+        subtitle="Bring us what you’ve shot and what you need it to do. Our editors help shape the story, refine the picture and sound, and prepare the versions you’ll use."
+        primary={{
+          label: "Discuss an editing project",
+          to: "/contact",
+          search: { intent: "editing" },
+        }}
+        secondary={{ label: "See our work", to: "/work" }}
         visual={
-          <Scene
-            name="postProduction"
-            priority
-            tags={["Raw media", "Story + polish", "Ready to use"]}
-          />
+          <Scene name="postProduction" priority tags={["Story", "Color + sound", "Final files"]} />
         }
       />
-
       <Section
-        eyebrow="Where footage gets stuck"
-        title="Fix the part keeping the story from landing."
-        subtitle="Post-production can solve a single technical gap or carry the entire project from selects to organized final delivery."
+        eyebrow="What we can help with"
+        title="Choose what the footage needs."
+        subtitle="Editing can stand alone. Send us the brief and details of your footage so we can confirm what’s possible, the scope, and the price."
       >
-        <CardGrid cols={3}>
-          {services.map((service, index) => (
+        <CardGrid cols={2}>
+          {services.map((service) => (
             <Card
               key={service.title}
-              index={`0${index + 1}`}
-              lane={service.lane}
-              glyph={service.glyph}
               title={service.title}
               body={service.body}
-            >
-              <div className="relative mt-5 flex flex-wrap gap-2">
-                {service.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full border border-border px-3 py-1.5 text-[11px] font-bold uppercase tracking-wide text-muted-foreground"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </Card>
-          ))}
-        </CardGrid>
-      </Section>
-
-      <Section
-        tone="mist"
-        eyebrow="Workflow"
-        title="A clear path from handoff to final files."
-        subtitle="You stay involved at the decisions that shape the story without having to manage every technical detail."
-      >
-        <ProcessTimeline steps={[...steps]} />
-        <div className="mx-auto mt-10 max-w-3xl">
-          <PalCallout
-            pal="kareem"
-            quote="Send me everything — the good takes, the bad takes, the B-roll you forgot about. The edit finds the story; you just have to approve the cut."
-            action={{ label: "Meet Spotlight Pal", to: "/spotlight-pal" }}
-          />
-        </div>
-      </Section>
-
-      <Section
-        eyebrow="Capabilities"
-        title="The polish should solve a real delivery need."
-        subtitle="Choose the capabilities that make the work clearer, more accessible, easier to reuse, and ready for the right channels."
-      >
-        <div className="space-y-16">
-          <FeatureSplit
-            lane="spotlight"
-            eyebrow="Advanced Color Grading"
-            title="Create stunning visual consistency and mood."
-            body="Professional-grade color correction and grading techniques establish mood, keep every clip on brand, and give the footage a cinematic look."
-            bullets={["Color Matching", "Mood Creation", "Brand Consistency", "Cinematic Grading"]}
-            visual={
-              <GraphicFrame lane="spotlight" label="Grade + match">
-                <div className="grid h-full grid-cols-3 items-center gap-3 pt-8">
-                  {(["reel", "spotlight", "evergreen"] as const).map((lane) => (
-                    <div
-                      key={lane}
-                      className="flex aspect-[3/4] flex-col items-center justify-end rounded-[1.5rem] bg-white p-3 shadow-sm"
-                    >
-                      <span
-                        className="mb-3 block h-16 w-full rounded-[1rem]"
-                        style={{ background: `var(--${lane})` }}
-                      />
-                      <Glyph name="light" lane={lane} className="size-10" />
-                    </div>
-                  ))}
-                </div>
-              </GraphicFrame>
-            }
-          />
-          <FeatureSplit
-            reverse
-            lane="system"
-            eyebrow="Motion Graphics"
-            title="Reinforce the brand. Explain the complex."
-            body="Custom animated elements that reinforce your brand identity and explain complex information visually — lower thirds, titles, infographics, and effects."
-            bullets={["Animated Titles", "Infographics", "Logo Animation", "Visual Effects"]}
-            visual={
-              <GraphicFrame lane="system" label="Titles + graphics">
-                <div className="grid h-full place-items-center pt-8">
-                  <div className="flex items-center gap-6">
-                    <Glyph name="spark" lane="system" className="size-24 sm:size-32" />
-                    <div className="space-y-2">
-                      <span className="block h-3 w-28 rounded-full bg-system" />
-                      <span className="block h-3 w-20 rounded-full bg-white" />
-                      <span className="block h-3 w-24 rounded-full bg-white/70" />
-                    </div>
-                  </div>
-                </div>
-              </GraphicFrame>
-            }
-          />
-          <FeatureSplit
-            lane="reel"
-            eyebrow="Multi-Format Optimization"
-            title="One master. Every platform."
-            body="Deliver platform-specific versions optimized for Instagram, YouTube, LinkedIn, Facebook, and web — 9:16, 16:9, and 1:1."
-            bullets={["Platform-Specific Edits", "Aspect Ratio Variants", "Subtitle Integration"]}
-            visual={
-              <GraphicFrame lane="reel" label="9:16 · 16:9 · 1:1">
-                <div className="grid h-full grid-cols-3 items-end gap-4 pt-10">
-                  {[
-                    { ratio: "9/16", label: "9:16" },
-                    { ratio: "16/9", label: "16:9" },
-                    { ratio: "1/1", label: "1:1" },
-                  ].map((f) => (
-                    <div key={f.label} className="flex flex-col items-center gap-2">
-                      <div
-                        className="grid w-full place-items-center rounded-[1rem] bg-white shadow-sm"
-                        style={{ aspectRatio: f.ratio }}
-                      >
-                        <Glyph name="layers" lane="reel" className="size-9" />
-                      </div>
-                      <span className="rounded-full bg-white px-2.5 py-1 font-mono text-[10px] font-bold text-reel-text shadow-sm">
-                        {f.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </GraphicFrame>
-            }
-          />
-        </div>
-      </Section>
-
-      <Section
-        tone="spotlight"
-        eyebrow="Deliverables"
-        title="Organized final delivery, every time."
-        subtitle="Beyond the headline edit, every project ships with the pieces that make it accessible, reusable, and easy to update later."
-      >
-        <IncludedPanel
-          title="Included with every post-production handoff."
-          items={deliverables}
-          lane="spotlight"
-          glyph="publish"
-        />
-      </Section>
-
-      <Section
-        eyebrow="Meet your post-production lane"
-        title="Spotlight Pal brings the finish into focus."
-        subtitle="Kareem and Kiana specialize in transforming raw footage into polished, professional content."
-      >
-        <FeatureSplit
-          lane="spotlight"
-          eyebrow="Spotlight Pal"
-          title="Editing, color, sound, and motion — with one team accountable for the finish."
-          body="Spotlight Pal specializes in transforming raw footage into polished, professional content through editing, color grading, audio post-production, and motion graphics."
-          bullets={["Expert Editing", "Color Grading", "Audio Mixing", "Motion Graphics"]}
-          action={{ label: "Meet Spotlight Pal", to: "/spotlight-pal" }}
-          visual={<PalDuo lane="spotlight" />}
-        />
-      </Section>
-
-      <Section tone="mist" eyebrow="Related" title="Related Video Services">
-        <CardGrid cols={3}>
-          {related.map((r) => (
-            <Card
-              key={r.title}
-              title={r.title}
-              body={r.body}
-              to={r.to}
-              lane={r.lane}
-              glyph={r.glyph}
+              lane={service.lane}
+              glyph={service.glyph}
             />
           ))}
         </CardGrid>
       </Section>
-
+      <Section
+        tone="mist"
+        eyebrow="The editing process"
+        title="A clear handoff. Room for your feedback."
+      >
+        <ProcessTimeline
+          steps={[
+            {
+              title: "Review the material",
+              body: "Tell us what you filmed, the source formats, and the result you want. We assess the files and agree the brief.",
+              glyph: "search",
+              lane: "evergreen",
+            },
+            {
+              title: "Agree the scope",
+              body: "Confirm the finished videos, lengths, formats, revision rounds, delivery timing, and quote before work starts.",
+              glyph: "script",
+              lane: "system",
+            },
+            {
+              title: "Review the edit",
+              body: "Our editors build the cut. You share consolidated feedback at the agreed review points.",
+              glyph: "edit",
+              lane: "spotlight",
+            },
+            {
+              title: "Receive the files",
+              body: "Get the agreed final versions, organized for your team to publish, share, or add to your own library.",
+              glyph: "publish",
+              lane: "reel",
+            },
+          ]}
+        />
+      </Section>
+      <Section
+        eyebrow="A useful starting brief"
+        title="Tell us what you have, and where it’s going."
+        subtitle="You don’t need to upload every take with your first inquiry."
+      >
+        <div className="surface-card mx-auto max-w-3xl p-6 sm:p-9">
+          <ul className="divide-y divide-border text-base">
+            {[
+              "What the video should say and who will watch it.",
+              "How much footage you have, and how it was filmed.",
+              "Any existing script, selects, brand guide, or reference edit.",
+              "The number of finished videos and where you’ll use them.",
+              "Your deadline, review process, and any caption or accessibility needs.",
+            ].map((line) => (
+              <li key={line} className="py-4 first:pt-0 last:pb-0">
+                {line}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+      <Section
+        tone="mist"
+        eyebrow="Need a different starting point?"
+        title="The pieces can work together."
+      >
+        <CardGrid cols={3}>
+          <Card
+            lane="spotlight"
+            glyph="camera"
+            title="Need filming too?"
+            body="Our production packages bring planning, filming, and editing together."
+            to="/shop"
+          />
+          <Card
+            lane="evergreen"
+            glyph="script"
+            title="Still shaping the idea?"
+            body="Get human help with a concept, script, and preparation before you shoot."
+            to="/content-strategy"
+          />
+          <Card
+            lane="system"
+            glyph="chat"
+            title="Develop your own materials"
+            body="Use Studio’s AI Pals for scripts, campaign drafts, images, and PDFs. Video editing remains a human service."
+            to="/membership"
+          />
+        </CardGrid>
+      </Section>
       <CtaBand
-        title="Have footage that is not working hard enough?"
-        subtitle="Tell us what exists, where it needs to live, and what is getting in the way. We will map the right post-production path."
-        primaryLabel="Book a Discovery Call"
-        lane="spotlight"
+        title="Put your footage to work."
+        subtitle="Tell us about the material and the finish you have in mind. We’ll follow up to confirm the editing scope and next steps."
+        primaryLabel="Discuss an editing project"
+        primaryTo="/contact"
+        primarySearch={{ intent: "editing" }}
+        secondaryLabel="See our work"
+        secondaryTo="/work"
       />
     </PageShell>
   );
 }
-
 export const Route = createFileRoute("/services/post-production")({
   head: () => ({
     ...createServiceSeo({
-      title: "Post-Production Services | Palmer House Productions",
+      title: "Video Editing & Post-Production | Palmer House",
       description:
-        "Professional editing, color grading, audio engineering, and motion graphics that elevate raw footage into captivating brand content.",
+        "Video editing, color, sound, motion graphics, and delivery formats for your footage. Discuss a scoped editing project with Palmer House Productions.",
       pathname: "/services/post-production",
       serviceName: "Post-production services",
       serviceType: "Video editing and post-production",

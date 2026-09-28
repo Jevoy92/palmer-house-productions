@@ -1,75 +1,107 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { MissionComparison } from "@/components/site/MissionComparison";
-import { CtaBand, PageHero, PageShell, Section } from "@/components/site/PageShell";
-import { PalBookingStrip } from "@/components/site/PalBookingStrip";
-import { LaneTiles, PalCallout, PalCrew, PalRoster } from "@/components/site/PalVisuals";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
+import { Card, CardGrid, CtaBand, PageHero, PageShell, Section } from "@/components/site/PageShell";
+import { PalCrew } from "@/components/site/PalVisuals";
+import { palList } from "@/lib/pal-directory";
+import { PAL_PORTRAITS, laneVar } from "@/lib/pal-lanes";
 import { createSeo } from "@/lib/seo";
 
 function MeetThePals() {
   return (
     <PageShell>
       <PageHero
-        eyebrow="Meet the Palmer House Pals"
-        title="Start with the problem."
-        highlight="Meet the right pair."
-        subtitle="Eight specialists. Four video lanes. Choose what your business needs to solve, then build the package around it."
+        eyebrow="Meet the Pals"
+        title="Your ideas."
+        highlight="Your kind of company."
+        subtitle="Find the voice you like working with. The Pals are our creative guides and your AI assistants in Studio. Our human team handles your filming and editing."
         lane="spotlight"
-        primary={{ label: "Find Your Pal", to: "/find-your-pal" }}
-        secondary={{ label: "Build Your Package", to: "/production-pricing" }}
-      >
-        <div className="relative min-h-[22rem]">
-          <span className="absolute left-2 top-2 z-10 rounded-full bg-white px-3 py-2 font-mono text-[11px] font-bold uppercase tracking-[0.12em] text-spotlight-text shadow-soft">
-            8 specialists · 4 lanes
-          </span>
-          <PalCrew className="pt-10" />
-        </div>
-      </PageHero>
+        primary={{ label: "Explore Studio", to: "/membership" }}
+        secondary={{ label: "Browse video packages", to: "/shop" }}
+        visual={<PalCrew className="w-full" />}
+      />
 
       <Section
-        eyebrow="Four lanes"
-        title="Every Pal pair owns one business problem."
-        subtitle="Pick the friction you feel most, then meet the two specialists built to remove it."
-        lane="spotlight"
+        eyebrow="Choose your creative company"
+        title="Who brings out your best ideas?"
+        subtitle="Every Pal can help with writing, planning, campaigns, images, and PDFs. Their perspective changes the conversation; your project stays yours."
       >
-        <LaneTiles ctaLabel="Meet" />
+        <div className="grid gap-5 md:grid-cols-2">
+          {palList.map((pal) => (
+            <article
+              key={pal.key}
+              className="surface-card grid overflow-hidden sm:grid-cols-[9rem_1fr]"
+            >
+              <div className="flex h-48 items-end justify-center overflow-hidden bg-muted/40 sm:h-full">
+                <img
+                  src={PAL_PORTRAITS[pal.key]}
+                  alt={`${pal.name}, Palmer House AI creative assistant`}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-contain object-bottom"
+                />
+              </div>
+              <div className="p-6 sm:p-7">
+                <p className="text-xs font-semibold" style={{ color: laneVar(pal.lane, "-text") }}>
+                  {pal.role}
+                </p>
+                <h2 className="mt-2 text-3xl font-extrabold tracking-tight">{pal.name}</h2>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{pal.intro}</p>
+                <blockquote className="mt-5 border-t border-border pt-5 text-lg font-semibold leading-snug">
+                  “{pal.persona.firstQuestion}”
+                </blockquote>
+              </div>
+            </article>
+          ))}
+        </div>
+        <p className="mt-5 text-sm text-muted-foreground">
+          These introductions show each Pal’s style. Choose or create your own Pal inside Studio.
+        </p>
       </Section>
 
-      <div className="bg-mist px-4">
-        <div className="mx-auto max-w-6xl">
-          <PalBookingStrip embedded />
-        </div>
-      </div>
-
-      <Section
-        eyebrow="The roster"
-        title="Eight specialists, one shared production standard."
-        subtitle="Every Pal works from the same session pricing and the same included production kit. What changes is the job the video is asked to do."
-        lane="evergreen"
-      >
-        <PalRoster />
-        <div className="mt-10 grid gap-6 lg:grid-cols-2">
-          <PalCallout
-            pal="kiana"
-            quote="Tell me what a video is supposed to change for your business and I can tell you which lane it belongs in — before we talk about cameras."
-            action={{ label: "Find your Pal", to: "/find-your-pal" }}
+      <Section eyebrow="One workspace" title="Change your Pal. Keep your project." tone="mist">
+        <CardGrid cols={3}>
+          <Card
+            lane="spotlight"
+            glyph="chat"
+            title="A voice that suits you"
+            body="Warm and curious, quick and direct, or calm and methodical. Switch Pals when you want another perspective."
           />
-          <PalCallout
-            pal="silas"
-            quote="One production day should feed a month of publishing. Plan it that way and the price per finished video drops fast."
-            action={{ label: "See how sessions stack", to: "/production-pricing" }}
+          <Card
+            lane="system"
+            glyph="library"
+            title="The same shared context"
+            body="Pals use your workspace’s Brand DNA, saved ideas, and project context. You can review and edit the shared memory."
           />
+          <Card
+            lane="evergreen"
+            glyph="script"
+            title="Useful work you can keep"
+            body="Create drafts, images, PDFs, and campaign materials. Review the results, save them to your Library, and publish through your own channels."
+          />
+        </CardGrid>
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-5 text-sm">
+          <Link
+            to="/ai-pov"
+            className="inline-flex min-h-11 items-center gap-2 font-semibold underline underline-offset-4"
+          >
+            How we use AI <ArrowRight className="size-4" />
+          </Link>
+          <Link
+            to="/pals"
+            className="inline-flex min-h-11 items-center gap-2 font-semibold underline underline-offset-4"
+          >
+            How Pals relate to video packages <ArrowRight className="size-4" />
+          </Link>
         </div>
       </Section>
-
-      <MissionComparison />
 
       <CtaBand
-        title="Not sure which lane fits?"
-        subtitle="Answer a few problem-first questions and get a Pal recommendation connected to a real starter package."
-        primaryLabel="Find your Pal"
-        primaryTo="/find-your-pal"
-        secondaryLabel="Book a Discovery Call"
-        secondaryTo="/contact"
+        title="Bring an idea. Find your favorite Pal."
+        subtitle="Work independently in Studio, ask our team to help you prepare, or have us produce the video. You choose the amount of support."
+        primaryLabel="Explore Studio"
+        primaryTo="/membership"
+        secondaryLabel="Planning and preparation"
+        secondaryTo="/content-strategy"
       />
     </PageShell>
   );
@@ -78,9 +110,9 @@ function MeetThePals() {
 export const Route = createFileRoute("/meet-the-pals")({
   head: () => ({
     ...createSeo({
-      title: "Meet the Pals | Palmer House Productions",
+      title: "Meet Your AI Creative Pals | Palmer House",
       description:
-        "Meet the eight Palmer House Pals and choose the video lane built for visibility, trust, clear explanations, or training and scale.",
+        "Meet eight distinct AI creative assistants in Palmer House Studio. Choose a voice you enjoy for writing, planning, campaigns, images, and PDFs.",
       pathname: "/meet-the-pals",
     }),
   }),

@@ -51,7 +51,7 @@ function CheckoutSuccessPage() {
     const pending = verification.status === "pending";
     const unavailable = verification.status === "unavailable";
     return (
-      <CollectionShell active="plan" backTo="/checkout">
+      <CollectionShell active="plan" backTo="/checkout" backLabel="Back to your plan">
         <section className="pc-guide" aria-labelledby="payment-status-title">
           {pending ? (
             <Clock size={36} aria-hidden="true" />
@@ -104,7 +104,7 @@ function CheckoutSuccessPage() {
       : undefined;
 
   return (
-    <CollectionShell active="plan" backTo="/checkout">
+    <CollectionShell active="plan" backTo="/checkout" backLabel="Back to your plan">
       <section className="pc-guide" aria-labelledby="payment-status-title">
         <CheckCircle2 size={38} aria-hidden="true" />
         <div className="mt-6">

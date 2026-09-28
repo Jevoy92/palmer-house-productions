@@ -1,10 +1,15 @@
 # Brand references
 
 ## Palmer House Productions — Brand Design Hub
-`PHP_Brand_Hub.html` — the official brand hub (open directly in a browser). This is the
-definitive Palmer House brand reference: colors, type, Pal lanes, usage rules.
+
+`PHP_Brand_Hub.html` — archived brand design hub (open directly in a browser). It records
+the earlier identity, Pal lanes, and usage examples. For the approved September 2026
+public/Studio UI, follow [DESIGN.md](../../DESIGN.md) and the runtime tokens.
+The current white/charcoal surfaces, Satoshi typography, Option B purchase layout,
+and actual offering catalog take precedence where this historical guide differs.
 
 ## Holo Brand Design Guide (external reference only)
+
 Reference material used for Studio UI inspiration — **not** Palmer House brand.
 
 - `Holo_Brand_Design_Guide.pdf.asset.json` — CDN pointer to the compiled PDF guide

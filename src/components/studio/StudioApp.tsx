@@ -1,3 +1,10 @@
+import {
+  currentStudioIntent,
+  rememberStudioIntent,
+  clearStudioIntent,
+  studioAuthReturnUrl,
+  type StudioPurchaseIntent,
+} from "@/lib/public-journey";
 import { buildMonthPlan, shiftCalendarPeriod } from "@/lib/studio-calendar-plan";
 import { StudioMemory } from "./StudioMemory";
 import { StudioCreditCost, StudioCreditPanel, StudioCreditsProvider } from "./StudioCredits";
@@ -344,6 +351,10 @@ type AuthNotice = { tone: "info" | "error" | "success"; text: string };
 function AuthExperience() {
   const { signIn, signUp, sendMagicLink, resetPassword, busy } = useStudio();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [purchaseIntent, setPurchaseIntent] = useState<StudioPurchaseIntent | null>(null);
+  useEffect(() => {
+    setPurchaseIntent(currentStudioIntent());
+  }, []);
   const [method, setMethod] = useState<"password" | "link">("password");
   const [notice, setNotice] = useState<AuthNotice | null>(null);
   const [googleBusy, setGoogleBusy] = useState(false);
@@ -358,7 +369,7 @@ function AuthExperience() {
     try {
       const { lovable } = await import("@/integrations/lovable/index");
       const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
+        redirect_uri: studioAuthReturnUrl(),
         extraParams: { prompt: "select_account" },
       });
       if (result.redirected) return;
@@ -503,6 +514,18 @@ function AuthExperience() {
               : "Create the private workspace where your ideas become campaigns your audience can use."}
           </p>
 
+          {purchaseIntent && (
+            <div className="mt-6 rounded-xl border border-border bg-white p-4" role="status">
+              <p className="font-semibold">
+                Your selection: {studioPlans[purchaseIntent.plan].name} ·{" "}
+                {purchaseIntent.interval === "year" ? "annual" : "monthly"}
+              </p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Sign in or create an account to review this plan. Nothing is charged until you
+                confirm in secure checkout.
+              </p>
+            </div>
+          )}
           <button
             type="button"
             onClick={() => void continueWithGoogle()}
@@ -4817,9 +4840,26 @@ function WorkspaceActivity({ dates }: { dates: string[] }) {
 function BillingView() {
   const { session, workspace, subscription } = useStudio();
   const [loadingPlan, setLoadingPlan] = useState<string>("");
+  const [purchaseIntent, setPurchaseIntent] = useState<StudioPurchaseIntent | null>(null);
   const [interval, setInterval] = useState<"month" | "year">(
     subscription?.billing_interval === "year" ? "year" : "month",
   );
+  useEffect(() => {
+    const intent = currentStudioIntent();
+    setPurchaseIntent(intent);
+    if (intent) setInterval(intent.interval);
+  }, []);
+  function changeInterval(value: "month" | "year") {
+    setInterval(value);
+    if (purchaseIntent) {
+      const next = { ...purchaseIntent, interval: value };
+      setPurchaseIntent(next);
+      rememberStudioIntent(next);
+      const url = new URL(window.location.href);
+      url.searchParams.set("interval", value);
+      window.history.replaceState(window.history.state, "", url);
+    }
+  }
   const activePlanKey: StudioPlanKey =
     subscription?.plan === "business" ||
     subscription?.plan === "partner" ||
@@ -4885,6 +4925,27 @@ function BillingView() {
           </button>
         }
       />
+      {purchaseIntent && (
+        <div className="mb-6 rounded-xl border border-border bg-white p-5" role="status">
+          <p className="font-bold">
+            You selected {studioPlans[purchaseIntent.plan].name} ·{" "}
+            {purchaseIntent.interval === "year" ? "annual billing" : "monthly billing"}
+          </p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Review the plan and total below. You can change your selection before opening secure
+            checkout.
+          </p>
+          <button
+            className="mt-3 text-sm underline"
+            onClick={() => {
+              clearStudioIntent();
+              setPurchaseIntent(null);
+            }}
+          >
+            Clear this selection
+          </button>
+        </div>
+      )}
       <StudioCreditPanel />
       <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-[1.25rem] border border-border bg-white p-3 pl-5">
         <div>
@@ -4904,7 +4965,7 @@ function BillingView() {
               type="button"
               role="radio"
               aria-checked={interval === value}
-              onClick={() => setInterval(value)}
+              onClick={() => changeInterval(value)}
               className={`min-h-11 rounded-lg px-4 text-xs font-black transition ${interval === value ? "bg-white shadow-sm" : "text-muted-foreground"}`}
             >
               {value === "month" ? "Monthly" : "Annual · save 17%"}
@@ -4916,7 +4977,7 @@ function BillingView() {
         {Object.entries(studioPlans).map(([key, plan]) => (
           <article
             key={key}
-            className={`studio-card flex flex-col ${subscription?.status === "active" && activePlanKey === key ? "ring-2 ring-ink" : ""}`}
+            className={`studio-card flex flex-col ${(subscription?.status === "active" && activePlanKey === key) || purchaseIntent?.plan === key ? "ring-2 ring-ink" : ""}`}
           >
             <p className="font-mono text-[11px] uppercase tracking-[.17em] text-muted-foreground">
               {plan.name}

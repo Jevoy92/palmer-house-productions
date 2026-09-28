@@ -62,8 +62,8 @@ const environment: { title: string; body: string; lane: PalAccent; glyph: GlyphN
 
 const planning: { title: string; body: string; lane: PalAccent; glyph: GlyphName }[] = [
   {
-    title: "Bullet Points > Scripts",
-    body: "Reading a script makes you look like a robot. Know your key bullets and speak naturally.",
+    title: "Find your way to say it",
+    body: "Choose the approach that helps you sound natural. Bring key points for an interview, or rehearse a script with the teleprompter when precise wording matters.",
     lane: "spotlight",
     glyph: "script",
   },
@@ -75,7 +75,7 @@ const planning: { title: string; body: string; lane: PalAccent; glyph: GlyphName
   },
   {
     title: "Energy Levels",
-    body: "The camera eats energy. Aim for 10-15% more enthusiasm than your normal conversation level.",
+    body: "Speak as if you are helping one person. Your director will help you find the right pace and energy for the message.",
     lane: "evergreen",
     glyph: "spark",
   },
@@ -83,15 +83,15 @@ const planning: { title: string; body: string; lane: PalAccent; glyph: GlyphName
 
 const schedule = [
   { time: "9:00 AM", item: "Crew Arrival & Setup", glyph: "clock" },
-  { time: "9:45 AM", item: "Sound & Light Check", glyph: "mic" },
-  { time: "10:00 AM", item: "First Take / Warm-up", glyph: "camera" },
-  { time: "12:00 PM", item: "Wrap Up", glyph: "publish" },
+  { time: "9:25 AM", item: "Sound & Light Check", glyph: "mic" },
+  { time: "9:40 AM", item: "First Take / Warm-up", glyph: "camera" },
+  { time: "11:00 AM", item: "Wrap Up", glyph: "publish" },
 ] as const;
 
 const dayOf: { title: string; body: string; lane: PalAccent; glyph: GlyphName }[] = [
   {
     title: "Hydrate & Rest",
-    body: "Drink plenty of water the day before. Avoid salty foods to prevent puffiness. Get a good night's sleep.",
+    body: "Bring water and give yourself time to arrive without rushing. A familiar routine can help you feel comfortable on set.",
     lane: "evergreen",
     glyph: "spark",
   },

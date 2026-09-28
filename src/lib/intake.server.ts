@@ -5,9 +5,7 @@
  * Server-only. Runs inside the Worker runtime, so every parser here is pure JS.
  */
 
-/** Gemini transcription caps a single request at 14 MB. */
-export const TRANSCRIBE_CHUNK_BYTES = 13_000_000;
-export const MAX_AUDIO_BYTES = 200 * 1024 * 1024;
+export { STUDIO_VOICE_MAX_BYTES as MAX_AUDIO_BYTES } from "./studio-transcription";
 export const MAX_DOCUMENT_BYTES = 25 * 1024 * 1024;
 export const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
 
@@ -46,15 +44,6 @@ export const IMAGE_MIME = new Set([
   "image/heif",
   "image/gif",
 ]);
-
-/** Audio cannot contact a paid model until duration pricing is metered. */
-export async function transcribeAudio(
-  ..._input: [Uint8Array, string]
-): Promise<{ text: string; chunks: number }> {
-  throw new Error(
-    "Audio transcription is being connected to prepaid usage. Paste a transcript or upload a text document for now. No AI credits were used.",
-  );
-}
 
 function cleanText(value: string) {
   return value

@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import { ArrowRight, CalendarDays, Check } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { PageShell, PageHero, Section, FaqList, CtaBand } from "@/components/site/PageShell";
@@ -11,6 +11,8 @@ import {
   Scene,
 } from "@/components/site/PalVisuals";
 import { GlyphBadge, type GlyphName } from "@/components/site/Glyphs";
+import { useHydratedReducedMotion } from "@/hooks/use-hydrated-reduced-motion";
+import { submitWebinarInterest } from "@/lib/public-resources";
 import { contactInfo } from "@/data/nav";
 import type { PalName } from "@/lib/studio-model";
 import { createSeo, faqSchema, jsonLdScript, schemaGraph } from "@/lib/seo";
@@ -51,8 +53,8 @@ const FACTS: { glyph: GlyphName; label: string; body: string }[] = [
   },
   {
     glyph: "publish",
-    label: "Replay included",
-    body: "Recording and slides go to every registrant.",
+    label: "Details confirmed first",
+    body: "Ask about the next date and replay availability.",
   },
 ];
 
@@ -70,7 +72,7 @@ const FAQS = [
   },
   {
     q: "Will there be a recording?",
-    a: "Yes, all registrants receive the replay and the slide deck by email.",
+    a: "We confirm replay and slide availability with the session details. Sending an interest request does not reserve a seat.",
   },
   {
     q: "Do I need any video experience?",
@@ -81,9 +83,9 @@ const FAQS = [
 export const Route = createFileRoute("/webinar")({
   head: () => ({
     ...createSeo({
-      title: "Free Webinar: Build a Video System That Scales | Palmer House Productions",
+      title: "Video Workshop: Request Session Details | Palmer House Productions",
       description:
-        "Join Palmer House Productions for a free live webinar on building a video system that turns messy content into a scalable, measurable machine.",
+        "Ask about the next free Palmer House video workshop. The team confirms the date, availability and session details before registration.",
       pathname: "/webinar",
     }),
     scripts: [jsonLdScript(schemaGraph(faqSchema(FAQS)))],
@@ -92,13 +94,16 @@ export const Route = createFileRoute("/webinar")({
 });
 
 function WebinarPage() {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
   const [error, setError] = useState("");
-  const [submitState, setSubmitState] = useState<"idle" | "sending" | "sent" | "received">("idle");
-  const submitted = submitState === "sent" || submitState === "received";
+  const [submitState, setSubmitState] = useState<"idle" | "sending" | "accepted" | "draft">("idle");
+  const submitted = submitState === "accepted";
+  const endpoint = (import.meta.env.VITE_CONTACT_FORM_ENDPOINT as string | undefined)?.trim() ?? "";
+  const requestText = `Name: ${name}\nEmail: ${email}\nCompany: ${company || "Not provided"}\n\nPlease send details about the next Palmer House video workshop, including date, availability and replay options.`;
+  const emailUrl = `mailto:${contactInfo.email}?subject=${encodeURIComponent("Video workshop interest")}&body=${encodeURIComponent(requestText)}`;
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -107,46 +112,33 @@ function WebinarPage() {
       return;
     }
     setError("");
-    // Mirrors the contact form: POST to the configured intake endpoint when present,
-    // otherwise fall back to an honest "request received" state.
-    const endpoint = (import.meta.env.VITE_CONTACT_FORM_ENDPOINT as string | undefined) ?? "";
-    if (endpoint) {
-      setSubmitState("sending");
-      try {
-        const response = await fetch(endpoint, {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({
-            name,
-            email,
-            company,
-            projectType: "Webinar registration",
-            message: `Webinar registration: Build a video system that scales.${company ? ` Company: ${company}.` : ""}`,
-            source: "palmerhouseproductions.com/webinar",
-          }),
-        });
-        if (!response.ok) throw new Error("Contact endpoint rejected the request.");
-        setSubmitState("sent");
-        return;
-      } catch {
-        setSubmitState("received");
-        return;
-      }
-    }
-    setSubmitState("received");
+    if (submitState === "sending") return;
+    setSubmitState("sending");
+    const result = await submitWebinarInterest(
+      { name: name.trim(), email: email.trim(), company: company.trim() },
+      { endpoint },
+    );
+    if (result.status === "error") {
+      setError(result.message);
+      setSubmitState("draft");
+    } else setSubmitState(result.status);
   }
 
   return (
     <PageShell>
       <PageHero
-        eyebrow="Free live working session"
+        eyebrow="Free video workshop · request details"
         title="Build a video system"
         highlight="that scales."
-        subtitle="In 45 minutes, learn how to turn scattered production into a repeatable content library—then bring your bottleneck to the live Q&A."
+        subtitle="A practical session about making video useful for your business. Ask about the next date and availability; no event date is currently listed here."
         ctas={false}
         lane="evergreen"
         visual={
-          <Scene name="webinar" priority tags={["45 minutes", "Live Q&A", "Replay included"]} />
+          <Scene
+            name="webinar"
+            priority
+            tags={["Practical teaching", "Questions welcome", "Date to confirm"]}
+          />
         }
       />
 
@@ -188,26 +180,13 @@ function WebinarPage() {
                   <Check className="size-7" />
                 </span>
                 <h2 className="mt-5 text-2xl font-extrabold">
-                  {submitState === "sent" ? "You’re registered." : "Request received."}
+                  Your interest request was received.
                 </h2>
-                {submitState === "sent" ? (
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    Thanks, {name.split(" ")[0]}. Check <strong>{email}</strong> for your
-                    confirmation, replay details, and calendar invite.
-                  </p>
-                ) : (
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    Thanks, {name.split(" ")[0]}. We’ll email your seat details to{" "}
-                    <strong>{email}</strong> within one business day. Need it sooner? Email{" "}
-                    <a
-                      href={`mailto:${contactInfo.email}?subject=${encodeURIComponent("Webinar registration")}`}
-                      className="inline-flex min-h-11 items-center font-semibold text-evergreen-text underline underline-offset-4"
-                    >
-                      {contactInfo.email}
-                    </a>
-                    .
-                  </p>
-                )}
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                  Thanks, {name.split(" ")[0]}. The team will follow up at <strong>{email}</strong>{" "}
+                  with availability and session details. This is not a confirmed registration or
+                  calendar booking.
+                </p>
                 <Link to="/blog" className="secondary-action mt-6">
                   Read a field guide while you wait
                 </Link>
@@ -225,9 +204,9 @@ function WebinarPage() {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-evergreen-text">
-                      Free registration
+                      Ask about the next session
                     </p>
-                    <h2 className="mt-2 text-2xl font-extrabold">Save your seat.</h2>
+                    <h2 className="mt-2 text-2xl font-extrabold">Find out what’s coming up.</h2>
                   </div>
                   <CalendarDays className="size-6 text-evergreen" aria-hidden />
                 </div>
@@ -304,12 +283,30 @@ function WebinarPage() {
                   disabled={submitState === "sending"}
                   className="primary-action mt-2 w-full justify-center"
                 >
-                  {submitState === "sending" ? "Sending…" : "Reserve my free spot"}{" "}
+                  {submitState === "sending"
+                    ? "Sending…"
+                    : endpoint
+                      ? "Request session details"
+                      : "Prepare an email request"}{" "}
                   <ArrowRight className="size-4" />
                 </button>
                 <p className="mt-3 text-center text-xs text-muted-foreground">
-                  Registrants receive the replay and slide deck by email.
+                  {endpoint
+                    ? "This sends an interest request. The team confirms date and availability."
+                    : "Prepare a message below, then review and send it in your email app."}
                 </p>
+                {submitState === "draft" && (
+                  <div className="mt-5 rounded-xl border border-border p-4" role="status">
+                    <h3 className="font-bold">Your email request is ready.</h3>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Nothing has been sent. Open the draft, review it, then send it from your email
+                      app.
+                    </p>
+                    <a href={emailUrl} className="secondary-action mt-4">
+                      Open email draft <ArrowRight className="size-4" />
+                    </a>
+                  </div>
+                )}
               </motion.form>
             )}
           </AnimatePresence>
@@ -346,14 +343,13 @@ function WebinarPage() {
           <div>
             <PalCrew />
             <p className="mt-6 font-mono text-[11px] font-bold uppercase tracking-[0.16em] text-evergreen-text">
-              Your hosts
+              Your guides
             </p>
-            <h3 className="mt-2 text-2xl font-bold">The Palmer House Pals</h3>
+            <h3 className="mt-2 text-2xl font-bold">The Palmer House team</h3>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              This session is co-hosted by members of the Palmer House Pals — the strategic guides
-              behind our four video pillars. Expect practical, no-fluff frameworks from the same
-              team that designs Reel, System, Evergreen, and Spotlight campaigns for real clients
-              every week.
+              Our human production team leads the workshop. The Pals are our creative guides and
+              Studio AI collaborators; their different perspectives help make the ideas easy to
+              apply.
             </p>
           </div>
         </div>
@@ -362,14 +358,15 @@ function WebinarPage() {
         </div>
       </Section>
 
-      <Section eyebrow="Questions" title="Before You Register">
+      <Section eyebrow="Questions" title="Before you request details">
         <FaqList items={FAQS} lane="evergreen" pal="cyrus" />
       </Section>
 
       <CtaBand
         title="Want a recommendation built around your business?"
         subtitle="Take the assessment for a fast starting point, or bring your current bottleneck to a discovery call."
-        primaryLabel="Book a Discovery Call"
+        primaryLabel="Request a conversation"
+        primarySearch={{ intent: "call" }}
         secondaryLabel="Take the assessment"
         secondaryTo="/video-system-assessment"
         lane="evergreen"

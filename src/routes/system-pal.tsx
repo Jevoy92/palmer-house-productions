@@ -7,7 +7,7 @@ export const Route = createFileRoute("/system-pal")({
     ...createServiceSeo({
       title: "System Pal Training Video Packages | Palmer House Productions",
       description:
-        "Explore Onboarding, Safety Training, Sales Training, and Video SOPs with Silas and Samira. See clear examples, scope, and pricing.",
+        "Explore Onboarding, Safety Training, Sales Training, and Video SOPs from Palmer House. See clear examples, scope, and pricing.",
       pathname: "/system-pal",
       serviceName: "System Pal training video production",
       serviceType: "Training, onboarding, and SOP video production",

@@ -1,6 +1,7 @@
+import { useHydratedReducedMotion } from "@/hooks/use-hydrated-reduced-motion";
 import { Link } from "@tanstack/react-router";
 import { Star } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { Section } from "@/components/site/PageShell";
 import { Scene } from "@/components/site/PalVisuals";
 import { laneVar } from "@/lib/pal-lanes";
@@ -28,7 +29,7 @@ const testimonials: Array<{ name: string; loc: string; text: string; lane: PalAc
 ];
 
 export function Testimonials() {
-  const reduce = useReducedMotion();
+  const reduce = useHydratedReducedMotion();
   return (
     <Section
       eyebrow="Client success"

@@ -1252,6 +1252,56 @@ function ConversationInvite({
   );
 }
 
+function NextMove({
+  reviewCount,
+  draftTitle,
+  missingBrand,
+  quietWeek,
+}: {
+  reviewCount: number;
+  draftTitle?: string;
+  missingBrand: string | null;
+  quietWeek: boolean;
+}) {
+  const move = reviewCount
+    ? {
+        label: `Review ${reviewCount} ${reviewCount === 1 ? "draft" : "drafts"} waiting for you`,
+        prompt: "Walk me through the drafts waiting for my review.",
+      }
+    : draftTitle
+      ? {
+          label: `Finish "${draftTitle}"`,
+          prompt: `Let's finish my campaign "${draftTitle}". What's left to do?`,
+        }
+      : missingBrand
+        ? {
+            label: `Tell your Pal ${missingBrand}`,
+            prompt: `I'd like to tell you ${missingBrand}. Ask me about it.`,
+          }
+        : quietWeek
+          ? {
+              label: "Your next 7 days are quiet — plan something",
+              prompt: "My calendar is empty this week. What should I post, and can you build it?",
+            }
+          : {
+              label: "Start your next campaign",
+              prompt: "Suggest my next campaign based on what's working.",
+            };
+  return (
+    <Link
+      to="/studio/conversations"
+      search={{ prompt: move.prompt }}
+      className="mt-8 flex items-center justify-between gap-4 rounded-2xl border border-border bg-card p-5 transition-colors hover:bg-muted"
+    >
+      <div>
+        <p className="studio-eyebrow text-muted-foreground">Do this next</p>
+        <p className="mt-1 text-lg font-semibold">{move.label}</p>
+      </div>
+      <span className="primary-action">Go</span>
+    </Link>
+  );
+}
+
 function Dashboard() {
   const { campaigns, assets, calendar, brand, profile, user, conversations, settings } =
     useStudio();
@@ -1309,6 +1359,27 @@ function Dashboard() {
           <Plus className="size-4" /> New conversation
         </Link>
       </header>
+
+      <NextMove
+        reviewCount={reviewCount}
+        draftTitle={activeCampaigns.find((c) => c.status !== "ready")?.title}
+        missingBrand={
+          !brand?.description
+            ? "what your business does"
+            : !brand?.primary_audience
+              ? "who your audience is"
+              : !brand?.website
+                ? "your website"
+                : null
+        }
+        quietWeek={
+          !calendar.some(
+            (i) =>
+              Date.parse(i.publish_at) >= Date.now() &&
+              Date.parse(i.publish_at) <= Date.now() + 7 * 864e5,
+          )
+        }
+      />
 
       <ConversationInvite conversations={conversations} preferredPal={settings?.preferred_pal} />
 

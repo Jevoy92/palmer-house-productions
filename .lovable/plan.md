@@ -1,20 +1,21 @@
-# One small real purchase to test payments
+# Test every payment with fake cards (Stripe test mode)
 
-The smallest credit pack costs $20, which is more than your $5. So we'll use a temporary $1 test pack that only your account can see, then refund it.
+No real money is involved at any point.
 
 ## Steps
-1. Add a hidden "Test pack" priced at $1 for 10 credits. It shows only in the JP Enterprises workspace. No other member ever sees it.
-2. You open the live site, go to Studio, then Billing, buy the Test pack with your real card, and tell me when it's done.
-3. I check three things: Stripe recorded the payment, the 10 credits arrived in your workspace, and the receipt and thank-you page look right.
-4. I refund the $1 in full through Stripe. It usually shows back on your card within 5 to 10 days.
-5. I remove the Test pack and publish again, so only the real $20 and $50 packs remain.
-6. Without charging anything, I also open the membership checkout and the video deposit checkout, to confirm both reach the Stripe payment page with the right amounts.
-
-## What this proves
-Real card payment, the automatic credit delivery, receipts and refunds all work end to end on your live account.
+1. You paste your test-mode secret key (starts with `sk_test_`) into a secure box. It's found in Stripe test mode under Developers → API keys.
+2. I recreate your products in test mode: the Studio memberships ($99, $499, $1,199) and the credit packs ($20 for 500 credits, $50 for 1,500).
+3. I set up the test-mode payment notices, so credits and memberships get delivered automatically after a test payment. You may need to copy one signing value from Stripe for this. I'll tell you exactly where to find it.
+4. Using Stripe's practice card (4242 4242 4242 4242), I run:
+   - a Studio membership sign-up, and check that access unlocks and credits are added
+   - a credit pack purchase, and check the credits arrive
+   - a video deposit, and check that 50% is charged, the thank-you page and HoneyBook intake button appear, and our team email is sent
+   - a declined card, and check that members see a clear message and nothing is added
+5. I make a test refund and cancel the test membership, to make sure access is removed properly.
+6. I switch back to your live key and live products, publish, and confirm the live checkout pages open correctly.
 
 ## Technical details
-- Add a `test` pack (10 credits, $1) to the top-up catalog, gated server-side to workspace `9c9fa0dc-655e-4635-83b3-d0c4fc30c21b`. The UI shows it only for that workspace, and checkout rejects it for any other workspace.
-- Publish, then after the purchase verify the `studio_credit_grants` row from the webhook and the Stripe session status.
-- Refund via the Stripe refunds API on the payment intent. Then remove the pack and publish again.
-- Payment links made directly in Stripe aren't used, because they skip the app's credit delivery.
+- Save the test key using the Stripe key update flow. Use the Stripe tools to create the test products and prices, then map their IDs where the app resolves prices, keeping the live IDs ready to restore.
+- Webhook: add a test-mode endpoint in Stripe pointing at the existing billing webhook route. Store its signing secret temporarily.
+- Verify each step through the rows in `studio_credit_grants` and the entitlement tables, the Stripe session status, and the email queue.
+- Restore: put back the live key, live price IDs and the live webhook secret, publish, then do a smoke check that no charge is made.

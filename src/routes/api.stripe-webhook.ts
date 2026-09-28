@@ -21,7 +21,7 @@ async function handleStripeWebhook({ request }: { request: Request }) {
   let event: Stripe.Event | null = null;
   for (const secret of webhookSecrets) {
     try {
-      event = stripe.webhooks.constructEvent(body, signature, secret);
+      event = await stripe.webhooks.constructEventAsync(body, signature, secret);
       break;
     } catch {
       /* try next secret */

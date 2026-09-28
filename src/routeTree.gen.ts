@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as WorkRouteImport } from './routes/work'
 import { Route as WebinarRouteImport } from './routes/webinar'
 import { Route as VideoSystemAssessmentRouteImport } from './routes/video-system-assessment'
+import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SystemPalRouteImport } from './routes/system-pal'
 import { Route as StudioRouteImport } from './routes/studio'
@@ -102,6 +103,11 @@ const WebinarRoute = WebinarRouteImport.update({
 const VideoSystemAssessmentRoute = VideoSystemAssessmentRouteImport.update({
   id: '/video-system-assessment',
   path: '/video-system-assessment',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UnsubscribeRoute = UnsubscribeRouteImport.update({
+  id: '/unsubscribe',
+  path: '/unsubscribe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -525,6 +531,7 @@ export interface FileRoutesByFullPath {
   '/studio': typeof StudioRouteWithChildren
   '/system-pal': typeof SystemPalRoute
   '/terms': typeof TermsRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
   '/webinar': typeof WebinarRoute
   '/work': typeof WorkRoute
@@ -605,6 +612,7 @@ export interface FileRoutesByTo {
   '/startups': typeof StartupsRoute
   '/system-pal': typeof SystemPalRoute
   '/terms': typeof TermsRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
   '/webinar': typeof WebinarRoute
   '/work': typeof WorkRoute
@@ -687,6 +695,7 @@ export interface FileRoutesById {
   '/studio': typeof StudioRouteWithChildren
   '/system-pal': typeof SystemPalRoute
   '/terms': typeof TermsRoute
+  '/unsubscribe': typeof UnsubscribeRoute
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
   '/webinar': typeof WebinarRoute
   '/work': typeof WorkRoute
@@ -770,6 +779,7 @@ export interface FileRouteTypes {
     | '/studio'
     | '/system-pal'
     | '/terms'
+    | '/unsubscribe'
     | '/video-system-assessment'
     | '/webinar'
     | '/work'
@@ -850,6 +860,7 @@ export interface FileRouteTypes {
     | '/startups'
     | '/system-pal'
     | '/terms'
+    | '/unsubscribe'
     | '/video-system-assessment'
     | '/webinar'
     | '/work'
@@ -931,6 +942,7 @@ export interface FileRouteTypes {
     | '/studio'
     | '/system-pal'
     | '/terms'
+    | '/unsubscribe'
     | '/video-system-assessment'
     | '/webinar'
     | '/work'
@@ -1013,6 +1025,7 @@ export interface RootRouteChildren {
   StudioRoute: typeof StudioRouteWithChildren
   SystemPalRoute: typeof SystemPalRoute
   TermsRoute: typeof TermsRoute
+  UnsubscribeRoute: typeof UnsubscribeRoute
   VideoSystemAssessmentRoute: typeof VideoSystemAssessmentRoute
   WebinarRoute: typeof WebinarRoute
   WorkRoute: typeof WorkRoute
@@ -1063,6 +1076,13 @@ declare module '@tanstack/react-router' {
       path: '/video-system-assessment'
       fullPath: '/video-system-assessment'
       preLoaderRoute: typeof VideoSystemAssessmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/unsubscribe': {
+      id: '/unsubscribe'
+      path: '/unsubscribe'
+      fullPath: '/unsubscribe'
+      preLoaderRoute: typeof UnsubscribeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -1695,6 +1715,7 @@ const rootRouteChildren: RootRouteChildren = {
   StudioRoute: StudioRouteWithChildren,
   SystemPalRoute: SystemPalRoute,
   TermsRoute: TermsRoute,
+  UnsubscribeRoute: UnsubscribeRoute,
   VideoSystemAssessmentRoute: VideoSystemAssessmentRoute,
   WebinarRoute: WebinarRoute,
   WorkRoute: WorkRoute,

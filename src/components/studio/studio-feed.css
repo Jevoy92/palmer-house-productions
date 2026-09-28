@@ -1,0 +1,322 @@
+.studio-feed-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 700px) minmax(210px, 300px);
+  gap: 40px;
+  max-width: 1120px;
+  margin: auto;
+  align-items: start;
+}
+.studio-feed-main {
+  min-width: 0;
+}
+.studio-feed-main .studio-filter-pills {
+  padding-top: 0;
+}
+.studio-feed-thread {
+  border: 1px solid var(--studio-border);
+  border-radius: 20px;
+  background: var(--studio-surface);
+  margin-bottom: 18px;
+  overflow: hidden;
+  box-shadow: var(--studio-shadow);
+}
+.studio-feed-thread > header {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 20px 22px 10px;
+}
+.studio-feed-avatar {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 50%;
+  background: var(--studio-accent-soft);
+}
+.studio-feed-initial {
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--studio-accent);
+}
+.studio-feed-thread > header > div {
+  min-width: 0;
+  flex: 1;
+}
+.studio-feed-thread > header strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 750;
+}
+.studio-feed-thread > header span:not(.studio-feed-lane) {
+  display: block;
+  font-size: 11px;
+  color: var(--studio-muted);
+  margin-top: 3px;
+}
+.studio-feed-lane {
+  font-size: 10px;
+  text-transform: capitalize;
+  border: 1px solid var(--studio-border);
+  padding: 5px 10px;
+  border-radius: 20px;
+  color: var(--studio-muted);
+}
+.studio-feed-thread-content {
+  padding: 8px 22px 18px;
+}
+.studio-feed-thread h2 {
+  font-size: 22px;
+  font-weight: 750;
+  line-height: 1.25;
+  letter-spacing: -0.7px;
+  margin-bottom: 10px;
+}
+.studio-feed-thread p {
+  font-size: 14px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+.studio-feed-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.studio-feed-sources a {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  color: var(--studio-accent);
+  background: var(--studio-accent-soft);
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+}
+.studio-feed-reply {
+  display: flex;
+  gap: 12px;
+  padding: 10px 22px 18px 38px;
+  position: relative;
+}
+.studio-feed-reply > .studio-feed-avatar {
+  width: 34px;
+  height: 34px;
+}
+.studio-feed-reply > div {
+  padding: 10px 14px;
+  border-radius: 15px;
+  background: var(--studio-soft);
+  min-width: 0;
+  flex: 1;
+}
+.studio-feed-reply strong {
+  font-size: 12px;
+  font-weight: 750;
+}
+.studio-feed-reply p {
+  margin-top: 4px;
+  font-size: 13px;
+}
+.studio-feed-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--studio-border);
+}
+.studio-feed-actions button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  min-height: 36px;
+  padding: 6px;
+  color: var(--studio-muted);
+}
+.studio-feed-actions button[aria-pressed="true"] {
+  color: var(--studio-accent);
+}
+.studio-feed-comments {
+  border-top: 1px solid var(--studio-border);
+}
+.studio-feed-comments form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 14px 18px;
+  background: var(--studio-soft);
+  border-radius: 23px;
+  padding: 6px 7px 6px 16px;
+}
+.studio-feed-comments input {
+  min-width: 0;
+  flex: 1;
+  background: transparent;
+  outline: 0;
+  font-size: 13px;
+}
+.studio-feed-comments form button {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--studio-accent-soft);
+  color: var(--studio-accent);
+}
+.studio-feed-compose {
+  padding: 16px;
+  background: var(--studio-surface);
+  border: 1px solid var(--studio-border);
+  border-radius: 19px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: 22px;
+  gap: 8px;
+}
+.studio-feed-compose textarea {
+  resize: vertical;
+  width: 100%;
+  min-height: 70px;
+  max-height: 200px;
+  font-size: 14px;
+  line-height: 1.6;
+  outline: 0;
+  background: transparent;
+}
+.studio-feed-compose .primary-action {
+  min-height: 36px;
+  font-size: 12px;
+  padding: 8px 15px;
+}
+.studio-feed-aside {
+  position: sticky;
+  top: 105px;
+  padding: 28px 20px;
+  border-radius: 24px;
+  background: var(--studio-accent-soft);
+  margin-top: 22px;
+}
+.studio-feed-team {
+  display: flex;
+  margin-bottom: 25px;
+}
+.studio-feed-team > img {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 50%;
+  border: 3px solid var(--studio-accent-soft);
+  margin-right: -10px;
+}
+.studio-feed-aside h2 {
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 750;
+  letter-spacing: -0.8px;
+}
+.studio-feed-aside p {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--studio-muted);
+  margin: 16px 0;
+}
+.studio-feed-aside a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--studio-accent);
+}
+.studio-feed-aside > .studio-graphic {
+  margin: 28px auto 0;
+}
+.studio-feed-working {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  border: 1px solid var(--studio-border);
+  border-radius: 20px;
+  margin-bottom: 20px;
+  background: var(--studio-soft);
+}
+.studio-feed-working > div {
+  display: flex;
+  flex-shrink: 0;
+}
+.studio-feed-working img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-left: -7px;
+}
+.studio-feed-error {
+  padding: 16px;
+  border: 1px solid var(--studio-border);
+  border-radius: 15px;
+  font-size: 13px;
+  margin: 12px 0;
+}
+.studio-feed-linked-asset {
+  margin-top: 16px;
+  overflow: hidden;
+  border-radius: 15px;
+  border: 1px solid var(--studio-border);
+}
+.studio-feed-linked-asset > strong {
+  display: block;
+  padding: 12px;
+  font-size: 14px;
+}
+@media (max-width: 1100px) {
+  .studio-feed-layout {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 720px;
+  }
+  .studio-feed-aside {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .studio-feed-thread > header {
+    padding: 16px 15px 8px;
+  }
+  .studio-feed-thread-content {
+    padding: 8px 15px 16px;
+  }
+  .studio-feed-thread h2 {
+    font-size: 21px;
+  }
+  .studio-feed-reply {
+    padding: 8px 14px 12px 22px;
+    gap: 8px;
+  }
+  .studio-feed-actions {
+    padding: 8px;
+  }
+  .studio-feed-actions button {
+    font-size: 10px;
+    gap: 4px;
+  }
+  .studio-feed-actions button > svg {
+    width: 16px;
+  }
+  .studio-feed-avatar {
+    width: 38px;
+    height: 38px;
+  }
+  .studio-feed-thread {
+    border-radius: 18px;
+  }
+}

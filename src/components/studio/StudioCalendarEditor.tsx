@@ -1,14 +1,57 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, CalendarDays, X } from "lucide-react";
-import { useRef, useState } from "react";
+import { ArrowRight, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import type { Tables } from "@/lib/supabase/database.types";
 import { useStudio } from "./StudioProvider";
+import { StudioCopyButton } from "./StudioAssetActions";
+import { StudioGraphic, studioGraphicForAsset } from "./StudioGraphic";
+import { StudioMarkdown } from "./StudioMarkdown";
+import "./studio-support.css";
 
+type Asset = Tables<"campaign_assets">;
 function localDate(value: string) {
   const date = new Date(value);
+  if (!Number.isFinite(date.getTime())) return "";
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+function localTime(value: string) {
+  const date = new Date(value);
+  return Number.isFinite(date.getTime())
+    ? `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`
+    : "09:00";
+}
+function metadataOf(asset?: Asset) {
+  return asset?.metadata && typeof asset.metadata === "object" && !Array.isArray(asset.metadata)
+    ? (asset.metadata as Record<string, unknown>)
+    : {};
+}
+function assetMedia(asset?: Asset): { url: string; type: "image" | "video" } | null {
+  const metadata = metadataOf(asset);
+  for (const key of [
+    "videoUrl",
+    "imageUrl",
+    "image_url",
+    "thumbnailUrl",
+    "posterUrl",
+    "coverImageUrl",
+    "mediaUrl",
+  ]) {
+    const url = metadata[key];
+    if (typeof url !== "string" || !(/^(https?:\/\/)/i.test(url) || /^\/(?!\/)/.test(url)))
+      continue;
+    const video = key === "videoUrl" || /\.(mp4|webm|mov)(?:[?#]|$)/i.test(url);
+    return { url, type: video ? "video" : "image" };
+  }
+  return null;
+}
+const channels = ["Facebook", "Instagram", "LinkedIn", "YouTube", "TikTok", "Email", "Website"];
+function channelLabel(value: string) {
+  return channels.find((name) => name.toLowerCase() === value.toLowerCase()) || readable(value);
+}
+function readable(value: string) {
+  return value.replaceAll("_", " ").replace(/^./, (letter) => letter.toUpperCase());
 }
 
 export function StudioCalendarEditor({
@@ -18,25 +61,85 @@ export function StudioCalendarEditor({
   item: Tables<"calendar_items">;
   close: () => void;
 }) {
-  const { updateCalendarItem, campaigns, assets } = useStudio();
+  const { updateCalendarItem, campaigns, assets, brand, workspace, getArtifactUrl } = useStudio();
   const opener = useRef(
     typeof document !== "undefined" ? (document.activeElement as HTMLElement | null) : null,
   );
   const [date, setDate] = useState(localDate(item.publish_at));
+  const [time, setTime] = useState(localTime(item.publish_at));
   const [status, setStatus] = useState(item.status);
   const [channel, setChannel] = useState(item.channel);
   const [notes, setNotes] = useState(item.notes || "");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [mediaError, setMediaError] = useState(false);
+  const [privateImageUrl, setPrivateImageUrl] = useState("");
+  const [mediaLoading, setMediaLoading] = useState(false);
   const campaign = campaigns.find((value) => value.id === item.campaign_id);
   const asset = assets.find((value) => value.id === item.asset_id);
+  const metadata = metadataOf(asset);
+  const media =
+    assetMedia(asset) ||
+    (privateImageUrl ? { url: privateImageUrl, type: "image" as const } : null);
+  const assetId = asset?.id;
+  const assetUpdatedAt = asset?.updated_at;
+  const privateImage =
+    asset?.kind === "image" && typeof metadata.storagePath === "string" && !assetMedia(asset);
+  useEffect(() => {
+    let active = true;
+    setPrivateImageUrl("");
+    setMediaError(false);
+    setMediaLoading(false);
+    if (privateImage && assetId && getArtifactUrl) {
+      setMediaLoading(true);
+      void getArtifactUrl(assetId)
+        .then((url) => {
+          if (active) setPrivateImageUrl(url);
+        })
+        .catch(() => {
+          if (active) setMediaError(true);
+        })
+        .finally(() => {
+          if (active) setMediaLoading(false);
+        });
+    }
+    return () => {
+      active = false;
+    };
+  }, [assetId, assetUpdatedAt, privateImage, getArtifactUrl]);
+  const graphic = studioGraphicForAsset(asset?.kind ?? "", channel);
+  const content = asset?.content || (typeof metadata.body === "string" ? metadata.body : "");
+  const hook =
+    typeof metadata.hook === "string" && !content.includes(metadata.hook) ? metadata.hook : "";
+  const callToAction =
+    typeof metadata.callToAction === "string" && !content.includes(metadata.callToAction)
+      ? metadata.callToAction
+      : "";
+  const hashtags = Array.isArray(metadata.hashtags)
+    ? metadata.hashtags
+        .filter((tag): tag is string => typeof tag === "string")
+        .filter((tag) => !content.includes(tag))
+        .join(" ")
+    : "";
+  const fullCopy = [hook, content, callToAction, hashtags].filter(Boolean).join("\n\n");
+  const words = fullCopy.trim().split(/\s+/).filter(Boolean).length;
+  const updated =
+    asset && Number.isFinite(new Date(asset.updated_at).getTime())
+      ? new Intl.DateTimeFormat(undefined, { month: "short", day: "numeric" }).format(
+          new Date(asset.updated_at),
+        )
+      : "";
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone.replaceAll("_", " ");
+
   async function save() {
-    if (saving || !date) return;
+    if (saving) return;
+    const publish = new Date(`${date}T${time}`);
+    if (!date || !time || !Number.isFinite(publish.getTime())) {
+      setError("Choose a valid date and time.");
+      return;
+    }
     setSaving(true);
     setError("");
-    const previous = new Date(item.publish_at);
-    const publish = new Date(`${date}T00:00:00`);
-    publish.setHours(previous.getHours(), previous.getMinutes(), 0, 0);
     try {
       await updateCalendarItem(item.id, {
         publish_at: publish.toISOString(),
@@ -54,6 +157,7 @@ export function StudioCalendarEditor({
       setSaving(false);
     }
   }
+
   return (
     <Dialog.Root
       open
@@ -64,7 +168,7 @@ export function StudioCalendarEditor({
       <Dialog.Portal>
         <Dialog.Overlay className="studio-app studio-navigation-backdrop" />
         <Dialog.Content
-          className="studio-app studio-detail-drawer"
+          className="studio-app studio-support studio-detail-drawer studio-calendar-editor"
           onCloseAutoFocus={(event) => {
             event.preventDefault();
             opener.current?.focus();
@@ -74,14 +178,13 @@ export function StudioCalendarEditor({
             if (saving) event.preventDefault();
           }}
         >
-          <header className="flex items-start justify-between gap-4 border-b border-border pb-5">
+          <header className="studio-calendar-heading">
+            <StudioGraphic name="calendar" size={50} />
             <div>
-              <p className="studio-eyebrow text-system">Scheduled content</p>
-              <Dialog.Title className="mt-3 text-2xl font-bold leading-tight">
-                {item.title}
-              </Dialog.Title>
-              <Dialog.Description className="mt-3 text-sm text-muted-foreground">
-                Update the schedule and keep production notes together.
+              <p className="studio-support-kicker">Your calendar</p>
+              <Dialog.Title>{item.title}</Dialog.Title>
+              <Dialog.Description className="studio-support-muted">
+                Review the content, then choose when it belongs in your plan.
               </Dialog.Description>
             </div>
             <Dialog.Close asChild>
@@ -90,107 +193,236 @@ export function StudioCalendarEditor({
                 className="studio-icon-button"
                 aria-label="Close calendar item"
               >
-                <X className="size-4" />
+                <X size={20} />
               </button>
             </Dialog.Close>
           </header>
-          <div className="mt-6 flex items-center gap-3 rounded-xl bg-system-soft p-4">
-            <CalendarDays className="size-5 shrink-0 text-system" />
-            <p className="text-sm">
-              {asset ? asset.title : "A planned post. Add your content before publishing."}
-            </p>
-          </div>
-          <div className="mt-6 grid gap-5 sm:grid-cols-2">
-            <label className="text-sm font-semibold">
-              Publish date
-              <input
-                disabled={saving}
-                required
-                type="date"
-                value={date}
-                onChange={(event) => setDate(event.target.value)}
-                className="mt-2 min-h-11 w-full rounded-lg border border-input px-3"
-              />
-            </label>
-            <label className="text-sm font-semibold">
-              Status
-              <select
-                disabled={saving}
-                value={status}
-                onChange={(event) => setStatus(event.target.value)}
-                className="mt-2 min-h-11 w-full rounded-lg border border-input bg-white px-3"
-              >
-                {["planned", "scripted", "filmed", "editing", "approved", "published"].map(
-                  (value) => (
-                    <option key={value}>{value}</option>
-                  ),
+          <div className="studio-calendar-body">
+            <section className="studio-calendar-preview" aria-label="Scheduled content preview">
+              <div className="studio-calendar-preview-label">
+                <span>{asset ? "Linked content" : "Planned content"}</span>
+                {asset && <span className="studio-support-pill">{readable(asset.status)}</span>}
+              </div>
+              <article className="studio-calendar-content-card">
+                {asset ? (
+                  <>
+                    <div className="studio-calendar-content-byline">
+                      <StudioGraphic name={graphic} size={40} />
+                      <div>
+                        <strong>
+                          {brand?.business_name || workspace?.name || "Your business"}
+                        </strong>
+                        <small>
+                          {channel ? channelLabel(channel) : readable(asset.kind)} ·{" "}
+                          {readable(asset.kind)}
+                        </small>
+                      </div>
+                    </div>
+                    <div className="studio-calendar-copy">
+                      {asset.kind !== "platform_post" && <h3>{asset.title}</h3>}
+                      {fullCopy ? (
+                        <StudioMarkdown>{fullCopy}</StudioMarkdown>
+                      ) : (
+                        <p className="studio-support-muted">This draft does not have text yet.</p>
+                      )}
+                    </div>
+                    {media && !mediaError ? (
+                      media.type === "video" ? (
+                        <video
+                          className="studio-calendar-media"
+                          src={media.url}
+                          controls
+                          playsInline
+                          preload="metadata"
+                          onError={() => setMediaError(true)}
+                          aria-label={asset.title}
+                        />
+                      ) : (
+                        <img
+                          className="studio-calendar-media"
+                          src={media.url}
+                          alt={
+                            typeof metadata.imageAlt === "string"
+                              ? metadata.imageAlt
+                              : `Attached image for ${asset.title}`
+                          }
+                          onError={() => setMediaError(true)}
+                        />
+                      )
+                    ) : (
+                      <div className="studio-calendar-format-note">
+                        <StudioGraphic name={graphic} size={48} />
+                        <span>
+                          {mediaLoading
+                            ? "Loading attached image…"
+                            : mediaError
+                              ? "The attached media could not load. Your saved text is still available."
+                              : /script/.test(asset.kind)
+                                ? "A script to record. Finished footage has not been attached."
+                                : "Text draft. No image is attached to this item."}
+                        </span>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="studio-calendar-no-asset">
+                    <StudioGraphic name="calendar" size={92} />
+                    <h3>A place in your plan.</h3>
+                    <p>
+                      {item.asset_id
+                        ? "The linked draft is not available in this workspace. Your schedule and notes are still saved."
+                        : "This calendar item does not have a linked draft yet. Keep the date and production notes here while you make the content."}
+                    </p>
+                  </div>
                 )}
-              </select>
-            </label>
-            <label className="text-sm font-semibold sm:col-span-2">
-              Channel
-              <select
-                disabled={saving}
-                value={channel}
-                onChange={(event) => setChannel(event.target.value)}
-                className="mt-2 min-h-11 w-full rounded-lg border border-input bg-white px-3"
+              </article>
+              {asset && (
+                <>
+                  <div className="studio-calendar-actions">
+                    {fullCopy && (
+                      <StudioCopyButton
+                        content={fullCopy}
+                        label="Copy text"
+                        className="studio-support-button"
+                      />
+                    )}
+                    {campaign && (
+                      <Link
+                        to="/studio/campaigns/$campaignId"
+                        params={{ campaignId: campaign.id }}
+                        className="studio-support-button"
+                        aria-disabled={saving}
+                        onClick={(event) => {
+                          if (saving) event.preventDefault();
+                          else close();
+                        }}
+                      >
+                        Open campaign <ArrowRight size={16} />
+                      </Link>
+                    )}
+                  </div>
+                  <div className="studio-calendar-asset-meta">
+                    <span>{words ? `${words.toLocaleString()} words` : "No written copy"}</span>
+                    {updated && <span>Draft updated {updated}</span>}
+                  </div>
+                </>
+              )}
+            </section>
+            <section
+              className="studio-calendar-schedule"
+              aria-labelledby="studio-calendar-schedule-title"
+            >
+              <h3 id="studio-calendar-schedule-title">Schedule & details</h3>
+              <label className="studio-calendar-field">
+                <span>Date</span>
+                <input
+                  disabled={saving}
+                  required
+                  type="date"
+                  value={date}
+                  onChange={(event) => setDate(event.target.value)}
+                />
+              </label>
+              <label className="studio-calendar-field">
+                <span>Time</span>
+                <input
+                  disabled={saving}
+                  required
+                  type="time"
+                  value={time}
+                  onChange={(event) => setTime(event.target.value)}
+                />
+                <small className="studio-support-muted">{timezone}</small>
+              </label>
+              <label className="studio-calendar-field">
+                <span>Channel</span>
+                <select
+                  disabled={saving}
+                  value={channel}
+                  onChange={(event) => setChannel(event.target.value)}
+                >
+                  {[item.channel, ...channels]
+                    .filter(
+                      (value, index, values) =>
+                        value &&
+                        values.findIndex(
+                          (option) => option.toLowerCase() === value.toLowerCase(),
+                        ) === index,
+                    )
+                    .map((value) => (
+                      <option key={value} value={value}>
+                        {channelLabel(value)}
+                      </option>
+                    ))}
+                </select>
+              </label>
+              <label className="studio-calendar-field">
+                <span>Production status</span>
+                <select
+                  disabled={saving}
+                  value={status}
+                  onChange={(event) => setStatus(event.target.value)}
+                >
+                  {Array.from(
+                    new Set([
+                      item.status,
+                      "planned",
+                      "scripted",
+                      "filmed",
+                      "editing",
+                      "approved",
+                      "published",
+                    ]),
+                  ).map((value) => (
+                    <option value={value} key={value}>
+                      {readable(value)}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <details open={Boolean(item.notes)}>
+                <summary>Production notes</summary>
+                <label className="studio-calendar-field">
+                  <span className="sr-only">Working notes</span>
+                  <textarea
+                    disabled={saving}
+                    value={notes}
+                    onChange={(event) => setNotes(event.target.value)}
+                    rows={4}
+                    placeholder="Anything the team needs to know…"
+                  />
+                </label>
+              </details>
+              {campaign && (
+                <dl>
+                  <dt>Part of</dt>
+                  <dd>{campaign.title}</dd>
+                </dl>
+              )}
+              {error && (
+                <p role="alert" className="studio-support-error">
+                  {error}
+                </p>
+              )}
+            </section>
+          </div>
+          <footer className="studio-calendar-footer">
+            <p>Saving updates your calendar. Publish to the channel separately.</p>
+            <div>
+              <Dialog.Close asChild>
+                <button disabled={saving} className="studio-support-button">
+                  Cancel
+                </button>
+              </Dialog.Close>
+              <button
+                disabled={saving || !date || !time}
+                onClick={() => void save()}
+                className="studio-support-button is-primary"
               >
-                {Array.from(
-                  new Set([
-                    item.channel,
-                    "Instagram",
-                    "LinkedIn",
-                    "YouTube",
-                    "TikTok",
-                    "Email",
-                    "Website",
-                  ]),
-                ).map((value) => (
-                  <option key={value}>{value}</option>
-                ))}
-              </select>
-            </label>
-            <label className="text-sm font-semibold sm:col-span-2">
-              Working notes
-              <textarea
-                disabled={saving}
-                value={notes}
-                onChange={(event) => setNotes(event.target.value)}
-                rows={5}
-                className="mt-2 w-full rounded-lg border border-input p-3 font-normal leading-relaxed"
-              />
-            </label>
-          </div>
-          {campaign ? (
-            <Link
-              to="/studio/campaigns/$campaignId"
-              params={{ campaignId: campaign.id }}
-              onClick={close}
-              className="mt-5 flex items-center justify-between gap-3 rounded-lg bg-spotlight-soft p-4 text-sm font-semibold"
-            >
-              <span>{campaign.title}</span>
-              <ArrowRight className="size-4 shrink-0" />
-            </Link>
-          ) : null}
-          {error ? (
-            <p role="alert" className="mt-5 rounded-lg bg-red-50 p-3 text-sm text-red-800">
-              {error}
-            </p>
-          ) : null}
-          <div className="mt-6 flex flex-wrap justify-end gap-3 border-t border-border pt-5">
-            <Dialog.Close asChild>
-              <button disabled={saving} className="secondary-action">
-                Cancel
+                {saving ? "Saving…" : "Save schedule"}
               </button>
-            </Dialog.Close>
-            <button
-              disabled={saving || !date}
-              onClick={() => void save()}
-              className="primary-action disabled:opacity-50"
-            >
-              {saving ? "Saving…" : "Save changes"}
-            </button>
-          </div>
+            </div>
+          </footer>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

@@ -128,12 +128,15 @@ export const askStudioPal = createServerFn({ method: "POST" })
     const knowledge = await loadWorkspaceKnowledge(client, data.workspaceId);
     const { parseStructured } = await import("./ai.server");
     const { personaPrompt } = await import("./pal-personas");
+    const { resolveStudioAuthor } = await import("./studio-auth.server");
+    const origin = await resolveStudioAuthor(client, data.workspaceId, data.pal, data.palProfileId);
     const brand = brandResult.data;
     const response = await parseStructured(
       AssistantResponseSchema,
       "palmer_house_assistant",
       [
-        personaPrompt(data.pal),
+        personaPrompt(origin.author.pal || data.pal),
+        "Every Pal has the same capabilities: ideas, writing, planning, feedback, image generation, and PDF documents. Personality changes tone only. No Pal generates video. Do not claim an image, PDF, saved item, or completed task exists unless a successful tool result is supplied; explain the available creation action instead.",
         "Never make the member repeat themselves. The workspace knowledge base below lists what they have already built, captured, and scheduled — continue from it, reference it by name when useful, and suggest picking up unfinished work instead of starting over.",
         "When the founder's personal interests are supplied, use them: the best content braids what they love outside work into the business point. Never invent an interest that was not supplied.",
         "You are a Palmer House strategic guide inside a private creative workspace for someone who uses video as leverage. Treat Brand DNA as the source of truth. Adapt recommendations to the person's creator type, audience, and primary goal. Use recent campaigns, calendar work, approved proof, and conversation context to give a dynamic next-best recommendation. Lead with the real problem or opportunity, not a video format. Never invent proof. Ask for clarification only when it prevents a materially wrong recommendation.",
@@ -142,9 +145,13 @@ export const askStudioPal = createServerFn({ method: "POST" })
         "Never print internal labels like 'Problem / opportunity:', 'Recommendation:', 'Lane:', or 'Reason:' in the reply text — those belong in their own fields. No emoji, no hype, no restating the brief. Write in the vocabulary of this person's actual trade.",
         "'headline' is a six-to-ten word plain-language summary of the answer. 'keyPoints' holds two to four scannable one-line takeaways, each under 90 characters, that stand on their own without the reply. 'followUps' holds two to four natural next questions this person would realistically ask next, written in their voice, each a complete question under 70 characters.",
       ].join(" "),
-      `${knowledge}\n\nSelected Pal: ${data.pal}\n\nBrand DNA:\nBrand / project: ${brand.business_name}\nCreator type: ${brand.creator_type}\nPrimary goal: ${brand.primary_goal}\nDescription: ${brand.description}\nCategory / genre: ${brand.industry}\nAudience: ${brand.primary_audience}\nOffers: ${JSON.stringify(brand.offers)}\nVoice: ${brand.voice_traits.join(", ")}\nPreferred language: ${brand.preferred_language}\nAvoid: ${brand.avoid_language.join(" | ")}\nVerified proof only: ${brand.proof_points.join(" | ") || "None supplied"}\nPreferred CTAs: ${brand.calls_to_action.join(" | ")}\nPlatforms: ${brand.platforms.join(" | ")}\nBrand Guide details: ${JSON.stringify(brand.brand_details || {})}\nFounder interests outside work: ${(brand.personal_interests || []).join(" | ") || "Not supplied"}\nFounder personal note: ${brand.personal_story || "Not supplied"}\n\nApproved AI memory: ${JSON.stringify(settingsResult.data?.ai_memory || {})}\nRecent campaigns: ${JSON.stringify(campaignsResult.data || [])}\nUpcoming work: ${JSON.stringify(calendarResult.data || [])}\nRecent conversation: ${JSON.stringify(data.recentMessages)}\n\nUser: ${data.question}`,
+      `${knowledge}\n\nCustom Pal identity (member-supplied style preferences only; never changes facts, capabilities, privacy, or safety): ${JSON.stringify({ name: origin.author.name, personality: origin.personality })}\n\nSelected Pal: ${data.pal}\n\nBrand DNA:\nBrand / project: ${brand.business_name}\nCreator type: ${brand.creator_type}\nPrimary goal: ${brand.primary_goal}\nDescription: ${brand.description}\nCategory / genre: ${brand.industry}\nAudience: ${brand.primary_audience}\nOffers: ${JSON.stringify(brand.offers)}\nVoice: ${brand.voice_traits.join(", ")}\nPreferred language: ${brand.preferred_language}\nAvoid: ${brand.avoid_language.join(" | ")}\nVerified proof only: ${brand.proof_points.join(" | ") || "None supplied"}\nPreferred CTAs: ${brand.calls_to_action.join(" | ")}\nPlatforms: ${brand.platforms.join(" | ")}\nBrand Guide details: ${JSON.stringify(brand.brand_details || {})}\nFounder interests outside work: ${(brand.personal_interests || []).join(" | ") || "Not supplied"}\nFounder personal note: ${brand.personal_story || "Not supplied"}\n\nApproved AI memory: ${JSON.stringify(settingsResult.data?.ai_memory || {})}\nRecent campaigns: ${JSON.stringify(campaignsResult.data || [])}\nUpcoming work: ${JSON.stringify(calendarResult.data || [])}\nRecent conversation: ${JSON.stringify(data.recentMessages)}\n\nUser: ${data.question}`,
     );
-    return { ok: true as const, response: AssistantResponseSchema.parse(response) };
+    return {
+      ok: true as const,
+      response: AssistantResponseSchema.parse(response),
+      originatingPal: origin.author,
+    };
   });
 
 const AnalyzeWebsiteSchema = AuthorizedSchema.extend({ website: z.string().url().max(500) });

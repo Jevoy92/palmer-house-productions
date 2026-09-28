@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { resolveGuide, type GuideProfile } from "@/lib/pal-directory";
 import type { PalName } from "@/lib/studio-model";
 import { useStudio } from "./StudioProvider";
@@ -13,16 +13,23 @@ export function useGuide(): {
   setGuide: (pal: PalName | "none") => Promise<void>;
   tip: (surface: string) => string;
 } {
-  const { settings, saveSettings } = useStudio();
+  const { settings, saveSettings, customPals, activeCustomPalId, selectCustomPal } = useStudio();
   const stored = settings?.preferred_pal || null;
-  const guide = resolveGuide(stored);
-  const hasChosen = Boolean(stored);
+  const custom = customPals.find((pal) => pal.id === activeCustomPalId);
+  const base = resolveGuide(custom?.base_pal || stored);
+  const guide = useMemo<GuideProfile>(
+    () =>
+      custom ? { ...base, name: custom.name, avatar: custom.avatar_url || base.avatar } : base,
+    [custom, base],
+  );
+  const hasChosen = Boolean(stored || custom);
 
   const setGuide = useCallback(
     async (pal: PalName | "none") => {
+      if (activeCustomPalId) await selectCustomPal(null);
       await saveSettings({ preferred_pal: pal });
     },
-    [saveSettings],
+    [saveSettings, activeCustomPalId, selectCustomPal],
   );
 
   const tip = useCallback(

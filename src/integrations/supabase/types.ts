@@ -306,7 +306,7 @@ export type Database = {
       }
       campaign_assets: {
         Row: {
-          campaign_id: string
+          campaign_id: string | null
           content: string
           created_at: string
           id: string
@@ -319,7 +319,7 @@ export type Database = {
           workspace_id: string
         }
         Insert: {
-          campaign_id: string
+          campaign_id: string | null
           content?: string
           created_at?: string
           id?: string
@@ -332,7 +332,7 @@ export type Database = {
           workspace_id: string
         }
         Update: {
-          campaign_id?: string
+          campaign_id?: string | null
           content?: string
           created_at?: string
           id?: string
@@ -1690,8 +1690,141 @@ export type Database = {
           },
         ]
       }
+      studio_pal_profiles: {
+        Row: {
+          id: string
+          workspace_id: string
+          created_by: string
+          name: string
+          base_pal: string
+          personality: string
+          avatar_path: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          workspace_id: string
+          created_by: string
+          name: string
+          base_pal: string
+          personality: string
+          avatar_path?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          workspace_id?: string
+          created_by?: string
+          name?: string
+          base_pal?: string
+          personality?: string
+          avatar_path?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      studio_feed_posts: {
+        Row: {
+          id: string
+          workspace_id: string
+          created_by: string
+          title: string
+          body: string
+          lane: string
+          author: Json
+          sources: Json
+          asset_id: string | null
+          generated: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          workspace_id: string
+          created_by: string
+          title?: string
+          body: string
+          lane?: string
+          author: Json
+          sources?: Json
+          asset_id?: string | null
+          generated?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          workspace_id?: string
+          created_by?: string
+          title?: string
+          body?: string
+          lane?: string
+          author?: Json
+          sources?: Json
+          asset_id?: string | null
+          generated?: boolean
+          created_at?: string
+        }
+        Relationships: []
+      }
+      studio_feed_comments: {
+        Row: {
+          id: string
+          workspace_id: string
+          post_id: string
+          created_by: string
+          body: string
+          author: Json
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          workspace_id: string
+          post_id: string
+          created_by: string
+          body: string
+          author: Json
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          workspace_id?: string
+          post_id?: string
+          created_by?: string
+          body?: string
+          author?: Json
+          created_at?: string
+        }
+        Relationships: []
+      }
+      studio_feed_reactions: {
+        Row: {
+          workspace_id: string
+          post_id: string
+          user_id: string
+          reaction: string
+          created_at: string
+        }
+        Insert: {
+          workspace_id: string
+          post_id: string
+          user_id: string
+          reaction: string
+          created_at?: string
+        }
+        Update: {
+          workspace_id?: string
+          post_id?: string
+          user_id?: string
+          reaction?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
       workspace_settings: {
         Row: {
+          active_pal_profile_id: string | null
           ai_memory: Json
           default_depth: string
           email_campaign_ready: boolean
@@ -1704,6 +1837,7 @@ export type Database = {
           workspace_id: string
         }
         Insert: {
+          active_pal_profile_id?: string | null
           ai_memory?: Json
           default_depth?: string
           email_campaign_ready?: boolean
@@ -1716,6 +1850,7 @@ export type Database = {
           workspace_id: string
         }
         Update: {
+          active_pal_profile_id?: string | null
           ai_memory?: Json
           default_depth?: string
           email_campaign_ready?: boolean
@@ -1864,6 +1999,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      create_studio_feed_discussion: {
+        Args: { target_workspace_id: string; post_value: Json; replies_value: Json }
+        Returns: string
+      }
       add_credits: {
         Args: {
           p_amount: number

@@ -33,6 +33,32 @@ import type {
 import { supabase } from "@/lib/supabase/client";
 import type { Tables } from "@/lib/supabase/database.types";
 
+import {
+  loadStudioRecovery,
+  saveStudioPalProfile,
+  selectStudioPalProfile,
+  uploadStudioPalAvatar,
+  resolveStudioPalAvatar,
+  generateStudioArtifact,
+  getStudioArtifactUrl,
+  createStudioFeedPost,
+  commentOnStudioFeed,
+  reactToStudioFeed,
+  refreshStudioPalFeed,
+  linkStudioCampaignToConversation,
+  reviseStudioDocument,
+} from "@/lib/studio-recovery-server";
+import type {
+  PalProfileInput,
+  StudioPalProfile,
+  StudioFeedPost,
+  StudioFeedComment,
+  StudioFeedReaction,
+  StudioFeedPostInput,
+  StudioArtifact,
+  StudioArtifactInput,
+} from "@/lib/studio-recovery";
+
 type Profile = Tables<"profiles">;
 type Workspace = Tables<"workspaces">;
 type Subscription = Tables<"workspace_subscriptions">;
@@ -73,6 +99,34 @@ type VideoProgress = Tables<"workspace_video_items">;
 type ServiceRequest = Tables<"service_requests">;
 
 export type StudioContextValue = {
+  customPals: StudioPalProfile[];
+  activeCustomPalId: string | null;
+  feedPosts: StudioFeedPost[];
+  feedComments: StudioFeedComment[];
+  feedReactions: StudioFeedReaction[];
+  recoveryError: string | null;
+  refreshRecovery: () => Promise<void>;
+  saveCustomPal: (values: PalProfileInput) => Promise<StudioPalProfile>;
+  selectCustomPal: (id: string | null) => Promise<void>;
+  uploadPalAvatar: (file: File) => Promise<string>;
+  resolvePalAvatar: (path: string) => Promise<string>;
+  linkCampaignToConversation: (values: {
+    campaignId: string;
+    conversationId: string;
+    pal: PalName;
+    palProfileId?: string;
+  }) => Promise<void>;
+  generateArtifact: (values: StudioArtifactInput) => Promise<StudioArtifact>;
+  getArtifactUrl: (assetId: string) => Promise<string>;
+  createFeedPost: (values: StudioFeedPostInput) => Promise<string>;
+  addFeedComment: (postId: string, body: string, palProfileId?: string) => Promise<void>;
+  setFeedReaction: (
+    postId: string,
+    reaction: StudioFeedReaction["reaction"],
+    active: boolean,
+  ) => Promise<void>;
+  refreshPalFeed: () => Promise<void>;
+
   loading: boolean;
   loadError: string | null;
   retryWorkspace: () => Promise<void>;
@@ -196,6 +250,13 @@ function slugify(value: string) {
 export function StudioProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
+  const [customPals, setCustomPals] = useState<StudioPalProfile[]>([]);
+  const [feedPosts, setFeedPosts] = useState<StudioFeedPost[]>([]);
+  const [feedComments, setFeedComments] = useState<StudioFeedComment[]>([]);
+  const [feedReactions, setFeedReactions] = useState<StudioFeedReaction[]>([]);
+  const [recoveryError, setRecoveryError] = useState<string | null>(null);
+  const recoveryRequest = useRef(0);
+  const recoveryScope = useRef<string | null>(null);
   const loadRequest = useRef(0);
   const conversationRequest = useRef(0);
   const sending = useRef(false);
@@ -241,11 +302,67 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     setHasOlderMessages(false);
   }, []);
 
+  const loadRecoveryFor = useCallback(async (activeSession: Session, workspaceId: string) => {
+    const scope = `${activeSession.user.id}:${workspaceId}`;
+    if (recoveryScope.current !== scope) {
+      recoveryScope.current = scope;
+      setCustomPals([]);
+      setFeedPosts([]);
+      setFeedComments([]);
+      setFeedReactions([]);
+      setRecoveryError(null);
+    }
+    const request = ++recoveryRequest.current;
+    try {
+      const result = await loadStudioRecovery({
+        data: { workspaceId, accessToken: activeSession.access_token },
+      });
+      if (
+        request !== recoveryRequest.current ||
+        recoveryScope.current !== scope ||
+        sessionUserRef.current !== activeSession.user.id
+      )
+        return;
+      setCustomPals(result.customPals);
+      setFeedPosts(result.posts);
+      setFeedComments(result.comments);
+      setFeedReactions(result.reactions);
+      setRecoveryError(null);
+    } catch (error) {
+      if (
+        request === recoveryRequest.current &&
+        recoveryScope.current === scope &&
+        sessionUserRef.current === activeSession.user.id
+      )
+        setRecoveryError(
+          error instanceof Error ? error.message : "Could not load saved Pals and feed activity.",
+        );
+    }
+  }, []);
+
   const loadWorkspace = useCallback(
     async (activeSession: Session | null) => {
       const request = ++loadRequest.current;
       setLoadError(null);
+      if (
+        !activeSession ||
+        (recoveryScope.current && !recoveryScope.current.startsWith(`${activeSession.user.id}:`))
+      ) {
+        recoveryRequest.current += 1;
+        recoveryScope.current = null;
+        setCustomPals([]);
+        setFeedPosts([]);
+        setFeedComments([]);
+        setFeedReactions([]);
+        setRecoveryError(null);
+      }
       if (!activeSession) {
+        recoveryRequest.current += 1;
+        setCustomPals([]);
+        setFeedPosts([]);
+        setFeedComments([]);
+        setFeedReactions([]);
+        setRecoveryError(null);
         setProfile(null);
         setWorkspace(null);
         setSubscription(null);
@@ -391,6 +508,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
         setConversations(conversationsResult.data || []);
         setVideoProgress(videoProgressResult.data || []);
         setServiceRequests(serviceRequestsResult.data || []);
+        await loadRecoveryFor(activeSession, workspaceId);
       } catch {
         if (request === loadRequest.current) {
           setLoadError(
@@ -401,7 +519,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
         if (request === loadRequest.current) setLoading(false);
       }
     },
-    [clearConversation],
+    [clearConversation, loadRecoveryFor],
   );
 
   useEffect(() => {
@@ -826,6 +944,9 @@ export function StudioProvider({ children }: { children: ReactNode }) {
           question,
           pal,
           recentMessages: history,
+          ...(settings?.active_pal_profile_id
+            ? { palProfileId: settings.active_pal_profile_id }
+            : {}),
         },
       });
       const response: AssistantResponse = generated.response;
@@ -841,9 +962,9 @@ export function StudioProvider({ children }: { children: ReactNode }) {
             workspace_id: workspace.id,
             conversation_id: threadId,
             role: "assistant",
-            pal,
+            pal: generated.originatingPal.pal || pal,
             body: response.reply,
-            metadata: response,
+            metadata: { ...response, originatingPal: generated.originatingPal },
             created_at: new Date().toISOString(),
           },
         ])
@@ -1100,6 +1221,23 @@ export function StudioProvider({ children }: { children: ReactNode }) {
         };
       }
     }
+    if (
+      previous?.kind === "document" &&
+      previousMetadata.mimeType === "application/pdf" &&
+      (values.content !== undefined || values.title !== undefined)
+    ) {
+      const saved = await reviseStudioDocument({
+        data: {
+          ...recoveryAuth(),
+          assetId: id,
+          title: values.title ?? previous.title,
+          content: values.content ?? previous.content,
+          expectedUpdatedAt: previous.updated_at,
+        },
+      });
+      setAssets((items) => items.map((item) => (item.id === id ? saved : item)));
+      return;
+    }
     const result = await supabase
       .from("campaign_assets")
       .update(patch)
@@ -1109,7 +1247,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     if (result.error) throw result.error;
     const saved = result.data;
     setAssets((items) => items.map((item) => (item.id === id ? saved : item)));
-    if (saved.kind === "platform_post") {
+    if (saved.kind === "platform_post" && saved.campaign_id) {
       const metadata = saved.metadata;
       if (metadata && typeof metadata === "object" && !Array.isArray(metadata)) {
         const parsed = PlatformPostSchema.safeParse({
@@ -1118,12 +1256,13 @@ export function StudioProvider({ children }: { children: ReactNode }) {
           title: saved.title,
         });
         if (parsed.success) {
+          const campaignId = saved.campaign_id;
           setCampaignOutputs((current) => {
-            const output = current[saved.campaign_id];
+            const output = current[campaignId];
             if (!output) return current;
             return {
               ...current,
-              [saved.campaign_id]: {
+              [campaignId]: {
                 ...output,
                 platformPosts: output.platformPosts.map((post) =>
                   post.id === parsed.data.id ? parsed.data : post,
@@ -1241,7 +1380,142 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     return result.profile;
   }
 
+  function recoveryAuth() {
+    if (!workspace || !session || sessionUserRef.current !== session.user.id)
+      throw new Error("Sign in and open a workspace first.");
+    return { workspaceId: workspace.id, accessToken: session.access_token };
+  }
+  async function refreshRecovery() {
+    if (!workspace || !session) return;
+    await loadRecoveryFor(session, workspace.id);
+  }
+  async function saveCustomPal(values: PalProfileInput) {
+    const saved = await saveStudioPalProfile({ data: { ...recoveryAuth(), profile: values } });
+    await refreshRecovery();
+    return saved;
+  }
+  async function selectCustomPal(id: string | null) {
+    const next = await selectStudioPalProfile({ data: { ...recoveryAuth(), id } });
+    setSettings(next);
+  }
+  async function uploadPalAvatar(file: File) {
+    if (
+      !["image/png", "image/jpeg", "image/webp"].includes(file.type) ||
+      file.size > 5 * 1024 * 1024
+    )
+      throw new Error("Choose a PNG, JPEG, or WebP avatar under 5 MB.");
+    const dataUrl = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = () => reject(new Error("Could not read this image."));
+      reader.readAsDataURL(file);
+    });
+    const result = await uploadStudioPalAvatar({ data: { ...recoveryAuth(), dataUrl } });
+    return result.path;
+  }
+  async function resolvePalAvatar(path: string) {
+    return resolveStudioPalAvatar({ data: { ...recoveryAuth(), path } });
+  }
+  async function getArtifactUrl(assetId: string) {
+    return getStudioArtifactUrl({ data: { ...recoveryAuth(), assetId } });
+  }
+  async function linkCampaignToConversation(values: {
+    campaignId: string;
+    conversationId: string;
+    pal: PalName;
+    palProfileId?: string;
+  }) {
+    await linkStudioCampaignToConversation({
+      data: {
+        ...recoveryAuth(),
+        ...values,
+        palProfileId: values.palProfileId || settings?.active_pal_profile_id || undefined,
+      },
+    });
+    if (activeConversationRef.current?.id === values.conversationId) {
+      try {
+        await openConversation(values.conversationId);
+      } catch {
+        toast.info("Campaign saved to this conversation. Reopen it to refresh the card.");
+      }
+    }
+  }
+  async function generateArtifact(values: StudioArtifactInput) {
+    const requestAuth = recoveryAuth();
+    const result = await generateStudioArtifact({
+      data: {
+        ...requestAuth,
+        artifact: {
+          ...values,
+          palProfileId: values.palProfileId || settings?.active_pal_profile_id || undefined,
+          pal: values.pal || (settings?.preferred_pal as PalName) || "kiana",
+        },
+      },
+    });
+    // A successful generation must not turn into a false failure when a view
+    // refresh fails: the file is already saved and retrying would bill twice.
+    const latest = await supabase
+      .from("campaign_assets")
+      .select("*")
+      .eq("workspace_id", requestAuth.workspaceId)
+      .order("sort_order");
+    if (!latest.error && sessionUserRef.current === session?.user.id) setAssets(latest.data || []);
+    if (values.conversationId && activeConversationRef.current?.id === values.conversationId) {
+      try {
+        await openConversation(values.conversationId);
+      } catch {
+        /* Library still contains the saved file. */
+      }
+    }
+    if (result.warning) toast.info(result.warning);
+    return result;
+  }
+  async function createFeedPost(values: StudioFeedPostInput) {
+    const id = await createStudioFeedPost({
+      data: {
+        ...recoveryAuth(),
+        post: { ...values, title: values.title || "", lane: values.lane || "reel" },
+      },
+    });
+    await refreshRecovery();
+    return id;
+  }
+  async function addFeedComment(postId: string, body: string) {
+    await commentOnStudioFeed({ data: { ...recoveryAuth(), postId, body } });
+    await refreshRecovery();
+  }
+  async function setFeedReaction(
+    postId: string,
+    reaction: StudioFeedReaction["reaction"],
+    active: boolean,
+  ) {
+    await reactToStudioFeed({ data: { ...recoveryAuth(), postId, reaction, active } });
+    await refreshRecovery();
+  }
+  async function refreshPalFeed() {
+    await refreshStudioPalFeed({ data: recoveryAuth() });
+    await refreshRecovery();
+  }
+
   const value: StudioContextValue = {
+    customPals,
+    activeCustomPalId: settings?.active_pal_profile_id || null,
+    feedPosts,
+    feedComments,
+    feedReactions,
+    recoveryError,
+    refreshRecovery,
+    saveCustomPal,
+    selectCustomPal,
+    uploadPalAvatar,
+    resolvePalAvatar,
+    linkCampaignToConversation,
+    generateArtifact,
+    getArtifactUrl,
+    createFeedPost,
+    addFeedComment,
+    setFeedReaction,
+    refreshPalFeed,
     loading,
     loadError,
     retryWorkspace,

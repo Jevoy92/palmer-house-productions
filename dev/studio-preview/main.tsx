@@ -18,6 +18,8 @@ import { StudioContext, useStudio } from "@/components/studio/StudioProvider";
 import "@/styles.css";
 import "./preview.css";
 import * as f from "./fixtures";
+import type { StudioPalProfile, StudioFeedReaction } from "@/lib/studio-recovery";
+import { palDirectory } from "@/lib/pal-directory";
 
 type ContextValue = ReturnType<typeof useStudio>;
 type FixtureState =
@@ -33,6 +35,7 @@ const params = new URLSearchParams(window.location.search);
 const initialState = (params.get("state") || "populated") as FixtureState;
 const screens: Array<{ view: StudioView; label: string; path: string }> = [
   { view: "home", label: "Dashboard", path: "/studio/dashboard" },
+  { view: "feed", label: "Feed", path: "/studio/feed" },
   { view: "conversations", label: "Conversations", path: "/studio/conversations" },
   { view: "assistant", label: "Chat", path: `/studio/conversations/${f.conversationId}` },
   { view: "engine", label: "Create", path: "/studio/create" },
@@ -194,6 +197,7 @@ function FixtureProvider({
   const [campaigns, setCampaigns] = useState(empty ? [] : f.campaigns);
   const [assets, setAssets] = useState(empty ? [] : f.assets);
   const [calendar, setCalendar] = useState(empty ? [] : f.calendar);
+  const [videoProgress, setVideoProgress] = useState<ContextValue["videoProgress"]>([]);
   const [ideas, setIdeas] = useState(empty ? [] : f.ideas);
   const [conversations, setConversations] = useState(empty ? [] : f.conversations);
   const [messages, setMessages] = useState(empty ? [] : f.messages);
@@ -202,6 +206,16 @@ function FixtureProvider({
   );
   const [activeId, setActiveId] = useState<string | null>(null);
   const [hasOlderMessages, setHasOlderMessages] = useState(!empty);
+  const [customPals, setCustomPals] = useState<StudioPalProfile[]>([]);
+  const [activeCustomPalId, setActiveCustomPalId] = useState<string | null>(null);
+  const [feedPosts, setFeedPosts] = useState(empty ? [] : f.feedPosts);
+  const [feedComments, setFeedComments] = useState(empty ? [] : f.feedComments);
+  const [feedReactions, setFeedReactions] = useState<StudioFeedReaction[]>([]);
+  const artifactUrls = useRef(new Map<string, string>());
+  const getArtifactUrl = useCallback(
+    async (id: string) => artifactUrls.current.get(id) || f.bakeryImage,
+    [],
+  );
   const [serviceRequests, setServiceRequests] = useState<ContextValue["serviceRequests"]>([]);
   const stamp = () => new Date().toISOString();
   const localId = () => `synthetic-${crypto.randomUUID()}`;
@@ -247,7 +261,18 @@ function FixtureProvider({
     brand,
     settings,
     subscription: f.subscription,
-    brandReferences: [],
+    brandReferences: [
+      {
+        id: "sample-brand-reference",
+        workspace_id: f.workspaceId,
+        kind: "image",
+        label: "Morning craft",
+        source_url: f.bakeryImage,
+        storage_path: null,
+        metadata: { type: "image/png" },
+        created_at: f.now,
+      },
+    ],
     campaigns,
     assets,
     calendar,
@@ -260,9 +285,218 @@ function FixtureProvider({
     conversationDrafts,
     setConversationDrafts,
     hasOlderMessages,
-    videoProgress: [],
+    videoProgress,
     serviceRequests,
-    campaignOutputs: { [f.campaignId]: f.output },
+    campaignOutputs: Object.fromEntries(
+      campaigns.map((c) => [c.id, { ...f.output, title: c.title }]),
+    ),
+    customPals,
+    activeCustomPalId,
+    feedPosts,
+    feedComments,
+    feedReactions,
+    recoveryError: null,
+    refreshRecovery: async () => {
+      await complete();
+    },
+    linkCampaignToConversation: async (input) => {
+      await complete();
+      setCampaigns((current) =>
+        current.map((c) =>
+          c.id === input.campaignId ? { ...c, conversation_id: input.conversationId } : c,
+        ),
+      );
+      setMessages((current) => [
+        ...current,
+        {
+          ...f.messages[1],
+          id: crypto.randomUUID(),
+          conversation_id: input.conversationId || null,
+          pal: input.pal,
+          body: `Your campaign is saved to the Library.`,
+          metadata: {
+            campaignId: input.campaignId,
+            originatingPal: {
+              pal: input.pal,
+              name:
+                customPals.find((p) => p.id === input.palProfileId)?.name ||
+                palDirectory[input.pal].name,
+              profileId: input.palProfileId,
+            },
+          },
+          created_at: stamp(),
+        },
+      ]);
+    },
+    saveCustomPal: async (input) => {
+      await complete();
+      const p: StudioPalProfile = {
+        id: input.id || crypto.randomUUID(),
+        workspace_id: f.workspaceId,
+        name: input.name,
+        base_pal: input.basePal,
+        personality: input.personality,
+        avatar_path: input.avatarPath || null,
+        avatar_url: input.avatarPath ? palDirectory[input.basePal].headshot : null,
+        created_by: f.userId,
+        created_at: stamp(),
+        updated_at: stamp(),
+      };
+      setCustomPals((current) => [p, ...current.filter((x) => x.id !== p.id)]);
+      return p;
+    },
+    selectCustomPal: async (id) => {
+      await complete();
+      setActiveCustomPalId(id);
+    },
+    uploadPalAvatar: async () => {
+      await complete();
+      return `${f.workspaceId}/sample-avatar.png`;
+    },
+    resolvePalAvatar: async () => palDirectory.kiana.headshot,
+    getArtifactUrl,
+    generateArtifact: async (input) => {
+      await complete();
+      const id = crypto.randomUUID();
+      let url = f.bakeryImage;
+      const storagePath = `${f.workspaceId}/generated/${id}.${input.kind === "pdf" ? "pdf" : "png"}`;
+      if (input.kind === "pdf") {
+        const { PDFDocument, StandardFonts } = await import("pdf-lib");
+        const doc = await PDFDocument.create();
+        const page = doc.addPage();
+        const font = await doc.embedFont(StandardFonts.Helvetica);
+        page.drawText(input.title.replace(/[^\x20-\x7e]/g, ""), { x: 50, y: 780, size: 22, font });
+        const lines =
+          (input.content || input.prompt)
+            .replace(/[^\x20-\x7e\n]/g, "")
+            .match(/.{1,80}(?:\s|$)|.{1,80}/g) || [];
+        lines
+          .slice(0, 34)
+          .forEach((line, i) =>
+            page.drawText(line.trim(), { x: 50, y: 740 - i * 18, size: 11, font }),
+          );
+        url = URL.createObjectURL(
+          new Blob([new Uint8Array(await doc.save())], { type: "application/pdf" }),
+        );
+      }
+      artifactUrls.current.set(id, url);
+      setAssets((current) => [
+        {
+          ...f.assets[0],
+          id,
+          campaign_id: input.campaignId || null,
+          kind: input.kind === "pdf" ? "document" : "image",
+          title: input.title,
+          content: input.content || input.prompt,
+          metadata: {
+            storagePath,
+            mimeType: input.kind === "pdf" ? "application/pdf" : "image/png",
+            generated: true,
+            ...(input.kind === "image" ? { imageUrl: url } : {}),
+          },
+          created_at: stamp(),
+          updated_at: stamp(),
+        },
+        ...current,
+      ]);
+      if (input.conversationId)
+        setMessages((current) => [
+          ...current,
+          {
+            ...f.messages[1],
+            id: crypto.randomUUID(),
+            conversation_id: input.conversationId || null,
+            pal: input.pal || "kiana",
+            body: `Your ${input.kind === "pdf" ? "document" : "image"} is saved to the Library.`,
+            metadata: {
+              artifactId: id,
+              assetIds: [id],
+              assetId: id,
+              artifactKind: input.kind,
+              originatingPal: {
+                name:
+                  customPals.find((p) => p.id === input.palProfileId)?.name ||
+                  palDirectory[input.pal || "kiana"].name,
+                pal: input.pal || "kiana",
+                profileId: input.palProfileId || null,
+              },
+            },
+            created_at: stamp(),
+          },
+        ]);
+      return {
+        assetId: id,
+        storagePath,
+        mimeType: input.kind === "pdf" ? "application/pdf" : "image/png",
+        url,
+        title: input.title,
+        kind: input.kind,
+      };
+    },
+    createFeedPost: async (input) => {
+      await complete();
+      const id = crypto.randomUUID();
+      setFeedPosts((current) => [
+        {
+          ...f.feedPosts[0],
+          id,
+          title: input.title || "",
+          body: input.body,
+          lane: input.lane || "reel",
+          author: { kind: "member", name: f.profile.full_name || "Alex", userId: f.userId },
+          generated: false,
+          asset_id: input.assetId || null,
+          created_at: stamp(),
+        },
+        ...current,
+      ]);
+      return id;
+    },
+    addFeedComment: async (postId, body) => {
+      await complete();
+      setFeedComments((current) => [
+        ...current,
+        {
+          ...f.feedComments[0],
+          id: crypto.randomUUID(),
+          post_id: postId,
+          body,
+          author: { kind: "member", name: f.profile.full_name || "Alex", userId: f.userId },
+          created_at: stamp(),
+        },
+      ]);
+    },
+    setFeedReaction: async (postId, reaction, active) => {
+      await complete();
+      setFeedReactions((current) => [
+        ...current.filter(
+          (r) => !(r.post_id === postId && r.reaction === reaction && r.user_id === f.userId),
+        ),
+        ...(active
+          ? [
+              {
+                workspace_id: f.workspaceId,
+                post_id: postId,
+                user_id: f.userId,
+                reaction,
+                created_at: stamp(),
+              },
+            ]
+          : []),
+      ]);
+    },
+    refreshPalFeed: async () => {
+      await complete();
+      setFeedPosts((current) => [
+        {
+          ...f.feedPosts[1],
+          id: crypto.randomUUID(),
+          title: "A fresh angle on the morning story",
+          created_at: stamp(),
+        },
+        ...current,
+      ]);
+    },
     signIn: async () => {
       await complete();
       onState("populated");
@@ -410,15 +644,36 @@ function FixtureProvider({
       setConversations((current) =>
         current.map((item) => (item.id === id ? { ...item, pal } : item)),
       ),
-    updateVideoProgress: async () => {
+    updateVideoProgress: async (itemKey, status, campaignId) => {
       await complete();
-      toast.success("Preview progress updated locally.");
+      setVideoProgress((current) => [
+        {
+          workspace_id: f.workspaceId,
+          item_key: itemKey,
+          status,
+          campaign_id: campaignId || null,
+          notes: "",
+          updated_at: stamp(),
+        },
+        ...current.filter((item) => item.item_key !== itemKey),
+      ]);
     },
     createCampaign: async (input) => {
       await complete();
       const id = localId();
       setCampaigns((current) => [
-        { ...f.campaigns[0], ...input, id, anchor_format: input.anchorFormat, created_at: stamp() },
+        {
+          ...f.campaigns[0],
+          ...input,
+          id,
+          conversation_id: activeId,
+          anchor_format: input.anchorFormat,
+          created_at: stamp(),
+        },
+        ...current,
+      ]);
+      setAssets((current) => [
+        ...f.assets.map((a) => ({ ...a, id: crypto.randomUUID(), campaign_id: id })),
         ...current,
       ]);
       return id;

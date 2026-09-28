@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate, useSearch } from "@tanstack/react-router";
-import { useReducedMotion } from "motion/react";
+import { useStudioMotion } from "./studio-motion";
 import {
   Archive,
   ArrowRight,
@@ -10,12 +10,16 @@ import {
   Copy,
   LoaderCircle,
   MessageSquareText,
+  Menu,
+  History,
+  Info,
+  ImagePlus,
+  FileText,
+  ArrowUp,
   Pencil,
   Plus,
   RotateCcw,
-  Send,
   Sparkles,
-  Users,
   X,
 } from "lucide-react";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from "react";
@@ -31,6 +35,15 @@ import { ComposerIntake, withAttachmentContext } from "./ComposerIntake";
 import { StudioMarkdown } from "./StudioMarkdown";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { useStudio, type ConversationIntake } from "./StudioProvider";
+import { PalAvatar } from "./PalAvatar";
+import {
+  StudioChatArtifactCard,
+  StudioChatEditor,
+  StudioOriginAvatar,
+  record,
+} from "./StudioChatArtifacts";
+import { StudioCustomPal } from "./StudioCustomPal";
+import "./studio-chat.css";
 
 function assistantMetadata(value: unknown): AssistantResponse | null {
   if (!value || typeof value !== "object" || !("recommendations" in value)) return null;
@@ -49,6 +62,11 @@ function relativeDay(value: string | null) {
 
 export function StudioAssistant({ conversationId }: { conversationId?: string }) {
   const {
+    customPals = [],
+    activeCustomPalId,
+    selectCustomPal,
+    generateArtifact,
+    linkCampaignToConversation,
     activeConversation,
     archiveConversation,
     askPal,
@@ -76,13 +94,23 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
     startConversation,
   } = useStudio();
   const navigate = useNavigate();
-  const reduce = useReducedMotion();
+  const { reduceMotion: reduce } = useStudioMotion();
 
   // The conversation's own Pal wins; otherwise the member's saved guide. The
   // neutral option resolves to a real Pal so the name on screen always matches
   // the one we send to the model.
   const selected = resolvePalName(activeConversation?.pal || settings?.preferred_pal);
-  const pal = palDirectory[selected];
+  const customPal = customPals.find((item) => item.id === activeCustomPalId);
+  const basePal = palDirectory[customPal?.base_pal || selected];
+  const pal = customPal
+    ? {
+        ...basePal,
+        name: customPal.name,
+        avatar: customPal.avatar_url || basePal.avatar,
+        headshot: customPal.avatar_url || basePal.headshot,
+        role: "Your creative Pal",
+      }
+    : basePal;
 
   const startingPrompt = useSearch({
     strict: false,
@@ -122,7 +150,25 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
   const [workOpen, setWorkOpen] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [customOpen, setCustomOpen] = useState(false);
+  const [greetingCycle, setGreetingCycle] = useState(0);
+  const [composerTools, setComposerTools] = useState(false);
+  const [editor, setEditor] = useState<{ assetId: string; mode: "preview" | "edit" } | null>(null);
+  const [artifactKind, setArtifactKind] = useState<"image" | "pdf" | null>(null);
+  const [artifactPrompt, setArtifactPrompt] = useState("");
+  const [artifactTitle, setArtifactTitle] = useState("");
+  const [artifactBusy, setArtifactBusy] = useState(false);
+  const [artifactError, setArtifactError] = useState("");
   const [historyOpen, setHistoryOpen] = useState(false);
+  const palTriggerRef = useRef<HTMLButtonElement>(null);
+  const historyTriggerRef = useRef<HTMLButtonElement>(null);
+  const workTriggerRef = useRef<HTMLButtonElement>(null);
+  const composerToolsRef = useRef<HTMLButtonElement>(null);
+  const campaignTriggerRef = useRef<HTMLButtonElement | null>(null);
+  function returnFocus(event: Event, target: HTMLElement | null) {
+    event.preventDefault();
+    if (target?.isConnected) target.focus();
+  }
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const scrollSnapshot = useRef<{ height: number; top: number } | null>(null);
   const scrollTail = useRef<string | undefined>(undefined);
@@ -131,6 +177,15 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
   const routeRef = useRef(conversationId);
   routeRef.current = conversationId;
   const composerRef = useRef<HTMLTextAreaElement | null>(null);
+  useLayoutEffect(() => {
+    if (!editor || window.matchMedia("(max-width: 1100px)").matches) return;
+    const viewport = scrollRef.current;
+    const card = Array.from(
+      viewport?.querySelectorAll<HTMLElement>(".studio-chat-artifact") || [],
+    ).find((element) => element.dataset.assetId === editor.assetId);
+    if (viewport && card)
+      viewport.scrollTop += card.getBoundingClientRect().top - viewport.getBoundingClientRect().top;
+  }, [editor]);
 
   const openThreads = useMemo(
     () => conversations.filter((item) => !item.archived),
@@ -150,6 +205,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
   // not trigger an automatic reopen of the same URL.
   useEffect(() => {
     setThreadError(null);
+    setEditor(null);
     setPickerOpen(false);
     setHistoryOpen(false);
     setSavedMemory([]);
@@ -182,7 +238,14 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
       viewport.scrollTop = previous.top + viewport.scrollHeight - previous.height;
       scrollSnapshot.current = null;
     } else if (justOpened.current && !conversationLoading && conversationMessages.length) {
-      viewport.scrollTop = viewport.scrollHeight;
+      const latest = viewport.querySelector<HTMLElement>(".studio-chat-turn:last-of-type");
+      // Start a long answer where it can be read, rather than below its artifact.
+      viewport.scrollTop =
+        latest && latest.offsetHeight > viewport.clientHeight
+          ? latest.getBoundingClientRect().top -
+            viewport.getBoundingClientRect().top +
+            viewport.scrollTop
+          : viewport.scrollHeight;
       justOpened.current = false;
     } else if (lastMessageId !== scrollTail.current && nearBottom.current) {
       viewport.scrollTo({ top: viewport.scrollHeight, behavior: reduce ? "auto" : "smooth" });
@@ -298,6 +361,10 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
   }
 
   async function buildCampaign(body: string, meta: AssistantResponse | null) {
+    if (building) return;
+    const targetConversation = conversationId;
+    const originPal = selected;
+    const originProfile = customPal?.id;
     setBuilding(true);
     try {
       const id = await createCampaign({
@@ -311,7 +378,22 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
       });
       setCampaignSource(null);
       toast.success("Your campaign is built.");
-      await navigate({ to: "/studio/campaigns/$campaignId", params: { campaignId: id } });
+      if (targetConversation) {
+        try {
+          await linkCampaignToConversation({
+            campaignId: id,
+            conversationId: targetConversation,
+            pal: originPal,
+            palProfileId: originProfile,
+          });
+        } catch (error) {
+          toast.error(
+            `Your campaign is saved in Campaigns. ${error instanceof Error ? error.message : "It could not be attached to this conversation."}`,
+          );
+        }
+      } else {
+        await navigate({ to: "/studio/campaigns/$campaignId", params: { campaignId: id } });
+      }
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not build this campaign.");
     } finally {
@@ -335,7 +417,9 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
 
   async function choosePal(name: PalName) {
     setPickerOpen(false);
+    setGreetingCycle((cycle) => cycle + 1);
     try {
+      if (activeCustomPalId && selectCustomPal) await selectCustomPal(null);
       // Keep the open thread with this Pal, and make it the default guide.
       if (activeConversation) await setConversationPal(activeConversation.id, name);
       await saveSettings({ preferred_pal: name });
@@ -404,177 +488,127 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
   }
 
   const starters = pal.persona.starters;
+  const greeting = customPal
+    ? `Hi, I’m ${customPal.name}. ${campaigns[0] ? `Want to pick up “${campaigns[0].title}”, or start with something new?` : `What would you like to make for ${brand?.business_name || "your business"} today?`}`
+    : `${pal.persona.phrases[greetingCycle % pal.persona.phrases.length]} ${campaigns[0] ? `Shall we build on “${campaigns[0].title}”?` : pal.persona.firstQuestion}`;
+  async function createArtifact() {
+    if (!artifactKind || !artifactPrompt.trim() || artifactBusy) return;
+    setArtifactBusy(true);
+    setArtifactError("");
+    try {
+      let thread = conversationId;
+      if (!thread) {
+        thread = await startConversation(selected, artifactTitle || artifactPrompt.slice(0, 58));
+        await navigate({
+          to: "/studio/conversations/$conversationId",
+          params: { conversationId: thread },
+        });
+      }
+      await generateArtifact({
+        kind: artifactKind,
+        title: artifactTitle || (artifactKind === "image" ? "New image" : "New document"),
+        prompt: artifactPrompt,
+        conversationId: thread,
+        palProfileId: customPal?.id,
+        pal: selected,
+      });
+      setArtifactKind(null);
+      setArtifactPrompt("");
+      setArtifactTitle("");
+      toast.success("Created and saved to your Library.");
+    } catch (reason) {
+      setArtifactError(
+        reason instanceof Error
+          ? reason.message
+          : "Could not create this file. Your request is ready to retry.",
+      );
+    } finally {
+      setArtifactBusy(false);
+    }
+  }
+  function openArtifact(kind: "image" | "pdf") {
+    setArtifactKind(kind);
+    setArtifactPrompt(draft);
+    setArtifactError("");
+    setComposerTools(false);
+  }
 
   return (
-    <div className="mx-auto max-w-[92rem]">
-      <div className="relative grid h-[calc(100dvh-8rem)] min-h-[28rem] grid-cols-1 overflow-hidden rounded-[1.5rem] border border-border bg-white xl:grid-cols-[14rem_minmax(0,1fr)_18rem]">
-        {/* History */}
-        <aside
-          className={`min-h-0 overflow-y-auto border-border bg-white p-3 xl:relative xl:block xl:border-r ${historyOpen ? "absolute inset-0 z-30 block" : "hidden"}`}
-        >
-          <div className="flex items-center justify-between px-2 pt-2">
-            <p className="studio-eyebrow text-system">Conversations</p>
-            <button
-              onClick={() => setHistoryOpen(false)}
-              className="grid size-7 place-items-center rounded-lg hover:bg-mist xl:hidden"
-              aria-label="Close history"
-            >
-              <X className="size-4" />
-            </button>
-          </div>
+    <div className={`studio-chat-workspace ${editor ? "has-editor" : ""}`}>
+      <section className="studio-chat-main" aria-label={`Conversation with ${pal.name}`}>
+        <header className="studio-chat-header">
           <button
-            onClick={() => void newConversation()}
-            className="mt-3 flex min-h-11 w-full items-center gap-2 rounded-xl border border-border px-3 text-left text-xs font-black hover:border-ink"
+            type="button"
+            className="studio-chat-icon studio-chat-menu"
+            aria-label="Open Studio navigation"
+            onClick={() => window.dispatchEvent(new CustomEvent("studio:open-navigation"))}
           >
-            <Plus className="size-4" /> New conversation
+            <Menu size={20} />
           </button>
-          <div className="mt-3 space-y-1">
-            {openThreads.map((thread) => {
-              const active = activeConversation?.id === thread.id;
-              const speaker = palDirectory[resolvePalName(thread.pal)];
-              return (
-                <Link
-                  key={thread.id}
-                  to="/studio/conversations/$conversationId"
-                  params={{ conversationId: thread.id }}
-                  onClick={() => setHistoryOpen(false)}
-                  className={`block rounded-xl px-3 py-2.5 transition ${active ? "border border-current" : "border border-transparent hover:bg-mist"}`}
-                  style={{
-                    color: active ? `var(--${speaker.lane}-ink, var(--ink))` : "var(--ink)",
-                    background: active ? speaker.soft : undefined,
-                  }}
-                  aria-current={active ? "page" : undefined}
-                >
-                  <span className="block truncate text-xs font-bold">{thread.title}</span>
-                  <span className="mt-1 block truncate text-[10px] text-muted-foreground">
-                    {thread.is_legacy ? "Earlier history" : speaker.name} ·{" "}
-                    {relativeDay(thread.last_message_at)}
-                  </span>
-                </Link>
-              );
-            })}
-            {!openThreads.length ? (
-              <p className="px-3 py-4 text-[11px] leading-relaxed text-muted-foreground">
-                Your conversations will be saved here so you can pick any of them back up.
-              </p>
-            ) : null}
-          </div>
-        </aside>
-
-        {/* Conversation */}
-        <section className="flex min-h-0 min-w-0 flex-col">
-          <header className="relative flex shrink-0 flex-wrap items-center gap-2 border-b border-border p-3 sm:p-4">
-            <button
-              onClick={() => setHistoryOpen(true)}
-              className="grid size-10 shrink-0 place-items-center rounded-xl border border-border xl:hidden"
-              aria-label="Open conversation history"
-            >
-              <MessageSquareText className="size-4" />
-            </button>
-            <img
-              src={pal.headshot}
-              alt={`${pal.name}, your Palmer House guide`}
-              className="size-11 shrink-0 rounded-[0.9rem] border border-border bg-white object-cover object-top"
+          <button
+            type="button"
+            className="studio-chat-pal"
+            ref={palTriggerRef}
+            onClick={() => setPickerOpen(true)}
+            aria-label={`Change Pal, currently ${pal.name}`}
+          >
+            <PalAvatar
+              pal={pal}
+              size="md"
+              activity={busy || artifactBusy ? "thinking" : "idle"}
+              ring={false}
             />
-            <div className="min-w-0">
-              <p className="truncate text-sm font-black">
-                {activeConversation?.title || `Talk with ${pal.name}`}
-              </p>
-              <p className="mt-0.5 truncate text-[11px] text-muted-foreground">
-                {pal.name} · {pal.role}
-              </p>
-            </div>
-            <div className="ml-auto flex items-center gap-2">
-              {activeConversation ? (
-                <>
-                  <button
-                    onClick={() => void rename()}
-                    className="inline-flex min-h-9 items-center gap-1.5 rounded-lg px-2 text-[11px] font-bold hover:bg-mist"
-                  >
-                    <Pencil className="size-3.5" />{" "}
-                    <span className="sr-only sm:not-sr-only">Rename</span>
-                  </button>
-                  <button
-                    onClick={() => void archiveCurrent()}
-                    className="inline-flex min-h-9 items-center gap-1.5 rounded-lg px-2 text-[11px] font-bold hover:bg-mist"
-                  >
-                    <Archive className="size-3.5" />{" "}
-                    <span className="sr-only sm:not-sr-only">Archive</span>
-                  </button>
-                </>
-              ) : null}
-              <button
-                onClick={() => setPickerOpen((open) => !open)}
-                aria-expanded={pickerOpen}
-                className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border px-3 text-[11px] font-bold hover:border-ink"
-              >
-                <Users className="size-3.5" />{" "}
-                <span className="sr-only sm:not-sr-only">Change Pal</span>
-              </button>
-            </div>
-
+            <span>
+              <strong>{pal.name}</strong>
+              <small>Your creative Pal</small>
+            </span>
+          </button>
+          <div className="studio-chat-header-actions">
             <button
               type="button"
-              onClick={() => setWorkOpen(true)}
-              className="min-h-9 rounded-lg px-2 text-[11px] font-bold hover:bg-mist xl:hidden"
+              className="studio-chat-icon"
+              aria-label="New conversation"
+              onClick={() => void newConversation()}
             >
-              Next steps
+              <Plus size={20} />
             </button>
-            {pickerOpen ? (
-              <div className="absolute right-4 top-[calc(100%-0.5rem)] z-20 w-[min(26rem,calc(100vw-2rem))] rounded-[1.25rem] border border-border bg-white p-3 shadow-soft">
-                <p className="studio-eyebrow px-1 pb-2 text-system">Who do you want on this?</p>
-                <div className="grid gap-1.5 sm:grid-cols-2">
-                  {palList.map((item) => (
-                    <button
-                      key={item.key}
-                      onClick={() => void choosePal(item.key)}
-                      aria-pressed={item.key === selected}
-                      className={`flex min-h-14 items-center gap-3 rounded-xl p-2 text-left transition ${item.key === selected ? "border border-current" : "border border-transparent hover:bg-mist"}`}
-                      style={{
-                        color:
-                          item.key === selected
-                            ? `var(--${item.lane}-ink, var(--ink))`
-                            : "var(--ink)",
-                      }}
-                    >
-                      <img
-                        src={item.headshot}
-                        alt=""
-                        className="size-9 shrink-0 rounded-lg bg-white object-cover object-top"
-                      />
-                      <span className="min-w-0">
-                        <span className="block truncate text-xs font-black">{item.name}</span>
-                        <span className="mt-0.5 block truncate text-[10px] text-muted-foreground">
-                          {item.role}
-                        </span>
-                      </span>
-                    </button>
-                  ))}
-                </div>
-                <p className="px-1 pt-3 text-[10px] leading-relaxed text-muted-foreground">
-                  Your conversation stays exactly where it is. Earlier answers keep the name of the
-                  Pal who gave them.
-                </p>
-              </div>
-            ) : null}
-          </header>
-
-          <div
-            ref={scrollRef}
-            className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 sm:p-6"
-            onScroll={(event) => {
-              const viewport = event.currentTarget;
-              nearBottom.current =
-                viewport.scrollHeight - viewport.scrollTop - viewport.clientHeight < 100;
-            }}
-          >
+            <button
+              type="button"
+              className="studio-chat-icon"
+              aria-label="Open conversation history"
+              ref={historyTriggerRef}
+              onClick={() => setHistoryOpen(true)}
+            >
+              <History size={19} />
+            </button>
+            <button
+              type="button"
+              className="studio-chat-icon"
+              aria-label="Open next steps"
+              ref={workTriggerRef}
+              onClick={() => setWorkOpen(true)}
+            >
+              <Info size={19} />
+            </button>
+          </div>
+        </header>
+        <div
+          ref={scrollRef}
+          className="studio-chat-scroll"
+          onScroll={(event) => {
+            const viewport = event.currentTarget;
+            nearBottom.current =
+              viewport.scrollHeight - viewport.scrollTop - viewport.clientHeight < 100;
+          }}
+        >
+          <div className="studio-chat-timeline">
             {threadError ? (
-              <div role="alert" className="mx-auto max-w-xl border-l-2 border-reel p-4">
-                <p className="font-bold">We couldn’t open this conversation.</p>
-                <p className="mt-2 text-sm text-muted-foreground">{threadError}</p>
+              <div role="alert" className="studio-chat-error">
+                <strong>We couldn’t open this conversation.</strong>
+                <p>{threadError}</p>
                 <button
                   type="button"
-                  className="mt-4 min-h-10 rounded-lg border border-border px-4 text-sm font-bold"
+                  className="studio-chat-button"
                   onClick={() => {
                     setThreadError(null);
                     void openConversation(conversationId!).catch((error) =>
@@ -586,390 +620,609 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                 </button>
               </div>
             ) : conversationLoading && !conversationMessages.length ? (
-              <p
-                role="status"
-                className="flex items-center justify-center gap-2 py-12 text-sm text-muted-foreground"
-              >
-                <LoaderCircle className="size-4 animate-spin" /> Opening conversation…
+              <p role="status" className="studio-chat-loading">
+                <LoaderCircle size={18} className="animate-spin" /> Opening conversation…
               </p>
             ) : null}
             {!conversationMessages.length && !conversationLoading && !threadError ? (
-              <div className="mx-auto flex max-w-2xl flex-col items-center py-10 text-center sm:py-16">
-                <img
-                  src={pal.headshot}
-                  alt=""
-                  className="size-20 rounded-[1.25rem] border border-border bg-white object-cover object-top"
-                />
-                <h1 className="mt-6 text-3xl font-black tracking-[-.045em] sm:text-4xl">
-                  {pal.persona.firstQuestion}
-                </h1>
-                <p className="mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
-                  {pal.intro} Ask in plain language — we have your saved brand, your work so far,
-                  and what is on the calendar.
-                </p>
-                <div className="mt-7 w-full divide-y divide-border border-y border-border text-left">
+              <div className="studio-chat-welcome">
+                <PalAvatar pal={pal} size="lg" ring={false} />
+                <h1>What are we making today?</h1>
+                <div className="studio-welcome-message">
+                  <strong>{pal.name}</strong>
+                  <p>{greeting}</p>
+                </div>
+                <div className="studio-chat-starters">
                   {starters.map((prompt) => (
                     <button
+                      type="button"
                       key={prompt}
-                      onClick={() => setDraft(prompt)}
-                      className="flex min-h-12 w-full items-center justify-between gap-3 px-2 py-3 text-left text-sm font-medium leading-snug hover:bg-mist"
+                      onClick={() => {
+                        setDraft(prompt);
+                        composerRef.current?.focus();
+                      }}
                     >
                       {prompt}
-                      <ArrowRight className="size-4 shrink-0" />
+                      <ArrowRight size={16} />
                     </button>
                   ))}
                 </div>
-              </div>
-            ) : (
-              <div className="mx-auto max-w-3xl space-y-6">
-                {hasOlderMessages ? (
-                  <button
-                    onClick={() => void loadEarlier()}
-                    disabled={conversationLoading}
-                    className="mx-auto flex min-h-10 items-center gap-1.5 rounded-lg border border-border px-4 text-[11px] font-bold hover:border-ink disabled:opacity-40"
-                  >
-                    <ChevronUp className="size-3.5" /> Load earlier messages
+                <div className="studio-welcome-actions">
+                  <button onClick={() => openArtifact("image")}>
+                    <ImagePlus size={17} /> Create an image
                   </button>
-                ) : null}
-
-                {conversationMessages.map((message, messageIndex) => {
-                  const previousQuestion =
-                    conversationMessages
-                      .slice(0, messageIndex)
-                      .reverse()
-                      .find((item) => item.role === "user")?.body || "";
-                  const meta = assistantMetadata(message.metadata);
-                  const speaker = palDirectory[resolvePalName(message.pal)];
-                  if (message.role === "user") {
-                    return (
-                      <div
-                        key={message.id}
-                        className="ml-auto whitespace-pre-wrap break-words max-w-[90%] rounded-[1.25rem] rounded-br-md px-4 py-3 text-sm font-medium leading-relaxed text-white"
-                        style={{ background: `var(--${pal.lane}-ink, var(--ink))` }}
-                      >
-                        {message.body}
-                      </div>
-                    );
-                  }
-                  return (
-                    <div key={message.id} className="space-y-3">
-                      <div className="flex items-center gap-2">
-                        <img
-                          src={speaker.headshot}
-                          alt=""
-                          className="size-7 rounded-lg border border-border bg-white object-cover object-top"
-                        />
-                        <span className="text-xs font-black">{speaker.name}</span>
-                        <span
-                          className="font-mono text-[10px] uppercase tracking-[.14em]"
-                          style={{ color: `var(--${speaker.lane}-ink, var(--ink))` }}
-                        >
-                          · {meta?.lane || speaker.lane}
-                        </span>
-                      </div>
-
-                      {meta?.headline ? (
-                        <p className="text-xl font-black leading-snug tracking-[-.03em]">
-                          {meta.headline}
-                        </p>
-                      ) : null}
-
-                      <StudioMarkdown accent={`var(--${speaker.lane}-ink, var(--ink))`}>
-                        {message.body}
-                      </StudioMarkdown>
-
-                      {meta?.keyPoints?.length ? (
-                        <ul
-                          className="mt-4 space-y-2 rounded-[1rem] p-4"
-                          style={{ background: speaker.soft }}
-                        >
-                          {meta.keyPoints.map((point) => (
-                            <li
-                              key={point}
-                              className="flex gap-2.5 text-[13px] font-bold leading-snug"
-                            >
-                              <Check
-                                className="mt-0.5 size-3.5 shrink-0"
-                                style={{ color: `var(--${speaker.lane}-ink, var(--ink))` }}
-                              />
-                              {point}
-                            </li>
-                          ))}
-                        </ul>
-                      ) : null}
-
-                      <div className="flex flex-wrap items-center gap-2 pt-1">
-                        <button
-                          onClick={() => void copyMessage(message.id, message.body)}
-                          className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink"
-                        >
-                          {copiedId === message.id ? (
-                            <Check className="size-3.5" />
-                          ) : (
-                            <Copy className="size-3.5" />
-                          )}
-                          {copiedId === message.id ? "Copied" : "Copy"}
-                        </button>
-                        <button
-                          onClick={() => void saveAnswerAsIdea(message.body, meta)}
-                          className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink"
-                        >
-                          <Plus className="size-3.5" /> Save as idea
-                        </button>
-                        <button
-                          onClick={() => setCampaignSource({ body: message.body, meta })}
-                          disabled={busy || building}
-                          className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink disabled:opacity-40"
-                        >
-                          {building ? (
-                            <LoaderCircle className="size-3.5 animate-spin" />
-                          ) : (
-                            <Sparkles className="size-3.5" />
-                          )}
-                          Build this campaign
-                        </button>
-                        <button
-                          onClick={() => {
-                            setDraft(previousQuestion);
-                            composerRef.current?.focus();
-                          }}
-                          disabled={busy || !previousQuestion}
-                          className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-border bg-white px-3 text-[11px] font-bold hover:border-ink disabled:opacity-40"
-                        >
-                          <RotateCcw className="size-3.5" /> Ask again
-                        </button>
-                      </div>
-
-                      {meta?.followUps?.length ? (
-                        <div className="flex flex-wrap gap-2 pt-1">
-                          {meta.followUps.map((question) => (
-                            <button
-                              key={question}
-                              onClick={() => {
-                                setDraft(question);
-                                composerRef.current?.focus();
-                              }}
-                              disabled={
-                                busy || sending || conversationLoading || Boolean(threadError)
-                              }
-                              className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-dashed border-border px-3 text-left text-[11px] font-bold text-muted-foreground transition hover:border-ink hover:text-ink disabled:opacity-40"
-                            >
-                              {question}
-                              <ArrowRight className="size-3.5 shrink-0" />
-                            </button>
-                          ))}
-                        </div>
-                      ) : null}
-                    </div>
-                  );
-                })}
-                {busy ? (
-                  <div role="status" className="flex items-center gap-3">
-                    <img
-                      src={pal.headshot}
-                      alt=""
-                      className="size-7 animate-pulse rounded-lg border border-border object-cover object-top"
-                    />
-                    <span className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
-                      <LoaderCircle
-                        className="size-3.5 animate-spin"
-                        style={{ color: pal.color }}
-                      />
-                      {pal.name} is reading the workspace…
-                    </span>
-                  </div>
-                ) : null}
-              </div>
-            )}
-          </div>
-
-          <form onSubmit={submit} className="shrink-0 border-t border-border bg-white p-3 sm:p-4">
-            <div
-              className="mx-auto max-w-3xl rounded-[1.15rem] border border-border bg-white p-2 shadow-soft transition focus-within:border-current"
-              style={{ color: `var(--${pal.lane}-ink, var(--ink))` }}
-            >
-              <div className="px-1 pb-2 pt-1">
-                <ComposerIntake
-                  key={draftKey}
-                  color={`var(--${pal.lane}-ink, var(--ink))`}
-                  conversationId={activeConversation?.id || conversationId}
-                  attachments={attachments}
-                  onAttachmentsChange={setAttachments}
-                  onBusyChange={setIntakeBusy}
-                  onTranscript={(text) =>
-                    setDraft((current) => (current ? `${current.trim()} ${text}` : text))
-                  }
-                  disabled={busy || sending || conversationLoading || Boolean(threadError)}
-                />
-              </div>
-              <div className="flex items-end gap-2">
-                <textarea
-                  ref={composerRef}
-                  aria-label={`Message ${pal.name}`}
-                  disabled={conversationLoading || Boolean(threadError)}
-                  value={draft}
-                  onChange={(event) => setDraft(event.target.value)}
-                  onKeyDown={(event) => {
-                    if (
-                      event.key === "Enter" &&
-                      !event.shiftKey &&
-                      !event.nativeEvent.isComposing
-                    ) {
-                      event.preventDefault();
-                      void send(draft);
-                    }
-                  }}
-                  rows={2}
-                  placeholder={`Tell ${pal.name} what you are working on…`}
-                  className="min-h-12 flex-1 resize-none border-0 bg-transparent p-2 text-sm text-ink outline-none"
-                />
-                <button
-                  disabled={
-                    busy ||
-                    sending ||
-                    intakeBusy ||
-                    conversationLoading ||
-                    Boolean(threadError) ||
-                    (draft.trim().length < 3 && !attachments.length)
-                  }
-                  aria-label="Send message"
-                  className="grid size-11 shrink-0 place-items-center rounded-xl text-white disabled:opacity-35"
-                  style={{ background: `var(--${pal.lane}-ink, var(--ink))` }}
-                >
-                  {busy ? (
-                    <LoaderCircle className="size-4 animate-spin" />
-                  ) : (
-                    <Send className="size-4" />
-                  )}
-                </button>
-              </div>
-            </div>
-            <p className="mt-2 text-center text-[10px] text-muted-foreground">
-              Enter to send · Shift + Enter for a new line
-            </p>
-          </form>
-        </section>
-
-        {/* Work panel */}
-        <aside
-          className={`min-h-0 overflow-y-auto border-border bg-mist p-4 xl:relative xl:block xl:border-l ${workOpen ? "absolute inset-0 z-30 block" : "hidden"}`}
-        >
-          <button
-            type="button"
-            onClick={() => setWorkOpen(false)}
-            aria-label="Close next steps"
-            className="mb-4 ml-auto grid size-9 place-items-center rounded-lg hover:bg-white xl:hidden"
-          >
-            <X className="size-4" />
-          </button>
-          <div className="flex items-center gap-2">
-            <Sparkles className="size-4 text-system" />
-            <p className="text-sm font-black">What we can do with this</p>
-          </div>
-          <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
-            Everything here saves into your work — nothing runs on its own.
-          </p>
-          <div className="mt-4 divide-y divide-border">
-            {(latestResponse?.recommendations || []).map((item) => (
-              <article key={item.title} className="py-4">
-                <p className="text-sm font-black">{item.title}</p>
-                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{item.reason}</p>
-                <div className="mt-4 grid grid-cols-2 gap-2">
-                  <button
-                    onClick={() => void saveRecommendation(item)}
-                    className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-lg bg-system-soft px-2 text-[10px] font-bold text-system"
-                  >
-                    <Plus className="size-3.5" /> Save idea
-                  </button>
-                  <button
-                    onClick={() => void scheduleRecommendation(item)}
-                    className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-lg bg-evergreen-soft px-2 text-[10px] font-bold text-evergreen"
-                  >
-                    <CalendarPlus className="size-3.5" /> Plan next week
+                  <button onClick={() => openArtifact("pdf")}>
+                    <FileText size={17} /> Make a document
                   </button>
                 </div>
-              </article>
-            ))}
-            {!latestResponse ? (
-              <div className="border-t border-border py-5">
-                <Brain className="size-5 text-system" />
-                <p className="mt-3 text-xs font-bold">
-                  Say one thing and this fills with real next steps.
-                </p>
-                <p className="mt-2 text-[10px] leading-relaxed text-muted-foreground">
-                  {campaigns.length} campaigns and {calendar.length} calendar items are already
-                  available as context.
-                </p>
+              </div>
+            ) : null}
+            {hasOlderMessages ? (
+              <button
+                type="button"
+                className="studio-chat-earlier"
+                onClick={() => void loadEarlier()}
+                disabled={conversationLoading}
+              >
+                <ChevronUp size={15} /> Load earlier messages
+              </button>
+            ) : null}
+            {conversationMessages.map((message, messageIndex) => {
+              const raw = record(message.metadata);
+              const meta = assistantMetadata(message.metadata);
+              const origin = record(raw.originatingPal);
+              const original = palDirectory[resolvePalName(message.pal)];
+              const originAvatar =
+                typeof origin.avatarUrl === "string"
+                  ? origin.avatarUrl
+                  : typeof origin.avatar_url === "string"
+                    ? origin.avatar_url
+                    : original.avatar;
+              const speaker = {
+                ...original,
+                name: typeof origin.name === "string" ? origin.name : original.name,
+                avatar: originAvatar,
+                headshot: originAvatar,
+              };
+              const previousQuestion =
+                conversationMessages
+                  .slice(0, messageIndex)
+                  .reverse()
+                  .find((item) => item.role === "user")?.body || "";
+              const linkedCampaign =
+                typeof raw.campaignId === "string"
+                  ? raw.campaignId
+                  : typeof raw.campaign_id === "string"
+                    ? raw.campaign_id
+                    : campaigns.find(
+                        (item) => item.title.length > 5 && message.body.includes(item.title),
+                      )?.id;
+              const assetIds = Array.isArray(raw.assetIds)
+                ? raw.assetIds.filter((id): id is string => typeof id === "string")
+                : typeof raw.assetId === "string"
+                  ? [raw.assetId]
+                  : typeof raw.artifactId === "string"
+                    ? [raw.artifactId]
+                    : undefined;
+              if (message.role === "user")
+                return (
+                  <div key={message.id} className="studio-chat-user-message">
+                    {message.body}
+                  </div>
+                );
+              return (
+                <div key={message.id} className="studio-chat-turn">
+                  <div className="studio-chat-response">
+                    <StudioOriginAvatar
+                      pal={speaker}
+                      avatarPath={
+                        typeof origin.avatarPath === "string" ? origin.avatarPath : undefined
+                      }
+                    />
+                    <article className="studio-chat-bubble">
+                      <span className="studio-chat-author">{speaker.name}</span>
+                      {meta?.headline ? <h2>{meta.headline}</h2> : null}
+                      <StudioMarkdown accent="var(--studio-accent)">{message.body}</StudioMarkdown>
+                    </article>
+                  </div>
+                  {linkedCampaign || assetIds?.length ? (
+                    <StudioChatArtifactCard
+                      campaignId={linkedCampaign}
+                      assetIds={assetIds}
+                      onOpen={(assetId, mode) => setEditor({ assetId, mode })}
+                    />
+                  ) : null}
+                  {meta?.keyPoints?.length && !linkedCampaign ? (
+                    <ul className="studio-chat-keypoints">
+                      {meta.keyPoints.map((point) => (
+                        <li key={point}>
+                          <Check size={14} />
+                          {point}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                  <div className="studio-chat-message-actions">
+                    <button
+                      type="button"
+                      onClick={() => void copyMessage(message.id, message.body)}
+                      aria-label={`Copy ${speaker.name}’s answer`}
+                    >
+                      {copiedId === message.id ? <Check size={14} /> : <Copy size={14} />}
+                      {copiedId === message.id ? "Copied" : "Copy"}
+                    </button>
+                    <button type="button" onClick={() => void saveAnswerAsIdea(message.body, meta)}>
+                      <Plus size={14} />
+                      Save idea
+                    </button>
+                    {!linkedCampaign ? (
+                      <button
+                        type="button"
+                        onClick={(event) => {
+                          campaignTriggerRef.current = event.currentTarget;
+                          setCampaignSource({ body: message.body, meta });
+                        }}
+                        disabled={busy || building}
+                      >
+                        <Sparkles size={14} />
+                        Build campaign
+                      </button>
+                    ) : null}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setDraft(previousQuestion);
+                        composerRef.current?.focus();
+                      }}
+                      disabled={busy || !previousQuestion}
+                    >
+                      <RotateCcw size={14} />
+                      Ask again
+                    </button>
+                  </div>
+                  {meta?.followUps?.length ? (
+                    <div className="studio-chat-followups">
+                      {meta.followUps.map((question) => (
+                        <button
+                          type="button"
+                          key={question}
+                          onClick={() => {
+                            setDraft(question);
+                            composerRef.current?.focus();
+                          }}
+                          disabled={busy || sending || conversationLoading || Boolean(threadError)}
+                        >
+                          {question}
+                          <ArrowRight size={13} />
+                        </button>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })}
+            {busy || artifactBusy || building ? (
+              <div role="status" className="studio-chat-working">
+                <PalAvatar pal={pal} activity="thinking" size="sm" ring={false} />
+                <div>
+                  <strong>
+                    {pal.name}{" "}
+                    {artifactBusy
+                      ? "is creating your file"
+                      : building
+                        ? "is building your campaign"
+                        : "is thinking"}
+                    <span className="studio-working-dots" aria-hidden="true">
+                      <i />
+                      <i />
+                      <i />
+                    </span>
+                  </strong>
+                  <p>
+                    {artifactBusy
+                      ? "Creating → saving to your Library"
+                      : building
+                        ? "Story → platform drafts → your Library"
+                        : "Using your Brand DNA and workspace context"}
+                  </p>
+                </div>
               </div>
             ) : null}
           </div>
-
-          {latestResponse?.memorySuggestions.length ? (
-            <div className="mt-6 border-t border-border pt-5">
-              <div className="flex items-center gap-2">
-                <Brain className="size-4 text-spotlight" />
-                <p className="text-sm font-black">Worth remembering</p>
-              </div>
-              <p className="mt-2 text-[10px] leading-relaxed text-muted-foreground">
-                Approve durable facts before they become Brand DNA.
-              </p>
-              <div className="mt-3 space-y-2">
-                {latestResponse.memorySuggestions.map((item) => {
-                  const key = `${item.field}:${item.value}`;
-                  const saved = savedMemory.includes(key);
-                  return (
-                    <button
-                      key={key}
-                      disabled={saved}
-                      onClick={() => void acceptMemory(item)}
-                      className="w-full rounded-xl border border-border bg-white p-3 text-left disabled:opacity-55"
-                    >
-                      <span className="flex items-center justify-between gap-2 text-[10px] font-black uppercase tracking-[.08em] text-spotlight">
-                        {item.field.replaceAll("_", " ")}
-                        {saved ? <Check className="size-3.5" /> : null}
-                      </span>
-                      <span className="mt-2 block text-xs leading-relaxed">{item.value}</span>
-                    </button>
-                  );
-                })}
+        </div>
+        <form onSubmit={submit} className="studio-chat-composer">
+          {composerTools || attachments.length ? (
+            <div className="studio-composer-tools">
+              <ComposerIntake
+                key={draftKey}
+                color="var(--studio-accent)"
+                conversationId={activeConversation?.id || conversationId}
+                attachments={attachments}
+                onAttachmentsChange={setAttachments}
+                onBusyChange={setIntakeBusy}
+                onTranscript={(text) =>
+                  setDraft((current) => (current ? `${current.trim()} ${text}` : text))
+                }
+                disabled={busy || sending || conversationLoading || Boolean(threadError)}
+              />
+              <div className="studio-composer-create">
+                <button type="button" onClick={() => openArtifact("image")}>
+                  <ImagePlus size={15} /> Create image
+                </button>
+                <button type="button" onClick={() => openArtifact("pdf")}>
+                  <FileText size={15} /> Create PDF
+                </button>
               </div>
             </div>
+          ) : (
+            <div className="studio-composer-intake-hidden">
+              <ComposerIntake
+                key={draftKey}
+                color="var(--studio-accent)"
+                conversationId={activeConversation?.id || conversationId}
+                attachments={attachments}
+                onAttachmentsChange={setAttachments}
+                onBusyChange={setIntakeBusy}
+                onTranscript={(text) =>
+                  setDraft((current) => (current ? `${current.trim()} ${text}` : text))
+                }
+                disabled={busy || sending || conversationLoading || Boolean(threadError)}
+              />
+            </div>
+          )}
+          <div className="studio-composer-row">
+            <button
+              type="button"
+              className="studio-composer-add"
+              aria-label={composerTools ? "Close attachment tools" : "Add files or create content"}
+              ref={composerToolsRef}
+              aria-expanded={composerTools}
+              onClick={() => setComposerTools((open) => !open)}
+            >
+              {composerTools ? <X size={21} /> : <Plus size={24} />}
+            </button>
+            <textarea
+              ref={composerRef}
+              aria-label={`Message ${pal.name}`}
+              disabled={conversationLoading || Boolean(threadError)}
+              value={draft}
+              onChange={(event) => setDraft(event.target.value)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && !event.shiftKey && !event.nativeEvent.isComposing) {
+                  event.preventDefault();
+                  void send(draft);
+                }
+              }}
+              rows={1}
+              placeholder={`Message ${pal.name}…`}
+            />
+            <button
+              disabled={
+                busy ||
+                sending ||
+                artifactBusy ||
+                intakeBusy ||
+                conversationLoading ||
+                Boolean(threadError) ||
+                (draft.trim().length < 3 && !attachments.length)
+              }
+              aria-label="Send message"
+              className="studio-composer-send"
+            >
+              {busy || sending ? (
+                <LoaderCircle size={21} className="animate-spin" />
+              ) : (
+                <ArrowUp size={22} />
+              )}
+            </button>
+          </div>
+          <p>Ideas become drafts. Nothing publishes without you.</p>
+        </form>
+      </section>
+      {editor ? (
+        <StudioChatEditor
+          key={editor.assetId}
+          assetId={editor.assetId}
+          initialMode={editor.mode}
+          pal={pal}
+          onClose={() => setEditor(null)}
+          onRefine={(prompt) => {
+            setDraft(prompt);
+            if (window.matchMedia("(max-width: 1100px)").matches) setEditor(null);
+            composerRef.current?.focus();
+          }}
+        />
+      ) : null}
+      <Dialog open={pickerOpen} onOpenChange={setPickerOpen}>
+        <DialogContent
+          className="studio-app studio-pal-picker"
+          onCloseAutoFocus={(event) =>
+            returnFocus(event, customOpen ? null : palTriggerRef.current)
+          }
+        >
+          <DialogTitle>Who do you want on this?</DialogTitle>
+          <DialogDescription>
+            Different personalities. The same shared knowledge of your business.
+          </DialogDescription>
+          <div className="studio-pal-grid">
+            {palList.map((item) => (
+              <button
+                key={item.key}
+                type="button"
+                aria-pressed={!customPal && item.key === selected}
+                onClick={() => void choosePal(item.key)}
+              >
+                <PalAvatar pal={item} size="md" ring={false} />
+                <span>
+                  <strong>{item.name}</strong>
+                  <small>{item.role}</small>
+                </span>
+                {!customPal && item.key === selected ? <Check size={16} /> : null}
+              </button>
+            ))}
+            {customPals.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                aria-pressed={item.id === activeCustomPalId}
+                onClick={() => {
+                  void selectCustomPal(item.id)
+                    .then(() => setPickerOpen(false))
+                    .catch((error) => toast.error(error.message));
+                }}
+              >
+                <PalAvatar
+                  pal={{
+                    ...palDirectory[item.base_pal],
+                    name: item.name,
+                    avatar: item.avatar_url || palDirectory[item.base_pal].avatar,
+                  }}
+                  size="md"
+                  ring={false}
+                />
+                <span>
+                  <strong>{item.name}</strong>
+                  <small>Your custom Pal</small>
+                </span>
+                {item.id === activeCustomPalId ? <Check size={16} /> : null}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            className="studio-chat-button is-primary"
+            onClick={() => {
+              setPickerOpen(false);
+              setCustomOpen(true);
+            }}
+          >
+            <Plus size={17} />
+            Create a Pal
+          </button>
+          <p className="studio-picker-note">
+            Earlier answers keep the name of the Pal who wrote them.
+          </p>
+        </DialogContent>
+      </Dialog>
+      <StudioCustomPal
+        open={customOpen}
+        onClose={() => setCustomOpen(false)}
+        returnFocusTo={palTriggerRef}
+      />
+      <Dialog open={historyOpen} onOpenChange={setHistoryOpen}>
+        <DialogContent
+          className="studio-app studio-chat-history"
+          onCloseAutoFocus={(event) => returnFocus(event, historyTriggerRef.current)}
+        >
+          <DialogTitle>Your conversations</DialogTitle>
+          <DialogDescription>Pick up where you left off.</DialogDescription>
+          <button
+            type="button"
+            className="studio-chat-button is-primary"
+            onClick={() => void newConversation()}
+          >
+            <Plus size={17} />
+            New conversation
+          </button>
+          <div className="studio-history-list">
+            {openThreads.map((thread) => (
+              <Link
+                key={thread.id}
+                to="/studio/conversations/$conversationId"
+                params={{ conversationId: thread.id }}
+                onClick={() => setHistoryOpen(false)}
+                aria-current={thread.id === conversationId ? "page" : undefined}
+              >
+                <MessageSquareText size={17} />
+                <span>
+                  <strong>{thread.title}</strong>
+                  <small>{relativeDay(thread.last_message_at || thread.updated_at)}</small>
+                </span>
+              </Link>
+            ))}
+          </div>
+          {!openThreads.length ? (
+            <p>Your conversations will appear here after your first message.</p>
           ) : null}
-        </aside>
-      </div>
+          {activeConversation ? (
+            <div className="studio-history-controls">
+              <button type="button" className="studio-chat-button" onClick={() => void rename()}>
+                <Pencil size={15} />
+                Rename
+              </button>
+              <button
+                type="button"
+                className="studio-chat-button"
+                onClick={() => void archiveCurrent()}
+              >
+                <Archive size={15} />
+                Archive
+              </button>
+            </div>
+          ) : null}
+        </DialogContent>
+      </Dialog>
+      <Dialog open={workOpen} onOpenChange={setWorkOpen}>
+        <DialogContent
+          className="studio-app studio-chat-next"
+          onCloseAutoFocus={(event) => returnFocus(event, workTriggerRef.current)}
+        >
+          <DialogTitle>What we can do with this</DialogTitle>
+          <DialogDescription>Turn the conversation into work you can use.</DialogDescription>
+          {latestResponse?.recommendations.map((item) => (
+            <article key={item.title}>
+              <h3>{item.title}</h3>
+              <p>{item.reason}</p>
+              <div>
+                <button
+                  type="button"
+                  className="studio-chat-button"
+                  onClick={() => void saveRecommendation(item)}
+                >
+                  <Plus size={15} />
+                  Save idea
+                </button>
+                <button
+                  type="button"
+                  className="studio-chat-button"
+                  onClick={() => void scheduleRecommendation(item)}
+                >
+                  <CalendarPlus size={15} />
+                  Plan next week
+                </button>
+              </div>
+            </article>
+          ))}
+          {!latestResponse ? (
+            <p>
+              Your next steps will appear here as you talk. Your Pal can build on {campaigns.length}{" "}
+              campaigns and {calendar.length} calendar items.
+            </p>
+          ) : null}
+          {latestResponse?.memorySuggestions?.length ? (
+            <section>
+              <h3>
+                <Brain size={17} />
+                Worth remembering
+              </h3>
+              <p>Approve these facts to add them to Brand DNA.</p>
+              {latestResponse.memorySuggestions.map((item) => {
+                const key = `${item.field}:${item.value}`;
+                return (
+                  <button
+                    key={key}
+                    className="studio-memory-button"
+                    disabled={savedMemory.includes(key)}
+                    onClick={() => void acceptMemory(item)}
+                  >
+                    <strong>{item.field.replaceAll("_", " ")}</strong>
+                    <span>{item.value}</span>
+                    {savedMemory.includes(key) ? <Check size={16} /> : <Plus size={16} />}
+                  </button>
+                );
+              })}
+            </section>
+          ) : null}
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={Boolean(artifactKind)}
+        onOpenChange={(open) => {
+          if (!open && !artifactBusy) setArtifactKind(null);
+        }}
+      >
+        <DialogContent
+          className="studio-app studio-custom-pal"
+          onCloseAutoFocus={(event) => returnFocus(event, composerToolsRef.current)}
+          onEscapeKeyDown={(event) => {
+            if (artifactBusy) event.preventDefault();
+          }}
+        >
+          <DialogTitle>{artifactKind === "image" ? "Create an image" : "Create a PDF"}</DialogTitle>
+          <DialogDescription>
+            {pal.name} will use your brief and Brand DNA. Your finished file saves to Library.
+          </DialogDescription>
+          <label className="studio-editor-label">
+            Title
+            <input
+              value={artifactTitle}
+              onChange={(event) => setArtifactTitle(event.target.value)}
+              maxLength={120}
+              placeholder={
+                artifactKind === "image" ? "Morning at the bakery" : "Our customer welcome guide"
+              }
+            />
+          </label>
+          <label className="studio-editor-label">
+            What should we make?
+            <textarea
+              rows={6}
+              value={artifactPrompt}
+              onChange={(event) => setArtifactPrompt(event.target.value)}
+              maxLength={3000}
+              placeholder={
+                artifactKind === "image"
+                  ? "Describe the subject, setting, and feeling…"
+                  : "Describe the document, who it is for, and what it should include…"
+              }
+            />
+          </label>
+          {artifactError ? (
+            <p role="alert" className="studio-chat-error">
+              {artifactError}
+            </p>
+          ) : null}
+          <button
+            type="button"
+            className="studio-chat-button is-primary"
+            disabled={artifactBusy || artifactPrompt.trim().length < 3}
+            onClick={() => void createArtifact()}
+          >
+            {artifactBusy ? (
+              <LoaderCircle size={16} className="animate-spin" />
+            ) : (
+              <Sparkles size={16} />
+            )}
+            {artifactBusy
+              ? "Creating and saving…"
+              : artifactKind === "image"
+                ? "Create image"
+                : "Create PDF"}
+          </button>
+        </DialogContent>
+      </Dialog>
       <Dialog
         open={Boolean(campaignSource)}
         onOpenChange={(open) => {
           if (!open && !building) setCampaignSource(null);
         }}
       >
-        <DialogContent className="studio-app max-h-[90dvh] overflow-y-auto rounded-2xl">
+        <DialogContent
+          className="studio-app studio-custom-pal"
+          onCloseAutoFocus={(event) => returnFocus(event, campaignTriggerRef.current)}
+        >
           <DialogTitle>Make this a campaign</DialogTitle>
           <DialogDescription>
-            Choose the outcome and format. We’ll use this conversation and your Brand DNA to build
-            an editable campaign.
+            Choose the outcome and format. We’ll build editable drafts from this conversation and
+            your Brand DNA.
           </DialogDescription>
-          <label className="grid gap-2 text-sm font-bold">
+          <label className="studio-editor-label">
             Goal
             <select
               value={campaignGoal}
               onChange={(event) => setCampaignGoal(event.target.value)}
-              className="min-h-11 rounded-lg border border-border bg-white px-3 font-normal"
               disabled={building}
             >
               {studioGoals.map((goal) => (
-                <option key={goal} value={goal}>
-                  {goal}
-                </option>
+                <option key={goal}>{goal}</option>
               ))}
             </select>
           </label>
-          <label className="grid gap-2 text-sm font-bold">
+          <label className="studio-editor-label">
             Anchor format
             <select
               value={campaignFormat}
               onChange={(event) => setCampaignFormat(event.target.value)}
-              className="min-h-11 rounded-lg border border-border bg-white px-3 font-normal"
               disabled={building}
             >
               {anchorFormats.map((format) => (
@@ -979,9 +1232,8 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
               ))}
             </select>
           </label>
-          <p className="text-xs leading-relaxed text-muted-foreground">
-            This uses one campaign from your plan. You can review and edit it before scheduling
-            anything.
+          <p className="studio-picker-note">
+            This uses one campaign from your plan. Review it before scheduling.
           </p>
           <button
             type="button"
@@ -989,18 +1241,18 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
             onClick={() => {
               if (campaignSource) void buildCampaign(campaignSource.body, campaignSource.meta);
             }}
-            className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-ink px-4 text-sm font-bold text-white disabled:opacity-50"
+            className="studio-chat-button is-primary"
           >
             {building ? (
-              <LoaderCircle className="size-4 animate-spin" />
+              <LoaderCircle size={16} className="animate-spin" />
             ) : (
-              <Sparkles className="size-4" />
+              <Sparkles size={16} />
             )}
             {building ? "Building campaign…" : "Build campaign"}
           </button>
           <Link
             to="/studio/create"
-            className="min-h-10 text-center text-sm font-bold underline underline-offset-4"
+            className="studio-chat-text-link"
             onClick={() => setCampaignSource(null)}
           >
             Open the full creation workflow

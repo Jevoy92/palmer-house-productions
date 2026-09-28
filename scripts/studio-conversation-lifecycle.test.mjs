@@ -86,9 +86,17 @@ export async function askStudioPal({data}){
   fixture.recentMessages=data.recentMessages;
   if(fixture.responseDelay) await new Promise(resolve=>setTimeout(resolve,fixture.responseDelay));
   if(fixture.responseError) throw new Error('Response unavailable');
-  return {response};
+  return {response,originatingPal:{kind:"pal",pal:data.pal,name:data.pal}};
 }
 export const analyzeStudioContentSource=()=>{}, analyzeStudioWebsite=()=>{};
+export async function loadStudioRecovery(){return {customPals:[],posts:[],comments:[],reactions:[]};}
+const unavailableRecovery=async()=>{throw new Error("Recovery action not supplied by this lifecycle fixture");};
+export const saveStudioPalProfile=unavailableRecovery,selectStudioPalProfile=unavailableRecovery,
+  uploadStudioPalAvatar=unavailableRecovery,resolveStudioPalAvatar=unavailableRecovery,
+  generateStudioArtifact=unavailableRecovery,getStudioArtifactUrl=unavailableRecovery,
+  createStudioFeedPost=unavailableRecovery,commentOnStudioFeed=unavailableRecovery,
+  reactToStudioFeed=unavailableRecovery,refreshStudioPalFeed=unavailableRecovery,
+  linkStudioCampaignToConversation=unavailableRecovery,reviseStudioDocument=unavailableRecovery;
 export async function generateStudioCampaign(){return {ok:true,output:fixture.campaignOutput};}
 export async function generateContentDirections(){if(fixture.directionError)throw new Error("Directions unavailable");return {directions:[1,2,3].map(id=>({id:String(id),title:"Direction "+id,angle:"A useful angle",whyItWorks:"The audience needs an answer",lane:"evergreen",flavor:"business"}))};}
 export async function startRecording(){
@@ -140,7 +148,14 @@ before(async () => {
         name: "studio-lifecycle-fixture",
         resolveId(id) {
           if (["virtual:fixture", "virtual:lifecycle-entry"].includes(id)) return `\0${id}`;
-          if (["@/lib/studio-server", "@/lib/supabase/client", "@/lib/audio-wav"].includes(id))
+          if (
+            [
+              "@/lib/studio-server",
+              "@/lib/studio-recovery-server",
+              "@/lib/supabase/client",
+              "@/lib/audio-wav",
+            ].includes(id)
+          )
             return "\0virtual:fixture";
           if (id.startsWith("@/")) {
             const extension = /\.[a-z]+$/i.test(id)
@@ -382,6 +397,7 @@ test("new prompts reset conversation identity; archive moves the URL away from t
     }),
   );
   await page.waitForFunction(() => window.studioApi.activeConversation?.id === "a");
+  await page.getByRole("button", { name: "Open conversation history", exact: true }).click();
   await page.getByRole("button", { name: "Archive", exact: true }).click();
   await page.waitForFunction(
     () =>

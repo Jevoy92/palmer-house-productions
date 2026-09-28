@@ -1,3 +1,4 @@
+import { isCompletedRoadmapStatus } from "./studio-recovery.ts";
 import { buildBrandVoiceContext } from "./studio-voice.ts";
 
 /**
@@ -32,7 +33,7 @@ export async function loadWorkspaceVoice(client: Client, workspaceId: string) {
 }
 
 export async function loadWorkspaceKnowledge(client: Client, workspaceId: string) {
-  const [campaigns, ideas, calendar, settings, videos, voice] = await Promise.all([
+  const [campaigns, ideas, calendar, settings, videos, assets, brand] = await Promise.all([
     client
       .from("campaigns")
       .select("title, topic, goal, primary_lane, status, strategy, updated_at")
@@ -61,8 +62,23 @@ export async function loadWorkspaceKnowledge(client: Client, workspaceId: string
       .select("item_key, status")
       .eq("workspace_id", workspaceId)
       .limit(30),
-    loadWorkspaceVoice(client, workspaceId),
+    client
+      .from("campaign_assets")
+      .select("id, title, kind, content, status, campaign_id, updated_at")
+      .eq("workspace_id", workspaceId)
+      .order("updated_at", { ascending: false })
+      .limit(14),
+    client
+      .from("brand_profiles")
+      .select(
+        "business_name, description, industry, creator_type, primary_goal, primary_audience, offers, proof_points, calls_to_action, platforms, personal_interests, personal_story, brand_details, voice_traits, avoid_language, content_examples",
+      )
+      .eq("workspace_id", workspaceId)
+      .maybeSingle(),
   ]);
+
+  if ([campaigns, ideas, calendar, settings, videos, assets, brand].some((result) => result.error))
+    throw new Error("Could not load shared workspace context. Please retry before generating.");
 
   // Voice notes, documents and recordings the member dropped into conversations.
   // Summaries only — the full text stays in the database so prompts stay bounded.
@@ -72,6 +88,7 @@ export async function loadWorkspaceKnowledge(client: Client, workspaceId: string
     .eq("workspace_id", workspaceId)
     .order("created_at", { ascending: false })
     .limit(8);
+  if (attachments.error) throw new Error("Could not load shared conversation files. Please retry.");
   const attachmentRows = (attachments.data || []).map(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (row: any) => `${row.kind}: ${row.label} — ${clip(row.summary, 200)}`,
@@ -92,16 +109,25 @@ export async function loadWorkspaceKnowledge(client: Client, workspaceId: string
   );
   const doneVideos = (videos.data || [])
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    .filter((row: any) => row.status === "done")
+    .filter((row: any) => isCompletedRoadmapStatus(row.status))
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     .map((row: any) => String(row.item_key));
 
   const memory = settings.data?.ai_memory;
   const sections = [
-    voice,
+    brand.data ? `Saved Brand DNA: ${JSON.stringify(brand.data).slice(0, 10000)}` : "",
+    buildBrandVoiceContext(brand.data),
     list("Campaigns already built (never repeat these angles verbatim)", campaignRows),
     list("Ideas captured but not yet produced", ideaRows),
     list("Already scheduled", calendarRows),
+    list(
+      "Current library assets (continue or revise these instead of duplicating)",
+      (assets.data || []).map(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (row: any) =>
+          `${row.title} [${row.kind}, ${row.status}; id ${row.id}] — ${clip(row.content, 500)}`,
+      ),
+    ),
     list("Files and voice notes the member has shared", attachmentRows),
     doneVideos.length ? `Roadmap videos already finished: ${doneVideos.join(", ")}` : "",
     memory && Object.keys(memory).length ? `Approved memory: ${JSON.stringify(memory)}` : "",

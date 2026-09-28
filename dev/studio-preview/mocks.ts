@@ -39,3 +39,18 @@ export const startRecording = async () => ({
   cancel() {},
   stop: async () => new Blob([new Uint8Array(5000)], { type: "audio/wav" }),
 });
+
+export const loadStudioRecovery = unavailable;
+export const saveStudioPalProfile = unavailable;
+export const selectStudioPalProfile = unavailable;
+export const uploadStudioPalAvatar = unavailable;
+export const resolveStudioPalAvatar = unavailable;
+export const generateStudioArtifact = unavailable;
+export const getStudioArtifactUrl = unavailable;
+export const createStudioFeedPost = unavailable;
+export const commentOnStudioFeed = unavailable;
+export const reactToStudioFeed = unavailable;
+export const refreshStudioPalFeed = unavailable;
+export const updateStudioArtifact = unavailable;
+export const linkStudioCampaignToConversation = unavailable;
+export const reviseStudioDocument = unavailable;

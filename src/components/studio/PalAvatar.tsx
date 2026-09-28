@@ -14,17 +14,20 @@ export function PalAvatar({
   size = "sm",
   className = "",
   ring = true,
+  activity = "idle",
 }: {
   pal?: string | null | GuideProfile;
   size?: Size;
   className?: string;
   ring?: boolean;
+  activity?: "idle" | "thinking" | "creating";
 }) {
   const guide = typeof pal === "object" && pal !== null ? pal : resolveGuide(pal as string | null);
   const initials = guide.name.slice(0, 1).toUpperCase();
   return (
     <span
-      className={`inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full ${sizes[size]} ${className}`}
+      className={`studio-pal-avatar inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full ${sizes[size]} ${className}`}
+      data-activity={activity}
       style={{
         background: guide.soft,
         boxShadow: ring ? `inset 0 0 0 1.5px ${guide.color}` : undefined,

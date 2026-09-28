@@ -1,10 +1,15 @@
+import { StudioBrandGuide } from "./StudioBrandGuide";
+import { StudioFeed } from "./StudioFeed";
+import { StudioLibrary } from "./StudioLibrary";
+import { StudioGraphic } from "./StudioGraphic";
+import { StudioAssetVisual } from "./StudioAssetVisual";
 import { StudioIdeasBoard } from "./StudioIdeasBoard";
 import * as Dialog from "@radix-ui/react-dialog";
 import { StudioCalendarEditor } from "./StudioCalendarEditor";
 import * as AlertDialog from "@radix-ui/react-alert-dialog";
 import { StudioCopyButton, StudioAssetEditor } from "./StudioAssetActions";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { AnimatePresence, MotionConfig, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import {
   Archive,
   Activity,
@@ -87,6 +92,8 @@ import samiraHeadshot from "@/assets/pal-headshots/samira.png";
 import { StudioWorkspaceShell as StudioShell } from "./StudioWorkspaceShell";
 import { STUDIO_SPRING, useStudioMotion } from "./studio-motion";
 import "./studio.css";
+import "./studio-redesign.css";
+import { StudioAppearanceScope, StudioAppearanceSettings } from "./StudioAppearance";
 import { PalAvatar } from "./PalAvatar";
 import { classifyLane } from "@/lib/studio-intelligence";
 import { useGuide } from "./useGuide";
@@ -187,7 +194,7 @@ function PalTip({
   color: string;
   children: ReactNode;
 }) {
-  const reduce = useReducedMotion();
+  const { reduceMotion: reduce } = useStudioMotion();
   return (
     <aside className="relative overflow-hidden rounded-[1.25rem] border border-border bg-white p-4">
       <div className="flex items-start gap-4">
@@ -230,9 +237,11 @@ export function StudioPage({
   conversationId?: string;
   workTab?: WorkTab;
 }) {
+  const { reduceMotion, transition } = useStudioMotion();
   return (
-    <MotionConfig reducedMotion="user" transition={STUDIO_SPRING}>
+    <MotionConfig reducedMotion={reduceMotion ? "always" : "user"} transition={transition}>
       <div className="studio-app">
+        <StudioAppearanceScope />
         <StudioGate
           view={view}
           campaignId={campaignId}
@@ -1148,6 +1157,7 @@ function renderView(
   if (view === "work") return <MyWork tab={workTab || "campaigns"} />;
   if (view === "engine") return <ContentEngine />;
   if (view === "home") return <Dashboard />;
+  if (view === "feed") return <StudioFeed />;
   if (view === "assistant" || view === "conversations")
     return <StudioAssistant conversationId={conversationId} />;
   if (view === "roadmap") return <VideoRoadmap />;
@@ -1219,7 +1229,6 @@ function ConversationInvite({
           <Link
             to="/studio/conversations"
             search={{ prompt: undefined }}
-
             className="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-2 text-xs font-bold underline underline-offset-4 hover:bg-white"
           >
             {latest ? "Start a new conversation" : `Talk with ${pal.name}`}
@@ -1294,7 +1303,11 @@ function Dashboard() {
                 : "Start with an idea. Build it into something useful."}
           </p>
         </div>
-        <Link to="/studio/conversations" search={{ prompt: newConversationPrompt }} className="primary-action">
+        <Link
+          to="/studio/conversations"
+          search={{ prompt: newConversationPrompt }}
+          className="primary-action"
+        >
           <Plus className="size-4" /> New conversation
         </Link>
       </header>
@@ -1316,7 +1329,8 @@ function Dashboard() {
             {activeCampaigns.length ? (
               <div className="grid gap-6 sm:grid-cols-2">
                 {activeCampaigns.slice(0, 4).map((campaign) => {
-                  const lane = lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
+                  const lane =
+                    lanes[campaign.primary_lane as keyof typeof lanes] || lanes.spotlight;
                   const outputs = assets.filter((asset) => asset.campaign_id === campaign.id);
                   const ready = outputs.filter((asset) => asset.status === "approved").length;
                   const pct = outputs.length ? Math.round((ready / outputs.length) * 100) : 0;
@@ -1647,7 +1661,13 @@ function Campaigns() {
 }
 
 type CampaignStage =
-  "strategy" | "longform" | "shorts" | "socials" | "blog" | "filmplan" | "publish";
+  | "strategy"
+  | "longform"
+  | "shorts"
+  | "socials"
+  | "blog"
+  | "filmplan"
+  | "publish";
 
 const campaignStages: Array<{
   id: CampaignStage;
@@ -3150,188 +3170,6 @@ const intakeStepLabels = [
 ];
 
 /** Live preview of the guide as it is being built. */
-function BrandGuidePreview({
-  draft,
-  completion,
-}: {
-  draft: Record<string, string>;
-  completion: number;
-}) {
-  const value = (key: string) => draft[key]?.trim() || "";
-  const list = (key: string) =>
-    value(key)
-      .split(/\n|,/)
-      .map((item) => item.trim())
-      .filter(Boolean);
-  const swatches = (
-    [
-      ["Primary", "primaryColor"],
-      ["Secondary", "secondaryColor"],
-      ["Accent", "accentColor"],
-    ] as const
-  ).filter(([, key]) => value(key));
-  const Empty = ({ children }: { children: string }) => (
-    <p className="rounded-xl border border-dashed border-border px-3 py-2 text-xs text-muted-foreground">
-      {children}
-    </p>
-  );
-  return (
-    <div className="space-y-5">
-      <div
-        className="rounded-2xl p-6 text-white"
-        style={{ background: value("primaryColor") || "var(--ink)" }}
-      >
-        <p className="font-mono text-[11px] uppercase tracking-[.2em] text-white/85">Brand guide</p>
-        <p
-          className="mt-3 text-2xl font-black leading-tight"
-          style={{ fontFamily: value("primaryFont") || undefined }}
-        >
-          {value("business_name") || "Your business name"}
-        </p>
-        <p className="mt-2 text-xs text-white/70">
-          {value("industry") || "Category not set"} · {completion}% complete
-        </p>
-      </div>
-
-      <section>
-        <p className="studio-eyebrow text-system">Colors</p>
-        {swatches.length ? (
-          <div className="mt-2 flex gap-2">
-            {swatches.map(([label, key]) => (
-              <div key={key} className="flex-1">
-                <div
-                  className="h-14 rounded-xl border border-border"
-                  style={{ background: value(key) }}
-                />
-                <p className="mt-1 font-mono text-[11px] uppercase text-muted-foreground">
-                  {label} {value(key)}
-                </p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="mt-2">
-            <Empty>Add hex colors in the Visual system step.</Empty>
-          </div>
-        )}
-      </section>
-
-      <section>
-        <p className="studio-eyebrow text-system">Typography</p>
-        <div className="mt-2">
-          {value("primaryFont") ? (
-            <p className="text-2xl font-black" style={{ fontFamily: value("primaryFont") }}>
-              {value("primaryFont")}
-            </p>
-          ) : (
-            <Empty>No typeface set yet.</Empty>
-          )}
-          {value("typography") ? (
-            <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-              {value("typography")}
-            </p>
-          ) : null}
-        </div>
-      </section>
-
-      <section>
-        <p className="studio-eyebrow text-system">What we do</p>
-        <div className="mt-2">
-          {value("description") ? (
-            <p className="text-sm leading-relaxed">{value("description")}</p>
-          ) : (
-            <Empty>Describe the business in the first step.</Empty>
-          )}
-        </div>
-      </section>
-
-      {list("offers").length ? (
-        <section>
-          <p className="studio-eyebrow text-system">Offers</p>
-          <ul className="mt-2 space-y-1">
-            {list("offers").map((item) => (
-              <li key={item} className="rounded-xl bg-mist px-3 py-2 text-xs font-semibold">
-                {item}
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
-
-      <section>
-        <p className="studio-eyebrow text-system">Voice</p>
-        {list("voice_traits").length ? (
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {list("voice_traits").map((item) => (
-              <span
-                key={item}
-                className="rounded-xl border border-border px-2.5 py-1 text-[11px] font-bold"
-              >
-                {item}
-              </span>
-            ))}
-          </div>
-        ) : (
-          <div className="mt-2">
-            <Empty>No voice traits chosen yet.</Empty>
-          </div>
-        )}
-      </section>
-
-      <section>
-        <p className="studio-eyebrow text-system">Audience</p>
-        <div className="mt-2">
-          {value("primary_audience") ? (
-            <p className="text-sm leading-relaxed">{value("primary_audience")}</p>
-          ) : (
-            <Empty>No audience defined yet.</Empty>
-          )}
-        </div>
-      </section>
-
-      <section>
-        <p className="studio-eyebrow text-system">Verified proof</p>
-        {list("proof_points").length ? (
-          <ul className="mt-2 space-y-1">
-            {list("proof_points").map((item) => (
-              <li key={item} className="flex gap-2 text-xs leading-relaxed">
-                <Check className="mt-0.5 size-3.5 shrink-0 text-evergreen" />
-                {item}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <div className="mt-2">
-            <Empty>Nothing verified yet — the Studio will not invent any.</Empty>
-          </div>
-        )}
-      </section>
-
-      <section>
-        <p className="studio-eyebrow text-system">Visual direction</p>
-        <div className="mt-2 space-y-2">
-          {(
-            [
-              ["Photography", "photography"],
-              ["Image style", "imageStyle"],
-              ["Motion", "motion"],
-            ] as const
-          ).map(([label, key]) =>
-            value(key) ? (
-              <p key={key} className="text-xs leading-relaxed">
-                <span className="font-black">{label}: </span>
-                {value(key)}
-              </p>
-            ) : null,
-          )}
-          {!value("photography") && !value("imageStyle") && !value("motion") ? (
-            <Empty>Set a look and feel in the Visual system step.</Empty>
-          ) : null}
-        </div>
-      </section>
-    </div>
-  );
-}
 
 function BrandStudio() {
   const { brand, brandReferences, saveBrand, uploadBrandAsset, addBrandReference, analyzeWebsite } =
@@ -4286,7 +4124,7 @@ function BrandStudio() {
         <Dialog.Portal>
           <Dialog.Overlay className="studio-app studio-navigation-backdrop" />
           <Dialog.Content
-            className="studio-app studio-detail-drawer"
+            className="studio-app studio-detail-drawer studio-brand-guide-drawer"
             onCloseAutoFocus={(event) => {
               event.preventDefault();
               previewOpener.current?.focus();
@@ -4305,7 +4143,7 @@ function BrandStudio() {
                 </button>
               </Dialog.Close>
             </div>
-            <BrandGuidePreview draft={draft} completion={completion} />
+            <StudioBrandGuide draft={draft} completion={completion} />
             <button
               onClick={() => void downloadBrandGuide(draft, completion)}
               className="primary-action mt-6 w-full"
@@ -4320,252 +4158,7 @@ function BrandStudio() {
 }
 
 function Library() {
-  const { assets, campaigns, workspace } = useStudio();
-  const favoritesKey = `phs.library.favorites.${workspace?.id || "guest"}`;
-  const [query, setQuery] = useState("");
-  const [kind, setKind] = useState("all");
-  const [collection, setCollection] = useState<"all" | "favorites" | "approved">("all");
-  const [favorites, setFavorites] = useState<Set<string>>(() => {
-    try {
-      const saved = JSON.parse(window.localStorage.getItem(favoritesKey) || "[]");
-      return new Set(
-        Array.isArray(saved) ? saved.filter((id): id is string => typeof id === "string") : [],
-      );
-    } catch {
-      return new Set();
-    }
-  });
-  const uniqueMediaByAsset = useMemo(() => {
-    const seen = new Set<string>();
-    return new Map(
-      assets.map<[string, string]>((asset) => {
-        const url = assetMediaUrl(asset);
-        if (!url || seen.has(url)) return [asset.id, ""];
-        seen.add(url);
-        return [asset.id, url];
-      }),
-    );
-  }, [assets]);
-  const filtered = assets.filter(
-    (item) =>
-      (kind === "all" || item.kind === kind) &&
-      (collection === "all" ||
-        (collection === "approved" ? item.status === "approved" : favorites.has(item.id))) &&
-      `${item.title} ${item.content}`.toLowerCase().includes(query.toLowerCase()),
-  );
-  return (
-    <div className="mx-auto max-w-[88rem]">
-      <PageIntro
-        eyebrow="Content library"
-        title="Your content, ready to use."
-        body="Search, edit, approve, copy, and reuse every campaign asset without digging through old chats."
-      />
-      {!assets.length ? (
-        <section className="studio-card mt-8 overflow-hidden p-0">
-          <div className="grid min-h-[32rem] lg:grid-cols-[1.05fr_.95fr]">
-            <div className="flex flex-col justify-center p-7 sm:p-10 lg:p-14">
-              <span className="grid size-12 place-items-center rounded-2xl bg-evergreen-soft text-evergreen">
-                <FolderOpen className="size-5" />
-              </span>
-              <p className="studio-eyebrow mt-8 text-system">A clean start</p>
-              <h2 className="mt-3 max-w-xl text-3xl font-black tracking-[-.04em] sm:text-5xl">
-                Your library starts with real work.
-              </h2>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
-                Create a campaign from a question, link, image, or idea. The finished scripts,
-                captions, plans, and approved media will collect here automatically—nothing is
-                prefilled or invented.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <Link to="/studio/create" className="primary-action">
-                  <WandSparkles className="size-4" /> Create your first campaign
-                </Link>
-                <Link to="/studio/ideas" className="secondary-action">
-                  <Lightbulb className="size-4" /> Save an idea
-                </Link>
-              </div>
-            </div>
-            <div className="relative grid place-items-center border-t border-border bg-cream p-8 lg:border-l lg:border-t-0">
-              <div className="w-full max-w-md space-y-3">
-                {[
-                  [Film, "Anchor video", "The complete explanation"],
-                  [Captions, "Short clips", "Platform-ready cutdowns"],
-                  [MessageSquareText, "Native captions", "Written for each channel"],
-                  [CalendarDays, "Production plan", "What to make and when"],
-                ].map(([Icon, label, detail], index) => (
-                  <div
-                    key={String(label)}
-                    className="flex items-center gap-4 rounded-2xl border border-border bg-white p-4 shadow-soft"
-                    style={{ transform: `translateX(${index % 2 ? 18 : 0}px)` }}
-                  >
-                    <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-system-soft text-system">
-                      <Icon className="size-4" />
-                    </span>
-                    <span>
-                      <strong className="block text-sm">{String(label)}</strong>
-                      <span className="mt-1 block text-xs text-muted-foreground">
-                        {String(detail)}
-                      </span>
-                    </span>
-                    <Check className="ml-auto size-4 text-evergreen" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      ) : (
-        <>
-          <div className="mt-8 flex gap-3 overflow-x-auto pb-2">
-            {[
-              ["all", "All assets", assets.length, FileStack],
-              ["favorites", "Favorites", favorites.size, Heart],
-              [
-                "approved",
-                "Approved",
-                assets.filter((item) => item.status === "approved").length,
-                CheckCircle2,
-              ],
-            ].map((entry) => {
-              const [value, label, count, Icon] = entry as [string, string, number, LucideIcon];
-              return (
-                <button
-                  key={String(value)}
-                  aria-pressed={collection === value}
-                  onClick={() => setCollection(value as typeof collection)}
-                  className={`flex min-w-44 items-center gap-3 rounded-[1.1rem] border p-3 text-left ${collection === value ? "border-evergreen bg-evergreen-soft" : "border-border"}`}
-                >
-                  <span className="grid size-10 place-items-center rounded-xl bg-white">
-                    <Icon className="size-4" />
-                  </span>
-                  <span>
-                    <span className="block text-sm font-extrabold">{String(label)}</span>
-                    <span className="mt-1 block text-xs text-muted-foreground">
-                      {String(count)} assets
-                    </span>
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-          <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-            <label className="flex min-h-12 flex-1 items-center gap-3 rounded-xl border border-border bg-white px-4">
-              <Search className="size-4 text-muted-foreground" />
-              <input
-                aria-label="Search library"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search scripts, captions, FAQs…"
-                className="min-h-11 min-w-0 flex-1 bg-transparent text-sm outline-none"
-              />
-            </label>
-            <select
-              aria-label="Filter by format"
-              value={kind}
-              onChange={(e) => setKind(e.target.value)}
-              className="min-h-12 rounded-xl border border-border bg-white px-4 text-sm font-semibold"
-            >
-              <option value="all">All formats</option>
-              {Array.from(new Set(assets.map((item) => item.kind))).map((item) => (
-                <option key={item} value={item}>
-                  {item.replaceAll("_", " ")}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="studio-content-list mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-            {filtered.map((asset) => {
-              const meta = assetKindMeta(asset.kind);
-              const mediaUrl = uniqueMediaByAsset.get(asset.id) || "";
-              return (
-                <article
-                  key={asset.id}
-                  className="studio-card group flex min-h-80 flex-col overflow-hidden p-0"
-                >
-                  <div
-                    className={`relative overflow-hidden border-b border-border ${mediaUrl ? "aspect-[16/9]" : "flex min-h-20 items-center bg-mist px-5 py-4 pr-20"}`}
-                  >
-                    {mediaUrl ? (
-                      <img
-                        src={mediaUrl}
-                        alt={`Media attached to ${asset.title}`}
-                        className="size-full object-cover"
-                      />
-                    ) : (
-                      <span className="flex items-center gap-3">
-                        <span className="grid size-10 place-items-center rounded-lg bg-white">
-                          <meta.icon className="size-5 text-spotlight" />
-                        </span>
-                        <span className="text-xs font-bold text-muted-foreground">
-                          {meta.label}
-                        </span>
-                      </span>
-                    )}
-                    <button
-                      onClick={() =>
-                        setFavorites((current) => {
-                          const next = new Set(current);
-                          if (next.has(asset.id)) next.delete(asset.id);
-                          else next.add(asset.id);
-                          try {
-                            window.localStorage.setItem(favoritesKey, JSON.stringify([...next]));
-                          } catch {
-                            /* Keep favorites available for this visit. */
-                          }
-                          return next;
-                        })
-                      }
-                      aria-pressed={favorites.has(asset.id)}
-                      aria-label={`${favorites.has(asset.id) ? "Remove" : "Add"} ${asset.title} ${favorites.has(asset.id) ? "from" : "to"} favorites`}
-                      className={`absolute right-3 top-3 grid size-12 place-items-center rounded-full bg-white ${favorites.has(asset.id) ? "text-reel" : "text-muted-foreground"}`}
-                    >
-                      <Heart
-                        className={`size-4 ${favorites.has(asset.id) ? "fill-current" : ""}`}
-                      />
-                    </button>
-                  </div>
-                  <div className="flex flex-1 flex-col p-5">
-                    <div className="flex items-center justify-between">
-                      <span
-                        className={`rounded-full px-3 py-1 text-[11px] font-bold ${asset.status === "approved" ? "bg-evergreen-soft text-evergreen" : asset.status === "review" ? "bg-reel-soft text-reel" : "border border-border"}`}
-                      >
-                        {asset.status}
-                      </span>
-                      <span className="text-[11px] text-muted-foreground">
-                        {new Date(asset.updated_at).toLocaleDateString()}
-                      </span>
-                    </div>
-                    <h2 className="mt-6 text-xl font-bold">{asset.title}</h2>
-                    <p className="mt-3 line-clamp-4 whitespace-pre-line text-sm leading-relaxed text-muted-foreground">
-                      {asset.content}
-                    </p>
-                    <div className="mt-4">
-                      <StudioAssetEditor asset={asset} />
-                    </div>
-                    <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-6">
-                      <p className="max-w-[14rem] truncate text-xs text-muted-foreground">
-                        {campaigns.find((item) => item.id === asset.campaign_id)?.title}
-                      </p>
-                      <StudioCopyButton content={asset.content} />
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
-            {!filtered.length && (
-              <div className="sm:col-span-2 xl:col-span-3 studio-card">
-                <EmptyState
-                  icon={FolderOpen}
-                  title="No assets match yet."
-                  body="Generate a campaign or change the search filters."
-                />
-              </div>
-            )}
-          </div>
-        </>
-      )}
-    </div>
-  );
+  return <StudioLibrary />;
 }
 
 function CalendarView() {
@@ -4587,7 +4180,7 @@ function CalendarView() {
   }, []);
   const [selected, setSelected] = useState<CalendarItem | null>(null);
   const [planning, setPlanning] = useState(false);
-  const reduce = useReducedMotion();
+  const { reduceMotion: reduce } = useStudioMotion();
   const [focusDate, setFocusDate] = useState(() => {
     const first = calendar[0]?.publish_at;
     return first ? new Date(first) : new Date();
@@ -4645,41 +4238,59 @@ function CalendarView() {
     setPlanning(true);
     try {
       const monthStart = new Date(focusDate.getFullYear(), focusDate.getMonth(), 1, 10);
-      const channels = ["LinkedIn", "Instagram", "YouTube", "Email"];
-      const sourceAssets = assets.length ? assets : ([] as Asset[]);
-      const sourceCampaign = campaigns[0];
-      const ideas = [
-        "Name the customer problem clearly",
-        "Show one proof moment",
-        "Answer the question before the sales call",
-        "Turn a team process into a useful walkthrough",
-        "Share the strongest campaign takeaway",
-        "Invite the audience into the next decision",
-        "Reuse the anchor video as a focused post",
-        "Close the month with one clear next step",
-      ];
-      await Promise.all(
-        ideas.map((fallback, index) => {
-          const publishAt = new Date(monthStart);
-          publishAt.setDate(2 + index * 3);
-          const asset = sourceAssets[index % Math.max(1, sourceAssets.length)];
-          return createCalendarItem({
-            campaignId: asset?.campaign_id || sourceCampaign?.id,
-            assetId: asset?.id,
-            title: asset?.title || fallback,
-            channel: channels[index % channels.length],
-            publishAt: publishAt.toISOString(),
-            notes:
-              "Month plan draft. Open this item to adjust the channel, date, status, or notes.",
-          });
-        }),
+      const used = new Set(
+        calendar
+          .filter((item) => {
+            const date = new Date(item.publish_at);
+            return (
+              date.getMonth() === monthStart.getMonth() &&
+              date.getFullYear() === monthStart.getFullYear()
+            );
+          })
+          .map((item) => item.asset_id),
       );
-      toast.success("A four-week draft plan is now on the calendar.");
-      celebrate({
-        title: "Four weeks planned.",
-        detail: "Your calendar is filled out and ready to shoot.",
-        colors: ["#5b8a2d", "#0a9b8f"],
-      });
+      const sourceAssets = assets
+        .filter(
+          (asset) => !used.has(asset.id) && asset.kind !== "image" && asset.kind !== "document",
+        )
+        .slice(0, 8);
+      if (!sourceAssets.length) {
+        toast.info(
+          assets.length
+            ? "Your available drafts are already planned this month."
+            : "Create a campaign first, then plan its drafts here.",
+        );
+        return;
+      }
+      for (const [index, asset] of sourceAssets.entries()) {
+        const metadata =
+          asset.metadata && typeof asset.metadata === "object" && !Array.isArray(asset.metadata)
+            ? asset.metadata
+            : {};
+        const channel =
+          typeof metadata.platform === "string"
+            ? metadata.platform
+            : asset.kind === "newsletter"
+              ? "Email"
+              : asset.kind === "anchor_script"
+                ? "YouTube"
+                : asset.kind === "short_script"
+                  ? "Instagram"
+                  : asset.kind === "article"
+                    ? "Website"
+                    : "Facebook";
+        const publishAt = new Date(monthStart);
+        publishAt.setDate(2 + index * 3);
+        await createCalendarItem({
+          campaignId: asset.campaign_id || undefined,
+          assetId: asset.id,
+          title: asset.title,
+          channel,
+          publishAt: publishAt.toISOString(),
+          notes: "Review this saved draft and choose the final publishing time.",
+        });
+      }
+      toast.success(`${sourceAssets.length} saved drafts added to this month.`);
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not build the month plan.");
     } finally {
@@ -5029,6 +4640,7 @@ function SettingsView() {
           <section className="min-h-0 overflow-y-auto p-5 sm:p-7">
             {tab === "workspace" ? (
               <div>
+                <StudioAppearanceSettings />
                 <SettingHeading
                   title="Workspace"
                   body="The private home for your brand, campaigns, calendar, and team."
@@ -5492,6 +5104,22 @@ function CampaignCard({ campaign }: { campaign: Campaign }) {
         params={{ campaignId: campaign.id }}
         className="block p-5 pr-14 hover:bg-mist"
       >
+        <div className="studio-campaign-cover">
+          {campaignAssets.length ? (
+            <StudioAssetVisual
+              asset={campaignAssets.find((asset) => assetMediaUrl(asset)) || campaignAssets[0]}
+            />
+          ) : (
+            <StudioGraphic
+              name={
+                (campaign.primary_lane in lanes
+                  ? campaign.primary_lane
+                  : "spotlight") as keyof typeof lanes
+              }
+              size={130}
+            />
+          )}
+        </div>
         <span className="studio-lane-label">
           <span className="size-2 rounded-full" style={{ background: lane.ink }} />
           {lane.label}

@@ -1,18 +1,19 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Film, Gauge, Sparkles } from "lucide-react";
-import { useMemo, useState } from "react";
+import { ArrowRight, Check, Plus } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
 import { diagnoseVideoLibrary, universalVideoLibrary } from "@/lib/studio-intelligence";
 import type { StudioLane } from "@/lib/studio-model";
+import { StudioGraphic, type StudioGraphicName } from "./StudioGraphic";
 import { useStudio } from "./StudioProvider";
+import "./studio-support.css";
 
-const laneMeta: Record<StudioLane, { label: string; color: string; soft: string }> = {
-  spotlight: { label: "Spotlight", color: "var(--spotlight)", soft: "var(--spotlight-soft)" },
-  reel: { label: "Reel", color: "var(--reel)", soft: "var(--reel-soft)" },
-  evergreen: { label: "Evergreen", color: "var(--evergreen)", soft: "var(--evergreen-soft)" },
-  system: { label: "System", color: "var(--system)", soft: "var(--system-soft)" },
+const lanes: Record<StudioLane, { label: string; purpose: string }> = {
+  spotlight: { label: "Spotlight", purpose: "Build trust" },
+  reel: { label: "Reel", purpose: "Get seen" },
+  evergreen: { label: "Evergreen", purpose: "Share expertise" },
+  system: { label: "System", purpose: "Help your team" },
 };
-
 const statuses = [
   ["recommended", "Recommended"],
   ["planned", "Planned"],
@@ -24,11 +25,41 @@ const statuses = [
   ["refresh", "Needs refresh"],
   ["not_needed", "Not needed"],
 ] as const;
+const graphics: Record<string, StudioGraphicName> = {
+  "homepage-hero": "spotlight",
+  "founder-story": "spotlight",
+  "why-choose-us": "brand",
+  "testimonial-proof": "brand",
+  "process-overview": "system",
+  "keystone-question": "chat",
+  "pricing-explainer": "article",
+  "faq-series": "chat",
+  "myth-busters": "evergreen",
+  "before-after": "brand",
+  "quick-wins": "ideas",
+  "behind-scenes": "image",
+  "customer-welcome": "library",
+  "employee-onboarding": "system",
+  "sop-library": "roadmap",
+  "support-library": "chat",
+  "offer-explainer": "spotlight",
+  "objection-answer": "chat",
+  "hook-first-tip": "ideas",
+  "day-in-the-life": "image",
+  "customer-question": "chat",
+  "results-breakdown": "article",
+  "partner-referral": "library",
+  "annual-recap": "campaigns",
+};
 
 export function VideoRoadmap() {
-  const { brand, campaigns, createIdea, updateVideoProgress, videoProgress } = useStudio();
+  const { brand, campaigns, ideas, createIdea, updateVideoProgress, videoProgress } = useStudio();
   const [lane, setLane] = useState<"all" | StudioLane>("all");
   const [show, setShow] = useState<"priority" | "all">("priority");
+  const [pending, setPending] = useState<string[]>([]);
+  const [savedHere, setSavedHere] = useState<string[]>([]);
+  const activeKeys = useRef(new Set<string>());
+  const createdKeys = useRef(new Set<string>());
   const diagnosed = useMemo(
     () =>
       diagnoseVideoLibrary(
@@ -37,17 +68,53 @@ export function VideoRoadmap() {
       ),
     [brand, campaigns],
   );
-  const progress = new Map(videoProgress.map((item) => [item.item_key, item.status]));
+  const progress = new Map(videoProgress.map((item) => [item.item_key, item]));
   const complete = universalVideoLibrary.filter(
-    (item) => progress.get(item.key) === "complete",
+    (item) => progress.get(item.key)?.status === "complete",
   ).length;
-  const visible = diagnosed.filter((item, index) => {
-    if (lane !== "all" && item.lane !== lane) return false;
-    return show === "all" || index < 8 || progress.has(item.key);
-  });
-  const percent = Math.round((complete / universalVideoLibrary.length) * 100);
+  const inProgress = universalVideoLibrary.filter((item) =>
+    /^(planned|scripted|ready_to_film|filmed|editing)$/.test(progress.get(item.key)?.status || ""),
+  ).length;
+  const laneItems = diagnosed.filter((item) => lane === "all" || item.lane === lane);
+  const priorityKeys = new Set(
+    laneItems
+      .filter((item) => !["complete", "not_needed"].includes(progress.get(item.key)?.status || ""))
+      .slice(0, 8)
+      .map((item) => item.key),
+  );
+  const visible = laneItems.filter((item) => show === "all" || priorityKeys.has(item.key));
+  const hasIdea = (item: (typeof diagnosed)[number]) =>
+    savedHere.includes(item.key) ||
+    ideas.some(
+      (idea) =>
+        idea.status !== "archived" &&
+        idea.source_type === "recommended" &&
+        idea.body === item.prompt,
+    );
 
+  function begin(key: string) {
+    if (activeKeys.current.has(key)) return false;
+    activeKeys.current.add(key);
+    setPending(Array.from(activeKeys.current));
+    return true;
+  }
+  function finish(key: string) {
+    activeKeys.current.delete(key);
+    setPending(Array.from(activeKeys.current));
+  }
+  async function changeStatus(key: string, status: string) {
+    if (!begin(key)) return;
+    try {
+      await updateVideoProgress(key, status, progress.get(key)?.campaign_id || undefined);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not update this video's status.");
+    } finally {
+      finish(key);
+    }
+  }
   async function saveAsIdea(item: (typeof diagnosed)[number]) {
+    if (hasIdea(item) || createdKeys.current.has(item.key) || !begin(item.key)) return;
+    let created = false;
     try {
       await createIdea({
         body: item.prompt,
@@ -55,145 +122,121 @@ export function VideoRoadmap() {
         lane: item.lane,
         businessProblem: item.problem,
       });
-      await updateVideoProgress(item.key, "planned");
-      toast.success("Added to Content ideas and marked planned.");
+      created = true;
+      createdKeys.current.add(item.key);
+      setSavedHere((current) => [...current, item.key]);
+      if (!progress.get(item.key) || progress.get(item.key)?.status === "recommended") {
+        await updateVideoProgress(
+          item.key,
+          "planned",
+          progress.get(item.key)?.campaign_id || undefined,
+        );
+      }
+      toast.success("Saved to Ideas. Your starting brief is ready.");
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Could not plan this video.");
+      toast.error(
+        created
+          ? "Your idea was saved, but the roadmap status could not update. You can change its status here."
+          : error instanceof Error
+            ? error.message
+            : "Could not save this idea.",
+      );
+    } finally {
+      finish(item.key);
     }
   }
 
   return (
-    <div className="mx-auto max-w-[90rem]">
-      <header className="grid gap-4 border-b border-border pb-5 lg:grid-cols-[1fr_18rem] lg:items-center">
+    <div className="studio-support studio-roadmap">
+      <header className="studio-roadmap-heading">
         <div>
-          <h1 className="text-3xl font-extrabold tracking-[-.05em] sm:text-4xl">Video roadmap</h1>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            A living checklist based on Brand DNA, the problems each video solves, and the work
-            already in motion.
+          <p className="studio-support-kicker">Build a useful video library</p>
+          <h1>Your video roadmap</h1>
+          <p>
+            Choose the videos that fit your business. Save a starting brief to Ideas, then build it
+            into a campaign when you're ready.
           </p>
         </div>
-        <div className="rounded-xl border border-system/30 bg-system-soft px-4 py-3">
-          <div className="flex items-center justify-between gap-3 text-xs">
-            <p className="font-semibold">Library health</p>
-            <span className="font-mono font-semibold text-system">{percent}%</span>
+        <div className="studio-roadmap-summary">
+          <StudioGraphic name="roadmap" size={90} />
+          <div>
+            <strong>{complete} complete</strong>
+            <span>{inProgress} in progress</span>
+            <small>Based on the statuses you set</small>
           </div>
-          <div
-            className="mt-2 h-1.5 overflow-hidden rounded-full bg-white"
-            role="progressbar"
-            aria-label="Video library completion"
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={percent}
-          >
-            <span
-              className="block h-full w-full origin-left bg-system"
-              style={{ transform: `scaleX(${percent / 100})` }}
-            />
-          </div>
-          <p className="mt-2 text-xs text-muted-foreground">
-            {complete} of {universalVideoLibrary.length} complete
-          </p>
         </div>
       </header>
-
-      <section aria-label="Filter video roadmap" className="mt-5 flex flex-wrap items-end gap-3">
-        <label className="min-w-0 flex-1 sm:max-w-52">
-          <span className="mb-1.5 block text-xs font-semibold text-muted-foreground">
-            Content lane
-          </span>
+      <section className="studio-roadmap-filters" aria-label="Filter video roadmap">
+        <label>
+          <span>Purpose</span>
           <select
             value={lane}
             onChange={(event) => setLane(event.target.value as "all" | StudioLane)}
-            className="min-h-11 w-full rounded-xl border border-border bg-white px-3 text-sm font-semibold"
           >
-            <option value="all">All lanes</option>
-            {(["spotlight", "reel", "evergreen", "system"] as const).map((value) => (
+            <option value="all">All purposes</option>
+            {Object.entries(lanes).map(([value, meta]) => (
               <option key={value} value={value}>
-                {laneMeta[value].label}
+                {meta.purpose} · {meta.label}
               </option>
             ))}
           </select>
         </label>
-        <div
-          className="grid shrink-0 grid-cols-2 rounded-xl border border-border bg-white p-1"
-          aria-label="Roadmap scope"
-        >
+        <div className="studio-roadmap-segment" role="group" aria-label="Suggestions to show">
           {(["priority", "all"] as const).map((value) => (
             <button
               key={value}
               type="button"
               aria-pressed={show === value}
               onClick={() => setShow(value)}
-              className={`min-h-11 rounded-lg px-3 text-xs font-semibold ${show === value ? "bg-system-soft text-system" : "text-muted-foreground"}`}
             >
-              {value === "priority" ? "For you first" : "Master list"}
+              {value === "priority" ? "Suggested next" : "All video ideas"}
             </button>
           ))}
         </div>
+        <span className="studio-roadmap-result-count" aria-live="polite">
+          {visible.length} video {visible.length === 1 ? "idea" : "ideas"}
+        </span>
       </section>
-
-      <div className="mt-5 grid gap-4 xl:grid-cols-2">
-        {visible.map((item, index) => {
-          const meta = laneMeta[item.lane];
-          const status = progress.get(item.key) || "recommended";
+      <div className="studio-roadmap-grid">
+        {visible.map((item) => {
+          const current = progress.get(item.key);
+          const status = current?.status || "recommended";
+          const busy = pending.includes(item.key);
+          const saved = hasIdea(item);
+          const campaign = campaigns.find((value) => value.id === current?.campaign_id);
           return (
-            <article
-              key={item.key}
-              className="rounded-[1.25rem] border border-border bg-white p-5 transition hover:border-ink sm:p-6"
-            >
-              <div className="flex items-start gap-4">
-                <span
-                  className="grid size-11 shrink-0 place-items-center rounded-xl"
-                  style={{ background: meta.soft, color: meta.color }}
-                >
-                  <Film className="size-5" />
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span
-                      className="text-[9px] font-black uppercase tracking-[.12em]"
-                      style={{ color: meta.color }}
-                    >
-                      {meta.label}
-                    </span>
-                    <span className="text-[9px] text-muted-foreground">{item.category}</span>
-                    {index < 3 ? (
-                      <span className="rounded-full bg-reel-soft px-2 py-1 text-[8px] font-black uppercase tracking-[.08em] text-reel">
-                        High priority
-                      </span>
-                    ) : null}
-                  </div>
-                  <h2 className="mt-3 text-xl font-black">{item.title}</h2>
+            <article key={item.key} className="studio-roadmap-card" data-lane={item.lane}>
+              <div className="studio-roadmap-card-heading">
+                <StudioGraphic name={graphics[item.key] || item.lane} size={66} />
+                <div>
+                  <p className="studio-roadmap-category">
+                    {lanes[item.lane].purpose}
+                    <span>·</span>
+                    {item.category}
+                  </p>
+                  <h2>{item.title}</h2>
                 </div>
               </div>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-xl bg-mist p-4">
-                  <p className="text-[9px] font-black uppercase tracking-[.12em] text-muted-foreground">
-                    Problem it solves
-                  </p>
-                  <p className="mt-2 text-sm font-bold leading-relaxed">{item.problem}</p>
-                </div>
-                <div className="rounded-xl p-4" style={{ background: meta.soft }}>
-                  <p
-                    className="text-[9px] font-black uppercase tracking-[.12em]"
-                    style={{ color: meta.color }}
-                  >
-                    Useful outcome
-                  </p>
-                  <p className="mt-2 text-sm leading-relaxed">{item.outcome}</p>
-                </div>
-              </div>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                <strong className="text-ink">Start here:</strong> {item.prompt}
+              <p className="studio-roadmap-outcome">{item.outcome}</p>
+              <p className="studio-roadmap-problem">
+                <span>Useful when</span>
+                {item.problem}
               </p>
-              <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-                <label className="min-w-0 flex-1">
+              <details className="studio-roadmap-brief">
+                <summary>What to cover</summary>
+                <p>{item.prompt}</p>
+              </details>
+              <div className="studio-roadmap-card-actions">
+                <label>
                   <span className="sr-only">Status for {item.title}</span>
                   <select
                     value={status}
-                    onChange={(event) => void updateVideoProgress(item.key, event.target.value)}
-                    className="min-h-12 w-full rounded-xl border border-border bg-white px-3 text-xs font-bold"
+                    disabled={busy}
+                    onChange={(event) => void changeStatus(item.key, event.target.value)}
                   >
+                    {!statuses.some(([value]) => value === status) && (
+                      <option value={status}>{status.replaceAll("_", " ")}</option>
+                    )}
                     {statuses.map(([value, label]) => (
                       <option key={value} value={value}>
                         {label}
@@ -201,32 +244,59 @@ export function VideoRoadmap() {
                     ))}
                   </select>
                 </label>
-                <button
-                  onClick={() => void saveAsIdea(item)}
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 text-sm font-bold text-white"
-                  style={{ background: meta.color }}
-                >
-                  <Sparkles className="size-4" /> Plan this
-                </button>
+                {saved ? (
+                  <Link to="/studio/ideas" className="studio-support-button">
+                    <Check size={15} />
+                    Open in Ideas
+                  </Link>
+                ) : (
+                  <button
+                    type="button"
+                    disabled={busy}
+                    onClick={() => void saveAsIdea(item)}
+                    className="studio-support-button is-primary"
+                  >
+                    <Plus size={15} />
+                    {busy ? "Saving…" : "Save idea"}
+                  </button>
+                )}
               </div>
+              {campaign && (
+                <Link
+                  to="/studio/campaigns/$campaignId"
+                  params={{ campaignId: campaign.id }}
+                  className="studio-roadmap-campaign"
+                >
+                  Continue {campaign.title}
+                  <ArrowRight size={14} />
+                </Link>
+              )}
             </article>
           );
         })}
       </div>
-
-      <section className="mt-6 grid gap-4 rounded-[1.25rem] border border-border bg-white p-5 md:grid-cols-[auto_1fr_auto] md:items-center">
-        <span className="grid size-12 place-items-center rounded-xl bg-spotlight-soft text-spotlight">
-          <Gauge className="size-5" />
-        </span>
+      {!visible.length && (
+        <div className="studio-roadmap-empty">
+          <StudioGraphic name="brand" size={80} />
+          <h2>You're up to date with these suggestions.</h2>
+          <p>See every video idea to revisit completed work or items marked not needed.</p>
+          <button type="button" className="studio-support-button" onClick={() => setShow("all")}>
+            Show all video ideas
+          </button>
+        </div>
+      )}
+      <section className="studio-roadmap-brand">
+        <StudioGraphic name="brand" size={60} />
         <div>
-          <p className="font-black">The roadmap gets sharper as Brand DNA gets stronger.</p>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Proof, offers, audience questions, and approved chat memory change the order—not the
-            universal foundation.
+          <h2>Help the suggestions fit your business.</h2>
+          <p>
+            Your business description, audience, proof points, and campaign lanes help set the
+            order. Keep Brand DNA up to date as your business changes.
           </p>
         </div>
-        <Link to="/studio/brand" className="secondary-action">
-          Strengthen Brand DNA <ArrowRight className="size-4" />
+        <Link to="/studio/brand" className="studio-support-link">
+          Review Brand DNA
+          <ArrowRight size={16} />
         </Link>
       </section>
     </div>

@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { StudioPage } from "@/components/studio/StudioApp";
 
 export const Route = createFileRoute("/studio/conversations/")({
-  validateSearch: (search: Record<string, unknown>) => ({
+  validateSearch: (search: Record<string, unknown>): { prompt?: string } => ({
     prompt: typeof search["prompt"] === "string" ? (search["prompt"] as string) : undefined,
   }),
   head: () => ({

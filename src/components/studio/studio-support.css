@@ -1,0 +1,901 @@
+/* Companion surfaces inherit Studio's global light/dark token contract, including portals. */
+.studio-graphic {
+  display: block;
+  flex: none;
+  object-fit: contain;
+  max-width: 100%;
+  background: transparent;
+  user-select: none;
+}
+.studio-support {
+  --support-text: var(--studio-text, var(--foreground, #1f1830));
+  --support-muted: var(--studio-muted, var(--muted-foreground, #6f687b));
+  --support-surface: var(--studio-surface, var(--background, #fff));
+  --support-soft: var(--studio-soft, #f7f4fa);
+  --support-border: var(--studio-border, var(--border, #e8e1ee));
+  --support-accent: var(--studio-accent, #592682);
+  --support-accent-soft: var(--studio-accent-soft, #f0e7f9);
+  color: var(--support-text);
+}
+.studio-support button,
+.studio-support input,
+.studio-support select,
+.studio-support textarea {
+  font: inherit;
+}
+.studio-support button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.studio-support-kicker {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--support-muted);
+}
+.studio-support-muted {
+  color: var(--support-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.studio-support-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid var(--support-border);
+  background: var(--support-soft);
+  border-radius: 99px;
+  padding: 5px 9px;
+  font-size: 11px;
+  line-height: 1.3;
+  color: var(--support-muted);
+}
+.studio-support-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 1px solid var(--support-border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  background: var(--support-surface);
+  color: var(--support-text);
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+}
+.studio-support-button.is-primary {
+  background: var(--support-accent);
+  border-color: var(--support-accent);
+  color: var(--studio-action-text, #fff);
+}
+.studio-support-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--support-accent);
+}
+.studio-support-error {
+  border: 1px solid #bf5757;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--support-text);
+  background: var(--support-soft);
+}
+.studio-calendar-editor.studio-detail-drawer {
+  display: flex;
+  flex-direction: column;
+  width: min(940px, 100%);
+  padding: 0;
+  background: var(--support-surface);
+  border-left: 1px solid var(--support-border);
+  color: var(--support-text);
+  overflow: hidden;
+}
+.studio-calendar-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid var(--support-border);
+}
+.studio-calendar-heading > div {
+  flex: 1;
+  min-width: 0;
+}
+.studio-calendar-heading h2 {
+  margin: 5px 0 0;
+  font-size: 24px;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+  font-weight: 750;
+}
+.studio-calendar-heading p:last-child {
+  margin-top: 7px;
+}
+.studio-calendar-heading .studio-icon-button {
+  flex: none;
+  color: var(--support-text);
+}
+.studio-calendar-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(245px, 1fr);
+  min-height: 0;
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.studio-calendar-preview {
+  min-width: 0;
+  padding: 24px 28px;
+  background: var(--studio-canvas, var(--support-soft));
+}
+.studio-calendar-preview-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: var(--support-muted);
+}
+.studio-calendar-content-card {
+  border: 1px solid var(--support-border);
+  border-radius: 16px;
+  background: var(--support-surface);
+  overflow: hidden;
+}
+.studio-calendar-content-byline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 18px 0;
+}
+.studio-calendar-content-byline strong {
+  font-size: 13px;
+  font-weight: 700;
+}
+.studio-calendar-content-byline small {
+  display: block;
+  margin-top: 2px;
+  color: var(--support-muted);
+  font-size: 11px;
+}
+.studio-calendar-copy {
+  padding: 18px;
+}
+.studio-calendar-copy h3 {
+  font-size: 18px;
+  line-height: 1.35;
+  margin: 0 0 12px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.studio-calendar-copy > div {
+  color: var(--support-text) !important;
+  font-size: 14px !important;
+  line-height: 1.65 !important;
+}
+.studio-calendar-copy :is(strong, p, h3, h4) {
+  color: inherit;
+}
+.studio-calendar-copy p:last-child {
+  margin-bottom: 0;
+}
+.studio-calendar-copy .text-ink {
+  color: var(--support-text);
+}
+.studio-calendar-media {
+  display: block;
+  width: 100%;
+  max-height: 340px;
+  object-fit: cover;
+}
+.studio-calendar-media-error {
+  padding: 16px;
+  border-top: 1px solid var(--support-border);
+}
+.studio-calendar-format-note {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 16px 18px;
+  border-top: 1px solid var(--support-border);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--support-muted);
+}
+.studio-calendar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 12px;
+}
+.studio-calendar-actions .studio-support-button {
+  flex: 1;
+}
+.studio-calendar-asset-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 15px;
+  color: var(--support-muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+.studio-calendar-no-asset {
+  padding: 26px 20px;
+  text-align: center;
+}
+.studio-calendar-no-asset .studio-graphic {
+  margin: 0 auto 12px;
+}
+.studio-calendar-no-asset h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+.studio-calendar-no-asset p {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--support-muted);
+}
+.studio-calendar-schedule {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+  padding: 24px;
+  border-left: 1px solid var(--support-border);
+}
+.studio-calendar-schedule h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+}
+.studio-calendar-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 650;
+}
+.studio-calendar-field :is(input, select, textarea) {
+  min-height: 44px;
+  width: 100%;
+  background: var(--support-surface);
+  border: 1px solid var(--support-border);
+  border-radius: 9px;
+  padding: 10px 12px;
+  color: var(--support-text);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.studio-calendar-field textarea {
+  resize: vertical;
+  min-height: 104px;
+}
+.studio-calendar-schedule details summary {
+  cursor: pointer;
+  min-height: 36px;
+  font-size: 12px;
+  font-weight: 650;
+}
+.studio-calendar-schedule details .studio-calendar-field {
+  margin-top: 8px;
+}
+.studio-calendar-schedule dl {
+  margin: 0;
+  border-top: 1px solid var(--support-border);
+  padding-top: 18px;
+  font-size: 12px;
+}
+.studio-calendar-schedule dt {
+  color: var(--support-muted);
+}
+.studio-calendar-schedule dd {
+  margin: 5px 0 0;
+  line-height: 1.6;
+}
+.studio-calendar-schedule dd a {
+  color: var(--support-accent);
+}
+.studio-calendar-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 28px;
+  border-top: 1px solid var(--support-border);
+  background: var(--support-surface);
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+.studio-calendar-footer > div {
+  display: flex;
+  gap: 8px;
+  flex: none;
+}
+.studio-calendar-footer p {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--support-muted);
+  max-width: 34ch;
+}
+.studio-roadmap {
+  max-width: 1160px;
+  margin: 0 auto;
+}
+.studio-roadmap-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 40px;
+  align-items: center;
+  padding: 5px 0 25px;
+  border-bottom: 1px solid var(--support-border);
+}
+.studio-roadmap-heading h1 {
+  margin: 8px 0 12px;
+  font-size: clamp(29px, 3vw, 38px);
+  font-weight: 750;
+  line-height: 1.12;
+  letter-spacing: -0.045em;
+}
+.studio-roadmap-heading > div > p:last-child {
+  max-width: 65ch;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--support-muted);
+  margin: 0;
+}
+.studio-roadmap-summary {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.studio-roadmap-summary strong,
+.studio-roadmap-summary span,
+.studio-roadmap-summary small {
+  display: block;
+}
+.studio-roadmap-summary strong {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.studio-roadmap-summary span {
+  font-size: 13px;
+  color: var(--support-muted);
+  margin-top: 4px;
+}
+.studio-roadmap-summary small {
+  font-size: 10px;
+  color: var(--support-muted);
+  margin-top: 10px;
+}
+.studio-roadmap-intro strong {
+  font-size: 14px;
+  font-weight: 650;
+}
+.studio-roadmap-filters {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 24px 0 18px;
+}
+.studio-roadmap-filters > label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 200px;
+}
+.studio-roadmap-filters > label > span {
+  font-size: 11px;
+  font-weight: 650;
+  color: var(--support-muted);
+}
+.studio-roadmap :is(select) {
+  min-height: 44px;
+  border: 1px solid var(--support-border);
+  border-radius: 10px;
+  padding: 10px 32px 10px 12px;
+  background: var(--support-surface);
+  color: var(--support-text);
+  font-size: 12px;
+  max-width: 100%;
+}
+.studio-roadmap-segment {
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--support-border);
+  border-radius: 11px;
+  background: var(--support-surface);
+}
+.studio-roadmap-segment button {
+  min-height: 36px;
+  border: 0;
+  border-radius: 7px;
+  padding: 7px 13px;
+  color: var(--support-muted);
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+}
+.studio-roadmap-segment button[aria-pressed="true"] {
+  background: var(--support-accent-soft);
+  color: var(--support-accent);
+}
+.studio-roadmap-result-count {
+  margin-left: auto;
+  align-self: flex-end;
+  padding-bottom: 13px;
+  font-size: 11px;
+  color: var(--support-muted);
+}
+.studio-roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.studio-roadmap-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--support-border);
+  border-radius: 18px;
+  background: var(--support-surface);
+  padding: 23px;
+}
+.studio-roadmap-card-heading {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.studio-roadmap-card-heading > div {
+  min-width: 0;
+}
+.studio-roadmap-category {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 10px;
+  line-height: 1.4;
+  color: var(--support-muted);
+  margin: 0 0 7px;
+}
+.studio-roadmap-category span {
+  opacity: 0.5;
+}
+.studio-roadmap-card h2 {
+  font-size: 19px;
+  line-height: 1.25;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  margin: 0;
+}
+.studio-roadmap-outcome {
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 17px 0 12px;
+}
+.studio-roadmap-problem {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--support-muted);
+  margin: 0 0 17px;
+}
+.studio-roadmap-problem span {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.025em;
+  font-weight: 650;
+  margin-bottom: 3px;
+}
+.studio-roadmap-brief {
+  margin-bottom: 18px;
+  background: var(--support-soft);
+  border-radius: 10px;
+  padding: 0 13px;
+}
+.studio-roadmap-brief summary {
+  cursor: pointer;
+  min-height: 43px;
+  align-content: center;
+  font-size: 12px;
+  font-weight: 650;
+}
+.studio-roadmap-brief p {
+  margin: 0;
+  padding: 0 0 14px;
+  font-size: 13px;
+  color: var(--support-muted);
+  line-height: 1.7;
+}
+.studio-roadmap-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 3px;
+}
+.studio-roadmap-card-actions label {
+  flex: 1;
+  min-width: 0;
+}
+.studio-roadmap-card-actions select {
+  width: 100%;
+}
+.studio-roadmap-card-actions .studio-support-button {
+  font-size: 12px;
+  flex: none;
+  padding: 10px 13px;
+}
+.studio-roadmap-campaign {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  color: var(--support-accent);
+  font-size: 12px;
+  line-height: 1.6;
+  margin-top: 12px;
+  min-height: 32px;
+}
+.studio-roadmap-campaign svg {
+  flex: none;
+}
+.studio-roadmap-brand {
+  display: flex;
+  gap: 18px;
+  align-items: center;
+  border-top: 1px solid var(--support-border);
+  margin-top: 27px;
+  padding: 25px 0;
+}
+.studio-roadmap-brand > div {
+  flex: 1;
+}
+.studio-roadmap-brand h2 {
+  font-size: 15px;
+  font-weight: 650;
+  margin: 0 0 6px;
+}
+.studio-roadmap-brand p {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--support-muted);
+  margin: 0;
+  max-width: 65ch;
+}
+.studio-roadmap-brand > a {
+  flex: none;
+}
+.studio-roadmap-empty {
+  border: 1px solid var(--support-border);
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+  background: var(--support-surface);
+}
+.studio-roadmap-empty .studio-graphic {
+  margin: auto;
+}
+.studio-roadmap-empty h2 {
+  font-size: 19px;
+  font-weight: 700;
+  margin: 14px 0 8px;
+}
+.studio-roadmap-empty p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--support-muted);
+  margin: 0 auto 20px;
+  max-width: 55ch;
+}
+.studio-support :is(button, a, select, input, textarea, summary):focus-visible {
+  outline: 2px solid var(--support-accent);
+  outline-offset: 3px;
+}
+@media (max-width: 900px) {
+  .studio-roadmap-heading {
+    gap: 20px;
+  }
+  .studio-roadmap-summary .studio-graphic {
+    width: 66px !important;
+    height: 66px !important;
+  }
+  .studio-roadmap-summary small {
+    max-width: 17ch;
+  }
+  .studio-roadmap-brand {
+    flex-wrap: wrap;
+  }
+  .studio-roadmap-brand > a {
+    margin-left: 78px;
+  }
+}
+@media (max-width: 700px) {
+  .studio-calendar-body {
+    grid-template-columns: 1fr;
+  }
+  .studio-calendar-schedule {
+    border-left: 0;
+    border-top: 1px solid var(--support-border);
+    padding: 22px;
+  }
+  .studio-calendar-heading {
+    padding: 20px;
+    gap: 12px;
+  }
+  .studio-calendar-heading h2 {
+    font-size: 21px;
+  }
+  .studio-calendar-heading > .studio-graphic {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  .studio-calendar-preview {
+    padding: 20px;
+  }
+  .studio-calendar-footer {
+    padding: 14px 20px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding-bottom: max(14px, env(safe-area-inset-bottom));
+  }
+  .studio-calendar-footer p {
+    max-width: none;
+  }
+  .studio-calendar-footer > div > * {
+    flex: 1;
+  }
+  .studio-roadmap-heading {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .studio-roadmap-summary {
+    gap: 13px;
+  }
+  .studio-roadmap-summary > div {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 5px 12px;
+  }
+  .studio-roadmap-summary strong {
+    font-size: 15px;
+  }
+  .studio-roadmap-summary span {
+    margin: 0;
+    font-size: 12px;
+  }
+  .studio-roadmap-summary small {
+    max-width: none;
+    flex-basis: 100%;
+    margin: 0;
+  }
+  .studio-roadmap-summary .studio-graphic {
+    width: 52px !important;
+    height: 52px !important;
+  }
+  .studio-roadmap-grid {
+    grid-template-columns: 1fr;
+  }
+  .studio-roadmap-filters {
+    gap: 10px;
+  }
+  .studio-roadmap-result-count {
+    display: none;
+  }
+  .studio-roadmap-brand {
+    gap: 13px;
+  }
+  .studio-roadmap-brand .studio-graphic {
+    width: 48px !important;
+    height: 48px !important;
+  }
+  .studio-roadmap-brand > a {
+    margin-left: 61px;
+  }
+}
+@media (max-width: 430px) {
+  .studio-calendar-heading > div > p:last-child {
+    font-size: 12px;
+  }
+  .studio-calendar-heading {
+    padding: 18px 16px;
+  }
+  .studio-calendar-preview,
+  .studio-calendar-schedule {
+    padding: 18px 16px;
+  }
+  .studio-calendar-footer {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+  .studio-calendar-copy {
+    padding: 16px;
+  }
+  .studio-calendar-content-byline {
+    padding: 16px 16px 0;
+  }
+  .studio-roadmap-card {
+    padding: 18px;
+  }
+  .studio-roadmap-card-heading {
+    gap: 11px;
+  }
+  .studio-roadmap-card-heading > .studio-graphic {
+    width: 57px !important;
+    height: 57px !important;
+  }
+  .studio-roadmap-card h2 {
+    font-size: 18px;
+  }
+  .studio-roadmap-filters > label {
+    width: 100%;
+  }
+  .studio-roadmap-segment {
+    width: 100%;
+  }
+  .studio-roadmap-segment > button {
+    flex: 1;
+  }
+  .studio-roadmap-card-actions {
+    gap: 7px;
+  }
+  .studio-roadmap-card-actions .studio-support-button {
+    padding: 10px;
+  }
+  .studio-roadmap-intro .studio-graphic {
+    width: 43px !important;
+    height: 43px !important;
+  }
+  .studio-roadmap-brand {
+    align-items: flex-start;
+  }
+  .studio-roadmap-brand > a {
+    margin-left: 0;
+  }
+}
+
+html[data-studio-theme="dark"] .studio-support-button.is-primary {
+  color: #241031;
+}
+.studio-calendar-heading,
+.studio-calendar-footer {
+  flex-shrink: 0;
+}
+.studio-idea-capture-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.studio-idea-capture-heading h2 {
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  margin: 6px 0 0;
+}
+.studio-idea-detected {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+  color: var(--support-muted);
+}
+.studio-idea-detected .studio-graphic {
+  flex: none;
+}
+.studio-idea-grid {
+  display: grid;
+  gap: 15px;
+  margin-top: 20px;
+}
+.studio-saved-idea {
+  border: 1px solid var(--support-border);
+  border-radius: 16px;
+  padding: 20px;
+  background: var(--support-surface);
+  min-width: 0;
+}
+.studio-saved-idea-header {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.studio-saved-idea-header > label {
+  flex: 1;
+  min-width: 80px;
+}
+.studio-saved-idea-header select {
+  color: var(--support-text);
+  max-width: 100%;
+  font-size: 12px;
+}
+.studio-idea-source-label {
+  font-size: 10px;
+  color: var(--support-muted);
+  text-transform: none;
+}
+.studio-saved-idea-copy {
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 13px 0 0;
+}
+.studio-idea-source-image {
+  margin: -20px -20px 17px;
+  border-bottom: 1px solid var(--support-border);
+  background: var(--support-soft);
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+}
+.studio-idea-source-image > img {
+  display: block;
+  width: 100%;
+  max-height: 230px;
+  object-fit: cover;
+}
+.studio-idea-source-image > div {
+  display: flex;
+  min-height: 110px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--support-muted);
+  padding: 18px;
+}
+.studio-ideas-board .studio-idea-capture {
+  background: var(--support-surface);
+}
+@media (min-width: 1600px) {
+  .studio-idea-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .studio-saved-idea {
+    display: flex;
+    flex-direction: column;
+  }
+  .studio-saved-idea > div:last-child {
+    margin-top: auto;
+    padding-top: 16px;
+  }
+}
+@media (max-width: 430px) {
+  .studio-saved-idea {
+    padding: 17px;
+  }
+  .studio-idea-source-image {
+    margin: -17px -17px 15px;
+  }
+  .studio-saved-idea-header {
+    gap: 7px;
+  }
+  .studio-saved-idea-header > .studio-graphic {
+    width: 40px !important;
+    height: 40px !important;
+  }
+  .studio-idea-source-label {
+    font-size: 9px;
+  }
+  .studio-saved-idea-copy {
+    font-size: 15px;
+  }
+}

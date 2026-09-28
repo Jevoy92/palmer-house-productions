@@ -53,6 +53,7 @@ import { Route as StudioRoadmapRouteImport } from './routes/studio.roadmap'
 import { Route as StudioOnboardingRouteImport } from './routes/studio.onboarding'
 import { Route as StudioLibraryRouteImport } from './routes/studio.library'
 import { Route as StudioIdeasRouteImport } from './routes/studio.ideas'
+import { Route as StudioFeedRouteImport } from './routes/studio.feed'
 import { Route as StudioDashboardRouteImport } from './routes/studio.dashboard'
 import { Route as StudioCreateRouteImport } from './routes/studio.create'
 import { Route as StudioCalendarRouteImport } from './routes/studio.calendar'
@@ -304,6 +305,11 @@ const StudioIdeasRoute = StudioIdeasRouteImport.update({
   path: '/ideas',
   getParentRoute: () => StudioRoute,
 } as any)
+const StudioFeedRoute = StudioFeedRouteImport.update({
+  id: '/feed',
+  path: '/feed',
+  getParentRoute: () => StudioRoute,
+} as any)
 const StudioDashboardRoute = StudioDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -516,6 +522,7 @@ export interface FileRoutesByFullPath {
   '/studio/calendar': typeof StudioCalendarRoute
   '/studio/create': typeof StudioCreateRoute
   '/studio/dashboard': typeof StudioDashboardRoute
+  '/studio/feed': typeof StudioFeedRoute
   '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
   '/studio/onboarding': typeof StudioOnboardingRoute
@@ -591,6 +598,7 @@ export interface FileRoutesByTo {
   '/studio/calendar': typeof StudioCalendarRoute
   '/studio/create': typeof StudioCreateRoute
   '/studio/dashboard': typeof StudioDashboardRoute
+  '/studio/feed': typeof StudioFeedRoute
   '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
   '/studio/onboarding': typeof StudioOnboardingRoute
@@ -668,6 +676,7 @@ export interface FileRoutesById {
   '/studio/calendar': typeof StudioCalendarRoute
   '/studio/create': typeof StudioCreateRoute
   '/studio/dashboard': typeof StudioDashboardRoute
+  '/studio/feed': typeof StudioFeedRoute
   '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
   '/studio/onboarding': typeof StudioOnboardingRoute
@@ -746,6 +755,7 @@ export interface FileRouteTypes {
     | '/studio/calendar'
     | '/studio/create'
     | '/studio/dashboard'
+    | '/studio/feed'
     | '/studio/ideas'
     | '/studio/library'
     | '/studio/onboarding'
@@ -821,6 +831,7 @@ export interface FileRouteTypes {
     | '/studio/calendar'
     | '/studio/create'
     | '/studio/dashboard'
+    | '/studio/feed'
     | '/studio/ideas'
     | '/studio/library'
     | '/studio/onboarding'
@@ -897,6 +908,7 @@ export interface FileRouteTypes {
     | '/studio/calendar'
     | '/studio/create'
     | '/studio/dashboard'
+    | '/studio/feed'
     | '/studio/ideas'
     | '/studio/library'
     | '/studio/onboarding'
@@ -1286,6 +1298,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StudioIdeasRouteImport
       parentRoute: typeof StudioRoute
     }
+    '/studio/feed': {
+      id: '/studio/feed'
+      path: '/feed'
+      fullPath: '/studio/feed'
+      preLoaderRoute: typeof StudioFeedRouteImport
+      parentRoute: typeof StudioRoute
+    }
     '/studio/dashboard': {
       id: '/studio/dashboard'
       path: '/dashboard'
@@ -1521,6 +1540,7 @@ interface StudioRouteChildren {
   StudioCalendarRoute: typeof StudioCalendarRoute
   StudioCreateRoute: typeof StudioCreateRoute
   StudioDashboardRoute: typeof StudioDashboardRoute
+  StudioFeedRoute: typeof StudioFeedRoute
   StudioIdeasRoute: typeof StudioIdeasRoute
   StudioLibraryRoute: typeof StudioLibraryRoute
   StudioOnboardingRoute: typeof StudioOnboardingRoute
@@ -1543,6 +1563,7 @@ const StudioRouteChildren: StudioRouteChildren = {
   StudioCalendarRoute: StudioCalendarRoute,
   StudioCreateRoute: StudioCreateRoute,
   StudioDashboardRoute: StudioDashboardRoute,
+  StudioFeedRoute: StudioFeedRoute,
   StudioIdeasRoute: StudioIdeasRoute,
   StudioLibraryRoute: StudioLibraryRoute,
   StudioOnboardingRoute: StudioOnboardingRoute,

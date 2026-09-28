@@ -1,22 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import {
-  Archive,
-  ArrowRight,
-  ExternalLink,
-  ImageUp,
-  Lightbulb,
-  LoaderCircle,
-  Plus,
-  Sparkles,
-  X,
-} from "lucide-react";
+import { Archive, ArrowRight, ExternalLink, LoaderCircle, Plus, Sparkles, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { classifyLane } from "@/lib/studio-intelligence";
 import type { ContentDirection, StudioLane } from "@/lib/studio-model";
 import { useStudio } from "./StudioProvider";
 import { useStudioMotion } from "./studio-motion";
+import { supabase } from "@/lib/supabase/client";
+import { StudioGraphic } from "./StudioGraphic";
+import "./studio-support.css";
 
 const lanes = {
   spotlight: { label: "Spotlight", role: "Build trust" },
@@ -62,10 +55,64 @@ function sourceLink(value: string | null) {
   }
 }
 
+function IdeaSourceImage({ path, workspaceId }: { path: string; workspaceId?: string }) {
+  const [url, setUrl] = useState("");
+  const [failed, setFailed] = useState(false);
+  useEffect(() => {
+    let active = true;
+    setUrl("");
+    setFailed(false);
+    if (!workspaceId || !path.startsWith(`${workspaceId}/`)) {
+      setFailed(true);
+      return;
+    }
+    void supabase.storage
+      .from("campaign-assets")
+      .createSignedUrl(path, 3600)
+      .then((result) => {
+        if (active) {
+          setUrl(result.data?.signedUrl || "");
+          setFailed(Boolean(result.error || !result.data?.signedUrl));
+        }
+      })
+      .catch(() => {
+        if (active) setFailed(true);
+      });
+    return () => {
+      active = false;
+    };
+  }, [path, workspaceId]);
+  return (
+    <div className="studio-idea-source-image">
+      {url && !failed ? (
+        <img
+          src={url}
+          alt="Image saved as the source for this idea"
+          loading="lazy"
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        <div>
+          <StudioGraphic name="image" size={56} />
+          <span>{failed ? "Saved image preview unavailable" : "Loading saved image…"}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /** Restores standalone idea capture and directions from the pre-consolidation workflow. */
 export function StudioIdeasBoard() {
-  const { ideas, createIdea, updateIdea, uploadIdeaSource, suggestDirections, brand, busy } =
-    useStudio();
+  const {
+    ideas,
+    createIdea,
+    updateIdea,
+    uploadIdeaSource,
+    suggestDirections,
+    brand,
+    busy,
+    workspace,
+  } = useStudio();
   const ui = useStudioMotion();
   const [draft, setDraft] = useState("");
   const [sourceType, setSourceType] = useState<"text" | "link" | "image">("text");
@@ -192,7 +239,7 @@ export function StudioIdeasBoard() {
   }
 
   return (
-    <div className="mx-auto max-w-[88rem]">
+    <div className="studio-support studio-ideas-board mx-auto max-w-[88rem]">
       <header className="flex flex-wrap items-end justify-between gap-5">
         <div className="max-w-2xl">
           <p className="studio-eyebrow text-system">Content ideas</p>
@@ -211,12 +258,15 @@ export function StudioIdeasBoard() {
       <div className="mt-8 grid items-start gap-8 xl:grid-cols-[minmax(0,24rem)_minmax(0,1fr)] xl:gap-12">
         <section
           aria-labelledby="idea-capture-title"
-          className="rounded-2xl border border-border bg-white p-5 sm:p-6"
+          className="studio-idea-capture rounded-2xl border border-border bg-white p-5 sm:p-6"
         >
-          <p className="studio-eyebrow text-system">Quick capture</p>
-          <h2 id="idea-capture-title" className="mt-3 text-xl font-black">
-            What are we starting with?
-          </h2>
+          <div className="studio-idea-capture-heading">
+            <StudioGraphic name="ideas" size={54} />
+            <div>
+              <p className="studio-support-kicker">Quick capture</p>
+              <h2 id="idea-capture-title">What are we starting with?</h2>
+            </div>
+          </div>
           <div className="mt-5 flex border-b border-border" role="group" aria-label="Source type">
             {(["text", "link", "image"] as const).map((type) => (
               <button
@@ -255,7 +305,7 @@ export function StudioIdeasBoard() {
                     />
                   ) : (
                     <>
-                      <ImageUp className="size-6 text-system" />
+                      <StudioGraphic name="image" size={58} />
                       <span className="text-sm font-bold">Choose a source image</span>
                       <span className="text-xs text-muted-foreground">PNG, JPG, or WebP</span>
                     </>
@@ -309,12 +359,12 @@ export function StudioIdeasBoard() {
                 className="min-h-11 min-w-0 rounded-lg border border-border bg-white px-3 font-normal"
               />
             </label>
-            <p
-              className="border-l-2 pl-3 text-xs leading-relaxed"
-              style={{ borderColor: `var(--${detectedLane})`, color: ink(detectedLane) }}
-            >
-              <strong>{lanes[detectedLane].label}</strong> · {lanes[detectedLane].role}. You can
-              change the category after saving.
+            <p className="studio-idea-detected text-xs leading-relaxed">
+              <StudioGraphic name={detectedLane} size={28} />
+              <span>
+                <strong>{lanes[detectedLane].label}</strong> · {lanes[detectedLane].role}. You can
+                change the category after saving.
+              </span>
             </p>
           </fieldset>
           <div className="mt-5 grid gap-2 sm:grid-cols-2">
@@ -435,7 +485,7 @@ export function StudioIdeasBoard() {
               ))}
             </div>
           </div>
-          <div className="mt-5 divide-y divide-border border-y border-border">
+          <div className="studio-idea-grid">
             {visible.map((idea) => {
               const lane = laneKeys.includes(idea.primary_lane as StudioLane)
                 ? (idea.primary_lane as StudioLane)
@@ -446,17 +496,17 @@ export function StudioIdeasBoard() {
                   key={idea.id}
                   layout={ui.reduceMotion ? false : "position"}
                   transition={ui.transition}
-                  className="py-5 sm:py-6"
+                  className="studio-saved-idea"
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-3">
+                  {idea.source_type === "image" && idea.source_media_path ? (
+                    <IdeaSourceImage path={idea.source_media_path} workspaceId={workspace?.id} />
+                  ) : null}
+                  <div className="studio-saved-idea-header">
+                    <StudioGraphic name={idea.source_type === "image" ? "image" : lane} size={48} />
                     <label
                       className="flex items-center gap-2 text-xs font-bold"
                       style={{ color: ink(lane) }}
                     >
-                      <span
-                        className="size-2 rounded-full"
-                        style={{ background: `var(--${lane})` }}
-                      />
                       <span className="sr-only">Category for {idea.body.slice(0, 50)}</span>
                       <select
                         value={lane}
@@ -475,13 +525,15 @@ export function StudioIdeasBoard() {
                         ))}
                       </select>
                     </label>
-                    <span className="text-xs capitalize text-muted-foreground">
-                      {idea.source_type} source
+                    <span className="studio-idea-source-label">
+                      {idea.source_type === "recommended"
+                        ? "Suggested brief"
+                        : idea.source_type === "chat"
+                          ? "From a chat"
+                          : `${idea.source_type} source`}
                     </span>
                   </div>
-                  <h3 className="mt-2 whitespace-pre-wrap break-words text-lg font-bold leading-snug">
-                    {idea.body}
-                  </h3>
+                  <h3 className="studio-saved-idea-copy">{idea.body}</h3>
                   {idea.business_problem ? (
                     <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                       {idea.business_problem}
@@ -549,7 +601,7 @@ export function StudioIdeasBoard() {
                         }}
                         className="flex min-h-16 w-full items-center gap-3 py-4 text-left"
                       >
-                        <Lightbulb className="size-4 shrink-0" style={{ color: ink(idea.lane) }} />
+                        <StudioGraphic name={idea.lane} size={42} />
                         <span className="text-sm font-bold">{idea.text}</span>
                         <ArrowRight className="ml-auto size-4 shrink-0 text-muted-foreground" />
                       </button>

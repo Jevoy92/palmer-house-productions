@@ -179,6 +179,7 @@ export const studioPlanPrices = {
   },
 } as const satisfies Record<StudioPlanKey, { month: string; year: string }>;
 export type StudioView =
+  | "feed"
   | "engine"
   | "work"
   | "home"
@@ -216,6 +217,7 @@ export const AssistantRequestSchema = z.object({
   accessToken: z.string().min(20),
   question: z.string().min(3).max(3000),
   pal: z.enum(palNames),
+  palProfileId: z.string().uuid().optional(),
   recentMessages: z
     .array(z.object({ role: z.enum(["user", "assistant"]), body: z.string().max(6000) }))
     .max(12),

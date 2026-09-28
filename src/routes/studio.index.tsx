@@ -4,9 +4,9 @@ import { StudioPage } from "@/components/studio/StudioApp";
 export const Route = createFileRoute("/studio/")({
   head: () => ({
     meta: [
-      { title: "Home — Palmer House Studio" },
+      { title: "Chat — Palmer House Studio" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),
-  component: () => <StudioPage view="home" />,
+  component: () => <StudioPage view="conversations" />,
 });

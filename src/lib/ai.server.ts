@@ -3,9 +3,7 @@ import type { z } from "zod";
 
 type ImagePart = { type: "input_image"; image_url: string; detail?: "low" | "high" | "auto" };
 type TextPart = { type: "input_text"; text: string };
-type StudioInput =
-  | string
-  | Array<{ role: "user"; content: Array<TextPart | ImagePart> }>;
+type StudioInput = string | Array<{ role: "user"; content: Array<TextPart | ImagePart> }>;
 
 /**
  * Structured AI generation through the Lovable AI Gateway.
@@ -28,12 +26,12 @@ export async function parseStructured<T extends z.ZodTypeAny>(
   input: StudioInput,
   options?: { model?: string },
 ): Promise<z.infer<T>> {
-  const key = process.env['LOVABLE_API_KEY'];
+  const key = process.env["LOVABLE_API_KEY"];
   if (!key) throw new Error("AI is not configured for this project.");
   const { default: OpenAI } = await import("openai");
   const client = new OpenAI({
     apiKey: key,
-    baseURL: process.env['AI_GATEWAY_URL'] || "https://ai.gateway.lovable.dev/v1",
+    baseURL: process.env["AI_GATEWAY_URL"] || "https://ai.gateway.lovable.dev/v1",
   });
 
   const userContent =
@@ -63,4 +61,44 @@ export async function parseStructured<T extends z.ZodTypeAny>(
   const raw = completion.choices[0]?.message?.content;
   if (!raw) throw new Error("The AI returned an empty response. Please try again.");
   return schema.parse(JSON.parse(raw)) as z.infer<T>;
+}
+
+/** Gateway image output stays on the server; callers receive validated bytes. */
+export async function generateStudioImage(prompt: string) {
+  const key = process.env["LOVABLE_API_KEY"];
+  if (!key) throw new Error("Image generation is not configured for this project.");
+  const response = await fetch(
+    `${(process.env["AI_GATEWAY_URL"] || "https://ai.gateway.lovable.dev/v1").replace(/\/$/, "")}/chat/completions`,
+    {
+      method: "POST",
+      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: process.env["STUDIO_IMAGE_MODEL"] || "google/gemini-3.1-flash-image",
+        modalities: ["image", "text"],
+        messages: [{ role: "user", content: prompt }],
+      }),
+      signal: AbortSignal.timeout(120000),
+    },
+  );
+  if (!response.ok) {
+    if (response.status === 429)
+      throw new Error("Image generation is busy. Please try again shortly.");
+    if (response.status === 402)
+      throw new Error("Image generation credits are unavailable. Contact your workspace owner.");
+    throw new Error("The image provider could not generate this image. Please try again.");
+  }
+  const result = (await response.json()) as {
+    choices?: Array<{ message?: { images?: Array<{ image_url?: { url?: string } }> } }>;
+  };
+  const image = result.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+  const match = image?.match(/^data:image\/(png|jpeg|webp);base64,([A-Za-z0-9+/=\r\n]+)$/);
+  if (!match)
+    throw new Error("The image provider returned no usable image. No artifact was saved.");
+  const bytes = Buffer.from(match[2], "base64");
+  if (!bytes.length || bytes.length > 20 * 1024 * 1024)
+    throw new Error("The generated image has an unsupported size.");
+  const { validateImageBytes } = await import("./studio-artifact.server");
+  const mimeType = `image/${match[1]}`;
+  validateImageBytes(bytes, mimeType);
+  return { bytes, mimeType, extension: match[1] === "jpeg" ? "jpg" : match[1] };
 }

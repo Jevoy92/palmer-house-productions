@@ -232,7 +232,7 @@ export function beginStudioTranscriptionCall(model: string, seconds: number) {
   const run = context.getStore();
   if (!run || run.operation !== "transcription")
     throw new Error("A voice usage reservation is required before transcription.");
-  if (model !== "gpt-transcribe")
+  if (model !== "google/gemini-3.5-transcribe")
     throw new Error("This transcription model has no approved duration price.");
   if (run.calls.length)
     throw new Error("Only one transcription request is allowed per reservation.");

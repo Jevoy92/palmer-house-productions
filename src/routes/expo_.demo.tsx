@@ -181,9 +181,9 @@ function ExpoDemo() {
     setMessages((m) => [...m, { id: crypto.randomUUID(), role: "pal", text, pal: key }]);
   };
 
-  const requestImage = async (slot: ImageSlot, prompt: string) => {
+  const requestImage = async (slot: ImageSlot, prompt: string, attempt = 0): Promise<void> => {
     const token = gen.current;
-    const request = ++imageRequests.current[slot];
+    const request = attempt ? imageRequests.current[slot] : ++imageRequests.current[slot];
     const current = () => token === gen.current && request === imageRequests.current[slot];
     setImageStatus((s) => ({ ...s, [slot]: "loading" }));
     try {
@@ -195,7 +195,9 @@ function ExpoDemo() {
       setImages((v) => ({ ...v, [slot]: result.url }));
       setImageStatus((s) => ({ ...s, [slot]: "ready" }));
     } catch {
-      if (current()) setImageStatus((s) => ({ ...s, [slot]: "error" }));
+      if (!current()) return;
+      if (attempt < 1) return requestImage(slot, prompt, attempt + 1);
+      setImageStatus((s) => ({ ...s, [slot]: "error" }));
     }
   };
 

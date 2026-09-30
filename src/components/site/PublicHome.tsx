@@ -5,7 +5,7 @@ import { InView } from "./PageShell";
 import { PAL_HEADSHOTS } from "@/lib/pal-lanes";
 import { palPersonas } from "@/lib/pal-personas";
 import { getPackageById, computePackagePrice, getPackageScope } from "@/lib/pricing-catalog";
-import { packagePreviews } from "@/lib/package-previews";
+import { FormatLoop } from "@/components/collection/FormatLoop";
 import type { PalName } from "@/lib/studio-model";
 import productionIcon from "@/assets/hero/icon-production.webp";
 import storyIcon from "@/assets/hero/icon-story.webp";
@@ -106,14 +106,8 @@ export function HomePackages() {
               params={{ packageId: id }}
             >
               <div className="ph-package-picture">
-                <img
-                  src={packagePreviews[id].poster}
-                  alt={`Fictional ${item.name.toLowerCase()} video example`}
-                  width={960}
-                  height={540}
-                  loading="lazy"
-                />
-                <span>AI concept example</span>
+                <FormatLoop id={id} name={item.name} />
+                <span>Format preview</span>
               </div>
               <div className="ph-package-info">
                 <div>

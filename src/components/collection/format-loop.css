@@ -1,0 +1,57 @@
+.fl {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  background: var(--fl-soft);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  --fl-cycle: 7s;
+}
+.fl-frame {
+  width: 62%;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 1rem 1.1rem;
+  display: grid;
+  gap: 0.7rem;
+  color: var(--foreground);
+}
+.fl-phone .fl-frame { width: 44%; border-radius: 1.4rem; }
+.fl-head { display: flex; align-items: center; gap: 0.5rem; font-size: clamp(0.8rem, 1.6vw, 1.05rem); line-height: 1.1; }
+.fl-dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--fl-color); flex: none; }
+.fl-beats { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+.fl-timeline .fl-beats { grid-auto-flow: column; grid-auto-columns: 1fr; }
+.fl-beats li {
+  display: flex; align-items: center; gap: 0.45rem;
+  font-size: clamp(0.62rem, 1.2vw, 0.82rem); font-weight: 650;
+  padding: 0.35rem 0.5rem; border-radius: 0.55rem; background: var(--fl-soft);
+  opacity: 0; transform: translateY(6px);
+  animation: fl-beat var(--fl-cycle) ease-out infinite;
+  animation-delay: calc(var(--i) * 0.9s + 0.4s);
+}
+.fl-chat li:nth-child(even) { margin-left: 18%; background: var(--fl-color); color: var(--background); }
+.fl-timeline li { justify-content: center; text-align: center; }
+.fl-mark {
+  width: 0.9rem; height: 0.9rem; flex: none; border-radius: 50%;
+  border: 2px solid var(--fl-color); display: grid; place-items: center;
+  font-size: 0.55rem; color: var(--fl-color);
+}
+.fl-checklist .fl-mark, .fl-callouts .fl-mark { background: var(--fl-color); }
+.fl-chat .fl-mark, .fl-timeline .fl-mark, .fl-phone .fl-mark { display: none; }
+.fl-progress { height: 4px; border-radius: 4px; background: var(--fl-soft); overflow: hidden; }
+.fl-progress span {
+  display: block; height: 100%; background: var(--fl-color);
+  transform-origin: left; animation: fl-bar var(--fl-cycle) linear infinite;
+}
+@keyframes fl-beat {
+  0% { opacity: 0; transform: translateY(6px); }
+  8%, 80% { opacity: 1; transform: none; }
+  92%, 100% { opacity: 0; transform: translateY(-4px); }
+}
+@keyframes fl-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .fl-beats li { animation: none; opacity: 1; transform: none; }
+  .fl-progress span { animation: none; transform: scaleX(1); }
+}

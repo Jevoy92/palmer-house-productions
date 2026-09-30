@@ -125,7 +125,7 @@ export async function applyStudioBillingEvent(
         session.payment_status === "paid"
       ) {
         const { upsertExpoContact } = await import("./expo.server");
-        const offer = session.metadata.offer === "booth" ? "booth" : "public";
+        const offer = session.metadata.offer?.endsWith("booth") ? "booth" : "public";
         await upsertExpoContact({
           email,
           name: session.customer_details?.name ?? null,

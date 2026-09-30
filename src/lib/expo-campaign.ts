@@ -29,6 +29,11 @@ export const expoCampaign = {
     public: { monthly: 79, couponId: "sbe-la-2026-public" },
     booth: { monthly: 69, couponId: "sbe-la-2026-booth" },
   },
+  /** Guided (business) and Partner: percent off the first three monthly payments. */
+  tierOffers: {
+    public: { percentOff: 10, couponId: "sbe-la-2026-tier-public" },
+    booth: { percentOff: 20, couponId: "sbe-la-2026-tier-booth" },
+  },
   /** Discounted checkout sessions must be completed within this window. */
   checkoutWindowMinutes: 30,
 } as const;

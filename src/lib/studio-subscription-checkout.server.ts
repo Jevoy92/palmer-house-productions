@@ -68,15 +68,36 @@ export async function openStudioMembershipCheckout(input: {
   const { expoCampaign, expoOfferLive } = await import("./expo-campaign");
   const { boothCodeMatches } = await import("./expo.server");
   const introEligible =
-    expoOfferLive() && input.plan === "creator" && input.interval === "month" && subscriptions.data.length === 0;
+    expoOfferLive() && input.interval === "month" && subscriptions.data.length === 0;
+  const tierOffer = input.plan !== "creator";
   if (input.boothCode && !introEligible)
     throw new Error(
-      "This booth offer applies only to a first monthly Studio membership before Sunday, October 4. No payment was taken.",
+      "This booth offer applies only to a first monthly membership before Sunday, October 4. No payment was taken.",
     );
   if (input.boothCode && !boothCodeMatches(input.boothCode))
     throw new Error("That booth code isn't valid. Remove it to continue at the public rate. No payment was taken.");
   const offer: "public" | "booth" | null = !introEligible ? null : input.boothCode ? "booth" : "public";
-  const offerTag = offer ?? "regular";
+  const offerTag = offer ? (tierOffer ? `tier-${offer}` : offer) : "regular";
+  let couponId: string | null = null;
+  if (offer && tierOffer) {
+    const tier = expoCampaign.tierOffers[offer];
+    couponId = tier.couponId;
+    // Create the percent-off coupon on first use in whichever Stripe mode is active.
+    try {
+      await stripe.coupons.retrieve(couponId);
+    } catch {
+      await stripe.coupons
+        .create({
+          id: couponId,
+          name: offer === "booth" ? "Booth offer" : "Expo offer",
+          percent_off: tier.percentOff,
+          duration: "repeating",
+          duration_in_months: expoCampaign.months,
+          redeem_by: Math.floor(Date.parse(expoCampaign.endsAt) / 1000),
+        })
+        .catch(() => undefined);
+    }
+  } else if (offer) couponId = expoCampaign.offers[offer].couponId;
   for (let attempt = 0; attempt < 2; attempt++) {
     const claimed = await admin.rpc("claim_studio_membership_checkout", {
       target_workspace_id: input.workspaceId,
@@ -109,7 +130,7 @@ export async function openStudioMembershipCheckout(input: {
               line_items: [{ quantity: 1, price: (stripeTestMode() ? studioPlanTestPrices : studioPlanPrices)[plan][interval] }],
               ...(offer
                 ? {
-                    discounts: [{ coupon: expoCampaign.offers[offer].couponId }],
+                    discounts: [{ coupon: couponId! }],
                     expires_at:
                       Math.floor(Date.now() / 1000) + expoCampaign.checkoutWindowMinutes * 60,
                   }

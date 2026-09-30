@@ -642,7 +642,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
         </header>
         {showOpening && conversationMessages.length > 0 ? (
           <div className="studio-chat-return" role="status">
-            <PalAvatar pal={pal} size="xs" ring={false} />
+            <img src={pal.avatar} alt="" className="studio-chat-return-avatar" />
             <span>
               <strong>{pal.name}:</strong> Welcome back. Pick up where we left off, or tell me
               what’s next.

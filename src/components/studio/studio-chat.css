@@ -1427,3 +1427,4 @@ html[data-studio-text="large"] .studio-composer-row textarea {
   .studio-chat-return { font-size: 12.5px; width: calc(100% - 20px); }
   .studio-chat-timeline .studio-artifact-heading h2 { font-size: 15px; }
 }
+.studio-chat-return-avatar{width:26px;height:26px;border-radius:50%;object-fit:cover;object-position:top;flex-shrink:0}

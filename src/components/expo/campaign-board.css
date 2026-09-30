@@ -1,0 +1,336 @@
+.cp-board {
+  min-width: 0;
+  background: #050505;
+  color: #f5f3ec;
+  padding: 12px 24px 24px;
+  font-family: var(--font-sans-brand), Arial, sans-serif;
+}
+.cp-board button {
+  background: transparent;
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+.cp-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  margin-bottom: 6px;
+  min-width: 0;
+}
+.cp-breadcrumb > span:first-child {
+  color: #bc88fa;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.cp-breadcrumb > span:nth-child(3) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cp-breadcrumb > button {
+  margin-left: auto;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  white-space: nowrap;
+  color: #b7b3be;
+  font-size: 11px;
+}
+.cp-heading {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 2px;
+}
+.cp-heading h1 {
+  font-size: clamp(30px, 3.65vw, 66px);
+  line-height: 1.05;
+  letter-spacing: -0.055em;
+  font-weight: 800;
+  margin: 0 0 5px;
+  color: #f9f6ed;
+  text-wrap: balance;
+}
+.cp-heading em {
+  font-style: normal;
+  color: #ee6b08;
+}
+.cp-ready {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #386b33;
+  background: #152414;
+  color: #acf1a6;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 11px;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.cp-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid #28282b;
+  margin-bottom: 12px;
+}
+.cp-filters {
+  display: flex;
+  gap: 20px;
+  min-width: 0;
+  overflow-x: auto;
+}
+.cp-filters button {
+  position: relative;
+  white-space: nowrap;
+  padding: 9px 3px;
+  color: #aaa8b2;
+  font-size: 12px;
+}
+.cp-filters button[aria-pressed="true"] {
+  color: #fff;
+  font-weight: 650;
+}
+.cp-filters button[aria-pressed="true"]::after {
+  content: "";
+  height: 3px;
+  border-radius: 3px;
+  background: #b66aff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.cp-layouts {
+  display: flex;
+  gap: 4px;
+  margin-left: auto;
+}
+.cp-layouts button {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding: 7px 9px;
+  font-size: 10px;
+  color: #aaa8b2;
+  border: 1px solid transparent;
+  border-radius: 7px;
+}
+.cp-layouts button[aria-pressed="true"] {
+  border-color: #35343a;
+  background: #18171b;
+  color: #eee;
+}
+.cp-cards {
+  min-width: 0;
+  gap: 12px;
+  align-items: start;
+}
+.cp-vertical {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.64fr) minmax(0, 1.02fr);
+  grid-template-areas: "ig reel li" "ig reel carousel" "yt yt extra";
+}
+.cp-vertical .cp-kind-instagram {
+  grid-area: ig;
+}
+.cp-vertical .cp-kind-reel {
+  grid-area: reel;
+}
+.cp-vertical .cp-kind-linkedin {
+  grid-area: li;
+}
+.cp-vertical .cp-kind-carousel {
+  grid-area: carousel;
+}
+.cp-vertical .cp-kind-youtube {
+  grid-area: yt;
+}
+.cp-vertical .cp-kind-extra {
+  grid-area: extra;
+}
+.cp-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #343438;
+  border-radius: 12px;
+  background: linear-gradient(125deg, #151518, #090a0c);
+  box-shadow: 0 2px 6px #0003;
+}
+.cp-card > header {
+  height: 33px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 10px;
+  color: #f4f4f5;
+  font-size: 11px;
+}
+.cp-card > header > span {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  min-width: 0;
+}
+.cp-card > header strong {
+  font-weight: 650;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cp-card > header small {
+  font-size: 10px;
+  color: #a9a7ad;
+  white-space: nowrap;
+}
+.cp-card > header button {
+  width: 23px;
+  height: 23px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  border: 1px solid #46454a;
+  border-radius: 5px;
+  color: #fff;
+  background: #1e1e2190;
+}
+.cp-card-preview {
+  min-width: 0;
+  padding: 0 3px 3px;
+  overflow: hidden;
+}
+.cp-card-preview > .xp-artifact {
+  border-radius: 8px;
+}
+.cp-card .xp-sequence-controls {
+  font-size: 9px;
+}
+.cp-card .xp-linkedin-body {
+  font-size: clamp(10px, 2.7cqw, 14px);
+}
+.cp-kind-extra .xp-document {
+  max-height: 300px;
+  overflow-y: auto;
+}
+.cp-kind-youtube .xp-yt-art {
+  aspect-ratio: 16/9;
+}
+.cp-horizontal {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding-bottom: 14px;
+}
+.cp-horizontal .cp-card {
+  flex: 0 0 330px;
+  scroll-snap-align: start;
+}
+.cp-horizontal .cp-kind-youtube,
+.cp-horizontal .cp-kind-linkedin,
+.cp-horizontal .cp-kind-extra {
+  flex-basis: 470px;
+}
+.cp-horizontal .cp-kind-reel {
+  flex-basis: 275px;
+}
+.cp-horizontal .cp-kind-carousel {
+  flex-basis: 470px;
+}
+.cp-filtered.cp-vertical {
+  grid-template-areas: none;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  align-items: start;
+}
+.cp-filtered.cp-vertical .cp-card {
+  grid-area: auto;
+  max-width: 500px;
+}
+.cp-board button:focus-visible {
+  outline: 2px solid #b986f7;
+  outline-offset: 3px;
+}
+.cp-empty {
+  padding: 40px;
+  color: #a9a7ad;
+}
+@media (min-width: 1800px) {
+  .cp-board {
+    padding: 24px 32px;
+  }
+  .cp-heading h1 {
+    font-size: 66px;
+  }
+}
+@media (max-width: 1180px) {
+  .cp-ready {
+    padding: 8px;
+    font-size: 10px;
+  }
+  .cp-heading {
+    gap: 10px;
+  }
+  .cp-filters {
+    gap: 12px;
+  }
+  .cp-layouts button span {
+    display: none;
+  }
+  .cp-board {
+    padding: 18px;
+  }
+  .cp-heading h1 {
+    font-size: clamp(28px, 3.9vw, 48px);
+  }
+}
+@media (max-width: 760px) {
+  .cp-board {
+    padding: 18px 12px;
+  }
+  .cp-heading {
+    flex-wrap: wrap;
+  }
+  .cp-heading h1 {
+    font-size: 35px;
+  }
+  .cp-ready {
+    margin: 0 0 6px;
+  }
+  .cp-toolbar {
+    gap: 8px;
+  }
+  .cp-filters {
+    gap: 10px;
+  }
+  .cp-filters button {
+    font-size: 11px;
+  }
+  .cp-layouts button {
+    padding: 7px;
+  }
+  .cp-vertical {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas: "ig reel" "li li" "carousel carousel" "yt yt" "extra extra";
+  }
+  .cp-breadcrumb > button {
+    font-size: 0;
+    gap: 0;
+  }
+  .cp-horizontal .cp-card {
+    flex-basis: 80vw;
+  }
+  .cp-horizontal .cp-kind-reel {
+    flex-basis: 66vw;
+  }
+  .cp-horizontal .cp-kind-youtube,
+  .cp-horizontal .cp-kind-linkedin,
+  .cp-horizontal .cp-kind-extra,
+  .cp-horizontal .cp-kind-carousel {
+    flex-basis: 86vw;
+  }
+}

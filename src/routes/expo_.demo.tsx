@@ -1,7 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useRef, useState } from "react";
+import * as Dialog from "@radix-ui/react-dialog";
 import { useServerFn } from "@tanstack/react-start";
-import { ArrowUp, Copy, ImagePlus, RotateCcw, UserRound, X } from "lucide-react";
+import {
+  ArrowUp,
+  ArrowRight,
+  Check,
+  Copy,
+  ImagePlus,
+  LayoutGrid,
+  Maximize2,
+  MessageCircle,
+  RotateCcw,
+  UserRound,
+  X,
+} from "lucide-react";
 import { palList, palDirectory } from "@/lib/pal-directory";
 import type { PalName } from "@/lib/studio-model";
 import { expoDemoCampaign, expoDemoChat, expoDemoImage } from "@/lib/expo-demo.functions";
@@ -14,6 +27,8 @@ import {
 } from "@/lib/expo-demo-types";
 import { exampleLibrary, expoGreetings, getExample, pickExample } from "@/lib/expo-demo-example";
 import { ArtifactPreview, artifactText } from "@/components/expo/DemoArtifacts";
+import { CampaignBoard } from "@/components/expo/CampaignBoard";
+import "@/components/expo/expo-reference-layout.css";
 
 export const Route = createFileRoute("/expo_/demo")({
   head: () => ({
@@ -39,16 +54,12 @@ export const Route = createFileRoute("/expo_/demo")({
 
 type Msg = { id: string; role: "guest" | "pal"; text: string; pal?: PalName };
 type Mode = "live" | "example";
-type View = "editorial" | "gallery" | "journey";
+type View = "chat" | "gallery" | "horizontal";
+type ImageSlot = "square" | "wide";
+type ImageStatus = "idle" | "loading" | "ready" | "error";
 
 const newSession = () => crypto.randomUUID();
 const urlPattern = /\b((?:https?:\/\/)?(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s]*)?)/i;
-const stageLabel = {
-  stop: "Stop the scroll",
-  matter: "Make it matter",
-  invite: "Invite them in",
-} as const;
-
 function ExpoDemo() {
   const chat = useServerFn(expoDemoChat);
   const build = useServerFn(expoDemoCampaign);
@@ -65,15 +76,21 @@ function ExpoDemo() {
   const [campaignOrigin, setCampaignOrigin] = useState<Mode | null>(null);
   const [exampleKey, setExampleKey] = useState("coffee");
   const [images, setImages] = useState<{ square?: string; wide?: string }>({});
+  const [imageStatus, setImageStatus] = useState<Record<ImageSlot, ImageStatus>>({
+    square: "idle",
+    wide: "idle",
+  });
   const [photo, setPhoto] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [mode, setMode] = useState<Mode>("live");
-  const [view, setView] = useState<View>("editorial");
+  const [view, setView] = useState<View>("chat");
   const [open, setOpen] = useState<string | null>(null);
   const [staff, setStaff] = useState(false);
+  const [showAllPals, setShowAllPals] = useState(false);
   const [draft, setDraft] = useState("");
   const [sources, setSources] = useState<Array<{ url: string; title: string }>>([]);
   const gen = useRef(0);
+  const imageRequests = useRef({ square: 0, wide: 0 });
   const chatEnd = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -93,9 +110,10 @@ function ExpoDemo() {
     setCampaign(null);
     setCampaignOrigin(null);
     setImages({});
+    setImageStatus({ square: "idle", wide: "idle" });
     setPhoto(null);
     setError(null);
-    setView("editorial");
+    setView("chat");
     setOpen(null);
     setDraft("");
     setSources([]);
@@ -140,6 +158,7 @@ function ExpoDemo() {
     setCampaign(ex.campaign);
     setCampaignOrigin("example");
     setImages(ex.images ?? {});
+    setImageStatus({ square: "ready", wide: "ready" });
     setReady(true);
     setMessages([
       {
@@ -152,6 +171,7 @@ function ExpoDemo() {
   };
 
   const choosePal = (key: PalName) => {
+    if (key === pal) return;
     const hadWork = messages.length > 0;
     setPal(key);
     const name = palDirectory[key].name;
@@ -161,8 +181,30 @@ function ExpoDemo() {
     setMessages((m) => [...m, { id: crypto.randomUUID(), role: "pal", text, pal: key }]);
   };
 
+  const requestImage = async (slot: ImageSlot, prompt: string) => {
+    const token = gen.current;
+    const request = ++imageRequests.current[slot];
+    const current = () => token === gen.current && request === imageRequests.current[slot];
+    setImageStatus((s) => ({ ...s, [slot]: "loading" }));
+    try {
+      const result = await image({
+        data: { sessionId, prompt, aspect: slot === "square" ? "4:5" : "16:9" },
+      });
+      if (!current()) return;
+      if (!result.url) throw new Error("No image returned");
+      setImages((v) => ({ ...v, [slot]: result.url }));
+      setImageStatus((s) => ({ ...s, [slot]: "ready" }));
+    } catch {
+      if (current()) setImageStatus((s) => ({ ...s, [slot]: "error" }));
+    }
+  };
+
+  const campaignImagePrompt = (c: DemoCampaign, b: GuestBrief) =>
+    c.artifacts.find((a) => a.type === "instagram")?.imagePrompt ||
+    `${b.businessName}: ${b.offer}, ${b.location}`;
+
   const runBuild = async (b: GuestBrief) => {
-    if (!pal) return;
+    if (!pal || building || thinking) return;
     const token = gen.current;
     setError(null);
     if (mode === "example") {
@@ -188,16 +230,12 @@ function ExpoDemo() {
       ]);
       if (photo) {
         setImages({ square: photo, wide: photo });
+        setImageStatus({ square: "ready", wide: "ready" });
         return;
       }
-      const ig = c.artifacts.find((a) => a.type === "instagram");
-      const prompt = ig?.imagePrompt || `${b.businessName}: ${b.offer}, ${b.location}`;
-      image({ data: { sessionId, prompt, aspect: "4:5" } })
-        .then((r) => token === gen.current && setImages((v) => ({ ...v, square: r.url })))
-        .catch(() => {});
-      image({ data: { sessionId, prompt, aspect: "16:9" } })
-        .then((r) => token === gen.current && setImages((v) => ({ ...v, wide: r.url })))
-        .catch(() => {});
+      const prompt = campaignImagePrompt(c, b);
+      void requestImage("square", prompt);
+      void requestImage("wide", prompt);
     } catch (e) {
       if (token !== gen.current) return;
       setBuilding(null);
@@ -206,7 +244,7 @@ function ExpoDemo() {
   };
 
   const send = async (text: string) => {
-    if (!pal || !text.trim() || thinking) return;
+    if (!pal || !text.trim() || thinking || building) return;
     const token = gen.current;
     const guest: Msg = { id: crypto.randomUUID(), role: "guest", text: text.trim() };
     const next = [...messages, guest];
@@ -261,9 +299,14 @@ function ExpoDemo() {
   const onPhoto = (file?: File) => {
     if (!file || !file.type.startsWith("image/") || file.size > 10 * 1024 * 1024) return;
     if (photo) URL.revokeObjectURL(photo);
+    imageRequests.current.square += 1;
+    imageRequests.current.wide += 1;
     const url = URL.createObjectURL(file);
     setPhoto(url);
-    if (campaign) setImages({ square: url, wide: url });
+    if (campaign) {
+      setImages({ square: url, wide: url });
+      setImageStatus({ square: "ready", wide: "ready" });
+    }
   };
 
   const brand = brief.businessName || "Your business";
@@ -275,26 +318,39 @@ function ExpoDemo() {
   const conversation = (
     <aside className="xd-chat" aria-label="Conversation">
       <header className="xd-chat-head">
-        <img src={palDirectory[pal].headshot} alt="" />
-        <div>
-          <strong>{palDirectory[pal].name}</strong>
-          <span>{palDirectory[pal].role}</span>
+        <div className="xd-pal-heading">
+          <strong>Your Pal</strong>
+          <button type="button" onClick={() => setShowAllPals(!showAllPals)}>
+            {showAllPals ? "Show less" : "See all 8"}
+            <ArrowRight size={14} />
+          </button>
         </div>
-        <details className="xd-switch">
-          <summary>Switch Pal</summary>
-          <div>
-            {palList.map((p) => (
-              <button
-                key={p.key}
-                type="button"
-                onClick={() => choosePal(p.key)}
-                aria-label={p.name}
-              >
-                <img src={p.headshot} alt="" />
-              </button>
-            ))}
-          </div>
-        </details>
+        <div className="xd-pal-roster">
+          {(showAllPals
+            ? palList
+            : [palDirectory.kiana, palDirectory.ryder, palDirectory.clara, palDirectory.cyrus].some(
+                  (p) => p.key === pal,
+                )
+              ? [palDirectory.kiana, palDirectory.ryder, palDirectory.clara, palDirectory.cyrus]
+              : [
+                  palDirectory[pal],
+                  ...[palDirectory.kiana, palDirectory.ryder, palDirectory.clara].filter(
+                    (p) => p.key !== pal,
+                  ),
+                ]
+          ).map((p) => (
+            <button
+              key={p.key}
+              type="button"
+              onClick={() => choosePal(p.key)}
+              aria-pressed={pal === p.key}
+              aria-label={`Talk with ${p.name}`}
+            >
+              <img src={p.headshot} alt="" />
+              <span>{p.name}</span>
+            </button>
+          ))}
+        </div>
       </header>
       {mode === "example" ? (
         <div className="xd-example-picker">
@@ -314,7 +370,7 @@ function ExpoDemo() {
           </select>
           <div className="xd-example-picker-actions">
             <button type="button" onClick={() => openExample(exampleKey)}>
-              View campaign
+              Load example
             </button>
             <button
               type="button"
@@ -349,36 +405,42 @@ function ExpoDemo() {
           );
         })}
         {campaign ? (
-          <div className="xd-compact" aria-label="Your campaign">
-            <p className="xd-eyebrow">Campaign · {campaign.artifacts.length} pieces</p>
-            <strong>{campaign.headline}</strong>
-            <div className="xd-compact-row">
-              {campaign.artifacts.slice(0, 4).map((a) => (
-                <button
-                  key={a.id}
-                  type="button"
-                  onClick={() => setOpen(a.id)}
-                  aria-label={`Open ${artifactMeta[a.type].label}`}
-                >
-                  {images.square ? (
-                    <img src={images.square} alt="" />
-                  ) : (
-                    <span>{artifactMeta[a.type].label}</span>
-                  )}
-                </button>
-              ))}
-            </div>
-            <div className="xd-compact-actions">
-              <button type="button" onClick={() => setOpen(campaign.artifacts[0].id)}>
-                Open campaign
-              </button>
-              <button type="button" onClick={() => setView("gallery")}>
-                View all
-              </button>
-            </div>
-          </div>
+          <CompactCampaign
+            c={campaign}
+            images={images}
+            brand={brand}
+            location={brief.location}
+            onOpen={setOpen}
+            onExpand={() => setView("gallery")}
+            imagesPending={Object.values(imageStatus).includes("loading")}
+          />
         ) : null}
         {thinking ? <div className="xd-msg pal xd-typing">…</div> : null}
+        {campaign &&
+        campaignOrigin === "live" &&
+        (Object.values(imageStatus).includes("loading") ||
+          Object.values(imageStatus).includes("error")) ? (
+          <div className="xd-image-status" role="status">
+            {Object.values(imageStatus).includes("loading") ? (
+              <p>Your campaign is ready. Creating the photos…</p>
+            ) : null}
+            {Object.values(imageStatus).includes("error") ? (
+              <>
+                <p>A photo could not be created. Your campaign text is ready to explore.</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const prompt = campaignImagePrompt(campaign, brief);
+                    for (const slot of ["square", "wide"] as const)
+                      if (imageStatus[slot] === "error") void requestImage(slot, prompt);
+                  }}
+                >
+                  Retry missing photos
+                </button>
+              </>
+            ) : null}
+          </div>
+        ) : null}
         {building ? (
           <div className="xd-building">
             <span className="xd-pulse" /> {building}
@@ -401,8 +463,8 @@ function ExpoDemo() {
         ) : null}
         <div ref={chatEnd} />
       </div>
-      {brief.businessName && mode === "live" ? (
-        <details className="xd-brief">
+      {brief.businessName ? (
+        <details className="xd-brief" open={view !== "chat"}>
           <summary>From your brief</summary>
           <dl>
             {(["businessName", "offer", "location", "audience", "goal"] as const).map((k) =>
@@ -438,7 +500,7 @@ function ExpoDemo() {
         <input
           value={draft}
           onChange={(e) => setDraft(e.target.value)}
-          placeholder={messages.length > 1 ? "Reply…" : "Your business, website, or what you need"}
+          placeholder={messages.length > 1 ? "Reply…" : "Tell your Pal about your business…"}
           aria-label="Message"
           maxLength={2000}
         />
@@ -446,7 +508,7 @@ function ExpoDemo() {
           type="submit"
           className="xd-send"
           aria-label="Send"
-          disabled={!draft.trim() || thinking}
+          disabled={!draft.trim() || thinking || !!building}
         >
           <ArrowUp size={18} />
         </button>
@@ -460,7 +522,9 @@ function ExpoDemo() {
   );
 
   return (
-    <div className="xd-root">
+    <div
+      className={`xd-root xd-reference ${view === "chat" || !campaign ? "xd-chat-mode" : "xd-board-mode"}`}
+    >
       <TopBar
         mode={mode}
         staff={staff}
@@ -470,29 +534,64 @@ function ExpoDemo() {
         view={campaign ? view : null}
         setView={setView}
       />
-      {campaign ? (
-        <div className={`xd-results xd-v-${view}`}>
-          {view === "gallery" ? conversation : null}
+      {campaign && view !== "chat" ? (
+        <div className="xd-reference-results">
+          {conversation}
           <main className="xd-canvas">
+            <CampaignBoard
+              business={brand}
+              headline={campaign.headline}
+              statusLabel={
+                Object.values(imageStatus).includes("loading")
+                  ? "Photos building"
+                  : "Ready to review"
+              }
+              layout={view === "horizontal" ? "horizontal" : "vertical"}
+              onLayoutChange={(layout) =>
+                setView(layout === "horizontal" ? "horizontal" : "gallery")
+              }
+              onBack={() => setView("chat")}
+              items={campaign.artifacts.map((a) => ({
+                id: a.id,
+                kind: a.type,
+                label: a.type === "reel" ? "Reel storyboard" : artifactMeta[a.type].label,
+                aspect: artifactMeta[a.type].aspect,
+                onOpen: () => setOpen(a.id),
+                preview: (
+                  <ArtifactPreview
+                    a={a}
+                    images={images}
+                    brand={brand}
+                    headline={campaign.headline}
+                    location={brief.location}
+                    compact={a.type === "instagram" || a.type === "youtube"}
+                  />
+                ),
+              }))}
+            />
             {campaignOrigin === "example" ? (
-              <p className="xd-example-flag">
-                Prepared example for {brief.businessName.replace(" (example)", "")}, a fictional
-                business. Illustrative stock photography; not generated for yours.
+              <p className="xd-reference-disclosure">
+                Fictional business · Prepared example · Illustrative photography
               </p>
             ) : null}
-            {view === "editorial" ? (
-              <Editorial c={campaign} images={images} brand={brand} onOpen={setOpen} />
-            ) : view === "gallery" ? (
-              <Gallery c={campaign} images={images} brand={brand} onOpen={setOpen} />
-            ) : (
-              <Journey c={campaign} images={images} brand={brand} onOpen={setOpen} />
-            )}
           </main>
-          {view !== "gallery" ? conversation : null}
         </div>
       ) : (
-        <div className="xd-solo">{conversation}</div>
+        <div className="xd-reference-chat">
+          <nav className="xd-rail" aria-label="Demo workspace">
+            <button type="button" aria-current="page" onClick={() => setView("chat")}>
+              <MessageCircle size={23} />
+              <span>Chat</span>
+            </button>
+            <button type="button" disabled={!campaign} onClick={() => setView("gallery")}>
+              <LayoutGrid size={23} />
+              <span>Campaign</span>
+            </button>
+          </nav>
+          {conversation}
+        </div>
       )}
+
       {openArtifact && campaign ? (
         <Screening
           c={campaign}
@@ -527,13 +626,14 @@ function TopBar({
   return (
     <header className="xd-top">
       <Link to="/expo" className="xd-logo">
-        Palmer House <span>Studio</span>
+        <strong>PALMER HOUSE</strong>
+        <span>STUDIO / EXPO DEMO</span>
       </Link>
       {view ? (
         <nav className="xd-views" aria-label="Campaign view">
-          {(["editorial", "gallery", "journey"] as const).map((v) => (
+          {(["chat", "gallery"] as const).map((v) => (
             <button key={v} type="button" aria-pressed={view === v} onClick={() => setView(v)}>
-              {v}
+              {v === "chat" ? "Chat" : "View campaign"}
             </button>
           ))}
         </nav>
@@ -591,7 +691,8 @@ function PalPicker({ onPick, onNext }: { onPick: (k: PalName) => void; onNext: (
     <div className="xd-root xd-picker">
       <header className="xd-top">
         <Link to="/expo" className="xd-logo">
-          Palmer House <span>Studio</span>
+          <strong>PALMER HOUSE</strong>
+          <span>STUDIO / EXPO DEMO</span>
         </Link>
         <span />
         <button type="button" className="xd-next" onClick={onNext}>
@@ -629,99 +730,125 @@ type ViewProps = {
   images: { square?: string; wide?: string };
   brand: string;
   onOpen: (id: string) => void;
+  imageLabel?: string;
 };
 
-function Tile({ a, images, brand, onOpen }: { a: Artifact } & Omit<ViewProps, "c">) {
+function CompactCampaign({
+  c,
+  images,
+  brand,
+  location,
+  onOpen,
+  onExpand,
+  imagesPending,
+}: ViewProps & { location?: string; onExpand: () => void; imagesPending: boolean }) {
+  const types = ["instagram", "carousel", "reel"] as const;
+  const featured = types
+    .map((type) => c.artifacts.find((a) => a.type === type))
+    .filter((a): a is Artifact => !!a);
+  const rest = c.artifacts.filter((a) => !types.some((type) => a.type === type));
   return (
-    <div
-      className="xd-tile"
-      role="button"
-      tabIndex={0}
-      onClick={() => onOpen(a.id)}
-      onKeyDown={(e) => e.key === "Enter" && onOpen(a.id)}
-    >
-      <ArtifactPreview a={a} images={images} brand={brand} />
-      <span className="xd-tile-label">{artifactMeta[a.type].label}</span>
-    </div>
-  );
-}
-
-function Editorial({ c, images, brand, onOpen }: ViewProps) {
-  const [hero, ...rest] = c.artifacts;
-  return (
-    <div className="xd-editorial-wrap">
-      <div className="xd-ed-top">
-        <div className="xd-ed-copy">
-          <p className="xd-eyebrow">{brand} · campaign</p>
+    <section className="xd-campaign-summary" aria-label="Your campaign">
+      <header>
+        <div>
           <h2>{c.headline}</h2>
-          <p>{c.centralIdea}</p>
-          <dl>
-            <div>
-              <dt>For</dt>
-              <dd>{c.audience}</dd>
-            </div>
-            <div>
-              <dt>Goal</dt>
-              <dd>{c.goal}</dd>
-            </div>
-          </dl>
+          <p>
+            {brand.replace(/\s*\(example\)/gi, "")}
+            {location ? ` · ${location}` : ""}
+          </p>
         </div>
-        <button
-          type="button"
-          className="xd-ed-hero"
-          aria-label={`Open ${hero.title}`}
-          onClick={() => onOpen(hero.id)}
-        >
-          {images.square ? (
-            <img src={images.square} alt="" />
-          ) : (
-            <span className="xd-visual-empty">Photo on its way…</span>
-          )}
-        </button>
-      </div>
-      <div className="xd-ed-row">
-        {[hero, ...rest].map((a) => (
-          <Tile key={a.id} a={a} images={images} brand={brand} onOpen={onOpen} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Gallery({ c, images, brand, onOpen }: ViewProps) {
-  return (
-    <div className="xd-gallery-wrap">
-      <h2>
-        Your business. <em>A whole campaign.</em>
-      </h2>
-      <div className="xd-masonry">
-        {c.artifacts.map((a) => (
-          <Tile key={a.id} a={a} images={images} brand={brand} onOpen={onOpen} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function Journey({ c, images, brand, onOpen }: ViewProps) {
-  return (
-    <div className="xd-journey-wrap">
-      <h2>One story. Every place it needs to go.</h2>
-      <div className="xd-journey">
-        {(["stop", "matter", "invite"] as const).map((s, i) => (
-          <section key={s}>
-            <p className="xd-eyebrow">
-              0{i + 1} · {stageLabel[s]}
+        <span className="xd-campaign-ready">
+          {imagesPending ? "Photos building" : `${c.artifacts.length} pieces ready`}
+          <span className="xd-ready-track">
+            <span style={{ width: imagesPending ? "65%" : "100%" }} />
+          </span>
+        </span>
+      </header>
+      <div className="xd-campaign-featured">
+        {featured.map((a) => (
+          <div key={a.id}>
+            <button
+              type="button"
+              className={`xd-campaign-thumb xd-thumb-${a.type}`}
+              onClick={() => onOpen(a.id)}
+              aria-label={`Open ${artifactMeta[a.type].label}`}
+            >
+              <span className="xd-thumb-expand">
+                <Maximize2 size={14} />
+              </span>
+              {a.type === "instagram" ? (
+                <ArtifactPreview
+                  a={a}
+                  images={images}
+                  brand={brand}
+                  headline={c.headline}
+                  compact
+                />
+              ) : a.type === "carousel" ? (
+                <div className="xd-slide-stack">
+                  {a.slides?.slice(0, 3).map((slide, i) => (
+                    <div key={i} className={`xd-stack-sheet sheet-${i}`}>
+                      {images.square ? <img src={images.square} alt="" /> : null}
+                      <strong>{slide.heading}</strong>
+                      <small>{brand.replace(/\s*\(example\)/gi, "")}</small>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="xd-script-sheet">
+                  <small>{brand.replace(/\s*\(example\)/gi, "")}</small>
+                  <h3>{a.hook || a.title}</h3>
+                  <dl>
+                    <div>
+                      <dt>HOOK</dt>
+                      <dd>{a.hook}</dd>
+                    </div>
+                    <div>
+                      <dt>VISUAL</dt>
+                      <dd>{a.beats?.[0]?.visual}</dd>
+                    </div>
+                    <div>
+                      <dt>CTA</dt>
+                      <dd>{a.cta}</dd>
+                    </div>
+                  </dl>
+                </div>
+              )}
+            </button>
+            <p>
+              {artifactMeta[a.type].label} ·{" "}
+              {a.type === "carousel"
+                ? `${a.slides?.length || 0} slides`
+                : artifactMeta[a.type].aspect}
             </p>
-            {c.artifacts
-              .filter((a) => a.stage === s)
-              .map((a) => (
-                <Tile key={a.id} a={a} images={images} brand={brand} onOpen={onOpen} />
-              ))}
-          </section>
+          </div>
         ))}
       </div>
-    </div>
+      <div className="xd-campaign-other">
+        {rest.map((a) => (
+          <button key={a.id} type="button" onClick={() => onOpen(a.id)}>
+            <span className={`xd-platform-symbol p-${a.type}`}>
+              {a.type === "linkedin" ? "in" : a.type === "youtube" ? "▶" : "▤"}
+            </span>
+            <span>{artifactMeta[a.type].label}</span>
+            <small>
+              <Check size={10} />
+              Ready
+            </small>
+            <Maximize2 size={12} />
+          </button>
+        ))}
+      </div>
+      <footer>
+        <button type="button" className="xd-open-campaign" onClick={onExpand}>
+          Open campaign
+          <ArrowRight size={16} />
+        </button>
+        <button type="button" onClick={onExpand}>
+          View all {c.artifacts.length}
+        </button>
+      </footer>
+    </section>
   );
 }
 
@@ -734,78 +861,107 @@ function Screening({
   onOpen,
 }: ViewProps & { a: Artifact; onClose: () => void }) {
   const [copied, setCopied] = useState(false);
+  const [copyError, setCopyError] = useState(false);
+  const opener = useRef(
+    typeof document === "undefined" ? null : (document.activeElement as HTMLElement | null),
+  );
   useEffect(() => {
-    const k = (e: KeyboardEvent) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", k);
-    return () => window.removeEventListener("keydown", k);
-  }, [onClose]);
+    setCopied(false);
+    setCopyError(false);
+  }, [a.id]);
   return (
-    <div className="xd-screen" role="dialog" aria-modal="true" aria-label={a.title}>
-      <button type="button" className="xd-close" onClick={onClose} aria-label="Close">
-        <X size={20} />
-      </button>
-      <div className="xd-screen-main">
-        <div className={`xd-screen-stage t-${a.type}`}>
-          <ArtifactPreview a={a} images={images} brand={brand} large />
-        </div>
-        <aside className="xd-side">
-          <p className="xd-eyebrow">{artifactMeta[a.type].label}</p>
-          <h3>{a.title}</h3>
-          {a.hook ? <p className="xd-hook">“{a.hook}”</p> : null}
-          {a.beats ? (
-            <ol className="xd-beats">
-              {a.beats.map((b, i) => (
-                <li key={i}>
-                  <strong>{b.onScreen}</strong>
-                  <span>{b.visual}</span>
-                  <em>{b.voice}</em>
-                </li>
-              ))}
-            </ol>
-          ) : null}
-          {a.slides ? (
-            <ol className="xd-beats">
-              {a.slides.map((s, i) => (
-                <li key={i}>
-                  <strong>{s.heading}</strong>
-                  <span>{s.body}</span>
-                </li>
-              ))}
-            </ol>
-          ) : null}
-          {a.body && a.type !== "linkedin" && a.type !== "extra" ? (
-            <p className="xd-body">{a.body}</p>
-          ) : null}
-          {a.caption && a.type !== "instagram" ? <p className="xd-body">{a.caption}</p> : null}
-          <p className="xd-cta">{a.cta}</p>
-          <p className="xd-why">
-            <span>Why it works</span>
-            {a.strategy}
-          </p>
-          <button
-            type="button"
-            className="xd-copy"
-            onClick={() => {
-              navigator.clipboard?.writeText(artifactText(a)).then(() => setCopied(true));
-              setTimeout(() => setCopied(false), 1500);
-            }}
-          >
-            <Copy size={14} /> {copied ? "Copied" : "Copy text"}
+    <Dialog.Root
+      open
+      onOpenChange={(isOpen) => {
+        if (!isOpen) onClose();
+      }}
+    >
+      <Dialog.Portal>
+        <Dialog.Overlay className="xd-screen-backdrop" />
+        <Dialog.Content
+          className="xd-screen"
+          aria-describedby={undefined}
+          onCloseAutoFocus={(event) => {
+            event.preventDefault();
+            opener.current?.focus();
+          }}
+        >
+          <Dialog.Title className="sr-only">{a.title}</Dialog.Title>
+          <button type="button" className="xd-close" onClick={onClose} aria-label="Close">
+            <X size={20} />
           </button>
-        </aside>
-      </div>
-      <nav className="xd-strip" aria-label="All pieces">
-        {c.artifacts.map((x) => (
-          <button
-            key={x.id}
-            type="button"
-            aria-current={x.id === a.id}
-            onClick={() => onOpen(x.id)}
-          >
-            {artifactMeta[x.type].label}
-          </button>
-        ))}
-      </nav>
-    </div>
+          <div className="xd-screen-main">
+            <div className={`xd-screen-stage t-${a.type}`}>
+              <ArtifactPreview a={a} images={images} brand={brand} headline={c.headline} large />
+            </div>
+            <aside className="xd-side">
+              <p className="xd-eyebrow">{artifactMeta[a.type].label}</p>
+              <h3>{a.title}</h3>
+              {a.hook ? <p className="xd-hook">“{a.hook}”</p> : null}
+              {a.beats ? (
+                <ol className="xd-beats">
+                  {a.beats.map((b, i) => (
+                    <li key={i}>
+                      <strong>{b.onScreen}</strong>
+                      <span>{b.visual}</span>
+                      <em>{b.voice}</em>
+                    </li>
+                  ))}
+                </ol>
+              ) : null}
+              {a.slides ? (
+                <ol className="xd-beats">
+                  {a.slides.map((s, i) => (
+                    <li key={i}>
+                      <strong>{s.heading}</strong>
+                      <span>{s.body}</span>
+                    </li>
+                  ))}
+                </ol>
+              ) : null}
+              {a.body && a.type !== "linkedin" && a.type !== "extra" ? (
+                <p className="xd-body">{a.body}</p>
+              ) : null}
+              {a.caption && a.type !== "instagram" ? <p className="xd-body">{a.caption}</p> : null}
+              <p className="xd-cta">{a.cta}</p>
+              <p className="xd-why">
+                <span>Why it works</span>
+                {a.strategy}
+              </p>
+              <button
+                type="button"
+                className="xd-copy"
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(artifactText(a));
+                    setCopied(true);
+                    setCopyError(false);
+                  } catch {
+                    setCopyError(true);
+                  }
+                }}
+              >
+                <Copy size={14} /> {copied ? "Copied" : "Copy text"}
+              </button>
+              {copyError ? (
+                <p role="status">Copy is unavailable here. Select the text to copy it manually.</p>
+              ) : null}
+            </aside>
+          </div>
+          <nav className="xd-strip" aria-label="All pieces">
+            {c.artifacts.map((x) => (
+              <button
+                key={x.id}
+                type="button"
+                aria-current={x.id === a.id}
+                onClick={() => onOpen(x.id)}
+              >
+                {artifactMeta[x.type].label}
+              </button>
+            ))}
+          </nav>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }

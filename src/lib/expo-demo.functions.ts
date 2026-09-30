@@ -1,7 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { palPersonas } from "./pal-personas";
-import type { DemoCampaign, GuestBrief } from "./expo-demo-types";
+import type { GuestBrief } from "./expo-demo-types";
+import { parseDemoCampaign } from "./expo-demo-validation";
 
 const palKey = z.enum(["kiana", "ryder", "clara", "silas", "raquel", "kareem", "cyrus", "samira"]);
 const session = z.string().min(8).max(64);
@@ -57,7 +58,9 @@ Return JSON: {"reply": string, "brief": {businessName, offer, location, audience
 Update the brief by merging new information; keep guest corrections over earlier data. readyToBuild is true once you know the business and roughly what it offers (a goal can be assumed). The guest has sent ${guestTurns} messages; after 2 guest messages set readyToBuild true unless you truly do not know what the business is. When ready, your reply should say you can build their campaign now and name one specific angle.${site ? " If the website gave you a useful fact, mention one concrete retrieved detail in your reply." : ""}${siteError ? ` The website could not be read (${siteError}); say so honestly and ask them to describe it instead.` : ""}`;
     const user = `CURRENT BRIEF:\n${JSON.stringify(data.brief)}\n\nCONVERSATION:\n${data.messages
       .map((m) => `${m.role === "guest" ? "Guest" : "You"}: ${m.text}`)
-      .join("\n")}${site ? `\n\nWEBSITE (${site.url})\nTitle: ${site.title}\nDescription: ${site.description}\nText: ${site.text}` : ""}`;
+      .join(
+        "\n",
+      )}${site ? `\n\nWEBSITE (${site.url})\nTitle: ${site.title}\nDescription: ${site.description}\nText: ${site.text}` : ""}`;
     const out = await gatewayJSON<{ reply: string; brief: GuestBrief; readyToBuild: boolean }>(
       system,
       user,
@@ -73,9 +76,7 @@ Update the brief by merging new information; keep guest corrections over earlier
   });
 
 export const expoDemoCampaign = createServerFn({ method: "POST" })
-  .inputValidator((d) =>
-    z.object({ sessionId: session, pal: palKey, brief: briefSchema }).parse(d),
-  )
+  .inputValidator((d) => z.object({ sessionId: session, pal: palKey, brief: briefSchema }).parse(d))
   .handler(async ({ data }) => {
     const { reserveExpoDemo, gatewayJSON } = await import("./expo-demo.server");
     await reserveExpoDemo(data.sessionId, "campaign");
@@ -94,15 +95,18 @@ Return JSON exactly:
   {"id":"youtube","type":"youtube","stage":"invite","title"(video title),"thumbnailText"(max 5 words),"body"(opening 30-second script),"caption":"","cta","strategy"},
   {"id":"extra","type":"extra","stage":"invite","title"(e.g. customer FAQ or welcome email — pick what fits the goal),"body"(120-200 words),"caption":"","cta","strategy"}
  ]}`;
-    const out = await gatewayJSON<DemoCampaign>(system, `BRIEF:\n${JSON.stringify(data.brief)}`, 90000);
-    if (!out?.artifacts?.length) throw new Error("The campaign came back incomplete. Try again.");
-    return out;
+    const out = await gatewayJSON<unknown>(system, `BRIEF:\n${JSON.stringify(data.brief)}`, 90000);
+    return parseDemoCampaign(out);
   });
 
 export const expoDemoImage = createServerFn({ method: "POST" })
   .inputValidator((d) =>
     z
-      .object({ sessionId: session, prompt: z.string().min(5).max(1500), aspect: z.string().max(10) })
+      .object({
+        sessionId: session,
+        prompt: z.string().min(5).max(1500),
+        aspect: z.string().max(10),
+      })
       .parse(d),
   )
   .handler(async ({ data }) => {

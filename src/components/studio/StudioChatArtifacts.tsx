@@ -1,7 +1,19 @@
 import { StudioDraftImage } from "./StudioDraftImage";
 import { Link } from "@tanstack/react-router";
 import {
+  ArrowRight,
+  Bookmark,
   Check,
+  ChevronLeft,
+  ChevronRight,
+  Heart,
+  Instagram,
+  Layers,
+  Linkedin,
+  Maximize2,
+  MoreHorizontal,
+  Send,
+  Youtube,
   Download,
   ExternalLink,
   FileText,
@@ -19,7 +31,10 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { toast } from "sonner";
 import type { Tables } from "@/lib/supabase/database.types";
 import type { GuideProfile } from "@/lib/pal-directory";
-import { studioAssetMedia } from "./StudioAssetVisual";
+import { studioAssetMedia, studioAssetStoryboard } from "./StudioAssetVisual";
+import "./studio-chat-artifacts.css";
+import { CampaignBoard } from "@/components/expo/CampaignBoard";
+import type { ArtifactType } from "@/lib/expo-demo-types";
 import { StudioMarkdown } from "./StudioMarkdown";
 import { StudioCopyButton } from "./StudioAssetActions";
 import { PalAvatar } from "./PalAvatar";
@@ -127,6 +142,123 @@ function useAssetMedia(asset?: Asset) {
   return resolved.key === key ? resolved.url : directUrl;
 }
 
+function platformFor(asset: Asset) {
+  const platform = record(asset.metadata).platform;
+  return typeof platform === "string" ? platform.toLowerCase() : "";
+}
+
+function plainCopy(value: string) {
+  return value
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/[*_`]/g, "")
+    .trim();
+}
+
+function assetSlides(asset: Asset): string[] {
+  const metadata = record(asset.metadata);
+  if (!metadata.studioTextOverride && Array.isArray(metadata.slides)) {
+    return metadata.slides
+      .flatMap((slide) => {
+        if (typeof slide === "string") return [slide];
+        const value = record(slide);
+        return typeof value.body === "string"
+          ? [
+              [typeof value.heading === "string" ? value.heading : "", value.body]
+                .filter(Boolean)
+                .join("\n"),
+            ]
+          : [];
+      })
+      .filter((slide) => slide.trim());
+  }
+  return [];
+}
+
+function previewFormat(asset: Asset) {
+  if (asset.kind.includes("script")) return "script";
+  if (asset.kind === "carousel" || String(record(asset.metadata).format).includes("carousel"))
+    return "carousel";
+  return platformFor(asset) === "youtube" ? "youtube" : "post";
+}
+
+function draftStatus(asset: Asset) {
+  if (asset.status === "archived") return "Archived";
+  if (["failed", "error"].includes(asset.status)) return "Needs attention";
+  if (["generating", "building", "processing", "queued", "pending"].includes(asset.status))
+    return "In progress";
+  const meta = record(asset.metadata);
+  if (
+    asset.content.trim() ||
+    mediaUrl(asset) ||
+    meta.mediaAssetId ||
+    meta.storagePath ||
+    meta.storage_path
+  ) {
+    return asset.status === "approved" ? "Approved" : "Ready to review";
+  }
+  return "Awaiting content";
+}
+
+function PlatformMark({ asset }: { asset: Asset }) {
+  const platform = platformFor(asset);
+  return (
+    <span className={`studio-campaign-platform is-${platform || previewFormat(asset)}`}>
+      {platform === "linkedin" ? (
+        <Linkedin size={17} />
+      ) : platform === "youtube" ? (
+        <Youtube size={18} />
+      ) : platform === "instagram" ? (
+        <Instagram size={16} />
+      ) : previewFormat(asset) === "carousel" ? (
+        <Layers size={16} />
+      ) : previewFormat(asset) === "script" ? (
+        <Play size={15} />
+      ) : (
+        <FileText size={16} />
+      )}
+    </span>
+  );
+}
+
+function ScriptDraftArtwork({ asset, business }: { asset: Asset; business: string }) {
+  const meta = record(asset.metadata);
+  const overridden = Boolean(meta.studioTextOverride);
+  const beats = overridden ? [] : studioAssetStoryboard(asset);
+  const hook =
+    !overridden && typeof meta.hook === "string"
+      ? meta.hook
+      : plainCopy(asset.content).split(/\n+/).find(Boolean) || asset.title;
+  const cta = !overridden && typeof meta.callToAction === "string" ? meta.callToAction : "";
+  const visual =
+    beats[0]?.text || (!overridden && typeof meta.visual === "string" ? meta.visual : "");
+  return (
+    <div className="studio-campaign-script">
+      <small>{business}</small>
+      <strong>{plainCopy(hook)}</strong>
+      <dl>
+        <div>
+          <dt>Hook</dt>
+          <dd>{plainCopy(hook)}</dd>
+        </div>
+        {visual ? (
+          <div>
+            <dt>Visual</dt>
+            <dd>{plainCopy(visual)}</dd>
+          </div>
+        ) : null}
+        {cta ? (
+          <div>
+            <dt>CTA</dt>
+            <dd>{plainCopy(cta)}</dd>
+          </div>
+        ) : null}
+      </dl>
+      <span>Script draft</span>
+    </div>
+  );
+}
+
 export function StudioNativeDraft({
   asset,
   content,
@@ -138,14 +270,82 @@ export function StudioNativeDraft({
 }) {
   const { brand, workspace } = useStudio();
   const business = brand?.business_name || workspace?.name || "Your brand";
-  const label = chatAssetLabel(asset);
   const image = useAssetMedia(asset);
+  const [failedImage, setFailedImage] = useState("");
+  const platform = platformFor(asset);
+  const slides = assetSlides(asset);
+  const isCarousel = previewFormat(asset) === "carousel";
+  const [slideIndex, setSlideIndex] = useState(0);
+  const currentSlide = Math.min(slideIndex, Math.max(slides.length - 1, 0));
   const isDocument = ["article", "newsletter", "pdf", "document"].includes(asset.kind);
   const isScript = asset.kind.includes("script");
-  const hasMedia = Boolean(image && !["pdf", "document"].includes(asset.kind));
+  const isInstagram = platform === "instagram";
+  const isYoutube = platform === "youtube";
+  const hasMedia = Boolean(
+    image && image !== failedImage && !["pdf", "document"].includes(asset.kind),
+  );
+  const body =
+    compact && isScript ? (
+      <ScriptDraftArtwork asset={asset} business={business} />
+    ) : (
+      <div className="studio-native-copy">
+        {isDocument || isScript || isYoutube ? <h3>{asset.title}</h3> : null}
+        <StudioMarkdown>{content ?? asset.content}</StudioMarkdown>
+      </div>
+    );
+  const media =
+    isCarousel && slides.length ? (
+      <div className="studio-native-carousel">
+        <div className={`studio-native-carousel-slide ${hasMedia ? "has-photo" : ""}`}>
+          {hasMedia ? <img src={image} alt="" onError={() => setFailedImage(image)} /> : null}
+          <span>
+            {currentSlide + 1} / {slides.length}
+          </span>
+          <strong>{plainCopy(slides[currentSlide])}</strong>
+          <small>{business}</small>
+        </div>
+        <div className="studio-native-carousel-controls">
+          <button
+            type="button"
+            aria-label="Previous slide"
+            disabled={currentSlide === 0}
+            onClick={() => setSlideIndex(currentSlide - 1)}
+          >
+            <ChevronLeft size={17} />
+          </button>
+          <span>
+            Slide {currentSlide + 1} of {slides.length}
+          </span>
+          <button
+            type="button"
+            aria-label="Next slide"
+            disabled={currentSlide === slides.length - 1}
+            onClick={() => setSlideIndex(currentSlide + 1)}
+          >
+            <ChevronRight size={17} />
+          </button>
+        </div>
+      </div>
+    ) : hasMedia ? (
+      <div className="studio-native-media">
+        <img
+          src={image}
+          alt={
+            typeof record(asset.metadata).imageAlt === "string"
+              ? String(record(asset.metadata).imageAlt)
+              : asset.title
+          }
+          loading="lazy"
+          onError={() => setFailedImage(image)}
+        />
+        {isScript ? (
+          <span className="studio-native-media-label">Script reference image</span>
+        ) : null}
+      </div>
+    ) : null;
   return (
     <article
-      className={`studio-native-draft ${isDocument ? "is-document" : ""} ${compact ? "is-compact" : ""} ${hasMedia ? "has-media" : ""}`}
+      className={`studio-native-draft studio-native-platform ${isDocument ? "is-document" : ""} ${compact ? "is-compact" : ""} ${hasMedia ? "has-media" : ""} platform-${platform || "draft"}`}
     >
       <header className="studio-native-header">
         <span className="studio-brand-initials">
@@ -157,58 +357,124 @@ export function StudioNativeDraft({
         </span>
         <div>
           <strong>{business}</strong>
-          <small>{label} · Draft preview</small>
+          <small>{isCarousel ? "Carousel" : chatAssetLabel(asset)} · Draft preview</small>
         </div>
-        <span className="studio-saved-indicator">
-          <Check size={12} /> Saved
-        </span>
+        <MoreHorizontal size={19} className="studio-native-menu" aria-hidden="true" />
       </header>
-      <div className="studio-native-copy">
-        {isDocument || isScript ? <h3>{asset.title}</h3> : null}
-        <StudioMarkdown>{content ?? asset.content}</StudioMarkdown>
-      </div>
-      {hasMedia ? (
-        <div className="studio-native-media">
-          <img
-            src={image}
-            alt={
-              typeof record(asset.metadata).imageAlt === "string" &&
-              String(record(asset.metadata).imageAlt).trim()
-                ? String(record(asset.metadata).imageAlt).trim()
-                : asset.title
-            }
-            loading="lazy"
-          />
-          {isScript ? (
-            <span className="studio-video-marker">
-              <Play size={24} fill="currentColor" />
-              <span>Script preview</span>
-            </span>
-          ) : null}
+      {isInstagram || isYoutube || isCarousel ? (
+        media
+      ) : (
+        <>
+          {body}
+          {media}
+        </>
+      )}
+      {!isDocument && !isScript && asset.kind !== "image" && !isYoutube ? (
+        <div className="studio-preview-social" aria-label="Illustrative platform controls">
+          {isInstagram ? (
+            <>
+              <Heart size={20} />
+              <MessageCircle size={20} />
+              <Send size={20} />
+              <Bookmark size={20} className="studio-native-bookmark" />
+            </>
+          ) : (
+            <>
+              <span>
+                <ThumbsUp size={16} /> Like
+              </span>
+              <span>
+                <MessageCircle size={16} /> Comment
+              </span>
+              <span>
+                <Share2 size={16} /> Share
+              </span>
+            </>
+          )}
         </div>
       ) : null}
-      {!isDocument && !isScript && asset.kind !== "image" ? (
-        <div
-          className="studio-preview-social"
-          aria-label="Platform preview controls, illustrative only"
-        >
-          <span>
-            <ThumbsUp size={16} /> Like
-          </span>
-          <span>
-            <MessageCircle size={16} /> Comment
-          </span>
-          <span>
-            <Share2 size={16} /> Share
-          </span>
-        </div>
-      ) : null}
+      {isInstagram || isYoutube || isCarousel ? body : null}
       {isScript ? (
         <footer className="studio-script-note">
-          <Play size={14} /> Ready to film · Video script
+          <FileText size={14} /> Video script · Draft for review
         </footer>
       ) : null}
     </article>
+  );
+}
+
+function CampaignPreview({
+  asset,
+  business,
+  onOpen,
+}: {
+  asset: Asset;
+  business: string;
+  onOpen: () => void;
+}) {
+  const image = useAssetMedia(asset);
+  const [failedImage, setFailedImage] = useState("");
+  const media = image && image !== failedImage ? image : "";
+  const format = previewFormat(asset);
+  const slides = assetSlides(asset);
+  const meta = record(asset.metadata);
+  const hasDraft = ["Ready to review", "Approved"].includes(draftStatus(asset));
+  return (
+    <button
+      type="button"
+      className={`studio-campaign-preview format-${format}`}
+      onClick={onOpen}
+      aria-label={`Open ${chatAssetLabel(asset)}: ${asset.title}`}
+    >
+      <div className="studio-campaign-preview-frame">
+        {format === "script" ? (
+          <ScriptDraftArtwork asset={asset} business={business} />
+        ) : format === "carousel" ? (
+          <div className="studio-campaign-slides">
+            {(slides.length ? slides.slice(0, 3) : [asset.title]).map((slide, index) => (
+              <div className="studio-campaign-slide" key={index}>
+                {media ? (
+                  <img src={media} alt="" loading="lazy" onError={() => setFailedImage(image)} />
+                ) : null}
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <strong>{plainCopy(slide)}</strong>
+                <small>{business}</small>
+              </div>
+            ))}
+          </div>
+        ) : media ? (
+          <img
+            className="studio-campaign-photo"
+            src={media}
+            alt={asset.title}
+            loading="lazy"
+            onError={() => setFailedImage(image)}
+          />
+        ) : (
+          <div className="studio-campaign-text-cover">
+            <PlatformMark asset={asset} />
+            <small>{business}</small>
+            <strong>{asset.title}</strong>
+            <p>{plainCopy(asset.content).slice(0, 150)}</p>
+            <span>{hasDraft ? "Text draft" : draftStatus(asset)}</span>
+          </div>
+        )}
+        <span className="studio-campaign-expand">
+          <Maximize2 size={14} />
+        </span>
+      </div>
+      <span className="studio-campaign-preview-label">
+        {format === "carousel"
+          ? "Carousel"
+          : format === "script"
+            ? asset.kind === "short_script"
+              ? "Reel script"
+              : "Video script"
+            : chatAssetLabel(asset)}
+        {format === "carousel" && slides.length ? ` · ${slides.length} slides` : ""}
+        {format === "script" && typeof meta.duration === "string" ? ` · ${meta.duration}` : ""}
+      </span>
+    </button>
   );
 }
 
@@ -221,9 +487,7 @@ export function StudioChatArtifactCard({
   campaignId?: string;
   onOpen: (assetId: string, mode: "preview" | "edit") => void;
 }) {
-  const { assets, campaigns } = useStudio();
-  const { reduceMotion, fadeTransition } = useStudioMotion();
-  const previewId = useId();
+  const { assets, campaigns, brand, workspace } = useStudio();
   const campaign = campaigns.find((item) => item.id === campaignId);
   const drafts = assets.filter((asset) =>
     campaignId
@@ -231,96 +495,173 @@ export function StudioChatArtifactCard({
       : assetIds?.includes(asset.id),
   );
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [boardOpen, setBoardOpen] = useState(false);
+  const [boardLayout, setBoardLayout] = useState<"vertical" | "horizontal">("vertical");
   const selected = drafts.find((asset) => asset.id === selectedId) || drafts[0];
   if (!selected) return null;
+  const business = brand?.business_name || workspace?.name || "Your brand";
+  const featured: Asset[] = [];
+  for (const match of [
+    (asset: Asset) => platformFor(asset) === "instagram" && previewFormat(asset) === "post",
+    (asset: Asset) => previewFormat(asset) === "carousel",
+    (asset: Asset) => asset.kind === "short_script",
+  ]) {
+    const asset = drafts.find((item) => !featured.includes(item) && match(item));
+    if (asset) featured.push(asset);
+  }
+  for (const asset of drafts) {
+    if (featured.length >= 3) break;
+    if (!featured.includes(asset)) featured.push(asset);
+  }
+  const rest = drafts.filter((asset) => !featured.includes(asset));
+  const ready = drafts.filter((asset) =>
+    ["Ready to review", "Approved"].includes(draftStatus(asset)),
+  ).length;
+  const open = (asset: Asset) => {
+    setSelectedId(asset.id);
+    onOpen(asset.id, "preview");
+  };
   return (
     <section
-      className="studio-chat-artifact"
+      className="studio-chat-artifact studio-campaign-card"
       data-asset-id={selected.id}
       aria-label={campaign?.title || selected.title}
     >
-      <header className="studio-artifact-heading">
+      <header className="studio-campaign-heading">
         <div>
           <h2>{campaign?.title || selected.title}</h2>
           <p>
-            {drafts.length} {drafts.length === 1 ? "draft" : "drafts"} · Saved to Library
+            {business}
+            {brand?.locations?.[0] ? ` · ${brand.locations[0]}` : ""}
           </p>
         </div>
-        {campaign ? (
-          <Link
-            to="/studio/campaigns/$campaignId"
-            params={{ campaignId: campaign.id }}
-            aria-label={`Open campaign ${campaign.title}`}
-          >
-            <ExternalLink size={17} />
-          </Link>
-        ) : (
-          <FileText size={18} />
-        )}
+        <div className="studio-campaign-readiness">
+          <span>
+            {ready} of {drafts.length} ready to review
+          </span>
+          <progress value={ready} max={drafts.length} aria-label="Drafts ready to review" />
+        </div>
       </header>
-      {drafts.length > 1 ? (
-        <div className="studio-artifact-tabs" role="tablist" aria-label="Campaign drafts">
-          {drafts.map((asset, index) => (
+      <div
+        className="studio-campaign-previews"
+        style={{ gridTemplateColumns: `repeat(${featured.length}, minmax(0, 1fr))` }}
+      >
+        {featured.map((asset) => (
+          <CampaignPreview
+            key={asset.id}
+            asset={asset}
+            business={business}
+            onOpen={() => open(asset)}
+          />
+        ))}
+      </div>
+      {rest.length ? (
+        <div className="studio-campaign-remaining">
+          {rest.slice(0, 2).map((asset) => (
             <button
               type="button"
               key={asset.id}
-              role="tab"
-              id={`${previewId}-tab-${asset.id}`}
-              aria-controls={`${previewId}-preview`}
-              aria-selected={asset.id === selected.id}
-              tabIndex={asset.id === selected.id ? 0 : -1}
-              onClick={() => setSelectedId(asset.id)}
-              onKeyDown={(event) => {
-                const next =
-                  event.key === "ArrowRight"
-                    ? (index + 1) % drafts.length
-                    : event.key === "ArrowLeft"
-                      ? (index + drafts.length - 1) % drafts.length
-                      : event.key === "Home"
-                        ? 0
-                        : event.key === "End"
-                          ? drafts.length - 1
-                          : -1;
-                if (next < 0) return;
-                event.preventDefault();
-                setSelectedId(drafts[next].id);
-                const button = event.currentTarget.parentElement?.querySelectorAll("button")[next];
-                button?.focus({ preventScroll: true });
-                button?.scrollIntoView({
-                  block: "nearest",
-                  inline: "nearest",
-                  behavior: reduceMotion ? "instant" : "smooth",
-                });
-              }}
+              onClick={() => open(asset)}
+              aria-label={`Open ${chatAssetLabel(asset)}: ${asset.title}`}
             >
-              {chatAssetLabel(asset)}
+              <PlatformMark asset={asset} />
+              <span className="studio-campaign-row-title">{chatAssetLabel(asset)}</span>
+              <small
+                className={
+                  ["Ready to review", "Approved"].includes(draftStatus(asset)) ? "is-ready" : ""
+                }
+              >
+                {draftStatus(asset)}
+              </small>
+              <Maximize2 size={13} />
             </button>
           ))}
         </div>
       ) : null}
-      <motion.div
-        key={selected.id}
-        id={`${previewId}-preview`}
-        role={drafts.length > 1 ? "tabpanel" : undefined}
-        aria-labelledby={drafts.length > 1 ? `${previewId}-tab-${selected.id}` : undefined}
-        tabIndex={drafts.length > 1 ? 0 : undefined}
-        initial={reduceMotion ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={fadeTransition}
-      >
-        <StudioNativeDraft asset={selected} compact />
-      </motion.div>
-      <div className="studio-artifact-actions">
+      <footer className="studio-campaign-actions">
+        <button
+          type="button"
+          className="studio-campaign-primary"
+          onClick={() => setBoardOpen(true)}
+        >
+          {campaign ? "Open campaign" : "Open drafts"} <ArrowRight size={16} />
+        </button>
+        {drafts.length > 1 ? (
+          <button type="button" onClick={() => setBoardOpen(true)}>
+            View all {drafts.length}
+          </button>
+        ) : null}
         <button type="button" onClick={() => onOpen(selected.id, "edit")}>
-          <Pencil size={15} /> Edit
+          <Pencil size={14} /> Edit draft
         </button>
-        <button type="button" onClick={() => onOpen(selected.id, "preview")}>
-          <ExternalLink size={15} /> Open full
-        </button>
-        <span>
-          <Check size={15} /> Saved
-        </span>
-      </div>
+      </footer>
+      <Dialog.Root open={boardOpen} onOpenChange={setBoardOpen}>
+        <Dialog.Portal>
+          <Dialog.Overlay className="studio-campaign-board-overlay" />
+          <Dialog.Content className="studio-campaign-board-dialog" aria-describedby={undefined}>
+            <Dialog.Title className="sr-only">{campaign?.title || selected.title}</Dialog.Title>
+            <Dialog.Close className="studio-campaign-board-close" aria-label="Close campaign board">
+              <X size={18} />
+            </Dialog.Close>
+            <CampaignBoard
+              business={business}
+              headline={campaign?.title || selected.title}
+              statusLabel={`${ready} of ${drafts.length} drafts ready to review`}
+              layout={boardLayout}
+              onLayoutChange={setBoardLayout}
+              onBack={() => setBoardOpen(false)}
+              items={drafts.map((asset) => {
+                const format = previewFormat(asset);
+                const platform = platformFor(asset);
+                const kind: ArtifactType =
+                  format === "carousel"
+                    ? "carousel"
+                    : asset.kind === "short_script"
+                      ? "reel"
+                      : format === "script" || platform === "youtube"
+                        ? "youtube"
+                        : platform === "linkedin"
+                          ? "linkedin"
+                          : platform === "instagram" || asset.kind === "image"
+                            ? "instagram"
+                            : "extra";
+                return {
+                  id: asset.id,
+                  kind,
+                  label:
+                    kind === "carousel"
+                      ? "Carousel"
+                      : kind === "reel"
+                        ? "Reel script"
+                        : chatAssetLabel(asset),
+                  aspect:
+                    kind === "youtube"
+                      ? "16 / 9"
+                      : kind === "reel"
+                        ? "9 / 16"
+                        : kind === "carousel"
+                          ? "1 / 1"
+                          : "4 / 5",
+                  preview: <StudioNativeDraft asset={asset} compact />,
+                  onOpen: () => {
+                    setBoardOpen(false);
+                    open(asset);
+                  },
+                };
+              })}
+            />
+            {campaign ? (
+              <Link
+                className="studio-campaign-details-link"
+                to="/studio/campaigns/$campaignId"
+                params={{ campaignId: campaign.id }}
+              >
+                Campaign details <ExternalLink size={13} />
+              </Link>
+            ) : null}
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </section>
   );
 }

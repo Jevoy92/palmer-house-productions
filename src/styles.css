@@ -704,6 +704,9 @@
 .xd-pulse { width: 10px; height: 10px; border-radius: 9999px; background: var(--reel); animation: pulse 1.4s ease-in-out infinite; }
 .xd-error { padding: .75rem .9rem; border: 1px solid var(--reel); border-radius: .8rem; font-size: .88rem; display: grid; gap: .5rem; }
 .xd-error button { justify-self: start; text-decoration: underline; color: var(--reel); }
+.xd-image-status { padding: .75rem .9rem; border: 1px solid var(--jet-line); border-radius: .8rem; font-size: .85rem; display: grid; gap: .5rem; }
+.xd-image-status button { justify-self: start; text-decoration: underline; color: var(--reel); }
+.xd-screen-backdrop { position: fixed; inset: 0; z-index: 49; background: color-mix(in oklab, var(--jet) 78%, transparent); }
 .xd-build { align-self: flex-start; padding: .8rem 1.2rem; border-radius: .8rem; background: var(--reel); color: var(--jet); font-weight: 700; transition: transform .2s; animation: scale-in .25s ease-out; }
 .xd-build:hover { transform: translateY(-2px); }
 .xd-brief { margin: 0 1.1rem .6rem; font-size: .82rem; border: 1px solid var(--jet-line); border-radius: .8rem; padding: .55rem .8rem; }
@@ -818,7 +821,7 @@
 .xd-compact-actions button { padding: .45rem .8rem; border-radius: .55rem; font-size: .82rem; border: 1px solid var(--jet-line); color: var(--cream); }
 .xd-compact-actions button:first-child { background: var(--reel); color: var(--jet); border-color: var(--reel); font-weight: 700; }
 /* Preview window: a centered, content-sized panel instead of a full black screen */
-.xd-screen { inset: 5vh max(1.5rem, calc(50% - 580px)); border-radius: 1.25rem; border: 1px solid var(--jet-line); background: var(--jet-soft, var(--jet)); box-shadow: 0 0 0 100vmax color-mix(in oklab, var(--jet) 78%, transparent); overflow: hidden; }
+.xd-screen { inset: 5vh max(1.5rem, calc(50% - 580px)); border-radius: 1.25rem; border: 1px solid var(--jet-line); background: var(--jet-soft, var(--jet)); overflow: hidden; }
 .xd-screen-main { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: stretch; }
 .xd-screen-stage { padding: 2rem; background: var(--jet); }
 .xd-screen-stage.t-reel .xd-native { width: auto; height: min(70vh, 640px); max-height: none; aspect-ratio: 9 / 16; }
@@ -841,6 +844,7 @@
 /* Keep desktop-only preview columns from overriding the phone layout. */
 @media (max-width: 960px) {
   .xd-screen-main { grid-template-columns: minmax(0, 1fr); }
+  .xd-strip { justify-content: flex-start; }
   .xd-side { padding: 1.25rem; border-left: 0; border-top: 1px solid var(--jet-line); }
   .xd-top { grid-template-columns: minmax(0, 1fr) auto; gap: .5rem; }
   .xd-top > .xd-logo { grid-column: 1; grid-row: 1; }

@@ -63,6 +63,21 @@ function relativeDay(value: string | null) {
   return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
+function MessageByline({ name, createdAt }: { name: string; createdAt: string }) {
+  const date = new Date(createdAt);
+  const hasTime = Number.isFinite(date.getTime());
+  return (
+    <div className="studio-chat-byline">
+      <strong>{name}</strong>
+      {hasTime ? (
+        <time dateTime={createdAt} title={date.toLocaleString()}>
+          {date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })}
+        </time>
+      ) : null}
+    </div>
+  );
+}
+
 export function StudioAssistant({ conversationId }: { conversationId?: string }) {
   const {
     customPals = [],
@@ -616,7 +631,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
             />
             <span>
               <strong>{pal.name}</strong>
-              <small>Your creative Pal</small>
+              <small>{activeConversation?.title || "Your creative Pal"}</small>
             </span>
           </button>
           <div className="studio-chat-header-actions">
@@ -719,6 +734,12 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
               </button>
             ) : null}
             {conversationMessages.map((message, messageIndex) => {
+              const previousMessage = conversationMessages[messageIndex - 1];
+              const grouped =
+                previousMessage?.role === message.role &&
+                previousMessage.pal === message.pal &&
+                Math.abs(Date.parse(message.created_at) - Date.parse(previousMessage.created_at)) <
+                  300_000;
               const raw = record(message.metadata);
               const meta = assistantMetadata(message.metadata);
               const origin = record(raw.originatingPal);
@@ -757,8 +778,23 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                     : undefined;
               if (message.role === "user")
                 return (
-                  <div key={message.id} className="studio-chat-user-message">
-                    {message.body}
+                  <div
+                    key={message.id}
+                    className="studio-chat-user-turn"
+                    data-grouped={grouped || undefined}
+                  >
+                    <span className="studio-chat-member-avatar" aria-hidden="true">
+                      {profile?.full_name
+                        ?.trim()
+                        .split(/\s+/)
+                        .slice(0, 2)
+                        .map((part) => part[0])
+                        .join("") || "Y"}
+                    </span>
+                    <div className="studio-chat-message-content">
+                      <MessageByline name="You" createdAt={message.created_at} />
+                      <div className="studio-chat-user-message">{message.body}</div>
+                    </div>
                   </div>
                 );
               return (
@@ -766,6 +802,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                   key={message.id}
                   className="studio-chat-turn"
                   data-avatar-side={answerSides.get(message.id)}
+                  data-grouped={grouped || undefined}
                 >
                   <div className="studio-chat-response">
                     <StudioOriginAvatar
@@ -774,87 +811,94 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                         typeof origin.avatarPath === "string" ? origin.avatarPath : undefined
                       }
                     />
-                    <article className="studio-chat-bubble">
-                      <span className="studio-chat-author">{speaker.name}</span>
-                      {meta?.headline ? <h2>{meta.headline}</h2> : null}
-                      <StudioMarkdown accent="var(--studio-accent)" variant="chat">
-                        {message.body}
-                      </StudioMarkdown>
-                    </article>
-                  </div>
-                  {linkedCampaign || assetIds?.length ? (
-                    <StudioChatArtifactCard
-                      campaignId={linkedCampaign}
-                      assetIds={assetIds}
-                      onOpen={(assetId, mode) => setEditor({ assetId, mode })}
-                    />
-                  ) : null}
-                  {meta?.keyPoints?.length && !linkedCampaign ? (
-                    <ul className="studio-chat-keypoints">
-                      {meta.keyPoints.map((point) => (
-                        <li key={point}>
-                          <Check size={14} />
-                          {point}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                  <div className="studio-chat-message-actions">
-                    <button
-                      type="button"
-                      onClick={() => void copyMessage(message.id, message.body)}
-                      aria-label={`Copy ${speaker.name}’s answer`}
-                    >
-                      {copiedId === message.id ? <Check size={14} /> : <Copy size={14} />}
-                      {copiedId === message.id ? "Copied" : "Copy"}
-                    </button>
-                    <button type="button" onClick={() => void saveAnswerAsIdea(message.body, meta)}>
-                      <Plus size={14} />
-                      Save idea
-                    </button>
-                    {!linkedCampaign ? (
-                      <button
-                        type="button"
-                        onClick={(event) => {
-                          campaignTriggerRef.current = event.currentTarget;
-                          setCampaignSource({ body: message.body, meta });
-                        }}
-                        disabled={busy || building}
-                      >
-                        <Sparkles size={14} />
-                        Build campaign
-                      </button>
-                    ) : null}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setDraft(previousQuestion);
-                        composerRef.current?.focus();
-                      }}
-                      disabled={busy || !previousQuestion}
-                    >
-                      <RotateCcw size={14} />
-                      Ask again
-                    </button>
-                  </div>
-                  {meta?.followUps?.length ? (
-                    <div className="studio-chat-followups">
-                      {meta.followUps.map((question) => (
+                    <div className="studio-chat-message-content">
+                      <MessageByline name={speaker.name} createdAt={message.created_at} />
+                      <article className="studio-chat-bubble">
+                        {meta?.headline ? <h2>{meta.headline}</h2> : null}
+                        <StudioMarkdown accent="var(--studio-accent)" variant="chat">
+                          {message.body}
+                        </StudioMarkdown>
+                      </article>
+                      {linkedCampaign || assetIds?.length ? (
+                        <StudioChatArtifactCard
+                          campaignId={linkedCampaign}
+                          assetIds={assetIds}
+                          onOpen={(assetId, mode) => setEditor({ assetId, mode })}
+                        />
+                      ) : null}
+                      {meta?.keyPoints?.length && !linkedCampaign ? (
+                        <ul className="studio-chat-keypoints">
+                          {meta.keyPoints.map((point) => (
+                            <li key={point}>
+                              <Check size={14} />
+                              {point}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+                      <div className="studio-chat-message-actions">
                         <button
                           type="button"
-                          key={question}
+                          onClick={() => void copyMessage(message.id, message.body)}
+                          aria-label={`Copy ${speaker.name}’s answer`}
+                        >
+                          {copiedId === message.id ? <Check size={14} /> : <Copy size={14} />}
+                          {copiedId === message.id ? "Copied" : "Copy"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => void saveAnswerAsIdea(message.body, meta)}
+                        >
+                          <Plus size={14} />
+                          Save idea
+                        </button>
+                        {!linkedCampaign ? (
+                          <button
+                            type="button"
+                            onClick={(event) => {
+                              campaignTriggerRef.current = event.currentTarget;
+                              setCampaignSource({ body: message.body, meta });
+                            }}
+                            disabled={busy || building}
+                          >
+                            <Sparkles size={14} />
+                            Build campaign
+                          </button>
+                        ) : null}
+                        <button
+                          type="button"
                           onClick={() => {
-                            setDraft(question);
+                            setDraft(previousQuestion);
                             composerRef.current?.focus();
                           }}
-                          disabled={busy || sending || conversationLoading || Boolean(threadError)}
+                          disabled={busy || !previousQuestion}
                         >
-                          {question}
-                          <ArrowRight size={13} />
+                          <RotateCcw size={14} />
+                          Ask again
                         </button>
-                      ))}
+                      </div>
+                      {meta?.followUps?.length ? (
+                        <div className="studio-chat-followups">
+                          {meta.followUps.map((question) => (
+                            <button
+                              type="button"
+                              key={question}
+                              onClick={() => {
+                                setDraft(question);
+                                composerRef.current?.focus();
+                              }}
+                              disabled={
+                                busy || sending || conversationLoading || Boolean(threadError)
+                              }
+                            >
+                              {question}
+                              <ArrowRight size={13} />
+                            </button>
+                          ))}
+                        </div>
+                      ) : null}
                     </div>
-                  ) : null}
+                  </div>
                 </div>
               );
             })}
@@ -958,8 +1002,10 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
               )}
             </button>
           </div>
-          <StudioCreditCost operation="chat" compact />
-          <p>Ideas become drafts. Nothing publishes without you.</p>
+          <div className="studio-composer-notes">
+            <StudioCreditCost operation="chat" compact />
+            <p>Nothing publishes without you.</p>
+          </div>
         </form>
       </section>
       {editor ? (

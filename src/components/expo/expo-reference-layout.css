@@ -1,0 +1,1047 @@
+/* The approved Expo board and compact conversation share one dark workspace. */
+.xd-root.xd-reference {
+  background: #050505;
+  color: #f5f3ec;
+  height: 100dvh;
+  min-height: 600px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  --xd-purple: #b57cf2;
+}
+.xd-reference .xd-top {
+  height: 56px;
+  min-height: 56px;
+  padding: 0 24px;
+  border-bottom: 1px solid #29292b;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  background: #050505;
+  z-index: 20;
+  gap: 18px;
+}
+.xd-reference .xd-logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  white-space: nowrap;
+}
+.xd-reference .xd-logo > strong {
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: #f7f4ea;
+}
+.xd-reference .xd-logo > span {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: #c5c2bd;
+  font-weight: 400;
+}
+.xd-reference .xd-views {
+  background: transparent;
+  border: 0;
+  display: flex;
+  gap: 4px;
+}
+.xd-reference .xd-views button {
+  font-size: 11px;
+  padding: 7px 12px;
+  color: #8f8b97;
+  text-transform: none;
+}
+.xd-reference .xd-views button[aria-pressed="true"] {
+  background: #141417;
+  color: #eee;
+}
+.xd-reference .xd-top-right {
+  justify-self: end;
+  position: relative;
+}
+.xd-reference .xd-next {
+  background: #ee6b08;
+  color: #fff;
+  border: 1px solid #fa8a32;
+  border-radius: 10px;
+  font-weight: 650;
+  padding: 8px 15px;
+  font-size: 12px;
+}
+.xd-reference .xd-mode {
+  border-radius: 999px;
+  background: #101112;
+  border-color: #36363a;
+  font-size: 10px;
+  padding: 6px 11px;
+}
+.xd-reference .xd-staff {
+  right: 0;
+  top: 40px;
+  z-index: 30;
+  background: #17151b;
+  color: #eee;
+  border-color: #39343f;
+}
+.xd-reference-results {
+  display: grid;
+  grid-template-columns: 390px minmax(0, 1fr);
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.xd-reference .xd-canvas {
+  background: #050505;
+  min-height: 0;
+  overflow-y: auto;
+}
+.xd-reference .xd-chat {
+  background: #050505;
+  color: #eee;
+  min-height: 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  border: 0;
+}
+.xd-board-mode .xd-chat {
+  border-right: 1px solid #2c2b30;
+  height: 100%;
+  overflow: hidden;
+}
+.xd-reference .xd-chat-head {
+  display: block;
+  padding: 18px 22px 14px;
+  border-bottom: 0;
+  flex: none;
+  background: transparent;
+}
+.xd-pal-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.xd-pal-heading > strong {
+  font-size: 14px;
+  color: #f9f6ed;
+}
+.xd-pal-heading > button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #b9b4bf;
+}
+.xd-pal-roster {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+}
+.xd-pal-roster > button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  color: #dbd6e0;
+  font-size: 11px;
+}
+.xd-pal-roster > button img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #3d3a42;
+  background: #161319;
+}
+.xd-pal-roster > button[aria-pressed="true"] img {
+  border-color: #b77bf8;
+  box-shadow: 0 0 15px #a255fd80;
+}
+.xd-pal-roster > button[aria-pressed="true"] {
+  color: #d6adff;
+}
+.xd-reference .xd-example-picker {
+  padding: 8px 20px 12px;
+  border-color: #242327;
+  background: transparent;
+  gap: 6px;
+}
+.xd-reference .xd-example-picker label {
+  font-size: 10px;
+  color: #97909e;
+}
+.xd-reference .xd-example-picker select {
+  padding: 6px 10px;
+  background: #101014;
+  color: #ddd;
+  border-color: #302d35;
+  border-radius: 8px;
+  font-size: 11px;
+}
+.xd-reference .xd-example-picker-actions button {
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+.xd-reference .xd-example-picker-actions button:first-child {
+  background: #25202e;
+  color: #d8b4fe;
+  border-color: #49315b;
+}
+.xd-reference .xd-messages {
+  padding: 16px 22px 22px;
+  gap: 16px;
+  min-height: 0;
+  overscroll-behavior: contain;
+}
+.xd-reference .xd-message-row {
+  gap: 10px;
+  align-items: flex-start;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+.xd-reference .xd-message-avatar {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  margin-top: 1px;
+  border: 1px solid #54445c;
+}
+.xd-reference .xd-message-author {
+  font-size: 10px;
+  color: #bc85f4;
+  line-height: 1.2;
+  margin-bottom: 5px;
+  letter-spacing: 0;
+  font-weight: 550;
+}
+.xd-reference .xd-msg {
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  padding: 10px 13px;
+  border-radius: 14px;
+  border: 1px solid #37313f;
+  max-width: 100%;
+  background: #17111f;
+  color: #efebf2;
+  white-space: pre-wrap;
+}
+.xd-reference .xd-msg.guest {
+  background: #141518;
+  border-color: #383b43;
+  color: #eee;
+}
+.xd-reference .xd-msg.guest .xd-message-author {
+  color: #adabb3;
+}
+.xd-reference .xd-guest-avatar {
+  background: #1b1d23;
+  color: #c4c1c9;
+  border-color: #37343c;
+}
+.xd-reference .xd-brief {
+  margin: 0 18px 12px;
+  background: #0e1012;
+  border: 1px solid #303039;
+  border-radius: 14px;
+  padding: 13px;
+  flex: none;
+  max-height: 185px;
+  overflow: auto;
+}
+.xd-reference .xd-brief summary {
+  font-size: 11px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: #eee;
+  font-weight: 650;
+}
+.xd-reference .xd-brief dl {
+  display: block;
+  margin-top: 7px;
+  font-size: 11px;
+  line-height: 1.45;
+}
+.xd-reference .xd-brief dl > div {
+  display: block;
+  margin-bottom: 5px;
+}
+.xd-reference .xd-brief dt {
+  display: inline;
+  font-size: 10px;
+  text-transform: none;
+  color: #b494cc;
+  margin-right: 5px;
+}
+.xd-reference .xd-brief dd {
+  display: inline;
+}
+.xd-reference .xd-composer {
+  flex: none;
+  margin: 0 15px 13px;
+  min-height: 48px;
+  padding: 5px 7px 5px 13px;
+  border-radius: 999px;
+  border: 1px solid #3f3a46;
+  background: linear-gradient(110deg, #0c0e0f, #17131f);
+  box-shadow: none;
+}
+.xd-reference .xd-composer input {
+  font-size: 12px;
+  color: #eee;
+}
+.xd-reference .xd-send {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 50%;
+  background: #b376f4;
+  color: #160b23;
+  box-shadow: 0 0 10px #a060ed55;
+}
+.xd-reference .xd-send:disabled {
+  opacity: 0.4;
+}
+.xd-reference .xd-photo-note {
+  font-size: 10px;
+  color: #aaa4af;
+  padding: 0 20px 8px;
+  margin: 0;
+}
+.xd-reference-disclosure {
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  color: #8f8997;
+  padding: 0 26px 14px;
+}
+.xd-reference-chat {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  justify-content: center;
+  padding: 0 5vw 0 75px;
+}
+.xd-rail {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 72px;
+  border-right: 1px solid #232226;
+  background: linear-gradient(90deg, #101010, #070707);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 55px;
+}
+.xd-rail button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  color: #ccc8d0;
+}
+.xd-rail button[aria-current="page"] {
+  color: #bf88fb;
+}
+.xd-rail button:disabled {
+  opacity: 0.3;
+}
+.xd-chat-mode .xd-chat {
+  width: min(860px, 100%);
+  overflow: hidden;
+}
+.xd-chat-mode .xd-chat-head {
+  padding: 10px 40px 6px;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  min-height: 62px;
+}
+.xd-chat-mode .xd-chat-head > div {
+  flex: initial;
+}
+.xd-chat-mode .xd-pal-roster {
+  margin-left: auto;
+}
+.xd-chat-mode .xd-pal-heading {
+  margin: 0;
+  min-width: 100px;
+  display: grid;
+  gap: 5px;
+}
+.xd-chat-mode .xd-pal-roster {
+  display: flex;
+  gap: 12px;
+}
+.xd-chat-mode .xd-pal-roster > button img {
+  width: 34px;
+  height: 34px;
+}
+.xd-chat-mode .xd-pal-roster > button span {
+  font-size: 9px;
+}
+.xd-chat-mode .xd-example-picker {
+  display: grid;
+  grid-template-columns: auto minmax(140px, 230px) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 7px 40px 10px;
+}
+.xd-chat-mode .xd-example-picker-actions {
+  display: flex;
+  gap: 6px;
+}
+.xd-chat-mode .xd-messages {
+  padding: 16px 40px 20px;
+  gap: 16px;
+}
+.xd-chat-mode .xd-message-row {
+  width: 100%;
+  max-width: 100%;
+}
+.xd-chat-mode .xd-msg {
+  max-width: 640px;
+  font-size: 14px;
+  background: #111114;
+  border: 1px solid #28282e;
+  border-radius: 15px;
+  padding: 12px 17px;
+}
+.xd-chat-mode .xd-message-row.side-right {
+  align-self: flex-end;
+}
+.xd-chat-mode .xd-msg.guest {
+  background: linear-gradient(105deg, #19191f, #111115);
+  border-color: #313139;
+}
+.xd-chat-mode .xd-message-avatar {
+  width: 42px;
+  height: 42px;
+  flex-basis: 42px;
+}
+.xd-chat-mode .xd-brief {
+  margin: 0 40px 9px;
+  max-height: 100px;
+  padding: 9px 13px;
+}
+.xd-chat-mode .xd-composer {
+  margin: 0 40px 20px;
+  min-height: 53px;
+  border-radius: 24px;
+}
+.xd-chat-mode .xd-composer input {
+  font-size: 13px;
+}
+.xd-chat-mode .xd-composer .xd-send {
+  width: 39px;
+  height: 39px;
+  flex-basis: 39px;
+}
+.xd-campaign-summary {
+  border: 1px solid #303035;
+  border-radius: 17px;
+  padding: 18px;
+  min-width: 0;
+  background: linear-gradient(135deg, #080809, #030304);
+  color: #f6f3ed;
+  flex: none;
+}
+.xd-campaign-summary > header {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 13px;
+}
+.xd-campaign-summary h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(20px, 1.9vw, 30px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: #f6eee0;
+  margin: 0;
+  text-wrap: balance;
+}
+.xd-campaign-summary > header p {
+  font-size: 12px;
+  color: #aba6af;
+  margin-top: 5px;
+}
+.xd-campaign-ready {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.xd-ready-track {
+  height: 5px;
+  width: 70px;
+  display: block;
+  background: #29292f;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.xd-ready-track > span {
+  height: 100%;
+  display: block;
+  background: #f58b3b;
+  border-radius: 5px;
+}
+.xd-campaign-featured {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.xd-campaign-featured > div {
+  min-width: 0;
+}
+.xd-campaign-thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4/5;
+  min-width: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #343237;
+  border-radius: 12px;
+  background: #080809;
+  text-align: left;
+}
+.xd-campaign-thumb .xp-artifact {
+  height: 100%;
+  width: 100%;
+  border-radius: 0;
+}
+.xd-campaign-thumb .xp-poster {
+  height: 100%;
+  aspect-ratio: 4/5;
+}
+.xd-thumb-expand {
+  position: absolute;
+  right: 7px;
+  top: 7px;
+  z-index: 3;
+  width: 25px;
+  height: 25px;
+  border-radius: 7px;
+  background: #08080899;
+  color: white;
+  display: grid;
+  place-items: center;
+  border: 1px solid #aaa5;
+}
+.xd-campaign-featured > div > p {
+  font-size: 11px;
+  color: #c2bec6;
+  margin: 6px 0 0;
+}
+.xd-slide-stack {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  padding: 8px;
+}
+.xd-stack-sheet {
+  position: absolute;
+  top: 20%;
+  bottom: 12%;
+  width: 65%;
+  border-radius: 11px;
+  overflow: hidden;
+  border: 1px solid #eee9;
+  box-shadow: 0 5px 10px #0009;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  padding: 11px;
+  color: #fff6e8;
+}
+.xd-stack-sheet img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.xd-stack-sheet::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent, #000a);
+}
+.xd-stack-sheet strong,
+.xd-stack-sheet small {
+  position: relative;
+  z-index: 1;
+}
+.xd-stack-sheet strong {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(13px, 1.55vw, 24px);
+  line-height: 1.05;
+}
+.xd-stack-sheet small {
+  font-size: 7px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  margin-top: 12px;
+}
+.xd-stack-sheet.sheet-0 {
+  left: -9%;
+  transform: rotate(-8deg);
+  top: 25%;
+  bottom: 17%;
+}
+.xd-stack-sheet.sheet-1 {
+  right: -9%;
+  transform: rotate(8deg);
+  top: 25%;
+  bottom: 17%;
+}
+.xd-stack-sheet.sheet-2 {
+  left: 17.5%;
+  z-index: 2;
+  top: 12%;
+  bottom: 10%;
+}
+.xd-script-sheet {
+  height: 100%;
+  padding: 14px 13px;
+  color: #302014;
+  background: radial-gradient(ellipse at top left, #fff7e6, #ecdac3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.xd-script-sheet > small {
+  font-size: 8px;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  text-align: center;
+}
+.xd-script-sheet h3 {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: clamp(15px, 1.65vw, 27px);
+  line-height: 1.12;
+  font-weight: 400;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.xd-script-sheet dl {
+  margin: 0;
+  display: grid;
+  gap: 9px;
+}
+.xd-script-sheet dl > div {
+  border-top: 1px solid #b5987550;
+  padding-top: 7px;
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 4px;
+}
+.xd-script-sheet dt {
+  font-size: 7px;
+  letter-spacing: 0.1em;
+}
+.xd-script-sheet dd {
+  font-size: 9px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.xd-campaign-other {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+.xd-campaign-other > button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 10px;
+  min-width: 0;
+  border: 1px solid #2c2b31;
+  border-radius: 9px;
+  font-size: 11px;
+  color: #e8e5ed;
+  text-align: left;
+}
+.xd-campaign-other > button > span:nth-child(2) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.xd-campaign-other > button > svg:last-child {
+  margin-left: auto;
+  flex: none;
+}
+.xd-campaign-other small {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #9bd0a5;
+  font-size: 8px;
+}
+.xd-platform-symbol {
+  width: 21px;
+  height: 19px;
+  display: grid;
+  place-items: center;
+  border-radius: 4px;
+  background: #51475c;
+  color: #fff;
+  flex: none;
+  font-weight: bold;
+  font-size: 13px;
+}
+.xd-platform-symbol.p-linkedin {
+  background: #087ab9;
+}
+.xd-platform-symbol.p-youtube {
+  background: #f00014;
+}
+.xd-campaign-summary > footer {
+  display: flex;
+  gap: 12px;
+  margin-top: 13px;
+}
+.xd-campaign-summary > footer button {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 9px 20px;
+  border-radius: 999px;
+  border: 1px solid #55515b;
+  color: #ece9f0;
+  font-size: 11px;
+}
+.xd-campaign-summary > footer .xd-open-campaign {
+  background: #f47a12;
+  border-color: #fb963f;
+  color: #080808;
+  font-weight: 600;
+}
+.xd-board-mode .xd-campaign-summary {
+  padding: 11px;
+  border-radius: 12px;
+}
+.xd-board-mode .xd-campaign-summary h2 {
+  font-size: 18px;
+}
+.xd-board-mode .xd-campaign-summary > header {
+  display: block;
+}
+.xd-board-mode .xd-campaign-ready {
+  font-size: 9px;
+  margin: 8px 0 0;
+}
+.xd-board-mode .xd-campaign-featured {
+  gap: 5px;
+}
+.xd-board-mode .xd-campaign-featured > div > p {
+  font-size: 8px;
+}
+.xd-board-mode .xd-script-sheet {
+  padding: 7px;
+  gap: 5px;
+}
+.xd-board-mode .xd-script-sheet h3 {
+  font-size: 12px;
+}
+.xd-board-mode .xd-script-sheet dl {
+  display: none;
+}
+.xd-board-mode .xd-stack-sheet {
+  padding: 5px;
+}
+.xd-board-mode .xd-stack-sheet strong {
+  font-size: 11px;
+}
+.xd-board-mode .xd-stack-sheet small {
+  display: none;
+}
+.xd-board-mode .xd-campaign-other {
+  display: none;
+}
+.xd-board-mode .xd-campaign-summary > footer {
+  gap: 6px;
+}
+.xd-board-mode .xd-campaign-summary > footer button {
+  font-size: 9px;
+  padding: 7px 10px;
+  gap: 5px;
+}
+.xd-screen-stage .xp-artifact {
+  width: min(440px, 100%);
+  border-radius: 12px;
+}
+.xd-screen-stage.t-reel .xp-artifact {
+  width: min(360px, 100%);
+}
+.xd-screen-stage.t-linkedin .xp-artifact,
+.xd-screen-stage.t-youtube .xp-artifact,
+.xd-screen-stage.t-carousel .xp-artifact {
+  width: min(700px, 100%);
+}
+.xd-screen-stage {
+  align-items: start;
+}
+@media (min-width: 1600px) {
+  .xd-reference-results {
+    grid-template-columns: 390px minmax(0, 1fr);
+  }
+}
+@media (max-width: 1180px) {
+  .xd-reference-results {
+    grid-template-columns: 310px minmax(0, 1fr);
+  }
+  .xd-reference .xd-logo > span {
+    display: none;
+  }
+  .xd-reference .xd-pal-roster > button img {
+    width: 49px;
+    height: 49px;
+  }
+  .xd-chat-mode .xd-pal-roster > button img {
+    width: 32px;
+    height: 32px;
+  }
+  .xd-campaign-ready {
+    display: grid;
+    gap: 4px;
+  }
+  .xd-reference .xd-chat-head {
+    padding: 14px 16px 10px;
+  }
+  .xd-reference .xd-messages {
+    padding: 14px 15px;
+  }
+  .xd-chat-mode .xd-messages {
+    padding: 24px 30px;
+  }
+}
+@media (max-width: 860px) {
+  .xd-reference .xd-top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    height: 90px;
+    min-height: 90px;
+    gap: 3px 10px;
+    padding: 8px 12px;
+  }
+  .xd-reference .xd-logo {
+    grid-row: 1;
+    grid-column: 1;
+  }
+  .xd-reference .xd-logo > strong {
+    font-size: 16px;
+  }
+  .xd-reference .xd-top-right {
+    grid-row: 1;
+    grid-column: 2;
+  }
+  .xd-reference .xd-top > .xd-views {
+    grid-row: 2;
+    grid-column: 1/-1;
+    justify-self: center;
+  }
+  .xd-reference .xd-next {
+    padding: 6px 9px;
+    font-size: 10px;
+  }
+  .xd-reference-results {
+    grid-template-columns: 270px minmax(0, 1fr);
+  }
+  .xd-chat-mode .xd-example-picker {
+    grid-template-columns: minmax(100px, 1fr) auto;
+    padding: 8px 16px;
+    gap: 8px;
+  }
+  .xd-chat-mode .xd-example-picker label {
+    grid-column: 1/-1;
+  }
+  .xd-reference-chat {
+    padding: 0 12px 0 56px;
+  }
+  .xd-rail {
+    width: 50px;
+  }
+  .xd-chat-mode .xd-chat-head {
+    padding: 12px;
+  }
+  .xd-chat-mode .xd-messages {
+    padding: 16px 10px;
+  }
+  .xd-chat-mode .xd-composer {
+    margin: 0 10px 12px;
+  }
+  .xd-chat-mode .xd-brief {
+    margin: 0 10px 9px;
+  }
+  .xd-campaign-summary {
+    padding: 13px;
+  }
+  .xd-campaign-summary h2 {
+    font-size: 24px;
+  }
+  .xd-campaign-featured {
+    gap: 8px;
+  }
+  .xd-campaign-ready {
+    font-size: 9px;
+  }
+  .xd-script-sheet {
+    padding: 10px 8px;
+    gap: 7px;
+  }
+  .xd-script-sheet dl {
+    gap: 5px;
+  }
+  .xd-script-sheet dl > div {
+    grid-template-columns: 1fr;
+  }
+  .xd-script-sheet dd {
+    font-size: 8px;
+    -webkit-line-clamp: 2;
+  }
+  .xd-campaign-other small {
+    display: none;
+  }
+}
+@media (max-width: 650px) {
+  .xd-root.xd-reference {
+    min-height: 0;
+  }
+  .xd-reference-results {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+  .xd-board-mode .xd-chat {
+    order: 2;
+    min-height: 620px;
+    height: 75vh;
+    border-right: 0;
+    border-top: 1px solid #333;
+    overflow: hidden;
+  }
+  .xd-reference .xd-canvas {
+    overflow: visible;
+    flex: none;
+  }
+  .xd-reference-chat {
+    padding: 0 8px;
+  }
+  .xd-rail {
+    display: none;
+  }
+  .xd-chat-mode .xd-chat-head {
+    padding: 9px 8px;
+  }
+  .xd-chat-mode .xd-pal-heading {
+    min-width: 75px;
+  }
+  .xd-chat-mode .xd-messages {
+    padding: 14px 6px;
+  }
+  .xd-reference .xd-msg {
+    font-size: 12px;
+  }
+  .xd-chat-mode .xd-message-avatar {
+    width: 31px;
+    height: 31px;
+    flex-basis: 31px;
+  }
+  .xd-campaign-summary > header {
+    display: block;
+  }
+  .xd-campaign-ready {
+    display: flex;
+    margin: 9px 0 0;
+  }
+  .xd-campaign-featured {
+    display: flex;
+    overflow: auto;
+    scroll-snap-type: x proximity;
+    padding-bottom: 6px;
+  }
+  .xd-campaign-featured > div {
+    flex: 0 0 43%;
+    scroll-snap-align: start;
+  }
+  .xd-script-sheet h3 {
+    font-size: 18px;
+  }
+  .xd-campaign-other {
+    grid-template-columns: 1fr;
+  }
+  .xd-campaign-summary h2 {
+    font-size: 24px;
+  }
+  .xd-campaign-summary > footer {
+    gap: 7px;
+  }
+  .xd-campaign-summary > footer button {
+    font-size: 10px;
+    padding: 8px 13px;
+  }
+  .xd-chat-mode .xd-composer {
+    margin: 0 6px 10px;
+  }
+  .xd-chat-mode .xd-example-picker {
+    padding: 6px 8px;
+  }
+  .xd-reference .xd-example-picker-actions button {
+    font-size: 9px;
+    padding: 4px 6px;
+  }
+  .xd-reference .xd-views button {
+    padding: 5px 12px;
+  }
+  .xd-reference .xd-top {
+    min-height: 82px;
+    height: 82px;
+  }
+}
+
+.xd-board-mode .xd-pal-heading {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.xd-board-mode .xd-pal-roster > button img {
+  width: 67px;
+  height: 67px;
+}
+
+.xd-picker .xd-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.xd-picker .xd-logo > span {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+.xd-chat-mode .xd-pal-roster {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}

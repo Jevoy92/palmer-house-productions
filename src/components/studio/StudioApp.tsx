@@ -4966,7 +4966,7 @@ function BillingView() {
           workspaceId: workspace.id,
           plan,
           interval,
-          ...(expoOfferShown && plan === "creator" && boothCode ? { boothCode } : {}),
+          ...(expoOfferShown && interval === "month" && boothCode ? { boothCode } : {}),
         },
       });
       if (result.ok) window.location.assign(result.url);

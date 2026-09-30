@@ -18,7 +18,7 @@
   gap: 0.7rem;
   color: var(--foreground);
 }
-.fl-phone .fl-frame { width: 38%; aspect-ratio: 9 / 14; align-content: end; border-radius: 1.4rem; }
+.fl-phone .fl-frame { width: 44%; border-radius: 1.4rem; }
 .fl-head { display: flex; align-items: center; gap: 0.5rem; font-size: clamp(0.8rem, 1.6vw, 1.05rem); line-height: 1.1; }
 .fl-dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--fl-color); flex: none; }
 .fl-beats { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }

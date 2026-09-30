@@ -1,3 +1,4 @@
+import { ExpoModule } from "@/components/expo/ExpoModule";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ShoppingBag } from "lucide-react";
 import { useState } from "react";
@@ -69,6 +70,7 @@ function OffersPage() {
 
   return (
     <PageShell>
+      <ExpoModule />
       <PageHero
         eyebrow="Current offers"
         title="Build the system."

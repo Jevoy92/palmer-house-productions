@@ -117,6 +117,22 @@ export async function applyStudioBillingEvent(
     const session = event.data.object;
     if (session.mode === "subscription" && session.subscription) {
       await sync(await stripe.subscriptions.retrieve(id(session.subscription)!));
+      const email = session.customer_details?.email ?? session.customer_email;
+      if (session.metadata?.campaign_id && email && session.status === "complete") {
+        const { upsertExpoContact } = await import("./expo.server");
+        const offer = session.metadata.offer === "booth" ? "booth" : "public";
+        await upsertExpoContact({
+          email,
+          name: session.customer_details?.name ?? null,
+          source: "checkout",
+          status: "paid",
+          purchased: "Studio monthly",
+          offer,
+          workspaceId: session.metadata.workspace_id ?? null,
+          stripeCustomerId: id(session.customer) ?? null,
+          event: { kind: "paid", detail: `Studio monthly · ${offer} offer`, dedupeKey: `paid-${session.id}` },
+        }).catch(() => undefined);
+      }
       return;
     }
     if (

@@ -10,6 +10,7 @@ export async function openStudioMembershipCheckout(input: {
   email?: string;
   plan: StudioPlanKey;
   interval: "month" | "year";
+  boothCode?: string;
   origin: string;
 }) {
   const stripe = new Stripe(stripeSecretKey()!, {
@@ -63,6 +64,19 @@ export async function openStudioMembershipCheckout(input: {
     throw new Error(
       "A membership already exists or its payment is pending. Use Manage membership before starting another.",
     );
+  // Expo intro: first-ever Studio subscription, monthly base plan only. Server time decides.
+  const { expoCampaign, expoOfferLive } = await import("./expo-campaign");
+  const { boothCodeMatches } = await import("./expo.server");
+  const introEligible =
+    expoOfferLive() && input.plan === "creator" && input.interval === "month" && subscriptions.data.length === 0;
+  if (input.boothCode && !introEligible)
+    throw new Error(
+      "This booth offer applies only to a first monthly Studio membership before Sunday, October 4. No payment was taken.",
+    );
+  if (input.boothCode && !boothCodeMatches(input.boothCode))
+    throw new Error("That booth code isn't valid. Remove it to continue at the public rate. No payment was taken.");
+  const offer: "public" | "booth" | null = !introEligible ? null : input.boothCode ? "booth" : "public";
+  const offerTag = offer ?? "regular";
   for (let attempt = 0; attempt < 2; attempt++) {
     const claimed = await admin.rpc("claim_studio_membership_checkout", {
       target_workspace_id: input.workspaceId,
@@ -93,13 +107,21 @@ export async function openStudioMembershipCheckout(input: {
               customer: customerId,
               client_reference_id: input.workspaceId,
               line_items: [{ quantity: 1, price: (stripeTestMode() ? studioPlanTestPrices : studioPlanPrices)[plan][interval] }],
-              allow_promotion_codes: true,
-              success_url: `${input.origin}/studio/billing?checkout=success`,
+              ...(offer
+                ? {
+                    discounts: [{ coupon: expoCampaign.offers[offer].couponId }],
+                    expires_at:
+                      Math.floor(Date.now() / 1000) + expoCampaign.checkoutWindowMinutes * 60,
+                  }
+                : { allow_promotion_codes: true }),
+              success_url: `${input.origin}/studio/billing?checkout=success${offer ? "&expo=1" : ""}`,
               cancel_url: `${input.origin}/studio/billing?checkout=canceled`,
-              subscription_data: { metadata: { workspace_id: input.workspaceId, plan, interval } },
-              metadata: { workspace_id: input.workspaceId, plan, interval },
+              subscription_data: {
+                metadata: { workspace_id: input.workspaceId, plan, interval, offer: offerTag, ...(offer ? { campaign_id: expoCampaign.id } : {}) },
+              },
+              metadata: { workspace_id: input.workspaceId, plan, interval, offer: offerTag, ...(offer ? { campaign_id: expoCampaign.id } : {}) },
             },
-            { idempotencyKey: `studio-membership:${row.attempt_id}` },
+            { idempotencyKey: `studio-membership:${row.attempt_id}:${offerTag}` },
           );
       if (session.status === "complete") {
         const priorId =
@@ -116,7 +138,13 @@ export async function openStudioMembershipCheckout(input: {
           "Your checkout has completed and billing is updating. Refresh Usage & billing shortly.",
         );
       }
-      if (plan !== input.plan || interval !== input.interval || session.status === "expired") {
+      const sessionOffer = session.metadata?.offer ?? "regular";
+      if (
+        plan !== input.plan ||
+        interval !== input.interval ||
+        sessionOffer !== offerTag ||
+        session.status === "expired"
+      ) {
         if (session.status === "open") await stripe.checkout.sessions.expire(session.id);
         await finish(session.id, true);
         continue;

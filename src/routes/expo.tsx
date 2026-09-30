@@ -36,6 +36,9 @@ function ExpoPage() {
             workspace for developing your brand, campaigns, scripts, posts, and visual ideas.
           </p>
           <p className="mt-4 font-bold">{expoPhaseLabel[phase]}</p>
+          <Link to="/expo/demo" className="primary-action mt-6 inline-flex">
+            Try Studio with your business
+          </Link>
         </header>
 
         {live ? (

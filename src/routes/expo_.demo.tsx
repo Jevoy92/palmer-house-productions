@@ -9,7 +9,7 @@ import { emptyBrief, artifactMeta, type Artifact, type DemoCampaign, type GuestB
 import { exampleBrief, exampleCampaign, expoGreetings } from "@/lib/expo-demo-example";
 import { ArtifactPreview, artifactText } from "@/components/expo/DemoArtifacts";
 
-export const Route = createFileRoute("/expo/demo")({
+export const Route = createFileRoute("/expo_/demo")({
   head: () => ({
     meta: [
       { title: "Try Palmer House Studio with your business — Expo demo" },

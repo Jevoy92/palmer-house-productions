@@ -369,3 +369,10 @@
   font-size: 13px;
   font-weight: 650;
 }
+.studio-feed-earlier { margin: 8px 0 0 46px; font-size: 12px; font-weight: 650; color: var(--studio-accent); min-height: 32px; }
+.studio-feed-thread .studio-feed-actions { justify-content: flex-start; gap: 14px; border-top: 0; padding: 6px 0 0 46px; }
+.studio-feed-thread .studio-feed-comments { border-top: 0; }
+.studio-feed-thread .studio-feed-comments form { margin: 8px 0 4px 46px; }
+.studio-feed-compose { padding: 10px 12px; border-radius: 16px; margin-bottom: 14px; }
+.studio-feed-compose textarea { min-height: 44px; font-size: 15px; }
+.studio-feed-thread img { max-height: 320px; width: auto; max-width: 100%; object-fit: cover; border-radius: 12px; }

@@ -8,3 +8,4 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+- Expo guest demo (/expo/demo) is stateless on the client and metered only by the server-only expo_demo_usage table; it never touches member credits or saves guest content — keeps booth guests isolated and the bill capped.

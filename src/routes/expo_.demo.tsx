@@ -312,7 +312,7 @@ function ExpoDemo() {
         setView={setView}
       />
       {campaign ? (
-        <div className={`xd-results xd-${view}`}>
+        <div className={`xd-results xd-v-${view}`}>
           <main className="xd-canvas">
             {mode === "example" ? (
               <p className="xd-example-flag">Example campaign for a fictional café — not generated for your business.</p>

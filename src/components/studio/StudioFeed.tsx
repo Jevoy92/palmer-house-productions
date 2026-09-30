@@ -74,7 +74,10 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
   useEffect(() => {
     if (expanded) commentRef.current?.focus({ preventScroll: true });
   }, [expanded]);
-  const replies = (feedComments || []).filter((c) => c.post_id === post.id);
+  const replies = (feedComments || [])
+    .filter((c) => c.post_id === post.id)
+    .sort((x, y) => String(x.created_at).localeCompare(String(y.created_at)));
+  const [showAll, setShowAll] = useState(false);
   const hearts = (feedReactions || []).filter(
     (r) => r.post_id === post.id && r.reaction === "love",
   );
@@ -183,18 +186,20 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
           </div>
         )}
       </div>
-      {replies
-        .filter((c) => c.author.kind === "pal")
-        .slice(0, expanded ? replies.length : 2)
-        .map((reply) => (
-          <div key={reply.id} className="studio-feed-reply">
-            <FeedAvatar author={reply.author} />
-            <div>
-              <strong>{reply.author.name}</strong>
-              <p>{reply.body}</p>
-            </div>
+      {replies.length > 3 && !showAll ? (
+        <button type="button" className="studio-feed-earlier" onClick={() => setShowAll(true)}>
+          Show {replies.length - 3} earlier {replies.length - 3 === 1 ? "reply" : "replies"}
+        </button>
+      ) : null}
+      {(showAll ? replies : replies.slice(-3)).map((reply) => (
+        <div key={reply.id} className="studio-feed-reply">
+          <FeedAvatar author={reply.author} />
+          <div>
+            <strong>{reply.author.name}</strong>
+            <p>{reply.body}</p>
           </div>
-        ))}
+        </div>
+      ))}
       <div className="studio-feed-actions">
         <button
           disabled={!!pending}
@@ -220,7 +225,7 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
           aria-label={expanded ? "Close comments" : "Open comments"}
         >
           <MessageCircle size={18} />
-          {replies.filter((c) => c.author.kind === "member").length || "Comment"}
+          {replies.length || "Reply"}
         </button>
         <button
           disabled={saved || !!pending}
@@ -264,17 +269,6 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
           commentTrigger.current?.focus();
         }}
       >
-        {replies
-          .filter((c) => c.author.kind === "member")
-          .map((reply) => (
-            <div key={reply.id} className="studio-feed-reply">
-              <FeedAvatar author={reply.author} />
-              <div>
-                <strong>{reply.author.name}</strong>
-                <p>{reply.body}</p>
-              </div>
-            </div>
-          ))}
         <form
           onSubmit={(e) => {
             e.preventDefault();

@@ -2748,13 +2748,6 @@ export type Database = {
         }
         Returns: boolean
       }
-      has_role: {
-        Args: {
-          _role: Database["public"]["Enums"]["app_role"]
-          _user_id: string
-        }
-        Returns: boolean
-      }
       hold_studio_billing: {
         Args: {
           event_key: string

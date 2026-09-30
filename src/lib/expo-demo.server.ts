@@ -37,7 +37,7 @@ export async function gatewayJSON<T>(system: string, user: string, timeoutMs = 6
     method: "POST",
     headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: process.env.EXPO_DEMO_MODEL || "google/gemini-3-flash-preview",
+      model: process.env.EXPO_DEMO_MODEL || studioAIConfig().buildModel,
       messages: [
         { role: "system", content: system },
         { role: "user", content: user },

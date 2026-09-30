@@ -4951,7 +4951,7 @@ function BillingView() {
       : "creator";
   const activePlan = studioPlans[activePlanKey];
   const expoOfferShown =
-    expoLive && interval === "month" && !["active", "past_due", "trialing"].includes(subscription?.status ?? "");
+    expoLive && interval === "month" && !["active", "past_due"].includes(subscription?.status ?? "");
   async function checkout(plan: StudioPlanKey) {
     if (!session || !workspace) return;
     if (subscription?.status === "active" || subscription?.status === "past_due") {

@@ -74,7 +74,9 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
   useEffect(() => {
     if (expanded) commentRef.current?.focus({ preventScroll: true });
   }, [expanded]);
-  const replies = (feedComments || []).filter((c) => c.post_id === post.id);
+  const replies = (feedComments || [])
+    .filter((c) => c.post_id === post.id)
+    .sort((x, y) => String(x.created_at).localeCompare(String(y.created_at)));
   const [showAll, setShowAll] = useState(false);
   const hearts = (feedReactions || []).filter(
     (r) => r.post_id === post.id && r.reaction === "love",

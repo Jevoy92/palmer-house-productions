@@ -376,3 +376,9 @@
 .studio-feed-compose { padding: 10px 12px; border-radius: 16px; margin-bottom: 14px; }
 .studio-feed-compose textarea { min-height: 44px; font-size: 15px; }
 .studio-feed-thread img { max-height: 320px; width: auto; max-width: 100%; object-fit: cover; border-radius: 12px; }
+@media (max-width: 639px) {
+  .studio-feed-thread-content { margin-left: 0; }
+  .studio-feed-thread h2 { font-size: 16px; line-height: 1.3; }
+  .studio-feed-thread p { font-size: 15px; }
+  .studio-feed-thread .studio-feed-actions, .studio-feed-earlier, .studio-feed-thread .studio-feed-comments form { padding-left: 0; margin-left: 0; }
+}

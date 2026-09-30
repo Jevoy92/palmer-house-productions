@@ -243,7 +243,7 @@ function ExpoDemo() {
           <div className="xd-error" role="alert">
             {error}
             {mode === "live" ? (
-              <button type="button" onClick={() => setMode("example")}>
+              <button type="button" onClick={() => { setMode("example"); setStaff(false); }}>
                 Use Example mode
               </button>
             ) : null}
@@ -384,13 +384,13 @@ function TopBar({
         {staff ? (
           <div className="xd-staff" role="dialog" aria-label="Demo mode">
             <p className="xd-staff-title">Demo mode · staff</p>
-            <button type="button" aria-pressed={mode === "live"} onClick={() => setMode("live")}>
+            <button type="button" aria-pressed={mode === "live"} onClick={() => { setMode("live"); setStaff(false); }}>
               Live — real AI and website reading
             </button>
             <button type="button" disabled title="Needs a local model installed on this laptop">
               Offline AI — not prepared on this laptop
             </button>
-            <button type="button" aria-pressed={mode === "example"} onClick={() => setMode("example")}>
+            <button type="button" aria-pressed={mode === "example"} onClick={() => { setMode("example"); setStaff(false); }}>
               Example — prepared, clearly labeled
             </button>
           </div>

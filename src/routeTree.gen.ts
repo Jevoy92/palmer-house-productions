@@ -73,7 +73,7 @@ import { Route as MembershipSprintRouteImport } from './routes/membership.sprint
 import { Route as MembershipPricingRouteImport } from './routes/membership.pricing'
 import { Route as LocationsSlugRouteImport } from './routes/locations.$slug'
 import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
-import { Route as ExpoDemoRouteImport } from './routes/expo.demo'
+import { Route as ExpoDemoRouteImport } from './routes/expo_.demo'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe-webhook'
@@ -414,9 +414,9 @@ const IndustriesSlugRoute = IndustriesSlugRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExpoDemoRoute = ExpoDemoRouteImport.update({
-  id: '/demo',
-  path: '/demo',
-  getParentRoute: () => ExpoRoute,
+  id: '/expo_/demo',
+  path: '/expo/demo',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
   id: '/email/unsubscribe',
@@ -527,7 +527,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/content-strategy': typeof ContentStrategyRoute
   '/evergreen-pal': typeof EvergreenPalRoute
-  '/expo': typeof ExpoRouteWithChildren
+  '/expo': typeof ExpoRoute
   '/faq': typeof FaqRoute
   '/find-your-pal': typeof FindYourPalRoute
   '/games': typeof GamesRoute
@@ -612,7 +612,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/content-strategy': typeof ContentStrategyRoute
   '/evergreen-pal': typeof EvergreenPalRoute
-  '/expo': typeof ExpoRouteWithChildren
+  '/expo': typeof ExpoRoute
   '/faq': typeof FaqRoute
   '/find-your-pal': typeof FindYourPalRoute
   '/games': typeof GamesRoute
@@ -697,7 +697,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/content-strategy': typeof ContentStrategyRoute
   '/evergreen-pal': typeof EvergreenPalRoute
-  '/expo': typeof ExpoRouteWithChildren
+  '/expo': typeof ExpoRoute
   '/faq': typeof FaqRoute
   '/find-your-pal': typeof FindYourPalRoute
   '/games': typeof GamesRoute
@@ -729,7 +729,7 @@ export interface FileRoutesById {
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
-  '/expo/demo': typeof ExpoDemoRoute
+  '/expo_/demo': typeof ExpoDemoRoute
   '/industries/$slug': typeof IndustriesSlugRoute
   '/locations/$slug': typeof LocationsSlugRoute
   '/membership/pricing': typeof MembershipPricingRoute
@@ -985,7 +985,7 @@ export interface FileRouteTypes {
     | '/api/stripe-webhook'
     | '/blog/$slug'
     | '/email/unsubscribe'
-    | '/expo/demo'
+    | '/expo_/demo'
     | '/industries/$slug'
     | '/locations/$slug'
     | '/membership/pricing'
@@ -1039,7 +1039,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   ContentStrategyRoute: typeof ContentStrategyRoute
   EvergreenPalRoute: typeof EvergreenPalRoute
-  ExpoRoute: typeof ExpoRouteWithChildren
+  ExpoRoute: typeof ExpoRoute
   FaqRoute: typeof FaqRoute
   FindYourPalRoute: typeof FindYourPalRoute
   GamesRoute: typeof GamesRoute
@@ -1071,6 +1071,7 @@ export interface RootRouteChildren {
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   BlogSlugRoute: typeof BlogSlugRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
+  ExpoDemoRoute: typeof ExpoDemoRoute
   IndustriesSlugRoute: typeof IndustriesSlugRoute
   LocationsSlugRoute: typeof LocationsSlugRoute
   PackagesPackageIdRoute: typeof PackagesPackageIdRoute
@@ -1542,12 +1543,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndustriesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/expo/demo': {
-      id: '/expo/demo'
-      path: '/demo'
+    '/expo_/demo': {
+      id: '/expo_/demo'
+      path: '/expo/demo'
       fullPath: '/expo/demo'
       preLoaderRoute: typeof ExpoDemoRouteImport
-      parentRoute: typeof ExpoRoute
+      parentRoute: typeof rootRouteImport
     }
     '/email/unsubscribe': {
       id: '/email/unsubscribe'
@@ -1678,16 +1679,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface ExpoRouteChildren {
-  ExpoDemoRoute: typeof ExpoDemoRoute
-}
-
-const ExpoRouteChildren: ExpoRouteChildren = {
-  ExpoDemoRoute: ExpoDemoRoute,
-}
-
-const ExpoRouteWithChildren = ExpoRoute._addFileChildren(ExpoRouteChildren)
-
 interface MembershipRouteChildren {
   MembershipPricingRoute: typeof MembershipPricingRoute
   MembershipSprintRoute: typeof MembershipSprintRoute
@@ -1763,7 +1754,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   ContentStrategyRoute: ContentStrategyRoute,
   EvergreenPalRoute: EvergreenPalRoute,
-  ExpoRoute: ExpoRouteWithChildren,
+  ExpoRoute: ExpoRoute,
   FaqRoute: FaqRoute,
   FindYourPalRoute: FindYourPalRoute,
   GamesRoute: GamesRoute,
@@ -1796,6 +1787,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   BlogSlugRoute: BlogSlugRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
+  ExpoDemoRoute: ExpoDemoRoute,
   IndustriesSlugRoute: IndustriesSlugRoute,
   LocationsSlugRoute: LocationsSlugRoute,
   PackagesPackageIdRoute: PackagesPackageIdRoute,

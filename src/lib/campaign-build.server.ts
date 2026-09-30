@@ -69,7 +69,7 @@ const wordCount = (value: string) => value.trim().split(/\s+/).filter(Boolean).l
 
 /** Runs both AI passes and merges them into one validated campaign output. */
 export async function buildCampaignOutput(brief: CampaignBuildBrief): Promise<CampaignOutput> {
-  const { parseStructured, STUDIO_BUILD_MODEL, STUDIO_CHAT_MODEL } = await import("./ai.server");
+  const { parseStructured, STUDIO_BUILD_MODEL } = await import("./ai.server");
   const briefText = campaignBriefText(brief);
   const [response, longForm] = await Promise.all([
     parseStructured(
@@ -78,7 +78,7 @@ export async function buildCampaignOutput(brief: CampaignBuildBrief): Promise<Ca
       campaignCoreInstructions,
       briefText,
       // Gemini rejects this structured schema (400 invalid argument); the chat model accepts it.
-      { model: STUDIO_CHAT_MODEL },
+      { model: "openai/gpt-6-luna" },
     ),
     parseStructured(
       LongFormOutputSchema,

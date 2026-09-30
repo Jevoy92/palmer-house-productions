@@ -2385,6 +2385,7 @@ export type Database = {
           email_campaign_ready: boolean
           email_palmer_support: boolean
           email_usage_alerts: boolean
+          inapp_alerts: boolean
           last_briefing_at: string | null
           preferred_pal: string
           updated_at: string
@@ -2398,6 +2399,7 @@ export type Database = {
           email_campaign_ready?: boolean
           email_palmer_support?: boolean
           email_usage_alerts?: boolean
+          inapp_alerts?: boolean
           last_briefing_at?: string | null
           preferred_pal?: string
           updated_at?: string
@@ -2411,6 +2413,7 @@ export type Database = {
           email_campaign_ready?: boolean
           email_palmer_support?: boolean
           email_usage_alerts?: boolean
+          inapp_alerts?: boolean
           last_briefing_at?: string | null
           preferred_pal?: string
           updated_at?: string

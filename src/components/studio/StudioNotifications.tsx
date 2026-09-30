@@ -9,7 +9,7 @@ import { useStudioMotion } from "./studio-motion";
 
 type Note = {
   id: string;
-  kind: "welcome" | "nudge";
+  kind: "welcome" | "nudge" | "update";
   title: string;
   body: string;
   color: string;
@@ -33,7 +33,8 @@ function readSet(key: string) {
  * the panel carries live nudges pulled from real workspace activity.
  */
 export function StudioNotifications() {
-  const { workspace, brand, campaigns, ideas, calendar, assets } = useStudio();
+  const { workspace, brand, campaigns, ideas, calendar, assets, settings } = useStudio();
+  const inApp = (settings as { inapp_alerts?: boolean } | null)?.inapp_alerts ?? true;
   const [open, setOpen] = useState(false);
   const [read, setRead] = useState<Set<string>>(new Set());
   const { enter, exit, transition } = useStudioMotion();
@@ -60,6 +61,16 @@ export function StudioNotifications() {
 
   const notes = useMemo<Note[]>(() => {
     const items: Note[] = [];
+    if (inApp)
+      items.push({
+        id: "update:credits-2026-09",
+        kind: "update",
+        title: "Your monthly credits just went up",
+        body: "Studio now includes 12,000 credits a month (was 3,500), Guided 25,000 and Partner 50,000. The new amount arrives at your next monthly refill. Same price, no action needed.",
+        color: "var(--spotlight)",
+        soft: "var(--spotlight-soft)",
+        to: "/studio/billing",
+      });
 
     const draft = campaigns.find((item) => item.status === "draft");
     if (draft)
@@ -122,7 +133,7 @@ export function StudioNotifications() {
       });
     }
     return items;
-  }, [assets, brand, calendar.length, campaigns, ideas]);
+  }, [assets, brand, calendar.length, campaigns, ideas, inApp]);
 
   const unread = notes.filter((note) => !read.has(note.id));
 

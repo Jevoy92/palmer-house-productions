@@ -1,0 +1,1 @@
+alter table public.workspace_settings add column if not exists inapp_alerts boolean not null default true;

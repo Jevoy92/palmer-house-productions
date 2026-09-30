@@ -885,6 +885,27 @@ export type Database = {
         }
         Relationships: []
       }
+      expo_demo_usage: {
+        Row: {
+          created_at: string
+          id: string
+          kind: string
+          session_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          kind: string
+          session_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          kind?: string
+          session_id?: string
+        }
+        Relationships: []
+      }
       pal_availability: {
         Row: {
           id: string

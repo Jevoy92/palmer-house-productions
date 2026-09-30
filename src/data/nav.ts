@@ -70,6 +70,17 @@ export const pricingLinks: NavLink[] = [
     description: "Bundles, BOGO, and savings",
     badge: "New",
   },
+  {
+    label: "Try the Studio Demo",
+    to: "/expo/demo",
+    description: "Build a free campaign in minutes",
+    badge: "Expo",
+  },
+  {
+    label: "Expo Offer",
+    to: "/expo",
+    description: "Small Business Expo LA pricing",
+  },
 ];
 
 export const companyLinks: NavLink[] = [
@@ -89,6 +100,7 @@ export const primaryLinks: NavLink[] = [
     description: "We plan, film and edit your videos.",
   },
   { label: "Studio", to: "/membership", description: "Create with our software and AI Pals." },
+  { label: "Try the demo", to: "/expo/demo", description: "Build a free campaign in minutes." },
   {
     label: "Planning & prep",
     to: "/content-strategy",

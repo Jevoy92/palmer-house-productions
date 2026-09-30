@@ -239,6 +239,7 @@ export type StudioContextValue = {
     audience: string;
     anchorFormat: string;
     depth: "quick" | "strategic" | "deep";
+    conversationId?: string;
   }) => Promise<string>;
   suggestDirections: (values: {
     idea: string;
@@ -1166,6 +1167,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     audience: string;
     anchorFormat: string;
     depth: "quick" | "strategic" | "deep";
+    conversationId?: string;
   }) {
     if (!workspace || !brand) throw new Error("Finish your workspace and brand profile first.");
     // Brand DNA may not have an audience yet; never fail the build over it.
@@ -1189,6 +1191,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
           audience: values.audience,
           anchor_format: values.anchorFormat,
           depth: values.depth,
+          conversation_id: values.conversationId || null,
           status: "generating",
         })
         .select()

@@ -516,6 +516,12 @@ export const linkStudioCampaignToConversation = createServerFn({ method: "POST" 
     const origin = await (
       await import("./studio-auth.server")
     ).resolveStudioAuthor(client, data.workspaceId, data.pal, data.palProfileId);
+    await client
+      .from("campaigns")
+      .update({ conversation_id: data.conversationId })
+      .eq("id", data.campaignId)
+      .eq("workspace_id", data.workspaceId)
+      .is("conversation_id", null);
     const result = await client.from("assistant_messages").insert({
       workspace_id: data.workspaceId,
       conversation_id: data.conversationId,

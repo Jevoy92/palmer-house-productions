@@ -19,7 +19,7 @@ export function studioBillingAdmin() {
   });
 }
 export function studioGlobalBudget() {
-  const value = Number(process.env.STUDIO_AI_MONTHLY_BUDGET_USD || "100");
+  const value = Number(process.env.STUDIO_AI_MONTHLY_BUDGET_USD || "1000");
   if (!Number.isFinite(value) || value <= 0 || value > 1_000_000)
     throw new Error("The provider spending limit needs configuration.");
   return value;

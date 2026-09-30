@@ -118,7 +118,7 @@ export function HomePackages() {
                 <strong>${computePackagePrice(item).toLocaleString()}</strong>
                 <small>{getPackageScope(item)}</small>
                 <span className="ph-link-label">
-                  View example & scope <ArrowRight size={17} />
+                  See what’s included <ArrowRight size={17} />
                 </span>
               </div>
             </Link>

@@ -781,6 +781,110 @@ export type Database = {
         }
         Relationships: []
       }
+      expo_contact_events: {
+        Row: {
+          contact_id: string
+          created_at: string
+          dedupe_key: string | null
+          detail: string | null
+          id: string
+          kind: string
+        }
+        Insert: {
+          contact_id: string
+          created_at?: string
+          dedupe_key?: string | null
+          detail?: string | null
+          id?: string
+          kind: string
+        }
+        Update: {
+          contact_id?: string
+          created_at?: string
+          dedupe_key?: string | null
+          detail?: string | null
+          id?: string
+          kind?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "expo_contact_events_contact_id_fkey"
+            columns: ["contact_id"]
+            isOneToOne: false
+            referencedRelation: "expo_contacts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      expo_contacts: {
+        Row: {
+          campaign_id: string
+          company: string | null
+          created_at: string
+          email: string
+          follow_up_date: string
+          follow_up_sent_at: string | null
+          follow_up_state: string
+          id: string
+          interest: string | null
+          name: string | null
+          notes: string | null
+          offer: string | null
+          phone: string | null
+          purchased: string | null
+          source: string
+          status: string
+          stripe_customer_id: string | null
+          updated_at: string
+          wants_to_create: string | null
+          workspace_id: string | null
+        }
+        Insert: {
+          campaign_id: string
+          company?: string | null
+          created_at?: string
+          email: string
+          follow_up_date?: string
+          follow_up_sent_at?: string | null
+          follow_up_state?: string
+          id?: string
+          interest?: string | null
+          name?: string | null
+          notes?: string | null
+          offer?: string | null
+          phone?: string | null
+          purchased?: string | null
+          source?: string
+          status?: string
+          stripe_customer_id?: string | null
+          updated_at?: string
+          wants_to_create?: string | null
+          workspace_id?: string | null
+        }
+        Update: {
+          campaign_id?: string
+          company?: string | null
+          created_at?: string
+          email?: string
+          follow_up_date?: string
+          follow_up_sent_at?: string | null
+          follow_up_state?: string
+          id?: string
+          interest?: string | null
+          name?: string | null
+          notes?: string | null
+          offer?: string | null
+          phone?: string | null
+          purchased?: string | null
+          source?: string
+          status?: string
+          stripe_customer_id?: string | null
+          updated_at?: string
+          wants_to_create?: string | null
+          workspace_id?: string | null
+        }
+        Relationships: []
+      }
       pal_availability: {
         Row: {
           id: string
@@ -1952,6 +2056,24 @@ export type Database = {
           },
         ]
       }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
       user_subscriptions: {
         Row: {
           cancel_at_period_end: boolean | null
@@ -2623,6 +2745,13 @@ export type Database = {
         }
         Returns: boolean
       }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
       hold_studio_billing: {
         Args: {
           event_key: string
@@ -2726,6 +2855,7 @@ export type Database = {
       }
     }
     Enums: {
+      app_role: "admin" | "moderator" | "user"
       business_industry:
         | "healthcare"
         | "fitness"
@@ -2870,6 +3000,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      app_role: ["admin", "moderator", "user"],
       business_industry: [
         "healthcare",
         "fitness",

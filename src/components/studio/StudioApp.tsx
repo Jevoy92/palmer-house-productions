@@ -88,6 +88,9 @@ import {
 } from "react";
 import { toast } from "sonner";
 import { createStudioBillingPortal, createStudioSubscriptionCheckout } from "@/lib/studio-server";
+import { ExpoCodeBox } from "@/components/expo/ExpoCodeBox";
+import { useExpoClock } from "@/components/expo/ExpoModule";
+import { expoCampaign, expoSavings, followUpPromise } from "@/lib/expo-campaign";
 import {
   anchorFormats,
   studioAudienceTypes,
@@ -4912,6 +4915,13 @@ function BillingView() {
   const { session, workspace, subscription } = useStudio();
   const [loadingPlan, setLoadingPlan] = useState<string>("");
   const [purchaseIntent, setPurchaseIntent] = useState<StudioPurchaseIntent | null>(null);
+  const [boothCode, setBoothCode] = useState("");
+  const [expoPaid, setExpoPaid] = useState(false);
+  const { live: expoLive } = useExpoClock();
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    setExpoPaid(q.get("checkout") === "success" && q.get("expo") === "1");
+  }, []);
   const [interval, setInterval] = useState<"month" | "year">(
     subscription?.billing_interval === "year" ? "year" : "month",
   );
@@ -4938,6 +4948,8 @@ function BillingView() {
       ? subscription.plan
       : "creator";
   const activePlan = studioPlans[activePlanKey];
+  const expoOfferShown =
+    expoLive && interval === "month" && !["active", "past_due", "trialing"].includes(subscription?.status ?? "");
   async function checkout(plan: StudioPlanKey) {
     if (!session || !workspace) return;
     if (subscription?.status === "active" || subscription?.status === "past_due") {
@@ -4947,7 +4959,13 @@ function BillingView() {
     setLoadingPlan(plan);
     try {
       const result = await createStudioSubscriptionCheckout({
-        data: { accessToken: session.access_token, workspaceId: workspace.id, plan, interval },
+        data: {
+          accessToken: session.access_token,
+          workspaceId: workspace.id,
+          plan,
+          interval,
+          ...(expoOfferShown && plan === "creator" && boothCode ? { boothCode } : {}),
+        },
       });
       if (result.ok) window.location.assign(result.url);
       else
@@ -5017,7 +5035,33 @@ function BillingView() {
           </button>
         </div>
       )}
+      {expoPaid && (
+        <div className="mb-6 rounded-xl border border-border bg-evergreen-soft p-5" role="status">
+          <p className="font-bold">You're in. Start exploring Studio now.</p>
+          <p className="mt-1 text-sm">
+            {followUpPromise().replace("with you ", "")} to see how you're getting on. — Jevoy
+          </p>
+        </div>
+      )}
       <StudioCreditPanel />
+      {expoOfferShown && (
+        <div className="mt-6 grid gap-4 rounded-[1.25rem] border border-border bg-white p-5 md:grid-cols-2">
+          <div>
+            <p className="font-mono text-[11px] uppercase tracking-[.17em] text-reel">
+              Small Business Expo · Expo-week offer
+            </p>
+            <p className="mt-2 font-bold">
+              {boothCode
+                ? `Booth offer: $${expoCampaign.offers.booth.monthly}/month for 3 months, then $${expoCampaign.regularMonthly}. Save $${expoSavings("booth")}.`
+                : `Studio monthly: $${expoCampaign.offers.public.monthly}/month for 3 months, then $${expoCampaign.regularMonthly}. Save $${expoSavings("public")}.`}
+            </p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              First Studio membership only. Applied at checkout. Ends {expoCampaign.deadlineLabel}.
+            </p>
+          </div>
+          <ExpoCodeBox onChange={setBoothCode} />
+        </div>
+      )}
       <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-[1.25rem] border border-border bg-white p-3 pl-5">
         <div>
           <p className="text-sm font-black">Choose how you pay</p>
@@ -5054,9 +5098,26 @@ function BillingView() {
               {plan.name}
             </p>
             <p className="mt-5 text-4xl font-extrabold">
-              ${interval === "year" ? Math.round(plan.annualPrice / 12) : plan.price}
-              <span className="text-sm font-medium text-muted-foreground"> / month</span>
+              {key === "creator" && expoOfferShown ? (
+                <>
+                  ${expoCampaign.offers[boothCode ? "booth" : "public"].monthly}
+                  <span className="text-sm font-medium text-muted-foreground">
+                    {" "}
+                    / month · <s>${plan.price}</s>
+                  </span>
+                </>
+              ) : (
+                <>
+                  ${interval === "year" ? Math.round(plan.annualPrice / 12) : plan.price}
+                  <span className="text-sm font-medium text-muted-foreground"> / month</span>
+                </>
+              )}
             </p>
+            {key === "creator" && expoOfferShown ? (
+              <p className="mt-1 text-xs font-bold text-evergreen">
+                First 3 months, then ${plan.price}/month
+              </p>
+            ) : null}
             {interval === "year" ? (
               <p className="mt-1 text-xs font-bold text-evergreen">
                 ${plan.annualPrice.toLocaleString()} billed annually

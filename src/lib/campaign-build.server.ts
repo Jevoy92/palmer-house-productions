@@ -77,7 +77,8 @@ export async function buildCampaignOutput(brief: CampaignBuildBrief): Promise<Ca
       "palmer_house_campaign",
       campaignCoreInstructions,
       briefText,
-      { model: STUDIO_BUILD_MODEL },
+      // Gemini rejects this structured schema (400 invalid argument); the chat model accepts it.
+      { model: "openai/gpt-6-luna" },
     ),
     parseStructured(
       LongFormOutputSchema,

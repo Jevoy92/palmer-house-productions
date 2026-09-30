@@ -35,6 +35,7 @@ import { Route as IntegrationsRouteImport } from './routes/integrations'
 import { Route as GamesRouteImport } from './routes/games'
 import { Route as FindYourPalRouteImport } from './routes/find-your-pal'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ExpoRouteImport } from './routes/expo'
 import { Route as EvergreenPalRouteImport } from './routes/evergreen-pal'
 import { Route as ContentStrategyRouteImport } from './routes/content-strategy'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -55,6 +56,7 @@ import { Route as StudioOnboardingRouteImport } from './routes/studio.onboarding
 import { Route as StudioLibraryRouteImport } from './routes/studio.library'
 import { Route as StudioIdeasRouteImport } from './routes/studio.ideas'
 import { Route as StudioFeedRouteImport } from './routes/studio.feed'
+import { Route as StudioExpoLeadsRouteImport } from './routes/studio.expo-leads'
 import { Route as StudioDashboardRouteImport } from './routes/studio.dashboard'
 import { Route as StudioCreateRouteImport } from './routes/studio.create'
 import { Route as StudioCalendarRouteImport } from './routes/studio.calendar'
@@ -220,6 +222,11 @@ const FaqRoute = FaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExpoRoute = ExpoRouteImport.update({
+  id: '/expo',
+  path: '/expo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EvergreenPalRoute = EvergreenPalRouteImport.update({
   id: '/evergreen-pal',
   path: '/evergreen-pal',
@@ -318,6 +325,11 @@ const StudioIdeasRoute = StudioIdeasRouteImport.update({
 const StudioFeedRoute = StudioFeedRouteImport.update({
   id: '/feed',
   path: '/feed',
+  getParentRoute: () => StudioRoute,
+} as any)
+const StudioExpoLeadsRoute = StudioExpoLeadsRouteImport.update({
+  id: '/expo-leads',
+  path: '/expo-leads',
   getParentRoute: () => StudioRoute,
 } as any)
 const StudioDashboardRoute = StudioDashboardRouteImport.update({
@@ -509,6 +521,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/content-strategy': typeof ContentStrategyRoute
   '/evergreen-pal': typeof EvergreenPalRoute
+  '/expo': typeof ExpoRoute
   '/faq': typeof FaqRoute
   '/find-your-pal': typeof FindYourPalRoute
   '/games': typeof GamesRoute
@@ -556,6 +569,7 @@ export interface FileRoutesByFullPath {
   '/studio/calendar': typeof StudioCalendarRoute
   '/studio/create': typeof StudioCreateRoute
   '/studio/dashboard': typeof StudioDashboardRoute
+  '/studio/expo-leads': typeof StudioExpoLeadsRoute
   '/studio/feed': typeof StudioFeedRoute
   '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
@@ -591,6 +605,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/content-strategy': typeof ContentStrategyRoute
   '/evergreen-pal': typeof EvergreenPalRoute
+  '/expo': typeof ExpoRoute
   '/faq': typeof FaqRoute
   '/find-your-pal': typeof FindYourPalRoute
   '/games': typeof GamesRoute
@@ -637,6 +652,7 @@ export interface FileRoutesByTo {
   '/studio/calendar': typeof StudioCalendarRoute
   '/studio/create': typeof StudioCreateRoute
   '/studio/dashboard': typeof StudioDashboardRoute
+  '/studio/expo-leads': typeof StudioExpoLeadsRoute
   '/studio/feed': typeof StudioFeedRoute
   '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
@@ -673,6 +689,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/content-strategy': typeof ContentStrategyRoute
   '/evergreen-pal': typeof EvergreenPalRoute
+  '/expo': typeof ExpoRoute
   '/faq': typeof FaqRoute
   '/find-your-pal': typeof FindYourPalRoute
   '/games': typeof GamesRoute
@@ -720,6 +737,7 @@ export interface FileRoutesById {
   '/studio/calendar': typeof StudioCalendarRoute
   '/studio/create': typeof StudioCreateRoute
   '/studio/dashboard': typeof StudioDashboardRoute
+  '/studio/expo-leads': typeof StudioExpoLeadsRoute
   '/studio/feed': typeof StudioFeedRoute
   '/studio/ideas': typeof StudioIdeasRoute
   '/studio/library': typeof StudioLibraryRoute
@@ -757,6 +775,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/content-strategy'
     | '/evergreen-pal'
+    | '/expo'
     | '/faq'
     | '/find-your-pal'
     | '/games'
@@ -804,6 +823,7 @@ export interface FileRouteTypes {
     | '/studio/calendar'
     | '/studio/create'
     | '/studio/dashboard'
+    | '/studio/expo-leads'
     | '/studio/feed'
     | '/studio/ideas'
     | '/studio/library'
@@ -839,6 +859,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/content-strategy'
     | '/evergreen-pal'
+    | '/expo'
     | '/faq'
     | '/find-your-pal'
     | '/games'
@@ -885,6 +906,7 @@ export interface FileRouteTypes {
     | '/studio/calendar'
     | '/studio/create'
     | '/studio/dashboard'
+    | '/studio/expo-leads'
     | '/studio/feed'
     | '/studio/ideas'
     | '/studio/library'
@@ -920,6 +942,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/content-strategy'
     | '/evergreen-pal'
+    | '/expo'
     | '/faq'
     | '/find-your-pal'
     | '/games'
@@ -967,6 +990,7 @@ export interface FileRouteTypes {
     | '/studio/calendar'
     | '/studio/create'
     | '/studio/dashboard'
+    | '/studio/expo-leads'
     | '/studio/feed'
     | '/studio/ideas'
     | '/studio/library'
@@ -1003,6 +1027,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   ContentStrategyRoute: typeof ContentStrategyRoute
   EvergreenPalRoute: typeof EvergreenPalRoute
+  ExpoRoute: typeof ExpoRoute
   FaqRoute: typeof FaqRoute
   FindYourPalRoute: typeof FindYourPalRoute
   GamesRoute: typeof GamesRoute
@@ -1239,6 +1264,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/expo': {
+      id: '/expo'
+      path: '/expo'
+      fullPath: '/expo'
+      preLoaderRoute: typeof ExpoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/evergreen-pal': {
       id: '/evergreen-pal'
       path: '/evergreen-pal'
@@ -1377,6 +1409,13 @@ declare module '@tanstack/react-router' {
       path: '/feed'
       fullPath: '/studio/feed'
       preLoaderRoute: typeof StudioFeedRouteImport
+      parentRoute: typeof StudioRoute
+    }
+    '/studio/expo-leads': {
+      id: '/studio/expo-leads'
+      path: '/expo-leads'
+      fullPath: '/studio/expo-leads'
+      preLoaderRoute: typeof StudioExpoLeadsRouteImport
       parentRoute: typeof StudioRoute
     }
     '/studio/dashboard': {
@@ -1642,6 +1681,7 @@ interface StudioRouteChildren {
   StudioCalendarRoute: typeof StudioCalendarRoute
   StudioCreateRoute: typeof StudioCreateRoute
   StudioDashboardRoute: typeof StudioDashboardRoute
+  StudioExpoLeadsRoute: typeof StudioExpoLeadsRoute
   StudioFeedRoute: typeof StudioFeedRoute
   StudioIdeasRoute: typeof StudioIdeasRoute
   StudioLibraryRoute: typeof StudioLibraryRoute
@@ -1665,6 +1705,7 @@ const StudioRouteChildren: StudioRouteChildren = {
   StudioCalendarRoute: StudioCalendarRoute,
   StudioCreateRoute: StudioCreateRoute,
   StudioDashboardRoute: StudioDashboardRoute,
+  StudioExpoLeadsRoute: StudioExpoLeadsRoute,
   StudioFeedRoute: StudioFeedRoute,
   StudioIdeasRoute: StudioIdeasRoute,
   StudioLibraryRoute: StudioLibraryRoute,
@@ -1693,6 +1734,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   ContentStrategyRoute: ContentStrategyRoute,
   EvergreenPalRoute: EvergreenPalRoute,
+  ExpoRoute: ExpoRoute,
   FaqRoute: FaqRoute,
   FindYourPalRoute: FindYourPalRoute,
   GamesRoute: GamesRoute,

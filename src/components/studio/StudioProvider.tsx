@@ -1168,6 +1168,12 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     depth: "quick" | "strategic" | "deep";
   }) {
     if (!workspace || !brand) throw new Error("Finish your workspace and brand profile first.");
+    // Brand DNA may not have an audience yet; never fail the build over it.
+    const audienceText =
+      values.audience.trim().length >= 3
+        ? values.audience.trim()
+        : `People who could hire or buy from ${brand.business_name || workspace.name || "this business"}`;
+    values = { ...values, audience: audienceText };
     setBusy(true);
     try {
       if (!session) throw new Error("Sign in first.");
@@ -1218,7 +1224,17 @@ export function StudioProvider({ children }: { children: ReactNode }) {
             personalStory: brand.personal_story || "",
           },
         },
-      }).finally(notifyCreditBalance);
+      })
+        .catch(async (error) => {
+          // Don't leave an empty "generating" campaign behind.
+          await supabase
+            .from("campaigns")
+            .delete()
+            .eq("id", inserted.data.id)
+            .eq("status", "generating");
+          throw error;
+        })
+        .finally(notifyCreditBalance);
       if (generated.ok)
         setCampaignOutputs((current) => ({ ...current, [inserted.data.id]: generated.output }));
       await refresh();

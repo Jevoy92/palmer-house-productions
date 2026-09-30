@@ -368,6 +368,7 @@ export const analyzeStudioContentSource = createServerFn({ method: "POST" })
 const SubscriptionSchema = AuthorizedSchema.extend({
   plan: z.enum(["creator", "business", "partner"]),
   interval: z.enum(["month", "year"]),
+  boothCode: z.string().trim().max(40).optional(),
 });
 export const createStudioSubscriptionCheckout = createServerFn({ method: "POST" })
   .validator(SubscriptionSchema)
@@ -385,6 +386,7 @@ export const createStudioSubscriptionCheckout = createServerFn({ method: "POST" 
       email: user.email,
       plan: data.plan,
       interval: data.interval,
+      boothCode: data.boothCode,
       origin: process.env.PUBLIC_SITE_URL || getRequestUrl().origin,
     });
   });

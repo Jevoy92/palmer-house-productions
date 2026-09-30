@@ -177,7 +177,7 @@ function ExpoDemo() {
 
   const choosePal = (key: PalName) => {
     if (key === pal) return;
-    const hadWork = messages.length > 0;
+    const hadWork = messages.some((m) => m.role === "guest");
     setPal(key);
     const name = palDirectory[key].name;
     const text = hadWork

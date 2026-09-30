@@ -142,9 +142,10 @@ export function StudioNativeDraft({
   const image = useAssetMedia(asset);
   const isDocument = ["article", "newsletter", "pdf", "document"].includes(asset.kind);
   const isScript = asset.kind.includes("script");
+  const hasMedia = Boolean(image && !["pdf", "document"].includes(asset.kind));
   return (
     <article
-      className={`studio-native-draft ${isDocument ? "is-document" : ""} ${compact ? "is-compact" : ""}`}
+      className={`studio-native-draft ${isDocument ? "is-document" : ""} ${compact ? "is-compact" : ""} ${hasMedia ? "has-media" : ""}`}
     >
       <header className="studio-native-header">
         <span className="studio-brand-initials">
@@ -166,7 +167,7 @@ export function StudioNativeDraft({
         {isDocument || isScript ? <h3>{asset.title}</h3> : null}
         <StudioMarkdown>{content ?? asset.content}</StudioMarkdown>
       </div>
-      {image && !["pdf", "document"].includes(asset.kind) ? (
+      {hasMedia ? (
         <div className="studio-native-media">
           <img
             src={image}
@@ -307,14 +308,14 @@ export function StudioChatArtifactCard({
         animate={{ opacity: 1 }}
         transition={fadeTransition}
       >
-        <StudioNativeDraft asset={selected} />
+        <StudioNativeDraft asset={selected} compact />
       </motion.div>
       <div className="studio-artifact-actions">
         <button type="button" onClick={() => onOpen(selected.id, "edit")}>
           <Pencil size={15} /> Edit
         </button>
         <button type="button" onClick={() => onOpen(selected.id, "preview")}>
-          <ExternalLink size={15} /> Open
+          <ExternalLink size={15} /> Open full
         </button>
         <span>
           <Check size={15} /> Saved
@@ -485,7 +486,7 @@ export function StudioChatEditor({
           transition={fadeTransition}
         >
           {mode === "preview" ? (
-            <StudioNativeDraft asset={asset} content={draft} compact />
+            <StudioNativeDraft asset={asset} content={draft} />
           ) : (
             <label className="studio-editor-label">
               {asset.kind.includes("script") ? "Script" : "Post text"}

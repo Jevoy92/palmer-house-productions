@@ -56,7 +56,7 @@ function FeedAvatar({ author }: { author: StudioAuthor }) {
     <span className="studio-feed-avatar studio-feed-initial">{author.name.slice(0, 1)}</span>
   );
 }
-function FeedThread({ post }: { post: StudioFeedPost }) {
+function FeedThread({ post, index }: { post: StudioFeedPost; index: number }) {
   const {
     user,
     assets,
@@ -85,6 +85,8 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
     .filter((c) => c.post_id === post.id)
     .sort((x, y) => String(x.created_at).localeCompare(String(y.created_at)));
   const [showAll, setShowAll] = useState(false);
+  const visibleReplies = showAll ? replies : replies.slice(-3);
+  const firstVisibleReply = replies.length - visibleReplies.length;
   const hearts = (feedReactions || []).filter(
     (r) => r.post_id === post.id && r.reaction === "love",
   );
@@ -151,6 +153,7 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
   return (
     <motion.article
       className="studio-feed-thread"
+      data-avatar-side={index % 2 === 0 ? "left" : "right"}
       layout={reduceMotion ? false : "position"}
       initial={reduceMotion ? false : { opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
@@ -198,8 +201,14 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
           Show {replies.length - 3} earlier {replies.length - 3 === 1 ? "reply" : "replies"}
         </button>
       ) : null}
-      {(showAll ? replies : replies.slice(-3)).map((reply) => (
-        <div key={reply.id} className="studio-feed-reply">
+      {visibleReplies.map((reply, replyIndex) => (
+        <div
+          key={reply.id}
+          className="studio-feed-reply"
+          data-avatar-side={
+            (index + firstVisibleReply + replyIndex + 1) % 2 === 0 ? "left" : "right"
+          }
+        >
           <FeedAvatar author={reply.author} />
           <div>
             <strong>{reply.author.name}</strong>
@@ -446,8 +455,8 @@ export function StudioFeed() {
           </motion.div>
         )}
         <AnimatePresence initial={false}>
-          {posts.map((post) => (
-            <FeedThread key={post.id} post={post} />
+          {posts.map((post, index) => (
+            <FeedThread key={post.id} post={post} index={index} />
           ))}
         </AnimatePresence>
         {!posts.length && !working && (

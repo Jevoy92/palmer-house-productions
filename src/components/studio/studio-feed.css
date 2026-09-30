@@ -13,11 +13,17 @@
   padding-top: 0;
 }
 .studio-feed-thread {
+  --feed-leading-space: 46px;
+  --feed-trailing-space: 0px;
   border: 0;
   border-bottom: 1px solid var(--studio-border);
   background: transparent;
   margin-bottom: 8px;
   padding-bottom: 12px;
+}
+.studio-feed-thread[data-avatar-side="right"] {
+  --feed-leading-space: 0px;
+  --feed-trailing-space: 46px;
 }
 .studio-feed-thread > header {
   display: flex;
@@ -45,12 +51,18 @@
   min-width: 0;
   flex: 1;
 }
+.studio-feed-thread[data-avatar-side="right"] > header > .studio-feed-avatar {
+  order: 2;
+}
+.studio-feed-thread[data-avatar-side="right"] > header > .studio-feed-lane {
+  order: 1;
+}
 .studio-feed-thread > header strong {
   display: block;
   font-size: 14px;
   font-weight: 700;
 }
-.studio-feed-thread > header span:not(.studio-feed-lane) {
+.studio-feed-thread > header > div > span {
   display: block;
   font-size: 11px;
   color: var(--studio-muted);
@@ -64,10 +76,13 @@
   color: var(--studio-muted);
 }
 .studio-feed-thread-content {
-  margin-left: 46px;
+  margin-inline: var(--feed-leading-space) var(--feed-trailing-space);
   padding: 10px 14px 12px;
   border-radius: 4px 16px 16px 16px;
   background: var(--studio-soft);
+}
+.studio-feed-thread[data-avatar-side="right"] .studio-feed-thread-content {
+  border-radius: 16px 4px 16px 16px;
 }
 .studio-feed-thread h2 {
   font-size: 15px;
@@ -104,6 +119,9 @@
   padding: 8px 0 0;
   position: relative;
 }
+.studio-feed-reply[data-avatar-side="right"] {
+  flex-direction: row-reverse;
+}
 .studio-feed-reply > .studio-feed-avatar {
   width: 36px;
   height: 36px;
@@ -114,6 +132,10 @@
   background: var(--studio-soft);
   min-width: 0;
   flex: 1;
+  text-align: left;
+}
+.studio-feed-reply[data-avatar-side="right"] > div {
+  border-radius: 16px 4px 16px 16px;
 }
 .studio-feed-reply strong {
   font-size: 12px;
@@ -369,17 +391,54 @@
   font-size: 13px;
   font-weight: 650;
 }
-.studio-feed-earlier { margin: 8px 0 0 46px; font-size: 12px; font-weight: 650; color: var(--studio-accent); min-height: 32px; }
-.studio-feed-thread .studio-feed-actions { justify-content: flex-start; gap: 14px; border-top: 0; padding: 6px 0 0 46px; }
-.studio-feed-thread .studio-feed-comments { border-top: 0; }
-.studio-feed-thread .studio-feed-comments form { margin: 8px 0 4px 46px; }
-.studio-feed-compose { padding: 10px 12px; border-radius: 16px; margin-bottom: 14px; }
-.studio-feed-compose textarea { min-height: 44px; font-size: 15px; }
-.studio-feed-thread img { max-height: 320px; width: auto; max-width: 100%; object-fit: cover; border-radius: 12px; }
+.studio-feed-earlier {
+  margin: 8px var(--feed-trailing-space) 0 var(--feed-leading-space);
+  font-size: 12px;
+  font-weight: 650;
+  color: var(--studio-accent);
+  min-height: 32px;
+}
+.studio-feed-thread .studio-feed-actions {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 14px;
+  border-top: 0;
+  padding: 6px var(--feed-trailing-space) 0 var(--feed-leading-space);
+}
+.studio-feed-thread .studio-feed-comments {
+  border-top: 0;
+}
+.studio-feed-thread .studio-feed-comments form {
+  margin: 8px var(--feed-trailing-space) 4px var(--feed-leading-space);
+}
+.studio-feed-compose {
+  padding: 10px 12px;
+  border-radius: 16px;
+  margin-bottom: 14px;
+}
+.studio-feed-compose textarea {
+  min-height: 44px;
+  font-size: 15px;
+}
+.studio-feed-linked-asset img {
+  max-height: 320px;
+  width: auto;
+  max-width: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
 @media (max-width: 639px) {
-  .studio-feed-thread-content { margin-left: 0; }
-  .studio-feed-thread h2 { font-size: 16px; line-height: 1.3; }
-  .studio-feed-thread p { font-size: 15px; }
-  .studio-feed-thread .studio-feed-actions, .studio-feed-earlier, .studio-feed-thread .studio-feed-comments form { padding-left: 0; margin-left: 0; }
+  .studio-feed-thread,
+  .studio-feed-thread[data-avatar-side="right"] {
+    --feed-leading-space: 0px;
+    --feed-trailing-space: 0px;
+  }
+  .studio-feed-thread h2 {
+    font-size: 16px;
+    line-height: 1.3;
+  }
+  .studio-feed-thread p {
+    font-size: 15px;
+  }
 }
 .studio-feed-actions .studio-feed-more { margin-left: auto; }

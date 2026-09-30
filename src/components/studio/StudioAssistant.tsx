@@ -103,6 +103,14 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
   } = useStudio();
   const navigate = useNavigate();
   const { reduceMotion: reduce, fadeTransition } = useStudioMotion();
+  const answerSides = useMemo(() => {
+    let answerIndex = 0;
+    return new Map(
+      conversationMessages
+        .filter((message) => message.role !== "user")
+        .map((message) => [message.id, answerIndex++ % 2 === 0 ? "left" : "right"]),
+    );
+  }, [conversationMessages]);
 
   // The conversation's own Pal wins; otherwise the member's saved guide. The
   // neutral option resolves to a real Pal so the name on screen always matches
@@ -754,7 +762,11 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                   </div>
                 );
               return (
-                <div key={message.id} className="studio-chat-turn">
+                <div
+                  key={message.id}
+                  className="studio-chat-turn"
+                  data-avatar-side={answerSides.get(message.id)}
+                >
                   <div className="studio-chat-response">
                     <StudioOriginAvatar
                       pal={speaker}

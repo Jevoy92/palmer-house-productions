@@ -618,6 +618,87 @@
 .xd-msg { max-width: 88%; padding: .7rem .95rem; border-radius: 1rem; line-height: 1.5; font-size: .95rem; animation: fade-in .3s ease-out; white-space: pre-wrap; }
 .xd-msg.pal { background: var(--jet-soft); border: 1px solid var(--jet-line); align-self: flex-start; }
 .xd-msg.guest { background: var(--cream); color: var(--ink); align-self: flex-end; }
+.xd-message-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.55rem;
+  width: 100%;
+}
+.xd-message-row.side-right {
+  flex-direction: row-reverse;
+}
+.xd-message-row .xd-msg {
+  max-width: calc(100% - 44px);
+  min-width: 0;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.xd-message-avatar {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--cream);
+}
+.xd-guest-avatar {
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+}
+.xd-message-author {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  opacity: 0.7;
+}
+.xd-example-picker {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--jet-line);
+}
+.xd-example-picker label {
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.xd-example-picker select {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  border: 1px solid var(--jet-line);
+  border-radius: 0.55rem;
+  background: var(--jet-soft);
+  color: var(--cream);
+  padding: 0.5rem 0.65rem;
+  font: inherit;
+  font-size: 0.88rem;
+}
+.xd-example-picker-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+.xd-example-picker-actions button {
+  min-height: 38px;
+  padding: 0.45rem 0.7rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--jet-line);
+  font-size: 0.8rem;
+}
+.xd-example-picker-actions button:first-child {
+  background: var(--reel);
+  color: var(--jet);
+  border-color: var(--reel);
+  font-weight: 700;
+}
+.xd-mode-note {
+  font-size: 0.75rem;
+  opacity: 0.75;
+  margin: 0.35rem 0 0.6rem;
+}
 .xd-typing { letter-spacing: .3em; opacity: .7; }
 .xd-building { display: flex; align-items: center; gap: .6rem; font-size: .9rem; opacity: .85; }
 .xd-pulse { width: 10px; height: 10px; border-radius: 9999px; background: var(--reel); animation: pulse 1.4s ease-in-out infinite; }
@@ -755,4 +836,22 @@
 @media (max-width: 960px) {
   .xd-screen { inset: 0; border-radius: 0; }
   .xd-screen-stage.t-reel .xd-native { height: 60vh; }
+}
+
+/* Keep desktop-only preview columns from overriding the phone layout. */
+@media (max-width: 960px) {
+  .xd-screen-main { grid-template-columns: minmax(0, 1fr); }
+  .xd-side { padding: 1.25rem; border-left: 0; border-top: 1px solid var(--jet-line); }
+  .xd-top { grid-template-columns: minmax(0, 1fr) auto; gap: .5rem; }
+  .xd-top > .xd-logo { grid-column: 1; grid-row: 1; }
+  .xd-top-right { grid-column: 2; grid-row: 1; }
+  .xd-top > span { display: none; }
+  .xd-top .xd-views { display: flex; grid-column: 1 / -1; grid-row: 2; justify-self: center; }
+}
+@media (min-width: 961px) {
+  .xd-v-gallery { grid-template-columns: 380px minmax(0, 1fr); }
+  .xd-v-gallery .xd-chat { border-left: 0; border-right: 1px solid var(--jet-line); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .xd-msg { animation: none; }
 }

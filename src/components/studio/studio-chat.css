@@ -13,7 +13,9 @@
 .studio-chat-workspace.has-editor {
   grid-template-columns: minmax(0, 1fr) 370px;
 }
-:root { --pal-read: 680px; }
+:root {
+  --pal-read: 680px;
+}
 .studio-chat-main {
   min-width: 0;
   min-height: 0;
@@ -95,31 +97,45 @@
   line-height: 1.55;
 }
 .studio-chat-turn {
+  --chat-avatar-space: 47px;
+  --chat-leading-space: var(--chat-avatar-space);
+  --chat-trailing-space: 0px;
   min-width: 0;
   display: grid;
   gap: 8px;
+}
+.studio-chat-turn[data-avatar-side="right"] {
+  --chat-leading-space: 0px;
+  --chat-trailing-space: var(--chat-avatar-space);
 }
 .studio-chat-response {
   display: flex;
   gap: 13px;
   align-items: flex-start;
 }
+.studio-chat-turn[data-avatar-side="right"] .studio-chat-response {
+  flex-direction: row-reverse;
+}
 .studio-chat-response > .studio-pal-avatar {
-  margin-top: 20px;
+  margin-top: 4px;
   width: 34px;
   height: 34px;
 }
 .studio-chat-bubble {
-  max-width: calc(100% - 42px);
+  max-width: calc(100% - var(--chat-avatar-space));
   border-radius: 4px 16px 16px 16px;
   background: var(--studio-soft, #f5f5f5);
   padding: 12px 16px;
   overflow-wrap: anywhere;
   min-width: 0;
+  text-align: left;
+}
+.studio-chat-turn[data-avatar-side="right"] .studio-chat-bubble {
+  border-radius: 16px 4px 16px 16px;
 }
 .studio-chat-author {
   display: block;
-  margin: -30px 0 12px -16px;
+  margin: 0 0 7px;
   font-size: 12px;
   font-weight: 650;
   color: var(--studio-muted, #737373);
@@ -139,7 +155,7 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-left: 47px;
+  margin-inline: var(--chat-leading-space) var(--chat-trailing-space);
   font-size: 12px;
   color: var(--studio-muted, #737373);
 }
@@ -157,7 +173,7 @@
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
-  margin-left: 42px;
+  margin-inline: var(--chat-leading-space) var(--chat-trailing-space);
 }
 .studio-chat-followups button {
   display: flex;
@@ -171,7 +187,7 @@
 }
 .studio-chat-keypoints {
   list-style: none;
-  margin-left: 42px;
+  margin-inline: var(--chat-leading-space) var(--chat-trailing-space);
   display: grid;
   gap: 8px;
   font-size: 12px;
@@ -428,6 +444,14 @@
   line-height: 1.3;
   font-weight: 750;
   letter-spacing: -0.035em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.studio-artifact-heading > div {
+  min-width: 0;
 }
 .studio-artifact-heading p {
   font-size: 10px;
@@ -549,6 +573,65 @@
 .studio-native-draft.is-document .studio-native-copy > h3 {
   font-family: Georgia, serif;
   font-size: 28px;
+}
+/* Only the inline chat card is bounded; Open full keeps the complete draft. */
+.studio-native-draft.is-compact {
+  height: 160px;
+  display: grid;
+  grid-template-rows: 46px minmax(0, 1fr);
+}
+.studio-native-draft.is-compact.has-media {
+  grid-template-columns: minmax(0, 1fr) 112px;
+}
+.studio-native-draft.is-compact .studio-native-header {
+  grid-column: 1 / -1;
+  padding: 8px 10px 4px;
+  gap: 8px;
+}
+.studio-native-draft.is-compact .studio-brand-initials {
+  width: 28px;
+  height: 28px;
+  font-size: 10px;
+}
+.studio-native-draft.is-compact .studio-native-header strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.studio-native-draft.is-compact .studio-native-copy {
+  min-height: 0;
+  min-width: 0;
+  padding: 6px 10px 10px;
+  overflow: hidden;
+  mask-image: linear-gradient(#000 75%, transparent);
+}
+.studio-native-draft.is-compact .studio-native-copy > h3 {
+  font-size: 15px;
+  line-height: 1.3;
+  margin: 0 0 6px;
+}
+.studio-native-draft.is-compact .studio-native-copy > div {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.studio-native-draft.is-compact .studio-native-media {
+  margin: 4px 8px 8px 0;
+  background: var(--chat-soft);
+  min-height: 0;
+}
+.studio-native-draft.is-compact .studio-native-media > img {
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+.studio-native-draft.is-compact .studio-preview-social,
+.studio-native-draft.is-compact .studio-script-note {
+  display: none;
+}
+.studio-native-draft.is-compact .studio-video-marker > span {
+  display: none;
 }
 .studio-script-note {
   display: flex;
@@ -1174,11 +1257,14 @@
   .studio-chat-response {
     gap: 12px;
   }
+  .studio-chat-turn {
+    --chat-avatar-space: 46px;
+  }
   .studio-chat-message-actions {
     gap: 12px;
   }
   .studio-chat-followups {
-    margin-left: 0;
+    margin-inline: 0;
   }
   .studio-chat-composer {
     padding: 7px 8px 10px;

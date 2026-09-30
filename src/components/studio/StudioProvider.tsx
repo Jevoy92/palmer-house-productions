@@ -239,6 +239,7 @@ export type StudioContextValue = {
     audience: string;
     anchorFormat: string;
     depth: "quick" | "strategic" | "deep";
+    conversationId?: string;
   }) => Promise<string>;
   suggestDirections: (values: {
     idea: string;

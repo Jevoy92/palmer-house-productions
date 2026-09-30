@@ -736,3 +736,23 @@
 .xd-compact-actions { display: flex; gap: .5rem; }
 .xd-compact-actions button { padding: .45rem .8rem; border-radius: .55rem; font-size: .82rem; border: 1px solid var(--jet-line); color: var(--cream); }
 .xd-compact-actions button:first-child { background: var(--reel); color: var(--jet); border-color: var(--reel); font-weight: 700; }
+/* Preview window: a centered, content-sized panel instead of a full black screen */
+.xd-screen { inset: 5vh max(1.5rem, calc(50% - 580px)); border-radius: 1.25rem; border: 1px solid var(--jet-line); background: var(--jet-soft, var(--jet)); box-shadow: 0 0 0 100vmax color-mix(in oklab, var(--jet) 78%, transparent); overflow: hidden; }
+.xd-screen-main { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: stretch; }
+.xd-screen-stage { padding: 2rem; background: var(--jet); }
+.xd-screen-stage.t-reel .xd-native { width: auto; height: min(70vh, 640px); max-height: none; aspect-ratio: 9 / 16; }
+.xd-side { padding: 2.5rem 2.25rem 2rem; gap: 1.1rem; border-left: 1px solid var(--jet-line); }
+.xd-side h3 { font-size: clamp(1.5rem, 2.2vw, 2rem); padding-right: 2.5rem; }
+.xd-hook { font-size: 1.2rem; line-height: 1.35; }
+.xd-beats { gap: .9rem; }
+.xd-beats li { counter-increment: b; position: relative; padding: 0 0 0 2.2rem; border-left: 0; font-size: .95rem; line-height: 1.45; }
+.xd-beats li::before { content: counter(b); position: absolute; left: 0; top: 0; width: 1.5rem; height: 1.5rem; border-radius: 9999px; display: grid; place-items: center; font-size: .72rem; font-weight: 700; background: var(--reel); color: var(--jet); }
+.xd-beats strong { font-size: 1rem; }
+.xd-body { font-size: 1rem; }
+.xd-why { font-size: .95rem; padding: 1rem; border-radius: .8rem; background: var(--jet); }
+.xd-strip { justify-content: center; background: var(--jet); }
+.xd-strip button { font-size: .9rem; padding: .55rem 1rem; }
+@media (max-width: 960px) {
+  .xd-screen { inset: 0; border-radius: 0; }
+  .xd-screen-stage.t-reel .xd-native { height: 60vh; }
+}

@@ -565,6 +565,18 @@
   flex-direction: column;
   padding: 11px;
   color: #fff6e8;
+  background: #2a2520;
+}
+.xd-stack-sheet.sheet-0,
+.xd-stack-sheet.sheet-1 {
+  background: #3a322a;
+  filter: brightness(0.7);
+}
+.xd-stack-sheet.sheet-0 strong,
+.xd-stack-sheet.sheet-0 small,
+.xd-stack-sheet.sheet-1 strong,
+.xd-stack-sheet.sheet-1 small {
+  visibility: hidden;
 }
 .xd-stack-sheet img {
   position: absolute;

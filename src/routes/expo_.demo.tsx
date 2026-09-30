@@ -6,7 +6,7 @@ import { palList, palDirectory } from "@/lib/pal-directory";
 import type { PalName } from "@/lib/studio-model";
 import { expoDemoCampaign, expoDemoChat, expoDemoImage } from "@/lib/expo-demo.functions";
 import { emptyBrief, artifactMeta, type Artifact, type DemoCampaign, type GuestBrief } from "@/lib/expo-demo-types";
-import { exampleBrief, exampleCampaign, expoGreetings } from "@/lib/expo-demo-example";
+import { expoGreetings, pickExample } from "@/lib/expo-demo-example";
 import { ArtifactPreview, artifactText } from "@/components/expo/DemoArtifacts";
 
 export const Route = createFileRoute("/expo_/demo")({
@@ -102,8 +102,9 @@ function ExpoDemo() {
       setBuilding("Opening the prepared example");
       setTimeout(() => {
         if (token !== gen.current) return;
-        setBrief(exampleBrief);
-        setCampaign(exampleCampaign);
+        const ex = pickExample([b.businessName, b.offer, ...messages.map((m) => m.text)].join(" "));
+        setBrief(ex.brief);
+        setCampaign(ex.campaign);
         setBuilding(null);
       }, 600);
       return;
@@ -332,7 +333,7 @@ function ExpoDemo() {
         <div className={`xd-results xd-v-${view}`}>
           <main className="xd-canvas">
             {mode === "example" ? (
-              <p className="xd-example-flag">Example campaign for a fictional café — not generated for your business.</p>
+              <p className="xd-example-flag">Example campaign for {brief.businessName.replace(" (example)", "")}, a fictional business — not generated for yours.</p>
             ) : null}
             {view === "editorial" ? (
               <Editorial c={campaign} images={images} brand={brand} onOpen={setOpen} />

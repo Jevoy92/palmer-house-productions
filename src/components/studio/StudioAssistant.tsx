@@ -426,6 +426,7 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
         audience: brand?.primary_audience || "",
         anchorFormat: campaignFormat,
         depth: "strategic",
+        conversationId: targetConversation || undefined,
       });
       setCampaignSource(null);
       toast.success("Your campaign is built.");

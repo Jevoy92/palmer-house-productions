@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import * as Dialog from "@radix-ui/react-dialog";
 import { ArrowRight, Check, ChevronLeft, ChevronRight, CircleHelp, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -63,6 +63,10 @@ const tour = [
 export function StudioStartHere() {
   const { workspace, user, brand, brandReferences, campaigns, assets, calendar } = useStudio();
   const { reduceMotion, fadeTransition } = useStudioMotion();
+  // Chat already opens with the Pal's own welcome; don't stack a second banner on top of it.
+  const inChat = useRouterState({
+    select: (state) => state.location.pathname.startsWith("/studio/conversations"),
+  });
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState<"setup" | "tour">("setup");
   const [page, setPage] = useState(0);
@@ -127,7 +131,7 @@ export function StudioStartHere() {
   if (!workspace || !user) return null;
   return (
     <>
-      {preference && !preference.dismissedWelcome && (
+      {preference && !preference.dismissedWelcome && !inChat && (
         <motion.aside
           className="studio-guide-arrival"
           aria-label={established ? "What’s new in Studio" : "Welcome to Studio"}

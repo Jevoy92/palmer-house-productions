@@ -641,17 +641,20 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
           </div>
         </header>
         {showOpening && conversationMessages.length > 0 ? (
-          <PalWelcome
-            key={presenceKey}
-            pal={pal}
-            context={openingContext}
-            variant={greetingCycle}
-            compact
-            onPrompt={useOpeningPrompt}
-            onImage={() => openArtifact("image")}
-            onPdf={() => openArtifact("pdf")}
-            onDismiss={() => setDismissedOpening(presenceKey)}
-          />
+          <div className="studio-chat-return" role="status">
+            <PalAvatar pal={pal} size="xs" ring={false} />
+            <span>
+              <strong>{pal.name}:</strong> Welcome back. Pick up where we left off, or tell me
+              what’s next.
+            </span>
+            <button
+              type="button"
+              aria-label="Dismiss greeting"
+              onClick={() => setDismissedOpening(presenceKey)}
+            >
+              <X size={14} />
+            </button>
+          </div>
         ) : null}
         <div
           ref={scrollRef}
@@ -762,7 +765,9 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
                     <article className="studio-chat-bubble">
                       <span className="studio-chat-author">{speaker.name}</span>
                       {meta?.headline ? <h2>{meta.headline}</h2> : null}
-                      <StudioMarkdown accent="var(--studio-accent)">{message.body}</StudioMarkdown>
+                      <StudioMarkdown accent="var(--studio-accent)" variant="chat">
+                        {message.body}
+                      </StudioMarkdown>
                     </article>
                   </div>
                   {linkedCampaign || assetIds?.length ? (

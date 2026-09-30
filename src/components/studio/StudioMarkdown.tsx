@@ -6,9 +6,20 @@ import remarkGfm from "remark-gfm";
  * Shared markdown renderer for Pal chat answers. Styled by hand so the output
  * matches Studio typography instead of a generic prose theme.
  */
-export function StudioMarkdown({ children, accent }: { children: string; accent?: string }) {
+export function StudioMarkdown({
+  children,
+  accent,
+  variant = "document",
+}: {
+  children: string;
+  accent?: string;
+  /** "chat" = conversational rhythm: tighter spacing, quieter headings. */
+  variant?: "document" | "chat";
+}) {
   return (
-    <div className="text-[15px] leading-[1.75] text-ink [&>*:first-child]:mt-0 [&>*:last-child]:mb-0">
+    <div
+      className={`${variant === "chat" ? "studio-md-chat text-[15.5px] leading-[1.6]" : "text-[15px] leading-[1.75]"} text-ink [&>*:first-child]:mt-0 [&>*:last-child]:mb-0`}
+    >
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         components={{

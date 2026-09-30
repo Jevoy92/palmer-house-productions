@@ -13,7 +13,7 @@ const productionQuestions = [
   },
   {
     q: "Are the example videos real client work?",
-    a: "Package examples marked AI concept are fictional illustrations of the kind of video you could make. Visit Our work to see Palmer House portfolio examples. Your project is planned around your own people, business, and message.",
+    a: "Package format previews are simple animations showing what each package delivers. Visit Our work to see real Palmer House portfolio examples. Your project is planned around your own people, business, and message.",
   },
   {
     q: "Does submitting a plan book the shoot or charge my card?",

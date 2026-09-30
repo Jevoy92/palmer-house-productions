@@ -106,14 +106,8 @@ export function HomePackages() {
               params={{ packageId: id }}
             >
               <div className="ph-package-picture">
-                <img
-                  src={packagePreviews[id].poster}
-                  alt={`Fictional ${item.name.toLowerCase()} video example`}
-                  width={960}
-                  height={540}
-                  loading="lazy"
-                />
-                <span>AI concept example</span>
+                <FormatLoop id={id} name={item.name} />
+                <span>Format preview</span>
               </div>
               <div className="ph-package-info">
                 <div>

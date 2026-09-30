@@ -64,7 +64,7 @@ function AiPovPage() {
             lane="spotlight"
             glyph="camera"
             title="Show what is an example"
-            body="AI concept previews illustrate a format. They are labeled and separate from our portfolio of production work. A generated example isn’t a client testimonial."
+            body="Package previews are animated graphics that explain a format. Our portfolio shows only real production work."
           />
           <Card
             lane="system"

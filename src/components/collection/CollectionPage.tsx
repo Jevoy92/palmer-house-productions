@@ -200,8 +200,8 @@ export function CollectionPage({ lane, q = "" }: { lane?: PalAccent | "all"; q?:
             );
           })}
           <p className="pc-portfolio-note">
-            AI concepts are fictional examples of the deliverables. Package scope is confirmed with
-            your quote.
+            Format previews show what each package delivers. Package scope is confirmed with your
+            quote.
           </p>
           <Link to="/shop" search={{ lane: "all" }} className="pc-section-link">
             Browse all 10 packages <ArrowRight size={18} />

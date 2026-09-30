@@ -59,6 +59,11 @@ type ImageSlot = "square" | "wide";
 type ImageStatus = "idle" | "loading" | "ready" | "error";
 
 const newSession = () => crypto.randomUUID();
+/** Booth guests start straight in chat with Kiana; they can still switch Pals in chat. */
+const DEFAULT_PAL: PalName = "kiana";
+const startMessages = (): Msg[] => [
+  { id: crypto.randomUUID(), role: "pal", pal: DEFAULT_PAL, text: expoGreetings[DEFAULT_PAL] },
+];
 const urlPattern = /\b((?:https?:\/\/)?(?:[a-z0-9-]+\.)+[a-z]{2,}(?:\/[^\s]*)?)/i;
 function ExpoDemo() {
   const chat = useServerFn(expoDemoChat);
@@ -66,8 +71,8 @@ function ExpoDemo() {
   const image = useServerFn(expoDemoImage);
 
   const [sessionId, setSessionId] = useState(newSession);
-  const [pal, setPal] = useState<PalName | null>(null);
-  const [messages, setMessages] = useState<Msg[]>([]);
+  const [pal, setPal] = useState<PalName | null>(DEFAULT_PAL);
+  const [messages, setMessages] = useState<Msg[]>(startMessages);
   const [brief, setBrief] = useState<GuestBrief>(emptyBrief);
   const [ready, setReady] = useState(false);
   const [thinking, setThinking] = useState(false);
@@ -101,8 +106,8 @@ function ExpoDemo() {
     gen.current += 1; // invalidates every late response from the previous guest
     if (photo) URL.revokeObjectURL(photo);
     setSessionId(newSession());
-    setPal(null);
-    setMessages([]);
+    setPal(DEFAULT_PAL);
+    setMessages(startMessages());
     setBrief(emptyBrief);
     setReady(false);
     setThinking(false);

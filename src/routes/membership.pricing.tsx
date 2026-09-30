@@ -1,6 +1,7 @@
 import { ExpoPlanNote } from "@/components/expo/ExpoModule";
 import {
   studioCreditAllowance,
+  studioCreditExamples,
   studioCreditOperations,
   studioCreditTopUps,
 } from "@/lib/studio-credits";
@@ -229,6 +230,33 @@ function PricingPage() {
               { value: 17, suffix: "%", label: "saved with annual billing", lane: "evergreen" },
             ]}
           />
+        </div>
+
+        <div className="mx-auto mt-10 grid max-w-6xl gap-4 md:grid-cols-3">
+          {plans.map((plan, index) => {
+            const allowance = [
+              studioCreditAllowance.creator,
+              studioCreditAllowance.business,
+              studioCreditAllowance.partner,
+            ][index];
+            const ex = studioCreditExamples(allowance);
+            return (
+              <div key={plan.name} className="rounded-2xl border border-border bg-card p-6">
+                <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                  A month of {plan.name} makes roughly
+                </p>
+                <ul className="mt-3 space-y-1.5 text-sm text-foreground">
+                  <li><strong>{ex.campaigns}</strong> complete campaigns</li>
+                  <li><strong>{ex.images.toLocaleString()}</strong> generated images</li>
+                  <li><strong>{ex.voiceMinutes.toLocaleString()}</strong> minutes of voice notes</li>
+                  <li><strong>{ex.replies.toLocaleString()}</strong> Pal replies, PDFs and ideas</li>
+                </ul>
+                <p className="mt-3 text-xs text-muted-foreground">
+                  All of it, together, every month. Mix it however you like.
+                </p>
+              </div>
+            );
+          })}
         </div>
 
         <div className="mx-auto mt-14 max-w-3xl">

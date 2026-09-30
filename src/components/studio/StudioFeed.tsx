@@ -12,7 +12,14 @@ import {
   Plus,
   ArrowRight,
   Check,
+  MoreHorizontal,
 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import type { StudioAuthor, StudioFeedPost } from "@/lib/studio-recovery";
 import { useStudio } from "./StudioProvider";
@@ -227,32 +234,34 @@ function FeedThread({ post }: { post: StudioFeedPost }) {
           <MessageCircle size={18} />
           {replies.length || "Reply"}
         </button>
-        <button
-          disabled={saved || !!pending}
-          onClick={() => void saveIdea()}
-          aria-busy={pending === "save"}
-        >
-          <motion.span
-            initial={false}
-            animate={{ scale: saved && !reduceMotion ? [1, 1.12, 1] : 1 }}
-            transition={fadeTransition}
-          >
-            {saved ? <Check size={18} /> : <Bookmark size={18} />}
-          </motion.span>
-          {saved ? "Saved" : pending === "save" ? "Saving…" : "Save idea"}
-        </button>
-        <button
-          disabled={!!pending}
-          onClick={() => void campaign()}
-          aria-label={`Build campaign from ${post.title || "this idea"}`}
-        >
-          <Plus size={18} />
-          <span>
-            {pending === "campaign"
-              ? "Building…"
-              : `Campaign · ${studioCreditOperations.campaign.credits} credits`}
-          </span>
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              className="studio-feed-more"
+              aria-label="More actions"
+              aria-busy={pending === "save" || pending === "campaign"}
+            >
+              {saved ? <Check size={18} /> : <MoreHorizontal size={18} />}
+              <span>
+                {pending === "campaign"
+                  ? "Building…"
+                  : pending === "save"
+                    ? "Saving…"
+                    : "More"}
+              </span>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="min-w-56">
+            <DropdownMenuItem disabled={saved || !!pending} onSelect={() => void saveIdea()}>
+              {saved ? <Check size={16} /> : <Bookmark size={16} />}
+              {saved ? "Saved to ideas" : "Save idea"}
+            </DropdownMenuItem>
+            <DropdownMenuItem disabled={!!pending} onSelect={() => void campaign()}>
+              <Plus size={16} />
+              Build campaign · {studioCreditOperations.campaign.credits} credits
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
       <motion.div
         className="studio-feed-comments"

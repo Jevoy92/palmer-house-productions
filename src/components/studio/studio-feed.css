@@ -382,3 +382,4 @@
   .studio-feed-thread p { font-size: 15px; }
   .studio-feed-thread .studio-feed-actions, .studio-feed-earlier, .studio-feed-thread .studio-feed-comments form { padding-left: 0; margin-left: 0; }
 }
+.studio-feed-actions .studio-feed-more { margin-left: auto; }

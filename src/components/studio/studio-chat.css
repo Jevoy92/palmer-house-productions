@@ -1380,3 +1380,51 @@ html[data-studio-text="large"] .studio-composer-row textarea {
   width: 100%;
   object-fit: cover;
 }
+
+/* Returning chats: one quiet line instead of the full Pal welcome. */
+.studio-chat-return {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: min(var(--pal-read, 680px), calc(100% - 32px));
+  margin: 10px auto 0;
+  padding: 8px 10px 8px 12px;
+  border-radius: 12px;
+  background: var(--chat-soft);
+  font-size: 13.5px;
+  line-height: 1.4;
+  color: var(--studio-muted);
+}
+.studio-chat-return span { flex: 1; min-width: 0; }
+.studio-chat-return strong { color: var(--studio-ink, inherit); font-weight: 700; }
+.studio-chat-return button {
+  display: grid; place-items: center; width: 28px; height: 28px;
+  border-radius: 50%; flex-shrink: 0;
+}
+.studio-chat-return button:hover { background: var(--studio-surface, #fff); }
+
+/* Chat-rhythm answers: tighter than document markdown. */
+.studio-md-chat p { margin: .55em 0; }
+.studio-md-chat h3 { margin-top: 1em !important; margin-bottom: .4em !important; font-size: 15px !important; }
+.studio-md-chat h4 { margin-top: .9em !important; margin-bottom: .3em !important; }
+.studio-md-chat ul, .studio-md-chat ol { margin: .5em 0 !important; }
+.studio-md-chat li + li { margin-top: .3em; }
+.studio-md-chat table { font-size: 13px; }
+
+/* Slimmer image / PDF / campaign cards inside chat. */
+.studio-chat-timeline .studio-chat-artifact {
+  border-radius: 16px;
+  padding: 10px 10px 10px;
+}
+.studio-chat-timeline .studio-artifact-heading { padding: 2px 4px 10px; gap: 12px; }
+.studio-chat-timeline .studio-artifact-heading h2 { font-size: 16px; }
+.studio-chat-timeline .studio-artifact-tabs { padding-bottom: 8px; gap: 5px; }
+.studio-chat-timeline .studio-artifact-tabs button { padding: 7px 11px; border-radius: 9px; }
+.studio-chat-timeline .studio-native-draft { border-radius: 12px; }
+.studio-chat-timeline .studio-native-draft img { max-height: 320px; object-fit: cover; width: 100%; }
+
+@media (max-width: 360px) {
+  .studio-chat-return { font-size: 12.5px; width: calc(100% - 20px); }
+  .studio-chat-timeline .studio-artifact-heading h2 { font-size: 15px; }
+}
+.studio-chat-return .studio-chat-return-avatar{width:26px!important;height:26px!important;max-width:26px!important;flex:0 0 26px!important;border-radius:50%;object-fit:cover;object-position:top}

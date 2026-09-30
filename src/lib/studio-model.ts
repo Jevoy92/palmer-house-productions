@@ -404,7 +404,9 @@ export const CampaignBriefSchema = z.object({
   campaignId: z.string().uuid(),
   accessToken: z.string().min(20),
   goal: z.string().min(3).max(180),
-  topic: z.string().min(8).max(1200),
+  // Chat builds include the Pal's answer (bounded to 4,000 characters), and
+  // Content Engine combines the owner's idea with its selected direction.
+  topic: z.string().min(8).max(4000),
   offer: z.string().max(500).default(""),
   audience: z.string().min(3).max(800),
   anchorFormat: z.string().min(2).max(80),

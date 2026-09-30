@@ -15,10 +15,10 @@ export function ComingSoon() {
       <header className="mx-auto flex max-w-5xl items-center justify-between">
         <StudioMark />
         <a
-          href="tel:+14255339060"
+          href="tel:+14254730349"
           className="hidden min-h-11 items-center gap-2 rounded-full border border-border px-4 text-sm font-bold sm:flex"
         >
-          <Phone className="size-4" /> (425) 533-9060
+          <Phone className="size-4" /> (425) 473-0349
         </a>
       </header>
 

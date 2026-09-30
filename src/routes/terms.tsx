@@ -115,7 +115,7 @@ const sections: LegalSection[] = [
   {
     title: "Contact",
     body: [
-      "Palmer House Productions — Pacific Northwest. Email info@palmerhouseproductions.com or call (425) 533-9060.",
+      "Palmer House Productions — Pacific Northwest. Email info@palmerhouseproductions.com or call (425) 473-0349.",
     ],
   },
 ];

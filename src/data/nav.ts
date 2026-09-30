@@ -164,6 +164,6 @@ export const socials = [
 
 export const contactInfo = {
   email: "info@palmerhouseproductions.com",
-  phone: "425-533-9060",
-  phoneHref: "tel:+14255339060",
+  phone: "425-473-0349",
+  phoneHref: "tel:+14254730349",
 };

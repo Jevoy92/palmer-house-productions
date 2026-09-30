@@ -11,8 +11,8 @@ export const WEBSITE_ID = `${SITE_URL}/#website`;
 export const BUSINESS_CONTACT = {
   name: SITE_NAME,
   email: "info@palmerhouseproductions.com",
-  phone: "+14255339060",
-  displayPhone: "(425) 533-9060",
+  phone: "+14254730349",
+  displayPhone: "(425) 473-0349",
 } as const;
 
 const SOCIAL_PROFILES = [

@@ -118,7 +118,12 @@ export async function applyStudioBillingEvent(
     if (session.mode === "subscription" && session.subscription) {
       await sync(await stripe.subscriptions.retrieve(id(session.subscription)!));
       const email = session.customer_details?.email ?? session.customer_email;
-      if (session.metadata?.campaign_id && email && session.status === "complete") {
+      if (
+        session.metadata?.campaign_id &&
+        email &&
+        session.status === "complete" &&
+        session.payment_status === "paid"
+      ) {
         const { upsertExpoContact } = await import("./expo.server");
         const offer = session.metadata.offer === "booth" ? "booth" : "public";
         await upsertExpoContact({
@@ -131,7 +136,10 @@ export async function applyStudioBillingEvent(
           workspaceId: session.metadata.workspace_id ?? null,
           stripeCustomerId: id(session.customer) ?? null,
           event: { kind: "paid", detail: `Studio monthly · ${offer} offer`, dedupeKey: `paid-${session.id}` },
-        }).catch(() => undefined);
+        });
+        // Keep this write in the webhook's retry boundary. The membership sync and
+        // Expo contact/event upserts are idempotent; swallowing a temporary database
+        // failure would permanently lose this buyer from Friday's follow-up list.
       }
       return;
     }

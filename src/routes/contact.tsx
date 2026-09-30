@@ -387,7 +387,7 @@ function ContactPage() {
                 href={contactInfo.phoneHref}
                 className="inline-flex min-h-11 items-center underline-offset-4 hover:underline"
               >
-                (425) 533-9060
+                {contactInfo.phone}
               </a>
             </p>
           </Card>

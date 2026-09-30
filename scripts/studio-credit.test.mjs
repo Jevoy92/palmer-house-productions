@@ -33,6 +33,7 @@ function loader(overrides = {}, env = {}) {
         crypto: globalThis.crypto,
         require(name) {
           if (name in overrides) return overrides[name];
+          if (name.startsWith("@/")) return load(path.resolve(root, "src", name.slice(2)));
           if (name.startsWith("./")) return load(path.resolve(path.dirname(file), name));
           return require(name);
         },
@@ -169,7 +170,7 @@ test("customer workspace owner is not an internal billing operator", () => {
   assert.equal(api.isStudioOperator("user-1"), false);
   assert.equal(api.isStudioOperator("operator-1"), true);
 });
-function billing() {
+function billing(overrides = {}) {
   const calls = [];
   const admin = {
     rpc: async (name, args) => {
@@ -177,7 +178,7 @@ function billing() {
       return { data: true };
     },
   };
-  const { applyStudioBillingEvent } = loader()("src/lib/studio-billing-webhook.server");
+  const { applyStudioBillingEvent } = loader(overrides)("src/lib/studio-billing-webhook.server");
   const stripe = {
     paymentIntents: {
       retrieve: async () => ({
@@ -233,6 +234,56 @@ test("pending checkout never grants prepaid credits", async () => {
   const { apply, admin, stripe, calls } = billing();
   await apply(admin, stripe, event({ ...checkout, payment_status: "unpaid" }));
   assert.equal(calls.length, 0);
+});
+const expoMembershipCheckout = {
+  id: "cs_expo",
+  mode: "subscription",
+  subscription: "sub_test",
+  status: "complete",
+  payment_status: "paid",
+  customer: "cus_test",
+  customer_details: { email: "attendee@example.invalid", name: "Expo attendee" },
+  metadata: { campaign_id: "sbe-la-2026", workspace_id: "workspace-1", offer: "booth" },
+};
+test("an Expo checkout awaiting payment is not labeled a paid follow-up", async () => {
+  const contacts = [];
+  const { apply, admin, stripe, calls } = billing({
+    "./expo.server": { upsertExpoContact: async (contact) => contacts.push(contact) },
+  });
+  await apply(admin, stripe, event({ ...expoMembershipCheckout, payment_status: "unpaid" }));
+  assert.equal(calls[0].name, "sync_studio_subscription");
+  assert.equal(contacts.length, 0);
+});
+test("an Expo asynchronous payment success records the buyer for follow-up", async () => {
+  const contacts = [];
+  const { apply, admin, stripe } = billing({
+    "./expo.server": { upsertExpoContact: async (contact) => contacts.push(contact) },
+  });
+  await apply(admin, stripe, event(expoMembershipCheckout, "checkout.session.async_payment_succeeded"));
+  assert.equal(contacts.length, 1);
+  assert.equal(contacts[0].status, "paid");
+  assert.equal(contacts[0].offer, "booth");
+  assert.equal(contacts[0].email, "attendee@example.invalid");
+  assert.equal(contacts[0].event.dedupeKey, "paid-cs_expo");
+});
+test("a failed Expo follow-up write stays retryable after membership sync", async () => {
+  let writes = 0;
+  const contacts = [];
+  const { apply, admin, stripe, calls } = billing({
+    "./expo.server": {
+      upsertExpoContact: async (contact) => {
+        writes++;
+        if (writes === 1) throw new Error("Temporary contact database failure");
+        contacts.push(contact);
+      },
+    },
+  });
+  await assert.rejects(apply(admin, stripe, event(expoMembershipCheckout)), /Temporary contact/);
+  await apply(admin, stripe, event(expoMembershipCheckout));
+  assert.equal(writes, 2);
+  assert.equal(contacts.length, 1);
+  assert.equal(calls.filter((call) => call.name === "sync_studio_subscription").length, 2);
+  assert.equal(contacts[0].event.dedupeKey, "paid-cs_expo");
 });
 test("verified paid pack grants exact server-side amount", async () => {
   const { apply, admin, stripe, calls } = billing();
@@ -374,7 +425,12 @@ function membershipCheckoutFixture(
     }
   }
   const { openStudioMembershipCheckout } = loader(
-    { stripe: StripeMock, "./studio-credit-runtime.server": { studioBillingAdmin: () => admin } },
+    {
+      stripe: StripeMock,
+      "./studio-credit-runtime.server": { studioBillingAdmin: () => admin },
+      // Lease recovery tests use regular pricing regardless of the wall-clock date.
+      "./expo-campaign": { expoOfferLive: () => false },
+    },
     { STRIPE_SECRET_KEY: "test" },
   )("src/lib/studio-subscription-checkout.server");
   return {

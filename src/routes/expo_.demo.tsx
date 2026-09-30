@@ -233,6 +233,23 @@ function ExpoDemo() {
             {m.text}
           </div>
         ))}
+        {campaign ? (
+          <div className="xd-compact" aria-label="Your campaign">
+            <p className="xd-eyebrow">Campaign · {campaign.artifacts.length} pieces</p>
+            <strong>{campaign.headline}</strong>
+            <div className="xd-compact-row">
+              {campaign.artifacts.slice(0, 4).map((a) => (
+                <button key={a.id} type="button" onClick={() => setOpen(a.id)} aria-label={`Open ${artifactMeta[a.type].label}`}>
+                  {images.square ? <img src={images.square} alt="" /> : <span>{artifactMeta[a.type].label}</span>}
+                </button>
+              ))}
+            </div>
+            <div className="xd-compact-actions">
+              <button type="button" onClick={() => setOpen(campaign.artifacts[0].id)}>Open campaign</button>
+              <button type="button" onClick={() => setView("gallery")}>View all</button>
+            </div>
+          </div>
+        ) : null}
         {thinking ? <div className="xd-msg pal xd-typing">…</div> : null}
         {building ? (
           <div className="xd-building">

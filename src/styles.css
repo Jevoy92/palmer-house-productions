@@ -727,3 +727,12 @@
   .xd-top { grid-template-columns: auto 1fr; }
   .xd-views { display: none; }
 }
+.xd-compact { display: grid; gap: .55rem; padding: .85rem; border: 1px solid var(--jet-line); border-radius: 1rem; background: var(--jet-soft); animation: scale-in .3s ease-out; }
+.xd-compact strong { font-size: 1rem; line-height: 1.2; color: var(--cream); }
+.xd-compact-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: .4rem; }
+.xd-compact-row button { aspect-ratio: 4 / 5; border-radius: .5rem; overflow: hidden; background: var(--cream); color: var(--ink); font-size: .6rem; padding: 0; transition: transform .2s; }
+.xd-compact-row button:hover { transform: translateY(-2px); }
+.xd-compact-row img { width: 100%; height: 100%; object-fit: cover; }
+.xd-compact-actions { display: flex; gap: .5rem; }
+.xd-compact-actions button { padding: .45rem .8rem; border-radius: .55rem; font-size: .82rem; border: 1px solid var(--jet-line); color: var(--cream); }
+.xd-compact-actions button:first-child { background: var(--reel); color: var(--jet); border-color: var(--reel); font-weight: 700; }

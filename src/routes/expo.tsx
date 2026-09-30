@@ -119,15 +119,21 @@ function ExpoPage() {
         <section className="expo-card text-sm text-muted-foreground" aria-label="Offer terms">
           <h3 className="text-foreground">Offer terms</h3>
           <p>
-            The public rate is ${expoCampaign.offers.public.monthly}/month and the booth-code rate is
-            ${expoCampaign.offers.booth.monthly}/month, each for the first 3 monthly billing periods
-            of a new monthly Studio membership. Then ${expoCampaign.regularMonthly}/month. One
-            introductory offer per workspace, for a first Studio membership only; the two offers
-            don't combine. Not available on annual billing, Guided, Partner, credit packs or
-            production. Start checkout by {expoCampaign.deadlineLabel}; each discounted checkout must
-            be completed within {expoCampaign.checkoutWindowMinutes} minutes of starting. Your
-            3-month rate continues after the offer closes. Normal cancellation, refund and tax terms
-            apply.
+            Studio: the public rate is ${expoCampaign.offers.public.monthly}/month and the
+            booth-code rate is ${expoCampaign.offers.booth.monthly}/month, each for the first 3
+            monthly billing periods, then ${expoCampaign.regularMonthly}/month. Guided and Partner:{" "}
+            {expoCampaign.tierOffers.public.percentOff}% off publicly or{" "}
+            {expoCampaign.tierOffers.booth.percentOff}% off with the booth code, each for the first 3
+            monthly billing periods, then regular monthly pricing. One introductory offer per
+            workspace, for a first membership only; the two offers don't combine. Not available on
+            annual billing, credit packs or production. Start checkout by{" "}
+            {expoCampaign.deadlineLabel}; each discounted checkout must be completed within{" "}
+            {expoCampaign.checkoutWindowMinutes} minutes of starting. Your 3-month rate continues
+            after the offer closes. Normal cancellation, refund and tax terms apply.
+          </p>
+          <p className="mt-2">
+            Guided with the booth code: $399.20/month for 3 months, then $499. Partner with the booth
+            code: $959.20/month for 3 months, then $1,199.
           </p>
         </section>
       </div>

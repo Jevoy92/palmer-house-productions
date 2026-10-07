@@ -1,7 +1,9 @@
+import { researchPosts } from "./research";
 export type BlogSection = {
   heading: string;
   paragraphs: string[];
   bullets?: string[];
+  sources?: { label: string; url: string }[];
 };
 
 export type BlogPost = {
@@ -13,10 +15,12 @@ export type BlogPost = {
   author: string;
   readTime: string;
   date: string;
+  updated?: string;
   sections: BlogSection[];
 };
 
 export const blogPosts: BlogPost[] = [
+  ...researchPosts,
   {
     slug: "video-content-toolkit-2025",
     title: `The Ultimate Video Content System Toolkit for Founders (2025 Edition)`,

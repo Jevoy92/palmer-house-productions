@@ -26,6 +26,7 @@ export const Route = createFileRoute("/blog/$slug")({
 
     const pathname = `/blog/${post.slug}`;
     const publishedDate = new Date(post.date).toISOString().slice(0, 10);
+    const modifiedDate = new Date(post.updated ?? post.date).toISOString().slice(0, 10);
     const seo = createSeo({
       title: `${post.title} | Palmer House Productions Blog`,
       description: post.excerpt,
@@ -38,7 +39,7 @@ export const Route = createFileRoute("/blog/$slug")({
       meta: [
         ...seo.meta,
         { property: "article:published_time", content: publishedDate },
-        { property: "article:modified_time", content: publishedDate },
+        { property: "article:modified_time", content: modifiedDate },
         { property: "article:author", content: post.author },
       ],
       scripts: [
@@ -80,6 +81,7 @@ const CATEGORY_GLYPH: Record<string, GlyphName> = {
   Tools: "gift",
   "Social Media": "reel",
   SEO: "search",
+  Research: "chart",
 };
 
 function BlogPostPage() {
@@ -154,7 +156,8 @@ function BlogPostPage() {
                 <span className="inline-flex items-center gap-2">
                   <UserRound className="size-4" /> By {post.author}
                 </span>
-                <span>{post.date}</span>
+                <span>Published {post.date}</span>
+                {post.updated && <span>Reviewed {post.updated}</span>}
                 <span className="inline-flex items-center gap-2">
                   <Clock3 className="size-4" /> {post.readTime}
                 </span>
@@ -202,6 +205,17 @@ function BlogPostPage() {
                           {paragraph}
                         </p>
                       ))}
+                      {section.sources && section.sources.length > 0 && (
+                        <div className="text-sm text-muted-foreground">
+                          <span className="font-semibold">Original source: </span>
+                          {section.sources.map((source, k) => (
+                            <span key={source.url}>
+                              {k > 0 && ", "}
+                              <a href={source.url} target="_blank" rel="noopener noreferrer" className="font-semibold underline underline-offset-2 hover:text-foreground">{source.label}</a>
+                            </span>
+                          ))}
+                        </div>
+                      )}
                       {section.bullets && section.bullets.length > 0 && (
                         <ul className="grid gap-3 pt-2 sm:grid-cols-2">
                           {section.bullets.map((bullet: string, k: number) => (
@@ -250,8 +264,9 @@ function BlogPostPage() {
                     Written by the Pals
                   </p>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    Every field guide is drafted with the Palmer House Pals — the strategic guides
-                    behind our four video lanes — and edited by {post.author}.
+                    {post.category === "Research"
+                      ? "This research guide summarizes published sources. Palmer House did not conduct the cited surveys; follow each source link for the original methods and findings."
+                      : `Every field guide is drafted with the Palmer House Pals — the strategic guides behind our four video lanes — and edited by ${post.author}.`}
                   </p>
                 </div>
               </div>

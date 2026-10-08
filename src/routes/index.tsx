@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Hero } from "@/components/site/Hero";
-import { ExpoBar, ExpoModule } from "@/components/expo/ExpoModule";
 import { HomePackages, HomeStudio, PublicPalGuide, WaysToWork } from "@/components/site/PublicHome";
 import { CtaBand, FaqList, PageShell, Section } from "@/components/site/PageShell";
 import { HOME_FAQS } from "@/data/site-faqs";
@@ -20,9 +19,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <PageShell>
-      <ExpoBar />
       <Hero />
-      <ExpoModule />
       <WaysToWork />
       <HomePackages />
       <HomeStudio />

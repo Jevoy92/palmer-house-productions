@@ -1,4 +1,3 @@
-import { ExpoPlanNote } from "@/components/expo/ExpoModule";
 import {
   studioCreditAllowance,
   studioCreditExamples,
@@ -186,7 +185,6 @@ function PricingPage() {
                       : "Self-guided, with the help desk when needed"}
                   </p>
                 </div>
-                {index === 0 && interval === "month" && <ExpoPlanNote />}
                 <ul className="mt-6 flex-1 space-y-3">
                   {plan.features.map((feature) => (
                     <li key={feature} className="flex gap-3 text-base leading-relaxed">

@@ -33,7 +33,7 @@ import "@/components/expo/expo-reference-layout.css";
 export const Route = createFileRoute("/expo_/demo")({
   head: () => ({
     meta: [
-      { title: "Try Palmer House Studio with your business — Expo demo" },
+      { title: "Try Palmer House Studio with your business — Free demo" },
       {
         name: "description",
         content:
@@ -46,8 +46,7 @@ export const Route = createFileRoute("/expo_/demo")({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "robots", content: "noindex" },
-    ],
+          ],
   }),
   component: ExpoDemo,
 });
@@ -59,7 +58,7 @@ type ImageSlot = "square" | "wide";
 type ImageStatus = "idle" | "loading" | "ready" | "error";
 
 const newSession = () => crypto.randomUUID();
-/** Booth guests start straight in chat with Kiana; they can still switch Pals in chat. */
+/** Visitors start straight in chat with Kiana; they can still switch Pals in chat. */
 const DEFAULT_PAL: PalName = "kiana";
 const startMessages = (): Msg[] => [
   { id: crypto.randomUUID(), role: "pal", pal: DEFAULT_PAL, text: expoGreetings[DEFAULT_PAL] },
@@ -632,9 +631,9 @@ function TopBar({
 }) {
   return (
     <header className="xd-top">
-      <Link to="/expo" className="xd-logo">
+      <Link to="/" className="xd-logo">
         <strong>PALMER HOUSE</strong>
-        <span>STUDIO / EXPO DEMO</span>
+        <span>STUDIO / FREE DEMO</span>
       </Link>
       {view ? (
         <nav className="xd-views" aria-label="Campaign view">
@@ -697,9 +696,9 @@ function PalPicker({ onPick, onNext }: { onPick: (k: PalName) => void; onNext: (
   return (
     <div className="xd-root xd-picker">
       <header className="xd-top">
-        <Link to="/expo" className="xd-logo">
+        <Link to="/" className="xd-logo">
           <strong>PALMER HOUSE</strong>
-          <span>STUDIO / EXPO DEMO</span>
+          <span>STUDIO / FREE DEMO</span>
         </Link>
         <span />
         <button type="button" className="xd-next" onClick={onNext}>

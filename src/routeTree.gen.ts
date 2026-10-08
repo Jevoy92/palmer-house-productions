@@ -81,6 +81,7 @@ import { Route as StudioSuccessRouteImport } from './routes/studio.success'
 import { Route as StudioWorkRouteImport } from './routes/studio.work'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as Char91DotmcpChar93InvokeToolToolRouteImport } from './routes/[.mcp]/invoke-tool/$tool'
+import { Route as ApiPublicResendWebhookRouteImport } from './routes/api.public.resend-webhook'
 import { Route as ApiStudioIntakeRouteImport } from './routes/api.studio.intake'
 import { Route as LovableEmailSuppressionRouteImport } from './routes/lovable/email/suppression'
 import { Route as StudioCampaignsIndexRouteImport } from './routes/studio.campaigns.index'
@@ -456,6 +457,11 @@ const Char91DotmcpChar93InvokeToolToolRoute =
     path: '/.mcp/invoke-tool/$tool',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicResendWebhookRoute = ApiPublicResendWebhookRouteImport.update({
+  id: '/api/public/resend-webhook',
+  path: '/api/public/resend-webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiStudioIntakeRoute = ApiStudioIntakeRouteImport.update({
   id: '/api/studio/intake',
   path: '/api/studio/intake',
@@ -591,6 +597,7 @@ export interface FileRoutesByFullPath {
   '/studio/': typeof StudioIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/public/resend-webhook': typeof ApiPublicResendWebhookRoute
   '/api/studio/intake': typeof ApiStudioIntakeRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
@@ -675,6 +682,7 @@ export interface FileRoutesByTo {
   '/studio': typeof StudioIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/public/resend-webhook': typeof ApiPublicResendWebhookRoute
   '/api/studio/intake': typeof ApiStudioIntakeRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
@@ -761,6 +769,7 @@ export interface FileRoutesById {
   '/studio/': typeof StudioIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
+  '/api/public/resend-webhook': typeof ApiPublicResendWebhookRoute
   '/api/studio/intake': typeof ApiStudioIntakeRoute
   '/lovable/email/suppression': typeof LovableEmailSuppressionRoute
   '/studio/campaigns/$campaignId': typeof StudioCampaignsCampaignIdRoute
@@ -848,6 +857,7 @@ export interface FileRouteTypes {
     | '/studio/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/public/resend-webhook'
     | '/api/studio/intake'
     | '/lovable/email/suppression'
     | '/studio/campaigns/$campaignId'
@@ -932,6 +942,7 @@ export interface FileRouteTypes {
     | '/studio'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/public/resend-webhook'
     | '/api/studio/intake'
     | '/lovable/email/suppression'
     | '/studio/campaigns/$campaignId'
@@ -1017,6 +1028,7 @@ export interface FileRouteTypes {
     | '/studio/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
+    | '/api/public/resend-webhook'
     | '/api/studio/intake'
     | '/lovable/email/suppression'
     | '/studio/campaigns/$campaignId'
@@ -1084,6 +1096,7 @@ export interface RootRouteChildren {
   LocationsIndexRoute: typeof LocationsIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   Char91DotmcpChar93InvokeToolToolRoute: typeof Char91DotmcpChar93InvokeToolToolRoute
+  ApiPublicResendWebhookRoute: typeof ApiPublicResendWebhookRoute
   ApiStudioIntakeRoute: typeof ApiStudioIntakeRoute
   LovableEmailSuppressionRoute: typeof LovableEmailSuppressionRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
@@ -1599,6 +1612,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotmcpChar93InvokeToolToolRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/resend-webhook': {
+      id: '/api/public/resend-webhook'
+      path: '/api/public/resend-webhook'
+      fullPath: '/api/public/resend-webhook'
+      preLoaderRoute: typeof ApiPublicResendWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/studio/intake': {
       id: '/api/studio/intake'
       path: '/api/studio/intake'
@@ -1800,6 +1820,7 @@ const rootRouteChildren: RootRouteChildren = {
   LocationsIndexRoute: LocationsIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   Char91DotmcpChar93InvokeToolToolRoute: Char91DotmcpChar93InvokeToolToolRoute,
+  ApiPublicResendWebhookRoute: ApiPublicResendWebhookRoute,
   ApiStudioIntakeRoute: ApiStudioIntakeRoute,
   LovableEmailSuppressionRoute: LovableEmailSuppressionRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,

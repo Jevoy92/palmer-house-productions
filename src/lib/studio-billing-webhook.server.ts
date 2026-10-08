@@ -162,6 +162,10 @@ export async function applyStudioBillingEvent(
       session.metadata?.purchase_kind === "production_deposit" &&
       session.payment_status === "paid"
     ) {
+      if (session.metadata.filming_redemption_id) {
+        const { markRedemption } = await import("./filming-benefit.server");
+        await markRedemption(session.metadata.filming_redemption_id, "redeemed", session.id);
+      }
       const { queueTeamEmail } = await import("./team-email.server");
       const money = (cents: number | null) =>
         cents == null ? "" : `$${(cents / 100).toFixed(2)}`;

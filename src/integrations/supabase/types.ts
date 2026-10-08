@@ -1262,6 +1262,130 @@ export type Database = {
           },
         ]
       }
+      social_posts: {
+        Row: {
+          asset_id: string | null
+          bundle_post_id: string | null
+          caption: string
+          created_at: string
+          created_by: string
+          destinations: number
+          error: string | null
+          id: string
+          media_url: string | null
+          platforms: string[]
+          scheduled_at: string
+          status: string
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          asset_id?: string | null
+          bundle_post_id?: string | null
+          caption: string
+          created_at?: string
+          created_by: string
+          destinations: number
+          error?: string | null
+          id?: string
+          media_url?: string | null
+          platforms: string[]
+          scheduled_at?: string
+          status?: string
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          asset_id?: string | null
+          bundle_post_id?: string | null
+          caption?: string
+          created_at?: string
+          created_by?: string
+          destinations?: number
+          error?: string | null
+          id?: string
+          media_url?: string | null
+          platforms?: string[]
+          scheduled_at?: string
+          status?: string
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_posts_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "campaign_assets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "social_posts_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      social_publishing_addons: {
+        Row: {
+          current_period_end: string | null
+          status: string
+          stripe_subscription_id: string | null
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          current_period_end?: string | null
+          status?: string
+          stripe_subscription_id?: string | null
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          current_period_end?: string | null
+          status?: string
+          stripe_subscription_id?: string | null
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_publishing_addons_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: true
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      social_teams: {
+        Row: {
+          bundle_team_id: string
+          created_at: string
+          workspace_id: string
+        }
+        Insert: {
+          bundle_team_id: string
+          created_at?: string
+          workspace_id: string
+        }
+        Update: {
+          bundle_team_id?: string
+          created_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "social_teams_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: true
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       studio_billing_events: {
         Row: {
           created_at: string
@@ -2812,6 +2936,18 @@ export type Database = {
           target_workspace_id: string
         }
         Returns: string
+      }
+      reserve_social_posts: {
+        Args: {
+          actor: string
+          asset: string
+          platform_list: string[]
+          post_at: string
+          post_caption: string
+          post_media: string
+          target_workspace_id: string
+        }
+        Returns: Json
       }
       reserve_studio_credits: {
         Args: {

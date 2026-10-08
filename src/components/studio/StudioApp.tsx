@@ -1,4 +1,5 @@
 import { StudioAlertPrefs } from "./StudioAlertPrefs";
+import { StudioSocialSettings, StudioPostButton } from "./StudioSocial";
 import {
   currentStudioIntent,
   rememberStudioIntent,
@@ -1793,7 +1794,10 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
                       </p>
                       <h2 className="mt-3 text-xl font-bold">{asset.title}</h2>
                     </div>
-                    <StudioAssetEditor asset={asset} />
+                    <div className="flex gap-2">
+                      <StudioPostButton asset={asset} />
+                      <StudioAssetEditor asset={asset} />
+                    </div>
                   </div>
                   <p className="my-6 whitespace-pre-wrap text-base leading-relaxed">
                     {asset.content}
@@ -4771,6 +4775,7 @@ function SettingsView() {
                   title="Account"
                   body="Your identity and local working preferences."
                 />
+                <StudioSocialSettings />
                 <StudioAlertPrefs />
                 <div className="mt-7 grid gap-5 sm:grid-cols-2">
                   <Field

@@ -15,3 +15,6 @@
 ## Done recently
 - Voice notes, documents, images, audio/video intake in conversations
 - Moved Studio off the retired AI model
+- [x] Social posting (bundle.social): connect IG/FB, post/schedule/cancel, 20 free/mo, $19/mo add-on → 100. Staff-only until STUDIO_SOCIAL_POSTING_ENABLED=true.
+- [ ] Social posting: staff test with a real IG/FB account + Stripe test-mode add-on purchase (needs Jevoy's accounts)
+- [ ] Ads pixel: confirm events in Ads Manager, then turn debug off

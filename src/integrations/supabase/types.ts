@@ -947,6 +947,146 @@ export type Database = {
           },
         ]
       }
+      newsletter_config: {
+        Row: {
+          key: string
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          key: string
+          updated_at?: string
+          value: string
+        }
+        Update: {
+          key?: string
+          updated_at?: string
+          value?: string
+        }
+        Relationships: []
+      }
+      newsletter_consent_events: {
+        Row: {
+          action: string
+          consent_text: string | null
+          created_at: string
+          email: string
+          id: string
+          ip_hash: string | null
+          source: string
+          subscriber_id: string
+          topic: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          action: string
+          consent_text?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          ip_hash?: string | null
+          source: string
+          subscriber_id: string
+          topic: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          consent_text?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          ip_hash?: string | null
+          source?: string
+          subscriber_id?: string
+          topic?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "newsletter_consent_events_subscriber_id_fkey"
+            columns: ["subscriber_id"]
+            isOneToOne: false
+            referencedRelation: "newsletter_subscribers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      newsletter_subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          first_name: string | null
+          id: string
+          last_synced_at: string | null
+          monthly: boolean
+          paid_eligible: boolean
+          resend_contact_id: string | null
+          sync_attempts: number
+          sync_error: string | null
+          sync_state: string
+          unsubscribed_all: boolean
+          updated_at: string
+          user_id: string | null
+          weekly: boolean
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          first_name?: string | null
+          id?: string
+          last_synced_at?: string | null
+          monthly?: boolean
+          paid_eligible?: boolean
+          resend_contact_id?: string | null
+          sync_attempts?: number
+          sync_error?: string | null
+          sync_state?: string
+          unsubscribed_all?: boolean
+          updated_at?: string
+          user_id?: string | null
+          weekly?: boolean
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          first_name?: string | null
+          id?: string
+          last_synced_at?: string | null
+          monthly?: boolean
+          paid_eligible?: boolean
+          resend_contact_id?: string | null
+          sync_attempts?: number
+          sync_error?: string | null
+          sync_state?: string
+          unsubscribed_all?: boolean
+          updated_at?: string
+          user_id?: string | null
+          weekly?: boolean
+        }
+        Relationships: []
+      }
+      newsletter_webhook_events: {
+        Row: {
+          event_type: string
+          received_at: string
+          svix_id: string
+        }
+        Insert: {
+          event_type: string
+          received_at?: string
+          svix_id: string
+        }
+        Update: {
+          event_type?: string
+          received_at?: string
+          svix_id?: string
+        }
+        Relationships: []
+      }
       pal_availability: {
         Row: {
           id: string

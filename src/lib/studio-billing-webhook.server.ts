@@ -225,6 +225,14 @@ export async function applyStudioBillingEvent(
     });
     return;
   }
+  if (event.type === "checkout.session.expired") {
+    const rid = event.data.object.metadata?.filming_redemption_id;
+    if (rid) {
+      const { markRedemption } = await import("./filming-benefit.server");
+      await markRedemption(rid, "released");
+    }
+    return;
+  }
   if (event.type === "invoice.paid") {
     const invoice = event.data.object;
     const subscriptionId = id(invoice.parent?.subscription_details?.subscription);

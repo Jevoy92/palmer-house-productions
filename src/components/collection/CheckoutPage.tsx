@@ -369,6 +369,13 @@ export function CheckoutPage({ quoteReference }: { quoteReference?: string }) {
       : HAS_HONEYBOOK
         ? "Continue to HoneyBook"
         : "Open email draft";
+  const memberNote =
+    payable && !digitalOnly ? (
+      <p className="mt-3 text-xs text-muted-foreground">
+        Studio members save on filming: 25% off (Studio), 50% off (Guided) or one session included
+        each month (Partner). Sign in to Studio before paying and your savings apply automatically.
+      </p>
+    ) : null;
   const action = (className: string) => (
     <div className={className}>
       {step === 1 ? (

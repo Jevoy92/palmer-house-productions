@@ -22,13 +22,24 @@ export async function resolveFilmingBenefit(
   workspaceId: string | undefined,
   reference: string,
 ): Promise<MemberBenefit | null> {
-  if (!accessToken || !workspaceId) return null;
+  if (!accessToken) return null;
   const url = process.env.SUPABASE_URL!;
   const key = process.env.SUPABASE_PUBLISHABLE_KEY!;
   const userClient = createClient(url, key, { auth: { persistSession: false } });
   const { data: u } = await userClient.auth.getUser(accessToken);
   if (!u.user) return null;
   const admin = studioBillingAdmin();
+  if (!workspaceId) {
+    // Public checkout: use the caller's best active membership.
+    const ms = await admin.from("workspace_members").select("workspace_id").eq("user_id", u.user.id);
+    const ids = (ms.data || []).map((m) => m.workspace_id);
+    if (!ids.length) return null;
+    const subs = await admin.from("workspace_subscriptions").select("workspace_id,plan").in("workspace_id", ids).eq("status", "active");
+    const rank: Record<string, number> = { partner: 3, business: 2, creator: 1 };
+    const best = (subs.data || []).sort((a, b) => (rank[b.plan] ?? 0) - (rank[a.plan] ?? 0))[0];
+    if (!best) return null;
+    workspaceId = best.workspace_id;
+  }
   const [member, sub] = await Promise.all([
     admin.from("workspace_members").select("role").eq("workspace_id", workspaceId).eq("user_id", u.user.id).maybeSingle(),
     admin.from("workspace_subscriptions").select("plan,status,current_period_end,billing_hold").eq("workspace_id", workspaceId).maybeSingle(),

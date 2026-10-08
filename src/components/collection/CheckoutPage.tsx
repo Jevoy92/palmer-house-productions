@@ -153,6 +153,12 @@ export async function submitCheckoutRequest(
   if (!isPayableNow(request.quote.items, request.quote.legacyReview?.length ?? 0))
     return submitPlanRequest(request, options);
   try {
+    // Signed-in members get their filming benefit; the server verifies the membership.
+    let accessToken: string | undefined;
+    try {
+      const { supabase } = await import("@/integrations/supabase/client");
+      accessToken = (await supabase.auth.getSession()).data.session?.access_token;
+    } catch {}
     const response = await (options.createCheckout ?? createDepositCheckout)({
       data: {
         name: request.name,
@@ -161,6 +167,7 @@ export async function submitCheckoutRequest(
         reference: request.quote.reference,
         offerCode: request.quote.offerCode,
         items: request.quote.items,
+        ...(accessToken ? { accessToken } : {}),
       },
     });
     if (!response.ok)

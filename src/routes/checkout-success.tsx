@@ -39,15 +39,29 @@ export function reconcileVerifiedReceipt(
 }
 
 function CheckoutSuccessPage() {
-  const { session_id: sessionId } = Route.useSearch();
+  const { session_id: sessionId, included } = Route.useSearch();
   const verification = Route.useLoaderData();
+  useEffect(() => {
+    reconcileVerifiedReceipt(sessionId, verification);
+  }, [sessionId, verification]);
+
+  if (included === "1") {
+    return (
+      <CollectionShell active="plan" backTo="/studio" backLabel="Back to Studio">
+        <section className="pc-guide" aria-labelledby="included-title">
+          <p className="pc-eyebrow">Partner membership</p>
+          <h1 id="included-title">Your filming session is booked.</h1>
+          <p className="mt-4">
+            This month's included filming session covers it, so there's nothing to pay today. Our team will reach out to schedule your shoot.
+          </p>
+        </section>
+      </CollectionShell>
+    );
+  }
   const paid = verification.status === "paid";
   const digital = paid && verification.purchaseKind === "digital";
   const deposit = paid && verification.purchaseKind === "production_deposit";
 
-  useEffect(() => {
-    reconcileVerifiedReceipt(sessionId, verification);
-  }, [sessionId, verification]);
 
   if (!paid) {
     const pending = verification.status === "pending";
@@ -193,6 +207,7 @@ function CheckoutSuccessPage() {
 export const Route = createFileRoute("/checkout-success")({
   validateSearch: (search: Record<string, unknown>) => ({
     session_id: typeof search.session_id === "string" ? search.session_id.trim() : "",
+    included: search.included === "1" || search.included === 1 ? "1" : undefined,
   }),
   loader: async ({ location }) =>
     loadCheckoutReceipt(new URLSearchParams(location.search).get("session_id")),

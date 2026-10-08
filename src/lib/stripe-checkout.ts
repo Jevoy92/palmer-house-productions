@@ -11,6 +11,8 @@ const CheckoutInput = z.object({
   offerCode: z.enum(["STARTERDUO", "EDIT2FOR1"]).optional(),
   gift: z.boolean().optional(),
   expandedScriptwriting: z.boolean().optional(),
+  accessToken: z.string().min(20).max(4000).optional(),
+  workspaceId: z.string().uuid().optional(),
   items: z
     .array(
       z.object({
@@ -62,6 +64,36 @@ export const createDepositCheckout = createServerFn({ method: "POST" })
       (sum, line) => sum + line.unitPrice * line.configuration.qty,
       0,
     );
+    // Membership filming benefit: verified on the server, applied to one session fee only.
+    let benefit: Awaited<ReturnType<typeof import("./filming-benefit.server").resolveFilmingBenefit>> = null;
+    const { getPackageById } = await import("./pricing-catalog");
+    const hasFilming = priced.some((l) => !l.isDigital && getPackageById(l.configuration.id)?.lane !== "evergreen");
+    if (isProduction && hasFilming && data.accessToken) {
+      const { resolveFilmingBenefit } = await import("./filming-benefit.server");
+      benefit = await resolveFilmingBenefit(data.accessToken, data.workspaceId, data.reference);
+      if (benefit) benefit.discount = Math.min(benefit.discount, productionTotal);
+    }
+    const memberTotal = productionTotal - (benefit?.discount ?? 0);
+    if (isProduction && benefit && memberTotal <= 0) {
+      // Fully covered by Partner's included session: no payment; confirm straight to the team.
+      const { markRedemption } = await import("./filming-benefit.server");
+      const { queueTeamEmail } = await import("./team-email.server");
+      await queueTeamEmail(
+        "deposit-booked",
+        {
+          reference: data.reference,
+          customerName: data.name,
+          customerEmail: data.email,
+          company: data.company ?? "",
+          depositPaid: "$0.00 (Partner included session)",
+          estimatedTotal: `$${productionTotal.toFixed(2)} retail · covered by membership`,
+        },
+        `included-${data.reference}`,
+      );
+      if (benefit.redemptionId) await markRedemption(benefit.redemptionId, "redeemed");
+      const siteOrigin0 = process.env.PUBLIC_SITE_URL || getRequestUrl().origin;
+      return { ok: true as const, url: `${siteOrigin0}/checkout-success?included=1&ref=${encodeURIComponent(data.reference)}` };
+    }
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = isProduction
       ? [
           {
@@ -70,9 +102,9 @@ export const createDepositCheckout = createServerFn({ method: "POST" })
               currency: "usd",
               product_data: {
                 name: "Video production deposit (50%)",
-                description: `Books your project (${priced.map((l) => l.name).join(", ").slice(0, 300)}). Estimated total $${productionTotal.toFixed(2)}; balance invoiced before delivery.`,
+                description: `Books your project (${priced.map((l) => l.name).join(", ").slice(0, 240)}). ${benefit ? `${benefit.label}: −$${benefit.discount.toFixed(2)}. ` : ""}Estimated total $${memberTotal.toFixed(2)}; balance invoiced before delivery.`,
               },
-              unit_amount: Math.round(productionTotal * 50),
+              unit_amount: Math.round(memberTotal * 50),
             },
           },
         ]
@@ -104,6 +136,7 @@ export const createDepositCheckout = createServerFn({ method: "POST" })
       client_reference_id: data.reference,
       line_items: lineItems,
       success_url: `${siteOrigin}/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
+      ...(benefit?.redemptionId ? { expires_at: Math.floor(Date.now() / 1000) + 3600 } : {}),
       cancel_url: `${siteOrigin}/checkout`,
       allow_promotion_codes: !data.offerCode && !isProduction,
       metadata: {
@@ -115,7 +148,9 @@ export const createDepositCheckout = createServerFn({ method: "POST" })
         expanded_scriptwriting: data.expandedScriptwriting ? "yes" : "no",
         configuration_version: "2",
         purchase_kind: isProduction ? "production_deposit" : "digital",
-        estimated_total: isProduction ? productionTotal.toFixed(2) : "",
+        estimated_total: isProduction ? memberTotal.toFixed(2) : "",
+        member_benefit: benefit ? `${benefit.plan}:${benefit.discount.toFixed(2)}` : "",
+        filming_redemption_id: benefit?.redemptionId ?? "",
         item_count: String(priced.length),
         ...configurationMetadata,
       },

@@ -906,6 +906,47 @@ export type Database = {
         }
         Relationships: []
       }
+      filming_benefit_redemptions: {
+        Row: {
+          checkout_session_id: string | null
+          created_at: string
+          id: string
+          period_month: string
+          quote_reference: string | null
+          status: string
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          checkout_session_id?: string | null
+          created_at?: string
+          id?: string
+          period_month: string
+          quote_reference?: string | null
+          status?: string
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          checkout_session_id?: string | null
+          created_at?: string
+          id?: string
+          period_month?: string
+          quote_reference?: string | null
+          status?: string
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "filming_benefit_redemptions_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       pal_availability: {
         Row: {
           id: string

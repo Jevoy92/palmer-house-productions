@@ -685,7 +685,7 @@ function TopBar({
           </div>
         ) : null}
         <button type="button" className="xd-next" onClick={onNext}>
-          <RotateCcw size={15} /> Next guest
+          <RotateCcw size={15} /> Start over
         </button>
       </div>
     </header>
@@ -702,7 +702,7 @@ function PalPicker({ onPick, onNext }: { onPick: (k: PalName) => void; onNext: (
         </Link>
         <span />
         <button type="button" className="xd-next" onClick={onNext}>
-          <RotateCcw size={15} /> Next guest
+          <RotateCcw size={15} /> Start over
         </button>
       </header>
       <div className="xd-picker-body">

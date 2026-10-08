@@ -23,6 +23,20 @@ export async function applyStudioBillingEvent(
   const sync = async (subscription: Stripe.Subscription, paidInvoice?: Stripe.Invoice) => {
     const workspaceId = subscription.metadata.workspace_id;
     if (!workspaceId) return;
+    if (subscription.metadata.purchase_kind === "social_publishing") {
+      // Separate add-on: never touches the membership plan or credits.
+      const end = subscription.items.data[0]?.current_period_end;
+      const live = ["active", "trialing"].includes(subscription.status);
+      const res = await admin.from("social_publishing_addons").upsert({
+        workspace_id: workspaceId,
+        status: live ? "active" : "inactive",
+        stripe_subscription_id: subscription.id,
+        current_period_end: end ? new Date(end * 1000).toISOString() : null,
+        updated_at: new Date().toISOString(),
+      });
+      if (res.error) throw new Error("Billing event could not be saved: social add-on");
+      return;
+    }
     const item = subscription.items.data[0];
     const catalog = item && planForPrice(item.price.id);
     if (!catalog || subscription.items.data.length !== 1)

@@ -188,7 +188,7 @@ export type StudioContextValue = {
   serviceRequests: ServiceRequest[];
   campaignOutputs: Record<string, CampaignOutput>;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (fullName: string, email: string, password: string) => Promise<string>;
+  signUp: (fullName: string, email: string, password: string, newsletterMonthly?: boolean) => Promise<string>;
   sendMagicLink: (email: string) => Promise<void>;
   resetPassword: (email: string) => Promise<void>;
   signOut: () => Promise<void>;
@@ -689,13 +689,19 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     setBusy(false);
     if (result.error) throw result.error;
   }
-  async function signUp(fullName: string, email: string, password: string) {
+  async function signUp(fullName: string, email: string, password: string, newsletterMonthly = false) {
     setBusy(true);
     const result = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { full_name: fullName },
+        data: {
+          full_name: fullName,
+          // Explicit, unticked-by-default opt-in; recorded as consent once on first Studio load.
+          ...(newsletterMonthly
+            ? { newsletter_monthly: true, newsletter_consent_at: new Date().toISOString() }
+            : {}),
+        },
         emailRedirectTo: studioAuthReturnUrl(),
       },
     });

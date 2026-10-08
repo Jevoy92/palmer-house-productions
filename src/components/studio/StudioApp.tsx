@@ -411,7 +411,7 @@ function AuthExperience() {
     setNotice(null);
     try {
       if (mode === "signup") {
-        const message = await signUp(
+        const message = await signUp.call(null,
           String(form.get("name") || "").trim(),
           address,
           String(form.get("password") || ""),

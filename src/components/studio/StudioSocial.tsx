@@ -98,7 +98,7 @@ export function StudioSocialSettings() {
       </ul>
       <div className="mt-5 flex flex-wrap gap-3">
         <Button
-          variant="spotlight"
+          variant="default"
           disabled={busy}
           onClick={() => run(async () => { const r = await connectStudioSocial({ data: auth }); window.location.href = r.url; })}
         >
@@ -244,7 +244,7 @@ export function StudioPostButton({ asset }: { asset: Tables<"campaign_assets"> }
                   <Button variant="outline">Cancel</Button>
                 </Dialog.Close>
                 <Button
-                  variant="spotlight"
+                  variant="default"
                   disabled={busy || picked.length === 0 || !caption.trim() || (picked.includes("INSTAGRAM") && !image)}
                   onClick={send}
                 >

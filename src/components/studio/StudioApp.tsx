@@ -1,5 +1,6 @@
 import { StudioAlertPrefs } from "./StudioAlertPrefs";
 import { StudioSocialSettings, StudioPostButton } from "./StudioSocial";
+import { StudioNewsletterPrefs, NewsletterSignupConsent } from "./StudioNewsletterPrefs";
 import {
   currentStudioIntent,
   rememberStudioIntent,
@@ -301,6 +302,7 @@ function StudioGate({
   if (!studio.workspace) return <Onboarding />;
   return (
     <StudioCreditsProvider key={studio.workspace.id}>
+      <NewsletterSignupConsent />
       <StudioShell view={view}>{renderView(view, campaignId, conversationId, workTab)}</StudioShell>
     </StudioCreditsProvider>
   );
@@ -415,6 +417,7 @@ function AuthExperience() {
           String(form.get("name") || "").trim(),
           address,
           String(form.get("password") || ""),
+          form.get("newsletter") === "on",
         );
         setNotice({ tone: "success", text: message });
       } else {
@@ -623,6 +626,12 @@ function AuthExperience() {
                 minLength={8}
                 required
               />
+              {mode === "signup" ? (
+                <label className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <input name="newsletter" type="checkbox" className="mt-1" />
+                  <span>Send me The Palmer House Letter, our free monthly email. Unsubscribe anytime.</span>
+                </label>
+              ) : null}
               <button
                 disabled={busy}
                 className="flex min-h-13 w-full items-center justify-center gap-2 rounded-xl bg-spotlight px-5 font-bold text-white transition hover:bg-ink disabled:opacity-50"
@@ -4777,6 +4786,7 @@ function SettingsView() {
                   body="Your identity and local working preferences."
                 />
                 <StudioSocialSettings />
+                <StudioNewsletterPrefs />
                 <StudioAlertPrefs />
                 <div className="mt-7 grid gap-5 sm:grid-cols-2">
                   <Field

@@ -63,7 +63,7 @@ const sections: LegalSection[] = [
   {
     title: "Service Providers We Share Information With",
     body: [
-      "We share only what is necessary with the vendors that run our business: Supabase and Lovable Cloud (application hosting, database, authentication, and file storage), Stripe (payments and subscriptions), HoneyBook (contact forms, proposals, and client management), Google (optional sign-in), and our AI model provider (content generation described above). Email is delivered from notify.palmerhouseproductions.com through our email infrastructure provider.",
+      "We share only what is necessary with the vendors that run our business: Supabase and Lovable Cloud (application hosting, database, authentication, and file storage), Stripe (payments and subscriptions), HoneyBook (contact forms, proposals, and client management), Google (optional sign-in), and our AI model provider (content generation described above). Email is delivered from notify.palmerhouseproductions.com through our email infrastructure provider. Our newsletters (The Palmer House Letter and The Studio Brief) are sent only to people who opt in, from news.palmerhouseproductions.com through Resend, which stores your email, first name and newsletter choices. Every newsletter has an unsubscribe link, and we keep a record of when and how you opted in or out.",
       "We may also disclose information when required by law, to enforce our agreements, or to protect the rights and safety of our clients, our team, or the public. If our business is ever sold or merged, information may transfer as part of that transaction; we will notify you if that happens.",
     ],
   },

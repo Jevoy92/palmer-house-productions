@@ -41,6 +41,10 @@ export function reconcileVerifiedReceipt(
 function CheckoutSuccessPage() {
   const { session_id: sessionId, included } = Route.useSearch();
   const verification = Route.useLoaderData();
+  useEffect(() => {
+    reconcileVerifiedReceipt(sessionId, verification);
+  }, [sessionId, verification]);
+
   if (included === "1") {
     return (
       <CollectionShell active="plan" backTo="/studio" backLabel="Back to Studio">
@@ -58,9 +62,6 @@ function CheckoutSuccessPage() {
   const digital = paid && verification.purchaseKind === "digital";
   const deposit = paid && verification.purchaseKind === "production_deposit";
 
-  useEffect(() => {
-    reconcileVerifiedReceipt(sessionId, verification);
-  }, [sessionId, verification]);
 
   if (!paid) {
     const pending = verification.status === "pending";

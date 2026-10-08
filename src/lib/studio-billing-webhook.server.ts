@@ -123,6 +123,9 @@ export async function applyStudioBillingEvent(
         cancelAtPeriodEnd: subscription.cancel_at_period_end,
       },
     });
+    // Weekly Studio Brief eligibility follows the plan; newsletter consent is never changed here.
+    const { refreshWorkspaceEligibility } = await import("./newsletter.server");
+    await refreshWorkspaceEligibility(workspaceId);
   };
   if (
     event.type === "checkout.session.completed" ||

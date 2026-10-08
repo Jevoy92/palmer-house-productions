@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { footerColumns, locations, socials, contactInfo } from "@/data/nav";
 import { SiteAppearance } from "./SiteAppearance";
+import { NewsletterSignup } from "./NewsletterSignup";
 
 export function SiteFooter() {
   return (
@@ -19,6 +20,7 @@ export function SiteFooter() {
             </a>
             <a href={contactInfo.phoneHref}>{contactInfo.phone}</a>
           </div>
+          <NewsletterSignup />
           <SiteAppearance />
         </div>
         {footerColumns.map((column) => (

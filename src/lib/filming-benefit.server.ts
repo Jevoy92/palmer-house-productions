@@ -40,7 +40,7 @@ export async function resolveFilmingBenefit(
     if (!best) return null;
     workspaceId = best.workspace_id;
   }
-  const ws: string = workspaceId;
+  const ws: string = workspaceId!;
   const [member, sub] = await Promise.all([
     admin.from("workspace_members").select("role").eq("workspace_id", ws).eq("user_id", u.user.id).maybeSingle(),
     admin.from("workspace_subscriptions").select("plan,status,current_period_end,billing_hold").eq("workspace_id", ws).maybeSingle(),
@@ -52,7 +52,7 @@ export async function resolveFilmingBenefit(
   const benefit = filmingBenefits[plan];
   if (!benefit) return null;
   if (benefit.kind === "discount")
-    return { ws, plan, discount: (FILMING_SESSION_FEE * benefit.percent) / 100, label: `Member filming benefit (${benefit.percent}% off session)` };
+    return { workspaceId: ws, plan, discount: (FILMING_SESSION_FEE * benefit.percent) / 100, label: `Member filming benefit (${benefit.percent}% off session)` };
   // Partner: one included session per calendar month. Release abandoned reservations older than 1h.
   const period = monthKey();
   await admin
@@ -67,8 +67,8 @@ export async function resolveFilmingBenefit(
     .select("id")
     .single();
   if (ins.error || !ins.data)
-    return { ws, plan, discount: FILMING_SESSION_FEE * 0.5, label: "Member filming benefit (50% off — this month's included session is used)" };
-  return { ws, plan, discount: FILMING_SESSION_FEE, label: "Member filming benefit (included monthly session)", redemptionId: ins.data.id };
+    return { workspaceId: ws, plan, discount: FILMING_SESSION_FEE * 0.5, label: "Member filming benefit (50% off — this month's included session is used)" };
+  return { workspaceId: ws, plan, discount: FILMING_SESSION_FEE, label: "Member filming benefit (included monthly session)", redemptionId: ins.data.id };
 }
 
 export async function markRedemption(id: string, status: "redeemed" | "released", sessionId?: string) {

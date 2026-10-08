@@ -411,10 +411,11 @@ function AuthExperience() {
     setNotice(null);
     try {
       if (mode === "signup") {
-        const message = await signUp.call(null,
+        const message = await signUp(
           String(form.get("name") || "").trim(),
           address,
           String(form.get("password") || ""),
+          form.get("newsletter") === "on",
         );
         setNotice({ tone: "success", text: message });
       } else {

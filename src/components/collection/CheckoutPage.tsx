@@ -925,6 +925,7 @@ export function CheckoutPage({ quoteReference }: { quoteReference?: string }) {
           </div>
           {receipt}
           {action("pc-checkout-desktop-action")}
+          {memberNote}
           {step === 2 && (
             <button
               type="button"

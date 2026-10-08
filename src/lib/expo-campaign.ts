@@ -3,7 +3,7 @@
 export const expoCampaign = {
   id: "sbe-la-2026",
   timezone: "America/Los_Angeles",
-  enabled: true,
+  enabled: false, // Expo campaign retired; demo stays public.
   // Offer is live from launch until Sunday Oct 4, 11:59:59 PM Pacific.
   startsAt: "2026-09-30T07:00:00Z",
   endsAt: "2026-10-05T06:59:59Z",

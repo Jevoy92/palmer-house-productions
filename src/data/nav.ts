@@ -74,12 +74,7 @@ export const pricingLinks: NavLink[] = [
     label: "Try the Studio Demo",
     to: "/expo/demo",
     description: "Build a free campaign in minutes",
-    badge: "Expo",
-  },
-  {
-    label: "Expo Offer",
-    to: "/expo",
-    description: "Small Business Expo LA pricing",
+    badge: "Free",
   },
 ];
 

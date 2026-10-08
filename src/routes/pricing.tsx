@@ -1,4 +1,3 @@
-import { ExpoModule } from "@/components/expo/ExpoModule";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Check } from "lucide-react";
 import { PageHero, PageShell, Section } from "@/components/site/PageShell";
@@ -21,7 +20,6 @@ export const Route = createFileRoute("/pricing")({
 function PricingHub() {
   return (
     <PageShell>
-      <ExpoModule />
       <PageHero
         eyebrow="Ways to work & pricing"
         title="The right help."

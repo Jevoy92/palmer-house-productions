@@ -37,7 +37,8 @@ const sections: LegalSection[] = [
     title: "Information Collected Automatically",
     body: [
       "Like most websites, our servers log basic technical information when you visit: IP address, browser type, device type, pages viewed, and referring page. We use this to keep the site secure and understand which pages are useful.",
-      "We use essential cookies and local browser storage to keep you signed in to Studio and to remember interface preferences such as which walkthrough steps you have completed. We do not run third-party advertising or cross-site tracking cookies.",
+      "We use essential cookies and local browser storage to keep you signed in to Studio and to remember interface preferences such as which walkthrough steps you have completed.",
+      "Ad measurement: we use the OpenAI Ads pixel to measure how our ads perform. It shares page visits and purchase events (such as starting a membership) with OpenAI. We do not sell this information. Visitors in the European Economic Area, the United Kingdom, and Switzerland see a permission prompt, and the pixel stays off unless they choose Allow. To change your choice, clear this site's stored data in your browser and the prompt will appear again.",
     ],
   },
   {

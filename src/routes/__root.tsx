@@ -24,6 +24,7 @@ import {
 } from "../lib/seo";
 import { SITE_MAINTENANCE, isAlwaysOnPath } from "../lib/site-mode";
 import { ComingSoon } from "../components/site/ComingSoon";
+import { AdConsentBanner } from "../components/site/AdConsentBanner";
 
 const DEFAULT_TITLE = "Palmer House Productions — Video Systems That Solve Business Problems";
 
@@ -120,8 +121,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       ],
       scripts: [
         {
-          // OpenAI Ads pixel (public ID). The snippet guards against double-loading.
-          children: `!function(w,d,s,u){if(w.oaiq)return;var q=function(){q.q.push(arguments)};q.q=[];w.oaiq=q;var j=d.createElement(s);j.async=1;j.src=u;var f=d.getElementsByTagName(s)[0];f.parentNode.insertBefore(j,f)}(window,document,"script","https://bzrcdn.openai.com/sdk/oaiq.min.js");oaiq("init",{pixelId:"Nw2z7d44jrvrEMCiiYbJG5",debug:true});`,
+          // OpenAI Ads pixel (public ID). Visitors in Europe/UK time zones load it only after consent (AdConsentBanner).
+          children: `window.__phpLoadAds=function(){!function(w,d,s,u){if(w.oaiq)return;var q=function(){q.q.push(arguments)};q.q=[];w.oaiq=q;var j=d.createElement(s);j.async=1;j.src=u;var f=d.getElementsByTagName(s)[0];f.parentNode.insertBefore(j,f)}(window,document,"script","https://bzrcdn.openai.com/sdk/oaiq.min.js");oaiq("init",{pixelId:"Nw2z7d44jrvrEMCiiYbJG5",debug:true});};(function(){var c=null;try{c=localStorage.getItem("php-ad-consent")}catch(e){}var tz="";try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||""}catch(e){}var eu=/^(Europe|Atlantic\\/(Reykjavik|Canary|Madeira|Azores|Faroe))/.test(tz);if(c==="granted"||(!eu&&c!=="denied"))window.__phpLoadAds();})();`,
         },
         jsonLdScript(schemaGraph(organizationSchema(), websiteSchema())),
       ],
@@ -156,6 +157,7 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       {holding ? <ComingSoon /> : <Outlet />}
+      <AdConsentBanner />
     </QueryClientProvider>
   );
 }

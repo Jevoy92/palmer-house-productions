@@ -302,6 +302,7 @@ function StudioGate({
   if (!studio.workspace) return <Onboarding />;
   return (
     <StudioCreditsProvider key={studio.workspace.id}>
+      <NewsletterSignupConsent />
       <StudioShell view={view}>{renderView(view, campaignId, conversationId, workTab)}</StudioShell>
     </StudioCreditsProvider>
   );

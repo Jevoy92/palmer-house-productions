@@ -1,5 +1,9 @@
 # Roadmap
 
+## In progress
+- [x] OpenAI Ads pixel on every page (debug on; switch off once Ads Manager sees visits)
+- [ ] Social posting via bundle.social: 20 free posts/month for every member, $19/month add-on raises it to 100. Waiting on: bundle.social API key.
+
 ## Parked (waiting on Jevoy)
 - [ ] Google Drive / Docs import for Studio members — on hold. Needs a Palmer House
       Google Cloud OAuth client first (Drive API + Docs API enabled, redirect URI

@@ -4928,6 +4928,14 @@ function BillingView() {
   useEffect(() => {
     const q = new URLSearchParams(window.location.search);
     setExpoPaid(q.get("checkout") === "success" && q.get("expo") === "1");
+    if (q.get("checkout") === "success") {
+      // OpenAI Ads conversion: membership started. Strip the flag so a refresh doesn't count twice.
+      const w = window as unknown as { oaiq?: (...a: unknown[]) => void };
+      w.oaiq?.("measure", "subscription_created", { type: "plan_enrollment" });
+      q.delete("checkout");
+      const rest = q.toString();
+      window.history.replaceState(null, "", `${window.location.pathname}${rest ? `?${rest}` : ""}`);
+    }
   }, []);
   const [interval, setInterval] = useState<"month" | "year">(
     subscription?.billing_interval === "year" ? "year" : "month",

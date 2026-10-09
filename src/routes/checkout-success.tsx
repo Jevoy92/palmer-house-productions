@@ -209,7 +209,7 @@ function ReceiptView({ sessionId, verification }: { sessionId: string; verificat
           {digital
             ? "Your digital purchase is paid in full. Keep your order reference for download access or support."
             : deposit
-              ? "Your 50% deposit is paid and our team has your order. One last step: tell us about your project in our intake form so we can schedule your shoot."
+              ? "Your 50% deposit is paid and our team has your order. Next: book your planning call and tell us about your project in our intake form."
               : "Stripe confirmed this payment. Contact Palmer House with your reference for details about this order."}
         </p>
         {deposit && <PlanningCallStep purchasedAt={verification.paidAt} />}

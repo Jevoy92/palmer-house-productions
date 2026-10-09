@@ -204,27 +204,55 @@ test("pure DIY creates a secure payment session with server-priced items, withou
   );
 });
 
-test("production and mixed plans never create a payment session", async () => {
+test("production and mixed plans open the 50% deposit checkout with server-priced items only", async () => {
   for (const items of [
     request.quote.items,
     [request.quote.items[0]],
     [...digitalRequest.quote.items, request.quote.items[0]],
   ]) {
-    let paymentCalls = 0;
+    let checkoutInput;
+    let intakeCalls = 0;
     const result = await submitCheckoutRequest(
       { ...request, quote: { ...request.quote, items } },
       {
         endpoint: "/configured-intake",
         honeyBookUrl: "",
-        fetcher: async () => ({ ok: true, status: 200 }),
-        createCheckout: async () => {
-          paymentCalls += 1;
-          throw new Error("Production cannot pay before quote approval");
+        fetcher: async () => ((intakeCalls += 1), { ok: true, status: 200 }),
+        createCheckout: async (input) => {
+          checkoutInput = input;
+          return { ok: true, url: "https://checkout.stripe.com/c/pay_deposit" };
         },
       },
     );
-    assert.equal(result.kind, "received");
-    assert.equal(paymentCalls, 0);
+    assert.equal(result.kind, "payment");
+    assert.equal(intakeCalls, 0);
+    assert.deepEqual(checkoutInput.data.items, items);
+    // The browser never sends a price or deposit amount; the server computes the 50% deposit.
+    for (const k of ["subtotal", "deposit", "amount", "total"]) assert.equal(k in checkoutInput.data, false);
+  }
+});
+
+test("monthly retainers and failed checkout never pretend to be paid", async () => {
+  let paymentCalls = 0;
+  const monthly = await submitCheckoutRequest(
+    { ...request, quote: { ...request.quote, items: [{ ...request.quote.items[0], cadence: "monthly" }] } },
+    {
+      endpoint: "/configured-intake",
+      honeyBookUrl: "",
+      fetcher: async () => ({ ok: true, status: 200 }),
+      createCheckout: async () => ((paymentCalls += 1), { ok: true, url: "https://checkout.stripe.com/x" }),
+    },
+  );
+  assert.equal(monthly.kind, "received");
+  assert.equal(paymentCalls, 0);
+  for (const response of [{ ok: false }, { ok: true, url: "http://evil.example/pay" }]) {
+    const r = await submitCheckoutRequest(request, {
+      endpoint: "/configured-intake",
+      honeyBookUrl: "",
+      fetcher: async () => ({ ok: true, status: 200 }),
+      createCheckout: async () => response,
+    });
+    assert.equal(r.kind, "error");
   }
 });
 

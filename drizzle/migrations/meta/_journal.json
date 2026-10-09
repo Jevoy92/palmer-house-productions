@@ -29,6 +29,13 @@
       "when": 1791519224893,
       "tag": "0003_customer_email_outbox",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1791519947291,
+      "tag": "0004_customer_email_outbox_lockdown",
+      "breakpoints": true
     }
   ]
 }

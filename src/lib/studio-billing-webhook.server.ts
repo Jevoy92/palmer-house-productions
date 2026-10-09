@@ -133,8 +133,33 @@ export async function applyStudioBillingEvent(
   ) {
     const session = event.data.object;
     if (session.mode === "subscription" && session.subscription) {
-      await sync(await stripe.subscriptions.retrieve(id(session.subscription)!));
+      const subscription = await stripe.subscriptions.retrieve(id(session.subscription)!);
+      await sync(subscription);
       const email = session.customer_details?.email ?? session.customer_email;
+      const welcomeWorkspace = subscription.metadata.workspace_id;
+      if (
+        email &&
+        welcomeWorkspace &&
+        subscription.metadata.purchase_kind !== "social_publishing" &&
+        session.status === "complete" &&
+        session.payment_status === "paid"
+      ) {
+        // First paid membership only: keyed per workspace, so renewals, upgrades and
+        // webhook retries never resend. Never blocks the membership sync above.
+        const planKey = subscription.metadata.plan as StudioPlanKey;
+        const { queueCustomerEmail } = await import("./team-email.server");
+        const { studioWelcomeEmailData } = await import("./client-booking-email");
+        await queueCustomerEmail(
+          "studio-welcome",
+          email,
+          studioWelcomeEmailData({
+            planName: studioPlans[planKey]?.name ?? "Studio",
+            purchasedAt: session.created * 1000,
+            origin: process.env.PUBLIC_SITE_URL,
+          }),
+          `studio-welcome-${welcomeWorkspace}`,
+        );
+      }
       if (
         session.metadata?.campaign_id &&
         email &&
@@ -186,6 +211,23 @@ export async function applyStudioBillingEvent(
         },
         `deposit-${session.id}`,
       );
+      // Buyer confirmation with the planning-call link. Never blocks fulfillment.
+      const buyer = session.customer_details?.email ?? session.customer_email;
+      if (buyer && session.metadata.quote_reference) {
+        const { queueCustomerEmail } = await import("./team-email.server");
+        const { clientBookingEmailData } = await import("./client-booking-email");
+        await queueCustomerEmail(
+          "client-deposit-confirmed",
+          buyer,
+          clientBookingEmailData({
+            reference: session.metadata.quote_reference,
+            customerName: session.metadata.customer_name,
+            depositPaid: money(session.amount_total),
+            purchasedAt: session.created * 1000,
+          }),
+          `client-deposit-${session.id}`,
+        );
+      }
       return;
     }
     if (session.mode !== "payment" || session.metadata?.purchase_kind !== "studio_credits") return;

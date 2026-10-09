@@ -41,7 +41,7 @@ function StudioWelcome({ planName = "Studio", bookingUrl = "", studioUrl = "", b
             </Button>
           ) : null}
           <Text style={{ ...text, fontSize: "13px", color: "#555" }}>
-            Please book within 7 days of your purchase{bookBy ? ` (by ${bookBy})` : ""}, and aim to
+            Times are available Mondays and Wednesdays, 9 am–5 pm Pacific. Please book within 7 days of your purchase{bookBy ? ` (by ${bookBy})` : ""}, and aim to
             meet within 14 days{meetBy ? ` (by ${meetBy})` : ""}. Appointments require at least 24
             hours' notice. If the times don't work, reply to this email and we'll help.
           </Text>

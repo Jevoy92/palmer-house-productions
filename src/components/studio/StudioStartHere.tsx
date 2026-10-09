@@ -4,6 +4,7 @@ import { ArrowRight, Check, ChevronLeft, ChevronRight, CircleHelp, X } from "luc
 import { useEffect, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { useStudio } from "./StudioProvider";
+import { OnboardingBookingCard } from "./OnboardingBookingCard";
 import { StudioGraphic, type StudioGraphicName } from "./StudioGraphic";
 import { useStudioMotion } from "./studio-motion";
 import {
@@ -248,6 +249,7 @@ export function StudioStartHere() {
                     </li>
                   ))}
                 </ol>
+                <OnboardingBookingCard compact />
                 <Link
                   className="studio-guide-usage-link"
                   to="/studio/billing"

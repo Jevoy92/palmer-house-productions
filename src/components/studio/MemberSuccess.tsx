@@ -31,6 +31,7 @@ import {
 } from "@/lib/studio-model";
 import { useStudio } from "./StudioProvider";
 import { useStudioMotion } from "./studio-motion";
+import { OnboardingBookingCard } from "./OnboardingBookingCard";
 
 const bookingUrl = import.meta.env.VITE_STRATEGY_BOOKING_URL || "/contact";
 const publicReviewUrl = import.meta.env.VITE_PUBLIC_REVIEW_URL || "/resources/reviews";
@@ -371,6 +372,8 @@ export function MemberSuccess() {
           </a>
         </nav>
       </header>
+
+      <OnboardingBookingCard />
 
       <section className="mt-6 grid items-start gap-5 xl:grid-cols-[1.15fr_.85fr]">
         <article id="member-help" className="studio-card scroll-mt-24">

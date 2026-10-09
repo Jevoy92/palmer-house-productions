@@ -1,10 +1,10 @@
 import { ArrowRight, CalendarCheck } from "lucide-react";
 import {
   BOOKING_EXPECTATIONS,
-  bookingTargets,
   isActivePaidMember,
   STUDIO_ONBOARDING_BOOKING_URL,
 } from "@/lib/booking-links";
+import { Button } from "@/components/ui/button";
 import { useStudio } from "./StudioProvider";
 
 /**
@@ -14,7 +14,6 @@ import { useStudio } from "./StudioProvider";
 export function OnboardingBookingCard({ compact = false }: { compact?: boolean }) {
   const { subscription } = useStudio();
   if (!isActivePaidMember(subscription)) return null;
-  const targets = bookingTargets(subscription?.created_at ?? null);
   return (
     <section
       className={`${compact ? "mt-4" : "mt-6"} rounded-[1.25rem] border border-border bg-system-soft p-5`}
@@ -31,16 +30,12 @@ export function OnboardingBookingCard({ compact = false }: { compact?: boolean }
             A 30-minute video call with our team to set up your Studio, Brand DNA and first
             campaign.
             {compact ? "" : ` ${BOOKING_EXPECTATIONS}`}
-            {!compact && targets ? ` Suggested: book by ${targets.bookBy}.` : ""}
           </p>
-          <a
-            href={STUDIO_ONBOARDING_BOOKING_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-lg bg-system px-4 text-sm font-bold text-system-foreground"
-          >
-            Book your Studio onboarding <ArrowRight size={16} aria-hidden="true" />
-          </a>
+          <Button asChild variant="system" className="mt-4">
+            <a href={STUDIO_ONBOARDING_BOOKING_URL} target="_blank" rel="noopener noreferrer">
+              Book your Studio onboarding <ArrowRight size={16} aria-hidden="true" />
+            </a>
+          </Button>
         </div>
       </div>
     </section>

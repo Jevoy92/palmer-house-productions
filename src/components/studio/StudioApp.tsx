@@ -93,6 +93,7 @@ import { toast } from "sonner";
 import { createStudioBillingPortal, createStudioSubscriptionCheckout } from "@/lib/studio-server";
 import { ExpoCodeBox } from "@/components/expo/ExpoCodeBox";
 import { FilmingBenefitCard } from "@/components/studio/FilmingBenefitCard";
+import { OnboardingBookingCard } from "@/components/studio/OnboardingBookingCard";
 import { useExpoClock } from "@/components/expo/ExpoModule";
 import { expoCampaign, expoSavings, followUpPromise } from "@/lib/expo-campaign";
 import {
@@ -5070,6 +5071,7 @@ function BillingView() {
         </div>
       )}
       <StudioCreditPanel />
+      <OnboardingBookingCard />
       {workspace && subscription && (
         <FilmingBenefitCard
           workspaceId={workspace.id}

@@ -1024,7 +1024,13 @@ export type Database = {
           last_synced_at: string | null
           monthly: boolean
           paid_eligible: boolean
+          prefs_changed_at: string
+          remote_changed_at: string | null
           resend_contact_id: string | null
+          resubscribe_requested: boolean
+          suppressed: boolean
+          suppressed_at: string | null
+          suppressed_reason: string | null
           sync_attempts: number
           sync_error: string | null
           sync_state: string
@@ -1041,7 +1047,13 @@ export type Database = {
           last_synced_at?: string | null
           monthly?: boolean
           paid_eligible?: boolean
+          prefs_changed_at?: string
+          remote_changed_at?: string | null
           resend_contact_id?: string | null
+          resubscribe_requested?: boolean
+          suppressed?: boolean
+          suppressed_at?: string | null
+          suppressed_reason?: string | null
           sync_attempts?: number
           sync_error?: string | null
           sync_state?: string
@@ -1058,7 +1070,13 @@ export type Database = {
           last_synced_at?: string | null
           monthly?: boolean
           paid_eligible?: boolean
+          prefs_changed_at?: string
+          remote_changed_at?: string | null
           resend_contact_id?: string | null
+          resubscribe_requested?: boolean
+          suppressed?: boolean
+          suppressed_at?: string | null
+          suppressed_reason?: string | null
           sync_attempts?: number
           sync_error?: string | null
           sync_state?: string

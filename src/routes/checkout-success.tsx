@@ -5,10 +5,55 @@ import { useEffect } from "react";
 import { CollectionShell } from "@/components/collection/CollectionShell";
 import { cartStore } from "@/lib/cart-store";
 import { DIY_DOWNLOADS } from "@/lib/pricing-catalog";
-import { verifyDepositCheckout } from "@/lib/stripe-checkout";
+import { verifyCoveredBooking, verifyDepositCheckout } from "@/lib/stripe-checkout";
 import { HONEYBOOK_LEAD_FORM_URL } from "@/lib/honeybook";
+import { BOOKING_EXPECTATIONS, bookingTargets, VIDEO_PLANNING_BOOKING_URL } from "@/lib/booking-links";
 
 type Verification = Awaited<ReturnType<typeof verifyDepositCheckout>>;
+type Covered = Awaited<ReturnType<typeof verifyCoveredBooking>>;
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+/** A covered Partner booking is shown only after the server confirms its redemption. */
+export async function loadCoveredBooking(
+  redemptionId: string | null,
+  verify: (input: { data: { redemptionId: string } }) => Promise<Covered> = verifyCoveredBooking,
+): Promise<Covered> {
+  const id = redemptionId?.trim() ?? "";
+  if (!UUID.test(id)) return { status: "invalid" };
+  try {
+    return await verify({ data: { redemptionId: id } });
+  } catch {
+    return { status: "unavailable" };
+  }
+}
+
+/** Planning-call next step. Opening it never marks anything as scheduled. */
+export function PlanningCallStep({ purchasedAt }: { purchasedAt?: number | null }) {
+  const targets = bookingTargets(purchasedAt ?? null);
+  return (
+    <div className="pc-status" aria-labelledby="planning-call-title">
+      <h2 id="planning-call-title">Book your planning call</h2>
+      <p>
+        A 30-minute video call with our team to plan your shoot. This call plans the shoot — it
+        does not reserve a filming date. We’ll agree on your filming date together.
+      </p>
+      <p>
+        {BOOKING_EXPECTATIONS}
+        {targets ? ` Suggested: book by ${targets.bookBy}; meet by ${targets.meetBy}.` : ""}
+      </p>
+      <div className="mt-4">
+        <a
+          href={VIDEO_PLANNING_BOOKING_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="pc-primary"
+        >
+          Book your planning call <ArrowRight size={18} />
+        </a>
+      </div>
+    </div>
+  );
+}
 
 export async function loadCheckoutReceipt(
   sessionId: string | null,
@@ -39,25 +84,52 @@ export function reconcileVerifiedReceipt(
 }
 
 function CheckoutSuccessPage() {
-  const { session_id: sessionId, included } = Route.useSearch();
+  const { session_id: sessionId } = Route.useSearch();
   const verification = Route.useLoaderData();
   useEffect(() => {
-    reconcileVerifiedReceipt(sessionId, verification);
+    if (verification.mode === "receipt") reconcileVerifiedReceipt(sessionId, verification.result);
   }, [sessionId, verification]);
 
-  if (included === "1") {
-    return (
-      <CollectionShell active="plan" backTo="/studio" backLabel="Back to Studio">
-        <section className="pc-guide" aria-labelledby="included-title">
-          <p className="pc-eyebrow">Partner membership</p>
-          <h1 id="included-title">Your filming session is booked.</h1>
-          <p className="mt-4">
-            This month's included filming session covers it, so there's nothing to pay today. Our team will reach out to schedule your shoot.
-          </p>
-        </section>
-      </CollectionShell>
-    );
+  if (verification.mode === "covered") {
+    const covered = verification.result;
+    if (covered.status === "covered") {
+      return (
+        <CollectionShell active="plan" backTo="/studio" backLabel="Back to Studio">
+          <section className="pc-guide" aria-labelledby="included-title">
+            <CheckCircle2 size={38} aria-hidden="true" />
+            <p className="pc-eyebrow mt-6">Partner membership</p>
+            <h1 id="included-title">Your filming session is booked.</h1>
+            <p className="mt-4">
+              This month's included filming session covers it, so there's nothing to pay today.
+              Next, book your planning call and tell us about your project.
+            </p>
+            <PlanningCallStep purchasedAt={covered.confirmedAt} />
+            <div className="mt-6">
+              <a
+                href={`${HONEYBOOK_LEAD_FORM_URL}${HONEYBOOK_LEAD_FORM_URL.includes("?") ? "&" : "?"}quote_ref=${encodeURIComponent(covered.reference)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pc-outline"
+              >
+                Complete your project intake <ArrowRight size={18} />
+              </a>
+            </div>
+            <p className="pc-reference">
+              Booking reference: <strong>{covered.reference}</strong>
+            </p>
+          </section>
+        </CollectionShell>
+      );
+    }
   }
+  const receipt: Verification =
+    verification.mode === "covered"
+      ? { status: verification.result.status === "unavailable" ? "unavailable" : "invalid" }
+      : verification.result;
+  return <ReceiptView sessionId={sessionId} verification={receipt} />;
+}
+
+function ReceiptView({ sessionId, verification }: { sessionId: string; verification: Verification }) {
   const paid = verification.status === "paid";
   const digital = paid && verification.purchaseKind === "digital";
   const deposit = paid && verification.purchaseKind === "production_deposit";
@@ -140,13 +212,14 @@ function CheckoutSuccessPage() {
               ? "Your 50% deposit is paid and our team has your order. One last step: tell us about your project in our intake form so we can schedule your shoot."
               : "Stripe confirmed this payment. Contact Palmer House with your reference for details about this order."}
         </p>
+        {deposit && <PlanningCallStep purchasedAt={verification.paidAt} />}
         {deposit && (
           <div className="mt-6">
             <a
               href={`${HONEYBOOK_LEAD_FORM_URL}${HONEYBOOK_LEAD_FORM_URL.includes("?") ? "&" : "?"}quote_ref=${encodeURIComponent(verification.reference)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="pc-primary"
+              className="pc-outline"
             >
               Complete your project intake <ArrowRight size={18} />
             </a>
@@ -207,10 +280,14 @@ function CheckoutSuccessPage() {
 export const Route = createFileRoute("/checkout-success")({
   validateSearch: (search: Record<string, unknown>) => ({
     session_id: typeof search.session_id === "string" ? search.session_id.trim() : "",
-    included: search.included === "1" || search.included === 1 ? "1" : undefined,
+    covered: typeof search.covered === "string" ? search.covered.trim() : undefined,
   }),
-  loader: async ({ location }) =>
-    loadCheckoutReceipt(new URLSearchParams(location.search).get("session_id")),
+  loader: async ({ location }) => {
+    const params = new URLSearchParams(location.search);
+    const covered = params.get("covered");
+    if (covered) return { mode: "covered" as const, result: await loadCoveredBooking(covered) };
+    return { mode: "receipt" as const, result: await loadCheckoutReceipt(params.get("session_id")) };
+  },
   head: () => ({
     meta: [
       { title: "Payment Status | Palmer House Productions" },

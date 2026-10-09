@@ -22,3 +22,4 @@
 - [x] Membership filming benefits at checkout (needs Stripe test-mode run per tier)
 - [x] Newsletter: handle contact.topics.updated, bounce/complaint suppression, fixed paid segment 7296d3e1…, no unsubscribed:false on routine sync; then secrets form (RESEND_API_KEY, RESEND_WEBHOOK_SECRET)
 - [ ] Newsletter: user adds RESEND_API_KEY + RESEND_WEBHOOK_SECRET, creates webhook (+email.bounced, email.complained), then live sync test
+- [ ] Unbooked-client follow-ups (day 2/day 5) and stop-on-booking — blocked: needs a proper Google Calendar/HoneyBook connection to know who actually booked.

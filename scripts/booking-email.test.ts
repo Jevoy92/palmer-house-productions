@@ -19,8 +19,8 @@ const q = (table: string) => {
 mock.module("@/integrations/supabase/client.server", () => ({
   supabaseAdmin: { from: q, rpc: async (_: string, a: any) => failEnqueue ? { error: { message: "queue down" } } : (queued.push(a.payload), { error: null }) },
 }));
-const { queueCustomerEmail } = await import("/dev-server/src/lib/team-email.server.ts");
-const { clientBookingEmailData, studioWelcomeEmailData } = await import("/dev-server/src/lib/client-booking-email.ts");
+const { queueCustomerEmail } = await import("../src/lib/team-email.server.ts");
+const { clientBookingEmailData, studioWelcomeEmailData } = await import("../src/lib/client-booking-email.ts");
 
 test("deposit email: once per checkout, reply-to set, retry-safe", async () => {
   const d = clientBookingEmailData({ reference: "PH-ABC234", customerName: "Jane", depositPaid: "$225.00", purchasedAt: Date.UTC(2026, 9, 1) });

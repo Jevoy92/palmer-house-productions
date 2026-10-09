@@ -21,6 +21,11 @@ vm.runInNewContext(
   compile(readFileSync(new URL("../src/lib/pricing-catalog.ts", import.meta.url), "utf8")),
   { exports: catalog, require: () => ({ default: "fixture-asset" }) },
 );
+const bookingLinks = {};
+vm.runInNewContext(
+  compile(readFileSync(new URL("../src/lib/booking-links.ts", import.meta.url), "utf8")),
+  { exports: bookingLinks, Intl, Date, Number, Set, String },
+);
 let visibleVerification;
 const exports = {};
 const modules = {
@@ -31,7 +36,8 @@ const modules = {
     createFileRoute: () => (config) => ({
       ...config,
       useSearch: () => ({ session_id: "cs_test_paid_session" }),
-      useLoaderData: () => visibleVerification,
+      useLoaderData: () =>
+        visibleVerification?.mode ? visibleVerification : { mode: "receipt", result: visibleVerification },
     }),
     Link: ({ to, children, ...props }) =>
       React.createElement("a", { href: to, ...props }, children),
@@ -54,7 +60,12 @@ const modules = {
     verifyDepositCheckout: () => {
       throw new Error("Live payment verification is forbidden in tests");
     },
+    verifyCoveredBooking: () => {
+      throw new Error("Live booking verification is forbidden in tests");
+    },
   },
+  "@/lib/honeybook": { HONEYBOOK_LEAD_FORM_URL: "https://honeybook.test/form" },
+  "@/lib/booking-links": bookingLinks,
 };
 vm.runInNewContext(
   compile(readFileSync(new URL("../src/routes/checkout-success.tsx", import.meta.url), "utf8")),
@@ -66,7 +77,17 @@ vm.runInNewContext(
     },
   },
 );
-const { loadCheckoutReceipt, reconcileVerifiedReceipt, Route } = exports;
+const { loadCheckoutReceipt, loadCoveredBooking, reconcileVerifiedReceipt, Route } = exports;
+const render = () => renderToStaticMarkup(React.createElement(Route.component));
+const deposit = {
+  status: "paid",
+  purchaseKind: "production_deposit",
+  reference: "PH-DEP234",
+  purchasedItems: [],
+  amountTotal: 22500,
+  currency: "usd",
+  paidAt: Date.UTC(2026, 9, 1, 18),
+};
 const paidDigital = {
   status: "paid",
   purchaseKind: "digital",
@@ -149,4 +170,68 @@ test("unverified status never displays a paid receipt", () => {
     assert.match(html, /cart is still saved/);
     assert.doesNotMatch(html, /Payment confirmed|Paid in full|Your digital order/);
   }
+});
+
+test("verified deposit shows the planning call next to intake and receipt", () => {
+  visibleVerification = deposit;
+  const html = render();
+  assert.match(html, /Book your planning call/);
+  assert.match(html, /calendar\.google\.com\/calendar\/u\/0\/appointments\/schedules\/AcZssZ3U/);
+  assert.match(html, /does not reserve a filming date/);
+  assert.match(html, /book by October 8, 2026; meet by October 15, 2026/);
+  assert.match(html, /Complete your project intake/);
+  assert.match(html, /\$225\.00/);
+  assert.doesNotMatch(html, /AcZssZ2V/); // never the Studio onboarding link
+  assert.doesNotMatch(html, /zoom\.us/i);
+});
+
+test("unpaid, pending or digital receipts never show the planning call", () => {
+  for (const v of [{ status: "pending" }, { status: "invalid" }, { status: "unavailable" }, paidDigital]) {
+    visibleVerification = v;
+    assert.doesNotMatch(render(), /Book your planning call/);
+  }
+});
+
+test("covered Partner bookings require a server-verified redemption", async () => {
+  let calls = 0;
+  for (const id of [null, "1", "included", "not-a-uuid"]) {
+    const r = await loadCoveredBooking(id, async () => (calls++, { status: "covered" }));
+    assert.equal(r.status, "invalid");
+  }
+  assert.equal(calls, 0);
+  const failed = await loadCoveredBooking("7a1f2c3d-1111-4222-8333-944455556666", async () => {
+    throw new Error("down");
+  });
+  assert.equal(failed.status, "unavailable");
+
+  visibleVerification = { mode: "covered", result: { status: "invalid" } };
+  let html = render();
+  assert.doesNotMatch(html, /filming session is booked|Book your planning call/);
+  assert.match(html, /cart is still saved/);
+
+  visibleVerification = {
+    mode: "covered",
+    result: { status: "covered", reference: "PH-COV234", confirmedAt: Date.UTC(2026, 9, 1, 18) },
+  };
+  html = render();
+  assert.match(html, /Your filming session is booked/);
+  assert.match(html, /Book your planning call/);
+  assert.match(html, /PH-COV234/);
+});
+
+test("paid onboarding eligibility excludes free, trial, held and lapsed members", () => {
+  const now = Date.UTC(2026, 9, 9);
+  const ok = { plan: "creator", status: "active", billing_hold: false, current_period_end: "2026-11-01" };
+  assert.equal(bookingLinks.isActivePaidMember(ok, now), true);
+  assert.equal(bookingLinks.isActivePaidMember({ ...ok, plan: "partner" }, now), true);
+  for (const bad of [
+    null,
+    { ...ok, plan: "free" },
+    { ...ok, plan: "trial" },
+    { ...ok, status: "canceled" },
+    { ...ok, status: "past_due" },
+    { ...ok, billing_hold: true },
+    { ...ok, current_period_end: "2026-10-01" },
+  ])
+    assert.equal(bookingLinks.isActivePaidMember(bad, now), false);
 });

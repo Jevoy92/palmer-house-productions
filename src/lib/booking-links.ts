@@ -5,12 +5,18 @@
  */
 export const VIDEO_PLANNING_BOOKING_URL =
   "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3UqCFDIKMt5ZiLcrqfv1kRk_8QxkEpyMja4FQL1r8XZCbzo6AYnWWGT0DufhagShSghbi86R2Y";
+/** Free 15-minute introduction for new inquiries (not for paid clients' planning/onboarding). */
+export const QUICK_CHAT_BOOKING_URL =
+  "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ1I3r54YzhE8Hv0WJ9ANGYv-0nWWNX5YHOslGAeJpMsneJ1dJi_D1xJMuSibt_1SVayBqNQo1AU";
 export const STUDIO_ONBOARDING_BOOKING_URL =
   "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2V7tGgzn1YlRpMiWrhzHDZX2aHiF8YwNwWplzuhWpnTZyMM3vE4k3V12S8EKID_VK7y8b88EZU";
 
 /** Weekly availability configured on the Google pages (Pacific time). */
 export const VIDEO_PLANNING_HOURS = "Tuesdays and Thursdays, 9 am–5 pm Pacific";
 export const STUDIO_ONBOARDING_HOURS = "Mondays and Wednesdays, 9 am–5 pm Pacific (not Wednesdays noon–1 pm)";
+
+export const QUICK_CHAT_HOURS = "Fridays, 9 am–5 pm Pacific";
+export const QUICK_CHAT_DETAILS = "Free · 15 minutes · Book at least 24 hours ahead, up to 14 days out";
 
 /** Friendly service expectations — not cancellation, expiry, refund or forfeiture terms. */
 export const BOOKING_EXPECTATIONS =

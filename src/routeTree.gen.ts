@@ -49,6 +49,7 @@ import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } fr
 import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe-webhook'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as ContactNextStepsRouteImport } from './routes/contact_.next-steps'
 import { Route as EmailUnsubscribeRouteImport } from './routes/email/unsubscribe'
 import { Route as ExpoDemoRouteImport } from './routes/expo_.demo'
 import { Route as IndustriesIndexRouteImport } from './routes/industries.index'
@@ -294,6 +295,11 @@ const BlogIndexRoute = BlogIndexRouteImport.update({
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog/$slug',
   path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactNextStepsRoute = ContactNextStepsRouteImport.update({
+  id: '/contact_/next-steps',
+  path: '/contact/next-steps',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EmailUnsubscribeRoute = EmailUnsubscribeRouteImport.update({
@@ -564,6 +570,7 @@ export interface FileRoutesByFullPath {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/contact/next-steps': typeof ContactNextStepsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/expo/demo': typeof ExpoDemoRoute
   '/industries/$slug': typeof IndustriesSlugRoute
@@ -649,6 +656,7 @@ export interface FileRoutesByTo {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/contact/next-steps': typeof ContactNextStepsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/expo/demo': typeof ExpoDemoRoute
   '/industries/$slug': typeof IndustriesSlugRoute
@@ -736,6 +744,7 @@ export interface FileRoutesById {
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/contact_/next-steps': typeof ContactNextStepsRoute
   '/email/unsubscribe': typeof EmailUnsubscribeRoute
   '/expo_/demo': typeof ExpoDemoRoute
   '/industries/$slug': typeof IndustriesSlugRoute
@@ -824,6 +833,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/api/stripe-webhook'
     | '/blog/$slug'
+    | '/contact/next-steps'
     | '/email/unsubscribe'
     | '/expo/demo'
     | '/industries/$slug'
@@ -909,6 +919,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/api/stripe-webhook'
     | '/blog/$slug'
+    | '/contact/next-steps'
     | '/email/unsubscribe'
     | '/expo/demo'
     | '/industries/$slug'
@@ -995,6 +1006,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-protected-resource'
     | '/api/stripe-webhook'
     | '/blog/$slug'
+    | '/contact_/next-steps'
     | '/email/unsubscribe'
     | '/expo_/demo'
     | '/industries/$slug'
@@ -1082,6 +1094,7 @@ export interface RootRouteChildren {
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  ContactNextStepsRoute: typeof ContactNextStepsRoute
   EmailUnsubscribeRoute: typeof EmailUnsubscribeRoute
   ExpoDemoRoute: typeof ExpoDemoRoute
   IndustriesSlugRoute: typeof IndustriesSlugRoute
@@ -1386,6 +1399,13 @@ declare module '@tanstack/react-router' {
       path: '/blog/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact_/next-steps': {
+      id: '/contact_/next-steps'
+      path: '/contact/next-steps'
+      fullPath: '/contact/next-steps'
+      preLoaderRoute: typeof ContactNextStepsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/email/unsubscribe': {
@@ -1806,6 +1826,7 @@ const rootRouteChildren: RootRouteChildren = {
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   ApiStripeWebhookRoute: ApiStripeWebhookRoute,
   BlogSlugRoute: BlogSlugRoute,
+  ContactNextStepsRoute: ContactNextStepsRoute,
   EmailUnsubscribeRoute: EmailUnsubscribeRoute,
   ExpoDemoRoute: ExpoDemoRoute,
   IndustriesSlugRoute: IndustriesSlugRoute,

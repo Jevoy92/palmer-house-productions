@@ -9,6 +9,8 @@ import { PAL_GROUPS, type PalAccent } from "@/lib/pricing-catalog";
 import { inquiryIntents, parseInquiryIntent, type InquiryIntent } from "@/lib/public-journey";
 import { createSeo } from "@/lib/seo";
 import { HoneyBookEmbed } from "@/components/HoneyBookEmbed";
+import { PaidClientNote, QuickChatCard } from "@/components/site/QuickChatCard";
+import { QUICK_CHAT_BOOKING_URL, QUICK_CHAT_HOURS } from "@/lib/booking-links";
 
 const PROJECT_TYPES = [
   ...Object.values(inquiryIntents).map((intent) => intent.label),
@@ -318,9 +320,11 @@ function ContactPage() {
           </div>
 
           <aside className="space-y-4 lg:sticky lg:top-28">
+            <QuickChatCard />
+            <PaidClientNote />
             <Scene
               name="contact"
-              tags={["Reply within 24 hours", "Free 30-min call"]}
+              tags={["Reply within 24 hours", "Free 15-min Friday chat"]}
               caption="Kiana · Story and presence"
             />
             <div className="flex items-start gap-4 rounded-[2rem] bg-evergreen-soft p-6">
@@ -343,33 +347,25 @@ function ContactPage() {
         tone="spotlight"
         eyebrow="Reach us directly"
         title="Pick whichever way is easiest."
-        subtitle="Book a call, send a note, or ring the studio. We serve the Pacific Northwest from Bellevue and Portland."
+        subtitle="Book a Friday quick chat, send a note, or ring the studio. We serve the Pacific Northwest from Bellevue and Portland."
       >
         <CardGrid cols={4}>
-          <Card lane="spotlight" glyph="calendar" title="Request an introductory call">
+          <Card lane="spotlight" glyph="calendar" title="Book a free quick chat">
             <p className="relative mt-1 font-mono text-[11px] font-bold uppercase tracking-[0.14em] text-spotlight-text">
-              Free 30-minute session
+              15 minutes · {QUICK_CHAT_HOURS}
             </p>
             <p className="relative mt-3 text-sm leading-relaxed text-muted-foreground">
-              Talk directly with our team about your goals, timeline, and budget. We'll map out the
-              right content path for you.
+              A short introduction with our team about your goals and timing.
             </p>
             <a
-              href="#project-inquiry"
+              href={QUICK_CHAT_BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="relative mt-4 inline-flex min-h-11 items-center font-semibold underline"
             >
-              Tell us about your project <ArrowRight className="ml-2 size-4" />
+              Pick a Friday time <ArrowRight className="ml-2 size-4" aria-hidden="true" />
+              <span className="sr-only">(opens Google Calendar in a new tab)</span>
             </a>
-            {import.meta.env.VITE_CLICKUP_INTAKE_URL && (
-              <a
-                href={import.meta.env.VITE_CLICKUP_INTAKE_URL as string}
-                target="_blank"
-                rel="noreferrer"
-                className="relative mt-5 inline-flex min-h-11 items-center rounded-full bg-spotlight px-4 text-sm font-bold text-white"
-              >
-                Open client intake
-              </a>
-            )}
           </Card>
           <Card lane="evergreen" glyph="chat" title="Email the team">
             <p className="relative mt-3 text-sm leading-relaxed text-muted-foreground">

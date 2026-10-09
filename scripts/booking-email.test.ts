@@ -3,7 +3,8 @@
 import { mock, test, expect, afterAll } from "bun:test";
 import { SQL } from "bun";
 
-const db = new SQL(); // PG* env vars
+// Local throwaway Postgres loaded with the exact deployed migration file.
+const db = new SQL({ url: "postgres://postgres@localhost:55432/postgres", host: "/tmp/pgt", port: 55432, max: 10 });
 const PREFIX = `test-${crypto.randomUUID().slice(0, 8)}-`;
 let queued: any[] = [];
 let failEnqueue = false;

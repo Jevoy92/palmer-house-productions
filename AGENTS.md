@@ -9,3 +9,5 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 - Expo guest demo (/expo/demo) is stateless on the client and metered only by the server-only expo_demo_usage table; it never touches member credits or saves guest content — keeps booth guests isolated and the bill capped.
+- Customer booking emails go through `queueCustomerEmail` with a deterministic idempotency key (per checkout session, redemption or workspace) and never throw — payment fulfillment must not depend on email delivery.
+- Booking CTAs link to Google appointment pages in `src/lib/booking-links.ts`; clicking never marks a call scheduled, and paid-only CTAs gate on `isActivePaidMember`.

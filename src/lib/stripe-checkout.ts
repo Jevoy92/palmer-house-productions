@@ -76,23 +76,36 @@ export const createDepositCheckout = createServerFn({ method: "POST" })
     const memberTotal = productionTotal - (benefit?.discount ?? 0);
     if (isProduction && benefit && memberTotal <= 0) {
       // Fully covered by Partner's included session: no payment; confirm straight to the team.
+      // The success page re-verifies the unguessable redemption id on the server.
       const { markRedemption } = await import("./filming-benefit.server");
-      const { queueTeamEmail } = await import("./team-email.server");
-      await queueTeamEmail(
-        "deposit-booked",
-        {
-          reference: data.reference,
-          customerName: data.name,
-          customerEmail: data.email,
-          company: data.company ?? "",
-          depositPaid: "$0.00 (Partner included session)",
-          estimatedTotal: `$${productionTotal.toFixed(2)} retail · covered by membership`,
-        },
-        `included-${data.reference}`,
+      const { queueTeamEmail, queueCustomerEmail } = await import("./team-email.server");
+      if (!benefit.redemptionId) throw new Error("This booking could not be confirmed. Please contact us.");
+      await markRedemption(benefit.redemptionId, "redeemed");
+      try {
+        await queueTeamEmail(
+          "deposit-booked",
+          {
+            reference: data.reference,
+            customerName: data.name,
+            customerEmail: data.email,
+            company: data.company ?? "",
+            depositPaid: "$0.00 (Partner included session)",
+            estimatedTotal: `$${productionTotal.toFixed(2)} retail · covered by membership`,
+          },
+          `included-${data.reference}`,
+        );
+      } catch (err) {
+        console.error("Team email failed", err instanceof Error ? err.message : err);
+      }
+      const { clientBookingEmailData } = await import("./client-booking-email");
+      await queueCustomerEmail(
+        "client-deposit-confirmed",
+        data.email,
+        clientBookingEmailData({ reference: data.reference, customerName: data.name, covered: true, purchasedAt: Date.now() }),
+        `client-covered-${benefit.redemptionId}`,
       );
-      if (benefit.redemptionId) await markRedemption(benefit.redemptionId, "redeemed");
       const siteOrigin0 = process.env.PUBLIC_SITE_URL || getRequestUrl().origin;
-      return { ok: true as const, url: `${siteOrigin0}/checkout-success?included=1&ref=${encodeURIComponent(data.reference)}` };
+      return { ok: true as const, url: `${siteOrigin0}/checkout-success?covered=${benefit.redemptionId}` };
     }
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = isProduction
       ? [
@@ -226,10 +239,36 @@ export const verifyDepositCheckout = createServerFn({ method: "GET" })
           purchasedItems: digital ? purchasedItems : [],
           amountTotal: session.amount_total,
           currency: session.currency,
+          paidAt: session.created * 1000,
         };
       }
       return { status: "pending" as const };
     } catch {
       return { status: "invalid" as const };
+    }
+  });
+
+/** Server-verifies a fully covered Partner booking by its unguessable redemption id. */
+export const verifyCoveredBooking = createServerFn({ method: "GET" })
+  .validator(z.object({ redemptionId: z.string().uuid() }))
+  .handler(async ({ data }) => {
+    try {
+      const { studioBillingAdmin } = await import("./studio-credit-runtime.server");
+      const row = await studioBillingAdmin()
+        .from("filming_benefit_redemptions")
+        .select("status,quote_reference,checkout_session_id,updated_at")
+        .eq("id", data.redemptionId)
+        .maybeSingle();
+      if (row.error) return { status: "unavailable" as const };
+      const r = row.data;
+      if (!r || r.status !== "redeemed" || r.checkout_session_id || !r.quote_reference)
+        return { status: "invalid" as const };
+      return {
+        status: "covered" as const,
+        reference: r.quote_reference,
+        confirmedAt: new Date(r.updated_at).getTime(),
+      };
+    } catch {
+      return { status: "unavailable" as const };
     }
   });

@@ -206,7 +206,7 @@ test("covered Partner bookings require a server-verified redemption", async () =
 
   visibleVerification = { mode: "covered", result: { status: "invalid" } };
   let html = render();
-  assert.doesNotMatch(html, /filming session is booked|Book your planning call/);
+  assert.doesNotMatch(html, /included session is confirmed|Book your planning call/);
   assert.match(html, /cart is still saved/);
 
   visibleVerification = {
@@ -214,7 +214,7 @@ test("covered Partner bookings require a server-verified redemption", async () =
     result: { status: "covered", reference: "PH-COV234", confirmedAt: Date.UTC(2026, 9, 1, 18) },
   };
   html = render();
-  assert.match(html, /Your filming session is booked/);
+  assert.match(html, /Your included session is confirmed/);
   assert.match(html, /Book your planning call/);
   assert.match(html, /PH-COV234/);
 });

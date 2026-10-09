@@ -38,11 +38,11 @@ function ClientDepositConfirmed({
   return (
     <Html lang="en">
       <Head />
-      <Preview>Your video project is booked — next, book your planning call.</Preview>
+      <Preview>Your project deposit is confirmed — next, book your planning call.</Preview>
       <Body style={{ backgroundColor: "#ffffff", fontFamily: "Arial, sans-serif" }}>
         <Container style={{ padding: "24px", maxWidth: "560px" }}>
           <Heading style={{ fontSize: "22px", color: "#1a1a1a" }}>
-            {first ? `Thanks, ${first} — your project is booked.` : "Your project is booked."}
+            {first ? `Thanks, ${first} — your project deposit is confirmed.` : "Your project deposit is confirmed."}
           </Heading>
           <Text style={text}>
             {covered
@@ -80,7 +80,7 @@ function ClientDepositConfirmed({
 export const template = {
   component: ClientDepositConfirmed,
   subject: (d: Record<string, any>) =>
-    `Your video project is booked${d.reference ? ` · ${d.reference}` : ""}`,
+    `Your project deposit is confirmed${d.reference ? ` · ${d.reference}` : ""}`,
   displayName: "Video project booked (customer)",
   previewData: {
     reference: "PH-7K2M9Q",

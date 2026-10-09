@@ -98,7 +98,7 @@ function CheckoutSuccessPage() {
           <section className="pc-guide" aria-labelledby="included-title">
             <CheckCircle2 size={38} aria-hidden="true" />
             <p className="pc-eyebrow mt-6">Partner membership</p>
-            <h1 id="included-title">Your filming session is booked.</h1>
+            <h1 id="included-title">Your included session is confirmed.</h1>
             <p className="mt-4">
               This month's included filming session covers it, so there's nothing to pay today.
               Next, book your planning call and tell us about your project.
@@ -202,7 +202,7 @@ function ReceiptView({ sessionId, verification }: { sessionId: string; verificat
           {digital
             ? "Thanks for your purchase."
             : deposit
-              ? "Your project is booked."
+              ? "Your project deposit is confirmed."
               : "Your payment is confirmed."}
         </h1>
         <p>

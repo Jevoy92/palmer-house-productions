@@ -1,6 +1,7 @@
 import { ArrowRight, CalendarCheck } from "lucide-react";
 import {
   BOOKING_EXPECTATIONS,
+  STUDIO_ONBOARDING_HOURS,
   isActivePaidMember,
   STUDIO_ONBOARDING_BOOKING_URL,
 } from "@/lib/booking-links";
@@ -14,6 +15,11 @@ import { useStudio } from "./StudioProvider";
 export function OnboardingBookingCard({ compact = false }: { compact?: boolean }) {
   const { subscription } = useStudio();
   if (!isActivePaidMember(subscription)) return null;
+  return <OnboardingBookingCardView compact={compact} />;
+}
+
+/** Presentational card; callers must already have verified an active paid membership. */
+export function OnboardingBookingCardView({ compact = false }: { compact?: boolean }) {
   return (
     <section
       className={`${compact ? "mt-4" : "mt-6"} rounded-[1.25rem] border border-border bg-system-soft p-5`}
@@ -28,7 +34,7 @@ export function OnboardingBookingCard({ compact = false }: { compact?: boolean }
           </h2>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
             A 30-minute video call with our team to set up your Studio, Brand DNA and first
-            campaign.
+            campaign. Available {STUDIO_ONBOARDING_HOURS}.
             {compact ? "" : ` ${BOOKING_EXPECTATIONS}`}
           </p>
           <Button asChild className="mt-4 min-h-11">

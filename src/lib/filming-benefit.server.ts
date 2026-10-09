@@ -72,10 +72,19 @@ export async function resolveFilmingBenefit(
 }
 
 export async function markRedemption(id: string, status: "redeemed" | "released", sessionId?: string) {
+  const now = new Date().toISOString();
   await studioBillingAdmin()
     .from("filming_benefit_redemptions")
-    .update({ status, checkout_session_id: sessionId ?? null, updated_at: new Date().toISOString() })
+    .update({ status, checkout_session_id: sessionId ?? null, updated_at: now })
     .eq("id", id);
+  // First confirmation time is stable: retries never reset booking deadlines.
+  if (status === "redeemed")
+    await studioBillingAdmin().from("filming_benefit_redemptions").update({ confirmed_at: now }).eq("id", id).is("confirmed_at", null);
+}
+
+export async function redemptionConfirmedAt(id: string): Promise<number | null> {
+  const r = await studioBillingAdmin().from("filming_benefit_redemptions").select("confirmed_at").eq("id", id).maybeSingle();
+  return r.data?.confirmed_at ? new Date(r.data.confirmed_at).getTime() : null;
 }
 
 export async function getFilmingBenefitStatus(ws: string) {

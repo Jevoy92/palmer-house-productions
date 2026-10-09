@@ -99,6 +99,10 @@ export const Route = createFileRoute("/lovable/email/queue/process")({
 
         const supabase = createClient<Database>(supabaseUrl, supabaseServiceKey);
 
+        // Re-queue customer receipts/booking emails whose earlier enqueue failed.
+        const { retryCustomerEmails } = await import("@/lib/team-email.server");
+        await retryCustomerEmails();
+
         // 1. Check rate-limit cooldown and read queue config
         const { data: state } = await supabase
           .from("email_send_state")

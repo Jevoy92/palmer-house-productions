@@ -7,7 +7,7 @@ import { cartStore } from "@/lib/cart-store";
 import { DIY_DOWNLOADS } from "@/lib/pricing-catalog";
 import { verifyCoveredBooking, verifyDepositCheckout } from "@/lib/stripe-checkout";
 import { HONEYBOOK_LEAD_FORM_URL } from "@/lib/honeybook";
-import { BOOKING_EXPECTATIONS, bookingTargets, VIDEO_PLANNING_BOOKING_URL } from "@/lib/booking-links";
+import { BOOKING_EXPECTATIONS, bookingTargets, VIDEO_PLANNING_BOOKING_URL, VIDEO_PLANNING_HOURS } from "@/lib/booking-links";
 
 type Verification = Awaited<ReturnType<typeof verifyDepositCheckout>>;
 type Covered = Awaited<ReturnType<typeof verifyCoveredBooking>>;
@@ -38,7 +38,7 @@ export function PlanningCallStep({ purchasedAt }: { purchasedAt?: number | null 
         does not reserve a filming date. We’ll agree on your filming date together.
       </p>
       <p>
-        {BOOKING_EXPECTATIONS}
+        Available {VIDEO_PLANNING_HOURS}. {BOOKING_EXPECTATIONS}
         {targets ? ` Suggested: book by ${targets.bookBy}; meet by ${targets.meetBy}.` : ""}
       </p>
       <div className="mt-4">

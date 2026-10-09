@@ -694,6 +694,45 @@ export type Database = {
           },
         ]
       }
+      customer_email_outbox: {
+        Row: {
+          attempts: number
+          created_at: string
+          idempotency_key: string
+          last_error: string | null
+          next_attempt_at: string | null
+          recipient_email: string
+          status: string
+          template_data: Json
+          template_name: string
+          updated_at: string
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          idempotency_key: string
+          last_error?: string | null
+          next_attempt_at?: string | null
+          recipient_email: string
+          status?: string
+          template_data?: Json
+          template_name: string
+          updated_at?: string
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          idempotency_key?: string
+          last_error?: string | null
+          next_attempt_at?: string | null
+          recipient_email?: string
+          status?: string
+          template_data?: Json
+          template_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       email_send_log: {
         Row: {
           created_at: string
@@ -909,6 +948,7 @@ export type Database = {
       filming_benefit_redemptions: {
         Row: {
           checkout_session_id: string | null
+          confirmed_at: string | null
           created_at: string
           id: string
           period_month: string
@@ -919,6 +959,7 @@ export type Database = {
         }
         Insert: {
           checkout_session_id?: string | null
+          confirmed_at?: string | null
           created_at?: string
           id?: string
           period_month: string
@@ -929,6 +970,7 @@ export type Database = {
         }
         Update: {
           checkout_session_id?: string | null
+          confirmed_at?: string | null
           created_at?: string
           id?: string
           period_month?: string
@@ -2964,6 +3006,15 @@ export type Database = {
         Args: { p_required_credits: number; p_user_id: string }
         Returns: boolean
       }
+      claim_customer_email: {
+        Args: {
+          p_data: Json
+          p_key: string
+          p_recipient: string
+          p_template: string
+        }
+        Returns: Json
+      }
       claim_studio_membership_checkout: {
         Args: {
           interval_key: string
@@ -3044,6 +3095,10 @@ export type Database = {
       }
       finish_campaign_usage: {
         Args: { outcome: string; target_event_id: string }
+        Returns: undefined
+      }
+      finish_customer_email: {
+        Args: { p_error: string; p_key: string; p_status: string }
         Returns: undefined
       }
       finish_studio_credits: {

@@ -146,7 +146,6 @@ export async function syncSubscriber(db: Admin, id: string) {
       }
     }
     if (unsubscribedAll && !sub.unsubscribed_all) await recordConsent(db, sub, "all", "unsubscribe_all", "resend");
-    if (unsubscribedAll || sub.suppressed) { monthly = monthly && !sub.suppressed; weekly = weekly && !sub.suppressed; }
 
     const topics = [
       { id: MONTHLY_TOPIC, subscription: monthly ? "opt_in" : "opt_out" },
@@ -184,8 +183,8 @@ export async function syncSubscriber(db: Admin, id: string) {
       .from("newsletter_subscribers")
       .update({
         resend_contact_id: contactId,
-        monthly: sub.suppressed ? sub.monthly : monthly || (blocked && sub.monthly),
-        weekly: sub.suppressed ? sub.weekly : weekly || (blocked && sub.weekly),
+        monthly: blocked ? sub.monthly : monthly,
+        weekly: blocked ? sub.weekly : weekly,
         unsubscribed_all: unsubscribedAll,
         resubscribe_requested: false,
         paid_eligible: eligible,

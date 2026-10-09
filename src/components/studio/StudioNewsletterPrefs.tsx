@@ -43,11 +43,13 @@ export function StudioNewsletterPrefs() {
     <section className="studio-card mb-7" aria-label="Newsletters">
       <p className="studio-eyebrow text-muted-foreground">Newsletters</p>
       <h3 className="mt-2 text-lg font-bold">What we email you</h3>
-      {prefs.unsubscribedAll ? (
+      {prefs.suppressed ? (
+        <p className="mt-2 text-sm text-muted-foreground">Our emails to this address bounced or were marked as spam, so newsletters are paused. Email info@palmerhouseproductions.com to fix it.</p>
+      ) : prefs.unsubscribedAll ? (
         <p className="mt-2 text-sm text-muted-foreground">You unsubscribed from all newsletters. Turn one on below to rejoin.</p>
       ) : null}
       <label className="mt-4 flex items-start gap-3">
-        <input type="checkbox" disabled={busy} checked={prefs.monthly} onChange={(e) => save({ monthly: e.target.checked, weekly: prefs.weekly })} className="mt-1" />
+        <input type="checkbox" disabled={busy || prefs.suppressed} checked={prefs.monthly} onChange={(e) => save({ monthly: e.target.checked, weekly: prefs.weekly })} className="mt-1" />
         <span>
           <span className="block font-bold">The Palmer House Letter · Monthly</span>
           <span className="text-sm text-muted-foreground">Free. Ideas, behind-the-scenes and video tips from our team.</span>
@@ -56,7 +58,7 @@ export function StudioNewsletterPrefs() {
       <label className="mt-4 flex items-start gap-3">
         <input
           type="checkbox"
-          disabled={busy || (!prefs.weeklyEligible && !prefs.weekly)}
+          disabled={busy || prefs.suppressed || (!prefs.weeklyEligible && !prefs.weekly)}
           checked={prefs.weekly}
           onChange={(e) => save({ monthly: prefs.monthly, weekly: e.target.checked })}
           className="mt-1"

@@ -25,6 +25,11 @@ export type Subscriber = {
   resend_contact_id: string | null;
   sync_state: string;
   sync_attempts: number;
+  prefs_changed_at: string;
+  remote_changed_at: string | null;
+  last_synced_at: string | null;
+  resubscribe_requested: boolean;
+  suppressed: boolean;
 };
 
 export const admin = () => studioBillingAdmin();
@@ -56,16 +61,9 @@ export async function sha256(value: string) {
   return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-async function paidSegmentId(db: Admin) {
-  if (process.env.RESEND_PAID_SEGMENT_ID) return process.env.RESEND_PAID_SEGMENT_ID;
-  const row = await db.from("newsletter_config").select("value").eq("key", "paid_segment_id").maybeSingle();
-  if (row.data?.value) return row.data.value as string;
-  const list = await resend<{ data: { id: string; name: string }[] }>("/segments");
-  let id = list.data?.find((s) => s.name === SEGMENT_NAME)?.id;
-  if (!id) id = (await resend<{ id: string }>("/segments", { method: "POST", body: JSON.stringify({ name: SEGMENT_NAME }) })).id;
-  await db.from("newsletter_config").upsert({ key: "paid_segment_id", value: id, updated_at: new Date().toISOString() });
-  return id;
-}
+// Existing Resend segment for active paid members (weekly targeting = this segment + weekly topic).
+export const PAID_SEGMENT = "7296d3e1-f5f9-4832-9e6a-b58354ababa2";
+const paidSegmentId = () => process.env.RESEND_PAID_SEGMENT_ID || PAID_SEGMENT;
 
 /** Paid eligibility = member of a workspace with an active, non-held Studio/Guided/Partner plan. */
 export async function computeEligibility(db: Admin, userId: string | null) {
@@ -105,60 +103,99 @@ export async function recordConsent(
   if (r.error) throw new Error("Consent could not be recorded.");
 }
 
-/** Push one subscriber's local state to Resend. Never throws; failures stay pending for retry. */
+/**
+ * Push one subscriber's state to Resend. Never throws; failures stay pending for retry.
+ * Safety rules:
+ *  - Remote unsubscribe and local suppression always win; `unsubscribed:false` is sent only
+ *    right after an explicit signed-in re-opt-in (resubscribe_requested).
+ *  - A topic difference is pushed only if the member changed preferences since the last
+ *    successful sync and after the last remote change; otherwise Resend's value is adopted.
+ *  - Suppressed contacts are never opted in to anything.
+ */
 export async function syncSubscriber(db: Admin, id: string) {
   const got = await db.from("newsletter_subscribers").select("*").eq("id", id).maybeSingle();
   const sub = got.data as Subscriber | null;
   if (!sub) return;
   try {
     const eligible = await computeEligibility(db, sub.user_id);
-    const topics = [
-      { id: MONTHLY_TOPIC, subscription: sub.monthly ? "opt_in" : "opt_out" },
-      { id: WEEKLY_TOPIC, subscription: sub.weekly ? "opt_in" : "opt_out" },
-    ];
-    let contactId = sub.resend_contact_id;
-    const wantsAny = sub.monthly || sub.weekly;
-    if (!contactId && !wantsAny) {
-      await db.from("newsletter_subscribers").update({ paid_eligible: eligible, sync_state: "synced", sync_error: null, last_synced_at: new Date().toISOString() }).eq("id", id);
-      return;
-    }
-    const segment = await paidSegmentId(db);
+    const segment = paidSegmentId();
     const ref = encodeURIComponent(sub.email);
-    if (!contactId) {
-      try {
+    const blocked = sub.suppressed || (sub.unsubscribed_all && !sub.resubscribe_requested);
+    const localDirty =
+      (!sub.last_synced_at || sub.prefs_changed_at > sub.last_synced_at) &&
+      (!sub.remote_changed_at || sub.prefs_changed_at > sub.remote_changed_at);
+    let monthly = sub.monthly && !blocked;
+    let weekly = sub.weekly && !blocked;
+    let unsubscribedAll = sub.unsubscribed_all && !sub.resubscribe_requested;
+    let contactId = sub.resend_contact_id;
+
+    // Read Resend's current state first so a missed webhook can't be overwritten.
+    let remote: { id: string; unsubscribed: boolean } | null = null;
+    try {
+      remote = await resend<{ id: string; unsubscribed: boolean }>(`/contacts/${ref}`);
+    } catch (e) {
+      if (!(e instanceof ResendError) || e.status !== 404) throw e;
+    }
+    if (remote) {
+      contactId = remote.id;
+      if (remote.unsubscribed && !sub.resubscribe_requested) unsubscribedAll = true;
+      if (!localDirty) {
+        const t = await fetchContactTopics(remote.id);
+        monthly = t.monthly && !blocked;
+        weekly = t.weekly && !blocked;
+      }
+    }
+    if (unsubscribedAll && !sub.unsubscribed_all) await recordConsent(db, sub, "all", "unsubscribe_all", "resend");
+    if (unsubscribedAll || sub.suppressed) { monthly = monthly && !sub.suppressed; weekly = weekly && !sub.suppressed; }
+
+    const topics = [
+      { id: MONTHLY_TOPIC, subscription: monthly ? "opt_in" : "opt_out" },
+      { id: WEEKLY_TOPIC, subscription: weekly ? "opt_in" : "opt_out" },
+    ];
+    if (!remote) {
+      if (monthly || weekly) {
         const created = await resend<{ id: string }>("/contacts", {
           method: "POST",
           body: JSON.stringify({
             email: sub.email,
             first_name: sub.first_name ?? undefined,
-            unsubscribed: sub.unsubscribed_all,
+            unsubscribed: unsubscribedAll || sub.suppressed,
             topics,
             segments: eligible ? [{ id: segment }] : [],
           }),
         });
         contactId = created.id;
-      } catch (e) {
-        if (!(e instanceof ResendError) || ![409, 422].includes(e.status)) throw e;
-        contactId = (await resend<{ id: string }>(`/contacts/${ref}`)).id; // already exists
-        await updateExisting();
-      }
+      } else contactId = null; // nothing consented: don't create a contact
     } else {
-      await updateExisting();
-    }
-    async function updateExisting() {
-      await resend(`/contacts/${ref}`, { method: "PATCH", body: JSON.stringify({ unsubscribed: sub!.unsubscribed_all, first_name: sub!.first_name ?? undefined }) });
-      await resend(`/contacts/${ref}/topics`, { method: "PATCH", body: JSON.stringify({ topics }) });
+      const patch: Record<string, unknown> = {};
+      if ((unsubscribedAll || sub.suppressed) && !remote.unsubscribed) patch.unsubscribed = true;
+      else if (sub.resubscribe_requested && remote.unsubscribed && !sub.suppressed) patch.unsubscribed = false;
+      if (sub.first_name) patch.first_name = sub.first_name;
+      if (Object.keys(patch).length) await resend(`/contacts/${ref}`, { method: "PATCH", body: JSON.stringify(patch) });
+      if (localDirty || sub.suppressed) await resend(`/contacts/${ref}/topics`, { method: "PATCH", body: JSON.stringify({ topics }) });
       try {
         await resend(`/contacts/${ref}/segments/${segment}`, { method: eligible ? "POST" : "DELETE" });
       } catch (e) {
-        // Already in / not in the segment is fine.
         if (!(e instanceof ResendError) || ![404, 409, 422].includes(e.status)) throw e;
       }
     }
+    // Only clear the dirty state if no newer local change arrived while we were syncing.
     await db
       .from("newsletter_subscribers")
-      .update({ resend_contact_id: contactId, paid_eligible: eligible, sync_state: "synced", sync_attempts: 0, sync_error: null, last_synced_at: new Date().toISOString() })
-      .eq("id", id);
+      .update({
+        resend_contact_id: contactId,
+        monthly: sub.suppressed ? sub.monthly : monthly || (blocked && sub.monthly),
+        weekly: sub.suppressed ? sub.weekly : weekly || (blocked && sub.weekly),
+        unsubscribed_all: unsubscribedAll,
+        resubscribe_requested: false,
+        paid_eligible: eligible,
+        sync_state: "synced",
+        sync_attempts: 0,
+        sync_error: null,
+        last_synced_at: new Date().toISOString(),
+      })
+      .eq("id", id)
+      .eq("prefs_changed_at", sub.prefs_changed_at);
   } catch (e) {
     const attempts = sub.sync_attempts + 1;
     await db
@@ -175,8 +212,13 @@ export async function retryPending(db: Admin, limit = 5) {
   for (const r of rows.data ?? []) await syncSubscriber(db, r.id);
 }
 
-export async function markPending(db: Admin, id: string, patch: Record<string, unknown> = {}) {
-  const r = await db.from("newsletter_subscribers").update({ ...patch, sync_state: "pending", updated_at: new Date().toISOString() }).eq("id", id);
+/** prefsChanged=true only for an explicit member/subscriber choice; eligibility refreshes pass false. */
+export async function markPending(db: Admin, id: string, patch: Record<string, unknown> = {}, prefsChanged = true) {
+  const now = new Date().toISOString();
+  const r = await db
+    .from("newsletter_subscribers")
+    .update({ ...patch, ...(prefsChanged ? { prefs_changed_at: now } : {}), sync_state: "pending", updated_at: now })
+    .eq("id", id);
   if (r.error) throw new Error("Preferences could not be saved.");
 }
 
@@ -189,7 +231,7 @@ export async function refreshWorkspaceEligibility(workspaceId: string) {
     if (!ids.length) return;
     const subs = await db.from("newsletter_subscribers").select("id").in("user_id", ids);
     for (const s of subs.data ?? []) {
-      await markPending(db, s.id);
+      await markPending(db, s.id, {}, false);
       await syncSubscriber(db, s.id);
     }
   } catch (e) {

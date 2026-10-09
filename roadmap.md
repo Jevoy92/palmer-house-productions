@@ -20,3 +20,4 @@
 - [ ] Ads pixel: confirm events in Ads Manager, then turn debug off
 - [ ] Monthly Palmer House newsletter (listed as membership benefit; not built)
 - [x] Membership filming benefits at checkout (needs Stripe test-mode run per tier)
+- [ ] Newsletter: handle contact.topics.updated, bounce/complaint suppression, fixed paid segment 7296d3e1…, no unsubscribed:false on routine sync; then secrets form (RESEND_API_KEY, RESEND_WEBHOOK_SECRET)

@@ -39,7 +39,7 @@ export const subscribeMonthlyNewsletter = createServerFn({ method: "POST" })
     const existing = await db.from("newsletter_subscribers").select("*").eq("email", email).maybeSingle();
     let sub = existing.data as import("./newsletter.server").Subscriber | null;
     // A global unsubscribe is never overridden from the public form.
-    if (sub?.unsubscribed_all) return OK;
+    if (sub?.unsubscribed_all || sub?.suppressed) return OK;
     if (sub?.monthly) return OK;
     if (!sub) {
       const ins = await db.from("newsletter_subscribers").insert({ email, first_name: data.firstName || null, monthly: true }).select("*").single();
@@ -82,9 +82,10 @@ async function ensureRow(db: ReturnType<typeof import("./newsletter.server")["ad
 
 function view(sub: import("./newsletter.server").Subscriber, eligible: boolean) {
   return {
-    monthly: sub.monthly && !sub.unsubscribed_all,
-    weekly: sub.weekly && !sub.unsubscribed_all,
+    monthly: sub.monthly && !sub.unsubscribed_all && !sub.suppressed,
+    weekly: sub.weekly && !sub.unsubscribed_all && !sub.suppressed,
     unsubscribedAll: sub.unsubscribed_all,
+    suppressed: sub.suppressed,
     weeklyEligible: eligible,
     syncState: sub.sync_state,
   };
@@ -113,11 +114,14 @@ export const saveNewsletterPrefs = createServerFn({ method: "POST" })
     const weekly = data.weekly && (eligible || sub.weekly);
     if (data.weekly && !weekly) throw new Error("The Studio Brief is for active Studio, Guided and Partner members.");
     const ua = getRequest()?.headers.get("user-agent") ?? null;
+    if (sub.suppressed && (data.monthly || weekly)) throw new Error("Emails to this address bounced or were marked as spam, so newsletters are paused. Contact info@palmerhouseproductions.com to fix it.");
     const patch: Record<string, unknown> = { monthly: data.monthly, weekly };
     const wasMonthly = sub.monthly && !sub.unsubscribed_all;
     const wasWeekly = sub.weekly && !sub.unsubscribed_all;
     if (sub.unsubscribed_all && (data.monthly || weekly)) {
+      if (sub.suppressed) throw new Error("Emails to this address bounced or were marked as spam, so newsletters are paused. Contact info@palmerhouseproductions.com to fix it.");
       patch.unsubscribed_all = false; // explicit re-opt-in by the signed-in owner
+      patch.resubscribe_requested = true;
       await n.recordConsent(db, sub, "all", "resubscribe_all", "settings", { user_agent: ua });
     }
     if (data.monthly !== wasMonthly)
@@ -142,7 +146,7 @@ export const applySignupNewsletterConsent = createServerFn({ method: "POST" })
     const db = n.admin();
     const sub = await ensureRow(db, user);
     const prior = await db.from("newsletter_consent_events").select("id").eq("subscriber_id", sub.id).eq("source", "signup").limit(1);
-    if ((prior.data ?? []).length || sub.unsubscribed_all) return { applied: false };
+    if ((prior.data ?? []).length || sub.unsubscribed_all || sub.suppressed) return { applied: false };
     await n.recordConsent(db, sub, "monthly", "opt_in", "signup", { consent_text: n.MONTHLY_CONSENT_TEXT });
     if (!sub.monthly) {
       await n.markPending(db, sub.id, { monthly: true });

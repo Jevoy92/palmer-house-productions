@@ -34,40 +34,61 @@ async function handle({ request }: { request: Request }) {
   if (seen.error) return Response.json({ received: true, duplicate: true });
 
   try {
-    const event = JSON.parse(body) as { type: string; data: { id: string; email: string; unsubscribed?: boolean } };
+    type Topic = { id: string; subscription: string };
+    const event = JSON.parse(body) as {
+      type: string;
+      created_at: string;
+      data: { id?: string; email?: string; to?: string[]; unsubscribed?: boolean; topics?: Topic[]; bounce?: { type?: string } };
+    };
     await db.from("newsletter_webhook_events").update({ event_type: event.type }).eq("svix_id", id);
-    if (event.type === "contact.updated" || event.type === "contact.deleted") {
-      const email = n.normalizeEmail(event.data.email || "");
+    const at = event.created_at || new Date().toISOString();
+    const emails =
+      event.type === "email.bounced" || event.type === "email.complained" ? (event.data.to ?? []) : [event.data.email ?? ""];
+    for (const raw of emails) {
+      const email = n.normalizeEmail(raw);
+      if (!email) continue;
       const row = await db.from("newsletter_subscribers").select("*").eq("email", email).maybeSingle();
       const sub = row.data as import("@/lib/newsletter.server").Subscriber | null;
-      if (sub) {
-        let monthly = sub.monthly, weekly = sub.weekly, all = sub.unsubscribed_all;
-        if (event.type === "contact.deleted") {
-          monthly = false;
-          weekly = false;
-        } else {
-          if (event.data.unsubscribed) all = true; // global unsubscribe always wins
-          // Skip topic overwrite while our own change is still on its way to Resend.
-          if (sub.sync_state !== "pending") {
-            const t = await n.fetchContactTopics(event.data.id);
-            monthly = t.monthly;
-            weekly = t.weekly;
+      if (!sub) continue;
+      const patch: Record<string, unknown> = { updated_at: new Date().toISOString() };
+      // A remote change only beats a local choice made earlier than the event.
+      const remoteNewer = Date.parse(at) > Date.parse(sub.prefs_changed_at);
+      if (event.type === "contact.updated") {
+        // Global unsubscribe always wins, whatever the ordering.
+        if (event.data.unsubscribed && !sub.unsubscribed_all) {
+          await n.recordConsent(db, sub, "all", "unsubscribe_all", "resend");
+          Object.assign(patch, { unsubscribed_all: true, resubscribe_requested: false });
+        }
+        if (event.data.id) patch.resend_contact_id = event.data.id;
+      } else if (event.type === "contact.topics.updated") {
+        const t = event.data.topics ?? [];
+        const pick = (topicId: string) => t.find((x) => x.id === topicId)?.subscription;
+        for (const [key, topicId] of [["monthly", n.MONTHLY_TOPIC], ["weekly", n.WEEKLY_TOPIC]] as const) {
+          const v = pick(topicId);
+          if (!v) continue;
+          const on = v === "opt_in";
+          // Opt-outs always apply; remote opt-ins apply only if newer than the local choice
+          // and never for suppressed or globally unsubscribed contacts.
+          if (on === sub[key]) continue;
+          if (!on || (remoteNewer && !sub.suppressed && !sub.unsubscribed_all)) {
+            await n.recordConsent(db, sub, key, on ? "opt_in" : "opt_out", "resend");
+            patch[key] = on;
           }
         }
-        if (all && !sub.unsubscribed_all) await n.recordConsent(db, sub, "all", "unsubscribe_all", "resend");
-        if (monthly !== sub.monthly) await n.recordConsent(db, sub, "monthly", monthly ? "opt_in" : "opt_out", "resend");
-        if (weekly !== sub.weekly) await n.recordConsent(db, sub, "weekly", weekly ? "opt_in" : "opt_out", "resend");
-        await db
-          .from("newsletter_subscribers")
-          .update({
-            monthly,
-            weekly,
-            unsubscribed_all: all,
-            resend_contact_id: event.type === "contact.deleted" ? null : event.data.id,
-            updated_at: new Date().toISOString(),
-          })
-          .eq("id", sub.id);
-      }
+        patch.remote_changed_at = at;
+      } else if (event.type === "contact.deleted") {
+        if (sub.monthly) await n.recordConsent(db, sub, "monthly", "opt_out", "resend");
+        if (sub.weekly) await n.recordConsent(db, sub, "weekly", "opt_out", "resend");
+        Object.assign(patch, { monthly: false, weekly: false, resend_contact_id: null, remote_changed_at: at });
+      } else if (event.type === "email.bounced" && event.data.bounce?.type === "Permanent") {
+        if (!sub.suppressed) await n.recordConsent(db, sub, "all", "suppressed_bounce", "resend");
+        Object.assign(patch, { suppressed: true, suppressed_reason: "hard_bounce", suppressed_at: at, sync_state: "pending" });
+      } else if (event.type === "email.complained") {
+        if (!sub.suppressed) await n.recordConsent(db, sub, "all", "suppressed_complaint", "resend");
+        Object.assign(patch, { suppressed: true, suppressed_reason: "complaint", suppressed_at: at, sync_state: "pending" });
+      } else continue;
+      await db.from("newsletter_subscribers").update(patch).eq("id", sub.id);
+      if (patch.sync_state === "pending") await n.syncSubscriber(db, sub.id);
     }
     await n.retryPending(db);
   } catch (e) {

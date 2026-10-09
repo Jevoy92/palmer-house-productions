@@ -52,7 +52,7 @@ async function handle({ request }: { request: Request }) {
       if (!sub) continue;
       const patch: Record<string, unknown> = { updated_at: new Date().toISOString() };
       // A remote change only beats a local choice made earlier than the event.
-      const remoteNewer = at > sub.prefs_changed_at;
+      const remoteNewer = Date.parse(at) > Date.parse(sub.prefs_changed_at);
       if (event.type === "contact.updated") {
         // Global unsubscribe always wins, whatever the ordering.
         if (event.data.unsubscribed && !sub.unsubscribed_all) {

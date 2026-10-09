@@ -85,7 +85,7 @@ export async function recordConsent(
   db: Admin,
   sub: Pick<Subscriber, "id" | "email" | "user_id">,
   topic: "monthly" | "weekly" | "all",
-  action: "opt_in" | "opt_out" | "unsubscribe_all" | "resubscribe_all",
+  action: "opt_in" | "opt_out" | "unsubscribe_all" | "resubscribe_all" | "suppressed_bounce" | "suppressed_complaint",
   source: "website" | "signup" | "settings" | "resend",
   extra: { consent_text?: string; ip_hash?: string | null; user_agent?: string | null } = {},
 ) {
@@ -121,9 +121,9 @@ export async function syncSubscriber(db: Admin, id: string) {
     const segment = paidSegmentId();
     const ref = encodeURIComponent(sub.email);
     const blocked = sub.suppressed || (sub.unsubscribed_all && !sub.resubscribe_requested);
+    const t0 = (v: string | null) => (v ? Date.parse(v) : 0);
     const localDirty =
-      (!sub.last_synced_at || sub.prefs_changed_at > sub.last_synced_at) &&
-      (!sub.remote_changed_at || sub.prefs_changed_at > sub.remote_changed_at);
+      t0(sub.prefs_changed_at) > t0(sub.last_synced_at) && t0(sub.prefs_changed_at) > t0(sub.remote_changed_at);
     let monthly = sub.monthly && !blocked;
     let weekly = sub.weekly && !blocked;
     let unsubscribedAll = sub.unsubscribed_all && !sub.resubscribe_requested;

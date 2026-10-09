@@ -15,6 +15,11 @@ import { useStudio } from "./StudioProvider";
 export function OnboardingBookingCard({ compact = false }: { compact?: boolean }) {
   const { subscription } = useStudio();
   if (!isActivePaidMember(subscription)) return null;
+  return <OnboardingBookingCardView compact={compact} />;
+}
+
+/** Presentational card; callers must already have verified an active paid membership. */
+export function OnboardingBookingCardView({ compact = false }: { compact?: boolean }) {
   return (
     <section
       className={`${compact ? "mt-4" : "mt-6"} rounded-[1.25rem] border border-border bg-system-soft p-5`}

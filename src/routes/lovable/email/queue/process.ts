@@ -2,6 +2,7 @@ import { sendLovableEmail } from "@lovable.dev/email-js";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { createFileRoute } from "@tanstack/react-router";
 import type { Database, Json } from "@/integrations/supabase/types";
+import { isRetryWakeMarker } from "@/lib/email-retry-wake";
 
 const MAX_RETRIES = 5;
 const DEFAULT_BATCH_SIZE = 10;
@@ -181,6 +182,19 @@ export const Route = createFileRoute("/lovable/email/queue/process")({
           for (let i = 0; i < queueMessages.length; i++) {
             const msg = queueMessages[i];
             const payload = msg.message;
+
+            // Internal retry-wake marker: settle it before any expiry/retry/send logic.
+            // It is never sent, rendered, logged or moved to the DLQ.
+            if (isRetryWakeMarker(queue, payload)) {
+              const { error: wakeError } = await (supabase.rpc as unknown as (
+                fn: string,
+                args: Record<string, unknown>,
+              ) => Promise<{ error: { message: string } | null }>)("settle_customer_email_retry_wake", {
+                p_msg_id: msg.msg_id,
+              });
+              if (wakeError) console.error("Retry wake settle failed", wakeError.message);
+              continue;
+            }
             const failedAttempts =
               payload?.message_id && typeof payload.message_id === "string"
                 ? (failedAttemptsByMessageId.get(payload.message_id) ?? 0)

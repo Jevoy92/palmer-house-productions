@@ -31,7 +31,7 @@ export function OnboardingBookingCard({ compact = false }: { compact?: boolean }
             campaign.
             {compact ? "" : ` ${BOOKING_EXPECTATIONS}`}
           </p>
-          <Button asChild variant="system" className="mt-4">
+          <Button asChild className="mt-4 min-h-11">
             <a href={STUDIO_ONBOARDING_BOOKING_URL} target="_blank" rel="noopener noreferrer">
               Book your Studio onboarding <ArrowRight size={16} aria-hidden="true" />
             </a>

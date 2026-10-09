@@ -77,7 +77,7 @@ export const createDepositCheckout = createServerFn({ method: "POST" })
     if (isProduction && benefit && memberTotal <= 0) {
       // Fully covered by Partner's included session: no payment; confirm straight to the team.
       // The success page re-verifies the unguessable redemption id on the server.
-      const { markRedemption } = await import("./filming-benefit.server");
+      const { markRedemption, redemptionConfirmedAt } = await import("./filming-benefit.server");
       const { queueTeamEmail, queueCustomerEmail } = await import("./team-email.server");
       if (!benefit.redemptionId) throw new Error("This booking could not be confirmed. Please contact us.");
       await markRedemption(benefit.redemptionId, "redeemed");
@@ -101,7 +101,7 @@ export const createDepositCheckout = createServerFn({ method: "POST" })
       await queueCustomerEmail(
         "client-deposit-confirmed",
         data.email,
-        clientBookingEmailData({ reference: data.reference, customerName: data.name, covered: true, purchasedAt: Date.now() }),
+        clientBookingEmailData({ reference: data.reference, customerName: data.name, covered: true, purchasedAt: await redemptionConfirmedAt(benefit.redemptionId) }),
         `client-covered-${benefit.redemptionId}`,
       );
       const siteOrigin0 = process.env.PUBLIC_SITE_URL || getRequestUrl().origin;
@@ -239,7 +239,7 @@ export const verifyDepositCheckout = createServerFn({ method: "GET" })
           purchasedItems: digital ? purchasedItems : [],
           amountTotal: session.amount_total,
           currency: session.currency,
-          paidAt: session.created * 1000,
+          paidAt: await chargeTimestamp(stripe, session),
         };
       }
       return { status: "pending" as const };
@@ -256,7 +256,7 @@ export const verifyCoveredBooking = createServerFn({ method: "GET" })
       const { studioBillingAdmin } = await import("./studio-credit-runtime.server");
       const row = await studioBillingAdmin()
         .from("filming_benefit_redemptions")
-        .select("status,quote_reference,checkout_session_id,updated_at")
+        .select("status,quote_reference,checkout_session_id,confirmed_at")
         .eq("id", data.redemptionId)
         .maybeSingle();
       if (row.error) return { status: "unavailable" as const };
@@ -266,9 +266,23 @@ export const verifyCoveredBooking = createServerFn({ method: "GET" })
       return {
         status: "covered" as const,
         reference: r.quote_reference,
-        confirmedAt: new Date(r.updated_at).getTime(),
+        confirmedAt: r.confirmed_at ? new Date(r.confirmed_at).getTime() : null,
       };
     } catch {
       return { status: "unavailable" as const };
     }
   });
+
+/** Payment-confirmation time from Stripe's successful charge; null when not verifiable. */
+async function chargeTimestamp(stripe: Stripe, session: Stripe.Checkout.Session): Promise<number | null> {
+  try {
+    const piId = typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id;
+    if (!piId) return null;
+    const pi = await stripe.paymentIntents.retrieve(piId, { expand: ["latest_charge"] });
+    const charge = pi.latest_charge;
+    if (pi.status !== "succeeded" || !charge || typeof charge === "string" || !charge.paid) return null;
+    return charge.created * 1000;
+  } catch {
+    return null;
+  }
+}

@@ -8,6 +8,10 @@ export const VIDEO_PLANNING_BOOKING_URL =
 export const STUDIO_ONBOARDING_BOOKING_URL =
   "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2V7tGgzn1YlRpMiWrhzHDZX2aHiF8YwNwWplzuhWpnTZyMM3vE4k3V12S8EKID_VK7y8b88EZU";
 
+/** Weekly availability configured on the Google pages (Pacific time). */
+export const VIDEO_PLANNING_HOURS = "Tuesdays and Thursdays, 9 am–5 pm Pacific";
+export const STUDIO_ONBOARDING_HOURS = "Mondays and Wednesdays, 9 am–5 pm Pacific (not Wednesdays noon–1 pm)";
+
 /** Friendly service expectations — not cancellation, expiry, refund or forfeiture terms. */
 export const BOOKING_EXPECTATIONS =
   "Please book within 7 days of your purchase, and aim to meet within 14 days. Appointments require at least 24 hours’ notice. If the times don’t work, contact us and we’ll help.";
@@ -19,7 +23,12 @@ export function bookingTargets(purchasedAt: string | number | null | undefined) 
   const start = new Date(typeof purchasedAt === "number" ? purchasedAt : purchasedAt);
   if (Number.isNaN(start.getTime())) return null;
   const fmt = (d: Date) =>
-    new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(d);
+    new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/Los_Angeles",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    }).format(d);
   return {
     bookBy: fmt(new Date(start.getTime() + 7 * DAY)),
     meetBy: fmt(new Date(start.getTime() + 14 * DAY)),

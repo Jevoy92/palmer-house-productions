@@ -154,7 +154,7 @@ export async function applyStudioBillingEvent(
           email,
           studioWelcomeEmailData({
             planName: studioPlans[planKey]?.name ?? "Studio",
-            purchasedAt: session.created * 1000,
+            purchasedAt: event.created * 1000,
             origin: process.env.PUBLIC_SITE_URL,
           }),
           `studio-welcome-${welcomeWorkspace}`,
@@ -223,7 +223,7 @@ export async function applyStudioBillingEvent(
             reference: session.metadata.quote_reference,
             customerName: session.metadata.customer_name,
             depositPaid: money(session.amount_total),
-            purchasedAt: session.created * 1000,
+            purchasedAt: event.created * 1000,
           }),
           `client-deposit-${session.id}`,
         );

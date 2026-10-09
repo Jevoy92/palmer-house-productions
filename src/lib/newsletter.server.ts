@@ -5,7 +5,6 @@ import { studioBillingAdmin } from "./studio-credit-runtime.server";
 const API = "https://api.resend.com";
 export const MONTHLY_TOPIC = "37c789d5-8b13-4af3-a7ae-e035adc9002e"; // The Palmer House Letter
 export const WEEKLY_TOPIC = "68caa885-2d32-44cd-9dee-3865f5eef1e5"; // The Studio Brief
-const SEGMENT_NAME = "Active paid members (Studio Brief)";
 const PAID_PLANS = ["creator", "business", "partner"];
 export const MONTHLY_CONSENT_TEXT =
   "Yes, send me The Palmer House Letter, a free monthly email from Palmer House Productions. Unsubscribe anytime.";

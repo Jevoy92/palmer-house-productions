@@ -11,3 +11,4 @@
 - Expo guest demo (/expo/demo) is stateless on the client and metered only by the server-only expo_demo_usage table; it never touches member credits or saves guest content — keeps booth guests isolated and the bill capped.
 - Customer booking emails go through `queueCustomerEmail`, which atomically claims a deterministic key in `customer_email_outbox` and is retried by the queue processor on failure; it never throws — payment fulfillment must not depend on email delivery, and newsletter preferences never block service emails.
 - Booking CTAs link to Google appointment pages in `src/lib/booking-links.ts`; clicking never marks a call scheduled, and paid-only CTAs gate on `isActivePaidMember`.
+- Customer-email retries keep the email processor awake with one content-free internal marker in the transactional queue, settled before any send logic; never use it for anything else — it avoids reading vault secrets or adding a permanent cron.

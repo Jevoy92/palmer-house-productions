@@ -23,7 +23,7 @@ function NextSteps() {
       <Section
         eyebrow="Next steps"
         title="Thanks for reaching out."
-        subtitle="Our team reads every message and usually replies within one business day. Nothing else is required from you."
+        subtitle="Our team reads every message and usually replies within 24 hours. Nothing else is required from you."
         lane="spotlight"
       >
         <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2 md:items-start">

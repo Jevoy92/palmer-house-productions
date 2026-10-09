@@ -44,7 +44,6 @@ import { Route as UnsubscribeRouteImport } from './routes/unsubscribe'
 import { Route as VideoSystemAssessmentRouteImport } from './routes/video-system-assessment'
 import { Route as WebinarRouteImport } from './routes/webinar'
 import { Route as WorkRouteImport } from './routes/work'
-import { Route as ZzMockReceiptRouteImport } from './routes/zz-mock-receipt'
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as ApiStripeWebhookRouteImport } from './routes/api.stripe-webhook'
@@ -268,11 +267,6 @@ const WebinarRoute = WebinarRouteImport.update({
 const WorkRoute = WorkRouteImport.update({
   id: '/work',
   path: '/work',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ZzMockReceiptRoute = ZzMockReceiptRouteImport.update({
-  id: '/zz-mock-receipt',
-  path: '/zz-mock-receipt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Char91DotmcpChar93ListToolsRoute =
@@ -566,7 +560,6 @@ export interface FileRoutesByFullPath {
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
   '/webinar': typeof WebinarRoute
   '/work': typeof WorkRoute
-  '/zz-mock-receipt': typeof ZzMockReceiptRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
@@ -652,7 +645,6 @@ export interface FileRoutesByTo {
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
   '/webinar': typeof WebinarRoute
   '/work': typeof WorkRoute
-  '/zz-mock-receipt': typeof ZzMockReceiptRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
@@ -740,7 +732,6 @@ export interface FileRoutesById {
   '/video-system-assessment': typeof VideoSystemAssessmentRoute
   '/webinar': typeof WebinarRoute
   '/work': typeof WorkRoute
-  '/zz-mock-receipt': typeof ZzMockReceiptRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/api/stripe-webhook': typeof ApiStripeWebhookRoute
@@ -829,7 +820,6 @@ export interface FileRouteTypes {
     | '/video-system-assessment'
     | '/webinar'
     | '/work'
-    | '/zz-mock-receipt'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/api/stripe-webhook'
@@ -915,7 +905,6 @@ export interface FileRouteTypes {
     | '/video-system-assessment'
     | '/webinar'
     | '/work'
-    | '/zz-mock-receipt'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/api/stripe-webhook'
@@ -1002,7 +991,6 @@ export interface FileRouteTypes {
     | '/video-system-assessment'
     | '/webinar'
     | '/work'
-    | '/zz-mock-receipt'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/api/stripe-webhook'
@@ -1090,7 +1078,6 @@ export interface RootRouteChildren {
   VideoSystemAssessmentRoute: typeof VideoSystemAssessmentRoute
   WebinarRoute: typeof WebinarRoute
   WorkRoute: typeof WorkRoute
-  ZzMockReceiptRoute: typeof ZzMockReceiptRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   ApiStripeWebhookRoute: typeof ApiStripeWebhookRoute
@@ -1364,13 +1351,6 @@ declare module '@tanstack/react-router' {
       path: '/work'
       fullPath: '/work'
       preLoaderRoute: typeof WorkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/zz-mock-receipt': {
-      id: '/zz-mock-receipt'
-      path: '/zz-mock-receipt'
-      fullPath: '/zz-mock-receipt'
-      preLoaderRoute: typeof ZzMockReceiptRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.mcp/list-tools': {
@@ -1821,7 +1801,6 @@ const rootRouteChildren: RootRouteChildren = {
   VideoSystemAssessmentRoute: VideoSystemAssessmentRoute,
   WebinarRoute: WebinarRoute,
   WorkRoute: WorkRoute,
-  ZzMockReceiptRoute: ZzMockReceiptRoute,
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,

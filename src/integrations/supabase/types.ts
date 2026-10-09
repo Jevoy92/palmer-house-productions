@@ -2983,6 +2983,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      arm_customer_email_retry_wake: { Args: never; Returns: undefined }
       associate_studio_asset_image: {
         Args: {
           expected_source_updated_at: string
@@ -3244,6 +3245,10 @@ export type Database = {
           target_workspace_id: string
         }
         Returns: Json
+      }
+      settle_customer_email_retry_wake: {
+        Args: { p_msg_id: number }
+        Returns: string
       }
       studio_credit_cost_snapshot: { Args: never; Returns: Json }
       studio_credit_snapshot: {

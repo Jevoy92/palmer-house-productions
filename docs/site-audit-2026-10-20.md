@@ -66,3 +66,9 @@ Lovable's execution environment reported these checks on October 21 UTC using ex
 - The image gateway reportedly marks that model deprecated. It still responds; replacement model selection and rate validation are follow-up work, not an unpriced automatic switch.
 
 These validate provider connectivity only. Test-mode webhook delivery, successful app fulfillment, credit replenishment and subscription renewal against an isolated test database remain unverified. Preview shares production data, so no test billing events were injected into it. Live chat/image checks do not establish every campaign or voice flow works end to end. No public publish was performed as part of these diagnostics.
+
+## Merged preview verification
+
+PR #4 merged as `8e474d0cfe2727248b921a92677b72e5a3bca303` after [all CI steps passed](https://github.com/Jevoy92/palmer-house-productions/actions/runs/39537664197). The hosted Lovable preview then showed the new greeting. A fictional bicycle-shop request successfully researched example.com and returned a contextual Pal reply; the database recorded chat=5c and research=1c reserves, both with hashed network identity. These are accounting reserves, not actual invoiced costs. Public hosting was not republished.
+
+Lovable subsequently regenerated its Supabase types and preview-auth adapter, including its timer initialization update. Those changes are preserved. These two generated files, like generated MCP routes, skip Prettier enforcement; the auth adapter also permits its generated timer forward declaration via prefer-const ignoreReadBeforeAssign. Lint correctness and TypeScript checks still apply. This prevents each supported Lovable sync from failing formatting checks.

@@ -37,7 +37,9 @@ const modules = {
       ...config,
       useSearch: () => ({ session_id: "cs_test_paid_session" }),
       useLoaderData: () =>
-        visibleVerification?.mode ? visibleVerification : { mode: "receipt", result: visibleVerification },
+        visibleVerification?.mode
+          ? visibleVerification
+          : { mode: "receipt", result: visibleVerification },
     }),
     Link: ({ to, children, ...props }) =>
       React.createElement("a", { href: to, ...props }, children),
@@ -186,7 +188,12 @@ test("verified deposit shows the planning call next to intake and receipt", () =
 });
 
 test("unpaid, pending or digital receipts never show the planning call", () => {
-  for (const v of [{ status: "pending" }, { status: "invalid" }, { status: "unavailable" }, paidDigital]) {
+  for (const v of [
+    { status: "pending" },
+    { status: "invalid" },
+    { status: "unavailable" },
+    paidDigital,
+  ]) {
     visibleVerification = v;
     assert.doesNotMatch(render(), /Book your planning call/);
   }
@@ -221,7 +228,12 @@ test("covered Partner bookings require a server-verified redemption", async () =
 
 test("paid onboarding eligibility excludes free, trial, held and lapsed members", () => {
   const now = Date.UTC(2026, 9, 9);
-  const ok = { plan: "creator", status: "active", billing_hold: false, current_period_end: "2026-11-01" };
+  const ok = {
+    plan: "creator",
+    status: "active",
+    billing_hold: false,
+    current_period_end: "2026-11-01",
+  };
   assert.equal(bookingLinks.isActivePaidMember(ok, now), true);
   assert.equal(bookingLinks.isActivePaidMember({ ...ok, plan: "partner" }, now), true);
   for (const bad of [

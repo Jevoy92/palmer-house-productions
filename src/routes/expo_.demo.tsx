@@ -46,7 +46,7 @@ export const Route = createFileRoute("/expo_/demo")({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-          ],
+    ],
   }),
   component: ExpoDemo,
 });
@@ -657,7 +657,7 @@ function TopBar({
         </button>
         {staff ? (
           <div className="xd-staff" role="dialog" aria-label="Demo mode">
-            <p className="xd-staff-title">Demo mode · staff</p>
+            <p className="xd-staff-title">Choose your demo</p>
             <p className="xd-mode-note">Switching modes starts a fresh demo.</p>
             <button
               type="button"
@@ -667,10 +667,7 @@ function TopBar({
                 setStaff(false);
               }}
             >
-              Live — real AI and website reading
-            </button>
-            <button type="button" disabled title="Needs a local model installed on this laptop">
-              Offline AI — not prepared on this laptop
+              Live — create with your business
             </button>
             <button
               type="button"

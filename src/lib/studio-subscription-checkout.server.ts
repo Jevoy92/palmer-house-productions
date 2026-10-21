@@ -75,8 +75,14 @@ export async function openStudioMembershipCheckout(input: {
       "This booth offer applies only to a first monthly membership before Sunday, October 4. No payment was taken.",
     );
   if (input.boothCode && !boothCodeMatches(input.boothCode))
-    throw new Error("That booth code isn't valid. Remove it to continue at the public rate. No payment was taken.");
-  const offer: "public" | "booth" | null = !introEligible ? null : input.boothCode ? "booth" : "public";
+    throw new Error(
+      "That booth code isn't valid. Remove it to continue at the public rate. No payment was taken.",
+    );
+  const offer: "public" | "booth" | null = !introEligible
+    ? null
+    : input.boothCode
+      ? "booth"
+      : "public";
   const offerTag = offer ? (tierOffer ? `tier-${offer}` : offer) : "regular";
   let couponId: string | null = null;
   if (offer && tierOffer) {
@@ -127,7 +133,14 @@ export async function openStudioMembershipCheckout(input: {
               mode: "subscription",
               customer: customerId,
               client_reference_id: input.workspaceId,
-              line_items: [{ quantity: 1, price: (stripeTestMode() ? studioPlanTestPrices : studioPlanPrices)[plan][interval] }],
+              line_items: [
+                {
+                  quantity: 1,
+                  price: (stripeTestMode() ? studioPlanTestPrices : studioPlanPrices)[plan][
+                    interval
+                  ],
+                },
+              ],
               ...(offer
                 ? {
                     discounts: [{ coupon: couponId! }],
@@ -138,9 +151,21 @@ export async function openStudioMembershipCheckout(input: {
               success_url: `${input.origin}/studio/billing?checkout=success${offer ? "&expo=1" : ""}`,
               cancel_url: `${input.origin}/studio/billing?checkout=canceled`,
               subscription_data: {
-                metadata: { workspace_id: input.workspaceId, plan, interval, offer: offerTag, ...(offer ? { campaign_id: expoCampaign.id } : {}) },
+                metadata: {
+                  workspace_id: input.workspaceId,
+                  plan,
+                  interval,
+                  offer: offerTag,
+                  ...(offer ? { campaign_id: expoCampaign.id } : {}),
+                },
               },
-              metadata: { workspace_id: input.workspaceId, plan, interval, offer: offerTag, ...(offer ? { campaign_id: expoCampaign.id } : {}) },
+              metadata: {
+                workspace_id: input.workspaceId,
+                plan,
+                interval,
+                offer: offerTag,
+                ...(offer ? { campaign_id: expoCampaign.id } : {}),
+              },
             },
             { idempotencyKey: `studio-membership:${row.attempt_id}:${offerTag}` },
           );

@@ -56,6 +56,7 @@ function fixture(initial = {}) {
       },
     });
     const localRequire = (specifier) => {
+      if (specifier === "@/lib/stripe-env") return load("stripe-env");
       if (specifier.startsWith("./")) return load(specifier.slice(2));
       if (specifier.startsWith("@/assets/")) return specifier;
       if (specifier === "react") return { useSyncExternalStore: (_, getSnapshot) => getSnapshot() };
@@ -84,7 +85,7 @@ function fixture(initial = {}) {
         queueMicrotask,
         console,
         URL,
-        process: { env: { STRIPE_SECRET_KEY: "test-fixture-no-real-payments" } },
+        process: { env: { STRIPE_SECRET_KEY: "sk_live_fixture_no_real_payments" } },
       },
       { filename },
     );

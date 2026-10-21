@@ -131,7 +131,7 @@ export function PalAuthShowcase() {
           <img
             src={slide.image}
             alt={`${slide.name}, ${slide.lane} at Palmer House`}
-            className="max-h-[26rem] w-auto object-contain mix-blend-multiply"
+            className="max-h-[26rem] w-auto object-contain"
           />
         </div>
 
@@ -169,8 +169,8 @@ export function PalAuthShowcase() {
             onClick={() => setIndex(position)}
             className="min-h-11 rounded-xl border px-2 text-xs font-bold hover:border-ink focus-visible:outline-2 focus-visible:outline-offset-2"
             style={{
-              background: position === index ? "var(--ink)" : "white",
-              color: position === index ? "white" : "var(--ink)",
+              background: position === index ? "var(--foreground)" : "var(--background)",
+              color: position === index ? "var(--background)" : "var(--foreground)",
               borderColor: position === index ? "var(--ink)" : "var(--border)",
             }}
           >

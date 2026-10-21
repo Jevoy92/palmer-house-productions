@@ -7,7 +7,12 @@ import { cartStore } from "@/lib/cart-store";
 import { DIY_DOWNLOADS } from "@/lib/pricing-catalog";
 import { verifyCoveredBooking, verifyDepositCheckout } from "@/lib/stripe-checkout";
 import { HONEYBOOK_LEAD_FORM_URL } from "@/lib/honeybook";
-import { BOOKING_EXPECTATIONS, bookingTargets, VIDEO_PLANNING_BOOKING_URL, VIDEO_PLANNING_HOURS } from "@/lib/booking-links";
+import {
+  BOOKING_EXPECTATIONS,
+  bookingTargets,
+  VIDEO_PLANNING_BOOKING_URL,
+  VIDEO_PLANNING_HOURS,
+} from "@/lib/booking-links";
 
 type Verification = Awaited<ReturnType<typeof verifyDepositCheckout>>;
 type Covered = Awaited<ReturnType<typeof verifyCoveredBooking>>;
@@ -34,8 +39,8 @@ export function PlanningCallStep({ purchasedAt }: { purchasedAt?: number | null 
     <div className="pc-status" aria-labelledby="planning-call-title">
       <h2 id="planning-call-title">Book your planning call</h2>
       <p>
-        A 30-minute video call with our team to plan your shoot. This call plans the shoot — it
-        does not reserve a filming date. We’ll agree on your filming date together.
+        A 30-minute video call with our team to plan your shoot. This call plans the shoot — it does
+        not reserve a filming date. We’ll agree on your filming date together.
       </p>
       <p>
         Available {VIDEO_PLANNING_HOURS}. {BOOKING_EXPECTATIONS}
@@ -129,11 +134,16 @@ function CheckoutSuccessPage() {
   return <ReceiptView sessionId={sessionId} verification={receipt} />;
 }
 
-function ReceiptView({ sessionId, verification }: { sessionId: string; verification: Verification }) {
+function ReceiptView({
+  sessionId,
+  verification,
+}: {
+  sessionId: string;
+  verification: Verification;
+}) {
   const paid = verification.status === "paid";
   const digital = paid && verification.purchaseKind === "digital";
   const deposit = paid && verification.purchaseKind === "production_deposit";
-
 
   if (!paid) {
     const pending = verification.status === "pending";
@@ -286,7 +296,10 @@ export const Route = createFileRoute("/checkout-success")({
     const params = new URLSearchParams(location.search);
     const covered = params.get("covered");
     if (covered) return { mode: "covered" as const, result: await loadCoveredBooking(covered) };
-    return { mode: "receipt" as const, result: await loadCheckoutReceipt(params.get("session_id")) };
+    return {
+      mode: "receipt" as const,
+      result: await loadCheckoutReceipt(params.get("session_id")),
+    };
   },
   head: () => ({
     meta: [

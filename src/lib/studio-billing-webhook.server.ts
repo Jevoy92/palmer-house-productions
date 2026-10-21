@@ -1,11 +1,19 @@
 import type Stripe from "stripe";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { studioPlans, studioPlanPrices, studioPlanTestPrices, type StudioPlanKey } from "./studio-model";
+import {
+  studioPlans,
+  studioPlanPrices,
+  studioPlanTestPrices,
+  type StudioPlanKey,
+} from "./studio-model";
 import { studioCreditAllowance, studioCreditTopUps } from "./studio-credits";
 const id = (value: string | { id: string } | null | undefined) =>
   typeof value === "string" ? value : value?.id;
 function planForPrice(price: string) {
-  for (const [plan, intervals] of [...Object.entries(studioPlanPrices), ...Object.entries(studioPlanTestPrices)])
+  for (const [plan, intervals] of [
+    ...Object.entries(studioPlanPrices),
+    ...Object.entries(studioPlanTestPrices),
+  ])
     for (const [interval, priceId] of Object.entries(intervals))
       if (priceId === price) return { plan: plan as StudioPlanKey, interval };
   return null;
@@ -177,7 +185,11 @@ export async function applyStudioBillingEvent(
           offer,
           workspaceId: session.metadata.workspace_id ?? null,
           stripeCustomerId: id(session.customer) ?? null,
-          event: { kind: "paid", detail: `Studio monthly · ${offer} offer`, dedupeKey: `paid-${session.id}` },
+          event: {
+            kind: "paid",
+            detail: `Studio monthly · ${offer} offer`,
+            dedupeKey: `paid-${session.id}`,
+          },
         });
         // Keep this write in the webhook's retry boundary. The membership sync and
         // Expo contact/event upserts are idempotent; swallowing a temporary database
@@ -195,8 +207,7 @@ export async function applyStudioBillingEvent(
         await markRedemption(session.metadata.filming_redemption_id, "redeemed", session.id);
       }
       const { queueTeamEmail } = await import("./team-email.server");
-      const money = (cents: number | null) =>
-        cents == null ? "" : `$${(cents / 100).toFixed(2)}`;
+      const money = (cents: number | null) => (cents == null ? "" : `$${(cents / 100).toFixed(2)}`);
       await queueTeamEmail(
         "deposit-booked",
         {

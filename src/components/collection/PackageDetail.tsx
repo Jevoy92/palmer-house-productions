@@ -89,7 +89,7 @@ export function PackageDetail({
         <div className="pc-detail-visual">
           <PreviewMedia id={item.id} name={item.name} priority />
           <p className="pc-desktop-media-note">
-            Fictional AI-generated concept. Your package is filmed for your business.
+            Illustrative format preview. Your package is filmed for your business.
           </p>
         </div>
         <div className="pc-detail-content">
@@ -221,7 +221,7 @@ export function PackageDetail({
             See how pricing works <ArrowRight size={18} />
           </Link>
           <p className="pc-detail-disclosure">
-            Fictional AI-generated concept. Your package is filmed for your business. Final scope,
+            Illustrative format preview. Your package is filmed for your business. Final scope,
             filming capacity, tax and travel are confirmed in your quote.
           </p>
         </div>

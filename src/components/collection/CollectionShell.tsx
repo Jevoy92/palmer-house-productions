@@ -3,7 +3,6 @@ import { ArrowLeft } from "lucide-react";
 import type { ReactNode } from "react";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { SiteAppearance } from "@/components/site/SiteAppearance";
 import { useSiteAppearance } from "@/components/site/useSiteAppearance";
 import "./collection.css";
 
@@ -53,7 +52,6 @@ export function CollectionShell({
             Your plan
           </Link>
         </nav>
-        <SiteAppearance compact />
       </div>
       {backTo && (
         <div className="pc-back-row">

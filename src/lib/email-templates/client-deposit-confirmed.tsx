@@ -1,5 +1,14 @@
 import * as React from "react";
-import { Body, Button, Container, Head, Heading, Html, Preview, Text } from "@react-email/components";
+import {
+  Body,
+  Button,
+  Container,
+  Head,
+  Heading,
+  Html,
+  Preview,
+  Text,
+} from "@react-email/components";
 import type { TemplateEntry } from "./registry";
 
 interface Props {
@@ -42,7 +51,9 @@ function ClientDepositConfirmed({
       <Body style={{ backgroundColor: "#ffffff", fontFamily: "Arial, sans-serif" }}>
         <Container style={{ padding: "24px", maxWidth: "560px" }}>
           <Heading style={{ fontSize: "22px", color: "#1a1a1a" }}>
-            {first ? `Thanks, ${first} — your project deposit is confirmed.` : "Your project deposit is confirmed."}
+            {first
+              ? `Thanks, ${first} — your project deposit is confirmed.`
+              : "Your project deposit is confirmed."}
           </Heading>
           <Text style={text}>
             {covered
@@ -60,9 +71,10 @@ function ClientDepositConfirmed({
             </Button>
           ) : null}
           <Text style={{ ...text, fontSize: "13px", color: "#555" }}>
-            Times are available Tuesdays and Thursdays, 9 am–5 pm Pacific. Please book within 7 days of your purchase{bookBy ? ` (by ${bookBy})` : ""}, and aim to
-            meet within 14 days{meetBy ? ` (by ${meetBy})` : ""}. Appointments require at least 24
-            hours' notice. If the times don't work, reply to this email and we'll help.
+            Times are available Tuesdays and Thursdays, 9 am–5 pm Pacific. Please book within 7 days
+            of your purchase{bookBy ? ` (by ${bookBy})` : ""}, and aim to meet within 14 days
+            {meetBy ? ` (by ${meetBy})` : ""}. Appointments require at least 24 hours' notice. If
+            the times don't work, reply to this email and we'll help.
           </Text>
           {intakeUrl ? (
             <Text style={text}>
@@ -79,7 +91,7 @@ function ClientDepositConfirmed({
 
 export const template = {
   component: ClientDepositConfirmed,
-  subject: (d: Record<string, any>) =>
+  subject: (d: Record<string, unknown>) =>
     `Your project deposit is confirmed${d.reference ? ` · ${d.reference}` : ""}`,
   displayName: "Video project booked (customer)",
   previewData: {

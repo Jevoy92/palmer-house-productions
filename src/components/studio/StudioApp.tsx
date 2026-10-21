@@ -630,7 +630,9 @@ function AuthExperience() {
               {mode === "signup" ? (
                 <label className="flex items-start gap-2 text-sm text-muted-foreground">
                   <input name="newsletter" type="checkbox" className="mt-1" />
-                  <span>Send me The Palmer House Letter, our free monthly email. Unsubscribe anytime.</span>
+                  <span>
+                    Send me The Palmer House Letter, our free monthly email. Unsubscribe anytime.
+                  </span>
                 </label>
               ) : null}
               <button
@@ -4976,7 +4978,9 @@ function BillingView() {
       : "creator";
   const activePlan = studioPlans[activePlanKey];
   const expoOfferShown =
-    expoLive && interval === "month" && !["active", "past_due"].includes(subscription?.status ?? "");
+    expoLive &&
+    interval === "month" &&
+    !["active", "past_due"].includes(subscription?.status ?? "");
   async function checkout(plan: StudioPlanKey) {
     if (!session || !workspace) return;
     if (subscription?.status === "active" || subscription?.status === "past_due") {

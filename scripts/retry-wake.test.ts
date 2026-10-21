@@ -1,15 +1,38 @@
-// Runs the retry-wake routines against a throwaway local Postgres with real pgmq SQL and the
-// live dispatcher/wake definitions (cron/net/vault are local stand-ins). Never sends email.
+// Runs application retry-wake migrations against disposable local Postgres.
+// Queue and cron services are SQL test doubles. Never sends email.
 import { test, expect, beforeEach } from "bun:test";
 import { SQL } from "bun";
 import { isRetryWakeMarker } from "../src/lib/email-retry-wake.ts";
 
-const db = new SQL({ hostname: "127.0.0.1", port: 55432, username: "postgres", database: "postgres", max: 12, tls: false });
+if (process.env.PALMER_TEST_DATABASE !== "1")
+  throw new Error("Disposable database opt-in required.");
+const db = new SQL({
+  hostname: "127.0.0.1",
+  port: 55432,
+  username: "postgres",
+  database: "palmer_audit_test",
+  password: process.env.TEST_DATABASE_PASSWORD,
+  max: 12,
+  tls: false,
+});
+const marker = await db`select purpose from public.palmer_test_marker`;
+if (marker.length !== 1 || marker[0].purpose !== "disposable-audit-tests")
+  throw new Error("Refusing to run against an unmarked database.");
 const markers = async () =>
-  (await db`select msg_id, vt, message from pgmq.q_transactional_emails where message->>'internal'='customer_email_retry_wake'`) as any[];
-const claim = (k: string) => db`select public.claim_customer_email(${k}, 'studio-welcome', 'a@b.co', '{}'::jsonb) as v`;
-const settle = async (id: number | bigint) => (await db`select public.settle_customer_email_retry_wake(${id}) as r`)[0].r;
-const armed = async () => (await db`select count(*)::int n from cron.job where jobname='process-email-queue'`)[0].n === 1;
+  (await db`select msg_id, vt, message from pgmq.q_transactional_emails where message->>'internal'='customer_email_retry_wake'`) as {
+    msg_id: number;
+    vt: string;
+    message: Record<string, unknown>;
+    a: boolean;
+    u: boolean;
+    s: boolean;
+  }[];
+const claim = (k: string) =>
+  db`select public.claim_customer_email(${k}, 'studio-welcome', 'a@b.co', '{}'::jsonb) as v`;
+const settle = async (id: number | bigint) =>
+  (await db`select public.settle_customer_email_retry_wake(${id}) as r`)[0].r;
+const armed = async () =>
+  (await db`select count(*)::int n from cron.job where jobname='process-email-queue'`)[0].n === 1;
 
 beforeEach(async () => {
   await db`delete from public.customer_email_outbox`;
@@ -33,7 +56,18 @@ test("marker stays (hidden with backoff) while work remains, then is removed and
   expect(await settle(m.msg_id)).toBe("kept"); // fresh claim = possible crash, keep watching
   const [after] = await markers();
   expect(new Date(after.vt).getTime()).toBeGreaterThan(Date.now() + 4000);
-  expect(((await db`select * from pgmq.read('transactional_emails', 30, 10)`) as any[]).length).toBe(0);
+  expect(
+    (
+      (await db`select * from pgmq.read('transactional_emails', 30, 10)`) as {
+        msg_id: number;
+        vt: string;
+        message: Record<string, unknown>;
+        a: boolean;
+        u: boolean;
+        s: boolean;
+      }[]
+    ).length,
+  ).toBe(0);
   await db`select public.email_queue_dispatch()`;
   expect(await armed()).toBe(true); // marker keeps the existing dispatcher armed
   await db`select public.finish_customer_email('k1', 'queued', null)`;
@@ -66,14 +100,34 @@ test("crashed stale claim keeps the marker and is re-claimable; marker re-arms i
 });
 
 test("settle refuses ordinary email messages", async () => {
-  const [{ id }] = await db`select pgmq.send('transactional_emails', '{"to":"x@y.co","message_id":"m1"}'::jsonb) as id`;
+  const [{ id }] =
+    await db`select pgmq.send('transactional_emails', '{"to":"x@y.co","message_id":"m1"}'::jsonb) as id`;
   expect(await settle(id)).toBe("not_marker");
-  expect(((await db`select 1 from pgmq.q_transactional_emails where msg_id=${id}`) as any[]).length).toBe(1);
+  expect(
+    (
+      (await db`select 1 from pgmq.q_transactional_emails where msg_id=${id}`) as {
+        msg_id: number;
+        vt: string;
+        message: Record<string, unknown>;
+        a: boolean;
+        u: boolean;
+        s: boolean;
+      }[]
+    ).length,
+  ).toBe(1);
 });
 
 test("only the server role can run the routines", async () => {
-  const rows = (await db`select p.proname, has_function_privilege('anon', p.oid, 'execute') a, has_function_privilege('authenticated', p.oid, 'execute') u, has_function_privilege('service_role', p.oid, 'execute') s
-    from pg_proc p where p.proname in ('arm_customer_email_retry_wake','settle_customer_email_retry_wake','claim_customer_email','finish_customer_email')`) as any[];
+  const rows =
+    (await db`select p.proname, has_function_privilege('anon', p.oid, 'execute') a, has_function_privilege('authenticated', p.oid, 'execute') u, has_function_privilege('service_role', p.oid, 'execute') s
+    from pg_proc p where p.proname in ('arm_customer_email_retry_wake','settle_customer_email_retry_wake','claim_customer_email','finish_customer_email')`) as {
+      msg_id: number;
+      vt: string;
+      message: Record<string, unknown>;
+      a: boolean;
+      u: boolean;
+      s: boolean;
+    }[];
   expect(rows.length).toBe(4);
   for (const r of rows) expect([r.a, r.u, r.s]).toEqual([false, false, true]);
 });

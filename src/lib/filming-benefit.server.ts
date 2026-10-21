@@ -31,10 +31,17 @@ export async function resolveFilmingBenefit(
   const admin = studioBillingAdmin();
   if (!workspaceId) {
     // Public checkout: use the caller's best active membership.
-    const ms = await admin.from("workspace_members").select("workspace_id").eq("user_id", u.user.id);
+    const ms = await admin
+      .from("workspace_members")
+      .select("workspace_id")
+      .eq("user_id", u.user.id);
     const ids = (ms.data || []).map((m) => m.workspace_id);
     if (!ids.length) return null;
-    const subs = await admin.from("workspace_subscriptions").select("workspace_id,plan").in("workspace_id", ids).eq("status", "active");
+    const subs = await admin
+      .from("workspace_subscriptions")
+      .select("workspace_id,plan")
+      .in("workspace_id", ids)
+      .eq("status", "active");
     const rank: Record<string, number> = { partner: 3, business: 2, creator: 1 };
     const best = (subs.data || []).sort((a, b) => (rank[b.plan] ?? 0) - (rank[a.plan] ?? 0))[0];
     if (!best) return null;
@@ -42,8 +49,17 @@ export async function resolveFilmingBenefit(
   }
   const ws: string = workspaceId!;
   const [member, sub] = await Promise.all([
-    admin.from("workspace_members").select("role").eq("workspace_id", ws).eq("user_id", u.user.id).maybeSingle(),
-    admin.from("workspace_subscriptions").select("plan,status,current_period_end,billing_hold").eq("workspace_id", ws).maybeSingle(),
+    admin
+      .from("workspace_members")
+      .select("role")
+      .eq("workspace_id", ws)
+      .eq("user_id", u.user.id)
+      .maybeSingle(),
+    admin
+      .from("workspace_subscriptions")
+      .select("plan,status,current_period_end,billing_hold")
+      .eq("workspace_id", ws)
+      .maybeSingle(),
   ]);
   const s = sub.data;
   if (!member.data || !s || s.status !== "active" || s.billing_hold) return null;
@@ -52,7 +68,12 @@ export async function resolveFilmingBenefit(
   const benefit = filmingBenefits[plan];
   if (!benefit) return null;
   if (benefit.kind === "discount")
-    return { workspaceId: ws, plan, discount: (FILMING_SESSION_FEE * benefit.percent) / 100, label: `Member filming benefit (${benefit.percent}% off session)` };
+    return {
+      workspaceId: ws,
+      plan,
+      discount: (FILMING_SESSION_FEE * benefit.percent) / 100,
+      label: `Member filming benefit (${benefit.percent}% off session)`,
+    };
   // Partner: one included session per calendar month. Release abandoned reservations older than 1h.
   const period = monthKey();
   await admin
@@ -67,11 +88,26 @@ export async function resolveFilmingBenefit(
     .select("id")
     .single();
   if (ins.error || !ins.data)
-    return { workspaceId: ws, plan, discount: FILMING_SESSION_FEE * 0.5, label: "Member filming benefit (50% off — this month's included session is used)" };
-  return { workspaceId: ws, plan, discount: FILMING_SESSION_FEE, label: "Member filming benefit (included monthly session)", redemptionId: ins.data.id };
+    return {
+      workspaceId: ws,
+      plan,
+      discount: FILMING_SESSION_FEE * 0.5,
+      label: "Member filming benefit (50% off — this month's included session is used)",
+    };
+  return {
+    workspaceId: ws,
+    plan,
+    discount: FILMING_SESSION_FEE,
+    label: "Member filming benefit (included monthly session)",
+    redemptionId: ins.data.id,
+  };
 }
 
-export async function markRedemption(id: string, status: "redeemed" | "released", sessionId?: string) {
+export async function markRedemption(
+  id: string,
+  status: "redeemed" | "released",
+  sessionId?: string,
+) {
   const now = new Date().toISOString();
   await studioBillingAdmin()
     .from("filming_benefit_redemptions")
@@ -79,11 +115,19 @@ export async function markRedemption(id: string, status: "redeemed" | "released"
     .eq("id", id);
   // First confirmation time is stable: retries never reset booking deadlines.
   if (status === "redeemed")
-    await studioBillingAdmin().from("filming_benefit_redemptions").update({ confirmed_at: now }).eq("id", id).is("confirmed_at", null);
+    await studioBillingAdmin()
+      .from("filming_benefit_redemptions")
+      .update({ confirmed_at: now })
+      .eq("id", id)
+      .is("confirmed_at", null);
 }
 
 export async function redemptionConfirmedAt(id: string): Promise<number | null> {
-  const r = await studioBillingAdmin().from("filming_benefit_redemptions").select("confirmed_at").eq("id", id).maybeSingle();
+  const r = await studioBillingAdmin()
+    .from("filming_benefit_redemptions")
+    .select("confirmed_at")
+    .eq("id", id)
+    .maybeSingle();
   return r.data?.confirmed_at ? new Date(r.data.confirmed_at).getTime() : null;
 }
 

@@ -46,7 +46,7 @@ export function StudioMark({ compact = false }: { compact?: boolean }) {
         <img
           src={phMark}
           alt="Palmer House Productions"
-          className="size-9 object-contain"
+          className="studio-brand-mark size-9 object-contain"
           loading="eager"
         />
       </span>

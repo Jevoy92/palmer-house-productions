@@ -244,10 +244,18 @@ function PricingPage() {
                   A month of {plan.name} makes roughly
                 </p>
                 <ul className="mt-3 space-y-1.5 text-sm text-foreground">
-                  <li><strong>{ex.campaigns}</strong> complete campaigns</li>
-                  <li><strong>{ex.images.toLocaleString()}</strong> generated images</li>
-                  <li><strong>{ex.voiceMinutes.toLocaleString()}</strong> minutes of voice notes</li>
-                  <li><strong>{ex.replies.toLocaleString()}</strong> Pal replies, PDFs and ideas</li>
+                  <li>
+                    <strong>{ex.campaigns}</strong> complete campaigns
+                  </li>
+                  <li>
+                    <strong>{ex.images.toLocaleString()}</strong> generated images
+                  </li>
+                  <li>
+                    <strong>{ex.voiceMinutes.toLocaleString()}</strong> minutes of voice notes
+                  </li>
+                  <li>
+                    <strong>{ex.replies.toLocaleString()}</strong> Pal replies, PDFs and ideas
+                  </li>
                 </ul>
                 <p className="mt-3 text-xs text-muted-foreground">
                   All of it, together, every month. Mix it however you like.

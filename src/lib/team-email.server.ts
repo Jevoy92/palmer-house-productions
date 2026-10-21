@@ -14,7 +14,8 @@ export async function queueTeamEmail(
   const element = React.createElement(template.component, data);
   const html = await render(element);
   const text = await render(element, { plainText: true });
-  const subject = typeof template.subject === "function" ? template.subject(data) : template.subject;
+  const subject =
+    typeof template.subject === "function" ? template.subject(data) : template.subject;
   const messageId = crypto.randomUUID();
   await supabaseAdmin.from("email_send_log").insert({
     message_id: messageId,
@@ -71,11 +72,26 @@ export async function queueCustomerEmail(
       p_data: data as never,
     });
     if (claim.error) throw new Error(claim.error.message);
-    const c = claim.data as { claimed: boolean; data?: Record<string, unknown>; recipient?: string; template?: string };
+    const c = claim.data as {
+      claimed: boolean;
+      data?: Record<string, unknown>;
+      recipient?: string;
+      template?: string;
+    };
     if (!c?.claimed) return "duplicate";
-    return await enqueueClaimed(supabaseAdmin, idempotencyKey, c.template ?? templateName, c.recipient ?? recipient, c.data ?? data);
+    return await enqueueClaimed(
+      supabaseAdmin,
+      idempotencyKey,
+      c.template ?? templateName,
+      c.recipient ?? recipient,
+      c.data ?? data,
+    );
   } catch (err) {
-    console.error("Customer email not queued", templateName, err instanceof Error ? err.message : err);
+    console.error(
+      "Customer email not queued",
+      templateName,
+      err instanceof Error ? err.message : err,
+    );
     return "failed";
   }
 }
@@ -94,10 +110,19 @@ async function enqueueClaimed(
   try {
     const template = TEMPLATES[templateName];
     if (!template) throw new Error("Unknown template");
-    const suppressed = await db.from("suppressed_emails").select("email").eq("email", recipient).maybeSingle();
+    const suppressed = await db
+      .from("suppressed_emails")
+      .select("email")
+      .eq("email", recipient)
+      .maybeSingle();
     if (suppressed.error) throw new Error(suppressed.error.message);
     if (suppressed.data) {
-      await db.from("email_send_log").insert({ message_id: key, template_name: templateName, recipient_email: recipient, status: "suppressed" });
+      await db.from("email_send_log").insert({
+        message_id: key,
+        template_name: templateName,
+        recipient_email: recipient,
+        status: "suppressed",
+      });
       await finish("suppressed", null);
       return "suppressed";
     }
@@ -105,7 +130,8 @@ async function enqueueClaimed(
     const element = React.createElement(template.component, data);
     const html = await render(element);
     const text = await render(element, { plainText: true });
-    const subject = typeof template.subject === "function" ? template.subject(data) : template.subject;
+    const subject =
+      typeof template.subject === "function" ? template.subject(data) : template.subject;
     const { error } = await db.rpc("enqueue_email", {
       queue_name: "transactional_emails",
       payload: {
@@ -125,12 +151,23 @@ async function enqueueClaimed(
       },
     });
     if (error) throw new Error(error.message);
-    await db.from("email_send_log").insert({ message_id: key, template_name: templateName, recipient_email: recipient, status: "pending" });
+    await db.from("email_send_log").insert({
+      message_id: key,
+      template_name: templateName,
+      recipient_email: recipient,
+      status: "pending",
+    });
     await finish("queued", null);
     return "queued";
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    await db.from("email_send_log").insert({ message_id: key, template_name: templateName, recipient_email: recipient, status: "failed", error_message: message });
+    await db.from("email_send_log").insert({
+      message_id: key,
+      template_name: templateName,
+      recipient_email: recipient,
+      status: "failed",
+      error_message: message,
+    });
     await finish("failed", message);
     console.error("Customer email enqueue failed; will retry", templateName, message);
     return "failed";
@@ -140,9 +177,15 @@ async function enqueueClaimed(
 async function unsubscribeTokenFor(db: Admin, email: string): Promise<string> {
   const bytes = crypto.getRandomValues(new Uint8Array(32));
   const fresh = Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
-  const up = await db.from("email_unsubscribe_tokens").upsert({ token: fresh, email }, { onConflict: "email", ignoreDuplicates: true });
+  const up = await db
+    .from("email_unsubscribe_tokens")
+    .upsert({ token: fresh, email }, { onConflict: "email", ignoreDuplicates: true });
   if (up.error) throw new Error(up.error.message);
-  const row = await db.from("email_unsubscribe_tokens").select("token").eq("email", email).maybeSingle();
+  const row = await db
+    .from("email_unsubscribe_tokens")
+    .select("token")
+    .eq("email", email)
+    .maybeSingle();
   if (row.error || !row.data) throw new Error("Unsubscribe token unavailable");
   return row.data.token;
 }
@@ -153,7 +196,9 @@ export async function retryCustomerEmails(limit = 5): Promise<number> {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const due = await supabaseAdmin
       .from("customer_email_outbox")
-      .select("idempotency_key,template_name,recipient_email,template_data,status,updated_at,next_attempt_at")
+      .select(
+        "idempotency_key,template_name,recipient_email,template_data,status,updated_at,next_attempt_at",
+      )
       .in("status", ["failed", "claimed"])
       .order("updated_at", { ascending: true })
       .limit(limit * 4);
@@ -168,7 +213,12 @@ export async function retryCustomerEmails(limit = 5): Promise<number> {
       .slice(0, limit);
     let n = 0;
     for (const r of ready) {
-      const res = await queueCustomerEmail(r.template_name, r.recipient_email, r.template_data as Record<string, unknown>, r.idempotency_key);
+      const res = await queueCustomerEmail(
+        r.template_name,
+        r.recipient_email,
+        r.template_data as Record<string, unknown>,
+        r.idempotency_key,
+      );
       if (res === "queued") n++;
     }
     return n;

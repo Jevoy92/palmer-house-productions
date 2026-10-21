@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useStudio } from "./StudioProvider";
-import { applySignupNewsletterConsent, getNewsletterPrefs, saveNewsletterPrefs } from "@/lib/newsletter.functions";
+import {
+  applySignupNewsletterConsent,
+  getNewsletterPrefs,
+  saveNewsletterPrefs,
+} from "@/lib/newsletter.functions";
 
 type Prefs = Awaited<ReturnType<typeof getNewsletterPrefs>>;
 
@@ -12,7 +16,7 @@ export function NewsletterSignupConsent() {
   useEffect(() => {
     if (!token || !session?.user.user_metadata?.newsletter_monthly) return;
     void applySignupNewsletterConsent({ data: { accessToken: token } }).catch(() => {});
-  }, [token]);
+  }, [token, session?.user.user_metadata?.newsletter_monthly]);
   return null;
 }
 
@@ -23,7 +27,9 @@ export function StudioNewsletterPrefs() {
   const [busy, setBusy] = useState(false);
   useEffect(() => {
     if (!token) return;
-    getNewsletterPrefs({ data: { accessToken: token } }).then(setPrefs).catch(() => {});
+    getNewsletterPrefs({ data: { accessToken: token } })
+      .then(setPrefs)
+      .catch(() => {});
   }, [token]);
   if (!token || !prefs) return null;
 
@@ -44,15 +50,28 @@ export function StudioNewsletterPrefs() {
       <p className="studio-eyebrow text-muted-foreground">Newsletters</p>
       <h3 className="mt-2 text-lg font-bold">What we email you</h3>
       {prefs.suppressed ? (
-        <p className="mt-2 text-sm text-muted-foreground">Our emails to this address bounced or were marked as spam, so newsletters are paused. Email info@palmerhouseproductions.com to fix it.</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Our emails to this address bounced or were marked as spam, so newsletters are paused.
+          Email info@palmerhouseproductions.com to fix it.
+        </p>
       ) : prefs.unsubscribedAll ? (
-        <p className="mt-2 text-sm text-muted-foreground">You unsubscribed from all newsletters. Turn one on below to rejoin.</p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          You unsubscribed from all newsletters. Turn one on below to rejoin.
+        </p>
       ) : null}
       <label className="mt-4 flex items-start gap-3">
-        <input type="checkbox" disabled={busy || prefs.suppressed} checked={prefs.monthly} onChange={(e) => save({ monthly: e.target.checked, weekly: prefs.weekly })} className="mt-1" />
+        <input
+          type="checkbox"
+          disabled={busy || prefs.suppressed}
+          checked={prefs.monthly}
+          onChange={(e) => save({ monthly: e.target.checked, weekly: prefs.weekly })}
+          className="mt-1"
+        />
         <span>
           <span className="block font-bold">The Palmer House Letter · Monthly</span>
-          <span className="text-sm text-muted-foreground">Free. Ideas, behind-the-scenes and video tips from our team.</span>
+          <span className="text-sm text-muted-foreground">
+            Free. Ideas, behind-the-scenes and video tips from our team.
+          </span>
         </span>
       </label>
       <label className="mt-4 flex items-start gap-3">
@@ -74,7 +93,9 @@ export function StudioNewsletterPrefs() {
           </span>
         </span>
       </label>
-      <p className="mt-4 text-xs text-muted-foreground">Turning one off never changes the other. Sign-in and receipt emails aren't affected.</p>
+      <p className="mt-4 text-xs text-muted-foreground">
+        Turning one off never changes the other. Sign-in and receipt emails aren't affected.
+      </p>
     </section>
   );
 }

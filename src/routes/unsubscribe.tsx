@@ -11,7 +11,10 @@ export const Route = createFileRoute("/unsubscribe")({
       { title: "Unsubscribe · Palmer House Productions" },
       { name: "description", content: "Manage email preferences for Palmer House Productions." },
       { property: "og:title", content: "Unsubscribe · Palmer House Productions" },
-      { property: "og:description", content: "Manage email preferences for Palmer House Productions." },
+      {
+        property: "og:description",
+        content: "Manage email preferences for Palmer House Productions.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },

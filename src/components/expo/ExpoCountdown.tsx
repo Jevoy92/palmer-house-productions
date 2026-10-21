@@ -29,7 +29,14 @@ export function ExpoCountdown() {
     <div className="expo-countdown">
       <p className="expo-countdown-label">Intro offer ends in</p>
       <div className="expo-countdown-digits" aria-hidden="true">
-        {(parts ?? [["days", "–"], ["hrs", "–"], ["min", "–"], ["sec", "–"]]).map(([k, v]) => (
+        {(
+          parts ?? [
+            ["days", "–"],
+            ["hrs", "–"],
+            ["min", "–"],
+            ["sec", "–"],
+          ]
+        ).map(([k, v]) => (
           <span key={k as string}>
             <strong>{typeof v === "number" ? String(v).padStart(2, "0") : v}</strong>
             <small>{k}</small>

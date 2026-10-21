@@ -43,7 +43,9 @@ export function ExpoBar() {
           <span className="dot" aria-hidden>
             ·
           </span>
-          <Link to="/expo">Studio intro: ${expoCampaign.offers.public.monthly}/mo for 3 months</Link>
+          <Link to="/expo">
+            Studio intro: ${expoCampaign.offers.public.monthly}/mo for 3 months
+          </Link>
           <span className="dot" aria-hidden>
             ·
           </span>

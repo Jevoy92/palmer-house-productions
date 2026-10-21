@@ -13,10 +13,12 @@ export const STUDIO_ONBOARDING_BOOKING_URL =
 
 /** Weekly availability configured on the Google pages (Pacific time). */
 export const VIDEO_PLANNING_HOURS = "Tuesdays and Thursdays, 9 am–5 pm Pacific";
-export const STUDIO_ONBOARDING_HOURS = "Mondays and Wednesdays, 9 am–5 pm Pacific (not Wednesdays noon–1 pm)";
+export const STUDIO_ONBOARDING_HOURS =
+  "Mondays and Wednesdays, 9 am–5 pm Pacific (not Wednesdays noon–1 pm)";
 
 export const QUICK_CHAT_HOURS = "Fridays, 9 am–5 pm Pacific";
-export const QUICK_CHAT_DETAILS = "Free · 15 minutes · Book at least 24 hours ahead, up to 14 days out";
+export const QUICK_CHAT_DETAILS =
+  "Free · 15 minutes · Book at least 24 hours ahead, up to 14 days out";
 
 /** Friendly service expectations — not cancellation, expiry, refund or forfeiture terms. */
 export const BOOKING_EXPECTATIONS =
@@ -45,12 +47,18 @@ const PAID_PLANS = new Set(["creator", "business", "partner"]);
 /** Active paid membership only. A free signup or trial is not a purchase. */
 export function isActivePaidMember(
   sub:
-    | { plan?: string | null; status?: string | null; billing_hold?: boolean | null; current_period_end?: string | null }
+    | {
+        plan?: string | null;
+        status?: string | null;
+        billing_hold?: boolean | null;
+        current_period_end?: string | null;
+      }
     | null
     | undefined,
   now = Date.now(),
 ) {
-  if (!sub || !PAID_PLANS.has(String(sub.plan)) || sub.status !== "active" || sub.billing_hold) return false;
+  if (!sub || !PAID_PLANS.has(String(sub.plan)) || sub.status !== "active" || sub.billing_hold)
+    return false;
   if (sub.current_period_end && new Date(sub.current_period_end).getTime() < now) return false;
   return true;
 }

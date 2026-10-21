@@ -1,5 +1,12 @@
 /** Animated format previews. Pure graphics, no generated footage. */
-export type LoopLayout = "phone" | "chat" | "timeline" | "callouts" | "checklist" | "card" | "steps";
+export type LoopLayout =
+  | "phone"
+  | "chat"
+  | "timeline"
+  | "callouts"
+  | "checklist"
+  | "card"
+  | "steps";
 
 export type PackagePreview = {
   title: string;

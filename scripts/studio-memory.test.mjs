@@ -63,6 +63,7 @@ function loader(overrides = {}, globals = {}) {
               }),
             };
 
+          if (name === "@/lib/stripe-env") return load(path.resolve(root, "src/lib/stripe-env"));
           if (name in overrides) return overrides[name];
           if (name === "@tanstack/react-start")
             return {

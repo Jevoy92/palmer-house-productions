@@ -45,4 +45,15 @@ export default tseslint.config(
     },
   },
   eslintPluginPrettier,
+  {
+    // The Lovable plugin regenerates these routes in its own formatting on every build.
+    // Keep correctness rules active; do not fight vendor-owned formatting.
+    files: [
+      "src/routes/**/invoke-tool/$tool.ts",
+      "src/routes/**/list-tools.ts",
+      "src/routes/**/oauth-protected-resource.ts",
+      "src/routes/mcp.ts",
+    ],
+    rules: { "prettier/prettier": "off" },
+  },
 );

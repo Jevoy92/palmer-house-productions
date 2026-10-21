@@ -252,11 +252,7 @@ function FeedThread({ post, index }: { post: StudioFeedPost; index: number }) {
             >
               {saved ? <Check size={18} /> : <MoreHorizontal size={18} />}
               <span>
-                {pending === "campaign"
-                  ? "Building…"
-                  : pending === "save"
-                    ? "Saving…"
-                    : "More"}
+                {pending === "campaign" ? "Building…" : pending === "save" ? "Saving…" : "More"}
               </span>
             </button>
           </DropdownMenuTrigger>

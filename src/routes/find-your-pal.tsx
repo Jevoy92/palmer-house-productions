@@ -35,13 +35,14 @@ const GOALS: { lane: PalAccent; title: string; description: string; packageId: s
 function FindYourPalPage() {
   const [step, setStep] = useState<1 | 2>(1);
   const [lane, setLane] = useState<PalAccent>("reel");
+  const [packageId, setPackageId] = useState("");
   const [scope, setScope] = useState<"focused" | "larger">("focused");
   const heading = useRef<HTMLHeadingElement>(null);
   const mounted = useRef(false);
   const goal = GOALS.find((candidate) => candidate.lane === lane)!;
   const group = PAL_GROUPS.find((candidate) => candidate.id === lane)!;
   const item =
-    group.items.find((candidate) => candidate.id === goal.packageId) ??
+    group.items.find((candidate) => candidate.id === (packageId || goal.packageId)) ??
     group.items.find((candidate) => candidate.recommended) ??
     group.items[0];
   const editable = item.editable;
@@ -116,13 +117,29 @@ function FindYourPalPage() {
                   name="video-goal"
                   value={choice.lane}
                   checked={lane === choice.lane}
-                  onChange={() => setLane(choice.lane)}
+                  onChange={() => {
+                    setLane(choice.lane);
+                    setPackageId("");
+                  }}
                 />
               </label>
             ))}
           </fieldset>
         ) : (
           <>
+            {group.items.length > 1 && (
+              <label className="pc-field mb-6">
+                <span>What kind of video do you need?</span>
+                <select value={item.id} onChange={(event) => setPackageId(event.target.value)}>
+                  {group.items.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.name}
+                    </option>
+                  ))}
+                </select>
+                <small>{item.description}</small>
+              </label>
+            )}
             <fieldset className="pc-guide-choices">
               <legend className="sr-only">Choose your starting scope</legend>
               <label className="pc-choice" data-selected={scope === "focused"}>

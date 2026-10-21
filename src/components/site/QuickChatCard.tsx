@@ -49,15 +49,17 @@ export function PaidClientNote({ className = "" }: { className?: string }) {
       <p className="text-sm font-bold">Already a client?</p>
       <ul className="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground">
         <li>
-          <span className="font-semibold text-foreground">Paid a video deposit:</span> use the planning-call
-          link in your confirmation email or receipt.
+          <span className="font-semibold text-foreground">Paid a video deposit:</span> use the
+          planning-call link in your confirmation email or receipt.
         </li>
         <li>
-          <span className="font-semibold text-foreground">Paid Studio member:</span> book onboarding from Start
-          Here in your Studio.
+          <span className="font-semibold text-foreground">Paid Studio member:</span> book onboarding
+          from Start Here in your Studio.
         </li>
       </ul>
-      <p className="mt-3 text-xs text-muted-foreground">You don’t need an introduction call first.</p>
+      <p className="mt-3 text-xs text-muted-foreground">
+        You don’t need an introduction call first.
+      </p>
     </div>
   );
 }

@@ -1343,6 +1343,7 @@
   text-decoration: underline;
 }
 .pc-status {
+  scroll-margin-top: 110px;
   border: 1px solid var(--pc-line);
   padding: 20px;
   border-radius: 10px;

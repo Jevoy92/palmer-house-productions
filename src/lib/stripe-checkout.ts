@@ -54,74 +54,12 @@ export const createDepositCheckout = createServerFn({ method: "POST" })
     if (data.items.some((item) => item.cadence === "monthly")) {
       return { ok: false as const, code: "MONTHLY_REQUIRES_BOOKING" as const };
     }
-    // Production is quote-first. A future payment endpoint must look up a persisted,
-    // approved quote rather than treating a client-created reference as approval.
-    // Existing standalone digital purchases remain available.
-    // Production books with a 50% deposit of the server-priced total; the balance is invoiced in HoneyBook.
-    const isProduction = priced.some((line) => !line.isDigital);
+    // Never accept a client-generated reference as approval to charge for production.
+    if (priced.some((line) => !line.isDigital)) {
+      return { ok: false as const, code: "PRODUCTION_REQUIRES_CONFIRMED_QUOTE" as const };
+    }
     const stripe = new Stripe(secret);
-    const productionTotal = priced.reduce(
-      (sum, line) => sum + line.unitPrice * line.configuration.qty,
-      0,
-    );
-    // Membership filming benefit: verified on the server, applied to one session fee only.
-    let benefit: Awaited<ReturnType<typeof import("./filming-benefit.server").resolveFilmingBenefit>> = null;
-    const { getPackageById } = await import("./pricing-catalog");
-    const hasFilming = priced.some((l) => !l.isDigital && getPackageById(l.configuration.id)?.lane !== "evergreen");
-    if (isProduction && hasFilming && data.accessToken) {
-      const { resolveFilmingBenefit } = await import("./filming-benefit.server");
-      benefit = await resolveFilmingBenefit(data.accessToken, data.workspaceId, data.reference);
-      if (benefit) benefit.discount = Math.min(benefit.discount, productionTotal);
-    }
-    const memberTotal = productionTotal - (benefit?.discount ?? 0);
-    if (isProduction && benefit && memberTotal <= 0) {
-      // Fully covered by Partner's included session: no payment; confirm straight to the team.
-      // The success page re-verifies the unguessable redemption id on the server.
-      const { markRedemption, redemptionConfirmedAt } = await import("./filming-benefit.server");
-      const { queueTeamEmail, queueCustomerEmail } = await import("./team-email.server");
-      if (!benefit.redemptionId) throw new Error("This booking could not be confirmed. Please contact us.");
-      await markRedemption(benefit.redemptionId, "redeemed");
-      try {
-        await queueTeamEmail(
-          "deposit-booked",
-          {
-            reference: data.reference,
-            customerName: data.name,
-            customerEmail: data.email,
-            company: data.company ?? "",
-            depositPaid: "$0.00 (Partner included session)",
-            estimatedTotal: `$${productionTotal.toFixed(2)} retail · covered by membership`,
-          },
-          `included-${data.reference}`,
-        );
-      } catch (err) {
-        console.error("Team email failed", err instanceof Error ? err.message : err);
-      }
-      const { clientBookingEmailData } = await import("./client-booking-email");
-      await queueCustomerEmail(
-        "client-deposit-confirmed",
-        data.email,
-        clientBookingEmailData({ reference: data.reference, customerName: data.name, covered: true, purchasedAt: await redemptionConfirmedAt(benefit.redemptionId) }),
-        `client-covered-${benefit.redemptionId}`,
-      );
-      const siteOrigin0 = process.env.PUBLIC_SITE_URL || getRequestUrl().origin;
-      return { ok: true as const, url: `${siteOrigin0}/checkout-success?covered=${benefit.redemptionId}` };
-    }
-    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = isProduction
-      ? [
-          {
-            quantity: 1,
-            price_data: {
-              currency: "usd",
-              product_data: {
-                name: "Video production deposit (50%)",
-                description: `Books your project (${priced.map((l) => l.name).join(", ").slice(0, 240)}). ${benefit ? `${benefit.label}: −$${benefit.discount.toFixed(2)}. ` : ""}Estimated total $${memberTotal.toFixed(2)}; balance invoiced before delivery.`,
-              },
-              unit_amount: Math.round(memberTotal * 50),
-            },
-          },
-        ]
-      : priced.map((line) => ({
+    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = priced.map((line) => ({
       quantity: line.configuration.qty,
       price_data: {
         currency: "usd",
@@ -149,9 +87,8 @@ export const createDepositCheckout = createServerFn({ method: "POST" })
       client_reference_id: data.reference,
       line_items: lineItems,
       success_url: `${siteOrigin}/checkout-success?session_id={CHECKOUT_SESSION_ID}`,
-      ...(benefit?.redemptionId ? { expires_at: Math.floor(Date.now() / 1000) + 3600 } : {}),
       cancel_url: `${siteOrigin}/checkout`,
-      allow_promotion_codes: !data.offerCode && !isProduction,
+      allow_promotion_codes: !data.offerCode,
       metadata: {
         quote_reference: data.reference,
         customer_name: data.name,
@@ -160,10 +97,7 @@ export const createDepositCheckout = createServerFn({ method: "POST" })
         gift: data.gift ? "yes" : "no",
         expanded_scriptwriting: data.expandedScriptwriting ? "yes" : "no",
         configuration_version: "2",
-        purchase_kind: isProduction ? "production_deposit" : "digital",
-        estimated_total: isProduction ? memberTotal.toFixed(2) : "",
-        member_benefit: benefit ? `${benefit.plan}:${benefit.discount.toFixed(2)}` : "",
-        filming_redemption_id: benefit?.redemptionId ?? "",
+        purchase_kind: "digital",
         item_count: String(priced.length),
         ...configurationMetadata,
       },
@@ -274,13 +208,20 @@ export const verifyCoveredBooking = createServerFn({ method: "GET" })
   });
 
 /** Payment-confirmation time from Stripe's successful charge; null when not verifiable. */
-async function chargeTimestamp(stripe: Stripe, session: Stripe.Checkout.Session): Promise<number | null> {
+async function chargeTimestamp(
+  stripe: Stripe,
+  session: Stripe.Checkout.Session,
+): Promise<number | null> {
   try {
-    const piId = typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id;
+    const piId =
+      typeof session.payment_intent === "string"
+        ? session.payment_intent
+        : session.payment_intent?.id;
     if (!piId) return null;
     const pi = await stripe.paymentIntents.retrieve(piId, { expand: ["latest_charge"] });
     const charge = pi.latest_charge;
-    if (pi.status !== "succeeded" || !charge || typeof charge === "string" || !charge.paid) return null;
+    if (pi.status !== "succeeded" || !charge || typeof charge === "string" || !charge.paid)
+      return null;
     return charge.created * 1000;
   } catch {
     return null;

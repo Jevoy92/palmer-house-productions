@@ -29,7 +29,11 @@ export function clientBookingEmailData(input: {
   };
 }
 
-export function studioWelcomeEmailData(input: { planName: string; purchasedAt?: number | null; origin?: string }) {
+export function studioWelcomeEmailData(input: {
+  planName: string;
+  purchasedAt?: number | null;
+  origin?: string;
+}) {
   const targets = bookingTargets(input.purchasedAt ?? null);
   return {
     planName: input.planName,

@@ -178,7 +178,12 @@ function billing(overrides = {}) {
       return { data: true };
     },
   };
-  const { applyStudioBillingEvent } = loader(overrides)("src/lib/studio-billing-webhook.server");
+  const { applyStudioBillingEvent } = loader({
+    "./newsletter.server": { refreshWorkspaceEligibility: async () => {} },
+    "./client-booking-email": { studioWelcomeEmailData: (data) => data },
+    "./team-email.server": { queueTeamEmail: async () => {}, queueCustomerEmail: async () => {} },
+    ...overrides,
+  })("src/lib/studio-billing-webhook.server");
   const stripe = {
     paymentIntents: {
       retrieve: async () => ({
@@ -259,7 +264,11 @@ test("an Expo asynchronous payment success records the buyer for follow-up", asy
   const { apply, admin, stripe } = billing({
     "./expo.server": { upsertExpoContact: async (contact) => contacts.push(contact) },
   });
-  await apply(admin, stripe, event(expoMembershipCheckout, "checkout.session.async_payment_succeeded"));
+  await apply(
+    admin,
+    stripe,
+    event(expoMembershipCheckout, "checkout.session.async_payment_succeeded"),
+  );
   assert.equal(contacts.length, 1);
   assert.equal(contacts[0].status, "paid");
   assert.equal(contacts[0].offer, "booth");
@@ -431,7 +440,7 @@ function membershipCheckoutFixture(
       // Lease recovery tests use regular pricing regardless of the wall-clock date.
       "./expo-campaign": { expoOfferLive: () => false },
     },
-    { STRIPE_SECRET_KEY: "test" },
+    { STRIPE_SECRET_KEY: "sk_live_fixture_no_real_payments" },
   )("src/lib/studio-subscription-checkout.server");
   return {
     calls,

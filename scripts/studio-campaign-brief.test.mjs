@@ -38,6 +38,9 @@ test("a full idea plus its selected strategic direction fits the campaign reques
 });
 
 test("campaign topics still reject unbounded input and empty directions", () => {
-  assert.equal(CampaignBriefSchema.safeParse({ ...baseBrief, topic: "x".repeat(4001) }).success, false);
+  assert.equal(
+    CampaignBriefSchema.safeParse({ ...baseBrief, topic: "x".repeat(4001) }).success,
+    false,
+  );
   assert.equal(CampaignBriefSchema.safeParse({ ...baseBrief, topic: "" }).success, false);
 });

@@ -6,8 +6,12 @@ async function verify(secret: string, id: string, ts: string, body: string, head
   const age = Math.abs(Date.now() / 1000 - Number(ts));
   if (!Number.isFinite(age) || age > 300) return false;
   const raw = Uint8Array.from(atob(secret.replace(/^whsec_/, "")), (c) => c.charCodeAt(0));
-  const key = await crypto.subtle.importKey("raw", raw, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-  const sig = new Uint8Array(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(`${id}.${ts}.${body}`)));
+  const key = await crypto.subtle.importKey("raw", raw, { name: "HMAC", hash: "SHA-256" }, false, [
+    "sign",
+  ]);
+  const sig = new Uint8Array(
+    await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(`${id}.${ts}.${body}`)),
+  );
   const expected = btoa(String.fromCharCode(...sig));
   return header.split(" ").some((part) => {
     const [, value] = part.split(",");
@@ -30,7 +34,9 @@ async function handle({ request }: { request: Request }) {
 
   const n = await import("@/lib/newsletter.server");
   const db = n.admin();
-  const seen = await db.from("newsletter_webhook_events").insert({ svix_id: id, event_type: "pending" });
+  const seen = await db
+    .from("newsletter_webhook_events")
+    .insert({ svix_id: id, event_type: "pending" });
   if (seen.error) return Response.json({ received: true, duplicate: true });
 
   try {
@@ -38,16 +44,29 @@ async function handle({ request }: { request: Request }) {
     const event = JSON.parse(body) as {
       type: string;
       created_at: string;
-      data: { id?: string; email?: string; to?: string[]; unsubscribed?: boolean; topics?: Topic[]; bounce?: { type?: string } };
+      data: {
+        id?: string;
+        email?: string;
+        to?: string[];
+        unsubscribed?: boolean;
+        topics?: Topic[];
+        bounce?: { type?: string };
+      };
     };
     await db.from("newsletter_webhook_events").update({ event_type: event.type }).eq("svix_id", id);
     const at = event.created_at || new Date().toISOString();
     const emails =
-      event.type === "email.bounced" || event.type === "email.complained" ? (event.data.to ?? []) : [event.data.email ?? ""];
+      event.type === "email.bounced" || event.type === "email.complained"
+        ? (event.data.to ?? [])
+        : [event.data.email ?? ""];
     for (const raw of emails) {
       const email = n.normalizeEmail(raw);
       if (!email) continue;
-      const row = await db.from("newsletter_subscribers").select("*").eq("email", email).maybeSingle();
+      const row = await db
+        .from("newsletter_subscribers")
+        .select("*")
+        .eq("email", email)
+        .maybeSingle();
       const sub = row.data as import("@/lib/newsletter.server").Subscriber | null;
       if (!sub) continue;
       const patch: Record<string, unknown> = { updated_at: new Date().toISOString() };
@@ -63,7 +82,10 @@ async function handle({ request }: { request: Request }) {
       } else if (event.type === "contact.topics.updated") {
         const t = event.data.topics ?? [];
         const pick = (topicId: string) => t.find((x) => x.id === topicId)?.subscription;
-        for (const [key, topicId] of [["monthly", n.MONTHLY_TOPIC], ["weekly", n.WEEKLY_TOPIC]] as const) {
+        for (const [key, topicId] of [
+          ["monthly", n.MONTHLY_TOPIC],
+          ["weekly", n.WEEKLY_TOPIC],
+        ] as const) {
           const v = pick(topicId);
           if (!v) continue;
           const on = v === "opt_in";
@@ -79,13 +101,29 @@ async function handle({ request }: { request: Request }) {
       } else if (event.type === "contact.deleted") {
         if (sub.monthly) await n.recordConsent(db, sub, "monthly", "opt_out", "resend");
         if (sub.weekly) await n.recordConsent(db, sub, "weekly", "opt_out", "resend");
-        Object.assign(patch, { monthly: false, weekly: false, resend_contact_id: null, remote_changed_at: at });
+        Object.assign(patch, {
+          monthly: false,
+          weekly: false,
+          resend_contact_id: null,
+          remote_changed_at: at,
+        });
       } else if (event.type === "email.bounced" && event.data.bounce?.type === "Permanent") {
         if (!sub.suppressed) await n.recordConsent(db, sub, "all", "suppressed_bounce", "resend");
-        Object.assign(patch, { suppressed: true, suppressed_reason: "hard_bounce", suppressed_at: at, sync_state: "pending" });
+        Object.assign(patch, {
+          suppressed: true,
+          suppressed_reason: "hard_bounce",
+          suppressed_at: at,
+          sync_state: "pending",
+        });
       } else if (event.type === "email.complained") {
-        if (!sub.suppressed) await n.recordConsent(db, sub, "all", "suppressed_complaint", "resend");
-        Object.assign(patch, { suppressed: true, suppressed_reason: "complaint", suppressed_at: at, sync_state: "pending" });
+        if (!sub.suppressed)
+          await n.recordConsent(db, sub, "all", "suppressed_complaint", "resend");
+        Object.assign(patch, {
+          suppressed: true,
+          suppressed_reason: "complaint",
+          suppressed_at: at,
+          sync_state: "pending",
+        });
       } else continue;
       await db.from("newsletter_subscribers").update(patch).eq("id", sub.id);
       if (patch.sync_state === "pending") await n.syncSubscriber(db, sub.id);

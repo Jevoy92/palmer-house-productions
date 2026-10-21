@@ -204,7 +204,7 @@ test("pure DIY creates a secure payment session with server-priced items, withou
   );
 });
 
-test("production and mixed plans open the 50% deposit checkout with server-priced items only", async () => {
+test("production and mixed plans request a quote without creating any payment session", async () => {
   for (const items of [
     request.quote.items,
     [request.quote.items[0]],
@@ -224,29 +224,33 @@ test("production and mixed plans open the 50% deposit checkout with server-price
         },
       },
     );
-    assert.equal(result.kind, "payment");
-    assert.equal(intakeCalls, 0);
-    assert.deepEqual(checkoutInput.data.items, items);
-    // The browser never sends a price or deposit amount; the server computes the 50% deposit.
-    for (const k of ["subtotal", "deposit", "amount", "total"]) assert.equal(k in checkoutInput.data, false);
+    assert.equal(result.kind, "received");
+    assert.equal(intakeCalls, 1);
+    assert.equal(checkoutInput, undefined);
   }
 });
 
 test("monthly retainers and failed checkout never pretend to be paid", async () => {
   let paymentCalls = 0;
   const monthly = await submitCheckoutRequest(
-    { ...request, quote: { ...request.quote, items: [{ ...request.quote.items[0], cadence: "monthly" }] } },
+    {
+      ...request,
+      quote: { ...request.quote, items: [{ ...request.quote.items[0], cadence: "monthly" }] },
+    },
     {
       endpoint: "/configured-intake",
       honeyBookUrl: "",
       fetcher: async () => ({ ok: true, status: 200 }),
-      createCheckout: async () => ((paymentCalls += 1), { ok: true, url: "https://checkout.stripe.com/x" }),
+      createCheckout: async () => (
+        (paymentCalls += 1),
+        { ok: true, url: "https://checkout.stripe.com/x" }
+      ),
     },
   );
   assert.equal(monthly.kind, "received");
   assert.equal(paymentCalls, 0);
   for (const response of [{ ok: false }, { ok: true, url: "http://evil.example/pay" }]) {
-    const r = await submitCheckoutRequest(request, {
+    const r = await submitCheckoutRequest(digitalRequest, {
       endpoint: "/configured-intake",
       honeyBookUrl: "",
       fetcher: async () => ({ ok: true, status: 200 }),

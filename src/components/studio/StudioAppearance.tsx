@@ -9,8 +9,10 @@ const defaults: Appearance = { theme: "system", largerText: false, reduceMotion:
 function readAppearance(): Appearance {
   try {
     const value = JSON.parse(localStorage.getItem(key) || "{}");
+    const siteTheme = localStorage.getItem("palmer-house-appearance");
+    const theme = ["light", "dark", "system"].includes(siteTheme || "") ? siteTheme : value.theme;
     return {
-      theme: ["light", "dark", "system"].includes(value.theme) ? value.theme : "system",
+      theme: ["light", "dark", "system"].includes(theme) ? theme : "system",
       largerText: value.largerText === true,
       reduceMotion: value.reduceMotion === true,
     };
@@ -29,9 +31,12 @@ export function useStudioAppearance() {
       );
     sync();
     window.addEventListener("studio:appearance", sync);
+    const syncSite = () => setAppearance(readAppearance());
+    window.addEventListener("palmer:appearance", syncSite);
     window.addEventListener("storage", sync);
     return () => {
       window.removeEventListener("studio:appearance", sync);
+      window.removeEventListener("palmer:appearance", syncSite);
       window.removeEventListener("storage", sync);
     };
   }, []);
@@ -40,10 +45,13 @@ export function useStudioAppearance() {
     setAppearance(value);
     try {
       localStorage.setItem(key, JSON.stringify(value));
+      if (next.theme) localStorage.setItem("palmer-house-appearance", next.theme);
     } catch {
       /* Keep this visit usable. */
     }
     window.dispatchEvent(new CustomEvent("studio:appearance", { detail: value }));
+    if (next.theme)
+      window.dispatchEvent(new CustomEvent("palmer:appearance", { detail: next.theme }));
   };
   return { appearance, update };
 }

@@ -8,6 +8,7 @@
 - Free-demo usage is reserved transactionally in PostgreSQL, with a signed guest identity, per-kind session allowances, network limits, a rolling 24-hour call limit and a weighted spending allowance. Missing bookkeeping fails closed.
 - Demo provider requests have bounded input/output, an approved model rate profile and conservative per-operation reserves. These are estimated exposure controls, not a reconciliation against actual provider invoices.
 - Website research resolves public IPv4 addresses, pins the connection to a validated address and rechecks each redirect. TLS verification remains enabled; requests, response size and content type are bounded.
+- Website and Studio theme choices now stay in sync while preserving Studio text/motion preferences.
 - Dark-mode Pal selectors and artwork are readable, the Studio mark remains visible, and the redundant collection theme control is removed.
 - The finder now asks which specific training, story or demonstration is needed. Package choice and scope carry through to the plan.
 - Script previews present scene-specific shot directions instead of misleading repeated pictures. Carousels use one shared photograph plus designed text slides. The mobile script detail has one vertical scrolling region.
@@ -37,10 +38,16 @@
 
 ## Current external blocker
 
-The current Lovable project is `f52a0363-e08b-4253-828c-ce70e0c11242`; its reported latest commit matches the audited base. Its database is enabled, but the connected Lovable authorization lacks `projects:write`, which the database query tool requires even for SELECT. The direct Supabase connector also cannot access the current project. No production migration or deployment was performed.
+The current Lovable project is `f52a0363-e08b-4253-828c-ce70e0c11242`; its reported latest commit initially matched the audited base (see the later concurrent-main update below). Its database is enabled, but the connected Lovable authorization lacks `projects:write`, which the database query tool requires even for SELECT. The direct Supabase connector also cannot access the current project. No production migration or deployment was performed.
 
 Reauthorize Lovable with its current permissions, or apply the migration in the current project's SQL editor and perform the listed deployment checks. Keep this change on a separate branch until then. Manual PDF delivery remains explicitly disclosed; there is no claim of instant download.
 
 ## Local check commands
 
 `npm run check` runs lint, types, all 195 unit tests and the production build. `PALMER_TEST_DATABASE=1 npm run test:db:setup` initializes an empty disposable PostgreSQL database named `palmer_audit_test` on localhost:55432; `PALMER_TEST_DATABASE=1 npm run test:db` exercises the integration checks. Setup refuses nonempty databases, and integration tests require the disposable marker. See the GitHub workflow for a reproducible PostgreSQL service.
+
+## Concurrent main changes preserved
+
+Main advanced to `7b97267` during the release check. The updated Lovable build dependency, preview-auth session handling, and PostgREST type metadata were incorporated without reverting those changes. All release checks were rerun against the combined files.
+
+Vendor-generated MCP routes retain correctness lint checks but are exempt from Prettier enforcement: the Vite plugin rewrites their formatting on each build. Lint is checked again after the build to verify repeatability.

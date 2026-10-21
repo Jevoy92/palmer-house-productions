@@ -280,3 +280,74 @@ test("misplaced live/test API keys fail closed", () => {
     assert.equal(api.stripeSecretKey(), undefined);
   }
 });
+
+function workerPageFixture(responder, addresses = ["1.1.1.1"]) {
+  const calls = [];
+  const api = fixture(
+    {},
+    {
+      "node:dns/promises": { resolve4: async () => addresses },
+      "node:https": {
+        request: () => {
+          throw new Error("Workers cannot use Node IP/SNI transport");
+        },
+      },
+    },
+    {
+      navigator: { userAgent: "Cloudflare-Workers" },
+      fetch: async (url, options) => {
+        calls.push({ url, options });
+        return responder();
+      },
+    },
+  )("src/lib/public-page-fetch.server");
+  return { api, calls };
+}
+test("Workers research uses bounded public fetch without forwarded credentials or automatic redirects", async () => {
+  const f = workerPageFixture(
+    () => new Response("<title>Example</title>", { headers: { "content-type": "text/html" } }),
+  );
+  const page = await f.api.fetchPinnedPublicPage(new URL("https://example.com"));
+  assert.equal(page.status, 200);
+  assert.match(page.html, /Example/);
+  assert.equal(f.calls.length, 1);
+  assert.equal(f.calls[0].options.redirect, "manual");
+  assert.equal(f.calls[0].options.credentials, "omit");
+  assert.deepEqual(Object.keys(f.calls[0].options.headers).sort(), ["Accept", "User-Agent"]);
+});
+test("Workers rejects private DNS before using public fetch", async () => {
+  const f = workerPageFixture(() => {
+    throw new Error("Unexpected fetch");
+  }, ["10.0.0.1"]);
+  await assert.rejects(
+    f.api.fetchPinnedPublicPage(new URL("https://example.com")),
+    /public address/,
+  );
+  assert.equal(f.calls.length, 0);
+});
+test("Workers returns redirect for caller validation without following it", async () => {
+  const f = workerPageFixture(
+    () => new Response(null, { status: 302, headers: { location: "https://127.0.0.1" } }),
+  );
+  const page = await f.api.fetchPinnedPublicPage(new URL("https://example.com"));
+  assert.equal(page.status, 302);
+  assert.equal(page.location, "https://127.0.0.1");
+  assert.throws(() => f.api.publicPageURL(page.location));
+  assert.equal(f.calls.length, 1);
+});
+test("Workers rejects non-HTML and oversized decoded bodies", async () => {
+  const binary = workerPageFixture(
+    () => new Response("abc", { headers: { "content-type": "application/pdf" } }),
+  );
+  await assert.rejects(
+    binary.api.fetchPinnedPublicPage(new URL("https://example.com")),
+    /HTML webpage/,
+  );
+  const large = workerPageFixture(
+    () => new Response("x".repeat(400001), { headers: { "content-type": "text/html" } }),
+  );
+  await assert.rejects(
+    large.api.fetchPinnedPublicPage(new URL("https://example.com")),
+    /too large/,
+  );
+});

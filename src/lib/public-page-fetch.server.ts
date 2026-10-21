@@ -32,8 +32,10 @@ export function publicPageURL(raw: string) {
     throw new Error("Use a public HTTPS website address without a password or custom port.");
   return url;
 }
-/** Resolve, validate, then connect to the exact public IP. No second DNS lookup or automatic redirects.
- * Runtimes without TLS SNI/IP transport fail closed; they must not fall back to ordinary fetch.
+/** Node pins a validated address. Workers uses its public-Internet-only fetch transport;
+ * node:https there is a fetch wrapper and cannot honor the servername/IP pairing.
+ * Never use a VPC/service binding or forward request credentials here. This application
+ * is hosted directly on Workers, with no private origin that trusts CF-Worker headers.
  */
 export async function fetchPinnedPublicPage(
   url: URL,
@@ -50,6 +52,44 @@ export async function fetchPinnedPublicPage(
       ]);
   if (!addresses.length || addresses.some((address) => !isPublicIPv4(address)))
     throw new Error("That website does not resolve to a public address.");
+  if (typeof navigator !== "undefined" && navigator.userAgent === "Cloudflare-Workers") {
+    const response = await fetch(url.toString(), {
+      method: "GET",
+      redirect: "manual",
+      credentials: "omit",
+      headers: { Accept: "text/html", "User-Agent": "PalmerHouseStudioDemo/1.0" },
+      signal: AbortSignal.timeout(8000),
+    });
+    if (response.status >= 300 && response.status < 400) {
+      await response.body?.cancel();
+      return {
+        status: response.status,
+        location: response.headers.get("location") || undefined,
+        html: "",
+      };
+    }
+    if (!/^text\/html\b/i.test(response.headers.get("content-type") || "")) {
+      await response.body?.cancel();
+      throw new Error("That address is not an HTML webpage.");
+    }
+    const reader = response.body?.getReader();
+    if (!reader) throw new Error("That webpage has no content.");
+    const chunks: Uint8Array[] = [];
+    let size = 0;
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        size += value.length;
+        if (size > 400000) throw new Error("That webpage is too large for the demo.");
+        chunks.push(value);
+      }
+      return { status: response.status, html: Buffer.concat(chunks).toString("utf8") };
+    } finally {
+      await reader.cancel().catch(() => {});
+      reader.releaseLock();
+    }
+  }
   return new Promise((resolve, reject) => {
     const req = request(
       {

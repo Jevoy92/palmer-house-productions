@@ -923,18 +923,24 @@ export type Database = {
           created_at: string;
           id: string;
           kind: string;
+          network_hash: string | null;
+          reserved_cents: number;
           session_id: string;
         };
         Insert: {
           created_at?: string;
           id?: string;
           kind: string;
+          network_hash?: string | null;
+          reserved_cents?: number;
           session_id: string;
         };
         Update: {
           created_at?: string;
           id?: string;
           kind?: string;
+          network_hash?: string | null;
+          reserved_cents?: number;
           session_id?: string;
         };
         Relationships: [];
@@ -2968,19 +2974,6 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
-      reserve_expo_demo: {
-        Args: {
-          p_session_id: string;
-          p_network_hash: string;
-          p_kind: string;
-          p_session_cap: number;
-          p_daily_cap: number;
-          p_network_cap: number;
-          p_budget_cents: number;
-          p_cost_cents: number;
-        };
-        Returns: string;
-      };
       add_credits: {
         Args: {
           p_amount: number;
@@ -3196,6 +3189,19 @@ export type Database = {
           request_key: string;
           target_campaign_id: string;
           target_workspace_id: string;
+        };
+        Returns: string;
+      };
+      reserve_expo_demo: {
+        Args: {
+          p_budget_cents: number;
+          p_cost_cents: number;
+          p_daily_cap: number;
+          p_kind: string;
+          p_network_cap: number;
+          p_network_hash: string;
+          p_session_cap: number;
+          p_session_id: string;
         };
         Returns: string;
       };

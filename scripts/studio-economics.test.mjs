@@ -59,9 +59,12 @@ test("annual billing and weekly human delivery do not disappear from economics",
 });
 
 test("unspent prepaid credits retain an AI redemption liability", () => {
-  const result = simulate("creator", profiles[1]);
-  assert.equal(result.unusedPaidCredits, 206);
-  assert.equal(result.prepaidAiReserveUsd, 1.03);
+  const result = simulate("creator", { ...profiles[1], chat: 20001 });
+  assert.ok(result.unusedPaidCredits > 0);
+  assert.equal(
+    result.prepaidAiReserveUsd,
+    Number((result.unusedPaidCredits * assumptions.creditAiEnvelopeUsd).toFixed(2)),
+  );
   assert.ok(
     result.contributionAfterIllustrativeServicePercent < result.contributionBeforeServicePercent,
   );

@@ -36,16 +36,23 @@ export const normalizeEmail = (e: string) => e.trim().toLowerCase();
 export const EMAIL_RE = /^[^\s@]{1,64}@[^\s@]{1,190}\.[a-z]{2,24}$/i;
 
 class ResendError extends Error {
-  constructor(public status: number, message: string) {
+  constructor(
+    public status: number,
+    message: string,
+  ) {
     super(message);
   }
 }
-async function resend<T = any>(path: string, init: RequestInit = {}): Promise<T> {
+async function resend<T = unknown>(path: string, init: RequestInit = {}): Promise<T> {
   const key = process.env.RESEND_API_KEY;
   if (!key) throw new ResendError(0, "Resend API key is not configured.");
   const res = await fetch(`${API}${path}`, {
     ...init,
-    headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json", ...(init.headers || {}) },
+    headers: {
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/json",
+      ...(init.headers || {}),
+    },
   });
   const text = await res.text();
   if (!res.ok) {
@@ -84,7 +91,13 @@ export async function recordConsent(
   db: Admin,
   sub: Pick<Subscriber, "id" | "email" | "user_id">,
   topic: "monthly" | "weekly" | "all",
-  action: "opt_in" | "opt_out" | "unsubscribe_all" | "resubscribe_all" | "suppressed_bounce" | "suppressed_complaint",
+  action:
+    | "opt_in"
+    | "opt_out"
+    | "unsubscribe_all"
+    | "resubscribe_all"
+    | "suppressed_bounce"
+    | "suppressed_complaint",
   source: "website" | "signup" | "settings" | "resend",
   extra: { consent_text?: string; ip_hash?: string | null; user_agent?: string | null } = {},
 ) {
@@ -122,7 +135,8 @@ export async function syncSubscriber(db: Admin, id: string) {
     const blocked = sub.suppressed || (sub.unsubscribed_all && !sub.resubscribe_requested);
     const t0 = (v: string | null) => (v ? Date.parse(v) : 0);
     const localDirty =
-      t0(sub.prefs_changed_at) > t0(sub.last_synced_at) && t0(sub.prefs_changed_at) > t0(sub.remote_changed_at);
+      t0(sub.prefs_changed_at) > t0(sub.last_synced_at) &&
+      t0(sub.prefs_changed_at) > t0(sub.remote_changed_at);
     let monthly = sub.monthly && !blocked;
     let weekly = sub.weekly && !blocked;
     let unsubscribedAll = sub.unsubscribed_all && !sub.resubscribe_requested;
@@ -144,7 +158,8 @@ export async function syncSubscriber(db: Admin, id: string) {
         weekly = t.weekly && !blocked;
       }
     }
-    if (unsubscribedAll && !sub.unsubscribed_all) await recordConsent(db, sub, "all", "unsubscribe_all", "resend");
+    if (unsubscribedAll && !sub.unsubscribed_all)
+      await recordConsent(db, sub, "all", "unsubscribe_all", "resend");
 
     const topics = [
       { id: MONTHLY_TOPIC, subscription: monthly ? "opt_in" : "opt_out" },
@@ -167,12 +182,20 @@ export async function syncSubscriber(db: Admin, id: string) {
     } else {
       const patch: Record<string, unknown> = {};
       if ((unsubscribedAll || sub.suppressed) && !remote.unsubscribed) patch.unsubscribed = true;
-      else if (sub.resubscribe_requested && remote.unsubscribed && !sub.suppressed) patch.unsubscribed = false;
+      else if (sub.resubscribe_requested && remote.unsubscribed && !sub.suppressed)
+        patch.unsubscribed = false;
       if (sub.first_name) patch.first_name = sub.first_name;
-      if (Object.keys(patch).length) await resend(`/contacts/${ref}`, { method: "PATCH", body: JSON.stringify(patch) });
-      if (localDirty || sub.suppressed) await resend(`/contacts/${ref}/topics`, { method: "PATCH", body: JSON.stringify({ topics }) });
+      if (Object.keys(patch).length)
+        await resend(`/contacts/${ref}`, { method: "PATCH", body: JSON.stringify(patch) });
+      if (localDirty || sub.suppressed)
+        await resend(`/contacts/${ref}/topics`, {
+          method: "PATCH",
+          body: JSON.stringify({ topics }),
+        });
       try {
-        await resend(`/contacts/${ref}/segments/${segment}`, { method: eligible ? "POST" : "DELETE" });
+        await resend(`/contacts/${ref}/segments/${segment}`, {
+          method: eligible ? "POST" : "DELETE",
+        });
       } catch (e) {
         if (!(e instanceof ResendError) || ![404, 409, 422].includes(e.status)) throw e;
       }
@@ -198,7 +221,11 @@ export async function syncSubscriber(db: Admin, id: string) {
     const attempts = sub.sync_attempts + 1;
     await db
       .from("newsletter_subscribers")
-      .update({ sync_state: attempts >= 8 ? "error" : "pending", sync_attempts: attempts, sync_error: String((e as Error).message).slice(0, 500) })
+      .update({
+        sync_state: attempts >= 8 ? "error" : "pending",
+        sync_attempts: attempts,
+        sync_error: String((e as Error).message).slice(0, 500),
+      })
       .eq("id", id);
   }
 }
@@ -206,16 +233,32 @@ export async function syncSubscriber(db: Admin, id: string) {
 /** Opportunistic retry of stale pending rows (called on every newsletter write and webhook). */
 export async function retryPending(db: Admin, limit = 5) {
   const cutoff = new Date(Date.now() - 60_000).toISOString();
-  const rows = await db.from("newsletter_subscribers").select("id").eq("sync_state", "pending").lt("updated_at", cutoff).order("updated_at").limit(limit);
+  const rows = await db
+    .from("newsletter_subscribers")
+    .select("id")
+    .eq("sync_state", "pending")
+    .lt("updated_at", cutoff)
+    .order("updated_at")
+    .limit(limit);
   for (const r of rows.data ?? []) await syncSubscriber(db, r.id);
 }
 
 /** prefsChanged=true only for an explicit member/subscriber choice; eligibility refreshes pass false. */
-export async function markPending(db: Admin, id: string, patch: Record<string, unknown> = {}, prefsChanged = true) {
+export async function markPending(
+  db: Admin,
+  id: string,
+  patch: Record<string, unknown> = {},
+  prefsChanged = true,
+) {
   const now = new Date().toISOString();
   const r = await db
     .from("newsletter_subscribers")
-    .update({ ...patch, ...(prefsChanged ? { prefs_changed_at: now } : {}), sync_state: "pending", updated_at: now })
+    .update({
+      ...patch,
+      ...(prefsChanged ? { prefs_changed_at: now } : {}),
+      sync_state: "pending",
+      updated_at: now,
+    })
     .eq("id", id);
   if (r.error) throw new Error("Preferences could not be saved.");
 }
@@ -224,7 +267,10 @@ export async function markPending(db: Admin, id: string, patch: Record<string, u
 export async function refreshWorkspaceEligibility(workspaceId: string) {
   try {
     const db = admin();
-    const members = await db.from("workspace_members").select("user_id").eq("workspace_id", workspaceId);
+    const members = await db
+      .from("workspace_members")
+      .select("user_id")
+      .eq("workspace_id", workspaceId);
     const ids = (members.data ?? []).map((m: { user_id: string }) => m.user_id);
     if (!ids.length) return;
     const subs = await db.from("newsletter_subscribers").select("id").in("user_id", ids);
@@ -239,7 +285,9 @@ export async function refreshWorkspaceEligibility(workspaceId: string) {
 
 /** Fetch Resend's view of a contact's topic subscriptions. */
 export async function fetchContactTopics(contactId: string) {
-  const res = await resend<{ data: { id: string; subscription: string }[] }>(`/contacts/${contactId}/topics`);
+  const res = await resend<{ data: { id: string; subscription: string }[] }>(
+    `/contacts/${contactId}/topics`,
+  );
   const m = res.data?.find((t) => t.id === MONTHLY_TOPIC)?.subscription;
   const w = res.data?.find((t) => t.id === WEEKLY_TOPIC)?.subscription;
   return { monthly: m === "opt_in", weekly: w === "opt_in" };

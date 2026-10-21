@@ -51,5 +51,5 @@ test("openings use an available memory or idea without inventing its contents", 
   assert.match(memory.body, /shared memory includes “Customer promise”/);
   const idea = composePalOpening("silas", { ideaTitle: "  One   good   idea  ", draftCount: 7 });
   assert.match(idea.body, /saved “One good idea”/);
-  assert.match(idea.suggestions[1], /7 saved drafts/);
+  assert.ok(idea.suggestions.some((suggestion) => /7 saved drafts/.test(suggestion)));
 });

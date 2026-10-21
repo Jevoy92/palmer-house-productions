@@ -1,5 +1,14 @@
 import * as React from "react";
-import { Body, Button, Container, Head, Heading, Html, Preview, Text } from "@react-email/components";
+import {
+  Body,
+  Button,
+  Container,
+  Head,
+  Heading,
+  Html,
+  Preview,
+  Text,
+} from "@react-email/components";
 import type { TemplateEntry } from "./registry";
 
 interface Props {
@@ -21,7 +30,13 @@ const button = {
   textDecoration: "none",
 };
 
-function StudioWelcome({ planName = "Studio", bookingUrl = "", studioUrl = "", bookBy = "", meetBy = "" }: Props) {
+function StudioWelcome({
+  planName = "Studio",
+  bookingUrl = "",
+  studioUrl = "",
+  bookBy = "",
+  meetBy = "",
+}: Props) {
   return (
     <Html lang="en">
       <Head />
@@ -41,9 +56,10 @@ function StudioWelcome({ planName = "Studio", bookingUrl = "", studioUrl = "", b
             </Button>
           ) : null}
           <Text style={{ ...text, fontSize: "13px", color: "#555" }}>
-            Times are available Mondays and Wednesdays, 9 am–5 pm Pacific. Please book within 7 days of your purchase{bookBy ? ` (by ${bookBy})` : ""}, and aim to
-            meet within 14 days{meetBy ? ` (by ${meetBy})` : ""}. Appointments require at least 24
-            hours' notice. If the times don't work, reply to this email and we'll help.
+            Times are available Mondays and Wednesdays, 9 am–5 pm Pacific. Please book within 7 days
+            of your purchase{bookBy ? ` (by ${bookBy})` : ""}, and aim to meet within 14 days
+            {meetBy ? ` (by ${meetBy})` : ""}. Appointments require at least 24 hours' notice. If
+            the times don't work, reply to this email and we'll help.
           </Text>
           {studioUrl ? (
             <Text style={text}>
@@ -58,7 +74,7 @@ function StudioWelcome({ planName = "Studio", bookingUrl = "", studioUrl = "", b
 
 export const template = {
   component: StudioWelcome,
-  subject: (d: Record<string, any>) => `Welcome to Palmer House ${d.planName ?? "Studio"}`,
+  subject: (d: Record<string, unknown>) => `Welcome to Palmer House ${d.planName ?? "Studio"}`,
   displayName: "Studio membership welcome (customer)",
   previewData: {
     planName: "Studio",

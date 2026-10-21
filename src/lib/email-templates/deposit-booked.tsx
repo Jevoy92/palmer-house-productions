@@ -27,9 +27,7 @@ function DepositBooked({
       <Preview>New video project booked: {reference}</Preview>
       <Body style={{ backgroundColor: "#ffffff", fontFamily: "Arial, sans-serif" }}>
         <Container style={{ padding: "24px", maxWidth: "560px" }}>
-          <Heading style={{ fontSize: "22px", color: "#1a1a1a" }}>
-            New video project booked
-          </Heading>
+          <Heading style={{ fontSize: "22px", color: "#1a1a1a" }}>New video project booked</Heading>
           <Text style={{ fontSize: "15px", color: "#333" }}>
             {customerName} paid a 50% deposit to book a project. They were sent to the HoneyBook
             intake form next.
@@ -63,7 +61,7 @@ function DepositBooked({
 
 export const template = {
   component: DepositBooked,
-  subject: (d: Record<string, any>) => `New project booked: ${d.reference ?? "deposit paid"}`,
+  subject: (d: Record<string, unknown>) => `New project booked: ${d.reference ?? "deposit paid"}`,
   displayName: "Production deposit booked (team)",
   to: "info@palmerhouseproductions.com",
   previewData: {

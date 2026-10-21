@@ -186,10 +186,12 @@ export const Route = createFileRoute("/lovable/email/queue/process")({
             // Internal retry-wake marker: settle it before any expiry/retry/send logic.
             // It is never sent, rendered, logged or moved to the DLQ.
             if (isRetryWakeMarker(queue, payload)) {
-              const { error: wakeError } = await (supabase.rpc as unknown as (
-                fn: string,
-                args: Record<string, unknown>,
-              ) => Promise<{ error: { message: string } | null }>)("settle_customer_email_retry_wake", {
+              const { error: wakeError } = await (
+                supabase.rpc as unknown as (
+                  fn: string,
+                  args: Record<string, unknown>,
+                ) => Promise<{ error: { message: string } | null }>
+              )("settle_customer_email_retry_wake", {
                 p_msg_id: msg.msg_id,
               });
               if (wakeError) console.error("Retry wake settle failed", wakeError.message);

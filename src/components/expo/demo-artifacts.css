@@ -614,3 +614,16 @@
     transition: none;
   }
 }
+
+/* Each scene describes its own shot; shared campaign photographs are not represented as scene renders. */
+.xp-scene { background: #152b2b; }
+.xp-scene:nth-child(2) { background: #292238; }
+.xp-scene:nth-child(3) { background: #34281e; }
+.xp-scene-number { position: absolute; right: .6rem; top: -.6rem; font: 800 7rem/1 sans-serif; color: #ffffff0c; pointer-events: none; }
+.xp-scene-copy { position: relative; padding: 1.25rem; }
+@media (max-width: 640px) {
+  .xp-scene-copy strong { font-size: 1rem; }
+  .xp-artifact .xp-scene-copy p { display: block; font-size: .75rem; }
+}
+
+.xd-beats { list-style: none; }

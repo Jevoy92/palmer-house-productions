@@ -125,12 +125,12 @@ export function isDigitalOnly(items: readonly { id: string }[], pendingReviewCou
   );
 }
 
-/** One-time carts (digital or production) can be paid now; production pays a 50% deposit. */
+/** Only standalone digital products may be paid before a scope review. */
 export function isPayableNow(
   items: readonly { id: string; cadence?: string }[],
   pendingReviewCount = 0,
 ): boolean {
-  return items.length > 0 && pendingReviewCount === 0 && items.every((i) => i.cadence !== "monthly");
+  return isDigitalOnly(items, pendingReviewCount) && items.every((i) => i.cadence !== "monthly");
 }
 
 type DigitalCheckoutData = {
@@ -153,12 +153,6 @@ export async function submitCheckoutRequest(
   if (!isPayableNow(request.quote.items, request.quote.legacyReview?.length ?? 0))
     return submitPlanRequest(request, options);
   try {
-    // Signed-in members get their filming benefit; the server verifies the membership.
-    let accessToken: string | undefined;
-    try {
-      const { supabase } = await import("@/integrations/supabase/client");
-      accessToken = (await supabase.auth.getSession()).data.session?.access_token;
-    } catch {}
     const response = await (options.createCheckout ?? createDepositCheckout)({
       data: {
         name: request.name,
@@ -167,7 +161,6 @@ export async function submitCheckoutRequest(
         reference: request.quote.reference,
         offerCode: request.quote.offerCode,
         items: request.quote.items,
-        ...(accessToken ? { accessToken } : {}),
       },
     });
     if (!response.ok)
@@ -203,6 +196,7 @@ export function CheckoutPage({ quoteReference }: { quoteReference?: string }) {
   const [details, setDetails] = useState<PlanDetails>(EMPTY_DETAILS);
   const [errors, setErrors] = useState<DetailErrors>({});
   const [submission, setSubmission] = useState<SubmissionState>({ kind: "idle" });
+  const [briefCopied, setBriefCopied] = useState(false);
   const [lastRequest, setLastRequest] = useState<PlanRequest | null>(null);
   const reference = useRef(quoteReference ?? "");
   const submittedPlan = useRef("");
@@ -221,7 +215,10 @@ export function CheckoutPage({ quoteReference }: { quoteReference?: string }) {
     migrationReview: cart.migrationReview,
   });
   useEffect(() => {
-    if (submission.kind !== "idle" && submission.kind !== "sending") status.current?.focus();
+    if (submission.kind !== "idle" && submission.kind !== "sending") {
+      status.current?.focus({ preventScroll: true });
+      status.current?.scrollIntoView({ block: "start", behavior: "instant" });
+    }
   }, [submission.kind]);
   useEffect(() => {
     if (
@@ -337,13 +334,12 @@ export function CheckoutPage({ quoteReference }: { quoteReference?: string }) {
     const { request, honeyBookUrl } = makeRequest();
     submittedPlan.current = planFingerprint;
     setLastRequest(request);
+    setBriefCopied(false);
     setSubmission({ kind: "sending" });
-    // Open external handoffs during the gesture. Neither represents a sent request.
+    // Let customers review and copy their complete brief before leaving the site.
     if (!payable && !CONTACT_ENDPOINT) {
       const handoff = planHandoff(request, honeyBookUrl);
       setSubmission(handoff);
-      if (handoff.kind === "honeybook") window.open(handoff.url, "_blank", "noopener,noreferrer");
-      if (handoff.kind === "email") window.location.assign(handoff.url);
       return;
     }
     submissionLock.current = true;
@@ -362,20 +358,17 @@ export function CheckoutPage({ quoteReference }: { quoteReference?: string }) {
   }
   const actionLabel = digitalOnly
     ? "Pay securely"
-    : payable
-      ? `Pay ${money(Math.round(subtotal * 50) / 100)} deposit`
-      : CONTACT_ENDPOINT
+    : CONTACT_ENDPOINT
       ? "Request this plan"
       : HAS_HONEYBOOK
-        ? "Continue to HoneyBook"
+        ? "Prepare my request"
         : "Open email draft";
-  const memberNote =
-    payable && !digitalOnly ? (
-      <p className="mt-3 text-xs text-muted-foreground">
-        Studio members save on filming: 25% off (Studio), 50% off (Guided) or one session included
-        each month (Partner). Sign in to Studio before paying and your savings apply automatically.
-      </p>
-    ) : null;
+  const memberNote = !digitalOnly ? (
+    <p className="mt-3 text-xs text-muted-foreground">
+      Member filming benefits apply to one eligible session per project. Tell us your Studio account
+      email in your request; we verify eligibility and include the benefit in your quote.
+    </p>
+  ) : null;
   const action = (className: string) => (
     <div className={className}>
       {step === 1 ? (
@@ -835,6 +828,41 @@ export function CheckoutPage({ quoteReference }: { quoteReference?: string }) {
                         Your plan has not been submitted from this page. Review and send the form in
                         HoneyBook to complete your request.
                       </p>
+                      {lastRequest && (
+                        <div className="pc-handoff-brief">
+                          <p>
+                            Copy this complete brief into HoneyBook’s project details. Custom fields
+                            may not transfer automatically.
+                          </p>
+                          <label className="pc-field">
+                            <span>Your project brief</span>
+                            <textarea
+                              readOnly
+                              rows={8}
+                              value={lastRequest.message}
+                              onFocus={(event) => event.target.select()}
+                            />
+                          </label>
+                          <button
+                            type="button"
+                            className="pc-outline"
+                            onClick={async () => {
+                              try {
+                                await navigator.clipboard.writeText(lastRequest.message);
+                                setBriefCopied(true);
+                              } catch {
+                                setBriefCopied(false);
+                              }
+                            }}
+                          >
+                            {briefCopied ? "Brief copied" : "Copy project brief"}
+                          </button>
+                          <p className="pc-muted">
+                            You can also select and copy the text above. Nothing is sent until you
+                            submit the HoneyBook form.
+                          </p>
+                        </div>
+                      )}
                       <a
                         className="pc-outline"
                         href={submission.url}
@@ -850,8 +878,8 @@ export function CheckoutPage({ quoteReference }: { quoteReference?: string }) {
                       <Mail size={25} />
                       <h2>Your email draft is ready.</h2>
                       <p>
-                        Your email app should open with your plan. Nothing has been sent yet—review
-                        the draft and send it to info@palmerhouseproductions.com.
+                        Open your email app with your plan. Nothing has been sent yet—review the
+                        draft and send it to info@palmerhouseproductions.com.
                       </p>
                       <a className="pc-outline" href={submission.url}>
                         Open email draft <ArrowRight size={18} />

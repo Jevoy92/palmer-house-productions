@@ -26,7 +26,8 @@ const statusText: Record<string, string> = {
 
 function useSocial() {
   const { session, workspace } = useStudio();
-  const auth = session && workspace ? { accessToken: session.access_token, workspaceId: workspace.id } : null;
+  const auth =
+    session && workspace ? { accessToken: session.access_token, workspaceId: workspace.id } : null;
   const [state, setState] = useState<Social | null>(null);
   const refresh = useCallback(async () => {
     if (!auth) return;
@@ -69,7 +70,8 @@ export function StudioSocialSettings() {
       <p className="studio-eyebrow text-muted-foreground">Connected accounts</p>
       <h3 className="mt-2 text-lg font-bold">Post to Instagram & Facebook</h3>
       <p className="mt-1 text-sm text-muted-foreground">
-        {s.addonActive ? "Social Publishing · 100 posts a month." : "20 free posts every month."} One post to one account counts as 1.
+        {s.addonActive ? "Social Publishing · 100 posts a month." : "20 free posts every month."}{" "}
+        One post to one account counts as 1.
       </p>
       <div className="mt-4 h-2 overflow-hidden rounded-sm bg-muted" aria-hidden="true">
         <div className="h-full bg-primary transition-all" style={{ width: `${pct}%` }} />
@@ -79,7 +81,9 @@ export function StudioSocialSettings() {
         {pct >= 80 && !s.addonActive ? " · Running low" : ""}
       </p>
       <ul className="mt-4 space-y-2">
-        {s.accounts.length === 0 && <li className="text-sm text-muted-foreground">No accounts connected yet.</li>}
+        {s.accounts.length === 0 && (
+          <li className="text-sm text-muted-foreground">No accounts connected yet.</li>
+        )}
         {s.accounts.map((a) => (
           <li key={a.type} className="flex items-center justify-between gap-3 text-sm">
             <span>
@@ -89,7 +93,12 @@ export function StudioSocialSettings() {
               size="sm"
               variant="outline"
               disabled={busy}
-              onClick={() => run(async () => { await disconnectStudioSocial({ data: { ...auth, type: a.type } }); await refresh(); })}
+              onClick={() =>
+                run(async () => {
+                  await disconnectStudioSocial({ data: { ...auth, type: a.type } });
+                  await refresh();
+                })
+              }
             >
               Disconnect
             </Button>
@@ -100,7 +109,12 @@ export function StudioSocialSettings() {
         <Button
           variant="default"
           disabled={busy}
-          onClick={() => run(async () => { const r = await connectStudioSocial({ data: auth }); window.location.href = r.url; })}
+          onClick={() =>
+            run(async () => {
+              const r = await connectStudioSocial({ data: auth });
+              window.location.href = r.url;
+            })
+          }
         >
           {s.accounts.length ? "Connect another account" : "Connect Instagram & Facebook"}
         </Button>
@@ -108,7 +122,12 @@ export function StudioSocialSettings() {
           <Button
             variant="outline"
             disabled={busy}
-            onClick={() => run(async () => { const r = await startSocialAddonCheckout({ data: auth }); window.location.href = r.url; })}
+            onClick={() =>
+              run(async () => {
+                const r = await startSocialAddonCheckout({ data: auth });
+                window.location.href = r.url;
+              })
+            }
           >
             Get 100 posts · $19/mo
           </Button>
@@ -123,8 +142,8 @@ export function StudioSocialSettings() {
                 <span className="min-w-0">
                   <span className="block truncate">{p.caption}</span>
                   <span className="text-xs text-muted-foreground">
-                    {p.platforms.map((x) => label[x]).join(" + ")} · {statusText[p.status] ?? p.status} ·{" "}
-                    {new Date(p.scheduledAt).toLocaleString()}
+                    {p.platforms.map((x) => label[x]).join(" + ")} ·{" "}
+                    {statusText[p.status] ?? p.status} · {new Date(p.scheduledAt).toLocaleString()}
                     {p.error ? ` · ${p.error}` : ""}
                   </span>
                 </span>
@@ -133,7 +152,12 @@ export function StudioSocialSettings() {
                     size="sm"
                     variant="outline"
                     disabled={busy}
-                    onClick={() => run(async () => { await cancelStudioSocialPost({ data: { ...auth, postId: p.id } }); await refresh(); })}
+                    onClick={() =>
+                      run(async () => {
+                        await cancelStudioSocialPost({ data: { ...auth, postId: p.id } });
+                        await refresh();
+                      })
+                    }
                   >
                     Cancel
                   </Button>
@@ -157,9 +181,17 @@ export function StudioPostButton({ asset }: { asset: Tables<"campaign_assets"> }
   const [image, setImage] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const meta = (asset.metadata || {}) as Record<string, unknown>;
-  const mediaId = asset.kind === "image" ? asset.id : typeof meta.mediaAssetId === "string" ? meta.mediaAssetId : null;
+  const mediaId =
+    asset.kind === "image"
+      ? asset.id
+      : typeof meta.mediaAssetId === "string"
+        ? meta.mediaAssetId
+        : null;
   useEffect(() => {
-    if (open && mediaId && !image) getAssetImageUrl(mediaId).then(setImage).catch(() => setImage(null));
+    if (open && mediaId && !image)
+      getAssetImageUrl(mediaId)
+        .then(setImage)
+        .catch(() => setImage(null));
   }, [open, mediaId, image, getAssetImageUrl]);
   if (!auth || !state || !state.enabled) return null;
   const s = state as Ready;
@@ -179,7 +211,10 @@ export function StudioPostButton({ asset }: { asset: Tables<"campaign_assets"> }
           scheduledAt: when ? new Date(when).toISOString() : undefined,
         },
       });
-      if (!r.ok) toast.error(`That needs ${picked.length} posts and you have ${r.allowance - r.used} left this month.`);
+      if (!r.ok)
+        toast.error(
+          `That needs ${picked.length} posts and you have ${r.allowance - r.used} left this month.`,
+        );
       else {
         toast.success(when ? "Post scheduled." : "Post sent.");
         setOpen(false);
@@ -192,9 +227,17 @@ export function StudioPostButton({ asset }: { asset: Tables<"campaign_assets"> }
     }
   }
   return (
-    <Dialog.Root open={open} onOpenChange={(v) => { setOpen(v); if (v) setPicked(accounts); }}>
+    <Dialog.Root
+      open={open}
+      onOpenChange={(v) => {
+        setOpen(v);
+        if (v) setPicked(accounts);
+      }}
+    >
       <Dialog.Trigger asChild>
-        <Button size="sm" variant="outline">Post</Button>
+        <Button size="sm" variant="outline">
+          Post
+        </Button>
       </Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 z-50 bg-foreground/40" />
@@ -206,7 +249,9 @@ export function StudioPostButton({ asset }: { asset: Tables<"campaign_assets"> }
             </p>
           ) : (
             <>
-              {image && <img src={image} alt="" className="mt-4 max-h-56 w-full rounded-lg object-cover" />}
+              {image && (
+                <img src={image} alt="" className="mt-4 max-h-56 w-full rounded-lg object-cover" />
+              )}
               <textarea
                 className="mt-4 h-32 w-full rounded-lg border border-input bg-background p-3 text-sm"
                 value={caption}
@@ -220,7 +265,9 @@ export function StudioPostButton({ asset }: { asset: Tables<"campaign_assets"> }
                     <input
                       type="checkbox"
                       checked={picked.includes(a)}
-                      onChange={(e) => setPicked(e.target.checked ? [...picked, a] : picked.filter((x) => x !== a))}
+                      onChange={(e) =>
+                        setPicked(e.target.checked ? [...picked, a] : picked.filter((x) => x !== a))
+                      }
                     />
                     {label[a]}
                   </label>
@@ -245,7 +292,12 @@ export function StudioPostButton({ asset }: { asset: Tables<"campaign_assets"> }
                 </Dialog.Close>
                 <Button
                   variant="default"
-                  disabled={busy || picked.length === 0 || !caption.trim() || (picked.includes("INSTAGRAM") && !image)}
+                  disabled={
+                    busy ||
+                    picked.length === 0 ||
+                    !caption.trim() ||
+                    (picked.includes("INSTAGRAM") && !image)
+                  }
                   onClick={send}
                 >
                   {busy ? "Sending…" : when ? "Schedule" : "Post now"}

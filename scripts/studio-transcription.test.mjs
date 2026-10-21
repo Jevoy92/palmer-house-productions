@@ -111,7 +111,7 @@ test("forged length/rate/channels or trailing hidden media cannot bypass duratio
 });
 const env = {
   STUDIO_TRANSCRIPTION_ENABLED: "true",
-  STUDIO_TRANSCRIPTION_API_KEY: "fake-test-key",
+  LOVABLE_API_KEY: "fake-test-key",
   SUPABASE_SECRET_KEY: "fake",
 };
 function provider(options = {}) {
@@ -138,14 +138,14 @@ test("transcription has a fixed endpoint, no redirects, one request, bounded tim
   const result = await api.transcribeStudioVoice(wav(61));
   assert.equal(result.credits, 4);
   assert.equal(api.calls.length, 1);
-  assert.equal(api.calls[0].url, "https://api.openai.com/v1/audio/transcriptions");
+  assert.equal(api.calls[0].url, "https://ai.gateway.lovable.dev/v1/audio/transcriptions");
   assert.equal(api.calls[0].init.redirect, "error");
   assert.ok(api.calls[0].init.signal instanceof AbortSignal);
-  assert.equal(api.calls[0].init.body.get("model"), "gpt-transcribe");
-  assert.deepEqual(api.reserved[0], ["gpt-transcribe", 61]);
+  assert.equal(api.calls[0].init.body.get("model"), "google/gemini-3.5-transcribe");
+  assert.deepEqual(api.reserved[0], ["google/gemini-3.5-transcribe", 61]);
 });
-test("missing configuration and unpriced model fail before a provider request", async () => {
-  for (const e of [{}, { ...env, STUDIO_TRANSCRIPTION_MODEL: "unpriced-model" }]) {
+test("missing configuration and disabled transcription fail before a provider request", async () => {
+  for (const e of [{}, { ...env, STUDIO_TRANSCRIPTION_ENABLED: "false" }]) {
     const api = provider({ env: e });
     await assert.rejects(api.transcribeStudioVoice(wav()), /not connected/);
     assert.equal(api.calls.length, 0);
@@ -209,7 +209,7 @@ test("voice reserves dynamic credits and reports duration-based provider cost wi
   await api.withStudioCredits(
     auth,
     "transcription",
-    async () => api.beginStudioTranscriptionCall("gpt-transcribe", 61),
+    async () => api.beginStudioTranscriptionCall("google/gemini-3.5-transcribe", 61),
     { audioSeconds: 61 },
   );
   assert.equal(events[0].args.credit_count, 4);
@@ -240,7 +240,7 @@ test("voice insufficient credits rejects before provider; failure refunds and re
       auth,
       "transcription",
       async () => {
-        api.beginStudioTranscriptionCall("gpt-transcribe", 3);
+        api.beginStudioTranscriptionCall("google/gemini-3.5-transcribe", 3);
         throw new Error("storage failed");
       },
       { audioSeconds: 3 },
@@ -257,8 +257,8 @@ test("a second voice provider call is rejected, and uncertain saved output stays
       auth,
       "transcription",
       async () => {
-        api.beginStudioTranscriptionCall("gpt-transcribe", 3);
-        api.beginStudioTranscriptionCall("gpt-transcribe", 3);
+        api.beginStudioTranscriptionCall("google/gemini-3.5-transcribe", 3);
+        api.beginStudioTranscriptionCall("google/gemini-3.5-transcribe", 3);
       },
       { audioSeconds: 3 },
     ),
@@ -366,7 +366,7 @@ function intakeFixture(mode = "success") {
         transcribeStudioVoice: async () => {
           events.push("provider");
           if (mode === "provider-fail") throw new Error("provider failed");
-          return { text: "Saved transcript.", model: "gpt-transcribe" };
+          return { text: "Saved transcript.", model: "google/gemini-3.5-transcribe" };
         },
       },
     },
@@ -481,12 +481,12 @@ test("failed release stays reserved and blocks a duplicate retry until reconcili
       auth,
       "transcription",
       async () => {
-        api.beginStudioTranscriptionCall("gpt-transcribe", 3);
+        api.beginStudioTranscriptionCall("google/gemini-3.5-transcribe", 3);
         throw new Error("provider failed");
       },
       { audioSeconds: 3 },
     ),
-    api.StudioCreditReconciliationError,
+    (error) => error instanceof api.StudioCreditReconciliationError,
   );
   assert.equal(events.length, 2);
   assert.equal(events[1].args.outcome, "released");

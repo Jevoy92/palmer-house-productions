@@ -31,7 +31,10 @@ export function NewsletterSignup() {
       setMsg({ ok: true, text: r.message });
       e.currentTarget?.reset();
     } catch (err) {
-      setMsg({ ok: false, text: err instanceof Error ? err.message : "Something went wrong. Please try again." });
+      setMsg({
+        ok: false,
+        text: err instanceof Error ? err.message : "Something went wrong. Please try again.",
+      });
     } finally {
       setBusy(false);
     }
@@ -40,20 +43,55 @@ export function NewsletterSignup() {
   return (
     <form onSubmit={submit} className="mt-6 max-w-sm space-y-2" aria-label="Newsletter signup">
       <p className="text-sm font-bold text-foreground">The Palmer House Letter</p>
-      <p className="text-xs text-muted-foreground">One free email a month: ideas, behind-the-scenes and video tips from our team.</p>
+      <p className="text-xs text-muted-foreground">
+        One free email a month: ideas, behind-the-scenes and video tips from our team.
+      </p>
       <div className="flex gap-2">
-        <input name="firstName" placeholder="First name" maxLength={80} autoComplete="given-name" className="w-28 rounded-lg border border-input bg-background px-3 py-2 text-sm" />
-        <input name="email" type="email" required maxLength={254} placeholder="you@company.com" autoComplete="email" className="min-w-0 flex-1 rounded-lg border border-input bg-background px-3 py-2 text-sm" />
+        <input
+          name="firstName"
+          placeholder="First name"
+          maxLength={80}
+          autoComplete="given-name"
+          className="w-28 rounded-lg border border-input bg-background px-3 py-2 text-sm"
+        />
+        <input
+          name="email"
+          type="email"
+          required
+          maxLength={254}
+          placeholder="you@company.com"
+          autoComplete="email"
+          className="min-w-0 flex-1 rounded-lg border border-input bg-background px-3 py-2 text-sm"
+        />
       </div>
-      <input name="website" tabIndex={-1} autoComplete="off" aria-hidden className="absolute -left-[9999px] h-0 w-0 opacity-0" />
+      <input
+        name="website"
+        tabIndex={-1}
+        autoComplete="off"
+        aria-hidden
+        className="absolute -left-[9999px] h-0 w-0 opacity-0"
+      />
       <label className="flex items-start gap-2 text-xs text-muted-foreground">
         <input name="consent" type="checkbox" className="mt-0.5" />
-        <span>Yes, send me The Palmer House Letter. Unsubscribe anytime. See our <a href="/privacy" className="underline">Privacy Policy</a>.</span>
+        <span>
+          Yes, send me The Palmer House Letter. Unsubscribe anytime. See our{" "}
+          <a href="/privacy" className="underline">
+            Privacy Policy
+          </a>
+          .
+        </span>
       </label>
-      <button disabled={busy} className="rounded-lg bg-spotlight px-4 py-2 text-sm font-bold text-white disabled:opacity-50">
+      <button
+        disabled={busy}
+        className="rounded-lg bg-spotlight px-4 py-2 text-sm font-bold text-white disabled:opacity-50"
+      >
         {busy ? "Joining…" : "Subscribe"}
       </button>
-      {msg ? <p role="status" className={`text-xs ${msg.ok ? "text-foreground" : "text-destructive"}`}>{msg.text}</p> : null}
+      {msg ? (
+        <p role="status" className={`text-xs ${msg.ok ? "text-foreground" : "text-destructive"}`}>
+          {msg.text}
+        </p>
+      ) : null}
     </form>
   );
 }

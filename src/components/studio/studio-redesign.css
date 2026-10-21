@@ -599,3 +599,6 @@ html[data-studio-theme] .studio-navigation-backdrop {
   background: var(--studio-accent);
   color: var(--studio-action-text);
 }
+
+.dark .studio-brand-mark, [data-studio-theme="dark"] .studio-brand-mark { filter: brightness(0) invert(1); }
+[data-studio-theme="light"] .studio-brand-mark { filter: none; }

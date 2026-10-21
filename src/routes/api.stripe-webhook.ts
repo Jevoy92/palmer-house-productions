@@ -1,4 +1,4 @@
-import { stripeSecretKey, stripeWebhookSecrets } from "@/lib/stripe-env";
+import { stripeSecretKey, stripeWebhookSecrets, stripeEventMatchesMode } from "@/lib/stripe-env";
 import { createClient } from "@supabase/supabase-js";
 import { createFileRoute } from "@tanstack/react-router";
 import Stripe from "stripe";
@@ -28,6 +28,12 @@ async function handleStripeWebhook({ request }: { request: Request }) {
     }
   }
   if (!event) return Response.json({ error: "Invalid Stripe signature." }, { status: 400 });
+  if (!stripeEventMatchesMode(event.livemode)) {
+    return Response.json(
+      { error: "Stripe event belongs to a different billing mode." },
+      { status: 400 },
+    );
+  }
   const admin = createClient<Database>(
     process.env["SUPABASE_URL"] || SUPABASE_URL,
     supabaseSecret,

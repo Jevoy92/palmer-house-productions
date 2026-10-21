@@ -1,15 +1,15 @@
-import type { ComponentType } from 'react'
-import { template as depositBooked } from './deposit-booked'
-import { template as clientDepositConfirmed } from './client-deposit-confirmed'
-import { template as studioWelcome } from './studio-welcome'
+import type { ComponentType } from "react";
+import { template as depositBooked } from "./deposit-booked";
+import { template as clientDepositConfirmed } from "./client-deposit-confirmed";
+import { template as studioWelcome } from "./studio-welcome";
 
 export interface TemplateEntry {
-  component: ComponentType<any>
-  subject: string | ((data: Record<string, any>) => string)
-  displayName?: string
-  previewData?: Record<string, any>
+  component: ComponentType<Record<string, unknown>>;
+  subject: string | ((data: Record<string, unknown>) => string);
+  displayName?: string;
+  previewData?: Record<string, unknown>;
   /** Fixed recipient — overrides caller-provided recipientEmail when set. */
-  to?: string
+  to?: string;
 }
 
 /**
@@ -21,9 +21,9 @@ export interface TemplateEntry {
  *   // then add to TEMPLATES: 'welcome': welcomeTemplate
  */
 export const TEMPLATES: Record<string, TemplateEntry> = {
-  'deposit-booked': depositBooked,
-  'client-deposit-confirmed': clientDepositConfirmed,
-  'studio-welcome': studioWelcome,
+  "deposit-booked": depositBooked,
+  "client-deposit-confirmed": clientDepositConfirmed,
+  "studio-welcome": studioWelcome,
   // Add templates here as they are created, e.g.:
   // 'welcome': welcomeTemplate,
-}
+};

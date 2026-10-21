@@ -9,7 +9,12 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "node scripts/run-unit-tests.mjs",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run lint && npm run typecheck && npm test && npm run build",
+    "test:db:setup": "node scripts/test-db-setup.mjs",
+    "test:db": "node --test scripts/demo-budget.integration.mjs && bun test scripts/booking-email.test.ts && bun test scripts/retry-wake.test.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

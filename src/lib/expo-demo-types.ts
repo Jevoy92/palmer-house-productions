@@ -43,11 +43,12 @@ export type DemoCampaign = {
   artifacts: Artifact[];
 };
 
-export const artifactMeta: Record<ArtifactType, { label: string; ratio: string; aspect: string }> = {
-  instagram: { label: "Instagram post", ratio: "4 / 5", aspect: "4:5" },
-  reel: { label: "Reel script", ratio: "9 / 16", aspect: "9:16" },
-  carousel: { label: "Carousel", ratio: "1 / 1", aspect: "1:1" },
-  linkedin: { label: "LinkedIn post", ratio: "1.91 / 1", aspect: "1.91:1" },
-  youtube: { label: "YouTube thumbnail", ratio: "16 / 9", aspect: "16:9" },
-  extra: { label: "Customer piece", ratio: "4 / 5", aspect: "4:5" },
-};
+export const artifactMeta: Record<ArtifactType, { label: string; ratio: string; aspect: string }> =
+  {
+    instagram: { label: "Instagram post", ratio: "4 / 5", aspect: "4:5" },
+    reel: { label: "Reel script", ratio: "9 / 16", aspect: "9:16" },
+    carousel: { label: "Carousel", ratio: "1 / 1", aspect: "1:1" },
+    linkedin: { label: "LinkedIn post", ratio: "1.91 / 1", aspect: "1.91:1" },
+    youtube: { label: "YouTube thumbnail", ratio: "16 / 9", aspect: "16:9" },
+    extra: { label: "Customer piece", ratio: "4 / 5", aspect: "4:5" },
+  };

@@ -9,7 +9,8 @@ export const Route = createFileRoute("/contact_/next-steps")({
   head: () => ({
     ...createSeo({
       title: "Next steps | Palmer House Productions",
-      description: "What happens after you contact Palmer House Productions, plus an optional free Friday quick chat.",
+      description:
+        "What happens after you contact Palmer House Productions, plus an optional free Friday quick chat.",
       pathname: "/contact/next-steps",
       noIndex: true,
     }),
@@ -48,8 +49,12 @@ function NextSteps() {
           </div>
         </div>
         <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <Link to="/" className="secondary-action">Back to home</Link>
-          <Link to="/process" className="secondary-action">See how we work</Link>
+          <Link to="/" className="secondary-action">
+            Back to home
+          </Link>
+          <Link to="/process" className="secondary-action">
+            See how we work
+          </Link>
         </div>
       </Section>
     </PageShell>

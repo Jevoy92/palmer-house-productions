@@ -1057,3 +1057,12 @@
   flex-wrap: wrap;
   justify-content: flex-end;
 }
+
+/* One vertical scroll region; the scene navigation stays available on phones. */
+@media (max-width: 960px) {
+  .xd-screen { overflow: hidden; }
+  .xd-screen-main { display: block; overflow-y: auto; overscroll-behavior: contain; }
+  .xd-screen-stage, .xd-screen .xd-side { overflow: visible; max-height: none; height: auto; }
+  .xd-screen-stage { padding-top: 4rem; }
+  .xd-screen .xd-close { position: absolute; top: .75rem; right: .75rem; z-index: 20; background: var(--jet); }
+}

@@ -13,25 +13,9 @@ export const Route = createFileRoute("/studio/expo-leads")({
   component: ExpoLeads,
 });
 
-type Contact = {
-  id: string;
-  email: string;
-  name: string | null;
-  company: string | null;
-  phone: string | null;
-  interest: string | null;
-  wants_to_create: string | null;
-  source: string;
-  status: "lead" | "account" | "paid";
-  purchased: string | null;
-  offer: "public" | "booth" | null;
-  follow_up_date: string;
-  follow_up_state: string;
-  notes: string | null;
-  created_at: string;
-};
+type Contact = import("@/integrations/supabase/types").Tables<"expo_contacts">;
 
-const db = supabase as any;
+const db = supabase;
 
 function firstName(c: Contact) {
   return (c.name || "there").split(" ")[0];
@@ -49,7 +33,8 @@ function previewEmail(c: Contact) {
       subject: "Your next step with Palmer House",
       body: `Hi ${firstName(c)}, thanks for booking ${c.purchased || "with us"}. Our team will reach out about scheduling and next steps. Reply any time with questions. — Jevoy`,
     };
-  const rate = c.offer === "booth" ? expoCampaign.offers.booth.monthly : expoCampaign.offers.public.monthly;
+  const rate =
+    c.offer === "booth" ? expoCampaign.offers.booth.monthly : expoCampaign.offers.public.monthly;
   return {
     subject: "Your Palmer House Studio details",
     body: `Hi ${firstName(c)}, as promised, here's more about Palmer House Studio and the offer we discussed: ${origin}/expo. Your rate is $${rate}/month for your first 3 months, then $${expoCampaign.regularMonthly}/month.${c.offer === "booth" ? " Enter the booth code from our booth at checkout." : ""} The introductory offer can be redeemed through Sunday, October 4. What kind of content would you most like help with? — Jevoy`,
@@ -73,13 +58,18 @@ function ExpoLeads() {
     void load();
   }, []);
   async function update(id: string, patch: Partial<Contact>) {
-    await db.from("expo_contacts").update({ ...patch, updated_at: new Date().toISOString() }).eq("id", id);
+    await db
+      .from("expo_contacts")
+      .update({ ...patch, updated_at: new Date().toISOString() })
+      .eq("id", id);
     await load();
   }
   async function addPaper(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
-    const email = String(f.get("email") || "").trim().toLowerCase();
+    const email = String(f.get("email") || "")
+      .trim()
+      .toLowerCase();
     if (!email) return;
     const r = await db.from("expo_contacts").upsert(
       {
@@ -99,11 +89,24 @@ function ExpoLeads() {
   function exportCsv() {
     if (!rows) return;
     const cols = [
-      "name", "email", "company", "phone", "source", "created_at", "interest", "status",
-      "purchased", "offer", "follow_up_date", "follow_up_state", "notes",
+      "name",
+      "email",
+      "company",
+      "phone",
+      "source",
+      "created_at",
+      "interest",
+      "status",
+      "purchased",
+      "offer",
+      "follow_up_date",
+      "follow_up_state",
+      "notes",
     ] as const;
     const esc = (v: unknown) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-    const csv = [cols.join(","), ...rows.map((r) => cols.map((c) => esc(r[c])).join(","))].join("\n");
+    const csv = [cols.join(","), ...rows.map((r) => cols.map((c) => esc(r[c])).join(","))].join(
+      "\n",
+    );
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
     a.download = `expo-follow-up-${expoCampaign.id}.csv`;
@@ -131,11 +134,32 @@ function ExpoLeads() {
               {rows.filter((r) => r.follow_up_state === "due").length} due
             </span>
           </div>
-          <form onSubmit={addPaper} className="mt-6 grid gap-2 rounded-xl border border-border bg-card p-4 md:grid-cols-5">
-            <input name="name" placeholder="Name" className="rounded-lg border border-border px-3 py-2" />
-            <input name="email" type="email" required placeholder="Email" className="rounded-lg border border-border px-3 py-2" />
-            <input name="company" placeholder="Company" className="rounded-lg border border-border px-3 py-2" />
-            <input name="notes" placeholder="Notes" className="rounded-lg border border-border px-3 py-2" />
+          <form
+            onSubmit={addPaper}
+            className="mt-6 grid gap-2 rounded-xl border border-border bg-card p-4 md:grid-cols-5"
+          >
+            <input
+              name="name"
+              placeholder="Name"
+              className="rounded-lg border border-border px-3 py-2"
+            />
+            <input
+              name="email"
+              type="email"
+              required
+              placeholder="Email"
+              className="rounded-lg border border-border px-3 py-2"
+            />
+            <input
+              name="company"
+              placeholder="Company"
+              className="rounded-lg border border-border px-3 py-2"
+            />
+            <input
+              name="notes"
+              placeholder="Notes"
+              className="rounded-lg border border-border px-3 py-2"
+            />
             <button className="primary-action">Add paper signup</button>
           </form>
           <div className="mt-6 space-y-3">
@@ -160,7 +184,10 @@ function ExpoLeads() {
                       {c.wants_to_create && <p className="mt-2 text-sm">“{c.wants_to_create}”</p>}
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      <button className="secondary-action" onClick={() => setOpen(open === c.id ? null : c.id)}>
+                      <button
+                        className="secondary-action"
+                        onClick={() => setOpen(open === c.id ? null : c.id)}
+                      >
                         Preview email
                       </button>
                       <select
@@ -168,7 +195,9 @@ function ExpoLeads() {
                         onChange={(e) =>
                           void update(c.id, {
                             follow_up_state: e.target.value,
-                            ...(e.target.value === "sent" ? { follow_up_sent_at: new Date().toISOString() } : {}),
+                            ...(e.target.value === "sent"
+                              ? { follow_up_sent_at: new Date().toISOString() }
+                              : {}),
                           } as Partial<Contact>)
                         }
                         className="rounded-lg border border-border px-2"
@@ -195,7 +224,10 @@ function ExpoLeads() {
                   <textarea
                     defaultValue={c.notes || ""}
                     placeholder="Notes"
-                    onBlur={(e) => e.target.value !== (c.notes || "") && void update(c.id, { notes: e.target.value })}
+                    onBlur={(e) =>
+                      e.target.value !== (c.notes || "") &&
+                      void update(c.id, { notes: e.target.value })
+                    }
                     className="mt-3 w-full rounded-lg border border-border p-2 text-sm"
                     rows={1}
                   />

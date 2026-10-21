@@ -134,7 +134,7 @@ function Instagram({ a, images, brand, headline, location, large, compact }: Pre
   );
 }
 
-function Storyboard({ a, images, brand, location, large }: PreviewProps) {
+function Storyboard({ a, brand, location, large }: PreviewProps) {
   const [firstBeat, setFirstBeat] = useState(0);
   const beats = a.beats?.length
     ? a.beats
@@ -148,7 +148,7 @@ function Storyboard({ a, images, brand, location, large }: PreviewProps) {
   return (
     <article
       className={`xp-artifact xp-storyboard ${large ? "xp-large" : ""}`}
-      aria-label={`${a.title}, storyboard preview`}
+      aria-label={`${a.title}, shot plan preview`}
     >
       <div
         className="xp-storyboard-film"
@@ -162,11 +162,9 @@ function Storyboard({ a, images, brand, location, large }: PreviewProps) {
               key={`${a.id}-${index}`}
               aria-label={`Scene ${index + 1}: ${beat.visual}`}
             >
-              <Photo
-                src={index % 2 ? images.wide || images.square : images.square || images.wide}
-                position={["28% 50%", "75% 62%", "50% 36%"][offset]}
-              />
-              <div className="xp-scene-shade" />
+              <span className="xp-scene-number" aria-hidden="true">
+                {String(index + 1).padStart(2, "0")}
+              </span>
               <div className="xp-scene-copy">
                 <span className="xp-scene-time">
                   {index + 1}. {time(index)}
@@ -183,7 +181,7 @@ function Storyboard({ a, images, brand, location, large }: PreviewProps) {
         </footer>
       </div>
       <div className="xp-sequence-controls" onClick={(e) => e.stopPropagation()}>
-        <span>Storyboard · suggested timing</span>
+        <span>Shot plan · suggested timing</span>
         {beats.length > 3 ? (
           <div>
             <button
@@ -253,10 +251,10 @@ function Carousel({ a, images, brand, large }: PreviewProps) {
               key={`${a.id}-${i}`}
               aria-label={`Slide ${i + 1}: ${slide.heading}`}
             >
-              {i % 3 !== 0 ? (
+              {i === 1 ? (
                 <>
                   <Photo
-                    src={i % 2 ? images.square || images.wide : images.wide || images.square}
+                    src={images.square || images.wide}
                     position={i % 2 ? "70% 50%" : "30% 50%"}
                   />
                   <div className="xp-slide-shade" />

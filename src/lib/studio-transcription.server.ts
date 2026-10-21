@@ -35,7 +35,9 @@ export async function transcribeStudioVoice(bytes: Uint8Array) {
   });
   if (!response.ok) {
     if (response.status === 402)
-      throw new Error("Studio AI credits are paused. Your recording is kept here; no credits were used.");
+      throw new Error(
+        "Studio AI credits are paused. Your recording is kept here; no credits were used.",
+      );
     if (response.status === 429)
       throw new Error("Transcription is busy. Your recording is kept here; try again shortly.");
     throw new Error(

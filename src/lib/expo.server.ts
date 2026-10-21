@@ -25,7 +25,7 @@ export async function upsertExpoContact(input: {
   event: { kind: string; detail?: string; dedupeKey?: string };
 }) {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const db = supabaseAdmin as any;
+  const db = supabaseAdmin;
   const email = input.email.trim().toLowerCase();
   const existing = await db
     .from("expo_contacts")
@@ -37,7 +37,7 @@ export async function upsertExpoContact(input: {
   const prev = existing.data;
   const status: Status =
     prev && rank[prev.status as Status] >= rank[input.status ?? "lead"]
-      ? prev.status
+      ? (prev.status as Status)
       : (input.status ?? "lead");
   const row = {
     campaign_id: expoCampaign.id,

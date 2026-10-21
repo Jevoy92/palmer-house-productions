@@ -18,9 +18,9 @@ type ExampleSeed = Pick<ExampleEntry, "key" | "label" | "match" | "brief" | "cam
 /** Bundled first lines so the Pal greets instantly, before any network request. */
 export const expoGreetings: Record<PalName, string> = {
   kiana:
-    "Your business has a story. Let's find the part people lean in for. Glad you're at the Expo — what brings you here today?",
+    "Your business has a story. Let's find the part people lean in for. What would you love your next customer to understand?",
   ryder:
-    "Let's make something people don't scroll past on the way to a dog video. What brings you to the Expo?",
+    "Let's make something people don't scroll past on the way to a dog video. What are we making for your business?",
   clara:
     "We'll give that idea a plan. No spreadsheet ambush. What would you like your content to do?",
   silas:
@@ -29,7 +29,8 @@ export const expoGreetings: Record<PalName, string> = {
     "Getting attention is lovely. Giving people a reason to stay is better. Who would you like to connect with?",
   kareem:
     "Your business deserves better than ‘we'll fix it in the edit.’ What would you like people to notice?",
-  cyrus: "Let's make something that outlives the tote bag. What brings you to the Expo?",
+  cyrus:
+    "Let's turn what you know into something people can keep using. What are we making for your business?",
   samira:
     "If you've explained it twelve times, I suspect there's content hiding in there. What do customers keep asking you?",
 };

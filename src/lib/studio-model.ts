@@ -99,7 +99,7 @@ export const studioPlans = {
       "Brand DNA + Pal guidance",
       "Personalized video roadmap",
       "Content calendar",
-      "25% off filming sessions ($337.50)",
+      "25% off one filming session per project ($337.50)",
       "Monthly Palmer House newsletter",
       "Member help desk",
     ],
@@ -117,7 +117,7 @@ export const studioPlans = {
       "Everything in Studio",
       "1 private strategy hour / month",
       "Project and campaign review queue",
-      "50% off filming sessions ($225)",
+      "50% off one filming session per project ($225)",
       "Monthly Palmer House newsletter",
     ],
   },
@@ -142,7 +142,10 @@ export const studioPlans = {
 
 /** Retail fee for one filming session; extra videos, editing and add-ons are priced separately. */
 export const FILMING_SESSION_FEE = 450;
-export const filmingBenefits: Record<string, { kind: "discount"; percent: number } | { kind: "included"; perMonth: 1 }> = {
+export const filmingBenefits: Record<
+  string,
+  { kind: "discount"; percent: number } | { kind: "included"; perMonth: 1 }
+> = {
   creator: { kind: "discount", percent: 25 },
   business: { kind: "discount", percent: 50 },
   partner: { kind: "included", perMonth: 1 },

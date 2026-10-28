@@ -47,7 +47,6 @@ import {
   FileStack,
   Film,
   FolderOpen,
-  Gauge,
   Heart,
   HandHeart,
   Home,

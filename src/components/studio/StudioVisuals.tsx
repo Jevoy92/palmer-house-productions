@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useStudioMotion } from "./studio-motion";
 import { CalendarDays, Lightbulb, MessageCircle, Play, Sparkles } from "lucide-react";
 import phMark from "@/assets/php-mark.png";
 import kiana from "@/assets/pal-headshots/kiana.png";
@@ -63,7 +64,7 @@ export function StudioMark({ compact = false }: { compact?: boolean }) {
 }
 
 export function ContentOrbit({ compact = false }: { compact?: boolean }) {
-  const reduce = useReducedMotion();
+  const { reduceMotion: reduce } = useStudioMotion();
   return (
     <div
       className={`relative isolate mx-auto w-full overflow-hidden ${compact ? "h-[18rem] max-w-xl" : "h-[31rem] max-w-3xl"}`}
@@ -177,7 +178,7 @@ export function ContentOrbit({ compact = false }: { compact?: boolean }) {
 }
 
 export function LanePulse() {
-  const reduce = useReducedMotion();
+  const { reduceMotion: reduce } = useStudioMotion();
   const colors = ["var(--spotlight)", "var(--reel)", "var(--evergreen)", "var(--system)"];
   return (
     <div className="flex items-center gap-1.5" aria-label="All four Palmer House lanes are active">

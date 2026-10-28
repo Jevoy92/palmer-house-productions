@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useStudioMotion } from "./studio-motion";
 import { ArrowLeft, ArrowRight, Download, Images, Palette } from "lucide-react";
 import { useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -82,7 +83,7 @@ export function CarouselGraphicBuilder({
   business: string;
   defaultStyle?: string;
 }) {
-  const reduce = useReducedMotion();
+  const { reduceMotion: reduce } = useStudioMotion();
   const initialStyle =
     studioVisualStyles.find((style) => style.name === defaultStyle)?.id || "palmer-clay";
   const [style, setStyle] = useState(initialStyle);

@@ -464,6 +464,7 @@ html[data-studio-text="large"] .studio-app {
 html[data-studio-text="large"] .studio-app :is(p, textarea, input) {
   font-size: max(1em, 16px);
 }
+html[data-studio-motion="reduce"] .studio-app,
 html[data-studio-motion="reduce"] .studio-app *,
 html[data-studio-motion="reduce"] .studio-app *::before,
 html[data-studio-motion="reduce"] .studio-app *::after {
@@ -472,6 +473,7 @@ html[data-studio-motion="reduce"] .studio-app *::after {
   scroll-behavior: auto !important;
 }
 @media (prefers-reduced-motion: reduce) {
+  .studio-app,
   .studio-app *,
   .studio-app *::before,
   .studio-app *::after {
@@ -602,3 +604,70 @@ html[data-studio-theme] .studio-navigation-backdrop {
 
 .dark .studio-brand-mark, [data-studio-theme="dark"] .studio-brand-mark { filter: brightness(0) invert(1); }
 [data-studio-theme="light"] .studio-brand-mark { filter: none; }
+
+/* Portalled controls share Studio tokens and stay inside short/mobile viewports. */
+.studio-notifications-panel {
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  width: min(23rem, calc(100vw - 2rem));
+  max-height: min(34rem, var(--radix-popover-content-available-height));
+  overflow: hidden;
+  border: 1px solid var(--studio-border);
+  border-radius: 20px;
+  background: var(--studio-surface);
+  box-shadow: 0 16px 48px #00000020;
+  transform-origin: var(--radix-popover-content-transform-origin);
+  animation: studio-fade-in 150ms ease-out;
+}
+.studio-notifications-scroll {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.studio-app [data-slot="switch"] {
+  background: #767e89;
+  border-radius: 999px;
+}
+.studio-app [data-slot="switch"][data-state="checked"] {
+  background: var(--studio-accent);
+}
+.studio-app [data-slot="switch-thumb"] {
+  background: #fff;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .studio-nav-item,
+  .studio-icon-button,
+  .studio-app .secondary-action,
+  .studio-menu-item {
+    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+  }
+}
+
+.studio-settings-tabs {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--studio-border);
+  padding: 4px 3px;
+  scroll-padding-inline: 12px;
+  scrollbar-width: thin;
+}
+.studio-settings-tabs [role="tab"] {
+  scroll-margin-inline: 12px;
+}
+
+.studio-app input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.studio-app input[type="checkbox"]:disabled {
+  cursor: not-allowed;
+}
+@media (min-width: 768px) {
+  .studio-chat-header .studio-chat-menu {
+    display: none;
+  }
+}

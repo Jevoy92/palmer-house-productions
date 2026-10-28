@@ -334,7 +334,7 @@
   }
 }
 
-.studio-app :is(button, a).rounded-full {
+.studio-app :is(button, a).rounded-full:not([role="switch"]) {
   border-radius: 9px;
 }
 @media (min-width: 1024px) {

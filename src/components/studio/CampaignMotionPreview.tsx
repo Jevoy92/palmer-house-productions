@@ -1,10 +1,10 @@
 import { Player } from "@remotion/player";
-import { useReducedMotion } from "motion/react";
+import { useStudioMotion } from "./studio-motion";
 import type { CampaignTeaserProps } from "@/remotion/CampaignTeaser";
 import { CampaignTeaser } from "@/remotion/CampaignTeaser";
 
 export function CampaignMotionPreview(props: Omit<CampaignTeaserProps, "reducedMotion">) {
-  const reduce = useReducedMotion();
+  const { reduceMotion: reduce } = useStudioMotion();
   return (
     <div className="overflow-hidden rounded-[2rem] border border-border bg-white p-3 shadow-soft">
       <div className="mb-3 flex items-center justify-between gap-4 px-2 pt-1">

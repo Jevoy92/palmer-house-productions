@@ -808,13 +808,15 @@ export function MemberSuccess() {
               <div
                 key={achievement.label}
                 className="flex min-h-24 items-start gap-3 rounded-[1rem] border border-border p-3"
-                style={{ background: achievement.done ? achievement.soft : "white" }}
+                style={{
+                  background: achievement.done ? achievement.soft : "var(--studio-surface)",
+                }}
               >
                 <span
                   className="grid size-8 shrink-0 place-items-center rounded-lg"
                   style={{
                     color: achievement.done ? achievement.color : "var(--muted)",
-                    background: achievement.done ? "white" : "var(--mist)",
+                    background: achievement.done ? "var(--studio-surface)" : "var(--mist)",
                   }}
                 >
                   {achievement.done ? <Award className="size-4" /> : <Flame className="size-4" />}

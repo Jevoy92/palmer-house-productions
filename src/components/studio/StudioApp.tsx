@@ -4626,7 +4626,7 @@ function SettingsView() {
     useStudio();
 
   const { guide, setGuide } = useGuide();
-  const [tab, setTab] = useState<"workspace" | "memory" | "brands" | "team" | "usage" | "account">(
+  const [tab, setTab] = useState<"workspace" | "memory" | "team" | "usage" | "account">(
     "workspace",
   );
   const [draft, setDraft] = useState({
@@ -4646,35 +4646,33 @@ function SettingsView() {
   const tabs = [
     ["workspace", Settings, "Workspace"],
     ["memory", BrainCircuit, "Shared memory"],
-    ["brands", Gauge, "Brand DNA"],
     ["team", Users, "Team"],
     ["usage", CreditCard, "Usage & plan"],
     ["account", CircleUserRound, "Account"],
   ] as const;
   return (
     <div className="mx-auto max-w-5xl">
-      <div className="overflow-hidden rounded-2xl border border-border bg-white">
-        <header className="flex items-start gap-4 border-b border-border px-5 py-4 sm:px-6">
-          <div className="min-w-0 flex-1">
-            <p className="studio-eyebrow text-system">Workspace settings</p>
-            <h1 className="mt-2 text-2xl font-black tracking-[-.04em]">Settings</h1>
-          </div>
+      <div>
+        <header className="pb-5">
+          <p className="studio-eyebrow text-system">Workspace settings</p>
+          <h1 className="mt-2 text-2xl font-black tracking-[-.04em]">Settings</h1>
         </header>
-        <div className="grid min-h-0 flex-1 overflow-hidden lg:grid-cols-[11.5rem_1fr]">
-          <aside className="flex gap-1 overflow-x-auto border-b border-border p-3 lg:block lg:overflow-visible lg:border-b-0 lg:border-r">
+        <div>
+          <div role="tablist" aria-label="Settings sections" className="flex gap-1 overflow-x-auto border-b border-border">
             {tabs.map(([value, Icon, label]) => (
               <button
                 key={value}
-                aria-pressed={tab === value}
+                role="tab"
+                aria-selected={tab === value}
                 onClick={() => setTab(value)}
-                className={`flex min-h-11 shrink-0 items-center gap-3 rounded-xl px-3 text-left text-sm font-bold lg:w-full ${tab === value ? "bg-spotlight-soft text-spotlight" : "text-muted-foreground hover:bg-mist"}`}
+                className={`-mb-px flex min-h-11 shrink-0 items-center gap-2 border-b-2 px-3 text-sm font-bold ${tab === value ? "border-spotlight text-spotlight" : "border-transparent text-muted-foreground hover:text-foreground"}`}
               >
                 <Icon className="size-4" />
                 {label}
               </button>
             ))}
-          </aside>
-          <section className="min-h-0 overflow-y-auto p-5 sm:p-7">
+          </div>
+          <section className="py-7">
             {tab === "workspace" ? (
               <div>
                 <StudioAppearanceSettings />
@@ -4715,28 +4713,6 @@ function SettingsView() {
                   Each customer workspace begins empty, follows onboarding, and only contains that
                   account’s brand memory, campaigns, assets, and calendar.
                 </p>
-              </div>
-            ) : null}
-            {tab === "brands" ? (
-              <div>
-                <SettingHeading
-                  title="Brand DNA"
-                  body="The source of truth the Content Engine reads before it writes."
-                />
-                <div className="mt-7 rounded-[1.25rem] border border-border p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-xl font-black">{workspace?.name}</p>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        Voice, audience, offers, proof, and language rules
-                      </p>
-                    </div>
-                    <Gauge className="size-8 text-spotlight" />
-                  </div>
-                  <Link to="/studio/brand" className="primary-action mt-7">
-                    Open Brand DNA <ArrowRight className="size-4" />
-                  </Link>
-                </div>
               </div>
             ) : null}
             {tab === "memory" ? <StudioMemory key={workspace?.id} /> : null}

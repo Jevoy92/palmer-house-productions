@@ -32,7 +32,6 @@ import { StudioNotifications } from "./StudioNotifications";
 import { CelebrationLayer } from "./Celebrate";
 import { useStudioMotion } from "./studio-motion";
 import { useGuide } from "./useGuide";
-import { StudioPageTrail } from "./StudioPageTrail";
 import { PalAvatar } from "./PalAvatar";
 import { StudioStartHere } from "./StudioStartHere";
 import { openStudioGuide } from "@/lib/studio-onboarding";
@@ -349,7 +348,6 @@ export function StudioWorkspaceShell({
         className="studio-workspace-content"
       >
         <StudioStartHere />
-        {!chat && <StudioPageTrail view={view} />}
         {children}
       </motion.main>
       <nav className="studio-bottom-nav" aria-label="Main navigation">

@@ -1,3 +1,4 @@
+import * as SettingsTabs from "@radix-ui/react-tabs";
 import { StudioAlertPrefs } from "./StudioAlertPrefs";
 import { StudioSocialSettings, StudioPostButton } from "./StudioSocial";
 import { StudioNewsletterPrefs, NewsletterSignupConsent } from "./StudioNewsletterPrefs";
@@ -303,7 +304,9 @@ function StudioGate({
   return (
     <StudioCreditsProvider key={studio.workspace.id}>
       <NewsletterSignupConsent />
-      <StudioShell view={view}>{renderView(view, campaignId, conversationId, workTab)}</StudioShell>
+      <StudioShell view={view === "work" ? workTab || "campaigns" : view}>
+        {renderView(view, campaignId, conversationId, workTab)}
+      </StudioShell>
     </StudioCreditsProvider>
   );
 }
@@ -899,7 +902,7 @@ function Onboarding() {
                           className="min-h-11 rounded-xl border px-4 text-sm font-bold transition"
                           style={{
                             borderColor: active ? match.color : "var(--border)",
-                            background: active ? match.color : "white",
+                            background: active ? match.color : "var(--studio-surface)",
                             color: active ? "white" : "var(--ink)",
                           }}
                         >
@@ -1003,7 +1006,9 @@ function Onboarding() {
                         key={pal.key}
                         onClick={() => setGuidePick(pal.key)}
                         className={`flex min-h-16 items-center gap-3 rounded-xl border p-3 text-left ${guidePick === pal.key ? "border-ink" : "border-border"}`}
-                        style={{ background: guidePick === pal.key ? pal.soft : "white" }}
+                        style={{
+                          background: guidePick === pal.key ? pal.soft : "var(--studio-surface)",
+                        }}
                       >
                         <PalAvatar pal={pal} size="sm" />
                         <span className="min-w-0">
@@ -1124,44 +1129,15 @@ function Onboarding() {
 
 const newConversationPrompt = "I have something to turn into content.";
 
-const workTabs = [
-  { key: "campaigns", label: "Campaigns" },
-  { key: "ideas", label: "Ideas" },
-  { key: "library", label: "Library" },
-  { key: "calendar", label: "Calendar" },
-  { key: "roadmap", label: "Video roadmap" },
-] as const;
+export type WorkTab = "campaigns" | "ideas" | "library" | "calendar" | "roadmap";
 
-export type WorkTab = (typeof workTabs)[number]["key"];
-
+/** Preserve saved /studio/work links without adding another global navigation bar. */
 function MyWork({ tab }: { tab: WorkTab }) {
-  return (
-    <div className="mx-auto max-w-[80rem]">
-      <div className="flex flex-wrap items-center gap-2 border-b border-border pb-3">
-        {workTabs.map((item) => (
-          <Link
-            key={item.key}
-            to="/studio/work"
-            search={{ tab: item.key }}
-            className={`inline-flex min-h-10 items-center rounded-xl px-4 text-[13px] font-bold transition ${
-              tab === item.key
-                ? "bg-spotlight-soft text-spotlight"
-                : "text-muted-foreground hover:bg-mist hover:text-ink"
-            }`}
-          >
-            {item.label}
-          </Link>
-        ))}
-      </div>
-      <div className="pt-6">
-        {tab === "campaigns" ? <Campaigns /> : null}
-        {tab === "ideas" ? <IdeasBoard /> : null}
-        {tab === "library" ? <Library /> : null}
-        {tab === "calendar" ? <CalendarView /> : null}
-        {tab === "roadmap" ? <VideoRoadmap /> : null}
-      </div>
-    </div>
-  );
+  if (tab === "ideas") return <IdeasBoard />;
+  if (tab === "library") return <Library />;
+  if (tab === "calendar") return <CalendarView />;
+  if (tab === "roadmap") return <VideoRoadmap />;
+  return <Campaigns />;
 }
 
 function renderView(
@@ -4656,22 +4632,20 @@ function SettingsView() {
           <p className="studio-eyebrow text-system">Workspace settings</p>
           <h1 className="mt-2 text-2xl font-black tracking-[-.04em]">Settings</h1>
         </header>
-        <div>
-          <div role="tablist" aria-label="Settings sections" className="flex gap-1 overflow-x-auto border-b border-border">
+        <SettingsTabs.Root value={tab} onValueChange={(value) => setTab(value as typeof tab)}>
+          <SettingsTabs.List aria-label="Settings sections" className="studio-settings-tabs">
             {tabs.map(([value, Icon, label]) => (
-              <button
+              <SettingsTabs.Trigger
                 key={value}
-                role="tab"
-                aria-selected={tab === value}
-                onClick={() => setTab(value)}
+                value={value}
                 className={`-mb-px flex min-h-11 shrink-0 items-center gap-2 border-b-2 px-3 text-sm font-bold ${tab === value ? "border-spotlight text-spotlight" : "border-transparent text-muted-foreground hover:text-foreground"}`}
               >
-                <Icon className="size-4" />
+                <Icon className="size-4" aria-hidden="true" />
                 {label}
-              </button>
+              </SettingsTabs.Trigger>
             ))}
-          </div>
-          <section className="py-7">
+          </SettingsTabs.List>
+          <SettingsTabs.Content key={tab} value={tab} className="py-7">
             {tab === "workspace" ? (
               <div>
                 <StudioAppearanceSettings />
@@ -4809,6 +4783,7 @@ function SettingsView() {
                     </p>
                     <div className="mt-4 grid gap-2 sm:grid-cols-3">
                       <button
+                        aria-pressed={!guide.key}
                         onClick={() => void setGuide("none")}
                         className={`min-h-16 rounded-xl border p-3 text-left ${guide.key ? "border-border" : "border-ink"}`}
                       >
@@ -4820,10 +4795,11 @@ function SettingsView() {
                       {palList.map((pal) => (
                         <button
                           key={pal.key}
+                          aria-pressed={guide.key === pal.key}
                           onClick={() => void setGuide(pal.key)}
                           className={`flex min-h-16 items-center gap-3 rounded-xl border p-3 text-left ${guide.key === pal.key ? "border-ink" : "border-border"}`}
                           style={{
-                            background: guide.key === pal.key ? pal.soft : "white",
+                            background: guide.key === pal.key ? pal.soft : "var(--studio-surface)",
                           }}
                         >
                           <PalAvatar pal={pal} size="sm" />
@@ -4852,8 +4828,8 @@ function SettingsView() {
                 </div>
               </div>
             ) : null}
-          </section>
-        </div>
+          </SettingsTabs.Content>
+        </SettingsTabs.Root>
       </div>
     </div>
   );

@@ -1,3 +1,5 @@
+import { useRef, useState } from "react";
+import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { useStudio } from "./StudioProvider";
 
@@ -35,13 +37,21 @@ export function StudioAlertPrefs() {
   const { settings, saveSettings } = useStudio();
   const current = (settings || {}) as Partial<Prefs>;
 
-  async function toggle(key: keyof Prefs) {
-    const next = !(current[key] ?? true);
+  const saving = useRef(false);
+  const [pending, setPending] = useState<keyof Prefs | null>(null);
+
+  async function toggle(key: keyof Prefs, next: boolean) {
+    if (saving.current) return;
+    saving.current = true;
+    setPending(key);
     try {
       await saveSettings({ [key]: next } as never);
       toast.success(next ? "Turned on." : "Turned off.");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Could not save that choice.");
+    } finally {
+      saving.current = false;
+      setPending(null);
     }
   }
 
@@ -58,28 +68,28 @@ export function StudioAlertPrefs() {
             <li key={row.key} className="flex items-start justify-between gap-4 py-3">
               <div>
                 <p className="text-sm font-medium text-foreground">{row.title}</p>
-                <p className="text-sm text-muted-foreground">{row.body}</p>
+                <p id={`${row.key}-description`} className="text-sm text-muted-foreground">
+                  {row.body}
+                </p>
               </div>
-              <button
-                type="button"
-                role="switch"
-                aria-checked={on}
-                aria-label={row.title}
-                onClick={() => toggle(row.key)}
-                className={`relative mt-1 h-6 w-11 shrink-0 rounded-full transition-colors ${
-                  on ? "bg-primary" : "bg-muted"
-                }`}
-              >
-                <span
-                  className={`absolute top-0.5 size-5 rounded-full bg-background shadow transition-transform ${
-                    on ? "translate-x-5" : "translate-x-0.5"
-                  }`}
+              <div className="flex min-h-11 shrink-0 items-center">
+                <Switch
+                  checked={on}
+                  aria-label={row.title}
+                  aria-describedby={`${row.key}-description`}
+                  aria-busy={pending === row.key}
+                  aria-disabled={pending !== null}
+                  className="aria-disabled:cursor-wait aria-disabled:opacity-50"
+                  onCheckedChange={(next) => void toggle(row.key, next)}
                 />
-              </button>
+              </div>
             </li>
           );
         })}
       </ul>
+      <p role="status" className="sr-only">
+        {pending ? "Saving preference…" : ""}
+      </p>
     </section>
   );
 }

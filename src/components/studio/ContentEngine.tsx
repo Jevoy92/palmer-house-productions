@@ -763,7 +763,7 @@ export function ContentEngine() {
                     <span
                       className="absolute right-5 top-5 grid size-8 place-items-center rounded-full border"
                       style={{
-                        background: selected ? lane.color : "white",
+                        background: selected ? lane.color : "var(--studio-surface)",
                         color: selected ? "white" : lane.color,
                       }}
                     >

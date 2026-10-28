@@ -41,6 +41,9 @@ export default defineConfig(({ command }) => {
     resolve: {
       alias: [
         { find: "@/lib/studio-server", replacement: mock },
+        { find: "@/lib/studio-social-server", replacement: mock },
+        { find: "@/lib/newsletter.functions", replacement: mock },
+        { find: "@/lib/expo.functions", replacement: mock },
         { find: "@/lib/studio-credit-server", replacement: mock },
         { find: "@/lib/studio-transcription-server", replacement: mock },
         { find: "@/lib/studio-recovery-server", replacement: mock },

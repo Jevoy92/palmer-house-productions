@@ -138,3 +138,27 @@ export async function getStudioCreditSummary() {
 export async function createStudioCreditCheckout() {
   throw new Error("Preview only: secure checkout is connected in the app. No payment was taken.");
 }
+
+// UI-only fixtures: these imports must never reach server functions in this harness.
+export const getStudioSocial = async () => ({ enabled: false as const });
+export const cancelStudioSocialPost = unavailable;
+export const connectStudioSocial = unavailable;
+export const disconnectStudioSocial = unavailable;
+export const publishStudioSocial = unavailable;
+export const startSocialAddonCheckout = unavailable;
+export const applySignupNewsletterConsent = unavailable;
+export const getNewsletterPrefs = async () => ({
+  monthly: false,
+  weekly: false,
+  weeklyEligible: true,
+  suppressed: false,
+  unsubscribedAll: false,
+});
+export const saveNewsletterPrefs = async ({
+  data,
+}: {
+  data: { monthly: boolean; weekly: boolean };
+}) => ({ ...(await getNewsletterPrefs()), monthly: data.monthly, weekly: data.weekly });
+
+export const checkExpoCode = unavailable;
+export const submitExpoLead = unavailable;

@@ -22,7 +22,6 @@ import {
   LogOut,
   Search,
   History,
-  PanelLeftClose,
   CircleHelp,
 } from "lucide-react";
 import type { StudioView } from "@/lib/studio-model";
@@ -64,7 +63,6 @@ function Navigation({ view, close }: { view: StudioView; close?: () => void }) {
       <div className="studio-workspace-label">
         <span>{workspace?.name.slice(0, 1)}</span>
         <strong>{workspace?.name}</strong>
-        <PanelLeftClose size={15} aria-hidden="true" />
       </div>
       <Link
         to="/studio/conversations"
@@ -296,7 +294,7 @@ export function StudioWorkspaceShell({
               const target = navigationOpener.current?.isConnected
                 ? navigationOpener.current
                 : document.getElementById("studio-content");
-              target?.focus();
+              target?.focus({ preventScroll: true });
             }}
           >
             <div className="studio-drawer-heading">

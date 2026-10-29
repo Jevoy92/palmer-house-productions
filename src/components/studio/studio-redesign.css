@@ -602,8 +602,13 @@ html[data-studio-theme] .studio-navigation-backdrop {
   color: var(--studio-action-text);
 }
 
-.dark .studio-brand-mark, [data-studio-theme="dark"] .studio-brand-mark { filter: brightness(0) invert(1); }
-[data-studio-theme="light"] .studio-brand-mark { filter: none; }
+.dark .studio-brand-mark,
+[data-studio-theme="dark"] .studio-brand-mark {
+  filter: brightness(0) invert(1);
+}
+[data-studio-theme="light"] .studio-brand-mark {
+  filter: none;
+}
 
 /* Portalled controls share Studio tokens and stay inside short/mobile viewports. */
 .studio-notifications-panel {
@@ -640,7 +645,10 @@ html[data-studio-theme] .studio-navigation-backdrop {
   .studio-icon-button,
   .studio-app .secondary-action,
   .studio-menu-item {
-    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+    transition:
+      background-color 150ms ease,
+      color 150ms ease,
+      border-color 150ms ease;
   }
 }
 
@@ -669,5 +677,12 @@ html[data-studio-theme] .studio-navigation-backdrop {
 @media (min-width: 768px) {
   .studio-chat-header .studio-chat-menu {
     display: none;
+  }
+}
+
+/* Keep campaign actions above the persistent mobile navigation, including iOS safe areas. */
+@media (max-width: 767px) {
+  .studio-campaign-handoff {
+    bottom: calc(78px + max(8px, env(safe-area-inset-bottom)));
   }
 }

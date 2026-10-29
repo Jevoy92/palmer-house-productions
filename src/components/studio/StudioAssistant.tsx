@@ -1,3 +1,4 @@
+import { composePalOpening } from "@/lib/pal-greetings";
 import { StudioCreditCost } from "./StudioCredits";
 import { Link, useLocation, useNavigate, useSearch } from "@tanstack/react-router";
 import { useStudioMotion } from "./studio-motion";
@@ -667,8 +668,8 @@ export function StudioAssistant({ conversationId }: { conversationId?: string })
           <div className="studio-chat-return" role="status">
             <img src={pal.avatar} alt="" className="studio-chat-return-avatar" />
             <span>
-              <strong>{pal.name}:</strong> Welcome back. Pick up where we left off, or tell me
-              what’s next.
+              <strong>{pal.name}:</strong>{" "}
+              {composePalOpening(pal.key, openingContext, greetingCycle).headline}
             </span>
             <button
               type="button"

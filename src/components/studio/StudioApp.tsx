@@ -1,3 +1,4 @@
+import { campaignPostEntries } from "@/lib/studio-campaign-posts";
 import * as SettingsTabs from "@radix-ui/react-tabs";
 import { StudioAlertPrefs } from "./StudioAlertPrefs";
 import { StudioSocialSettings, StudioPostButton } from "./StudioSocial";
@@ -1651,6 +1652,10 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
   const items = assets.filter((item) => item.campaign_id === campaignId);
   const output = campaignId ? campaignOutputs[campaignId] : undefined;
   const [stage, setStage] = useState<CampaignStage>("strategy");
+  const reviewLock = useRef(false);
+  const [reviewPending, setReviewPending] = useState(false);
+  const [reviewError, setReviewError] = useState("");
+
   const { enter, exit, transition } = useStudioMotion();
   if (!campaign)
     return (
@@ -1749,18 +1754,42 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
           {currentStage.detail}
         </p>
         <button
-          onClick={() =>
-            void requestService(
-              "strategy_review",
-              `Please review the ${campaign.title} campaign, especially the ${currentStage.label} stage.`,
-              campaign.id,
-            )
-          }
+          disabled={reviewPending}
+          aria-busy={reviewPending}
+          onClick={async () => {
+            if (reviewLock.current) return;
+            reviewLock.current = true;
+            setReviewPending(true);
+            setReviewError("");
+            try {
+              await requestService(
+                "strategy_review",
+                `Please review the ${campaign.title} campaign, especially the ${currentStage.label} stage.`,
+                campaign.id,
+              );
+            } catch (error) {
+              setReviewError(
+                error instanceof Error
+                  ? error.message
+                  : "Could not send your review request. Please try again.",
+              );
+            } finally {
+              reviewLock.current = false;
+              setReviewPending(false);
+            }
+          }}
           className="secondary-action"
         >
-          <Eye className="size-4" /> Ask Palmer House to review
+          <Eye className="size-4" />{" "}
+          {reviewPending ? "Sending request…" : "Ask Palmer House to review"}
         </button>
       </div>
+
+      {reviewError && (
+        <p role="alert" className="mt-3 text-sm text-destructive">
+          {reviewError}
+        </p>
+      )}
 
       <AnimatePresence mode="wait">
         <motion.section
@@ -1820,7 +1849,7 @@ function CampaignDetail({ campaignId }: { campaignId?: string }) {
         </motion.section>
       </AnimatePresence>
 
-      <footer className="sticky bottom-4 z-20 mt-7 rounded-[1.25rem] border border-border bg-white/95 p-3 shadow-soft backdrop-blur sm:flex sm:items-center sm:justify-between">
+      <footer className="studio-campaign-handoff sticky bottom-4 z-20 mt-7 rounded-[1.25rem] border border-border bg-white/95 p-3 shadow-soft backdrop-blur sm:flex sm:items-center sm:justify-between">
         <div className="hidden sm:block">
           <p className="text-sm font-black">Campaign handoff</p>
           <p className="mt-1 text-xs text-muted-foreground">
@@ -2457,9 +2486,8 @@ function SocialsResult({
   business: string;
 }) {
   const entries = useMemo<SocialEntry[]>(() => {
-    const platformAssets = items.filter((item) => item.kind === "platform_post");
     if (output?.platformPosts?.length) {
-      return output.platformPosts.map((post, index) => ({
+      return campaignPostEntries(output, items).map(({ post, asset }, index) => ({
         id: safeText(post?.id, `platform-${index}`),
         type: safeText(post?.format, "post"),
         channel: safeText(post?.platform, "social"),
@@ -2484,7 +2512,7 @@ function SocialsResult({
                   typeof post.quiz.correctIndex === "number" ? post.quiz.correctIndex : 0,
               }
             : null,
-        asset: platformAssets[index],
+        asset,
       }));
     }
     return items

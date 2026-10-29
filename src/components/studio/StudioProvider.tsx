@@ -1,3 +1,4 @@
+import { prepareAssetUpdate } from "@/lib/studio-asset-update";
 import { studioAuthReturnUrl } from "@/lib/public-journey";
 import type { Session, User } from "@supabase/supabase-js";
 import {
@@ -1335,50 +1336,13 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   }
   async function updateAsset(id: string, values: Partial<Asset>) {
     const previous = assets.find((asset) => asset.id === id);
-    let patch = values;
+    const patch = prepareAssetUpdate(previous, values);
     const previousMetadata =
       previous?.metadata &&
       typeof previous.metadata === "object" &&
       !Array.isArray(previous.metadata)
         ? previous.metadata
         : {};
-    if (
-      previous &&
-      previous.kind !== "platform_post" &&
-      values.content !== undefined &&
-      values.content !== previous.content &&
-      values.metadata === undefined
-    ) {
-      // Plain editing cannot safely reconstruct scenes, slides, or article
-      // sections. Retain those structures and mark the saved text as the
-      // display authority, including after a fresh workspace load.
-      patch = { ...values, metadata: { ...previousMetadata, studioTextOverride: true } };
-    } else if (
-      values.content !== undefined &&
-      values.metadata &&
-      typeof values.metadata === "object" &&
-      !Array.isArray(values.metadata)
-    ) {
-      const structured = { ...values.metadata };
-      delete structured.studioTextOverride;
-      patch = { ...values, metadata: structured };
-    }
-    if (previous?.kind === "platform_post") {
-      const metadata = patch.metadata ?? previous.metadata;
-      if (metadata && typeof metadata === "object" && !Array.isArray(metadata)) {
-        // The plain-text editor and platform editor share one saved post. Keep
-        // their two representations aligned without dropping native features.
-        patch = {
-          ...patch,
-          metadata: {
-            ...previousMetadata,
-            ...metadata,
-            ...(values.content !== undefined ? { body: values.content } : {}),
-            ...(values.title !== undefined ? { title: values.title } : {}),
-          },
-        };
-      }
-    }
     if (
       previous?.kind === "document" &&
       previousMetadata.mimeType === "application/pdf" &&

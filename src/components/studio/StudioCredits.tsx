@@ -288,7 +288,7 @@ export function StudioCreditPanel({ compact = false }: { compact?: boolean }) {
           </div>
         )}
         {compact ? (
-          <Link className="studio-chat-text-link" to="/studio/billing">
+          <Link className="studio-credit-details-link" to="/studio/billing">
             See usage and add credits <ArrowUpRight size={15} />
           </Link>
         ) : (

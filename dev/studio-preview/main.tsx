@@ -1,4 +1,5 @@
 /* eslint-disable react-refresh/only-export-components -- Standalone development preview entry. */
+import { prepareAssetUpdate } from "@/lib/studio-asset-update";
 import React, { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import {
@@ -869,7 +870,9 @@ function FixtureProvider({
     updateAsset: async (id, update) => {
       await complete();
       setAssets((current) =>
-        current.map((item) => (item.id === id ? { ...item, ...update } : item)),
+        current.map((item) =>
+          item.id === id ? { ...item, ...prepareAssetUpdate(item, update) } : item,
+        ),
       );
     },
     updateCalendarItem: async (id, update) => {

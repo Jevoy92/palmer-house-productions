@@ -832,6 +832,7 @@ export function StudioChatEditor({
             <label className="studio-editor-label">
               {asset.kind.includes("script") ? "Script" : "Post text"}
               <textarea
+                aria-label={asset.kind.includes("script") ? "Script" : "Post text"}
                 value={draft}
                 onChange={(event) => setDraft(event.target.value)}
                 disabled={saving}
